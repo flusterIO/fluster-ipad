@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		796F71042EB174610012B500 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				796F71232EB185380012B500 /* SVGView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = Fluster;
 			packageProductDependencies = (
+				796F71222EB185380012B500 /* SVGView */,
 			);
 			productName = Fluster;
 			productReference = 796F71042EB174610012B500 /* Fluster.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 796F70FB2EB174610012B500;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F71052EB174610012B500 /* Products */;
 			projectDirPath = "";
@@ -150,6 +159,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Fluster/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -184,6 +194,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Fluster/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -349,6 +360,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/SVGView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		796F71222EB185380012B500 /* SVGView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */;
+			productName = SVGView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 796F70FC2EB174610012B500 /* Project object */;
 }
