@@ -1,6 +1,6 @@
-# Fluster
+# Fluster - iPad
 
-> Here's a poem from Gemini because Swift is hard.
+> Since this app might never make it into produciton, here's a poem from Gemini because Swift is hard.
 
 In realms of code, where logic's spun,
 A dev named Byte, his battles won.

@@ -18,6 +18,7 @@ struct MainView: View {
                         Image(systemName: navItem.icon)
                         Text(navItem.label)
                     }
+                    .ignoresSafeArea()
                     .onTapGesture {
                         if navItem.path == MainCoordinatorPages.root {
                             coordinator.popToRoot()
@@ -29,6 +30,7 @@ struct MainView: View {
             }
         } detail: {
             EditorSplitView()
+                .ignoresSafeArea()
         }
     }
 }

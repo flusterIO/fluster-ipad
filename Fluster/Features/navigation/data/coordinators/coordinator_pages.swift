@@ -21,6 +21,7 @@ enum MainCoordinatorPages: Coordinatable {
         switch self {
         case .root:
             MainView()
+                .ignoresSafeArea()
         case .bibliography:
             BibliographyPageView()
         case .search:
