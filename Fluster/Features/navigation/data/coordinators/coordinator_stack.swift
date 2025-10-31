@@ -16,6 +16,7 @@ struct CoordinatorStack<CoordinatorPage: Coordinatable>: View {
     }
     
     @State private var coordinator = Coordinator<CoordinatorPage>()
+    @State private var themeManager = ThemeManager(initialTheme: FlusterDark())
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
@@ -24,6 +25,7 @@ struct CoordinatorStack<CoordinatorPage: Coordinatable>: View {
                 .sheet(item: $coordinator.sheet) { $0 }
                 .fullScreenCover(item: $coordinator.fullScreenCover) { $0 }
         }
+        .environment(themeManager)
         .environment(coordinator)
     }
 }

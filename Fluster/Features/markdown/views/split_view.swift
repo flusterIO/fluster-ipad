@@ -10,6 +10,7 @@ import SwiftUI
 struct EditorSplitView: View {
     @State private var leftPaneWidthFraction: CGFloat = 0.5
     @GestureState private var dragOffset: CGFloat = 0
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     private let minPaneWidthFraction: CGFloat = 0.1
 
@@ -42,9 +43,7 @@ struct EditorSplitView: View {
                                 self.leftPaneWidthFraction = finalWidth / geometry.size.width
                             }
                     )
-
-                // Right View
-                Color.green
+                themeManager.theme.background
             }
         }
     }

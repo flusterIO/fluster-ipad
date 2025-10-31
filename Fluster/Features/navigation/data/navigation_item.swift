@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct NavigationItem: Identifiable {
-    let id = UUID()
+    let id: String
     var label: String
     var path: MainCoordinatorPages
     var icon: String
 }
 
 var navigationItems: [NavigationItem] = [
-    NavigationItem(label: "Home", path: .root, icon: "house.fill"),
-    NavigationItem(label: "Bibliography", path: .bibliography, icon: "book.pages.fill"),
-    NavigationItem(label: "Search", path: .search, icon: "magnifyingglass.circle.fill"),
+    NavigationItem(id: "home", label: "Home", path: .root, icon: "house.fill"),
+    NavigationItem(id: "bib", label: "Bibliography", path: .bibliography, icon: "book.pages.fill"),
+    NavigationItem(id: "search", label: "Search", path: .search, icon: "magnifyingglass.circle.fill"),
 ]

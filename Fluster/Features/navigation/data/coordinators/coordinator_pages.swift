@@ -28,5 +28,4 @@ enum MainCoordinatorPages: Coordinatable {
             SearchResultsPageView()
         }
     }
-
 }

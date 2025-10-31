@@ -6,15 +6,19 @@
 //
 
 import SwiftUI
-
+import STTextViewSwiftUI
 
 
 struct MarkdownEditorView: View {
+    @State private var editorValue = AttributedString("")
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     var body: some View {
-        Text("Mardown Editor")
+        ZStack {
+            themeManager.theme.background
+            TextView(text: $editorValue,
+                     options: [.showLineNumbers, .wrapLines],
+            )
+        }
     }
-}
-
-#Preview {
-    MarkdownEditorView()
 }

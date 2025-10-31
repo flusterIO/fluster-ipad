@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
+		79C35B5D2EB4403400806066 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B5C2EB4403400806066 /* Yams */; };
+		79C35B602EB4416600806066 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B5F2EB4416600806066 /* MarkdownUI */; };
+		79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 79FFA6CC2EB4280100B09AE7 /* STTextView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				796F71232EB185380012B500 /* SVGView in Frameworks */,
+				79C35B5D2EB4403400806066 /* Yams in Frameworks */,
+				79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */,
+				79C35B602EB4416600806066 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +90,9 @@
 			name = Fluster;
 			packageProductDependencies = (
 				796F71222EB185380012B500 /* SVGView */,
+				79FFA6CC2EB4280100B09AE7 /* STTextView */,
+				79C35B5C2EB4403400806066 /* Yams */,
+				79C35B5F2EB4416600806066 /* MarkdownUI */,
 			);
 			productName = Fluster;
 			productReference = 796F71042EB174610012B500 /* Fluster.app */;
@@ -115,6 +124,9 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */,
+				79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */,
+				79C35B5B2EB4403400806066 /* XCRemoteSwiftPackageReference "Yams" */,
+				79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F71052EB174610012B500 /* Products */;
@@ -165,6 +177,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -200,6 +213,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -370,6 +384,30 @@
 				minimumVersion = 1.0.6;
 			};
 		};
+		79C35B5B2EB4403400806066 /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.2.0;
+			};
+		};
+		79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.1;
+			};
+		};
+		79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/STTextView";
+			requirement = {
+				kind = exactVersion;
+				version = 2.2.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -377,6 +415,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */;
 			productName = SVGView;
+		};
+		79C35B5C2EB4403400806066 /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79C35B5B2EB4403400806066 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
+		79C35B5F2EB4416600806066 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
+		};
+		79FFA6CC2EB4280100B09AE7 /* STTextView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */;
+			productName = STTextView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
