@@ -14,30 +14,32 @@ struct MainView: View {
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var body: some View {
-        NavigationStack {
-            ZStack {
-                EditorSplitView()
-                    .background(themeManager.theme.background).slideInView(isActive: $sidebarOpen, content: {
-                        SideMenuView(open: $sidebarOpen)
-                    })
-            }
-            .toolbar(sidebarOpen ? .hidden : .visible, for: .navigationBar)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(
-                    placement: .topBarLeading,
-                    content: {
-                        Button(
-                            action: {
-                                sidebarOpen.toggle()
-                            },
-                            label: {
-                                Image(systemName: "line.3.horizontal")
-                                    .shadow(radius: 0)
+        TabView {
+            Tab("Markdown", systemImage: "book.closed.circle.fill") {
+                ZStack {
+                    EditorSplitView()
+                        .background(themeManager.theme.background).slideInView(
+                            isActive: $sidebarOpen,
+                            content: {
+                                SideMenuView(open: $sidebarOpen)
                             }
                         )
-                    }
-                )
+                }
+            }
+            Tab("Paper", systemImage: "pencil.circle.fill") {
+                ZStack {
+                    PaperView()
+                }
+            }
+            Tab("Bibliography", systemImage: "books.vertical.circle.fill") {
+                ZStack {
+                    BibliographyPageView()
+                }
+            }
+            Tab("Search", systemImage: "magnifyingglass.circle.fill") {
+                ZStack {
+                    SearchResultsPageView()
+                }
             }
         }
     }
