@@ -10,7 +10,7 @@ import STTextViewSwiftUI
 
 
 struct MarkdownEditorView: View {
-    @State private var editorValue = AttributedString("")
+    @Binding var editorValue: AttributedString
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var body: some View {

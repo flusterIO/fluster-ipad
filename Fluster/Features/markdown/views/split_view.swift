@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EditorSplitView: View {
     @State private var leftPaneWidthFraction: CGFloat = 0.5
+    @State private var content: AttributedString = AttributedString("")
     @GestureState private var dragOffset: CGFloat = 0
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
@@ -22,9 +23,10 @@ struct EditorSplitView: View {
             
             let clampedLeftPaneWidth = max(lowerBound, min(upperBound, adjustedLeftPaneWidth))
 
-            HStack(spacing: 0) {
+            HStack(alignment: .top, spacing: 0) {
                 // Left View
-                MarkdownEditorView()
+                MarkdownEditorView(editorValue: $content)
+                    .padding()
                     .frame(width: clampedLeftPaneWidth)
 
                 // Draggable Splitter
@@ -43,7 +45,7 @@ struct EditorSplitView: View {
                                 self.leftPaneWidthFraction = finalWidth / geometry.size.width
                             }
                     )
-                themeManager.theme.background
+                MarkdownPreviewView(content: $content)
             }
         }
     }
