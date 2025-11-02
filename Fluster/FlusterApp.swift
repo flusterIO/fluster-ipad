@@ -25,7 +25,7 @@ struct FlusterApp: App {
 
     var body: some Scene {
         WindowGroup {
-            CoordinatorStack( MainCoordinatorPages.root)
+            MainView()
                 .ignoresSafeArea()
         }
         .modelContainer(sharedModelContainer)

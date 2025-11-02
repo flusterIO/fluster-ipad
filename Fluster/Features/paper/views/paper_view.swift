@@ -5,15 +5,19 @@
 //  Created by Andrew on 11/1/25.
 //
 
+import PencilKit
 import SwiftUI
 
 struct PaperView: View {
-    var body: some View {
-        CanvasView()
-            .ignoresSafeArea()
-    }
-}
+    @State private var drawing = PKDrawing()
+    @Binding var toolbar: PKToolPicker
+    @Binding var canvasView: PKCanvasView
 
-#Preview {
-    PaperView()
+    var body: some View {
+        CanvasView(
+            toolPicker: $toolbar,
+            canvasView: $canvasView,
+            drawing: $drawing
+        )
+    }
 }

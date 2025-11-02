@@ -16,8 +16,6 @@ enum MainCoordinatorPages: Coordinatable {
     case search
 
     case bibliography
-    
-    case paper
 
     var body: some View {
         switch self {
@@ -27,10 +25,7 @@ enum MainCoordinatorPages: Coordinatable {
         case .bibliography:
             BibliographyPageView()
         case .search:
-            SearchResultsPageView()
-        case .paper:
-            PaperView()
-                .ignoresSafeArea()
+            SearchPageView()
         }
     }
 }

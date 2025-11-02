@@ -5,43 +5,61 @@
 //  Created by Andrew on 10/29/25.
 //
 
+import PencilKit
 import SwiftUI
 
+enum MainViewTab {
+    case paper, markdown, bib, search
+}
+
 struct MainView: View {
-    @State private var sidebarOpen: Bool = false
-    @State private var visibility: NavigationSplitViewVisibility = .detailOnly
-    @Environment(Coordinator<MainCoordinatorPages>.self) private var coordinator
-    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @State private var toolbar = PKToolPicker()
+    @State private var canvasView = PKCanvasView()
+    @State private var themeManager = ThemeManager(initialTheme: FlusterDark())
+    @State private var selectedTab = MainViewTab.paper
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var body: some View {
-        TabView {
-            Tab("Markdown", systemImage: "book.closed.circle.fill") {
-                ZStack {
-                    EditorSplitView()
-                        .background(themeManager.theme.background).slideInView(
-                            isActive: $sidebarOpen,
-                            content: {
-                                SideMenuView(open: $sidebarOpen)
-                            }
-                        )
-                }
+        TabView(selection: $selectedTab) {
+            Tab(
+                "Paper",
+                systemImage: "pencil.circle.fill",
+                value: MainViewTab.paper
+            ) {
+                PaperView(toolbar: $toolbar, canvasView: $canvasView)
             }
-            Tab("Paper", systemImage: "pencil.circle.fill") {
-                ZStack {
-                    PaperView()
-                }
+            Tab(
+                "Markdown",
+                systemImage: "book.closed.circle.fill",
+                value: MainViewTab.markdown
+            ) {
+                EditorSplitView()
+                    .background(themeManager.theme.background)
             }
-            Tab("Bibliography", systemImage: "books.vertical.circle.fill") {
-                ZStack {
-                    BibliographyPageView()
-                }
+            Tab(
+                "Bibliography",
+                systemImage: "books.vertical.circle.fill",
+                value: MainViewTab.bib
+            ) {
+                BibliographyPageView()
             }
-            Tab("Search", systemImage: "magnifyingglass.circle.fill") {
-                ZStack {
-                    SearchResultsPageView()
-                }
+            Tab(
+                "Search",
+                systemImage: "magnifyingglass.circle.fill",
+                value: MainViewTab.search
+            ) {
+                SearchPageView()
+                    .ignoresSafeArea()
             }
-        }
+        }.onChange(
+            of: selectedTab,
+            {
+                if selectedTab == .paper {
+                    toolbar.setVisible(true, forFirstResponder: canvasView)
+                    toolbar.addObserver(canvasView)
+                    canvasView.becomeFirstResponder()                }
+            }
+        )
+        .environment(themeManager)
     }
     func handleColorSchemeChange(newScheme: ColorScheme) {
         self.themeManager.theme = getTheme(
@@ -54,5 +72,4 @@ struct MainView: View {
 #Preview {
     MainView()
         .environment(ThemeManager(initialTheme: FlusterDark()))
-        .environment(Coordinator<MainCoordinatorPages>())
 }

@@ -1,15 +1,14 @@
 //
-//  side_menu_row_view.swift
+//  search_category_row.swift
 //  Fluster
 //
-//  Created by Andrew on 10/31/25.
+//  Created by Andrew on 11/1/25.
 //
 
 import SwiftUI
 
-
-struct SideMenuRowView: View {
-    var item: NavigationItem
+struct SearchCategoryRow: View {
+    var item: SearchCategoryItem
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     var body: some View {
@@ -28,6 +27,6 @@ struct SideMenuRowView: View {
 }
 
 #Preview {
-    SideMenuRowView(item: navigationItems[0])
+    SearchCategoryRow(item: searchCategoryItems[0])
         .environment(ThemeManager(initialTheme: FlusterDark()))
 }
