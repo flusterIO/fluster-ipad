@@ -12,7 +12,13 @@ import SwiftData
 struct FlusterApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            MarkdownNote.self,
+            NoteModel.self,
+            NoteTag.self,
+            SubjectModel.self,
+            TopicModel.self,
+            TagModel.self,
+            BibEntryModel.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

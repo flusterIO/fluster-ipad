@@ -9,7 +9,7 @@ import PencilKit
 import SwiftUI
 
 enum MainViewTab {
-    case paper, markdown, bib, search
+    case paper, markdown, bib, notes
 }
 
 struct MainView: View {
@@ -43,20 +43,22 @@ struct MainView: View {
                 BibliographyPageView()
             }
             Tab(
-                "Search",
+                "Notes",
                 systemImage: "magnifyingglass.circle.fill",
-                value: MainViewTab.search
+                value: MainViewTab.notes
             ) {
                 SearchPageView()
                     .ignoresSafeArea()
             }
-        }.onChange(
+        }
+        .onChange(
             of: selectedTab,
             {
                 if selectedTab == .paper {
                     toolbar.setVisible(true, forFirstResponder: canvasView)
                     toolbar.addObserver(canvasView)
-                    canvasView.becomeFirstResponder()                }
+                    canvasView.becomeFirstResponder()
+                }
             }
         )
         .environment(themeManager)

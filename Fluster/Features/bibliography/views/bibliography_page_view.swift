@@ -6,10 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BibliographyPageView: View {
+    @Query var bibEntries: [BibEntryModel]
+    @State private var editing: BibEntryModel? = nil
     var body: some View {
-        Text("Bibliography Page")
+        if bibEntries.isEmpty {
+            EmptyBibListView()
+        } else {
+            BibListView(items: bibEntries, editing: $editing)
+        }
     }
 }
 

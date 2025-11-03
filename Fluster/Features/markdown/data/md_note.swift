@@ -8,24 +8,31 @@
 import Foundation
 import SwiftData
 
+func removeHeadingSyntax(val: String) -> String {
+    if val.hasPrefix("#") {
+        return removeHeadingSyntax(val: String(val.suffix(val.count - 1)))
+    }
+    return val.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+}
+
+func getTitle(body: String) -> String? {
+    let lines = body.components(separatedBy: .newlines)
+    let firstTitleLine = lines.first(where: { $0.hasPrefix("#") })
+    if firstTitleLine == nil {
+        return nil
+    }
+    return removeHeadingSyntax(val: firstTitleLine!)
+}
+
 @Model
 class MarkdownNote {
     var body: String
-    var label: String
-    var id: UUID
-    /// The last update time.
-    var utime: Date
-    /// The create time.
-    var ctime: Date
-    /// The date the note was last accessed.
-    var last_read: Date
+    var title: String?
     
-    init(body: String, label: String, id: UUID, utime: Date = .now, ctime: Date = .now, last_read: Date = .now) {
+    init(body: String) {
         self.body = body
-        self.label = label
-        self.id = id
-        self.utime = utime
-        self.ctime = ctime
-        self.last_read = last_read
+        self.title = getTitle(body: body)
     }
+    
+    
 }

@@ -10,6 +10,7 @@
 		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
 		79C35B5D2EB4403400806066 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B5C2EB4403400806066 /* Yams */; };
 		79C35B602EB4416600806066 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B5F2EB4416600806066 /* MarkdownUI */; };
+		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 79FFA6CC2EB4280100B09AE7 /* STTextView */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 				79C35B5D2EB4403400806066 /* Yams in Frameworks */,
 				79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */,
 				79C35B602EB4416600806066 /* MarkdownUI in Frameworks */,
+				79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +95,7 @@
 				79FFA6CC2EB4280100B09AE7 /* STTextView */,
 				79C35B5C2EB4403400806066 /* Yams */,
 				79C35B5F2EB4416600806066 /* MarkdownUI */,
+				79C35B942EB8FA1B00806066 /* SwiftyBibtex */,
 			);
 			productName = Fluster;
 			productReference = 796F71042EB174610012B500 /* Fluster.app */;
@@ -127,6 +130,7 @@
 				79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */,
 				79C35B5B2EB4403400806066 /* XCRemoteSwiftPackageReference "Yams" */,
 				79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F71052EB174610012B500 /* Products */;
@@ -400,6 +404,14 @@
 				minimumVersion = 2.4.1;
 			};
 		};
+		79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MaxHaertwig/SwiftyBibtex.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/STTextView";
@@ -425,6 +437,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
+		};
+		79C35B942EB8FA1B00806066 /* SwiftyBibtex */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */;
+			productName = SwiftyBibtex;
 		};
 		79FFA6CC2EB4280100B09AE7 /* STTextView */ = {
 			isa = XCSwiftPackageProductDependency;

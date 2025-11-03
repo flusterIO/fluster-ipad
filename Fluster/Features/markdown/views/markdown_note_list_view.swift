@@ -9,18 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct MarkdownNoteListView: View {
-    @Query var notes: [MarkdownNote]
+    @Query var notes: [NoteModel]
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(notes) { note in
-                    VStack(alignment: .center){
-                        Text(note.label)
-                            .font(.headline)
-                    }
-                }
-        }
-        }
+        Text("Here")
     }
 }
 
