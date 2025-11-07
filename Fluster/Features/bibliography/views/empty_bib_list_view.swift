@@ -10,7 +10,10 @@ import SwiftUI
 struct EmptyBibListView: View {
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
     
+    @State private var inputValue: String = ""
+    
     @State private var createSheetOpen = false
+    @Binding var editing: BibEntryModel?
 
     var body: some View {
         VStack(spacing: 16) {
@@ -29,11 +32,15 @@ struct EmptyBibListView: View {
             }
         }
         .sheet(isPresented: $createSheetOpen, content: {
-            CreateBibEntrySheetView(isPresented: $createSheetOpen)
+            CreateBibEntrySheetView(
+                inputValue: $inputValue,
+                isPresented: $createSheetOpen,
+                editing: $editing
+            )
         })
     }
 }
 
 #Preview {
-    EmptyBibListView()
+    EmptyBibListView(editing: .constant(nil))
 }

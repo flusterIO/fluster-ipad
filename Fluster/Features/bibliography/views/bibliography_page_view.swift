@@ -13,7 +13,7 @@ struct BibliographyPageView: View {
     @State private var editing: BibEntryModel? = nil
     var body: some View {
         if bibEntries.isEmpty {
-            EmptyBibListView()
+            EmptyBibListView(editing: $editing)
         } else {
             BibListView(items: bibEntries, editing: $editing)
         }

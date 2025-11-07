@@ -12,6 +12,7 @@ struct BibListView: View {
     var items: [BibEntryModel]
     @Binding var editing: BibEntryModel?
     @State private var editingSheetOpen: Bool = false
+    @State private var editingInputValue: String = ""
     var body: some View {
         HStack{
             List(items, id: \.id) {item in
@@ -19,11 +20,18 @@ struct BibListView: View {
             }
         }
         .sheet(isPresented: $editingSheetOpen, content: {
-            CreateBibEntrySheetView(isPresented: $editingSheetOpen)
+            CreateBibEntrySheetView(
+                inputValue: $editingInputValue,
+                isPresented: $editingSheetOpen,
+                editing: $editing
+            )
         })
         .onChange(of: editing, {
             if editing != nil {
                 editingSheetOpen = true
+                editingInputValue = editing!.data
+            } else {
+                editingSheetOpen = false
             }
         })
     }

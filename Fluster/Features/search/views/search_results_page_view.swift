@@ -9,7 +9,10 @@ import SwiftUI
 
 struct SearchPageView: View {
     @State private var inputValue: String = ""
-    @State private var selectedCategory: SearchCategory = .note
+    @State private var selectedCategory: SearchCategoryId = .note
+    @Binding var editingNoteId: String?
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+
     var body: some View {
         NavigationSplitView(
             sidebar: {
@@ -23,7 +26,7 @@ struct SearchPageView: View {
                                 selectedCategory = cat.id
                             },
                             label: {
-                                SearchCategoryRow(item: cat)
+                                SearchCategoryRow(item: cat, activeCategory: $selectedCategory)
                             }
                         )
                     }
@@ -33,9 +36,11 @@ struct SearchPageView: View {
             detail: {
                 switch selectedCategory {
                 case .note:
-                    Text("Note")
+                    MarkdownNotesSearchResultsView(searchQuery: $inputValue, activeCategory: $selectedCategory)
                 case .citation:
-                    Text("Bibliography")
+                    BibliographySearchResultsView(searchQuery: $inputValue, activeCategory: $selectedCategory)
+                case .createNote:
+                    CreateNoteSheetView(editingNoteId: $editingNoteId)
                 }
             }
         )
@@ -43,6 +48,6 @@ struct SearchPageView: View {
 }
 
 #Preview {
-    SearchPageView()
+    SearchPageView(editingNoteId: .constant(nil))
         .environment(ThemeManager(initialTheme: FlusterDark()))
 }

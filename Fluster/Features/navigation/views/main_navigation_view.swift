@@ -15,9 +15,10 @@ enum MainViewTab {
 struct MainView: View {
     @State private var toolbar = PKToolPicker()
     @State private var canvasView = PKCanvasView()
-    @State private var themeManager = ThemeManager(initialTheme: FlusterDark())
-    @State private var selectedTab = MainViewTab.paper
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @State private var themeManager = ThemeManager(initialTheme: getTheme(themeName: .Fluster, darkMode: true))
+    @State private var selectedTab = MainViewTab.paper
+    @State private var editingNoteId: String?
     var body: some View {
         TabView(selection: $selectedTab) {
             Tab(
@@ -33,7 +34,6 @@ struct MainView: View {
                 value: MainViewTab.markdown
             ) {
                 EditorSplitView()
-                    .background(themeManager.theme.background)
             }
             Tab(
                 "Bibliography",
@@ -47,7 +47,7 @@ struct MainView: View {
                 systemImage: "magnifyingglass.circle.fill",
                 value: MainViewTab.notes
             ) {
-                SearchPageView()
+                SearchPageView(editingNoteId: $editingNoteId)
                     .ignoresSafeArea()
             }
         }
@@ -61,12 +61,20 @@ struct MainView: View {
                 }
             }
         )
+        .onChange(
+            of: colorScheme,
+            {
+                handleColorSchemeChange(newScheme: colorScheme)
+            }
+        )
         .environment(themeManager)
     }
     func handleColorSchemeChange(newScheme: ColorScheme) {
-        self.themeManager.theme = getTheme(
-            themeName: .Fluster,
-            darkMode: colorScheme == .dark
+        self.themeManager = ThemeManager(
+            initialTheme: getTheme(
+                themeName: .Fluster,
+                darkMode: colorScheme == .dark
+            )
         )
     }
 }

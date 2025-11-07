@@ -16,7 +16,6 @@ struct BibEntryListItemView: View {
             .font(.subheadline)
             .swipeActions(content: {
                 Button(action: {
-                   print("Editing here...")
                     editing = item
                 }, label: {
                     Label("Edit", systemImage: "slider.horizontal.3")

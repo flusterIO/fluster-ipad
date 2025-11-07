@@ -9,26 +9,32 @@ import SwiftUI
 import SwiftData
 
 struct CreateBibEntrySheetView: View {
-    @State private var inputValue: String = ""
+    @Binding var inputValue: String
     @Binding var isPresented: Bool
+    @Binding var editing: BibEntryModel?
     @Environment(\.modelContext) var modelContext
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     var body: some View {
         VStack {
+            Spacer(minLength: 8)
+            HStack(alignment: .center){
+                Text("Paste supported bibtex entry.")
+                    .font(.caption)
+            }
             TextEditor(text: $inputValue)
                 .padding()
-                .border(themeManager.theme.border)
                 .frame(minHeight: 150)
 
             Spacer(minLength: 8)
             VStack(alignment: .trailing) {
                 Button("Create") {
-                    if inputValue.isEmpty {
-                       return
-                    }
                     isPresented = false
-                    modelContext.insert(BibEntryModel(data: inputValue))
+                    let item = BibEntryModel(data: inputValue)
+                    if editing != nil {
+                        item.id = editing!.id
+                    }
+                    modelContext.insert(item)
                 }
             }
             .padding()
@@ -39,7 +45,7 @@ struct CreateBibEntrySheetView: View {
 }
 
 #Preview {
-    CreateBibEntrySheetView(isPresented: .constant(true))
+    CreateBibEntrySheetView(inputValue: .constant(""), isPresented: .constant(true), editing: .constant(nil))
         .environment(ThemeManager(initialTheme: FlusterDark()))
 
 }

@@ -11,13 +11,13 @@ import SwiftyBibtex
 
 @Model
 class BibEntryModel {
-    @Attribute(.unique) var id: UUID?
+    @Attribute(.unique) var id: String
     @Attribute(.unique) var citationKey: String?
     /// The bibtex string representing the item's data.
     var data: String
     var ctime: Date
-    init(id: UUID? = nil, data: String, ctime: Date = .now) {
-        self.id = id
+    init(id: String? = nil, data: String, ctime: Date = .now) {
+        self.id = id ?? UUID().uuidString
         self.data = data
         self.ctime = ctime
         self.citationKey = self.getCitationKey()

@@ -661,7 +661,6 @@ enum ThemeNames {
     case Green
     case Gray
     case Blue
-
 }
 
 func getTheme(themeName: ThemeNames, darkMode: Bool) -> ThemeProtocol {
