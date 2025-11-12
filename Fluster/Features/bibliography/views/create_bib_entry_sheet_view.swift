@@ -27,18 +27,31 @@ struct CreateBibEntrySheetView: View {
                 .frame(minHeight: 150)
 
             Spacer(minLength: 8)
-            VStack(alignment: .trailing) {
-                Button("Create") {
+            HStack(alignment: .center) {
+                Spacer()
+                Button("Cancel") {
                     isPresented = false
-                    let item = BibEntryModel(data: inputValue)
-                    if editing != nil {
-                        item.id = editing!.id
-                    }
-                    modelContext.insert(item)
+                    inputValue = ""
                 }
+                Spacer()
+                Button(editing == nil ? "Create" : "Update") {
+                    isPresented = false
+                    if inputValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        return
+                    }
+                    if editing == nil {
+                        // -- If the model should be created new. --
+                        let newEntry = BibEntryModel(data: inputValue)
+                        modelContext.insert(newEntry)
+                    } else {
+                        // -- If the model needs to be updated. --
+                    editing!.data = inputValue
+                    }
+                }
+                .buttonStyle(.glassProminent)
+                Spacer()
             }
             .padding()
-            .buttonStyle(.glassProminent)
             Spacer(minLength: 8)
         }
     }

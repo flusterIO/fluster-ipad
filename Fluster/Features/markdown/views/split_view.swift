@@ -9,9 +9,10 @@ import SwiftUI
 
 struct EditorSplitView: View {
     @State private var leftPaneWidthFraction: CGFloat = 0.5
-    @State private var content: AttributedString = AttributedString("")
+    @State private var content: String = ""
     @GestureState private var dragOffset: CGFloat = 0
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Binding var editingNote: NoteModel?
 
     private let minPaneWidthFraction: CGFloat = 0.1
 
@@ -25,7 +26,7 @@ struct EditorSplitView: View {
 
             HStack(alignment: .top, spacing: 0) {
                 // Left View
-                MarkdownEditorView(editorValue: $content)
+                MarkdownEditorView(editorValue: .constant(AttributedString("")))
                     .padding()
                     .frame(width: clampedLeftPaneWidth)
 
@@ -47,11 +48,17 @@ struct EditorSplitView: View {
                     )
                 MarkdownPreviewView(content: $content)
             }
+            .onChange(of: content, {
+                if editingNote != nil {
+                    editingNote!.markdown.body = content
+                    editingNote!.utime = .now
+                }
+            })
         }
     }
 }
 
 
 #Preview {
-    EditorSplitView()
+    EditorSplitView(editingNote: .constant(nil))
 }

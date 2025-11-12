@@ -12,7 +12,7 @@ import PencilKit
 struct CanvasView: UIViewRepresentable {
     @Binding var toolPicker:  PKToolPicker
     @Binding var canvasView: PKCanvasView
-    @Binding var drawing: PKDrawing
+    var drawing: PKDrawing
 
     
     func makeUIView(context: Context) -> some PKCanvasView {

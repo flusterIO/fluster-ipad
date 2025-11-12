@@ -9,15 +9,15 @@ import PencilKit
 import SwiftUI
 
 struct PaperView: View {
-    @State private var drawing = PKDrawing()
     @Binding var toolbar: PKToolPicker
     @Binding var canvasView: PKCanvasView
+    var drawing: PKDrawing
 
     var body: some View {
         CanvasView(
             toolPicker: $toolbar,
             canvasView: $canvasView,
-            drawing: $drawing
+            drawing: drawing
         )
     }
 }

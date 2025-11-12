@@ -16,10 +16,12 @@ class BibEntryModel {
     /// The bibtex string representing the item's data.
     var data: String
     var ctime: Date
-    init(id: String? = nil, data: String, ctime: Date = .now) {
+    var notes = [NoteModel]()
+    init(id: String? = nil, data: String, ctime: Date = .now, notes: [NoteModel] = []) {
         self.id = id ?? UUID().uuidString
         self.data = data
         self.ctime = ctime
+        self.notes = notes
         self.citationKey = self.getCitationKey()
     }
     func parse() -> SwiftyBibtex.BibtexResult? {

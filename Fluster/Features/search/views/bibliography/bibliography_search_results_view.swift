@@ -10,15 +10,20 @@ import SwiftData
 
 struct BibliographySearchResultsView: View {
     @Binding var searchQuery: String
-    @Query var notes: [MarkdownNote]
     @Binding var activeCategory: SearchCategoryId
-
-
+    @Query(sort: \BibEntryModel.ctime) var bibEntries: [BibEntryModel]
+    
+    
     var body: some View {
-        if notes.isEmpty {
+        if bibEntries.isEmpty {
             EmptyBibSearchResultsView(activeCategory: $activeCategory)
         } else {
-            Text("Bibliography stuff here dawg")
+            List {
+                ForEach(bibEntries, id: \.id) { item in
+                    BibEntrySearchResultItemView(item: item)
+                }
+            }
+            .navigationTitle("Search by citation")
         }
     }
 }

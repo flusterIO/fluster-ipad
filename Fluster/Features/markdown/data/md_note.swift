@@ -26,13 +26,22 @@ func getTitle(body: String) -> String? {
 
 @Model
 class MarkdownNote {
-    var body: String
+    var _body: String
     var title: String?
     
     init(body: String) {
-        self.body = body
+        self._body = body
         self.title = getTitle(body: body)
     }
     
+    var body: String {
+        get {
+            return _body
+        }
+        set(newBody) {
+            self._body = newBody
+            self.title = getTitle(body: newBody)
+        }
+    }
     
 }

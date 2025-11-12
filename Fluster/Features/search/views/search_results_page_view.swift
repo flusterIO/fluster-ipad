@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchPageView: View {
     @State private var inputValue: String = ""
     @State private var selectedCategory: SearchCategoryId = .note
-    @Binding var editingNoteId: String?
+    @Binding var editingNote: NoteModel?
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     var body: some View {
@@ -36,11 +36,11 @@ struct SearchPageView: View {
             detail: {
                 switch selectedCategory {
                 case .note:
-                    MarkdownNotesSearchResultsView(searchQuery: $inputValue, activeCategory: $selectedCategory)
+                    MarkdownNotesSearchResultsView(searchQuery: $inputValue, activeCategory: $selectedCategory, editingNote: $editingNote)
                 case .citation:
                     BibliographySearchResultsView(searchQuery: $inputValue, activeCategory: $selectedCategory)
                 case .createNote:
-                    CreateNoteSheetView(editingNoteId: $editingNoteId)
+                    CreateNoteSheetView(editingNote: $editingNote)
                 }
             }
         )
@@ -48,6 +48,6 @@ struct SearchPageView: View {
 }
 
 #Preview {
-    SearchPageView(editingNoteId: .constant(nil))
+    SearchPageView(editingNote: .constant(nil))
         .environment(ThemeManager(initialTheme: FlusterDark()))
 }

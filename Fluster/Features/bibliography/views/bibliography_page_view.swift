@@ -14,8 +14,10 @@ struct BibliographyPageView: View {
     var body: some View {
         if bibEntries.isEmpty {
             EmptyBibListView(editing: $editing)
+                .navigationTitle("Note Bibliography")
         } else {
             BibListView(items: bibEntries, editing: $editing)
+                .navigationTitle("Note Bibliography")
         }
     }
 }

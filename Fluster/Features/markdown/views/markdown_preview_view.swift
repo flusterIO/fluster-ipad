@@ -10,12 +10,12 @@ import MarkdownUI
 
 
 struct MarkdownPreviewView: View {
-    @Binding var content: AttributedString
+    @Binding var content: String
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     var body: some View {
             Markdown {
-                String(content.characters)
+                String(content)
             }
             .markdownBlockStyle(\.blockquote) { configuration in
               configuration.label

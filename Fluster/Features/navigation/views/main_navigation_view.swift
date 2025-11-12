@@ -6,19 +6,38 @@
 //
 
 import PencilKit
+import SwiftData
 import SwiftUI
 
 enum MainViewTab {
     case paper, markdown, bib, notes
 }
 
+
+func getDrawing(data: Data?) -> PKDrawing {
+    if data == nil {
+        return PKDrawing()
+    }
+    
+    do {
+        let drawing = try PKDrawing(data: data!)
+        return drawing
+    } catch {
+        return PKDrawing()
+    }
+}
+
 struct MainView: View {
     @State private var toolbar = PKToolPicker()
     @State private var canvasView = PKCanvasView()
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-    @State private var themeManager = ThemeManager(initialTheme: getTheme(themeName: .Fluster, darkMode: true))
+    @State private var themeManager = ThemeManager(
+        initialTheme: getTheme(themeName: .Fluster, darkMode: true)
+    )
     @State private var selectedTab = MainViewTab.paper
     @State private var editingNoteId: String?
+    @State private var editingNote: NoteModel?
+
     var body: some View {
         TabView(selection: $selectedTab) {
             Tab(
@@ -26,14 +45,22 @@ struct MainView: View {
                 systemImage: "pencil.circle.fill",
                 value: MainViewTab.paper
             ) {
-                PaperView(toolbar: $toolbar, canvasView: $canvasView)
+                if editingNote != nil {
+                    PaperView(
+                        toolbar: $toolbar,
+                        canvasView: $canvasView,
+                        drawing: editingNote != nil ? getDrawing(data: editingNote!.drawing) : PKDrawing()
+                    )
+                } else {
+                     SelectNoteToContinueView()
+                }
             }
             Tab(
                 "Markdown",
                 systemImage: "book.closed.circle.fill",
                 value: MainViewTab.markdown
             ) {
-                EditorSplitView()
+                EditorSplitView(editingNote: $editingNote)
             }
             Tab(
                 "Bibliography",
@@ -43,11 +70,11 @@ struct MainView: View {
                 BibliographyPageView()
             }
             Tab(
-                "Notes",
+                "Search",
                 systemImage: "magnifyingglass.circle.fill",
                 value: MainViewTab.notes
             ) {
-                SearchPageView(editingNoteId: $editingNoteId)
+                SearchPageView(editingNote: $editingNote)
                     .ignoresSafeArea()
             }
         }
@@ -67,6 +94,9 @@ struct MainView: View {
                 handleColorSchemeChange(newScheme: colorScheme)
             }
         )
+        .onAppear {
+            handleColorSchemeChange(newScheme: colorScheme)
+        }
         .environment(themeManager)
     }
     func handleColorSchemeChange(newScheme: ColorScheme) {

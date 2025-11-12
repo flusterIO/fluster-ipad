@@ -27,7 +27,7 @@ func loadDrawing(note: NoteModel) -> PKDrawing {
 class NoteModel {
     var id: String
     var drawing: Data?
-    var markdown: MarkdownNote
+    var markdown: MarkdownNote = MarkdownNote(body: "")
     var ctime: Date
     var utime: Date
     var last_read: Date
@@ -35,9 +35,10 @@ class NoteModel {
     var subject: SubjectModel? = nil
     var topic: TopicModel? = nil
     var tags = [TagModel]()
+    var citations = [BibEntryModel]()
    
     // drawing.toDataRepresentation() to conform to Data type.
-    init(id: String? = nil, drawing: Data, markdown: MarkdownNote, ctime: Date = .now, utime: Date = .now, last_read: Date = .now, subject: SubjectModel? = nil, topic: TopicModel? = nil, tags: [TagModel] = [TagModel]()) {
+    init(id: String? = nil, drawing: Data, markdown: MarkdownNote = MarkdownNote(body: ""), ctime: Date = .now, utime: Date = .now, last_read: Date = .now, subject: SubjectModel? = nil, topic: TopicModel? = nil, tags: [TagModel] = [TagModel](), citations: [BibEntryModel] = [BibEntryModel]()) {
         self.id = id ?? UUID.init().uuidString
         self.drawing = drawing
         self.markdown = markdown
@@ -47,6 +48,7 @@ class NoteModel {
         self.subject = subject
         self.topic = topic
         self.tags = tags
+        self.citations = citations
     }
     
 }

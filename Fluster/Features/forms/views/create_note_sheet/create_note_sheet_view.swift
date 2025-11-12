@@ -11,30 +11,39 @@ import SwiftData
 
 struct CreateNoteSheetView: View {
     @State private var titleValue: String = ""
-    @Binding var editingNoteId: String?
+    @Binding var editingNote: NoteModel?
+    @FocusState private var textFieldFocused: Bool
     @Environment(\.modelContext) var modelContext
 
     var body: some View {
         Form {
             TextField("Title", text: $titleValue)
+                .focused($textFieldFocused)
+                .onAppear {
+                    textFieldFocused = true
+                }
             HStack(alignment: .lastTextBaseline) {
                 Spacer()
                 Button("Create") {
+                    if titleValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        return
+                    }
                     let model = NoteModel(
                         id: nil,
                         drawing: PKDrawing.init().dataRepresentation(),
                         markdown: MarkdownNote(body: "# \(titleValue)")
                     )
                     modelContext.insert(model)
-                    editingNoteId = model.id
+                    editingNote = model
                     titleValue = ""
                 }
                 .buttonStyle(.glassProminent)
             }
         }
+        .navigationTitle("Create new note")
     }
 }
 
 #Preview {
-    CreateNoteSheetView(editingNoteId: .constant(nil))
+    CreateNoteSheetView(editingNote: .constant(nil))
 }
