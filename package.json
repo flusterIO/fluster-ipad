@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "9.1.7",
+    "syncpack": "13.0.4",
+    "vite-tsconfig-paths": "5.1.4"
+  }
+}

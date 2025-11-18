@@ -1,0 +1,18 @@
+#editor-panel-resize-handle {
+  width: 2px;
+  background-color: hsl(var(--border));
+}
+
+#code-editor-container {
+  .cm-editor {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    caret-color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .cm-content {
+    white-space: pre-wrap;
+    max-width: 100%;
+  }
+}

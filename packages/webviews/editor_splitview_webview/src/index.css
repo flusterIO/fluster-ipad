@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@source "../../../webview_utils/src";
+@plugin "@tailwindcss/typography";
+@import "../../../webview_utils/src/core/utils/themes.scss";
+@import "../../../webview_utils/src/core/utils/base.scss";
+
+html,
+body {
+    background-color: hsl(var(--background));
+}
+
+#root {
+    height: 100vh;
+    width: 100vw;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+}

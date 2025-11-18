@@ -1,0 +1,13 @@
+#!/bin/bash
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "master" ] || [ "$branch" = "main" ]; then
+    echo "You can't commit directly to $branch branch Einstein..."
+    exit 1
+fi
+
+make format_package_jsons
+
+git add packages/webview_utils/package.json
+git add packages/webviews/editor_webview/package.json

@@ -1,0 +1,3 @@
+packages:
+  - packages/webviews/editor_webview
+  - packages/webview_utils

@@ -60,3 +60,8 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+**/node_modules
+packages/webviews/*/node_modules
+packages/webviews/*/build
+packages/webviews/*/node_modules
