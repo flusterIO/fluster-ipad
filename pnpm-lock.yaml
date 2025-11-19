@@ -15,16 +15,16 @@ importers:
         specifier: 9.1.7
         version: 9.1.7
       quicktype:
-        specifier: ^23.2.6
+        specifier: 23.2.6
         version: 23.2.6
       quicktype-core:
-        specifier: ^23.2.6
+        specifier: 23.2.6
         version: 23.2.6
       syncpack:
         specifier: 13.0.4
         version: 13.0.4(typescript@4.9.4)
       tsx:
-        specifier: ^4.20.6
+        specifier: 4.20.6
         version: 4.20.6
       vite-tsconfig-paths:
         specifier: 5.1.4
@@ -78,7 +78,7 @@ importers:
         specifier: 3.4.2
         version: 3.4.2
       '@uiw/codemirror-extensions-line-numbers-relative':
-        specifier: ^4.25.3
+        specifier: 4.25.3
         version: 4.25.3(@codemirror/state@6.5.2)(@codemirror/view@6.38.7)
       '@uiw/codemirror-theme-bbedit':
         specifier: 4.25.3
@@ -117,7 +117,7 @@ importers:
         specifier: 10.0.1
         version: 10.0.1(react@19.2.0)
       react-spinners:
-        specifier: ^0.17.0
+        specifier: 0.17.0
         version: 0.17.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       rehype-autolink-headings:
         specifier: 7.1.0

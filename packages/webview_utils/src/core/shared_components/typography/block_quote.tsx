@@ -7,6 +7,7 @@ export const BlockQuote = (props: BlockQuoteProps): ReactNode => {
             className="border-primary pl-2"
             style={{
                 borderLeftWidth: "4px",
+                borderLeftColor: "hsl(var(--primary))",
             }}
         >
             {props.children}

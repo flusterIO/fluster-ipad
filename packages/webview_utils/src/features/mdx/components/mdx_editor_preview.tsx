@@ -21,7 +21,7 @@ export const MdxEditorPreview = (): ReactNode => {
     return (
         <MdxContent
             removeGrayMatter
-            className="p-6 max-h-full contents"
+            className="p-6 max-h-full contents prose dark:prose-invert"
             mdx={value}
         />
     );

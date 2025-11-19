@@ -25,33 +25,18 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
         frame: .zero,
         configuration: getConfig()
     )
+    @State private var haveSetInitialContent: Bool = false
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var modelContext
 
-    @Binding var theme: WebViewTheme {
-        willSet {
-            print("Setting webview theme")
-            self.webView.evaluateJavaScript(
-                """
-                document.body.setAttribute("data-fluster-theme", "\(newValue)")
-                """
-            )
-        }
-    }
-    @Binding var editorTheme: CodeEditorTheme {
-        willSet {
-            print("Setting code editor theme")
-            self.webView.evaluateJavaScript(
-                """
-                window.dispatchEvent(new CustomEvent("set-editor-theme", {
-                    detail: "\(newValue.rawValue)"
-                }))
-                """
-            )
-        }
-    }
+    @Binding var theme: WebViewTheme
+    @Binding var editorTheme: CodeEditorTheme
     @Binding var editingNote: NoteModel?
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme {
+        didSet {
+            applyWebViewColorScheme()
+        }
+    }
 
     func makeUIView(context: Context) -> WKWebView {
         // set the configuration on the `WKWebView`
@@ -72,7 +57,7 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
 
         // now load the local url
         self.webView.loadFileURL(url, allowingReadAccessTo: url)
-        emitInitialContentEvent()
+        emitEditorThemeEvent(theme: editorTheme)
         applyWebViewColorScheme()
         return self.webView
     }
@@ -80,29 +65,30 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {
         //        let colorScheme = context.environment.colorScheme
         applyWebViewColorScheme()
-        //        emitEditorThemeEvent(theme: editorTheme)
+        emitEditorThemeEvent(theme: editorTheme)
+        if !haveSetInitialContent {
+            print("Setting initial content")
+            let body = editingNote?.markdown.body.replacingOccurrences(
+                of: "`",
+                with: "\\`"
+            )
+            self.webView.evaluateJavaScript(
+                """
+                window.localStorage.setItem("editor-initial-value", `\(body ?? "")`)
+                """
+            ) { (result, error) in
+                if error != nil {
+                    print("set initial value error: ", error)
+                } else {
+                    print("Set initial value result: ", result)
+                }
+            }
+            haveSetInitialContent = true
+        }
         uiView.loadFileURL(url, allowingReadAccessTo: url)
     }
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
-    }
-    func emitInitialContentEvent() {
-        if editingNote == nil {
-            return
-        }
-        print("Emitting initial content event")
-        print(editingNote?.markdown.body ?? "No body found")
-        self.webView.evaluateJavaScript(
-            """
-            window.localStorage.setItem("editor-initial-value", `\(editingNote!.markdown.body)`)
-            """
-        ) { (result, error) in
-            if error != nil {
-                print("Error: ", error)
-            } else {
-                print("Result: ", result)
-            }
-        }
     }
     func emitEditorThemeEvent(theme: CodeEditorTheme) {
         print("Emitting editor theme event")
@@ -122,9 +108,10 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     }
     func applyWebViewColorScheme() {
         print("Applying webview color scheme")
-        self.webView.evaluateJavaScript("""
-           window.localStorage.setItem("darkMode", "\(colorScheme == .dark ? "true" : "false")")
-           """
+        self.webView.evaluateJavaScript(
+            """
+            window.localStorage.setItem("darkMode", "\(colorScheme == .dark ? "true" : "false")")
+            """
         ) { (result, error) in
             if error != nil {
                 print("Error: ", error)

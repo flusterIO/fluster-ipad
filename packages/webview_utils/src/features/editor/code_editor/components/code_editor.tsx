@@ -10,11 +10,10 @@ import {
 import { codeEditorBaseKeymapMap } from "../data/code_editor_base_keymap_map";
 import { codeEditorThemeMap } from "../data/code_editor_theme_map";
 import { stringToCodeEditorTheme } from "../types/code_editor_types";
-import { useEventListener } from "@/state/hooks/use_event_listener";
 import { lineNumbersRelative } from "@uiw/codemirror-extensions-line-numbers-relative";
 import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
-import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { LoadingComponent } from "@/shared_components/loading_component";
+import { useLocalStorage } from "@/state/hooks/use_local_storage";
 
 interface CodeEditorProps {
     language?: Extension;
@@ -47,9 +46,6 @@ export const CodeEditorInner = ({
             language,
             codeEditorThemeMap[state.theme](),
             EditorView.updateListener.of((v: ViewUpdate) => {
-                if (!state.haveSetInitialValue) {
-                    return;
-                }
                 if (v.docChanged) {
                     const payload = v.state.doc.toString();
                     if (timer.current) {
@@ -83,28 +79,22 @@ export const CodeEditorInner = ({
         haveRendered.current = true;
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
     }, [state.baseKeymap, state.theme, state.haveSetInitialValue]);
-    useEventListener("set-editor-theme", (e) => {
-        window.alert(`Set Theme: ${e.detail}`);
-        dispatch({
-            type: "setTheme",
-            payload: stringToCodeEditorTheme(e.detail),
-        });
-    });
-    useEventListener("set-editor-keymap", (e) => {
-        window.alert(`Set keymap: ${e.detail}`);
+    const [editorKeymap] = useLocalStorage("editor-keymap");
+    useEffect(() => {
         dispatch({
             type: "setVimMode",
-            payload: e.detail === "vim",
+            payload: editorKeymap === "vim",
         });
-    });
+    }, [editorKeymap]);
 
-    useEventListener("set-initial-editor-content", (e) => {
-        window.alert(`Set initial value: ${e.detail}`);
+    const [editorTheme] = useLocalStorage("editor-theme");
+    useEffect(() => {
         dispatch({
-            type: "setInitialEditorValue",
-            payload: e.detail,
+            type: "setTheme",
+            payload: stringToCodeEditorTheme((editorTheme as string) ?? "dracula"),
         });
-    });
+    }, [editorKeymap]);
+
     useEffect(() => {
         return () => window.localStorage.removeItem("editor-initial-value");
     }, []);
@@ -112,9 +102,21 @@ export const CodeEditorInner = ({
 };
 
 export const CodeEditor = (): ReactNode => {
-    const [value] = useLocalStorage("editor-initial-value");
-    return typeof value === "string" ? (
-        <CodeEditorInner initialValue={value} />
+    const dispatch = useCodeEditorDispatch();
+    const [initialValue] = useLocalStorage("editor-initial-value", undefined, {
+        deserializer(value) {
+            console.log("value: ", value);
+            return value;
+        },
+        serializer(value) {
+            console.log("value: ", value);
+            return value;
+        },
+        initializeWithValue: false,
+    });
+    console.log("initialValue: ", initialValue);
+    return initialValue ? (
+        <CodeEditorInner initialValue={initialValue as string} />
     ) : (
         <div className="w-full h-full flex flex-col justify-center items-center">
             <LoadingComponent />
