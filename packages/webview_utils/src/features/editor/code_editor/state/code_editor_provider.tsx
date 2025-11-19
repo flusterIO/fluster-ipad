@@ -9,6 +9,7 @@ export interface CodeEditorState {
     baseKeymap: CodeEditorBaseKeymap;
     theme: CodeEditorTheme;
     value: string;
+    haveSetInitialValue: boolean;
 }
 
 const defaultInitialCodeEditorState: CodeEditorState = {
@@ -16,6 +17,7 @@ const defaultInitialCodeEditorState: CodeEditorState = {
     baseKeymap: CodeEditorBaseKeymap.default,
     theme: CodeEditorTheme.dracula,
     value: "",
+    haveSetInitialValue: false,
 };
 
 export const CodeEditorContext = createContext<CodeEditorState>(
@@ -38,6 +40,10 @@ type CodeEditorContextActions =
     | {
         type: "setVimMode";
         payload: boolean | "toggle";
+    }
+    | {
+        type: "setInitialEditorValue";
+        payload: string;
     };
 
 export const CodeEditorDispatchContext = createContext<
@@ -75,6 +81,16 @@ export const CodeEditorContextReducer = (
             return {
                 ...state,
                 baseKeymap: action.payload,
+            };
+        }
+        case "setInitialEditorValue": {
+            if (state.haveSetInitialValue) {
+                return state;
+            }
+            return {
+                ...state,
+                haveSetInitialValue: true,
+                value: action.payload,
             };
         }
         default: {

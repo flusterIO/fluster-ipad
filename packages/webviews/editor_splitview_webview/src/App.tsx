@@ -1,8 +1,15 @@
 import React from "react";
-import { ResponsiveSplitViewEditor } from "@fluster/webview_utils";
+import {
+    ResponsiveSplitViewEditor,
+    WebViewContainer,
+} from "@fluster/webview_utils";
 
 function App() {
-    return <ResponsiveSplitViewEditor />;
+    return (
+        <WebViewContainer>
+            <ResponsiveSplitViewEditor />
+        </WebViewContainer>
+    );
 }
 
 export default App;

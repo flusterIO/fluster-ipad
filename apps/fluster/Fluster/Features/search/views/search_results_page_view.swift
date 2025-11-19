@@ -41,6 +41,7 @@ struct SearchPageView: View {
                     BibliographySearchResultsView(searchQuery: $inputValue, activeCategory: $selectedCategory)
                 case .createNote:
                     CreateNoteSheetView(editingNote: $editingNote)
+                    
                 }
             }
         )

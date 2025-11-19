@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 import WebKit
 
@@ -20,11 +21,16 @@ func getConfig() -> WKWebViewConfiguration {
 struct ResponsiveEditorWebView: UIViewRepresentable {
 
     let url: URL
-    let webView: WKWebView = WKWebView(frame: .zero, configuration: getConfig())
+    @State private var webView: WKWebView = WKWebView(
+        frame: .zero,
+        configuration: getConfig()
+    )
     @Environment(\.openURL) var openURL
+    @Environment(\.modelContext) var modelContext
+
     @Binding var theme: WebViewTheme {
         willSet {
-            newValue
+            print("Setting webview theme")
             self.webView.evaluateJavaScript(
                 """
                 document.body.setAttribute("data-fluster-theme", "\(newValue)")
@@ -32,6 +38,19 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
             )
         }
     }
+    @Binding var editorTheme: CodeEditorTheme {
+        willSet {
+            print("Setting code editor theme")
+            self.webView.evaluateJavaScript(
+                """
+                window.dispatchEvent(new CustomEvent("set-editor-theme", {
+                    detail: "\(newValue.rawValue)"
+                }))
+                """
+            )
+        }
+    }
+    @Binding var editingNote: NoteModel?
     @Environment(\.colorScheme) var colorScheme
 
     func makeUIView(context: Context) -> WKWebView {
@@ -42,18 +61,79 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
         self.webView.scrollView.zoomScale = 1
         self.webView.scrollView.minimumZoomScale = 1
         self.webView.scrollView.maximumZoomScale = 1
+        self.webView.allowsBackForwardNavigationGestures = false
+        self.webView.configuration.userContentController.add(
+            context.coordinator,
+            name: "editor-update"
+        )
+        if #available(iOS 16.4, macOS 13.3, *) {
+            self.webView.isInspectable = true  // Enable inspection
+        }
+
         // now load the local url
         self.webView.loadFileURL(url, allowingReadAccessTo: url)
+        emitInitialContentEvent()
+        applyWebViewColorScheme()
         return self.webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
+        //        let colorScheme = context.environment.colorScheme
+        applyWebViewColorScheme()
+        //        emitEditorThemeEvent(theme: editorTheme)
         uiView.loadFileURL(url, allowingReadAccessTo: url)
     }
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-    class Coordinator: NSObject, WKNavigationDelegate {
+    func emitInitialContentEvent() {
+        if editingNote == nil {
+            return
+        }
+        print("Emitting initial content event")
+        print(editingNote?.markdown.body ?? "No body found")
+        self.webView.evaluateJavaScript(
+            """
+            window.localStorage.setItem("editor-initial-value", `\(editingNote!.markdown.body)`)
+            """
+        ) { (result, error) in
+            if error != nil {
+                print("Error: ", error)
+            } else {
+                print("Result: ", result)
+            }
+        }
+    }
+    func emitEditorThemeEvent(theme: CodeEditorTheme) {
+        print("Emitting editor theme event")
+        self.webView.evaluateJavaScript(
+            """
+            window.dispatchEvent(new CustomEvent("set-editor-theme", {
+                detail: "\(theme.rawValue)"
+            }))
+            """
+        ) { (result, error) in
+            if error != nil {
+                print("Error: ", error)
+            } else {
+                print("Result: ", result)
+            }
+        }
+    }
+    func applyWebViewColorScheme() {
+        print("Applying webview color scheme")
+        self.webView.evaluateJavaScript("""
+           window.localStorage.setItem("darkMode", "\(colorScheme == .dark ? "true" : "false")")
+           """
+        ) { (result, error) in
+            if error != nil {
+                print("Error: ", error)
+            } else {
+                print("Result: ", result)
+            }
+        }
+    }
+    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
         var parent: ResponsiveEditorWebView
         init(_ parent: ResponsiveEditorWebView) {
             self.parent = parent
@@ -86,6 +166,18 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
 
             // Allow the navigation within the web view for other links
             decisionHandler(.allow)
+        }
+        func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive message: WKScriptMessage
+        ) {
+            if message.name == "editor-update" {
+                if parent.editingNote != nil {
+                    print("Message: \(message.body)")
+                    parent.editingNote!.markdown.body = message.body as! String
+                    //                       parent.modelContext.insert(parent.editingNote!)
+                }
+            }
         }
     }
 

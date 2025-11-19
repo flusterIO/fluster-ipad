@@ -54,6 +54,7 @@ struct MainView: View {
     @State private var editingNoteId: String?
     @State private var editingNote: NoteModel?
     @State private var findInNotePresented: Bool = false
+    
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -87,7 +88,9 @@ struct MainView: View {
                                 withExtension: "html",
                                 subdirectory: "dist"
                             )!,
-                        theme: $theme
+                        theme: $theme,
+                        editorTheme: $editorTheme,
+                        editingNote: $editingNote
                     )
                     .findNavigator(isPresented: $findInNotePresented)
                     .ignoresSafeArea(edges: .bottom)

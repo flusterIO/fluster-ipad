@@ -9,5 +9,5 @@ fi
 
 make format_package_jsons
 
-git add packages/webview_utils/package.json
-git add packages/webviews/editor_webview/package.json
+# git add packages/webview_utils/package.json
+# git add packages/webviews/editor_webview/package.json

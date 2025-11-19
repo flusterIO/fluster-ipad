@@ -3,8 +3,12 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@types/node": "24.10.0",
     "husky": "9.1.7",
+    "quicktype": "^23.2.6",
+    "quicktype-core": "^23.2.6",
     "syncpack": "13.0.4",
+    "tsx": "^4.20.6",
     "vite-tsconfig-paths": "5.1.4"
   }
 }

@@ -4,6 +4,8 @@
 @import "../../../webview_utils/src/core/utils/themes.scss";
 @import "../../../webview_utils/src/core/utils/base.scss";
 
+@custom-variant dark (&:where(.dark *));
+
 html,
 body {
     background-color: hsl(var(--background));

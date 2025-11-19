@@ -7,7 +7,14 @@ export const MdxEditorPreview = (): ReactNode => {
     if (value === "") {
         return (
             <div className="w-full h-full flex flex-col justify-center items-center">
-                <div className="text-xl font-semibold">Content Empty</div>
+                <div
+                    className="text-xl font-semibold"
+                    style={{
+                        color: "hsl(var(--foreground))",
+                    }}
+                >
+                    Content Empty
+                </div>
             </div>
         );
     }

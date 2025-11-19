@@ -15,6 +15,7 @@ struct MarkdownNotesSearchResultsView: View {
     @Binding var activeCategory: SearchCategoryId
     @Binding var editingNote: NoteModel?
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    
 
     var body: some View {
         if notes.isEmpty {
@@ -28,6 +29,9 @@ struct MarkdownNotesSearchResultsView: View {
                     }
             }
             .onDelete(perform: removeRows)
+            .onAppear {
+                print("View Database: ", modelContext.sqliteCommand)
+            }
             }
             .navigationTitle("Recently accessed notes")
         }
