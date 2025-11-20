@@ -28,19 +28,16 @@ export const MdxContent = ({
         /* eslint-disable-next-line  -- I hate that this rule applies to functions... */
     }, [mdx]);
 
+    const classes = cn(
+        "mdx-content prose dark:prose-invert prose-p:text-foreground prose-code:before:content-none prose-code:after:content-none prose-code:bg-[--shiki-light-bg] dark:prose-code:bg-[--shiki-dark-bg] [&_code_*]:text-[--shiki-light] dark:[&_code_*]:text-[--shiki-dark] w-full  max-w-full @container/mdx prose-code:p-2 prose-pre:bg-transparent dark:prose-pre:bg-transparent",
+        className,
+    );
+
     if (abortIfNoMath && !mdx.includes("$")) {
-        return mdx;
+        return <div className={classes}>{mdx}</div>;
     }
 
-    return (
-        <Component
-            {...props}
-            className={cn(
-                "mdx-content prose dark:prose-invert prose-p:text-foreground prose-code:before:content-none prose-code:after:content-none prose-code:bg-[--shiki-light-bg] dark:prose-code:bg-[--shiki-dark-bg] [&_code_*]:text-[--shiki-light] dark:[&_code_*]:text-[--shiki-dark] w-full  max-w-full @container/mdx prose-code:p-2 prose-pre:bg-transparent dark:prose-pre:bg-transparent",
-                className,
-            )}
-        />
-    );
+    return <Component {...props} className={classes} />;
 };
 
 MdxContent.displayName = "MdxContent";

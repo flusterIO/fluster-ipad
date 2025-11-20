@@ -31,8 +31,8 @@ struct CreateNoteSheetView: View {
                     let model = NoteModel(
                         id: nil,
                         drawing: PKDrawing.init().dataRepresentation(),
-                        markdown: MarkdownNote(body: "# \(titleValue)")
-                    )
+                        markdown: MarkdownNote(body: "# \(titleValue)", summary: nil)
+                   )
                     modelContext.insert(model)
                     editingNote = model
                     titleValue = ""

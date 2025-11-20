@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, type ReactNode } from "react";
+import React, {
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+    type ReactNode,
+} from "react";
 import { EditorState, Extension } from "@codemirror/state";
 import { EditorView, keymap, ViewUpdate } from "@codemirror/view";
 import { markdown } from "@codemirror/lang-markdown";
@@ -66,11 +72,6 @@ export const CodeEditorInner = ({
             extensions,
         });
 
-        dispatch({
-            type: "setInitialEditorValue",
-            payload: initialValue,
-        });
-
         const _view = new EditorView({
             state: startState,
             parent: document.getElementById("code-editor-container")!,
@@ -79,21 +80,6 @@ export const CodeEditorInner = ({
         haveRendered.current = true;
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
     }, [state.baseKeymap, state.theme, state.haveSetInitialValue]);
-    const [editorKeymap] = useLocalStorage("editor-keymap");
-    useEffect(() => {
-        dispatch({
-            type: "setVimMode",
-            payload: editorKeymap === "vim",
-        });
-    }, [editorKeymap]);
-
-    const [editorTheme] = useLocalStorage("editor-theme");
-    useEffect(() => {
-        dispatch({
-            type: "setTheme",
-            payload: stringToCodeEditorTheme((editorTheme as string) ?? "dracula"),
-        });
-    }, [editorKeymap]);
 
     useEffect(() => {
         return () => window.localStorage.removeItem("editor-initial-value");
@@ -102,7 +88,7 @@ export const CodeEditorInner = ({
 };
 
 export const CodeEditor = (): ReactNode => {
-    const dispatch = useCodeEditorDispatch();
+    const [haveRendered, setHaveRendered] = useState(false);
     const [initialValue] = useLocalStorage("editor-initial-value", undefined, {
         deserializer(value) {
             console.log("value: ", value);
@@ -114,9 +100,8 @@ export const CodeEditor = (): ReactNode => {
         },
         initializeWithValue: false,
     });
-    console.log("initialValue: ", initialValue);
     return initialValue ? (
-        <CodeEditorInner initialValue={initialValue as string} />
+        <CodeEditorInner initialValue={initialValue} />
     ) : (
         <div className="w-full h-full flex flex-col justify-center items-center">
             <LoadingComponent />

@@ -1,8 +1,16 @@
-import React, { ReactNode, createContext, useReducer, useContext } from "react";
+import React, {
+    ReactNode,
+    createContext,
+    useReducer,
+    useContext,
+    useEffect,
+} from "react";
 import {
     CodeEditorBaseKeymap,
     CodeEditorTheme,
+    stringToCodeEditorTheme,
 } from "../types/code_editor_types";
+import { useLocalStorage } from "@/state/hooks/use_local_storage";
 
 export interface CodeEditorState {
     vimMode: boolean;
@@ -116,6 +124,71 @@ export const CodeEditorProvider = ({
             ? { ...initialValues, ...defaultInitialCodeEditorState }
             : defaultInitialCodeEditorState,
     );
+
+    const [editorKeymap] = useLocalStorage("editor-keymap", undefined, {
+        deserializer(value) {
+            console.log("value: ", value);
+            return value;
+        },
+        serializer(value) {
+            console.log("value: ", value);
+            return value;
+        },
+        initializeWithValue: false,
+    });
+    useEffect(() => {
+        console.log(`Setting editor keymap`);
+        if ((editorKeymap === "vim") !== state.vimMode) {
+            dispatch({
+                type: "setVimMode",
+                payload: editorKeymap === "vim",
+            });
+        }
+    }, [editorKeymap]);
+
+    const [editorTheme] = useLocalStorage("editor-theme", undefined, {
+        deserializer(value) {
+            console.log("value: ", value);
+            return value;
+        },
+        serializer(value) {
+            console.log("value: ", value);
+            return value;
+        },
+        initializeWithValue: false,
+    });
+    useEffect(() => {
+        console.log(`Setting theme`);
+        const payload = stringToCodeEditorTheme(
+            (editorTheme as string) ?? "dracula",
+        );
+        if (payload !== state.theme) {
+            dispatch({
+                type: "setTheme",
+                payload,
+            });
+        }
+    }, [editorKeymap]);
+
+    const [initialValue] = useLocalStorage("editor-initial-value", undefined, {
+        deserializer(value) {
+            return value;
+        },
+        serializer(value) {
+            return value;
+        },
+        initializeWithValue: false,
+    });
+    useEffect(() => {
+        console.log(`Attempting to set initial value`);
+        if (!state.haveSetInitialValue && typeof initialValue === "string") {
+            console.log(`Setting initial value`);
+            dispatch({
+                type: "setInitialEditorValue",
+                payload: initialValue,
+            });
+        }
+    }, [initialValue, state.haveSetInitialValue]);
 
     return (
         <CodeEditorContext.Provider value={state}>

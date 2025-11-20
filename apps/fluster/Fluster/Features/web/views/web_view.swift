@@ -25,13 +25,13 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
         frame: .zero,
         configuration: getConfig()
     )
-    @State private var haveSetInitialContent: Bool = false
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var modelContext
 
     @Binding var theme: WebViewTheme
     @Binding var editorTheme: CodeEditorTheme
     @Binding var editingNote: NoteModel?
+    @State var haveSetInitialContent: Bool = false
     @Environment(\.colorScheme) var colorScheme {
         didSet {
             applyWebViewColorScheme()
@@ -39,8 +39,6 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> WKWebView {
-        // set the configuration on the `WKWebView`
-        //        let webView = WKWebView(frame: .zero, configuration: config)
         self.webView.navigationDelegate = context.coordinator
         self.webView.scrollView.isScrollEnabled = false
         self.webView.scrollView.zoomScale = 1
@@ -57,15 +55,23 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
 
         // now load the local url
         self.webView.loadFileURL(url, allowingReadAccessTo: url)
-        emitEditorThemeEvent(theme: editorTheme)
-        applyWebViewColorScheme()
+//        emitEditorThemeEvent(theme: editorTheme)
+//        applyWebViewColorScheme()
         return self.webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        //        let colorScheme = context.environment.colorScheme
-        applyWebViewColorScheme()
-        emitEditorThemeEvent(theme: editorTheme)
+        if !haveSetInitialContent {
+//            applyWebViewColorScheme()
+//            emitEditorThemeEvent(theme: editorTheme)
+//            setInitialContent()
+        }
+        uiView.loadFileURL(url, allowingReadAccessTo: url)
+    }
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    func setInitialContent() {
         if !haveSetInitialContent {
             print("Setting initial content")
             let body = editingNote?.markdown.body.replacingOccurrences(
@@ -81,22 +87,16 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
                     print("set initial value error: ", error)
                 } else {
                     print("Set initial value result: ", result)
+                    haveSetInitialContent = true
                 }
             }
-            haveSetInitialContent = true
         }
-        uiView.loadFileURL(url, allowingReadAccessTo: url)
-    }
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
     }
     func emitEditorThemeEvent(theme: CodeEditorTheme) {
-        print("Emitting editor theme event")
+        print("Changing editor theme event")
         self.webView.evaluateJavaScript(
             """
-            window.dispatchEvent(new CustomEvent("set-editor-theme", {
-                detail: "\(theme.rawValue)"
-            }))
+            window.localStorage.setItem("editor-theme", "\(theme.rawValue)")
             """
         ) { (result, error) in
             if error != nil {
@@ -162,7 +162,6 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
                 if parent.editingNote != nil {
                     print("Message: \(message.body)")
                     parent.editingNote!.markdown.body = message.body as! String
-                    //                       parent.modelContext.insert(parent.editingNote!)
                 }
             }
         }

@@ -10,10 +10,14 @@ interface Props {
     container?: HTMLProps<HTMLDivElement>;
 }
 
-export const ParsedMdxContent = ({ MdxContentComponent, raw }: Props) => {
+export const ParsedMdxContent = ({
+    MdxContentComponent,
+    raw,
+    container,
+}: Props) => {
     const componentMap = useComponentMap(raw);
     return (
-        <div>
+        <div {...container}>
             <ErrorBoundary
                 onError={(e) => {
                     console.error(`Mdx Error: ${e}`);

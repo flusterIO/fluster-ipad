@@ -6,7 +6,11 @@ import {
 
 function App() {
     return (
-        <WebViewContainer>
+        <WebViewContainer
+            style={{
+                backgroundColor: "hsl(var(--background))",
+            }}
+        >
             <ResponsiveSplitViewEditor />
         </WebViewContainer>
     );

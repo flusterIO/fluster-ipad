@@ -28,9 +28,11 @@ func getTitle(body: String) -> String? {
 class MarkdownNote {
     var _body: String
     var title: String?
+    var summary: String?
     
-    init(body: String) {
+    init(body: String, summary: String?) {
         self._body = body
+        self.summary = summary
         self.title = getTitle(body: body)
     }
     
@@ -43,5 +45,4 @@ class MarkdownNote {
             self.title = getTitle(body: newBody)
         }
     }
-    
 }

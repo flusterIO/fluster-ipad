@@ -42,7 +42,7 @@ struct NoteSearchResultItemView: View {
     NoteSearchResultItemView(
         item: NoteModel(
             drawing: PKDrawing.init().dataRepresentation(),
-            markdown: MarkdownNote(body: "# My Note title")
+            markdown: MarkdownNote(body: "# My Note title", summary: nil)
         ),
         editingNote: .constant(nil)
     )
