@@ -88,7 +88,6 @@ export const CodeEditorInner = ({
 };
 
 export const CodeEditor = (): ReactNode => {
-    const [haveRendered, setHaveRendered] = useState(false);
     const [initialValue] = useLocalStorage("editor-initial-value", undefined, {
         deserializer(value) {
             console.log("value: ", value);

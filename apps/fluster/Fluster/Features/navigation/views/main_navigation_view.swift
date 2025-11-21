@@ -54,6 +54,8 @@ struct MainView: View {
     @State private var editingNoteId: String?
     @State private var editingNote: NoteModel?
     @State private var findInNotePresented: Bool = false
+    @StateObject private var editorContainer = EditorWebViewContainer()
+
     
     
 
@@ -92,6 +94,7 @@ struct MainView: View {
                         theme: $theme,
                         editorTheme: $editorTheme,
                         editingNote: $editingNote,
+                        container: editorContainer
                     )
                     .findNavigator(isPresented: $findInNotePresented)
                     .ignoresSafeArea(edges: .bottom)
