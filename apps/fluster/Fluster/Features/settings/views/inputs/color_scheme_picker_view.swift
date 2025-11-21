@@ -26,5 +26,5 @@ struct ColorSchemePickerView: View {
 }
 
 #Preview {
-    EditorThemePickerView(theme: .constant(.githubDark))
+    EditorThemePickerView(theme: .constant(.githubDark), title: "Test title")
 }

@@ -1,5 +1,6 @@
 export enum SwiftHandler {
     editorUpdate = "editor-update",
+    requestInitialData = "request-initial-data",
 }
 
 declare global {

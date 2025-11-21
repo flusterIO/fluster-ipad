@@ -45,8 +45,10 @@ struct MainView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @AppStorage(AppStorageKeys.colorScheme.rawValue) private
         var colorSchemeSelection: ColorSchemeSelection = .dark
-    @AppStorage(AppStorageKeys.editorTheme.rawValue) private var editorTheme:
-        CodeEditorTheme = .materialDark
+    @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
+        CodeEditorTheme = .dracula
+    @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
+        CodeEditorTheme = .githubLight
     @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
     @State private var themeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
@@ -93,7 +95,8 @@ struct MainView: View {
                                 subdirectory: "dist"
                             )!,
                         theme: $theme,
-                        editorTheme: $editorTheme,
+                        editorThemeDark: $editorThemeDark,
+                        editorThemeLight: $editorThemeLight,
                         editingNote: $editingNote,
                         editorKeymap: $editorKeymap,
                         container: editorContainer,
@@ -112,8 +115,11 @@ struct MainView: View {
                         editorContainer.setInitialContent(note: editingNote!)
                         }
                     })
-                    .onChange(of: editorTheme, {
-                        editorContainer.emitEditorThemeEvent(theme: editorTheme)
+                    .onChange(of: editorThemeDark, {
+                        editorContainer.emitEditorThemeEvent(theme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
+                    })
+                    .onChange(of: editorThemeLight, {
+                        editorContainer.emitEditorThemeEvent(theme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
                     })
                     .onChange(of: editorKeymap, {
                         editorContainer.setEditorKeymap(editorKeymap:editorKeymap)
@@ -145,7 +151,8 @@ struct MainView: View {
             ) {
                 SettingsPageView(
                     theme: $theme,
-                    editorTheme: $editorTheme,
+                    editorThemeDark: $editorThemeDark,
+                    editorThemeLight: $editorThemeLight,
                     colorSchemeSelection: $colorSchemeSelection
                 )
             }
@@ -214,6 +221,7 @@ struct MainView: View {
         )
     }
     func handleColorSchemeChange(newScheme: ColorScheme) {
+        editorContainer.emitEditorThemeEvent(theme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
         self.themeManager = ThemeManager(
             initialTheme: getTheme(
                 themeName: theme,

@@ -21,16 +21,13 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     @Binding var theme: WebViewTheme
     @State private var didSetInitialContent = false
     @State var haveSetInitialContent: Bool = false
-    @Binding var editorTheme: CodeEditorTheme
+    @Binding var editorThemeDark: CodeEditorTheme
+    @Binding var editorThemeLight: CodeEditorTheme
     @Binding var editingNote: NoteModel?
     @Binding var editorKeymap: EditorKeymap
 
     let container: EditorWebViewContainer
-    @Environment(\.colorScheme) var colorScheme {
-        didSet {
-            setInitialContent()
-        }
-    }
+    @Environment(\.colorScheme) var colorScheme
 
     func makeUIView(context: Context) -> WKWebView {
         let webView = container.webView
@@ -39,6 +36,10 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
         webView.configuration.userContentController.add(
             context.coordinator,
             name: "editor-update"
+        )
+        webView.configuration.userContentController.add(
+            context.coordinator,
+            name: "request-initial-data"
         )
 
         // Loading the page only once
@@ -51,6 +52,15 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     }
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
+    }
+    func setInitialProperties() {
+        container.setInitialProperties(
+            editingNote: editingNote,
+            codeEditorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight,
+            editorKeymap: editorKeymap,
+            theme: theme,
+            darkMode: colorScheme == .dark
+        )
     }
     func setInitialContent() {
         print("Setting initial content")
@@ -91,13 +101,7 @@ extension ResponsiveEditorWebView {
                 window.localStorage.setItem("editor-initial-value", `\(body)`);
                 """
             )
-            parent.container.setInitialProperties(
-                editingNote: parent.editingNote,
-                codeEditorTheme: parent.editorTheme,
-                editorKeymap: parent.editorKeymap,
-                theme: parent.theme,
-                darkMode: parent.colorScheme == .dark
-            )
+            parent.setInitialProperties()
             parent.container.webView.isHidden = false
         }
 
@@ -109,6 +113,11 @@ extension ResponsiveEditorWebView {
                 let str = message.body as? String
             {
                 parent.editingNote?.markdown.body = str
+            }
+            if message.name == "request-initial-data" {
+                print("Request for initial editor data received...")
+                parent.setInitialProperties()
+                parent.setInitialContent()
             }
         }
     }

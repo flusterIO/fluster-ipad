@@ -7,7 +7,7 @@ export interface SwiftEventMap {
 declare global {
     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface WindowEventMap {
-        "set-swift-editor-content": CustomEvent<string>;
+        "set-editor-content": CustomEvent<string>;
         "set-editor-keymap": CustomEvent<string>;
         "set-editor-theme": CustomEvent<string>;
     }
@@ -20,7 +20,7 @@ declare global {
 
 export function setEditorContent(payload: string) {
     window.dispatchEvent(
-        new CustomEvent("set-swift-editor-content", { detail: payload }),
+        new CustomEvent("set-editor-content", { detail: payload }),
     );
 }
 

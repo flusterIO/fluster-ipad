@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct SettingsPageView: View {
-    
+
     @Binding var theme: WebViewTheme
-    @Binding var editorTheme: CodeEditorTheme
+    @Binding var editorThemeDark: CodeEditorTheme
+    @Binding var editorThemeLight: CodeEditorTheme
     @Binding var colorSchemeSelection: ColorSchemeSelection
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
@@ -19,12 +20,26 @@ struct SettingsPageView: View {
             Section(header: Text("Appearance")) {
                 ColorSchemePickerView(scheme: $colorSchemeSelection)
                 ThemePickerView(theme: $theme)
-                EditorThemePickerView(theme: $editorTheme)
+                Section(header: Text("Editor Theme")) {
+                    EditorThemePickerView(
+                        theme: $editorThemeDark,
+                        title: "Dark Mode"
+                    )
+                    EditorThemePickerView(
+                        theme: $editorThemeLight,
+                        title: "Light Mode"
+                    )
+                }
             }
         }
     }
 }
 
 #Preview {
-    SettingsPageView(theme: .constant(.fluster), editorTheme: .constant(.solarizedLight), colorSchemeSelection: .constant(.dark))
+    SettingsPageView(
+        theme: .constant(.fluster),
+        editorThemeDark: .constant(.dracula),
+        editorThemeLight: .constant(.solarizedLight),
+        colorSchemeSelection: .constant(.dark)
+    )
 }

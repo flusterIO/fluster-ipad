@@ -83,7 +83,7 @@ export const CodeEditorInner = ({
     useEffect(() => {
         return () => window.localStorage.removeItem("editor-initial-value");
     }, []);
-    useEventListener("set-swift-editor-content", (e) => {
+    useEventListener("set-editor-content", (e) => {
         if (view.current) {
             view.current.dispatch({
                 changes: {
@@ -98,16 +98,28 @@ export const CodeEditorInner = ({
 };
 
 export const CodeEditor = (): ReactNode => {
-    const [initialValue] = useLocalStorage("editor-initial-value", undefined, {
-        deserializer(value) {
-            console.log("value: ", value);
-            return value;
+    const [initialValue, setInitialValue] = useLocalStorage(
+        "editor-initial-value",
+        undefined,
+        {
+            deserializer(value) {
+                console.log("value: ", value);
+                return value;
+            },
+            serializer(value) {
+                console.log("value: ", value);
+                return value;
+            },
+            initializeWithValue: false,
         },
-        serializer(value) {
-            console.log("value: ", value);
-            return value;
-        },
-        initializeWithValue: false,
+    );
+    useEffect(() => {
+        if (!initialValue) {
+            sendToSwift(SwiftHandler.requestInitialData, "");
+        }
+    }, [initialValue]);
+    useEventListener("set-editor-content", (e) => {
+        setInitialValue(e.detail);
     });
     return initialValue ? (
         <CodeEditorInner initialValue={initialValue} />

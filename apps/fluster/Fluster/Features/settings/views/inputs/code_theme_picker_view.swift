@@ -41,11 +41,12 @@ func getEditorThemeText(editorTheme: CodeEditorTheme) -> String {
 struct EditorThemePickerView: View {
 
     @Binding var theme: CodeEditorTheme
+    var title: String
     @Environment(\.colorScheme) var colorScheme
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     var body: some View {
-        Picker(selection: $theme, label: Text("Editor Theme")) {
+        Picker(selection: $theme, label: Text(title)) {
             ForEach(0..<CodeEditorTheme.allCases.count) {
                 Text(getEditorThemeText(editorTheme: CodeEditorTheme.allCases[$0])).tag(
                     CodeEditorTheme.allCases[$0]
@@ -56,5 +57,5 @@ struct EditorThemePickerView: View {
 }
 
 #Preview {
-    EditorThemePickerView(theme: .constant(.githubDark))
+    EditorThemePickerView(theme: .constant(.githubDark), title: "Test title")
 }
