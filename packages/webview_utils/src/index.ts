@@ -1,3 +1,5 @@
+export * from "./features/editor/code_editor/types/swift_events/swift_events";
+
 // -- Core Components --
 export * from "./features/webview_container/presentation/webview_container";
 

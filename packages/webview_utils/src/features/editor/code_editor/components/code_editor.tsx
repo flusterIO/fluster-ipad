@@ -1,10 +1,4 @@
-import React, {
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-    type ReactNode,
-} from "react";
+import React, { useEffect, useRef, type ReactNode } from "react";
 import { EditorState, Extension } from "@codemirror/state";
 import { EditorView, keymap, ViewUpdate } from "@codemirror/view";
 import { markdown } from "@codemirror/lang-markdown";
@@ -15,16 +9,19 @@ import {
 } from "../state/code_editor_provider";
 import { codeEditorBaseKeymapMap } from "../data/code_editor_base_keymap_map";
 import { codeEditorThemeMap } from "../data/code_editor_theme_map";
-import { stringToCodeEditorTheme } from "../types/code_editor_types";
 import { lineNumbersRelative } from "@uiw/codemirror-extensions-line-numbers-relative";
 import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
+import { useEventListener } from "@/state/hooks/use_event_listener";
+import { setWindowBridgeFunctions } from "../types/swift_events/swift_events";
 
 interface CodeEditorProps {
     language?: Extension;
     initialValue: string;
 }
+
+setWindowBridgeFunctions();
 
 export const CodeEditorInner = ({
     language = markdown(),
@@ -34,6 +31,7 @@ export const CodeEditorInner = ({
     const state = useCodeEditorContext();
     const dispatch = useCodeEditorDispatch();
     const timer = useRef<NodeJS.Timeout | null>(null);
+    const view = useRef<EditorView | null>(null);
     useEffect(() => {
         if (haveRendered.current) {
             haveRendered.current = false;
@@ -77,6 +75,7 @@ export const CodeEditorInner = ({
             parent: document.getElementById("code-editor-container")!,
         });
         _view.focus();
+        view.current = _view;
         haveRendered.current = true;
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
     }, [state.baseKeymap, state.theme, state.haveSetInitialValue]);
@@ -84,6 +83,18 @@ export const CodeEditorInner = ({
     useEffect(() => {
         return () => window.localStorage.removeItem("editor-initial-value");
     }, []);
+    useEventListener("set-swift-editor-content", (e) => {
+        console.log(`Here mothafuckaaaaa`);
+        if (view.current) {
+            view.current.dispatch({
+                changes: {
+                    from: 0,
+                    to: view.current.state.doc.length,
+                    insert: e.detail,
+                },
+            });
+        }
+    });
     return <div className="h-full w-full" id="code-editor-container" />;
 };
 
@@ -99,6 +110,7 @@ export const CodeEditor = (): ReactNode => {
         },
         initializeWithValue: false,
     });
+    console.log("initialValue: ", initialValue);
     return initialValue ? (
         <CodeEditorInner initialValue={initialValue} />
     ) : (

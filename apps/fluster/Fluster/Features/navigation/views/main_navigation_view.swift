@@ -105,6 +105,11 @@ struct MainView: View {
                             }
                         }
                     }
+                    .onChange(of: editingNote, {
+                        if editingNote != nil {
+                        editorContainer.setInitialContent(note: editingNote!)
+                        }
+                    })
                 } else {
                     SelectNoteToContinueView()
                 }

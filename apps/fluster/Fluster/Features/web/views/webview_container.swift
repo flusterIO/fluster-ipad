@@ -1,5 +1,5 @@
-import WebKit
 import Combine
+import WebKit
 
 func getConfig() -> WKWebViewConfiguration {
     // configuring the `WKWebView` is very important
@@ -11,7 +11,6 @@ func getConfig() -> WKWebViewConfiguration {
     return config
 }
 
-
 final class EditorWebViewContainer: ObservableObject {
     @Published var justToConform: Bool = false
     let webView: WKWebView = {
@@ -20,6 +19,30 @@ final class EditorWebViewContainer: ObservableObject {
         view.scrollView.minimumZoomScale = 1
         view.scrollView.maximumZoomScale = 1
         view.allowsBackForwardNavigationGestures = false
+        if #available(iOS 16.4, macOS 13.3, *) {
+            view.isInspectable = true
+        }
+
         return view
     }()
+    func runJavascript(_ script: String) {
+        self.webView.evaluateJavaScript(script) { result, error in
+            if let error = error {
+                print("Error executing JS: \(error.localizedDescription)")
+            } else if let result = result {
+                print("JS Result: \(result)")
+            }
+        }
+    }
+    func setInitialContent(note: NoteModel) {
+        let body = note.markdown.body.replacingOccurrences(
+            of: "`",
+            with: "\\`"
+        )
+        self.runJavascript(
+            """
+            window.setEditorContent(`\(body)`)
+            """
+        )
+    }
 }
