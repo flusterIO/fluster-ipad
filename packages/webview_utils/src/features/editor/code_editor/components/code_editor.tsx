@@ -38,7 +38,7 @@ export const CodeEditorInner = ({
             document.getElementById("code-editor-container")!.replaceChildren();
         }
         let extensions: Extension[] = [];
-        if (state.vimMode) {
+        if (state.keymap === "vim") {
             extensions.push(vim());
             extensions.push(lineNumbersRelative);
         }
@@ -84,7 +84,6 @@ export const CodeEditorInner = ({
         return () => window.localStorage.removeItem("editor-initial-value");
     }, []);
     useEventListener("set-swift-editor-content", (e) => {
-        console.log(`Here mothafuckaaaaa`);
         if (view.current) {
             view.current.dispatch({
                 changes: {
@@ -110,7 +109,6 @@ export const CodeEditor = (): ReactNode => {
         },
         initializeWithValue: false,
     });
-    console.log("initialValue: ", initialValue);
     return initialValue ? (
         <CodeEditorInner initialValue={initialValue} />
     ) : (

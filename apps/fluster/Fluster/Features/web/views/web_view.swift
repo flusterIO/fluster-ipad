@@ -23,12 +23,11 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     @State var haveSetInitialContent: Bool = false
     @Binding var editorTheme: CodeEditorTheme
     @Binding var editingNote: NoteModel?
-    //    @StateObject var viewModel: WebViewModel = WebViewModel()
+    @Binding var editorKeymap: EditorKeymap
 
     let container: EditorWebViewContainer
     @Environment(\.colorScheme) var colorScheme {
         didSet {
-            print("Here??? I hope... this would make life a whole lot easier.")
             setInitialContent()
         }
     }
@@ -49,9 +48,6 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-//        if (editingNote != nil) && (editingNote!.id != renderedNoteId) {
-//            setInitialContent()
-//        }
     }
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -64,25 +60,8 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
         )
         container.runJavascript(
             """
-            window.localStorage.removeItem("editor-initial-value")
             window.localStorage.setItem("editor-initial-value", `\(body ?? "")`)
             window.setEditorContent(`\(body ?? "")`)
-            """
-        )
-    }
-    func emitEditorThemeEvent(theme: CodeEditorTheme) {
-        print("Changing editor theme event")
-        container.runJavascript(
-            """
-            window.localStorage.setItem("editor-theme", "\(theme.rawValue)")
-            """
-        )
-    }
-    func applyWebViewColorScheme() {
-        print("Applying webview color scheme")
-        container.runJavascript(
-            """
-            window.localStorage.setItem("darkMode", "\(colorScheme == .dark ? "true" : "false")")
             """
         )
     }
@@ -112,6 +91,14 @@ extension ResponsiveEditorWebView {
                 window.localStorage.setItem("editor-initial-value", `\(body)`);
                 """
             )
+            parent.container.setInitialProperties(
+                editingNote: parent.editingNote,
+                codeEditorTheme: parent.editorTheme,
+                editorKeymap: parent.editorKeymap,
+                theme: parent.theme,
+                darkMode: parent.colorScheme == .dark
+            )
+            parent.container.webView.isHidden = false
         }
 
         func userContentController(

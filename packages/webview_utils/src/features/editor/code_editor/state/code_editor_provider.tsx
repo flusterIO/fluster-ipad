@@ -11,9 +11,10 @@ import {
     stringToCodeEditorTheme,
 } from "../types/code_editor_types";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
+import { useEventListener } from "@/state/hooks/use_event_listener";
 
 export interface CodeEditorState {
-    vimMode: boolean;
+    keymap: string;
     baseKeymap: CodeEditorBaseKeymap;
     theme: CodeEditorTheme;
     value: string;
@@ -21,9 +22,9 @@ export interface CodeEditorState {
 }
 
 const defaultInitialCodeEditorState: CodeEditorState = {
-    vimMode: false,
     baseKeymap: CodeEditorBaseKeymap.default,
     theme: CodeEditorTheme.dracula,
+    keymap: "base",
     value: "",
     haveSetInitialValue: false,
 };
@@ -46,8 +47,8 @@ type CodeEditorContextActions =
         payload: CodeEditorBaseKeymap;
     }
     | {
-        type: "setVimMode";
-        payload: boolean | "toggle";
+        type: "setKeymap";
+        payload: string;
     }
     | {
         type: "setInitialEditorValue";
@@ -79,10 +80,10 @@ export const CodeEditorContextReducer = (
                 theme: action.payload,
             };
         }
-        case "setVimMode": {
+        case "setKeymap": {
             return {
                 ...state,
-                vimMode: action.payload === "toggle" ? !state.vimMode : action.payload,
+                keymap: action.payload,
             };
         }
         case "setBaseKeymap": {
@@ -138,13 +139,18 @@ export const CodeEditorProvider = ({
     });
     useEffect(() => {
         console.log(`Setting editor keymap`);
-        if ((editorKeymap === "vim") !== state.vimMode) {
-            dispatch({
-                type: "setVimMode",
-                payload: editorKeymap === "vim",
-            });
-        }
+        dispatch({
+            type: "setKeymap",
+            payload: editorKeymap,
+        });
     }, [editorKeymap]);
+
+    useEventListener("set-editor-keymap", (e) => {
+        dispatch({
+            type: "setKeymap",
+            payload: e.detail,
+        });
+    });
 
     const [editorTheme] = useLocalStorage("editor-theme", undefined, {
         deserializer(value) {
@@ -157,18 +163,20 @@ export const CodeEditorProvider = ({
         },
         initializeWithValue: false,
     });
-    useEffect(() => {
+    const handleTheme = (t: string): void => {
         console.log(`Setting theme`);
-        const payload = stringToCodeEditorTheme(
-            (editorTheme as string) ?? "dracula",
-        );
-        if (payload !== state.theme) {
-            dispatch({
-                type: "setTheme",
-                payload,
-            });
-        }
-    }, [editorKeymap]);
+        const payload = stringToCodeEditorTheme((t as string) ?? "dracula");
+        dispatch({
+            type: "setTheme",
+            payload,
+        });
+    };
+    useEffect(() => {
+        handleTheme(editorTheme);
+    }, [editorTheme]);
+    useEventListener("set-editor-theme", (e) => {
+        handleTheme(e.detail);
+    });
 
     const [initialValue] = useLocalStorage("editor-initial-value", undefined, {
         deserializer(value) {
@@ -180,9 +188,7 @@ export const CodeEditorProvider = ({
         initializeWithValue: false,
     });
     useEffect(() => {
-        console.log(`Attempting to set initial value`);
         if (!state.haveSetInitialValue && typeof initialValue === "string") {
-            console.log(`Setting initial value`);
             dispatch({
                 type: "setInitialEditorValue",
                 payload: initialValue,

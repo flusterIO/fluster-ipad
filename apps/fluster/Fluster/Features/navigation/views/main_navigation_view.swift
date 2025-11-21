@@ -47,6 +47,7 @@ struct MainView: View {
         var colorSchemeSelection: ColorSchemeSelection = .dark
     @AppStorage(AppStorageKeys.editorTheme.rawValue) private var editorTheme:
         CodeEditorTheme = .materialDark
+    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
     @State private var themeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
@@ -94,7 +95,8 @@ struct MainView: View {
                         theme: $theme,
                         editorTheme: $editorTheme,
                         editingNote: $editingNote,
-                        container: editorContainer
+                        editorKeymap: $editorKeymap,
+                        container: editorContainer,
                     )
                     .findNavigator(isPresented: $findInNotePresented)
                     .ignoresSafeArea(edges: .bottom)
@@ -109,6 +111,12 @@ struct MainView: View {
                         if editingNote != nil {
                         editorContainer.setInitialContent(note: editingNote!)
                         }
+                    })
+                    .onChange(of: editorTheme, {
+                        editorContainer.emitEditorThemeEvent(theme: editorTheme)
+                    })
+                    .onChange(of: editorKeymap, {
+                        editorContainer.setEditorKeymap(editorKeymap:editorKeymap)
                     })
                 } else {
                     SelectNoteToContinueView()
@@ -169,6 +177,7 @@ struct MainView: View {
             of: colorSchemeSelection,
             {
                 handleColorSchemeSelectionChange()
+                editorContainer.applyWebViewColorScheme(darkMode: colorSchemeSelection == .dark)
             }
         )
         .onAppear {
@@ -196,6 +205,7 @@ struct MainView: View {
         )
     }
     func handleThemeChange(newTheme: WebViewTheme) {
+        self.editorContainer.setWebviewTheme(theme: newTheme)
         self.themeManager = ThemeManager(
             initialTheme: getTheme(
                 themeName: newTheme,

@@ -1,4 +1,5 @@
 import Combine
+import SwiftUI
 import WebKit
 
 func getConfig() -> WKWebViewConfiguration {
@@ -19,6 +20,7 @@ final class EditorWebViewContainer: ObservableObject {
         view.scrollView.minimumZoomScale = 1
         view.scrollView.maximumZoomScale = 1
         view.allowsBackForwardNavigationGestures = false
+        view.isHidden = true
         if #available(iOS 16.4, macOS 13.3, *) {
             view.isInspectable = true
         }
@@ -34,6 +36,33 @@ final class EditorWebViewContainer: ObservableObject {
             }
         }
     }
+    func emitEditorThemeEvent(theme: CodeEditorTheme) {
+        print("Changing editor theme event")
+        self.runJavascript(
+            """
+            window.localStorage.setItem("editor-theme", "\(theme.rawValue)")
+            window.setEditorTheme("\(theme.rawValue)")
+            """
+        )
+    }
+    func applyWebViewColorScheme(darkMode: Bool) {
+        print("Applying webview color scheme")
+        self.runJavascript(
+            """
+            window.localStorage.setItem("dark-mode", "\(darkMode ? "true" : "false")")
+            window.setDarkMode(\(darkMode ? "true" : "false"))
+            """
+        )
+    }
+    func setEditorKeymap(editorKeymap: EditorKeymap) {
+        print("Applying webview color scheme")
+        self.runJavascript(
+            """
+            window.localStorage.setItem("editor-keymap", "\(editorKeymap.rawValue)")
+            window.setEditorKeymap("\(editorKeymap.rawValue)")
+            """
+        )
+    }
     func setInitialContent(note: NoteModel) {
         let body = note.markdown.body.replacingOccurrences(
             of: "`",
@@ -44,5 +73,25 @@ final class EditorWebViewContainer: ObservableObject {
             window.setEditorContent(`\(body)`)
             """
         )
+    }
+    func setWebviewTheme(theme: WebViewTheme) {
+        self.runJavascript("""
+            window.setWebviewTheme("\(theme.rawValue)")
+            """)
+    }
+    func setInitialProperties(
+        editingNote: NoteModel?,
+        codeEditorTheme: CodeEditorTheme,
+        editorKeymap: EditorKeymap,
+        theme: WebViewTheme,
+        darkMode: Bool
+    ) {
+        self.applyWebViewColorScheme(darkMode: darkMode)
+        self.emitEditorThemeEvent(theme: codeEditorTheme)
+        self.setEditorKeymap(editorKeymap: editorKeymap)
+        self.setWebviewTheme(theme: theme)
+        if editingNote != nil {
+            self.setInitialContent(note: editingNote!)
+        }
     }
 }
