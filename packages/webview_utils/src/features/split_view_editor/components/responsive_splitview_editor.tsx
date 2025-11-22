@@ -2,7 +2,7 @@ import { CodeEditorProvider } from "#/editor/code_editor/state/code_editor_provi
 import React, { type ReactNode } from "react";
 import { useMediaQuery } from "react-responsive";
 import { SplitViewEditorInner } from "./split_view_editor";
-import { MdxEditorPreview } from "#/mdx/components/mdx_editor_preview";
+import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
 
 export const ResponsiveSplitViewEditor = (): ReactNode => {
     const isLanscape = useMediaQuery({
@@ -10,7 +10,7 @@ export const ResponsiveSplitViewEditor = (): ReactNode => {
     });
     return (
         <CodeEditorProvider>
-            {isLanscape ? <SplitViewEditorInner /> : <MdxEditorPreview />}
+            {isLanscape ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly />}
         </CodeEditorProvider>
     );
 };
