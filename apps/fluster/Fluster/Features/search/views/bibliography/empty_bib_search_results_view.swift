@@ -21,7 +21,7 @@ struct EmptyBibSearchResultsView: View {
                     .imageScale(.large)
                     .foregroundStyle(themeManager.theme.primary_foreground)
             }
-            Text("No notes found")
+            Text("No entries found")
                 .font(.title2)
             Button("Create") {
                 activeCategory = .createNote

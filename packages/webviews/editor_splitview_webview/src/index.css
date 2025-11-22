@@ -4,6 +4,8 @@
 @import "../../../webview_utils/src/core/utils/themes.scss";
 @import "../../../webview_utils/src/core/utils/base.scss";
 
+@source inline("prose-base prose-lg prose-xl prose-2xl");
+
 @custom-variant dark (&:where(.dark *));
 
 html,

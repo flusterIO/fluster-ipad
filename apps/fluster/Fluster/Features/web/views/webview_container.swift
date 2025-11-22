@@ -55,7 +55,7 @@ final class EditorWebViewContainer: ObservableObject {
         )
     }
     func setEditorKeymap(editorKeymap: EditorKeymap) {
-        print("Applying webview color scheme")
+        print("Applying editor keymap")
         self.runJavascript(
             """
             window.localStorage.setItem("editor-keymap", "\(editorKeymap.rawValue)")
@@ -79,17 +79,25 @@ final class EditorWebViewContainer: ObservableObject {
             window.setWebviewTheme("\(theme.rawValue)")
             """)
     }
+    func setWebviewFontSize(fontSize: WebviewFontSize) {
+        self.runJavascript("""
+        window.localStorage.setItem("webview-font-class", "\(fontSize.cssClass())");
+        window.setWebViewFontSize('\(fontSize.cssClass())');
+        """)
+    }
     func setInitialProperties(
         editingNote: NoteModel?,
         codeEditorTheme: CodeEditorTheme,
         editorKeymap: EditorKeymap,
         theme: WebViewTheme,
+        fontSize: WebviewFontSize,
         darkMode: Bool
     ) {
         self.applyWebViewColorScheme(darkMode: darkMode)
         self.emitEditorThemeEvent(theme: codeEditorTheme)
         self.setEditorKeymap(editorKeymap: editorKeymap)
         self.setWebviewTheme(theme: theme)
+        self.setWebviewFontSize(fontSize: fontSize)
         if editingNote != nil {
             self.setInitialContent(note: editingNote!)
         }

@@ -6,5 +6,5 @@
 //
 
 enum AppStorageKeys: String {
-    case theme, editorThemeDark, editorThemeLight, colorScheme, editorKeymap
+    case theme, editorThemeDark, editorThemeLight, colorScheme, editorKeymap, webviewFontSize
 }

@@ -42,6 +42,7 @@ struct MainView: View {
     @State private var canvasView = PKCanvasView()
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
         .fluster
+    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private var webviewFontSize: WebviewFontSize = .base
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @AppStorage(AppStorageKeys.colorScheme.rawValue) private
         var colorSchemeSelection: ColorSchemeSelection = .dark
@@ -174,6 +175,9 @@ struct MainView: View {
                 handleColorSchemeChange(newScheme: colorScheme)
             }
         )
+        .onChange(of: webviewFontSize, {
+            editorContainer.setWebviewFontSize(fontSize: webviewFontSize)
+        })
         .onChange(
             of: theme,
             {

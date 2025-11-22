@@ -25,7 +25,7 @@ export const SplitViewEditorInner = (): ReactNode => {
             >
                 <div
                     id="mdx-page-container"
-                    className="w-full h-full overflow-y-auto overflow-x-hidden py-16 px-8 bg-background dark:bg-black"
+                    className="w-full h-full overflow-y-auto overflow-x-hidden bg-background dark:bg-black"
                 >
                     <MdxEditorPreview />
                 </div>

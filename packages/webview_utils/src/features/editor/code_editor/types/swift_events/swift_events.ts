@@ -1,5 +1,3 @@
-import { setWebviewWindowBridgeFunctions } from "#/webview_container/state/swift_events/webview_swift_events";
-
 export interface SwiftEventMap {
     updateEditorValue: string;
 }

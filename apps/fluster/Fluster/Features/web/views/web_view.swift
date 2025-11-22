@@ -17,7 +17,7 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     )
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var modelContext
-
+    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private var webviewFontSize: WebviewFontSize = .base
     @Binding var theme: WebViewTheme
     @State private var didSetInitialContent = false
     @State var haveSetInitialContent: Bool = false
@@ -59,6 +59,7 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
             codeEditorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight,
             editorKeymap: editorKeymap,
             theme: theme,
+            fontSize: webviewFontSize,
             darkMode: colorScheme == .dark
         )
     }

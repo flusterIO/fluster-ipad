@@ -28,18 +28,10 @@ export const WebViewContainer = ({
         initializeWithValue: false,
     });
     useEventListener("set-dark-mode", (e) => {
-        console.log("e.detail: ", e.detail);
         if (typeof e.detail === "boolean" && e.detail !== (darkMode === "true")) {
             setDarkMode(e.detail ? "true" : "false");
         }
     });
-    if (darkMode === null) {
-        return (
-            <div className="w-full h-full flex flex-col justify-center items-center">
-                <LoadingComponent />
-            </div>
-        );
-    }
     const [theme, setTheme] = useLocalStorage("webview-theme", "fluster", {
         deserializer(value) {
             return value;
@@ -55,12 +47,19 @@ export const WebViewContainer = ({
     useEventListener("set-webview-theme", (e) => {
         setTheme(e.detail);
     });
+    if (darkMode === null) {
+        return (
+            <div className="w-full h-full flex flex-col justify-center items-center">
+                <LoadingComponent />
+            </div>
+        );
+    }
     return (
         <div
             className={cn(
                 "w-screen h-screen",
                 className,
-                darkMode === "true" && "dark",
+                darkMode === "true" && "dark !bg-black",
             )}
             style={style}
         >

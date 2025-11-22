@@ -20,16 +20,24 @@ struct SettingsPageView: View {
             Section(header: Text("Appearance")) {
                 ColorSchemePickerView(scheme: $colorSchemeSelection)
                 ThemePickerView(theme: $theme)
-                Section(header: Text("Editor Theme")) {
-                    EditorThemePickerView(
-                        theme: $editorThemeDark,
-                        title: "Dark Mode"
-                    )
-                    EditorThemePickerView(
-                        theme: $editorThemeLight,
-                        title: "Light Mode"
-                    )
-                }
+            }
+            Section(header: Text("Font Size")) {
+                FontSizePicker()
+            }
+            .listRowSeparator(.hidden)
+            Section(header: Text("Keymap")) {
+                EditorKeymapPickerView()
+            }
+            .listRowSeparator(.hidden)
+            Section(header: Text("Editor Theme")) {
+                EditorThemePickerView(
+                    theme: $editorThemeDark,
+                    title: "Dark Mode"
+                )
+                EditorThemePickerView(
+                    theme: $editorThemeLight,
+                    title: "Light Mode"
+                )
             }
         }
     }
