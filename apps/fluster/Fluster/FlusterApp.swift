@@ -5,35 +5,27 @@
 //  Created by Andrew on 10/28/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
+
+typealias NoteModel = AppSchemaV1.NoteModel
+typealias BibEntryModel = AppSchemaV1.BibEntryModel
+typealias SubjectModel = AppSchemaV1.SubjectModel
+typealias TagModel = AppSchemaV1.TagModel
+typealias TopicModel = AppSchemaV1.TopicModel
 
 @main
 struct FlusterApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            MarkdownNote.self,
-            NoteModel.self,
-            NoteTag.self,
-            SubjectModel.self,
-            TopicModel.self,
-            TagModel.self,
-            BibEntryModel.self
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    @AppStorage(AppStorageKeys.isFirstLaunch.rawValue) private
+        var isFirstLaunch = true
 
     var body: some Scene {
         WindowGroup {
             MainView()
                 .ignoresSafeArea()
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(
+            AppDataContainer.create(isInitialLaunch: &isFirstLaunch)
+        )
     }
 }

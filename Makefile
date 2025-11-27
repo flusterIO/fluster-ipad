@@ -11,6 +11,9 @@ format_package_jsons:
 lint:
 	cd ${FLUSTER_IOS_ROOT}/apps/fluster; swiftlint lint
 
+generate_initial_note_paths:
+	tsx ${FLUSTER_IOS_ROOT}/scripts/generate_initial_note_paths.ts
+
 build_webview_utils:
 	pnpm run -C packages/webview_utils build
 
@@ -19,3 +22,5 @@ build_editor_splitview_webview: build_webview_utils
 
 build_bibtex_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/bibtex_editor_webview build
+
+pre_swift_build: generate_initial_note_paths build_editor_splitview_webview build_bibtex_editor_webview

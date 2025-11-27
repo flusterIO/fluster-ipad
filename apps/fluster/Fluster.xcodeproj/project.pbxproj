@@ -14,6 +14,7 @@
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
 		79F131092ED392740082BA65 /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = 79F131082ED392740082BA65 /* FloatingButton */; };
+		79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */ = {isa = PBXBuildFile; fileRef = 79FA54412ED8BB5F00D16F68 /* initial_note_docs */; };
 		79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 79FFA6CC2EB4280100B09AE7 /* STTextView */; };
 /* End PBXBuildFile section */
 
@@ -21,6 +22,7 @@
 		796F71042EB174610012B500 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79AD78962EC903970030B3C5 /* dist */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dist; path = ../../packages/webviews/editor_splitview_webview/dist; sourceTree = "<group>"; };
 		79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
+		79FA54412ED8BB5F00D16F68 /* initial_note_docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = initial_note_docs; path = ../../docs/initial_note_docs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -64,6 +66,7 @@
 		796F70FB2EB174610012B500 = {
 			isa = PBXGroup;
 			children = (
+				79FA54412ED8BB5F00D16F68 /* initial_note_docs */,
 				79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */,
 				79AD78962EC903970030B3C5 /* dist */,
 				796F71062EB174610012B500 /* Fluster */,
@@ -158,6 +161,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */,
 				79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */,
 				79AD78972EC903970030B3C5 /* dist in Resources */,
 			);
