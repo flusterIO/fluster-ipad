@@ -9,5 +9,7 @@ fi
 
 make format_package_jsons
 
-# git add packages/webview_utils/package.json
-# git add packages/webviews/editor_webview/package.json
+DIR_NAME=$(dirname)
+
+git add "$DIR_NAME/../packages/webview_utils/package.json"
+git add "$DIR_NAME/../packages/webviews/editor_webview/package.json"

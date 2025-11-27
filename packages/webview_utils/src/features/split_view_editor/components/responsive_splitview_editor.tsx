@@ -5,12 +5,12 @@ import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
 
 export const ResponsiveSplitViewEditor = (): ReactNode => {
-    const isLanscape = useMediaQuery({
+    const isLandscape = useMediaQuery({
         orientation: "landscape",
     });
     return (
         <CodeEditorProvider>
-            {isLanscape ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly />}
+            {isLandscape ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly />}
         </CodeEditorProvider>
     );
 };

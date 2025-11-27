@@ -1,6 +1,8 @@
 export enum SwiftHandler {
     editorUpdate = "editor-update",
     requestInitialData = "request-initial-data",
+    bibtexRequestInitialData = "bibtex-request-initial-data",
+    bibtexEditorUpdate = "bibtex-editor-update",
 }
 
 declare global {

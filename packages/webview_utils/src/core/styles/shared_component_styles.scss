@@ -1,0 +1,20 @@
+li.hide-li-marker {
+  ::marker {
+    content: none !important;
+  }
+}
+
+.checkbox-primitive {
+  border-color: hsl(var(--foreground)/0.4);
+}
+
+.checkbox-primitive[data-state="checked"] {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground));
+}
+
+.dark {
+  .checkbox-primitive[data-state="checked"] {
+    border-color: hsl(var(--primary));
+  }
+}

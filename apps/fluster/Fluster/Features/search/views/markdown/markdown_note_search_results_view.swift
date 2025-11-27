@@ -8,42 +8,85 @@
 import SwiftData
 import SwiftUI
 
-struct MarkdownNotesSearchResultsView: View {
+struct MarkdownNotesSearchResultsWrappedQuery: View {
     @Environment(\.modelContext) var modelContext
-    @Query(sort: \NoteModel.last_read) var notes: [NoteModel]
-    @Binding var searchQuery: String
-    @Binding var activeCategory: SearchCategoryId
-    @Binding var editingNote: NoteModel?
+    @Query var notes: [NoteModel]
+    @State private var confirmationDeleteModalOpen: Bool = false
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Binding var editingNote: NoteModel?
+    @Binding var searchQuery: String
     
+    var sortedNotes: [NoteModel] {
+        var titleResults: [NoteModel] = []
+        var bodyResults: [NoteModel] = []
+        for note in notes {
+            if NoteModel.isTitleMatch(noteBody: note.markdown._body, query: searchQuery) {
+                titleResults.append(note)
+            } else {
+                bodyResults.append(note)
+            }
+        }
+        return titleResults + bodyResults
+    }
+
+    init(editingNote: Binding<NoteModel?>, searchQuery: Binding<String>) {
+        _editingNote = editingNote
+        _searchQuery = searchQuery
+        let _query = searchQuery.wrappedValue // Can't use getter in predicate
+        if (!searchQuery.wrappedValue.isEmpty) {
+            _notes = Query(
+                filter: #Predicate<NoteModel> { note in
+                    note.markdown._body.localizedStandardContains(
+                        _query
+                    )
+                },
+                sort: [SortDescriptor(\NoteModel.last_read, order: .reverse)],
+                animation: .default
+            )
+        }
+    }
 
     var body: some View {
         if notes.isEmpty {
-            EmptyMarkdownSearchResultsView(activeCategory: $activeCategory)
+            EmptyMarkdownSearchResultsView(editingNote: $editingNote)
         } else {
             List {
-            ForEach(notes, id: \.id) {note in
-                NoteSearchResultItemView(item: note, editingNote: $editingNote)
+                ForEach(sortedNotes, id: \.id) { note in
+                    NoteSearchResultItemView(
+                        item: note,
+                        editingNote: $editingNote
+                    )
                     .onTapGesture {
                         editingNote = note
                     }
+                }
+                .onAppear {
+                    print("View Database: ", modelContext.sqliteCommand)
+                }
             }
-            .onDelete(perform: removeRows)
-            .onAppear {
-                print("View Database: ", modelContext.sqliteCommand)
-            }
-            }
+            .searchable(
+                text: $searchQuery,
+                placement: .toolbarPrincipal,
+                prompt: "Search"
+            )
             .navigationTitle("Recently accessed notes")
-        }
-    }
-    func removeRows(at offset: IndexSet) {
-        let items = notes[offset.first!...offset.last!]
-        for item in items {
-            modelContext.delete(item)
         }
     }
 }
 
+struct MarkdownNotesSearchResultsView: View {
+    @Binding var editingNote: NoteModel?
+    @State private var searchQuery: String = ""
+    var body: some View {
+        MarkdownNotesSearchResultsWrappedQuery(
+            editingNote: $editingNote,
+            searchQuery: $searchQuery
+        )
+    }
+}
+
 #Preview {
-    MarkdownNotesSearchResultsView(searchQuery: .constant(""), activeCategory: .constant(.citation), editingNote: .constant(nil))
+    MarkdownNotesSearchResultsView(
+        editingNote: .constant(nil),
+    )
 }

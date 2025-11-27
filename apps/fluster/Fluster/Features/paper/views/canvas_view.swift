@@ -8,22 +8,53 @@
 import SwiftUI
 import PencilKit
 
-
 struct CanvasView: UIViewRepresentable {
-    @Binding var toolPicker:  PKToolPicker
+    @Binding var toolPicker: PKToolPicker
+    @Binding var drawingData: Data
     @Binding var canvasView: PKCanvasView
-    var drawing: PKDrawing
 
-    
-    func makeUIView(context: Context) -> some PKCanvasView {
+    func makeUIView(context: Context) -> PKCanvasView {
         canvasView.drawingPolicy = .anyInput
-        canvasView.drawing = drawing
+        canvasView.delegate = context.coordinator
         toolPicker.setVisible(true, forFirstResponder: canvasView)
         toolPicker.addObserver(canvasView)
         canvasView.becomeFirstResponder()
         return canvasView
     }
-    func updateUIView(_ uiView: some PKCanvasView, context: Context) {
-        // toolPicker.setVisible(true, forFirstResponder: uiView)
+    
+    func showToolbar() {
+        toolPicker.setVisible(true, forFirstResponder: canvasView)
+        toolPicker.addObserver(canvasView)
+        canvasView.becomeFirstResponder()
+    }
+
+    func updateUIView(_ uiView: PKCanvasView, context: Context) {
+        // 1. Attempt to deserialize the data into a PKDrawing
+        if let drawing = try? PKDrawing(data: drawingData) {
+            // 2. Only update the canvas if the drawing has actually changed
+            // This prevents infinite loops where updateUIView triggers a save, which triggers updateUIView...
+            if uiView.drawing != drawing {
+                uiView.drawing = drawing
+            }
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    // The Coordinator listens to the PKCanvasView delegates
+    class Coordinator: NSObject, PKCanvasViewDelegate {
+        var parent: CanvasView
+
+        init(_ parent: CanvasView) {
+            self.parent = parent
+        }
+
+        // Triggered whenever the user lifts their finger/pencil
+        func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
+            // Convert the drawing back to Data and update the binding
+            parent.drawingData = canvasView.drawing.dataRepresentation()
+        }
     }
 }

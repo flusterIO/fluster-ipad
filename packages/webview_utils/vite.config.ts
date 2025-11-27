@@ -3,6 +3,7 @@ import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
+import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -33,6 +34,8 @@ export default defineConfig({
     resolve: {
         alias: {
             path: "path-browserify",
+            "@": path.resolve(__dirname, "./src/core"),
+            "#": path.resolve(__dirname, "./src/features"),
         },
     },
 });

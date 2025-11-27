@@ -1,10 +1,16 @@
 import { useCodeEditorContext } from "#/editor/code_editor/state/code_editor_provider";
-import React, { type ReactNode } from "react";
-import { MdxContent } from "./mdx_content";
+import React, { HTMLProps, type ReactNode } from "react";
+import { MdxContent, MdxContentProps } from "./mdx_content";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
 
-export const MdxEditorPreview = (): ReactNode => {
+export type MdxEditorPreviewProps = HTMLProps<HTMLDivElement> &
+    Pick<MdxContentProps, "scrollPositionKey">;
+
+export const MdxEditorPreview = ({
+    className,
+    ...props
+}: MdxEditorPreviewProps): ReactNode => {
     const { value } = useCodeEditorContext();
 
     const isEditorView = useMediaQuery({
@@ -27,12 +33,27 @@ export const MdxEditorPreview = (): ReactNode => {
     }
     return (
         <MdxContent
+            id="mdx-preview"
             removeGrayMatter
+            {...props}
             className={cn(
-                "block max-h-full",
-                isEditorView ? "px-4 pt-4" : "px-8 pt-6",
+                isEditorView ? "px-4 pt-4" : "px-8 pt-6 max-h-screen overflow-y-auto",
+                className,
             )}
             mdx={value}
+        /* onScroll={(e) => { */
+        /*     if (props.scrollPositionKey) { */
+        /*         if (timer.current) { */
+        /*             clearTimeout(timer.current); */
+        /*         } */
+        /*         timer.current = setTimeout(() => { */
+        /*             localStorage.setItem( */
+        /*                 props.scrollPositionKey!, */
+        /*                 (e.target as HTMLDivElement).scrollTop.toString(), */
+        /*             ); */
+        /*         }, 250); */
+        /*     } */
+        /* }} */
         />
     );
 };

@@ -6,14 +6,16 @@
 //
 
 import PencilKit
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct CreateNoteSheetView: View {
     @State private var titleValue: String = ""
-    @Binding var editingNote: NoteModel?
     @FocusState private var textFieldFocused: Bool
     @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    @Binding var editingNote: NoteModel?
+    let dismissOnSubmit: Bool
 
     var body: some View {
         Form {
@@ -25,17 +27,25 @@ struct CreateNoteSheetView: View {
             HStack(alignment: .lastTextBaseline) {
                 Spacer()
                 Button("Create") {
-                    if titleValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    if titleValue.trimmingCharacters(
+                        in: .whitespacesAndNewlines
+                    ).isEmpty {
                         return
                     }
                     let model = NoteModel(
                         id: nil,
                         drawing: PKDrawing.init().dataRepresentation(),
-                        markdown: MarkdownNote(body: "# \(titleValue)", summary: nil)
-                   )
+                        markdown: MarkdownNote(
+                            body: "# \(titleValue)",
+                            summary: nil
+                        )
+                    )
                     modelContext.insert(model)
                     editingNote = model
                     titleValue = ""
+                    if dismissOnSubmit {
+                        dismiss()
+                    }
                 }
                 .buttonStyle(.glassProminent)
             }
@@ -45,5 +55,5 @@ struct CreateNoteSheetView: View {
 }
 
 #Preview {
-    CreateNoteSheetView(editingNote: .constant(nil))
+    CreateNoteSheetView(editingNote: .constant(nil), dismissOnSubmit: false)
 }

@@ -10,9 +10,10 @@ import SwiftyBibtex
 
 struct BibEntrySearchResultItemView: View {
     var item: BibEntryModel
+    @Binding var editingNote: NoteModel?
     var body: some View {
         NavigationLink(
-            destination: ByBibEntrySearchResults(bibEntryId: item.id),
+            value: item,
             label: {
                 VStack(alignment: .leading, spacing: 16) {
                     Text(item.parse()?.publications[0].fields["title"] ?? "--")
@@ -44,6 +45,7 @@ struct BibEntrySearchResultItemView: View {
                 }
                 """,
             ctime: .now
-        )
+        ),
+        editingNote: .constant(nil),
     )
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EmptyBibSearchResultsView: View {
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
-    @Binding var activeCategory: SearchCategoryId
+    let bibtexEditorContainer: BibtexEditorWebviewContainer
 
     var body: some View {
         VStack(spacing: 16) {
@@ -23,14 +23,22 @@ struct EmptyBibSearchResultsView: View {
             }
             Text("No entries found")
                 .font(.title2)
-            Button("Create") {
-                activeCategory = .createNote
-            }
-            .buttonStyle(.bordered)
+            NavigationLink(
+                destination: CreateBibEntrySheetView(
+                    editingBibEntry: .constant(nil),
+                    container: bibtexEditorContainer
+                ),
+                label: {
+                    Label("Create", systemImage: "plus")
+                }
+            )
+            .buttonStyle(.borderedProminent)
         }
     }
 }
 
 #Preview {
-    EmptyBibSearchResultsView(activeCategory: .constant(.createNote))
+    EmptyBibSearchResultsView(
+        bibtexEditorContainer: BibtexEditorWebviewContainer()
+    )
 }

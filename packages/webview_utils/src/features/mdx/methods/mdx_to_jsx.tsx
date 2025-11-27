@@ -32,8 +32,54 @@ export const mathOptions = {
     },
 };
 
-const rehypePlugins = (): CompileOptions["rehypePlugins"] => {
-    const darkMode = document.body.classList.contains("dark");
+interface RehypePluginProps {
+    lightCodeTheme?: string;
+    darkCodeTheme?: string;
+}
+
+const codeThemeStringToThemeName = (input: string): string => {
+    const defaultLightTheme = "material-theme-lighter";
+    const defaultDarkTheme = "dracula";
+    switch (input) {
+        case "materialLight":
+            return "material-theme-lighter";
+        case "solarizedLight":
+            return "solarized-light";
+        case "solarizedDark":
+            return "solarized-dark";
+        case "githubLight":
+            return "github-light";
+        case "aura":
+            return "aurora-x";
+        case "tokyoNightDay":
+            return defaultLightTheme; // Real theme does not exist so sub other light themee.
+        case "xcodeLight":
+            return defaultLightTheme; // Real theme does not exist so sub other light themee.
+        case "dracula":
+            return "dracula";
+        case "tokyoNight":
+            return "tokyo-night";
+        case "materialDark":
+            return "material-theme-darker";
+        case "tokyoNightStorm":
+            return defaultDarkTheme;
+        case "githubDark":
+            return "github-dark";
+        case "xcodeDark":
+            return defaultDarkTheme;
+        default:
+            console.log("Could not find theme value for: ", input);
+    }
+    return input;
+};
+
+const rehypePlugins = ({
+    lightCodeTheme,
+    darkCodeTheme,
+}: RehypePluginProps): CompileOptions["rehypePlugins"] => {
+    const darkMode = document
+        .getElementById("webview-container")
+        ?.classList.contains("dark");
     // let shikiTransformers = await getShikiTransformers(config)
     return [
         /* TODO: Add an embeded video component for this rehypeVideo that then utilizes the existing video element. */
@@ -67,8 +113,12 @@ const rehypePlugins = (): CompileOptions["rehypePlugins"] => {
             {
                 keepBackground: true,
                 theme: {
-                    light: "material-theme-lighter",
-                    dark: "dracula",
+                    light: lightCodeTheme
+                        ? codeThemeStringToThemeName(lightCodeTheme)
+                        : "material-theme-lighter",
+                    dark: darkCodeTheme
+                        ? codeThemeStringToThemeName(darkCodeTheme)
+                        : "dracula",
                 },
                 onVisitLine(node: any) {
                     if (node.children.length === 0) {
@@ -110,11 +160,22 @@ const remarkPlugins = (): /* config?: AppConfigSchemaOutput, */
     return [remarkMath, remarkGfm, emoji];
 };
 
-export const parseMdxString = async ({ content }: { content: string }) => {
+export const parseMdxString = async ({
+    content,
+    lightCodeTheme,
+    darkCodeTheme,
+}: {
+    content: string;
+    lightCodeTheme: string;
+    darkCodeTheme: string;
+}) => {
     const res = await compile(content, {
         outputFormat: "function-body",
         remarkPlugins: remarkPlugins(),
-        rehypePlugins: rehypePlugins(),
+        rehypePlugins: rehypePlugins({
+            lightCodeTheme,
+            darkCodeTheme,
+        }),
         // development: process.env.NODE_ENV === "development",
         /* baseUrl: import.meta.url */
     });

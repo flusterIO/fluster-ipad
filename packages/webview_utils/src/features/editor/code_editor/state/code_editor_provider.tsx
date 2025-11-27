@@ -113,11 +113,13 @@ CodeEditorContextReducer.displayName = "CodeEditorContextReducer";
 interface CodeEditorProviderProps {
     children: ReactNode;
     initialValues?: Partial<CodeEditorState>;
+    initialValueKey?: string;
 }
 
 export const CodeEditorProvider = ({
     children,
     initialValues,
+    initialValueKey = "editor-initial-value",
 }: CodeEditorProviderProps) => {
     const [state, dispatch] = useReducer(
         CodeEditorContextReducer,
@@ -126,19 +128,16 @@ export const CodeEditorProvider = ({
             : defaultInitialCodeEditorState,
     );
 
-    const [editorKeymap] = useLocalStorage("editor-keymap", undefined, {
+    const [editorKeymap] = useLocalStorage("editor-keymap", "base", {
         deserializer(value) {
-            console.log("value: ", value);
             return value;
         },
         serializer(value) {
-            console.log("value: ", value);
             return value;
         },
         initializeWithValue: false,
     });
     useEffect(() => {
-        console.log(`Setting editor keymap`);
         dispatch({
             type: "setKeymap",
             payload: editorKeymap,
@@ -154,17 +153,14 @@ export const CodeEditorProvider = ({
 
     const [editorTheme] = useLocalStorage("editor-theme", undefined, {
         deserializer(value) {
-            console.log("value: ", value);
             return value;
         },
         serializer(value) {
-            console.log("value: ", value);
             return value;
         },
         initializeWithValue: false,
     });
     const handleTheme = (t: string): void => {
-        console.log(`Setting theme`);
         const payload = stringToCodeEditorTheme((t as string) ?? "dracula");
         dispatch({
             type: "setTheme",
@@ -178,7 +174,7 @@ export const CodeEditorProvider = ({
         handleTheme(e.detail);
     });
 
-    const [initialValue] = useLocalStorage("editor-initial-value", undefined, {
+    const [initialValue] = useLocalStorage(initialValueKey, undefined, {
         deserializer(value) {
             return value;
         },

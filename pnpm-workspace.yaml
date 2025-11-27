@@ -1,3 +1,6 @@
 packages:
-  - packages/webviews/editor_webview
+  - packages/webviews/editor_splitview_webview
+  - packages/webviews/bibtex_editor_webview
+  - packages/webviews/bib_entry_details_webview
+  - packages/webviews/reference_note_webview
   - packages/webview_utils

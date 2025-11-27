@@ -12,12 +12,15 @@
 		79C35B5D2EB4403400806066 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B5C2EB4403400806066 /* Yams */; };
 		79C35B602EB4416600806066 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B5F2EB4416600806066 /* MarkdownUI */; };
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
+		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
+		79F131092ED392740082BA65 /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = 79F131082ED392740082BA65 /* FloatingButton */; };
 		79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 79FFA6CC2EB4280100B09AE7 /* STTextView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		796F71042EB174610012B500 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79AD78962EC903970030B3C5 /* dist */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dist; path = ../../packages/webviews/editor_splitview_webview/dist; sourceTree = "<group>"; };
+		79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -46,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79F131092ED392740082BA65 /* FloatingButton in Frameworks */,
 				796F71232EB185380012B500 /* SVGView in Frameworks */,
 				79C35B5D2EB4403400806066 /* Yams in Frameworks */,
 				79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */,
@@ -60,6 +64,7 @@
 		796F70FB2EB174610012B500 = {
 			isa = PBXGroup;
 			children = (
+				79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */,
 				79AD78962EC903970030B3C5 /* dist */,
 				796F71062EB174610012B500 /* Fluster */,
 				796F71052EB174610012B500 /* Products */,
@@ -100,6 +105,7 @@
 				79C35B5C2EB4403400806066 /* Yams */,
 				79C35B5F2EB4416600806066 /* MarkdownUI */,
 				79C35B942EB8FA1B00806066 /* SwiftyBibtex */,
+				79F131082ED392740082BA65 /* FloatingButton */,
 			);
 			productName = Fluster;
 			productReference = 796F71042EB174610012B500 /* Fluster.app */;
@@ -135,6 +141,7 @@
 				79C35B5B2EB4403400806066 /* XCRemoteSwiftPackageReference "Yams" */,
 				79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */,
+				79F131072ED392740082BA65 /* XCRemoteSwiftPackageReference "FloatingButton" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F71052EB174610012B500 /* Products */;
@@ -151,6 +158,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */,
 				79AD78972EC903970030B3C5 /* dist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -173,7 +181,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This will clear the dist directory in the iOS app if there is one from a previous build\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/dist\"\n\ncd ../../packages/webviews/editor_splitview_webview\n\n# NOTE: This is a super bad hack to get this to work locally. This should not be hardcoded... even though I am big and sexy.\n~/.pnpm/pnpm install\n~/.pnpm/pnpm run build\n";
+			shellScript = "# This will clear the dist directory in the iOS app if there is one from a previous build\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/dist\"\n\ncd ../../packages/webview_utils\n\n~/.pnpm/pnpm install\n~/.pnpm/pnpm build\n\ncd ../webviews/editor_splitview_webview\n\n~/.pnpm/pnpm install\n~/.pnpm/pnpm run build\n\ncd ../bibtex_editor_webview\n\n~/.pnpm/pnpm install\n~/.pnpm/pnpm run build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -441,6 +449,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		79F131072ED392740082BA65 /* XCRemoteSwiftPackageReference "FloatingButton" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/FloatingButton";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
 		79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/STTextView";
@@ -471,6 +487,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */;
 			productName = SwiftyBibtex;
+		};
+		79F131082ED392740082BA65 /* FloatingButton */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79F131072ED392740082BA65 /* XCRemoteSwiftPackageReference "FloatingButton" */;
+			productName = FloatingButton;
 		};
 		79FFA6CC2EB4280100B09AE7 /* STTextView */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -5,6 +5,8 @@ import * as devRuntime from "react/jsx-dev-runtime";
 import type { MDXModule } from "mdx/types";
 import { parseMdxString } from "../methods/mdx_to_jsx";
 import { ParsedMdxContent } from "../components/parsed_mdx_content";
+import { useLocalStorage } from "@/state/hooks/use_local_storage";
+import { useEventListener } from "@/state/hooks/use_event_listener";
 
 export const useDebounceMdxParse = (
     initialValue: string = "",
@@ -13,12 +15,50 @@ export const useDebounceMdxParse = (
     const [value, setValue] = useState<string>(initialValue);
     const [hasParsed, setHasParsed] = useState(false);
     const [mdxModule, setMdxModule] = useState<MDXModule | null>(null);
+    const [darkCodeTheme, setDarkCodeTheme] = useLocalStorage(
+        "editor-theme-dark",
+        undefined,
+        {
+            deserializer(value) {
+                return value;
+            },
+            serializer(value) {
+                return value;
+            },
+            initializeWithValue: false,
+        },
+    );
+    const [lightCodeTheme, setLightCodeTheme] = useLocalStorage(
+        "editor-theme-light",
+        undefined,
+        {
+            deserializer(value) {
+                return value;
+            },
+            serializer(value) {
+                return value;
+            },
+            initializeWithValue: false,
+        },
+    );
+
+    useEventListener("set-editor-theme-dark", (e) => setDarkCodeTheme(e.detail));
+    useEventListener("set-editor-theme-light", (e) =>
+        setLightCodeTheme(e.detail),
+    );
+
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
-    const handleParse = async (_value: string) => {
+    const handleParse = async (
+        _value: string,
+        darkCodeTheme: string,
+        lightCodeTheme: string,
+    ) => {
         try {
             const compiled = await parseMdxString({
                 content: _value,
+                darkCodeTheme,
+                lightCodeTheme,
             });
             const res = await run(compiled, {
                 Fragment: Fragment,
@@ -37,9 +77,13 @@ export const useDebounceMdxParse = (
         }
     };
 
-    const parse = async (_value: string): Promise<void> => {
+    const parse = async (
+        _value: string,
+        darkCodeTheme: string,
+        lightCodeTheme: string,
+    ): Promise<void> => {
         try {
-            await handleParse(_value);
+            await handleParse(_value, darkCodeTheme, lightCodeTheme);
         } catch (err) {
             console.error("Error: ", err);
         }
@@ -52,12 +96,17 @@ export const useDebounceMdxParse = (
         }
         if (hasParsed === false) {
             /* eslint-disable-next-line  -- I'll come back to this later. */
-            parse(value);
+            parse(value, darkCodeTheme, lightCodeTheme);
         } else {
-            setTimer(setTimeout(() => handleParse(value || ""), debounceTimeout));
+            setTimer(
+                setTimeout(
+                    () => handleParse(value || "", darkCodeTheme, lightCodeTheme),
+                    debounceTimeout,
+                ),
+            );
         }
         /* eslint-disable-next-line  --  */
-    }, [value]);
+    }, [value, darkCodeTheme, lightCodeTheme]);
 
     const Component = (props: HTMLProps<HTMLDivElement>) =>
         mdxModule ? (

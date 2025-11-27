@@ -8,7 +8,7 @@ enum CodeEditorTheme: String, Codable, CaseIterable {
         solarizedDark, xcodeDark, xcodeLight
 }
 
-struct ResponsiveEditorWebView: UIViewRepresentable {
+struct WebViewWrapper: UIViewRepresentable {
 
     let url: URL
     @State private var webView: WKWebView = WKWebView(
@@ -17,7 +17,8 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     )
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var modelContext
-    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private var webviewFontSize: WebviewFontSize = .base
+    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
+        var webviewFontSize: WebviewFontSize = .base
     @Binding var theme: WebViewTheme
     @State private var didSetInitialContent = false
     @State var haveSetInitialContent: Bool = false
@@ -42,6 +43,8 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
             name: "request-initial-data"
         )
 
+//        webView.scrollView.contentInsetAdjustmentBehavior = .never
+
         // Loading the page only once
         webView.loadFileURL(url, allowingReadAccessTo: url)
 
@@ -49,6 +52,8 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
+//        uiView.scrollView.contentInset = .zero
+//        uiView.scrollView.scrollIndicatorInsets = .zero
     }
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -56,35 +61,35 @@ struct ResponsiveEditorWebView: UIViewRepresentable {
     func setInitialProperties() {
         container.setInitialProperties(
             editingNote: editingNote,
-            codeEditorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight,
+            codeEditorTheme: colorScheme == .dark
+                ? editorThemeDark : editorThemeLight,
             editorKeymap: editorKeymap,
             theme: theme,
             fontSize: webviewFontSize,
+            editorThemeDark: editorThemeDark,
+            editorThemeLight: editorThemeLight,
             darkMode: colorScheme == .dark
         )
     }
     func setInitialContent() {
         print("Setting initial content")
-        let body = editingNote?.markdown.body.replacingOccurrences(
-            of: "`",
-            with: "\\`"
-        )
+        let s = editingNote?.markdown.body.toQuotedJavascriptString() ?? "''"
         container.runJavascript(
             """
-            window.localStorage.setItem("editor-initial-value", `\(body ?? "")`)
-            window.setEditorContent(`\(body ?? "")`)
+            window.localStorage.setItem("editor-initial-value", \(s))
+            window.setEditorContent(\(s))
             """
         )
     }
 }
 
-extension ResponsiveEditorWebView {
+extension WebViewWrapper {
     final class Coordinator: NSObject, WKNavigationDelegate,
         WKScriptMessageHandler
     {
-        var parent: ResponsiveEditorWebView
+        var parent: WebViewWrapper
 
-        init(_ parent: ResponsiveEditorWebView) {
+        init(_ parent: WebViewWrapper) {
             self.parent = parent
         }
 
@@ -93,13 +98,9 @@ extension ResponsiveEditorWebView {
             guard !parent.didSetInitialContent else { return }
             parent.didSetInitialContent = true
 
-            let body =
-                parent.editingNote?.markdown.body
-                .replacingOccurrences(of: "`", with: "\\`") ?? ""
-
             webView.evaluateJavaScript(
                 """
-                window.localStorage.setItem("editor-initial-value", `\(body)`);
+                window.localStorage.setItem("editor-initial-value", \(parent.editingNote?.markdown.body.toQuotedJavascriptString() ?? "''"));
                 """
             )
             parent.setInitialProperties()

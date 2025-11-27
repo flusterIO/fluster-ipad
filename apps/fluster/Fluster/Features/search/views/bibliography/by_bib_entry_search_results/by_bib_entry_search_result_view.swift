@@ -5,25 +5,37 @@
 //  Created by Andrew on 11/10/25.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ByBibEntrySearchResults: View {
     var bibEntryId: String
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    var body: some View {
-        VStack {
-           Text("Here mothafucka...")
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading, content: {
-                Button(action: {
-                    print("Back mothafucka...")
-                    self.presentationMode.wrappedValue.dismiss()
-                }, label: {
-                    Label("Back", image: "plus")
+    @Binding var editingNote: NoteModel?
+    @Query private var notes: [NoteModel]
+
+    init(bibEntryId: String, editingNote: Binding<NoteModel?>) {
+        self.bibEntryId = bibEntryId
+        self._editingNote = editingNote
+        _notes = Query(
+            filter: #Predicate {
+                $0.citations.contains(where: { citation in
+                    citation.id == bibEntryId
                 })
-            })
+            },
+            sort: [SortDescriptor(\NoteModel.last_read, order: .reverse)]
+        )
+    }
+
+    var body: some View {
+        if notes.isEmpty {
+            Text("No notes found")
+                .font(.title)
+        } else {
+            List(notes, id: \.id) { note in
+                NoteSearchResultItemInnerView(editingNote: $editingNote, item: note)
+            }
+            .toolbarRole(.navigationStack)
+            .navigationTitle("Matching Notes")
         }
     }
 }

@@ -5,13 +5,12 @@
 //  Created by Andrew on 11/5/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct EmptyMarkdownSearchResultsView: View {
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
-
-    @Binding var activeCategory: SearchCategoryId
+    @Binding var editingNote: NoteModel?
 
     var body: some View {
         VStack(spacing: 16) {
@@ -25,14 +24,17 @@ struct EmptyMarkdownSearchResultsView: View {
             }
             Text("No notes found")
                 .font(.title2)
-            Button("Create") {
-                activeCategory = .createNote
-            }
-            .buttonStyle(.bordered)
+            NavigationLink(
+                destination: CreateNoteSheetView(editingNote: $editingNote, dismissOnSubmit: true),
+                label: {
+                    Label("Create", systemImage: "plus")
+                }
+            )
+            .buttonStyle(.borderedProminent)
         }
     }
 }
 
 #Preview {
-    EmptyMarkdownSearchResultsView(activeCategory: .constant(.citation))
+    EmptyMarkdownSearchResultsView(editingNote: .constant(nil))
 }

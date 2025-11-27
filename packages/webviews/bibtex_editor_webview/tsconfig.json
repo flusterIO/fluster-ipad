@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "target": "ES2024",
+        "allowUmdGlobalAccess": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "sourceMap": true,
+        "noEmit": true,
+        "allowJs": false,
+        "skipLibCheck": true,
+        "rootDir": "src",
+        "lib": [
+            "ES2024",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "esModuleInterop": true,
+        "verbatimModuleSyntax": false,
+        "outDir": "bibtex_editor_webview",
+        "strict": true
+    },
+    "exclude": [
+        "bin"
+    ],
+    "include": [
+        "src"
+    ]
+}

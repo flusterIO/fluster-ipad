@@ -56,6 +56,7 @@ export const WebViewContainer = ({
     }
     return (
         <div
+            id="webview-container"
             className={cn(
                 "w-screen h-screen",
                 className,

@@ -13,6 +13,7 @@ export * from "./core/state/hooks/use_is_mounted";
 export * from "./core/state/hooks/use_local_storage";
 export * from "./core/state/hooks/use_event_callback";
 export * from "./core/state/hooks/use_event_listener";
+export * from "./core/state/hooks/use_persist_scroll";
 
 // -- Mdx --
 
@@ -39,3 +40,6 @@ export * from "./features/editor/code_editor/components/code_editor";
 //      -- Split View: Components
 export * from "./features/split_view_editor/components/split_view_editor";
 export * from "./features/split_view_editor/components/responsive_splitview_editor";
+
+// -- Bibtex Editor --
+export * from "./features/editor/code_editor/components/bibtex_editor";

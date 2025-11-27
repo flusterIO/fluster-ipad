@@ -6,7 +6,7 @@
         "moduleResolution": "bundler",
         "useDefineForClassFields": true,
         "composite": true,
-        "baseUrl": "./src",
+        "baseUrl": ".",
         "allowSyntheticDefaultImports": true,
         "allowUmdGlobalAccess": true,
         "noUnusedParameters": true,
@@ -25,19 +25,19 @@
         ],
         "esModuleInterop": true,
         "verbatimModuleSyntax": false,
-        "outDir": "lib",
+        "outDir": "dist",
         "strict": true,
         "paths": {
             "@/*": [
-                "./core/*"
+                "./src/core/*"
             ],
             "#/*": [
-                "./features/*"
+                "./src/features/*"
             ]
         }
     },
     "exclude": [
-        "lib"
+        "dist"
     ],
     "include": [
         "src",

@@ -12,7 +12,7 @@ func getConfig() -> WKWebViewConfiguration {
     return config
 }
 
-final class EditorWebViewContainer: ObservableObject {
+class WebviewContainer: ObservableObject {
     @Published var justToConform: Bool = false
     let webView: WKWebView = {
         let view = WKWebView(frame: .zero, configuration: getConfig())
@@ -36,6 +36,31 @@ final class EditorWebViewContainer: ObservableObject {
             }
         }
     }
+    func setWebviewTheme(theme: WebViewTheme) {
+        self.runJavascript(
+            """
+            window.setWebviewTheme("\(theme.rawValue)")
+            """)
+    }
+    func setWebviewFontSize(fontSize: WebviewFontSize) {
+        self.runJavascript(
+            """
+            window.localStorage.setItem("webview-font-class", "\(fontSize.cssClass())");
+            window.setWebViewFontSize('\(fontSize.cssClass())');
+            """)
+    }
+    func applyWebViewColorScheme(darkMode: Bool) {
+        print("Applying webview color scheme")
+        self.runJavascript(
+            """
+            window.localStorage.setItem("dark-mode", "\(darkMode ? "true" : "false")")
+            window.setDarkMode(\(darkMode ? "true" : "false"))
+            """
+        )
+    }
+}
+
+final class EditorWebViewContainer: WebviewContainer {
     func emitEditorThemeEvent(theme: CodeEditorTheme) {
         print("Changing editor theme event")
         self.runJavascript(
@@ -45,12 +70,19 @@ final class EditorWebViewContainer: ObservableObject {
             """
         )
     }
-    func applyWebViewColorScheme(darkMode: Bool) {
-        print("Applying webview color scheme")
+    func setEditorLightTheme(theme: CodeEditorTheme) {
         self.runJavascript(
             """
-            window.localStorage.setItem("dark-mode", "\(darkMode ? "true" : "false")")
-            window.setDarkMode(\(darkMode ? "true" : "false"))
+            window.localStorage.setItem("editor-theme-light", "\(theme.rawValue)")
+            window.setEditorThemeLight("\(theme.rawValue)")
+            """
+        )
+    }
+    func setEditorDarkTheme(theme: CodeEditorTheme) {
+        self.runJavascript(
+            """
+            window.localStorage.setItem("editor-theme-dark", "\(theme.rawValue)")
+            window.setEditorThemeDark("\(theme.rawValue)")
             """
         )
     }
@@ -64,26 +96,16 @@ final class EditorWebViewContainer: ObservableObject {
         )
     }
     func setInitialContent(note: NoteModel) {
-        let body = note.markdown.body.replacingOccurrences(
-            of: "`",
-            with: "\\`"
-        )
         self.runJavascript(
             """
-            window.setEditorContent(`\(body)`)
+            window.setEditorContent(\(note.markdown.body.toQuotedJavascriptString()))
             """
         )
     }
-    func setWebviewTheme(theme: WebViewTheme) {
+    func resetScrollPosition() {
         self.runJavascript("""
-            window.setWebviewTheme("\(theme.rawValue)")
+            window.resetMdxPreviewScrollPosition()
             """)
-    }
-    func setWebviewFontSize(fontSize: WebviewFontSize) {
-        self.runJavascript("""
-        window.localStorage.setItem("webview-font-class", "\(fontSize.cssClass())");
-        window.setWebViewFontSize('\(fontSize.cssClass())');
-        """)
     }
     func setInitialProperties(
         editingNote: NoteModel?,
@@ -91,6 +113,8 @@ final class EditorWebViewContainer: ObservableObject {
         editorKeymap: EditorKeymap,
         theme: WebViewTheme,
         fontSize: WebviewFontSize,
+        editorThemeDark: CodeEditorTheme,
+        editorThemeLight: CodeEditorTheme,
         darkMode: Bool
     ) {
         self.applyWebViewColorScheme(darkMode: darkMode)
@@ -98,6 +122,8 @@ final class EditorWebViewContainer: ObservableObject {
         self.setEditorKeymap(editorKeymap: editorKeymap)
         self.setWebviewTheme(theme: theme)
         self.setWebviewFontSize(fontSize: fontSize)
+        self.setEditorDarkTheme(theme: editorThemeDark)
+        self.setEditorLightTheme(theme: editorThemeLight)
         if editingNote != nil {
             self.setInitialContent(note: editingNote!)
         }

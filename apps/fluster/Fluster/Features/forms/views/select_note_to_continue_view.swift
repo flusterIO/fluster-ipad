@@ -23,7 +23,9 @@ struct SelectNoteToContinueView: View {
             Text("No note selected")
                 .font(.title2)
             Text("Select a note on the search tab or create a new note to edit your note here.")
+                .multilineTextAlignment(.center)
         }
+        .padding()
     }
 }
 

@@ -1,5 +1,5 @@
 {
-  "originHash" : "292e5435833c3b322efbf1b2520405077da5c68eea55fe1c4e185eb03fc114aa",
+  "originHash" : "d20ce588b8e54a83316f6db6b583972b390fa30b02f9e722ebd06eac4ad9e930",
   "pins" : [
     {
       "identity" : "antlr4-swift",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "833177201d6421e6322296f39fce6ff6ae52618a",
         "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "floatingbutton",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/FloatingButton",
+      "state" : {
+        "revision" : "c1e3e6a641ef5bacbcbc2b2c80db54793f75f974",
+        "version" : "1.4.0"
       }
     },
     {

@@ -11,55 +11,30 @@ import SwiftUI
 struct BibListView: View {
     var items: [BibEntryModel]
     @Binding var editing: BibEntryModel?
-    @State private var editingSheetOpen: Bool = false
-    @State private var editingInputValue: String = ""
+    let editorContainer: BibtexEditorWebviewContainer
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Environment(\.modelContext) var modelContext
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            HStack {
-                List(items, id: \.id) { item in
-                    BibEntryListItemView(item: item, editing: $editing)
+            List {
+                ForEach(items, id: \.id) { item in
+                    BibEntryListItemView(
+                        item: item,
+                        editing: $editing,
+                        container: editorContainer
+                    )
                 }
             }
-            Button {
-                editingInputValue = ""
-                editing = nil
-                editingSheetOpen = true
-            } label: {
-                Image(systemName: "plus")
-                    .imageScale(.large)
-                    .foregroundStyle(themeManager.theme.primary_foreground)
-                    .clipShape(Circle())
-                    .padding()
-            }
-            .buttonStyle(.borderedProminent)
-            .padding()
         }
-        .fullScreenCover(
-            isPresented: $editingSheetOpen,
-            content: {
-                CreateBibEntrySheetView(
-                    inputValue: $editingInputValue,
-                    isPresented: $editingSheetOpen,
-                    editing: $editing
-                )
-            }
-        )
-        .onChange(
-            of: editing,
-            {
-                if editing != nil {
-                    editingSheetOpen = true
-                    editingInputValue = editing!.data
-                } else {
-                    editingInputValue = ""
-                }
-            }
-        )
     }
+
 }
 
 #Preview {
-    BibListView(items: [], editing: .constant(nil))
+    BibListView(
+        items: [],
+        editing: .constant(nil),
+        editorContainer: BibtexEditorWebviewContainer()
+    )
 }

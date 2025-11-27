@@ -6,5 +6,5 @@
 //
 
 enum EditorKeymap: String, CaseIterable {
-    case vim, base, emacs
+    case base, vim, emacs
 }

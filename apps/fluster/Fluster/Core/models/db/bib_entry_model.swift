@@ -10,17 +10,19 @@ import SwiftData
 import SwiftyBibtex
 
 @Model
-class BibEntryModel {
+class BibEntryModel: Identifiable {
     @Attribute(.unique) var id: String
     @Attribute(.unique) var citationKey: String?
     /// The bibtex string representing the item's data.
     var data: String
     var ctime: Date
+    var utime: Date
     var notes = [NoteModel]()
-    init(id: String? = nil, data: String, ctime: Date = .now, notes: [NoteModel] = []) {
+    init(id: String? = nil, data: String, ctime: Date = .now, utime: Date = .now, notes: [NoteModel] = []) {
         self.id = id ?? UUID().uuidString
         self.data = data
         self.ctime = ctime
+        self.utime = utime
         self.notes = notes
         self.citationKey = self.getCitationKey()
     }
@@ -48,5 +50,9 @@ class BibEntryModel {
             }
         }
         return nil
+    }
+    
+    func getTitle() -> String {
+        return self.parse()?.publications[0].fields["title"] ?? "--"
     }
 }

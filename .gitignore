@@ -65,3 +65,5 @@ fastlane/test_output
 packages/webviews/*/node_modules
 packages/webviews/*/build
 packages/webviews/*/node_modules
+packages/webviews/bibtex_editor_webview/bibtex_editor_webview/
+packages/webviews/reference_note_webview/reference_note_webview/

@@ -19,6 +19,7 @@ import { setWindowBridgeFunctions } from "../types/swift_events/swift_events";
 interface CodeEditorProps {
     language?: Extension;
     initialValue: string;
+    updateHandler?: SwiftHandler;
 }
 
 setWindowBridgeFunctions();
@@ -26,6 +27,7 @@ setWindowBridgeFunctions();
 export const CodeEditorInner = ({
     language = markdown(),
     initialValue,
+    updateHandler = SwiftHandler.editorUpdate,
 }: CodeEditorProps): ReactNode => {
     const haveRendered = useRef(false);
     const state = useCodeEditorContext();
@@ -33,6 +35,7 @@ export const CodeEditorInner = ({
     const timer = useRef<NodeJS.Timeout | null>(null);
     const view = useRef<EditorView | null>(null);
     useEffect(() => {
+        console.log("state.keymap: ", state.keymap);
         if (haveRendered.current) {
             haveRendered.current = false;
             document.getElementById("code-editor-container")!.replaceChildren();
@@ -56,7 +59,7 @@ export const CodeEditorInner = ({
                         clearTimeout(timer.current);
                     }
                     timer.current = setTimeout(() => {
-                        sendToSwift(SwiftHandler.editorUpdate, payload);
+                        sendToSwift(updateHandler, payload);
                     }, 500);
                     dispatch({
                         type: "setValue",
@@ -78,7 +81,7 @@ export const CodeEditorInner = ({
         view.current = _view;
         haveRendered.current = true;
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
-    }, [state.baseKeymap, state.theme, state.haveSetInitialValue]);
+    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap]);
 
     useEffect(() => {
         return () => window.localStorage.removeItem("editor-initial-value");
@@ -97,17 +100,17 @@ export const CodeEditorInner = ({
     return <div className="h-full w-full" id="code-editor-container" />;
 };
 
-export const CodeEditor = (): ReactNode => {
+export const CodeEditor = (
+    props: Omit<CodeEditorProps, "initialValue">,
+): ReactNode => {
     const [initialValue, setInitialValue] = useLocalStorage(
         "editor-initial-value",
         undefined,
         {
             deserializer(value) {
-                console.log("value: ", value);
                 return value;
             },
             serializer(value) {
-                console.log("value: ", value);
                 return value;
             },
             initializeWithValue: false,
@@ -122,7 +125,7 @@ export const CodeEditor = (): ReactNode => {
         setInitialValue(e.detail);
     });
     return initialValue ? (
-        <CodeEditorInner initialValue={initialValue} />
+        <CodeEditorInner {...props} initialValue={initialValue} />
     ) : (
         <div className="w-full h-full flex flex-col justify-center items-center">
             <LoadingComponent />

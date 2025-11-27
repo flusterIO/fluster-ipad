@@ -3,12 +3,16 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@types/node": "24.10.0",
+    "@tailwindcss/vite": "4.1.17",
+    "@types/node": "24.10.1",
+    "@vitejs/plugin-react": "5.1.1",
     "husky": "9.1.7",
     "quicktype": "23.2.6",
     "quicktype-core": "23.2.6",
     "syncpack": "13.0.4",
     "tsx": "4.20.6",
+    "vite": "7.2.4",
+    "vite-plugin-singlefile": "2.3.0",
     "vite-tsconfig-paths": "5.1.4"
   }
 }

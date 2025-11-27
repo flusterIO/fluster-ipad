@@ -6,13 +6,13 @@
 //
 
 import PencilKit
+import SwiftData
 import SwiftUI
 
-struct NoteSearchResultItemView: View {
-    var item: NoteModel
+struct NoteSearchResultItemInnerView: View {
     @Binding var editingNote: NoteModel?
+    let item: NoteModel
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
-
     var body: some View {
         HStack {
             RoundedRectangle(cornerRadius: 8)
@@ -32,9 +32,47 @@ struct NoteSearchResultItemView: View {
                     .font(.headline)
                     .lineLimit(2)
                 Text(item.ctime.formatted(date: .complete, time: .shortened))
-                    .font(.subheadline)
+                    .font(.caption)
             }
         }
+    }
+}
+
+struct NoteSearchResultItemView: View {
+    var item: NoteModel
+    @Binding var editingNote: NoteModel?
+    @State private var confirmationDeleteModalOpen: Bool = false
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Environment(\.modelContext) var modelContext
+
+    var body: some View {
+        NoteSearchResultItemInnerView(editingNote: $editingNote, item: item)
+            .swipeActions(allowsFullSwipe: true) {
+                Button(
+                    action: {
+                        confirmationDeleteModalOpen = true
+                    },
+                    label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                )
+            }
+            .confirmationDialog(
+                "Are you sure you want to remove this note?",
+                isPresented: $confirmationDeleteModalOpen,
+                actions: {
+                    Button("Clear", role: .cancel) {
+                        //                    confirmationDeleteModalOpen = false
+                    }
+                    Button("Delete") {
+                        modelContext.delete(item)
+                        confirmationDeleteModalOpen = false
+                    }
+                },
+                message: {
+                    Text("Are you sure you want to delete this note?")
+                }
+            )
     }
 }
 
