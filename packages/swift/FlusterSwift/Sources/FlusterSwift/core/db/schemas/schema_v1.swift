@@ -14,7 +14,7 @@ public enum AppSchemaV1: VersionedSchema {
     public static var models: [any PersistentModel.Type] {
         [NoteModel.self, BibEntryModel.self]  // Leaving off other models as they should be able to be inferred and this will simplify migration scripts I hope.
     }
-    nonisolated(unsafe) public static let versionIdentifier: Schema.Version = .init(1, 0, 0)
+    public static let versionIdentifier: Schema.Version = .init(1, 0, 0)
 }
 
 extension AppSchemaV1 {
