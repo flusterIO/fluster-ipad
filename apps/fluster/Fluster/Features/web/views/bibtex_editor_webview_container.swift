@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FlusterSwift
 
 final class BibtexEditorWebviewContainer: WebviewContainer {
     func emitEditorThemeEvent(theme: CodeEditorTheme) {

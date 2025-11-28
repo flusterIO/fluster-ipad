@@ -5,6 +5,6 @@
 //  Created by Andrew on 11/17/25.
 //
 
-enum AppStorageKeys: String {
+public enum AppStorageKeys: String {
     case theme, editorThemeDark, editorThemeLight, colorScheme, editorKeymap, webviewFontSize, tabviewCustomization, isFirstLaunch
 }

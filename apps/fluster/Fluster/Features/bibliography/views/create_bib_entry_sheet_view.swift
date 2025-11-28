@@ -7,14 +7,16 @@
 
 import SwiftData
 import SwiftUI
+import FlusterSwift
 
 struct CreateBibEntrySheetView: View {
-    @Binding var editingBibEntry: BibEntryModel?
     @State private var newEntryValue: String = ""
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
     @Environment(NoteModel.self) private var editingNote: NoteModel?
+    @Binding var editingBibEntry: BibEntryModel?
+    let ignoreEditingNote: Bool
     let container: BibtexEditorWebviewContainer
 
     var body: some View {
@@ -24,7 +26,9 @@ struct CreateBibEntrySheetView: View {
                 Text("Enter valid bibtex entry.")
                     .font(.caption)
             }
-            if let editingEntryBinding = Binding($editingBibEntry) {
+            if let editingEntryBinding = Binding($editingBibEntry),
+                !ignoreEditingNote
+            {
                 BibtexEditorWebview(
                     value: editingEntryBinding.data,
                     container: container
@@ -45,7 +49,8 @@ struct CreateBibEntrySheetView: View {
                 Spacer()
                 Button(editingBibEntry == nil ? "Create" : "Update") {
                     let inputValue =
-                        editingBibEntry == nil ? self.newEntryValue : editingBibEntry!.data
+                        editingBibEntry == nil
+                        ? self.newEntryValue : editingBibEntry!.data
                     if inputValue.trimmingCharacters(
                         in: .whitespacesAndNewlines
                     ).isEmpty {
@@ -81,6 +86,7 @@ struct CreateBibEntrySheetView: View {
 #Preview {
     CreateBibEntrySheetView(
         editingBibEntry: .constant(nil),
+        ignoreEditingNote: true,
         container: BibtexEditorWebviewContainer()
     )
     .environment(ThemeManager(initialTheme: FlusterDark()))

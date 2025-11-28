@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 const colorKeys = ["primary", "secondary", "muted", "error"] as const;
 export type ColorKey = (typeof colorKeys)[number];
 
@@ -7,6 +9,10 @@ export type WithColorKey = {
 
 export type ColorClassMap = {
     [key in ColorKey]: string;
+};
+
+export type ColorCssMap = {
+    [key in ColorKey]: CSSProperties;
 };
 
 export const getColorKey = (

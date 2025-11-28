@@ -1,6 +1,7 @@
 import Combine
 import SwiftUI
 import WebKit
+import FlusterSwift
 
 func getConfig() -> WKWebViewConfiguration {
     // configuring the `WKWebView` is very important

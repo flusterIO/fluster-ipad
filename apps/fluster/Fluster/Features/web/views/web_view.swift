@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 import WebKit
+import FlusterSwift
 
 enum CodeEditorTheme: String, Codable, CaseIterable {
     case materialLight, solarizedLight, githubLight, aura, tokyoNightDay,

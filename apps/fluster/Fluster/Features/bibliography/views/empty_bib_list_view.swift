@@ -7,16 +7,19 @@
 
 import SwiftData
 import SwiftUI
+import FlusterSwift
 
 struct EmptyBibListView: View {
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
-
     @State private var createSheetOpen = false
-    @Binding var editingBibEntry: BibEntryModel?
     @Environment(NoteModel.self) private var editingNote: NoteModel?
     @Environment(\.modelContext) var modelContext
+    
+    @Binding var editingBibEntry: BibEntryModel?
 
     let container: BibtexEditorWebviewContainer
+    /// If true, the nested CreateBibEntrySheetView will automatically link bibliography entries to the note being edited.
+    let ignoreBibEntryOnCreate: Bool = true
 
     var body: some View {
         NavigationStack {
@@ -34,6 +37,7 @@ struct EmptyBibListView: View {
                 NavigationLink(
                     destination: CreateBibEntrySheetView(
                         editingBibEntry: $editingBibEntry,
+                        ignoreEditingNote: ignoreBibEntryOnCreate,
                         container: container
                     ),
                     label: {

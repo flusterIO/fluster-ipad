@@ -7,6 +7,8 @@
 
 import SwiftUI
 import WebKit
+import FlusterSwift
+
 
 struct BibtexEditorWebview: UIViewRepresentable {
 

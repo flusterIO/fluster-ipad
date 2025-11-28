@@ -10,31 +10,31 @@ import PencilKit
 import SwiftData
 import SwiftyBibtex
 
-enum AppSchemaV1: VersionedSchema {
-    static var models: [any PersistentModel.Type] {
+public enum AppSchemaV1: VersionedSchema {
+    public static var models: [any PersistentModel.Type] {
         [NoteModel.self, BibEntryModel.self]  // Leaving off other models as they should be able to be inferred and this will simplify migration scripts I hope.
     }
-    static var versionIdentifier: Schema.Version = .init(1, 0, 0)
+    nonisolated(unsafe) public static let versionIdentifier: Schema.Version = .init(1, 0, 0)
 }
 
 extension AppSchemaV1 {
     @Model
-    class NoteModel {
-        var id: String
-        @Attribute(.externalStorage) var drawing: Data
-        var markdown: MarkdownNote = MarkdownNote(body: "", summary: nil)
-        var ctime: Date
-        var utime: Date
-        var last_read: Date
+    public class NoteModel {
+        public var id: String
+        @Attribute(.externalStorage) public var drawing: Data
+        public var markdown: MarkdownNote = MarkdownNote(body: "", summary: nil)
+        public var ctime: Date
+        public var utime: Date
+        public var last_read: Date
 
-        var subject: SubjectModel? = nil
-        var topic: TopicModel? = nil
-        var tags = [TagModel]()
+        public var subject: SubjectModel? = nil
+        public var topic: TopicModel? = nil
+        public var tags = [TagModel]()
         @Relationship(inverse: \BibEntryModel.notes)
-        var citations = [BibEntryModel]()
+        public var citations = [BibEntryModel]()
 
         // drawing.toDataRepresentation() to conform to Data type.
-        init(
+        public init(
             id: String? = nil,
             drawing: Data,
             markdown: MarkdownNote = MarkdownNote(body: "", summary: nil),
@@ -58,22 +58,22 @@ extension AppSchemaV1 {
             self.citations = citations
         }
 
-        func containsCitation(citation: BibEntryModel) -> Bool {
+        public func containsCitation(citation: BibEntryModel) -> Bool {
             return self.citations.contains(where: { $0.id == citation.id })
         }
 
-        static func count(modelContext: ModelContext) -> Int {
+        public static func count(modelContext: ModelContext) -> Int {
             let descriptor = FetchDescriptor<BibEntryModel>()
             return (try? modelContext.fetchCount(descriptor)) ?? 0
         }
 
-        static func isTitleMatch(noteBody: String, query: String) -> Bool {
-            let title = getTitle(body: noteBody)
+        public static func isTitleMatch(noteBody: String, query: String) -> Bool {
+            let title = MdxTextUtils.getTitle(body: noteBody)
             return title == nil
                 ? false : title!.localizedCaseInsensitiveContains(query)
         }
 
-        static func fromNoteBody(noteBody: String) -> NoteModel {
+        public static func fromNoteBody(noteBody: String) -> NoteModel {
             let note = NoteModel(
                 drawing: PKDrawing().dataRepresentation(),
                 markdown: MarkdownNote(body: noteBody, summary: nil)
@@ -82,15 +82,15 @@ extension AppSchemaV1 {
         }
     }
     @Model
-    class BibEntryModel: Identifiable {
-        @Attribute(.unique) var id: String
-        @Attribute(.unique) var citationKey: String?
+    public class BibEntryModel: Identifiable {
+        @Attribute(.unique) public var id: String
+        @Attribute(.unique) public var citationKey: String?
         /// The bibtex string representing the item's data.
-        var data: String
-        var ctime: Date
-        var utime: Date
-        var notes = [NoteModel]()
-        init(
+        public var data: String
+        public var ctime: Date
+        public var utime: Date
+        public var notes = [NoteModel]()
+        public init(
             id: String? = nil,
             data: String,
             ctime: Date = .now,
@@ -104,7 +104,7 @@ extension AppSchemaV1 {
             self.notes = notes
             self.citationKey = self.getCitationKey()
         }
-        func parse() -> SwiftyBibtex.BibtexResult? {
+        public func parse() -> SwiftyBibtex.BibtexResult? {
             let result = try? SwiftyBibtex.parse(self.data)
             if result != nil {
                 for warning in result!.warnings {
@@ -117,7 +117,7 @@ extension AppSchemaV1 {
             return nil
         }
 
-        func getCitationKey() -> String? {
+        public func getCitationKey() -> String? {
             let result = try? SwiftyBibtex.parse(self.data)
             if result != nil {
                 for warning in result!.warnings {
@@ -130,29 +130,29 @@ extension AppSchemaV1 {
             return nil
         }
 
-        func getTitle() -> String {
+        public func getTitle() -> String {
             return self.parse()?.publications[0].fields["title"] ?? "--"
         }
     }
 
     @Model
-    class TagModel {
-        @Attribute(.unique) var value: String
-        var ctime: Date
-        @Relationship(inverse: \NoteModel.tags) var notes: [NoteModel] = []
-        init(value: String, ctime: Date = .now) {
+    public class TagModel {
+        @Attribute(.unique) public var value: String
+        public var ctime: Date
+        @Relationship(inverse: \NoteModel.tags) public var notes: [NoteModel] = []
+        public init(value: String, ctime: Date = .now) {
             self.value = value
             self.ctime = ctime
         }
     }
 
     @Model
-    class SubjectModel {
-        @Attribute(.unique) var value: String
-        var ctime: Date
-        var utime: Date
-        @Relationship(inverse: \NoteModel.subject) var notes: [NoteModel] = []
-        init(
+    public class SubjectModel {
+        @Attribute(.unique) public var value: String
+        public var ctime: Date
+        public var utime: Date
+        @Relationship(inverse: \NoteModel.subject) public var notes: [NoteModel] = []
+        public init(
             value: String,
             ctime: Date = .now,
             utime: Date = .now,
@@ -166,12 +166,12 @@ extension AppSchemaV1 {
     }
 
     @Model
-    class TopicModel {
-        @Attribute(.unique) var value: String
-        var ctime: Date
-        var utime: Date
-        @Relationship(inverse: \NoteModel.topic) var notes: [NoteModel] = []
-        init(
+    public class TopicModel {
+        @Attribute(.unique) public var value: String
+        public var ctime: Date
+        public var utime: Date
+        @Relationship(inverse: \NoteModel.topic) public var notes: [NoteModel] = []
+        public init(
             value: String,
             ctime: Date = .now,
             utime: Date = .now,
@@ -181,6 +181,29 @@ extension AppSchemaV1 {
             self.ctime = ctime
             self.utime = utime
             self.notes = notes
+        }
+    }
+
+    @Model
+    public class MarkdownNote {
+        public var _body: String
+        public var title: String?
+        public var summary: String?
+
+        public init(body: String, summary: String?) {
+            self._body = body
+            self.summary = summary
+            self.title = MdxTextUtils.getTitle(body: body)
+        }
+
+        public var body: String {
+            get {
+                return _body
+            }
+            set(newBody) {
+                self._body = newBody
+                self.title = MdxTextUtils.getTitle(body: newBody)
+            }
         }
     }
 }

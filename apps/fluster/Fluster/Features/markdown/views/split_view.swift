@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FlusterSwift
 
 struct EditorSplitView: View {
     @State private var leftPaneWidthFraction: CGFloat = 0.5

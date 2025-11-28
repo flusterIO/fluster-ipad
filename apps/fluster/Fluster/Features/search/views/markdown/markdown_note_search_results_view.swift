@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterSwift
 
 struct MarkdownNotesSearchResultsWrappedQuery: View {
     @Environment(\.modelContext) var modelContext
@@ -17,16 +18,7 @@ struct MarkdownNotesSearchResultsWrappedQuery: View {
     @Binding var searchQuery: String
     
     var sortedNotes: [NoteModel] {
-        var titleResults: [NoteModel] = []
-        var bodyResults: [NoteModel] = []
-        for note in notes {
-            if NoteModel.isTitleMatch(noteBody: note.markdown._body, query: searchQuery) {
-                titleResults.append(note)
-            } else {
-                bodyResults.append(note)
-            }
-        }
-        return titleResults + bodyResults
+        return MdxTextUtils.sortNotesByMarkdownBodyMatch(notes: notes, query: searchQuery)
     }
 
     init(editingNote: Binding<NoteModel?>, searchQuery: Binding<String>) {

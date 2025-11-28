@@ -126,7 +126,7 @@ const items: ComponentMapItem[] = [
     /*     component: Ul, */
     /* }, */
     {
-        query: "Hl",
+        query: ["Hl", "HL"],
         component: Hl,
     },
     /* { */

@@ -8,6 +8,7 @@
 import PencilKit
 import SwiftData
 import SwiftUI
+import FlusterSwift
 
 enum MainViewTab: String {
     case paper, markdown, bib, notes, settings, createNote, searchNotes,
@@ -161,7 +162,6 @@ struct MainView: View {
                 value: MainViewTab.bib
             ) {
                 BibliographyPageView()
-                    .ignoresSafeArea(edges: .horizontal)
             }
             .customizationID(MainViewTab.bib.rawValue)
             .defaultVisibility(.visible, for: .tabBar)

@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterSwift
 
 struct BibliographySearchResultsViewQueryWrapped: View {
     @StateObject private var bibtexEditorContainer =
@@ -82,6 +83,7 @@ struct BibliographySearchResultsView: View {
                     NavigationLink(
                         destination: CreateBibEntrySheetView(
                             editingBibEntry: .constant(nil),
+                            ignoreEditingNote: true,
                             container: bibtexEditorContainer
                         ),
                         label: {

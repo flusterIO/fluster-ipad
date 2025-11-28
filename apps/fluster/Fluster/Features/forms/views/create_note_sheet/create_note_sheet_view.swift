@@ -8,6 +8,7 @@
 import PencilKit
 import SwiftData
 import SwiftUI
+import FlusterSwift
 
 struct CreateNoteSheetView: View {
     @State private var titleValue: String = ""

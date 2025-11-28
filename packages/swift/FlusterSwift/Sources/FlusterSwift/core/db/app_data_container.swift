@@ -7,9 +7,17 @@
 
 import SwiftData
 
-actor AppDataContainer {
+public typealias NoteModel = AppSchemaV1.NoteModel
+public typealias BibEntryModel = AppSchemaV1.BibEntryModel
+public typealias SubjectModel = AppSchemaV1.SubjectModel
+public typealias TagModel = AppSchemaV1.TagModel
+public typealias TopicModel = AppSchemaV1.TopicModel
+public typealias MarkdownNote = AppSchemaV1.MarkdownNote
+
+@available(iOS 17, *)
+public actor AppDataContainer {
     @MainActor
-    static func create(isInitialLaunch: inout Bool) -> ModelContainer {
+    public static func create(isInitialLaunch: inout Bool) -> ModelContainer {
         let schema = Schema([
             NoteModel.self,
             BibEntryModel.self,
@@ -21,15 +29,14 @@ actor AppDataContainer {
         do {
             let container = try ModelContainer(
                 for: schema,
+                migrationPlan: AppDataMigrationPlan.self,
                 configurations: [modelConfiguration]
             )
 
-            print("isInitialLaunch: \(isInitialLaunch)")
             if isInitialLaunch {
                 let notes = InitialNoteModelPathJsonDecoder.decode(
                     from: "initial_note_docs/initial_note_paths"
                 )
-                print("Notes: \(notes)")
                 if notes.isEmpty {
                     fatalError("Failed to load initial notes.")
                 }

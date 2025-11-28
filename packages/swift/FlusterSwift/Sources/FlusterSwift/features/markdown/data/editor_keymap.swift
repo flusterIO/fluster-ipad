@@ -5,6 +5,6 @@
 //  Created by Andrew on 11/21/25.
 //
 
-enum EditorKeymap: String, CaseIterable {
+public enum EditorKeymap: String, CaseIterable {
     case base, vim, emacs
 }

@@ -26,6 +26,7 @@ struct EmptyBibSearchResultsView: View {
             NavigationLink(
                 destination: CreateBibEntrySheetView(
                     editingBibEntry: .constant(nil),
+                    ignoreEditingNote: true,
                     container: bibtexEditorContainer
                 ),
                 label: {

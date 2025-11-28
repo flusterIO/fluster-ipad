@@ -7,12 +7,13 @@
 
 import FloatingButton
 import SwiftUI
+import FlusterSwift
 
 struct BibliographyPageFloatingButtonView: View {
-    @Binding var editing: BibEntryModel?
-    let bibEditorContainer: BibtexEditorWebviewContainer
     @State private var isOpen: Bool = false
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Binding var editing: BibEntryModel?
+    let bibEditorContainer: BibtexEditorWebviewContainer
 
     var body: some View {
         FloatingButton(
@@ -32,14 +33,21 @@ struct BibliographyPageFloatingButtonView: View {
                         .padding()
                 },
             buttons: [
-                NavigationLink(destination: {
-                   CreateBibEntrySheetView(editingBibEntry: $editing, container: bibEditorContainer)
-                        .onAppear{
+                NavigationLink(
+                    destination: {
+                        CreateBibEntrySheetView(
+                            editingBibEntry: $editing,
+                            ignoreEditingNote: false,
+                            container: bibEditorContainer
+                        )
+                        .onAppear {
                             isOpen = false
                         }
-                }, label: {
-                    Label("New Entry", systemImage: "plus")
-                })
+                    },
+                    label: {
+                        Label("New Entry", systemImage: "plus")
+                    }
+                )
             ],
             isOpen: $isOpen
         )
@@ -53,5 +61,8 @@ struct BibliographyPageFloatingButtonView: View {
 }
 
 #Preview {
-    BibliographyPageFloatingButtonView(editing: .constant(nil), bibEditorContainer: BibtexEditorWebviewContainer())
+    BibliographyPageFloatingButtonView(
+        editing: .constant(nil),
+        bibEditorContainer: BibtexEditorWebviewContainer()
+    )
 }

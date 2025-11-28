@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterSwift
 
 struct BibliographyPageInternalView: View {
     @Binding var editing: BibEntryModel?
