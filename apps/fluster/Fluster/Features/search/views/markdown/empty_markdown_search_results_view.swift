@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterSwift
 
 struct EmptyMarkdownSearchResultsView: View {
     @Environment(ThemeManager.self) private var themeManager: ThemeManager

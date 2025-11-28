@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct InitialNoteModelPathJsonDecoder {
-    static func decode(from fileName: String) -> [String] {
+public struct InitialNoteModelPathJsonDecoder {
+    public static func decode(from fileName: String) -> [String] {
         guard
             let url = Bundle.main.url(
                 forResource: fileName,
@@ -23,7 +23,7 @@ struct InitialNoteModelPathJsonDecoder {
         return paths
     }
     
-    static func loadInitialNoteFromPath(notePath: String, fileExtension: String = "mdx") -> String {
+    public static func loadInitialNoteFromPath(notePath: String, fileExtension: String = "mdx") -> String {
         if let filepath = Bundle.main.path(forResource: notePath, ofType: fileExtension) {
             do {
                 let contents = try String(contentsOfFile: filepath, encoding: .utf8)

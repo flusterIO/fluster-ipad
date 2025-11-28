@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FlusterSwift
 
 func getEditorThemeText(editorTheme: CodeEditorTheme) -> String {
     switch editorTheme {

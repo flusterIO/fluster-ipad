@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FlusterSwift
 
 struct SelectNoteToContinueView: View {
     @Environment(ThemeManager.self) private var themeManager: ThemeManager

@@ -6,7 +6,7 @@ import Combine
 @MainActor
 public class ThemeManager {
     /// The selected theme.
-    var theme: any ThemeProtocol
+    public var theme: any ThemeProtocol
 
     /// Create a new theme manager instance.
     ///

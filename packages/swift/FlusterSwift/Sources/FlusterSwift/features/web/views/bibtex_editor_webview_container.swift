@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import FlusterSwift
 
-final class BibtexEditorWebviewContainer: WebviewContainer {
-    func emitEditorThemeEvent(theme: CodeEditorTheme) {
+public final class BibtexEditorWebviewContainer: WebviewContainer {
+    public override init() {}
+    public func emitEditorThemeEvent(theme: CodeEditorTheme) {
         print("Changing editor theme event")
         self.runJavascript(
             """
@@ -18,7 +18,7 @@ final class BibtexEditorWebviewContainer: WebviewContainer {
             """
         )
     }
-    func setEditorKeymap(editorKeymap: EditorKeymap) {
+    public func setEditorKeymap(editorKeymap: EditorKeymap) {
         print("Applying editor keymap")
         self.runJavascript(
             """
@@ -27,12 +27,12 @@ final class BibtexEditorWebviewContainer: WebviewContainer {
             """
         )
     }
-    func clearEditorData() {
+    public func clearEditorData() {
         self.runJavascript("""
             window.clearBibtexEditorData()
             """)
     }
-    func setInitialContent(entryBody: String) {
+    public func setInitialContent(entryBody: String) {
         let body = entryBody.toQuotedJavascriptString()
         self.runJavascript(
             """
@@ -41,7 +41,7 @@ final class BibtexEditorWebviewContainer: WebviewContainer {
             """
         )
     }
-    func setInitialProperties(
+    public func setInitialProperties(
         initialValue: String?,
         codeEditorTheme: CodeEditorTheme,
         editorKeymap: EditorKeymap,

@@ -7,10 +7,9 @@
 
 import SwiftUI
 import WebKit
-import FlusterSwift
 
 
-struct BibtexEditorWebview: UIViewRepresentable {
+public struct BibtexEditorWebview: UIViewRepresentable {
 
     let url: URL = Bundle.main.url(
         forResource: "index",
@@ -23,6 +22,7 @@ struct BibtexEditorWebview: UIViewRepresentable {
     )
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var modelContext
+    @Environment(\.colorScheme) var colorScheme
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
         var webviewFontSize: WebviewFontSize = .base
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
@@ -37,9 +37,13 @@ struct BibtexEditorWebview: UIViewRepresentable {
         EditorKeymap = .base
     @Binding var value: String
     let container: BibtexEditorWebviewContainer
-    @Environment(\.colorScheme) var colorScheme
+    
+    public init(value: Binding<String>, container: BibtexEditorWebviewContainer) {
+        self._value = value
+        self.container = container
+    }
 
-    func makeUIView(context: Context) -> WKWebView {
+    public func makeUIView(context: Context) -> WKWebView {
         let webView = container.webView
 
         webView.navigationDelegate = context.coordinator
@@ -62,12 +66,12 @@ struct BibtexEditorWebview: UIViewRepresentable {
         return webView
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {
+    public func updateUIView(_ uiView: WKWebView, context: Context) {
     }
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-    func setInitialProperties() {
+    public func setInitialProperties() {
         container.setInitialProperties(
             initialValue: value,
             codeEditorTheme: colorScheme == .dark
@@ -80,7 +84,7 @@ struct BibtexEditorWebview: UIViewRepresentable {
     }
 }
 
-extension BibtexEditorWebview {
+public extension BibtexEditorWebview {
     final class Coordinator: NSObject, WKNavigationDelegate,
         WKScriptMessageHandler
     {
@@ -90,7 +94,7 @@ extension BibtexEditorWebview {
             self.parent = parent
         }
 
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
+        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
         {
             guard !parent.didSetInitialContent else { return }
             parent.didSetInitialContent = true
@@ -108,7 +112,7 @@ extension BibtexEditorWebview {
             parent.container.webView.isHidden = false
         }
 
-        func userContentController(
+        public func userContentController(
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {

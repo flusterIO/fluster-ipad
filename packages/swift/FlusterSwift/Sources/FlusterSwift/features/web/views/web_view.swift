@@ -1,37 +1,46 @@
 import SwiftData
 import SwiftUI
 import WebKit
-import FlusterSwift
 
-enum CodeEditorTheme: String, Codable, CaseIterable {
+public enum CodeEditorTheme: String, Codable, CaseIterable {
     case materialLight, solarizedLight, githubLight, aura, tokyoNightDay,
         dracula, tokyoNight, materialDark, tokyoNightStorm, githubDark,
         solarizedDark, xcodeDark, xcodeLight
 }
 
-struct WebViewWrapper: UIViewRepresentable {
+public struct WebViewWrapper: UIViewRepresentable {
 
-    let url: URL
     @State private var webView: WKWebView = WKWebView(
         frame: .zero,
         configuration: getConfig()
     )
-    @Environment(\.openURL) var openURL
-    @Environment(\.modelContext) var modelContext
-    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
-        var webviewFontSize: WebviewFontSize = .base
-    @Binding var theme: WebViewTheme
     @State private var didSetInitialContent = false
     @State var haveSetInitialContent: Bool = false
+    @Environment(\.openURL) var openURL
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.colorScheme) var colorScheme
+    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
+        var webviewFontSize: WebviewFontSize = .base
+    let url: URL
+    @Binding var theme: WebViewTheme
     @Binding var editorThemeDark: CodeEditorTheme
     @Binding var editorThemeLight: CodeEditorTheme
     @Binding var editingNote: NoteModel?
     @Binding var editorKeymap: EditorKeymap
 
     let container: EditorWebViewContainer
-    @Environment(\.colorScheme) var colorScheme
 
-    func makeUIView(context: Context) -> WKWebView {
+    public init(url: URL, theme: Binding<WebViewTheme>, editorThemeDark: Binding<CodeEditorTheme>, editorThemeLight: Binding<CodeEditorTheme>, editingNote: Binding<NoteModel?>, editorKeymap: Binding<EditorKeymap>, container: EditorWebViewContainer) {
+        self.url = url
+        self._theme = theme
+        self._editorThemeDark = editorThemeDark
+        self._editorThemeLight = editorThemeLight
+        self._editingNote = editingNote
+        self._editorKeymap = editorKeymap
+        self.container = container
+    }
+
+    public func makeUIView(context: Context) -> WKWebView {
         let webView = container.webView
 
         webView.navigationDelegate = context.coordinator
@@ -52,14 +61,14 @@ struct WebViewWrapper: UIViewRepresentable {
         return webView
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {
+    public func updateUIView(_ uiView: WKWebView, context: Context) {
 //        uiView.scrollView.contentInset = .zero
 //        uiView.scrollView.scrollIndicatorInsets = .zero
     }
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-    func setInitialProperties() {
+    public func setInitialProperties() {
         container.setInitialProperties(
             editingNote: editingNote,
             codeEditorTheme: colorScheme == .dark
@@ -72,7 +81,7 @@ struct WebViewWrapper: UIViewRepresentable {
             darkMode: colorScheme == .dark
         )
     }
-    func setInitialContent() {
+    public func setInitialContent() {
         print("Setting initial content")
         let s = editingNote?.markdown.body.toQuotedJavascriptString() ?? "''"
         container.runJavascript(
@@ -84,7 +93,7 @@ struct WebViewWrapper: UIViewRepresentable {
     }
 }
 
-extension WebViewWrapper {
+public extension WebViewWrapper {
     final class Coordinator: NSObject, WKNavigationDelegate,
         WKScriptMessageHandler
     {
@@ -94,7 +103,7 @@ extension WebViewWrapper {
             self.parent = parent
         }
 
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
+        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
         {
             guard !parent.didSetInitialContent else { return }
             parent.didSetInitialContent = true
@@ -108,7 +117,7 @@ extension WebViewWrapper {
             parent.container.webView.isHidden = false
         }
 
-        func userContentController(
+        public func userContentController(
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {

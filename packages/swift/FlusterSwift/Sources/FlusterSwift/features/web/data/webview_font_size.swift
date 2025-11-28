@@ -5,7 +5,7 @@
 //  Created by Andrew on 11/21/25.
 //
 
-enum WebviewFontSize: String, CaseIterable {
+public enum WebviewFontSize: String, CaseIterable {
     case small, base, large, xl, xxl
     func cssClass() -> String {
         switch self {
