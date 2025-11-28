@@ -7,15 +7,20 @@
 
 import PencilKit
 import SwiftUI
-import FlusterSwift
 
-struct PaperView: View {
+public struct PaperView: View {
+    @State private var canvasView = PKCanvasView()
     @Binding var toolbar: PKToolPicker
     @Binding var drawingData: Data
-    @State private var canvasView = PKCanvasView()
     @Binding var activeTab: IpadMainViewTab
+    
+    public init(toolbar: Binding<PKToolPicker>, drawingData: Binding<Data>, activeTab: Binding<IpadMainViewTab>) {
+        self._toolbar = toolbar
+        self._drawingData = drawingData
+        self._activeTab = activeTab
+    }
 
-    var body: some View {
+    public var body: some View {
         CanvasView(
             toolPicker: $toolbar,
             drawingData: $drawingData,

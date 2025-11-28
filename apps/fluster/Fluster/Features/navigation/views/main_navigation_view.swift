@@ -10,11 +10,6 @@ import SwiftData
 import SwiftUI
 import FlusterSwift
 
-enum MainViewTab: String {
-    case paper, markdown, bib, notes, settings, createNote, searchNotes,
-        searchByBib
-}
-
 func getDrawing(data: Data?) -> PKDrawing {
     if data == nil {
         return PKDrawing()
@@ -60,7 +55,7 @@ struct MainView: View {
     @State private var themeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
-    @State private var selectedTab = MainViewTab.paper
+    @State private var selectedTab = IpadMainViewTab.paper
     @State private var editingNoteId: String?
     @State private var editingNote: NoteModel?
     @State private var findInNotePresented: Bool = false
@@ -71,7 +66,7 @@ struct MainView: View {
             Tab(
                 "Paper",
                 systemImage: "pencil.circle.fill",
-                value: MainViewTab.paper
+                value: IpadMainViewTab.paper
             ) {
                 if let unwrappedEditingNote = Binding($editingNote) {
                     PaperView(
@@ -84,12 +79,12 @@ struct MainView: View {
                     SelectNoteToContinueView()
                 }
             }
-            .customizationID(MainViewTab.paper.rawValue)
+            .customizationID(IpadMainViewTab.paper.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
             Tab(
                 "Markdown",
                 systemImage: "book.closed.circle.fill",
-                value: MainViewTab.markdown
+                value: IpadMainViewTab.markdown
             ) {
                 if editingNote != nil {
                     WebViewWrapper(
@@ -154,21 +149,21 @@ struct MainView: View {
                     SelectNoteToContinueView()
                 }
             }
-            .customizationID(MainViewTab.markdown.rawValue)
+            .customizationID(IpadMainViewTab.markdown.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
             Tab(
                 "Bibliography",
                 systemImage: "books.vertical.circle.fill",
-                value: MainViewTab.bib
+                value: IpadMainViewTab.bib
             ) {
                 BibliographyPageView()
             }
-            .customizationID(MainViewTab.bib.rawValue)
+            .customizationID(IpadMainViewTab.bib.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
             Tab(
                 "Search",
                 systemImage: "magnifyingglass.circle.fill",
-                value: MainViewTab.searchNotes,
+                value: IpadMainViewTab.searchNotes,
                 role: .search
             ) {
                 NavigationStack {
@@ -177,7 +172,7 @@ struct MainView: View {
                     )
                 }
             }
-            .customizationID("\(MainViewTab.searchNotes.rawValue)-tabbar")
+            .customizationID("\(IpadMainViewTab.searchNotes.rawValue)-tabbar")
             .customizationBehavior(.disabled, for: .sidebar)
             .tabPlacement(.pinned)
             TabSection(
@@ -186,7 +181,7 @@ struct MainView: View {
                     Tab(
                         "Search Notes",
                         systemImage: "magnifyingglass.circle.fill",
-                        value: MainViewTab.searchNotes,
+                        value: IpadMainViewTab.searchNotes,
                         role: .search
                     ) {
                         NavigationStack {
@@ -195,13 +190,13 @@ struct MainView: View {
                             )
                         }
                     }
-                    .customizationID(MainViewTab.searchNotes.rawValue)
+                    .customizationID(IpadMainViewTab.searchNotes.rawValue)
                     .customizationBehavior(.disabled, for: .tabBar)
                     .defaultVisibility(.hidden, for: .tabBar)
                     Tab(
                         "Search bibliography",
                         systemImage: "magnifyingglass.circle.fill",
-                        value: MainViewTab.searchByBib,
+                        value: IpadMainViewTab.searchByBib,
                     ) {
                         NavigationStack {
                             BibliographySearchResultsView(
@@ -219,7 +214,7 @@ struct MainView: View {
                             )
                         }
                     }
-                    .customizationID(MainViewTab.searchByBib.rawValue)
+                    .customizationID(IpadMainViewTab.searchByBib.rawValue)
                     .customizationBehavior(.disabled, for: .tabBar)
                     .defaultVisibility(.hidden, for: .tabBar)
                 }
@@ -231,7 +226,7 @@ struct MainView: View {
             Tab(
                 "Settings",
                 systemImage: "gearshape.fill",
-                value: MainViewTab.settings
+                value: IpadMainViewTab.settings
             ) {
                 SettingsPageView(
                     theme: $theme,
@@ -241,15 +236,15 @@ struct MainView: View {
                 )
             }
             .tabPlacement(.sidebarOnly)
-            .customizationID(MainViewTab.settings.rawValue)
+            .customizationID(IpadMainViewTab.settings.rawValue)
             Tab(
                 "Create Note",
                 systemImage: "plus",
-                value: MainViewTab.createNote
+                value: IpadMainViewTab.createNote
             ) {
                 CreateNoteSheetView(editingNote: $editingNote, dismissOnSubmit: false)
             }
-            .customizationID(MainViewTab.createNote.rawValue)
+            .customizationID(IpadMainViewTab.createNote.rawValue)
             .customizationBehavior(.disabled, for: .tabBar)
             .defaultVisibility(.hidden, for: .tabBar)
         }
