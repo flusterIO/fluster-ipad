@@ -5,9 +5,9 @@
 //  Created by Andrew on 11/3/25.
 //
 
+import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 struct CreateBibEntrySheetView: View {
     @State private var newEntryValue: String = ""
@@ -59,7 +59,7 @@ struct CreateBibEntrySheetView: View {
                     if editingBibEntry == nil {
                         // -- If the model should be created new. --
                         let newEntry = BibEntryModel(data: inputValue)
-                        if let _editingNote = editingNote {
+                        if let _editingNote = editingNote, !ignoreEditingNote {
                             _editingNote.citations.append(newEntry)
                         } else {
                             modelContext.insert(newEntry)

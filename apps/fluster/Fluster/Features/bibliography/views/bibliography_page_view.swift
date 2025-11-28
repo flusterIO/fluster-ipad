@@ -5,22 +5,26 @@
 //  Created by Andrew on 10/29/25.
 //
 
+import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 struct BibliographyPageInternalView: View {
-    @Binding var editing: BibEntryModel?
     @Query var bibEntries: [BibEntryModel]
     @Environment(NoteModel.self) private var editingNote: NoteModel?
+    @State var associateNoteModalPresented: Bool = false
+    @Binding var editing: BibEntryModel?
     let bibtexEditorContainer: BibtexEditorWebviewContainer
+
     var body: some View {
         if let _editingNote = editingNote {
             ZStack(alignment: .bottomTrailing) {
                 if _editingNote.citations.isEmpty {
                     EmptyBibListView(
                         editingBibEntry: $editing,
-                        container: bibtexEditorContainer
+                        container: bibtexEditorContainer,
+                        associateNoteModalPresented:
+                            $associateNoteModalPresented
                     )
                     .navigationTitle("Note Bibliography")
                 } else {
@@ -29,13 +33,30 @@ struct BibliographyPageInternalView: View {
                         editing: $editing,
                         editorContainer: bibtexEditorContainer
                     )
+                    .toolbar {
+                        Button(action: {
+                            associateNoteModalPresented = true
+                        }, label: {
+                            Label("Search", systemImage: "magnifyingglass")
+                        })
+                    }
                     .navigationTitle("Note Bibliography")
-                    BibliographyPageFloatingButtonView(
-                        editing: $editing,
-                        bibEditorContainer: bibtexEditorContainer
-                    )
                 }
             }
+            .fullScreenCover(
+                isPresented: $associateNoteModalPresented,
+                content: {
+                    if let editingNoteExists = editingNote {
+                        @Bindable var editingNoteBinding = editingNoteExists
+                        NavigationStack {
+                            AssociateNoteWithBibEntryView(
+                                editingNote: editingNoteBinding,
+                                open: $associateNoteModalPresented
+                            )
+                        }
+                    }
+                }
+            )
         } else {
             SelectNoteToContinueView()
         }

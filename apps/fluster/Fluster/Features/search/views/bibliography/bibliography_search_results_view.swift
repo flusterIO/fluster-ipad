@@ -5,19 +5,21 @@
 //  Created by Andrew on 11/5/25.
 //
 
+import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 struct BibliographySearchResultsViewQueryWrapped: View {
     @StateObject private var bibtexEditorContainer =
         BibtexEditorWebviewContainer()
     @Query(sort: \BibEntryModel.ctime) var bibEntries: [BibEntryModel]
-    @Binding var editingNote: NoteModel?
+    @Environment(NoteModel.self) private var editingNote: NoteModel?
+    @Environment(\.modelContext) var modelContext
+    @State private var confirmationModalOpen: Bool = false
+    @State private var deletingBibEntry: BibEntryModel? = nil
     @Binding var searchQuery: String
 
-    init(editingNote: Binding<NoteModel?>, searchQuery: Binding<String>) {
-        _editingNote = editingNote
+    init(searchQuery: Binding<String>) {
         _searchQuery = searchQuery
 
         if !searchQuery.wrappedValue.isEmpty {
@@ -54,9 +56,38 @@ struct BibliographySearchResultsViewQueryWrapped: View {
                 ForEach(bibEntries, id: \.id) { item in
                     BibEntrySearchResultItemView(
                         item: item,
-                        editingNote: $editingNote,
+                    )
+                    .swipeActions(
+                        edge: .leading,
+                        content: {
+                            Button(
+                                "Delete",
+                                role: .destructive
+                            ) {
+                                deletingBibEntry = item
+                                confirmationModalOpen = true
+                            }
+                        }
                     )
                 }
+            }
+            .onChange(of: confirmationModalOpen, {
+                if !confirmationModalOpen {
+                    deletingBibEntry = nil
+                }
+            })
+            .confirmationDialog(
+                "Delete this bibliography entry?",
+                isPresented: $confirmationModalOpen,
+            ) {
+                Button("Delete") {
+                    if let deletingBibEntryExists = deletingBibEntry {
+                        modelContext.delete(deletingBibEntryExists)
+                        deletingBibEntry = nil
+                    }
+                }
+            } message: {
+                Text("Delete this bibliography entry?")
             }
             .searchable(
                 text: $searchQuery,
@@ -69,27 +100,20 @@ struct BibliographySearchResultsViewQueryWrapped: View {
 
 struct BibliographySearchResultsView: View {
     @State private var searchQuery: String = ""
-    @Binding var editingNote: NoteModel?
     let bibtexEditorContainer = BibtexEditorWebviewContainer()
     var body: some View {
         BibliographySearchResultsViewQueryWrapped(
-            editingNote: $editingNote,
             searchQuery: $searchQuery
         )
         .toolbar(content: {
-            ToolbarItemGroup(
-                placement: .topBarTrailing,
-                content: {
-                    NavigationLink(
-                        destination: CreateBibEntrySheetView(
-                            editingBibEntry: .constant(nil),
-                            ignoreEditingNote: true,
-                            container: bibtexEditorContainer
-                        ),
-                        label: {
-                            Label("Create", systemImage: "plus")
-                        }
-                    )
+            NavigationLink(
+                destination: CreateBibEntrySheetView(
+                    editingBibEntry: .constant(nil),
+                    ignoreEditingNote: true,
+                    container: bibtexEditorContainer
+                ),
+                label: {
+                    Label("Create", systemImage: "plus")
                 }
             )
         })
@@ -97,7 +121,5 @@ struct BibliographySearchResultsView: View {
 }
 
 #Preview {
-    BibliographySearchResultsView(
-        editingNote: .constant(nil),
-    )
+    BibliographySearchResultsView()
 }

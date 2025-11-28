@@ -10,11 +10,11 @@ import SwiftUI
 import FlusterSwift
 
 struct BibEntrySelectionItem: View {
-    @Bindable var editingNote: NoteModel
     @State private var isSelected: Bool = false
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Bindable var editingNote: NoteModel
     let entry: BibEntryModel
     
-    @Environment(ThemeManager.self) private var themeManager: ThemeManager
     var body: some View {
         HStack {
             Toggle(

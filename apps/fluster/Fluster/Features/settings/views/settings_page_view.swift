@@ -5,8 +5,8 @@
 //  Created by Andrew on 11/17/25.
 //
 
-import SwiftUI
 import FlusterSwift
+import SwiftUI
 
 struct SettingsPageView: View {
 
@@ -41,6 +41,7 @@ struct SettingsPageView: View {
                 )
             }
         }
+        .navigationTitle("Settings")
     }
 }
 

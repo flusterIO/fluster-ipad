@@ -5,11 +5,10 @@
 //  Created by Andrew on 11/3/25.
 //
 
+import FlusterSwift
 import SwiftData
 import SwiftUI
 import SwiftyBibtex
-import FlusterSwift
-
 
 struct BibEntryListItemView: View {
     var item: BibEntryModel
@@ -17,28 +16,40 @@ struct BibEntryListItemView: View {
     let container: BibtexEditorWebviewContainer
     @State private var confirmationModalModel: Bool = false
     @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    @Environment(NoteModel.self) var editingNote: NoteModel?
 
     var body: some View {
         Text(item.getTitle())
             .font(.subheadline)
-            .swipeActions(content: {
-                Button(
-                    action: {
-                        confirmationModalModel = true
-                    },
-                    label: {
-                        Label("Delete", systemImage: "trash")
+            .swipeActions(
+                edge: .leading,
+                content: {
+                    Button(
+                        action: {
+                            confirmationModalModel = true
+                        },
+                        label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    )
+                    Button(
+                        action: {
+                            editing = item
+                        },
+                        label: {
+                            Label("Edit", systemImage: "slider.horizontal.3")
+                        }
+                    )
+                    Button("Disassociate") {
+                        if let editingNoteExists = editingNote {
+                            editingNoteExists.citations.removeAll {
+                                $0.id == item.id
+                            }
+                        }
                     }
-                )
-                Button(
-                    action: {
-                        editing = item
-                    },
-                    label: {
-                        Label("Edit", systemImage: "slider.horizontal.3")
-                    }
-                )
-            })
+                }
+            )
             .confirmationDialog(
                 "Delete this bibliography entry?",
                 isPresented: $confirmationModalModel,

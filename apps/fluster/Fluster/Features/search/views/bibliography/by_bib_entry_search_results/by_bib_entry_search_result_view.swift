@@ -29,8 +29,7 @@ struct ByBibEntrySearchResults: View {
 
     var body: some View {
         if notes.isEmpty {
-            Text("No notes found")
-                .font(.title)
+            NoNotesFoundView(subtitle: "No notes are currently linked to this bibliography entry.")
         } else {
             List(notes, id: \.id) { note in
                 NoteSearchResultItemInnerView(editingNote: $editingNote, item: note)

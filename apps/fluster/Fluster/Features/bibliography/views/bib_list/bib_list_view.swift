@@ -5,9 +5,9 @@
 //  Created by Andrew on 11/3/25.
 //
 
+import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 struct BibListView: View {
     var items: [BibEntryModel]
@@ -20,11 +20,7 @@ struct BibListView: View {
         ZStack(alignment: .bottomTrailing) {
             List {
                 ForEach(items, id: \.id) { item in
-                    BibEntryListItemView(
-                        item: item,
-                        editing: $editing,
-                        container: editorContainer
-                    )
+                    BibEntrySearchResultItemView(item: item)
                 }
             }
         }

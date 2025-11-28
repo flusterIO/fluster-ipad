@@ -20,6 +20,7 @@ struct EmptyBibListView: View {
     let container: BibtexEditorWebviewContainer
     /// If true, the nested CreateBibEntrySheetView will automatically link bibliography entries to the note being edited.
     let ignoreBibEntryOnCreate: Bool = true
+    @Binding var associateNoteModalPresented: Bool
 
     var body: some View {
         NavigationStack {
@@ -41,22 +42,18 @@ struct EmptyBibListView: View {
                         container: container
                     ),
                     label: {
-                        Text("Create")
+                        Label("Create", systemImage: "plus")
                     }
                 ).onTapGesture {
                     editingBibEntry = nil
                 }
-                if let _editingNote = editingNote {
+                if let _ = editingNote {
                     if NoteModel.count(modelContext: modelContext) > 0 {
-                        @Bindable var editingNoteBinding = _editingNote
-                        NavigationLink(
-                            destination: AssociateNoteWithBibEntryView(
-                                editingNote: editingNoteBinding
-                            ),
-                            label: {
-                                Text("Search")
-                            }
-                        )
+                        Button(action: {
+                          associateNoteModalPresented = true
+                        }, label: {
+                           Label("Search", systemImage: "magnifyingglass")
+                        })
                     }
                 }
             }
@@ -67,6 +64,7 @@ struct EmptyBibListView: View {
 #Preview {
     EmptyBibListView(
         editingBibEntry: .constant(nil),
-        container: BibtexEditorWebviewContainer()
+        container: BibtexEditorWebviewContainer(),
+        associateNoteModalPresented: .constant(false)
     )
 }

@@ -5,10 +5,10 @@
 //  Created by Andrew on 10/29/25.
 //
 
+import FlusterSwift
 import PencilKit
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 func getDrawing(data: Data?) -> PKDrawing {
     if data == nil {
@@ -75,6 +75,7 @@ struct MainView: View {
                         activeTab: $selectedTab
                     )
                     .backgroundExtensionEffect()
+                    .ignoresSafeArea()
                 } else {
                     SelectNoteToContinueView()
                 }
@@ -156,7 +157,18 @@ struct MainView: View {
                 systemImage: "books.vertical.circle.fill",
                 value: IpadMainViewTab.bib
             ) {
-                BibliographyPageView()
+                NavigationStack {
+                    BibliographyPageView()
+                        .navigationDestination(
+                            for: BibEntryModel.self,
+                            destination: { bibEntry in
+                                ByBibEntrySearchResults(
+                                    bibEntryId: bibEntry.id,
+                                    editingNote: $editingNote
+                                )
+                            }
+                        )
+                }
             }
             .customizationID(IpadMainViewTab.bib.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
@@ -199,19 +211,17 @@ struct MainView: View {
                         value: IpadMainViewTab.searchByBib,
                     ) {
                         NavigationStack {
-                            BibliographySearchResultsView(
-                                editingNote: $editingNote,
-                            )
-                            .navigationTitle("Bibliography Entries")
-                            .navigationDestination(
-                                for: BibEntryModel.self,
-                                destination: { bibEntry in
-                                    ByBibEntrySearchResults(
-                                        bibEntryId: bibEntry.id,
-                                        editingNote: $editingNote
-                                    )
-                                }
-                            )
+                            BibliographySearchResultsView()
+                                .navigationTitle("Bibliography Entries")
+                                .navigationDestination(
+                                    for: BibEntryModel.self,
+                                    destination: { bibEntry in
+                                        ByBibEntrySearchResults(
+                                            bibEntryId: bibEntry.id,
+                                            editingNote: $editingNote
+                                        )
+                                    }
+                                )
                         }
                     }
                     .customizationID(IpadMainViewTab.searchByBib.rawValue)
@@ -224,29 +234,34 @@ struct MainView: View {
             .tabPlacement(.sidebarOnly)
             .defaultVisibility(.hidden, for: .tabBar)
             Tab(
-                "Settings",
-                systemImage: "gearshape.fill",
-                value: IpadMainViewTab.settings
-            ) {
-                SettingsPageView(
-                    theme: $theme,
-                    editorThemeDark: $editorThemeDark,
-                    editorThemeLight: $editorThemeLight,
-                    colorSchemeSelection: $colorSchemeSelection
-                )
-            }
-            .tabPlacement(.sidebarOnly)
-            .customizationID(IpadMainViewTab.settings.rawValue)
-            Tab(
                 "Create Note",
                 systemImage: "plus",
                 value: IpadMainViewTab.createNote
             ) {
-                CreateNoteSheetView(editingNote: $editingNote, dismissOnSubmit: false)
+                CreateNoteSheetView(
+                    editingNote: $editingNote,
+                    dismissOnSubmit: false
+                )
             }
             .customizationID(IpadMainViewTab.createNote.rawValue)
             .customizationBehavior(.disabled, for: .tabBar)
             .defaultVisibility(.hidden, for: .tabBar)
+            TabSection("Fluster", content: {
+                Tab(
+                    "Settings",
+                    systemImage: "gearshape.fill",
+                    value: IpadMainViewTab.settings
+                ) {
+                    SettingsPageView(
+                        theme: $theme,
+                        editorThemeDark: $editorThemeDark,
+                        editorThemeLight: $editorThemeLight,
+                        colorSchemeSelection: $colorSchemeSelection
+                    )
+                }
+                .tabPlacement(.sidebarOnly)
+                .customizationID(IpadMainViewTab.settings.rawValue)
+            })
         }
         .onChange(
             of: colorScheme,
@@ -292,7 +307,7 @@ struct MainView: View {
             )
         )
         .environment(themeManager)
-        .environment(editingNote)  // TODO: Remove this and all references to it. Cannot use an optional in the environment.
+        .environment(editingNote)
     }
     func handleColorSchemeSelectionChange() {
         handleColorSchemeChange(

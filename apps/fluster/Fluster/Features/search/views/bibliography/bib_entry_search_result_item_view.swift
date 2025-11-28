@@ -11,7 +11,6 @@ import FlusterSwift
 
 struct BibEntrySearchResultItemView: View {
     var item: BibEntryModel
-    @Binding var editingNote: NoteModel?
     var body: some View {
         NavigationLink(
             value: item,
@@ -47,6 +46,5 @@ struct BibEntrySearchResultItemView: View {
                 """,
             ctime: .now
         ),
-        editingNote: .constant(nil),
     )
 }

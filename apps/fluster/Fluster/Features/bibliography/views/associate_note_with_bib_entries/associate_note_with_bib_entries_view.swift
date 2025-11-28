@@ -5,16 +5,32 @@
 //  Created by Andrew on 11/24/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct AssociateNoteWithBibEntryView: View {
     @Query private var bibEntries: [BibEntryModel]
     @Bindable var editingNote: NoteModel
+    @Binding var open: Bool
+
+    init(editingNote: NoteModel, open: Binding<Bool>) {
+        self.editingNote = editingNote
+        _open = open
+    }
     var body: some View {
-        List(bibEntries, id: \.id) {entry in
+        List(bibEntries, id: \.id) { entry in
             BibEntrySelectionItem(editingNote: editingNote, entry: entry)
         }
+        .toolbar(content: {
+            Button(
+                action: {
+                    open = false
+                },
+                label: {
+                    Label("Close", systemImage: "x.circle.fill")
+                }
+            )
+        })
         .navigationTitle("Bibliography Entries")
     }
 }

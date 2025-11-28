@@ -14,6 +14,7 @@ struct NoteSearchResultItemInnerView: View {
     @Binding var editingNote: NoteModel?
     let item: NoteModel
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         HStack {
             RoundedRectangle(cornerRadius: 8)
@@ -35,6 +36,10 @@ struct NoteSearchResultItemInnerView: View {
                 Text(item.ctime.formatted(date: .complete, time: .shortened))
                     .font(.caption)
             }
+        }
+        .onTapGesture {
+            editingNote = item
+            dismiss()
         }
     }
 }
