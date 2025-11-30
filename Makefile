@@ -17,6 +17,12 @@ lint:
 generate_initial_note_paths:
 	tsx ${FLUSTER_IOS_ROOT}/scripts/generate_initial_note_paths.ts
 
+build_ipad_simulator:
+	cd ${FLUSTER_IOS_ROOT}/apps/fluster; xcodebuild -destination "platform=iOS Simulator,name=iPad Pro 13-inch M5 26.1" -scheme Fluster build
+
+launch_ipad_simulator: build_ipad_simulator
+	cd ${FLUSTER_IOS_ROOT}/apps/fluster; xcrun simctl launch "iPad Pro 13-inch M5 26.1" iglooDevelopment.Fluster 
+
 build_webview_utils:
 	pnpm run -C packages/webview_utils build
 

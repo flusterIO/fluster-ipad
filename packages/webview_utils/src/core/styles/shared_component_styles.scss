@@ -29,12 +29,18 @@ li.hide-li-marker {
   }
 
   &.loading {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     .load-hide {
       display: none;
     }
 
     .load-show {
-      display: block;
+      display: flex;
     }
   }
 }

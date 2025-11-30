@@ -9,10 +9,6 @@ import FlusterSwift
 import SwiftUI
 
 struct SplitViewEditorView: View {
-    //    let splitFraction = FractionHolder.usingUserDefaults(
-    //        0.5,
-    //        key: "splitViewMdxEditorFraction"
-    //    )
     @StateObject private var previewContainer = MdxPreviewWebviewContainer(
         bounce: false,
         scrollEnabled: false
@@ -68,33 +64,36 @@ struct SplitViewEditorView: View {
                     .ignoresSafeArea(edges: .bottom)
                 },
                 right: {
-                    ScrollView {
-                        MdxPreviewWebview(
-                            url:
-                                Bundle.main.url(
-                                    forResource: "index",
-                                    withExtension: "html",
-                                    subdirectory: "standalone_mdx_preview"
-                                )!,
-                            theme: $theme,
-                            editorThemeDark: $editorThemeDark,
-                            editorThemeLight: $editorThemeLight,
-                            editingNote: $editingNote,
-                            editorKeymap: $editorKeymap,
-                            shouldShowEditor: $shouldShowEditor,
-                            viewportHeight: $previewHeight,
-                            container: previewContainer,
-                        )
-                        .frame(height: previewHeight)
-                        .padding(.bottom, 0)
-                        .ignoresSafeArea(edges: .bottom)
-                    }
+                        ScrollView {
+                            MdxPreviewWebview(
+                                url:
+                                    Bundle.main.url(
+                                        forResource: "index",
+                                        withExtension: "html",
+                                        subdirectory: "standalone_mdx_preview"
+                                    )!,
+                                theme: $theme,
+                                editorThemeDark: $editorThemeDark,
+                                editorThemeLight: $editorThemeLight,
+                                editingNote: $editingNote,
+                                editorKeymap: $editorKeymap,
+                                shouldShowEditor: $shouldShowEditor,
+                                viewportHeight: $previewHeight,
+                                container: previewContainer,
+                            )
+                            .frame(
+                                height: previewHeight
+                            )
+                            .padding(.bottom, 0)
+                            .ignoresSafeArea(edges: .bottom)
+                        }
                     .frame(
                         height: getPreviewHeight(rect: rect)
                     )
                 },
                 onDragStart: {
                     isDragging = true
+                    previewHeight = self.viewportHeight(rect: rect)
                     previewContainer.setLoading(isLoading: true)
                 },
                 onDragEnd: {
@@ -110,16 +109,17 @@ struct SplitViewEditorView: View {
             )
         }
     }
-    func getPreviewHeight(rect:GeometryProxy) -> CGFloat {
-        print("isdragging: \(isDragging)")
-        if !isDragging {
-            return previewHeight
-        }
+    func viewportHeight(rect: GeometryProxy) -> CGFloat {
         if let h = UIScreen.current?.bounds.height {
-            print("H: \(h)")
             return h - rect.safeAreaInsets.top
         } else {
             return 0
         }
+    }
+    func getPreviewHeight(rect: GeometryProxy) -> CGFloat {
+        if !isDragging {
+            return previewHeight
+        }
+        return viewportHeight(rect: rect)
     }
 }
