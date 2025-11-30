@@ -9,6 +9,8 @@ interface WebViewContainerProps {
     children: ReactNode;
     className?: string;
     style?: CSSProperties;
+    /// If shrinkHeight = true, will shrink to fit-content to allow window to resize to match content
+    shrinkHeight?: boolean;
 }
 
 setWebviewWindowBridgeFunctions();
@@ -16,6 +18,7 @@ setWebviewWindowBridgeFunctions();
 export const WebViewContainer = ({
     className,
     children,
+    shrinkHeight,
     style,
 }: WebViewContainerProps): ReactNode => {
     const [darkMode, setDarkMode] = useLocalStorage("dark-mode", undefined, {
@@ -58,13 +61,19 @@ export const WebViewContainer = ({
         <div
             id="webview-container"
             className={cn(
-                "w-screen h-screen",
+                "w-screen",
+                shrinkHeight ? "h-fit" : "h-screen min-h-fit",
                 className,
                 darkMode === "true" && "dark !bg-black",
             )}
             style={style}
         >
-            {children}
+            <div id="webview-content-wrapper" className="w-full h-fit load-hide">
+                {children}
+            </div>
+            <div className="w-full h-full flex flex-col justifiy-center items-center loading load-show">
+                <LoadingComponent />
+            </div>
         </div>
     );
 };

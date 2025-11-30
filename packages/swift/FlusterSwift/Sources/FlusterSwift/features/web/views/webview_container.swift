@@ -15,9 +15,11 @@ import WebKit
 @MainActor
 public class WebviewContainer: ObservableObject {
     @Published var justToConform: Bool = false
+    public let scrollViewBounce: Bool = true
+    public let scrollEnabled: Bool = false
     let webView: WKWebView = {
         let view = WKWebView(frame: .zero, configuration: getConfig())
-        view.scrollView.isScrollEnabled = false
+//        view.scrollView.isScrollEnabled = scrollEnabled
         view.scrollView.minimumZoomScale = 1
         view.scrollView.maximumZoomScale = 1
         view.allowsBackForwardNavigationGestures = false
@@ -29,7 +31,10 @@ public class WebviewContainer: ObservableObject {
         return view
     }()
 
-    public init() {}
+    public init(bounce: Bool = false, scrollEnabled: Bool = false) {
+        self.webView.scrollView.bounces = bounce
+        self.webView.scrollView.isScrollEnabled = scrollEnabled
+    }
     
     public func runJavascript(_ script: String) {
         self.webView.evaluateJavaScript(script) { result, error in
@@ -63,5 +68,29 @@ public class WebviewContainer: ObservableObject {
             window.setDarkMode(\(darkMode ? "true" : "false"))
             """
         )
+    }
+    
+    public func requestDocumentSize() {
+        self.runJavascript("""
+            window.requestDocumentSize()
+            """)
+    }
+    public func addClassToWebviewContainer(className: String) {
+        self.runJavascript("""
+            document.getElementById("webview-container")?.classList.add("\(className)")
+            """)
+    }
+    public func removeClassFromWebviewContainer(className: String) {
+        self.runJavascript("""
+            document.getElementById("webview-container")?.classList.remove("\(className)")
+            """)
+    }
+    
+    public func setLoading(isLoading: Bool) {
+        if isLoading {
+            self.addClassToWebviewContainer(className: "loading")
+        } else {
+            self.removeClassFromWebviewContainer(className: "loading")
+        }
     }
 }

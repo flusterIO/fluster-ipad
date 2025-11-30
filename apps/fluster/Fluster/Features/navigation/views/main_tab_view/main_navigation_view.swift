@@ -44,14 +44,14 @@ struct MainView: View {
     @AppStorage(AppStorageKeys.colorScheme.rawValue) private
         var colorSchemeSelection: ColorSchemeSelection = .dark
     @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-        var editorThemeDark: CodeEditorTheme = .dracula
+        var editorThemeDark: CodeSyntaxTheme = .dracula
     @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-        var editorThemeLight: CodeEditorTheme = .githubLight
+        var editorThemeLight: CodeSyntaxTheme = .githubLight
     @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap:
         EditorKeymap = .base
     @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
         var tabviewCustomization: TabViewCustomization
-
+    @StateObject private var editorContainer = MdxEditorWebviewContainer(bounce: false, scrollEnabled: true)
     @State private var themeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
@@ -59,7 +59,6 @@ struct MainView: View {
     @State private var editingNoteId: String?
     @State private var editingNote: NoteModel?
     @State private var findInNotePresented: Bool = false
-    @StateObject private var editorContainer = EditorWebViewContainer()
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -88,19 +87,13 @@ struct MainView: View {
                 value: IpadMainViewTab.markdown
             ) {
                 if editingNote != nil {
-                    WebViewWrapper(
-                        url:
-                            Bundle.main.url(
-                                forResource: "index",
-                                withExtension: "html",
-                                subdirectory: "dist"
-                            )!,
+                    SplitViewEditorView(
                         theme: $theme,
                         editorThemeDark: $editorThemeDark,
                         editorThemeLight: $editorThemeLight,
                         editingNote: $editingNote,
                         editorKeymap: $editorKeymap,
-                        container: editorContainer,
+                        editorContainer: editorContainer,
                     )
                     .onChange(
                         of: editingNote,
@@ -246,22 +239,20 @@ struct MainView: View {
             .customizationID(IpadMainViewTab.createNote.rawValue)
             .customizationBehavior(.disabled, for: .tabBar)
             .defaultVisibility(.hidden, for: .tabBar)
-            TabSection("Fluster", content: {
-                Tab(
-                    "Settings",
-                    systemImage: "gearshape.fill",
-                    value: IpadMainViewTab.settings
-                ) {
-                    SettingsPageView(
-                        theme: $theme,
-                        editorThemeDark: $editorThemeDark,
-                        editorThemeLight: $editorThemeLight,
-                        colorSchemeSelection: $colorSchemeSelection
-                    )
+            TabSection(
+                "Fluster",
+                content: {
+                    Tab(
+                        "Settings",
+                        systemImage: "gearshape.fill",
+                        value: IpadMainViewTab.settings
+                    ) {
+                        SettingsPageView()
+                    }
+                    .tabPlacement(.sidebarOnly)
+                    .customizationID(IpadMainViewTab.settings.rawValue)
                 }
-                .tabPlacement(.sidebarOnly)
-                .customizationID(IpadMainViewTab.settings.rawValue)
-            })
+            )
         }
         .onChange(
             of: colorScheme,

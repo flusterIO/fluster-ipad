@@ -41,6 +41,6 @@ struct EmptyBibSearchResultsView: View {
 
 #Preview {
     EmptyBibSearchResultsView(
-        bibtexEditorContainer: BibtexEditorWebviewContainer()
+        bibtexEditorContainer: BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
     )
 }

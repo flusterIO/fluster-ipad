@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7930C3EE2EDA6BD10063B3DA /* SplitView in Frameworks */ = {isa = PBXBuildFile; productRef = 7930C3ED2EDA6BD10063B3DA /* SplitView */; };
+		7930C3F92EDA740B0063B3DA /* standalone_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */; };
 		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
+		79A2681D2EDBF0D5004E929E /* SplitView in Frameworks */ = {isa = PBXBuildFile; productRef = 79A2681C2EDBF0D5004E929E /* SplitView */; };
+		79AC14442EDB4D1700E3773F /* standalone_mdx_preview in Resources */ = {isa = PBXBuildFile; fileRef = 79AC14432EDB4D1700E3773F /* standalone_mdx_preview */; };
 		79AD78972EC903970030B3C5 /* dist in Resources */ = {isa = PBXBuildFile; fileRef = 79AD78962EC903970030B3C5 /* dist */; };
-		79C35B5D2EB4403400806066 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B5C2EB4403400806066 /* Yams */; };
-		79C35B602EB4416600806066 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B5F2EB4416600806066 /* MarkdownUI */; };
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
-		79F131092ED392740082BA65 /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = 79F131082ED392740082BA65 /* FloatingButton */; };
 		79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */ = {isa = PBXBuildFile; fileRef = 79FA54412ED8BB5F00D16F68 /* initial_note_docs */; };
 		79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79FB1F542ED928FB0041E1E0 /* FlusterSwift */; };
-		79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 79FFA6CC2EB4280100B09AE7 /* STTextView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_editor; path = ../../packages/webviews/standalone_mdx_editor/standalone_mdx_editor; sourceTree = "<group>"; };
 		796F71042EB174610012B500 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79AC14432EDB4D1700E3773F /* standalone_mdx_preview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview; sourceTree = "<group>"; };
 		79AD78962EC903970030B3C5 /* dist */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dist; path = ../../packages/webviews/editor_splitview_webview/dist; sourceTree = "<group>"; };
 		79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
 		79FA54412ED8BB5F00D16F68 /* initial_note_docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = initial_note_docs; path = ../../docs/initial_note_docs; sourceTree = "<group>"; };
@@ -53,13 +53,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7930C3EE2EDA6BD10063B3DA /* SplitView in Frameworks */,
-				79F131092ED392740082BA65 /* FloatingButton in Frameworks */,
+				79A2681D2EDBF0D5004E929E /* SplitView in Frameworks */,
 				796F71232EB185380012B500 /* SVGView in Frameworks */,
 				79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */,
-				79C35B5D2EB4403400806066 /* Yams in Frameworks */,
-				79FFA6CD2EB4280100B09AE7 /* STTextView in Frameworks */,
-				79C35B602EB4416600806066 /* MarkdownUI in Frameworks */,
 				79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -70,6 +66,8 @@
 		796F70FB2EB174610012B500 = {
 			isa = PBXGroup;
 			children = (
+				79AC14432EDB4D1700E3773F /* standalone_mdx_preview */,
+				7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */,
 				79FA54412ED8BB5F00D16F68 /* initial_note_docs */,
 				79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */,
 				79AD78962EC903970030B3C5 /* dist */,
@@ -108,13 +106,9 @@
 			name = Fluster;
 			packageProductDependencies = (
 				796F71222EB185380012B500 /* SVGView */,
-				79FFA6CC2EB4280100B09AE7 /* STTextView */,
-				79C35B5C2EB4403400806066 /* Yams */,
-				79C35B5F2EB4416600806066 /* MarkdownUI */,
 				79C35B942EB8FA1B00806066 /* SwiftyBibtex */,
-				79F131082ED392740082BA65 /* FloatingButton */,
 				79FB1F542ED928FB0041E1E0 /* FlusterSwift */,
-				7930C3ED2EDA6BD10063B3DA /* SplitView */,
+				79A2681C2EDBF0D5004E929E /* SplitView */,
 			);
 			productName = Fluster;
 			productReference = 796F71042EB174610012B500 /* Fluster.app */;
@@ -146,13 +140,9 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */,
-				79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */,
-				79C35B5B2EB4403400806066 /* XCRemoteSwiftPackageReference "Yams" */,
-				79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */,
-				79F131072ED392740082BA65 /* XCRemoteSwiftPackageReference "FloatingButton" */,
 				79FB1F532ED928FB0041E1E0 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
-				7930C3EC2EDA6BD10063B3DA /* XCRemoteSwiftPackageReference "SplitView" */,
+				79A2681B2EDBF0D5004E929E /* XCLocalSwiftPackageReference "../../packages/swift/SplitViewFork" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F71052EB174610012B500 /* Products */;
@@ -169,6 +159,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79AC14442EDB4D1700E3773F /* standalone_mdx_preview in Resources */,
+				7930C3F92EDA740B0063B3DA /* standalone_mdx_editor in Resources */,
 				79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */,
 				79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */,
 				79AD78972EC903970030B3C5 /* dist in Resources */,
@@ -240,7 +232,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -277,7 +269,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -429,6 +421,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		79A2681B2EDBF0D5004E929E /* XCLocalSwiftPackageReference "../../packages/swift/SplitViewFork" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/SplitViewFork;
+		};
 		79FB1F532ED928FB0041E1E0 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/swift/FlusterSwift;
@@ -436,36 +432,12 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		7930C3EC2EDA6BD10063B3DA /* XCRemoteSwiftPackageReference "SplitView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/stevengharris/SplitView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.5.3;
-			};
-		};
 		796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/exyte/SVGView";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.6;
-			};
-		};
-		79C35B5B2EB4403400806066 /* XCRemoteSwiftPackageReference "Yams" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jpsim/Yams";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.2.0;
-			};
-		};
-		79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.4.1;
 			};
 		};
 		79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */ = {
@@ -476,63 +448,26 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		79F131072ED392740082BA65 /* XCRemoteSwiftPackageReference "FloatingButton" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/exyte/FloatingButton";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
-			};
-		};
-		79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/krzyzanowskim/STTextView";
-			requirement = {
-				kind = exactVersion;
-				version = 2.2.4;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7930C3ED2EDA6BD10063B3DA /* SplitView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7930C3EC2EDA6BD10063B3DA /* XCRemoteSwiftPackageReference "SplitView" */;
-			productName = SplitView;
-		};
 		796F71222EB185380012B500 /* SVGView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */;
 			productName = SVGView;
 		};
-		79C35B5C2EB4403400806066 /* Yams */ = {
+		79A2681C2EDBF0D5004E929E /* SplitView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 79C35B5B2EB4403400806066 /* XCRemoteSwiftPackageReference "Yams" */;
-			productName = Yams;
-		};
-		79C35B5F2EB4416600806066 /* MarkdownUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 79C35B5E2EB4416600806066 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
-			productName = MarkdownUI;
+			productName = SplitView;
 		};
 		79C35B942EB8FA1B00806066 /* SwiftyBibtex */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */;
 			productName = SwiftyBibtex;
 		};
-		79F131082ED392740082BA65 /* FloatingButton */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 79F131072ED392740082BA65 /* XCRemoteSwiftPackageReference "FloatingButton" */;
-			productName = FloatingButton;
-		};
 		79FB1F542ED928FB0041E1E0 /* FlusterSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlusterSwift;
-		};
-		79FFA6CC2EB4280100B09AE7 /* STTextView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 79FFA6CB2EB4280100B09AE7 /* XCRemoteSwiftPackageReference "STTextView" */;
-			productName = STTextView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

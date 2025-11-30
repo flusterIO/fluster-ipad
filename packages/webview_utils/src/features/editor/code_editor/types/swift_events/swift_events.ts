@@ -3,21 +3,20 @@ export interface SwiftEventMap {
 }
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface WindowEventMap {
         "set-editor-content": CustomEvent<string>;
         "set-editor-keymap": CustomEvent<string>;
-        "set-editor-theme": CustomEvent<string>;
-        "set-editor-theme-dark": CustomEvent<string>;
-        "set-editor-theme-light": CustomEvent<string>;
+        "set-code-theme": CustomEvent<string>;
+        "set-code-theme-dark": CustomEvent<string>;
+        "set-code-theme-light": CustomEvent<string>;
         "reset-mdx-preview-scroll-position": CustomEvent<null>;
     }
     interface Window {
         setEditorContent: typeof setEditorContent;
         setEditorKeymap: typeof setEditorKeymap;
-        setEditorTheme: typeof setEditorTheme;
-        setEditorThemeLight: typeof setEditorThemeLight;
-        setEditorThemeDark: typeof setEditorThemeDark;
+        setCodeTheme: typeof setCodeTheme;
+        setCodeThemeLight: typeof setCodeThemeLight;
+        setCodeThemeDark: typeof setCodeThemeDark;
         resetMdxPreviewScrollPosition: typeof resetMdxPreviewScrollPosition;
     }
 }
@@ -34,19 +33,19 @@ export function setEditorKeymap(keymap: string) {
     );
 }
 
-export function setEditorTheme(theme: string) {
-    window.dispatchEvent(new CustomEvent("set-editor-theme", { detail: theme }));
+export function setCodeTheme(theme: string) {
+    window.dispatchEvent(new CustomEvent("set-code-theme", { detail: theme }));
 }
 
-export function setEditorThemeDark(theme: string) {
+export function setCodeThemeDark(theme: string) {
     window.dispatchEvent(
-        new CustomEvent("set-editor-theme-dark", { detail: theme }),
+        new CustomEvent("set-code-theme-dark", { detail: theme }),
     );
 }
 
-export function setEditorThemeLight(theme: string) {
+export function setCodeThemeLight(theme: string) {
     window.dispatchEvent(
-        new CustomEvent("set-editor-theme-light", { detail: theme }),
+        new CustomEvent("set-code-theme-light", { detail: theme }),
     );
 }
 
@@ -61,8 +60,8 @@ const resetMdxPreviewScrollPosition = (): void => {
 export const setWindowBridgeFunctions = () => {
     window.setEditorContent = setEditorContent;
     window.setEditorKeymap = setEditorKeymap;
-    window.setEditorTheme = setEditorTheme;
-    window.setEditorThemeDark = setEditorThemeDark;
-    window.setEditorThemeLight = setEditorThemeLight;
+    window.setCodeTheme = setCodeTheme;
+    window.setCodeThemeDark = setCodeThemeDark;
+    window.setCodeThemeLight = setCodeThemeLight;
     window.resetMdxPreviewScrollPosition = resetMdxPreviewScrollPosition;
 };

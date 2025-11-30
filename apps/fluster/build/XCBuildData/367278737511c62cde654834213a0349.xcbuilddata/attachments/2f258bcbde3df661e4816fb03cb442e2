@@ -1,0 +1,4 @@
+module FloatingButton {
+header "FloatingButton-Swift.h"
+export *
+}

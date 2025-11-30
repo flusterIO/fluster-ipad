@@ -1,0 +1,21 @@
+{
+  "" : {
+    "const-values" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/STTextViewSwiftUIUIKit-primary.swiftconstvalues",
+    "dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/STTextViewSwiftUIUIKit-primary.d",
+    "diagnostics" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/STTextViewSwiftUIUIKit-primary.dia",
+    "emit-module-dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/STTextViewSwiftUIUIKit-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/STTextViewSwiftUIUIKit-primary-emit-module.dia",
+    "pch" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/STTextViewSwiftUIUIKit-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/STTextViewSwiftUIUIKit-primary.swiftdeps"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/Sources/STTextViewSwiftUIUIKit/TextView.swift" : {
+    "index-unit-output-path" : "/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/TextView.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/TextView.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/TextView.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/Sources/STTextViewSwiftUIUIKit/TextViewModifier.swift" : {
+    "index-unit-output-path" : "/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/TextViewModifier.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/TextViewModifier.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextView/build/STTextView.build/Release-iphoneos/STTextViewSwiftUIUIKit.build/Objects-normal/arm64/TextViewModifier.o"
+  }
+}

@@ -3,30 +3,28 @@ import SwiftUI
 import WebKit
 
 @MainActor
-public final class EditorWebViewContainer: WebviewContainer {
-    public override init() {}
-    public func emitEditorThemeEvent(theme: CodeEditorTheme) {
-        print("Changing editor theme event")
+public final class MdxEditorWebviewContainer: WebviewContainer {
+    public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
         self.runJavascript(
             """
-            window.localStorage.setItem("editor-theme", "\(theme.rawValue)")
-            window.setEditorTheme("\(theme.rawValue)")
+            window.localStorage.setItem("code-theme", "\(theme.rawValue)")
+            window.setCodeSyntaxTheme("\(theme.rawValue)")
             """
         )
     }
-    public func setEditorLightTheme(theme: CodeEditorTheme) {
+    public func setEditorLightTheme(theme: CodeSyntaxTheme) {
         self.runJavascript(
             """
-            window.localStorage.setItem("editor-theme-light", "\(theme.rawValue)")
-            window.setEditorThemeLight("\(theme.rawValue)")
+            window.localStorage.setItem("code-theme-light", "\(theme.rawValue)")
+            window.setCodeSyntaxThemeLight("\(theme.rawValue)")
             """
         )
     }
-    public func setEditorDarkTheme(theme: CodeEditorTheme) {
+    public func setEditorDarkTheme(theme: CodeSyntaxTheme) {
         self.runJavascript(
             """
-            window.localStorage.setItem("editor-theme-dark", "\(theme.rawValue)")
-            window.setEditorThemeDark("\(theme.rawValue)")
+            window.localStorage.setItem("code-theme-dark", "\(theme.rawValue)")
+            window.setCodeSyntaxThemeDark("\(theme.rawValue)")
             """
         )
     }
@@ -47,18 +45,19 @@ public final class EditorWebViewContainer: WebviewContainer {
         )
     }
     public func resetScrollPosition() {
-        self.runJavascript("""
+        self.runJavascript(
+            """
             window.resetMdxPreviewScrollPosition()
             """)
     }
     public func setInitialProperties(
         editingNote: NoteModel?,
-        codeEditorTheme: CodeEditorTheme,
+        codeEditorTheme: CodeSyntaxTheme,
         editorKeymap: EditorKeymap,
         theme: WebViewTheme,
         fontSize: WebviewFontSize,
-        editorThemeDark: CodeEditorTheme,
-        editorThemeLight: CodeEditorTheme,
+        editorThemeDark: CodeSyntaxTheme,
+        editorThemeLight: CodeSyntaxTheme,
         darkMode: Bool
     ) {
         self.applyWebViewColorScheme(darkMode: darkMode)

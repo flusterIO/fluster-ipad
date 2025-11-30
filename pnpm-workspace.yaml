@@ -2,5 +2,7 @@ packages:
   - packages/webviews/editor_splitview_webview
   - packages/webviews/bibtex_editor_webview
   - packages/webviews/bib_entry_details_webview
-  - packages/webviews/reference_note_webview
+  - packages/webviews/standalone_mdx_editor
+  - packages/webviews/standalone_mdx_preview
   - packages/webview_utils
+  - packages/shared_config

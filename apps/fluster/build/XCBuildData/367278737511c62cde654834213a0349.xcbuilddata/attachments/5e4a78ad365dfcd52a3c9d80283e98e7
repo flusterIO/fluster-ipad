@@ -1,0 +1,4 @@
+module FlusterSwift {
+header "FlusterSwift-Swift.h"
+export *
+}

@@ -1,0 +1,4 @@
+module SwiftyBibtex {
+header "SwiftyBibtex-Swift.h"
+export *
+}

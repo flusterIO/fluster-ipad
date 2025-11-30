@@ -8,8 +8,8 @@
 import Foundation
 
 public final class BibtexEditorWebviewContainer: WebviewContainer {
-    public override init() {}
-    public func emitEditorThemeEvent(theme: CodeEditorTheme) {
+//    public override init() {}
+    public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
         print("Changing editor theme event")
         self.runJavascript(
             """
@@ -43,7 +43,7 @@ public final class BibtexEditorWebviewContainer: WebviewContainer {
     }
     public func setInitialProperties(
         initialValue: String?,
-        codeEditorTheme: CodeEditorTheme,
+        codeEditorTheme: CodeSyntaxTheme,
         editorKeymap: EditorKeymap,
         theme: WebViewTheme,
         fontSize: WebviewFontSize,

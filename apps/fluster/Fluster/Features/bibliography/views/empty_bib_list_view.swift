@@ -64,7 +64,7 @@ struct EmptyBibListView: View {
 #Preview {
     EmptyBibListView(
         editingBibEntry: .constant(nil),
-        container: BibtexEditorWebviewContainer(),
+        container: BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true),
         associateNoteModalPresented: .constant(false)
     )
 }

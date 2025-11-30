@@ -61,9 +61,13 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
+packages/swift/SplitViewFork/Demo
+
 **/node_modules
 packages/webviews/*/node_modules
 packages/webviews/*/build
 packages/webviews/*/node_modules
 packages/webviews/bibtex_editor_webview/bibtex_editor_webview/
 packages/webviews/reference_note_webview/reference_note_webview/
+packages/webviews/standalone_mdx_editor/standalone_mdx_editor
+packages/webviews/standalone_mdx_preview/standalone_mdx_preview

@@ -1,5 +1,5 @@
 {
-  "originHash" : "95fc79670072c52c763b229e99760e32d6424654e3c53f5f45857eadaae954b8",
+  "originHash" : "4b3f15a6918025bf63a16202e986636f43c87a9436bcd50fc8630d86362c6937",
   "pins" : [
     {
       "identity" : "antlr4-swift",
@@ -11,57 +11,12 @@
       }
     },
     {
-      "identity" : "coretextswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/CoreTextSwift",
-      "state" : {
-        "revision" : "833177201d6421e6322296f39fce6ff6ae52618a",
-        "version" : "0.2.0"
-      }
-    },
-    {
-      "identity" : "floatingbutton",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/exyte/FloatingButton",
-      "state" : {
-        "revision" : "c1e3e6a641ef5bacbcbc2b2c80db54793f75f974",
-        "version" : "1.4.0"
-      }
-    },
-    {
       "identity" : "networkimage",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/gonzalezreal/NetworkImage",
       "state" : {
         "revision" : "2849f5323265386e200484b0d0f896e73c3411b9",
         "version" : "6.0.1"
-      }
-    },
-    {
-      "identity" : "splitview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/stevengharris/SplitView",
-      "state" : {
-        "revision" : "7737a80740919c2fa94a6e64f870d37ef77b9b5f",
-        "version" : "3.5.3"
-      }
-    },
-    {
-      "identity" : "sttextkitplus",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/STTextKitPlus",
-      "state" : {
-        "revision" : "42513da2f28f90fb180d422c31fe670cf3e0875a",
-        "version" : "0.1.10"
-      }
-    },
-    {
-      "identity" : "sttextview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/STTextView",
-      "state" : {
-        "revision" : "c315a8ef18bca290a03368d154186044eede4cc0",
-        "version" : "2.2.4"
       }
     },
     {
@@ -98,15 +53,6 @@
       "state" : {
         "revision" : "b653c01e6315cf06c2c55a8396a397cdadaddccf",
         "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "yams",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jpsim/Yams",
-      "state" : {
-        "revision" : "51b5127c7fb6ffac106ad6d199aaa33c5024895f",
-        "version" : "6.2.0"
       }
     }
   ],

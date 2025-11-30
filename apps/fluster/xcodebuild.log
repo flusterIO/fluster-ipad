@@ -1,0 +1,246 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CoreTextSwift: https://github.com/krzyzanowskim/CoreTextSwift @ 0.2.0
+  NetworkImage: https://github.com/gonzalezreal/NetworkImage @ 6.0.1
+  SVGView: https://github.com/exyte/SVGView @ 1.0.6
+  Antlr4: https://github.com/MaxHaertwig/ANTLR4-Swift.git @ 4.9.1
+  cmark-gfm: https://github.com/swiftlang/swift-cmark @ 0.7.1
+  SwiftyBibtex: https://github.com/MaxHaertwig/SwiftyBibtex.git @ 1.0.0
+  swift-markdown-ui: https://github.com/gonzalezreal/swift-markdown-ui @ 2.4.1
+  Yams: https://github.com/jpsim/Yams @ 6.2.0
+  STTextKitPlus: https://github.com/krzyzanowskim/STTextKitPlus @ 0.1.10
+  FloatingButton: https://github.com/exyte/FloatingButton @ 1.4.0
+  FlusterSwift: /Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift @ local
+  SplitView: https://github.com/stevengharris/SplitView @ 3.5.3
+  STTextView: https://github.com/krzyzanowskim/STTextView @ 2.2.4
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (36 targets)
+    Target 'Fluster' in project 'Fluster'
+        ➜ Explicit dependency on target 'SplitView' in project 'SplitView'
+        ➜ Explicit dependency on target 'FloatingButton' in project 'FloatingButton'
+        ➜ Explicit dependency on target 'SVGView' in project 'SVGView'
+        ➜ Explicit dependency on target 'FlusterSwift' in project 'FlusterSwift'
+        ➜ Explicit dependency on target 'Yams' in project 'Yams'
+        ➜ Explicit dependency on target 'STTextView' in project 'STTextView'
+        ➜ Explicit dependency on target 'MarkdownUI' in project 'swift-markdown-ui'
+        ➜ Explicit dependency on target 'SwiftyBibtex' in project 'SwiftyBibtex'
+    Target 'STTextView' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextView' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewSwiftUI' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewCommon' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewUIKit' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewSwiftUIUIKit' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextKitPlus' in project 'STTextKitPlus'
+        ➜ Explicit dependency on target 'CoreTextSwift' in project 'CoreTextSwift'
+    Target 'STTextViewSwiftUI' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewCommon' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewUIKit' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextView' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewSwiftUIUIKit' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextKitPlus' in project 'STTextKitPlus'
+        ➜ Explicit dependency on target 'CoreTextSwift' in project 'CoreTextSwift'
+    Target 'STTextViewSwiftUIUIKit' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewCommon' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewUIKit' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextView' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextKitPlus' in project 'STTextKitPlus'
+        ➜ Explicit dependency on target 'CoreTextSwift' in project 'CoreTextSwift'
+    Target 'STTextView' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewCommon' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewUIKit' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextKitPlus' in project 'STTextKitPlus'
+        ➜ Explicit dependency on target 'CoreTextSwift' in project 'CoreTextSwift'
+    Target 'STTextViewUIKit' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextViewCommon' in project 'STTextView'
+        ➜ Explicit dependency on target 'STObjCLandShim' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextKitPlus' in project 'STTextKitPlus'
+        ➜ Explicit dependency on target 'CoreTextSwift' in project 'CoreTextSwift'
+    Target 'CoreTextSwift' in project 'CoreTextSwift'
+        ➜ Explicit dependency on target 'CoreTextSwift' in project 'CoreTextSwift'
+    Target 'CoreTextSwift' in project 'CoreTextSwift' (no dependencies)
+    Target 'STObjCLandShim' in project 'STTextView' (no dependencies)
+    Target 'STTextViewCommon' in project 'STTextView'
+        ➜ Explicit dependency on target 'STTextKitPlus' in project 'STTextKitPlus'
+    Target 'STTextKitPlus' in project 'STTextKitPlus'
+        ➜ Explicit dependency on target 'STTextKitPlus' in project 'STTextKitPlus'
+    Target 'STTextKitPlus' in project 'STTextKitPlus' (no dependencies)
+    Target 'Yams' in project 'Yams'
+        ➜ Explicit dependency on target 'Yams' in project 'Yams'
+        ➜ Explicit dependency on target 'CYaml' in project 'Yams'
+    Target 'Yams' in project 'Yams'
+        ➜ Explicit dependency on target 'CYaml' in project 'Yams'
+    Target 'CYaml' in project 'Yams' (no dependencies)
+    Target 'FlusterSwift' in project 'FlusterSwift'
+        ➜ Explicit dependency on target 'FlusterSwift' in project 'FlusterSwift'
+        ➜ Explicit dependency on target 'SwiftyBibtex' in project 'SwiftyBibtex'
+        ➜ Explicit dependency on target 'MarkdownUI' in project 'swift-markdown-ui'
+    Target 'FlusterSwift' in project 'FlusterSwift'
+        ➜ Explicit dependency on target 'SwiftyBibtex' in project 'SwiftyBibtex'
+        ➜ Explicit dependency on target 'MarkdownUI' in project 'swift-markdown-ui'
+    Target 'MarkdownUI' in project 'swift-markdown-ui'
+        ➜ Explicit dependency on target 'MarkdownUI' in project 'swift-markdown-ui'
+        ➜ Explicit dependency on target 'cmark-gfm' in project 'cmark-gfm'
+        ➜ Explicit dependency on target 'cmark-gfm-extensions' in project 'cmark-gfm'
+        ➜ Explicit dependency on target 'NetworkImage' in project 'NetworkImage'
+    Target 'MarkdownUI' in project 'swift-markdown-ui'
+        ➜ Explicit dependency on target 'cmark-gfm' in project 'cmark-gfm'
+        ➜ Explicit dependency on target 'cmark-gfm-extensions' in project 'cmark-gfm'
+        ➜ Explicit dependency on target 'NetworkImage' in project 'NetworkImage'
+    Target 'NetworkImage' in project 'NetworkImage'
+        ➜ Explicit dependency on target 'NetworkImage' in project 'NetworkImage'
+    Target 'NetworkImage' in project 'NetworkImage' (no dependencies)
+    Target 'cmark-gfm-extensions' in project 'cmark-gfm'
+        ➜ Explicit dependency on target 'cmark-gfm-extensions' in project 'cmark-gfm'
+        ➜ Explicit dependency on target 'cmark-gfm' in project 'cmark-gfm'
+    Target 'cmark-gfm-extensions' in project 'cmark-gfm'
+        ➜ Explicit dependency on target 'cmark-gfm' in project 'cmark-gfm'
+    Target 'cmark-gfm' in project 'cmark-gfm'
+        ➜ Explicit dependency on target 'cmark-gfm' in project 'cmark-gfm'
+    Target 'cmark-gfm' in project 'cmark-gfm' (no dependencies)
+    Target 'SwiftyBibtex' in project 'SwiftyBibtex'
+        ➜ Explicit dependency on target 'SwiftyBibtex' in project 'SwiftyBibtex'
+        ➜ Explicit dependency on target 'Antlr4' in project 'Antlr4'
+        ➜ Explicit dependency on target 'BibtexParser' in project 'SwiftyBibtex'
+    Target 'SwiftyBibtex' in project 'SwiftyBibtex'
+        ➜ Explicit dependency on target 'Antlr4' in project 'Antlr4'
+        ➜ Explicit dependency on target 'BibtexParser' in project 'SwiftyBibtex'
+    Target 'BibtexParser' in project 'SwiftyBibtex'
+        ➜ Explicit dependency on target 'Antlr4' in project 'Antlr4'
+    Target 'Antlr4' in project 'Antlr4'
+        ➜ Explicit dependency on target 'Antlr4' in project 'Antlr4'
+    Target 'Antlr4' in project 'Antlr4' (no dependencies)
+    Target 'SVGView' in project 'SVGView'
+        ➜ Explicit dependency on target 'SVGView' in project 'SVGView'
+    Target 'SVGView' in project 'SVGView' (no dependencies)
+    Target 'FloatingButton' in project 'FloatingButton'
+        ➜ Explicit dependency on target 'FloatingButton' in project 'FloatingButton'
+    Target 'FloatingButton' in project 'FloatingButton' (no dependencies)
+    Target 'SplitView' in project 'SplitView'
+        ➜ Explicit dependency on target 'SplitView' in project 'SplitView'
+    Target 'SplitView' in project 'SplitView' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+ExecuteExternalTool /opt/homebrew/opt/llvm/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /opt/homebrew/opt/llvm/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.1.sdk -x objective-c -c /dev/null
+
+ExecuteExternalTool /opt/homebrew/opt/llvm/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/bigsexy/Desktop/swift/Fluster/apps/fluster/Fluster/Assets.xcassets
+
+ReadFileContents /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/docc/features.json
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+Build description signature: 31f025cf2fd019c13e071f3ff1b3483c
+Build description path: /Users/bigsexy/Desktop/swift/Fluster/apps/fluster/build/XCBuildData/31f025cf2fd019c13e071f3ff1b3483c.xcbuilddata
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'CYaml' from project 'Yams')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'CYaml' from project 'Yams')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'CYaml' from project 'Yams')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'CYaml' from project 'Yams')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'CYaml' from project 'Yams')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'CYaml' from project 'Yams')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'CYaml' from project 'Yams')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'CYaml' from project 'Yams')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'CYaml' from project 'Yams')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'CYaml' from project 'Yams')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'CYaml' from project 'Yams')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'CYaml' from project 'Yams')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'STObjCLandShim' from project 'STTextView')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'STObjCLandShim' from project 'STTextView')
+/Users/bigsexy/Desktop/swift/Fluster/apps/fluster/Fluster.xcodeproj: error: No profiles for 'iglooDevelopment.Fluster' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'iglooDevelopment.Fluster'. Automatic signing is disabled and unable to generate a profile. To enable automatic signing, pass -allowProvisioningUpdates to xcodebuild. (in target 'Fluster' from project 'Fluster')
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Fluster' from project 'Fluster')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Explicit modules is enabled but could not resolve libclang.dylib, continuing with explicit modules disabled. (in target 'cmark-gfm-extensions' from project 'cmark-gfm')
+note: Candidate '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib' skipped because it did not match the configured compiler (in target 'cmark-gfm-extensions' from project 'cmark-gfm')

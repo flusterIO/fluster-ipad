@@ -1,0 +1,46 @@
+{
+  "" : {
+    "const-values" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/STTextKitPlus-primary.swiftconstvalues",
+    "dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/STTextKitPlus-primary.d",
+    "diagnostics" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/STTextKitPlus-primary.dia",
+    "emit-module-dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/STTextKitPlus-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/STTextKitPlus-primary-emit-module.dia",
+    "pch" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/STTextKitPlus-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/STTextKitPlus-primary.swiftdeps"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/Sources/STTextKitPlus/NSRange.swift" : {
+    "index-unit-output-path" : "/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSRange.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSRange.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSRange.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/Sources/STTextKitPlus/NSTextContentManager.swift" : {
+    "index-unit-output-path" : "/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextContentManager.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextContentManager.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextContentManager.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/Sources/STTextKitPlus/NSTextLayoutFragment.swift" : {
+    "index-unit-output-path" : "/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLayoutFragment.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLayoutFragment.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLayoutFragment.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/Sources/STTextKitPlus/NSTextLayoutManager.swift" : {
+    "index-unit-output-path" : "/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLayoutManager.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLayoutManager.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLayoutManager.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/Sources/STTextKitPlus/NSTextLineFragment.swift" : {
+    "index-unit-output-path" : "/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLineFragment.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLineFragment.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLineFragment.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/Sources/STTextKitPlus/NSTextLocation+Equatable.swift" : {
+    "index-unit-output-path" : "/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLocation+Equatable.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLocation+Equatable.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextLocation+Equatable.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/Sources/STTextKitPlus/NSTextRange.swift" : {
+    "index-unit-output-path" : "/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextRange.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextRange.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/STTextKitPlus/build/STTextKitPlus.build/Release-iphoneos/STTextKitPlus.build/Objects-normal/arm64/NSTextRange.o"
+  }
+}

@@ -32,6 +32,6 @@ struct BibListView: View {
     BibListView(
         items: [],
         editing: .constant(nil),
-        editorContainer: BibtexEditorWebviewContainer()
+        editorContainer: BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
     )
 }

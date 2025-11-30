@@ -13,3 +13,4 @@ git add packages/webview_utils/package.json
 git add packages/webviews/bib_entry_details_webview/package.json
 git add packages/webviews/bibtex_editor_webview/package.json
 git add packages/webviews/editor_splitview_webview/package.json
+git add packages/webviews/standalone_mdx_editor/package.json

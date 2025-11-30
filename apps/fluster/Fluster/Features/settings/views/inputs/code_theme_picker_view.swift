@@ -8,7 +8,7 @@
 import SwiftUI
 import FlusterSwift
 
-func getEditorThemeText(editorTheme: CodeEditorTheme) -> String {
+func getEditorThemeText(editorTheme: CodeSyntaxTheme) -> String {
     switch editorTheme {
     case .githubDark:
         return "Github Dark"
@@ -41,16 +41,16 @@ func getEditorThemeText(editorTheme: CodeEditorTheme) -> String {
 
 struct EditorThemePickerView: View {
 
-    @Binding var theme: CodeEditorTheme
+    @Binding var theme: CodeSyntaxTheme
     var title: String
     @Environment(\.colorScheme) var colorScheme
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     var body: some View {
         Picker(selection: $theme, label: Text(title)) {
-            ForEach(0..<CodeEditorTheme.allCases.count) {
-                Text(getEditorThemeText(editorTheme: CodeEditorTheme.allCases[$0])).tag(
-                    CodeEditorTheme.allCases[$0]
+            ForEach(0..<CodeSyntaxTheme.allCases.count) {
+                Text(getEditorThemeText(editorTheme: CodeSyntaxTheme.allCases[$0])).tag(
+                    CodeSyntaxTheme.allCases[$0]
                 )
             }
         }

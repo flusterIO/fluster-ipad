@@ -30,9 +30,9 @@ public struct BibtexEditorWebview: UIViewRepresentable {
     @State private var didSetInitialContent = false
     @State var haveSetInitialContent: Bool = false
     @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-        var editorThemeDark: CodeEditorTheme = .dracula
+        var editorThemeDark: CodeSyntaxTheme = .dracula
     @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-        var editorThemeLight: CodeEditorTheme = .githubLight
+        var editorThemeLight: CodeSyntaxTheme = .githubLight
     @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap:
         EditorKeymap = .base
     @Binding var value: String

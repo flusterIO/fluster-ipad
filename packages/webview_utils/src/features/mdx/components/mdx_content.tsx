@@ -9,7 +9,6 @@ export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     className?: string;
     abortIfNoMath?: boolean;
     debounceTimeout?: number;
-    removeGrayMatter?: boolean;
     scrollPositionKey?: string;
 }
 
@@ -18,10 +17,9 @@ export const MdxContent = ({
     className,
     abortIfNoMath,
     debounceTimeout = 300,
-    removeGrayMatter,
     ...props
 }: MdxContentProps): ReactNode => {
-    const { Component, setValue, value } = useDebounceMdxParse(
+    const { Component, setValue } = useDebounceMdxParse(
         undefined,
         debounceTimeout,
     );

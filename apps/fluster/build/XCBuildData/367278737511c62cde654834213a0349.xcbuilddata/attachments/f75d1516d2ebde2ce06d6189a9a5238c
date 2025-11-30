@@ -1,0 +1,4 @@
+module STTextViewCommon {
+header "STTextViewCommon-Swift.h"
+export *
+}

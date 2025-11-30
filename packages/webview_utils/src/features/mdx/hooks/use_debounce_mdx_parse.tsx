@@ -16,7 +16,7 @@ export const useDebounceMdxParse = (
     const [hasParsed, setHasParsed] = useState(false);
     const [mdxModule, setMdxModule] = useState<MDXModule | null>(null);
     const [darkCodeTheme, setDarkCodeTheme] = useLocalStorage(
-        "editor-theme-dark",
+        "code-theme-dark",
         undefined,
         {
             deserializer(value) {
@@ -29,7 +29,7 @@ export const useDebounceMdxParse = (
         },
     );
     const [lightCodeTheme, setLightCodeTheme] = useLocalStorage(
-        "editor-theme-light",
+        "code-theme-light",
         undefined,
         {
             deserializer(value) {
@@ -42,10 +42,8 @@ export const useDebounceMdxParse = (
         },
     );
 
-    useEventListener("set-editor-theme-dark", (e) => setDarkCodeTheme(e.detail));
-    useEventListener("set-editor-theme-light", (e) =>
-        setLightCodeTheme(e.detail),
-    );
+    useEventListener("set-code-theme-dark", (e) => setDarkCodeTheme(e.detail));
+    useEventListener("set-code-theme-light", (e) => setLightCodeTheme(e.detail));
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 

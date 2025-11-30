@@ -2,13 +2,13 @@ import SwiftData
 import SwiftUI
 import WebKit
 
-public enum CodeEditorTheme: String, Codable, CaseIterable {
+public enum CodeSyntaxTheme: String, Codable, CaseIterable {
     case materialLight, solarizedLight, githubLight, aura, tokyoNightDay,
         dracula, tokyoNight, materialDark, tokyoNightStorm, githubDark,
         solarizedDark, xcodeDark, xcodeLight
 }
 
-public struct WebViewWrapper: UIViewRepresentable {
+public struct MdxEditorWebview: UIViewRepresentable {
 
     @State private var webView: WKWebView = WKWebView(
         frame: .zero,
@@ -23,20 +23,31 @@ public struct WebViewWrapper: UIViewRepresentable {
         var webviewFontSize: WebviewFontSize = .base
     let url: URL
     @Binding var theme: WebViewTheme
-    @Binding var editorThemeDark: CodeEditorTheme
-    @Binding var editorThemeLight: CodeEditorTheme
+    @Binding var editorThemeDark: CodeSyntaxTheme
+    @Binding var editorThemeLight: CodeSyntaxTheme
     @Binding var editingNote: NoteModel?
     @Binding var editorKeymap: EditorKeymap
+    @Binding var viewportHeight: CGFloat
 
-    let container: EditorWebViewContainer
+    let container: MdxEditorWebviewContainer
 
-    public init(url: URL, theme: Binding<WebViewTheme>, editorThemeDark: Binding<CodeEditorTheme>, editorThemeLight: Binding<CodeEditorTheme>, editingNote: Binding<NoteModel?>, editorKeymap: Binding<EditorKeymap>, container: EditorWebViewContainer) {
+    public init(
+        url: URL,
+        theme: Binding<WebViewTheme>,
+        editorThemeDark: Binding<CodeSyntaxTheme>,
+        editorThemeLight: Binding<CodeSyntaxTheme>,
+        editingNote: Binding<NoteModel?>,
+        editorKeymap: Binding<EditorKeymap>,
+        viewportHeight: Binding<CGFloat>,
+        container: MdxEditorWebviewContainer
+    ) {
         self.url = url
         self._theme = theme
         self._editorThemeDark = editorThemeDark
         self._editorThemeLight = editorThemeLight
         self._editingNote = editingNote
         self._editorKeymap = editorKeymap
+        self._viewportHeight = viewportHeight
         self.container = container
     }
 
@@ -44,16 +55,18 @@ public struct WebViewWrapper: UIViewRepresentable {
         let webView = container.webView
 
         webView.navigationDelegate = context.coordinator
-        webView.configuration.userContentController.add(
-            context.coordinator,
-            name: "editor-update"
-        )
-        webView.configuration.userContentController.add(
-            context.coordinator,
-            name: "request-initial-data"
-        )
-
-//        webView.scrollView.contentInsetAdjustmentBehavior = .never
+        let editorContentControllers = [
+            "editor-update",
+            "request-initial-editor-data",
+            "set-editor-viewport-height",
+        ]
+        for controllerName in editorContentControllers {
+            addUserContentController(
+                controller: webView.configuration.userContentController,
+                coordinator: context.coordinator,
+                name: controllerName
+            )
+        }
 
         // Loading the page only once
         webView.loadFileURL(url, allowingReadAccessTo: url)
@@ -62,8 +75,8 @@ public struct WebViewWrapper: UIViewRepresentable {
     }
 
     public func updateUIView(_ uiView: WKWebView, context: Context) {
-//        uiView.scrollView.contentInset = .zero
-//        uiView.scrollView.scrollIndicatorInsets = .zero
+        //        uiView.scrollView.contentInset = .zero
+        //        uiView.scrollView.scrollIndicatorInsets = .zero
     }
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -93,18 +106,20 @@ public struct WebViewWrapper: UIViewRepresentable {
     }
 }
 
-public extension WebViewWrapper {
-    final class Coordinator: NSObject, WKNavigationDelegate,
+extension MdxEditorWebview {
+    public final class Coordinator: NSObject, WKNavigationDelegate,
         WKScriptMessageHandler
     {
-        var parent: WebViewWrapper
+        var parent: MdxEditorWebview
 
-        init(_ parent: WebViewWrapper) {
+        init(_ parent: MdxEditorWebview) {
             self.parent = parent
         }
 
-        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
-        {
+        public func webView(
+            _ webView: WKWebView,
+            didFinish navigation: WKNavigation!
+        ) {
             guard !parent.didSetInitialContent else { return }
             parent.didSetInitialContent = true
 
@@ -121,12 +136,18 @@ public extension WebViewWrapper {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            if message.name == "editor-update",
+            if message.name == "set-editor-viewport-height" {
+                if let n = NumberFormatter().number(
+                    from: message.body as! String
+                ) {
+                    print("N: \(n)")
+                    parent.viewportHeight = CGFloat(truncating: n)
+                }
+            } else if message.name == "editor-update",
                 let str = message.body as? String
             {
                 parent.editingNote?.markdown.body = str
-            }
-            if message.name == "request-initial-data" {
+            } else if message.name == "request-initial-editor-data" {
                 print("Request for initial editor data received...")
                 parent.setInitialProperties()
                 parent.setInitialContent()

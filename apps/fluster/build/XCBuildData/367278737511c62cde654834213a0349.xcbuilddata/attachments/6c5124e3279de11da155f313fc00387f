@@ -1,0 +1,151 @@
+{
+  "" : {
+    "const-values" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift-primary.swiftconstvalues",
+    "dependencies" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift-primary.d",
+    "diagnostics" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift-primary.dia",
+    "emit-module-dependencies" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift-primary-emit-module.dia",
+    "pch" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift-primary.swiftdeps"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/FlusterSwift.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/FlusterSwift.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/db/app_data_container.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_data_container.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_data_container.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_data_container.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/db/app_data_migration.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_data_migration.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_data_migration.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_data_migration.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/db/app_storage_keys.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_storage_keys.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_storage_keys.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/app_storage_keys.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/db/model_context_extensions.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/model_context_extensions.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/model_context_extensions.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/model_context_extensions.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/db/schemas/schema_v1.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/schema_v1.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/schema_v1.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/schema_v1.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/extensions/string.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/string.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/string.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/string.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/utils/models/initial_note_paths_json_decoder.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/initial_note_paths_json_decoder.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/initial_note_paths_json_decoder.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/initial_note_paths_json_decoder.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/utils/themeing/theme_manager.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/theme_manager.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/theme_manager.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/theme_manager.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/utils/themeing/theme_protocol.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/theme_protocol.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/theme_protocol.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/theme_protocol.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/utils/themeing/themes.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/themes.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/themes.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/themes.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/core/utils/themeing/webview_theme_enum.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_theme_enum.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_theme_enum.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_theme_enum.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/markdown/data/editor_keymap.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/editor_keymap.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/editor_keymap.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/editor_keymap.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/markdown/data/functions/mdx_text_utils.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_text_utils.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_text_utils.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_text_utils.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/markdown/data/functions/mdx_utility_structs.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_utility_structs.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_utility_structs.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_utility_structs.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/markdown/data/markdown_text_processor.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/markdown_text_processor.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/markdown_text_processor.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/markdown_text_processor.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/markdown/data/parsers/mdx_tag_parser.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_tag_parser.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_tag_parser.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/mdx_tag_parser.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/paper/data/functions/paper_utils.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/paper_utils.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/paper_utils.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/paper_utils.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/paper/views/canvas_view.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/canvas_view.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/canvas_view.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/canvas_view.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/paper/views/paper_view.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/paper_view.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/paper_view.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/paper_view.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/search/views/no_notes_found_view.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/no_notes_found_view.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/no_notes_found_view.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/no_notes_found_view.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/web/data/webview_font_size.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_font_size.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_font_size.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_font_size.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/web/views/bibtex_editor_webview.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/bibtex_editor_webview.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/bibtex_editor_webview.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/bibtex_editor_webview.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/web/views/bibtex_editor_webview_container.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/bibtex_editor_webview_container.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/bibtex_editor_webview_container.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/bibtex_editor_webview_container.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/web/views/editor_webview_container.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/editor_webview_container.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/editor_webview_container.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/editor_webview_container.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/web/views/web_view.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/web_view.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/web_view.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/web_view.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/features/web/views/webview_container.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_container.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_container.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/webview_container.o"
+  },
+  "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/Sources/FlusterSwift/platform_utils/ipad/models/ipad_main_view_tab.swift" : {
+    "index-unit-output-path" : "/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/ipad_main_view_tab.o",
+    "llvm-bc" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/ipad_main_view_tab.bc",
+    "object" : "/Users/bigsexy/Desktop/swift/Fluster/packages/swift/FlusterSwift/build/FlusterSwift.build/Release-iphoneos/FlusterSwift.build/Objects-normal/arm64/ipad_main_view_tab.o"
+  }
+}

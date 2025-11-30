@@ -66,16 +66,16 @@ struct BibliographyPageInternalView: View {
 struct BibliographyPageView: View {
     @State private var editing: BibEntryModel? = nil
     @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-        var editorThemeDark: CodeEditorTheme = .dracula
+        var editorThemeDark: CodeSyntaxTheme = .dracula
     @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-        var editorThemeLight: CodeEditorTheme = .githubLight
+        var editorThemeLight: CodeSyntaxTheme = .githubLight
     @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap:
         EditorKeymap = .base
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
         .fluster
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var bibtexEditorContainer =
-        BibtexEditorWebviewContainer()
+        BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
     var body: some View {
         BibliographyPageInternalView(
             editing: $editing,

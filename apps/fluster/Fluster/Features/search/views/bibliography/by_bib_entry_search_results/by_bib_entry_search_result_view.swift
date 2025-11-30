@@ -10,9 +10,9 @@ import SwiftUI
 import FlusterSwift
 
 struct ByBibEntrySearchResults: View {
+    @Query private var notes: [NoteModel]
     var bibEntryId: String
     @Binding var editingNote: NoteModel?
-    @Query private var notes: [NoteModel]
 
     init(bibEntryId: String, editingNote: Binding<NoteModel?>) {
         self.bibEntryId = bibEntryId

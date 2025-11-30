@@ -5,19 +5,121 @@
 //  Created by Andrew on 11/28/25.
 //
 
+import FlusterSwift
 import SwiftUI
-import SplitView
 
 struct SplitViewEditorView: View {
-    var body: some View {
-        HSplit(left: {
-            SplitViewEditorOnlyView()
-        }, right: {
-            SplitViewPreviewOnlyView()
-        })
+    //    let splitFraction = FractionHolder.usingUserDefaults(
+    //        0.5,
+    //        key: "splitViewMdxEditorFraction"
+    //    )
+    @StateObject private var previewContainer = MdxPreviewWebviewContainer(
+        bounce: false,
+        scrollEnabled: false
+    )
+    @State private var shouldShowEditor: Bool = false
+    @State private var previewHeight: CGFloat = 0
+    @State private var editorHeight: CGFloat = 0
+    @State private var isDragging: Bool = true
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Binding var theme: WebViewTheme
+    @Binding var editorThemeDark: CodeSyntaxTheme
+    @Binding var editorThemeLight: CodeSyntaxTheme
+    @Binding var editingNote: NoteModel?
+    @Binding var editorKeymap: EditorKeymap
+    //    @StateObject private var editorContainer = MdxEditorWebviewContainer()
+    let editorContainer: MdxEditorWebviewContainer
+    init(
+        theme: Binding<WebViewTheme>,
+        editorThemeDark: Binding<CodeSyntaxTheme>,
+        editorThemeLight: Binding<CodeSyntaxTheme>,
+        editingNote: Binding<NoteModel?>,
+        editorKeymap: Binding<EditorKeymap>,
+        editorContainer: MdxEditorWebviewContainer
+    ) {
+        self._theme = theme
+        self._editorThemeDark = editorThemeDark
+        self._editorThemeLight = editorThemeLight
+        self._editingNote = editingNote
+        self._editorKeymap = editorKeymap
+        self.editorContainer = editorContainer
     }
-}
-
-#Preview {
-    SplitViewEditorView()
+    var body: some View {
+        GeometryReader { rect in
+            SplitView(
+                left: {
+                    MdxEditorWebview(
+                        url:
+                            Bundle.main.url(
+                                forResource: "index",
+                                withExtension: "html",
+                                subdirectory: "standalone_mdx_editor"
+                            )!,
+                        theme: $theme,
+                        editorThemeDark: $editorThemeDark,
+                        editorThemeLight: $editorThemeLight,
+                        editingNote: $editingNote,
+                        editorKeymap: $editorKeymap,
+                        viewportHeight: $editorHeight,
+                        container: editorContainer,
+                    )
+                    //                .frame(height: editorHeight)
+                    .padding(.bottom, 0)
+                    .ignoresSafeArea(edges: .bottom)
+                },
+                right: {
+                    ScrollView {
+                        MdxPreviewWebview(
+                            url:
+                                Bundle.main.url(
+                                    forResource: "index",
+                                    withExtension: "html",
+                                    subdirectory: "standalone_mdx_preview"
+                                )!,
+                            theme: $theme,
+                            editorThemeDark: $editorThemeDark,
+                            editorThemeLight: $editorThemeLight,
+                            editingNote: $editingNote,
+                            editorKeymap: $editorKeymap,
+                            shouldShowEditor: $shouldShowEditor,
+                            viewportHeight: $previewHeight,
+                            container: previewContainer,
+                        )
+                        .frame(height: previewHeight)
+                        .padding(.bottom, 0)
+                        .ignoresSafeArea(edges: .bottom)
+                    }
+                    .frame(
+                        height: getPreviewHeight(rect: rect)
+                    )
+                },
+                onDragStart: {
+                    isDragging = true
+                    previewContainer.setLoading(isLoading: true)
+                },
+                onDragEnd: {
+                    //                isDragging = false
+                    // TODO: Close one side animation if ratio below or above certain bounds. Use a state variabl enum for this though and make sure to persist it in appstorage.
+                    //                    withAnimation(.easeInOut) {
+                    //                        self.editorHeight = 0
+                    //                        self.previewHeight = 0
+                    //                    }
+                    previewContainer.setLoading(isLoading: false)
+                    previewContainer.requestDocumentSize()
+                }
+            )
+        }
+    }
+    func getPreviewHeight(rect:GeometryProxy) -> CGFloat {
+        print("isdragging: \(isDragging)")
+        if !isDragging {
+            return previewHeight
+        }
+        if let h = UIScreen.current?.bounds.height {
+            print("H: \(h)")
+            return h - rect.safeAreaInsets.top
+        } else {
+            return 0
+        }
+    }
 }

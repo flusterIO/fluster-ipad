@@ -34,7 +34,6 @@ export const MdxEditorPreview = ({
     return (
         <MdxContent
             id="mdx-preview"
-            removeGrayMatter
             {...props}
             className={cn(
                 isEditorView ? "px-4 pt-4" : "px-8 pt-6 max-h-screen overflow-y-auto",

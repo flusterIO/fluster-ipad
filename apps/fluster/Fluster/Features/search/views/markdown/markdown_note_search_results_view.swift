@@ -67,8 +67,8 @@ struct MarkdownNotesSearchResultsWrappedQuery: View {
 }
 
 struct MarkdownNotesSearchResultsView: View {
-    @Binding var editingNote: NoteModel?
     @State private var searchQuery: String = ""
+    @Binding var editingNote: NoteModel?
     var body: some View {
         MarkdownNotesSearchResultsWrappedQuery(
             editingNote: $editingNote,

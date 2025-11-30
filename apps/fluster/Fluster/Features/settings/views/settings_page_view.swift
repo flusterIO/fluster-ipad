@@ -9,11 +9,14 @@ import FlusterSwift
 import SwiftUI
 
 struct SettingsPageView: View {
-
-    @Binding var theme: WebViewTheme
-    @Binding var editorThemeDark: CodeEditorTheme
-    @Binding var editorThemeLight: CodeEditorTheme
-    @Binding var colorSchemeSelection: ColorSchemeSelection
+    @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
+        .fluster
+    @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
+        var editorThemeDark: CodeSyntaxTheme = .dracula
+    @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
+        var editorThemeLight: CodeSyntaxTheme = .githubLight
+    @AppStorage(AppStorageKeys.colorScheme.rawValue) private
+        var colorSchemeSelection: ColorSchemeSelection = .dark
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     var body: some View {
@@ -43,13 +46,4 @@ struct SettingsPageView: View {
         }
         .navigationTitle("Settings")
     }
-}
-
-#Preview {
-    SettingsPageView(
-        theme: .constant(.fluster),
-        editorThemeDark: .constant(.dracula),
-        editorThemeLight: .constant(.solarizedLight),
-        colorSchemeSelection: .constant(.dark)
-    )
 }

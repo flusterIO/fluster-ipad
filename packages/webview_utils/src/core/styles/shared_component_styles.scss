@@ -5,7 +5,7 @@ li.hide-li-marker {
 }
 
 .checkbox-primitive {
-  border-color: hsl(var(--foreground)/0.4);
+  border-color: hsl(var(--foreground) / 0.4);
 }
 
 .checkbox-primitive[data-state="checked"] {
@@ -16,5 +16,25 @@ li.hide-li-marker {
 .dark {
   .checkbox-primitive[data-state="checked"] {
     border-color: hsl(var(--primary));
+  }
+}
+
+#webview-container {
+  .load-hide {
+    display: block;
+  }
+
+  .load-show {
+    display: none;
+  }
+
+  &.loading {
+    .load-hide {
+      display: none;
+    }
+
+    .load-show {
+      display: block;
+    }
   }
 }

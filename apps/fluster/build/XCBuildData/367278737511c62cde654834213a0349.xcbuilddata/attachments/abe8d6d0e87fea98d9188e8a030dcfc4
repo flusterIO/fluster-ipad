@@ -1,0 +1,61 @@
+{
+  "" : {
+    "const-values" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitView-primary.swiftconstvalues",
+    "dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitView-primary.d",
+    "diagnostics" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitView-primary.dia",
+    "emit-module-dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitView-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitView-primary-emit-module.dia",
+    "pch" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitView-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitView-primary.swiftdeps"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/HSplit.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/HSplit.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/HSplit.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/HSplit.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/Split.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Split.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Split.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Split.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/SplitConstraints.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitConstraints.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitConstraints.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitConstraints.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/SplitEnums.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitEnums.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitEnums.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitEnums.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/SplitHolders.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitHolders.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitHolders.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitHolders.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/SplitModifiers.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitModifiers.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitModifiers.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitModifiers.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/SplitStyling.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitStyling.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitStyling.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/SplitStyling.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/Splitter+Extensions.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Splitter+Extensions.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Splitter+Extensions.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Splitter+Extensions.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/Splitter.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Splitter.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Splitter.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/Splitter.o"
+  },
+  "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/Sources/SplitView/VSplit.swift" : {
+    "index-unit-output-path" : "/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/VSplit.o",
+    "llvm-bc" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/VSplit.bc",
+    "object" : "/Users/bigsexy/Library/Developer/Xcode/DerivedData/Fluster-dnwyssfnvlbfjygkaoiwopnbozvq/SourcePackages/checkouts/SplitView/build/SplitView.build/Release-iphoneos/SplitView.build/Objects-normal/arm64/VSplit.o"
+  }
+}

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct BibliographySearchResultsViewQueryWrapped: View {
     @StateObject private var bibtexEditorContainer =
-        BibtexEditorWebviewContainer()
+        BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
     @Query(sort: \BibEntryModel.ctime) var bibEntries: [BibEntryModel]
     @Environment(NoteModel.self) private var editingNote: NoteModel?
     @Environment(\.modelContext) var modelContext

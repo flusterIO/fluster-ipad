@@ -118,7 +118,7 @@ export const CodeEditor = (
     );
     useEffect(() => {
         if (!initialValue) {
-            sendToSwift(SwiftHandler.requestInitialData, "");
+            sendToSwift(SwiftHandler.requestInitialEditorData, "");
         }
     }, [initialValue]);
     useEventListener("set-editor-content", (e) => {

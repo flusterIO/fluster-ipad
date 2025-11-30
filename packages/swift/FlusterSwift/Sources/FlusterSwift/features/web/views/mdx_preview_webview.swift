@@ -1,0 +1,168 @@
+//
+//  File.swift
+//  FlusterSwift
+//
+//  Created by Andrew on 11/29/25.
+//
+
+import SwiftData
+import SwiftUI
+import WebKit
+
+public struct MdxPreviewWebview: UIViewRepresentable {
+
+    @State private var webView: WKWebView = WKWebView(
+        frame: .zero,
+        configuration: getConfig()
+    )
+    @State private var didSetInitialContent = false
+    @State var haveSetInitialContent: Bool = false
+    @Environment(\.openURL) var openURL
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.colorScheme) var colorScheme
+    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
+        var webviewFontSize: WebviewFontSize = .base
+    let url: URL
+    @Binding var theme: WebViewTheme
+    @Binding var editorThemeDark: CodeSyntaxTheme
+    @Binding var editorThemeLight: CodeSyntaxTheme
+    @Binding var editingNote: NoteModel?
+    @Binding var editorKeymap: EditorKeymap
+    @Binding var shouldShowEditor: Bool
+    @Binding var viewportHeight: CGFloat
+
+    let container: MdxPreviewWebviewContainer
+
+    public init(
+        url: URL,
+        theme: Binding<WebViewTheme>,
+        editorThemeDark: Binding<CodeSyntaxTheme>,
+        editorThemeLight: Binding<CodeSyntaxTheme>,
+        editingNote: Binding<NoteModel?>,
+        editorKeymap: Binding<EditorKeymap>,
+        shouldShowEditor: Binding<Bool>,
+        viewportHeight: Binding<CGFloat>,
+        container: MdxPreviewWebviewContainer
+    ) {
+        self.url = url
+        self._theme = theme
+        self._editorThemeDark = editorThemeDark
+        self._editorThemeLight = editorThemeLight
+        self._editingNote = editingNote
+        self._editorKeymap = editorKeymap
+        self._shouldShowEditor = shouldShowEditor
+        self._viewportHeight = viewportHeight
+        self.container = container
+    }
+
+    public func makeUIView(context: Context) -> WKWebView {
+        let webView = container.webView
+
+        webView.navigationDelegate = context.coordinator
+        let controllers = [
+            "request-initial-preview-data",
+            "set-preview-viewport-height",
+            "is-landscape-view"
+        ]
+        
+        for controllerName in controllers {
+            addUserContentController(
+                controller: webView.configuration.userContentController,
+                coordinator: context.coordinator,
+                name: controllerName
+            )
+        }
+        // Loading the page only once
+        webView.loadFileURL(url, allowingReadAccessTo: url)
+
+        return webView
+    }
+
+    public func updateUIView(_ uiView: WKWebView, context: Context) {
+        //        uiView.scrollView.contentInset = .zero
+        //        uiView.scrollView.scrollIndicatorInsets = .zero
+    }
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    public func setInitialProperties() {
+        container.setInitialProperties(
+            editingNote: editingNote,
+            codeEditorTheme: colorScheme == .dark
+                ? editorThemeDark : editorThemeLight,
+            editorKeymap: editorKeymap,
+            theme: theme,
+            fontSize: webviewFontSize,
+            editorThemeDark: editorThemeDark,
+            editorThemeLight: editorThemeLight,
+            darkMode: colorScheme == .dark
+        )
+    }
+    func getQuotedContent() -> String {
+        if editingNote == nil {
+            return "''"
+        }
+        let t = MdxText(body: editingNote!.markdown.body)
+        t.parse()
+        return t.body.toQuotedJavascriptString()
+    }
+    public func setInitialContent() {
+        if editingNote != nil {
+            container.setInitialContent(note: editingNote!)
+        } else {
+            container.runJavascript(
+                """
+                window.localStorage.setItem("mdx-preview-content", "")
+                window.setEditorContent("")
+                """
+            )
+        }
+    }
+}
+
+extension MdxPreviewWebview {
+    public final class Coordinator: @MainActor NSObject, WKNavigationDelegate,
+        WKScriptMessageHandler
+    {
+        var parent: MdxPreviewWebview
+
+        init(_ parent: MdxPreviewWebview) {
+            self.parent = parent
+        }
+
+        public func webView(
+            _ webView: WKWebView,
+            didFinish navigation: WKNavigation!
+        ) {
+            guard !parent.didSetInitialContent else { return }
+            parent.didSetInitialContent = true
+
+            webView.evaluateJavaScript(
+                """
+                window.localStorage.setItem("mdx-preview-content", \(parent.getQuotedContent()));
+                """
+            )
+            parent.setInitialProperties()
+            parent.container.webView.isHidden = false
+        }
+
+        public func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive message: WKScriptMessage
+        ) {
+            if message.name == "set-preview-viewport-height" {
+                if let n = NumberFormatter().number(from: message.body as! String) {
+                    parent.viewportHeight = CGFloat(truncating: n)
+                }  else {
+                    parent.viewportHeight = UIScreen.main.bounds.height
+                }
+            } else if message.name == "is-landscape-view" {
+                print("is-landscape: \(message.body as! String)")
+                parent.shouldShowEditor = (message.body as! String) == "true"
+            } else if message.name == "request-initial-preview-data" {
+                parent.setInitialProperties()
+                parent.setInitialContent()
+            }
+        }
+    }
+}

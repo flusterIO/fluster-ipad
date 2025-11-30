@@ -1,6 +1,10 @@
 export enum SwiftHandler {
     editorUpdate = "editor-update",
-    requestInitialData = "request-initial-data",
+    setSplitviewEditorLandscapeView = "is-landscape-view",
+    setPreviewViewportSize = "set-preview-viewport-height",
+    setEditorViewportSize = "set-editor-viewport-height",
+    requestInitialEditorData = "request-initial-editor-data",
+    requestInitialPreviewData = "request-initial-preview-data",
     bibtexRequestInitialData = "bibtex-request-initial-data",
     bibtexEditorUpdate = "bibtex-editor-update",
 }
