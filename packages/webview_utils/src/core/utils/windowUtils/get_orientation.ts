@@ -29,7 +29,6 @@ export const setOrientationListener = (): void => {
         document
             .getElementById("webview-container")
             ?.classList[isLandscape ? "add" : "remove"]("landscape");
-        console.log(`Sending to swift...`);
         sendToSwift(
             SwiftHandler.setSplitviewEditorLandscapeView,
             isLandscape ? "true" : "false",
@@ -44,4 +43,3 @@ export const setOrientationListener = (): void => {
         handleOrientationChange(e.target as ScreenOrientation),
     );
 };
-

@@ -44,49 +44,54 @@ struct SplitViewEditorView: View {
         GeometryReader { rect in
             SplitView(
                 left: {
-                    MdxEditorWebview(
-                        url:
-                            Bundle.main.url(
-                                forResource: "index",
-                                withExtension: "html",
-                                subdirectory: "standalone_mdx_editor"
-                            )!,
-                        theme: $theme,
-                        editorThemeDark: $editorThemeDark,
-                        editorThemeLight: $editorThemeLight,
-                        editingNote: $editingNote,
-                        editorKeymap: $editorKeymap,
-                        viewportHeight: $editorHeight,
-                        container: editorContainer,
-                    )
-                    //                .frame(height: editorHeight)
-                    .padding(.bottom, 0)
-                    .ignoresSafeArea(edges: .bottom)
+                    ScrollView {
+                        MdxEditorWebview(
+                            url:
+                                Bundle.main.url(
+                                    forResource: "index",
+                                    withExtension: "html",
+                                    subdirectory: "standalone_mdx_editor"
+                                )!,
+                            theme: $theme,
+                            editorThemeDark: $editorThemeDark,
+                            editorThemeLight: $editorThemeLight,
+                            editingNote: $editingNote,
+                            editorKeymap: $editorKeymap,
+                            viewportHeight: $editorHeight,
+                            container: editorContainer,
+                        )
+                        .frame(height: editorHeight)
+                        .padding(.bottom, 0)
+                        .ignoresSafeArea(edges: .bottom)
+                        .onAppear {
+                            editorContainer.requestDocumentSize()
+                        }
+                    }
                 },
                 right: {
-                        ScrollView {
-                            MdxPreviewWebview(
-                                url:
-                                    Bundle.main.url(
-                                        forResource: "index",
-                                        withExtension: "html",
-                                        subdirectory: "standalone_mdx_preview"
-                                    )!,
-                                theme: $theme,
-                                editorThemeDark: $editorThemeDark,
-                                editorThemeLight: $editorThemeLight,
-                                editingNote: $editingNote,
-                                editorKeymap: $editorKeymap,
-                                shouldShowEditor: $shouldShowEditor,
-                                viewportHeight: $previewHeight,
-                                container: previewContainer,
-                            )
-                            .frame(
-                                height: previewHeight
-                            )
-                            .padding(.bottom, 0)
-                            .ignoresSafeArea(edges: .bottom)
-                        }
+                    ScrollView {
+                        MdxPreviewWebview(
+                            url:
+                                Bundle.main.url(
+                                    forResource: "index",
+                                    withExtension: "html",
+                                    subdirectory: "standalone_mdx_preview"
+                                )!,
+                            theme: $theme,
+                            editorThemeDark: $editorThemeDark,
+                            editorThemeLight: $editorThemeLight,
+                            editingNote: $editingNote,
+                            editorKeymap: $editorKeymap,
+                            shouldShowEditor: $shouldShowEditor,
+                            viewportHeight: $previewHeight,
+                            container: previewContainer,
+                        )
+                        .frame(
+                            height: previewHeight
+                        )
+                        .padding(.bottom, 0)
+                        .ignoresSafeArea(edges: .bottom)
+                    }
                     .frame(
                         height: getPreviewHeight(rect: rect)
                     )
@@ -105,11 +110,60 @@ struct SplitViewEditorView: View {
                     //                    }
                     previewContainer.setLoading(isLoading: false)
                     previewContainer.requestDocumentSize()
+                    editorContainer.requestDocumentSize()
                 }
             )
+            .onChange(
+                of: editingNote,
+                {
+                    if let note = editingNote {
+                        editorContainer.setInitialContent(
+                            note: note
+                        )
+                        previewContainer.setInitialContent(
+                            note: note
+                        )
+                        editorContainer.resetScrollPosition()
+                    }
+                }
+            )
+            .onChange(
+                of: editorThemeDark,
+                {
+                    editorContainer.emitEditorThemeEvent(
+                        theme: colorScheme == .dark
+                            ? editorThemeDark : editorThemeLight
+                    )
+                    editorContainer.setEditorDarkTheme(
+                        theme: editorThemeDark
+                    )
+                }
+            )
+            .onChange(
+                of: editorThemeLight,
+                {
+                    editorContainer.emitEditorThemeEvent(
+                        theme: colorScheme == .dark
+                            ? editorThemeDark : editorThemeLight
+                    )
+                    editorContainer.setEditorLightTheme(
+                        theme: editorThemeLight
+                    )
+                }
+            )
+            .onChange(
+                of: editorKeymap,
+                {
+                    editorContainer.setEditorKeymap(
+                        editorKeymap: editorKeymap
+                    )
+                }
+            )
+            .disableAnimations()
         }
     }
     func viewportHeight(rect: GeometryProxy) -> CGFloat {
+        print("Getting height")
         if let h = UIScreen.current?.bounds.height {
             return h - rect.safeAreaInsets.top
         } else {

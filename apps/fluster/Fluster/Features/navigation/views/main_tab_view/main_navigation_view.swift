@@ -51,7 +51,7 @@ struct MainView: View {
         EditorKeymap = .base
     @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
         var tabviewCustomization: TabViewCustomization
-    @StateObject private var editorContainer = MdxEditorWebviewContainer(bounce: false, scrollEnabled: true)
+    @StateObject private var editorContainer = MdxEditorWebviewContainer(bounce: false, scrollEnabled: false)
     @State private var themeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
@@ -94,50 +94,6 @@ struct MainView: View {
                         editingNote: $editingNote,
                         editorKeymap: $editorKeymap,
                         editorContainer: editorContainer,
-                    )
-                    .onChange(
-                        of: editingNote,
-                        {
-                            if let note = editingNote {
-                                editorContainer.setInitialContent(
-                                    note: note
-                                )
-                                editorContainer.resetScrollPosition()
-                                note.last_read = .now
-                            }
-                        }
-                    )
-                    .onChange(
-                        of: editorThemeDark,
-                        {
-                            editorContainer.emitEditorThemeEvent(
-                                theme: colorScheme == .dark
-                                    ? editorThemeDark : editorThemeLight
-                            )
-                            editorContainer.setEditorDarkTheme(
-                                theme: editorThemeDark
-                            )
-                        }
-                    )
-                    .onChange(
-                        of: editorThemeLight,
-                        {
-                            editorContainer.emitEditorThemeEvent(
-                                theme: colorScheme == .dark
-                                    ? editorThemeDark : editorThemeLight
-                            )
-                            editorContainer.setEditorLightTheme(
-                                theme: editorThemeLight
-                            )
-                        }
-                    )
-                    .onChange(
-                        of: editorKeymap,
-                        {
-                            editorContainer.setEditorKeymap(
-                                editorKeymap: editorKeymap
-                            )
-                        }
                     )
                 } else {
                     SelectNoteToContinueView()
@@ -281,6 +237,11 @@ struct MainView: View {
                 )
             }
         )
+        .onChange(of: editingNote, {
+            if let _editingNote = editingNote {
+                _editingNote.last_read = .now
+            }
+        })
         .onAppear {
             handleColorSchemeChange(newScheme: colorScheme)
             handleThemeChange(newTheme: theme)

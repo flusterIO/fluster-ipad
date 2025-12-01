@@ -34,8 +34,8 @@ export const CodeEditorInner = ({
     const dispatch = useCodeEditorDispatch();
     const timer = useRef<NodeJS.Timeout | null>(null);
     const view = useRef<EditorView | null>(null);
+
     useEffect(() => {
-        console.log("state.keymap: ", state.keymap);
         if (haveRendered.current) {
             haveRendered.current = false;
             document.getElementById("code-editor-container")!.replaceChildren();
@@ -83,9 +83,9 @@ export const CodeEditorInner = ({
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
     }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap]);
 
-    useEffect(() => {
-        return () => window.localStorage.removeItem("editor-initial-value");
-    }, []);
+    /* useEffect(() => { */
+    /* }, []); */
+
     useEventListener("set-editor-content", (e) => {
         if (view.current) {
             view.current.dispatch({

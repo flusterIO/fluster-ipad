@@ -1,10 +1,17 @@
-import { WebViewContainer, MdxStandalonePreview } from "@fluster/webview_utils";
+import {
+    WebViewContainer,
+    MdxStandalonePreview,
+    SwiftHandler,
+} from "@fluster/webview_utils";
 import React from "react";
 
 function App() {
     return (
-        <WebViewContainer shrinkHeight>
-            <MdxStandalonePreview className={"px-6 pb-12 drag-hide"} />
+        <WebViewContainer
+            shrinkHeight
+            broadcastHeightKey={SwiftHandler.setPreviewViewportSize}
+        >
+            <MdxStandalonePreview className={"px-6 pb-12 pt-8"} />
         </WebViewContainer>
     );
 }

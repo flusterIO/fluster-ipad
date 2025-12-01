@@ -14,9 +14,9 @@ declare global {
     interface Window {
         setEditorContent: typeof setEditorContent;
         setEditorKeymap: typeof setEditorKeymap;
-        setCodeTheme: typeof setCodeTheme;
-        setCodeThemeLight: typeof setCodeThemeLight;
-        setCodeThemeDark: typeof setCodeThemeDark;
+        setCodeSyntaxTheme: typeof setCodeTheme;
+        setCodeSyntaxThemeLight: typeof setCodeThemeLight;
+        setCodeSyntaxThemeDark: typeof setCodeThemeDark;
         resetMdxPreviewScrollPosition: typeof resetMdxPreviewScrollPosition;
     }
 }
@@ -60,8 +60,8 @@ const resetMdxPreviewScrollPosition = (): void => {
 export const setWindowBridgeFunctions = () => {
     window.setEditorContent = setEditorContent;
     window.setEditorKeymap = setEditorKeymap;
-    window.setCodeTheme = setCodeTheme;
-    window.setCodeThemeDark = setCodeThemeDark;
-    window.setCodeThemeLight = setCodeThemeLight;
+    window.setCodeSyntaxTheme = setCodeTheme;
+    window.setCodeSyntaxThemeDark = setCodeThemeDark;
+    window.setCodeSyntaxThemeLight = setCodeThemeLight;
     window.resetMdxPreviewScrollPosition = resetMdxPreviewScrollPosition;
 };

@@ -1,5 +1,4 @@
 import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
-import { CaseUpper } from "lucide-react";
 
 /// Applies a listener that will broadcast the viewport dimensions to swift.
 declare global {
@@ -15,26 +14,32 @@ declare global {
 export const applyViewportBroadcastListener = (
     broadcastKey: SwiftHandler,
     /// The optional id of the element that wraps the documents content. This is required to avoidd expanding to meet the viewport when height: 100vh
-    sizeElementId: string = "webview-content-wrapper",
+    sizeElement: () => HTMLElement | null = () =>
+        document.getElementById("webview-container"),
 ): void => {
-    const height = (): string =>
-        document.getElementById(sizeElementId)!.scrollHeight.toString();
+    const height = (): string | undefined =>
+        sizeElement()?.scrollHeight.toString();
     const handleResize = (): void => {
         console.log("Sending viewport size to swift");
-        console.log("sending height: ", height());
         const isLoading = document
             .getElementById("webview-container")
             ?.classList.contains("loading");
         if (!isLoading) {
-            sendToSwift(broadcastKey, height());
+            const x = height();
+            console.log("height in handleResize: ", x);
+            if (x) {
+                sendToSwift(broadcastKey, x);
+            }
         }
     };
     window.requestDocumentSize = () => {
-        sendToSwift(broadcastKey, height());
+        const h = height();
+        console.log("height in requestDocumentSize: ", h);
+        if (h) {
+            sendToSwift(broadcastKey, h);
+        }
     };
     screen.orientation.addEventListener("change", handleResize);
-    document
-        .getElementById(sizeElementId)
-        ?.addEventListener("resize", handleResize);
+    sizeElement()?.addEventListener("resize", handleResize);
     window.addEventListener("request-document-size", handleResize);
 };

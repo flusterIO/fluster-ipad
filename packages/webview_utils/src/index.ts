@@ -39,6 +39,7 @@ export * from "./features/mdx/methods/get_component_map";
 // -- Webview --
 
 export * from "./features/webview_container/utils/apply_viewport_broadcast_listener";
+export * from "./features/webview_container/state/hooks/useRequestDocumentSize";
 
 //      -- Editor: Components --
 export * from "./features/editor/code_editor/components/code_editor";

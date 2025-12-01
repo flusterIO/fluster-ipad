@@ -62,9 +62,9 @@ public struct MdxPreviewWebview: UIViewRepresentable {
         let controllers = [
             "request-initial-preview-data",
             "set-preview-viewport-height",
-            "is-landscape-view"
+            "is-landscape-view",
         ]
-        
+
         for controllerName in controllers {
             addUserContentController(
                 controller: webView.configuration.userContentController,
@@ -153,11 +153,10 @@ extension MdxPreviewWebview {
             if message.name == "set-preview-viewport-height" {
                 if let n = NumberFormatter().number(from: message.body as! String) {
                     parent.viewportHeight = CGFloat(truncating: n)
-                }  else {
+                } else {
                     parent.viewportHeight = UIScreen.main.bounds.height
                 }
             } else if message.name == "is-landscape-view" {
-                print("is-landscape: \(message.body as! String)")
                 parent.shouldShowEditor = (message.body as! String) == "true"
             } else if message.name == "request-initial-preview-data" {
                 parent.setInitialProperties()

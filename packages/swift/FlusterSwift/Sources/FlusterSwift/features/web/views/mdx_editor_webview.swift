@@ -28,6 +28,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
     @Binding var editingNote: NoteModel?
     @Binding var editorKeymap: EditorKeymap
     @Binding var viewportHeight: CGFloat
+    
 
     let container: MdxEditorWebviewContainer
 
@@ -39,7 +40,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
         editingNote: Binding<NoteModel?>,
         editorKeymap: Binding<EditorKeymap>,
         viewportHeight: Binding<CGFloat>,
-        container: MdxEditorWebviewContainer
+        container: MdxEditorWebviewContainer,
     ) {
         self.url = url
         self._theme = theme
@@ -120,8 +121,8 @@ extension MdxEditorWebview {
             _ webView: WKWebView,
             didFinish navigation: WKNavigation!
         ) {
+            // On Load
             guard !parent.didSetInitialContent else { return }
-            parent.didSetInitialContent = true
 
             webView.evaluateJavaScript(
                 """
@@ -130,13 +131,35 @@ extension MdxEditorWebview {
             )
             parent.setInitialProperties()
             parent.container.webView.isHidden = false
+            parent.container.requestDocumentSize()
+            parent.didSetInitialContent = true
         }
+//        public func webView(
+//            _ webView: WKWebView,
+//            didStartProvisionalNavigation navigation: WKNavigation!
+//        ) {
+//            parent.isLoading = true  // Set loading to true when navigation starts
+//        }
 
+//        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
+//        {
+//        }
+
+        public func webView(
+            _ webView: WKWebView,
+            didFail navigation: WKNavigation!,
+            withError error: Error
+        ) {
+            print(
+                "WebView navigation failed with error: \(error.localizedDescription)"
+            )
+        }
         public func userContentController(
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
             if message.name == "set-editor-viewport-height" {
+                print("Message body: \(message.body)")
                 if let n = NumberFormatter().number(
                     from: message.body as! String
                 ) {

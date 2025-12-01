@@ -10,11 +10,13 @@ import {
 } from "@fluster/webview_utils";
 
 sendOrientationSwiftEvents();
-applyViewportBroadcastListener(SwiftHandler.setPreviewViewportSize);
+applyViewportBroadcastListener(
+    SwiftHandler.setPreviewViewportSize,
+    /* () => document.getElementById("webview-container")!, */
+);
 
 window.onload = () => {
     setOrientationListener();
-    window.requestDocumentSize();
 };
 
 createRoot(document.getElementById("root")!).render(

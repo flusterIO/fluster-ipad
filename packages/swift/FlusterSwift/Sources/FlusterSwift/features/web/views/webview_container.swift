@@ -19,7 +19,7 @@ public class WebviewContainer: ObservableObject {
     public let scrollEnabled: Bool = false
     let webView: WKWebView = {
         let view = WKWebView(frame: .zero, configuration: getConfig())
-//        view.scrollView.isScrollEnabled = scrollEnabled
+        //        view.scrollView.isScrollEnabled = scrollEnabled
         view.scrollView.minimumZoomScale = 1
         view.scrollView.maximumZoomScale = 1
         view.allowsBackForwardNavigationGestures = false
@@ -35,11 +35,12 @@ public class WebviewContainer: ObservableObject {
         self.webView.scrollView.bounces = bounce
         self.webView.scrollView.isScrollEnabled = scrollEnabled
     }
-    
+
     public func runJavascript(_ script: String) {
         self.webView.evaluateJavaScript(script) { result, error in
             if let error = error {
                 print("Error executing JS: \(error.localizedDescription)")
+                print("Command: \(script)")
             } else if let result = result {
                 print("JS Result: \(result)")
             }
@@ -69,23 +70,26 @@ public class WebviewContainer: ObservableObject {
             """
         )
     }
-    
+
     public func requestDocumentSize() {
-        self.runJavascript("""
+        self.runJavascript(
+            """
             window.requestDocumentSize()
             """)
     }
     public func addClassToWebviewContainer(className: String) {
-        self.runJavascript("""
+        self.runJavascript(
+            """
             document.getElementById("webview-container")?.classList.add("\(className)")
             """)
     }
     public func removeClassFromWebviewContainer(className: String) {
-        self.runJavascript("""
+        self.runJavascript(
+            """
             document.getElementById("webview-container")?.classList.remove("\(className)")
             """)
     }
-    
+
     public func setLoading(isLoading: Bool) {
         if isLoading {
             self.addClassToWebviewContainer(className: "loading")
