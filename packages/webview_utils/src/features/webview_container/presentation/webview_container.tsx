@@ -5,17 +5,29 @@ import { setWebviewWindowBridgeFunctions } from "../state/swift_events/webview_s
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
+import {
+    ScreenDimensions,
+    useScreenDimensions,
+} from "@/state/hooks/use_screen_dimensions";
 
 interface WebViewContainerProps {
     children: ReactNode;
     className?: string;
     style?: CSSProperties;
-    /// If shrinkHeight = true, will shrink to fit-content to allow window to resize to match content
+    /** If shrinkHeight = true, will shrink to fit-content to allow window to resize to match content */
     shrinkHeight?: boolean;
     broadcastHeightKey?: SwiftHandler;
+    /** An optional function that can accept the actual screen dimensions sent by swift and returns another screen dimensions that the webview will bind it's size to. */
+    screenDimensionCalculator?: (
+        actualDimensions: ScreenDimensions,
+    ) => CSSProperties;
 }
 
 setWebviewWindowBridgeFunctions();
+
+/** A utility function intended to have a shared place to get this element since this webview keeps breaking. */
+export const getParentContentWrapper = () =>
+    document.getElementById("webview-content-wrapper");
 
 export const WebViewContainer = ({
     className,
@@ -23,9 +35,11 @@ export const WebViewContainer = ({
     shrinkHeight,
     broadcastHeightKey,
     style,
+    screenDimensionCalculator,
 }: WebViewContainerProps): ReactNode => {
-    /* const updateDocSizeTimer = useRef<NodeJS.Timeout | null>(null); */
+    const updateDocSizeTimer = useRef<NodeJS.Timeout | null>(null);
     const container = useRef<HTMLDivElement>(null);
+    const dimensions = useScreenDimensions(screenDimensionCalculator);
     const [darkMode, setDarkMode] = useLocalStorage("dark-mode", undefined, {
         deserializer(value) {
             return value;
@@ -74,16 +88,17 @@ export const WebViewContainer = ({
         const observer = new MutationObserver((mutationsList) => {
             for (const mutation of mutationsList) {
                 if (mutation.type === "childList") {
-                    /* if (updateDocSizeTimer.current) { */
-                    /*     clearTimeout(updateDocSizeTimer.current); */
-                    /* } */
-                    /* updateDocSizeTimer.current = setTimeout(() => { */
-                    /*     const h = container.current?.getBoundingClientRect().height; */
-                    /*     if (h) { */
-                    /*         sendToSwift(broadcastHeightKey, h.toString()); */
-                    /*     } */
-                    /* }, 150); */
-                    sendToSwift(broadcastHeightKey, h.toString());
+                    console.log(`Child change`);
+                    if (updateDocSizeTimer.current) {
+                        clearTimeout(updateDocSizeTimer.current);
+                    }
+                    updateDocSizeTimer.current = setTimeout(() => {
+                        const h = container.current?.getBoundingClientRect().height;
+                        if (h) {
+                            sendToSwift(broadcastHeightKey, h.toString());
+                        }
+                    }, 50);
+                    /* sendToSwift(broadcastHeightKey, h.toString()); */
                 }
             }
         });
@@ -101,16 +116,25 @@ export const WebViewContainer = ({
     return (
         <div
             id="webview-container"
-            ref={container}
             className={cn(
                 "max-w-screen",
                 shrinkHeight ? "h-fit" : "h-screen min-h-fit",
                 className,
                 darkMode === "true" && "dark !bg-black",
             )}
-            style={style}
+            style={{
+                ...style,
+                ...(screenDimensionCalculator &&
+                    dimensions && {
+                    ...dimensions,
+                }),
+            }}
         >
-            <div id="webview-content-wrapper" className="w-full h-fit load-hide">
+            <div
+                id="webview-content-wrapper"
+                className="w-full h-fit load-hide"
+                ref={container}
+            >
                 {children}
             </div>
             <div

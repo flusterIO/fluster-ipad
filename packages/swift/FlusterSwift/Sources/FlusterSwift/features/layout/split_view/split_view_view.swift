@@ -7,15 +7,22 @@
 
 import SwiftUI
 
+public enum SplitViewSide {
+    case left, right, none
+}
+
 public struct SplitView<Vl: View, Vr: View>: View {
-    @AppStorage(AppStorageKeys.splitViewEditorSplit.rawValue)
-    var splitViewRatio: Double = 0.5
+    @State private var leftHidden: Bool = false
+    @State private var rightHidden: Bool = false
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     public let left: Vl
     public let right: Vr
+    @Binding var splitViewRatio: Double
     public let height: CGFloat?
     public var onDragStart: () -> Void = {}
     public var onDragEnd: () -> Void = {}
+    public var hideSide: SplitViewSide?
+
     var screenHeight: CGFloat {
         if let h = UIScreen.current?.bounds.height {
             return h
@@ -26,12 +33,15 @@ public struct SplitView<Vl: View, Vr: View>: View {
     public init(
         @ViewBuilder left: () -> Vl,
         @ViewBuilder right: () -> Vr,
+        splitViewRatio: Binding<Double>,
         height: CGFloat? = nil,
         onDragStart: (() -> Void)? = nil,
-        onDragEnd: (() -> Void)? = nil
+        onDragEnd: (() -> Void)? = nil,
+        hideSide: SplitViewSide?,
     ) {
         self.left = left()
         self.right = right()
+        self._splitViewRatio = splitViewRatio
         self.height = height
         if onDragEnd != nil {
             self.onDragEnd = onDragEnd!
@@ -39,17 +49,21 @@ public struct SplitView<Vl: View, Vr: View>: View {
         if onDragStart != nil {
             self.onDragStart = onDragStart!
         }
+        self.hideSide = hideSide
     }
     public var body: some View {
         GeometryReader { rect in
             ZStack {
                 colorScheme == .dark ? Color.black : Color.white
                 HStack {
-                    left
-                        .frame(
-                            width: rect.size.width * splitViewRatio,
-                            height: screenHeight - rect.safeAreaInsets.top
-                        )
+                    if hideSide != .left {
+                        left
+                            .frame(
+                                width: hideSide == .left
+                                    ? 0 : rect.size.width * splitViewRatio,
+                                height: screenHeight - rect.safeAreaInsets.top
+                            )
+                    }
                     SplitViewDividerView(
                         splitViewRatio: $splitViewRatio,
                         rect: rect,
@@ -58,7 +72,8 @@ public struct SplitView<Vl: View, Vr: View>: View {
                     )
                     right
                         .frame(
-                            width: rect.size.width * (1 - splitViewRatio),
+                            width: hideSide == .right
+                                ? 0 : rect.size.width * (1 - splitViewRatio),
                             height: screenHeight - rect.safeAreaInsets.top
                         )
                         .ignoresSafeArea(edges: .bottom)
@@ -66,6 +81,11 @@ public struct SplitView<Vl: View, Vr: View>: View {
             }
         }
         .coordinateSpace(name: "splitView")
+    }
+    public func hideSide(direction: SplitViewSide) {
+        withAnimation(.easeInOut) {
+            self.splitViewRatio = direction == .left ? 0 : 1
+        }
     }
 }
 
@@ -76,6 +96,8 @@ public struct SplitView<Vl: View, Vr: View>: View {
         },
         right: {
             Text("Right")
-        }
+        },
+        splitViewRatio: .constant(0.5),
+        hideSide: .none
     )
 }

@@ -51,7 +51,7 @@ struct MainView: View {
         EditorKeymap = .base
     @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
         var tabviewCustomization: TabViewCustomization
-    @StateObject private var editorContainer = MdxEditorWebviewContainer(bounce: false, scrollEnabled: false)
+    @StateObject private var editorContainer = MdxEditorWebviewContainer(bounce: false, scrollEnabled: true)
     @State private var themeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )

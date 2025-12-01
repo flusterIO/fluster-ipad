@@ -3,9 +3,6 @@ import SwiftUI
 import WebKit
 
 @MainActor func getConfig() -> WKWebViewConfiguration {
-    // configuring the `WKWebView` is very important
-    // without doing this the local index.html will not be able to read
-    // the css or js files properly
     let config = WKWebViewConfiguration()
     config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
     config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
@@ -19,7 +16,6 @@ public class WebviewContainer: ObservableObject {
     public let scrollEnabled: Bool = false
     let webView: WKWebView = {
         let view = WKWebView(frame: .zero, configuration: getConfig())
-        //        view.scrollView.isScrollEnabled = scrollEnabled
         view.scrollView.minimumZoomScale = 1
         view.scrollView.maximumZoomScale = 1
         view.allowsBackForwardNavigationGestures = false
@@ -75,19 +71,22 @@ public class WebviewContainer: ObservableObject {
         self.runJavascript(
             """
             window.requestDocumentSize()
-            """)
+            """
+        )
     }
     public func addClassToWebviewContainer(className: String) {
         self.runJavascript(
             """
             document.getElementById("webview-container")?.classList.add("\(className)")
-            """)
+            """
+        )
     }
     public func removeClassFromWebviewContainer(className: String) {
         self.runJavascript(
             """
             document.getElementById("webview-container")?.classList.remove("\(className)")
-            """)
+            """
+        )
     }
 
     public func setLoading(isLoading: Bool) {
@@ -95,6 +94,18 @@ public class WebviewContainer: ObservableObject {
             self.addClassToWebviewContainer(className: "loading")
         } else {
             self.removeClassFromWebviewContainer(className: "loading")
+        }
+    }
+
+    public func sendScreenSize() {
+        let width = UIScreen.current?.bounds.width
+        let height = UIScreen.current?.bounds.height
+        if width != nil && height != nil {
+            self.runJavascript(
+                """
+                window.setScreenSize(\(width), \(height))
+                """
+            )
         }
     }
 }

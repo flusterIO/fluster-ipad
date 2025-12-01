@@ -8,7 +8,7 @@ import React from "react";
 function App() {
     return (
         <WebViewContainer
-            shrinkHeight
+            /* shrinkHeight */
             broadcastHeightKey={SwiftHandler.setEditorViewportSize}
         >
             <CodeEditor />

@@ -1,4 +1,5 @@
 import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
+import { getParentContentWrapper } from "../presentation/webview_container";
 
 /// Applies a listener that will broadcast the viewport dimensions to swift.
 declare global {
@@ -14,8 +15,7 @@ declare global {
 export const applyViewportBroadcastListener = (
     broadcastKey: SwiftHandler,
     /// The optional id of the element that wraps the documents content. This is required to avoidd expanding to meet the viewport when height: 100vh
-    sizeElement: () => HTMLElement | null = () =>
-        document.getElementById("webview-container"),
+    sizeElement: () => HTMLElement | null = getParentContentWrapper,
 ): void => {
     const height = (): string | undefined =>
         sizeElement()?.scrollHeight.toString();

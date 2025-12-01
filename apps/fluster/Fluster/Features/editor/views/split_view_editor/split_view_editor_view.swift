@@ -16,14 +16,15 @@ struct SplitViewEditorView: View {
     @State private var shouldShowEditor: Bool = false
     @State private var previewHeight: CGFloat = 0
     @State private var editorHeight: CGFloat = 0
-    @State private var isDragging: Bool = true
+    /// Used to store the aspect ratio when hiding the editor to restore to the proper ratio.
+    @State private var restoreAspectRatio: Double? = nil
+    @AppStorage(AppStorageKeys.splitViewEditorSplit.rawValue) var splitViewRatio: Double = 0.5
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @Binding var theme: WebViewTheme
     @Binding var editorThemeDark: CodeSyntaxTheme
     @Binding var editorThemeLight: CodeSyntaxTheme
     @Binding var editingNote: NoteModel?
     @Binding var editorKeymap: EditorKeymap
-    //    @StateObject private var editorContainer = MdxEditorWebviewContainer()
     let editorContainer: MdxEditorWebviewContainer
     init(
         theme: Binding<WebViewTheme>,
@@ -44,29 +45,27 @@ struct SplitViewEditorView: View {
         GeometryReader { rect in
             SplitView(
                 left: {
-                    ScrollView {
-                        MdxEditorWebview(
-                            url:
-                                Bundle.main.url(
-                                    forResource: "index",
-                                    withExtension: "html",
-                                    subdirectory: "standalone_mdx_editor"
-                                )!,
-                            theme: $theme,
-                            editorThemeDark: $editorThemeDark,
-                            editorThemeLight: $editorThemeLight,
-                            editingNote: $editingNote,
-                            editorKeymap: $editorKeymap,
-                            viewportHeight: $editorHeight,
-                            container: editorContainer,
-                        )
-                        .frame(height: editorHeight)
-                        .padding(.bottom, 0)
-                        .ignoresSafeArea(edges: .bottom)
-                        .onAppear {
-                            editorContainer.requestDocumentSize()
-                        }
-                    }
+                    MdxEditorWebview(
+                        url:
+                            Bundle.main.url(
+                                forResource: "index",
+                                withExtension: "html",
+                                subdirectory: "standalone_mdx_editor"
+                            )!,
+                        theme: $theme,
+                        editorThemeDark: $editorThemeDark,
+                        editorThemeLight: $editorThemeLight,
+                        editingNote: $editingNote,
+                        editorKeymap: $editorKeymap,
+                        viewportHeight: $editorHeight,
+                        container: editorContainer,
+                    )
+                    .contentMargins(0)
+                    .padding(.bottom, 0)
+                    .ignoresSafeArea(edges: .bottom)
+//                    .onAppear {
+//                        editorContainer.requestDocumentSize()
+//                    }
                 },
                 right: {
                     ScrollView {
@@ -93,25 +92,22 @@ struct SplitViewEditorView: View {
                         .ignoresSafeArea(edges: .bottom)
                     }
                     .frame(
-                        height: getPreviewHeight(rect: rect)
+                        height: viewportHeight(rect: rect)
                     )
                 },
+                splitViewRatio: $splitViewRatio,
                 onDragStart: {
-                    isDragging = true
                     previewHeight = self.viewportHeight(rect: rect)
                     previewContainer.setLoading(isLoading: true)
+                    editorContainer.setLoading(isLoading: true)
                 },
                 onDragEnd: {
-                    //                isDragging = false
-                    // TODO: Close one side animation if ratio below or above certain bounds. Use a state variabl enum for this though and make sure to persist it in appstorage.
-                    //                    withAnimation(.easeInOut) {
-                    //                        self.editorHeight = 0
-                    //                        self.previewHeight = 0
-                    //                    }
                     previewContainer.setLoading(isLoading: false)
+                    editorContainer.setLoading(isLoading: false)
                     previewContainer.requestDocumentSize()
                     editorContainer.requestDocumentSize()
-                }
+                },
+                hideSide: shouldShowEditor ? SplitViewSide.none : SplitViewSide.left
             )
             .onChange(
                 of: editingNote,
@@ -159,21 +155,27 @@ struct SplitViewEditorView: View {
                     )
                 }
             )
+            .onChange(of: shouldShowEditor, {
+                if !shouldShowEditor {
+                    restoreAspectRatio = splitViewRatio
+                    splitViewRatio = 0
+                    previewContainer.requestDocumentSize()
+                } else {
+                    if let ra = restoreAspectRatio {
+                        splitViewRatio = ra
+                    }
+                    restoreAspectRatio = nil
+                    previewContainer.requestDocumentSize()
+                }
+            })
             .disableAnimations()
         }
     }
     func viewportHeight(rect: GeometryProxy) -> CGFloat {
-        print("Getting height")
         if let h = UIScreen.current?.bounds.height {
             return h - rect.safeAreaInsets.top
         } else {
             return 0
         }
-    }
-    func getPreviewHeight(rect: GeometryProxy) -> CGFloat {
-        if !isDragging {
-            return previewHeight
-        }
-        return viewportHeight(rect: rect)
     }
 }
