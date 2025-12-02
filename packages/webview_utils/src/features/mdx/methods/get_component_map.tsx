@@ -4,8 +4,11 @@ import { H1, H2, H3, H4, P } from "@/shared_components/typography/typography";
 import { BlockQuote } from "@/shared_components/typography/block_quote";
 import { MDXComponents } from "mdx/types";
 import { InlineMdxContent } from "../components/inline_mdx_content";
-import { MdxInput } from "../embeddable_mdx_components/input";
 import { Hl } from "../embeddable_mdx_components/hl";
+import { MdxInput } from "../embeddable_mdx_components/html/input";
+import { AnchorTag } from "../embeddable_mdx_components/html/anchor";
+import { AutoInsertedTag } from "../embeddable_mdx_components/auto_inserted/tag";
+import { Ul } from "../embeddable_mdx_components/ul";
 interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
     query: string | string[];
@@ -23,9 +26,8 @@ export const componentOverrides: MDXComponents = {
     blockquote: BlockQuote,
     mark: Hl,
     /* pre: WrappedCodeBlock, */
-    /* a: AnchorTag, */
+    a: AnchorTag,
     /* hr: Hr, */
-    /* a: A, */
     input: MdxInput,
     /* img: ImgComponent as any, */
 };
@@ -121,10 +123,10 @@ const items: ComponentMapItem[] = [
     /*     query: "Hint", */
     /*     component: Hint, */
     /* }, */
-    /* { */
-    /*     query: "Ul", */
-    /*     component: Ul, */
-    /* }, */
+    {
+        query: "Ul",
+        component: Ul,
+    },
     {
         query: ["Hl", "HL"],
         component: Hl,
@@ -183,10 +185,10 @@ const items: ComponentMapItem[] = [
     /*     query: "InlineCitation", */
     /*     component: InlineCitation, */
     /* }, */
-    /* { */
-    /*     query: "Tag", */
-    /*     component: Tag, */
-    /* }, */
+    {
+        query: "AutoInsertedTag",
+        component: AutoInsertedTag,
+    },
     /* { */
     /*     query: "DictionaryEntry", */
     /*     component: DictionaryEntry, */

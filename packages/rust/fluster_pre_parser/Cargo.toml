@@ -1,0 +1,13 @@
+[package]
+name = "fluster_pre_parser"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+edition.workspace = true
+
+[dependencies]
+uniffi = { version = "0.29", features = ["tokio"] }
+fluster_core_utilities = { path = "../fluster_core_utilities/" }
+serde = { workspace = true }
+async-trait = { workspace = true }

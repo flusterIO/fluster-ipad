@@ -271,39 +271,14 @@ void*_Nonnull uniffi_fluster_rust_fn_constructor_greeter_new(RustBuffer name, Ru
 RustBuffer uniffi_fluster_rust_fn_method_greeter_greet(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_CLONE_MDXPARSINGRESULT
-#define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_CLONE_MDXPARSINGRESULT
-void*_Nonnull uniffi_fluster_rust_fn_clone_mdxparsingresult(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FREE_MDXPARSINGRESULT
-#define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FREE_MDXPARSINGRESULT
-void uniffi_fluster_rust_fn_free_mdxparsingresult(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_CLONE_PARSEMDXBYREGEXOPTS
-#define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_CLONE_PARSEMDXBYREGEXOPTS
-void*_Nonnull uniffi_fluster_rust_fn_clone_parsemdxbyregexopts(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FREE_PARSEMDXBYREGEXOPTS
-#define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FREE_PARSEMDXBYREGEXOPTS
-void uniffi_fluster_rust_fn_free_parsemdxbyregexopts(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_CLONE_TAGRESULT
-#define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_CLONE_TAGRESULT
-void*_Nonnull uniffi_fluster_rust_fn_clone_tagresult(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FREE_TAGRESULT
-#define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FREE_TAGRESULT
-void uniffi_fluster_rust_fn_free_tagresult(void*_Nonnull ptr, RustCallStatus *_Nonnull out_status
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FUNC_ADD
 #define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FUNC_ADD
 uint64_t uniffi_fluster_rust_fn_func_add(uint64_t a, uint64_t b, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FUNC_PARSE_MDX_STRING_BY_REGEX
+#define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_FN_FUNC_PARSE_MDX_STRING_BY_REGEX
+uint64_t uniffi_fluster_rust_fn_func_parse_mdx_string_by_regex(RustBuffer opts
 );
 #endif
 #ifndef UNIFFI_FFIDEF_FFI_FLUSTER_RUST_RUSTBUFFER_ALLOC
@@ -589,6 +564,12 @@ void ffi_fluster_rust_rust_future_complete_void(uint64_t handle, RustCallStatus 
 #ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_CHECKSUM_FUNC_ADD
 #define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_CHECKSUM_FUNC_ADD
 uint16_t uniffi_fluster_rust_checksum_func_add(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_CHECKSUM_FUNC_PARSE_MDX_STRING_BY_REGEX
+#define UNIFFI_FFIDEF_UNIFFI_FLUSTER_RUST_CHECKSUM_FUNC_PARSE_MDX_STRING_BY_REGEX
+uint16_t uniffi_fluster_rust_checksum_func_parse_mdx_string_by_regex(void
     
 );
 #endif

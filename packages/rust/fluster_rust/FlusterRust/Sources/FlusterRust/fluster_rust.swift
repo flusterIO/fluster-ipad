@@ -470,6 +470,24 @@ fileprivate struct FfiConverterString: FfiConverter {
     }
 }
 
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterData: FfiConverterRustBuffer {
+    typealias SwiftType = Data
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> Data {
+        let len: Int32 = try readInt(&buf)
+        return Data(try readBytes(&buf, count: Int(len)))
+    }
+
+    public static func write(_ value: Data, into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        writeBytes(&buf, value)
+    }
+}
+
 
 
 
@@ -601,345 +619,6 @@ public func FfiConverterTypeGreeter_lower(_ value: Greeter) -> UnsafeMutableRawP
 
 
 
-
-
-public protocol MdxParsingResultProtocol: AnyObject, Sendable {
-    
-}
-open class MdxParsingResult: MdxParsingResultProtocol, @unchecked Sendable {
-    fileprivate let pointer: UnsafeMutableRawPointer!
-
-    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public struct NoPointer {
-        public init() {}
-    }
-
-    // TODO: We'd like this to be `private` but for Swifty reasons,
-    // we can't implement `FfiConverter` without making this `required` and we can't
-    // make it `required` without making it `public`.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        self.pointer = pointer
-    }
-
-    // This constructor can be used to instantiate a fake object.
-    // - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
-    //
-    // - Warning:
-    //     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public init(noPointer: NoPointer) {
-        self.pointer = nil
-    }
-
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
-        return try! rustCall { uniffi_fluster_rust_fn_clone_mdxparsingresult(self.pointer, $0) }
-    }
-    // No primary constructor declared for this class.
-
-    deinit {
-        guard let pointer = pointer else {
-            return
-        }
-
-        try! rustCall { uniffi_fluster_rust_fn_free_mdxparsingresult(pointer, $0) }
-    }
-
-    
-
-    
-
-}
-
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public struct FfiConverterTypeMdxParsingResult: FfiConverter {
-
-    typealias FfiType = UnsafeMutableRawPointer
-    typealias SwiftType = MdxParsingResult
-
-    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> MdxParsingResult {
-        return MdxParsingResult(unsafeFromRawPointer: pointer)
-    }
-
-    public static func lower(_ value: MdxParsingResult) -> UnsafeMutableRawPointer {
-        return value.uniffiClonePointer()
-    }
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MdxParsingResult {
-        let v: UInt64 = try readInt(&buf)
-        // The Rust code won't compile if a pointer won't fit in a UInt64.
-        // We have to go via `UInt` because that's the thing that's the size of a pointer.
-        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
-        if (ptr == nil) {
-            throw UniffiInternalError.unexpectedNullPointer
-        }
-        return try lift(ptr!)
-    }
-
-    public static func write(_ value: MdxParsingResult, into buf: inout [UInt8]) {
-        // This fiddling is because `Int` is the thing that's the same size as a pointer.
-        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
-        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
-    }
-}
-
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public func FfiConverterTypeMdxParsingResult_lift(_ pointer: UnsafeMutableRawPointer) throws -> MdxParsingResult {
-    return try FfiConverterTypeMdxParsingResult.lift(pointer)
-}
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public func FfiConverterTypeMdxParsingResult_lower(_ value: MdxParsingResult) -> UnsafeMutableRawPointer {
-    return FfiConverterTypeMdxParsingResult.lower(value)
-}
-
-
-
-
-
-
-public protocol ParseMdxByRegexOptsProtocol: AnyObject, Sendable {
-    
-}
-open class ParseMdxByRegexOpts: ParseMdxByRegexOptsProtocol, @unchecked Sendable {
-    fileprivate let pointer: UnsafeMutableRawPointer!
-
-    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public struct NoPointer {
-        public init() {}
-    }
-
-    // TODO: We'd like this to be `private` but for Swifty reasons,
-    // we can't implement `FfiConverter` without making this `required` and we can't
-    // make it `required` without making it `public`.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        self.pointer = pointer
-    }
-
-    // This constructor can be used to instantiate a fake object.
-    // - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
-    //
-    // - Warning:
-    //     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public init(noPointer: NoPointer) {
-        self.pointer = nil
-    }
-
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
-        return try! rustCall { uniffi_fluster_rust_fn_clone_parsemdxbyregexopts(self.pointer, $0) }
-    }
-    // No primary constructor declared for this class.
-
-    deinit {
-        guard let pointer = pointer else {
-            return
-        }
-
-        try! rustCall { uniffi_fluster_rust_fn_free_parsemdxbyregexopts(pointer, $0) }
-    }
-
-    
-
-    
-
-}
-
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public struct FfiConverterTypeParseMdxByRegexOpts: FfiConverter {
-
-    typealias FfiType = UnsafeMutableRawPointer
-    typealias SwiftType = ParseMdxByRegexOpts
-
-    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> ParseMdxByRegexOpts {
-        return ParseMdxByRegexOpts(unsafeFromRawPointer: pointer)
-    }
-
-    public static func lower(_ value: ParseMdxByRegexOpts) -> UnsafeMutableRawPointer {
-        return value.uniffiClonePointer()
-    }
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ParseMdxByRegexOpts {
-        let v: UInt64 = try readInt(&buf)
-        // The Rust code won't compile if a pointer won't fit in a UInt64.
-        // We have to go via `UInt` because that's the thing that's the size of a pointer.
-        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
-        if (ptr == nil) {
-            throw UniffiInternalError.unexpectedNullPointer
-        }
-        return try lift(ptr!)
-    }
-
-    public static func write(_ value: ParseMdxByRegexOpts, into buf: inout [UInt8]) {
-        // This fiddling is because `Int` is the thing that's the same size as a pointer.
-        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
-        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
-    }
-}
-
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public func FfiConverterTypeParseMdxByRegexOpts_lift(_ pointer: UnsafeMutableRawPointer) throws -> ParseMdxByRegexOpts {
-    return try FfiConverterTypeParseMdxByRegexOpts.lift(pointer)
-}
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public func FfiConverterTypeParseMdxByRegexOpts_lower(_ value: ParseMdxByRegexOpts) -> UnsafeMutableRawPointer {
-    return FfiConverterTypeParseMdxByRegexOpts.lower(value)
-}
-
-
-
-
-
-
-public protocol TagResultProtocol: AnyObject, Sendable {
-    
-}
-open class TagResult: TagResultProtocol, @unchecked Sendable {
-    fileprivate let pointer: UnsafeMutableRawPointer!
-
-    /// Used to instantiate a [FFIObject] without an actual pointer, for fakes in tests, mostly.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public struct NoPointer {
-        public init() {}
-    }
-
-    // TODO: We'd like this to be `private` but for Swifty reasons,
-    // we can't implement `FfiConverter` without making this `required` and we can't
-    // make it `required` without making it `public`.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    required public init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        self.pointer = pointer
-    }
-
-    // This constructor can be used to instantiate a fake object.
-    // - Parameter noPointer: Placeholder value so we can have a constructor separate from the default empty one that may be implemented for classes extending [FFIObject].
-    //
-    // - Warning:
-    //     Any object instantiated with this constructor cannot be passed to an actual Rust-backed object. Since there isn't a backing [Pointer] the FFI lower functions will crash.
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public init(noPointer: NoPointer) {
-        self.pointer = nil
-    }
-
-#if swift(>=5.8)
-    @_documentation(visibility: private)
-#endif
-    public func uniffiClonePointer() -> UnsafeMutableRawPointer {
-        return try! rustCall { uniffi_fluster_rust_fn_clone_tagresult(self.pointer, $0) }
-    }
-    // No primary constructor declared for this class.
-
-    deinit {
-        guard let pointer = pointer else {
-            return
-        }
-
-        try! rustCall { uniffi_fluster_rust_fn_free_tagresult(pointer, $0) }
-    }
-
-    
-
-    
-
-}
-
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public struct FfiConverterTypeTagResult: FfiConverter {
-
-    typealias FfiType = UnsafeMutableRawPointer
-    typealias SwiftType = TagResult
-
-    public static func lift(_ pointer: UnsafeMutableRawPointer) throws -> TagResult {
-        return TagResult(unsafeFromRawPointer: pointer)
-    }
-
-    public static func lower(_ value: TagResult) -> UnsafeMutableRawPointer {
-        return value.uniffiClonePointer()
-    }
-
-    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TagResult {
-        let v: UInt64 = try readInt(&buf)
-        // The Rust code won't compile if a pointer won't fit in a UInt64.
-        // We have to go via `UInt` because that's the thing that's the size of a pointer.
-        let ptr = UnsafeMutableRawPointer(bitPattern: UInt(truncatingIfNeeded: v))
-        if (ptr == nil) {
-            throw UniffiInternalError.unexpectedNullPointer
-        }
-        return try lift(ptr!)
-    }
-
-    public static func write(_ value: TagResult, into buf: inout [UInt8]) {
-        // This fiddling is because `Int` is the thing that's the same size as a pointer.
-        // The Rust code won't compile if a pointer won't fit in a `UInt64`.
-        writeInt(&buf, UInt64(bitPattern: Int64(Int(bitPattern: lower(value)))))
-    }
-}
-
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public func FfiConverterTypeTagResult_lift(_ pointer: UnsafeMutableRawPointer) throws -> TagResult {
-    return try FfiConverterTypeTagResult.lift(pointer)
-}
-
-#if swift(>=5.8)
-@_documentation(visibility: private)
-#endif
-public func FfiConverterTypeTagResult_lower(_ value: TagResult) -> UnsafeMutableRawPointer {
-    return FfiConverterTypeTagResult.lower(value)
-}
-
-
-
-
 public struct Example {
     public var items: [String]
     public var value: Double?
@@ -1010,11 +689,214 @@ public func FfiConverterTypeExample_lower(_ value: Example) -> RustBuffer {
 }
 
 
+public struct MdxParsingResult {
+    public var content: String
+    public var tags: [TagResult]
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(content: String, tags: [TagResult]) {
+        self.content = content
+        self.tags = tags
+    }
+}
+
+#if compiler(>=6)
+extension MdxParsingResult: Sendable {}
+#endif
+
+
+extension MdxParsingResult: Equatable, Hashable {
+    public static func ==(lhs: MdxParsingResult, rhs: MdxParsingResult) -> Bool {
+        if lhs.content != rhs.content {
+            return false
+        }
+        if lhs.tags != rhs.tags {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(content)
+        hasher.combine(tags)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeMdxParsingResult: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> MdxParsingResult {
+        return
+            try MdxParsingResult(
+                content: FfiConverterString.read(from: &buf), 
+                tags: FfiConverterSequenceTypeTagResult.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: MdxParsingResult, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.content, into: &buf)
+        FfiConverterSequenceTypeTagResult.write(value.tags, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeMdxParsingResult_lift(_ buf: RustBuffer) throws -> MdxParsingResult {
+    return try FfiConverterTypeMdxParsingResult.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeMdxParsingResult_lower(_ value: MdxParsingResult) -> RustBuffer {
+    return FfiConverterTypeMdxParsingResult.lower(value)
+}
+
+
+public struct ParseMdxOptions {
+    public var content: String
+    public var ignoreParsing: Data
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(content: String, ignoreParsing: Data) {
+        self.content = content
+        self.ignoreParsing = ignoreParsing
+    }
+}
+
+#if compiler(>=6)
+extension ParseMdxOptions: Sendable {}
+#endif
+
+
+extension ParseMdxOptions: Equatable, Hashable {
+    public static func ==(lhs: ParseMdxOptions, rhs: ParseMdxOptions) -> Bool {
+        if lhs.content != rhs.content {
+            return false
+        }
+        if lhs.ignoreParsing != rhs.ignoreParsing {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(content)
+        hasher.combine(ignoreParsing)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeParseMdxOptions: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ParseMdxOptions {
+        return
+            try ParseMdxOptions(
+                content: FfiConverterString.read(from: &buf), 
+                ignoreParsing: FfiConverterData.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: ParseMdxOptions, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.content, into: &buf)
+        FfiConverterData.write(value.ignoreParsing, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeParseMdxOptions_lift(_ buf: RustBuffer) throws -> ParseMdxOptions {
+    return try FfiConverterTypeParseMdxOptions.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeParseMdxOptions_lower(_ value: ParseMdxOptions) -> RustBuffer {
+    return FfiConverterTypeParseMdxOptions.lower(value)
+}
+
+
+public struct TagResult {
+    public var body: String
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(body: String) {
+        self.body = body
+    }
+}
+
+#if compiler(>=6)
+extension TagResult: Sendable {}
+#endif
+
+
+extension TagResult: Equatable, Hashable {
+    public static func ==(lhs: TagResult, rhs: TagResult) -> Bool {
+        if lhs.body != rhs.body {
+            return false
+        }
+        return true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(body)
+    }
+}
+
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeTagResult: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> TagResult {
+        return
+            try TagResult(
+                body: FfiConverterString.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: TagResult, into buf: inout [UInt8]) {
+        FfiConverterString.write(value.body, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTagResult_lift(_ buf: RustBuffer) throws -> TagResult {
+    return try FfiConverterTypeTagResult.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeTagResult_lower(_ value: TagResult) -> RustBuffer {
+    return FfiConverterTypeTagResult.lower(value)
+}
+
+
 public enum FlusterError: Swift.Error {
 
     
     
     case CanaryError
+    case JsonSerializationError
 }
 
 
@@ -1032,6 +914,7 @@ public struct FfiConverterTypeFlusterError: FfiConverterRustBuffer {
 
         
         case 1: return .CanaryError
+        case 2: return .JsonSerializationError
 
          default: throw UniffiInternalError.unexpectedEnumCase
         }
@@ -1046,6 +929,10 @@ public struct FfiConverterTypeFlusterError: FfiConverterRustBuffer {
         
         case .CanaryError:
             writeInt(&buf, Int32(1))
+        
+        
+        case .JsonSerializationError:
+            writeInt(&buf, Int32(2))
         
         }
     }
@@ -1076,6 +963,66 @@ extension FlusterError: Foundation.LocalizedError {
         String(reflecting: self)
     }
 }
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+
+public enum ParserId : UInt8 {
+    
+    case tag = 0
+}
+
+
+#if compiler(>=6)
+extension ParserId: Sendable {}
+#endif
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeParserId: FfiConverterRustBuffer {
+    typealias SwiftType = ParserId
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ParserId {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .tag
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: ParserId, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .tag:
+            writeInt(&buf, Int32(1))
+        
+        }
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeParserId_lift(_ buf: RustBuffer) throws -> ParserId {
+    return try FfiConverterTypeParserId.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeParserId_lower(_ value: ParserId) -> RustBuffer {
+    return FfiConverterTypeParserId.lower(value)
+}
+
+
+extension ParserId: Equatable, Hashable {}
+
 
 
 #if swift(>=5.8)
@@ -1126,6 +1073,77 @@ fileprivate struct FfiConverterSequenceString: FfiConverterRustBuffer {
         return seq
     }
 }
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterSequenceTypeTagResult: FfiConverterRustBuffer {
+    typealias SwiftType = [TagResult]
+
+    public static func write(_ value: [TagResult], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeTagResult.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [TagResult] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [TagResult]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeTagResult.read(from: &buf))
+        }
+        return seq
+    }
+}
+private let UNIFFI_RUST_FUTURE_POLL_READY: Int8 = 0
+private let UNIFFI_RUST_FUTURE_POLL_MAYBE_READY: Int8 = 1
+
+fileprivate let uniffiContinuationHandleMap = UniffiHandleMap<UnsafeContinuation<Int8, Never>>()
+
+fileprivate func uniffiRustCallAsync<F, T>(
+    rustFutureFunc: () -> UInt64,
+    pollFunc: (UInt64, @escaping UniffiRustFutureContinuationCallback, UInt64) -> (),
+    completeFunc: (UInt64, UnsafeMutablePointer<RustCallStatus>) -> F,
+    freeFunc: (UInt64) -> (),
+    liftFunc: (F) throws -> T,
+    errorHandler: ((RustBuffer) throws -> Swift.Error)?
+) async throws -> T {
+    // Make sure to call the ensure init function since future creation doesn't have a
+    // RustCallStatus param, so doesn't use makeRustCall()
+    uniffiEnsureFlusterRustInitialized()
+    let rustFuture = rustFutureFunc()
+    defer {
+        freeFunc(rustFuture)
+    }
+    var pollResult: Int8;
+    repeat {
+        pollResult = await withUnsafeContinuation {
+            pollFunc(
+                rustFuture,
+                uniffiFutureContinuationCallback,
+                uniffiContinuationHandleMap.insert(obj: $0)
+            )
+        }
+    } while pollResult != UNIFFI_RUST_FUTURE_POLL_READY
+
+    return try liftFunc(makeRustCall(
+        { completeFunc(rustFuture, $0) },
+        errorHandler: errorHandler
+    ))
+}
+
+// Callback handlers for an async calls.  These are invoked by Rust when the future is ready.  They
+// lift the return value or error and resume the suspended function.
+fileprivate func uniffiFutureContinuationCallback(handle: UInt64, pollResult: Int8) {
+    if let continuation = try? uniffiContinuationHandleMap.remove(handle: handle) {
+        continuation.resume(returning: pollResult)
+    } else {
+        print("uniffiFutureContinuationCallback invalid handle")
+    }
+}
 public func add(a: UInt64, b: UInt64) -> UInt64  {
     return try!  FfiConverterUInt64.lift(try! rustCall() {
     uniffi_fluster_rust_fn_func_add(
@@ -1133,6 +1151,25 @@ public func add(a: UInt64, b: UInt64) -> UInt64  {
         FfiConverterUInt64.lower(b),$0
     )
 })
+}
+/**
+ * ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
+ * based approach but will work for now.
+ * This returns
+ */
+public func parseMdxStringByRegex(opts: ParseMdxOptions)async throws  -> MdxParsingResult  {
+    return
+        try  await uniffiRustCallAsync(
+            rustFutureFunc: {
+                uniffi_fluster_rust_fn_func_parse_mdx_string_by_regex(FfiConverterTypeParseMdxOptions_lower(opts)
+                )
+            },
+            pollFunc: ffi_fluster_rust_rust_future_poll_rust_buffer,
+            completeFunc: ffi_fluster_rust_rust_future_complete_rust_buffer,
+            freeFunc: ffi_fluster_rust_rust_future_free_rust_buffer,
+            liftFunc: FfiConverterTypeMdxParsingResult_lift,
+            errorHandler: FfiConverterTypeFlusterError_lift
+        )
 }
 
 private enum InitializationResult {
@@ -1151,6 +1188,9 @@ private let initializationResult: InitializationResult = {
         return InitializationResult.contractVersionMismatch
     }
     if (uniffi_fluster_rust_checksum_func_add() != 37) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_fluster_rust_checksum_func_parse_mdx_string_by_regex() != 37013) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_fluster_rust_checksum_method_greeter_greet() != 59312) {

@@ -24,6 +24,7 @@ let package = Package(
             url: "https://github.com/gonzalezreal/swift-markdown-ui",
             .upToNextMajor(from: "2.4.1")
         ),
+        .package(path: "../../rust/fluster_rust/FlusterRust/"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -33,11 +34,12 @@ let package = Package(
             dependencies: [
                 "SwiftyBibtex",
                 .product(name: "MarkdownUI", package: "swift-markdown-ui"),
+                .product(name: "FlusterRust", package: "FlusterRust"),
             ]
         ),
         .testTarget(
             name: "FlusterSwiftTests",
-            dependencies: ["FlusterSwift"]
+            dependencies: ["FlusterSwift", "FlusterRust"]
         ),
     ],
 )

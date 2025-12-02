@@ -26,6 +26,9 @@ launch_ipad_simulator: build_ipad_simulator
 build_fluster_rust:
 	cd ${FLUSTER_IOS_ROOT}/packages/rust/fluster_rust; cargo-swift swift package -y
 
+build_all_rust:
+	cargo build
+
 build_webview_utils:
 	pnpm run -C packages/webview_utils build
 

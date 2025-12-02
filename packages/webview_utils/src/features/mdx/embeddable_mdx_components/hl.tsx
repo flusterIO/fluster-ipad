@@ -5,8 +5,6 @@ import {
     WithColorKey,
 } from "./embeddable_component_types/color_key";
 
-export const ComponentName = "Hl";
-
 export interface HlProps extends HTMLProps<HTMLSpanElement>, WithColorKey {
     /// A valid fluster color variable.
     color: string;
