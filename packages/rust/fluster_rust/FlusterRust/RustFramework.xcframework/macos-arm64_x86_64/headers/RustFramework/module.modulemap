@@ -1,0 +1,4 @@
+module fluster_rustFFI {
+    header "fluster_rustFFI.h"
+    export *
+}

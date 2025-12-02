@@ -71,7 +71,7 @@ export enum CodeEditorLanguage {
 
 declare global {
     interface WindowEventMap {
-        "set-editor-theme": CustomEvent<string>;
+        "set-code-theme": CustomEvent<string>;
         "set-editor-keymap": CustomEvent<string>;
         "set-initial-editor-content": CustomEvent<string>;
     }

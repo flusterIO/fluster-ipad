@@ -57,7 +57,7 @@ struct SplitViewEditorView: View {
                         editorThemeLight: $editorThemeLight,
                         editingNote: $editingNote,
                         editorKeymap: $editorKeymap,
-                        viewportHeight: $editorHeight,
+//                        viewportHeight: $editorHeight,
                         container: editorContainer,
                     )
                     .contentMargins(0)
@@ -104,8 +104,8 @@ struct SplitViewEditorView: View {
                 onDragEnd: {
                     previewContainer.setLoading(isLoading: false)
                     editorContainer.setLoading(isLoading: false)
-                    previewContainer.requestDocumentSize()
-                    editorContainer.requestDocumentSize()
+//                    previewContainer.requestDocumentSize()
+//                    editorContainer.requestDocumentSize()
                 },
                 hideSide: shouldShowEditor ? SplitViewSide.none : SplitViewSide.left
             )
@@ -155,19 +155,6 @@ struct SplitViewEditorView: View {
                     )
                 }
             )
-            .onChange(of: shouldShowEditor, {
-                if !shouldShowEditor {
-                    restoreAspectRatio = splitViewRatio
-                    splitViewRatio = 0
-                    previewContainer.requestDocumentSize()
-                } else {
-                    if let ra = restoreAspectRatio {
-                        splitViewRatio = ra
-                    }
-                    restoreAspectRatio = nil
-                    previewContainer.requestDocumentSize()
-                }
-            })
             .disableAnimations()
         }
     }

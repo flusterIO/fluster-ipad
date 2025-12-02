@@ -14,7 +14,7 @@ public final class MdxPreviewWebviewContainer: WebviewContainer {
         self.runJavascript(
             """
             window.localStorage.setItem("code-theme-light", "\(theme.rawValue)")
-            window.setCodeSyntaxTheme("\(theme.rawValue)")
+            window.setCodeSyntaxThemeLight("\(theme.rawValue)")
             """
         )
     }
@@ -22,11 +22,12 @@ public final class MdxPreviewWebviewContainer: WebviewContainer {
         self.runJavascript(
             """
             window.localStorage.setItem("code-theme-dark", "\(theme.rawValue)")
-            window.setCodeSyntaxTheme("\(theme.rawValue)")
+            window.setCodeSyntaxThemeDark("\(theme.rawValue)")
             """
         )
     }
     public func setInitialContent(note: NoteModel) {
+        // TODO: Move this to method on markdown class to keep everything in one place.
         let content = MdxText(body: note.markdown.body)
         content.parse()
         self.runJavascript(
@@ -37,7 +38,9 @@ public final class MdxPreviewWebviewContainer: WebviewContainer {
     }
     public func resetScrollPosition() {
         self.runJavascript("""
-            window.resetMdxPreviewScrollPosition()
+            if ('resetMdxPreviewScrollPosition' in window) {
+                window.resetMdxPreviewScrollPosition()
+            }
             """)
     }
     public func setInitialProperties(

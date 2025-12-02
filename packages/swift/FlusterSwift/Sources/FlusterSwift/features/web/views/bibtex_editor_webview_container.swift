@@ -8,13 +8,13 @@
 import Foundation
 
 public final class BibtexEditorWebviewContainer: WebviewContainer {
-//    public override init() {}
+    //    public override init() {}
     public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
         print("Changing editor theme event")
         self.runJavascript(
             """
             window.localStorage.setItem("editor-theme", "\(theme.rawValue)")
-            window.setEditorTheme("\(theme.rawValue)")
+            window.setCodeSyntaxTheme("\(theme.rawValue)")
             """
         )
     }
@@ -28,7 +28,8 @@ public final class BibtexEditorWebviewContainer: WebviewContainer {
         )
     }
     public func clearEditorData() {
-        self.runJavascript("""
+        self.runJavascript(
+            """
             window.clearBibtexEditorData()
             """)
     }

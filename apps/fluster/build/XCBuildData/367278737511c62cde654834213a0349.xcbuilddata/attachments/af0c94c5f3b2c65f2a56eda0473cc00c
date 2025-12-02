@@ -7,7 +7,7 @@ cd ../../packages/webview_utils
 ~/.pnpm/pnpm install
 ~/.pnpm/pnpm build
 
-cd ../webviews/editor_splitview_webview
+cd ../webviews/splitview_mdx_editor
 
 ~/.pnpm/pnpm install
 ~/.pnpm/pnpm run build
@@ -16,4 +16,3 @@ cd ../bibtex_editor_webview
 
 ~/.pnpm/pnpm install
 ~/.pnpm/pnpm run build
-

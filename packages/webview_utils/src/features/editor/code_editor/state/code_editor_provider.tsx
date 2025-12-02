@@ -161,6 +161,7 @@ export const CodeEditorProvider = ({
         initializeWithValue: false,
     });
     const handleTheme = (t: string): void => {
+        console.log("t: ", t);
         const payload = stringToCodeEditorTheme((t as string) ?? "dracula");
         dispatch({
             type: "setTheme",
@@ -170,7 +171,7 @@ export const CodeEditorProvider = ({
     useEffect(() => {
         handleTheme(editorTheme);
     }, [editorTheme]);
-    useEventListener("set-editor-theme", (e) => {
+    useEventListener("set-code-theme", (e) => {
         handleTheme(e.detail);
     });
 

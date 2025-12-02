@@ -47,7 +47,9 @@ public final class MdxEditorWebviewContainer: WebviewContainer {
     public func resetScrollPosition() {
         self.runJavascript(
             """
-            window.resetMdxPreviewScrollPosition()
+            if ('resetMdxPreviewScrollPosition' in window) {
+                window.resetMdxPreviewScrollPosition()
+            }
             """)
     }
     public func setInitialProperties(

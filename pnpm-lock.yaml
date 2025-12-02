@@ -382,7 +382,7 @@ importers:
         specifier: 7.2.4
         version: 7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(tsx@4.20.6)(yaml@2.8.1)
 
-  packages/webviews/editor_splitview_webview:
+  packages/webviews/splitview_mdx_editor:
     dependencies:
       '@fluster/webview_utils':
         specifier: workspace:*

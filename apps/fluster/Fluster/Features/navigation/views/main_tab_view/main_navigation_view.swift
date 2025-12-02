@@ -87,14 +87,28 @@ struct MainView: View {
                 value: IpadMainViewTab.markdown
             ) {
                 if editingNote != nil {
-                    SplitViewEditorView(
-                        theme: $theme,
-                        editorThemeDark: $editorThemeDark,
-                        editorThemeLight: $editorThemeLight,
-                        editingNote: $editingNote,
-                        editorKeymap: $editorKeymap,
-                        editorContainer: editorContainer,
-                    )
+//                    SplitViewEditorView(
+//                        theme: $theme,
+//                        editorThemeDark: $editorThemeDark,
+//                        editorThemeLight: $editorThemeLight,
+//                        editingNote: $editingNote,
+//                        editorKeymap: $editorKeymap,
+//                        editorContainer: editorContainer,
+//                    )
+                        MdxEditorWebview(
+                            url:
+                                Bundle.main.url(
+                                    forResource: "index",
+                                    withExtension: "html",
+                                    subdirectory: "splitview_mdx_editor"
+                                )!,
+                            theme: $theme,
+                            editorThemeDark: $editorThemeDark,
+                            editorThemeLight: $editorThemeLight,
+                            editingNote: $editingNote,
+                            editorKeymap: $editorKeymap,
+                            container: editorContainer,
+                        )
                 } else {
                     SelectNoteToContinueView()
                 }
@@ -210,6 +224,52 @@ struct MainView: View {
                 }
             )
         }
+        .onChange(
+            of: editingNote,
+            {
+                if let note = editingNote {
+                    editorContainer.setInitialContent(
+                        note: note
+                    )
+//                    previewContainer.setInitialContent(
+//                        note: note
+//                    )
+                    editorContainer.resetScrollPosition()
+                }
+            }
+        )
+        .onChange(
+            of: editorThemeDark,
+            {
+                editorContainer.emitEditorThemeEvent(
+                    theme: colorScheme == .dark
+                        ? editorThemeDark : editorThemeLight
+                )
+                editorContainer.setEditorDarkTheme(
+                    theme: editorThemeDark
+                )
+            }
+        )
+        .onChange(
+            of: editorThemeLight,
+            {
+                editorContainer.emitEditorThemeEvent(
+                    theme: colorScheme == .dark
+                        ? editorThemeDark : editorThemeLight
+                )
+                editorContainer.setEditorLightTheme(
+                    theme: editorThemeLight
+                )
+            }
+        )
+        .onChange(
+            of: editorKeymap,
+            {
+                editorContainer.setEditorKeymap(
+                    editorKeymap: editorKeymap
+                )
+            }
+        )
         .onChange(
             of: colorScheme,
             {

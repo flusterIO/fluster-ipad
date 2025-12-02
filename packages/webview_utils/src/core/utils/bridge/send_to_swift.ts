@@ -30,8 +30,10 @@ export const sendToSwift = (
         window.webkit.messageHandlers &&
         window.webkit.messageHandlers[handler]
     ) {
-        window.webkit.messageHandlers[handler].postMessage(
-            typeof msg === "string" ? msg : JSON.stringify(msg),
-        );
+        if (handler in window.webkit.messageHandlers) {
+            window.webkit.messageHandlers?.[handler].postMessage(
+                typeof msg === "string" ? msg : JSON.stringify(msg),
+            );
+        }
     }
 };

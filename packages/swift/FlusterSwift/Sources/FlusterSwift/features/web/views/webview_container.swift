@@ -100,12 +100,12 @@ public class WebviewContainer: ObservableObject {
     public func sendScreenSize() {
         let width = UIScreen.current?.bounds.width
         let height = UIScreen.current?.bounds.height
-        if width != nil && height != nil {
-            self.runJavascript(
-                """
-                window.setScreenSize(\(width), \(height))
-                """
-            )
-        }
+//        if width != nil && height != nil {
+//            self.runJavascript(
+//                """
+//                window.setScreenSize(\(width), \(height))
+//                """
+//            )
+//        }
     }
 }

@@ -27,7 +27,6 @@ public struct MdxEditorWebview: UIViewRepresentable {
     @Binding var editorThemeLight: CodeSyntaxTheme
     @Binding var editingNote: NoteModel?
     @Binding var editorKeymap: EditorKeymap
-    @Binding var viewportHeight: CGFloat
     
 
     let container: MdxEditorWebviewContainer
@@ -39,7 +38,6 @@ public struct MdxEditorWebview: UIViewRepresentable {
         editorThemeLight: Binding<CodeSyntaxTheme>,
         editingNote: Binding<NoteModel?>,
         editorKeymap: Binding<EditorKeymap>,
-        viewportHeight: Binding<CGFloat>,
         container: MdxEditorWebviewContainer,
     ) {
         self.url = url
@@ -48,7 +46,6 @@ public struct MdxEditorWebview: UIViewRepresentable {
         self._editorThemeLight = editorThemeLight
         self._editingNote = editingNote
         self._editorKeymap = editorKeymap
-        self._viewportHeight = viewportHeight
         self.container = container
     }
 
@@ -59,7 +56,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
         let editorContentControllers = [
             "editor-update",
             "request-initial-editor-data",
-            "set-editor-viewport-height",
+//            "set-editor-viewport-height",
         ]
         for controllerName in editorContentControllers {
             addUserContentController(
@@ -96,7 +93,6 @@ public struct MdxEditorWebview: UIViewRepresentable {
         )
     }
     public func setInitialContent() {
-        print("Setting initial content")
         let s = editingNote?.markdown.body.toQuotedJavascriptString() ?? "''"
         container.runJavascript(
             """
@@ -131,7 +127,7 @@ extension MdxEditorWebview {
             )
             parent.setInitialProperties()
             parent.container.webView.isHidden = false
-            parent.container.requestDocumentSize()
+//            parent.container.requestDocumentSize()
             parent.didSetInitialContent = true
         }
 //        public func webView(
@@ -158,15 +154,16 @@ extension MdxEditorWebview {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            if message.name == "set-editor-viewport-height" {
-                print("Message body: \(message.body)")
-                if let n = NumberFormatter().number(
-                    from: message.body as! String
-                ) {
-                    print("N: \(n)")
-                    parent.viewportHeight = CGFloat(truncating: n)
-                }
-            } else if message.name == "editor-update",
+//            if message.name == "set-editor-viewport-height" {
+//                print("Message body: \(message.body)")
+//                if let n = NumberFormatter().number(
+//                    from: message.body as! String
+//                ) {
+//                    print("N: \(n)")
+//                    parent.viewportHeight = CGFloat(truncating: n)
+//                }
+//            } else
+            if message.name == "editor-update",
                 let str = message.body as? String
             {
                 parent.editingNote?.markdown.body = str

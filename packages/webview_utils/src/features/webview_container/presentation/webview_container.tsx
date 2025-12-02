@@ -14,6 +14,7 @@ interface WebViewContainerProps {
     children: ReactNode;
     className?: string;
     style?: CSSProperties;
+    contentContainerClasses?: string;
     /** If shrinkHeight = true, will shrink to fit-content to allow window to resize to match content */
     shrinkHeight?: boolean;
     broadcastHeightKey?: SwiftHandler;
@@ -35,6 +36,7 @@ export const WebViewContainer = ({
     shrinkHeight,
     broadcastHeightKey,
     style,
+    contentContainerClasses,
     screenDimensionCalculator,
 }: WebViewContainerProps): ReactNode => {
     const updateDocSizeTimer = useRef<NodeJS.Timeout | null>(null);
@@ -132,7 +134,7 @@ export const WebViewContainer = ({
         >
             <div
                 id="webview-content-wrapper"
-                className="w-full h-fit load-hide"
+                className={cn("w-full h-fit load-hide", contentContainerClasses)}
                 ref={container}
             >
                 {children}
