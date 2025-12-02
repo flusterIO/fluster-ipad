@@ -1,8 +1,0 @@
-/Users/bigsexy/Desktop/swift/Fluster/target/debug/deps/uniffi_pipeline-d055e5a1f6c8a58c.d: /Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/lib.rs /Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/node.rs /Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/pipeline.rs /Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/value.rs
-
-/Users/bigsexy/Desktop/swift/Fluster/target/debug/deps/libuniffi_pipeline-d055e5a1f6c8a58c.rmeta: /Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/lib.rs /Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/node.rs /Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/pipeline.rs /Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/value.rs
-
-/Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/lib.rs:
-/Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/node.rs:
-/Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/pipeline.rs:
-/Users/bigsexy/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uniffi_pipeline-0.29.5/src/value.rs:

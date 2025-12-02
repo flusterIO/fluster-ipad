@@ -20,6 +20,11 @@ thiserror = "2.0.17"
 uniffi = { version = "0.29", features = ["tokio"] }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.145"
+fluster_core_utilities = { path = "packages/rust/fluster_core_utilities" }
+fluster_pre_parser = { path = "packages/rust/fluster_pre_parser" }
+rayon = "1.11.0"
+regex = "1.12.2"
+tokio = "1.48.0"
 
 [workspace.lints.rust]
 unused_crate_dependencies = "warn"

@@ -135,56 +135,75 @@ extension AppSchemaV1 {
             return self.parse()?.publications[0].fields["title"] ?? "--"
         }
     }
-
+    
     @Model
-    public class TagModel {
-        @Attribute(.unique) public var value: String
+    public class TaggableModel {
         public var ctime: Date
+        public var utime: Date
+        /// lastAccess is (will be) updated each time a note is accessed that contains a given taggable to help with search ranking.
+        public var lastAccess: Date
+        
+        public init(ctime: Date, utime: Date, lastAccess: Date) {
+            self.ctime = ctime
+            self.utime = utime
+            self.lastAccess = lastAccess
+        }
+    }
+    @available(iOS 26, *)
+    @Model
+    public class TagModel: TaggableModel {
+        @Attribute(.unique) public var value: String
         @Relationship(inverse: \NoteModel.tags) public var notes: [NoteModel] =
             []
-        public init(value: String, ctime: Date = .now) {
+        public init(
+            value: String,
+            ctime: Date = .now,
+            utime: Date = .now,
+            lastAccess: Date = .now,
+            notes: [NoteModel] = []
+        ) {
+//            super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
             self.value = value
-            self.ctime = ctime
+            self.notes = notes
+            super .init(ctime: ctime, utime: utime, lastAccess: lastAccess)
         }
     }
 
+    @available(iOS 26, *)
     @Model
-    public class SubjectModel {
+    public class SubjectModel: TaggableModel {
         @Attribute(.unique) public var value: String
-        public var ctime: Date
-        public var utime: Date
         @Relationship(inverse: \NoteModel.subject) public var notes:
             [NoteModel] = []
         public init(
             value: String,
             ctime: Date = .now,
             utime: Date = .now,
+            lastAccess: Date = .now,
             notes: [NoteModel] = []
         ) {
-            self.value = value
-            self.ctime = ctime
-            self.utime = utime
             self.notes = notes
+            self.value = value
+            super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
         }
     }
 
+    @available(iOS 26, *)
     @Model
-    public class TopicModel {
+    public class TopicModel: TaggableModel {
         @Attribute(.unique) public var value: String
-        public var ctime: Date
-        public var utime: Date
         @Relationship(inverse: \NoteModel.topic) public var notes: [NoteModel] =
             []
         public init(
             value: String,
             ctime: Date = .now,
             utime: Date = .now,
+            lastAccess: Date = .now,
             notes: [NoteModel] = []
         ) {
             self.value = value
-            self.ctime = ctime
-            self.utime = utime
             self.notes = notes
+            super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
         }
     }
 

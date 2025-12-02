@@ -14,7 +14,7 @@ public typealias TagModel = AppSchemaV1.TagModel
 public typealias TopicModel = AppSchemaV1.TopicModel
 public typealias MarkdownNote = AppSchemaV1.MarkdownNote
 
-@available(iOS 17, *)
+@available(iOS 26, *)
 public actor AppDataContainer {
     @MainActor
     public static func create(isInitialLaunch: inout Bool) -> ModelContainer {

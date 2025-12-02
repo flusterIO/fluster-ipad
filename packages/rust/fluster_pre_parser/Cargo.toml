@@ -7,7 +7,10 @@ documentation.workspace = true
 edition.workspace = true
 
 [dependencies]
-uniffi = { version = "0.29", features = ["tokio"] }
-fluster_core_utilities = { path = "../fluster_core_utilities/" }
+uniffi = { workspace = true, features = ["tokio"] }
+fluster_core_utilities = { workspace = true }
 serde = { workspace = true }
 async-trait = { workspace = true }
+regex = { workspace = true }
+rayon = { workspace = true }
+tokio = { workspace = true, features = ["full"] }

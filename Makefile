@@ -23,11 +23,11 @@ build_ipad_simulator:
 launch_ipad_simulator: build_ipad_simulator
 	cd ${FLUSTER_IOS_ROOT}/apps/fluster; xcrun simctl launch "iPad Pro 13-inch M5 26.1" iglooDevelopment.Fluster 
 
-build_fluster_rust:
-	cd ${FLUSTER_IOS_ROOT}/packages/rust/fluster_rust; cargo-swift swift package -y
-
 build_all_rust:
 	cargo build
+
+build_fluster_rust: build_all_rust
+	cd ${FLUSTER_IOS_ROOT}/packages/rust/fluster_rust; cargo-swift swift package -y
 
 build_webview_utils:
 	pnpm run -C packages/webview_utils build
