@@ -36,7 +36,8 @@ export const MdxEditorPreview = ({
             id="mdx-preview"
             {...props}
             className={cn(
-                isEditorView ? "px-4 pt-4" : "px-8 pt-6 max-h-screen overflow-y-auto",
+                "max-w-[1080px]",
+                isEditorView ? "px-6 pt-4" : "px-8 pt-6 max-h-screen overflow-y-auto",
                 className,
             )}
             mdx={value}

@@ -39,7 +39,7 @@ struct MarkdownNotesSearchResultsWrappedQuery: View {
     }
 
     var body: some View {
-        if notes.isEmpty {
+        if NoteModel.count(modelContext: modelContext) == 0 {
             EmptyMarkdownSearchResultsView(editingNote: $editingNote)
         } else {
             List {

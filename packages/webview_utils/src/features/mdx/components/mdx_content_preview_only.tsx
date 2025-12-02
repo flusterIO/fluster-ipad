@@ -1,4 +1,4 @@
-import React, { HTMLProps, type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { MdxEditorPreview, MdxEditorPreviewProps } from "./mdx_editor_preview";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useCodeEditorDispatch } from "#/editor/code_editor/state/code_editor_provider";

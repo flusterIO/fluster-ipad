@@ -18,7 +18,7 @@ public struct MdxTextUtils {
         -> MdxTitleResult
     {
         if !titleString.hasPrefix("#") {
-            return MdxTitleResult(depth: 0, content: titleString)
+            return MdxTitleResult(depth: depth, content: titleString)
         }
         let result = parseMarkdownTitle(
             titleString: String(titleString.dropFirst()),
@@ -77,6 +77,7 @@ public struct MdxTextUtils {
         var bodyResults: [NoteModel] = []
         for note in notes {
             let titles = getTitles(body: note.markdown.body)
+            print("Titles \(titles)")
             if !titles.isEmpty {
                 if let highestMatch = getHighestMatch(
                     titleResults: titles,
@@ -104,8 +105,10 @@ public struct MdxTextUtils {
                     bodyResults.append(note)
                 }
             }
-
         }
+        
+        print("H1 match length \(h1Results.count)")
+        
         return h1Results + h2Results + h3Results + h4Results + h5Results
             + h6Results + bodyResults
     }
