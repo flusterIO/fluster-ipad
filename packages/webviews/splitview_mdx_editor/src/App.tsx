@@ -3,6 +3,8 @@ import {
     ResponsiveSplitViewEditor,
     WebViewContainer,
 } from "@fluster/webview_utils";
+import "../../../webview_utils/dist/webview_utils.css";
+import "./index.css";
 
 function App() {
     return (

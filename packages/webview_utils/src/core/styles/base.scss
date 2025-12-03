@@ -1,3 +1,6 @@
+@use "./themes.scss";
+@use "./shared_component_styles.scss";
+
 #editor-panel-resize-handle {
   width: 2px;
   background-color: hsl(var(--border));

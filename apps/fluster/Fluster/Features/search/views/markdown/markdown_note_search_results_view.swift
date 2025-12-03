@@ -41,6 +41,10 @@ struct MarkdownNotesSearchResultsWrappedQuery: View {
     var body: some View {
         if NoteModel.count(modelContext: modelContext) == 0 {
             EmptyMarkdownSearchResultsView(editingNote: $editingNote)
+                .onAppear {
+                    print("Length: \(notes.count)")
+                }
+                .navigationTitle("Recently accessed notes")
         } else {
             List {
                 ForEach(sortedNotes, id: \.id) { note in
@@ -51,9 +55,6 @@ struct MarkdownNotesSearchResultsWrappedQuery: View {
                     .onTapGesture {
                         editingNote = note
                     }
-                }
-                .onAppear {
-                    print("View Database: ", modelContext.sqliteCommand)
                 }
             }
             .searchable(

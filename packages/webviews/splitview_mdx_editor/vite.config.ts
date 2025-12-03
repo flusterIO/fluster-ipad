@@ -6,7 +6,7 @@ import {
 
 const config: WebviewViteConfig = {
     outputDir: "splitview_mdx_editor",
-    // plugins: getConfigPlugins()
+    // singleFile: false,
 };
 
 export default defineConfig(getWebviewViteConfig(config));

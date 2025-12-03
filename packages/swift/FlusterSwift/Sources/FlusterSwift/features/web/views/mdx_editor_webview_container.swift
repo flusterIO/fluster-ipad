@@ -52,6 +52,11 @@ public final class MdxEditorWebviewContainer: WebviewContainer {
             }
             """)
     }
+    public func setParsedEditorContent(content: String) {
+        self.runJavascript("""
+            window.setParsedEditorContent(\(content.toQuotedJavascriptString()))
+            """)
+    }
     public func setInitialProperties(
         editingNote: NoteModel?,
         codeEditorTheme: CodeSyntaxTheme,

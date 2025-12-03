@@ -1,5 +1,6 @@
 export enum SwiftHandler {
     editorUpdate = "editor-update",
+    requestParsedMdxContent = "request-parsed-mdx-content",
     setSplitviewEditorLandscapeView = "is-landscape-view",
     setPreviewViewportSize = "set-preview-viewport-height",
     setEditorViewportSize = "set-editor-viewport-height",

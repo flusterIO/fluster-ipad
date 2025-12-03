@@ -64,6 +64,7 @@ fastlane/test_output
 packages/swift/SplitViewFork/Demo
 
 **/node_modules
+**/.wireit
 target/
 packages/rust/fluster_rust/FlusterRust/
 packages/webviews/*/node_modules

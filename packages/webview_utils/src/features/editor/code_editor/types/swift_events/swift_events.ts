@@ -5,6 +5,7 @@ export interface SwiftEventMap {
 declare global {
     interface WindowEventMap {
         "set-editor-content": CustomEvent<string>;
+        "set-parsed-editor-content": CustomEvent<string>;
         "set-editor-keymap": CustomEvent<string>;
         "set-code-theme": CustomEvent<string>;
         "set-code-theme-dark": CustomEvent<string>;
@@ -13,6 +14,7 @@ declare global {
     }
     interface Window {
         setEditorContent: typeof setEditorContent;
+        setParsedEditorContent: typeof setParsedEditorContent;
         setEditorKeymap: typeof setEditorKeymap;
         setCodeSyntaxTheme: typeof setCodeTheme;
         setCodeSyntaxThemeLight: typeof setCodeThemeLight;
@@ -24,6 +26,12 @@ declare global {
 export function setEditorContent(payload: string) {
     window.dispatchEvent(
         new CustomEvent("set-editor-content", { detail: payload }),
+    );
+}
+
+export function setParsedEditorContent(payload: string) {
+    window.dispatchEvent(
+        new CustomEvent("set-parsed-editor-content", { detail: payload }),
     );
 }
 
@@ -60,6 +68,7 @@ const resetMdxPreviewScrollPosition = (): void => {
 export const setWindowBridgeFunctions = () => {
     window.setEditorContent = setEditorContent;
     window.setEditorKeymap = setEditorKeymap;
+    window.setParsedEditorContent = setParsedEditorContent;
     window.setCodeSyntaxTheme = setCodeTheme;
     window.setCodeSyntaxThemeDark = setCodeThemeDark;
     window.setCodeSyntaxThemeLight = setCodeThemeLight;

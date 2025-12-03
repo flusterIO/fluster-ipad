@@ -7,7 +7,11 @@ interface AutoInsertedTagProps {
 export const AutoInsertedTag = ({
     children,
 }: AutoInsertedTagProps): ReactNode => {
-    return <a className="bg-primary px-2 rounded">{children}</a>;
+    return (
+        <span role="button" className="bg-primary px-8 rounded-md">
+            {children}
+        </span>
+    );
 };
 
 AutoInsertedTag.displayName = "AutoInsertedTag";

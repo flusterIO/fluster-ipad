@@ -12,12 +12,14 @@ import {
 } from "../types/code_editor_types";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
+import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
 
 export interface CodeEditorState {
     keymap: string;
     baseKeymap: CodeEditorBaseKeymap;
     theme: CodeEditorTheme;
     value: string;
+    parsedValue: string | null;
     haveSetInitialValue: boolean;
 }
 
@@ -26,6 +28,7 @@ const defaultInitialCodeEditorState: CodeEditorState = {
     theme: CodeEditorTheme.dracula,
     keymap: "base",
     value: "",
+    parsedValue: null,
     haveSetInitialValue: false,
 };
 
@@ -52,6 +55,10 @@ type CodeEditorContextActions =
     }
     | {
         type: "setInitialEditorValue";
+        payload: string;
+    }
+    | {
+        type: "setParsedEditorContent";
         payload: string;
     };
 
@@ -100,6 +107,12 @@ export const CodeEditorContextReducer = (
                 ...state,
                 haveSetInitialValue: true,
                 value: action.payload,
+            };
+        }
+        case "setParsedEditorContent": {
+            return {
+                ...state,
+                parsedValue: action.payload,
             };
         }
         default: {
@@ -192,6 +205,19 @@ export const CodeEditorProvider = ({
             });
         }
     }, [initialValue, state.haveSetInitialValue]);
+
+    useEventListener("set-parsed-editor-content", (e) => {
+        dispatch({
+            type: "setParsedEditorContent",
+            payload: e.detail,
+        });
+    });
+
+    useEffect(() => {
+        if (state.parsedValue === null) {
+            sendToSwift(SwiftHandler.requestParsedMdxContent, "");
+        }
+    }, [state.parsedValue]);
 
     return (
         <CodeEditorContext.Provider value={state}>

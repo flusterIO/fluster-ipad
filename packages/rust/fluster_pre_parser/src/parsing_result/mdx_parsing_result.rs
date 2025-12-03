@@ -1,8 +1,8 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::parsing_result::tag_result::TagResult;
 
-#[derive(uniffi::Object, Serialize)]
+#[derive(uniffi::Record, Serialize, Deserialize)]
 pub struct MdxParsingResult {
     pub content: String,
     pub tags: Vec<TagResult>,

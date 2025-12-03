@@ -1,26 +1,28 @@
-import type { UserConfig } from "vite";
+import type { PluginOption, UserConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { viteSingleFile } from "vite-plugin-singlefile";
 
-
 /// Required to get the plugins to read the correct file paths.
 // export const getConfigPlugins = () => {
-//     return 
+//     return
 // }
 
 export interface WebviewViteConfig {
-    outputDir: string
+    singleFile?: boolean;
+    outputDir: string;
     // plugins: ReturnType<typeof getConfigPlugins>
 }
 
-
 export const getWebviewViteConfig = (config: WebviewViteConfig): UserConfig => {
+    let plugins: PluginOption[] = [react(), tsconfigPaths()];
+    if (config.singleFile !== false) {
+        plugins.push(viteSingleFile());
+    }
     return {
-        plugins: [react(), tailwindcss(), tsconfigPaths(), viteSingleFile()],
+        plugins,
         build: {
             outDir: config.outputDir,
-        }
-    } satisfies UserConfig
-}
+        },
+    } satisfies UserConfig;
+};

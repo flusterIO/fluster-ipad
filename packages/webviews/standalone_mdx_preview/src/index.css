@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @source "../../../webview_utils/src";
 @plugin "@tailwindcss/typography";
+@import "../../../webview_utils/dist/webview_utils.css";
 @import "../../../webview_utils/src/core/styles/themes.scss";
 @import "../../../webview_utils/src/core/styles/base.scss";
 @import "../../../webview_utils/src/core/styles/shared_component_styles.scss";

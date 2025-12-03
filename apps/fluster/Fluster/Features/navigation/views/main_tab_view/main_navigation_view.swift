@@ -5,6 +5,7 @@
 //  Created by Andrew on 10/29/25.
 //
 
+import FlusterRust
 import FlusterSwift
 import PencilKit
 import SwiftData
@@ -41,6 +42,7 @@ struct MainView: View {
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
         var webviewFontSize: WebviewFontSize = .base
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.modelContext) var modelContext: ModelContext
     @AppStorage(AppStorageKeys.colorScheme.rawValue) private
         var colorSchemeSelection: ColorSchemeSelection = .dark
     @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
@@ -51,7 +53,10 @@ struct MainView: View {
         EditorKeymap = .base
     @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
         var tabviewCustomization: TabViewCustomization
-    @StateObject private var editorContainer = MdxEditorWebviewContainer(bounce: false, scrollEnabled: true)
+    @StateObject private var editorContainer = MdxEditorWebviewContainer(
+        bounce: false,
+        scrollEnabled: true
+    )
     @State private var themeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
@@ -87,28 +92,43 @@ struct MainView: View {
                 value: IpadMainViewTab.markdown
             ) {
                 if editingNote != nil {
-//                    SplitViewEditorView(
-//                        theme: $theme,
-//                        editorThemeDark: $editorThemeDark,
-//                        editorThemeLight: $editorThemeLight,
-//                        editingNote: $editingNote,
-//                        editorKeymap: $editorKeymap,
-//                        editorContainer: editorContainer,
-//                    )
-                        MdxEditorWebview(
-                            url:
-                                Bundle.main.url(
-                                    forResource: "index",
-                                    withExtension: "html",
-                                    subdirectory: "splitview_mdx_editor"
-                                )!,
-                            theme: $theme,
-                            editorThemeDark: $editorThemeDark,
-                            editorThemeLight: $editorThemeLight,
-                            editingNote: $editingNote,
-                            editorKeymap: $editorKeymap,
-                            container: editorContainer,
-                        )
+                    MdxEditorWebview(
+                        url:
+                            Bundle.main.url(
+                                forResource: "index",
+                                withExtension: "html",
+                                subdirectory: "splitview_mdx_editor"
+                            )!,
+                        theme: $theme,
+                        editorThemeDark: $editorThemeDark,
+                        editorThemeLight: $editorThemeLight,
+                        editingNote: $editingNote,
+                        editorKeymap: $editorKeymap,
+                        container: editorContainer,
+                    )
+                    .frame(
+                        alignment: .bottom
+                    )
+                    .scrollDisabled(true)
+                    //                    .task(
+                    //                        id: getParseMdxTaskId(),
+                    //                        priority: .userInitiated,
+                    //                        {
+                    //                            if let editingNoteExists = editingNote {
+                    //                                if let parsedMdx =
+                    //                                    await editingNoteExists.markdown
+                    //                                    .body.preParseAsMdx()
+                    //                                {
+                    //                                    editingNoteExists.applyMdxParsingResults(
+                    //                                        results: parsedMdx,
+                    //                                    )
+                    //                                    editorContainer.setParsedEditorContent(
+                    //                                        content: parsedMdx.content
+                    //                                    )
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                    )
                 } else {
                     SelectNoteToContinueView()
                 }
@@ -231,10 +251,27 @@ struct MainView: View {
                     editorContainer.setInitialContent(
                         note: note
                     )
-//                    previewContainer.setInitialContent(
-//                        note: note
-//                    )
                     editorContainer.resetScrollPosition()
+                }
+            }
+        )
+        .onChange(
+            of: editingNote?.markdown.body,
+            {
+                Task {
+                    if let note = editingNote {
+                        if let parsedMdx =
+                            await note.markdown
+                            .body.preParseAsMdx()
+                        {
+                            note.applyMdxParsingResults(
+                                results: parsedMdx,
+                            )
+                            editorContainer.setParsedEditorContent(
+                                content: parsedMdx.content
+                            )
+                        }
+                    }
                 }
             }
         )
@@ -297,15 +334,19 @@ struct MainView: View {
                 )
             }
         )
-        .onChange(of: editingNote, {
-            if let _editingNote = editingNote {
-                _editingNote.last_read = .now
+        .onChange(
+            of: editingNote,
+            {
+                if let _editingNote = editingNote {
+                    _editingNote.last_read = .now
+                }
             }
-        })
+        )
         .onAppear {
             handleColorSchemeChange(newScheme: colorScheme)
             handleThemeChange(newTheme: theme)
             handleColorSchemeSelectionChange()
+            print("View Database: ", modelContext.sqliteCommand)
         }
         .tabViewCustomization($tabviewCustomization)
         .tabViewStyle(.sidebarAdaptable)
@@ -348,6 +389,12 @@ struct MainView: View {
                 darkMode: newScheme == .dark
             )
         )
+    }
+    func getParseMdxTaskId() -> String {
+        if let editingNoteExists = editingNote {
+            return "\(editingNoteExists.id)-\(editingNoteExists.markdown.body)"
+        }
+        return "parse-mdx"
     }
 }
 

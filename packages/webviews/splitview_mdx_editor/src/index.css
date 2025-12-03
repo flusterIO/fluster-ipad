@@ -1,13 +1,6 @@
-@import "tailwindcss";
-@source "../../../webview_utils/src";
-@plugin "@tailwindcss/typography";
-@import "../../../webview_utils/src/core/styles/themes.scss";
-@import "../../../webview_utils/src/core/styles/base.scss";
-@import "../../../webview_utils/src/core/styles/shared_component_styles.scss";
-
-@source inline("prose-base prose-lg prose-xl prose-2xl");
-
-@custom-variant dark (&:where(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 body {

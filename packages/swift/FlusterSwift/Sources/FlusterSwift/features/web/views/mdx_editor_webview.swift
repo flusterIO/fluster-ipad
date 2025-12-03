@@ -28,7 +28,6 @@ public struct MdxEditorWebview: UIViewRepresentable {
     @Binding var editingNote: NoteModel?
     @Binding var editorKeymap: EditorKeymap
     
-
     let container: MdxEditorWebviewContainer
 
     public init(
@@ -163,7 +162,24 @@ extension MdxEditorWebview {
 //                    parent.viewportHeight = CGFloat(truncating: n)
 //                }
 //            } else
-            if message.name == "editor-update",
+            if message.name == "request-parsed-mdx-content" {
+                Task {
+                    if let note = parent.editingNote {
+                        if let parsedMdx =
+                            await note.markdown
+                            .body.preParseAsMdx()
+                        {
+                            note.applyMdxParsingResults(
+                                results: parsedMdx,
+                            )
+                            parent.container.setParsedEditorContent(
+                                content: parsedMdx.content
+                            )
+                        }
+                    }
+                }
+
+            } else if message.name == "editor-update",
                 let str = message.body as? String
             {
                 parent.editingNote?.markdown.body = str

@@ -6,8 +6,17 @@
 //
 
 import Foundation
+import FlusterRust
 
 extension [Int] {
+    public func toData() -> Data {
+        self.withUnsafeBufferPointer { buffer in
+            Data(buffer: buffer)
+        }
+    }
+}
+
+extension [ParserId] {
     public func toData() -> Data {
         self.withUnsafeBufferPointer { buffer in
             Data(buffer: buffer)

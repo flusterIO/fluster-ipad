@@ -29,11 +29,20 @@
     "src/core/utils/themes.scss"
   ],
   "scripts": {
-    "build": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
+    "build": "wireit",
     "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
+  },
+  "wireit": {
+    "build": {
+      "command": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
+      "output": [
+        "dist"
+      ],
+      "clean": true
+    }
   },
   "types": "./dist/index.d.ts",
   "main": "./dist/index.umd.js",
@@ -102,6 +111,7 @@
     "remark-rehype": "11.1.2",
     "shiki": "3.3.0",
     "tailwind-merge": "3.3.0",
+    "tailwindcss": "3.4.18",
     "thememirror": "2.0.1",
     "unified": "11.0.5"
   },

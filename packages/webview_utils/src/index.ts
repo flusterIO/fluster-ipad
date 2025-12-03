@@ -1,3 +1,4 @@
+import "./core/styles/base.scss";
 export * from "./features/editor/code_editor/types/swift_events/swift_events";
 
 // -- Core Components --

@@ -82,6 +82,11 @@ const config = {
             pinVersion: "8.21.3",
             label: "Pin react-table",
         },
+        {
+            dependencies: ["tailwindcss"],
+            pinVersion: "3.4.18",
+            label: "Pin tailwind version",
+        },
     ],
 };
 

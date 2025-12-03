@@ -19,6 +19,10 @@ public class WebviewContainer: ObservableObject {
         view.scrollView.minimumZoomScale = 1
         view.scrollView.maximumZoomScale = 1
         view.allowsBackForwardNavigationGestures = false
+        // At best, this will only work for the editor.
+        if let screen = UIScreen.current {
+            view.frame = CGRect(x: 0, y: 0, width: screen.bounds.width, height: screen.bounds.height)
+        }
         view.isHidden = true
         if #available(iOS 16.4, macOS 13.3, *) {
             view.isInspectable = true
@@ -100,12 +104,12 @@ public class WebviewContainer: ObservableObject {
     public func sendScreenSize() {
         let width = UIScreen.current?.bounds.width
         let height = UIScreen.current?.bounds.height
-//        if width != nil && height != nil {
-//            self.runJavascript(
-//                """
-//                window.setScreenSize(\(width), \(height))
-//                """
-//            )
-//        }
+        if width != nil && height != nil {
+            self.runJavascript(
+                """
+                window.setScreenSize(\(width), \(height))
+                """
+            )
+        }
     }
 }
