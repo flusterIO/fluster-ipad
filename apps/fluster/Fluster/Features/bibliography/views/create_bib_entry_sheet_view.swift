@@ -60,7 +60,7 @@ struct CreateBibEntrySheetView: View {
                         // -- If the model should be created new. --
                         let newEntry = BibEntryModel(data: inputValue)
                         if let _editingNote = editingNote, !ignoreEditingNote {
-                            _editingNote.citations.append(newEntry)
+                            _editingNote.citations.appendWithoutDuplicates(item: newEntry)
                         } else {
                             modelContext.insert(newEntry)
                         }

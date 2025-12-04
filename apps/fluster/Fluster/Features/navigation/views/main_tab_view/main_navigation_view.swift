@@ -204,17 +204,16 @@ struct MainView: View {
                         value: IpadMainViewTab.searchByBib,
                     ) {
                         NavigationStack {
-                            BibliographySearchResultsView()
+                            BibliographySearchResultsView(
+                                editingNote: $editingNote
+                            )
                                 .navigationTitle("Bibliography Entries")
-                                .navigationDestination(
-                                    for: BibEntryModel.self,
-                                    destination: { bibEntry in
-                                        ByBibEntrySearchResults(
-                                            bibEntryId: bibEntry.id,
-                                            editingNote: $editingNote
-                                        )
-                                    }
-                                )
+//                                .navigationDestination(
+//                                    for: BibEntryModel.self,
+//                                    destination: { bibEntry in
+//
+//                                    }
+//                                )
                         }
                     }
                     .customizationID(IpadMainViewTab.searchByBib.rawValue)

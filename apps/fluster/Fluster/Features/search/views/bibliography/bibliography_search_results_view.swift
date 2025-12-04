@@ -13,14 +13,15 @@ struct BibliographySearchResultsViewQueryWrapped: View {
     @StateObject private var bibtexEditorContainer =
         BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
     @Query(sort: \BibEntryModel.ctime) var bibEntries: [BibEntryModel]
-    @Environment(NoteModel.self) private var editingNote: NoteModel?
     @Environment(\.modelContext) var modelContext
     @State private var confirmationModalOpen: Bool = false
     @State private var deletingBibEntry: BibEntryModel? = nil
     @Binding var searchQuery: String
+    @Binding var editingNote: NoteModel?
 
-    init(searchQuery: Binding<String>) {
+    init(searchQuery: Binding<String>, editingNote: Binding<NoteModel?>) {
         _searchQuery = searchQuery
+        _editingNote = editingNote
 
         if !searchQuery.wrappedValue.isEmpty {
             let query_cantUseGetterInPredicate = searchQuery.wrappedValue
@@ -54,8 +55,18 @@ struct BibliographySearchResultsViewQueryWrapped: View {
         } else {
             List {
                 ForEach(bibEntries, id: \.id) { item in
-                    BibEntrySearchResultItemView(
-                        item: item,
+                    NavigationLink(
+                        destination: {
+                            ByBibEntrySearchResults(
+                                bibEntryId: item.id,
+                                editingNote: $editingNote
+                            )
+                        },
+                        label: {
+                            BibEntrySearchResultItemView(
+                                item: item,
+                            )
+                        }
                     )
                     .swipeActions(
                         edge: .leading,
@@ -71,11 +82,14 @@ struct BibliographySearchResultsViewQueryWrapped: View {
                     )
                 }
             }
-            .onChange(of: confirmationModalOpen, {
-                if !confirmationModalOpen {
-                    deletingBibEntry = nil
+            .onChange(
+                of: confirmationModalOpen,
+                {
+                    if !confirmationModalOpen {
+                        deletingBibEntry = nil
+                    }
                 }
-            })
+            )
             .confirmationDialog(
                 "Delete this bibliography entry?",
                 isPresented: $confirmationModalOpen,
@@ -101,9 +115,11 @@ struct BibliographySearchResultsViewQueryWrapped: View {
 struct BibliographySearchResultsView: View {
     @State private var searchQuery: String = ""
     let bibtexEditorContainer = BibtexEditorWebviewContainer()
+    @Binding var editingNote: NoteModel?
     var body: some View {
         BibliographySearchResultsViewQueryWrapped(
-            searchQuery: $searchQuery
+            searchQuery: $searchQuery,
+            editingNote: $editingNote
         )
         .toolbar(content: {
             NavigationLink(
@@ -121,5 +137,7 @@ struct BibliographySearchResultsView: View {
 }
 
 #Preview {
-    BibliographySearchResultsView()
+    BibliographySearchResultsView(
+        editingNote: .constant(nil)
+    )
 }
