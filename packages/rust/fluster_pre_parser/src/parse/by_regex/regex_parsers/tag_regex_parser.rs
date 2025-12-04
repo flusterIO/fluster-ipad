@@ -3,7 +3,10 @@ use rayon::prelude::*;
 use regex::Regex;
 
 use crate::{
-    parse::by_regex::regex_parsers::mdx_parser::{MdxParser, ParserId},
+    parse::by_regex::{
+        parse_mdx_by_regex::ParseMdxOptions,
+        regex_parsers::mdx_parser::{MdxParser, ParserId},
+    },
     parsing_result::{mdx_parsing_result::MdxParsingResult, tag_result::TagResult},
 };
 
@@ -14,7 +17,7 @@ impl MdxParser for TagRegexParser {
     fn parser_id(&self) -> ParserId {
         ParserId::Tags
     }
-    async fn parse_async(&self, result: &mut MdxParsingResult) {
+    async fn parse_async(&self, _: &ParseMdxOptions, result: &mut MdxParsingResult) {
         let r = Regex::new(r"\[\[#(?<body>[^\]]+)\]\]").unwrap();
         let mut new_content = String::from(&result.content);
         let mut tags: Vec<TagResult> = Vec::new();

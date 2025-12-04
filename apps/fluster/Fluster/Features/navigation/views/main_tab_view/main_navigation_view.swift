@@ -35,6 +35,7 @@ func getInitialTheme() -> WebViewTheme {
     return .fluster
 }
 
+@MainActor
 struct MainView: View {
     @State private var toolbar = PKToolPicker()
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
@@ -277,7 +278,7 @@ struct MainView: View {
                     if let note = editingNote {
                         if let parsedMdx =
                             await note.markdown
-                            .body.preParseAsMdx()
+                            .body.preParseAsMdx(modelContext: modelContext)
                         {
                             note.applyMdxParsingResults(
                                 results: parsedMdx,

@@ -8,6 +8,8 @@ public enum CodeSyntaxTheme: String, Codable, CaseIterable {
         solarizedDark, xcodeDark, xcodeLight
 }
 
+
+@MainActor
 public struct MdxEditorWebview: UIViewRepresentable {
 
     @State private var webView: WKWebView = WKWebView(
@@ -103,6 +105,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
     }
 }
 
+@MainActor
 extension MdxEditorWebview {
     public final class Coordinator: NSObject, WKNavigationDelegate,
         WKScriptMessageHandler
@@ -150,6 +153,7 @@ extension MdxEditorWebview {
                 "WebView navigation failed with error: \(error.localizedDescription)"
             )
         }
+        @MainActor
         public func userContentController(
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
@@ -173,7 +177,7 @@ extension MdxEditorWebview {
                     if let note = parent.editingNote {
                         if let parsedMdx =
                             await note.markdown
-                            .body.preParseAsMdx()
+                            .body.preParseAsMdx(modelContext: parent.modelContext)
                         {
                             note.applyMdxParsingResults(
                                 results: parsedMdx,

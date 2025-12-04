@@ -2,15 +2,25 @@ use fluster_core_utilities::core_types::fluster_error::FlusterResult;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    parse::by_regex::regex_parsers::{mdx_parser::MdxParser, tag_regex_parser::TagRegexParser},
+    parse::by_regex::regex_parsers::{
+        citation_regex_parser::CitationRegexParser, mdx_parser::MdxParser,
+        tag_regex_parser::TagRegexParser,
+    },
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
-static REGEX_PARSERS: [&'static dyn MdxParser; 1] = [&TagRegexParser];
+static REGEX_PARSERS: [&'static dyn MdxParser; 2] = [&TagRegexParser, &CitationRegexParser];
+
+#[derive(Serialize, Deserialize, uniffi::Record)]
+pub struct SwiftDataCitationSummary {
+    pub citation_key: String,
+    pub body: String,
+}
 
 #[derive(Serialize, Deserialize, uniffi::Record)]
 pub struct ParseMdxOptions {
-    content: String,
+    pub content: String,
+    pub citations: Vec<SwiftDataCitationSummary>,
 }
 
 // impl Lift {
@@ -38,7 +48,7 @@ pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<M
     }
 
     for parser in parsers {
-        parser.parse_async(&mut result).await;
+        parser.parse_async(&opts, &mut result).await;
     }
 
     Ok(result)
@@ -56,6 +66,7 @@ mod tests {
         let test_content = get_welcome_to_fluster_content();
         let res = parse_mdx_string_by_regex(ParseMdxOptions {
             content: test_content,
+            citations: Vec::new(),
         })
         .await;
         assert!(

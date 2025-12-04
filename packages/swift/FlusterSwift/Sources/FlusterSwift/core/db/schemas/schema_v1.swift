@@ -98,8 +98,7 @@ extension AppSchemaV1 {
             return (try? modelContext.fetchCount(descriptor)) ?? 0
         }
 
-        public static func isTitleMatch(noteBody: String, query: String) -> Bool
-        {
+        public static func isTitleMatch(noteBody: String, query: String) -> Bool {
             let title = MdxTextUtils.getTitle(body: noteBody)
             return title == nil
                 ? false : title!.localizedCaseInsensitiveContains(query)
@@ -203,6 +202,10 @@ extension AppSchemaV1 {
         public func getTitle() -> String {
             return self.parse()?.publications[0].fields["title"] ?? "--"
         }
+        
+        public func toCitationSummary() -> SwiftDataCitationSummary {
+            return SwiftDataCitationSummary(citationKey: self.id, body: self.data)
+        }
     }
 
     @Model
@@ -257,8 +260,7 @@ extension AppSchemaV1 {
     @Model
     public class SubjectModel: TaggableModel {
         @Attribute(.unique) public var value: String
-        @Relationship(inverse: \NoteModel.subject) public var notes:
-            [NoteModel] = []
+        @Relationship(inverse: \NoteModel.subject) public var notes: [NoteModel] = []
         public init(
             value: String,
             ctime: Date = .now,

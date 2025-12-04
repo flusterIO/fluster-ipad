@@ -1,5 +1,6 @@
 import Foundation
 import FlusterRust
+import SwiftData
 
 public extension String {
     func toQuotedJavascriptString() -> String {
@@ -7,9 +8,17 @@ public extension String {
     }
    
     /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
-    func preParseAsMdx() async -> MdxParsingResult? {
+    func preParseAsMdx(modelContext: ModelContext) async -> MdxParsingResult? {
          do {
-             return try await parseMdxStringByRegex(opts: ParseMdxOptions(content: self))
+             let citations = try modelContext.fetch(FetchDescriptor(
+                predicate: #Predicate<BibEntryModel> {
+                    $0.id != ""
+                },
+             ))
+             let citationSummaries: [SwiftDataCitationSummary] = citations.map({ cit in
+                 cit.toCitationSummary()
+             })
+             return try await parseMdxStringByRegex(opts: ParseMdxOptions(content: self, citations: citationSummaries))
          } catch {
              print("Mdx parsing error: \(error.localizedDescription)")
          }
