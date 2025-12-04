@@ -149,16 +149,18 @@ struct MainView: View {
                 value: IpadMainViewTab.bib
             ) {
                 NavigationStack {
-                    BibliographyPageView()
-                        .navigationDestination(
-                            for: BibEntryModel.self,
-                            destination: { bibEntry in
-                                ByBibEntrySearchResults(
-                                    bibEntryId: bibEntry.id,
-                                    editingNote: $editingNote
-                                )
-                            }
-                        )
+                    BibliographyPageView(
+                        editingNote: $editingNote
+                    )
+//                        .navigationDestination(
+//                            for: BibEntryModel.self,
+//                            destination: { bibEntry in
+//                                ByBibEntrySearchResults(
+//                                    bibEntryId: bibEntry.id,
+//                                    editingNote: $editingNote
+//                                )
+//                            }
+//                        )
                 }
             }
             .customizationID(IpadMainViewTab.bib.rawValue)

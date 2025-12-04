@@ -10,17 +10,44 @@ import SwiftData
 import SwiftUI
 
 struct BibListView: View {
-    var items: [BibEntryModel]
-    @Binding var editing: BibEntryModel?
-    let editorContainer: BibtexEditorWebviewContainer
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
     @Environment(\.modelContext) var modelContext
+    var items: [BibEntryModel]
+    @Binding var editingBibEntry: BibEntryModel?
+    @Binding var editingNote: NoteModel?
+    let editorContainer: BibtexEditorWebviewContainer
+    
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             List {
                 ForEach(items, id: \.id) { item in
-                    BibEntrySearchResultItemView(item: item)
+                    NavigationLink(
+                        destination: ByBibEntrySearchResults(
+                            bibEntryId: item.id,
+                            editingNote: $editingNote
+                        ),
+                        label: {
+                            BibEntrySearchResultItemView(item: item)
+                        }
+                    )
+                    .swipeActions(
+                        edge: .leading,
+                        allowsFullSwipe: true,
+                        content: {
+                            Button(
+                                action: {
+                                    editingNote?.diassociateBibEntry(bibEntry: item)
+                                },
+                                label: {
+                                    Label(
+                                        "Disassociate",
+                                        systemImage: "x.circle.fill"
+                                    )
+                                }
+                            )
+                        }
+                    )
                 }
             }
         }
@@ -31,7 +58,11 @@ struct BibListView: View {
 #Preview {
     BibListView(
         items: [],
-        editing: .constant(nil),
-        editorContainer: BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
+        editingBibEntry: .constant(nil),
+        editingNote: .constant(nil),
+        editorContainer: BibtexEditorWebviewContainer(
+            bounce: true,
+            scrollEnabled: true
+        )
     )
 }

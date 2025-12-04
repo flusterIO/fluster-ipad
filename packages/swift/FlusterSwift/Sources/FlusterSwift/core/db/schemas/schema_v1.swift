@@ -123,6 +123,11 @@ extension AppSchemaV1 {
                 TagModel.fromRustTagResult(t: tag, existingTags: self.tags)
             }
         }
+        public func diassociateBibEntry(bibEntry: BibEntryModel) {
+            self.citations.removeAll {
+                $0.id == bibEntry.id
+            }
+        }
         public func setLastRead() {
             self.last_read = .now
             for tag in self.tags {

@@ -5,28 +5,23 @@
 //  Created by Andrew on 11/9/25.
 //
 
+import FlusterSwift
 import SwiftUI
 import SwiftyBibtex
-import FlusterSwift
 
 struct BibEntrySearchResultItemView: View {
     var item: BibEntryModel
     var body: some View {
-        NavigationLink(
-            value: item,
-            label: {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text(item.parse()?.publications[0].fields["title"] ?? "--")
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                        .lineLimit(2)
-                    Text(
-                        item.ctime.formatted(date: .complete, time: .shortened)
-                    )
-                    .font(.caption)
-                }
-            }
-        )
+        VStack(alignment: .leading, spacing: 16) {
+            Text(item.parse()?.publications[0].fields["title"] ?? "--")
+                .font(.subheadline)
+                .fontWeight(.bold)
+                .lineLimit(2)
+            Text(
+                item.ctime.formatted(date: .complete, time: .shortened)
+            )
+            .font(.caption)
+        }
     }
 }
 

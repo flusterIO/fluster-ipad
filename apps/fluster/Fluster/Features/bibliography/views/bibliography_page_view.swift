@@ -11,9 +11,9 @@ import SwiftUI
 
 struct BibliographyPageInternalView: View {
     @Query var bibEntries: [BibEntryModel]
-    @Environment(NoteModel.self) private var editingNote: NoteModel?
     @State var associateNoteModalPresented: Bool = false
-    @Binding var editing: BibEntryModel?
+    @Binding var editingBibEntry: BibEntryModel?
+    @Binding var editingNote: NoteModel?
     let bibtexEditorContainer: BibtexEditorWebviewContainer
 
     var body: some View {
@@ -21,16 +21,18 @@ struct BibliographyPageInternalView: View {
             ZStack(alignment: .bottomTrailing) {
                 if _editingNote.citations.isEmpty {
                     EmptyBibListView(
-                        editingBibEntry: $editing,
+                        editingBibEntry: $editingBibEntry,
                         container: bibtexEditorContainer,
+                        ignoreBibEntryOnCreate: false,
                         associateNoteModalPresented:
-                            $associateNoteModalPresented
+                            $associateNoteModalPresented,
                     )
                     .navigationTitle("Note Bibliography")
                 } else {
                     BibListView(
                         items: _editingNote.citations,
-                        editing: $editing,
+                        editingBibEntry: $editingBibEntry,
+                        editingNote: $editingNote,
                         editorContainer: bibtexEditorContainer
                     )
                     .toolbar {
@@ -64,7 +66,7 @@ struct BibliographyPageInternalView: View {
 }
 
 struct BibliographyPageView: View {
-    @State private var editing: BibEntryModel? = nil
+    @State private var editingBibEntry: BibEntryModel? = nil
     @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
         var editorThemeDark: CodeSyntaxTheme = .dracula
     @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
@@ -76,17 +78,19 @@ struct BibliographyPageView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var bibtexEditorContainer =
         BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
+    @Binding var editingNote: NoteModel?
     var body: some View {
         BibliographyPageInternalView(
-            editing: $editing,
+            editingBibEntry: $editingBibEntry,
+            editingNote: $editingNote,
             bibtexEditorContainer: bibtexEditorContainer
         )
         .onChange(
-            of: editing,
+            of: editingBibEntry,
             {
-                if editing != nil {
+                if editingBibEntry != nil {
                     bibtexEditorContainer.setInitialContent(
-                        entryBody: editing!.data
+                        entryBody: editingBibEntry!.data
                     )
                 }
             }
@@ -127,5 +131,5 @@ struct BibliographyPageView: View {
 }
 
 #Preview {
-    BibliographyPageView()
+    BibliographyPageView(editingNote: .constant(nil))
 }
