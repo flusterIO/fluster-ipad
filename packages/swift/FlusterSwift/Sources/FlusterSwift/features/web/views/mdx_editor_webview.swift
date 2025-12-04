@@ -55,7 +55,8 @@ public struct MdxEditorWebview: UIViewRepresentable {
         let editorContentControllers = [
             "editor-update",
             "request-initial-editor-data",
-            //            "set-editor-viewport-height",
+            "request-parsed-mdx-content",
+            "tag-click-event"
         ]
         for controllerName in editorContentControllers {
             addUserContentController(

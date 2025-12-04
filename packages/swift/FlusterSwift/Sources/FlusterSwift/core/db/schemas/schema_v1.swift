@@ -21,10 +21,39 @@ public enum AppSchemaV1: VersionedSchema {
 
 extension AppSchemaV1 {
     @Model
+    public class FrontMatter {
+        public var id: String
+        public var title: String?
+        public var userDefinedId: String?
+
+        init(id: String, title: String? = nil, userDefinedId: String? = nil) {
+            self.id = id
+            self.title = title
+            self.userDefinedId = userDefinedId
+        }
+
+        public static func emptyFrontMatter() -> FrontMatter {
+            return FrontMatter(
+                id: UUID().uuidString,
+                title: nil,
+                userDefinedId: nil
+            )
+        }
+        public func applyRustFrontMatterResult(res: FrontMatterResult) {
+            if res.title != nil, !res.title!.isEmpty {
+                self.title = res.title
+            }
+            if res.userDefinedId != nil, !res.userDefinedId!.isEmpty {
+                self.userDefinedId = res.userDefinedId
+            }
+        }
+    }
+    @Model
     public class NoteModel {
         public var id: String
         @Attribute(.externalStorage) public var drawing: Data
         public var markdown: MarkdownNote = MarkdownNote(body: "", summary: nil)
+        public var frontMatter: FrontMatter = FrontMatter.emptyFrontMatter()
         public var ctime: Date
         public var utime: Date
         public var last_read: Date
@@ -69,7 +98,8 @@ extension AppSchemaV1 {
             return (try? modelContext.fetchCount(descriptor)) ?? 0
         }
 
-        public static func isTitleMatch(noteBody: String, query: String) -> Bool {
+        public static func isTitleMatch(noteBody: String, query: String) -> Bool
+        {
             let title = MdxTextUtils.getTitle(body: noteBody)
             return title == nil
                 ? false : title!.localizedCaseInsensitiveContains(query)
@@ -86,6 +116,9 @@ extension AppSchemaV1 {
             results: MdxParsingResult,
         ) {
             self.markdown.preParsedBody = results.content
+            if let frontMatter = results.frontMatter {
+                self.frontMatter.applyRustFrontMatterResult(res: frontMatter)
+            }
             self.tags = results.tags.map { tag in
                 TagModel.fromRustTagResult(t: tag, existingTags: self.tags)
             }
@@ -219,7 +252,8 @@ extension AppSchemaV1 {
     @Model
     public class SubjectModel: TaggableModel {
         @Attribute(.unique) public var value: String
-        @Relationship(inverse: \NoteModel.subject) public var notes: [NoteModel] = []
+        @Relationship(inverse: \NoteModel.subject) public var notes:
+            [NoteModel] = []
         public init(
             value: String,
             ctime: Date = .now,
