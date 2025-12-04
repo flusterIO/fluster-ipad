@@ -12,7 +12,7 @@ pub struct TagRegexParser;
 #[async_trait]
 impl MdxParser for TagRegexParser {
     fn parser_id(&self) -> ParserId {
-        ParserId::Tag
+        ParserId::Tags
     }
     async fn parse_async(&self, result: &mut MdxParsingResult) {
         let r = Regex::new(r"\[\[#(?<body>[^\]]+)\]\]").unwrap();

@@ -18,7 +18,7 @@ struct MarkdownNotesSearchResultsWrappedQuery: View {
     @Binding var searchQuery: String
     
     var sortedNotes: [NoteModel] {
-        return MdxTextUtils.sortNotesByMarkdownBodyMatch(notes: notes, query: searchQuery)
+        return searchQuery.isEmpty ? notes : MdxTextUtils.sortNotesByMarkdownBodyMatch(notes: notes, query: searchQuery)
     }
 
     init(editingNote: Binding<NoteModel?>, searchQuery: Binding<String>) {

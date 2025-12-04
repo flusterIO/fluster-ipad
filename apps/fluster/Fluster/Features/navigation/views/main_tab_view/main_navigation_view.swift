@@ -106,10 +106,18 @@ struct MainView: View {
                         editorKeymap: $editorKeymap,
                         container: editorContainer,
                     )
+//                    .fixedSize()
                     .frame(
                         alignment: .bottom
                     )
                     .scrollDisabled(true)
+                    .onAppear {
+                        if let parsedMdx = editingNote!.markdown.preParsedBody {
+                            editorContainer.setParsedEditorContent(
+                                content: parsedMdx
+                            )
+                        }
+                    }
                     //                    .task(
                     //                        id: getParseMdxTaskId(),
                     //                        priority: .userInitiated,
@@ -248,9 +256,15 @@ struct MainView: View {
             of: editingNote,
             {
                 if let note = editingNote {
+                    note.setLastRead()
                     editorContainer.setInitialContent(
                         note: note
                     )
+                    if let parsedMdx = note.markdown.preParsedBody {
+                        editorContainer.setParsedEditorContent(
+                            content: parsedMdx
+                        )
+                    }
                     editorContainer.resetScrollPosition()
                 }
             }

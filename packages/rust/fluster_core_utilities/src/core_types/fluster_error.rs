@@ -13,6 +13,8 @@ pub enum FlusterError {
     // -- General Errors --
     #[error("Json serialization error.")]
     JsonSerializationError,
+    #[error("Frontmatter error.")]
+    FrontMatterError,
 }
 
 pub type FlusterResult<T> = Result<T, FlusterError>;

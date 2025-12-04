@@ -63,6 +63,7 @@ public struct MdxPreviewWebview: UIViewRepresentable {
             "request-initial-preview-data",
             "set-preview-viewport-height",
             "is-landscape-view",
+            "tag-click-event",
         ]
 
         for controllerName in controllers {
@@ -118,6 +119,10 @@ public struct MdxPreviewWebview: UIViewRepresentable {
             )
         }
     }
+    
+    public func handleTagClick(tagValue: String) {
+        // TODO: Handle tag click here by navigating to proper tag search results. Create a full screen cover that will open search results that will then be dismissed on click.
+    }
 }
 
 extension MdxPreviewWebview {
@@ -150,17 +155,24 @@ extension MdxPreviewWebview {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            if message.name == "set-preview-viewport-height" {
-                if let n = NumberFormatter().number(from: message.body as! String) {
+            switch message.name {
+            case "tag-click-event":
+                parent.handleTagClick(tagValue: message.body as! String)
+            case "set-preview-viewport-height":
+                if let n = NumberFormatter().number(
+                    from: message.body as! String
+                ) {
                     parent.viewportHeight = CGFloat(truncating: n)
                 } else {
                     parent.viewportHeight = UIScreen.main.bounds.height
                 }
-            } else if message.name == "is-landscape-view" {
+            case "is-landscape-view":
                 parent.shouldShowEditor = (message.body as! String) == "true"
-            } else if message.name == "request-initial-preview-data" {
+            case "request-initial-preview-data":
                 parent.setInitialProperties()
                 parent.setInitialContent()
+            default:
+                return
             }
         }
     }

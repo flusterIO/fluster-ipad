@@ -8,6 +8,8 @@ export enum SwiftHandler {
     requestInitialPreviewData = "request-initial-preview-data",
     bibtexRequestInitialData = "bibtex-request-initial-data",
     bibtexEditorUpdate = "bibtex-editor-update",
+    // -- user actions --
+    handleTagClick = "tag-click-event",
 }
 
 declare global {

@@ -134,7 +134,11 @@ export const WebViewContainer = ({
         >
             <div
                 id="webview-content-wrapper"
-                className={cn("w-full h-fit load-hide", contentContainerClasses)}
+                className={cn(
+                    "w-full load-hide",
+                    shrinkHeight ? "h-fit" : "h-screen min-h-fit",
+                    contentContainerClasses,
+                )}
                 ref={container}
             >
                 {children}

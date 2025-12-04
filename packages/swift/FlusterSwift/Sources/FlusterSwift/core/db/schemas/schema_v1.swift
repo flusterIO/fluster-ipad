@@ -90,11 +90,27 @@ extension AppSchemaV1 {
                 TagModel.fromRustTagResult(t: tag, existingTags: self.tags)
             }
         }
+        public func setLastRead() {
+            self.last_read = .now
+            for tag in self.tags {
+                tag.lastAccess = .now
+            }
+            for bibEntry in self.citations {
+                bibEntry.lastAccess = .now
+            }
+            if let subject = self.subject {
+                subject.lastAccess = .now
+            }
+            if let topic = self.topic {
+                topic.lastAccess = .now
+            }
+        }
     }
     @Model
     public class BibEntryModel: Identifiable {
         @Attribute(.unique) public var id: String
         @Attribute(.unique) public var citationKey: String?
+        public var htmlFormattedCitation: String?
         /// The bibtex string representing the item's data.
         public var data: String
         public var ctime: Date
@@ -116,6 +132,8 @@ extension AppSchemaV1 {
             self.utime = utime
             self.notes = notes
             self.lastAccess = lastAccess
+            // TODO: Figure out how to get the html formatted citation in rust and use that to generate a formatted citation for each item that can then be passed to the webview for bibliography creation.
+            self.htmlFormattedCitation = nil
             self.citationKey = self.getCitationKey()
         }
         public func parse() -> SwiftyBibtex.BibtexResult? {

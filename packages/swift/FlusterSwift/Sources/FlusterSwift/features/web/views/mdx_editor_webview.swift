@@ -27,7 +27,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
     @Binding var editorThemeLight: CodeSyntaxTheme
     @Binding var editingNote: NoteModel?
     @Binding var editorKeymap: EditorKeymap
-    
+
     let container: MdxEditorWebviewContainer
 
     public init(
@@ -55,7 +55,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
         let editorContentControllers = [
             "editor-update",
             "request-initial-editor-data",
-//            "set-editor-viewport-height",
+            //            "set-editor-viewport-height",
         ]
         for controllerName in editorContentControllers {
             addUserContentController(
@@ -126,19 +126,19 @@ extension MdxEditorWebview {
             )
             parent.setInitialProperties()
             parent.container.webView.isHidden = false
-//            parent.container.requestDocumentSize()
+            //            parent.container.requestDocumentSize()
             parent.didSetInitialContent = true
         }
-//        public func webView(
-//            _ webView: WKWebView,
-//            didStartProvisionalNavigation navigation: WKNavigation!
-//        ) {
-//            parent.isLoading = true  // Set loading to true when navigation starts
-//        }
+        //        public func webView(
+        //            _ webView: WKWebView,
+        //            didStartProvisionalNavigation navigation: WKNavigation!
+        //        ) {
+        //            parent.isLoading = true  // Set loading to true when navigation starts
+        //        }
 
-//        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
-//        {
-//        }
+        //        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
+        //        {
+        //        }
 
         public func webView(
             _ webView: WKWebView,
@@ -153,16 +153,21 @@ extension MdxEditorWebview {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-//            if message.name == "set-editor-viewport-height" {
-//                print("Message body: \(message.body)")
-//                if let n = NumberFormatter().number(
-//                    from: message.body as! String
-//                ) {
-//                    print("N: \(n)")
-//                    parent.viewportHeight = CGFloat(truncating: n)
-//                }
-//            } else
-            if message.name == "request-parsed-mdx-content" {
+            //            if message.name == "set-editor-viewport-height" {
+            //                print("Message body: \(message.body)")
+            //                if let n = NumberFormatter().number(
+            //                    from: message.body as! String
+            //                ) {
+            //                    print("N: \(n)")
+            //                    parent.viewportHeight = CGFloat(truncating: n)
+            //                }
+            //            } else
+            switch message.name {
+            case "tag-click-event":
+                // TODO: Handle this tag click event.
+                print("Tag clicked \(message.body as! String)")
+            case "request-parsed-mdx-content":
+                print("Received request for parsed mdx content")
                 Task {
                     if let note = parent.editingNote {
                         if let parsedMdx =
@@ -178,15 +183,16 @@ extension MdxEditorWebview {
                         }
                     }
                 }
-
-            } else if message.name == "editor-update",
-                let str = message.body as? String
-            {
-                parent.editingNote?.markdown.body = str
-            } else if message.name == "request-initial-editor-data" {
+            case "editor-update":
+                if let str = message.body as? String {
+                    parent.editingNote?.markdown.body = str
+                }
+            case "request-initial-editor-data":
                 print("Request for initial editor data received...")
                 parent.setInitialProperties()
                 parent.setInitialContent()
+            default:
+                return
             }
         }
     }

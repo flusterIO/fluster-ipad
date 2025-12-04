@@ -7,9 +7,9 @@ public extension String {
     }
    
     /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
-    func preParseAsMdx(ignoreParsing: [ParserId] = []) async -> MdxParsingResult? {
+    func preParseAsMdx() async -> MdxParsingResult? {
          do {
-             return try await parseMdxStringByRegex(opts: ParseMdxOptions(content: self, ignoreParsing: ignoreParsing.toData()))
+             return try await parseMdxStringByRegex(opts: ParseMdxOptions(content: self))
          } catch {
              print("Mdx parsing error: \(error.localizedDescription)")
          }

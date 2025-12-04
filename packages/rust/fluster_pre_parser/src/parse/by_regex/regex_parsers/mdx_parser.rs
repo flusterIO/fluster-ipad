@@ -1,12 +1,13 @@
 use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
 
 use crate::parsing_result::mdx_parsing_result::MdxParsingResult;
 
-#[derive(PartialEq)]
-#[repr(u8)]
-#[derive(uniffi::Enum)]
+#[derive(Serialize, Deserialize, PartialEq, strum_macros::Display)]
 pub enum ParserId {
-    Tag = 0,
+    #[serde(rename = "tags")]
+    #[strum(to_string = "tags")]
+    Tags,
 }
 
 #[async_trait]

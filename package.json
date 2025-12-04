@@ -4,7 +4,6 @@
     },
     "devDependencies": {
         "@tailwindcss/cli": "4.1.17",
-        "@tailwindcss/vite": "4.1.17",
         "@types/node": "24.10.1",
         "@vitejs/plugin-react": "5.1.1",
         "autoprefixer": "10.4.21",

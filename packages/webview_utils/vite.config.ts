@@ -3,7 +3,6 @@ import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
-import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 // https://vite.dev/config/
@@ -15,7 +14,6 @@ export default defineConfig({
             insertTypesEntry: true,
             copyDtsFiles: true,
         }),
-        tailwindcss(),
     ],
     build: {
         lib: {

@@ -192,7 +192,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This will clear the dist directory in the iOS app if there is one from a previous build\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/dist\"\n\ncd ../../packages/webview_utils\n\n~/.pnpm/pnpm install\n~/.pnpm/pnpm build\n\ncd ../webviews/editor_splitview_webview\n\n~/.pnpm/pnpm install\n~/.pnpm/pnpm run build\n\ncd ../bibtex_editor_webview\n\n~/.pnpm/pnpm install\n~/.pnpm/pnpm run build\n";
+			shellScript = "# This will clear the dist directory in the iOS app if there is one from a previous build\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/dist\"\n\necho Working directory: $(pwd)\n\ncd ../../\n\necho New working directory: $(pwd)\n\n# cd $FLUSTER_IOS_ROOT\n\n# make pre_ipad_build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

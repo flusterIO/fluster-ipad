@@ -20,6 +20,10 @@ li.hide-li-marker {
 }
 
 #webview-container {
+  .cm-line {
+    padding-right: 1rem;
+  }
+
   .load-hide {
     display: block;
   }

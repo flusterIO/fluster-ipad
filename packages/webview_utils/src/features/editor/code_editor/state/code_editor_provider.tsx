@@ -214,6 +214,7 @@ export const CodeEditorProvider = ({
     });
 
     useEffect(() => {
+        console.log("state.parsedValue: ", state.parsedValue);
         if (state.parsedValue === null) {
             sendToSwift(SwiftHandler.requestParsedMdxContent, "");
         }

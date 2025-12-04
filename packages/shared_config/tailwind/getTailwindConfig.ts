@@ -43,7 +43,6 @@ export const getBaseTailwindConfig = (
         );
     }
 
-    console.log("content: ", content);
     return {
         content,
         darkMode: "class",

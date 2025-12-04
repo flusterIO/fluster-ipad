@@ -22,7 +22,6 @@
       "url": "https://github.com/flusterIO/fluster"
     }
   ],
-  "type": "module",
   "private": true,
   "scripts": {
     "build": "tsc -b && vite build",
