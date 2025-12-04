@@ -5,6 +5,7 @@
 //  Created by Andrew on 11/27/25.
 //
 
+import Foundation
 import SwiftData
 
 public typealias NoteModel = AppSchemaV1.NoteModel
@@ -14,10 +15,15 @@ public typealias TagModel = AppSchemaV1.TagModel
 public typealias TopicModel = AppSchemaV1.TopicModel
 public typealias MarkdownNote = AppSchemaV1.MarkdownNote
 
+@MainActor  // This was required by the mainContext key, but there's almost surely a way to do this multi-threaded. Look into this later.
 @available(iOS 26, *)
-public actor AppDataContainer {
-    @MainActor
-    public static func create(isInitialLaunch: inout Bool) -> ModelContainer {
+public final class AppDataContainer {
+    public static let shared = AppDataContainer()
+    public var sharedModelContainer: ModelContainer {
+        let hasLaunchedPreviously = UserDefaults.standard.bool(
+            forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
+        )
+        print("isInitialLaunch: \(hasLaunchedPreviously)")
         let schema = Schema([
             NoteModel.self,
             BibEntryModel.self,
@@ -33,7 +39,7 @@ public actor AppDataContainer {
                 configurations: [modelConfiguration]
             )
 
-            if isInitialLaunch {
+            if !hasLaunchedPreviously {
                 let notes = InitialNoteModelPathJsonDecoder.decode(
                     from: "initial_note_docs/initial_note_paths"
                 )
@@ -49,12 +55,24 @@ public actor AppDataContainer {
                     )
                     container.mainContext.insert(noteModel)
                 }
-                isInitialLaunch = false
+                UserDefaults.standard.set(
+                    true,
+                    forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
+                )
             }
 
             return container
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
+        }
+    }
+   
+    private init() {}
+
+    public func dataHandlerCreator() -> @Sendable () async -> DataHandler {
+        let container = sharedModelContainer
+        return {
+            DataHandler(modelContainer: container)
         }
     }
 }

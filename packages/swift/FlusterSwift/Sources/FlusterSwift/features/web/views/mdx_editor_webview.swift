@@ -21,6 +21,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var modelContext
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.createDataHandler) var dataHandler
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
         var webviewFontSize: WebviewFontSize = .base
     let url: URL
@@ -177,7 +178,7 @@ extension MdxEditorWebview {
                     if let note = parent.editingNote {
                         if let parsedMdx =
                             await note.markdown
-                            .body.preParseAsMdx(modelContext: parent.modelContext)
+                            .body.preParseAsMdx()
                         {
                             note.applyMdxParsingResults(
                                 results: parsedMdx,

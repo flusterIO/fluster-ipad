@@ -1,0 +1,6 @@
+table CitationResult {
+    citation_key:string;
+    body:string;
+}
+
+

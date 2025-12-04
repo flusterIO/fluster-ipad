@@ -3,6 +3,7 @@ COMMIT=$(shell git rev-parse HEAD)
 BRANCH=$(shell git rev-parse --abbrev-rev HEAD)
 BUILD_DATE := $(shell date -u +"%Y-%m-%d%H:%M:%SZ")
 VERSION := $(shell git describe --tags --abbrev=0)
+FLAT_BUFFER_PATH=/Users/bigsexy/dev-utils/bin/flatc
 
 format_package_jsons:
 	pnpm syncpack fix-mismatches
@@ -14,6 +15,11 @@ generate_build_output:
 lint:
 	cd ${FLUSTER_IOS_ROOT}/apps/fluster; swiftlint lint
 
+build_cross_language_schemas:
+	${FLAT_BUFFER_PATH} -o ./packages/swift/FlusterSwift/Sources/FlusterSwift/core/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift
+	${FLAT_BUFFER_PATH} -o ./packages/rust/fluster_core_utilities/src/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --rust
+	${FLAT_BUFFER_PATH} -o ./packages/webview_utils/src/core/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --rust
+
 generate_initial_note_paths:
 	tsx ${FLUSTER_IOS_ROOT}/scripts/generate_initial_note_paths.ts
 
@@ -23,7 +29,7 @@ build_ipad_simulator:
 launch_ipad_simulator: build_ipad_simulator
 	cd ${FLUSTER_IOS_ROOT}/apps/fluster; xcrun simctl launch "iPad Pro 13-inch M5 26.1" iglooDevelopment.Fluster 
 
-build_all_rust:
+build_all_rust: build_cross_language_schemas
 	cargo build
 
 build_fluster_rust: build_all_rust
@@ -44,6 +50,6 @@ build_splitview_mdx_editor: build_webview_utils
 build_bibtex_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/bibtex_editor_webview build
 
-build_all_webviews: build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview
+build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview
 
-pre_ipad_build: generate_initial_note_paths build_fluster_rust build_all_webviews
+pre_ipad_build: build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews

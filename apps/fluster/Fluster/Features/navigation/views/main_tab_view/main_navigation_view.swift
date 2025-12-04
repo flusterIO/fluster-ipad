@@ -119,25 +119,6 @@ struct MainView: View {
                             )
                         }
                     }
-                    //                    .task(
-                    //                        id: getParseMdxTaskId(),
-                    //                        priority: .userInitiated,
-                    //                        {
-                    //                            if let editingNoteExists = editingNote {
-                    //                                if let parsedMdx =
-                    //                                    await editingNoteExists.markdown
-                    //                                    .body.preParseAsMdx()
-                    //                                {
-                    //                                    editingNoteExists.applyMdxParsingResults(
-                    //                                        results: parsedMdx,
-                    //                                    )
-                    //                                    editorContainer.setParsedEditorContent(
-                    //                                        content: parsedMdx.content
-                    //                                    )
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    )
                 } else {
                     SelectNoteToContinueView()
                 }
@@ -153,15 +134,6 @@ struct MainView: View {
                     BibliographyPageView(
                         editingNote: $editingNote
                     )
-//                        .navigationDestination(
-//                            for: BibEntryModel.self,
-//                            destination: { bibEntry in
-//                                ByBibEntrySearchResults(
-//                                    bibEntryId: bibEntry.id,
-//                                    editingNote: $editingNote
-//                                )
-//                            }
-//                        )
                 }
             }
             .customizationID(IpadMainViewTab.bib.rawValue)
@@ -278,7 +250,7 @@ struct MainView: View {
                     if let note = editingNote {
                         if let parsedMdx =
                             await note.markdown
-                            .body.preParseAsMdx(modelContext: modelContext)
+                            .body.preParseAsMdx()
                         {
                             note.applyMdxParsingResults(
                                 results: parsedMdx,

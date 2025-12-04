@@ -5,9 +5,9 @@
 //  Created by Andrew on 10/28/25.
 //
 
+import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 typealias NoteModel = AppSchemaV1.NoteModel
 typealias BibEntryModel = AppSchemaV1.BibEntryModel
@@ -18,16 +18,14 @@ typealias MarkdownNote = AppSchemaV1.MarkdownNote
 
 @main
 struct FlusterApp: App {
-    @AppStorage(AppStorageKeys.isFirstLaunch.rawValue) private
-        var isFirstLaunch = true
+    let appData = AppDataContainer.shared
 
     var body: some Scene {
         WindowGroup {
             MainView()
                 .ignoresSafeArea()
+                .environment(\.createDataHandler, appData.dataHandlerCreator())
         }
-        .modelContainer(
-            AppDataContainer.create(isInitialLaunch: &isFirstLaunch)
-        )
+        .modelContainer(appData.sharedModelContainer)
     }
 }
