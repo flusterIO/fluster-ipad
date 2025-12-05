@@ -43,19 +43,25 @@ impl MdxParser for TagRegexParser {
 
 #[cfg(test)]
 mod tests {
+
     use super::*;
 
     #[tokio::test]
     async fn parses_tags_properly() {
-        let mut initial_result = MdxParsingResult::from_initial_mdx_content(
-            r#"
+        let opts = ParseMdxOptions {
+            citations: Vec::new(),
+            content: r#"
         # My note
 
         This is [[#my_tag]] and [[#myOtherTag]]
-            "#,
-        );
+            "#
+            .to_string(),
+        };
+        let mut initial_result = MdxParsingResult::from_initial_mdx_content(&opts.content.clone());
 
-        TagRegexParser {}.parse_async(&mut initial_result).await;
+        TagRegexParser {}
+            .parse_async(&opts, &mut initial_result)
+            .await;
 
         assert!(
             initial_result.tags.iter().any(|x| x.body == "myOtherTag"),
@@ -72,7 +78,5 @@ mod tests {
             initial_result.content, should_equal,
             "Parses tags to mdx string as expected."
         )
-
-        // assert_eq!(result, 4);
     }
 }

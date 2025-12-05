@@ -29,7 +29,7 @@ build_ipad_simulator:
 launch_ipad_simulator: build_ipad_simulator
 	cd ${FLUSTER_IOS_ROOT}/apps/fluster; xcrun simctl launch "iPad Pro 13-inch M5 26.1" iglooDevelopment.Fluster 
 
-build_all_rust: build_cross_language_schemas
+build_all_rust:
 	cargo build
 
 build_fluster_rust: build_all_rust
@@ -50,6 +50,6 @@ build_splitview_mdx_editor: build_webview_utils
 build_bibtex_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/bibtex_editor_webview build
 
-build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview
+build_all_webviews: build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview
 
-pre_ipad_build: build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews
+pre_ipad_build: generate_initial_note_paths build_fluster_rust build_all_webviews
