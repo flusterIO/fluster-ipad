@@ -25,7 +25,6 @@ struct PaperView: View {
             of: activeTab,
             {
                 if activeTab == .paper {
-                    print("Showing toolbar")
                     toolbar.setVisible(true, forFirstResponder: canvasView)
                     toolbar.addObserver(canvasView)
                     canvasView.becomeFirstResponder()

@@ -1,4 +1,4 @@
 public enum IpadMainViewTab: String {
-    case paper, markdown, bib, notes, settings, createNote, searchNotes,
+    case paper, markdown, bib, noteDetail, notes, settings, createNote, searchNotes,
         searchByBib
 }

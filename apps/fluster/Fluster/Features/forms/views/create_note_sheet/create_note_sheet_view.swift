@@ -5,13 +5,14 @@
 //  Created by Andrew on 11/5/25.
 //
 
+import FlusterSwift
 import PencilKit
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 struct CreateNoteSheetView: View {
     @State private var titleValue: String = ""
+    @State private var selectedSubject: SubjectModel?
     @FocusState private var textFieldFocused: Bool
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
@@ -25,6 +26,15 @@ struct CreateNoteSheetView: View {
                 .onAppear {
                     textFieldFocused = true
                 }
+            NavigationLink(
+                destination: {
+                    LinkSubjectToNoteView(selection: $selectedSubject)
+                },
+                label: {
+                    Text("Subject")
+                }
+            )
+
             HStack(alignment: .lastTextBaseline) {
                 Spacer()
                 Button("Create") {
@@ -39,7 +49,8 @@ struct CreateNoteSheetView: View {
                         markdown: MarkdownNote(
                             body: "# \(titleValue)",
                             summary: nil
-                        )
+                        ),
+                        subject: selectedSubject,
                     )
                     modelContext.insert(model)
                     editingNote = model

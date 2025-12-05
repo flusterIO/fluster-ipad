@@ -134,17 +134,7 @@ extension MdxEditorWebview {
             //            parent.container.requestDocumentSize()
             parent.didSetInitialContent = true
         }
-        //        public func webView(
-        //            _ webView: WKWebView,
-        //            didStartProvisionalNavigation navigation: WKNavigation!
-        //        ) {
-        //            parent.isLoading = true  // Set loading to true when navigation starts
-        //        }
-
-        //        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
-        //        {
-        //        }
-
+        
         public func webView(
             _ webView: WKWebView,
             didFail navigation: WKNavigation!,
@@ -159,15 +149,6 @@ extension MdxEditorWebview {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            //            if message.name == "set-editor-viewport-height" {
-            //                print("Message body: \(message.body)")
-            //                if let n = NumberFormatter().number(
-            //                    from: message.body as! String
-            //                ) {
-            //                    print("N: \(n)")
-            //                    parent.viewportHeight = CGFloat(truncating: n)
-            //                }
-            //            } else
             switch message.name {
             case "tag-click-event":
                 // TODO: Handle this tag click event.
@@ -192,6 +173,7 @@ extension MdxEditorWebview {
             case "editor-update":
                 if let str = message.body as? String {
                     parent.editingNote?.markdown.body = str
+                    parent.editingNote?.setLastRead(setModified: true)
                 }
             case "request-initial-editor-data":
                 print("Request for initial editor data received...")

@@ -67,7 +67,7 @@ extension AppSchemaV1 {
         // drawing.toDataRepresentation() to conform to Data type.
         public init(
             id: String? = nil,
-            drawing: Data,
+            drawing: Data = PKDrawing().dataRepresentation(),
             markdown: MarkdownNote = MarkdownNote(body: "", summary: nil),
             ctime: Date = .now,
             utime: Date = .now,
@@ -98,7 +98,8 @@ extension AppSchemaV1 {
             return (try? modelContext.fetchCount(descriptor)) ?? 0
         }
 
-        public static func isTitleMatch(noteBody: String, query: String) -> Bool {
+        public static func isTitleMatch(noteBody: String, query: String) -> Bool
+        {
             let title = MdxTextUtils.getTitle(body: noteBody)
             return title == nil
                 ? false : title!.localizedCaseInsensitiveContains(query)
@@ -127,7 +128,7 @@ extension AppSchemaV1 {
                 $0.id == bibEntry.id
             }
         }
-        public func setLastRead() {
+        public func setLastRead(setModified: Bool = false) {
             self.last_read = .now
             for tag in self.tags {
                 tag.lastAccess = .now
@@ -141,6 +142,18 @@ extension AppSchemaV1 {
             if let topic = self.topic {
                 topic.lastAccess = .now
             }
+            if setModified {
+                self.utime = .now
+            }
+        }
+        public static func getEmptyModel(
+            noteBody: String = "",
+            noteSummary: String? = nil
+        ) -> NoteModel {
+            NoteModel(
+                drawing: PKDrawing().dataRepresentation(),
+                markdown: MarkdownNote(body: noteBody, summary: noteSummary)
+            )
         }
     }
     @Model
@@ -202,9 +215,12 @@ extension AppSchemaV1 {
         public func getTitle() -> String {
             return self.parse()?.publications[0].fields["title"] ?? "--"
         }
-        
+
         public func toCitationSummary() -> SwiftDataCitationSummary {
-            return SwiftDataCitationSummary(citationKey: self.id, body: self.data)
+            return SwiftDataCitationSummary(
+                citationKey: self.id,
+                body: self.data
+            )
         }
     }
 
@@ -260,7 +276,8 @@ extension AppSchemaV1 {
     @Model
     public class SubjectModel: TaggableModel {
         @Attribute(.unique) public var value: String
-        @Relationship(inverse: \NoteModel.subject) public var notes: [NoteModel] = []
+        @Relationship(inverse: \NoteModel.subject) public var notes:
+            [NoteModel] = []
         public init(
             value: String,
             ctime: Date = .now,

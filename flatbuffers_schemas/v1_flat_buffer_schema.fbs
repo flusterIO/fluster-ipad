@@ -1,6 +1,35 @@
 table CitationResult {
-    citation_key:string;
-    body:string;
+    citation_key:string (required);
+    body:string (required);
 }
 
+table TagResult {
+    body:string (required);
+}
 
+table FrontMatterResult {
+    ignore_parsers:[string] (required);
+    title:string;
+    user_defined_id:string;
+}
+
+table MdxParsingResult {
+    content:string (required);
+    tags:[TagResult] (required);
+    front_matter:FrontMatterResult;
+    citations:[CitationResult];
+}
+
+table ParseMdxOptions {
+    content:string;
+    citations:[CitationResult];
+}
+
+table NoteDetailData {
+    note_id:string (required);
+    title:string (required);
+    tags:[TagResult] (required);
+    citations:[CitationResult] (required);
+    last_modified_string:string (required);
+    last_read_string:string (required);
+}

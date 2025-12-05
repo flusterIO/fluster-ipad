@@ -107,7 +107,7 @@ struct MainView: View {
                         editorKeymap: $editorKeymap,
                         container: editorContainer,
                     )
-//                    .fixedSize()
+                    //                    .fixedSize()
                     .frame(
                         alignment: .bottom
                     )
@@ -137,6 +137,26 @@ struct MainView: View {
                 }
             }
             .customizationID(IpadMainViewTab.bib.rawValue)
+            .defaultVisibility(.visible, for: .tabBar)
+            Tab(
+                "Details",
+                systemImage: "receipt.fill",
+                value: IpadMainViewTab.noteDetail
+            ) {
+                if let note = editingNote {
+                    GeometryReader { rect in
+                        NavigationStack {
+                            NoteDetailView(
+                                note: note
+                            )
+                            .frame(width: min(rect.size.width - 64, 768))
+                        }
+                    }
+                } else {
+                    SelectNoteToContinueView()
+                }
+            }
+            .customizationID(IpadMainViewTab.noteDetail.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
             Tab(
                 "Search",
@@ -180,13 +200,7 @@ struct MainView: View {
                             BibliographySearchResultsView(
                                 editingNote: $editingNote
                             )
-                                .navigationTitle("Bibliography Entries")
-//                                .navigationDestination(
-//                                    for: BibEntryModel.self,
-//                                    destination: { bibEntry in
-//
-//                                    }
-//                                )
+                            .navigationTitle("Bibliography Entries")
                         }
                     }
                     .customizationID(IpadMainViewTab.searchByBib.rawValue)
@@ -203,10 +217,13 @@ struct MainView: View {
                 systemImage: "plus",
                 value: IpadMainViewTab.createNote
             ) {
-                CreateNoteSheetView(
-                    editingNote: $editingNote,
-                    dismissOnSubmit: false
-                )
+                NavigationStack {
+                    CreateNoteSheetView(
+                        editingNote: $editingNote,
+                        dismissOnSubmit: false
+                    )
+                    .navigationTitle("Create note")
+                }
             }
             .customizationID(IpadMainViewTab.createNote.rawValue)
             .customizationBehavior(.disabled, for: .tabBar)
@@ -230,7 +247,7 @@ struct MainView: View {
             of: editingNote,
             {
                 if let note = editingNote {
-                    note.setLastRead()
+                    note.setLastRead(setModified: false)
                     editorContainer.setInitialContent(
                         note: note
                     )
@@ -263,6 +280,14 @@ struct MainView: View {
                 }
             }
         )
+//        .onChange( TODO: this will run every time the note changes and always update it. This will need to be tapped in to some sort of event listener.
+//            of: editingNote?.drawing,
+//            {
+//                if let note = editingNote {
+//                    note.setLastRead(setModified: true)
+//                }
+//            }
+//        )
         .onChange(
             of: editorThemeDark,
             {
