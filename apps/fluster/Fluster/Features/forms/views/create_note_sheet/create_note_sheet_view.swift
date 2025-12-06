@@ -62,6 +62,11 @@ struct CreateNoteSheetView: View {
                 .buttonStyle(.glassProminent)
             }
         }
+        .onDisappear {
+            if let note = editingNote, let _subject = selectedSubject {
+                note.subject = _subject
+            }
+        }
         .navigationTitle("Create new note")
     }
 }
