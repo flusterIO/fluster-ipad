@@ -10,11 +10,13 @@
 pub enum FlusterError {
     #[error("A test error used for development.")]
     CanaryError,
-    // -- General Errors --
+    // -- Serialization Errors --
     #[error("Json serialization error.")]
     JsonSerializationError,
     #[error("Frontmatter error.")]
     FrontMatterError,
+    #[error("Could not successfully parse this mdx content.")]
+    MdxParsingError,
 }
 
 pub type FlusterResult<T> = Result<T, FlusterError>;

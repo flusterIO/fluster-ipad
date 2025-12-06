@@ -1,5 +1,5 @@
 {
-  "originHash" : "9dd4e645cc9de7c1ece18b647c84e62bb464d31d54c12d733e9c8eb8b290c743",
+  "originHash" : "d0ca3dbeda2161f8e1c864ed5dd88c9db7ab6092954446f6a3bff5c8600346f9",
   "pins" : [
     {
       "identity" : "antlr4-swift",
@@ -11,30 +11,12 @@
       }
     },
     {
-      "identity" : "networkimage",
+      "identity" : "flatbuffers",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/NetworkImage",
+      "location" : "https://github.com/google/flatbuffers.git",
       "state" : {
-        "revision" : "2849f5323265386e200484b0d0f896e73c3411b9",
-        "version" : "6.0.1"
-      }
-    },
-    {
-      "identity" : "swift-cmark",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-cmark",
-      "state" : {
-        "revision" : "5d9bdaa4228b381639fff09403e39a04926e2dbe",
-        "version" : "0.7.1"
-      }
-    },
-    {
-      "identity" : "swift-markdown-ui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/swift-markdown-ui",
-      "state" : {
-        "revision" : "5f613358148239d0292c0cef674a3c2314737f9e",
-        "version" : "2.4.1"
+        "revision" : "187240970746d00bbd26b0f5873ed54d2477f9f3",
+        "version" : "25.9.23"
       }
     },
     {

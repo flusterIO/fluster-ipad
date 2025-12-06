@@ -1,13 +1,18 @@
+import { NoteDetailWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { AnyWebviewAction } from "../types/any_window_event";
+
 export enum SwiftHandler {
     editorUpdate = "editor-update",
-    requestParsedMdxContent = "request-parsed-mdx-content",
     setSplitviewEditorLandscapeView = "is-landscape-view",
     setPreviewViewportSize = "set-preview-viewport-height",
     setEditorViewportSize = "set-editor-viewport-height",
-    requestInitialEditorData = "request-initial-editor-data",
-    requestInitialPreviewData = "request-initial-preview-data",
     bibtexRequestInitialData = "bibtex-request-initial-data",
     bibtexEditorUpdate = "bibtex-editor-update",
+    // -- Requesting data from swift --
+    requestParsedMdxContent = "request-parsed-mdx-content",
+    requestInitialEditorData = "request-initial-editor-data",
+    requestInitialPreviewData = "request-initial-preview-data",
+    requestNoteDetailData = "request-note-details",
     // -- user actions --
     handleTagClick = "tag-click-event",
 }
@@ -24,9 +29,11 @@ export interface SwiftBridgeMessageObject {
     [key: string]: object | string | number;
 }
 
+
+// TODO: Get rid of this 'swifthandler' all together now that enums are being generated cross-language.
 export const sendToSwift = (
-    handler: SwiftHandler,
-    msg: SwiftBridgeMessageObject | string,
+    handler: SwiftHandler | AnyWebviewAction,
+    msg: SwiftBridgeMessageObject | string = "",
 ) => {
     if (
         window.webkit &&

@@ -1,6 +1,10 @@
 import "./core/styles/base.scss";
 export * from "./features/editor/code_editor/types/swift_events/swift_events";
 
+// -- Types --
+export * from "./core/utils/types/any_window_event";
+export * from "./core/code_gen/typeshare/fluster_core_utilities";
+
 // -- Core Components --
 export * from "./features/webview_container/presentation/webview_container";
 export * from "./core/shared_components/loading/loading_component";
@@ -8,6 +12,7 @@ export * from "./core/shared_components/loading/loading_component";
 // -- Utils --
 export * from "./core/utils/windowUtils/get_orientation";
 export * from "./core/utils/bridge/send_to_swift";
+export * from "./core/state/hooks/use_webview_loaded_event";
 
 // -- Typography --
 export * from "./core/shared_components/typography/typography";
@@ -29,6 +34,7 @@ export * from "./features/mdx/components/mdx_content";
 export * from "./features/mdx/components/inline_mdx_content";
 export * from "./features/mdx/components/parsed_mdx_content";
 export * from "./features/mdx/components/standalone_mdx_preview/standalone_mdx_preview";
+export * from "./features/mdx/components/note_details/note_detail_sheet";
 
 //      -- Mdx: Hooks --
 export * from "./features/mdx/hooks/use_component_map";

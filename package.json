@@ -9,6 +9,8 @@
     "autoprefixer": "10.4.21",
     "husky": "9.1.7",
     "postcss": "8.5.3",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "quicktype": "23.2.6",
     "quicktype-core": "23.2.6",
     "syncpack": "13.0.4",

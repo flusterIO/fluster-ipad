@@ -4,5 +4,6 @@ packages:
   - packages/webviews/bib_entry_details_webview
   - packages/webviews/standalone_mdx_editor
   - packages/webviews/standalone_mdx_preview
+  - packages/webviews/note_detail_webview/
   - packages/webview_utils
   - packages/shared_config

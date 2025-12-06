@@ -5,10 +5,12 @@
 //  Created by Andrew on 11/29/25.
 //
 
+import Combine
 import Foundation
+import SwiftUI
 
 @MainActor
-public final class MdxPreviewWebviewContainer: WebviewContainer {
+public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebviewEvents> {
 //    public override init() {}
     public func setEditorLightTheme(theme: CodeSyntaxTheme) {
         self.runJavascript(

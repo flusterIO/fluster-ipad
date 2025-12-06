@@ -55,4 +55,3 @@ impl MdxParser for CitationRegexParser {
         result.citations = citations;
     }
 }
-

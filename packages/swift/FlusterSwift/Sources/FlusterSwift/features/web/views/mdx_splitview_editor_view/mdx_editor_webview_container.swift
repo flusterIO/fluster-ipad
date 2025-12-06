@@ -3,11 +3,11 @@ import SwiftUI
 import WebKit
 
 @MainActor
-public final class MdxEditorWebviewContainer: WebviewContainer {
+public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWebviewEvents> {
     public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
         self.runJavascript(
             """
-            window.localStorage.setItem("code-theme", "\(theme.rawValue)")
+            window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeTheme.rawValue)", "\(theme.rawValue)")
             window.setCodeSyntaxTheme("\(theme.rawValue)")
             """
         )
@@ -15,7 +15,7 @@ public final class MdxEditorWebviewContainer: WebviewContainer {
     public func setEditorLightTheme(theme: CodeSyntaxTheme) {
         self.runJavascript(
             """
-            window.localStorage.setItem("code-theme-light", "\(theme.rawValue)")
+            window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeThemeLight.rawValue)", "\(theme.rawValue)")
             window.setCodeSyntaxThemeLight("\(theme.rawValue)")
             """
         )
@@ -23,7 +23,7 @@ public final class MdxEditorWebviewContainer: WebviewContainer {
     public func setEditorDarkTheme(theme: CodeSyntaxTheme) {
         self.runJavascript(
             """
-            window.localStorage.setItem("code-theme-dark", "\(theme.rawValue)")
+            window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeThemeDark.rawValue)", "\(theme.rawValue)")
             window.setCodeSyntaxThemeDark("\(theme.rawValue)")
             """
         )
@@ -32,7 +32,7 @@ public final class MdxEditorWebviewContainer: WebviewContainer {
         print("Applying editor keymap")
         self.runJavascript(
             """
-            window.localStorage.setItem("editor-keymap", "\(editorKeymap.rawValue)")
+            window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.editorKeymap.rawValue)", "\(editorKeymap.rawValue)")
             window.setEditorKeymap("\(editorKeymap.rawValue)")
             """
         )

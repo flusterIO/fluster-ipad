@@ -25,6 +25,8 @@ fluster_pre_parser = { path = "packages/rust/fluster_pre_parser" }
 rayon = "1.11.0"
 regex = "1.12.2"
 tokio = "1.48.0"
+flatbuffers = "25.9.23"
+typeshare = "1.0.0"
 
 [workspace.lints.rust]
 unused_crate_dependencies = "warn"

@@ -9,3 +9,7 @@ edition.workspace = true
 [dependencies]
 thiserror = { workspace = true }
 uniffi = { workspace = true }
+flatbuffers = { workspace = true }
+serde.workspace = true
+strum_macros = "0.27.2"
+typeshare.workspace = true

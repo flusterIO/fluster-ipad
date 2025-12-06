@@ -146,10 +146,9 @@ struct MainView: View {
                 if let note = editingNote {
                     GeometryReader { rect in
                         NavigationStack {
-                            NoteDetailView(
-                                note: note
+                            NoteDetailWebview(
+                                note: note,
                             )
-                            .frame(width: min(rect.size.width - 64, 768))
                         }
                     }
                 } else {

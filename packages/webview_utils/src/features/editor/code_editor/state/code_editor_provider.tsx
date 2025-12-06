@@ -13,6 +13,7 @@ import {
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
+import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export interface CodeEditorState {
     keymap: string;
@@ -132,7 +133,7 @@ interface CodeEditorProviderProps {
 export const CodeEditorProvider = ({
     children,
     initialValues,
-    initialValueKey = "editor-initial-value",
+    initialValueKey = SplitviewEditorWebviewLocalStorageKeys.InitialValue,
 }: CodeEditorProviderProps) => {
     const [state, dispatch] = useReducer(
         CodeEditorContextReducer,
@@ -141,7 +142,7 @@ export const CodeEditorProvider = ({
             : defaultInitialCodeEditorState,
     );
 
-    const [editorKeymap] = useLocalStorage("editor-keymap", "base", {
+    const [editorKeymap] = useLocalStorage(SplitviewEditorWebviewLocalStorageKeys.EditorKeymap, "base", {
         deserializer(value) {
             return value;
         },
@@ -157,14 +158,14 @@ export const CodeEditorProvider = ({
         });
     }, [editorKeymap]);
 
-    useEventListener("set-editor-keymap", (e) => {
+    useEventListener(SplitviewEditorWebviewEvents.SetEditorKeymap, (e) => {
         dispatch({
             type: "setKeymap",
             payload: e.detail,
         });
     });
 
-    const [editorTheme] = useLocalStorage("editor-theme", undefined, {
+    const [editorTheme] = useLocalStorage(SplitviewEditorWebviewLocalStorageKeys.CodeTheme, undefined, {
         deserializer(value) {
             return value;
         },
@@ -174,7 +175,6 @@ export const CodeEditorProvider = ({
         initializeWithValue: false,
     });
     const handleTheme = (t: string): void => {
-        console.log("t: ", t);
         const payload = stringToCodeEditorTheme((t as string) ?? "dracula");
         dispatch({
             type: "setTheme",
@@ -184,7 +184,7 @@ export const CodeEditorProvider = ({
     useEffect(() => {
         handleTheme(editorTheme);
     }, [editorTheme]);
-    useEventListener("set-code-theme", (e) => {
+    useEventListener(SplitviewEditorWebviewEvents.SetCodeTheme, (e) => {
         handleTheme(e.detail);
     });
 
@@ -206,7 +206,7 @@ export const CodeEditorProvider = ({
         }
     }, [initialValue, state.haveSetInitialValue]);
 
-    useEventListener("set-parsed-editor-content", (e) => {
+    useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContent, (e) => {
         dispatch({
             type: "setParsedEditorContent",
             payload: e.detail,

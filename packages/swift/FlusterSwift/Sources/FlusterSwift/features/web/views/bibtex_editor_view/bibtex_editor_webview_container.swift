@@ -7,13 +7,13 @@
 
 import Foundation
 
-public final class BibtexEditorWebviewContainer: WebviewContainer {
+public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWebviewEvents> {
     //    public override init() {}
     public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
         print("Changing editor theme event")
         self.runJavascript(
             """
-            window.localStorage.setItem("editor-theme", "\(theme.rawValue)")
+            window.localStorage.setItem("\(BibtexEditorWebviewEvents.setCodeTheme.rawValue)", "\(theme.rawValue)")
             window.setCodeSyntaxTheme("\(theme.rawValue)")
             """
         )
@@ -22,7 +22,7 @@ public final class BibtexEditorWebviewContainer: WebviewContainer {
         print("Applying editor keymap")
         self.runJavascript(
             """
-            window.localStorage.setItem("editor-keymap", "\(editorKeymap.rawValue)")
+            window.localStorage.setItem("\(BibtexEditorWebviewEvents.setEditorKeymap.rawValue)", "\(editorKeymap.rawValue)")
             window.setEditorKeymap("\(editorKeymap.rawValue)")
             """
         )
@@ -37,7 +37,7 @@ public final class BibtexEditorWebviewContainer: WebviewContainer {
         let body = entryBody.toQuotedJavascriptString()
         self.runJavascript(
             """
-            window.localStorage.setItem("bibtex-editor-initial-value", \(body))
+            window.localStorage.setItem("\(BibtexEditorWebviewLocalStorageKeys.initialValue.rawValue)", \(body))
             window.setBibtexEditorContent(\(body))
             """
         )

@@ -1,60 +1,43 @@
 {
-  "originHash" : "c6593d0c8e949949d61bf62d8ca21974d75f93b0d772bc6fd6d2dff1738c9619",
-  "pins" : [
-    {
-      "identity" : "antlr4-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MaxHaertwig/ANTLR4-Swift.git",
-      "state" : {
-        "revision" : "0b4eed93b803c931db67cc30434b5531f72d50b1",
-        "version" : "4.9.1"
+  "object": {
+    "pins": [
+      {
+        "package": "ANTLR4-Swift",
+        "repositoryURL": "https://github.com/MaxHaertwig/ANTLR4-Swift.git",
+        "state": {
+          "branch": null,
+          "revision": "0b4eed93b803c931db67cc30434b5531f72d50b1",
+          "version": "4.9.1"
+        }
+      },
+      {
+        "package": "FlatBuffers",
+        "repositoryURL": "https://github.com/google/flatbuffers.git",
+        "state": {
+          "branch": null,
+          "revision": "187240970746d00bbd26b0f5873ed54d2477f9f3",
+          "version": "25.9.23"
+        }
+      },
+      {
+        "package": "SVGView",
+        "repositoryURL": "https://github.com/exyte/SVGView",
+        "state": {
+          "branch": null,
+          "revision": "6465962facdd25cb96eaebc35603afa2f15d2c0d",
+          "version": "1.0.6"
+        }
+      },
+      {
+        "package": "SwiftyBibtex",
+        "repositoryURL": "https://github.com/MaxHaertwig/SwiftyBibtex.git",
+        "state": {
+          "branch": null,
+          "revision": "b653c01e6315cf06c2c55a8396a397cdadaddccf",
+          "version": "1.0.0"
+        }
       }
-    },
-    {
-      "identity" : "networkimage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/NetworkImage",
-      "state" : {
-        "revision" : "2849f5323265386e200484b0d0f896e73c3411b9",
-        "version" : "6.0.1"
-      }
-    },
-    {
-      "identity" : "svgview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/exyte/SVGView",
-      "state" : {
-        "revision" : "6465962facdd25cb96eaebc35603afa2f15d2c0d",
-        "version" : "1.0.6"
-      }
-    },
-    {
-      "identity" : "swift-cmark",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-cmark",
-      "state" : {
-        "revision" : "5d9bdaa4228b381639fff09403e39a04926e2dbe",
-        "version" : "0.7.1"
-      }
-    },
-    {
-      "identity" : "swift-markdown-ui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/swift-markdown-ui",
-      "state" : {
-        "revision" : "5f613358148239d0292c0cef674a3c2314737f9e",
-        "version" : "2.4.1"
-      }
-    },
-    {
-      "identity" : "swiftybibtex",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MaxHaertwig/SwiftyBibtex.git",
-      "state" : {
-        "revision" : "b653c01e6315cf06c2c55a8396a397cdadaddccf",
-        "version" : "1.0.0"
-      }
-    }
-  ],
-  "version" : 3
+    ]
+  },
+  "version": 1
 }

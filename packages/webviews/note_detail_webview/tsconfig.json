@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "target": "ES2024",
+        "allowUmdGlobalAccess": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "sourceMap": true,
+        "noEmit": true,
+        "allowJs": false,
+        "skipLibCheck": true,
+        "rootDir": "src",
+        "lib": [
+            "ES2024",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "esModuleInterop": true,
+        "verbatimModuleSyntax": false,
+        "outDir": "note_detail_webview",
+        "strict": true
+    },
+    "exclude": [
+        "note_detail_webview"
+    ],
+    "include": [
+        "src"
+    ]
+}

@@ -13,6 +13,7 @@
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
 		79F74C8A2EDE1EFB00E00653 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 79F74C892EDE1EFB00E00653 /* splitview_mdx_editor */; };
+		79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F936DE2EE38B8000777CDB /* note_detail_webview */; };
 		79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */ = {isa = PBXBuildFile; fileRef = 79FA54412ED8BB5F00D16F68 /* initial_note_docs */; };
 		79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79FB1F542ED928FB0041E1E0 /* FlusterSwift */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 		79AC14432EDB4D1700E3773F /* standalone_mdx_preview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview; sourceTree = "<group>"; };
 		79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
 		79F74C892EDE1EFB00E00653 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
+		79F936DE2EE38B8000777CDB /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
 		79FA54412ED8BB5F00D16F68 /* initial_note_docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = initial_note_docs; path = ../../docs/initial_note_docs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,6 +67,7 @@
 		796F70FB2EB174610012B500 = {
 			isa = PBXGroup;
 			children = (
+				79F936DE2EE38B8000777CDB /* note_detail_webview */,
 				79F74C892EDE1EFB00E00653 /* splitview_mdx_editor */,
 				79AC14432EDB4D1700E3773F /* standalone_mdx_preview */,
 				7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */,
@@ -166,6 +169,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */,
 				79F74C8A2EDE1EFB00E00653 /* splitview_mdx_editor in Resources */,
 				79AC14442EDB4D1700E3773F /* standalone_mdx_preview in Resources */,
 				7930C3F92EDA740B0063B3DA /* standalone_mdx_editor in Resources */,

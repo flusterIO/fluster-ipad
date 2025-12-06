@@ -1,16 +1,18 @@
+import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
+
 export interface SwiftEventMap {
     updateEditorValue: string;
 }
 
 declare global {
     interface WindowEventMap {
-        "set-editor-content": CustomEvent<string>;
-        "set-parsed-editor-content": CustomEvent<string>;
-        "set-editor-keymap": CustomEvent<string>;
-        "set-code-theme": CustomEvent<string>;
-        "set-code-theme-dark": CustomEvent<string>;
-        "set-code-theme-light": CustomEvent<string>;
-        "reset-mdx-preview-scroll-position": CustomEvent<null>;
+        [SplitviewEditorWebviewEvents.SetSplitviewEditorContent]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetParsedMdxContent]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetEditorKeymap]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetCodeTheme]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetCodeThemeLight]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetCodeThemeDark]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.ResetPreviewScrollPosition]: CustomEvent<null>;
     }
     interface Window {
         setEditorContent: typeof setEditorContent;
@@ -25,41 +27,41 @@ declare global {
 
 export function setEditorContent(payload: string) {
     window.dispatchEvent(
-        new CustomEvent("set-editor-content", { detail: payload }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, { detail: payload }),
     );
 }
 
 export function setParsedEditorContent(payload: string) {
     window.dispatchEvent(
-        new CustomEvent("set-parsed-editor-content", { detail: payload }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, { detail: payload }),
     );
 }
 
 export function setEditorKeymap(keymap: string) {
     window.dispatchEvent(
-        new CustomEvent("set-editor-keymap", { detail: keymap }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetEditorKeymap, { detail: keymap }),
     );
 }
 
 export function setCodeTheme(theme: string) {
-    window.dispatchEvent(new CustomEvent("set-code-theme", { detail: theme }));
+    window.dispatchEvent(new CustomEvent(SplitviewEditorWebviewEvents.SetCodeTheme, { detail: theme }));
 }
 
 export function setCodeThemeDark(theme: string) {
     window.dispatchEvent(
-        new CustomEvent("set-code-theme-dark", { detail: theme }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetCodeThemeDark, { detail: theme }),
     );
 }
 
 export function setCodeThemeLight(theme: string) {
     window.dispatchEvent(
-        new CustomEvent("set-code-theme-light", { detail: theme }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetCodeThemeLight, { detail: theme }),
     );
 }
 
 const resetMdxPreviewScrollPosition = (): void => {
     window.dispatchEvent(
-        new CustomEvent("reset-mdx-preview-scroll-position", {
+        new CustomEvent(SplitviewEditorWebviewEvents.ResetPreviewScrollPosition, {
             detail: null,
         }),
     );

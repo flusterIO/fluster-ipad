@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "FlusterSwift",
     platforms: [
-        .iOS(.v26)
+        .iOS(.v26),
+        .macOS(.v15),
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -20,11 +21,8 @@ let package = Package(
             url: "https://github.com/MaxHaertwig/SwiftyBibtex.git",
             .upToNextMajor(from: "1.0.0")
         ),
-        .package(
-            url: "https://github.com/gonzalezreal/swift-markdown-ui",
-            .upToNextMajor(from: "2.4.1")
-        ),
         .package(path: "../../rust/fluster_rust/FlusterRust/"),
+        .package(url: "https://github.com/google/flatbuffers.git", from: "25.9.23"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -33,8 +31,8 @@ let package = Package(
             name: "FlusterSwift",
             dependencies: [
                 "SwiftyBibtex",
-                .product(name: "MarkdownUI", package: "swift-markdown-ui"),
                 .product(name: "FlusterRust", package: "FlusterRust"),
+                .product(name: "FlatBuffers", package: "flatbuffers"),
             ]
         ),
         .testTarget(

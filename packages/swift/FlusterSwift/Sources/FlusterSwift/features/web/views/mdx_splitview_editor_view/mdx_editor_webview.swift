@@ -8,7 +8,6 @@ public enum CodeSyntaxTheme: String, Codable, CaseIterable {
         solarizedDark, xcodeDark, xcodeLight
 }
 
-
 @MainActor
 public struct MdxEditorWebview: UIViewRepresentable {
 
@@ -56,10 +55,10 @@ public struct MdxEditorWebview: UIViewRepresentable {
 
         webView.navigationDelegate = context.coordinator
         let editorContentControllers = [
-            "editor-update",
-            "request-initial-editor-data",
-            "request-parsed-mdx-content",
-            "tag-click-event"
+            SplitviewEditorWebviewActions.onEditorChange.rawValue,
+            SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
+            SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
+            SplitviewEditorWebviewActions.onTagClick.rawValue,
         ]
         for controllerName in editorContentControllers {
             addUserContentController(
@@ -134,7 +133,7 @@ extension MdxEditorWebview {
             //            parent.container.requestDocumentSize()
             parent.didSetInitialContent = true
         }
-        
+
         public func webView(
             _ webView: WKWebView,
             didFail navigation: WKNavigation!,
@@ -150,10 +149,10 @@ extension MdxEditorWebview {
             didReceive message: WKScriptMessage
         ) {
             switch message.name {
-            case "tag-click-event":
+            case SplitviewEditorWebviewActions.onTagClick.rawValue:
                 // TODO: Handle this tag click event.
                 print("Tag clicked \(message.body as! String)")
-            case "request-parsed-mdx-content":
+            case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
                 print("Received request for parsed mdx content")
                 Task {
                     if let note = parent.editingNote {
@@ -170,12 +169,12 @@ extension MdxEditorWebview {
                         }
                     }
                 }
-            case "editor-update":
+            case SplitviewEditorWebviewActions.onEditorChange.rawValue:
                 if let str = message.body as? String {
                     parent.editingNote?.markdown.body = str
                     parent.editingNote?.setLastRead(setModified: true)
                 }
-            case "request-initial-editor-data":
+            case SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue:
                 print("Request for initial editor data received...")
                 parent.setInitialProperties()
                 parent.setInitialContent()

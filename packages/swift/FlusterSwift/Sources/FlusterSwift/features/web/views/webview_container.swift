@@ -9,13 +9,14 @@ import WebKit
     return config
 }
 
+//typealias AnyWebviewAction = NoteDetailWebviewActions | SplitviewEditorWebviewActions
 @MainActor
-public class WebviewContainer: ObservableObject {
-    @Published var justToConform: Bool = false
+public class WebviewContainer<WebviewEventsType: RawRepresentable>: ObservableObject where WebviewEventsType.RawValue == String {
     public let scrollViewBounce: Bool = true
     public let scrollEnabled: Bool = false
     let webView: WKWebView = {
         let view = WKWebView(frame: .zero, configuration: getConfig())
+        view.isHidden = true
         view.scrollView.minimumZoomScale = 1
         view.scrollView.maximumZoomScale = 1
         view.allowsBackForwardNavigationGestures = false
@@ -23,7 +24,6 @@ public class WebviewContainer: ObservableObject {
         if let screen = UIScreen.current {
             view.frame = CGRect(x: 0, y: 0, width: screen.bounds.width, height: screen.bounds.height)
         }
-        view.isHidden = true
         if #available(iOS 16.4, macOS 13.3, *) {
             view.isInspectable = true
         }
@@ -34,6 +34,7 @@ public class WebviewContainer: ObservableObject {
     public init(bounce: Bool = false, scrollEnabled: Bool = false) {
         self.webView.scrollView.bounces = bounce
         self.webView.scrollView.isScrollEnabled = scrollEnabled
+//        self._colorScheme = colorScheme
     }
 
     public func runJavascript(_ script: String) {
@@ -45,6 +46,20 @@ public class WebviewContainer: ObservableObject {
                 print("JS Result: \(result)")
             }
         }
+    }
+    
+    public func sendEvent(_ event: WebviewEventsType, eventDetail: String = "") {
+        self.runJavascript("""
+            window?.dispatchEvent(new CustomEvent("\(event.rawValue)", {
+                    detail: \(eventDetail.toQuotedJavascriptString())
+                }))
+            """)
+    }
+    /// A utility function used to append some initial styles to the window before loading the webview. Not sure if this will even work...
+    public func preShow(colorScheme: ColorScheme) {
+        self.runJavascript("""
+            document.body.classList.add('\(colorScheme == .dark ? "dark" : "light")')
+            """)
     }
     public func setWebviewTheme(theme: WebViewTheme) {
         self.runJavascript(

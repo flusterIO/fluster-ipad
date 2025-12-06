@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 import WebKit
+//import FlusterS
 
 public struct MdxPreviewWebview: UIViewRepresentable {
 
@@ -42,7 +43,7 @@ public struct MdxPreviewWebview: UIViewRepresentable {
         editorKeymap: Binding<EditorKeymap>,
         shouldShowEditor: Binding<Bool>,
         viewportHeight: Binding<CGFloat>,
-        container: MdxPreviewWebviewContainer
+        container: MdxPreviewWebviewContainer,
     ) {
         self.url = url
         self._theme = theme
@@ -64,6 +65,7 @@ public struct MdxPreviewWebview: UIViewRepresentable {
             "set-preview-viewport-height",
             "is-landscape-view",
             "tag-click-event",
+            "show-webview"
         ]
 
         for controllerName in controllers {
@@ -130,6 +132,7 @@ extension MdxPreviewWebview {
         WKScriptMessageHandler
     {
         var parent: MdxPreviewWebview
+        
 
         init(_ parent: MdxPreviewWebview) {
             self.parent = parent
