@@ -1,4 +1,5 @@
-import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
+import { SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import React, { type ReactNode } from "react";
 
 interface AutoInsertedTagProps {
@@ -13,7 +14,7 @@ export const AutoInsertedTag = ({
             role="button"
             className="bg-primary text-primary-foreground px-1 rounded-md cursor-pointer"
             onClick={() => {
-                sendToSwift(SwiftHandler.handleTagClick, children);
+                sendToSwift(SplitviewEditorWebviewActions.OnTagClick, children);
             }}
         >
             {`#${children}`}

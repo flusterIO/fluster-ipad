@@ -1,7 +1,7 @@
 import { NoteDetailWebviewActions, NoteDetailWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities';
 import { H4 } from '@/shared_components/typography/typography';
 import { useEventListener } from '@/state/hooks/use_event_listener';
-import { sendToSwift, SwiftHandler } from '@/utils/bridge/send_to_swift';
+import { sendToSwift } from '@/utils/bridge/send_to_swift';
 import React, { useEffect, useState, type ReactNode } from 'react'
 
 // TODO: Replace all of these local references with the flatbuffers crate once things are serializing on the rust side properly.

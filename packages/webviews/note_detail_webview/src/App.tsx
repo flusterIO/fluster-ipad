@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     NoteDetailSheet,
     useWebviewLoadedEvent,
@@ -10,6 +10,7 @@ import "./index.css";
 
 function App() {
     useWebviewLoadedEvent(NoteDetailWebviewActions.SetWebviewLoaded);
+    /* const [data, setData] = useState<MdxParsingResult | null>(null) */
     return (
         <WebViewContainer
             style={{

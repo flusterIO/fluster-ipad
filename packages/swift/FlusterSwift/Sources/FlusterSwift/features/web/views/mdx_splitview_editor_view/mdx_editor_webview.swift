@@ -17,6 +17,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
     )
     @State private var didSetInitialContent = false
     @State var haveSetInitialContent: Bool = false
+    @State private var show: Bool = false
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var modelContext
     @Environment(\.colorScheme) var colorScheme
@@ -55,6 +56,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
 
         webView.navigationDelegate = context.coordinator
         let editorContentControllers = [
+            SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
             SplitviewEditorWebviewActions.onEditorChange.rawValue,
             SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
             SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
@@ -75,6 +77,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
     }
 
     public func updateUIView(_ uiView: WKWebView, context: Context) {
+        uiView.isHidden = !show
         //        uiView.scrollView.contentInset = .zero
         //        uiView.scrollView.scrollIndicatorInsets = .zero
     }
@@ -129,7 +132,7 @@ extension MdxEditorWebview {
                 """
             )
             parent.setInitialProperties()
-            parent.container.webView.isHidden = false
+            parent.container.webView.isHidden = !self.parent.show
             //            parent.container.requestDocumentSize()
             parent.didSetInitialContent = true
         }
@@ -149,6 +152,12 @@ extension MdxEditorWebview {
             didReceive message: WKScriptMessage
         ) {
             switch message.name {
+                
+            case SplitviewEditorWebviewActions.setWebviewLoaded.rawValue:
+                print("No longer hidden")
+                self.parent.webView.isHidden = false
+                self.parent.show = true
+//                self.parent.webView.allowsMagnification
             case SplitviewEditorWebviewActions.onTagClick.rawValue:
                 // TODO: Handle this tag click event.
                 print("Tag clicked \(message.body as! String)")

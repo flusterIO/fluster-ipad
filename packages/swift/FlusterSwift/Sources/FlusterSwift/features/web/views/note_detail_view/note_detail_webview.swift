@@ -10,6 +10,7 @@ import WebKit
 
 
 public struct NoteDetailWebview: UIViewRepresentable {
+    @State private var show: Bool = false
     public let url: URL = Bundle.main.url(
         forResource: "index",
         withExtension: "html",
@@ -29,6 +30,7 @@ public struct NoteDetailWebview: UIViewRepresentable {
         let webView = container.webView
 
         webView.navigationDelegate = context.coordinator
+        webView.isHidden = true
         let editorContentControllers = [
             NoteDetailWebviewActions.requestNoteDetailData.rawValue,
             NoteDetailWebviewActions.setWebviewLoaded.rawValue,
@@ -47,6 +49,7 @@ public struct NoteDetailWebview: UIViewRepresentable {
     }
 
     public func updateUIView(_ uiView: WKWebView, context: Context) {
+        uiView.isHidden = !show
     }
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -70,8 +73,6 @@ public extension NoteDetailWebview {
         ) {
             // On Load
             parent.container.webView.isHidden = false
-            //            parent.container.requestDocumentSize()
-//            parent.didSetInitialContent = true
         }
         
         public func webView(
@@ -89,6 +90,8 @@ public extension NoteDetailWebview {
             didReceive message: WKScriptMessage
         ) {
             switch message.name {
+            case NoteDetailWebviewActions.setWebviewLoaded.rawValue:
+                self.parent.show = true
             case NoteDetailWebviewActions.requestNoteDetailData.rawValue:
                 self.parent.container.setNoteDetails(note: parent.note)
             default:

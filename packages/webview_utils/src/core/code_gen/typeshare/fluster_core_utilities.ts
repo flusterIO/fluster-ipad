@@ -5,19 +5,19 @@
 
 /** From typescript to swift. */
 export enum BibtexEditorWebviewActions {
-	RequestBibtexEditorData = "request-note-detail-data",
-	SetWebviewLoaded = "set-note-detail-webview-loaded",
+	RequestBibtexEditorData = "request-bibtex-data",
+	SetWebviewLoaded = "set-bibtex-webview-loaded",
 	OnEditorChange = "on-bib-editor-change",
 }
 
 /** From swift to typescript */
 export enum BibtexEditorWebviewEvents {
-	SetInitialColorScheme = "set-initial-color-scheme",
-	SetBibtexEditorContent = "set-note-details",
-	SetEditorKeymap = "set-editor-keymap",
-	SetCodeTheme = "set-code-theme",
-	SetCodeThemeLight = "set-code-theme-light",
-	SetCodeThemeDark = "set-code-theme-dark",
+	SetInitialColorScheme = "set-bib-initial-color-scheme",
+	SetBibtexEditorContent = "set-bibtex-data",
+	SetEditorKeymap = "set-bib-editor-keymap",
+	SetCodeTheme = "set-bib-code-theme",
+	SetCodeThemeLight = "set-bib-code-theme-light",
+	SetCodeThemeDark = "set-bib-code-theme-dark",
 }
 
 export enum BibtexEditorWebviewLocalStorageKeys {

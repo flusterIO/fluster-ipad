@@ -5,11 +5,11 @@ use typeshare::typeshare;
 #[typeshare]
 #[derive(strum_macros::Display, Serialize, Deserialize)]
 pub enum BibtexEditorWebviewActions {
-    #[serde(rename = "request-note-detail-data")]
-    #[strum(to_string = "request-note-detail-data")]
+    #[serde(rename = "request-bibtex-data")]
+    #[strum(to_string = "request-bibtex-data")]
     RequestBibtexEditorData,
-    #[serde(rename = "set-note-detail-webview-loaded")]
-    #[strum(to_string = "set-note-detail-webview-loaded")]
+    #[serde(rename = "set-bibtex-webview-loaded")]
+    #[strum(to_string = "set-bibtex-webview-loaded")]
     SetWebviewLoaded,
     #[serde(rename = "on-bib-editor-change")]
     #[strum(to_string = "on-bib-editor-change")]
@@ -20,23 +20,23 @@ pub enum BibtexEditorWebviewActions {
 #[typeshare]
 #[derive(strum_macros::Display, Serialize, Deserialize)]
 pub enum BibtexEditorWebviewEvents {
-    #[serde(rename = "set-initial-color-scheme")]
-    #[strum(to_string = "set-initial-color-scheme")]
+    #[serde(rename = "set-bib-initial-color-scheme")]
+    #[strum(to_string = "set-bib-initial-color-scheme")]
     SetInitialColorScheme,
-    #[serde(rename = "set-note-details")]
-    #[strum(to_string = "set-note-details")]
+    #[serde(rename = "set-bibtex-data")]
+    #[strum(to_string = "set-bibtex-data")]
     SetBibtexEditorContent,
-    #[serde(rename = "set-editor-keymap")]
-    #[strum(to_string = "set-editor-keymap")]
+    #[serde(rename = "set-bib-editor-keymap")]
+    #[strum(to_string = "set-bib-editor-keymap")]
     SetEditorKeymap,
-    #[serde(rename = "set-code-theme")]
-    #[strum(to_string = "set-code-theme")]
+    #[serde(rename = "set-bib-code-theme")]
+    #[strum(to_string = "set-bib-code-theme")]
     SetCodeTheme,
-    #[serde(rename = "set-code-theme-light")]
-    #[strum(to_string = "set-code-theme-light")]
+    #[serde(rename = "set-bib-code-theme-light")]
+    #[strum(to_string = "set-bib-code-theme-light")]
     SetCodeThemeLight,
-    #[serde(rename = "set-code-theme-dark")]
-    #[strum(to_string = "set-code-theme-dark")]
+    #[serde(rename = "set-bib-code-theme-dark")]
+    #[strum(to_string = "set-bib-code-theme-dark")]
     SetCodeThemeDark,
 }
 

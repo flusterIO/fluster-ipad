@@ -20,6 +20,7 @@ public struct BibtexEditorWebview: UIViewRepresentable {
         frame: .zero,
         configuration: getConfig()
     )
+    @State private var show: Bool = false
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var modelContext
     @Environment(\.colorScheme) var colorScheme
@@ -47,26 +48,28 @@ public struct BibtexEditorWebview: UIViewRepresentable {
         let webView = container.webView
 
         webView.navigationDelegate = context.coordinator
-        webView.configuration.userContentController.removeScriptMessageHandler(
-            forName: "bibtex-editor-update"
-        )
-        webView.configuration.userContentController.add(
-            context.coordinator,
-            name: "bibtex-editor-update"
-        )
-        webView.configuration.userContentController.removeScriptMessageHandler(
-            forName: "bibtex-request-initial-data"
-        )
-        webView.configuration.userContentController.add(
-            context.coordinator,
-            name: "bibtex-request-initial-data"
-        )
+        webView.isHidden = true
+        let controllers = [
+            BibtexEditorWebviewActions.onEditorChange.rawValue,
+            BibtexEditorWebviewActions.requestBibtexEditorData.rawValue,
+            BibtexEditorWebviewActions.setWebviewLoaded.rawValue
+        ]
+
+        for controllerName in controllers {
+            addUserContentController(
+                controller: webView.configuration.userContentController,
+                coordinator: context.coordinator,
+                name: controllerName
+            )
+        }
+        
         webView.loadFileURL(url, allowingReadAccessTo: url)
 
         return webView
     }
 
     public func updateUIView(_ uiView: WKWebView, context: Context) {
+        uiView.isHidden = !self.show
     }
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -96,37 +99,44 @@ public extension BibtexEditorWebview {
 
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
         {
+            webView.isHidden = !self.parent.show
+            print("Here 1")
             guard !parent.didSetInitialContent else { return }
-            parent.didSetInitialContent = true
+            print("Here 2")
 
             let body =
                 parent.value
-                .replacingOccurrences(of: "`", with: "\\`")
+                .toQuotedJavascriptString()
 
             webView.evaluateJavaScript(
                 """
-                window.localStorage.setItem("bibtex-editor-initial-value", `\(body)`);
+                window.localStorage.setItem("\(BibtexEditorWebviewLocalStorageKeys.initialValue.rawValue)", `\(body)`);
                 """
             )
             parent.setInitialProperties()
-            parent.container.webView.isHidden = false
+            parent.didSetInitialContent = true
+            parent.container.webView.isHidden = !self.parent.show
         }
 
         public func userContentController(
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            if message.name == "bibtex-editor-update",
-                let str = message.body as? String
-            {
-                parent.value = str
-            }
-            if message.name == "bibtex-request-initial-data" {
-                print("Request for initial editor data received...")
+            switch message.name {
+            case BibtexEditorWebviewActions.setWebviewLoaded.rawValue:
+                print("Showing editor...")
+                self.parent.show = true
+            case BibtexEditorWebviewActions.requestBibtexEditorData.rawValue:
                 parent.setInitialProperties()
                 parent.container.setInitialContent(
                     entryBody: parent.value
                 )
+            case BibtexEditorWebviewActions.onEditorChange.rawValue:
+                if let body = message.body as? String {
+                    parent.value = body
+                }
+            default:
+                return
             }
         }
     }

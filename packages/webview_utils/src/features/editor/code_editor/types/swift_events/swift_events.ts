@@ -32,7 +32,6 @@ export function setEditorContent(payload: string) {
 }
 
 export function setParsedEditorContent(payload: string) {
-    console.log("payload: ", payload)
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, { detail: payload }),
     );

@@ -12,7 +12,7 @@ import {
 } from "../types/code_editor_types";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
+import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export interface CodeEditorState {

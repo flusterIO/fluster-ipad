@@ -36,10 +36,35 @@ struct BibliographyPageInternalView: View {
                         editorContainer: bibtexEditorContainer
                     )
                     .toolbar {
-                        Button(action: {
-                            associateNoteModalPresented = true
-                        }, label: {
-                            Label("Search", systemImage: "magnifyingglass")
+                        ToolbarItem(content: {
+                            NavigationLink(
+                                destination: {
+                                    CreateBibEntrySheetView(
+                                        editingBibEntry: .constant(nil),
+                                        ignoreEditingNote: false,
+                                        container: bibtexEditorContainer
+                                    )
+                                },
+                                label: {
+                                    Label(
+                                        "Create",
+                                        systemImage: "plus"
+                                    )
+                                }
+                            )
+                        })
+                        ToolbarItem(content: {
+                            Button(
+                                action: {
+                                    associateNoteModalPresented = true
+                                },
+                                label: {
+                                    Label(
+                                        "Search",
+                                        systemImage: "magnifyingglass"
+                                    )
+                                }
+                            )
                         })
                     }
                     .navigationTitle("Note Bibliography")

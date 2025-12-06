@@ -1,4 +1,5 @@
-import { sendToSwift, SwiftHandler } from "../bridge/send_to_swift";
+import { SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { sendToSwift } from "../bridge/send_to_swift";
 
 export enum DeviceOrientation {
     landscape,
@@ -15,7 +16,7 @@ export const getDeviceOrientation = (
 
 export const sendOrientationSwiftEvents = (): void => {
     sendToSwift(
-        SwiftHandler.setSplitviewEditorLandscapeView,
+        SplitviewEditorWebviewActions.SetIsLandscape,
         getDeviceOrientation(screen.orientation) === DeviceOrientation.landscape
             ? "true"
             : "false",
@@ -30,7 +31,7 @@ export const setOrientationListener = (): void => {
             .getElementById("webview-container")
             ?.classList[isLandscape ? "add" : "remove"]("landscape");
         sendToSwift(
-            SwiftHandler.setSplitviewEditorLandscapeView,
+            SplitviewEditorWebviewActions.SetIsLandscape,
             isLandscape ? "true" : "false",
         );
     };

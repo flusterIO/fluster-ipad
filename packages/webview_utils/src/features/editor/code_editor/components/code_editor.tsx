@@ -10,17 +10,23 @@ import {
 import { codeEditorBaseKeymapMap } from "../data/code_editor_base_keymap_map";
 import { codeEditorThemeMap } from "../data/code_editor_theme_map";
 import { lineNumbersRelative } from "@uiw/codemirror-extensions-line-numbers-relative";
-import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
+import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { setWindowBridgeFunctions } from "../types/swift_events/swift_events";
-import { BibtexEditorWebviewActions, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { AnyWebviewAction, AnyWebviewEvent, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 
 interface CodeEditorProps {
     language?: Extension;
     initialValue: string;
-    updateHandler?: SplitviewEditorWebviewActions | BibtexEditorWebviewActions;
+    requestNewDataAction?: AnyWebviewAction
+    updateHandler?: AnyWebviewAction
+    showWebviewHandler?: AnyWebviewAction
+    swiftContentEvent?: AnyWebviewEvent
+    containerId?: string;
+    initialValueStorageKey?: AnyWebviewStorageKey
 }
 
 setWindowBridgeFunctions();
@@ -29,6 +35,9 @@ export const CodeEditorInner = ({
     language = markdown(),
     initialValue,
     updateHandler = SplitviewEditorWebviewActions.OnEditorChange,
+    showWebviewHandler = SplitviewEditorWebviewActions.SetWebviewLoaded,
+    swiftContentEvent = SplitviewEditorWebviewEvents.SetSplitviewEditorContent,
+    containerId = "code-editor-container"
 }: CodeEditorProps): ReactNode => {
     const haveRendered = useRef(false);
     const state = useCodeEditorContext();
@@ -37,15 +46,18 @@ export const CodeEditorInner = ({
     const view = useRef<EditorView | null>(null);
 
     useEffect(() => {
+        const em = document.getElementById(containerId)!
+        console.log("em: ", em)
         if (haveRendered.current) {
             haveRendered.current = false;
-            document.getElementById("code-editor-container")!.replaceChildren();
+            em.replaceChildren();
         }
         let extensions: Extension[] = [];
         if (state.keymap === "vim") {
             extensions.push(vim());
             extensions.push(lineNumbersRelative);
         }
+        console.log(`Here 1`)
         extensions = [
             ...extensions,
             keymap.of(codeEditorBaseKeymapMap[state.baseKeymap]()),
@@ -69,43 +81,45 @@ export const CodeEditorInner = ({
                 }
             }),
         ];
+        console.log(`Here 2`);
         const startState = EditorState.create({
             doc: initialValue,
             extensions,
         });
 
+        console.log(`Here 3`);
         const _view = new EditorView({
             state: startState,
-            parent: document.getElementById("code-editor-container")!,
+            parent: em,
         });
+        console.log(`Here 4`);
         _view.focus();
         view.current = _view;
         haveRendered.current = true;
+        console.log(`Here though?`);
+        sendToSwift(showWebviewHandler);
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
     }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap]);
 
-    /* useEffect(() => { */
-    /* }, []); */
-
-    useEventListener(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
+    useEventListener(swiftContentEvent as keyof WindowEventMap, (e) => {
         if (view.current) {
             view.current.dispatch({
                 changes: {
                     from: 0,
                     to: view.current.state.doc.length,
-                    insert: e.detail,
+                    insert: "detail" in e ? e.detail : "",
                 },
             });
         }
     });
-    return <div className="h-full w-full" id="code-editor-container" />;
+    return <div className="h-full w-full" id={containerId} />;
 };
 
 export const CodeEditor = (
     props: Omit<CodeEditorProps, "initialValue">,
 ): ReactNode => {
     const [initialValue, setInitialValue] = useLocalStorage(
-        SplitviewEditorWebviewLocalStorageKeys.InitialValue,
+        props.initialValueStorageKey ?? SplitviewEditorWebviewLocalStorageKeys.InitialValue,
         undefined,
         {
             deserializer(value) {
@@ -119,11 +133,11 @@ export const CodeEditor = (
     );
     useEffect(() => {
         if (!initialValue) {
-            sendToSwift(SwiftHandler.requestInitialEditorData, "");
+            sendToSwift(props.requestNewDataAction ?? SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
     }, [initialValue]);
-    useEventListener(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
-        setInitialValue(e.detail);
+    useEventListener((props.swiftContentEvent ?? SplitviewEditorWebviewEvents.SetSplitviewEditorContent) as keyof WindowEventMap, (e) => {
+        setInitialValue("detail" in e ? e.detail : "");
     });
     return initialValue ? (
         <CodeEditorInner {...props} initialValue={initialValue} />

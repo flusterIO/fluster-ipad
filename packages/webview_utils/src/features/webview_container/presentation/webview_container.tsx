@@ -4,11 +4,12 @@ import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { setWebviewWindowBridgeFunctions } from "../state/swift_events/webview_swift_events";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
+import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import {
     ScreenDimensions,
     useScreenDimensions,
 } from "@/state/hooks/use_screen_dimensions";
+import { AnyWebviewAction } from "@/utils/types/any_window_event";
 
 interface WebViewContainerProps {
     children: ReactNode;
@@ -17,7 +18,7 @@ interface WebViewContainerProps {
     contentContainerClasses?: string;
     /** If shrinkHeight = true, will shrink to fit-content to allow window to resize to match content */
     shrinkHeight?: boolean;
-    broadcastHeightKey?: SwiftHandler;
+    broadcastHeightKey?: AnyWebviewAction;
     /** An optional function that can accept the actual screen dimensions sent by swift and returns another screen dimensions that the webview will bind it's size to. */
     screenDimensionCalculator?: (
         actualDimensions: ScreenDimensions,

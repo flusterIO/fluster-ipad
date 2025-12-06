@@ -13,6 +13,7 @@ authors = ["Andrew Iglinski"]
 description = "Be less dum."
 documentation = "https://flusterapp.com"
 edition = "2024"
+license = "Unlicense"
 
 [workspace.dependencies]
 async-trait = "0.1.81"

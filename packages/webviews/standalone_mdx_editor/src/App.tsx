@@ -1,15 +1,10 @@
-import {
-    CodeEditor,
-    SwiftHandler,
-    WebViewContainer,
-} from "@fluster/webview_utils";
+import { CodeEditor, WebViewContainer } from "@fluster/webview_utils";
 import React from "react";
 
 function App() {
     return (
         <WebViewContainer
-            /* shrinkHeight */
-            broadcastHeightKey={SwiftHandler.setEditorViewportSize}
+        /* shrinkHeight */
         >
             <CodeEditor />
         </WebViewContainer>

@@ -6,19 +6,19 @@ import Foundation
 
 /// From typescript to swift.
 public enum BibtexEditorWebviewActions: String, Codable {
-	case requestBibtexEditorData = "request-note-detail-data"
-	case setWebviewLoaded = "set-note-detail-webview-loaded"
+	case requestBibtexEditorData = "request-bibtex-data"
+	case setWebviewLoaded = "set-bibtex-webview-loaded"
 	case onEditorChange = "on-bib-editor-change"
 }
 
 /// From swift to typescript
 public enum BibtexEditorWebviewEvents: String, Codable {
-	case setInitialColorScheme = "set-initial-color-scheme"
-	case setBibtexEditorContent = "set-note-details"
-	case setEditorKeymap = "set-editor-keymap"
-	case setCodeTheme = "set-code-theme"
-	case setCodeThemeLight = "set-code-theme-light"
-	case setCodeThemeDark = "set-code-theme-dark"
+	case setInitialColorScheme = "set-bib-initial-color-scheme"
+	case setBibtexEditorContent = "set-bibtex-data"
+	case setEditorKeymap = "set-bib-editor-keymap"
+	case setCodeTheme = "set-bib-code-theme"
+	case setCodeThemeLight = "set-bib-code-theme-light"
+	case setCodeThemeDark = "set-bib-code-theme-dark"
 }
 
 public enum BibtexEditorWebviewLocalStorageKeys: String, Codable {

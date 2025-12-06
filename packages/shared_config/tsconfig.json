@@ -1,0 +1,46 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "module": "ESNext",
+        "target": "ESNext",
+        "moduleResolution": "bundler",
+        "useDefineForClassFields": true,
+        "composite": true,
+        "baseUrl": ".",
+        "allowSyntheticDefaultImports": true,
+        "allowUmdGlobalAccess": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "resolveJsonModule": true,
+        "allowImportingTsExtensions": true,
+        "isolatedModules": true,
+        "sourceMap": true,
+        "noEmit": true,
+        "allowJs": false,
+        "skipLibCheck": true,
+        "lib": [
+            "ESNext",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "esModuleInterop": true,
+        "verbatimModuleSyntax": false,
+        "outDir": "dist",
+        "strict": true,
+        "paths": {
+            "@/*": [
+                "./src/core/*"
+            ],
+            "#/*": [
+                "./src/features/*"
+            ]
+        }
+    },
+    "exclude": [
+        "dist"
+    ],
+    "include": [
+        "src",
+        "vite.config.ts"
+    ]
+}

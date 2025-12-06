@@ -107,9 +107,9 @@ struct MainView: View {
                         editorKeymap: $editorKeymap,
                         container: editorContainer,
                     )
-                    .moveDisabled(true)
+//                    .moveDisabled(true)
                     .disableAnimations()
-                    .scrollDisabled(true)
+//                    .scrollDisabled(true)
                     .frame(
                         alignment: .bottom
                     )

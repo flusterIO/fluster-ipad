@@ -88,6 +88,7 @@
     "@uiw/codemirror-theme-material": "4.25.3",
     "@uiw/codemirror-theme-xcode": "4.25.3",
     "clsx": "2.1.1",
+    "flatbuffers": "25.9.23",
     "lucide-react": "0.554.0",
     "monaco-editor": "0.52.2",
     "monaco-vim": "0.4.2",
