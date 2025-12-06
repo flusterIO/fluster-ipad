@@ -8,7 +8,7 @@ import Common
 
 import FlatBuffers
 
-public struct MdxSerialization_CitationResult: FlatBufferObject, Verifiable {
+public struct MdxSerialization_CitationResultBuffer: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -28,19 +28,19 @@ public struct MdxSerialization_CitationResult: FlatBufferObject, Verifiable {
   public var citationKeySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.citationKey.v) }
   public var body: String! { let o = _accessor.offset(VTOFFSET.body.v); return _accessor.string(at: o) }
   public var bodySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.body.v) }
-  public static func startCitationResult(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 2) }
+  public static func startCitationResultBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 2) }
   public static func add(citationKey: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citationKey, at: VTOFFSET.citationKey.p) }
   public static func add(body: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: body, at: VTOFFSET.body.p) }
-  public static func endCitationResult(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
-  public static func createCitationResult(
+  public static func endCitationResultBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
+  public static func createCitationResultBuffer(
     _ fbb: inout FlatBufferBuilder,
     citationKeyOffset citationKey: Offset,
     bodyOffset body: Offset
   ) -> Offset {
-    let __start = MdxSerialization_CitationResult.startCitationResult(&fbb)
-    MdxSerialization_CitationResult.add(citationKey: citationKey, &fbb)
-    MdxSerialization_CitationResult.add(body: body, &fbb)
-    return MdxSerialization_CitationResult.endCitationResult(&fbb, start: __start)
+    let __start = MdxSerialization_CitationResultBuffer.startCitationResultBuffer(&fbb)
+    MdxSerialization_CitationResultBuffer.add(citationKey: citationKey, &fbb)
+    MdxSerialization_CitationResultBuffer.add(body: body, &fbb)
+    return MdxSerialization_CitationResultBuffer.endCitationResultBuffer(&fbb, start: __start)
   }
 
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
@@ -51,7 +51,7 @@ public struct MdxSerialization_CitationResult: FlatBufferObject, Verifiable {
   }
 }
 
-public struct MdxSerialization_TagResult: FlatBufferObject, Verifiable {
+public struct MdxSerialization_TagResultBuffer: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -68,16 +68,16 @@ public struct MdxSerialization_TagResult: FlatBufferObject, Verifiable {
 
   public var body: String! { let o = _accessor.offset(VTOFFSET.body.v); return _accessor.string(at: o) }
   public var bodySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.body.v) }
-  public static func startTagResult(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 1) }
+  public static func startTagResultBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 1) }
   public static func add(body: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: body, at: VTOFFSET.body.p) }
-  public static func endTagResult(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
-  public static func createTagResult(
+  public static func endTagResultBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
+  public static func createTagResultBuffer(
     _ fbb: inout FlatBufferBuilder,
     bodyOffset body: Offset
   ) -> Offset {
-    let __start = MdxSerialization_TagResult.startTagResult(&fbb)
-    MdxSerialization_TagResult.add(body: body, &fbb)
-    return MdxSerialization_TagResult.endTagResult(&fbb, start: __start)
+    let __start = MdxSerialization_TagResultBuffer.startTagResultBuffer(&fbb)
+    MdxSerialization_TagResultBuffer.add(body: body, &fbb)
+    return MdxSerialization_TagResultBuffer.endTagResultBuffer(&fbb, start: __start)
   }
 
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
@@ -87,7 +87,7 @@ public struct MdxSerialization_TagResult: FlatBufferObject, Verifiable {
   }
 }
 
-public struct MdxSerialization_FrontMatterResult: FlatBufferObject, Verifiable {
+public struct MdxSerialization_FrontMatterResultBuffer: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -111,22 +111,22 @@ public struct MdxSerialization_FrontMatterResult: FlatBufferObject, Verifiable {
   public var titleSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.title.v) }
   public var userDefinedId: String? { let o = _accessor.offset(VTOFFSET.userDefinedId.v); return o == 0 ? nil : _accessor.string(at: o) }
   public var userDefinedIdSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.userDefinedId.v) }
-  public static func startFrontMatterResult(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 3) }
+  public static func startFrontMatterResultBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 3) }
   public static func addVectorOf(ignoreParsers: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: ignoreParsers, at: VTOFFSET.ignoreParsers.p) }
   public static func add(title: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: title, at: VTOFFSET.title.p) }
   public static func add(userDefinedId: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: userDefinedId, at: VTOFFSET.userDefinedId.p) }
-  public static func endFrontMatterResult(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
-  public static func createFrontMatterResult(
+  public static func endFrontMatterResultBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
+  public static func createFrontMatterResultBuffer(
     _ fbb: inout FlatBufferBuilder,
     ignoreParsersVectorOffset ignoreParsers: Offset,
     titleOffset title: Offset = Offset(),
     userDefinedIdOffset userDefinedId: Offset = Offset()
   ) -> Offset {
-    let __start = MdxSerialization_FrontMatterResult.startFrontMatterResult(&fbb)
-    MdxSerialization_FrontMatterResult.addVectorOf(ignoreParsers: ignoreParsers, &fbb)
-    MdxSerialization_FrontMatterResult.add(title: title, &fbb)
-    MdxSerialization_FrontMatterResult.add(userDefinedId: userDefinedId, &fbb)
-    return MdxSerialization_FrontMatterResult.endFrontMatterResult(&fbb, start: __start)
+    let __start = MdxSerialization_FrontMatterResultBuffer.startFrontMatterResultBuffer(&fbb)
+    MdxSerialization_FrontMatterResultBuffer.addVectorOf(ignoreParsers: ignoreParsers, &fbb)
+    MdxSerialization_FrontMatterResultBuffer.add(title: title, &fbb)
+    MdxSerialization_FrontMatterResultBuffer.add(userDefinedId: userDefinedId, &fbb)
+    return MdxSerialization_FrontMatterResultBuffer.endFrontMatterResultBuffer(&fbb, start: __start)
   }
 
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
@@ -138,7 +138,7 @@ public struct MdxSerialization_FrontMatterResult: FlatBufferObject, Verifiable {
   }
 }
 
-public struct MdxSerialization_MdxParsingResult: FlatBufferObject, Verifiable {
+public struct MdxSerialization_MdxParsingResultBuffer: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -148,7 +148,7 @@ public struct MdxSerialization_MdxParsingResult: FlatBufferObject, Verifiable {
   public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
 
   private enum VTOFFSET: VOffset {
-    case content = 4
+    case parsedContent = 4
     case tags = 6
     case frontMatter = 8
     case citations = 10
@@ -156,42 +156,42 @@ public struct MdxSerialization_MdxParsingResult: FlatBufferObject, Verifiable {
     var p: VOffset { self.rawValue }
   }
 
-  public var content: String! { let o = _accessor.offset(VTOFFSET.content.v); return _accessor.string(at: o) }
-  public var contentSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.content.v) }
+  public var parsedContent: String! { let o = _accessor.offset(VTOFFSET.parsedContent.v); return _accessor.string(at: o) }
+  public var parsedContentSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.parsedContent.v) }
   public var hasTags: Bool { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? false : true }
   public var tagsCount: Int32 { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? 0 : _accessor.vector(count: o) }
-  public func tags(at index: Int32) -> MdxSerialization_TagResult? { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? nil : MdxSerialization_TagResult(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
-  public var frontMatter: MdxSerialization_FrontMatterResult? { let o = _accessor.offset(VTOFFSET.frontMatter.v); return o == 0 ? nil : MdxSerialization_FrontMatterResult(_accessor.bb, o: _accessor.indirect(o + _accessor.position)) }
+  public func tags(at index: Int32) -> MdxSerialization_TagResultBuffer? { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? nil : MdxSerialization_TagResultBuffer(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
+  public var frontMatter: MdxSerialization_FrontMatterResultBuffer? { let o = _accessor.offset(VTOFFSET.frontMatter.v); return o == 0 ? nil : MdxSerialization_FrontMatterResultBuffer(_accessor.bb, o: _accessor.indirect(o + _accessor.position)) }
   public var hasCitations: Bool { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? false : true }
   public var citationsCount: Int32 { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? 0 : _accessor.vector(count: o) }
-  public func citations(at index: Int32) -> MdxSerialization_CitationResult? { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? nil : MdxSerialization_CitationResult(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
-  public static func startMdxParsingResult(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 4) }
-  public static func add(content: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: content, at: VTOFFSET.content.p) }
+  public func citations(at index: Int32) -> MdxSerialization_CitationResultBuffer? { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? nil : MdxSerialization_CitationResultBuffer(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
+  public static func startMdxParsingResultBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 4) }
+  public static func add(parsedContent: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: parsedContent, at: VTOFFSET.parsedContent.p) }
   public static func addVectorOf(tags: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: tags, at: VTOFFSET.tags.p) }
   public static func add(frontMatter: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: frontMatter, at: VTOFFSET.frontMatter.p) }
   public static func addVectorOf(citations: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citations, at: VTOFFSET.citations.p) }
-  public static func endMdxParsingResult(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
-  public static func createMdxParsingResult(
+  public static func endMdxParsingResultBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
+  public static func createMdxParsingResultBuffer(
     _ fbb: inout FlatBufferBuilder,
-    contentOffset content: Offset,
+    parsedContentOffset parsedContent: Offset,
     tagsVectorOffset tags: Offset,
     frontMatterOffset frontMatter: Offset = Offset(),
     citationsVectorOffset citations: Offset = Offset()
   ) -> Offset {
-    let __start = MdxSerialization_MdxParsingResult.startMdxParsingResult(&fbb)
-    MdxSerialization_MdxParsingResult.add(content: content, &fbb)
-    MdxSerialization_MdxParsingResult.addVectorOf(tags: tags, &fbb)
-    MdxSerialization_MdxParsingResult.add(frontMatter: frontMatter, &fbb)
-    MdxSerialization_MdxParsingResult.addVectorOf(citations: citations, &fbb)
-    return MdxSerialization_MdxParsingResult.endMdxParsingResult(&fbb, start: __start)
+    let __start = MdxSerialization_MdxParsingResultBuffer.startMdxParsingResultBuffer(&fbb)
+    MdxSerialization_MdxParsingResultBuffer.add(parsedContent: parsedContent, &fbb)
+    MdxSerialization_MdxParsingResultBuffer.addVectorOf(tags: tags, &fbb)
+    MdxSerialization_MdxParsingResultBuffer.add(frontMatter: frontMatter, &fbb)
+    MdxSerialization_MdxParsingResultBuffer.addVectorOf(citations: citations, &fbb)
+    return MdxSerialization_MdxParsingResultBuffer.endMdxParsingResultBuffer(&fbb, start: __start)
   }
 
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
     var _v = try verifier.visitTable(at: position)
-    try _v.visit(field: VTOFFSET.content.p, fieldName: "content", required: true, type: ForwardOffset<String>.self)
-    try _v.visit(field: VTOFFSET.tags.p, fieldName: "tags", required: true, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_TagResult>, MdxSerialization_TagResult>>.self)
-    try _v.visit(field: VTOFFSET.frontMatter.p, fieldName: "frontMatter", required: false, type: ForwardOffset<MdxSerialization_FrontMatterResult>.self)
-    try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: false, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_CitationResult>, MdxSerialization_CitationResult>>.self)
+    try _v.visit(field: VTOFFSET.parsedContent.p, fieldName: "parsedContent", required: true, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.tags.p, fieldName: "tags", required: true, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_TagResultBuffer>, MdxSerialization_TagResultBuffer>>.self)
+    try _v.visit(field: VTOFFSET.frontMatter.p, fieldName: "frontMatter", required: false, type: ForwardOffset<MdxSerialization_FrontMatterResultBuffer>.self)
+    try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: false, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_CitationResultBuffer>, MdxSerialization_CitationResultBuffer>>.self)
     _v.finish()
   }
 }
@@ -216,7 +216,7 @@ public struct MdxSerialization_Request_ParseMdxOptions: FlatBufferObject, Verifi
   public var contentSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.content.v) }
   public var hasCitations: Bool { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? false : true }
   public var citationsCount: Int32 { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? 0 : _accessor.vector(count: o) }
-  public func citations(at index: Int32) -> MdxSerialization_CitationResult? { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? nil : MdxSerialization_CitationResult(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
+  public func citations(at index: Int32) -> MdxSerialization_CitationResultBuffer? { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? nil : MdxSerialization_CitationResultBuffer(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
   public static func startParseMdxOptions(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 2) }
   public static func add(content: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: content, at: VTOFFSET.content.p) }
   public static func addVectorOf(citations: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citations, at: VTOFFSET.citations.p) }
@@ -235,12 +235,12 @@ public struct MdxSerialization_Request_ParseMdxOptions: FlatBufferObject, Verifi
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
     var _v = try verifier.visitTable(at: position)
     try _v.visit(field: VTOFFSET.content.p, fieldName: "content", required: false, type: ForwardOffset<String>.self)
-    try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: false, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_CitationResult>, MdxSerialization_CitationResult>>.self)
+    try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: false, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_CitationResultBuffer>, MdxSerialization_CitationResultBuffer>>.self)
     _v.finish()
   }
 }
 
-public struct MdxSerialization_NoteDetails_NoteDetailData: FlatBufferObject, Verifiable {
+public struct MdxSerialization_NoteDetails_NoteDetailDataBuffer: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -266,23 +266,23 @@ public struct MdxSerialization_NoteDetails_NoteDetailData: FlatBufferObject, Ver
   public var titleSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.title.v) }
   public var hasTags: Bool { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? false : true }
   public var tagsCount: Int32 { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? 0 : _accessor.vector(count: o) }
-  public func tags(at index: Int32) -> MdxSerialization_TagResult? { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? nil : MdxSerialization_TagResult(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
+  public func tags(at index: Int32) -> MdxSerialization_TagResultBuffer? { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? nil : MdxSerialization_TagResultBuffer(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
   public var hasCitations: Bool { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? false : true }
   public var citationsCount: Int32 { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? 0 : _accessor.vector(count: o) }
-  public func citations(at index: Int32) -> MdxSerialization_CitationResult? { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? nil : MdxSerialization_CitationResult(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
+  public func citations(at index: Int32) -> MdxSerialization_CitationResultBuffer? { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? nil : MdxSerialization_CitationResultBuffer(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
   public var lastModifiedString: String! { let o = _accessor.offset(VTOFFSET.lastModifiedString.v); return _accessor.string(at: o) }
   public var lastModifiedStringSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.lastModifiedString.v) }
   public var lastReadString: String! { let o = _accessor.offset(VTOFFSET.lastReadString.v); return _accessor.string(at: o) }
   public var lastReadStringSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.lastReadString.v) }
-  public static func startNoteDetailData(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 6) }
+  public static func startNoteDetailDataBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 6) }
   public static func add(noteId: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: noteId, at: VTOFFSET.noteId.p) }
   public static func add(title: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: title, at: VTOFFSET.title.p) }
   public static func addVectorOf(tags: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: tags, at: VTOFFSET.tags.p) }
   public static func addVectorOf(citations: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citations, at: VTOFFSET.citations.p) }
   public static func add(lastModifiedString: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: lastModifiedString, at: VTOFFSET.lastModifiedString.p) }
   public static func add(lastReadString: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: lastReadString, at: VTOFFSET.lastReadString.p) }
-  public static func endNoteDetailData(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6, 8, 10, 12, 14]); return end }
-  public static func createNoteDetailData(
+  public static func endNoteDetailDataBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6, 8, 10, 12, 14]); return end }
+  public static func createNoteDetailDataBuffer(
     _ fbb: inout FlatBufferBuilder,
     noteIdOffset noteId: Offset,
     titleOffset title: Offset,
@@ -291,22 +291,22 @@ public struct MdxSerialization_NoteDetails_NoteDetailData: FlatBufferObject, Ver
     lastModifiedStringOffset lastModifiedString: Offset,
     lastReadStringOffset lastReadString: Offset
   ) -> Offset {
-    let __start = MdxSerialization_NoteDetails_NoteDetailData.startNoteDetailData(&fbb)
-    MdxSerialization_NoteDetails_NoteDetailData.add(noteId: noteId, &fbb)
-    MdxSerialization_NoteDetails_NoteDetailData.add(title: title, &fbb)
-    MdxSerialization_NoteDetails_NoteDetailData.addVectorOf(tags: tags, &fbb)
-    MdxSerialization_NoteDetails_NoteDetailData.addVectorOf(citations: citations, &fbb)
-    MdxSerialization_NoteDetails_NoteDetailData.add(lastModifiedString: lastModifiedString, &fbb)
-    MdxSerialization_NoteDetails_NoteDetailData.add(lastReadString: lastReadString, &fbb)
-    return MdxSerialization_NoteDetails_NoteDetailData.endNoteDetailData(&fbb, start: __start)
+    let __start = MdxSerialization_NoteDetails_NoteDetailDataBuffer.startNoteDetailDataBuffer(&fbb)
+    MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(noteId: noteId, &fbb)
+    MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(title: title, &fbb)
+    MdxSerialization_NoteDetails_NoteDetailDataBuffer.addVectorOf(tags: tags, &fbb)
+    MdxSerialization_NoteDetails_NoteDetailDataBuffer.addVectorOf(citations: citations, &fbb)
+    MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(lastModifiedString: lastModifiedString, &fbb)
+    MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(lastReadString: lastReadString, &fbb)
+    return MdxSerialization_NoteDetails_NoteDetailDataBuffer.endNoteDetailDataBuffer(&fbb, start: __start)
   }
 
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
     var _v = try verifier.visitTable(at: position)
     try _v.visit(field: VTOFFSET.noteId.p, fieldName: "noteId", required: true, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.title.p, fieldName: "title", required: true, type: ForwardOffset<String>.self)
-    try _v.visit(field: VTOFFSET.tags.p, fieldName: "tags", required: true, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_TagResult>, MdxSerialization_TagResult>>.self)
-    try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: true, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_CitationResult>, MdxSerialization_CitationResult>>.self)
+    try _v.visit(field: VTOFFSET.tags.p, fieldName: "tags", required: true, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_TagResultBuffer>, MdxSerialization_TagResultBuffer>>.self)
+    try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: true, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_CitationResultBuffer>, MdxSerialization_CitationResultBuffer>>.self)
     try _v.visit(field: VTOFFSET.lastModifiedString.p, fieldName: "lastModifiedString", required: true, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.lastReadString.p, fieldName: "lastReadString", required: true, type: ForwardOffset<String>.self)
     _v.finish()

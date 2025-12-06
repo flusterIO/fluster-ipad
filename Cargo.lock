@@ -331,6 +331,7 @@ name = "fluster_pre_parser"
 version = "0.0.1"
 dependencies = [
  "async-trait",
+ "flatbuffers",
  "fluster_core_utilities",
  "gray_matter",
  "rayon",

@@ -18,35 +18,35 @@ pub mod mdx_serialization {
   extern crate flatbuffers;
   use self::flatbuffers::{EndianScalar, Follow};
 
-pub enum CitationResultOffset {}
+pub enum CitationResultBufferOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct CitationResult<'a> {
+pub struct CitationResultBuffer<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for CitationResult<'a> {
-  type Inner = CitationResult<'a>;
+impl<'a> flatbuffers::Follow<'a> for CitationResultBuffer<'a> {
+  type Inner = CitationResultBuffer<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
-impl<'a> CitationResult<'a> {
+impl<'a> CitationResultBuffer<'a> {
   pub const VT_CITATION_KEY: flatbuffers::VOffsetT = 4;
   pub const VT_BODY: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    CitationResult { _tab: table }
+    CitationResultBuffer { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
-    args: &'args CitationResultArgs<'args>
-  ) -> flatbuffers::WIPOffset<CitationResult<'bldr>> {
-    let mut builder = CitationResultBuilder::new(_fbb);
+    args: &'args CitationResultBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<CitationResultBuffer<'bldr>> {
+    let mut builder = CitationResultBufferBuilder::new(_fbb);
     if let Some(x) = args.body { builder.add_body(x); }
     if let Some(x) = args.citation_key { builder.add_citation_key(x); }
     builder.finish()
@@ -58,18 +58,18 @@ impl<'a> CitationResult<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(CitationResult::VT_CITATION_KEY, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(CitationResultBuffer::VT_CITATION_KEY, None).unwrap()}
   }
   #[inline]
   pub fn body(&self) -> &'a str {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(CitationResult::VT_BODY, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(CitationResultBuffer::VT_BODY, None).unwrap()}
   }
 }
 
-impl flatbuffers::Verifiable for CitationResult<'_> {
+impl flatbuffers::Verifiable for CitationResultBuffer<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -82,86 +82,86 @@ impl flatbuffers::Verifiable for CitationResult<'_> {
     Ok(())
   }
 }
-pub struct CitationResultArgs<'a> {
+pub struct CitationResultBufferArgs<'a> {
     pub citation_key: Option<flatbuffers::WIPOffset<&'a str>>,
     pub body: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for CitationResultArgs<'a> {
+impl<'a> Default for CitationResultBufferArgs<'a> {
   #[inline]
   fn default() -> Self {
-    CitationResultArgs {
+    CitationResultBufferArgs {
       citation_key: None, // required field
       body: None, // required field
     }
   }
 }
 
-pub struct CitationResultBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+pub struct CitationResultBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> CitationResultBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> CitationResultBufferBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_citation_key(&mut self, citation_key: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(CitationResult::VT_CITATION_KEY, citation_key);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(CitationResultBuffer::VT_CITATION_KEY, citation_key);
   }
   #[inline]
   pub fn add_body(&mut self, body: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(CitationResult::VT_BODY, body);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(CitationResultBuffer::VT_BODY, body);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> CitationResultBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> CitationResultBufferBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
-    CitationResultBuilder {
+    CitationResultBufferBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<CitationResult<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<CitationResultBuffer<'a>> {
     let o = self.fbb_.end_table(self.start_);
-    self.fbb_.required(o, CitationResult::VT_CITATION_KEY,"citation_key");
-    self.fbb_.required(o, CitationResult::VT_BODY,"body");
+    self.fbb_.required(o, CitationResultBuffer::VT_CITATION_KEY,"citation_key");
+    self.fbb_.required(o, CitationResultBuffer::VT_BODY,"body");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for CitationResult<'_> {
+impl core::fmt::Debug for CitationResultBuffer<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("CitationResult");
+    let mut ds = f.debug_struct("CitationResultBuffer");
       ds.field("citation_key", &self.citation_key());
       ds.field("body", &self.body());
       ds.finish()
   }
 }
-pub enum TagResultOffset {}
+pub enum TagResultBufferOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct TagResult<'a> {
+pub struct TagResultBuffer<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for TagResult<'a> {
-  type Inner = TagResult<'a>;
+impl<'a> flatbuffers::Follow<'a> for TagResultBuffer<'a> {
+  type Inner = TagResultBuffer<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
-impl<'a> TagResult<'a> {
+impl<'a> TagResultBuffer<'a> {
   pub const VT_BODY: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    TagResult { _tab: table }
+    TagResultBuffer { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
-    args: &'args TagResultArgs<'args>
-  ) -> flatbuffers::WIPOffset<TagResult<'bldr>> {
-    let mut builder = TagResultBuilder::new(_fbb);
+    args: &'args TagResultBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<TagResultBuffer<'bldr>> {
+    let mut builder = TagResultBufferBuilder::new(_fbb);
     if let Some(x) = args.body { builder.add_body(x); }
     builder.finish()
   }
@@ -172,11 +172,11 @@ impl<'a> TagResult<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(TagResult::VT_BODY, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(TagResultBuffer::VT_BODY, None).unwrap()}
   }
 }
 
-impl flatbuffers::Verifiable for TagResult<'_> {
+impl flatbuffers::Verifiable for TagResultBuffer<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -188,80 +188,80 @@ impl flatbuffers::Verifiable for TagResult<'_> {
     Ok(())
   }
 }
-pub struct TagResultArgs<'a> {
+pub struct TagResultBufferArgs<'a> {
     pub body: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for TagResultArgs<'a> {
+impl<'a> Default for TagResultBufferArgs<'a> {
   #[inline]
   fn default() -> Self {
-    TagResultArgs {
+    TagResultBufferArgs {
       body: None, // required field
     }
   }
 }
 
-pub struct TagResultBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+pub struct TagResultBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TagResultBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> TagResultBufferBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_body(&mut self, body: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(TagResult::VT_BODY, body);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(TagResultBuffer::VT_BODY, body);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> TagResultBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> TagResultBufferBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
-    TagResultBuilder {
+    TagResultBufferBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<TagResult<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<TagResultBuffer<'a>> {
     let o = self.fbb_.end_table(self.start_);
-    self.fbb_.required(o, TagResult::VT_BODY,"body");
+    self.fbb_.required(o, TagResultBuffer::VT_BODY,"body");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for TagResult<'_> {
+impl core::fmt::Debug for TagResultBuffer<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("TagResult");
+    let mut ds = f.debug_struct("TagResultBuffer");
       ds.field("body", &self.body());
       ds.finish()
   }
 }
-pub enum FrontMatterResultOffset {}
+pub enum FrontMatterResultBufferOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct FrontMatterResult<'a> {
+pub struct FrontMatterResultBuffer<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for FrontMatterResult<'a> {
-  type Inner = FrontMatterResult<'a>;
+impl<'a> flatbuffers::Follow<'a> for FrontMatterResultBuffer<'a> {
+  type Inner = FrontMatterResultBuffer<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
-impl<'a> FrontMatterResult<'a> {
+impl<'a> FrontMatterResultBuffer<'a> {
   pub const VT_IGNORE_PARSERS: flatbuffers::VOffsetT = 4;
   pub const VT_TITLE: flatbuffers::VOffsetT = 6;
   pub const VT_USER_DEFINED_ID: flatbuffers::VOffsetT = 8;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    FrontMatterResult { _tab: table }
+    FrontMatterResultBuffer { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
-    args: &'args FrontMatterResultArgs<'args>
-  ) -> flatbuffers::WIPOffset<FrontMatterResult<'bldr>> {
-    let mut builder = FrontMatterResultBuilder::new(_fbb);
+    args: &'args FrontMatterResultBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<FrontMatterResultBuffer<'bldr>> {
+    let mut builder = FrontMatterResultBufferBuilder::new(_fbb);
     if let Some(x) = args.user_defined_id { builder.add_user_defined_id(x); }
     if let Some(x) = args.title { builder.add_title(x); }
     if let Some(x) = args.ignore_parsers { builder.add_ignore_parsers(x); }
@@ -274,25 +274,25 @@ impl<'a> FrontMatterResult<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(FrontMatterResult::VT_IGNORE_PARSERS, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(FrontMatterResultBuffer::VT_IGNORE_PARSERS, None).unwrap()}
   }
   #[inline]
   pub fn title(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FrontMatterResult::VT_TITLE, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FrontMatterResultBuffer::VT_TITLE, None)}
   }
   #[inline]
   pub fn user_defined_id(&self) -> Option<&'a str> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FrontMatterResult::VT_USER_DEFINED_ID, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FrontMatterResultBuffer::VT_USER_DEFINED_ID, None)}
   }
 }
 
-impl flatbuffers::Verifiable for FrontMatterResult<'_> {
+impl flatbuffers::Verifiable for FrontMatterResultBuffer<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -306,15 +306,15 @@ impl flatbuffers::Verifiable for FrontMatterResult<'_> {
     Ok(())
   }
 }
-pub struct FrontMatterResultArgs<'a> {
+pub struct FrontMatterResultBufferArgs<'a> {
     pub ignore_parsers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
     pub title: Option<flatbuffers::WIPOffset<&'a str>>,
     pub user_defined_id: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for FrontMatterResultArgs<'a> {
+impl<'a> Default for FrontMatterResultBufferArgs<'a> {
   #[inline]
   fn default() -> Self {
-    FrontMatterResultArgs {
+    FrontMatterResultBufferArgs {
       ignore_parsers: None, // required field
       title: None,
       user_defined_id: None,
@@ -322,143 +322,143 @@ impl<'a> Default for FrontMatterResultArgs<'a> {
   }
 }
 
-pub struct FrontMatterResultBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+pub struct FrontMatterResultBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> FrontMatterResultBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> FrontMatterResultBufferBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_ignore_parsers(&mut self, ignore_parsers: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FrontMatterResult::VT_IGNORE_PARSERS, ignore_parsers);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FrontMatterResultBuffer::VT_IGNORE_PARSERS, ignore_parsers);
   }
   #[inline]
   pub fn add_title(&mut self, title: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FrontMatterResult::VT_TITLE, title);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FrontMatterResultBuffer::VT_TITLE, title);
   }
   #[inline]
   pub fn add_user_defined_id(&mut self, user_defined_id: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FrontMatterResult::VT_USER_DEFINED_ID, user_defined_id);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FrontMatterResultBuffer::VT_USER_DEFINED_ID, user_defined_id);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> FrontMatterResultBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> FrontMatterResultBufferBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
-    FrontMatterResultBuilder {
+    FrontMatterResultBufferBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<FrontMatterResult<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<FrontMatterResultBuffer<'a>> {
     let o = self.fbb_.end_table(self.start_);
-    self.fbb_.required(o, FrontMatterResult::VT_IGNORE_PARSERS,"ignore_parsers");
+    self.fbb_.required(o, FrontMatterResultBuffer::VT_IGNORE_PARSERS,"ignore_parsers");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for FrontMatterResult<'_> {
+impl core::fmt::Debug for FrontMatterResultBuffer<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("FrontMatterResult");
+    let mut ds = f.debug_struct("FrontMatterResultBuffer");
       ds.field("ignore_parsers", &self.ignore_parsers());
       ds.field("title", &self.title());
       ds.field("user_defined_id", &self.user_defined_id());
       ds.finish()
   }
 }
-pub enum MdxParsingResultOffset {}
+pub enum MdxParsingResultBufferOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct MdxParsingResult<'a> {
+pub struct MdxParsingResultBuffer<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for MdxParsingResult<'a> {
-  type Inner = MdxParsingResult<'a>;
+impl<'a> flatbuffers::Follow<'a> for MdxParsingResultBuffer<'a> {
+  type Inner = MdxParsingResultBuffer<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
-impl<'a> MdxParsingResult<'a> {
-  pub const VT_CONTENT: flatbuffers::VOffsetT = 4;
+impl<'a> MdxParsingResultBuffer<'a> {
+  pub const VT_PARSED_CONTENT: flatbuffers::VOffsetT = 4;
   pub const VT_TAGS: flatbuffers::VOffsetT = 6;
   pub const VT_FRONT_MATTER: flatbuffers::VOffsetT = 8;
   pub const VT_CITATIONS: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    MdxParsingResult { _tab: table }
+    MdxParsingResultBuffer { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
-    args: &'args MdxParsingResultArgs<'args>
-  ) -> flatbuffers::WIPOffset<MdxParsingResult<'bldr>> {
-    let mut builder = MdxParsingResultBuilder::new(_fbb);
+    args: &'args MdxParsingResultBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<MdxParsingResultBuffer<'bldr>> {
+    let mut builder = MdxParsingResultBufferBuilder::new(_fbb);
     if let Some(x) = args.citations { builder.add_citations(x); }
     if let Some(x) = args.front_matter { builder.add_front_matter(x); }
     if let Some(x) = args.tags { builder.add_tags(x); }
-    if let Some(x) = args.content { builder.add_content(x); }
+    if let Some(x) = args.parsed_content { builder.add_parsed_content(x); }
     builder.finish()
   }
 
 
   #[inline]
-  pub fn content(&self) -> &'a str {
+  pub fn parsed_content(&self) -> &'a str {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(MdxParsingResult::VT_CONTENT, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(MdxParsingResultBuffer::VT_PARSED_CONTENT, None).unwrap()}
   }
   #[inline]
-  pub fn tags(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResult<'a>>> {
+  pub fn tags(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResultBuffer<'a>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResult>>>>(MdxParsingResult::VT_TAGS, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResultBuffer>>>>(MdxParsingResultBuffer::VT_TAGS, None).unwrap()}
   }
   #[inline]
-  pub fn front_matter(&self) -> Option<FrontMatterResult<'a>> {
+  pub fn front_matter(&self) -> Option<FrontMatterResultBuffer<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FrontMatterResult>>(MdxParsingResult::VT_FRONT_MATTER, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FrontMatterResultBuffer>>(MdxParsingResultBuffer::VT_FRONT_MATTER, None)}
   }
   #[inline]
-  pub fn citations(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResult<'a>>>> {
+  pub fn citations(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResult>>>>(MdxParsingResult::VT_CITATIONS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer>>>>(MdxParsingResultBuffer::VT_CITATIONS, None)}
   }
 }
 
-impl flatbuffers::Verifiable for MdxParsingResult<'_> {
+impl flatbuffers::Verifiable for MdxParsingResultBuffer<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("content", Self::VT_CONTENT, true)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<TagResult>>>>("tags", Self::VT_TAGS, true)?
-     .visit_field::<flatbuffers::ForwardsUOffset<FrontMatterResult>>("front_matter", Self::VT_FRONT_MATTER, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<CitationResult>>>>("citations", Self::VT_CITATIONS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("parsed_content", Self::VT_PARSED_CONTENT, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<TagResultBuffer>>>>("tags", Self::VT_TAGS, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<FrontMatterResultBuffer>>("front_matter", Self::VT_FRONT_MATTER, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<CitationResultBuffer>>>>("citations", Self::VT_CITATIONS, false)?
      .finish();
     Ok(())
   }
 }
-pub struct MdxParsingResultArgs<'a> {
-    pub content: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub tags: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResult<'a>>>>>,
-    pub front_matter: Option<flatbuffers::WIPOffset<FrontMatterResult<'a>>>,
-    pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResult<'a>>>>>,
+pub struct MdxParsingResultBufferArgs<'a> {
+    pub parsed_content: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub tags: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResultBuffer<'a>>>>>,
+    pub front_matter: Option<flatbuffers::WIPOffset<FrontMatterResultBuffer<'a>>>,
+    pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer<'a>>>>>,
 }
-impl<'a> Default for MdxParsingResultArgs<'a> {
+impl<'a> Default for MdxParsingResultBufferArgs<'a> {
   #[inline]
   fn default() -> Self {
-    MdxParsingResultArgs {
-      content: None, // required field
+    MdxParsingResultBufferArgs {
+      parsed_content: None, // required field
       tags: None, // required field
       front_matter: None,
       citations: None,
@@ -466,48 +466,48 @@ impl<'a> Default for MdxParsingResultArgs<'a> {
   }
 }
 
-pub struct MdxParsingResultBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+pub struct MdxParsingResultBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> MdxParsingResultBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> MdxParsingResultBufferBuilder<'a, 'b, A> {
   #[inline]
-  pub fn add_content(&mut self, content: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResult::VT_CONTENT, content);
+  pub fn add_parsed_content(&mut self, parsed_content: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_PARSED_CONTENT, parsed_content);
   }
   #[inline]
-  pub fn add_tags(&mut self, tags: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<TagResult<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResult::VT_TAGS, tags);
+  pub fn add_tags(&mut self, tags: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<TagResultBuffer<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_TAGS, tags);
   }
   #[inline]
-  pub fn add_front_matter(&mut self, front_matter: flatbuffers::WIPOffset<FrontMatterResult<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FrontMatterResult>>(MdxParsingResult::VT_FRONT_MATTER, front_matter);
+  pub fn add_front_matter(&mut self, front_matter: flatbuffers::WIPOffset<FrontMatterResultBuffer<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FrontMatterResultBuffer>>(MdxParsingResultBuffer::VT_FRONT_MATTER, front_matter);
   }
   #[inline]
-  pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<CitationResult<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResult::VT_CITATIONS, citations);
+  pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<CitationResultBuffer<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_CITATIONS, citations);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> MdxParsingResultBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> MdxParsingResultBufferBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
-    MdxParsingResultBuilder {
+    MdxParsingResultBufferBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<MdxParsingResult<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<MdxParsingResultBuffer<'a>> {
     let o = self.fbb_.end_table(self.start_);
-    self.fbb_.required(o, MdxParsingResult::VT_CONTENT,"content");
-    self.fbb_.required(o, MdxParsingResult::VT_TAGS,"tags");
+    self.fbb_.required(o, MdxParsingResultBuffer::VT_PARSED_CONTENT,"parsed_content");
+    self.fbb_.required(o, MdxParsingResultBuffer::VT_TAGS,"tags");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for MdxParsingResult<'_> {
+impl core::fmt::Debug for MdxParsingResultBuffer<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("MdxParsingResult");
-      ds.field("content", &self.content());
+    let mut ds = f.debug_struct("MdxParsingResultBuffer");
+      ds.field("parsed_content", &self.parsed_content());
       ds.field("tags", &self.tags());
       ds.field("front_matter", &self.front_matter());
       ds.field("citations", &self.citations());
@@ -515,74 +515,74 @@ impl core::fmt::Debug for MdxParsingResult<'_> {
   }
 }
 #[inline]
-/// Verifies that a buffer of bytes contains a `MdxParsingResult`
+/// Verifies that a buffer of bytes contains a `MdxParsingResultBuffer`
 /// and returns it.
 /// Note that verification is still experimental and may not
 /// catch every error, or be maximally performant. For the
 /// previous, unchecked, behavior use
-/// `root_as_mdx_parsing_result_unchecked`.
-pub fn root_as_mdx_parsing_result(buf: &[u8]) -> Result<MdxParsingResult, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::root::<MdxParsingResult>(buf)
+/// `root_as_mdx_parsing_result_buffer_unchecked`.
+pub fn root_as_mdx_parsing_result_buffer(buf: &[u8]) -> Result<MdxParsingResultBuffer, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::root::<MdxParsingResultBuffer>(buf)
 }
 #[inline]
 /// Verifies that a buffer of bytes contains a size prefixed
-/// `MdxParsingResult` and returns it.
+/// `MdxParsingResultBuffer` and returns it.
 /// Note that verification is still experimental and may not
 /// catch every error, or be maximally performant. For the
 /// previous, unchecked, behavior use
-/// `size_prefixed_root_as_mdx_parsing_result_unchecked`.
-pub fn size_prefixed_root_as_mdx_parsing_result(buf: &[u8]) -> Result<MdxParsingResult, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::size_prefixed_root::<MdxParsingResult>(buf)
+/// `size_prefixed_root_as_mdx_parsing_result_buffer_unchecked`.
+pub fn size_prefixed_root_as_mdx_parsing_result_buffer(buf: &[u8]) -> Result<MdxParsingResultBuffer, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::size_prefixed_root::<MdxParsingResultBuffer>(buf)
 }
 #[inline]
 /// Verifies, with the given options, that a buffer of bytes
-/// contains a `MdxParsingResult` and returns it.
+/// contains a `MdxParsingResultBuffer` and returns it.
 /// Note that verification is still experimental and may not
 /// catch every error, or be maximally performant. For the
 /// previous, unchecked, behavior use
-/// `root_as_mdx_parsing_result_unchecked`.
-pub fn root_as_mdx_parsing_result_with_opts<'b, 'o>(
+/// `root_as_mdx_parsing_result_buffer_unchecked`.
+pub fn root_as_mdx_parsing_result_buffer_with_opts<'b, 'o>(
   opts: &'o flatbuffers::VerifierOptions,
   buf: &'b [u8],
-) -> Result<MdxParsingResult<'b>, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::root_with_opts::<MdxParsingResult<'b>>(opts, buf)
+) -> Result<MdxParsingResultBuffer<'b>, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::root_with_opts::<MdxParsingResultBuffer<'b>>(opts, buf)
 }
 #[inline]
 /// Verifies, with the given verifier options, that a buffer of
-/// bytes contains a size prefixed `MdxParsingResult` and returns
+/// bytes contains a size prefixed `MdxParsingResultBuffer` and returns
 /// it. Note that verification is still experimental and may not
 /// catch every error, or be maximally performant. For the
 /// previous, unchecked, behavior use
-/// `root_as_mdx_parsing_result_unchecked`.
-pub fn size_prefixed_root_as_mdx_parsing_result_with_opts<'b, 'o>(
+/// `root_as_mdx_parsing_result_buffer_unchecked`.
+pub fn size_prefixed_root_as_mdx_parsing_result_buffer_with_opts<'b, 'o>(
   opts: &'o flatbuffers::VerifierOptions,
   buf: &'b [u8],
-) -> Result<MdxParsingResult<'b>, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::size_prefixed_root_with_opts::<MdxParsingResult<'b>>(opts, buf)
+) -> Result<MdxParsingResultBuffer<'b>, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::size_prefixed_root_with_opts::<MdxParsingResultBuffer<'b>>(opts, buf)
 }
 #[inline]
-/// Assumes, without verification, that a buffer of bytes contains a MdxParsingResult and returns it.
+/// Assumes, without verification, that a buffer of bytes contains a MdxParsingResultBuffer and returns it.
 /// # Safety
-/// Callers must trust the given bytes do indeed contain a valid `MdxParsingResult`.
-pub unsafe fn root_as_mdx_parsing_result_unchecked(buf: &[u8]) -> MdxParsingResult {
-  unsafe { flatbuffers::root_unchecked::<MdxParsingResult>(buf) }
+/// Callers must trust the given bytes do indeed contain a valid `MdxParsingResultBuffer`.
+pub unsafe fn root_as_mdx_parsing_result_buffer_unchecked(buf: &[u8]) -> MdxParsingResultBuffer {
+  unsafe { flatbuffers::root_unchecked::<MdxParsingResultBuffer>(buf) }
 }
 #[inline]
-/// Assumes, without verification, that a buffer of bytes contains a size prefixed MdxParsingResult and returns it.
+/// Assumes, without verification, that a buffer of bytes contains a size prefixed MdxParsingResultBuffer and returns it.
 /// # Safety
-/// Callers must trust the given bytes do indeed contain a valid size prefixed `MdxParsingResult`.
-pub unsafe fn size_prefixed_root_as_mdx_parsing_result_unchecked(buf: &[u8]) -> MdxParsingResult {
-  unsafe { flatbuffers::size_prefixed_root_unchecked::<MdxParsingResult>(buf) }
+/// Callers must trust the given bytes do indeed contain a valid size prefixed `MdxParsingResultBuffer`.
+pub unsafe fn size_prefixed_root_as_mdx_parsing_result_buffer_unchecked(buf: &[u8]) -> MdxParsingResultBuffer {
+  unsafe { flatbuffers::size_prefixed_root_unchecked::<MdxParsingResultBuffer>(buf) }
 }
 #[inline]
-pub fn finish_mdx_parsing_result_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(
+pub fn finish_mdx_parsing_result_buffer_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(
     fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
-    root: flatbuffers::WIPOffset<MdxParsingResult<'a>>) {
+    root: flatbuffers::WIPOffset<MdxParsingResultBuffer<'a>>) {
   fbb.finish(root, None);
 }
 
 #[inline]
-pub fn finish_size_prefixed_mdx_parsing_result_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>, root: flatbuffers::WIPOffset<MdxParsingResult<'a>>) {
+pub fn finish_size_prefixed_mdx_parsing_result_buffer_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>, root: flatbuffers::WIPOffset<MdxParsingResultBuffer<'a>>) {
   fbb.finish_size_prefixed(root, None);
 }
 #[allow(unused_imports, dead_code)]
@@ -637,11 +637,11 @@ impl<'a> ParseMdxOptions<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(ParseMdxOptions::VT_CONTENT, None)}
   }
   #[inline]
-  pub fn citations(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResult<'a>>>> {
+  pub fn citations(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResultBuffer<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResult>>>>(ParseMdxOptions::VT_CITATIONS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResultBuffer>>>>(ParseMdxOptions::VT_CITATIONS, None)}
   }
 }
 
@@ -653,14 +653,14 @@ impl flatbuffers::Verifiable for ParseMdxOptions<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("content", Self::VT_CONTENT, false)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::CitationResult>>>>("citations", Self::VT_CITATIONS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::CitationResultBuffer>>>>("citations", Self::VT_CITATIONS, false)?
      .finish();
     Ok(())
   }
 }
 pub struct ParseMdxOptionsArgs<'a> {
     pub content: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResult<'a>>>>>,
+    pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResultBuffer<'a>>>>>,
 }
 impl<'a> Default for ParseMdxOptionsArgs<'a> {
   #[inline]
@@ -682,7 +682,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ParseMdxOptionsBuilder<'a, 'b, 
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ParseMdxOptions::VT_CONTENT, content);
   }
   #[inline]
-  pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::CitationResult<'b >>>>) {
+  pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::CitationResultBuffer<'b >>>>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ParseMdxOptions::VT_CITATIONS, citations);
   }
   #[inline]
@@ -719,22 +719,22 @@ pub mod note_details {
   extern crate flatbuffers;
   use self::flatbuffers::{EndianScalar, Follow};
 
-pub enum NoteDetailDataOffset {}
+pub enum NoteDetailDataBufferOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct NoteDetailData<'a> {
+pub struct NoteDetailDataBuffer<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for NoteDetailData<'a> {
-  type Inner = NoteDetailData<'a>;
+impl<'a> flatbuffers::Follow<'a> for NoteDetailDataBuffer<'a> {
+  type Inner = NoteDetailDataBuffer<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
-impl<'a> NoteDetailData<'a> {
+impl<'a> NoteDetailDataBuffer<'a> {
   pub const VT_NOTE_ID: flatbuffers::VOffsetT = 4;
   pub const VT_TITLE: flatbuffers::VOffsetT = 6;
   pub const VT_TAGS: flatbuffers::VOffsetT = 8;
@@ -744,14 +744,14 @@ impl<'a> NoteDetailData<'a> {
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    NoteDetailData { _tab: table }
+    NoteDetailDataBuffer { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
-    args: &'args NoteDetailDataArgs<'args>
-  ) -> flatbuffers::WIPOffset<NoteDetailData<'bldr>> {
-    let mut builder = NoteDetailDataBuilder::new(_fbb);
+    args: &'args NoteDetailDataBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<NoteDetailDataBuffer<'bldr>> {
+    let mut builder = NoteDetailDataBufferBuilder::new(_fbb);
     if let Some(x) = args.last_read_string { builder.add_last_read_string(x); }
     if let Some(x) = args.last_modified_string { builder.add_last_modified_string(x); }
     if let Some(x) = args.citations { builder.add_citations(x); }
@@ -767,46 +767,46 @@ impl<'a> NoteDetailData<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailData::VT_NOTE_ID, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailDataBuffer::VT_NOTE_ID, None).unwrap()}
   }
   #[inline]
   pub fn title(&self) -> &'a str {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailData::VT_TITLE, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailDataBuffer::VT_TITLE, None).unwrap()}
   }
   #[inline]
-  pub fn tags(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::TagResult<'a>>> {
+  pub fn tags(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::TagResultBuffer<'a>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::TagResult>>>>(NoteDetailData::VT_TAGS, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::TagResultBuffer>>>>(NoteDetailDataBuffer::VT_TAGS, None).unwrap()}
   }
   #[inline]
-  pub fn citations(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResult<'a>>> {
+  pub fn citations(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResultBuffer<'a>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResult>>>>(NoteDetailData::VT_CITATIONS, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResultBuffer>>>>(NoteDetailDataBuffer::VT_CITATIONS, None).unwrap()}
   }
   #[inline]
   pub fn last_modified_string(&self) -> &'a str {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailData::VT_LAST_MODIFIED_STRING, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailDataBuffer::VT_LAST_MODIFIED_STRING, None).unwrap()}
   }
   #[inline]
   pub fn last_read_string(&self) -> &'a str {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailData::VT_LAST_READ_STRING, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailDataBuffer::VT_LAST_READ_STRING, None).unwrap()}
   }
 }
 
-impl flatbuffers::Verifiable for NoteDetailData<'_> {
+impl flatbuffers::Verifiable for NoteDetailDataBuffer<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -815,26 +815,26 @@ impl flatbuffers::Verifiable for NoteDetailData<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("note_id", Self::VT_NOTE_ID, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("title", Self::VT_TITLE, true)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::TagResult>>>>("tags", Self::VT_TAGS, true)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::CitationResult>>>>("citations", Self::VT_CITATIONS, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::TagResultBuffer>>>>("tags", Self::VT_TAGS, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::CitationResultBuffer>>>>("citations", Self::VT_CITATIONS, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("last_modified_string", Self::VT_LAST_MODIFIED_STRING, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("last_read_string", Self::VT_LAST_READ_STRING, true)?
      .finish();
     Ok(())
   }
 }
-pub struct NoteDetailDataArgs<'a> {
+pub struct NoteDetailDataBufferArgs<'a> {
     pub note_id: Option<flatbuffers::WIPOffset<&'a str>>,
     pub title: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub tags: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::TagResult<'a>>>>>,
-    pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResult<'a>>>>>,
+    pub tags: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::TagResultBuffer<'a>>>>>,
+    pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResultBuffer<'a>>>>>,
     pub last_modified_string: Option<flatbuffers::WIPOffset<&'a str>>,
     pub last_read_string: Option<flatbuffers::WIPOffset<&'a str>>,
 }
-impl<'a> Default for NoteDetailDataArgs<'a> {
+impl<'a> Default for NoteDetailDataBufferArgs<'a> {
   #[inline]
   fn default() -> Self {
-    NoteDetailDataArgs {
+    NoteDetailDataBufferArgs {
       note_id: None, // required field
       title: None, // required field
       tags: None, // required field
@@ -845,59 +845,59 @@ impl<'a> Default for NoteDetailDataArgs<'a> {
   }
 }
 
-pub struct NoteDetailDataBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+pub struct NoteDetailDataBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> NoteDetailDataBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> NoteDetailDataBufferBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_note_id(&mut self, note_id: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailData::VT_NOTE_ID, note_id);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailDataBuffer::VT_NOTE_ID, note_id);
   }
   #[inline]
   pub fn add_title(&mut self, title: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailData::VT_TITLE, title);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailDataBuffer::VT_TITLE, title);
   }
   #[inline]
-  pub fn add_tags(&mut self, tags: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::TagResult<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailData::VT_TAGS, tags);
+  pub fn add_tags(&mut self, tags: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::TagResultBuffer<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailDataBuffer::VT_TAGS, tags);
   }
   #[inline]
-  pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::CitationResult<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailData::VT_CITATIONS, citations);
+  pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::CitationResultBuffer<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailDataBuffer::VT_CITATIONS, citations);
   }
   #[inline]
   pub fn add_last_modified_string(&mut self, last_modified_string: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailData::VT_LAST_MODIFIED_STRING, last_modified_string);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailDataBuffer::VT_LAST_MODIFIED_STRING, last_modified_string);
   }
   #[inline]
   pub fn add_last_read_string(&mut self, last_read_string: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailData::VT_LAST_READ_STRING, last_read_string);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailDataBuffer::VT_LAST_READ_STRING, last_read_string);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> NoteDetailDataBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> NoteDetailDataBufferBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
-    NoteDetailDataBuilder {
+    NoteDetailDataBufferBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<NoteDetailData<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<NoteDetailDataBuffer<'a>> {
     let o = self.fbb_.end_table(self.start_);
-    self.fbb_.required(o, NoteDetailData::VT_NOTE_ID,"note_id");
-    self.fbb_.required(o, NoteDetailData::VT_TITLE,"title");
-    self.fbb_.required(o, NoteDetailData::VT_TAGS,"tags");
-    self.fbb_.required(o, NoteDetailData::VT_CITATIONS,"citations");
-    self.fbb_.required(o, NoteDetailData::VT_LAST_MODIFIED_STRING,"last_modified_string");
-    self.fbb_.required(o, NoteDetailData::VT_LAST_READ_STRING,"last_read_string");
+    self.fbb_.required(o, NoteDetailDataBuffer::VT_NOTE_ID,"note_id");
+    self.fbb_.required(o, NoteDetailDataBuffer::VT_TITLE,"title");
+    self.fbb_.required(o, NoteDetailDataBuffer::VT_TAGS,"tags");
+    self.fbb_.required(o, NoteDetailDataBuffer::VT_CITATIONS,"citations");
+    self.fbb_.required(o, NoteDetailDataBuffer::VT_LAST_MODIFIED_STRING,"last_modified_string");
+    self.fbb_.required(o, NoteDetailDataBuffer::VT_LAST_READ_STRING,"last_read_string");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for NoteDetailData<'_> {
+impl core::fmt::Debug for NoteDetailDataBuffer<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("NoteDetailData");
+    let mut ds = f.debug_struct("NoteDetailDataBuffer");
       ds.field("note_id", &self.note_id());
       ds.field("title", &self.title());
       ds.field("tags", &self.tags());

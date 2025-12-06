@@ -30,7 +30,7 @@ pub struct ParseMdxOptions {
 /// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
 /// based approach but will work for now.
 #[uniffi::export(async_runtime = "tokio")]
-pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<MdxParsingResult> {
+pub async fn parse_mdx_string_by_regex<'builder>(opts: ParseMdxOptions) -> FlusterResult<Vec<u8>> {
     let mut parsers = REGEX_PARSERS.to_vec();
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     if let Some(ref fm) = result.front_matter
@@ -51,13 +51,18 @@ pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<M
         parser.parse_async(&opts, &mut result).await;
     }
 
-    Ok(result)
+    let data = result.serialize_to_flatbuffer();
+
+    Ok(data)
 }
 
 #[cfg(test)]
 mod tests {
 
-    use fluster_core_utilities::test_utilities::get_test_mdx_content::get_welcome_to_fluster_content;
+    use fluster_core_utilities::{
+        code_gen::flat_buffer::v1_flat_buffer_schema_generated::mdx_serialization::root_as_mdx_parsing_result_buffer,
+        test_utilities::get_test_mdx_content::get_welcome_to_fluster_content,
+    };
 
     use super::*;
 
@@ -73,18 +78,21 @@ mod tests {
             &res.is_ok(),
             "Parses mdx content without throwing an error."
         );
+        let binding = res.unwrap();
+        let result = root_as_mdx_parsing_result_buffer(&binding)
+            .expect("Deseralizes returned data without throwing an error.");
         assert!(
-            res.as_ref().unwrap().front_matter.is_some(),
+            result.front_matter().is_some(),
             "Has front matter when front matter is present"
         );
-        let fm = res.as_ref().unwrap().front_matter.as_ref().unwrap();
+        let fm = result.front_matter();
         assert!(
-            fm.ignored_parsers.iter().any(|x| x == "tags"),
+            fm.unwrap().ignore_parsers().iter().any(|x| x == "tags"),
             "Has 'tags' parser in 'ignore_parsers' when present in that field."
         );
 
         assert!(
-            !res.unwrap().content.contains("AutoInsertedTag"),
+            !result.parsed_content().contains("AutoInsertedTag"),
             "No tags were inserted when 'tags' parser was ignored."
         );
         // assert_eq!(result, 4);

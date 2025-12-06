@@ -2,9 +2,9 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 
-export { CitationResult } from './mdx-serialization/citation-result.js';
-export { FrontMatterResult } from './mdx-serialization/front-matter-result.js';
-export { MdxParsingResult } from './mdx-serialization/mdx-parsing-result.js';
-export { TagResult } from './mdx-serialization/tag-result.js';
+export { CitationResultBuffer } from './mdx-serialization/citation-result-buffer.js';
+export { FrontMatterResultBuffer } from './mdx-serialization/front-matter-result-buffer.js';
+export { MdxParsingResultBuffer } from './mdx-serialization/mdx-parsing-result-buffer.js';
+export { TagResultBuffer } from './mdx-serialization/tag-result-buffer.js';
 export * as NoteDetails from './mdx-serialization/note-details.js';
 export * as Request from './mdx-serialization/request.js';

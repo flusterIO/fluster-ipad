@@ -2,4 +2,4 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 
-export { NoteDetailData } from './note-details/note-detail-data.js';
+export { NoteDetailDataBuffer } from './note-details/note-detail-data-buffer.js';

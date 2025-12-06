@@ -4,7 +4,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { CitationResult } from '../../mdx-serialization/citation-result.js';
+import { CitationResultBuffer } from '../../mdx-serialization/citation-result-buffer.js';
 
 
 export class ParseMdxOptions {
@@ -32,9 +32,9 @@ content(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-citations(index: number, obj?:CitationResult):CitationResult|null {
+citations(index: number, obj?:CitationResultBuffer):CitationResultBuffer|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new CitationResult()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new CitationResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 citationsLength():number {

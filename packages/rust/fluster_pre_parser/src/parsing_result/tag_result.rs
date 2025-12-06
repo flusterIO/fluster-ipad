@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(uniffi::Record, Serialize, Deserialize)]
+#[derive(uniffi::Record, Serialize, Deserialize, Clone)]
 pub struct TagResult {
     pub body: String,
 }
