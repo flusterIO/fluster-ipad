@@ -7,6 +7,7 @@ import { parseMdxString } from "../methods/mdx_to_jsx";
 import { ParsedMdxContent } from "../components/parsed_mdx_content";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
+import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export const useDebounceMdxParse = (
     initialValue: string = "",
@@ -16,7 +17,7 @@ export const useDebounceMdxParse = (
     const [hasParsed, setHasParsed] = useState(false);
     const [mdxModule, setMdxModule] = useState<MDXModule | null>(null);
     const [darkCodeTheme, setDarkCodeTheme] = useLocalStorage(
-        "code-theme-dark",
+        SplitviewEditorWebviewLocalStorageKeys.CodeThemeDark,
         undefined,
         {
             deserializer(value) {
@@ -29,7 +30,7 @@ export const useDebounceMdxParse = (
         },
     );
     const [lightCodeTheme, setLightCodeTheme] = useLocalStorage(
-        "code-theme-light",
+        SplitviewEditorWebviewLocalStorageKeys.CodeThemeLight,
         undefined,
         {
             deserializer(value) {
@@ -42,8 +43,8 @@ export const useDebounceMdxParse = (
         },
     );
 
-    useEventListener("set-code-theme-dark", (e) => setDarkCodeTheme(e.detail));
-    useEventListener("set-code-theme-light", (e) => setLightCodeTheme(e.detail));
+    useEventListener(SplitviewEditorWebviewEvents.SetCodeThemeDark, (e) => setDarkCodeTheme(e.detail));
+    useEventListener(SplitviewEditorWebviewEvents.SetCodeThemeLight, (e) => setLightCodeTheme(e.detail));
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 

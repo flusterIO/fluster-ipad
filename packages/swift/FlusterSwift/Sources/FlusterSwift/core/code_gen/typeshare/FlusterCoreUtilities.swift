@@ -8,6 +8,7 @@ import Foundation
 public enum BibtexEditorWebviewActions: String, Codable {
 	case requestBibtexEditorData = "request-note-detail-data"
 	case setWebviewLoaded = "set-note-detail-webview-loaded"
+	case onEditorChange = "on-bib-editor-change"
 }
 
 /// From swift to typescript
@@ -55,6 +56,7 @@ public enum SplitviewEditorWebviewActions: String, Codable {
 	case onEditorChange = "on-editor-change"
 	case setWebviewLoaded = "set-editor-webview-loaded"
 	case onTagClick = "tag-click-event"
+	case setIsLandscape = "set-is-landscape-view"
 }
 
 /// From swift to typescript
@@ -71,6 +73,7 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 
 public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
 	case initialValue = "editor-initial-value"
+	case parsedMdxData = "parsed-mdx-data"
 	case codeTheme = "editor-code-theme"
 	case codeThemeDark = "editor-code-theme-dark"
 	case codeThemeLight = "editor-code-theme-light"

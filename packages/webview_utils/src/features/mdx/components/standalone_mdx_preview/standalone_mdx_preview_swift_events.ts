@@ -1,3 +1,5 @@
+import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
+
 declare global {
     interface Window {
         setMdxPreviewContent: typeof setMdxPreviewContent;
@@ -6,7 +8,7 @@ declare global {
 
 const setMdxPreviewContent = (mdxContent: string): void => {
     window.dispatchEvent(
-        new CustomEvent("set-mdx-preview-content", {
+        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, {
             detail: mdxContent,
         }),
     );

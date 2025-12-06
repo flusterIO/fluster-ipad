@@ -74,8 +74,11 @@ public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWe
         self.setWebviewFontSize(fontSize: fontSize)
         self.setEditorDarkTheme(theme: editorThemeDark)
         self.setEditorLightTheme(theme: editorThemeLight)
-        if editingNote != nil {
-            self.setInitialContent(note: editingNote!)
+        if let _editingNote = editingNote {
+            self.setInitialContent(note: _editingNote)
+            if let parsedBody = _editingNote.markdown.preParsedBody {
+                self.setParsedEditorContent(content: parsedBody)
+            }
         }
     }
 }

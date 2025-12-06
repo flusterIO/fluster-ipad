@@ -13,7 +13,7 @@ import {
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
-import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export interface CodeEditorState {
     keymap: string;
@@ -214,9 +214,8 @@ export const CodeEditorProvider = ({
     });
 
     useEffect(() => {
-        console.log("state.parsedValue: ", state.parsedValue);
         if (state.parsedValue === null) {
-            sendToSwift(SwiftHandler.requestParsedMdxContent, "");
+            sendToSwift(SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
     }, [state.parsedValue]);
 

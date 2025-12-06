@@ -37,10 +37,10 @@ build_all_rust: build_cross_language_schemas
 build_fluster_rust: build_all_rust
 	cd ${FLUSTER_IOS_ROOT}/packages/rust/fluster_rust; cargo-swift swift package -y
 
-build_webview_utils:
+build_webview_utils: build_cross_language_schemas
 	pnpm run -C packages/webview_utils build
 
-build_note_detail_webview:
+build_note_detail_webview: build_cross_language_schemas
 	pnpm run -C packages/webviews/note_detail_webview build
 
 build_standalone_mdx_preview_webview: build_webview_utils

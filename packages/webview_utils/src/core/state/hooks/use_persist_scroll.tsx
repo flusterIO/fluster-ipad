@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect } from "react";
 import { useEventListener } from "./use_event_listener";
 import { useMediaQuery } from "react-responsive";
+import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export const MDX_EDITOR_PREVIEW_SCROLL_LANDSCAPE_KEY =
     "mdx-preview-landscape-scroll";
@@ -33,7 +34,6 @@ export const usePersistMdxPreviewScroll = () => {
             ? MDX_EDITOR_PREVIEW_ID_LANDSCAPE
             : MDX_EDITOR_PREVIEW_ID_PORTRAIT;
         const element = document.getElementById(elementId);
-        console.log("element in useLayoutEffect: ", element);
     }, [isLandscape]);
     useEffect(() => {
         const elementId = isLandscape
@@ -41,14 +41,12 @@ export const usePersistMdxPreviewScroll = () => {
             : MDX_EDITOR_PREVIEW_ID_PORTRAIT;
         const element = document.getElementById(elementId);
 
-        console.log("element: ", element);
-
         // Safety check: if element doesn't exist (yet), stop here
         if (!element) return;
         loadScrollPosition(element, storageKey);
         // 1. Restore: Set the element's scrollTop
     }, [isLandscape]);
-    useEventListener("reset-mdx-preview-scroll-position", () => {
+    useEventListener(SplitviewEditorWebviewEvents.ResetPreviewScrollPosition, () => {
         window.localStorage.removeItem(storageKey);
     });
 };

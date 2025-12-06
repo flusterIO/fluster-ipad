@@ -30,13 +30,16 @@ public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebvie
     }
     public func setInitialContent(note: NoteModel) {
         // TODO: Move this to method on markdown class to keep everything in one place.
-        let content = MdxText(body: note.markdown.body)
-        content.parse()
-        self.runJavascript(
+//        let content = MdxText(body: note.markdown.body)
+//        content.parse()
+        let r = note.markdown.preParsedBody?.toQuotedJavascriptString()
+        if r != nil {
+            self.runJavascript(
             """
-            window.setMdxPreviewContent(\(content.body.toQuotedJavascriptString()))
+            window.setMdxPreviewContent(\(r))
             """
-        )
+            )
+        }
     }
     public func resetScrollPosition() {
         self.runJavascript("""

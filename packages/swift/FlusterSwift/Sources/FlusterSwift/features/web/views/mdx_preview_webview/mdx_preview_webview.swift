@@ -61,11 +61,11 @@ public struct MdxPreviewWebview: UIViewRepresentable {
 
         webView.navigationDelegate = context.coordinator
         let controllers = [
-            "request-initial-preview-data",
-            "set-preview-viewport-height",
-            "is-landscape-view",
-            "tag-click-event",
-            "show-webview"
+            SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
+            SplitviewEditorWebviewActions.setIsLandscape.rawValue,
+            SplitviewEditorWebviewActions.onTagClick.rawValue,
+            SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
+
         ]
 
         for controllerName in controllers {
@@ -115,7 +115,7 @@ public struct MdxPreviewWebview: UIViewRepresentable {
         } else {
             container.runJavascript(
                 """
-                window.localStorage.setItem("mdx-preview-content", "")
+                window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.parsedMdxData.rawValue)", "")
                 window.setEditorContent("")
                 """
             )
@@ -147,7 +147,7 @@ extension MdxPreviewWebview {
 
             webView.evaluateJavaScript(
                 """
-                window.localStorage.setItem("mdx-preview-content", \(parent.getQuotedContent()));
+                window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.parsedMdxData.rawValue)", \(parent.getQuotedContent()));
                 """
             )
             parent.setInitialProperties()
@@ -159,19 +159,19 @@ extension MdxPreviewWebview {
             didReceive message: WKScriptMessage
         ) {
             switch message.name {
-            case "tag-click-event":
+            case SplitviewEditorWebviewActions.onTagClick.rawValue:
                 parent.handleTagClick(tagValue: message.body as! String)
-            case "set-preview-viewport-height":
-                if let n = NumberFormatter().number(
-                    from: message.body as! String
-                ) {
-                    parent.viewportHeight = CGFloat(truncating: n)
-                } else {
-                    parent.viewportHeight = UIScreen.main.bounds.height
-                }
-            case "is-landscape-view":
+//            case "set-preview-viewport-height":
+//                if let n = NumberFormatter().number(
+//                    from: message.body as! String
+//                ) {
+//                    parent.viewportHeight = CGFloat(truncating: n)
+//                } else {
+//                    parent.viewportHeight = UIScreen.main.bounds.height
+//                }
+            case SplitviewEditorWebviewActions.setIsLandscape.rawValue:
                 parent.shouldShowEditor = (message.body as! String) == "true"
-            case "request-initial-preview-data":
+            case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
                 parent.setInitialProperties()
                 parent.setInitialContent()
             default:

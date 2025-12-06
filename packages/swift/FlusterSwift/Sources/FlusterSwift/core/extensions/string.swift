@@ -14,7 +14,7 @@ public extension String {
         let modelContext = modelContainer.sharedModelContainer.mainContext
         let handler = modelContainer.dataHandlerCreator()
          do {
-             // TODO: Fix this and pass in citations here once modelContext functionality is back in order.
+             // TODO: Fix this and generate MdxParsingResult, serialize it and send it to the webview.
 //             let citations = try modelContext.fetch(FetchDescriptor(
 //                predicate: #Predicate<BibEntryModel> {
 //                    $0.id != ""

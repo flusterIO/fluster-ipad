@@ -98,7 +98,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
         let s = editingNote?.markdown.body.toQuotedJavascriptString() ?? "''"
         container.runJavascript(
             """
-            window.localStorage.setItem("editor-initial-value", \(s))
+            window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue)", \(s))
             window.setEditorContent(\(s))
             """
         )
@@ -125,7 +125,7 @@ extension MdxEditorWebview {
 
             webView.evaluateJavaScript(
                 """
-                window.localStorage.setItem("editor-initial-value", \(parent.editingNote?.markdown.body.toQuotedJavascriptString() ?? "''"));
+                window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue)", \(parent.editingNote?.markdown.body.toQuotedJavascriptString() ?? "''"));
                 """
             )
             parent.setInitialProperties()

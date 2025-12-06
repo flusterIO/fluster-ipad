@@ -11,6 +11,7 @@ import { useEventListener } from "@/state/hooks/use_event_listener";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { sendToSwift, SwiftHandler } from "@/utils/bridge/send_to_swift";
 import { setBibtexEditorWindowBridgeFunctions } from "../types/swift_events/bibtex_editor_swift_events";
+import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 
 setBibtexEditorWindowBridgeFunctions();
 
@@ -18,7 +19,7 @@ const BibtexEditorInner = (): ReactNode => {
     const data = useCodeEditorContext();
     const dispatch = useCodeEditorDispatch();
     const [initialValue, setInitialValue] = useLocalStorage(
-        "bibtex-editor-initial-value",
+        BibtexEditorWebviewLocalStorageKeys.InitialValue,
         undefined,
         {
             deserializer(value) {
@@ -30,7 +31,7 @@ const BibtexEditorInner = (): ReactNode => {
             initializeWithValue: false,
         },
     );
-    useEventListener("set-bibtex-editor-content", (e) => {
+    useEventListener(BibtexEditorWebviewEvents.SetBibtexEditorContent, (e) => {
         setInitialValue(e.detail);
         dispatch({
             type: "setInitialEditorValue",
@@ -47,7 +48,7 @@ const BibtexEditorInner = (): ReactNode => {
         <CodeEditorInner
             initialValue={initialValue}
             language={bibtex()}
-            updateHandler={SwiftHandler.bibtexEditorUpdate}
+            updateHandler={BibtexEditorWebviewActions.OnEditorChange}
         />
     ) : (
         <div className="w-full h-full flex flex-col justify-center items-center">

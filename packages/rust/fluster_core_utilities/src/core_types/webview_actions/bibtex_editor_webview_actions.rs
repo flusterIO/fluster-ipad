@@ -11,6 +11,9 @@ pub enum BibtexEditorWebviewActions {
     #[serde(rename = "set-note-detail-webview-loaded")]
     #[strum(to_string = "set-note-detail-webview-loaded")]
     SetWebviewLoaded,
+    #[serde(rename = "on-bib-editor-change")]
+    #[strum(to_string = "on-bib-editor-change")]
+    OnEditorChange,
 }
 
 /// From swift to typescript

@@ -15,11 +15,12 @@ import { LoadingComponent } from "@/shared_components/loading_component";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { setWindowBridgeFunctions } from "../types/swift_events/swift_events";
+import { BibtexEditorWebviewActions, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 
 interface CodeEditorProps {
     language?: Extension;
     initialValue: string;
-    updateHandler?: SwiftHandler;
+    updateHandler?: SplitviewEditorWebviewActions | BibtexEditorWebviewActions;
 }
 
 setWindowBridgeFunctions();
@@ -27,7 +28,7 @@ setWindowBridgeFunctions();
 export const CodeEditorInner = ({
     language = markdown(),
     initialValue,
-    updateHandler = SwiftHandler.editorUpdate,
+    updateHandler = SplitviewEditorWebviewActions.OnEditorChange,
 }: CodeEditorProps): ReactNode => {
     const haveRendered = useRef(false);
     const state = useCodeEditorContext();
@@ -86,7 +87,7 @@ export const CodeEditorInner = ({
     /* useEffect(() => { */
     /* }, []); */
 
-    useEventListener("set-editor-content", (e) => {
+    useEventListener(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
         if (view.current) {
             view.current.dispatch({
                 changes: {
@@ -104,7 +105,7 @@ export const CodeEditor = (
     props: Omit<CodeEditorProps, "initialValue">,
 ): ReactNode => {
     const [initialValue, setInitialValue] = useLocalStorage(
-        "editor-initial-value",
+        SplitviewEditorWebviewLocalStorageKeys.InitialValue,
         undefined,
         {
             deserializer(value) {
@@ -121,7 +122,7 @@ export const CodeEditor = (
             sendToSwift(SwiftHandler.requestInitialEditorData, "");
         }
     }, [initialValue]);
-    useEventListener("set-editor-content", (e) => {
+    useEventListener(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
         setInitialValue(e.detail);
     });
     return initialValue ? (

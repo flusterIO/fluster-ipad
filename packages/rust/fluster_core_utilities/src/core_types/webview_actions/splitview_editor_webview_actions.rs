@@ -20,6 +20,9 @@ pub enum SplitviewEditorWebviewActions {
     #[serde(rename = "tag-click-event")]
     #[strum(to_string = "tag-click-event")]
     OnTagClick,
+    #[serde(rename = "set-is-landscape-view")]
+    #[strum(to_string = "set-is-landscape-view")]
+    SetIsLandscape,
 }
 
 /// From swift to typescript
@@ -58,6 +61,9 @@ pub enum SplitviewEditorWebviewLocalStorageKeys {
     #[serde(rename = "editor-initial-value")]
     #[strum(to_string = "editor-initial-value")]
     InitialValue,
+    #[serde(rename = "parsed-mdx-data")]
+    #[strum(to_string = "parsed-mdx-data")]
+    ParsedMdxData,
     #[serde(rename = "editor-code-theme")]
     #[strum(to_string = "editor-code-theme")]
     CodeTheme,

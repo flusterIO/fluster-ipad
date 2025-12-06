@@ -6,13 +6,14 @@ import {
     MDX_EDITOR_PREVIEW_ID_PORTRAIT,
     MDX_EDITOR_PREVIEW_SCROLL_PORTRAIT_KEY,
 } from "@/state/hooks/use_persist_scroll";
+import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
 
 /** A utility component used to implement some event listeners before rendering the MdxEditorPreview component. */
 export const MdxEditorPreviewOnly = (
     props: MdxEditorPreviewProps,
 ): ReactNode => {
     const dispatch = useCodeEditorDispatch();
-    useEventListener("set-editor-content", (e) => {
+    useEventListener(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
         dispatch({
             type: "setValue",
             payload: e.detail,

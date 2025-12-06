@@ -107,7 +107,9 @@ struct MainView: View {
                         editorKeymap: $editorKeymap,
                         container: editorContainer,
                     )
-                    //                    .fixedSize()
+                    .moveDisabled(true)
+                    .disableAnimations()
+                    .scrollDisabled(true)
                     .frame(
                         alignment: .bottom
                     )
@@ -263,6 +265,7 @@ struct MainView: View {
             of: editingNote?.markdown.body,
             {
                 Task {
+                    print("Note body changed")
                     if let note = editingNote {
                         if let parsedMdx =
                             await note.markdown
@@ -274,6 +277,8 @@ struct MainView: View {
                             editorContainer.setParsedEditorContent(
                                 content: parsedMdx.content
                             )
+                        } else {
+                            print("Could not parse mdx.")
                         }
                     }
                 }

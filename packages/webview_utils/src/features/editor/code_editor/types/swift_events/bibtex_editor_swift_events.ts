@@ -1,7 +1,9 @@
+import { BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+
 declare global {
     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface WindowEventMap {
-        "set-bibtex-editor-content": CustomEvent<string>;
+        [BibtexEditorWebviewEvents.SetBibtexEditorContent]: CustomEvent<string>;
     }
     interface Window {
         setBibtexEditorContent: typeof setBibtexEditorContent;
@@ -10,13 +12,12 @@ declare global {
 }
 
 const clearBibtexEditorData = () => {
-    console.log(`Clearing bibtex editor data...`);
-    window.localStorage.removeItem("bibtex-editor-initial-value");
+    window.localStorage.removeItem(BibtexEditorWebviewLocalStorageKeys.InitialValue);
 };
 
 export function setBibtexEditorContent(payload: string) {
     window.dispatchEvent(
-        new CustomEvent("set-bibtex-editor-content", { detail: payload }),
+        new CustomEvent(BibtexEditorWebviewEvents.SetBibtexEditorContent, { detail: payload }),
     );
 }
 

@@ -7,6 +7,7 @@
 export enum BibtexEditorWebviewActions {
 	RequestBibtexEditorData = "request-note-detail-data",
 	SetWebviewLoaded = "set-note-detail-webview-loaded",
+	OnEditorChange = "on-bib-editor-change",
 }
 
 /** From swift to typescript */
@@ -54,6 +55,7 @@ export enum SplitviewEditorWebviewActions {
 	OnEditorChange = "on-editor-change",
 	SetWebviewLoaded = "set-editor-webview-loaded",
 	OnTagClick = "tag-click-event",
+	SetIsLandscape = "set-is-landscape-view",
 }
 
 /** From swift to typescript */
@@ -70,6 +72,7 @@ export enum SplitviewEditorWebviewEvents {
 
 export enum SplitviewEditorWebviewLocalStorageKeys {
 	InitialValue = "editor-initial-value",
+	ParsedMdxData = "parsed-mdx-data",
 	CodeTheme = "editor-code-theme",
 	CodeThemeDark = "editor-code-theme-dark",
 	CodeThemeLight = "editor-code-theme-light",
