@@ -9,9 +9,20 @@ import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 
+
+
+declare global {
+
+    interface WindowEventMap {
+        "mdx-content-loaded": CustomEvent<{ id?: string }>;
+    }
+}
+
 export const useDebounceMdxParse = (
     initialValue: string = "",
     debounceTimeout: number = 300,
+    /// A unique key that is passed to the mdx-content-loaded event as the detail field if present.
+    contentLoadedId: string = "mdx-content"
 ) => {
     const [value, setValue] = useState<string>(initialValue);
     const [hasParsed, setHasParsed] = useState(false);
@@ -117,6 +128,13 @@ export const useDebounceMdxParse = (
         ) : (
             <></>
         );
+
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent("mdx-content-loaded", {
+            detail: contentLoadedId
+        }))
+        /* eslint-disable-next-line -- I hate this rule but I'm too lazy to turn it off. */
+    }, [mdxModule])
 
     return {
         value,

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { useEventListener } from "./use_event_listener";
 import { useMediaQuery } from "react-responsive";
 import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
@@ -21,7 +21,12 @@ export const loadScrollPosition = (
     }
 };
 
-export const usePersistMdxPreviewScroll = (debounce: number = 500) => {
+export const usePersistMdxPreviewScroll = (
+    ref: RefObject<HTMLElement | null>,
+    debounce: number = 500,
+    /// An optional id that must match the contentLoadedId field passed to the useDebounceMdxParse hook.
+    mdxContentId: string = "mdx-content"
+) => {
     const isLandscape = useMediaQuery({
         orientation: "landscape",
     });
@@ -36,21 +41,29 @@ export const usePersistMdxPreviewScroll = (debounce: number = 500) => {
         }
         timer.current = setTimeout(() => window.localStorage.setItem(storageKey, (e.target as HTMLElement).scrollTop.toString()), debounce)
     }
-
-    useEffect(() => {
+    const handleScrollSetup = (): void => {
         const elementId = isLandscape
             ? MDX_EDITOR_PREVIEW_ID_LANDSCAPE
             : MDX_EDITOR_PREVIEW_ID_PORTRAIT;
-        const element = document.getElementById(elementId);
+        const element = ref.current ?? document.getElementById(elementId);
         if (element) {
             loadScrollPosition(element, storageKey);
+            element.removeEventListener("scroll", handleScroll)
             element.addEventListener("scroll", handleScroll)
-            return () => element.removeEventListener("scroll", handleScroll)
-        } else {
-            console.error(`Could not find element with the id ${elementId} to persist scroll.`)
         }
-        /* eslint-disable-next-line  -- I hate this rule. */
+    }
+
+    useEffect(() => {
+        handleScrollSetup()
+        /* eslint-disable-next-line -- I hate this rule but I'm too lazy to turn it off. */
     }, [isLandscape, storageKey]);
+
+    useEventListener("mdx-content-loaded", (e) => {
+        if (e.detail === mdxContentId) {
+            handleScrollSetup()
+        }
+    })
+
     useEventListener(SplitviewEditorWebviewEvents.ResetPreviewScrollPosition, () => {
         window.localStorage.removeItem(storageKey);
     });

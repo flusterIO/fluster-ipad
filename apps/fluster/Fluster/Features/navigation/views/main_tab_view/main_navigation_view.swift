@@ -121,6 +121,12 @@ struct MainView: View {
                                 content: parsedMdx
                             )
                         }
+                        UIScrollView.appearance().bounces = false
+                        UIScrollView.appearance().isScrollEnabled = false
+                    }
+                    .onDisappear{
+                        UIScrollView.appearance().bounces = true
+                        UIScrollView.appearance().isScrollEnabled = true
                     }
                 } else {
                     SelectNoteToContinueView()
@@ -250,14 +256,6 @@ struct MainView: View {
             {
                 if let note = editingNote {
                     note.setLastRead(setModified: false)
-//                    editorContainer.setInitialContent(
-//                        note: note
-//                    )
-//                    if let preParsedBody = note.markdown.preParsedBody {
-//                        editorContainer.setParsedEditorContentString(
-//                            content: preParsedBody
-//                        )
-//                    }
                     editorContainer.resetScrollPosition()
                 }
             }
@@ -272,6 +270,7 @@ struct MainView: View {
                             await note.markdown
                             .body.preParseAsMdxToBytes()
                         {
+                            editorContainer.setInitialContent(note: note)
                             editorContainer.setParsedEditorContent(
                                 content: parsedMdx
                             )

@@ -50,19 +50,7 @@ export const MdxEditorPreview = ({
                 className,
             )}
             mdx={parsedValue}
-        /* onScroll={(e) => { */
-        /*     if (props.scrollPositionKey) { */
-        /*         if (timer.current) { */
-        /*             clearTimeout(timer.current); */
-        /*         } */
-        /*         timer.current = setTimeout(() => { */
-        /*             localStorage.setItem( */
-        /*                 props.scrollPositionKey!, */
-        /*                 (e.target as HTMLDivElement).scrollTop.toString(), */
-        /*             ); */
-        /*         }, 250); */
-        /*     } */
-        /* }} */
+            onScrollEnd={(e) => console.log("e: ", e)}
         />
     );
 };
