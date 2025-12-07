@@ -5,12 +5,12 @@
 //  Created by Andrew on 10/29/25.
 //
 
+import FlatBuffers
 import FlusterRust
 import FlusterSwift
 import PencilKit
 import SwiftData
 import SwiftUI
-import FlatBuffers
 
 func getDrawing(data: Data?) -> PKDrawing {
     if data == nil {
@@ -116,7 +116,7 @@ struct MainView: View {
                     )
                     .scrollDisabled(true)
                     .onAppear {
-                        if let parsedMdx = editingNote!.markdown.preParsedBody {
+                        if let parsedMdx = editingNote?.markdown.preParsedBody {
                             editorContainer.setParsedEditorContentString(
                                 content: parsedMdx
                             )
@@ -245,23 +245,23 @@ struct MainView: View {
                 }
             )
         }
-                .onChange(
-                    of: editingNote,
-                    {
-                        if let note = editingNote {
-                            note.setLastRead(setModified: false)
-                            editorContainer.setInitialContent(
-                                note: note
-                            )
-                            if let preParsedBody = note.markdown.preParsedBody {
-                                editorContainer.setParsedEditorContentString(
-                                    content: preParsedBody
-                                )
-                            }
-                            editorContainer.resetScrollPosition()
-                        }
-                    }
-                )
+        .onChange(
+            of: editingNote,
+            {
+                if let note = editingNote {
+                    note.setLastRead(setModified: false)
+//                    editorContainer.setInitialContent(
+//                        note: note
+//                    )
+//                    if let preParsedBody = note.markdown.preParsedBody {
+//                        editorContainer.setParsedEditorContentString(
+//                            content: preParsedBody
+//                        )
+//                    }
+                    editorContainer.resetScrollPosition()
+                }
+            }
+        )
         .onChange(
             of: editingNote?.markdown.body,
             {
@@ -275,13 +275,11 @@ struct MainView: View {
                             editorContainer.setParsedEditorContent(
                                 content: parsedMdx
                             )
-//                            let p = parsedMdx.toMdxParsingResult()
-                            //                            print("P: \(p)")
-                            //                            if let parsingResults = parsedMdx.toMdxParsingResult() {
-                            //                                note.applyMdxParsingResults(
-                            //                                    results: parsingResults,
-                            //                                )
-                            //                            }
+                            if let parsingResults = parsedMdx.toMdxParsingResult() {
+                                note.applyMdxParsingResults(
+                                    results: parsingResults,
+                                )
+                            }
                         } else {
                             print("Could not parse mdx.")
                         }

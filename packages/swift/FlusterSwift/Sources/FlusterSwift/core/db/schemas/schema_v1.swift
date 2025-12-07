@@ -120,12 +120,13 @@ extension AppSchemaV1 {
             if let frontMatter = results.frontMatter {
                 self.frontMatter.applyRustFrontMatterResult(res: frontMatter)
             }
-            var tags: [TagResult] = []
-            for i in (0...results.tagsCount) {
+            var tags: [TagModel] = []
+            for i in (0..<results.tagsCount) {
                 if let t = results.tags(at: i) {
-                    tags.append(TagResult(body: t.body))
+                    tags.append(TagModel(value: t.body))
                 }
             }
+            self.tags = tags
         }
         public func diassociateBibEntry(bibEntry: BibEntryModel) {
             self.citations.removeAll {
