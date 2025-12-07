@@ -19,6 +19,34 @@ li.hide-li-marker {
   }
 }
 
+.loading-only-flex {
+  display: none;
+}
+
+.loading-main-only {
+  display: none;
+}
+
+body.loading {
+  .loading-hide {
+    display: none;
+  }
+
+  .loading-only-flex {
+    display: flex;
+  }
+}
+
+body.loading-main {
+  .loading-main-hide {
+    display: none;
+  }
+
+  .loading-main-only {
+    display: block;
+  }
+}
+
 #webview-container {
   .cm-line {
     padding-right: 1rem;

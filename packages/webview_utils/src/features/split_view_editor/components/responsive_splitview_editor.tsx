@@ -3,6 +3,7 @@ import React, { type ReactNode } from "react";
 import { useMediaQuery } from "react-responsive";
 import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
+import { LoadingComponent } from "@/shared_components/loading_component";
 /* import { MdxPreviewScrollPersistor } from "#/mdx/components/mdx_preview_scroll_persistor"; */
 
 export const ResponsiveSplitViewEditor = (): ReactNode => {
@@ -13,6 +14,9 @@ export const ResponsiveSplitViewEditor = (): ReactNode => {
         <>
             <CodeEditorProvider>
                 {isLandscape ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly />}
+                <div className="w-full h-full flex flex-col justify-center items-center p-8 loading-main-only">
+                    <LoadingComponent />
+                </div>
             </CodeEditorProvider>
         </>
     );

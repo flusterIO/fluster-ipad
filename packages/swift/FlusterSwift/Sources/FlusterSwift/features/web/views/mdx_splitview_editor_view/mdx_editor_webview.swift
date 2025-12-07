@@ -136,6 +136,31 @@ extension MdxEditorWebview {
             //            parent.container.requestDocumentSize()
             parent.didSetInitialContent = true
         }
+        
+        public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
+            let isOriginalUrl = navigationResponse.response.url == self.parent.url
+            if let _url = navigationResponse.response.url, !isOriginalUrl {
+                self.parent.openURL(_url)
+            }
+            return isOriginalUrl ? .allow : .cancel
+        }
+
+        func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction,
+            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+        ) {
+            print("NavigationType: \(navigationAction.navigationType)")
+            print("Url: \(navigationAction.request.url)")
+            if navigationAction.navigationType == .linkActivated,
+                let url = navigationAction.request.url
+            {
+                UIApplication.shared.open(url)
+                decisionHandler(.cancel)
+            } else {
+                decisionHandler(.allow)
+            }
+        }
 
         public func webView(
             _ webView: WKWebView,
@@ -172,7 +197,9 @@ extension MdxEditorWebview {
                             parent.container.setParsedEditorContent(
                                 content: parsedMdx
                             )
-                            if let parsingResults = parsedMdx.toMdxParsingResult() {
+                            if let parsingResults =
+                                parsedMdx.toMdxParsingResult()
+                            {
                                 note.applyMdxParsingResults(
                                     results: parsingResults,
                                 )

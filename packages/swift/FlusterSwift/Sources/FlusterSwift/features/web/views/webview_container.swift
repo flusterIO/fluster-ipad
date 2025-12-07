@@ -24,14 +24,14 @@ where WebviewEventsType.RawValue == String {
         view.scrollView.maximumZoomScale = 1.0
         view.allowsBackForwardNavigationGestures = false
         // At best, this will only work for the editor.
-        if let screen = UIScreen.current {
-            view.frame = CGRect(
-                x: 0,
-                y: 0,
-                width: screen.bounds.width,
-                height: screen.bounds.height
-            )
-        }
+//        if let screen = UIScreen.current {
+//            view.frame = CGRect(
+//                x: 0,
+//                y: 0,
+//                width: screen.bounds.width,
+//                height: screen.bounds.height
+//            )
+//        }
         if #available(iOS 16.4, macOS 13.3, *) {
             view.isInspectable = true
         }

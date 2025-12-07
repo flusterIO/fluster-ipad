@@ -257,6 +257,7 @@ struct MainView: View {
                 if let note = editingNote {
                     note.setLastRead(setModified: false)
                     editorContainer.resetScrollPosition()
+                    editorContainer.setInitialContent(note: note)
                 }
             }
         )
@@ -270,7 +271,6 @@ struct MainView: View {
                             await note.markdown
                             .body.preParseAsMdxToBytes()
                         {
-                            editorContainer.setInitialContent(note: note)
                             editorContainer.setParsedEditorContent(
                                 content: parsedMdx
                             )

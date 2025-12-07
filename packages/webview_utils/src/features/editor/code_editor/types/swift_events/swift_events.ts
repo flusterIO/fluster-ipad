@@ -46,6 +46,7 @@ export function setParsedEditorContent(payload: Uint8Array) {
 }
 
 export function setParsedEditorContentString(payload: string) {
+    document.body.classList.add("loading")
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContentString, { detail: payload }),
     );

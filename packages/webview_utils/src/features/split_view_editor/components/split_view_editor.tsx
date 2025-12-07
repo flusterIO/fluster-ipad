@@ -4,6 +4,7 @@ import React, { type ReactNode } from "react";
 import { MdxEditorPreview } from "#/mdx/components/mdx_editor_preview";
 import { CodeEditorProvider } from "#/editor/code_editor/state/code_editor_provider";
 import { MDX_EDITOR_PREVIEW_ID_LANDSCAPE, MDX_EDITOR_PREVIEW_SCROLL_LANDSCAPE_KEY } from "#/mdx/data/mdx_scroll_restore_keys";
+import { LoadingComponent } from "@/shared_components/loading_component";
 
 export const SplitViewEditorInner = (): ReactNode => {
     const autoSaveId = "split-view-editor-panel-split";
@@ -11,7 +12,7 @@ export const SplitViewEditorInner = (): ReactNode => {
         <PanelGroup
             autoSaveId={autoSaveId}
             direction="horizontal"
-            className="w-screen h-screen"
+            className="w-screen h-screen loading-main-hide"
         >
             <Panel id="editor-panel" order={1} defaultSize={50} minSize={10}>
                 <CodeEditor />
@@ -26,9 +27,12 @@ export const SplitViewEditorInner = (): ReactNode => {
             >
                 <MdxEditorPreview
                     id={MDX_EDITOR_PREVIEW_ID_LANDSCAPE}
-                    className="overflow-y-auto overflow-x-hidden h-full"
+                    className="overflow-y-auto overflow-x-hidden h-full loading-hide"
                     scrollPositionKey={MDX_EDITOR_PREVIEW_SCROLL_LANDSCAPE_KEY}
                 />
+                <div className="w-full h-full flex flex-col justify-center items-center loading-only-flex">
+                    <LoadingComponent />
+                </div>
             </Panel>
         </PanelGroup>
     );

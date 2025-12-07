@@ -59,7 +59,6 @@ export const MdxContent = ({
     }, [mdx]);
 
     const handleScroll = (e: Event): void => {
-        console.log("scrollPositionKey: ", scrollPositionKey)
         if (scrollPositionKey) {
             window.localStorage.setItem(scrollPositionKey, (e.target as HTMLElement).scrollTop.toString())
         }
@@ -70,7 +69,6 @@ export const MdxContent = ({
             const em = document.getElementById(id);
             if (em) {
                 loadScrollPosition(em, sk);
-                console.log(`Finally found element...`)
                 em.removeEventListener("scroll", handleScroll)
                 em.addEventListener("scroll", handleScroll)
             } else {
@@ -79,17 +77,9 @@ export const MdxContent = ({
         }
     }
 
-    /* NOTE: This works, but it causes a weird sizing issues with a white bar on Apple's end. I'll come back to scroll restoration later. */
-    useEffect(() => {
-        console.log(`Running this...`)
-    }, [props.id, scrollPositionKey]);
-
 
     useEventListener("mdx-content-loaded", (e) => {
-        console.log("e.detail: ", e.detail)
-        console.log("scrollPositionKey: ", scrollPositionKey)
         if (props.id && (e.detail === scrollPositionKey)) {
-            console.log(`Mdx content has loaded...`, props.id, e.detail);
             handleScrollSetup(props.id, scrollPositionKey)
         }
     })
