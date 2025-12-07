@@ -38,8 +38,8 @@ export function setEditorContent(payload: string) {
 export function setParsedEditorContent(payload: Uint8Array) {
     console.log("payload: ", payload)
     console.log("payload.length: ", payload.length)
-    let data = Uint8Array.from(payload)
-    let buf = new ByteBuffer(data)
+    const data = Uint8Array.from(payload)
+    const buf = new ByteBuffer(data)
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, { detail: MdxParsingResultBuffer.getRootAsMdxParsingResultBuffer(buf) }),
     );
@@ -74,6 +74,7 @@ export function setCodeThemeLight(theme: string) {
 }
 
 const resetMdxPreviewScrollPosition = (): void => {
+    console.info(`Resetting scroll position`)
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.ResetPreviewScrollPosition, {
             detail: null,

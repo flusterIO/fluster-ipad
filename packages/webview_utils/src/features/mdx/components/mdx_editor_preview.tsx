@@ -40,6 +40,7 @@ export const MdxEditorPreview = ({
             </div>
         );
     }
+
     return (
         <MdxContent
             id="mdx-preview"
@@ -50,7 +51,6 @@ export const MdxEditorPreview = ({
                 className,
             )}
             mdx={parsedValue}
-            onScrollEnd={(e) => console.log("e: ", e)}
         />
     );
 };

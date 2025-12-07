@@ -24,7 +24,6 @@ export * from "./core/state/hooks/use_is_mounted";
 export * from "./core/state/hooks/use_local_storage";
 export * from "./core/state/hooks/use_event_callback";
 export * from "./core/state/hooks/use_event_listener";
-export * from "./core/state/hooks/use_persist_scroll";
 export * from "./core/state/hooks/use_screen_dimensions";
 
 // -- Mdx --

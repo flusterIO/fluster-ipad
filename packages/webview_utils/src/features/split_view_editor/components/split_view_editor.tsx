@@ -1,18 +1,12 @@
 import { CodeEditor } from "#/editor/code_editor/components/code_editor";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import React, { useRef, type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { MdxEditorPreview } from "#/mdx/components/mdx_editor_preview";
 import { CodeEditorProvider } from "#/editor/code_editor/state/code_editor_provider";
-import {
-    MDX_EDITOR_PREVIEW_ID_LANDSCAPE,
-    MDX_EDITOR_PREVIEW_SCROLL_LANDSCAPE_KEY,
-    usePersistMdxPreviewScroll,
-} from "@/state/hooks/use_persist_scroll";
+import { MDX_EDITOR_PREVIEW_ID_LANDSCAPE, MDX_EDITOR_PREVIEW_SCROLL_LANDSCAPE_KEY } from "#/mdx/data/mdx_scroll_restore_keys";
 
 export const SplitViewEditorInner = (): ReactNode => {
     const autoSaveId = "split-view-editor-panel-split";
-    const previewRef = useRef<HTMLDivElement>(null);
-    usePersistMdxPreviewScroll(previewRef, 250);
     return (
         <PanelGroup
             autoSaveId={autoSaveId}
@@ -34,7 +28,6 @@ export const SplitViewEditorInner = (): ReactNode => {
                     id={MDX_EDITOR_PREVIEW_ID_LANDSCAPE}
                     className="overflow-y-auto overflow-x-hidden h-full"
                     scrollPositionKey={MDX_EDITOR_PREVIEW_SCROLL_LANDSCAPE_KEY}
-                    ref={previewRef}
                 />
             </Panel>
         </PanelGroup>

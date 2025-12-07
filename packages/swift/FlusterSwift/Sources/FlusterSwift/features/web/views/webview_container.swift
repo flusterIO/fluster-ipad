@@ -90,7 +90,6 @@ where WebviewEventsType.RawValue == String {
         )
     }
     public func applyWebViewColorScheme(darkMode: Bool) {
-        print("Applying webview color scheme")
         self.runJavascript(
             """
             window.localStorage.setItem("dark-mode", "\(darkMode ? "true" : "false")")

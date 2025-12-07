@@ -4,6 +4,16 @@ import { useDebounceMdxParse } from "../hooks/use_debounce_mdx_parse";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 
+const loadScrollPosition = (
+    element: HTMLElement,
+    storageKey: string,
+) => {
+    const savedPosition = localStorage.getItem(storageKey);
+    if (savedPosition) {
+        element.scrollTop = parseInt(savedPosition);
+    }
+};
+
 export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     mdx: string;
     className?: string;
@@ -23,6 +33,7 @@ export const MdxContent = ({
     const { Component, setValue } = useDebounceMdxParse(
         undefined,
         debounceTimeout,
+        scrollPositionKey
     );
     const [fontSizeClass, setFontSizeClass] = useLocalStorage(
         "webview-font-class",
@@ -48,35 +59,40 @@ export const MdxContent = ({
     }, [mdx]);
 
     const handleScroll = (e: Event): void => {
-        console.log("e up here: ", e)
+        console.log("scrollPositionKey: ", scrollPositionKey)
         if (scrollPositionKey) {
             window.localStorage.setItem(scrollPositionKey, (e.target as HTMLElement).scrollTop.toString())
         }
     }
 
-    useEffect(() => {
-        if (props.id) {
-            const em = document.getElementById(props.id)
+    const handleScrollSetup = (id: string, sk: typeof scrollPositionKey): void => {
+        if (id && sk) {
+            const em = document.getElementById(id);
             if (em) {
+                loadScrollPosition(em, sk);
+                console.log(`Finally found element...`)
+                em.removeEventListener("scroll", handleScroll)
                 em.addEventListener("scroll", handleScroll)
-                return () => em.removeEventListener("scroll", handleScroll)
+            } else {
+                console.log(`Can't find the fucking element...`);
             }
-        } else {
-            console.error(`Cannot find element with id despite the fact that it's right here... ${props.id}`)
         }
-
-    }, [props.id])
+    }
 
     /* NOTE: This works, but it causes a weird sizing issues with a white bar on Apple's end. I'll come back to scroll restoration later. */
-    /* useEffect(() => { */
-    /*     if (props.id && props.scrollPositionKey) { */
-    /*         const element = document.getElementById(props.id); */
-    /*         if (!element) { */
-    /*             return; */
-    /*         } */
-    /*         loadScrollPosition(element, props.scrollPositionKey); */
-    /*     } */
-    /* }, [value]); */
+    useEffect(() => {
+        console.log(`Running this...`)
+    }, [props.id, scrollPositionKey]);
+
+
+    useEventListener("mdx-content-loaded", (e) => {
+        console.log("e.detail: ", e.detail)
+        console.log("scrollPositionKey: ", scrollPositionKey)
+        if (props.id && (e.detail === scrollPositionKey)) {
+            console.log(`Mdx content has loaded...`, props.id, e.detail);
+            handleScrollSetup(props.id, scrollPositionKey)
+        }
+    })
 
     const classes = cn(
         "mdx-content block pb-12 overflow-y-hidden h-auto max-h-fit prose dark:prose-invert prose-p:text-foreground prose-code:before:content-none prose-code:after:content-none prose-code:bg-[var(--shiki-light-bg)] dark:prose-code:bg-[var(--shiki-dark-bg)] [&_code_*]:text-[var(--shiki-light)] dark:[&_code_*]:text-[var(--shiki-dark)] w-full max-w-full @container/mdx prose-code:p-2 prose-pre:bg-transparent dark:prose-pre:bg-transparent",
@@ -89,9 +105,6 @@ export const MdxContent = ({
             <div
                 {...props}
                 className={classes}
-                onScroll={(e) => {
-                    console.log("e here: ", e)
-                }}
             >
                 {mdx}
             </div>
@@ -101,9 +114,6 @@ export const MdxContent = ({
     return <Component
         {...props}
         className={classes}
-        onScrollEnd={(e) => {
-            console.log("e: ", e)
-        }}
     />;
 };
 

@@ -1,4 +1,4 @@
-import React, { HTMLProps } from "react";
+import React, { HTMLProps, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useComponentMap } from "../hooks/use_component_map";
 import { H2 } from "../../../core/shared_components/typography/typography";
@@ -8,14 +8,21 @@ interface Props {
     MdxContentComponent: MDXContent;
     raw: string;
     container?: HTMLProps<HTMLDivElement>;
+    scrollPositionKey?: string
 }
 
 export const ParsedMdxContent = ({
     MdxContentComponent,
     raw,
     container,
+    scrollPositionKey
 }: Props) => {
     const componentMap = useComponentMap(raw);
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent("mdx-content-loaded", {
+            detail: scrollPositionKey
+        }))
+    }, [MdxContentComponent, scrollPositionKey])
     return (
         <div {...container}>
             <ErrorBoundary

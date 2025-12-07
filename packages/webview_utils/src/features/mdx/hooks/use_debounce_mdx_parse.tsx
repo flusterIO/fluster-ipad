@@ -22,7 +22,7 @@ export const useDebounceMdxParse = (
     initialValue: string = "",
     debounceTimeout: number = 300,
     /// A unique key that is passed to the mdx-content-loaded event as the detail field if present.
-    contentLoadedId: string = "mdx-content"
+    contentLoadedId: string = "mdx-content",
 ) => {
     const [value, setValue] = useState<string>(initialValue);
     const [hasParsed, setHasParsed] = useState(false);
@@ -124,6 +124,7 @@ export const useDebounceMdxParse = (
                 container={props}
                 MdxContentComponent={mdxModule.default}
                 raw={value}
+                scrollPositionKey={contentLoadedId}
             />
         ) : (
             <></>
