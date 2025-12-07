@@ -23,3 +23,6 @@ uniffi = { workspace = true }
 fluster_core_utilities = { workspace = true }
 fluster_pre_parser = { workspace = true }
 serde_bibtex = { version = "0.7.1", features = ["all"] }
+
+[profile.release]
+lto = "fat"

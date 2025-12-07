@@ -10,6 +10,7 @@ import FlusterSwift
 import PencilKit
 import SwiftData
 import SwiftUI
+import FlatBuffers
 
 func getDrawing(data: Data?) -> PKDrawing {
     if data == nil {
@@ -107,16 +108,16 @@ struct MainView: View {
                         editorKeymap: $editorKeymap,
                         container: editorContainer,
                     )
-//                    .moveDisabled(true)
+                    //                    .moveDisabled(true)
                     .disableAnimations()
-//                    .scrollDisabled(true)
+                    //                    .scrollDisabled(true)
                     .frame(
                         alignment: .bottom
                     )
                     .scrollDisabled(true)
                     .onAppear {
                         if let parsedMdx = editingNote!.markdown.preParsedBody {
-                            editorContainer.setParsedEditorContent(
+                            editorContainer.setParsedEditorContentString(
                                 content: parsedMdx
                             )
                         }
@@ -244,23 +245,23 @@ struct MainView: View {
                 }
             )
         }
-        .onChange(
-            of: editingNote,
-            {
-                if let note = editingNote {
-                    note.setLastRead(setModified: false)
-                    editorContainer.setInitialContent(
-                        note: note
-                    )
-                    if let parsedMdx = note.markdown.preParsedBody {
-                        editorContainer.setParsedEditorContent(
-                            content: parsedMdx
-                        )
+                .onChange(
+                    of: editingNote,
+                    {
+                        if let note = editingNote {
+                            note.setLastRead(setModified: false)
+                            editorContainer.setInitialContent(
+                                note: note
+                            )
+                            if let preParsedBody = note.markdown.preParsedBody {
+                                editorContainer.setParsedEditorContentString(
+                                    content: preParsedBody
+                                )
+                            }
+                            editorContainer.resetScrollPosition()
+                        }
                     }
-                    editorContainer.resetScrollPosition()
-                }
-            }
-        )
+                )
         .onChange(
             of: editingNote?.markdown.body,
             {
@@ -269,14 +270,18 @@ struct MainView: View {
                     if let note = editingNote {
                         if let parsedMdx =
                             await note.markdown
-                            .body.preParseAsMdx()
+                            .body.preParseAsMdxToBytes()
                         {
-                            note.applyMdxParsingResults(
-                                results: parsedMdx,
-                            )
                             editorContainer.setParsedEditorContent(
-                                content: parsedMdx.content
+                                content: parsedMdx
                             )
+//                            let p = parsedMdx.toMdxParsingResult()
+                            //                            print("P: \(p)")
+                            //                            if let parsingResults = parsedMdx.toMdxParsingResult() {
+                            //                                note.applyMdxParsingResults(
+                            //                                    results: parsingResults,
+                            //                                )
+                            //                            }
                         } else {
                             print("Could not parse mdx.")
                         }
@@ -284,14 +289,14 @@ struct MainView: View {
                 }
             }
         )
-//        .onChange( TODO: this will run every time the note changes and always update it. This will need to be tapped in to some sort of event listener.
-//            of: editingNote?.drawing,
-//            {
-//                if let note = editingNote {
-//                    note.setLastRead(setModified: true)
-//                }
-//            }
-//        )
+        //        .onChange( TODO: this will run every time the note changes and always update it. This will need to be tapped in to some sort of event listener.
+        //            of: editingNote?.drawing,
+        //            {
+        //                if let note = editingNote {
+        //                    note.setLastRead(setModified: true)
+        //                }
+        //            }
+        //        )
         .onChange(
             of: editorThemeDark,
             {

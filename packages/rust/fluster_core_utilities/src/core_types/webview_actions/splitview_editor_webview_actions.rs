@@ -38,6 +38,9 @@ pub enum SplitviewEditorWebviewEvents {
     #[serde(rename = "set-parsed-mdx-content")]
     #[strum(to_string = "set-parsed-mdx-content")]
     SetParsedMdxContent,
+    #[serde(rename = "set-editor-content-str")]
+    #[strum(to_string = "set-editor-content-str")]
+    SetParsedMdxContentString,
     #[serde(rename = "set-editor-keymap")]
     #[strum(to_string = "set-editor-keymap")]
     SetEditorKeymap,

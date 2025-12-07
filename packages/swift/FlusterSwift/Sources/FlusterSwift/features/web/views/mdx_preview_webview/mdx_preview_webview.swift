@@ -101,14 +101,6 @@ public struct MdxPreviewWebview: UIViewRepresentable {
             darkMode: colorScheme == .dark
         )
     }
-    func getQuotedContent() -> String {
-        if editingNote == nil {
-            return "''"
-        }
-        let t = MdxText(body: editingNote!.markdown.body)
-        t.parse()
-        return t.body.toQuotedJavascriptString()
-    }
     public func setInitialContent() {
         if editingNote != nil {
             container.setInitialContent(note: editingNote!)
@@ -145,11 +137,13 @@ extension MdxPreviewWebview {
             guard !parent.didSetInitialContent else { return }
             parent.didSetInitialContent = true
 
-            webView.evaluateJavaScript(
-                """
-                window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.parsedMdxData.rawValue)", \(parent.getQuotedContent()));
-                """
-            )
+            if let preParsedNoteBody = self.parent.editingNote?.markdown.preParsedBody {
+                webView.evaluateJavaScript(
+                    """
+                    window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.parsedMdxData.rawValue)", \(preParsedNoteBody.toQuotedJavascriptString()));
+                    """
+                )
+            }
             parent.setInitialProperties()
             parent.container.webView.isHidden = false
         }

@@ -14,11 +14,14 @@ import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { CitationResultBuffer, MdxParsingResultBuffer, TagResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 
 export interface CodeEditorState {
     keymap: string;
     baseKeymap: CodeEditorBaseKeymap;
     theme: CodeEditorTheme;
+    citations: CitationResultBuffer[]
+    tags: TagResultBuffer[]
     value: string;
     parsedValue: string | null;
     haveSetInitialValue: boolean;
@@ -29,6 +32,8 @@ const defaultInitialCodeEditorState: CodeEditorState = {
     theme: CodeEditorTheme.dracula,
     keymap: "base",
     value: "",
+    citations: [],
+    tags: [],
     parsedValue: null,
     haveSetInitialValue: false,
 };
@@ -55,12 +60,15 @@ type CodeEditorContextActions =
         payload: string;
     }
     | {
+        type: "setParsedEditorContentString",
+        payload: string
+    } | {
         type: "setInitialEditorValue";
         payload: string;
     }
     | {
         type: "setParsedEditorContent";
-        payload: string;
+        payload: MdxParsingResultBuffer;
     };
 
 export const CodeEditorDispatchContext = createContext<
@@ -110,10 +118,33 @@ export const CodeEditorContextReducer = (
                 value: action.payload,
             };
         }
-        case "setParsedEditorContent": {
+        case "setParsedEditorContentString": {
             return {
                 ...state,
-                parsedValue: action.payload,
+                parsedValue: action.payload
+            }
+        }
+        case "setParsedEditorContent": {
+            const content = action.payload.parsedContent()
+            const citations: CitationResultBuffer[] = [];
+            for (let i = 0; i < action.payload.citationsLength(); i++) {
+                const cit = action.payload.citations(i)
+                if (cit) {
+                    citations.push()
+                }
+            }
+            const tags: TagResultBuffer[] = []
+            for (let i = 0; i < action.payload.tagsLength(); i++) {
+                const tag = action.payload.tags(i)
+                if (tag) {
+                    tags.push()
+                }
+            }
+            return {
+                ...state,
+                parsedValue: content ? content : state.parsedValue,
+                citations,
+                tags
             };
         }
         default: {
@@ -212,6 +243,13 @@ export const CodeEditorProvider = ({
             payload: e.detail,
         });
     });
+
+    useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContentString, (e) => {
+        dispatch({
+            type: "setParsedEditorContentString",
+            payload: e.detail
+        })
+    })
 
     useEffect(() => {
         if (state.parsedValue === null) {

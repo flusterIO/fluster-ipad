@@ -1,6 +1,7 @@
 import Combine
 import SwiftUI
 import WebKit
+import FlatBuffers
 
 @MainActor
 public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWebviewEvents> {
@@ -52,9 +53,15 @@ public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWe
             }
             """)
     }
-    public func setParsedEditorContent(content: String) {
+    public func setParsedEditorContentString(content: String) {
         self.runJavascript("""
-            window.setParsedEditorContent(\(content.toQuotedJavascriptString()))
+            window.setParsedEditorContentString(\(content.toQuotedJavascriptString()))
+            """)
+    }
+    public func setParsedEditorContent(content: Data) {
+        let bytes: [UInt8] = Array(content)
+        self.runJavascript("""
+            window.setParsedEditorContent(\(bytes))
             """)
     }
     public func setInitialProperties(
@@ -77,7 +84,7 @@ public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWe
         if let _editingNote = editingNote {
             self.setInitialContent(note: _editingNote)
             if let parsedBody = _editingNote.markdown.preParsedBody {
-                self.setParsedEditorContent(content: parsedBody)
+                self.setParsedEditorContentString(content: parsedBody)
             }
         }
     }

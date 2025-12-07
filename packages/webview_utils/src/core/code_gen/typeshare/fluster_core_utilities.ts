@@ -63,6 +63,7 @@ export enum SplitviewEditorWebviewEvents {
 	SetInitialColorScheme = "set-initial-color-scheme",
 	SetSplitviewEditorContent = "set-editor-content",
 	SetParsedMdxContent = "set-parsed-mdx-content",
+	SetParsedMdxContentString = "set-editor-content-str",
 	SetEditorKeymap = "set-editor-keymap",
 	SetCodeTheme = "set-code-theme",
 	SetCodeThemeLight = "set-code-theme-light",

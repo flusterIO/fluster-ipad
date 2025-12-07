@@ -13,7 +13,7 @@ struct CodableCitationResult: Codable {
     public let body: String
 
     static func fromRustResult(res: CitationResult) -> CodableCitationResult {
-        CodableCitationResult(citation_key: res.citationKey, body: res.entry)
+        CodableCitationResult(citation_key: res.citationKey, body: res.body)
     }
 }
 

@@ -152,12 +152,12 @@ extension MdxEditorWebview {
             didReceive message: WKScriptMessage
         ) {
             switch message.name {
-                
+
             case SplitviewEditorWebviewActions.setWebviewLoaded.rawValue:
                 print("No longer hidden")
                 self.parent.webView.isHidden = false
                 self.parent.show = true
-//                self.parent.webView.allowsMagnification
+            //                self.parent.webView.allowsMagnification
             case SplitviewEditorWebviewActions.onTagClick.rawValue:
                 // TODO: Handle this tag click event.
                 print("Tag clicked \(message.body as! String)")
@@ -167,14 +167,16 @@ extension MdxEditorWebview {
                     if let note = parent.editingNote {
                         if let parsedMdx =
                             await note.markdown
-                            .body.preParseAsMdx()
+                            .body.preParseAsMdxToBytes()
                         {
-                            note.applyMdxParsingResults(
-                                results: parsedMdx,
-                            )
                             parent.container.setParsedEditorContent(
-                                content: parsedMdx.content
+                                content: parsedMdx
                             )
+                            if let parsingResults = parsedMdx.toMdxParsingResult() {
+                                note.applyMdxParsingResults(
+                                    results: parsingResults,
+                                )
+                            }
                         }
                     }
                 }
@@ -183,7 +185,8 @@ extension MdxEditorWebview {
                     parent.editingNote?.markdown.body = str
                     parent.editingNote?.setLastRead(setModified: true)
                 }
-            case SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue:
+            case SplitviewEditorWebviewActions.requestSplitviewEditorData
+                .rawValue:
                 print("Request for initial editor data received...")
                 parent.setInitialProperties()
                 parent.setInitialContent()

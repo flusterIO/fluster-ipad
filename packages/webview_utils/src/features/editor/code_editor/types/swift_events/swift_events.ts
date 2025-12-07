@@ -1,4 +1,6 @@
+import { MdxParsingResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
+import { ByteBuffer } from "flatbuffers";
 
 export interface SwiftEventMap {
     updateEditorValue: string;
@@ -7,7 +9,8 @@ export interface SwiftEventMap {
 declare global {
     interface WindowEventMap {
         [SplitviewEditorWebviewEvents.SetSplitviewEditorContent]: CustomEvent<string>;
-        [SplitviewEditorWebviewEvents.SetParsedMdxContent]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetParsedMdxContent]: CustomEvent<MdxParsingResultBuffer>;
+        [SplitviewEditorWebviewEvents.SetParsedMdxContentString]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetEditorKeymap]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetCodeTheme]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetCodeThemeLight]: CustomEvent<string>;
@@ -17,6 +20,7 @@ declare global {
     interface Window {
         setEditorContent: typeof setEditorContent;
         setParsedEditorContent: typeof setParsedEditorContent;
+        setParsedEditorContentString: typeof setParsedEditorContentString;
         setEditorKeymap: typeof setEditorKeymap;
         setCodeSyntaxTheme: typeof setCodeTheme;
         setCodeSyntaxThemeLight: typeof setCodeThemeLight;
@@ -31,9 +35,19 @@ export function setEditorContent(payload: string) {
     );
 }
 
-export function setParsedEditorContent(payload: string) {
+export function setParsedEditorContent(payload: Uint8Array) {
+    console.log("payload: ", payload)
+    console.log("payload.length: ", payload.length)
+    let data = Uint8Array.from(payload)
+    let buf = new ByteBuffer(data)
     window.dispatchEvent(
-        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, { detail: payload }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, { detail: MdxParsingResultBuffer.getRootAsMdxParsingResultBuffer(buf) }),
+    );
+}
+
+export function setParsedEditorContentString(payload: string) {
+    window.dispatchEvent(
+        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContentString, { detail: payload }),
     );
 }
 
@@ -71,6 +85,7 @@ export const setWindowBridgeFunctions = () => {
     window.setEditorContent = setEditorContent;
     window.setEditorKeymap = setEditorKeymap;
     window.setParsedEditorContent = setParsedEditorContent;
+    window.setParsedEditorContentString = setParsedEditorContentString;
     window.setCodeSyntaxTheme = setCodeTheme;
     window.setCodeSyntaxThemeDark = setCodeThemeDark;
     window.setCodeSyntaxThemeLight = setCodeThemeLight;

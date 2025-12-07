@@ -14,3 +14,6 @@ flatbuffers = { workspace = true }
 serde.workspace = true
 strum_macros = "0.27.2"
 typeshare.workspace = true
+
+[profile.release]
+lto = "fat"
