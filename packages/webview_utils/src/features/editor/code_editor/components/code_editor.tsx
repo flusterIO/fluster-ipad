@@ -47,7 +47,6 @@ export const CodeEditorInner = ({
 
     useEffect(() => {
         const em = document.getElementById(containerId)!
-        console.log("em: ", em)
         if (haveRendered.current) {
             haveRendered.current = false;
             em.replaceChildren();
@@ -57,7 +56,6 @@ export const CodeEditorInner = ({
             extensions.push(vim());
             extensions.push(lineNumbersRelative);
         }
-        console.log(`Here 1`)
         extensions = [
             ...extensions,
             keymap.of(codeEditorBaseKeymapMap[state.baseKeymap]()),
@@ -81,22 +79,18 @@ export const CodeEditorInner = ({
                 }
             }),
         ];
-        console.log(`Here 2`);
         const startState = EditorState.create({
             doc: initialValue,
             extensions,
         });
 
-        console.log(`Here 3`);
         const _view = new EditorView({
             state: startState,
             parent: em,
         });
-        console.log(`Here 4`);
         _view.focus();
         view.current = _view;
         haveRendered.current = true;
-        console.log(`Here though?`);
         sendToSwift(showWebviewHandler);
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
     }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap]);

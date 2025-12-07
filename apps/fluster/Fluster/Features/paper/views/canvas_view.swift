@@ -16,6 +16,10 @@ struct CanvasView: UIViewRepresentable {
     func makeUIView(context: Context) -> PKCanvasView {
         canvasView.drawingPolicy = .anyInput
         canvasView.delegate = context.coordinator
+        canvasView.minimumZoomScale = 0.01
+        canvasView.maximumZoomScale = 1000.0
+        canvasView.zoomScale = 1.0
+        canvasView.isScrollEnabled = true
         toolPicker.setVisible(true, forFirstResponder: canvasView)
         toolPicker.addObserver(canvasView)
         canvasView.becomeFirstResponder()

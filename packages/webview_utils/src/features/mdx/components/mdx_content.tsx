@@ -16,6 +16,7 @@ export const MdxContent = ({
     mdx,
     className,
     abortIfNoMath,
+    scrollPositionKey,
     debounceTimeout = 300,
     ...props
 }: MdxContentProps): ReactNode => {
@@ -46,6 +47,26 @@ export const MdxContent = ({
         /* eslint-disable-next-line  -- I hate that this rule applies to functions... */
     }, [mdx]);
 
+    const handleScroll = (e: Event): void => {
+        console.log("e up here: ", e)
+        if (scrollPositionKey) {
+            window.localStorage.setItem(scrollPositionKey, (e.target as HTMLElement).scrollTop.toString())
+        }
+    }
+
+    useEffect(() => {
+        if (props.id) {
+            const em = document.getElementById(props.id)
+            if (em) {
+                em.addEventListener("scroll", handleScroll)
+                return () => em.removeEventListener("scroll", handleScroll)
+            }
+        } else {
+            console.error(`Cannot find element with id despite the fact that it's right here... ${props.id}`)
+        }
+
+    }, [props.id])
+
     /* NOTE: This works, but it causes a weird sizing issues with a white bar on Apple's end. I'll come back to scroll restoration later. */
     /* useEffect(() => { */
     /*     if (props.id && props.scrollPositionKey) { */
@@ -65,13 +86,25 @@ export const MdxContent = ({
 
     if (abortIfNoMath && !mdx.includes("$")) {
         return (
-            <div {...props} className={classes}>
+            <div
+                {...props}
+                className={classes}
+                onScroll={(e) => {
+                    console.log("e here: ", e)
+                }}
+            >
                 {mdx}
             </div>
         );
     }
 
-    return <Component {...props} className={classes} />;
+    return <Component
+        {...props}
+        className={classes}
+        onScrollEnd={(e) => {
+            console.log("e: ", e)
+        }}
+    />;
 };
 
 MdxContent.displayName = "MdxContent";

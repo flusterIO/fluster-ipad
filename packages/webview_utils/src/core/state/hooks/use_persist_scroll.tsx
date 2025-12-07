@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useEventListener } from "./use_event_listener";
 import { useMediaQuery } from "react-responsive";
 import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
@@ -21,31 +21,36 @@ export const loadScrollPosition = (
     }
 };
 
-export const usePersistMdxPreviewScroll = () => {
+export const usePersistMdxPreviewScroll = (debounce: number = 500) => {
     const isLandscape = useMediaQuery({
         orientation: "landscape",
     });
+    const timer = useRef<NodeJS.Timeout | null>(null);
     const storageKey = isLandscape
         ? MDX_EDITOR_PREVIEW_SCROLL_LANDSCAPE_KEY
         : MDX_EDITOR_PREVIEW_SCROLL_PORTRAIT_KEY;
 
-    useLayoutEffect(() => {
-        const elementId = isLandscape
-            ? MDX_EDITOR_PREVIEW_ID_LANDSCAPE
-            : MDX_EDITOR_PREVIEW_ID_PORTRAIT;
-        const element = document.getElementById(elementId);
-    }, [isLandscape]);
+    const handleScroll = (e: Event): void => {
+        if (timer.current) {
+            clearTimeout(timer.current)
+        }
+        timer.current = setTimeout(() => window.localStorage.setItem(storageKey, (e.target as HTMLElement).scrollTop.toString()), debounce)
+    }
+
     useEffect(() => {
         const elementId = isLandscape
             ? MDX_EDITOR_PREVIEW_ID_LANDSCAPE
             : MDX_EDITOR_PREVIEW_ID_PORTRAIT;
         const element = document.getElementById(elementId);
-
-        // Safety check: if element doesn't exist (yet), stop here
-        if (!element) return;
-        loadScrollPosition(element, storageKey);
-        // 1. Restore: Set the element's scrollTop
-    }, [isLandscape]);
+        if (element) {
+            loadScrollPosition(element, storageKey);
+            element.addEventListener("scroll", handleScroll)
+            return () => element.removeEventListener("scroll", handleScroll)
+        } else {
+            console.error(`Could not find element with the id ${elementId} to persist scroll.`)
+        }
+        /* eslint-disable-next-line  -- I hate this rule. */
+    }, [isLandscape, storageKey]);
     useEventListener(SplitviewEditorWebviewEvents.ResetPreviewScrollPosition, () => {
         window.localStorage.removeItem(storageKey);
     });
