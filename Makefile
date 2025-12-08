@@ -40,7 +40,7 @@ build_fluster_rust: build_all_rust
 build_webview_utils: build_cross_language_schemas
 	pnpm run -C packages/webview_utils build
 
-build_note_detail_webview: build_cross_language_schemas
+build_note_detail_webview: build_cross_language_schemas build_webview_utils
 	pnpm run -C packages/webviews/note_detail_webview build
 
 build_standalone_mdx_preview_webview: build_webview_utils
@@ -55,6 +55,6 @@ build_splitview_mdx_editor: build_webview_utils
 build_bibtex_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/bibtex_editor_webview build
 
-build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview
+build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview
 
 pre_ipad_build: build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews

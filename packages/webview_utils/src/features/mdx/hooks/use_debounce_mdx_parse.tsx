@@ -8,6 +8,7 @@ import { ParsedMdxContent } from "../components/parsed_mdx_content";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { AnyWebviewAction } from "@/utils/types/any_window_event";
 
 
 
@@ -23,6 +24,7 @@ export const useDebounceMdxParse = (
     debounceTimeout: number = 300,
     /// A unique key that is passed to the mdx-content-loaded event as the detail field if present.
     contentLoadedId: string = "mdx-content",
+    showWebviewHandler?: AnyWebviewAction
 ) => {
     const [value, setValue] = useState<string>(initialValue);
     const [hasParsed, setHasParsed] = useState(false);
@@ -125,6 +127,7 @@ export const useDebounceMdxParse = (
                 MdxContentComponent={mdxModule.default}
                 raw={value}
                 scrollPositionKey={contentLoadedId}
+                showWebviewHandler={showWebviewHandler}
             />
         ) : (
             <></>

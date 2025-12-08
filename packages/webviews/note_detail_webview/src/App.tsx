@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import {
+    LoadingComponent,
     NoteDetailSheet,
-    useWebviewLoadedEvent,
+    NoteDetailWebviewEvents,
     WebViewContainer,
-    NoteDetailWebviewActions,
 } from "@fluster/webview_utils";
 import "../../../webview_utils/dist/webview_utils.css";
 import "./index.css";
 
+declare global {
+    interface Window {
+        setNoteDetails: (data: number[]) => void;
+    }
+}
+
+window.setNoteDetails = (data) => {
+    window.dispatchEvent(
+        new CustomEvent(NoteDetailWebviewEvents.SetNoteDetails, {
+            detail: data,
+        }),
+    );
+};
+
 function App() {
-    useWebviewLoadedEvent(NoteDetailWebviewActions.SetWebviewLoaded);
-    /* const [data, setData] = useState<MdxParsingResult | null>(null) */
     return (
         <WebViewContainer
             style={{
@@ -19,6 +31,9 @@ function App() {
             contentContainerClasses="h-full"
         >
             <NoteDetailSheet />
+            <div className="w-full h-full flex flex-col justify-center items-center loading-show">
+                <LoadingComponent />
+            </div>
         </WebViewContainer>
     );
 }

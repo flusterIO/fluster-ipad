@@ -4,8 +4,10 @@ import { useMediaQuery } from "react-responsive";
 import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
 import { LoadingComponent } from "@/shared_components/loading_component";
-/* import { MdxPreviewScrollPersistor } from "#/mdx/components/mdx_preview_scroll_persistor"; */
+/* import { MdxParsingErrorIndicator } from "#/editor/code_editor/components/editor_parsing_error_indicator"; */
 
+
+// TODO: Fix this parsing error indicator
 export const ResponsiveSplitViewEditor = (): ReactNode => {
     const isLandscape = useMediaQuery({
         orientation: "landscape",
@@ -17,6 +19,7 @@ export const ResponsiveSplitViewEditor = (): ReactNode => {
                 <div className="w-full h-full flex flex-col justify-center items-center p-8 loading-main-only">
                     <LoadingComponent />
                 </div>
+                {/* <MdxParsingErrorIndicator /> */} 
             </CodeEditorProvider>
         </>
     );

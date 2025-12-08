@@ -69,9 +69,11 @@ export const CodeEditorInner = ({
                     if (timer.current) {
                         clearTimeout(timer.current);
                     }
-                    timer.current = setTimeout(() => {
-                        sendToSwift(updateHandler, payload);
-                    }, 500);
+                    if (payload !== initialValue) {
+                        timer.current = setTimeout(() => {
+                            sendToSwift(updateHandler, payload);
+                        }, 500);
+                    }
                     dispatch({
                         type: "setValue",
                         payload,
@@ -106,6 +108,7 @@ export const CodeEditorInner = ({
             });
         }
     });
+
     return <div className="h-full w-full" id={containerId} />;
 };
 

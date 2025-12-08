@@ -56,6 +56,12 @@ pub enum SplitviewEditorWebviewEvents {
     #[serde(rename = "reset-mdx-preview-scroll-position")]
     #[strum(to_string = "reset-mdx-preview-scroll-position")]
     ResetPreviewScrollPosition,
+    #[serde(rename = "mdx-parsing-error")]
+    #[strum(to_string = "mdx-parsing-error")]
+    EmitMdxParsingError,
+    #[serde(rename = "mdx-parsing-success")]
+    #[strum(to_string = "mdx-parsing-success")]
+    EmitMdxParsingSuccess,
 }
 
 #[typeshare]

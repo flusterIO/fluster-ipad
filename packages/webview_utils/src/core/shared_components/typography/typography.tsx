@@ -69,7 +69,7 @@ export function H4({
         <h4
             {...props}
             className={cn(
-                "block scroll-m-20 text-xl font-semibold tracking-tight",
+                "block scroll-m-20 text-xl font-semibold tracking-tight text-foreground",
                 className,
             )}
         >

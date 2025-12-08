@@ -8,6 +8,7 @@ body {
     width: 100vw;
     background-color: hsl(var(--background));
     scrollbar-width: none;
+    color: hsl(var(--foreground));
 }
 
 ::-webkit-scrollbar {
@@ -20,4 +21,22 @@ body {
     width: 100vw;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+}
+
+.loading-hide {
+    display: block;
+}
+
+.loading-show {
+    display: none;
+}
+
+body.loading {
+    .loading-hide {
+        display: none;
+    }
+
+    .loading-show {
+        display: flex;
+    }
 }

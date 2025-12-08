@@ -737,10 +737,11 @@ impl<'a> flatbuffers::Follow<'a> for NoteDetailDataBuffer<'a> {
 impl<'a> NoteDetailDataBuffer<'a> {
   pub const VT_NOTE_ID: flatbuffers::VOffsetT = 4;
   pub const VT_TITLE: flatbuffers::VOffsetT = 6;
-  pub const VT_TAGS: flatbuffers::VOffsetT = 8;
-  pub const VT_CITATIONS: flatbuffers::VOffsetT = 10;
-  pub const VT_LAST_MODIFIED_STRING: flatbuffers::VOffsetT = 12;
-  pub const VT_LAST_READ_STRING: flatbuffers::VOffsetT = 14;
+  pub const VT_SUMMARY: flatbuffers::VOffsetT = 8;
+  pub const VT_TAGS: flatbuffers::VOffsetT = 10;
+  pub const VT_CITATIONS: flatbuffers::VOffsetT = 12;
+  pub const VT_LAST_MODIFIED_STRING: flatbuffers::VOffsetT = 14;
+  pub const VT_LAST_READ_STRING: flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -756,6 +757,7 @@ impl<'a> NoteDetailDataBuffer<'a> {
     if let Some(x) = args.last_modified_string { builder.add_last_modified_string(x); }
     if let Some(x) = args.citations { builder.add_citations(x); }
     if let Some(x) = args.tags { builder.add_tags(x); }
+    if let Some(x) = args.summary { builder.add_summary(x); }
     if let Some(x) = args.title { builder.add_title(x); }
     if let Some(x) = args.note_id { builder.add_note_id(x); }
     builder.finish()
@@ -775,6 +777,13 @@ impl<'a> NoteDetailDataBuffer<'a> {
     // Created from valid Table for this object
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailDataBuffer::VT_TITLE, None).unwrap()}
+  }
+  #[inline]
+  pub fn summary(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(NoteDetailDataBuffer::VT_SUMMARY, None)}
   }
   #[inline]
   pub fn tags(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::TagResultBuffer<'a>>> {
@@ -815,6 +824,7 @@ impl flatbuffers::Verifiable for NoteDetailDataBuffer<'_> {
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("note_id", Self::VT_NOTE_ID, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("title", Self::VT_TITLE, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("summary", Self::VT_SUMMARY, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::TagResultBuffer>>>>("tags", Self::VT_TAGS, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<super::CitationResultBuffer>>>>("citations", Self::VT_CITATIONS, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("last_modified_string", Self::VT_LAST_MODIFIED_STRING, true)?
@@ -826,6 +836,7 @@ impl flatbuffers::Verifiable for NoteDetailDataBuffer<'_> {
 pub struct NoteDetailDataBufferArgs<'a> {
     pub note_id: Option<flatbuffers::WIPOffset<&'a str>>,
     pub title: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub summary: Option<flatbuffers::WIPOffset<&'a str>>,
     pub tags: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::TagResultBuffer<'a>>>>>,
     pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::CitationResultBuffer<'a>>>>>,
     pub last_modified_string: Option<flatbuffers::WIPOffset<&'a str>>,
@@ -837,6 +848,7 @@ impl<'a> Default for NoteDetailDataBufferArgs<'a> {
     NoteDetailDataBufferArgs {
       note_id: None, // required field
       title: None, // required field
+      summary: None,
       tags: None, // required field
       citations: None, // required field
       last_modified_string: None, // required field
@@ -857,6 +869,10 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> NoteDetailDataBufferBuilder<'a,
   #[inline]
   pub fn add_title(&mut self, title: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailDataBuffer::VT_TITLE, title);
+  }
+  #[inline]
+  pub fn add_summary(&mut self, summary: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(NoteDetailDataBuffer::VT_SUMMARY, summary);
   }
   #[inline]
   pub fn add_tags(&mut self, tags: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::TagResultBuffer<'b >>>>) {
@@ -900,6 +916,7 @@ impl core::fmt::Debug for NoteDetailDataBuffer<'_> {
     let mut ds = f.debug_struct("NoteDetailDataBuffer");
       ds.field("note_id", &self.note_id());
       ds.field("title", &self.title());
+      ds.field("summary", &self.summary());
       ds.field("tags", &self.tags());
       ds.field("citations", &self.citations());
       ds.field("last_modified_string", &self.last_modified_string());

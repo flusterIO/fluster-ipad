@@ -69,6 +69,8 @@ export enum SplitviewEditorWebviewEvents {
 	SetCodeThemeLight = "set-code-theme-light",
 	SetCodeThemeDark = "set-code-theme-dark",
 	ResetPreviewScrollPosition = "reset-mdx-preview-scroll-position",
+	EmitMdxParsingError = "mdx-parsing-error",
+	EmitMdxParsingSuccess = "mdx-parsing-success",
 }
 
 export enum SplitviewEditorWebviewLocalStorageKeys {

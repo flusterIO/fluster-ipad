@@ -4,6 +4,7 @@ import { MdxContent, MdxContentProps } from "./mdx_content";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
+import { SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export type MdxEditorPreviewProps = HTMLProps<HTMLDivElement> &
     Pick<MdxContentProps, "scrollPositionKey">;
@@ -51,6 +52,7 @@ export const MdxEditorPreview = ({
                 className,
             )}
             mdx={parsedValue}
+            showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
         />
     );
 };

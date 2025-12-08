@@ -58,6 +58,16 @@ public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWe
             window.setParsedEditorContentString(\(content.toQuotedJavascriptString()))
             """)
     }
+    public func emitMdxParsingError() {
+        self.runJavascript("""
+            window.emitMdxParsingError()
+            """)
+    }
+    public func emitMdxParsingSuccess() {
+        self.runJavascript("""
+            window.emitMdxParsingSuccess()
+            """)
+    }
     public func setParsedEditorContent(content: Data) {
         let bytes: [UInt8] = Array(content)
         self.runJavascript("""

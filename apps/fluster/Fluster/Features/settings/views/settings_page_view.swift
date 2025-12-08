@@ -17,6 +17,8 @@ struct SettingsPageView: View {
         var editorThemeLight: CodeSyntaxTheme = .githubLight
     @AppStorage(AppStorageKeys.colorScheme.rawValue) private
         var colorSchemeSelection: ColorSchemeSelection = .dark
+    @AppStorage(AppStorageKeys.silenceParsingErrors.rawValue) private
+        var silenceParsingErrors: Bool = false
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
     var body: some View {
@@ -29,6 +31,8 @@ struct SettingsPageView: View {
                 FontSizePicker()
             }
             .listRowSeparator(.hidden)
+            Text("Editor")
+                .font(.title)
             Section(header: Text("Keymap")) {
                 EditorKeymapPickerView()
             }
@@ -43,6 +47,10 @@ struct SettingsPageView: View {
                     title: "Light Mode"
                 )
             }
+            Toggle(isOn: $silenceParsingErrors, label: {
+                Text("Silence parsing errors")
+            })
+            .tint(themeManager.theme.primary)
         }
         .navigationTitle("Settings")
     }

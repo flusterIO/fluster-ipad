@@ -43,6 +43,8 @@ struct MainView: View {
         .fluster
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
         var webviewFontSize: WebviewFontSize = .base
+    @AppStorage(AppStorageKeys.silenceParsingErrors.rawValue) private
+        var silenceParsingErrors: Bool = false
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @Environment(\.modelContext) var modelContext: ModelContext
     @AppStorage(AppStorageKeys.colorScheme.rawValue) private
@@ -114,6 +116,7 @@ struct MainView: View {
                     .frame(
                         alignment: .bottom
                     )
+                    // TODO: Remove this. This is just for easy development.
                     .scrollDisabled(true)
                     .onAppear {
                         if let parsedMdx = editingNote?.markdown.preParsedBody {
@@ -124,7 +127,7 @@ struct MainView: View {
                         UIScrollView.appearance().bounces = false
                         UIScrollView.appearance().isScrollEnabled = false
                     }
-                    .onDisappear{
+                    .onDisappear {
                         UIScrollView.appearance().bounces = true
                         UIScrollView.appearance().isScrollEnabled = true
                     }
@@ -153,12 +156,10 @@ struct MainView: View {
                 value: IpadMainViewTab.noteDetail
             ) {
                 if let note = editingNote {
-                    GeometryReader { rect in
-                        NavigationStack {
-                            NoteDetailWebview(
-                                note: note,
-                            )
-                        }
+                    NavigationStack {
+                        NoteDetailWebview(
+                            note: note,
+                        )
                     }
                 } else {
                     SelectNoteToContinueView()
@@ -265,21 +266,27 @@ struct MainView: View {
             of: editingNote?.markdown.body,
             {
                 Task {
-                    print("Note body changed")
+                    // NOTE: Don't set the last read state with setModified: true here. It's being set in the event to avoid setting it on the initial render.
                     if let note = editingNote {
                         if let parsedMdx =
                             await note.markdown
                             .body.preParseAsMdxToBytes()
                         {
+                            editorContainer.emitMdxParsingSuccess()
                             editorContainer.setParsedEditorContent(
                                 content: parsedMdx
                             )
-                            if let parsingResults = parsedMdx.toMdxParsingResult() {
+                            if let parsingResults =
+                                parsedMdx.toMdxParsingResult()
+                            {
                                 note.applyMdxParsingResults(
                                     results: parsingResults,
                                 )
                             }
                         } else {
+                            if !silenceParsingErrors {
+                                editorContainer.emitMdxParsingError()
+                            }
                             print("Could not parse mdx.")
                         }
                     }

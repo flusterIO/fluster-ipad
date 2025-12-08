@@ -17,10 +17,11 @@ export const MdxEditorPreviewOnly = (
             payload: e.detail,
         });
     });
+    /* useE */
     return (
         <MdxEditorPreview
             {...props}
-            className={cn("loading-main-hide", props.className)}
+            className={cn("loading-main-hide h-full", props.className)}
             scrollPositionKey={MDX_EDITOR_PREVIEW_SCROLL_PORTRAIT_KEY}
             id={MDX_EDITOR_PREVIEW_ID_PORTRAIT}
         />

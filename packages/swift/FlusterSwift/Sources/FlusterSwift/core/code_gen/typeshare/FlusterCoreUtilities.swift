@@ -70,6 +70,8 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 	case setCodeThemeLight = "set-code-theme-light"
 	case setCodeThemeDark = "set-code-theme-dark"
 	case resetPreviewScrollPosition = "reset-mdx-preview-scroll-position"
+	case emitMdxParsingError = "mdx-parsing-error"
+	case emitMdxParsingSuccess = "mdx-parsing-success"
 }
 
 public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
