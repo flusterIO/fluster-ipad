@@ -30,17 +30,26 @@ public struct TopicSearchResultListView: View {
         }
     }
     public var body: some View {
-        if (topics.isEmpty && topicQuery.isEmpty) {
-            NoNotesFoundView(title: "No topics found", subtitle: "Add a topic to your note to filter your notes by topic here.")
+        if topics.isEmpty && topicQuery.isEmpty {
+            NoNotesFoundView(
+                title: "No topics found",
+                subtitle:
+                    "Add a topic to your note to filter your notes by topic here."
+            )
+            .navigationTitle("Topics")
         } else {
             List(topics) { topic in
                 NavigationLink(
                     destination: {
-                        NoteSearchResultsByTopicView(topic: topic, editingNote: $editingNote)
+                        NoteSearchResultsByTopicView(
+                            topic: topic,
+                            editingNote: $editingNote
+                        )
                     },
                     label: {
                         Text(topic.value)
-                    })
+                    }
+                )
             }
             .searchable(text: $topicQuery, prompt: "Search Topics")
             .navigationTitle("Topics")

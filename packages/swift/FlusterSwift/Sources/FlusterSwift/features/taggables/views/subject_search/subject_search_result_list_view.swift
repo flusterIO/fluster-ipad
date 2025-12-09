@@ -11,6 +11,10 @@ import SwiftUI
 public struct SubjectSearchResultListView: View {
     @Query(sort: \SubjectModel.lastAccess, order: .reverse) private
         var subjects: [SubjectModel]
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Environment(\.modelContext) private var modelContext: ModelContext
+    @State private var showDeleteConfirmation: Bool = false
+    @State private var subjectToDelete: SubjectModel?
     @Binding var subjectQuery: String
     @Binding var editingNote: NoteModel?
     public init(subjectQuery: Binding<String>, editingNote: Binding<NoteModel?>)
@@ -39,22 +43,77 @@ public struct SubjectSearchResultListView: View {
             )
             .navigationTitle("Subjects")
         } else {
-            List(subjects) { subject in
+            List(subjects, id: \.id) { subject in
                 NavigationLink(
                     destination: {
                         NoteSearchResultsBySubjectView(
-                            subject: subject,
+                            subject: subject as! SubjectModel,
                             editingNote: $editingNote
                         )
                     },
                     label: {
-                        Text(subject.value)
+                        Text((subject as! SubjectModel).value)
                     }
+                )
+                .swipeActions(
+                    edge: .leading,
+                    content: {
+                        Button(
+                            action: {
+                                subjectToDelete = subject
+                                showDeleteConfirmation = true
+                            },
+                            label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        )
+                        .tint(themeManager.theme.destructive)
+                    },
                 )
             }
             .searchable(text: $subjectQuery, prompt: "Search Subjects")
             .navigationTitle("Subjects")
+            .confirmationDialog(
+                "deleteSubjectConfirmation",
+                isPresented: $showDeleteConfirmation,
+                actions: {
+                    Button(action: {
+                        Task {
+                            if let _subjectToDelete = subjectToDelete {
+                                await deleteSubject(_subjectToDelete)
+                            }
+                        }
+                    }, label: {
+                        Label("Delete", systemImage: "trash")
+                    })
+                    .tint(themeManager.theme.destructive)
+                    .foregroundStyle(themeManager.theme.destructive_foreground)
+                },
+                message: {
+                    Text("Are you sure you want to remove this subject? This will automatically remove this subject from all associated notes.")
+                }
+            )
         }
+    }
+    
+    func deleteSubject(_ subject: SubjectModel) async {
+        let subjectValue = subject.value
+        let noteFetchDescriptor = FetchDescriptor<NoteModel>(
+            predicate: #Predicate<NoteModel> { note in
+                note.subject?.value == subjectValue
+            }
+        )
+        
+        do {
+            let noteResults = try modelContext.fetch(noteFetchDescriptor)
+            for n in noteResults {
+                n.subject = nil
+            }
+        } catch {
+            print("An error occurred while deleting tags \(error)")
+        }
+        
+        modelContext.delete(subject)
     }
 }
 
