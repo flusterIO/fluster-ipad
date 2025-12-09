@@ -40,6 +40,8 @@ func getInitialTheme() -> WebViewTheme {
 struct MainView: View {
     @State private var toolbar = PKToolPicker()
     @State private var tagQuery: String = ""
+    @State private var subjectQuery: String = ""
+    @State private var topicQuery: String = ""
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
         .fluster
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
@@ -230,6 +232,38 @@ struct MainView: View {
                         }
                     }
                     .customizationID(IpadMainViewTab.searchByTag.rawValue)
+                    .customizationBehavior(.disabled, for: .tabBar)
+                    .defaultVisibility(.hidden, for: .tabBar)
+                    Tab(
+                        "Topics",
+                        systemImage: "magnifyingglass.circle.fill",
+                        value: IpadMainViewTab.searchByTopic,
+                    ) {
+                        NavigationStack {
+                            TopicSearchResultListView(
+                                topicQuery: $topicQuery,
+                                editingNote: $editingNote
+                            )
+                            .navigationTitle("Topics")
+                        }
+                    }
+                    .customizationID(IpadMainViewTab.searchByTopic.rawValue)
+                    .customizationBehavior(.disabled, for: .tabBar)
+                    .defaultVisibility(.hidden, for: .tabBar)
+                    Tab(
+                        "Subjects",
+                        systemImage: "magnifyingglass.circle.fill",
+                        value: IpadMainViewTab.searchBySubject,
+                    ) {
+                        NavigationStack {
+                            SubjectSearchResultListView(
+                                subjectQuery: $subjectQuery,
+                                editingNote: $editingNote
+                            )
+                            .navigationTitle("Subjects")
+                        }
+                    }
+                    .customizationID(IpadMainViewTab.searchBySubject.rawValue)
                     .customizationBehavior(.disabled, for: .tabBar)
                     .defaultVisibility(.hidden, for: .tabBar)
                 }

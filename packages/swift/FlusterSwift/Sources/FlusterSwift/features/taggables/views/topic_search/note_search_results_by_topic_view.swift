@@ -5,16 +5,15 @@
 //  Created by Andrew on 12/9/25.
 //
 
-import SwiftData
 import SwiftUI
+import SwiftData
 
-struct NoteSearchResultsByTagView: View {
+struct NoteSearchResultsByTopicView: View {
     @Query(sort: \NoteModel.last_read, order: .reverse) private var notes:
         [NoteModel]
     @State private var noteQuery: String = ""
     @Binding var editingNote: NoteModel?
-    let tag: TagModel
-
+    let topic: TopicModel
     var filteredNotes: [NoteModel] {
         return noteQuery.isEmpty
             ? notes
@@ -24,11 +23,11 @@ struct NoteSearchResultsByTagView: View {
                 filterNoMatch: true
             )
     }
-
-    public init(tag: TagModel, editingNote: Binding<NoteModel?>) {
+    
+    public init(topic: TopicModel, editingNote: Binding<NoteModel?>) {
         self._editingNote = editingNote
-        self.tag = tag
-        let queryValue = tag.value
+        self.topic = topic
+        let queryValue = topic.value
         _notes = Query(
             filter: #Predicate<NoteModel> { note in
                 note.tags.contains(where: { $0.value == queryValue })
@@ -38,6 +37,7 @@ struct NoteSearchResultsByTagView: View {
         )
     }
 
+    
     var body: some View {
         ZStack {
             List(filteredNotes) { note in
@@ -55,8 +55,8 @@ struct NoteSearchResultsByTagView: View {
 }
 
 #Preview {
-    NoteSearchResultsByTagView(
-        tag: TagModel(value: "myTag"),
+    NoteSearchResultsByTopicView(
+        topic: TopicModel(value: "math"),
         editingNote: .constant(nil)
     )
 }
