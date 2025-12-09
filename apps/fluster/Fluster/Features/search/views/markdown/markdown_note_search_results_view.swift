@@ -5,27 +5,28 @@
 //  Created by Andrew on 11/2/25.
 //
 
+import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 struct MarkdownNotesSearchResultsWrappedQuery: View {
     @Environment(\.modelContext) var modelContext
-    @Query var notes: [NoteModel]
+    @Query(sort: \NoteModel.last_read, order: .reverse) var notes: [NoteModel]
     @State private var confirmationDeleteModalOpen: Bool = false
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
     @Binding var editingNote: NoteModel?
     @Binding var searchQuery: String
-    
+
     var sortedNotes: [NoteModel] {
-        return searchQuery.isEmpty ? notes : MdxTextUtils.sortNotesByMarkdownBodyMatch(notes: notes, query: searchQuery)
+        return searchQuery.isEmpty
+            ? notes : MdxTextUtils.sortNotesByMarkdownBodyMatch(notes: notes, query: searchQuery, filterNoMatch: false)
     }
 
     init(editingNote: Binding<NoteModel?>, searchQuery: Binding<String>) {
         _editingNote = editingNote
         _searchQuery = searchQuery
-        let _query = searchQuery.wrappedValue // Can't use getter in predicate
-        if (!searchQuery.wrappedValue.isEmpty) {
+        let _query = searchQuery.wrappedValue  // Can't use getter in predicate
+        if !searchQuery.wrappedValue.isEmpty {
             _notes = Query(
                 filter: #Predicate<NoteModel> { note in
                     note.markdown._body.localizedStandardContains(

@@ -5,13 +5,13 @@
 //  Created by Andrew on 11/27/25.
 //
 
+import FlatBuffers
 import FlusterRust
 import FlusterSwift
 import Foundation
 import PencilKit
 import SwiftData
 import SwiftyBibtex
-import FlatBuffers
 
 public enum AppSchemaV1: VersionedSchema {
     public static var models: [any PersistentModel.Type] {
@@ -40,7 +40,9 @@ extension AppSchemaV1 {
                 userDefinedId: nil
             )
         }
-        public func applyRustFrontMatterResult(res: MdxSerialization_FrontMatterResultBuffer) {
+        public func applyRustFrontMatterResult(
+            res: MdxSerialization_FrontMatterResultBuffer
+        ) {
             if res.title != nil, !res.title!.isEmpty {
                 self.title = res.title
             }
@@ -123,7 +125,13 @@ extension AppSchemaV1 {
             var tags: [TagModel] = []
             for i in (0..<results.tagsCount) {
                 if let t = results.tags(at: i) {
-                    tags.append(TagModel(value: t.body))
+                    if let existingResult = self.tags.first(where: {
+                        $0.value == t.body
+                    }) {
+                        tags.append(existingResult)
+                    } else {
+                        tags.append(TagModel(value: t.body))
+                    }
                 }
             }
             self.tags = tags

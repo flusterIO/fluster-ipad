@@ -65,7 +65,7 @@ public struct MdxTextUtils {
     }
 
     /// This function assumes that all 'notes' have been validated to be a match by the database query. Otherwise  all notes will return to be a match.
-    public static func sortNotesByMarkdownBodyMatch(notes: [NoteModel], query: String)
+    public static func sortNotesByMarkdownBodyMatch(notes: [NoteModel], query: String, filterNoMatch: Bool = true)
         -> [NoteModel]
     {
         var h1Results: [NoteModel] = []
@@ -100,13 +100,11 @@ public struct MdxTextUtils {
                     default:
                         bodyResults.append(note)
                     }
-                } else {
+                } else if !filterNoMatch {
                     bodyResults.append(note)
                 }
             }
         }
-
-        print("H1 match length \(h1Results.count)")
 
         return h1Results + h2Results + h3Results + h4Results + h5Results
             + h6Results + bodyResults

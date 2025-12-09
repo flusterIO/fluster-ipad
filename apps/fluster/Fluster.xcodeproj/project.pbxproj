@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		79516C4D2EE893ED00573A77 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 79516C4C2EE893ED00573A77 /* splitview_mdx_editor */; };
 		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
-		79F74C8A2EDE1EFB00E00653 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 79F74C892EDE1EFB00E00653 /* splitview_mdx_editor */; };
 		79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F936DE2EE38B8000777CDB /* note_detail_webview */; };
 		79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */ = {isa = PBXBuildFile; fileRef = 79FA54412ED8BB5F00D16F68 /* initial_note_docs */; };
 		79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79FB1F542ED928FB0041E1E0 /* FlusterSwift */; };
@@ -18,6 +18,8 @@
 
 /* Begin PBXFileReference section */
 		7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_editor; path = ../../packages/webviews/standalone_mdx_editor/standalone_mdx_editor; sourceTree = "<group>"; };
+		79516C4B2EE8933900573A77 /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
+		79516C4C2EE893ED00573A77 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
 		796F71042EB174610012B500 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		797DB4F32EDF70700047C0F4 /* FlusterRust */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlusterRust; path = ../../packages/rust/fluster_rust/FlusterRust; sourceTree = "<group>"; };
 		79AC14432EDB4D1700E3773F /* standalone_mdx_preview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview; sourceTree = "<group>"; };
@@ -65,7 +67,9 @@
 		796F70FB2EB174610012B500 = {
 			isa = PBXGroup;
 			children = (
+				79516C4C2EE893ED00573A77 /* splitview_mdx_editor */,
 				79F936DE2EE38B8000777CDB /* note_detail_webview */,
+				79516C4B2EE8933900573A77 /* note_detail_webview */,
 				79F74C892EDE1EFB00E00653 /* splitview_mdx_editor */,
 				79AC14432EDB4D1700E3773F /* standalone_mdx_preview */,
 				7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */,
@@ -167,8 +171,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79516C4D2EE893ED00573A77 /* splitview_mdx_editor in Resources */,
 				79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */,
-				79F74C8A2EDE1EFB00E00653 /* splitview_mdx_editor in Resources */,
 				79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */,
 				79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */,
 			);
@@ -191,8 +195,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This will clear the dist directory in the iOS app if there is one from a previous build\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/dist\"\n\ncd $FLUSTER_IOS_ROOT\n\n# /usr/bin/make pre_ipad_build\n";
+			shellPath = /bin/zsh;
+			shellScript = "# This will clear the dist directory in the iOS app if there is one from a previous build\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/dist\"\n\ncd $FLUSTER_IOS_ROOT\n\n# echo $(which make)\n# /usr/bin/make pre_ipad_build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

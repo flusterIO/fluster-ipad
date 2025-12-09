@@ -42,13 +42,6 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
             NoteDetailWebviewActions.requestNoteDetailData.rawValue,
             NoteDetailWebviewActions.setWebviewLoaded.rawValue,
         ]
-        if colorScheme == .dark {
-            webView.evaluateJavaScript(
-                """
-                document.body.classList.add("dark"); null;
-                """
-            )
-        }
         for controllerName in editorContentControllers {
             addUserContentController(
                 controller: webView.configuration.userContentController,
@@ -58,6 +51,14 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
         }
 
         webView.loadFileURL(url, allowingReadAccessTo: url)
+        
+        if colorScheme == .dark {
+            webView.evaluateJavaScript(
+                """
+                document.body.classList.add("dark"); null;
+                """
+            )
+        }
 
         return webView
     }
@@ -146,6 +147,7 @@ public struct NoteDetailWebview: View {
                 show: $show,
                 container: container
             )
+            .scrollDisabled(true)
             if !show {
                 ProgressView()
                     .progressViewStyle(.circular)
@@ -153,30 +155,23 @@ public struct NoteDetailWebview: View {
                     .tint(.blue)
             }
         }
-        .onChange(
-            of: note,
-            {
-                if self.show {
-                    container.setNoteDetails(note: note)
-                }
-            }
-        )
-        .onChange(
-            of: show,
-            {
-                if self.show {
-                    container.setNoteDetails(note: note)
-                }
-            }
-        )
-        .onChange(
-            of: note.markdown.body,
-            {
-                if self.show {
-                    container.setNoteDetails(note: note)
-                }
-            }
-        )
+        .background(colorScheme == .dark ? .black : .white)
+//        .onChange(
+//            of: note,
+//            {
+//                if self.show {
+//                    container.setNoteDetails(note: note)
+//                }
+//            }
+//        )
+//        .onChange(
+//            of: note.markdown.body,
+//            {
+//                if self.show {
+//                    container.setNoteDetails(note: note)
+//                }
+//            }
+//        )
         .onChange(
             of: colorScheme,
             {
