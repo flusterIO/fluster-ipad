@@ -8,6 +8,70 @@ import Common
 
 import FlatBuffers
 
+public struct SharedWebviewData_WebviewJavascriptError: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case message = 4
+    case url = 6
+    case line = 8
+    case column = 10
+    case error = 12
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var message: String? { let o = _accessor.offset(VTOFFSET.message.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var messageSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.message.v) }
+  public var url: String? { let o = _accessor.offset(VTOFFSET.url.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var urlSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.url.v) }
+  public var line: String? { let o = _accessor.offset(VTOFFSET.line.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var lineSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.line.v) }
+  public var column: String? { let o = _accessor.offset(VTOFFSET.column.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var columnSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.column.v) }
+  public var error: String? { let o = _accessor.offset(VTOFFSET.error.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var errorSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.error.v) }
+  public static func startWebviewJavascriptError(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 5) }
+  public static func add(message: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: message, at: VTOFFSET.message.p) }
+  public static func add(url: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: url, at: VTOFFSET.url.p) }
+  public static func add(line: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: line, at: VTOFFSET.line.p) }
+  public static func add(column: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: column, at: VTOFFSET.column.p) }
+  public static func add(error: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: error, at: VTOFFSET.error.p) }
+  public static func endWebviewJavascriptError(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); return end }
+  public static func createWebviewJavascriptError(
+    _ fbb: inout FlatBufferBuilder,
+    messageOffset message: Offset = Offset(),
+    urlOffset url: Offset = Offset(),
+    lineOffset line: Offset = Offset(),
+    columnOffset column: Offset = Offset(),
+    errorOffset error: Offset = Offset()
+  ) -> Offset {
+    let __start = SharedWebviewData_WebviewJavascriptError.startWebviewJavascriptError(&fbb)
+    SharedWebviewData_WebviewJavascriptError.add(message: message, &fbb)
+    SharedWebviewData_WebviewJavascriptError.add(url: url, &fbb)
+    SharedWebviewData_WebviewJavascriptError.add(line: line, &fbb)
+    SharedWebviewData_WebviewJavascriptError.add(column: column, &fbb)
+    SharedWebviewData_WebviewJavascriptError.add(error: error, &fbb)
+    return SharedWebviewData_WebviewJavascriptError.endWebviewJavascriptError(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.message.p, fieldName: "message", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.url.p, fieldName: "url", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.line.p, fieldName: "line", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.column.p, fieldName: "column", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.error.p, fieldName: "error", required: false, type: ForwardOffset<String>.self)
+    _v.finish()
+  }
+}
+
 public struct MdxSerialization_CitationResultBuffer: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }

@@ -6,6 +6,7 @@ import WebKit
     let config = WKWebViewConfiguration()
     config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
     config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+//    config.preferences.setValue(true, forKey: "")
     return config
 }
 
@@ -48,8 +49,10 @@ where WebviewEventsType.RawValue == String {
     public func runJavascript(_ script: String) {
         self.webView.evaluateJavaScript(script) { result, error in
             if let error = error {
+                print("--- Error ---")
                 print("Error executing JS: \(error.localizedDescription)")
                 print("Command: \(script)")
+                print("-------------")
             } else if let result = result {
                 print("JS Result: \(result)")
             }
@@ -70,30 +73,28 @@ where WebviewEventsType.RawValue == String {
     public func preShow(colorScheme: ColorScheme) {
         self.runJavascript(
             """
-            document.body.classList.add('\(colorScheme == .dark ? "dark" : "light")')
+            document.body.classList.add('\(colorScheme == .dark ? "dark" : "light")'); null;
             """
         )
     }
     public func setWebviewTheme(theme: WebViewTheme) {
         self.runJavascript(
             """
-            window.setWebviewTheme("\(theme.rawValue)")
+            window.setWebviewTheme("\(theme.rawValue)"); null;
             """
         )
     }
     public func setWebviewFontSize(fontSize: WebviewFontSize) {
         self.runJavascript(
             """
-            window.localStorage.setItem("webview-font-class", "\(fontSize.cssClass())");
-            window.setWebViewFontSize('\(fontSize.cssClass())');
+            window.setWebViewFontSize('\(fontSize.cssClass())'); null;
             """
         )
     }
     public func applyWebViewColorScheme(darkMode: Bool) {
         self.runJavascript(
             """
-            window.localStorage.setItem("dark-mode", "\(darkMode ? "true" : "false")")
-            window.setDarkMode(\(darkMode ? "true" : "false"))
+            window.setDarkMode(\(darkMode ? "true" : "false")); null;
             """
         )
     }
@@ -101,21 +102,21 @@ where WebviewEventsType.RawValue == String {
     public func requestDocumentSize() {
         self.runJavascript(
             """
-            window.requestDocumentSize()
+            window.requestDocumentSize(); null;
             """
         )
     }
     public func addClassToWebviewContainer(className: String) {
         self.runJavascript(
             """
-            document.getElementById("webview-container")?.classList.add("\(className)")
+            document.getElementById("webview-container")?.classList.add("\(className)"); null;
             """
         )
     }
     public func removeClassFromWebviewContainer(className: String) {
         self.runJavascript(
             """
-            document.getElementById("webview-container")?.classList.remove("\(className)")
+            document.getElementById("webview-container")?.classList.remove("\(className)"); null;
             """
         )
     }
@@ -134,7 +135,7 @@ where WebviewEventsType.RawValue == String {
         if width != nil && height != nil {
             self.runJavascript(
                 """
-                window.setScreenSize(\(width), \(height))
+                window.setScreenSize(\(width), \(height)); null;
                 """
             )
         }

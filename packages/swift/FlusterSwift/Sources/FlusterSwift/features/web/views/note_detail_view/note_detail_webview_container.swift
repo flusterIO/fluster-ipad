@@ -15,6 +15,7 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
     NoteDetailWebviewEvents
 >
 {
+
     public func setNoteDetails(note: NoteModel) {
         var builder = FlatBufferBuilder(initialSize: 1024)
         var noteIdOffset = builder.create(string: note.id)
@@ -74,9 +75,14 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
                 )
             )
         builder.finish(offset: details)
-        self.runJavascript("""
-            window.setNoteDetails(\(builder.sizedByteArray))
+        let bytes: [UInt8] = Array(builder.data)
+        self.runJavascript(
+            """
+            window.dispatchEvent(
+                new CustomEvent("\(NoteDetailWebviewEvents.setNoteDetails.rawValue)", {
+                    detail: \(bytes),
+                }),
+            );
             """)
-        
     }
 }

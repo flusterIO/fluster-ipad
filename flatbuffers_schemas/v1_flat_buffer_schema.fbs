@@ -1,4 +1,14 @@
 
+namespace SharedWebviewData;
+
+table WebviewJavascriptError {
+    message:string;
+    url:string;
+    line:string;
+    column:string;
+    error:string;
+}
+
 namespace MdxSerialization;
 
 table CitationResultBuffer {

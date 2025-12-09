@@ -49,6 +49,11 @@ export enum NoteDetailWebviewEvents {
 }
 
 /** From typescript to swift. */
+export enum SharedWebviewActions {
+	JavascriptError = "javascript-error",
+}
+
+/** From typescript to swift. */
 export enum SplitviewEditorWebviewActions {
 	RequestSplitviewEditorData = "request-editor-data",
 	RequestParsedMdxContent = "request-parsed-mdx",

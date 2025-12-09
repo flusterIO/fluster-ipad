@@ -12,7 +12,7 @@ function App() {
             style={{
                 backgroundColor: "hsl(var(--background))",
             }}
-            contentContainerClasses="h-full relative"
+            contentContainerClasses="h-full"
         >
             <ResponsiveSplitViewEditor />
         </WebViewContainer>

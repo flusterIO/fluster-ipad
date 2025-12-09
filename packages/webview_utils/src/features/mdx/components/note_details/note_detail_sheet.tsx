@@ -1,5 +1,5 @@
 import { NoteDetailWebviewActions, NoteDetailWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities';
-import { H1, H3, H4 } from '@/shared_components/typography/typography';
+import { H3 } from '@/shared_components/typography/typography';
 import { useEventListener } from '@/state/hooks/use_event_listener';
 import { sendToSwift } from '@/utils/bridge/send_to_swift';
 import React, { useEffect, useMemo, useState, type ReactNode } from 'react'
@@ -9,14 +9,18 @@ import { NoteDetailDataBuffer } from '@/code_gen/flat_buffer/mdx-serialization/n
 import { LoadingComponent } from '@/shared_components/loading_component';
 import { InlineMdxContent } from '../inline_mdx_content';
 import { CitationResultBuffer, TagResultBuffer } from '@/code_gen/flat_buffer/mdx-serialization';
+import { setWindowBridgeFunctions } from '#/editor/code_editor/types/swift_events/swift_events';
+import { setWebviewWindowBridgeFunctions } from '#/webview_container/state/swift_events/webview_swift_events';
+import { ErrorBoundary } from 'react-error-boundary';
 
+setWindowBridgeFunctions();
+setWebviewWindowBridgeFunctions();
 
 declare global {
     interface WindowEventMap {
         [NoteDetailWebviewEvents.SetNoteDetails]: CustomEvent<number[]>;
     }
 }
-
 
 const Subtitle = ({ children }: { children: ReactNode }): ReactNode => {
     return (
@@ -27,7 +31,6 @@ const Subtitle = ({ children }: { children: ReactNode }): ReactNode => {
 export const NoteDetailSheet = (): ReactNode => {
     const [data, setData] = useState<NoteDetailDataBuffer | null>(null)
     useEventListener(NoteDetailWebviewEvents.SetNoteDetails, (e) => {
-        console.log("e: ", e)
         try {
             const bytes = new Uint8Array(e.detail);
             const buf = new ByteBuffer(bytes)
@@ -56,10 +59,13 @@ export const NoteDetailSheet = (): ReactNode => {
             const x = data.tags(i)
             if (x) {
                 t.push(x)
+            } else {
+                console.error("Could not load tag")
             }
         }
         return t
-    }, [data])
+    }, [data]);
+
     const citations = useMemo(() => {
         if (!data) {
             return null
@@ -69,6 +75,8 @@ export const NoteDetailSheet = (): ReactNode => {
             const x = data.citations(i)
             if (x) {
                 t.push(x)
+            } else {
+                console.error("Could not load citation")
             }
         }
         return t
@@ -86,53 +94,61 @@ export const NoteDetailSheet = (): ReactNode => {
 
 
     return (
-        <div className="w-full h-full flex flex-col justify-start items-center px-8 py-12">
-            <div className="w-full h-screen loading-hide max-w-[768px]">
-                <Subtitle>Title</Subtitle>
-                <div className="block scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                    <InlineMdxContent className="pb-4 pt-2" mdx={`# ${data.title() ?? "No title found"}`} />
+        <ErrorBoundary
+            fallbackRender={() => (
+                <div className="w-full h-full flex flex-col justify-center items-center px-6">
+                    <div className="text-xl text-foreground/80">An error occurred while gathering your note's details</div>
                 </div>
-                <div className="text-muted-foreground text-light">{`Last modified ${data.lastModifiedString() ?? 'unknown'}`}</div>
-                <div className="text-muted-foreground text-light">{`Last read ${data.lastReadString() ?? 'unknown'}`}</div>
-                <div className="w-full h-[2px] bg-muted-foreground/60 my-6" />
-                {summary ? (
-                    <>
-                        <Subtitle>Summary</Subtitle>
-                        <div className="text-lg text-foreground/80">{summary}</div>
-                    </>
-                ) : null}
-                <Subtitle>{`Tags (${tags?.length ?? 0})`}</Subtitle>
-                {tags?.length ? (
-                    <div className="flex flex-row justify-start items-center gap-4">
-                        {tags.map((t) => (
-                            <div className="bg-primary/70 text-primary-foreground rounded-lg px-2 py-1">
-                                {t.body()}
-                            </div>
-                        ))}
+            )}
+        >
+            <div className="w-full h-full flex flex-col justify-start items-center px-8 py-12">
+                <div className="w-full h-screen loading-hide max-w-[768px]">
+                    <Subtitle>Title</Subtitle>
+                    <div className="block scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+                        <InlineMdxContent className="pb-4 pt-2" mdx={`# ${data.title() ?? "No title found"}`} />
                     </div>
-                ) : (
-                    <div className="w-full flex flex-row justify-center items-center">
-                        <div className="text-lg text-muted-foreground">
-                            No tags
+                    <div className="text-muted-foreground text-light">{`Last modified ${data.lastModifiedString() ?? 'unknown'}`}</div>
+                    <div className="text-muted-foreground text-light">{`Last read ${data.lastReadString() ?? 'unknown'}`}</div>
+                    <div className="w-full h-[2px] bg-muted-foreground/60 my-6" />
+                    {summary ? (
+                        <>
+                            <Subtitle>Summary</Subtitle>
+                            <div className="text-lg text-foreground/80">{summary}</div>
+                        </>
+                    ) : null}
+                    <Subtitle>{`Tags (${tags?.length ?? 0})`}</Subtitle>
+                    {tags?.length ? (
+                        <div className="flex flex-row justify-start items-center gap-4 mt-2 mb-4">
+                            {tags.map((t) => (
+                                <div className="bg-primary/70 text-primary-foreground rounded-lg px-2 py-1 cursor-pointer">
+                                    {t.body()}
+                                </div>
+                            ))}
                         </div>
-                    </div>
-                )}
-                <Subtitle>{`Citations (${data.citationsLength()})`}</Subtitle>
-                {citations?.length ? citations.map((c) => {
-                    return (
-                        <div className="w-full px-4 py-3 rounded-lg">
-                            <div className="font-bold text-lg">
-                                <InlineMdxContent abortIfNoMath mdx={c.body() ?? ""} />
+                    ) : (
+                        <div className="w-full flex flex-row justify-center items-center mt-2 mb-4">
+                            <div className="text-lg text-muted-foreground">
+                                No tags
                             </div>
                         </div>
-                    )
-                }) : (
-                    <div className="flex flex-row justify-center items-center px-4">
-                        <div className="text-lg text-muted-foreground">No citations</div>
-                    </div>
-                )}
+                    )}
+                    <Subtitle>{`Citations (${data.citationsLength()})`}</Subtitle>
+                    {citations?.length ? citations.map((c) => {
+                        return (
+                            <div className="w-full px-4 py-3 rounded-lg">
+                                <div className="font-bold text-lg">
+                                    <InlineMdxContent abortIfNoMath mdx={c.body() ?? ""} />
+                                </div>
+                            </div>
+                        )
+                    }) : (
+                        <div className="flex flex-row justify-center items-center px-4">
+                            <div className="text-lg text-muted-foreground">No citations</div>
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+        </ErrorBoundary>
     )
 }
 

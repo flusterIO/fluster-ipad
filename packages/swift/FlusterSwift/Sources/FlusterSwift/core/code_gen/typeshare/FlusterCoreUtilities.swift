@@ -50,6 +50,11 @@ public enum NoteDetailWebviewEvents: String, Codable {
 }
 
 /// From typescript to swift.
+public enum SharedWebviewActions: String, Codable {
+	case javascriptError = "javascript-error"
+}
+
+/// From typescript to swift.
 public enum SplitviewEditorWebviewActions: String, Codable {
 	case requestSplitviewEditorData = "request-editor-data"
 	case requestParsedMdxContent = "request-parsed-mdx"

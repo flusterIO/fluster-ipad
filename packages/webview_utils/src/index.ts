@@ -13,6 +13,9 @@ export * from "./core/shared_components/loading/loading_component";
 export * from "./core/utils/windowUtils/get_orientation";
 export * from "./core/utils/bridge/send_to_swift";
 export * from "./core/state/hooks/use_webview_loaded_event";
+export * from "./features/webview_container/utils/webview_on_error";
+export * from "./features/webview_container/utils/uint8FromBase64";
+export * from "./features/webview_container/utils/uint8ToBase64";
 
 // -- Typography --
 export * from "./core/shared_components/typography/typography";

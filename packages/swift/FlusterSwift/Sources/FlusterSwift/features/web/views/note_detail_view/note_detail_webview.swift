@@ -8,24 +8,31 @@
 import SwiftUI
 import WebKit
 
-
-public struct NoteDetailWebview: UIViewRepresentable {
-    @State private var show: Bool = false
+public struct NoteDetailWebviewInternal: UIViewRepresentable {
+    @State private var lastNoteId: String? = nil
+    @State private var didSetInitialContent: Bool = false
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     public let url: URL = Bundle.main.url(
         forResource: "index",
         withExtension: "html",
         subdirectory: "note_detail_webview"
     )!
-    
-    public let note: NoteModel
-    
+
+    @Binding public var show: Bool
+    @Binding public var note: NoteModel
+
     public let container: NoteDetailWebviewContainer
 
-    public init(note: NoteModel) {
-        self.note = note
-        self.container = NoteDetailWebviewContainer()
+    public init(
+        note: Binding<NoteModel>,
+        show: Binding<Bool>,
+        container: NoteDetailWebviewContainer
+    ) {
+        self._note = note
+        self._show = show
+        self.container = container
     }
-    
+
     public func makeUIView(context: Context) -> WKWebView {
         let webView = container.webView
 
@@ -35,6 +42,13 @@ public struct NoteDetailWebview: UIViewRepresentable {
             NoteDetailWebviewActions.requestNoteDetailData.rawValue,
             NoteDetailWebviewActions.setWebviewLoaded.rawValue,
         ]
+        if colorScheme == .dark {
+            webView.evaluateJavaScript(
+                """
+                document.body.classList.add("dark"); null;
+                """
+            )
+        }
         for controllerName in editorContentControllers {
             addUserContentController(
                 controller: webView.configuration.userContentController,
@@ -57,13 +71,13 @@ public struct NoteDetailWebview: UIViewRepresentable {
 }
 
 @MainActor
-public extension NoteDetailWebview {
+extension NoteDetailWebviewInternal {
     public final class Coordinator: NSObject, WKNavigationDelegate,
         WKScriptMessageHandler
     {
-        var parent: NoteDetailWebview
+        var parent: NoteDetailWebviewInternal
 
-        public init(_ parent: NoteDetailWebview) {
+        public init(_ parent: NoteDetailWebviewInternal) {
             self.parent = parent
         }
 
@@ -72,9 +86,11 @@ public extension NoteDetailWebview {
             didFinish navigation: WKNavigation!
         ) {
             // On Load
-            parent.container.webView.isHidden = false
+            guard !parent.didSetInitialContent else { return }
+            parent.container.webView.isHidden = !self.parent.show
+            parent.didSetInitialContent = true
         }
-        
+
         public func webView(
             _ webView: WKWebView,
             didFail navigation: WKNavigation!,
@@ -84,6 +100,7 @@ public extension NoteDetailWebview {
                 "WebView navigation failed with error: \(error.localizedDescription)"
             )
         }
+
         @MainActor
         public func userContentController(
             _ userContentController: WKUserContentController,
@@ -92,11 +109,105 @@ public extension NoteDetailWebview {
             switch message.name {
             case NoteDetailWebviewActions.setWebviewLoaded.rawValue:
                 self.parent.show = true
+            case SharedWebviewActions.javascriptError.rawValue:
+                handleJavascriptError(base64String: message.body as! String)
             case NoteDetailWebviewActions.requestNoteDetailData.rawValue:
                 self.parent.container.setNoteDetails(note: parent.note)
             default:
                 return
             }
         }
+    }
+}
+
+public struct NoteDetailWebview: View {
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @AppStorage(AppStorageKeys.theme.rawValue) private var webviewTheme:
+        WebViewTheme =
+            .fluster
+    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
+        var webviewFontSize: WebviewFontSize = .base
+    @State private var show: Bool = false
+    let container: NoteDetailWebviewContainer = NoteDetailWebviewContainer(
+        bounce: true,
+        scrollEnabled: true
+    )
+
+    @Binding var note: NoteModel
+
+    public init(note: Binding<NoteModel>) {
+        self._note = note
+    }
+    public var body: some View {
+        ZStack {
+            NoteDetailWebviewInternal(
+                note: $note,
+                show: $show,
+                container: container
+            )
+            if !show {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .scaleEffect(1.5)
+                    .tint(.blue)
+            }
+        }
+        .onChange(
+            of: note,
+            {
+                if self.show {
+                    container.setNoteDetails(note: note)
+                }
+            }
+        )
+        .onChange(
+            of: show,
+            {
+                if self.show {
+                    container.setNoteDetails(note: note)
+                }
+            }
+        )
+        .onChange(
+            of: note.markdown.body,
+            {
+                if self.show {
+                    container.setNoteDetails(note: note)
+                }
+            }
+        )
+        .onChange(
+            of: colorScheme,
+            {
+                if self.show {
+                    container.applyWebViewColorScheme(
+                        darkMode: colorScheme == .dark
+                    )
+                }
+            }
+        )
+        .onChange(
+            of: webviewTheme,
+            {
+                if self.show {
+                    container.setWebviewTheme(theme: webviewTheme)
+                }
+            }
+        )
+        .onChange(
+            of: webviewFontSize,
+            {
+                if self.show {
+                    container.setWebviewFontSize(fontSize: webviewFontSize)
+                }
+            }
+        )
+        //        .onAppear {
+        //            container.setNoteDetails(note: note)
+        //            container.applyWebViewColorScheme(darkMode: colorScheme == .dark)
+        //            container.setWebviewTheme(theme: webviewTheme)
+        //            container.setWebviewFontSize(fontSize: webviewFontSize)
+        //        }
     }
 }

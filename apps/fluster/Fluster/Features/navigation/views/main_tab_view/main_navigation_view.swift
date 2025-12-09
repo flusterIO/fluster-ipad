@@ -155,10 +155,10 @@ struct MainView: View {
                 systemImage: "receipt.fill",
                 value: IpadMainViewTab.noteDetail
             ) {
-                if let note = editingNote {
+                if let noteBinding = Binding($editingNote) {
                     NavigationStack {
                         NoteDetailWebview(
-                            note: note,
+                            note: noteBinding,
                         )
                     }
                 } else {

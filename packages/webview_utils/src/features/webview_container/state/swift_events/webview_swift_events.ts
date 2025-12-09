@@ -17,6 +17,7 @@ declare global {
 
 export function setDarkMode(darkMode: boolean) {
     window.dispatchEvent(new CustomEvent("set-dark-mode", { detail: darkMode }));
+    window.localStorage.setItem("dark-mode", darkMode ? "true" : "false")
     const h = document.querySelector("html")
     if (h) {
         h.style.backgroundColor = darkMode ? "black" : "white"
@@ -30,6 +31,7 @@ export function setWebviewTheme(webviewTheme: string) {
 }
 
 export function setWebViewFontSize(cssClass: string) {
+    window.localStorage.setItem("webview-font-class", cssClass);
     window.dispatchEvent(
         new CustomEvent("set-webview-font-size", { detail: cssClass }),
     );

@@ -53,6 +53,7 @@ public struct MdxEditorWebview: UIViewRepresentable {
 
     public func makeUIView(context: Context) -> WKWebView {
         let webView = container.webView
+        webView.isHidden = true
 
         webView.navigationDelegate = context.coordinator
         let editorContentControllers = [
@@ -62,6 +63,13 @@ public struct MdxEditorWebview: UIViewRepresentable {
             SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
             SplitviewEditorWebviewActions.onTagClick.rawValue,
         ]
+        if colorScheme == .dark {
+            webView.evaluateJavaScript(
+                """
+                document.body.classList.add("dark"); null;
+                """
+            )
+        }
         for controllerName in editorContentControllers {
             addUserContentController(
                 controller: webView.configuration.userContentController,
@@ -137,30 +145,30 @@ extension MdxEditorWebview {
             parent.didSetInitialContent = true
         }
         
-        public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
-            let isOriginalUrl = navigationResponse.response.url == self.parent.url
-            if let _url = navigationResponse.response.url, !isOriginalUrl {
-                self.parent.openURL(_url)
-            }
-            return isOriginalUrl ? .allow : .cancel
-        }
+//        public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
+//            let isOriginalUrl = navigationResponse.response.url == self.parent.url
+//            if let _url = navigationResponse.response.url, !isOriginalUrl {
+//                self.parent.openURL(_url)
+//            }
+//            return isOriginalUrl ? .allow : .cancel
+//        }
 
-        func webView(
-            _ webView: WKWebView,
-            decidePolicyFor navigationAction: WKNavigationAction,
-            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-        ) {
-            print("NavigationType: \(navigationAction.navigationType)")
-            print("Url: \(navigationAction.request.url)")
-            if navigationAction.navigationType == .linkActivated,
-                let url = navigationAction.request.url
-            {
-                UIApplication.shared.open(url)
-                decisionHandler(.cancel)
-            } else {
-                decisionHandler(.allow)
-            }
-        }
+//        func webView(
+//            _ webView: WKWebView,
+//            decidePolicyFor navigationAction: WKNavigationAction,
+//            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+//        ) {
+//            print("NavigationType: \(navigationAction.navigationType)")
+//            print("Url: \(navigationAction.request.url)")
+//            if navigationAction.navigationType == .linkActivated,
+//                let url = navigationAction.request.url
+//            {
+//                UIApplication.shared.open(url)
+//                decisionHandler(.cancel)
+//            } else {
+//                decisionHandler(.allow)
+//            }
+//        }
 
         public func webView(
             _ webView: WKWebView,
@@ -179,7 +187,6 @@ extension MdxEditorWebview {
             switch message.name {
 
             case SplitviewEditorWebviewActions.setWebviewLoaded.rawValue:
-                print("No longer hidden")
                 self.parent.webView.isHidden = false
                 self.parent.show = true
             //                self.parent.webView.allowsMagnification
@@ -207,6 +214,8 @@ extension MdxEditorWebview {
                         }
                     }
                 }
+            case SharedWebviewActions.javascriptError.rawValue:
+                handleJavascriptError(base64String: message.body as! String)
             case SplitviewEditorWebviewActions.onEditorChange.rawValue:
                 if let str = message.body as? String {
                     parent.editingNote?.markdown.body = str

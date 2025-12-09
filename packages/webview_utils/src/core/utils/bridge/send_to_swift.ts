@@ -3,7 +3,7 @@ import { AnyWebviewAction } from "../types/any_window_event";
 declare global {
     interface Window {
         webkit: {
-            messageHandlers: Record<string, { postMessage: (msg: string) => void }>;
+            messageHandlers: Record<string, { postMessage: (msg: string | Uint8Array) => void }>;
         };
     }
 }

@@ -10,6 +10,182 @@ extern crate flatbuffers;
 use self::flatbuffers::{EndianScalar, Follow};
 
 #[allow(unused_imports, dead_code)]
+pub mod shared_webview_data {
+
+  use core::mem;
+  use core::cmp::Ordering;
+
+  extern crate flatbuffers;
+  use self::flatbuffers::{EndianScalar, Follow};
+
+pub enum WebviewJavascriptErrorOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct WebviewJavascriptError<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for WebviewJavascriptError<'a> {
+  type Inner = WebviewJavascriptError<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> WebviewJavascriptError<'a> {
+  pub const VT_MESSAGE: flatbuffers::VOffsetT = 4;
+  pub const VT_URL: flatbuffers::VOffsetT = 6;
+  pub const VT_LINE: flatbuffers::VOffsetT = 8;
+  pub const VT_COLUMN: flatbuffers::VOffsetT = 10;
+  pub const VT_ERROR: flatbuffers::VOffsetT = 12;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    WebviewJavascriptError { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args WebviewJavascriptErrorArgs<'args>
+  ) -> flatbuffers::WIPOffset<WebviewJavascriptError<'bldr>> {
+    let mut builder = WebviewJavascriptErrorBuilder::new(_fbb);
+    if let Some(x) = args.error { builder.add_error(x); }
+    if let Some(x) = args.column { builder.add_column(x); }
+    if let Some(x) = args.line { builder.add_line(x); }
+    if let Some(x) = args.url { builder.add_url(x); }
+    if let Some(x) = args.message { builder.add_message(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn message(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(WebviewJavascriptError::VT_MESSAGE, None)}
+  }
+  #[inline]
+  pub fn url(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(WebviewJavascriptError::VT_URL, None)}
+  }
+  #[inline]
+  pub fn line(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(WebviewJavascriptError::VT_LINE, None)}
+  }
+  #[inline]
+  pub fn column(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(WebviewJavascriptError::VT_COLUMN, None)}
+  }
+  #[inline]
+  pub fn error(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(WebviewJavascriptError::VT_ERROR, None)}
+  }
+}
+
+impl flatbuffers::Verifiable for WebviewJavascriptError<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("message", Self::VT_MESSAGE, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("url", Self::VT_URL, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("line", Self::VT_LINE, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("column", Self::VT_COLUMN, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("error", Self::VT_ERROR, false)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct WebviewJavascriptErrorArgs<'a> {
+    pub message: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub url: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub line: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub column: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub error: Option<flatbuffers::WIPOffset<&'a str>>,
+}
+impl<'a> Default for WebviewJavascriptErrorArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    WebviewJavascriptErrorArgs {
+      message: None,
+      url: None,
+      line: None,
+      column: None,
+      error: None,
+    }
+  }
+}
+
+pub struct WebviewJavascriptErrorBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> WebviewJavascriptErrorBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_message(&mut self, message: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(WebviewJavascriptError::VT_MESSAGE, message);
+  }
+  #[inline]
+  pub fn add_url(&mut self, url: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(WebviewJavascriptError::VT_URL, url);
+  }
+  #[inline]
+  pub fn add_line(&mut self, line: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(WebviewJavascriptError::VT_LINE, line);
+  }
+  #[inline]
+  pub fn add_column(&mut self, column: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(WebviewJavascriptError::VT_COLUMN, column);
+  }
+  #[inline]
+  pub fn add_error(&mut self, error: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(WebviewJavascriptError::VT_ERROR, error);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> WebviewJavascriptErrorBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    WebviewJavascriptErrorBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<WebviewJavascriptError<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for WebviewJavascriptError<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("WebviewJavascriptError");
+      ds.field("message", &self.message());
+      ds.field("url", &self.url());
+      ds.field("line", &self.line());
+      ds.field("column", &self.column());
+      ds.field("error", &self.error());
+      ds.finish()
+  }
+}
+}  // pub mod SharedWebviewData
+
+#[allow(unused_imports, dead_code)]
 pub mod mdx_serialization {
 
   use core::mem;

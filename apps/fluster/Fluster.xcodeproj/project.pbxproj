@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7930C3F92EDA740B0063B3DA /* standalone_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */; };
 		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
-		79AC14442EDB4D1700E3773F /* standalone_mdx_preview in Resources */ = {isa = PBXBuildFile; fileRef = 79AC14432EDB4D1700E3773F /* standalone_mdx_preview */; };
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
 		79F74C8A2EDE1EFB00E00653 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 79F74C892EDE1EFB00E00653 /* splitview_mdx_editor */; };
@@ -171,8 +169,6 @@
 			files = (
 				79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */,
 				79F74C8A2EDE1EFB00E00653 /* splitview_mdx_editor in Resources */,
-				79AC14442EDB4D1700E3773F /* standalone_mdx_preview in Resources */,
-				7930C3F92EDA740B0063B3DA /* standalone_mdx_editor in Resources */,
 				79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */,
 				79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */,
 			);

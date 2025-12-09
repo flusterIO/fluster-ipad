@@ -132,6 +132,7 @@ export const CodeEditor = (
         if (!initialValue) {
             sendToSwift(props.requestNewDataAction ?? SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
+        /* eslint-disable-next-line  -- I hate this rule */
     }, [initialValue]);
     useEventListener((props.swiftContentEvent ?? SplitviewEditorWebviewEvents.SetSplitviewEditorContent) as keyof WindowEventMap, (e) => {
         setInitialValue("detail" in e ? e.detail : "");
