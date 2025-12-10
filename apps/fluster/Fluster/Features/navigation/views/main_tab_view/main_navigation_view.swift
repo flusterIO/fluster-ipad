@@ -42,6 +42,7 @@ struct MainView: View {
     @State private var tagQuery: String = ""
     @State private var subjectQuery: String = ""
     @State private var topicQuery: String = ""
+    @State private var showEditNoteTaggables: Bool = false
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
         .fluster
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
@@ -76,7 +77,7 @@ struct MainView: View {
         TabView(selection: $selectedTab) {
             Tab(
                 "Paper",
-                systemImage: "pencil.circle.fill",
+                systemImage: FlusterIcon.paper.rawValue,
                 value: IpadMainViewTab.paper
             ) {
                 if let unwrappedEditingNote = Binding($editingNote) {
@@ -95,45 +96,74 @@ struct MainView: View {
             .defaultVisibility(.visible, for: .tabBar)
             Tab(
                 "Markdown",
-                systemImage: "book.closed.circle.fill",
+                systemImage: FlusterIcon.markdown.rawValue,
                 value: IpadMainViewTab.markdown
             ) {
-                if editingNote != nil {
-                    MdxEditorWebview(
-                        url:
-                            Bundle.main.url(
-                                forResource: "index",
-                                withExtension: "html",
-                                subdirectory: "splitview_mdx_editor"
-                            )!,
-                        theme: $theme,
-                        editorThemeDark: $editorThemeDark,
-                        editorThemeLight: $editorThemeLight,
-                        editingNote: $editingNote,
-                        editorKeymap: $editorKeymap,
-                        container: editorContainer,
-                    )
-                    //                    .moveDisabled(true)
-                    .disableAnimations()
-                    //                    .scrollDisabled(true)
-                    .frame(
-                        alignment: .bottom
-                    )
-                    // TODO: Remove this. This is just for easy development.
-                    .scrollDisabled(true)
-                    .onAppear {
-                        if let parsedMdx = editingNote?.markdown.preParsedBody {
-                            editorContainer.setParsedEditorContentString(
-                                content: parsedMdx
+                if let editingNoteBinding = Binding($editingNote) {
+                    NavigationStack {
+                        ZStack(alignment: .bottomTrailing) {
+                            MdxEditorWebview(
+                                url:
+                                    Bundle.main.url(
+                                        forResource: "index",
+                                        withExtension: "html",
+                                        subdirectory: "splitview_mdx_editor"
+                                    )!,
+                                theme: $theme,
+                                editorThemeDark: $editorThemeDark,
+                                editorThemeLight: $editorThemeLight,
+                                editingNote: $editingNote,
+                                editorKeymap: $editorKeymap,
+                                container: editorContainer,
                             )
+                            //                    .moveDisabled(true)
+                            .disableAnimations()
+                            //                    .scrollDisabled(true)
+                            .frame(
+                                alignment: .bottom
+                            )
+                            // TODO: Remove this. This is just for easy development.
+                            .scrollDisabled(true)
+                            .onAppear {
+                                if let parsedMdx = editingNote?.markdown
+                                    .preParsedBody
+                                {
+                                    editorContainer.setParsedEditorContentString(
+                                        content: parsedMdx
+                                    )
+                                }
+                                UIScrollView.appearance().bounces = false
+                                UIScrollView.appearance().isScrollEnabled =
+                                    false
+                            }
+                            .onDisappear {
+                                UIScrollView.appearance().bounces = true
+                                UIScrollView.appearance().isScrollEnabled = true
+                            }
+                            FloatingButtonView(
+                                buttons: [
+                                    FloatingButtonItem(
+                                        id: "addTaggable",
+                                        systemImage: "tag.fill",
+                                        action: {
+                                            showEditNoteTaggables = true
+                                        }
+                                    )
+                                ]
+                            )
+                            .padding()
                         }
-                        UIScrollView.appearance().bounces = false
-                        UIScrollView.appearance().isScrollEnabled = false
                     }
-                    .onDisappear {
-                        UIScrollView.appearance().bounces = true
-                        UIScrollView.appearance().isScrollEnabled = true
-                    }
+                    .fullScreenCover(
+                        isPresented: $showEditNoteTaggables,
+                        content: {
+                            EditNoteTaggablesView(
+                                editingNote: editingNoteBinding,
+                                open: $showEditNoteTaggables
+                            )
+                            .interactiveDismissDisabled(true)
+                        },
+                    )
                 } else {
                     SelectNoteToContinueView()
                 }
@@ -142,7 +172,7 @@ struct MainView: View {
             .defaultVisibility(.visible, for: .tabBar)
             Tab(
                 "Bibliography",
-                systemImage: "books.vertical.circle.fill",
+                systemImage: FlusterIcon.bibliography.rawValue,
                 value: IpadMainViewTab.bib
             ) {
                 NavigationStack {
@@ -155,7 +185,7 @@ struct MainView: View {
             .defaultVisibility(.visible, for: .tabBar)
             Tab(
                 "Details",
-                systemImage: "receipt.fill",
+                systemImage: FlusterIcon.details.rawValue,
                 value: IpadMainViewTab.noteDetail
             ) {
                 if let noteBinding = Binding($editingNote) {
@@ -190,7 +220,7 @@ struct MainView: View {
                 content: {
                     Tab(
                         "Notes",
-                        systemImage: "magnifyingglass.circle.fill",
+                        systemImage: "book.pages.fill",
                         value: IpadMainViewTab.searchNotes,
                         role: .search
                     ) {
@@ -205,7 +235,7 @@ struct MainView: View {
                     .defaultVisibility(.hidden, for: .tabBar)
                     Tab(
                         "Bibliography",
-                        systemImage: "magnifyingglass.circle.fill",
+                        systemImage: FlusterIcon.bibliography.rawValue,
                         value: IpadMainViewTab.searchByBib,
                     ) {
                         NavigationStack {
@@ -220,7 +250,7 @@ struct MainView: View {
                     .defaultVisibility(.hidden, for: .tabBar)
                     Tab(
                         "Tags",
-                        systemImage: "magnifyingglass.circle.fill",
+                        systemImage: FlusterIcon.tag.rawValue,
                         value: IpadMainViewTab.searchByTag,
                     ) {
                         NavigationStack {
@@ -236,7 +266,7 @@ struct MainView: View {
                     .defaultVisibility(.hidden, for: .tabBar)
                     Tab(
                         "Topics",
-                        systemImage: "magnifyingglass.circle.fill",
+                        systemImage: FlusterIcon.topic.rawValue,
                         value: IpadMainViewTab.searchByTopic,
                     ) {
                         NavigationStack {
@@ -252,7 +282,7 @@ struct MainView: View {
                     .defaultVisibility(.hidden, for: .tabBar)
                     Tab(
                         "Subjects",
-                        systemImage: "magnifyingglass.circle.fill",
+                        systemImage: FlusterIcon.subject.rawValue,
                         value: IpadMainViewTab.searchBySubject,
                     ) {
                         NavigationStack {

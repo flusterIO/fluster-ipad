@@ -66,6 +66,7 @@ extension AppSchemaV1 {
         public var tags = [TagModel]()
         @Relationship(inverse: \BibEntryModel.notes)
         public var citations = [BibEntryModel]()
+        public var bookmarked: Bool = false
 
         // drawing.toDataRepresentation() to conform to Data type.
         public init(

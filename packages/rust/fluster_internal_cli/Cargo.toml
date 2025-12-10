@@ -1,0 +1,17 @@
+[package]
+name = "fluster_internal_cli"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+clap = { version = "4.5.53", features = ["derive"] }
+ignore = "0.4.25"
+serde.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

@@ -11,6 +11,10 @@ import SwiftUI
 public struct TopicSearchResultListView: View {
     @Query(sort: \TopicModel.lastAccess, order: .reverse) private var topics:
         [TopicModel]
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+    @Environment(\.modelContext) private var modelContext: ModelContext
+    @State private var showDeleteConfirmation: Bool = false
+    @State private var topicToDelete: TopicModel?
     @Binding var topicQuery: String
     @Binding var editingNote: NoteModel?
     public init(topicQuery: Binding<String>, editingNote: Binding<NoteModel?>) {
@@ -50,10 +54,64 @@ public struct TopicSearchResultListView: View {
                         Text(topic.value)
                     }
                 )
+                .swipeActions(
+                    edge: .leading,
+                    content: {
+                        Button(
+                            action: {
+                                topicToDelete = topic
+                                showDeleteConfirmation = true
+                            },
+                            label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        )
+                        .tint(themeManager.theme.destructive)
+                    },
+                )
             }
             .searchable(text: $topicQuery, prompt: "Search Topics")
             .navigationTitle("Topics")
+            .confirmationDialog(
+                "deleteTopicConfirmation",
+                isPresented: $showDeleteConfirmation,
+                actions: {
+                    Button(action: {
+                        Task {
+                            if let _topicToDelete = topicToDelete {
+                                await deleteTopic(_topicToDelete)
+                            }
+                        }
+                    }, label: {
+                        Label("Delete", systemImage: "trash")
+                    })
+                    .tint(themeManager.theme.destructive)
+                    .foregroundStyle(themeManager.theme.destructive_foreground)
+                },
+                message: {
+                    Text("Are you sure you want to remove this subject? This will automatically remove this subject from all associated notes.")
+                }
+            )
         }
+    }
+    func deleteTopic(_ topic: TopicModel) async {
+        let topicValue = topic.value
+        let noteFetchDescriptor = FetchDescriptor<NoteModel>(
+            predicate: #Predicate<NoteModel> { note in
+                note.topic?.value == topicValue
+            }
+        )
+        
+        do {
+            let noteResults = try modelContext.fetch(noteFetchDescriptor)
+            for n in noteResults {
+                n.topic = nil
+            }
+        } catch {
+            print("An error occurred while deleting tags \(error)")
+        }
+        
+        modelContext.delete(topic)
     }
 }
 

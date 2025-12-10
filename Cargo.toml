@@ -2,6 +2,8 @@
 resolver = "3"
 members = [
     "packages/rust/fluster_core_utilities",
+    "packages/rust/fluster_internal_cli",
+    "packages/rust/fluster_lsp",
     "packages/rust/fluster_pre_parser",
     "packages/rust/fluster_rust",
 ]

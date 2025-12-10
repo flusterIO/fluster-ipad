@@ -22,6 +22,9 @@ build_cross_language_schemas:
 	typeshare ${FLUSTER_IOS_ROOT}/packages/rust/fluster_core_utilities --lang=typescript --output-folder=${FLUSTER_IOS_ROOT}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare ${FLUSTER_IOS_ROOT}/packages/rust/fluster_core_utilities --lang=swift --output-folder=${FLUSTER_IOS_ROOT}/packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/typeshare
 
+generate_component_docs_paths:
+	fluster_internal_cli gather-component-doc-paths
+
 generate_initial_note_paths:
 	tsx ${FLUSTER_IOS_ROOT}/scripts/generate_initial_note_paths.ts
 
