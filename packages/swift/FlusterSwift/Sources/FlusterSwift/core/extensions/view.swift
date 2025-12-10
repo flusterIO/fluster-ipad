@@ -51,4 +51,15 @@ extension View {
     public func logRerender(msg: String? = nil) -> some View {
         modifier(LogRerender(msg: msg))
     }
+
+    func roundedCornerWithBorder(
+        lineWidth: CGFloat,
+        borderColor: Color,
+        radius: CGFloat,
+    ) -> some View {
+        self.overlay(
+            RoundedRectangle(cornerRadius: radius)
+                .stroke(borderColor, lineWidth: lineWidth)
+        )
+    }
 }

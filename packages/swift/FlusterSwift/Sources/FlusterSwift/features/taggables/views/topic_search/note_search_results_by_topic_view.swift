@@ -30,7 +30,7 @@ struct NoteSearchResultsByTopicView: View {
         let queryValue = topic.value
         _notes = Query(
             filter: #Predicate<NoteModel> { note in
-                note.tags.contains(where: { $0.value == queryValue })
+                note.topic?.value == queryValue
             },
             sort: [SortDescriptor(\NoteModel.last_read, order: .reverse)],
             animation: .default
