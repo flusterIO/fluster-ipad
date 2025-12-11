@@ -8,6 +8,10 @@ extension String {
         return
             "`\(self.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "`", with: "\\`"))`"
     }
+    
+    public func isTrimmedEmpty() -> Bool {
+        return self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
 
     @MainActor
     public func preParseAsMdxToBytes() async -> Data? {

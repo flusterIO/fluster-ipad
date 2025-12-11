@@ -163,7 +163,7 @@ importers:
         specifier: 25.9.23
         version: 25.9.23
       framer-motion:
-        specifier: ^12.23.25
+        specifier: 12.23.25
         version: 12.23.25(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       lucide-react:
         specifier: 0.554.0
@@ -175,7 +175,7 @@ importers:
         specifier: 0.4.2
         version: 0.4.2(monaco-editor@0.52.2)
       p:
-        specifier: ^0.2.0
+        specifier: 0.2.0
         version: 0.2.0
       path-browserify:
         specifier: 1.0.1
@@ -432,6 +432,9 @@ importers:
       autoprefixer:
         specifier: 10.4.21
         version: 10.4.21(postcss@8.5.3)
+      flatbuffers:
+        specifier: 25.9.23
+        version: 25.9.23
       postcss:
         specifier: 8.5.3
         version: 8.5.3

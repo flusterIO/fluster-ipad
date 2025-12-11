@@ -42,7 +42,8 @@ struct MainView: View {
     @State private var tagQuery: String = ""
     @State private var subjectQuery: String = ""
     @State private var topicQuery: String = ""
-    @State private var showEditNoteTaggables: Bool = false
+    @State private var fullScreenCoverDragDrag: CGFloat = 0
+    @State private var fullScreenCoverOpacity: CGFloat = 1
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
         .fluster
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
@@ -101,69 +102,38 @@ struct MainView: View {
             ) {
                 if let editingNoteBinding = Binding($editingNote) {
                     NavigationStack {
-                        ZStack(alignment: .bottomTrailing) {
-                            MdxEditorWebview(
-                                url:
-                                    Bundle.main.url(
-                                        forResource: "index",
-                                        withExtension: "html",
-                                        subdirectory: "splitview_mdx_editor"
-                                    )!,
-                                theme: $theme,
-                                editorThemeDark: $editorThemeDark,
-                                editorThemeLight: $editorThemeLight,
-                                editingNote: $editingNote,
-                                editorKeymap: $editorKeymap,
-                                container: editorContainer,
-                            )
-                            //                    .moveDisabled(true)
-                            .disableAnimations()
-                            //                    .scrollDisabled(true)
-                            .frame(
-                                alignment: .bottom
-                            )
-                            // TODO: Remove this. This is just for easy development.
-                            .scrollDisabled(true)
-                            .onAppear {
-                                if let parsedMdx = editingNote?.markdown
-                                    .preParsedBody
-                                {
-                                    editorContainer.setParsedEditorContentString(
-                                        content: parsedMdx
-                                    )
-                                }
-                                UIScrollView.appearance().bounces = false
-                                UIScrollView.appearance().isScrollEnabled =
-                                    false
+                        MdxEditorWebview(
+                            url:
+                                Bundle.main.url(
+                                    forResource: "index",
+                                    withExtension: "html",
+                                    subdirectory: "splitview_mdx_editor"
+                                )!,
+                            theme: $theme,
+                            editorThemeDark: $editorThemeDark,
+                            editorThemeLight: $editorThemeLight,
+                            editingNote: editingNoteBinding,
+                            editorKeymap: $editorKeymap,
+                            container: editorContainer,
+                        )
+                        // TODO: Remove this. This is just for easy development.
+                        .onAppear {
+                            if let parsedMdx = editingNote?.markdown
+                                .preParsedBody
+                            {
+                                editorContainer.setParsedEditorContentString(
+                                    content: parsedMdx
+                                )
                             }
-                            .onDisappear {
-                                UIScrollView.appearance().bounces = true
-                                UIScrollView.appearance().isScrollEnabled = true
-                            }
-                            FloatingButtonView(
-                                buttons: [
-                                    FloatingButtonItem(
-                                        id: "addTaggable",
-                                        systemImage: "tag.fill",
-                                        action: {
-                                            showEditNoteTaggables = true
-                                        }
-                                    )
-                                ]
-                            )
-                            .padding()
+                            UIScrollView.appearance().bounces = false
+                            UIScrollView.appearance().isScrollEnabled =
+                                false
+                        }
+                        .onDisappear {
+                            UIScrollView.appearance().bounces = true
+                            UIScrollView.appearance().isScrollEnabled = true
                         }
                     }
-                    .fullScreenCover(
-                        isPresented: $showEditNoteTaggables,
-                        content: {
-                            EditNoteTaggablesView(
-                                editingNote: editingNoteBinding,
-                                open: $showEditNoteTaggables
-                            )
-                            .interactiveDismissDisabled(true)
-                        },
-                    )
                 } else {
                     SelectNoteToContinueView()
                 }
@@ -231,6 +201,21 @@ struct MainView: View {
                         }
                     }
                     .customizationID(IpadMainViewTab.searchNotes.rawValue)
+                    .customizationBehavior(.disabled, for: .tabBar)
+                    .defaultVisibility(.hidden, for: .tabBar)
+                    Tab(
+                        "Bookmarks",
+                        systemImage: FlusterIcon.bookmark.rawValue,
+                        value: IpadMainViewTab.bookmarks,
+                    ) {
+                        NavigationStack {
+                            BookmarksView(
+                                editingNote: $editingNote
+                            )
+                            .navigationTitle("Bookmarks")
+                        }
+                    }
+                    .customizationID(IpadMainViewTab.bookmarks.rawValue)
                     .customizationBehavior(.disabled, for: .tabBar)
                     .defaultVisibility(.hidden, for: .tabBar)
                     Tab(

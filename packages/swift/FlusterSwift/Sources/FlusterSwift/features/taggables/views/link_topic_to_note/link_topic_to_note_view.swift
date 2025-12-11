@@ -8,31 +8,31 @@
 import SwiftData
 import SwiftUI
 
-public struct LinkSubjectToNoteView: View {
+public struct LinkTopicToNoteView: View {
     @Environment(\.dismiss) private var dismiss
-    @Query private var subjects: [SubjectModel]
+    @Query private var topics: [TopicModel]
     @State private var searchQuery: String = ""
-    @State private var showSubjectSearch: Bool = false
-    @Binding var selection: SubjectModel?
-    var filteredSubjects: [SubjectModel] {
-        return searchQuery.isEmpty ? subjects : subjects.filter { $0.value.contains(searchQuery) }
+    @State private var showTopicSearch: Bool = false
+    @Binding var selection: TopicModel?
+    var filteredTopics: [TopicModel] {
+        return searchQuery.isEmpty ? topics : topics.filter { $0.value.contains(searchQuery) }
     }
-    public init(selection: Binding<SubjectModel?>) {
+    public init(selection: Binding<TopicModel?>) {
         self._selection = selection
     }
     public var body: some View {
-        if filteredSubjects.isEmpty {
+        if filteredTopics.isEmpty {
             NoNotesFoundView(
-                title: "No subjects found",
+                title: "No topics found",
                 subtitle: searchQuery.isEmpty
-                    ? "Tap the + button to create a new subject"
-                    : "No subjects found that match your query"
+                    ? "Tap the + button to create a new topic"
+                    : "No topics found that match your query"
             )
             .toolbar {
                 ToolbarItem(content: {
                     NavigationLink(
                         destination: {
-                            CreateSubjectView(selectedSubject: $selection)
+                            CreateTopicView(selectedTopic: $selection)
                         },
                         label: {
                             Label("Create", systemImage: "plus")
@@ -45,18 +45,18 @@ public struct LinkSubjectToNoteView: View {
             HStack(
                 alignment: .top,
                 content: {
-                    List(filteredSubjects) { subject in
-                        Text(subject.value)
+                    List(filteredTopics) { topic in
+                        Text(topic.value)
                             .onTapGesture {
-                                selection = subject
+                                selection = topic 
                                 dismiss()
                             }
                     }
                     .onAppear {
-                        showSubjectSearch = true
+                        showTopicSearch = true
                     }
                     .onDisappear {
-                        showSubjectSearch = false
+                        showTopicSearch = false
                     }
                 }
             )
@@ -64,7 +64,7 @@ public struct LinkSubjectToNoteView: View {
                 ToolbarItem(content: {
                     NavigationLink(
                         destination: {
-                            CreateSubjectView(selectedSubject: $selection)
+                            CreateTopicView(selectedTopic: $selection)
                         },
                         label: {
                             Label("Create", systemImage: "plus")
@@ -76,9 +76,9 @@ public struct LinkSubjectToNoteView: View {
             .pickerStyle(.navigationLink)
             .searchable(
                 text: $searchQuery,
-                isPresented: $showSubjectSearch,
+                isPresented: $showTopicSearch,
                 placement: .automatic,
-                prompt: LocalizedStringResource("Search subjects")
+                prompt: LocalizedStringResource("Search topics")
             )
             .searchable(text: $searchQuery)
         }
@@ -86,5 +86,5 @@ public struct LinkSubjectToNoteView: View {
 }
 
 #Preview {
-    LinkSubjectToNoteView(selection: .constant(nil))
+    LinkTopicToNoteView(selection: .constant(nil))
 }

@@ -8,11 +8,11 @@
 import SwiftData
 import SwiftUI
 
-struct CreateSubjectView: View {
+struct CreateTopicView: View {
     @State private var textValue: String = ""
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    @Binding var selectedSubject: SubjectModel?
+    @Binding var selectedTopic: TopicModel?
     var body: some View {
         Form {
             TextField(
@@ -27,26 +27,26 @@ struct CreateSubjectView: View {
                     action: {
                         if !textValue.isTrimmedEmpty() {
                             let fetchDescriptor = FetchDescriptor<
-                                SubjectModel
+                                TopicModel
                             >()
                             do {
-                                let subjects = try modelContext.fetch(
+                                let topics = try modelContext.fetch(
                                     fetchDescriptor
                                 )
-                                let existingSubject = subjects.first(where: { sub in
+                                let existingTopic = topics.first(where: { sub in
                                         sub.value == textValue
                                     })
-                                selectedSubject = existingSubject
-                                     ?? SubjectModel(value: textValue)
-                                if  existingSubject == nil {
-                                    print("Creating new subject")
-                                    modelContext.insert(selectedSubject!)
+                                selectedTopic = existingTopic
+                                     ?? TopicModel(value: textValue)
+                                if existingTopic == nil {
+                                    print("Saving new topic")
+                                    modelContext.insert(selectedTopic!)
                                 }
                                 textValue = ""
                                 dismiss()
                             } catch {
                                 print(
-                                    "A error occurre while saving this subject: \(error)"
+                                    "A error occurre while saving this topic: \(error)"
                                 )
                             }
                         }
@@ -58,10 +58,10 @@ struct CreateSubjectView: View {
                 .disabled(textValue.isEmpty)
             }
         }
-        .navigationTitle("Create subject")
+        .navigationTitle("Create topic")
     }
 }
 
 #Preview {
-    CreateSubjectView(selectedSubject: .constant(nil))
+    CreateTopicView(selectedTopic: .constant(nil))
 }

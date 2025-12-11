@@ -10,6 +10,7 @@ import { AnchorTag } from "../embeddable_mdx_components/html/anchor";
 import { AutoInsertedTag } from "../embeddable_mdx_components/auto_inserted/tag";
 import { Ul } from "../embeddable_mdx_components/ul";
 import { FlusterCitation } from "../embeddable_mdx_components/auto_inserted/fluster_citation";
+import { Admonition } from "../embeddable_mdx_components/admonition";
 interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
     query: string | string[];
@@ -92,11 +93,11 @@ const items: ComponentMapItem[] = [
     /*     component: PlotRef, */
     /* }, */
     /* // -- Layout -- */
-    /* { */
-    /*     query: "Admonition", */
-    /*     component: Admonition, */
-    /*     requiresInlineMdx: true, */
-    /* }, */
+    {
+        query: "Admonition",
+        component: Admonition,
+        requiresInlineMdx: true,
+    },
     /* { */
     /*     query: "Card", */
     /*     component: EmbeddableCard, */

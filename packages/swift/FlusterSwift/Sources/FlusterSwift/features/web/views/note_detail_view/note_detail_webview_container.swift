@@ -80,7 +80,7 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
             """
             window.dispatchEvent(
                 new CustomEvent("\(NoteDetailWebviewEvents.setNoteDetails.rawValue)", {
-                    detail: \(bytes),
+                    detail: "",
                 }),
             );
             """)

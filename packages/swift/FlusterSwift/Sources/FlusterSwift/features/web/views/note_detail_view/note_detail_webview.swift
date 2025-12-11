@@ -152,26 +152,26 @@ public struct NoteDetailWebview: View {
                 ProgressView()
                     .progressViewStyle(.circular)
                     .scaleEffect(1.5)
-                    .tint(.blue)
+                    .tint(themeManager.theme.primary)
             }
         }
         .background(colorScheme == .dark ? .black : .white)
-//        .onChange(
-//            of: note,
-//            {
-//                if self.show {
-//                    container.setNoteDetails(note: note)
-//                }
-//            }
-//        )
-//        .onChange(
-//            of: note.markdown.body,
-//            {
-//                if self.show {
-//                    container.setNoteDetails(note: note)
-//                }
-//            }
-//        )
+        .onChange(
+            of: note,
+            {
+                if self.show {
+                    container.setNoteDetails(note: note)
+                }
+            }
+        )
+        .onChange(
+            of: note.markdown.body,
+            {
+                if self.show {
+                    container.setNoteDetails(note: note)
+                }
+            }
+        )
         .onChange(
             of: colorScheme,
             {

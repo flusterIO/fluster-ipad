@@ -89,7 +89,7 @@ export const MdxContent = ({
     })
 
     const classes = cn(
-        "mdx-content block pb-12 overflow-y-hidden h-auto max-h-fit prose dark:prose-invert prose-p:text-foreground prose-code:before:content-none prose-code:after:content-none prose-code:bg-[var(--shiki-light-bg)] dark:prose-code:bg-[var(--shiki-dark-bg)] [&_code_*]:text-[var(--shiki-light)] dark:[&_code_*]:text-[var(--shiki-dark)] w-full max-w-full @container/mdx prose-code:p-2 prose-pre:bg-transparent dark:prose-pre:bg-transparent",
+        "mdx-content block overflow-y-hidden h-auto max-h-fit prose dark:prose-invert prose-p:text-foreground prose-code:before:content-none prose-code:after:content-none prose-code:bg-[var(--shiki-light-bg)] dark:prose-code:bg-[var(--shiki-dark-bg)] [&_code_*]:text-[var(--shiki-light)] dark:[&_code_*]:text-[var(--shiki-dark)] w-full max-w-full @container/mdx prose-code:p-2 prose-pre:bg-transparent dark:prose-pre:bg-transparent",
         fontSizeClass,
         className,
     );

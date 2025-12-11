@@ -15,4 +15,5 @@ public enum FlusterIcon: String {
     case topic = "book.closed.circle"
     case subject = "character.book.closed.fill"
     case details = "receipt.fill"
+    case bookmark = "bookmark.fill"
 }

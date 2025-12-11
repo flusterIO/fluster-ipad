@@ -13,6 +13,7 @@ import SwiftUI
 struct CreateNoteSheetView: View {
     @State private var titleValue: String = ""
     @State private var selectedSubject: SubjectModel?
+    @State private var selectedTopic: TopicModel?
     @FocusState private var textFieldFocused: Bool
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
@@ -32,6 +33,14 @@ struct CreateNoteSheetView: View {
                 },
                 label: {
                     Text("Subject")
+                }
+            )
+            NavigationLink(
+                destination: {
+                    LinkTopicToNoteView(selection: $selectedTopic)
+                },
+                label: {
+                    Text("Topic")
                 }
             )
 

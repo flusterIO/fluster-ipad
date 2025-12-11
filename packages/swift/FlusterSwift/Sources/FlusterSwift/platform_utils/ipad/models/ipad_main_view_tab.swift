@@ -10,5 +10,6 @@ public enum IpadMainViewTab: String {
         searchByBib,
         searchByTag,
         searchByTopic,
-        searchBySubject
+        searchBySubject,
+        bookmarks
 }

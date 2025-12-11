@@ -36,6 +36,7 @@ public struct NoNotesFoundView: View {
                 .font(.title2)
             Text(subtitle)
                 .multilineTextAlignment(.center)
+                .frame(maxWidth: 540)
         }
         .padding()
     }
