@@ -55,18 +55,19 @@ public final class AppDataContainer {
                     )
                     container.mainContext.insert(noteModel)
                 }
-                UserDefaults.standard.set(
-                    true,
-                    forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
-                )
             }
 
+            UserDefaults.setValue(
+                true,
+                forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
+            )
             return container
+
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }
-   
+
     private init() {}
 
     public func dataHandlerCreator() -> @Sendable () async -> DataHandler {

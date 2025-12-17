@@ -44,6 +44,8 @@ struct MainView: View {
     @State private var topicQuery: String = ""
     @State private var fullScreenCoverDragDrag: CGFloat = 0
     @State private var fullScreenCoverOpacity: CGFloat = 1
+    @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
+        var hasPreviouslyLaunched: Bool = false
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
         .fluster
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
@@ -287,25 +289,25 @@ struct MainView: View {
             .customizationBehavior(.disabled, for: .tabBar)
             .tabPlacement(.sidebarOnly)
             .defaultVisibility(.hidden, for: .tabBar)
-            Tab(
-                "Create Note",
-                systemImage: "plus",
-                value: IpadMainViewTab.createNote
-            ) {
-                NavigationStack {
-                    CreateNoteSheetView(
-                        editingNote: $editingNote,
-                        dismissOnSubmit: false
-                    )
-                    .navigationTitle("Create note")
-                }
-            }
-            .customizationID(IpadMainViewTab.createNote.rawValue)
-            .customizationBehavior(.disabled, for: .tabBar)
-            .defaultVisibility(.hidden, for: .tabBar)
             TabSection(
                 "Fluster",
                 content: {
+                    Tab(
+                        "Create Note",
+                        systemImage: "plus",
+                        value: IpadMainViewTab.createNote
+                    ) {
+                        NavigationStack {
+                            CreateNoteSheetView(
+                                editingNote: $editingNote,
+                                dismissOnSubmit: false
+                            )
+                            .navigationTitle("Create note")
+                        }
+                    }
+                    .customizationID(IpadMainViewTab.createNote.rawValue)
+                    .customizationBehavior(.disabled, for: .tabBar)
+                    .defaultVisibility(.hidden, for: .tabBar)
                     Tab(
                         "Settings",
                         systemImage: "gearshape.fill",
@@ -438,6 +440,12 @@ struct MainView: View {
             handleColorSchemeChange(newScheme: colorScheme)
             handleThemeChange(newTheme: theme)
             handleColorSchemeSelectionChange()
+            if !self.hasPreviouslyLaunched {
+                Task {
+//                    await self.handleInitialSeeding()
+                    self.hasPreviouslyLaunched = true
+                }
+            }
             print("View Database: ", modelContext.sqliteCommand)
         }
         .tabViewCustomization($tabviewCustomization)
@@ -453,6 +461,48 @@ struct MainView: View {
         )
         .environment(themeManager)
         .environment(editingNote)
+    }
+    func handleInitialSeeding() async {
+        if hasPreviouslyLaunched {
+            return
+        }
+        let fetchDescriptor = FetchDescriptor<NoteModel>()
+        do {
+            let initialNotes = try modelContext.fetch(fetchDescriptor)
+            for n in initialNotes {
+                if let parsedMdx =
+                    await n.markdown
+                    .body.preParseAsMdxToBytes()
+                {
+                    if let parsingResults =
+                        parsedMdx.toMdxParsingResult()
+                    {
+                        n.applyMdxParsingResults(
+                            results: parsingResults,
+                        )
+                    }
+                }
+            }
+            print("Initial Notes: \(initialNotes)")
+            if let initialEditingNote = initialNotes.first(where: {
+                $0.frontMatter.userDefinedId == "welcomeToFluster"
+            }) {
+                editingNote = initialEditingNote
+            } else {
+                print("Could not find initial editing note")
+            }
+            do {
+                try modelContext.save()
+            } catch {
+                print(
+                    "An error occurred while attempting to save the model context during initial data handling: \(error)"
+                )
+            }
+            hasPreviouslyLaunched = true
+        } catch {
+            print("Error: \(error)")
+        }
+
     }
     func handleColorSchemeSelectionChange() {
         handleColorSchemeChange(

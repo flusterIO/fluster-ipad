@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct AssociateNoteWithBibEntryView: View {
-    @Query private var bibEntries: [BibEntryModel]
+    @Query(sort: \BibEntryModel.title, animation: .default) private var bibEntries: [BibEntryModel]
     @Bindable var editingNote: NoteModel
     @Binding var open: Bool
 

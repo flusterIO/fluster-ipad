@@ -274,6 +274,7 @@ dependencies = [
  "iana-time-zone",
  "js-sys",
  "num-traits",
+ "serde",
  "wasm-bindgen",
  "windows-link",
 ]
@@ -530,6 +531,7 @@ name = "fluster_pre_parser"
 version = "0.0.1"
 dependencies = [
  "async-trait",
+ "chrono",
  "flatbuffers",
  "fluster_core_utilities",
  "gray_matter",

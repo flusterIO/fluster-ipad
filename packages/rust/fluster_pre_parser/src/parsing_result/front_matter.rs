@@ -1,5 +1,3 @@
-use flatbuffers::{FlatBufferBuilder, WIPOffset};
-use fluster_core_utilities::code_gen::flat_buffer::v1_flat_buffer_schema_generated::mdx_serialization::{FrontMatterResultBuffer, FrontMatterResultBufferBuilder};
 use gray_matter::Pod;
 use serde::{Deserialize, Serialize};
 
@@ -42,15 +40,11 @@ impl FrontMatterResult {
     }
     pub fn get_user_defined_id(data: &mut Pod) -> Option<String> {
         let id = &data.remove("id".to_string());
-        if id.is_empty() {
-            None
-        } else {
-            match id.as_string() {
-                Ok(s) => Some(s),
-                Err(e) => {
-                    println!("Front Matter Error: {}", e);
-                    None
-                }
+        match id.as_string() {
+            Ok(s) => Some(s),
+            Err(e) => {
+                println!("Front Matter Error: {}", e);
+                None
             }
         }
     }

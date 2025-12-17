@@ -30,7 +30,7 @@ pub struct ParseMdxOptions {
 /// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
 /// based approach but will work for now.
 #[uniffi::export(async_runtime = "tokio")]
-pub async fn parse_mdx_string_by_regex<'builder>(opts: ParseMdxOptions) -> FlusterResult<Vec<u8>> {
+pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<Vec<u8>> {
     let mut parsers = REGEX_PARSERS.to_vec();
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     if let Some(ref fm) = result.front_matter
@@ -85,9 +85,11 @@ mod tests {
             result.front_matter().is_some(),
             "Has front matter when front matter is present"
         );
-        let fm = result.front_matter();
+        let fm = result
+            .front_matter()
+            .expect("Has front matter when front matter is present");
         assert!(
-            fm.unwrap().ignore_parsers().iter().any(|x| x == "tags"),
+            fm.ignore_parsers().iter().any(|x| x == "tags"),
             "Has 'tags' parser in 'ignore_parsers' when present in that field."
         );
 
@@ -95,6 +97,12 @@ mod tests {
             !result.parsed_content().contains("AutoInsertedTag"),
             "No tags were inserted when 'tags' parser was ignored."
         );
+
+        assert!(
+            fm.user_defined_id()
+                .is_some_and(|x| x == "welcomeToFluster"),
+            "Note parses user defined id as expected"
+        )
         // assert_eq!(result, 4);
     }
 }

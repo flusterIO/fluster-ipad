@@ -92,6 +92,7 @@ impl MdxParsingResult {
             let ignored_parsers_vector = builder.create_vector(&ignored_parsers_offsets);
 
             let title = fm.title.as_ref().map(|s| builder.create_string(s));
+            println!("fm.user_defined_id: {:#?}", fm.user_defined_id);
             let user_defined_id = fm
                 .user_defined_id
                 .as_ref()
@@ -101,8 +102,10 @@ impl MdxParsingResult {
             if let Some(title) = title {
                 fmb.add_title(title);
             }
-            if let Some(user_defined_id) = user_defined_id {
-                fmb.add_user_defined_id(user_defined_id);
+            println!("Is some: {:#?}", user_defined_id);
+            if let Some(user_def_id) = user_defined_id {
+                println!("User defined id here: {:#?}", user_def_id);
+                fmb.add_user_defined_id(user_def_id);
             }
             fmb.finish()
         });

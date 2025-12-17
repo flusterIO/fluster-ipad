@@ -176,12 +176,13 @@ extension AppSchemaV1 {
         @Attribute(.unique) public var citationKey: String?
         public var htmlFormattedCitation: String?
         /// The bibtex string representing the item's data.
-        public var data: String
+        public var _data: String
         public var ctime: Date
         public var utime: Date
         /// The time a note with this bibliography entry was last accessed.
         public var lastAccess: Date
         public var notes = [NoteModel]()
+        public var title: String
         public init(
             id: String? = nil,
             data: String,
@@ -191,14 +192,25 @@ extension AppSchemaV1 {
             notes: [NoteModel] = []
         ) {
             self.id = id ?? UUID().uuidString
-            self.data = data
+            self._data = data
             self.ctime = ctime
             self.utime = utime
             self.notes = notes
             self.lastAccess = lastAccess
             // TODO: Figure out how to get the html formatted citation in rust and use that to generate a formatted citation for each item that can then be passed to the webview for bibliography creation.
             self.htmlFormattedCitation = nil
+            self.title = "" // Required to avoid an 'using self before all properties are initialized' error
             self.citationKey = self.getCitationKey()
+            self.title = self.getTitle()
+        }
+        public var data: String {
+            get {
+                return self._data
+            }
+            set(newData) {
+                self._data = newData
+                self.title = self.getTitle()
+            }
         }
         public func parse() -> SwiftyBibtex.BibtexResult? {
             let result = try? SwiftyBibtex.parse(self.data)
@@ -227,7 +239,16 @@ extension AppSchemaV1 {
         }
 
         public func getTitle() -> String {
-            return self.parse()?.publications[0].fields["title"] ?? "--"
+            let result = try? SwiftyBibtex.parse(self.data)
+            if result != nil {
+                for warning in result!.warnings {
+                    print(warning.message)
+                }
+                if result!.publications.count == 1 {
+                    return result!.publications[0].fields["title"] ?? "No title found"
+                }
+            }
+            return "No title found"
         }
 
         public func toCitationSummary() -> SwiftDataCitationSummary {
