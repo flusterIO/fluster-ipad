@@ -80,9 +80,30 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
             """
             window.dispatchEvent(
                 new CustomEvent("\(NoteDetailWebviewEvents.setNoteDetails.rawValue)", {
-                    detail: "",
+                    detail: \(bytes),
                 }),
             );
             """)
     }
+    
+    
+    public func setInitialData(
+        colorScheme: ColorScheme,
+        webviewTheme: WebViewTheme,
+        fontSize: WebviewFontSize,
+        note: NoteModel
+    ) {
+        self.applyWebViewColorScheme(
+            darkMode: colorScheme == .dark
+        )
+        self.setWebviewTheme(
+            theme: webviewTheme
+        )
+        self.setWebviewFontSize(
+            fontSize: fontSize
+        )
+        self.setNoteDetails(note: note)
+    }
+
+    
 }

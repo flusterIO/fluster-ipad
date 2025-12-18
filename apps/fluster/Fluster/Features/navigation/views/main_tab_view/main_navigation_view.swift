@@ -75,7 +75,7 @@ struct MainView: View {
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
     @State private var editingNote: NoteModel? = nil
-    @State private var selectedTab = IpadMainViewTab.paper
+    @State private var selectedTab = IpadMainViewTab.markdown
     @State private var findInNotePresented: Bool = false
 
     var body: some View {
@@ -94,7 +94,14 @@ struct MainView: View {
                     .backgroundExtensionEffect()
                     .ignoresSafeArea()
                 } else {
-                    SelectNoteToContinueView()
+                    if hasPreviouslyLaunched {
+                        SelectNoteToContinueView()
+                    } else {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .scaleEffect(1.5)
+                            .tint(themeManager.theme.primary)
+                    }
                 }
             }
             .customizationID(IpadMainViewTab.paper.rawValue)
@@ -139,7 +146,14 @@ struct MainView: View {
                         }
                     }
                 } else {
-                    SelectNoteToContinueView()
+                    if hasPreviouslyLaunched {
+                        SelectNoteToContinueView()
+                    } else {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .scaleEffect(1.5)
+                            .tint(themeManager.theme.primary)
+                    }
                 }
             }
             .customizationID(IpadMainViewTab.markdown.rawValue)
@@ -167,9 +181,25 @@ struct MainView: View {
                         NoteDetailWebview(
                             note: noteBinding,
                         )
+                        .onAppear { // hack to avoid scroll bouncing with awkward colored background.
+                            UIScrollView.appearance().bounces = false
+                            UIScrollView.appearance().isScrollEnabled =
+                                false
+                        }
+                        .onDisappear {
+                            UIScrollView.appearance().bounces = true
+                            UIScrollView.appearance().isScrollEnabled = true
+                        }
                     }
                 } else {
-                    SelectNoteToContinueView()
+                    if hasPreviouslyLaunched {
+                        SelectNoteToContinueView()
+                    } else {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .scaleEffect(1.5)
+                            .tint(themeManager.theme.primary)
+                    }
                 }
             }
             .customizationID(IpadMainViewTab.noteDetail.rawValue)
@@ -480,8 +510,6 @@ struct MainView: View {
             }
         )
         let res = try modelContext.fetch(fetchDescriptor)
-        let logger = FlusterLogger(.mainApp, .devOnly)
-        logger.logger.info("Res: \(res)")
         if !res.isEmpty && editingNote == nil {
             self.editingNote = res.first
         }

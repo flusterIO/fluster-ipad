@@ -20,16 +20,13 @@ public struct InitialNotesDataJsonDecoder {
                         [MdxParsingResult].self,
                         from: data
                     )
-                    FlusterLogger(.appLaunch, .devOnly).log("parsingResults: \(parsingResults)", .debug)
                     return parsingResults
                 } else {
-                    let logger = FlusterLogger(.appLaunch, .prodAndDev)
-                    logger.log("Error: Unable to get initial notes data url", .error)
+                    FlusterLogger(.appLaunch, .prodAndDev).log("Error: Unable to get initial notes data url", .error)
                     return nil
                 }
         } catch {
-            let logger = FlusterLogger(.serialization, .prodAndDev)
-            logger.log("Error: \(error)", .error)
+            FlusterLogger(.serialization, .prodAndDev).log("Error: \(error)", .error)
             return nil
         }
     }

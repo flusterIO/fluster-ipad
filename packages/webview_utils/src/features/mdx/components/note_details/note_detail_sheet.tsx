@@ -1,10 +1,7 @@
 import { NoteDetailWebviewActions, NoteDetailWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities';
 import { H3 } from '@/shared_components/typography/typography';
-import { useEventListener } from '@/state/hooks/use_event_listener';
 import { sendToSwift } from '@/utils/bridge/send_to_swift';
-import React, { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { ByteBuffer } from 'flatbuffers';
-import { MdxSerialization } from '@/code_gen/flat_buffer/v1_flat_buffer_schema';
+import React, { useEffect, useMemo, type ReactNode } from 'react'
 import { NoteDetailDataBuffer } from '@/code_gen/flat_buffer/mdx-serialization/note-details';
 import { LoadingComponent } from '@/shared_components/loading_component';
 import { InlineMdxContent } from '../inline_mdx_content';
@@ -28,27 +25,12 @@ const Subtitle = ({ children }: { children: ReactNode }): ReactNode => {
     )
 }
 
-export const NoteDetailSheet = (): ReactNode => {
-    const [data, setData] = useState<NoteDetailDataBuffer | null>(null)
-    useEventListener(NoteDetailWebviewEvents.SetNoteDetails, (e) => {
-        try {
-            const bytes = new Uint8Array(e.detail);
-            const buf = new ByteBuffer(bytes)
-            const noteDetails = MdxSerialization.NoteDetails.NoteDetailDataBuffer.getRootAsNoteDetailDataBuffer(buf);
-            setData(noteDetails)
-        } catch (err) {
-            console.log("NoteDetails serialization error: ", err)
-        }
-    })
+export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): ReactNode => {
 
     useEffect(() => {
-        if (!data) {
-            sendToSwift(NoteDetailWebviewActions.RequestNoteDetailData)
-        } else {
-            sendToSwift(NoteDetailWebviewActions.SetWebviewLoaded)
-            document.body.classList.remove("loading")
-        }
-    }, [data])
+        sendToSwift(NoteDetailWebviewActions.SetWebviewLoaded);
+        document.body.classList.remove("loading");
+    }, [])
 
     const tags = useMemo(() => {
         if (!data) {

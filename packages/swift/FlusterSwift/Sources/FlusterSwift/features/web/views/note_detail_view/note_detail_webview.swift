@@ -12,6 +12,11 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
     @State private var lastNoteId: String? = nil
     @State private var didSetInitialContent: Bool = false
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
+    @AppStorage(AppStorageKeys.theme.rawValue) private var webviewTheme:
+        WebViewTheme =
+            .fluster
+    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
+        var webviewFontSize: WebviewFontSize = .base
     public let url: URL = Bundle.main.url(
         forResource: "index",
         withExtension: "html",
@@ -51,7 +56,7 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
         }
 
         webView.loadFileURL(url, allowingReadAccessTo: url)
-        
+
         if colorScheme == .dark {
             webView.evaluateJavaScript(
                 """
@@ -102,6 +107,15 @@ extension NoteDetailWebviewInternal {
             )
         }
 
+        public func setInitialData() {
+            self.parent.container.setInitialData(
+                colorScheme: self.parent.colorScheme,
+                webviewTheme: self.parent.webviewTheme,
+                fontSize: self.parent.webviewFontSize,
+                note: self.parent.note
+            )
+        }
+
         @MainActor
         public func userContentController(
             _ userContentController: WKUserContentController,
@@ -113,7 +127,7 @@ extension NoteDetailWebviewInternal {
             case SharedWebviewActions.javascriptError.rawValue:
                 handleJavascriptError(base64String: message.body as! String)
             case NoteDetailWebviewActions.requestNoteDetailData.rawValue:
-                self.parent.container.setNoteDetails(note: parent.note)
+                self.setInitialData()
             default:
                 return
             }
@@ -130,10 +144,11 @@ public struct NoteDetailWebview: View {
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
         var webviewFontSize: WebviewFontSize = .base
     @State private var show: Bool = false
-    let container: NoteDetailWebviewContainer = NoteDetailWebviewContainer(
-        bounce: true,
-        scrollEnabled: true
-    )
+    @State var container: NoteDetailWebviewContainer =
+        NoteDetailWebviewContainer(
+            bounce: true,
+            scrollEnabled: true
+        )
 
     @Binding var note: NoteModel
 
@@ -147,7 +162,14 @@ public struct NoteDetailWebview: View {
                 show: $show,
                 container: container
             )
-            .scrollDisabled(true)
+            .onAppear {
+                self.container.setInitialData(
+                    colorScheme: self.colorScheme,
+                    webviewTheme: self.webviewTheme,
+                    fontSize: self.webviewFontSize,
+                    note: self.note
+                )
+            }
             if !show {
                 ProgressView()
                     .progressViewStyle(.circular)
@@ -198,11 +220,5 @@ public struct NoteDetailWebview: View {
                 }
             }
         )
-        //        .onAppear {
-        //            container.setNoteDetails(note: note)
-        //            container.applyWebViewColorScheme(darkMode: colorScheme == .dark)
-        //            container.setWebviewTheme(theme: webviewTheme)
-        //            container.setWebviewFontSize(fontSize: webviewFontSize)
-        //        }
     }
 }
