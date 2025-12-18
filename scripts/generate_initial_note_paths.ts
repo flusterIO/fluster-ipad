@@ -10,7 +10,7 @@ const paths = fs
     .readdirSync(initialNotesDir, {
         encoding: "utf-8",
     })
-    .filter((_path) => _path !== "initial_note_paths.json")
+    .filter((_path) => _path.endsWith(".md") || _path.endsWith(".mdx"))
     .map((d) => `initial_note_docs/${d.slice(0, d.lastIndexOf("."))}`);
 
 fs.writeFileSync(

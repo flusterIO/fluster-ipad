@@ -7,7 +7,6 @@
 
 import FlatBuffers
 import FlusterRust
-import FlusterSwift
 import Foundation
 import PencilKit
 import SwiftData
@@ -26,6 +25,7 @@ extension AppSchemaV1 {
         public var id: String
         public var title: String?
         public var userDefinedId: String?
+        public var ignoreParsers: [String] = []
 
         init(id: String, title: String? = nil, userDefinedId: String? = nil) {
             self.id = id
@@ -49,6 +49,25 @@ extension AppSchemaV1 {
             if res.userDefinedId != nil, !res.userDefinedId!.isEmpty {
                 self.userDefinedId = res.userDefinedId
             }
+        }
+        public func applyParsingResult(
+            res: FrontMatterResult
+        ) {
+            if res.title != nil, !res.title!.isEmpty {
+                self.title = res.title
+            }
+            if res.userDefinedId != nil, !res.userDefinedId!.isEmpty {
+                self.userDefinedId = res.userDefinedId
+            }
+            self.ignoreParsers = res.ignoredParsers
+        }
+
+        public static func fromParsingResult(data: FrontMatterResult)
+            -> FrontMatter
+        {
+            let fm = FrontMatter(id: UUID.init().uuidString)
+            fm.applyParsingResult(res: data)
+            return fm
         }
     }
     @Model
@@ -160,6 +179,14 @@ extension AppSchemaV1 {
                 self.utime = .now
             }
         }
+
+        public func getEditingNoteId() -> EditingNoteId {
+            if let fmId = self.frontMatter.userDefinedId {
+                return EditingNoteId.fromUserDefinedId(userDefinedId: fmId)
+            } else {
+                return EditingNoteId(value: self.id)
+            }
+        }
         public static func getEmptyModel(
             noteBody: String = "",
             noteSummary: String? = nil
@@ -169,6 +196,28 @@ extension AppSchemaV1 {
                 markdown: MarkdownNote(body: noteBody, summary: noteSummary)
             )
         }
+
+        public static func fromInitialDataParsingResult(
+            data: MdxParsingResult,
+            existingTags: [TagModel]
+        ) -> NoteModel {
+            let n = NoteModel.getEmptyModel(
+                noteBody: data.content,
+                noteSummary: nil
+            )
+            n.citations = data.citations.map({ cit in
+                BibEntryModel.fromParsingResult(data: cit)
+            })
+            n.tags = data.tags.map({ tag in
+                TagModel.fromRustTagResult(t: tag, existingTags: existingTags)
+            })
+            if let fm = data.frontMatter {
+                n.frontMatter = FrontMatter.fromParsingResult(data: fm)
+            }
+
+            return n
+        }
+
     }
     @Model
     public class BibEntryModel: Identifiable {
@@ -199,7 +248,7 @@ extension AppSchemaV1 {
             self.lastAccess = lastAccess
             // TODO: Figure out how to get the html formatted citation in rust and use that to generate a formatted citation for each item that can then be passed to the webview for bibliography creation.
             self.htmlFormattedCitation = nil
-            self.title = "" // Required to avoid an 'using self before all properties are initialized' error
+            self.title = ""  // Required to avoid an 'using self before all properties are initialized' error
             self.citationKey = self.getCitationKey()
             self.title = self.getTitle()
         }
@@ -245,7 +294,8 @@ extension AppSchemaV1 {
                     print(warning.message)
                 }
                 if result!.publications.count == 1 {
-                    return result!.publications[0].fields["title"] ?? "No title found"
+                    return result!.publications[0].fields["title"]
+                        ?? "No title found"
                 }
             }
             return "No title found"
@@ -256,6 +306,12 @@ extension AppSchemaV1 {
                 citationKey: self.id,
                 body: self.data
             )
+        }
+
+        public static func fromParsingResult(data: CitationResult)
+            -> BibEntryModel
+        {
+            BibEntryModel(id: data.citationKey, data: data.body)
         }
     }
 

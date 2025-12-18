@@ -15,6 +15,10 @@ generate_build_output:
 lint:
 	cd ${FLUSTER_IOS_ROOT}/apps/fluster; swiftlint lint
 
+build_internal_cli:
+	cd ${FLUSTER_IOS_ROOT}/packages/rust/fluster_internal_cli; cargo build
+# parse-initial-notes
+
 build_cross_language_schemas:
 	${FLAT_BUFFER_PATH} -o ./packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift
 	${FLAT_BUFFER_PATH} -o ./packages/rust/fluster_core_utilities/src/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --rust
@@ -22,11 +26,16 @@ build_cross_language_schemas:
 	typeshare ${FLUSTER_IOS_ROOT}/packages/rust/fluster_core_utilities --lang=typescript --output-folder=${FLUSTER_IOS_ROOT}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare ${FLUSTER_IOS_ROOT}/packages/rust/fluster_core_utilities --lang=swift --output-folder=${FLUSTER_IOS_ROOT}/packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/typeshare
 
-generate_component_docs_paths:
-	fluster_internal_cli gather-component-doc-paths
+generate_component_docs_paths: build_internal_cli
+	./target/debug/fluster_internal_cli gather-component-doc-paths
 
 generate_initial_note_paths:
 	tsx ${FLUSTER_IOS_ROOT}/scripts/generate_initial_note_paths.ts
+
+generate_initial_note_data: generate_initial_note_paths
+	./target/debug/fluster_internal_cli parse-initial-notes
+
+generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data
 
 build_ipad_simulator:
 	cd ${FLUSTER_IOS_ROOT}/apps/fluster; xcodebuild -destination "platform=iOS Simulator,name=iPad Pro 13-inch M5 26.1" -scheme Fluster build
@@ -60,4 +69,4 @@ build_bibtex_editor_webview: build_webview_utils
 
 build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview
 
-pre_ipad_build: build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews
+pre_ipad_build: generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews

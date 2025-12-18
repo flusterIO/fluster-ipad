@@ -12,6 +12,8 @@ clap = { version = "4.5.53", features = ["derive"] }
 ignore = "0.4.25"
 serde.workspace = true
 serde_json.workspace = true
+fluster_pre_parser = { path = "../fluster_pre_parser/" }
+tokio = { workspace = true, features = ["full"] }
 
 [lints]
 workspace = true

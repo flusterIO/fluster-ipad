@@ -510,9 +510,11 @@ name = "fluster_internal_cli"
 version = "0.0.1"
 dependencies = [
  "clap",
+ "fluster_pre_parser",
  "ignore",
  "serde",
  "serde_json",
+ "tokio",
 ]
 
 [[package]]

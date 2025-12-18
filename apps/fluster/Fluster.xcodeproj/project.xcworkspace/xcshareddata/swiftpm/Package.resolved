@@ -29,6 +29,24 @@
         }
       },
       {
+        "package": "swift-syntax",
+        "repositoryURL": "https://github.com/swiftlang/swift-syntax.git",
+        "state": {
+          "branch": null,
+          "revision": "4799286537280063c85a32f09884cfbca301b1a1",
+          "version": "602.0.0"
+        }
+      },
+      {
+        "package": "swift-testing",
+        "repositoryURL": "https://github.com/swiftlang/swift-testing",
+        "state": {
+          "branch": null,
+          "revision": "48a471ab313e858258ab0b9b0bf2cea55a50cefb",
+          "version": "6.2.3"
+        }
+      },
+      {
         "package": "SwiftyBibtex",
         "repositoryURL": "https://github.com/MaxHaertwig/SwiftyBibtex.git",
         "state": {

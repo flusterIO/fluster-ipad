@@ -11,6 +11,7 @@ import FlusterSwift
 import PencilKit
 import SwiftData
 import SwiftUI
+internal import os
 
 func getDrawing(data: Data?) -> PKDrawing {
     if data == nil {
@@ -64,6 +65,8 @@ struct MainView: View {
         EditorKeymap = .base
     @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
         var tabviewCustomization: TabViewCustomization
+    /// editingNoteId is a EditingNoteId.value protocol string. Use that class to parse this result and retrieve results since this encodes both user defined ids and uuids.
+    let defaultNoteId: String = "welcomeToFluster"
     @StateObject private var editorContainer = MdxEditorWebviewContainer(
         bounce: false,
         scrollEnabled: true
@@ -71,9 +74,8 @@ struct MainView: View {
     @State private var themeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
+    @State private var editingNote: NoteModel? = nil
     @State private var selectedTab = IpadMainViewTab.paper
-    @State private var editingNoteId: String?
-    @State private var editingNote: NoteModel?
     @State private var findInNotePresented: Bool = false
 
     var body: some View {
@@ -440,12 +442,12 @@ struct MainView: View {
             handleColorSchemeChange(newScheme: colorScheme)
             handleThemeChange(newTheme: theme)
             handleColorSchemeSelectionChange()
-            if !self.hasPreviouslyLaunched {
+            if !hasPreviouslyLaunched {
                 Task {
-//                    await self.handleInitialSeeding()
-                    self.hasPreviouslyLaunched = true
+                    try? await self.setEditingNoteFromEditingNoteId()
                 }
             }
+            hasPreviouslyLaunched = true
             print("View Database: ", modelContext.sqliteCommand)
         }
         .tabViewCustomization($tabviewCustomization)
@@ -462,48 +464,6 @@ struct MainView: View {
         .environment(themeManager)
         .environment(editingNote)
     }
-    func handleInitialSeeding() async {
-        if hasPreviouslyLaunched {
-            return
-        }
-        let fetchDescriptor = FetchDescriptor<NoteModel>()
-        do {
-            let initialNotes = try modelContext.fetch(fetchDescriptor)
-            for n in initialNotes {
-                if let parsedMdx =
-                    await n.markdown
-                    .body.preParseAsMdxToBytes()
-                {
-                    if let parsingResults =
-                        parsedMdx.toMdxParsingResult()
-                    {
-                        n.applyMdxParsingResults(
-                            results: parsingResults,
-                        )
-                    }
-                }
-            }
-            print("Initial Notes: \(initialNotes)")
-            if let initialEditingNote = initialNotes.first(where: {
-                $0.frontMatter.userDefinedId == "welcomeToFluster"
-            }) {
-                editingNote = initialEditingNote
-            } else {
-                print("Could not find initial editing note")
-            }
-            do {
-                try modelContext.save()
-            } catch {
-                print(
-                    "An error occurred while attempting to save the model context during initial data handling: \(error)"
-                )
-            }
-            hasPreviouslyLaunched = true
-        } catch {
-            print("Error: \(error)")
-        }
-
-    }
     func handleColorSchemeSelectionChange() {
         handleColorSchemeChange(
             newScheme: getColorScheme(
@@ -511,6 +471,20 @@ struct MainView: View {
                 systemScheme: colorScheme
             )
         )
+    }
+    func setEditingNoteFromEditingNoteId() async throws {
+        let defaultNoteId = self.defaultNoteId
+        let fetchDescriptor = FetchDescriptor<NoteModel>(
+            predicate: #Predicate<NoteModel> { note in
+                note.frontMatter.userDefinedId == defaultNoteId
+            }
+        )
+        let res = try modelContext.fetch(fetchDescriptor)
+        let logger = FlusterLogger(.mainApp, .devOnly)
+        logger.logger.info("Res: \(res)")
+        if !res.isEmpty && editingNote == nil {
+            self.editingNote = res.first
+        }
     }
     func handleThemeChange(newTheme: WebViewTheme) {
         self.editorContainer.setWebviewTheme(theme: newTheme)

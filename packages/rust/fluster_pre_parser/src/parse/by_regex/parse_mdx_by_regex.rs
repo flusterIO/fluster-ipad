@@ -23,14 +23,7 @@ pub struct ParseMdxOptions {
     pub citations: Vec<SwiftDataCitationSummary>,
 }
 
-// impl Lift {
-//
-// }
-
-/// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
-/// based approach but will work for now.
-#[uniffi::export(async_runtime = "tokio")]
-pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<Vec<u8>> {
+pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsingResult {
     let mut parsers = REGEX_PARSERS.to_vec();
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     if let Some(ref fm) = result.front_matter
@@ -50,6 +43,15 @@ pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<V
     for parser in parsers {
         parser.parse_async(&opts, &mut result).await;
     }
+
+    result
+}
+
+/// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
+/// based approach but will work for now.
+#[uniffi::export(async_runtime = "tokio")]
+pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<Vec<u8>> {
+    let result = parse_mdx_string_to_mdx_result(&opts).await;
 
     let data = result.serialize_to_flatbuffer();
 

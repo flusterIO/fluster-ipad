@@ -5,6 +5,7 @@
 //  Created by Andrew on 11/27/25.
 //
 
+import FlusterRust
 import Foundation
 import SwiftData
 
@@ -14,6 +15,8 @@ public typealias SubjectModel = AppSchemaV1.SubjectModel
 public typealias TagModel = AppSchemaV1.TagModel
 public typealias TopicModel = AppSchemaV1.TopicModel
 public typealias MarkdownNote = AppSchemaV1.MarkdownNote
+
+public let INITIAL_NOTES_DATA_PATH = "initial_note_docs/initial_notes_parsed_data"
 
 @MainActor  // This was required by the mainContext key, but there's almost surely a way to do this multi-threaded. Look into this later.
 @available(iOS 26, *)
@@ -40,27 +43,23 @@ public final class AppDataContainer {
             )
 
             if !hasLaunchedPreviously {
-                let notes = InitialNoteModelPathJsonDecoder.decode(
-                    from: "initial_note_docs/initial_note_paths"
+                let noteData = InitialNotesDataJsonDecoder.decode(
+                    from: INITIAL_NOTES_DATA_PATH
                 )
-                if notes.isEmpty {
+                
+
+                if let nd = noteData {
+                    nd.forEach { noteItemData in
+                        let noteModel = NoteModel.fromInitialDataParsingResult(
+                            data: noteItemData,
+                            existingTags: []
+                        )
+                        container.mainContext.insert(noteModel)
+                    }
+                } else {
                     fatalError("Failed to load initial notes.")
                 }
-                notes.forEach { notePath in
-                    let noteBody =
-                        InitialNoteModelPathJsonDecoder
-                        .loadInitialNoteFromPath(notePath: notePath)
-                    let noteModel = NoteModel.fromNoteBody(
-                        noteBody: noteBody
-                    )
-                    container.mainContext.insert(noteModel)
-                }
             }
-
-            UserDefaults.setValue(
-                true,
-                forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
-            )
             return container
 
         } catch {
