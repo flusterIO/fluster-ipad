@@ -9,7 +9,7 @@ import OSLog
 import SwiftUI
 
 public enum FlusterLoggerSubdomain: String {
-    case mainApp, appLaunch, serialization
+    case mainApp, appLaunch, serialization, webview
 }
 
 public enum FlusterLoggerCategory: String {

@@ -17,7 +17,6 @@ lint:
 
 build_internal_cli:
 	cd ${FLUSTER_IOS_ROOT}/packages/rust/fluster_internal_cli; cargo build
-# parse-initial-notes
 
 build_cross_language_schemas:
 	${FLAT_BUFFER_PATH} -o ./packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift

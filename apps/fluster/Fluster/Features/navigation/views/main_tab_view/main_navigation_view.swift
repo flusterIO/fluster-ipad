@@ -45,6 +45,7 @@ struct MainView: View {
     @State private var topicQuery: String = ""
     @State private var fullScreenCoverDragDrag: CGFloat = 0
     @State private var fullScreenCoverOpacity: CGFloat = 1
+    @State private var fullScreenCover: MainFullScreenCover? = nil
     @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
         var hasPreviouslyLaunched: Bool = false
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
@@ -79,6 +80,19 @@ struct MainView: View {
     @State private var findInNotePresented: Bool = false
 
     var body: some View {
+        let showFullScreenCover = Binding<Bool>(
+            get: { self.fullScreenCover != nil },
+            set: { newValue in
+                if !newValue {
+                    self.fullScreenCover = nil
+                } else {
+                    FlusterLogger(.mainApp, .devOnly).log(
+                        "Attempted to open full screen cover via derived showFullScreenCover.",
+                        .trace
+                    )
+                }
+            }
+        )
         TabView(selection: $selectedTab) {
             Tab(
                 "Paper",
@@ -179,9 +193,10 @@ struct MainView: View {
                 if let noteBinding = Binding($editingNote) {
                     NavigationStack {
                         NoteDetailWebview(
+                            fullScreenCover: $fullScreenCover,
                             note: noteBinding,
                         )
-                        .onAppear { // hack to avoid scroll bouncing with awkward colored background.
+                        .onAppear {  // hack to avoid scroll bouncing with awkward colored background.
                             UIScrollView.appearance().bounces = false
                             UIScrollView.appearance().isScrollEnabled =
                                 false
@@ -490,6 +505,25 @@ struct MainView: View {
                 selected: colorSchemeSelection,
                 systemScheme: colorScheme
             )
+        )
+        .fullScreenCover(
+            isPresented: showFullScreenCover,
+            content: {
+                if let fs = fullScreenCover {
+                    switch fs {
+                    case .tagSearch(let tag):
+                        return Text(tag.value)
+                    //                        return NoteSearchResultsByTagView(
+                    //                            tag: TagModel(value: "Herel"),
+                    //                            editingNote: .constant(nil)
+                    //                        )
+                    default:
+                        return Text("Something went wrong")
+                    }
+                } else {
+                    return Text("Something went wrong")
+                }
+            }
         )
         .environment(themeManager)
         .environment(editingNote)

@@ -8,12 +8,12 @@
 import SwiftData
 import SwiftUI
 
-struct NoteSearchResultsByTagView: View {
+public struct NoteSearchResultsByTagView: View {
     @Query(sort: \NoteModel.last_read, order: .reverse) private var notes:
         [NoteModel]
     @State private var noteQuery: String = ""
     @Binding var editingNote: NoteModel?
-    let tag: TagModel
+    public let tag: TagModel
 
     var filteredNotes: [NoteModel] {
         return noteQuery.isEmpty
@@ -38,7 +38,7 @@ struct NoteSearchResultsByTagView: View {
         )
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack {
             List(filteredNotes) { note in
                 NoteSearchResultItemView(item: note, editingNote: $editingNote)

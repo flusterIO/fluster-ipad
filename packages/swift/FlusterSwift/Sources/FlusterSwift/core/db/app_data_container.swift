@@ -47,7 +47,6 @@ public final class AppDataContainer {
                     from: INITIAL_NOTES_DATA_PATH
                 )
                 
-
                 if let nd = noteData {
                     nd.forEach { noteItemData in
                         let noteModel = NoteModel.fromInitialDataParsingResult(

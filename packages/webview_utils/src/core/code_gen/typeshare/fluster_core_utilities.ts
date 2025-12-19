@@ -40,6 +40,8 @@ export enum MdxPreviewWebviewEvents {
 export enum NoteDetailWebviewActions {
 	RequestNoteDetailData = "request-note-detail-data",
 	SetWebviewLoaded = "set-note-detail-webview-loaded",
+	HandleTagClick = "handle-tag-click",
+	HandleCitationView = "handle-citation-view",
 }
 
 /** From swift to typescript */

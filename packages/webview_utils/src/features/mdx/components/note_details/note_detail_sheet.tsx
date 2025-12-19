@@ -26,7 +26,6 @@ const Subtitle = ({ children }: { children: ReactNode }): ReactNode => {
 }
 
 export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): ReactNode => {
-
     useEffect(() => {
         sendToSwift(NoteDetailWebviewActions.SetWebviewLoaded);
         document.body.classList.remove("loading");
@@ -102,9 +101,19 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                     {tags?.length ? (
                         <div className="flex flex-row justify-start items-center gap-4 mt-2 mb-4">
                             {tags.map((t) => (
-                                <div className="bg-primary/70 text-primary-foreground rounded-lg px-2 py-1 cursor-pointer">
+                                <a
+                                    className="bg-primary/70 text-primary-foreground rounded-lg px-2 py-1 cursor-pointer"
+                                    onClick={() => {
+                                        let b = t.body()
+                                        if (b !== null) {
+                                            sendToSwift(NoteDetailWebviewActions.HandleTagClick, b)
+                                        } else {
+                                            console.error("No tag body found")
+                                        }
+                                    }}
+                                >
                                     {t.body()}
-                                </div>
+                                </a>
                             ))}
                         </div>
                     ) : (

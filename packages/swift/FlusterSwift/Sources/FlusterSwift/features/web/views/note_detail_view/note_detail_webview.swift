@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 import WebKit
 
 public struct NoteDetailWebviewInternal: UIViewRepresentable {
     @State private var lastNoteId: String? = nil
     @State private var didSetInitialContent: Bool = false
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
+    @Environment(\.modelContext) private var modelContext: ModelContext
     @AppStorage(AppStorageKeys.theme.rawValue) private var webviewTheme:
         WebViewTheme =
             .fluster
@@ -23,19 +25,43 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
         subdirectory: "note_detail_webview"
     )!
 
+    //    @Binding public var tagQuery: String
+    @Binding public var fullScreenCover: MainFullScreenCover?
     @Binding public var show: Bool
     @Binding public var note: NoteModel
 
     public let container: NoteDetailWebviewContainer
 
     public init(
+        fullScreenCover: Binding<MainFullScreenCover?>,
         note: Binding<NoteModel>,
         show: Binding<Bool>,
+        //        tagQuery: Binding<String>,
         container: NoteDetailWebviewContainer
     ) {
+        self._fullScreenCover = fullScreenCover
         self._note = note
         self._show = show
+        //        self._tagQuery = tagQuery
         self.container = container
+    }
+
+    public func handleTagClick(tagBody: String) {
+        FlusterLogger(.webview, .devOnly).log("Tag body: \(tagBody)", .info)
+        let fetchDescriptor = FetchDescriptor<TagModel>(
+            predicate: #Predicate<TagModel> {t in
+                t.value == tagBody
+            }
+        )
+        do {
+            let res = try modelContext.fetch(fetchDescriptor)
+            FlusterLogger(.webview, .devOnly).log("Res: \(res)", .info)
+            if !res.isEmpty {
+                self.fullScreenCover = .tagSearch(tag: res.first!)
+            }
+        } catch {
+            FlusterLogger(.mainApp, .prodAndDev).log("Failed to find tag in handleTagClick: \(error)", .warning)
+        }
     }
 
     public func makeUIView(context: Context) -> WKWebView {
@@ -46,6 +72,8 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
         let editorContentControllers = [
             NoteDetailWebviewActions.requestNoteDetailData.rawValue,
             NoteDetailWebviewActions.setWebviewLoaded.rawValue,
+            NoteDetailWebviewActions.handleTagClick.rawValue,
+            NoteDetailWebviewActions.handleCitationView.rawValue,
         ]
         for controllerName in editorContentControllers {
             addUserContentController(
@@ -150,14 +178,20 @@ public struct NoteDetailWebview: View {
             scrollEnabled: true
         )
 
+    @Binding var fullScreenCover: MainFullScreenCover?
     @Binding var note: NoteModel
 
-    public init(note: Binding<NoteModel>) {
+    public init(
+        fullScreenCover: Binding<MainFullScreenCover?>,
+        note: Binding<NoteModel>
+    ) {
+        self._fullScreenCover = fullScreenCover
         self._note = note
     }
     public var body: some View {
         ZStack {
             NoteDetailWebviewInternal(
+                fullScreenCover: $fullScreenCover,
                 note: $note,
                 show: $show,
                 container: container

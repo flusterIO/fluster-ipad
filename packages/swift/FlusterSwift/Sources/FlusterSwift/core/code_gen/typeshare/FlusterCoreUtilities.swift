@@ -41,6 +41,8 @@ public enum MdxPreviewWebviewEvents: String, Codable {
 public enum NoteDetailWebviewActions: String, Codable {
 	case requestNoteDetailData = "request-note-detail-data"
 	case setWebviewLoaded = "set-note-detail-webview-loaded"
+	case handleTagClick = "handle-tag-click"
+	case handleCitationView = "handle-citation-view"
 }
 
 /// From swift to typescript

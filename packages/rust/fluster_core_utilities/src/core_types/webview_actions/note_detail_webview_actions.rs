@@ -11,6 +11,12 @@ pub enum NoteDetailWebviewActions {
     #[serde(rename = "set-note-detail-webview-loaded")]
     #[strum(to_string = "set-note-detail-webview-loaded")]
     SetWebviewLoaded,
+    #[serde(rename = "handle-tag-click")]
+    #[strum(to_string = "handle-tag-click")]
+    HandleTagClick,
+    #[serde(rename = "handle-citation-view")]
+    #[strum(to_string = "handle-citation-view")]
+    HandleCitationView,
 }
 
 /// From swift to typescript

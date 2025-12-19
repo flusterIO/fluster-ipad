@@ -16,38 +16,44 @@ struct BibListView: View {
     @Binding var editingBibEntry: BibEntryModel?
     @Binding var editingNote: NoteModel?
     let editorContainer: BibtexEditorWebviewContainer
-    
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            List {
-                ForEach(items, id: \.id) { item in
-                    NavigationLink(
-                        destination: ByBibEntrySearchResults(
-                            bibEntryId: item.id,
-                            editingNote: $editingNote
-                        ),
-                        label: {
-                            BibEntrySearchResultItemView(item: item)
-                        }
-                    )
-                    .swipeActions(
-                        edge: .leading,
-                        allowsFullSwipe: true,
-                        content: {
-                            Button(
-                                action: {
-                                    editingNote?.diassociateBibEntry(bibEntry: item)
-                                },
-                                label: {
-                                    Label(
-                                        "Disassociate",
-                                        systemImage: "x.circle.fill"
-                                    )
-                                }
-                            )
-                        }
-                    )
+            if items.isEmpty {
+                Text("No bibliography entries found.")
+                    .font(.title)
+            } else {
+                List {
+                    ForEach(items, id: \.id) { item in
+                        NavigationLink(
+                            destination: ByBibEntrySearchResults(
+                                bibEntryId: item.id,
+                                editingNote: $editingNote
+                            ),
+                            label: {
+                                BibEntrySearchResultItemView(item: item)
+                            }
+                        )
+                        .swipeActions(
+                            edge: .leading,
+                            allowsFullSwipe: true,
+                            content: {
+                                Button(
+                                    action: {
+                                        editingNote?.diassociateBibEntry(
+                                            bibEntry: item
+                                        )
+                                    },
+                                    label: {
+                                        Label(
+                                            "Disassociate",
+                                            systemImage: "x.circle.fill"
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

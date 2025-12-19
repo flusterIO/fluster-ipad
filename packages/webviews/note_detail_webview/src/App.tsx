@@ -18,15 +18,12 @@ function App() {
         useState<MdxSerialization.NoteDetails.NoteDetailDataBuffer | null>(null);
     useEventListener(NoteDetailWebviewEvents.SetNoteDetails, (e) => {
         try {
-            console.log(`Have updated note details`);
-            console.log("e.detail: ", e.detail);
             const bytes = new Uint8Array(e.detail);
             const buf = new ByteBuffer(bytes);
             const noteDetails =
                 MdxSerialization.NoteDetails.NoteDetailDataBuffer.getRootAsNoteDetailDataBuffer(
                     buf,
                 );
-            console.log("noteDetails: ", noteDetails);
             setData(noteDetails);
         } catch (err) {
             console.log("NoteDetails serialization error: ", err);
