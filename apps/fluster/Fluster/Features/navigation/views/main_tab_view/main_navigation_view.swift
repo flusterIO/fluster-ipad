@@ -76,7 +76,7 @@ struct MainView: View {
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
     @State private var editingNote: NoteModel? = nil
-    @State private var selectedTab = IpadMainViewTab.markdown
+    @State private var selectedTab = IpadMainViewTab.notes
     @State private var findInNotePresented: Bool = false
 
     var body: some View {
@@ -157,7 +157,7 @@ struct MainView: View {
                         .onDisappear {
                             UIScrollView.appearance().bounces = true
                             UIScrollView.appearance().isScrollEnabled = true
-                            
+
                         }
                     }
                 } else {
@@ -345,13 +345,10 @@ struct MainView: View {
                         systemImage: "plus",
                         value: IpadMainViewTab.createNote
                     ) {
-                        NavigationStack {
-                            CreateNoteSheetView(
-                                editingNote: $editingNote,
-                                dismissOnSubmit: false
-                            )
-                            .navigationTitle("Create note")
-                        }
+                        CreateNoteSheetView(
+                            editingNote: $editingNote,
+                            dismissOnSubmit: false,
+                        )
                     }
                     .customizationID(IpadMainViewTab.createNote.rawValue)
                     .customizationBehavior(.disabled, for: .tabBar)
@@ -403,7 +400,9 @@ struct MainView: View {
                                 do {
                                     try modelContext.save()
                                 } catch {
-                                    print("Failed to save model context when navigating away from editor view.")
+                                    print(
+                                        "Failed to save model context when navigating away from editor view."
+                                    )
                                 }
                             }
                         } else {
@@ -521,18 +520,17 @@ struct MainView: View {
                     switch fs {
                     case .tagSearch(let tag):
                         return Text(tag.value)
-                    //                        return NoteSearchResultsByTagView(
-                    //                            tag: TagModel(value: "Herel"),
-                    //                            editingNote: .constant(nil)
-                    //                        )
-                    default:
-                        return Text("Something went wrong")
+                        //                        return NoteSearchResultsByTagView(
+                        //                            tag: TagModel(value: "Herel"),
+                        //                            editingNote: .constant(nil)
+                        //                        )
                     }
                 } else {
                     return Text("Something went wrong")
                 }
             }
         )
+        .environment(\.mainTab, $selectedTab)
         .environment(themeManager)
         .environment(editingNote)
     }

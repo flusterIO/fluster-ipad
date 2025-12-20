@@ -10,18 +10,21 @@ import SwiftUI
 
 public struct LinkTopicToNoteView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(ThemeManager.self) private var themeManager: ThemeManager
     @Query private var topics: [TopicModel]
     @State private var searchQuery: String = ""
     @State private var showTopicSearch: Bool = false
     @Binding var selection: TopicModel?
+    @Binding var paths: [CreateNotePath]
     var filteredTopics: [TopicModel] {
         return searchQuery.isEmpty ? topics : topics.filter { $0.value.contains(searchQuery) }
     }
-    public init(selection: Binding<TopicModel?>) {
+    public init(selection: Binding<TopicModel?>, paths: Binding<[CreateNotePath]>) {
         self._selection = selection
+        self._paths = paths
     }
     public var body: some View {
-        if filteredTopics.isEmpty {
+        if topics.isEmpty {
             NoNotesFoundView(
                 title: "No topics found",
                 subtitle: searchQuery.isEmpty
@@ -30,46 +33,41 @@ public struct LinkTopicToNoteView: View {
             )
             .toolbar {
                 ToolbarItem(content: {
-                    NavigationLink(
-                        destination: {
-                            CreateTopicView(selectedTopic: $selection)
-                        },
-                        label: {
-                            Label("Create", systemImage: "plus")
-                        }
-                    )
-
+                    NavigationLink(value: CreateNotePath.createTopic, label: {
+                        Label("Create", systemImage: "plus")
+                    })
                 })
             }
         } else {
             HStack(
                 alignment: .top,
                 content: {
-                    List(filteredTopics) { topic in
-                        Text(topic.value)
-                            .onTapGesture {
-                                selection = topic 
-                                dismiss()
-                            }
-                    }
-                    .onAppear {
-                        showTopicSearch = true
-                    }
-                    .onDisappear {
-                        showTopicSearch = false
+                    if filteredTopics.isEmpty {
+                        Text("No topics found")
+                            .font(.title)
+                            .foregroundStyle(themeManager.theme.muted_foreground)
+                    } else {
+                        List(filteredTopics) { topic in
+                            Text(topic.value)
+                                .onTapGesture {
+                                    selection = topic
+                                    dismiss()
+                                }
+                        }
                     }
                 }
             )
+            .onAppear {
+                showTopicSearch = true
+            }
+            .onDisappear {
+                showTopicSearch = false
+            }
             .toolbar {
                 ToolbarItem(content: {
-                    NavigationLink(
-                        destination: {
-                            CreateTopicView(selectedTopic: $selection)
-                        },
-                        label: {
-                            Label("Create", systemImage: "plus")
-                        }
-                    )
+                    NavigationLink(value: CreateNotePath.createTopic, label: {
+                        Label("Create", systemImage: "plus")
+                    })
 
                 })
             }
@@ -86,5 +84,5 @@ public struct LinkTopicToNoteView: View {
 }
 
 #Preview {
-    LinkTopicToNoteView(selection: .constant(nil))
+    LinkTopicToNoteView(selection: .constant(nil), paths: .constant([]))
 }

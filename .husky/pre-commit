@@ -10,7 +10,4 @@ fi
 make format_package_jsons
 
 git add packages/webview_utils/package.json
-git add packages/webviews/bib_entry_details_webview/package.json
-git add packages/webviews/bibtex_editor_webview/package.json
-git add packages/webviews/splitview_mdx_editor/package.json
-git add packages/webviews/standalone_mdx_editor/package.json
+git add packages/webviews/*/package.json

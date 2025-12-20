@@ -1,4 +1,4 @@
-public enum IpadMainViewTab: String {
+public enum IpadMainViewTab: String, Sendable {
     case paper,
         markdown,
         bib,

@@ -5,9 +5,9 @@
 //  Created by Andrew on 11/5/25.
 //
 
+import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterSwift
 
 struct EmptyMarkdownSearchResultsView: View {
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
@@ -26,7 +26,10 @@ struct EmptyMarkdownSearchResultsView: View {
             Text("No notes found")
                 .font(.title2)
             NavigationLink(
-                destination: CreateNoteSheetView(editingNote: $editingNote, dismissOnSubmit: true),
+                destination: CreateNoteSheetView(
+                    editingNote: $editingNote,
+                    dismissOnSubmit: true
+                ),
                 label: {
                     Label("Create", systemImage: "plus")
                 }

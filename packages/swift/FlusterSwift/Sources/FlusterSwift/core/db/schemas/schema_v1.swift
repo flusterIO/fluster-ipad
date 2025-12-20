@@ -332,6 +332,9 @@ extension AppSchemaV1 {
     @Model
     public class TagModel: TaggableModel {
         @Attribute(.unique) public var value: String
+        /// This is a hack to allow searching the DB with a case insensitive string. It will store duplicate data, but a tag should be pretty short anyways.
+        /// This will also make sure the case insensitive string is unique.
+        @Attribute(.unique) public var caseInsensitive: String
         @Relationship(inverse: \NoteModel.tags) public var notes: [NoteModel] =
             []
         public init(
@@ -343,6 +346,7 @@ extension AppSchemaV1 {
         ) {
             //            super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
             self.value = value
+            self.caseInsensitive = value.lowercased()
             self.notes = notes
             super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
         }
@@ -367,6 +371,9 @@ extension AppSchemaV1 {
     @Model
     public class SubjectModel: TaggableModel {
         @Attribute(.unique) public var value: String
+        /// This is a hack to allow searching the DB with a case insensitive string. It will store duplicate data, but a tag should be pretty short anyways.
+        /// This will also make sure the case insensitive string is unique.
+        @Attribute(.unique) public var caseInsensitive: String
         @Relationship(inverse: \NoteModel.subject) public var notes:
             [NoteModel] = []
         public init(
@@ -378,6 +385,7 @@ extension AppSchemaV1 {
         ) {
             self.notes = notes
             self.value = value
+            self.caseInsensitive = value.lowercased()
             super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
         }
     }
@@ -386,6 +394,9 @@ extension AppSchemaV1 {
     @Model
     public class TopicModel: TaggableModel {
         @Attribute(.unique) public var value: String
+        /// This is a hack to allow searching the DB with a case insensitive string. It will store duplicate data, but a tag should be pretty short anyways.
+        /// This will also make sure the case insensitive string is unique.
+        @Attribute(.unique) public var caseInsensitive: String
         @Relationship(inverse: \NoteModel.topic) public var notes: [NoteModel] =
             []
         public init(
@@ -396,6 +407,7 @@ extension AppSchemaV1 {
             notes: [NoteModel] = []
         ) {
             self.value = value
+            self.caseInsensitive = value.lowercased()
             self.notes = notes
             super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
         }

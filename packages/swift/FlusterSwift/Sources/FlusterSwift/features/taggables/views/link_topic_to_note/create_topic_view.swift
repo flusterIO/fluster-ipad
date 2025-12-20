@@ -8,12 +8,17 @@
 import SwiftData
 import SwiftUI
 
-struct CreateTopicView: View {
+public struct CreateTopicView: View {
     @State private var textValue: String = ""
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Binding var selectedTopic: TopicModel?
-    var body: some View {
+    @Binding var paths: [CreateNotePath]
+    public init(selectedTopic: Binding<TopicModel?>, paths: Binding<[CreateNotePath]>) {
+        self._selectedTopic = selectedTopic
+        self._paths = paths
+    }
+    public var body: some View {
         Form {
             TextField(
                 text: $textValue,
@@ -43,7 +48,7 @@ struct CreateTopicView: View {
                                     modelContext.insert(selectedTopic!)
                                 }
                                 textValue = ""
-                                dismiss()
+                                paths = []
                             } catch {
                                 print(
                                     "A error occurre while saving this topic: \(error)"
@@ -63,5 +68,5 @@ struct CreateTopicView: View {
 }
 
 #Preview {
-    CreateTopicView(selectedTopic: .constant(nil))
+    CreateTopicView(selectedTopic: .constant(nil), paths: .constant([]))
 }
