@@ -15,9 +15,12 @@ const AdmonitionTitle = (props: Props): ReactNode => {
     return (
         <div
             className={cn(
-                "w-full pl-2 pr-4 pt-2 rounded-tl rounded-tr relative z-[1] min-h-[42px] font-semibold",
+                "w-full p-2 rounded-tl rounded-tr relative cursor-pointer z-[1] min-h-[42px] font-semibold grid place-items-center",
                 getTitleVariantClasses(props.type)
             )}
+            style={{
+                gridTemplateColumns: `48px 1fr`
+            }}
         >
             <AdmonitionVariantIcon
                 className={admonitionTitleIconClasses}
@@ -31,3 +34,4 @@ const AdmonitionTitle = (props: Props): ReactNode => {
 AdmonitionTitle.displayName = "AdmonitionTitle";
 
 export default AdmonitionTitle;
+

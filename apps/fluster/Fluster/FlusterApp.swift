@@ -20,6 +20,7 @@ typealias MarkdownNote = AppSchemaV1.MarkdownNote
 @main
 struct FlusterApp: App {
     let appData = AppDataContainer.shared
+    @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private var hasPreviouslyLaunched: Bool = false
 
     var body: some Scene {
         WindowGroup {

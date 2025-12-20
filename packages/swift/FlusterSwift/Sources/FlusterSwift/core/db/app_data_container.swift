@@ -41,8 +41,12 @@ public final class AppDataContainer {
                 migrationPlan: AppDataMigrationPlan.self,
                 configurations: [modelConfiguration]
             )
+            
+            let fetchDescriptor = FetchDescriptor<NoteModel>()
+            
+            let existingNotes = try container.mainContext.fetch(fetchDescriptor)
 
-            if !hasLaunchedPreviously {
+            if !hasLaunchedPreviously && existingNotes.isEmpty {
                 let noteData = InitialNotesDataJsonDecoder.decode(
                     from: INITIAL_NOTES_DATA_PATH
                 )
@@ -59,6 +63,7 @@ public final class AppDataContainer {
                     fatalError("Failed to load initial notes.")
                 }
             }
+            try container.mainContext.save()
             return container
 
         } catch {

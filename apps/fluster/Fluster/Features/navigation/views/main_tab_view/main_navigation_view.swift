@@ -157,6 +157,7 @@ struct MainView: View {
                         .onDisappear {
                             UIScrollView.appearance().bounces = true
                             UIScrollView.appearance().isScrollEnabled = true
+                            
                         }
                     }
                 } else {
@@ -397,6 +398,13 @@ struct MainView: View {
                                 note.applyMdxParsingResults(
                                     results: parsingResults,
                                 )
+                            }
+                            Task {
+                                do {
+                                    try modelContext.save()
+                                } catch {
+                                    print("Failed to save model context when navigating away from editor view.")
+                                }
                             }
                         } else {
                             if !silenceParsingErrors {
