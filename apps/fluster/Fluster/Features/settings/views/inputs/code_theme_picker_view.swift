@@ -5,8 +5,8 @@
 //  Created by Andrew on 11/17/25.
 //
 
-import SwiftUI
 import FlusterSwift
+import SwiftUI
 
 func getEditorThemeText(editorTheme: CodeSyntaxTheme) -> String {
     switch editorTheme {
@@ -46,9 +46,13 @@ struct EditorThemePickerView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
+    var count: Int {
+        CodeSyntaxTheme.allCases.count
+    }
+
     var body: some View {
         Picker(selection: $theme, label: Text(title)) {
-            ForEach(0..<CodeSyntaxTheme.allCases.count) {
+            ForEach(0..<self.count) {
                 Text(getEditorThemeText(editorTheme: CodeSyntaxTheme.allCases[$0])).tag(
                     CodeSyntaxTheme.allCases[$0]
                 )

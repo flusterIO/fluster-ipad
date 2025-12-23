@@ -55,6 +55,12 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
                 noteIdOffset: noteIdOffset,
                 titleOffset: titleOffset,
                 summaryOffset: builder.create(string: note.markdown.summary),
+                topicOffset: builder.create(
+                    string: note.topic?.value
+                ),
+                subjectOffset: builder.create(
+                    string: note.subject?.value
+                ),
                 tagsVectorOffset: builder.createVector(
                     ofOffsets: tagVectorOffset
                 ),
@@ -83,10 +89,10 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
                     detail: \(bytes),
                 }),
             );
-            """)
+            """
+        )
     }
-    
-    
+
     public func setInitialData(
         colorScheme: ColorScheme,
         webviewTheme: WebViewTheme,
@@ -105,5 +111,4 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
         self.setNoteDetails(note: note)
     }
 
-    
 }

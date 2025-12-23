@@ -1,0 +1,376 @@
+---
+title: On the gravitational nature of time
+ignore_parsers:
+  - tags
+id: onTheGravitationalNatureOfTime
+---
+
+
+# The Lighthouse & The Clock-Tower
+
+<Admonition title="Ok, so you chose to read this..." type="info" dropdown foldable>
+***Thank you!*** 
+
+I was homeless for 3 years and 4 months while working on this model and Fluster, and I'm typing this now from a homeless shelter. This model is too important to pass by, and I'm thankful that you're open minded enough to consider the possibilities.
+
+I've tried the academic approach previously, so now I'm just going to assume that everybody reading this has zero knowledge of relativity and walk you all the way through to understanding the flaws in our current interpretations. Keep an open mind, think about the concepts deeply, and by the end of this I hope that some of you will see the Universe in a new light. 
+
+This may be long, but it's worth the read.
+
+
+**For the physics students/professionals:** It's relativistic simultaneity. Resolving this absurdity while still allowing for the experimental validations of both SR and GR gives a set of 3 equations yielding both our cosmological and kinematic velocities from local gravitational parameters alone to well within 0.5% of direct observation.
+</Admonition>
+
+
+## Some Prerequisite Knowledge
+
+### Special Relativity & Time Dilation
+
+First, let's break down the difference between the generalized and specialized theories of relativity. This requires an understanding of a few concepts, but I promise, if you passed high school algebra you can follow the remainder of this note. Some calculus does make an appearance, but the concepts are what matters... not your ability to do the actual math.
+
+Special relativity refers to a set of phenomenon that occur due to relative motion and the (kind of) fact that the speed of light is constant in all reference frames. General relativity has to do with the addition of gravity to this model through a theory known as the [equivalence principle](https://en.wikipedia.org/wiki/Equivalence_principle). The equivalence principle simply put states that there is no measurable difference between being in a gravitational field that accelerates an observer at $n$ meters per second and being in a completely gravity-free environment and being in an elevator accelerating upwards at $n$ meters per second. If the magnitude is the same, gravity simple _is_ this acceleration.
+
+
+Next, let's break down why exactly the speed of light is presumed to be constant so we can later dissect this claim in more detail. Spoiler: _It's only half true._
+
+
+$$
+\begin{align}
+c = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
+\end{align}
+$$
+
+Here, $c$ represents the speed of light, $\mu_0$ the magnetic constant, and $\epsilon_0$ the electric constant. The magnetic and electric constants are often referred to as the permeability and permittivity of free space, respectively. Both of these _'constants'_ act as a scalar of the electric and magnetic forces, but more importantly, both have units proportional to length.
+
+$$
+\begin{align}
+ \epsilon_0 = \left[ \frac{F}{m} \right] \qquad  \mu_0 = \left[ \frac{H}{m} \right]
+\end{align}
+$$
+
+
+Where $F$ is a _Farad_, $H$ is a _Henry_, and $m$ is a meter. The square brackets are used only to imply the equality is demonstrating units.
+
+> The fact that both of these _constants_ have units proportional to length will become important soon. Take some time to think of how this might relate to the equivalence principle.
+
+#### Time dilation due to relative motion
+
+Einstein was famous for quite a few incredible discoveries, and he deserves credit for even the one which I am attempting to disprove. See, his theory wasn't completely wrong. In fact it was far, far closer to the truth than any of his contemporaries, but his insistence on a static Universe (a Universe that is not expanding) early in his career led him to miss the obvious. Throughout the remainder of this note I will attempt to help you see the mistake that he made, but first, we must cover what he did right. The next few paragraphs will walk you through a derivation that follows the derivation provided by Einstein himself to the best of my ability without going into the details of the Maxwell equations, electromagnetism and vector calculus.
+
+Imagine shooting a laser straight up and down from the floor of some space ship. Thinking of this as being in a space ship is important for it's lack of gravitational field. This will become incredibly important as we move forward and integrate gravity into this model.
+
+At some height $h$ above that laser, place a mirror, and another mirror where the laser is placed (this isn't technically possible because the laser would be occupying that space. Pretend that the laser is like a ghost for the sake of this thought experiment). At the end of this thought experiment we should have a pair of mirrors with a laser bouncing between them, straight up and down. Imagine that each unit of time, $t$, occurs over the period that a photon is in transit between one mirror and the other.
+
+See, there's nothing special about the speed of light here. What matters is the speed of causality, the ability for one event at some position $\left( x_{0},\ z_{0},\ y_{0},\ t_{0} \right)$ to affect an object or an observer at another position, $\left( x_{1},\ z_{1},\ y_{1},\ t_{1} \right)$. Since $c$, the speed of light is the fastest possible way for us to become aware of some distant event, $c$ is _equivalent_ to the speed of causality. **This** is why time appears to dilate due to the constant nature of the speed of light, but is it really constant?
+
+
+So that 'time clock' we set up a couple paragraphs ago? Let's set that in motion now, literally. Imagine that we are now in a _different_ space ship. 
+
+All of the physics majors are likely screaming right now, waiting for me to tell you how the entire basis of relativity is that all motion is relative and that there is no such thing as absolute rest or absolute motion, but I'm here to tell you that this is wrong. In fact, this is ***not*** the way we treat motion mathematically. In reality, physics carves out a unique niche for gravity, one where all motion is calculated relative to the underlying gravitational field, so that's what we should do here: The space ship you are in is at rest relative to the local gravitational acceleration. 
+
+Now since we're far out in outer space, far away from any stars or planets in this thought experiment we can pretend that gravitational acceleration is zero. This is a core piece of special relativity, but don't worry... we'll add gravity back in the next section.
+
+
+Now imagine that we are at rest in spaceship $A$, while space ship $B$ (containing the light clock) zooms past us in a straight line and a constant speed at velocity $v$. That light clock we just made is no longer a line straight up and down, but a triangle. We can use this, the _'constant'_ speed of light, and the Pythagorean theorem to find:
+
+
+$$
+\begin{align}
+t^{\prime} = t \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
+\end{align}
+$$
+
+This factor of $1/\sqrt{1-v^2/c^2}$ is such an important part of relativity that it gets it's own symbol, $\gamma$ (_gamma_).
+
+And that's it! You've successfully derived time dilation due to relative motion, or did you? That's what modern physics would tell us, although many pompous academics would take issue with the simplistic derivation, but let's break down what we ***actually*** discovered here.
+
+First, we have the emission of the photon from the 'laser'. Let's say that this event occurred at $\left( x_{0},\ z_{0},\ y_{0},\ t_{0} \right)$. We then have the second event, let's say at $\left( x_{1},\ z_{1},\ y_{1},\ t_{1} \right)$.
+
+
+See, time dilation is only 1 possible solution here. What we have really discovered is the Euclidean distance between these two events is elongated by an additional factor of $\gamma$.
+
+$$
+\begin{align}
+\text{distance} = \text{velocity}\cdot \text{time} \cdot \gamma
+\end{align}
+$$
+
+So we are left with two possible solutions:
+
+1. Time, a quantity we have never directly measured, and a quantity we aren't even sure exists in any physically meaningful manner dilates.
+2. Space dilates with time. This coincides perfectly with the notion of cosmic inflation, and as you will soon see, allows us to collapse cosmic inflation, gravitational acceleration and time itself into a single process as observed from different reference frames. Some units have to change to modify quantities that are proportional to time, making them instead proportional to motion, but all experiments validating current models of relativity are satisfied due to the $d=vt\gamma$ equivalence that both models seek to maintain.
+
+
+To be clear, what I am proposing is that time doesn't dilate with relative motion. In fact, I'm claiming that time doesn't exist as any physically meaningful quantity. I believe that time exists only as a ratio of distances. Due to our co-motion across the temporal (time) axis we don't perceive this dilation of distance directly, but we _do_ experience this dilation as gravitational acceleration. So on that note, let's add gravity back into this equation.
+
+### General Relativity & New physics
+
+> **Beware:** Calculus
+
+<Admonition title="Introducing Gravity" type="info" foldable>
+In this section we will attempt to demonstrate the equivalence principle and the relationship this principle has to the model I'm proposing. In short, we can derive a dilation of space that is of the precise magnitude required to produce our local gravitational acceleration. From this derivation we can substitute this equation for $\gamma$ as it represents the same phenomenon in a different reference frame, solve that equation for velocity, and what do you know... it matches direct observation with an error margin of less than 0.5%! This works because the dilation of space due to relative motion ***is*** gravity.
+</Admonition>
+
+
+So far we've only reviewed what Einstein himself gave us. His brilliance in finding the additional factor of $\gamma$ in the simple $d=vt\gamma$ equivalence gives us the opportunity to derive our velocity here on Earth in two distinct forms, but first we must discuss how a single body can have two different velocities.
+
+
+To diver deeper into the relationship between cosmic inflation, gravitational acceleration and time let us use some common analogies. The most common analogy you're likely to hear for cosmic inflation is that of a loaf of raisin bread or a blueberry muffin. If we imagine a piece of dough placed into an oven, each blueberry will move away from the center of the dough at a velocity that is proportional to the distance that the blueberry was from the center when the dough was placed into the oven. If the berry started further from the center, it will move away from the center faster as all of the dough in between the berry and the center of the dough expands. 
+
+This concept gives us our notion of _cosmological velocity_: Our velocity that takes into account this dilation of space. In this notion of velocity, it is not the motion of the berry _through_ the dough that matters alone, but rather the cumulative motion of both the berry's motion through the dough and the motion of the dough itself.
+
+Our _kinematic velocity_ is different, being made of only the motion _through_ the dough. 
+
+So far, what is above in this section is standard physics. What I am about to cover now is new, defining gravity as a function of not just mass, but of velocity. Through the $d=vt\gamma$ equivalence and the attribution of $\gamma$ to space, **not** time, we can derive ***both*** of these velocities here on Earth to almost undeniable accuracy.
+
+#### Cosmological Velocity
+
+First, let's start with our cosmological velocity. The following is our standard equation for gravity
+
+
+$$
+\begin{align}
+\vec{g} = G \frac{M}{R^2} \hat{R}
+\end{align}
+$$
+
+Above, $\vec{g}$ is the acceleration due to gravity, $G$ is the gravitational constant, $M$ is the mass of the gravitational source, $R$ is the distance from the center of mass of the gravitational source, and $\hat{R}$ just gives the acceleration a direction.
+
+If we then take the derivative of this equation with respect to radius we find
+
+$$
+\begin{align}
+\delta = 2 G \frac{M_{\oplus}}{R_{\oplus}^3}\hat{R}
+\end{align}
+$$
+
+Above, $\oplus$ indicates that a value pertains specifically to Earth, and $\delta$ (_delta_) is an arbitrary variable used for this equation elsewhere.
+
+We're getting closer, but as $\gamma$ is applied as a scalar, we should take the average of the integral of this equation. If you're unfamiliar with calculus, we are adding up all of the small changes in distance that would occur according to the model being proposed, and taking the average of the sum of all of these small changes to give us a scalar that we can apply to distance in a way that is symmetric with the manner in which $\gamma$ is applied. This allows us to essentially exchange the two variables as they describe the same phenomenon in a different reference frame.
+
+The average of this integral gives us:
+
+$$
+\begin{align}
+\frac{1}{R} \int 2 G \frac{M_{\oplus}}{R_{\oplus}^3}\ dR = 1 + G \frac{M_{\oplus}}{R^3_{\oplus}}
+\end{align}
+$$
+
+This means that we can now solve $\gamma$ for $v$ to find
+
+$$
+\begin{align}
+v = \sqrt{c - \frac{1}{\gamma}} = \sqrt{c - \frac{1}{\left( 1 + G \frac{M_{\oplus}}{R_{\oplus}^3} \right)^2}} = 526.6 \ \frac{\text{km}}{\text{sec}}
+\end{align}
+$$
+
+
+The above value falls almost [perfectly on top of probability curves](https://www.flusterapp.com/docs/my_work/on_the_gravitational_nature_of_time) found through direct observation, but we're not done! We can derive our kinematic velocity too.
+
+#### Kinematic Velocity
+
+Before we dive into the derivation for the kinematic velocity we first need to dig a little deeper into the muffin analogy. Imagine the muffin baking in the oven. If there was some coordinate system in the oven, and a coordinate system in the muffin, there is exactly 1 position within the muffin that does not move relative to the oven as the dough expands. If we expand that analogy to our Universe, we will call that point $p_{\alpha}$... essentially 
+
+$$
+p_{\alpha} = \left( x_{\alpha},\ y_{\alpha},\ z_{\alpha},\ t_{\alpha} \right) = \left( 0,\ 0,\ 0,\ 0 \right)
+$$
+
+This point $p_{\alpha}$ now would be expanded to contain the entire Universe as the Big Bang model describes, but there is one key difference in the model I am proposing: This point exists concurrently to our own, separated only by some deviation across this density axis. In other words, the 'dough' started out as the ultra-dense early Universe that gives us the Big Bang model, but that 'dough' will be the size of the Universe at which ever time is in question. The 'dough' ***is*** the Universe.
+
+This concurrent nature of time should be pretty self evident, even in existing models of relativity and has been demonstrated [experimentally](https://en.wikipedia.org/wiki/Hafele%E2%80%93Keating_experiment). Consider two observers, $O_{a}$ and $O_{b}$. If $O_{a}$ and $O_{b}$ are initially very near one another so that they come close to sharing the same coordinates, $O_{a}$ and $O_{b}$ would exist at a shared time coordinate. If $O_{b}$ however was to be set into motion, $\gamma$ is applied, making it so that $O_{b}$ has progressed further along the time axis than $O_{a}$. While both existed once at a shared position along our temporal axis, they now exist concurrently at different time coordinates.
+
+$p_{\alpha}$ is important for several reasons, mostly pertaining to the _cosmological_ velocity, but this distinction is important as we move onto the kinematic velocity. See, we measure our cosmological velocity relative not to $p_{\alpha}$, but relative to distant "standard candles", or objects with a known brightness. However, as the distance to the standard candle approaches $c T$ where $T$ is the age of the Universe and $c$ the speed of light, the 4-dimensional[^2] spatial distance approaches the distance to $p_{\alpha}$ due to the relationship time, cosmic inflation and gravitational acceleration now share. As $t = dv$ and the light has been travelling for $t$ from a distant standard candle, as this elapsed period approaches the age of the Universe this distance approaches the distance to $p_{\alpha}$ due to the principle (in the model being proposed) that cosmic inflation and time are the same process as observed from different reference frames.  _That_ is why direct observation aligns closely with the derived cosmological velocity despite the wide error margins inherent in this type of measurement.
+
+If we modify the equations above so we instead define $g$ not as proportional to time, but as proportional to motion _through_ space we reach the cusp of the model I'm proposing: Motion occupies the 4th fundamental rate of change, ***not*** time. That is to say that for some small motion _through_ the 'dough', the 'dough' dilates by some small quantity that is a function of that motion _through_ the 'dough'. The faster (greater magnitude since there is no concept of time anymore) an object moves _through_ the dough, the faster the dough dilates.
+
+So let us slightly modify the equation for our cosmological velocity to take into account this proportionality to motion, removing the dependence on time. This in turn removes the expansion of the 'dough', giving us our kinematic velocity.
+
+First though, we must define a 'time equivalent' quantity, since we are removing time from the equation (literally and figuratively).
+
+
+**Time equivalent quantities:**
+
+<Admonition title="For the math types" type="warn" foldable sidebar right>
+$\dot{x}$ does not indicate a time derivative in the traditional sense. Instead, it indicates a ***fundamental*** change in displacement. This occupies the role that time previously held as a driving rate of change instead of a rate of change that is proportional to another. In the model being proposed _motion_ occupies this 4th fundamental rate of change, while the 4th temporal coordinate is indicated by a coordinate along the spatial density axis this model demonstrates.
+</Admonition>
+
+If the 'dough' dilates as a function of the magnitude of a body's motion _through_ the 'dough', and this process when summed over for all bodies within the Universe gives us cosmic inflation, there is no need for some abstract quantity we naively call time. We can define time purely as a ratio of these distances... the distance a body travels _through_ the dough, and a distance that two nearby points diverge from each other. To be more precise, time is the dilation of space. This ratio is what gives us the perceived acceleration due to gravity. When $ds/dx$ is greater than 1 we produce what we now consider a blackhole, however these blackholes are nothing more than a mirage in the distance that dissipates as an observer approaches that gravitational field, dilating $c$ proportionally to $g$.[^3]
+
+In it's integral (adding up all of the small changes) form, this might look like:
+
+$$
+\begin{align}
+ \Delta  \tau = \frac{\int_p x}{\int x}
+\end{align}
+$$
+
+This notation is likely confusing, so let me explain. The denominator indicates the change in displacement integrated over a single unit of "time", giving a measure of length equivalent to the velocity in units of length, while the subscript $p$ indicates an integral that continues to grow as the Universe progress temporally.
+
+To put this in human language, there is no time anymore. There is only motion _through_ the "dough", and motion _of_ the "dough". When each small motion _through_ the "dough" is added up over all of the time in question, we get $\int_p x$. This number will be proportional to time in our standard units of measure, but there is no need for time in the physical sense. Our attribution of time is largely arbitrary, albeit proportional to the rate of cosmic inflation as we currently define cosmic inflation as being proportional to time. This relationship of course becomes inverse, but this is irrelevant as $ds/dt = 1$. Since the dilation of space _is_ time, this ratio will always be 1, making the inverse of this relationship irrelevant. This is precisely why gravity lacks any apparent [aberration](https://en.wikipedia.org/wiki/Aberration_(astronomy)).
+
+**Time Derivative Equivalent:**
+
+Consider that for $\int x$ as it appears in equation above, $1$ unit of _pseudo-time_ will pass. Because the passage of pseudo-time is _defined_ by the relationship between proportional derivatives and distances, where $t_{p}$ indicates 1 unit of pseudo-time in units applied to the traditional notion of velocity, we can easily infer the following:
+
+$$
+\begin{align}
+\tau_o = \frac{1 ~ t_{p}}{dt_p} \equiv \frac{\int x_\sigma}{dx_\sigma}
+\end{align}
+$$
+
+This gives $\tau_o$ time derivatives per unit of time, but more importantly, a time derivative, $1/\tau_o$ that is proportionate to $dx$ if $\int x$ is defined by $dx$.
+
+To put this simply, we can derive an exactly proportional time-equivalent derivative so that we can remove time, and in turn cosmic inflation from the cosmological velocity derivation above.
+
+**Applying the time equivalent quantities to find our kinematic velocity:**
+
+
+If $\delta$ is the dilation of space in it's derivative form, let's apply the time equivalent derivative to this equation. This will make this equation proportional to motion, not time, in turn removing the motion which is only secondary to the dilation of space.
+
+Since $\delta$ in traditional models is proportional to time, $\delta$ in it's current form represents the dilation of a small quantity of space over a single unit of time, whatever the unit of time applied to $\delta$ may be.[^4] Since $v$ is also proportional to a single unit of "time", we can find a proportional value of
+
+
+$$
+\begin{align}
+\delta^\prime = 2 G \frac{M_{\oplus}}{R_{\oplus}^3} \frac{1}{v} \tau
+\end{align}
+$$
+
+
+When we then integrate this in the same manner in which we did to find the replacement for $\gamma$, we will now have to integrate twice. First over a unit of pseudo-time, and then over the radius. This gives us the sum of the dilation of space for each small quantity of space, for the sum of each small quantity in time, in the coordinate system of the 'dough'.
+
+
+$$
+\begin{align}
+ \delta_\alpha & = \frac{1}{R_{\oplus}} \int \int_0^{R} \left[ 2 G \frac{M_{\oplus}}{R_{\oplus}^{3}} \frac{1}{v_{0}} \tau \right] ~ dR\ d\tau \\
+ & = 1 + \frac{1}{2} G\frac{M_{\oplus}}{R_{\oplus}^3} = 371.4 ~ \text{km} ~ \text{s}^{-1}
+\end{align}
+$$
+
+Our observed velocity relative to the [CMB](https://en.wikipedia.org/wiki/Cosmic_microwave_background) (the _dough_ in this model) is approximately $370 ~ \text{km}\ \text{s}^{-1}$.
+
+
+For the math types out there, it is important to note that the integral of $\tau$ is treated uniquely, as the denominator of $\tau$ remains fixed in the same manner as when $\tau$ was first defined. This is due to the nature of this quantity, being proportional to time. Because our units of time are largely arbitrary it is required to divide the proportional integral $\int_p$ by a unit of length equivalent to the velocity in units of length to align this quantity with our measures of time. This maintains $\tau$ as a quantity that is equivalent to time, both in integral and derivative form, and allows that certain quantities remain directly hidden from us as our co-motion along this temporal axis causes our measuring apparatus to dilate along with the objects which we are attempting to measure.
+
+
+## Supportive Observations
+
+### Pound & Rebka
+
+The [Pound-Rebka](https://en.wikipedia.org/wiki/Pound%E2%80%93Rebka_experiment) experiment was an experiment carried out at Harvard in which the researchers setup a light clock, not two dissimilar from the one we've setup in our previous thought experiment. The difference (at least the difference that matters) is that they moved the two 'mirrors' apart from each other at a velocity that would perfectly cancel out the [Doppler shift](https://en.wikipedia.org/wiki/Doppler_effect) induced by gravity. They found a result of 
+
+$$
+\begin{align}
+v \approx g \frac{h}{c}
+\end{align}
+$$
+
+And because $t = d/v$
+
+$$
+\begin{align}
+v \approx g \Delta t
+\end{align}
+$$
+
+If you're unfamiliar, $\Delta$ (_delta,_ I know, we've already used delta) just means the 'change of' $t$, and $h$ is the height between the emitter and the receiver.
+
+And you've likely guessed it, this coincides _perfectly_ with the outcome we would expect in the model in which $h$ dilates with time, and we did so without the need to dilate a quantity that we can't even measure!
+
+Further, since both $h$ and $c$ would dilate proportionally to $g$ (in it's derivative form) in the model I'm proposing, it is irrelevant which coordinate system we use to calculate $\Delta t$ as both are equivalent.
+
+### Bullet Cluster
+
+> Image hosted by [Caltech](https://ned.ipac.caltech.edu/level5/March15/Roos/Roos15.html). They have no affiliation with this app or this model.
+
+The bullet cluster is a pair of galaxy clusters rapidly approaching each other. The extreme relative velocities accompanied by the extreme masses of each galaxy cluster give rise to a phenomenon that current models of relativity can't explain: The mass we see does not align with the gravitational lens.
+
+![Bullet Cluster](https://ned.ipac.caltech.edu/level5/March15/Roos/Figures/figure18.jpg)
+
+This sort of 'washing' effect is precisely what would be expected in a model in which gravity, and in turn the gravitational lens is a function of not mass alone, but of mass and velocity.
+
+
+### Lack of Gravitational Aberration
+
+The apparent lack of gravitational [aberration](https://en.wikipedia.org/wiki/Aberration_(astronomy)) seems to imply that the speed of gravity is infinite, but this can't be the case. If 'time' passes and gravity effects some distant body, it must be that either gravity does not 'move' at all, or that gravity and time are the same thing.
+
+If gravity and time are the same process when observed from the coordinate system of the 'oven', $ds/dx = 1$, regardless of the units used or any relativistic effects, and any motion of space remains hidden from our perspective in the coordinate system of the 'dough'.
+
+
+### Super Evolved Galaxies
+
+With the launch of the James Webb Space Telescope in 2021 we've made quite a few incredible observations that require some additional context, if not entirely new physics. One of such discoveries is that of galaxies which appear to be [too large](https://www.nature.com/articles/s41550-023-01937-7) to exist at the time at which we observe them. 
+
+Because light has to travel to us, the further away an object is the further in the past it was when the light that reaches our eyes or telescope departed that object. This problem of super-evolved galaxies at a time which appears to be too early for our current $\Lambda CDM$ model is resolved by the concurrent nature of this density axis being proposed. If this axis is concurrent, there is no reason to believe that there should be any limit on the evolution of a cosmic process at any point in time.
+
+### Fine Tuning and the Fermi Paradox
+### The Mass Independence of Gravity
+### Classical Simultaneity
+
+This one is not so much an experiment, but rather an absolutely ridiculous notion that falls out of current interpretations of special relativity. Resolving this absurdity was perhaps the single greatest motivation in the development of this model. This notion, known as relativistic simultaneity, says that a single, instantaneous event can occur at two different points in time. This just falls out of the math of special relativity, and since _most_ of the math of special relativity has been demonstrated experimentally, it is widely, albeit inexplicably accepted. This is obviously absurd, not only as a matter of physics, but as a matter of math. Through the modifications to special relativity being proposed we can remove this notion, maintaining that all instantaneous events occur at precisely one instant in time.
+
+
+## Discussion
+
+### Problems & Shortcomings
+
+First, this model will, by the very nature of the symmetries it shares with existing models of relativity, satisfy _all_ experiments supporting existing models. That is not to say that all the math has been resolved. In the narrow view we can say that all vectors have the same magnitude, some are pointing in the exact opposite direction, but if that is the case the opposite body is moving (space, not the object when it is in gravitational free fall). This gives the same kinematic velocity in both models. Cosmological velocities are a little harder to demonstrate, but by the very symmetries that this model shares with current models, all experiments _must_ be satisfied. That is not to say that the math is easy. In fact, deriving a set of equations for a body in motion through a medium that dilates as a function of that motion, putting space itself in motion is proving to be really, _really_ hard. I know I can do it, but with me being homeless I haven't been able to dedicate time to this model in almost a year as I've worked on releasing Fluster.
+
+#### Conservation of Energy and Momentum
+
+RESUME RESUME RESUME
+
+### Variable speed of light
+
+So, have you noticed the inconsistency yet? If the speed of light is constant in each reference frame, how can it possibly be a constant if either space or time dilates? If $t = d/v$ and either $t$ or $d$ dilates, it is impossible for $c$ to be both an absolute constant and equivalent in each reference frame. What is possible however is that $c$ is equivalent in each reference frame, as $c$ dilates proportional to distance as space itself dilates. This gives a measure of $c$ that both observers would agree on, but this is only due to the dilated space of the observer in motion. The kinematic velocity of $c$ is equivalent in each reference frame, not the velocity in the coordinate system of the 'oven'.
+
+
+### The Blackhole Mirage
+
+One of the biggest mysteries in modern physics is how to describe the interior of a blackhole. Current models suggest that the interior of a blackhole is a point of infinite density, a place where even light can't escape. In the model I am proposing, blackholes are nothing more than a mirage in the distance that dissipates as an observer approaches that body's gravitational field, causing the speed of light to dilate proportionally. As only the speed of light _through_ the 'dough' is constant in each reference frame, inversely proportional to the density of the 'dough', the speed of light increases proportionally to local gravitational acceleration. This fits perfectly with what is observed in the Pound & Rebka experiment once our co-motion across the temporal axis is accounted for. Even the curvature of light ***away*** from the gravitational source in the gravitational lens follows this pattern.[^1]
+
+### The speed of gravity
+
+RESUME RESUME RESUME
+
+### The key to moving forward
+
+In short, this model needs to be bound with electromagnetism. The potential outcome of such a unity would change the world on par with the wheel or the discovery of electricity. Through this new description of gravity, cosmic inflation and time we can infer that the divergence of the magnetic field is **not** 0, but rather equivalent to the determinant of some time dependent 3x3 matrix that describes the dilation of space at that point. In a manner that is similar to the way in which the dilation of space remains hidden apart from the apparent acceleration due to gravity, our co-motion keeps this divergence hidden from us directly. Through this relationship I am confident that gravity and electromagnetism can finally be unified.
+
+$$
+\begin{align}
+\nabla B = 0 \quad \Rightarrow \quad \nabla B = \delta \left|\begin{array}{ccc}
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+    \end{array}\right|
+\end{align}
+$$
+
+There also exists an intriguing coincidence, where if we treat $v$ as being not proportional to time, but as the fundamental rate of change mentioned above, making $v$ a pure magnitude of distance proportional only to other velocities, we can derive a ratio of
+
+$$
+\begin{align}
+\frac{ds}{dx} \approx 1.618 = \phi
+\end{align}
+$$
+
+
+for a set of local gravitational parameters that occurs on the surface of Earth, where $ds$ is the dilation of space per the change in displacement of magnitude $v$. Oddly enough this quantity can be found through a peculiar pairing of our equatorial and polar radii to an accuracy of $\pm 0.004\%$.
+
+Treating $v$ as being only proportional to other magnitudes leads to a theoretical upper limit of $c$ in units of length, making the magnitude of each vector _not_ purely relative in the same manner that motion is currently thought to be. Instead the free-fall reference frame leaves an observer at rest relative to the 'oven', making all displacement vectors (arrows describing the change in your location) being relative to this reference frame. 
+
+
+### The Lighthouse And The Clock-tower - A closing thought experiment
+
+Let there be two observers, $A$ and $B$. Let these two observers agree that $B$ should travel at some agreed upon velocity $v$ between two arbitrary points in space, $p_{1}$ and $p_{2}$. At $p_{2}$ place a time keeping device that remains visible from $p_{1}$. As $A$ remains at $p_{1}$ and watches $B$ in motion between $p_{1}$ and $p_{2}$, at what time will $B$ reach $p_{2}$? 
+
+Surely both observers must agree on the time at which $B$ reaches $p_{2}$, which I will now call $t_{\omega}$. If we were to place a camera at $p_{2}$ that captures $B$ arriving at $p_{2}$, this image must agree with the time $A$ observes $B$ reach $p_{2}$ since there are no relativistic effects impacting the image returned from $p_{2}$ to $A$ at $p_{1}$. We also ***know*** that $\gamma$ must apply to this equation. [Pound & Rebka](https://en.wikipedia.org/wiki/Pound%E2%80%93Rebka_experiment), and [Ives & Stillwell](https://en.wikipedia.org/wiki/Ives%E2%80%93Stilwell_experiment) have both demonstrated this additional factor of $\gamma$ experimentally.
+
+So if $t_{\omega}$ must be $t_{0} + d/v \gamma$ where $d$ is the distance between $p_{1}$ and $p_{2}$, $t_{0}$ the initial time, and $v$ is the ***agreed upon*** velocity, the only possible solution to the $d=vt \gamma$ equivalence is that _distance_ dilates in the coordinate system of $B$ and that $A$ and $B$ <Ul yellow>can't</Ul> agree upon a velocity. If both $A$ and $B$ must agree on the time at which $B$ reaches $p_{2}$ and this time must be extended by an additional factor of $\gamma$, then the agreed upon velocity produces an elongated distance while the velocity decreases by a factor of $1/\gamma$ in the coordinate system of $A$ to accommodate a $d$ that is not elongated by $\gamma$. It's as if there exists some sort of drag induced by the more dense coordinate system, and in a manner similar to the way in which 4-vectors remain constant in traditional models of relativity, $d/v$ remains constant irrespective of coordinate system.
+
+
+[^1]: The metric tensor, in the way it is currently applied, appears to describe this motion due to Einstein's reliance on the equivalence principle and the addition of vectors.
+[^2]: 3 orthonormal spatial dimensions and a density dimension giving a Euclidean distance of $\sqrt{\Delta x^2 + \Delta y^2 + \Delta z^2}$ in the "oven's" coordinate system.
+[^3]: See the section on the Pound & Rebka results. $c$ dilates proportionally to $g$ as a fundamental piece of this model is the principle that all functions limit at their Newtonian counterpart when the reference frame is shared, once this divergent geometry is accounted for.
+[^4]: $s^{-2}$ in standard units. The dimensionality issue with $\dot{x} \mapsto \ddot{x}$ is discussed in the section on the conservation of energy and momentum.

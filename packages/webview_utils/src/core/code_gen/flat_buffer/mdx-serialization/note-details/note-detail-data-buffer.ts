@@ -47,42 +47,56 @@ summary(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-tags(index: number, obj?:TagResultBuffer):TagResultBuffer|null {
+topic():string|null
+topic(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+topic(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+subject():string|null
+subject(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+subject(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
+tags(index: number, obj?:TagResultBuffer):TagResultBuffer|null {
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? (obj || new TagResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 tagsLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 14);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 citations(index: number, obj?:CitationResultBuffer):CitationResultBuffer|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? (obj || new CitationResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 citationsLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
+  const offset = this.bb!.__offset(this.bb_pos, 16);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 lastModifiedString():string|null
 lastModifiedString(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 lastModifiedString(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 14);
+  const offset = this.bb!.__offset(this.bb_pos, 18);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 lastReadString():string|null
 lastReadString(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 lastReadString(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 16);
+  const offset = this.bb!.__offset(this.bb_pos, 20);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 static startNoteDetailDataBuffer(builder:flatbuffers.Builder) {
-  builder.startObject(7);
+  builder.startObject(9);
 }
 
 static addNoteId(builder:flatbuffers.Builder, noteIdOffset:flatbuffers.Offset) {
@@ -97,8 +111,16 @@ static addSummary(builder:flatbuffers.Builder, summaryOffset:flatbuffers.Offset)
   builder.addFieldOffset(2, summaryOffset, 0);
 }
 
+static addTopic(builder:flatbuffers.Builder, topicOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(3, topicOffset, 0);
+}
+
+static addSubject(builder:flatbuffers.Builder, subjectOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(4, subjectOffset, 0);
+}
+
 static addTags(builder:flatbuffers.Builder, tagsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, tagsOffset, 0);
+  builder.addFieldOffset(5, tagsOffset, 0);
 }
 
 static createTagsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
@@ -114,7 +136,7 @@ static startTagsVector(builder:flatbuffers.Builder, numElems:number) {
 }
 
 static addCitations(builder:flatbuffers.Builder, citationsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, citationsOffset, 0);
+  builder.addFieldOffset(6, citationsOffset, 0);
 }
 
 static createCitationsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
@@ -130,29 +152,31 @@ static startCitationsVector(builder:flatbuffers.Builder, numElems:number) {
 }
 
 static addLastModifiedString(builder:flatbuffers.Builder, lastModifiedStringOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(5, lastModifiedStringOffset, 0);
+  builder.addFieldOffset(7, lastModifiedStringOffset, 0);
 }
 
 static addLastReadString(builder:flatbuffers.Builder, lastReadStringOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(6, lastReadStringOffset, 0);
+  builder.addFieldOffset(8, lastReadStringOffset, 0);
 }
 
 static endNoteDetailDataBuffer(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   builder.requiredField(offset, 4) // note_id
   builder.requiredField(offset, 6) // title
-  builder.requiredField(offset, 10) // tags
-  builder.requiredField(offset, 12) // citations
-  builder.requiredField(offset, 14) // last_modified_string
-  builder.requiredField(offset, 16) // last_read_string
+  builder.requiredField(offset, 14) // tags
+  builder.requiredField(offset, 16) // citations
+  builder.requiredField(offset, 18) // last_modified_string
+  builder.requiredField(offset, 20) // last_read_string
   return offset;
 }
 
-static createNoteDetailDataBuffer(builder:flatbuffers.Builder, noteIdOffset:flatbuffers.Offset, titleOffset:flatbuffers.Offset, summaryOffset:flatbuffers.Offset, tagsOffset:flatbuffers.Offset, citationsOffset:flatbuffers.Offset, lastModifiedStringOffset:flatbuffers.Offset, lastReadStringOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createNoteDetailDataBuffer(builder:flatbuffers.Builder, noteIdOffset:flatbuffers.Offset, titleOffset:flatbuffers.Offset, summaryOffset:flatbuffers.Offset, topicOffset:flatbuffers.Offset, subjectOffset:flatbuffers.Offset, tagsOffset:flatbuffers.Offset, citationsOffset:flatbuffers.Offset, lastModifiedStringOffset:flatbuffers.Offset, lastReadStringOffset:flatbuffers.Offset):flatbuffers.Offset {
   NoteDetailDataBuffer.startNoteDetailDataBuffer(builder);
   NoteDetailDataBuffer.addNoteId(builder, noteIdOffset);
   NoteDetailDataBuffer.addTitle(builder, titleOffset);
   NoteDetailDataBuffer.addSummary(builder, summaryOffset);
+  NoteDetailDataBuffer.addTopic(builder, topicOffset);
+  NoteDetailDataBuffer.addSubject(builder, subjectOffset);
   NoteDetailDataBuffer.addTags(builder, tagsOffset);
   NoteDetailDataBuffer.addCitations(builder, citationsOffset);
   NoteDetailDataBuffer.addLastModifiedString(builder, lastModifiedStringOffset);

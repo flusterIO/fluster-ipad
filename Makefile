@@ -18,21 +18,22 @@ lint:
 build_internal_cli:
 	cd ${FLUSTER_IOS_ROOT}/packages/rust/fluster_internal_cli; cargo build
 
-build_cross_language_schemas:
+generate_component_docs_paths: build_internal_cli
+	./target/debug/fluster_internal_cli gather-component-doc-paths
+
+generate_initial_note_paths: build_internal_cli
+	tsx ${FLUSTER_IOS_ROOT}/scripts/generate_initial_note_paths.ts
+
+generate_initial_note_data: generate_initial_note_paths
+	cp /Users/bigsexy/Desktop/notes/content/physics/ipad_app_notes/on_the_gravitational_nature_of_time.mdx /Users/bigsexy/Desktop/swift/Fluster/docs/initial_note_docs/on_the_gravitational_nature_of_time.mdx
+	./target/debug/fluster_internal_cli parse-initial-notes
+
+build_cross_language_schemas: generate_initial_note_data
 	${FLAT_BUFFER_PATH} -o ./packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift
 	${FLAT_BUFFER_PATH} -o ./packages/rust/fluster_core_utilities/src/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --rust
 	${FLAT_BUFFER_PATH} -o ./packages/webview_utils/src/core/code_gen//flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --ts
 	typeshare ${FLUSTER_IOS_ROOT}/packages/rust/fluster_core_utilities --lang=typescript --output-folder=${FLUSTER_IOS_ROOT}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare ${FLUSTER_IOS_ROOT}/packages/rust/fluster_core_utilities --lang=swift --output-folder=${FLUSTER_IOS_ROOT}/packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/typeshare
-
-generate_component_docs_paths: build_internal_cli
-	./target/debug/fluster_internal_cli gather-component-doc-paths
-
-generate_initial_note_paths:
-	tsx ${FLUSTER_IOS_ROOT}/scripts/generate_initial_note_paths.ts
-
-generate_initial_note_data: generate_initial_note_paths
-	./target/debug/fluster_internal_cli parse-initial-notes
 
 generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data
 

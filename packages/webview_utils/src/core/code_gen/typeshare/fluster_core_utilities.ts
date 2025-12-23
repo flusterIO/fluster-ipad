@@ -41,7 +41,9 @@ export enum NoteDetailWebviewActions {
 	RequestNoteDetailData = "request-note-detail-data",
 	SetWebviewLoaded = "set-note-detail-webview-loaded",
 	HandleTagClick = "handle-tag-click",
-	HandleCitationView = "handle-citation-view",
+	HandleTopicClick = "handle-topic-click",
+	HandleSubjectClick = "handle-subject-click",
+	HandleCitationClick = "handle-citation-click",
 }
 
 /** From swift to typescript */

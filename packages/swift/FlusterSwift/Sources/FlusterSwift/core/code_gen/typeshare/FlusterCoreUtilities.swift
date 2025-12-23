@@ -42,7 +42,9 @@ public enum NoteDetailWebviewActions: String, Codable {
 	case requestNoteDetailData = "request-note-detail-data"
 	case setWebviewLoaded = "set-note-detail-webview-loaded"
 	case handleTagClick = "handle-tag-click"
-	case handleCitationView = "handle-citation-view"
+	case handleTopicClick = "handle-topic-click"
+	case handleSubjectClick = "handle-subject-click"
+	case handleCitationClick = "handle-citation-click"
 }
 
 /// From swift to typescript

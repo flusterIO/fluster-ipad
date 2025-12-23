@@ -48,6 +48,8 @@ table NoteDetailDataBuffer {
     note_id:string (required);
     title:string (required);
     summary:string;
+    topic:string;
+    subject:string;
     tags:[MdxSerialization.TagResultBuffer] (required);
     citations:[MdxSerialization.CitationResultBuffer] (required);
     last_modified_string:string (required);

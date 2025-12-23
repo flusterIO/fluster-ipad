@@ -63,6 +63,37 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
             FlusterLogger(.mainApp, .prodAndDev).log("Failed to find tag in handleTagClick: \(error)", .warning)
         }
     }
+    func handleSubjectClck(subjectValue: String) {
+        let fetchDescriptor = FetchDescriptor<SubjectModel>(
+            predicate: #Predicate<SubjectModel> {t in
+                t.value == subjectValue
+            }
+        )
+        do {
+            let res = try modelContext.fetch(fetchDescriptor)
+            if !res.isEmpty {
+                self.fullScreenCover = .subjectSearch(subject: res.first!)
+            }
+        } catch {
+            FlusterLogger(.mainApp, .prodAndDev).log("Failed to find subject in handleSubjectClick: \(error)", .warning)
+        }
+    }
+
+    func handleTopicClck(topicValue: String) {
+        let fetchDescriptor = FetchDescriptor<TopicModel>(
+            predicate: #Predicate<TopicModel> {t in
+                t.value == topicValue
+            }
+        )
+        do {
+            let res = try modelContext.fetch(fetchDescriptor)
+            if !res.isEmpty {
+                self.fullScreenCover = .topicSearch(topic: res.first!)
+            }
+        } catch {
+            FlusterLogger(.mainApp, .prodAndDev).log("Failed to find topic in handleTopicClick: \(error)", .warning)
+        }
+    }
 
     public func makeUIView(context: Context) -> WKWebView {
         let webView = container.webView
@@ -73,7 +104,9 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
             NoteDetailWebviewActions.requestNoteDetailData.rawValue,
             NoteDetailWebviewActions.setWebviewLoaded.rawValue,
             NoteDetailWebviewActions.handleTagClick.rawValue,
-            NoteDetailWebviewActions.handleCitationView.rawValue,
+            NoteDetailWebviewActions.handleTopicClick.rawValue,
+            NoteDetailWebviewActions.handleSubjectClick.rawValue,
+            NoteDetailWebviewActions.handleCitationClick.rawValue,
         ]
         for controllerName in editorContentControllers {
             addUserContentController(
@@ -156,6 +189,10 @@ extension NoteDetailWebviewInternal {
                 handleJavascriptError(base64String: message.body as! String)
             case NoteDetailWebviewActions.requestNoteDetailData.rawValue:
                 self.setInitialData()
+            case NoteDetailWebviewActions.handleTopicClick.rawValue:
+                self.parent.handleTopicClck(topicValue: message.body as! String)
+            case NoteDetailWebviewActions.handleSubjectClick.rawValue:
+                self.parent.handleSubjectClck(subjectValue: message.body as! String)
             default:
                 return
             }

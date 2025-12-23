@@ -87,6 +87,7 @@
     "@uiw/codemirror-theme-bbedit": "4.25.3",
     "@uiw/codemirror-theme-material": "4.25.3",
     "@uiw/codemirror-theme-xcode": "4.25.3",
+    "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "flatbuffers": "25.9.23",
     "framer-motion": "12.23.25",

@@ -317,10 +317,12 @@ public struct MdxSerialization_NoteDetails_NoteDetailDataBuffer: FlatBufferObjec
     case noteId = 4
     case title = 6
     case summary = 8
-    case tags = 10
-    case citations = 12
-    case lastModifiedString = 14
-    case lastReadString = 16
+    case topic = 10
+    case subject = 12
+    case tags = 14
+    case citations = 16
+    case lastModifiedString = 18
+    case lastReadString = 20
     var v: Int32 { Int32(self.rawValue) }
     var p: VOffset { self.rawValue }
   }
@@ -331,6 +333,10 @@ public struct MdxSerialization_NoteDetails_NoteDetailDataBuffer: FlatBufferObjec
   public var titleSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.title.v) }
   public var summary: String? { let o = _accessor.offset(VTOFFSET.summary.v); return o == 0 ? nil : _accessor.string(at: o) }
   public var summarySegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.summary.v) }
+  public var topic: String? { let o = _accessor.offset(VTOFFSET.topic.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var topicSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.topic.v) }
+  public var subject: String? { let o = _accessor.offset(VTOFFSET.subject.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var subjectSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.subject.v) }
   public var hasTags: Bool { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? false : true }
   public var tagsCount: Int32 { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? 0 : _accessor.vector(count: o) }
   public func tags(at index: Int32) -> MdxSerialization_TagResultBuffer? { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? nil : MdxSerialization_TagResultBuffer(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
@@ -341,20 +347,24 @@ public struct MdxSerialization_NoteDetails_NoteDetailDataBuffer: FlatBufferObjec
   public var lastModifiedStringSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.lastModifiedString.v) }
   public var lastReadString: String! { let o = _accessor.offset(VTOFFSET.lastReadString.v); return _accessor.string(at: o) }
   public var lastReadStringSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.lastReadString.v) }
-  public static func startNoteDetailDataBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 7) }
+  public static func startNoteDetailDataBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 9) }
   public static func add(noteId: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: noteId, at: VTOFFSET.noteId.p) }
   public static func add(title: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: title, at: VTOFFSET.title.p) }
   public static func add(summary: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: summary, at: VTOFFSET.summary.p) }
+  public static func add(topic: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: topic, at: VTOFFSET.topic.p) }
+  public static func add(subject: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: subject, at: VTOFFSET.subject.p) }
   public static func addVectorOf(tags: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: tags, at: VTOFFSET.tags.p) }
   public static func addVectorOf(citations: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citations, at: VTOFFSET.citations.p) }
   public static func add(lastModifiedString: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: lastModifiedString, at: VTOFFSET.lastModifiedString.p) }
   public static func add(lastReadString: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: lastReadString, at: VTOFFSET.lastReadString.p) }
-  public static func endNoteDetailDataBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6, 10, 12, 14, 16]); return end }
+  public static func endNoteDetailDataBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6, 14, 16, 18, 20]); return end }
   public static func createNoteDetailDataBuffer(
     _ fbb: inout FlatBufferBuilder,
     noteIdOffset noteId: Offset,
     titleOffset title: Offset,
     summaryOffset summary: Offset = Offset(),
+    topicOffset topic: Offset = Offset(),
+    subjectOffset subject: Offset = Offset(),
     tagsVectorOffset tags: Offset,
     citationsVectorOffset citations: Offset,
     lastModifiedStringOffset lastModifiedString: Offset,
@@ -364,6 +374,8 @@ public struct MdxSerialization_NoteDetails_NoteDetailDataBuffer: FlatBufferObjec
     MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(noteId: noteId, &fbb)
     MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(title: title, &fbb)
     MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(summary: summary, &fbb)
+    MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(topic: topic, &fbb)
+    MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(subject: subject, &fbb)
     MdxSerialization_NoteDetails_NoteDetailDataBuffer.addVectorOf(tags: tags, &fbb)
     MdxSerialization_NoteDetails_NoteDetailDataBuffer.addVectorOf(citations: citations, &fbb)
     MdxSerialization_NoteDetails_NoteDetailDataBuffer.add(lastModifiedString: lastModifiedString, &fbb)
@@ -376,6 +388,8 @@ public struct MdxSerialization_NoteDetails_NoteDetailDataBuffer: FlatBufferObjec
     try _v.visit(field: VTOFFSET.noteId.p, fieldName: "noteId", required: true, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.title.p, fieldName: "title", required: true, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.summary.p, fieldName: "summary", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.topic.p, fieldName: "topic", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.subject.p, fieldName: "subject", required: false, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.tags.p, fieldName: "tags", required: true, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_TagResultBuffer>, MdxSerialization_TagResultBuffer>>.self)
     try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: true, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_CitationResultBuffer>, MdxSerialization_CitationResultBuffer>>.self)
     try _v.visit(field: VTOFFSET.lastModifiedString.p, fieldName: "lastModifiedString", required: true, type: ForwardOffset<String>.self)

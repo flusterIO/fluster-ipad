@@ -3,7 +3,6 @@
 //  Fluster
 //
 //  Created by Andrew on 10/29/25.
-//
 
 import FlatBuffers
 import FlusterRust
@@ -39,13 +38,10 @@ func getInitialTheme() -> WebViewTheme {
 
 @MainActor
 struct MainView: View {
-    @State private var toolbar = PKToolPicker()
-    @State private var tagQuery: String = ""
+    @State private var fullScreenCover: MainFullScreenCover? = nil
     @State private var subjectQuery: String = ""
     @State private var topicQuery: String = ""
-    @State private var fullScreenCoverDragDrag: CGFloat = 0
-    @State private var fullScreenCoverOpacity: CGFloat = 1
-    @State private var fullScreenCover: MainFullScreenCover? = nil
+    @State private var tagQuery: String = ""
     @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
         var hasPreviouslyLaunched: Bool = false
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
@@ -62,21 +58,23 @@ struct MainView: View {
         var editorThemeDark: CodeSyntaxTheme = .dracula
     @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
         var editorThemeLight: CodeSyntaxTheme = .githubLight
-    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap:
-        EditorKeymap = .base
+    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
     @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
         var tabviewCustomization: TabViewCustomization
     /// editingNoteId is a EditingNoteId.value protocol string. Use that class to parse this result and retrieve results since this encodes both user defined ids and uuids.
     let defaultNoteId: String = "welcomeToFluster"
-    @StateObject private var editorContainer = MdxEditorWebviewContainer(
-        bounce: false,
-        scrollEnabled: true
-    )
-    @State private var themeManager = ThemeManager(
+    @StateObject private var editorContainer: MdxEditorWebviewContainer =
+        MdxEditorWebviewContainer(
+            bounce: false,
+            scrollEnabled: true
+        )
+    @State private var themeManager: ThemeManager = ThemeManager(
         initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
     )
+    /// haveSetNoteDataId is used to set last_read and other data when a user navigates to the note's content rather than setting it when the user selects the note.
+    @State private var haveSetNoteDataId: String?
     @State private var editingNote: NoteModel? = nil
-    @State private var selectedTab = IpadMainViewTab.notes
+    @State private var selectedTab: IpadMainViewTab = IpadMainViewTab.notes
     @State private var findInNotePresented: Bool = false
 
     var body: some View {
@@ -99,24 +97,10 @@ struct MainView: View {
                 systemImage: FlusterIcon.paper.rawValue,
                 value: IpadMainViewTab.paper
             ) {
-                if let unwrappedEditingNote = Binding($editingNote) {
-                    PaperView(
-                        toolbar: $toolbar,
-                        drawingData: unwrappedEditingNote.drawing,
-                        activeTab: $selectedTab
-                    )
-                    .backgroundExtensionEffect()
-                    .ignoresSafeArea()
-                } else {
-                    if hasPreviouslyLaunched {
-                        SelectNoteToContinueView()
-                    } else {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                            .scaleEffect(1.5)
-                            .tint(themeManager.theme.primary)
-                    }
-                }
+                PaperTabView(
+                    editingNote: $editingNote,
+                    selectedTab: $selectedTab
+                )
             }
             .customizationID(IpadMainViewTab.paper.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
@@ -125,51 +109,10 @@ struct MainView: View {
                 systemImage: FlusterIcon.markdown.rawValue,
                 value: IpadMainViewTab.markdown
             ) {
-                if let editingNoteBinding = Binding($editingNote) {
-                    NavigationStack {
-                        MdxEditorWebview(
-                            url:
-                                Bundle.main.url(
-                                    forResource: "index",
-                                    withExtension: "html",
-                                    subdirectory: "splitview_mdx_editor"
-                                )!,
-                            theme: $theme,
-                            editorThemeDark: $editorThemeDark,
-                            editorThemeLight: $editorThemeLight,
-                            editingNote: editingNoteBinding,
-                            editorKeymap: $editorKeymap,
-                            container: editorContainer,
-                        )
-                        // TODO: Remove this. This is just for easy development.
-                        .onAppear {
-                            if let parsedMdx = editingNote?.markdown
-                                .preParsedBody
-                            {
-                                editorContainer.setParsedEditorContentString(
-                                    content: parsedMdx
-                                )
-                            }
-                            UIScrollView.appearance().bounces = false
-                            UIScrollView.appearance().isScrollEnabled =
-                                false
-                        }
-                        .onDisappear {
-                            UIScrollView.appearance().bounces = true
-                            UIScrollView.appearance().isScrollEnabled = true
-
-                        }
-                    }
-                } else {
-                    if hasPreviouslyLaunched {
-                        SelectNoteToContinueView()
-                    } else {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                            .scaleEffect(1.5)
-                            .tint(themeManager.theme.primary)
-                    }
-                }
+                MarkdownTabView(
+                    editingNote: $editingNote,
+                    editorContainer: editorContainer
+                )
             }
             .customizationID(IpadMainViewTab.markdown.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
@@ -178,11 +121,9 @@ struct MainView: View {
                 systemImage: FlusterIcon.bibliography.rawValue,
                 value: IpadMainViewTab.bib
             ) {
-                NavigationStack {
-                    BibliographyPageView(
-                        editingNote: $editingNote
-                    )
-                }
+                BibliographyTabView(
+                    editingNote: $editingNote
+                )
             }
             .customizationID(IpadMainViewTab.bib.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
@@ -191,32 +132,10 @@ struct MainView: View {
                 systemImage: FlusterIcon.details.rawValue,
                 value: IpadMainViewTab.noteDetail
             ) {
-                if let noteBinding = Binding($editingNote) {
-                    NavigationStack {
-                        NoteDetailWebview(
-                            fullScreenCover: $fullScreenCover,
-                            note: noteBinding,
-                        )
-                        .onAppear {  // hack to avoid scroll bouncing with awkward colored background.
-                            UIScrollView.appearance().bounces = false
-                            UIScrollView.appearance().isScrollEnabled =
-                                false
-                        }
-                        .onDisappear {
-                            UIScrollView.appearance().bounces = true
-                            UIScrollView.appearance().isScrollEnabled = true
-                        }
-                    }
-                } else {
-                    if hasPreviouslyLaunched {
-                        SelectNoteToContinueView()
-                    } else {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                            .scaleEffect(1.5)
-                            .tint(themeManager.theme.primary)
-                    }
-                }
+                NoteDetailsTabView(
+                    editingNote: $editingNote,
+                    fullScreenCover: $fullScreenCover
+                )
             }
             .customizationID(IpadMainViewTab.noteDetail.rawValue)
             .defaultVisibility(.visible, for: .tabBar)
@@ -369,7 +288,6 @@ struct MainView: View {
             of: editingNote,
             {
                 if let note = editingNote {
-                    note.setLastRead(setModified: false)
                     editorContainer.resetScrollPosition()
                     editorContainer.setInitialContent(note: note)
                 }
@@ -415,14 +333,6 @@ struct MainView: View {
                 }
             }
         )
-        //        .onChange( TODO: this will run every time the note changes and always update it. This will need to be tapped in to some sort of event listener.
-        //            of: editingNote?.drawing,
-        //            {
-        //                if let note = editingNote {
-        //                    note.setLastRead(setModified: true)
-        //                }
-        //            }
-        //        )
         .onChange(
             of: editorThemeDark,
             {
@@ -483,11 +393,20 @@ struct MainView: View {
             }
         )
         .onChange(
-            of: editingNote,
+            of: selectedTab,
             {
-                if let _editingNote = editingNote {
-                    _editingNote.last_read = .now
+                if let editingNoteBinding = editingNote {
+                    if haveSetNoteDataId != editingNoteBinding.id {
+                        if [
+                            IpadMainViewTab.noteDetail, IpadMainViewTab.markdown,
+                            IpadMainViewTab.bib, IpadMainViewTab.paper,
+                        ].contains(selectedTab) {
+                            editingNoteBinding.setLastRead()
+                            haveSetNoteDataId = editingNoteBinding.id
+                        }
+                    }
                 }
+
             }
         )
         .onAppear {
@@ -519,14 +438,39 @@ struct MainView: View {
                 if let fs = fullScreenCover {
                     switch fs {
                     case .tagSearch(let tag):
-                        return Text(tag.value)
-                        //                        return NoteSearchResultsByTagView(
-                        //                            tag: TagModel(value: "Herel"),
-                        //                            editingNote: .constant(nil)
-                        //                        )
+                        FullScreenSheetDraggableView(
+                            open: showFullScreenCover,
+                            content: {
+                                NoteSearchResultsByTagView(
+                                    tag: tag,
+                                    editingNote: $editingNote
+                                )
+                            }
+                        )
+                    case .topicSearch(let topic):
+                        FullScreenSheetDraggableView(
+                            open: showFullScreenCover,
+                            content: {
+                                Text("Here")
+                                NoteSearchResultsByTopicView(
+                                    topic: topic,
+                                    editingNote: $editingNote
+                                )
+                            }
+                        )
+                    case .subjectSearch(let subject):
+                        FullScreenSheetDraggableView(
+                            open: showFullScreenCover,
+                            content: {
+                                NoteSearchResultsBySubjectView(
+                                    subject: subject,
+                                    editingNote: $editingNote
+                                )
+                            }
+                        )
                     }
                 } else {
-                    return Text("Something went wrong")
+                    Text("Something went wrong")
                 }
             }
         )

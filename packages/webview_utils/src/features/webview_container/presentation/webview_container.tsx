@@ -120,7 +120,7 @@ export const WebViewContainer = ({
         <div
             id="webview-container"
             className={cn(
-                "max-w-screen",
+                "max-w-screen w-screen",
                 shrinkHeight ? "h-fit" : "h-screen min-h-fit",
                 className,
                 darkMode === "true" && "dark !bg-black",

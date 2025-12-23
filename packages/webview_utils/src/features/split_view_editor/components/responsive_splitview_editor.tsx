@@ -4,7 +4,6 @@ import { useMediaQuery } from "react-responsive";
 import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
 import { LoadingComponent } from "@/shared_components/loading_component";
-/* import { MdxParsingErrorIndicator } from "#/editor/code_editor/components/editor_parsing_error_indicator"; */
 
 
 // TODO: Fix this parsing error indicator

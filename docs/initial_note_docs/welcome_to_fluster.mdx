@@ -9,18 +9,16 @@ id: welcomeToFluster
 
 My name is Andrew, and I'm the creator of Fluster. Please take the time to look through these initial notes as they contain all of the information you need to get the most from Fluster!
 
-> This is a sample not designed to get you familiar with what Fluster has to offer!
+> This is a sample note designed to get you familiar with what Fluster has to offer!
 
 ### Fluster's Back Story
 
-Well, the **TLDR** is:
+> See the attached note for more details if this intrigues you. Fluster came to be almost entirely as an effort to force this model into the physics debate.
 
-1. Got my masters in astrophysics
-2. Late one night came across an assumption made by Einstein and spent the next month examining this assumption in further detail.
-3. Realized this model has incredible potential, already giving multiple directly observed quantities to well within measurement error, and as a result I decided to leave my career in software to pursue this model.
-4. Became homeless for almost 4 years, now living in a homeless shelter.
-5. Became frustrated with existing note taking options, so I built my own for my own personal use to accommodate my own studies.
-6. Reworked my own personal app into a series of applications culminating in the Fluster you see before you to draw attention to the model, since the model reaches some controversial conclusions (gravity is a _repulsive_ force, space dilates... _not_ time.).
+Well, it's a long story. To sum it up, I think I Einstein was wrong about an assumption he made early in his career, and I think I can demonstrate the flaws in this assumptions convincingly. In the winter of 2022 I had a realization about this assumption and I spent the next few months exploring the potential solutions further. It was then that I realized I could derive our velocity here on Earth (_both_ of them... explained in the attached note) to an almost undeniable accuracy through this modification to Einstein's work and our local gravitational parameters alone. I then gave up my career as a software engineer to pursue this model full time, becoming homeless for more than 3 years in the process.
+
+Over the course of this pursuit I built my own note taking application, the original version of Fluster for my personal use. As the application grew and grew I decided to release it as a free & open source application, and now 4 years later we arrived at the version of Fluster you see before you now. This app will always be my own personal note taking solution, and as such it will remain under active development with new features added often.
+
 
 ## What makes Fluster unique?
 
@@ -29,11 +27,13 @@ As Fluster was built originally for my own personal academic pursuits, I built t
 To accomplish this, Fluster relies on [mdx](https://mdxjs.com), a superset of markdown that allows for embedding [React](https://react.dev) components directly within your notes. This works because Fluster embeds your note's rendered markdown in a webview container, allowing you to extend your markdown notes to include content designed for the web. Fluster includes a set of components by default, but plugin functionality will be enabled once the Fluster MacOS application has been rewritten in Swift.
 
 
-## Why Fluster?
+## Why should I use Fluster?
 
-Well, in short, because you have a lot of different things to jot down, search and reference later. Being built by a former software engineer pursuing my own goals in cosmology, I've tried my best to to design Fluster to reflect the often chaotic and jumbled workflows of modern academics. Instead of keeping sketches in one app, with typed notes in another, Fluster keeps your sketches and markdown content side-by-side. By keeping this content separate but linked we allow artificial intelligence to digest the parts of your notes that they handle best, while giving you the freedom to choose the input method that works best for you.
+### 1) Options
 
-### Search Functionality
+Because you have a lot of different things to jot down, search and reference later. Being built by a former software engineer pursuing my own goals in cosmology, I've tried my best to to design Fluster to reflect the often chaotic and jumbled workflows of modern academics. Instead of keeping sketches in one app, with typed notes in another, Fluster keeps your sketches and markdown content side-by-side. By keeping this content separate but linked we allow artificial intelligence to digest the parts of your notes that they handle best, while giving you the freedom to choose the input method that works best for you.
+
+### 2) Search Functionality
 
 When I decided to build a note taking application instead of using existing options I was driven by one unfortunate fact: All existing options either had reasonable search features but lacked in STEM related features, or they were great for STEM focused work and lacked the searching and organization capabilities that I required.
 
@@ -42,3 +42,13 @@ To get around this, Fluster extends upon other navigation methods to allow you t
 - First, Fluster allows adding bibliography entries to each of your notes. By adding a bibliography entry and then linking that entry to 1 or more notes, you can search first by bibliography entry before returning notes linked to that entry.
 - Second, Fluster allows you add add 'taggables' to each note. A 'taggable' is just a term I use internally within the app to reference a topic, a subject, or a tag. Each note can have as many tags as you like, being inserted directly into the content with the `[[#myTagHere]]{:mdx}` syntax, an optional subject and an optional topic. Each 'taggable' is then searchable within the app, easily guiding you to related notes.
 - Third, Fluster includes traditional search methods like full-text search with special ranking methods used to sort content that appears to match your query more significantly given the note's content. Search results appearing in more semantically significant markdown blocks will appear ahead of those that briefly mention the subject.
+
+### 3) Future Proofing
+
+As somebody that is passionate about physics and driven by a deeper understanding of the Universe, I will always be a student of some sort and Fluster will always be my note taking application. This means that features will be added often, from a developer that is also a daily user of the application. If you notice a bug or find room for improvement, chances are that I do too and this will lead to rapid improvements in the application and related tools (Python, GO and Typscript SDK coming soon as well as a CLI).
+
+### 4) You just need more
+
+Fluster was built originally by me and for me. This means that I was able to include some features that might be on the complicated end of the spectrum for some users, but the tradeoffs are worth it if you are willing to put the time in to learn mdx. Mdx is really only slightly more complicated than markdown, and all regular markdown syntax will work exactly as it would in a markdown application, but for those power users that really need the most from their note taking application mdx opens the door to completely new possibilities. 
+
+Fluster includes a set of components for you to use right out of the box, and this list will continue to grow. From interactive plots, to mermaid diagrams, to syntax highlighted code blocks, Fluster lets you include more complicated content than markdown alone would allow.

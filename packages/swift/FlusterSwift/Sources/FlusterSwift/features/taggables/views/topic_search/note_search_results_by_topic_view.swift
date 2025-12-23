@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct NoteSearchResultsByTopicView: View {
+public struct NoteSearchResultsByTopicView: View {
     @Query(sort: \NoteModel.last_read, order: .reverse) private var notes:
         [NoteModel]
     @State private var noteQuery: String = ""
@@ -38,7 +38,7 @@ struct NoteSearchResultsByTopicView: View {
     }
 
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             List(filteredNotes) { note in
                 NoteSearchResultItemView(item: note, editingNote: $editingNote)

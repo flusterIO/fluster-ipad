@@ -9,6 +9,8 @@ import { CitationResultBuffer, TagResultBuffer } from '@/code_gen/flat_buffer/md
 import { setWindowBridgeFunctions } from '#/editor/code_editor/types/swift_events/swift_events';
 import { setWebviewWindowBridgeFunctions } from '#/webview_container/state/swift_events/webview_swift_events';
 import { ErrorBoundary } from 'react-error-boundary';
+import { TaggableBadge } from '@/shared_components/shad/badge';
+import { cn } from '@/utils/cn';
 
 setWindowBridgeFunctions();
 setWebviewWindowBridgeFunctions();
@@ -19,9 +21,9 @@ declare global {
     }
 }
 
-const Subtitle = ({ children }: { children: ReactNode }): ReactNode => {
+const Subtitle = ({ children, className }: { children: ReactNode, className?: string }): ReactNode => {
     return (
-        <H3 className="w-full text-muted-foreground tracking-wide">{children}</H3>
+        <H3 className={cn("w-full text-muted-foreground tracking-wide", className)}>{children}</H3>
     )
 }
 
@@ -72,6 +74,8 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
     }
 
     const summary = data.summary()
+    const topic = data.topic()
+    const subject = data.subject()
 
 
     return (
@@ -89,13 +93,30 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                         <InlineMdxContent className="pb-4 pt-2" mdx={`# ${data.title() ?? "No title found"}`} />
                     </div>
                     <div className="text-muted-foreground text-light">{`Last modified ${data.lastModifiedString() ?? 'unknown'}`}</div>
-                    <div className="text-muted-foreground text-light">{`Last read ${data.lastReadString() ?? 'unknown'}`}</div>
                     <div className="w-full h-[2px] bg-muted-foreground/60 my-6" />
                     {summary ? (
-                        <>
+                        <div className="flex flex-row justify-start items-center gap-x-6">
                             <Subtitle>Summary</Subtitle>
                             <div className="text-lg text-foreground/80">{summary}</div>
-                        </>
+                        </div>
+                    ) : null}
+                    {topic ? (
+                        <div className="flex flex-row justify-start items-center gap-x-6 my-6">
+                            <Subtitle className="w-fit">Topic</Subtitle>
+                            <TaggableBadge
+                                taggableValue={topic}
+                                clickAction={NoteDetailWebviewActions.HandleTopicClick}
+                            />
+                        </div>
+                    ) : null}
+                    {subject ? (
+                        <div className="flex flex-row justify-start items-center gap-x-6 my-6">
+                            <Subtitle className="w-fit">Subject</Subtitle>
+                            <TaggableBadge
+                                taggableValue={subject}
+                                clickAction={NoteDetailWebviewActions.HandleSubjectClick}
+                            />
+                        </div>
                     ) : null}
                     <Subtitle>{`Tags (${tags?.length ?? 0})`}</Subtitle>
                     {tags?.length ? (
