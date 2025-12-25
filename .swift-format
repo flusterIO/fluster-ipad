@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "lineBreakBeforeControlFlowKeywords": false,
+    "rules": {
+        "AllmanBraceStyle": false,
+        "MultiLineArgumentTrailingComma": true
+    }
+}

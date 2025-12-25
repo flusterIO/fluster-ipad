@@ -13,7 +13,7 @@ export const getMonorepoRootDir = (): string => {
 
 export const loadMonorepoEnv = (): void => {
     let root = getMonorepoRootDir()
-    let envPath = path.join(root, ".env.public");
+    let envPath = path.join(root, ".env.local");
 
     if (fs.existsSync(envPath)) {
         process.loadEnvFile(envPath)

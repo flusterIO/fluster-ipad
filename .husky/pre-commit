@@ -7,7 +7,7 @@ if [ "$branch" = "master" ] || [ "$branch" = "main" ]; then
     exit 1
 fi
 
-make format_package_jsons
+just format_package_jsons
 
 git add packages/webview_utils/package.json
 git add packages/webviews/*/package.json

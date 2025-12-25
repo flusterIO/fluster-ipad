@@ -1,0 +1,8 @@
+included:
+  - apps/fluster/Fluster/
+  - packages/swift/FlusterSwift/Sources/
+type_body_length:
+  warning: 500
+  error: 800
+# disabled_rules:
+#   - trailing_comma

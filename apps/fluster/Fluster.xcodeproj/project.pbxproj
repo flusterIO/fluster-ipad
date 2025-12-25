@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		049C76C1C7F8C29049FE8927 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = C0305B23A6A2F59F862FB5A7 /* .swiftlint.yml */; };
+		3CB18915032A2FDCC5C5FC60 /* justfile in Resources */ = {isa = PBXBuildFile; fileRef = 71CCE89ADF1D9C5A763575CD /* justfile */; };
 		79513C752EF3AF3700FF4885 /* Testing in Frameworks */ = {isa = PBXBuildFile; productRef = 79513C742EF3AF3700FF4885 /* Testing */; };
 		79513C772EF3AF3700FF4885 /* _TestDiscovery in Frameworks */ = {isa = PBXBuildFile; productRef = 79513C762EF3AF3700FF4885 /* _TestDiscovery */; };
 		79516C4D2EE893ED00573A77 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 79516C4C2EE893ED00573A77 /* splitview_mdx_editor */; };
@@ -22,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		71CCE89ADF1D9C5A763575CD /* justfile */ = {isa = PBXFileReference; name = justfile; path = ../../../../../../../justfile; sourceTree = "<group>"; };
 		7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_editor; path = ../../packages/webviews/standalone_mdx_editor/standalone_mdx_editor; sourceTree = "<group>"; };
 		79516C4B2EE8933900573A77 /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
 		79516C4C2EE893ED00573A77 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
@@ -33,6 +36,7 @@
 		79F936DE2EE38B8000777CDB /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
 		79FA54412ED8BB5F00D16F68 /* initial_note_docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = initial_note_docs; path = ../../docs/initial_note_docs; sourceTree = "<group>"; };
 		B253FAAA5C8BE2BCBE4C5C9B /* paper_tab.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = paper_tab.swift; path = paper_tab.swift; sourceTree = "<group>"; };
+		C0305B23A6A2F59F862FB5A7 /* .swiftlint.yml */ = {isa = PBXFileReference; explicitFileType = text.yaml; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		D3A7F9DCEA3AD54345FF1F97 /* note_details_tab.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = note_details_tab.swift; path = note_details_tab.swift; sourceTree = "<group>"; };
 		F2E54063C22E019A775516C1 /* bibliography_tab.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = bibliography_tab.swift; path = bibliography_tab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,6 +78,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		05AE33E79441E1918824A6C0 /* Fluster */ = {
+			isa = PBXGroup;
+			children = (
+				71CCE89ADF1D9C5A763575CD /* justfile */,
+			);
+			name = Fluster;
+			path = Fluster;
+			sourceTree = "<group>";
+		};
+		07FD343EA4BE911F37A886E3 /* swift */ = {
+			isa = PBXGroup;
+			children = (
+				72A5D3DB793355C0111E1A35 /* Fluster */,
+			);
+			name = swift;
+			path = swift;
+			sourceTree = "<group>";
+		};
+		25B3A03E628BA002AF0AE182 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				88A3B4AE5C3E240DC85005E2 /*  */,
+			);
+			name = "";
+			path = "";
+			sourceTree = "<group>";
+		};
 		263F368CC02F42648E2DCEF2 /* search_tab_group */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +143,33 @@
 			path = fluster_tab_group;
 			sourceTree = "<group>";
 		};
+		635A3503B7E165734BFC91EB /* Desktop */ = {
+			isa = PBXGroup;
+			children = (
+				930336F1A11FE94B4E48883F /* swift */,
+			);
+			name = Desktop;
+			path = Desktop;
+			sourceTree = "<group>";
+		};
+		64D50EE8A0FC9965EBF51AB2 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				93F74A2C12C792A47E7622C3 /* bigsexy */,
+			);
+			name = Users;
+			path = Users;
+			sourceTree = "<group>";
+		};
+		72A5D3DB793355C0111E1A35 /* Fluster */ = {
+			isa = PBXGroup;
+			children = (
+				C0305B23A6A2F59F862FB5A7 /* .swiftlint.yml */,
+			);
+			name = Fluster;
+			path = Fluster;
+			sourceTree = "<group>";
+		};
 		796F70FB2EB174610012B500 = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +185,8 @@
 				797DB4F22EDF70700047C0F4 /* Frameworks */,
 				796F71052EB174610012B500 /* Products */,
 				819D8055FCB997F1B7A2A388 /* Fluster */,
+				C1892C916668CC4994864DF5 /*  */,
+				25B3A03E628BA002AF0AE182 /*  */,
 			);
 			sourceTree = "<group>";
 		};
@@ -155,6 +215,33 @@
 			path = Fluster;
 			sourceTree = "<group>";
 		};
+		88A3B4AE5C3E240DC85005E2 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				64D50EE8A0FC9965EBF51AB2 /* Users */,
+			);
+			name = "";
+			path = "";
+			sourceTree = "<group>";
+		};
+		930336F1A11FE94B4E48883F /* swift */ = {
+			isa = PBXGroup;
+			children = (
+				05AE33E79441E1918824A6C0 /* Fluster */,
+			);
+			name = swift;
+			path = swift;
+			sourceTree = "<group>";
+		};
+		93F74A2C12C792A47E7622C3 /* bigsexy */ = {
+			isa = PBXGroup;
+			children = (
+				635A3503B7E165734BFC91EB /* Desktop */,
+			);
+			name = bigsexy;
+			path = bigsexy;
+			sourceTree = "<group>";
+		};
 		93FC37F0FD70AA8705295D52 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +260,15 @@
 			path = navigation;
 			sourceTree = "<group>";
 		};
+		ADFE9FB411F9C864D31C89CB /*  */ = {
+			isa = PBXGroup;
+			children = (
+				B693D53624DEC8DFC5BAF3B5 /* Users */,
+			);
+			name = "";
+			path = "";
+			sourceTree = "<group>";
+		};
 		B2B6E61FFEAA942DD8160A1A /* main_tab_view */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +276,42 @@
 			);
 			name = main_tab_view;
 			path = main_tab_view;
+			sourceTree = "<group>";
+		};
+		B44E5513D455E07C5674C411 /* bigsexy */ = {
+			isa = PBXGroup;
+			children = (
+				EF9A00ADF0C17CC0E2AA96C0 /* Desktop */,
+			);
+			name = bigsexy;
+			path = bigsexy;
+			sourceTree = "<group>";
+		};
+		B693D53624DEC8DFC5BAF3B5 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				B44E5513D455E07C5674C411 /* bigsexy */,
+			);
+			name = Users;
+			path = Users;
+			sourceTree = "<group>";
+		};
+		C1892C916668CC4994864DF5 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				ADFE9FB411F9C864D31C89CB /*  */,
+			);
+			name = "";
+			path = "";
+			sourceTree = "<group>";
+		};
+		EF9A00ADF0C17CC0E2AA96C0 /* Desktop */ = {
+			isa = PBXGroup;
+			children = (
+				07FD343EA4BE911F37A886E3 /* swift */,
+			);
+			name = Desktop;
+			path = Desktop;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +395,8 @@
 				79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */,
 				79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */,
 				79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */,
+				049C76C1C7F8C29049FE8927 /* .swiftlint.yml in Resources */,
+				3CB18915032A2FDCC5C5FC60 /* justfile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
