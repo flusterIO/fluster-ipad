@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 func getSplitViewDimensions(drag: DragGesture.Value, rect: GeometryProxy)
-    -> Double
+  -> Double
 {
-    let newRatio = drag.location.x / rect.size.width
-    let screenWidth = UIScreen.current?.bounds.width ?? 1
+  let newRatio = drag.location.x / rect.size.width
+  let screenWidth = UIScreen.current?.bounds.width ?? 1
 
-    return newRatio
+  return newRatio
 }

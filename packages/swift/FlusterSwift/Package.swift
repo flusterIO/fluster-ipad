@@ -4,47 +4,47 @@
 import PackageDescription
 
 let package = Package(
-    name: "FlusterSwift",
-    platforms: [
-        .iOS(.v26),
-        .macOS(.v15),
-    ],
-    products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "FlusterSwift",
-            targets: ["FlusterSwift"]
-        )
-    ],
-    dependencies: [
-        .package(
-            url: "https://github.com/MaxHaertwig/SwiftyBibtex.git",
-            .upToNextMajor(from: "1.0.0")
-        ),
-        .package(path: "../../rust/fluster_rust/FlusterRust/"),
-        .package(
-            url: "https://github.com/google/flatbuffers.git",
-            from: "25.9.23"
-        ),
-        .package(
-            url: "https://github.com/swiftlang/swift-testing",
-            .upToNextMajor(from: "6.2.3")
-        ),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "FlusterSwift",
-            dependencies: [
-                "SwiftyBibtex",
-                .product(name: "FlusterRust", package: "FlusterRust"),
-                .product(name: "FlatBuffers", package: "flatbuffers"),
-            ]
-        ),
-        .testTarget(
-            name: "FlusterSwiftTests",
-            dependencies: ["FlusterSwift", "FlusterRust"]
-        ),
-    ],
+  name: "FlusterSwift",
+  platforms: [
+    .iOS(.v26),
+    .macOS(.v15)
+  ],
+  products: [
+    // Products define the executables and libraries a package produces, making them visible to other packages.
+    .library(
+      name: "FlusterSwift",
+      targets: ["FlusterSwift"]
+    )
+  ],
+  dependencies: [
+    .package(
+      url: "https://github.com/MaxHaertwig/SwiftyBibtex.git",
+      .upToNextMajor(from: "1.0.0")
+    ),
+    .package(path: "../../rust/fluster_rust/FlusterRust/"),
+    .package(
+      url: "https://github.com/google/flatbuffers.git",
+      from: "25.9.23"
+    ),
+    .package(
+      url: "https://github.com/swiftlang/swift-testing",
+      .upToNextMajor(from: "6.2.3")
+    )
+  ],
+  targets: [
+    // Targets are the basic building blocks of a package, defining a module or a test suite.
+    // Targets can depend on other targets in this package and products from dependencies.
+    .target(
+      name: "FlusterSwift",
+      dependencies: [
+        "SwiftyBibtex",
+        .product(name: "FlusterRust", package: "FlusterRust"),
+        .product(name: "FlatBuffers", package: "flatbuffers")
+      ]
+    ),
+    .testTarget(
+      name: "FlusterSwiftTests",
+      dependencies: ["FlusterSwift", "FlusterRust"]
+    )
+  ],
 )

@@ -1,17 +1,20 @@
-use flatbuffers::{FlatBufferBuilder, WIPOffset};
+use flatbuffers::FlatBufferBuilder;
 use fluster_core_utilities::{
     code_gen::flat_buffer::v1_flat_buffer_schema_generated::mdx_serialization::{
-        CitationResultBuffer, CitationResultBufferArgs, FrontMatterResultBufferBuilder,
-        MdxParsingResultBuffer, MdxParsingResultBufferBuilder, TagResultBuffer,
-        TagResultBufferArgs,
+        CitationResultBuffer, CitationResultBufferArgs, DictionaryEntryResultBuffer,
+        DictionaryEntryResultBufferArgs, FrontMatterResultBufferBuilder,
+        MdxParsingResultBufferBuilder, TagResultBuffer, TagResultBufferArgs,
     },
     core_types::fluster_error::FlusterError,
 };
 use gray_matter::{Matter, engine::YAML};
 use serde::{Deserialize, Serialize};
 
-use crate::parsing_result::{
-    citation_result::CitationResult, front_matter::FrontMatterResult, tag_result::TagResult,
+use crate::{
+    parse::by_regex::regex_parsers::dictionary_entry_regex_parser::DictionaryEntryResult,
+    parsing_result::{
+        citation_result::CitationResult, front_matter::FrontMatterResult, tag_result::TagResult,
+    },
 };
 
 #[derive(uniffi::Record, Serialize, Deserialize, Clone)]
@@ -22,6 +25,7 @@ pub struct MdxParsingResult {
     /// bibliography_string is a string representing the concatenated bibtex entries of all
     /// valid bibentries within the note, without duplicates and in the proper order.
     pub citations: Vec<CitationResult>,
+    pub dictionary_entries: Vec<DictionaryEntryResult>,
 }
 
 impl MdxParsingResult {
@@ -43,6 +47,7 @@ impl MdxParsingResult {
             },
             citations: Vec::new(),
             tags: Vec::new(),
+            dictionary_entries: Vec::new(),
             front_matter: match data {
                 Some(front_matter_data) => front_matter_data
                     .data
@@ -52,8 +57,8 @@ impl MdxParsingResult {
         }
     }
 
-    pub fn serialize_to_flatbuffer<'builder>(&self) -> Vec<u8> {
-        let mut builder: FlatBufferBuilder<'builder> = FlatBufferBuilder::new();
+    pub fn serialize_to_flatbuffer(&self) -> Vec<u8> {
+        let mut builder: FlatBufferBuilder = FlatBufferBuilder::new();
         let content = builder.create_string(&self.content);
 
         // --- Serialize Tags ---
@@ -80,6 +85,22 @@ impl MdxParsingResult {
                 },
             ));
         }
+
+        let mut dictionary_entry_offets = Vec::new();
+
+        for dict in &self.dictionary_entries {
+            let label = builder.create_string(&dict.label);
+            let body = builder.create_string(&dict.body);
+            dictionary_entry_offets.push(DictionaryEntryResultBuffer::create(
+                &mut builder,
+                &DictionaryEntryResultBufferArgs {
+                    label: Some(label),
+                    body: Some(body),
+                },
+            ))
+        }
+
+        let dictionary_entries = builder.create_vector(&dictionary_entry_offets);
 
         let citations_vector = builder.create_vector(&citations_offsets);
 
@@ -113,6 +134,7 @@ impl MdxParsingResult {
         let mut mdx_builder = MdxParsingResultBufferBuilder::new(&mut builder);
         mdx_builder.add_parsed_content(content);
         mdx_builder.add_tags(tags_vector);
+        mdx_builder.add_dictionary_entries(dictionary_entries);
         if let Some(front_matter_offset) = front_matter_offset {
             mdx_builder.add_front_matter(front_matter_offset);
         }

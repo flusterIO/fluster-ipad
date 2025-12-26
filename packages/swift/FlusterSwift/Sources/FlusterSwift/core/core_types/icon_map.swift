@@ -8,12 +8,13 @@
 import Foundation
 
 public enum FlusterIcon: String {
-    case paper = "pencil.circle.fill"
-    case bibliography = "books.vertical.circle.fill"
-    case markdown = "book.closed.circle.fill"
-    case tag = "tag.fill"
-    case topic = "book.closed.circle"
-    case subject = "character.book.closed.fill"
-    case details = "receipt.fill"
-    case bookmark = "bookmark.fill"
+  case paper = "pencil.circle.fill"
+  case bibliography = "books.vertical.circle.fill"
+  case markdown = "book.closed.circle.fill"
+  case tag = "tag.fill"
+  case topic = "book.closed.circle"
+  case subject = "folder.fill"
+  case details = "receipt.fill"
+  case bookmark = "bookmark.fill"
+  case dictionary = "character.book.closed.fill"
 }

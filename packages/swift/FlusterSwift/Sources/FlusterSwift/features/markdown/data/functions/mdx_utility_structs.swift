@@ -8,6 +8,6 @@
 import Foundation
 
 public struct MdxTitleResult {
-    public let depth: Int
-    public let content: String
+  public let depth: Int
+  public let content: String
 }

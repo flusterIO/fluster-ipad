@@ -9,58 +9,57 @@ import FlusterSwift
 import SwiftUI
 
 func getEditorThemeText(editorTheme: CodeSyntaxTheme) -> String {
-    switch editorTheme {
+  switch editorTheme {
     case .githubDark:
-        return "Github Dark"
+      return "Github Dark"
     case .githubLight:
-        return "Github Light"
+      return "Github Light"
     case .aura:
-        return "Aura"
+      return "Aura"
     case .dracula:
-        return "Dracula"
+      return "Dracula"
     case .materialDark:
-        return "Material Dark"
+      return "Material Dark"
     case .materialLight:
-        return "Material Light"
+      return "Material Light"
     case .solarizedDark:
-        return "Solaraized Dark"
+      return "Solaraized Dark"
     case .solarizedLight:
-        return "Solaraized Light"
+      return "Solaraized Light"
     case .tokyoNight:
-        return "Tokyo Night"
+      return "Tokyo Night"
     case .tokyoNightDay:
-        return "Tokyo Night Day"
+      return "Tokyo Night Day"
     case .tokyoNightStorm:
-        return "Tokyo Night Storm"
+      return "Tokyo Night Storm"
     case .xcodeDark:
-        return "Xcode Dark"
+      return "Xcode Dark"
     case .xcodeLight:
-        return "Xcode Light"
-    }
+      return "Xcode Light"
+  }
 }
 
 struct EditorThemePickerView: View {
+  @Binding var theme: CodeSyntaxTheme
+  var title: String
+  @Environment(\.colorScheme) var colorScheme
+  @Environment(ThemeManager.self) private var themeManager: ThemeManager
 
-    @Binding var theme: CodeSyntaxTheme
-    var title: String
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(ThemeManager.self) private var themeManager: ThemeManager
+  var count: Int {
+    CodeSyntaxTheme.allCases.count
+  }
 
-    var count: Int {
-        CodeSyntaxTheme.allCases.count
+  var body: some View {
+    Picker(selection: $theme, label: Text(title)) {
+      ForEach(0..<self.count) {
+        Text(getEditorThemeText(editorTheme: CodeSyntaxTheme.allCases[$0])).tag(
+          CodeSyntaxTheme.allCases[$0]
+        )
+      }
     }
-
-    var body: some View {
-        Picker(selection: $theme, label: Text(title)) {
-            ForEach(0..<self.count) {
-                Text(getEditorThemeText(editorTheme: CodeSyntaxTheme.allCases[$0])).tag(
-                    CodeSyntaxTheme.allCases[$0]
-                )
-            }
-        }
-    }
+  }
 }
 
 #Preview {
-    EditorThemePickerView(theme: .constant(.githubDark), title: "Test title")
+  EditorThemePickerView(theme: .constant(.githubDark), title: "Test title")
 }

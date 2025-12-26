@@ -30,6 +30,8 @@ playground.xcworkspace
 # .swiftpm
 
 .build/
+apps/fluster/.build
+apps/fluster/build
 
 # CocoaPods
 #
@@ -76,4 +78,5 @@ packages/webviews/standalone_mdx_editor/standalone_mdx_editor
 packages/webviews/note_detail_webview/note_detail_webview/
 packages/webviews/standalone_mdx_preview/standalone_mdx_preview
 packages/webviews/splitview_mdx_editor/splitview_mdx_editor
+packages/webviews/dictionary_webview/dictionary_webview/
 .nvim/xcodebuild/

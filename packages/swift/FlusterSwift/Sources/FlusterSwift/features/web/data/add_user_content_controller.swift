@@ -8,9 +8,10 @@
 import Foundation
 import WebKit
 
-
 @MainActor
-func addUserContentController(controller: WKUserContentController, coordinator: WKScriptMessageHandler, name: String)  {
-    controller.removeScriptMessageHandler(forName: name)
-    controller.add(coordinator, name: name)
+func addUserContentController(
+  controller: WKUserContentController, coordinator: WKScriptMessageHandler, name: String
+) {
+  controller.removeScriptMessageHandler(forName: name)
+  controller.add(coordinator, name: name)
 }

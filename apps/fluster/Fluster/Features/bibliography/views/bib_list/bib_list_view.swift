@@ -10,65 +10,64 @@ import SwiftData
 import SwiftUI
 
 struct BibListView: View {
-    @Environment(ThemeManager.self) private var themeManager: ThemeManager
-    @Environment(\.modelContext) var modelContext
-    var items: [BibEntryModel]
-    @Binding var editingBibEntry: BibEntryModel?
-    @Binding var editingNote: NoteModel?
-    let editorContainer: BibtexEditorWebviewContainer
+  @Environment(ThemeManager.self) private var themeManager: ThemeManager
+  @Environment(\.modelContext) var modelContext
+  var items: [BibEntryModel]
+  @Binding var editingBibEntry: BibEntryModel?
+  @Binding var editingNote: NoteModel?
+  let editorContainer: BibtexEditorWebviewContainer
 
-    var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            if items.isEmpty {
-                Text("No bibliography entries found.")
-                    .font(.title)
-            } else {
-                List {
-                    ForEach(items, id: \.id) { item in
-                        NavigationLink(
-                            destination: ByBibEntrySearchResults(
-                                bibEntryId: item.id,
-                                editingNote: $editingNote
-                            ),
-                            label: {
-                                BibEntrySearchResultItemView(item: item)
-                            }
-                        )
-                        .swipeActions(
-                            edge: .leading,
-                            allowsFullSwipe: true,
-                            content: {
-                                Button(
-                                    action: {
-                                        editingNote?.diassociateBibEntry(
-                                            bibEntry: item
-                                        )
-                                    },
-                                    label: {
-                                        Label(
-                                            "Disassociate",
-                                            systemImage: "x.circle.fill"
-                                        )
-                                    }
-                                )
-                            }
-                        )
-                    }
-                }
-            }
+  var body: some View {
+    ZStack(alignment: .bottomTrailing) {
+      if items.isEmpty {
+        Text("No bibliography entries found.")
+          .font(.title)
+      } else {
+        List {
+          ForEach(items, id: \.id) { item in
+            NavigationLink(
+              destination: ByBibEntrySearchResults(
+                bibEntryId: item.id,
+                editingNote: $editingNote
+              ),
+              label: {
+                BibEntrySearchResultItemView(item: item)
+              }
+            )
+            .swipeActions(
+              edge: .leading,
+              allowsFullSwipe: true,
+              content: {
+                Button(
+                  action: {
+                    editingNote?.diassociateBibEntry(
+                      bibEntry: item
+                    )
+                  },
+                  label: {
+                    Label(
+                      "Disassociate",
+                      systemImage: "x.circle.fill"
+                    )
+                  }
+                )
+              }
+            )
+          }
         }
+      }
     }
-
+  }
 }
 
 #Preview {
-    BibListView(
-        items: [],
-        editingBibEntry: .constant(nil),
-        editingNote: .constant(nil),
-        editorContainer: BibtexEditorWebviewContainer(
-            bounce: true,
-            scrollEnabled: true,
-        )
+  BibListView(
+    items: [],
+    editingBibEntry: .constant(nil),
+    editingNote: .constant(nil),
+    editorContainer: BibtexEditorWebviewContainer(
+      bounce: true,
+      scrollEnabled: true,
     )
+  )
 }

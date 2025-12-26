@@ -3,6 +3,7 @@
 //  Fluster
 //
 //  Created by Andrew on 10/29/25.
+// swiftlint:disable file_length
 
 import FlatBuffers
 import FlusterRust
@@ -275,6 +276,16 @@ struct MainView: View {
           .customizationBehavior(.disabled, for: .tabBar)
           .defaultVisibility(.hidden, for: .tabBar)
           Tab(
+            "Dictionary",
+            systemImage: FlusterIcon.dictionary.rawValue,
+            value: IpadMainViewTab.dictionary
+          ) {
+            DictionaryTab()
+          }
+          .tabPlacement(.sidebarOnly)
+          .customizationID(IpadMainViewTab.dictionary.rawValue)
+          .defaultVisibility(.hidden, for: .tabBar)
+          Tab(
             "Settings",
             systemImage: "gearshape.fill",
             value: IpadMainViewTab.settings
@@ -289,8 +300,13 @@ struct MainView: View {
     .onChange(
       of: editingNote,
       {
+        editorContainer.resetScrollPosition(
+          containerId: "mdx-preview",
+          scrollStorageKeys: [
+            SplitviewEditorWebviewLocalStorageKeys.scrollPositionLandscape.rawValue,
+            SplitviewEditorWebviewLocalStorageKeys.scrollPositionPortrait.rawValue
+          ])
         if let note = editingNote {
-          editorContainer.resetScrollPosition()
           editorContainer.setInitialContent(note: note)
         }
       }
@@ -305,14 +321,14 @@ struct MainView: View {
             if let parsedMdx =
               await note.markdown
               .body.preParseAsMdxToBytes()
-                    {
+            {
               editorContainer.emitMdxParsingSuccess()
               editorContainer.setParsedEditorContent(
                 content: parsedMdx
               )
               if let parsingResults =
                 parsedMdx.toMdxParsingResult()
-                           {
+              {
                 note.applyMdxParsingResults(
                   results: parsingResults,
                 )
@@ -402,14 +418,13 @@ struct MainView: View {
           if haveSetNoteDataId != editingNoteBinding.id {
             if [
               IpadMainViewTab.noteDetail, IpadMainViewTab.markdown,
-              IpadMainViewTab.bib, IpadMainViewTab.paper,
+              IpadMainViewTab.bib, IpadMainViewTab.paper
             ].contains(selectedTab) {
               editingNoteBinding.setLastRead()
               haveSetNoteDataId = editingNoteBinding.id
             }
           }
         }
-
       }
     )
     .onAppear {
@@ -440,37 +455,37 @@ struct MainView: View {
       content: {
         if let fs = fullScreenCover {
           switch fs {
-          case .tagSearch(let tag):
-            FullScreenSheetDraggableView(
-              open: showFullScreenCover,
-              content: {
-                NoteSearchResultsByTagView(
-                  tag: tag,
-                  editingNote: $editingNote
-                )
-              }
-            )
-          case .topicSearch(let topic):
-            FullScreenSheetDraggableView(
-              open: showFullScreenCover,
-              content: {
-                Text("Here")
-                NoteSearchResultsByTopicView(
-                  topic: topic,
-                  editingNote: $editingNote
-                )
-              }
-            )
-          case .subjectSearch(let subject):
-            FullScreenSheetDraggableView(
-              open: showFullScreenCover,
-              content: {
-                NoteSearchResultsBySubjectView(
-                  subject: subject,
-                  editingNote: $editingNote
-                )
-              }
-            )
+            case .tagSearch(let tag):
+              FullScreenSheetDraggableView(
+                open: showFullScreenCover,
+                content: {
+                  NoteSearchResultsByTagView(
+                    tag: tag,
+                    editingNote: $editingNote
+                  )
+                }
+              )
+            case .topicSearch(let topic):
+              FullScreenSheetDraggableView(
+                open: showFullScreenCover,
+                content: {
+                  Text("Here")
+                  NoteSearchResultsByTopicView(
+                    topic: topic,
+                    editingNote: $editingNote
+                  )
+                }
+              )
+            case .subjectSearch(let subject):
+              FullScreenSheetDraggableView(
+                open: showFullScreenCover,
+                content: {
+                  NoteSearchResultsBySubjectView(
+                    subject: subject,
+                    editingNote: $editingNote
+                  )
+                }
+              )
           }
         } else {
           Text("Something went wrong")

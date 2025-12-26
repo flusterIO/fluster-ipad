@@ -7,13 +7,23 @@
 
 import Foundation
 
-public func getTestNote() -> NoteModel {
-    return NoteModel(
-        markdown: MarkdownNote(
-            body: """
-                # My test note
-                """,
+@MainActor
+public func getTestNote() async -> NoteModel {
+    do {
+        let testNoteUrl = try URL("file:///Users/bigsexy/Desktop/notes/content/physics/ipad_app_notes/on_the_gravitational_nature_of_time.mdx", strategy: .url)
+        let fileContents = try String(contentsOf: testNoteUrl, encoding: .utf8)
+        let res = NoteModel(
+          markdown: MarkdownNote(
+            body: fileContents,
             summary: nil
+          )
         )
-    )
+        if let parsingResults = await fileContents.preParseAsMdx() {
+            res.applyMdxParsingResults(results: parsingResults)
+        }
+        return res
+    } catch {
+        print("Error getting test note: \(error)")
+        fatalError("Error getting test note: \(error)")
+    }
 }

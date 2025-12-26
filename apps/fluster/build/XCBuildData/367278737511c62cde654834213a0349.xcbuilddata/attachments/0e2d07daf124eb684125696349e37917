@@ -1,4 +1,0 @@
-module STTextView {
-header "STTextView-Swift.h"
-export *
-}

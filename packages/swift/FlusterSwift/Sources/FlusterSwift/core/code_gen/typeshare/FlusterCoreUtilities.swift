@@ -26,6 +26,29 @@ public enum BibtexEditorWebviewLocalStorageKeys: String, Codable {
 }
 
 /// From typescript to swift.
+public enum DictionaryWebviewActions: String, Codable {
+	case requestDictionaryData = "request-dictionary-data"
+	case setWebviewLoaded = "set-webview-loaded"
+}
+
+/// From swift to typescript
+public enum DictionaryWebviewEvents: String, Codable {
+	case setInitialColorScheme = "set-initial-color-scheme"
+	case setDictionaryData = "set-dictionary-data"
+	case setCodeTheme = "set-code-theme"
+}
+
+public enum DictionaryWebviewIds: String, Codable {
+	case dictionaryContainer = "dictionary-container"
+}
+
+public enum DictionaryWebviewStorageKeys: String, Codable {
+	case scrollPositionPortrait = "dict-scroll-pos-portrait"
+	case scrollPositionLandscape = "dict-scroll-pos-landscape"
+	case dictionaryData = "dict-data"
+}
+
+/// From typescript to swift.
 public enum MdxPreviewWebviewActions: String, Codable {
 	case requestNoteData = "request-note-data"
 	case setWebviewLoaded = "set-preview-webview-loaded"
@@ -83,6 +106,11 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 	case emitMdxParsingSuccess = "mdx-parsing-success"
 }
 
+public enum SplitviewEditorWebviewIds: String, Codable {
+	case portraitPreview = "mdx-preview-portrait"
+	case landscapePreview = "mdx-preview-landscape"
+}
+
 public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
 	case initialValue = "editor-initial-value"
 	case parsedMdxData = "parsed-mdx-data"
@@ -90,4 +118,6 @@ public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
 	case codeThemeDark = "editor-code-theme-dark"
 	case codeThemeLight = "editor-code-theme-light"
 	case editorKeymap = "editor-keymap"
+	case scrollPositionPortrait = "splitview-editor-scroll-position-portrait"
+	case scrollPositionLandscape = "splitview-editor-scroll-position-landscape"
 }

@@ -1,4 +1,0 @@
-module SVGView {
-header "SVGView-Swift.h"
-export *
-}

@@ -7,7 +7,6 @@
 
 import Testing
 
-
 @Test func myTest() async throws {
-    #expect(true == false, "Canary error")
+  #expect(true == false, "Canary error")
 }

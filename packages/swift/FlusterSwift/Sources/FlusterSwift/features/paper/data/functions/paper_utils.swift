@@ -10,11 +10,11 @@ import PencilKit
 
 // TODO: Move this to some place that makes sense.
 public func loadDrawing(note: NoteModel) -> PKDrawing {
-    do {
-        // Recreate the PKDrawing from the Data
-        return try PKDrawing(data: note.drawing)
-    } catch {
-        print("Error loading PKDrawing: \(error)")
-        return PKDrawing()
-    }
+  do {
+    // Recreate the PKDrawing from the Data
+    return try PKDrawing(data: note.drawing)
+  } catch {
+    print("Error loading PKDrawing: \(error)")
+    return PKDrawing()
+  }
 }

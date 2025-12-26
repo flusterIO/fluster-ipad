@@ -9,43 +9,45 @@ import SwiftData
 import SwiftUI
 
 public struct BookmarksView: View {
-    @Query(
-        filter: #Predicate<NoteModel> { note in
-            note.bookmarked
-        },
-        sort: \.last_read,
-        animation: .default
-    ) private var notes: [NoteModel]
-    @Binding var editingNote: NoteModel?
-    public init(editingNote: Binding<NoteModel?>) {
-        self._editingNote = editingNote
+  @Query(
+    filter: #Predicate<NoteModel> { note in
+      note.bookmarked
+    },
+    sort: \.lastRead,
+    animation: .default
+  ) private var notes: [NoteModel]
+  @Binding var editingNote: NoteModel?
+  public init(editingNote: Binding<NoteModel?>) {
+    self._editingNote = editingNote
+  }
+  public var body: some View {
+    if notes.isEmpty {
+      NoNotesFoundView(
+        title: "No notes found",
+        subtitle:
+          "No bookmarked notes were found. Use the floating button when a note is selected to bookmark that note."
+      )
+      .padding()
+    } else {
+      List(notes, id: \.id) { note in
+        NoteSearchResultItemInnerView(editingNote: $editingNote, item: note)
+          .swipeActions(content: {
+            Button(
+              role: .cancel,
+              action: {
+                withAnimation {
+                  note.bookmarked.toggle()
+                }
+              },
+              label: {
+                Label("Remove Bookmark", systemImage: "bookmark.slash")
+              })
+          })
+      }
     }
-    public var body: some View {
-        if notes.isEmpty {
-           NoNotesFoundView(
-            title: "No notes found",
-            subtitle: "No bookmarked notes were found. Use the floating button when a note is selected to bookmark that note."
-           )
-           .padding()
-        } else {
-            List(notes, id: \.id) { note in
-                NoteSearchResultItemInnerView(editingNote: $editingNote, item: note)
-                    .swipeActions(content: {
-                        Button(
-                            role: .cancel,
-                            action: {
-                                withAnimation {
-                                    note.bookmarked.toggle()
-                                }
-                            }, label: {
-                                Label("Remove Bookmark", systemImage: "bookmark.slash")
-                            })
-                    })
-            }
-        }
-    }
+  }
 }
 
 #Preview {
-    BookmarksView(editingNote: .constant(nil))
+  BookmarksView(editingNote: .constant(nil))
 }

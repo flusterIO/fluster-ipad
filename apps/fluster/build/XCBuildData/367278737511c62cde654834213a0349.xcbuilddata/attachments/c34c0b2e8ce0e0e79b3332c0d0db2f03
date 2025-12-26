@@ -1,4 +1,0 @@
-module SplitView {
-header "SplitView-Swift.h"
-export *
-}

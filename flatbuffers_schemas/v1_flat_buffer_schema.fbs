@@ -9,6 +9,18 @@ table WebviewJavascriptError {
     error:string;
 }
 
+namespace Dictionary;
+
+table DictionaryEntryModel {
+    id:string (required);
+    label:string (required);
+    body:string (required);
+}
+
+table DictionaryData {
+    entries:[DictionaryEntryModel] (required);
+}
+
 namespace MdxSerialization;
 
 table CitationResultBuffer {
@@ -17,6 +29,11 @@ table CitationResultBuffer {
 }
 
 table TagResultBuffer {
+    body:string (required);
+}
+
+table DictionaryEntryResultBuffer {
+    label:string (required);
     body:string (required);
 }
 
@@ -31,6 +48,7 @@ table MdxParsingResultBuffer {
     tags:[TagResultBuffer] (required);
     front_matter:FrontMatterResultBuffer;
     citations:[CitationResultBuffer];
+    dictionary_entries:[DictionaryEntryResultBuffer];
 }
 
 root_type MdxParsingResultBuffer;

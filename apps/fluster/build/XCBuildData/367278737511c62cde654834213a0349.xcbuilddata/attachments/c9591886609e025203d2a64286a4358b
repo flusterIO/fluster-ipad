@@ -1,4 +1,0 @@
-module BibtexParser {
-header "BibtexParser-Swift.h"
-export *
-}

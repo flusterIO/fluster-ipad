@@ -8,5 +8,5 @@
 import SwiftUI
 
 struct AssociateNoteWithBibEntriesContainer {
-    let webView: any View
+  let webView: any View
 }

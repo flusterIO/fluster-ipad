@@ -7,8 +7,7 @@
 
 import Foundation
 
-
 /// An enum used in the create-note workflow in the iPad application. Will likely be usable in the macOS application as well.
 public enum CreateNotePath {
-    case subjectSelect, createSubject, topicSelect, createTopic
+  case subjectSelect, createSubject, topicSelect, createTopic
 }

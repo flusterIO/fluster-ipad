@@ -6,19 +6,19 @@
 //
 
 public enum WebviewFontSize: String, CaseIterable {
-    case small, base, large, xl, xxl
-    func cssClass() -> String {
-        switch self {
-        case .small:
-            return "prose-sm"
-        case .base:
-            return "prose-base"
-        case .large:
-            return "prose-lg"
-        case .xl:
-            return "prose-xl"
-        case .xxl:
-            return "prose-2xl"
-        }
+  case small, base, large, xl, xxl
+  func cssClass() -> String {
+    switch self {
+      case .small:
+        return "prose-sm"
+      case .base:
+        return "prose-base"
+      case .large:
+        return "prose-lg"
+      case .xl:
+        return "prose-xl"
+      case .xxl:
+        return "prose-2xl"
     }
+  }
 }

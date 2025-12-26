@@ -25,6 +25,29 @@ export enum BibtexEditorWebviewLocalStorageKeys {
 }
 
 /** From typescript to swift. */
+export enum DictionaryWebviewActions {
+	RequestDictionaryData = "request-dictionary-data",
+	SetWebviewLoaded = "set-webview-loaded",
+}
+
+/** From swift to typescript */
+export enum DictionaryWebviewEvents {
+	SetInitialColorScheme = "set-initial-color-scheme",
+	SetDictionaryData = "set-dictionary-data",
+	SetCodeTheme = "set-code-theme",
+}
+
+export enum DictionaryWebviewIds {
+	DictionaryContainer = "dictionary-container",
+}
+
+export enum DictionaryWebviewStorageKeys {
+	ScrollPositionPortrait = "dict-scroll-pos-portrait",
+	ScrollPositionLandscape = "dict-scroll-pos-landscape",
+	DictionaryData = "dict-data",
+}
+
+/** From typescript to swift. */
 export enum MdxPreviewWebviewActions {
 	RequestNoteData = "request-note-data",
 	SetWebviewLoaded = "set-preview-webview-loaded",
@@ -82,6 +105,11 @@ export enum SplitviewEditorWebviewEvents {
 	EmitMdxParsingSuccess = "mdx-parsing-success",
 }
 
+export enum SplitviewEditorWebviewIds {
+	PortraitPreview = "mdx-preview-portrait",
+	LandscapePreview = "mdx-preview-landscape",
+}
+
 export enum SplitviewEditorWebviewLocalStorageKeys {
 	InitialValue = "editor-initial-value",
 	ParsedMdxData = "parsed-mdx-data",
@@ -89,5 +117,7 @@ export enum SplitviewEditorWebviewLocalStorageKeys {
 	CodeThemeDark = "editor-code-theme-dark",
 	CodeThemeLight = "editor-code-theme-light",
 	EditorKeymap = "editor-keymap",
+	ScrollPositionPortrait = "splitview-editor-scroll-position-portrait",
+	ScrollPositionLandscape = "splitview-editor-scroll-position-landscape",
 }
 

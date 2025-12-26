@@ -85,4 +85,21 @@ pub enum SplitviewEditorWebviewLocalStorageKeys {
     #[serde(rename = "editor-keymap")]
     #[strum(to_string = "editor-keymap")]
     EditorKeymap,
+    #[serde(rename = "splitview-editor-scroll-position-portrait")]
+    #[strum(to_string = "splitview-editor-scroll-position-portrait")]
+    ScrollPositionPortrait,
+    #[serde(rename = "splitview-editor-scroll-position-landscape")]
+    #[strum(to_string = "splitview-editor-scroll-position-landscape")]
+    ScrollPositionLandscape,
+}
+
+#[typeshare]
+#[derive(strum_macros::Display, Serialize, Deserialize)]
+pub enum SplitviewEditorWebviewIds {
+    #[serde(rename = "mdx-preview-portrait")]
+    #[strum(to_string = "mdx-preview-portrait")]
+    PortraitPreview,
+    #[serde(rename = "mdx-preview-landscape")]
+    #[strum(to_string = "mdx-preview-landscape")]
+    LandscapePreview,
 }

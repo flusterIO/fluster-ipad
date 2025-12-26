@@ -10,36 +10,36 @@ import SwiftUI
 import SwiftyBibtex
 
 struct BibEntrySearchResultItemView: View {
-    var item: BibEntryModel
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(item.parse()?.publications[0].fields["title"] ?? "--")
-                .font(.subheadline)
-                .fontWeight(.bold)
-                .lineLimit(2)
-            Text(
-                item.ctime.formatted(date: .complete, time: .shortened)
-            )
-            .font(.caption)
-        }
+  var item: BibEntryModel
+  var body: some View {
+    VStack(alignment: .leading, spacing: 16) {
+      Text(item.parse()?.publications[0].fields["title"] ?? "--")
+        .font(.subheadline)
+        .fontWeight(.bold)
+        .lineLimit(2)
+      Text(
+        item.ctime.formatted(date: .complete, time: .shortened)
+      )
+      .font(.caption)
     }
+  }
 }
 
 #Preview {
-    BibEntrySearchResultItemView(
-        item: BibEntryModel(
-            id: nil,
-            data: """
-                @book{latex2e,
-                  author = {Leslie Lamport},
-                  year = {1994},
-                  title = {{\\LaTeX}: a Document Preparation System},
-                  publisher = {Addison Wesley},
-                  address = {Massachusetts},
-                  edition = {2}
-                }
-                """,
-            ctime: .now
-        ),
-    )
+  BibEntrySearchResultItemView(
+    item: BibEntryModel(
+      id: nil,
+      data: """
+        @book{latex2e,
+          author = {Leslie Lamport},
+          year = {1994},
+          title = {{\\LaTeX}: a Document Preparation System},
+          publisher = {Addison Wesley},
+          address = {Massachusetts},
+          edition = {2}
+        }
+        """,
+      ctime: .now
+    ),
+  )
 }

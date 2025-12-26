@@ -15,7 +15,7 @@ export function H1({
         <h1
             {...props}
             className={cn(
-                "block scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+                "block scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-foreground",
                 className,
             )}
         >

@@ -1,5 +1,7 @@
 import { ScreenDimensions } from "@/state/hooks/use_screen_dimensions";
 
+
+// TODO: Migrate these all to enums
 declare global {
     interface WindowEventMap {
         "set-dark-mode": CustomEvent<boolean>;

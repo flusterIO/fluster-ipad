@@ -1,4 +1,0 @@
-module STTextKitPlus {
-header "STTextKitPlus-Swift.h"
-export *
-}

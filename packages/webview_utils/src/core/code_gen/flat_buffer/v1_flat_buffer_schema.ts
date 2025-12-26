@@ -2,5 +2,6 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 
+export * as Dictionary from './dictionary.js';
 export * as MdxSerialization from './mdx-serialization.js';
 export * as SharedWebviewData from './shared-webview-data.js';

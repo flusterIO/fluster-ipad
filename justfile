@@ -13,6 +13,12 @@ format_package_jsons:
 	pnpm syncpack fix-mismatches
 	pnpm syncpack format
 
+format_swift:
+	swift-format format --configuration={{justfile_directory()}}/.swift-format -ipr {{justfile_directory()}}/apps/fluster
+	swift-format format --configuration={{justfile_directory()}}/.swift-format -ipr {{justfile_directory()}}/packages/swift
+
+format: format_package_jsons format_swift
+
 generate_build_output:
 	cd {{justfile_directory()}}/apps/fluster; xcodebuild | tee xcodebuild.log | xcpretty
 
@@ -56,6 +62,9 @@ build_fluster_rust: build_all_rust
 build_webview_utils: build_cross_language_schemas
 	pnpm run -C packages/webview_utils build
 
+build_dictionary_webview: build_cross_language_schemas build_webview_utils
+	pnpm run -C packages/webviews/dictionary_webview build
+
 build_note_detail_webview: build_cross_language_schemas build_webview_utils
 	pnpm run -C packages/webviews/note_detail_webview build
 
@@ -71,6 +80,9 @@ build_splitview_mdx_editor: build_webview_utils
 build_bibtex_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/bibtex_editor_webview build
 
-build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview
+build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview build_dictionary_webview
 
 pre_ipad_build: generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews
+
+test_rust: build_cross_language_schemas
+	cargo nextest --no-capture

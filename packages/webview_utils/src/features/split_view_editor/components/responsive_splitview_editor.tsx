@@ -6,7 +6,6 @@ import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only"
 import { LoadingComponent } from "@/shared_components/loading_component";
 
 
-// TODO: Fix this parsing error indicator
 export const ResponsiveSplitViewEditor = (): ReactNode => {
     const isLandscape = useMediaQuery({
         orientation: "landscape",

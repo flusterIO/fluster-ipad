@@ -186,6 +186,249 @@ impl core::fmt::Debug for WebviewJavascriptError<'_> {
 }  // pub mod SharedWebviewData
 
 #[allow(unused_imports, dead_code)]
+pub mod dictionary {
+
+  use core::mem;
+  use core::cmp::Ordering;
+
+  extern crate flatbuffers;
+  use self::flatbuffers::{EndianScalar, Follow};
+
+pub enum DictionaryEntryModelOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct DictionaryEntryModel<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for DictionaryEntryModel<'a> {
+  type Inner = DictionaryEntryModel<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> DictionaryEntryModel<'a> {
+  pub const VT_ID: flatbuffers::VOffsetT = 4;
+  pub const VT_LABEL: flatbuffers::VOffsetT = 6;
+  pub const VT_BODY: flatbuffers::VOffsetT = 8;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    DictionaryEntryModel { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args DictionaryEntryModelArgs<'args>
+  ) -> flatbuffers::WIPOffset<DictionaryEntryModel<'bldr>> {
+    let mut builder = DictionaryEntryModelBuilder::new(_fbb);
+    if let Some(x) = args.body { builder.add_body(x); }
+    if let Some(x) = args.label { builder.add_label(x); }
+    if let Some(x) = args.id { builder.add_id(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn id(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(DictionaryEntryModel::VT_ID, None).unwrap()}
+  }
+  #[inline]
+  pub fn label(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(DictionaryEntryModel::VT_LABEL, None).unwrap()}
+  }
+  #[inline]
+  pub fn body(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(DictionaryEntryModel::VT_BODY, None).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for DictionaryEntryModel<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("id", Self::VT_ID, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("label", Self::VT_LABEL, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("body", Self::VT_BODY, true)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct DictionaryEntryModelArgs<'a> {
+    pub id: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub label: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub body: Option<flatbuffers::WIPOffset<&'a str>>,
+}
+impl<'a> Default for DictionaryEntryModelArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    DictionaryEntryModelArgs {
+      id: None, // required field
+      label: None, // required field
+      body: None, // required field
+    }
+  }
+}
+
+pub struct DictionaryEntryModelBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> DictionaryEntryModelBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_id(&mut self, id: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DictionaryEntryModel::VT_ID, id);
+  }
+  #[inline]
+  pub fn add_label(&mut self, label: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DictionaryEntryModel::VT_LABEL, label);
+  }
+  #[inline]
+  pub fn add_body(&mut self, body: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DictionaryEntryModel::VT_BODY, body);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> DictionaryEntryModelBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    DictionaryEntryModelBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<DictionaryEntryModel<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, DictionaryEntryModel::VT_ID,"id");
+    self.fbb_.required(o, DictionaryEntryModel::VT_LABEL,"label");
+    self.fbb_.required(o, DictionaryEntryModel::VT_BODY,"body");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for DictionaryEntryModel<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("DictionaryEntryModel");
+      ds.field("id", &self.id());
+      ds.field("label", &self.label());
+      ds.field("body", &self.body());
+      ds.finish()
+  }
+}
+pub enum DictionaryDataOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct DictionaryData<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for DictionaryData<'a> {
+  type Inner = DictionaryData<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> DictionaryData<'a> {
+  pub const VT_ENTRIES: flatbuffers::VOffsetT = 4;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    DictionaryData { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args DictionaryDataArgs<'args>
+  ) -> flatbuffers::WIPOffset<DictionaryData<'bldr>> {
+    let mut builder = DictionaryDataBuilder::new(_fbb);
+    if let Some(x) = args.entries { builder.add_entries(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn entries(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DictionaryEntryModel<'a>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DictionaryEntryModel>>>>(DictionaryData::VT_ENTRIES, None).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for DictionaryData<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<DictionaryEntryModel>>>>("entries", Self::VT_ENTRIES, true)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct DictionaryDataArgs<'a> {
+    pub entries: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DictionaryEntryModel<'a>>>>>,
+}
+impl<'a> Default for DictionaryDataArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    DictionaryDataArgs {
+      entries: None, // required field
+    }
+  }
+}
+
+pub struct DictionaryDataBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> DictionaryDataBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_entries(&mut self, entries: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<DictionaryEntryModel<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DictionaryData::VT_ENTRIES, entries);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> DictionaryDataBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    DictionaryDataBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<DictionaryData<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, DictionaryData::VT_ENTRIES,"entries");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for DictionaryData<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("DictionaryData");
+      ds.field("entries", &self.entries());
+      ds.finish()
+  }
+}
+}  // pub mod Dictionary
+
+#[allow(unused_imports, dead_code)]
 pub mod mdx_serialization {
 
   use core::mem;
@@ -408,6 +651,122 @@ impl core::fmt::Debug for TagResultBuffer<'_> {
       ds.finish()
   }
 }
+pub enum DictionaryEntryResultBufferOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct DictionaryEntryResultBuffer<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for DictionaryEntryResultBuffer<'a> {
+  type Inner = DictionaryEntryResultBuffer<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> DictionaryEntryResultBuffer<'a> {
+  pub const VT_LABEL: flatbuffers::VOffsetT = 4;
+  pub const VT_BODY: flatbuffers::VOffsetT = 6;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    DictionaryEntryResultBuffer { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args DictionaryEntryResultBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<DictionaryEntryResultBuffer<'bldr>> {
+    let mut builder = DictionaryEntryResultBufferBuilder::new(_fbb);
+    if let Some(x) = args.body { builder.add_body(x); }
+    if let Some(x) = args.label { builder.add_label(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn label(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(DictionaryEntryResultBuffer::VT_LABEL, None).unwrap()}
+  }
+  #[inline]
+  pub fn body(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(DictionaryEntryResultBuffer::VT_BODY, None).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for DictionaryEntryResultBuffer<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("label", Self::VT_LABEL, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("body", Self::VT_BODY, true)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct DictionaryEntryResultBufferArgs<'a> {
+    pub label: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub body: Option<flatbuffers::WIPOffset<&'a str>>,
+}
+impl<'a> Default for DictionaryEntryResultBufferArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    DictionaryEntryResultBufferArgs {
+      label: None, // required field
+      body: None, // required field
+    }
+  }
+}
+
+pub struct DictionaryEntryResultBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> DictionaryEntryResultBufferBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_label(&mut self, label: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DictionaryEntryResultBuffer::VT_LABEL, label);
+  }
+  #[inline]
+  pub fn add_body(&mut self, body: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(DictionaryEntryResultBuffer::VT_BODY, body);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> DictionaryEntryResultBufferBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    DictionaryEntryResultBufferBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<DictionaryEntryResultBuffer<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, DictionaryEntryResultBuffer::VT_LABEL,"label");
+    self.fbb_.required(o, DictionaryEntryResultBuffer::VT_BODY,"body");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for DictionaryEntryResultBuffer<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("DictionaryEntryResultBuffer");
+      ds.field("label", &self.label());
+      ds.field("body", &self.body());
+      ds.finish()
+  }
+}
 pub enum FrontMatterResultBufferOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
@@ -560,6 +919,7 @@ impl<'a> MdxParsingResultBuffer<'a> {
   pub const VT_TAGS: flatbuffers::VOffsetT = 6;
   pub const VT_FRONT_MATTER: flatbuffers::VOffsetT = 8;
   pub const VT_CITATIONS: flatbuffers::VOffsetT = 10;
+  pub const VT_DICTIONARY_ENTRIES: flatbuffers::VOffsetT = 12;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -571,6 +931,7 @@ impl<'a> MdxParsingResultBuffer<'a> {
     args: &'args MdxParsingResultBufferArgs<'args>
   ) -> flatbuffers::WIPOffset<MdxParsingResultBuffer<'bldr>> {
     let mut builder = MdxParsingResultBufferBuilder::new(_fbb);
+    if let Some(x) = args.dictionary_entries { builder.add_dictionary_entries(x); }
     if let Some(x) = args.citations { builder.add_citations(x); }
     if let Some(x) = args.front_matter { builder.add_front_matter(x); }
     if let Some(x) = args.tags { builder.add_tags(x); }
@@ -607,6 +968,13 @@ impl<'a> MdxParsingResultBuffer<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer>>>>(MdxParsingResultBuffer::VT_CITATIONS, None)}
   }
+  #[inline]
+  pub fn dictionary_entries(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DictionaryEntryResultBuffer<'a>>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DictionaryEntryResultBuffer>>>>(MdxParsingResultBuffer::VT_DICTIONARY_ENTRIES, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for MdxParsingResultBuffer<'_> {
@@ -620,6 +988,7 @@ impl flatbuffers::Verifiable for MdxParsingResultBuffer<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<TagResultBuffer>>>>("tags", Self::VT_TAGS, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<FrontMatterResultBuffer>>("front_matter", Self::VT_FRONT_MATTER, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<CitationResultBuffer>>>>("citations", Self::VT_CITATIONS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<DictionaryEntryResultBuffer>>>>("dictionary_entries", Self::VT_DICTIONARY_ENTRIES, false)?
      .finish();
     Ok(())
   }
@@ -629,6 +998,7 @@ pub struct MdxParsingResultBufferArgs<'a> {
     pub tags: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResultBuffer<'a>>>>>,
     pub front_matter: Option<flatbuffers::WIPOffset<FrontMatterResultBuffer<'a>>>,
     pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer<'a>>>>>,
+    pub dictionary_entries: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<DictionaryEntryResultBuffer<'a>>>>>,
 }
 impl<'a> Default for MdxParsingResultBufferArgs<'a> {
   #[inline]
@@ -638,6 +1008,7 @@ impl<'a> Default for MdxParsingResultBufferArgs<'a> {
       tags: None, // required field
       front_matter: None,
       citations: None,
+      dictionary_entries: None,
     }
   }
 }
@@ -664,6 +1035,10 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> MdxParsingResultBufferBuilder<'
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_CITATIONS, citations);
   }
   #[inline]
+  pub fn add_dictionary_entries(&mut self, dictionary_entries: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<DictionaryEntryResultBuffer<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_DICTIONARY_ENTRIES, dictionary_entries);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> MdxParsingResultBufferBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     MdxParsingResultBufferBuilder {
@@ -687,6 +1062,7 @@ impl core::fmt::Debug for MdxParsingResultBuffer<'_> {
       ds.field("tags", &self.tags());
       ds.field("front_matter", &self.front_matter());
       ds.field("citations", &self.citations());
+      ds.field("dictionary_entries", &self.dictionary_entries());
       ds.finish()
   }
 }

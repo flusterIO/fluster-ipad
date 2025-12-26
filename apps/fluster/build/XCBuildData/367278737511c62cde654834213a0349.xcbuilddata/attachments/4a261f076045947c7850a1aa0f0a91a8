@@ -1,4 +1,0 @@
-module CoreTextSwift {
-header "CoreTextSwift-Swift.h"
-export *
-}

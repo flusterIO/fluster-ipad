@@ -9,54 +9,53 @@ import SwiftData
 import SwiftUI
 
 public struct NoteSearchResultsByTagView: View {
-    @Query(sort: \NoteModel.last_read, order: .reverse) private var notes:
-        [NoteModel]
-    @State private var noteQuery: String = ""
-    @Binding var editingNote: NoteModel?
-    public let tag: TagModel
+  @Query(sort: \NoteModel.lastRead, order: .reverse) private var notes: [NoteModel]
+  @State private var noteQuery: String = ""
+  @Binding var editingNote: NoteModel?
+  public let tag: TagModel
 
-    var filteredNotes: [NoteModel] {
-        return noteQuery.isEmpty
-            ? notes
-            : MdxTextUtils.sortNotesByMarkdownBodyMatch(
-                notes: notes,
-                query: noteQuery,
-                filterNoMatch: true
-            )
-    }
+  var filteredNotes: [NoteModel] {
+    return noteQuery.isEmpty
+      ? notes
+      : MdxTextUtils.sortNotesByMarkdownBodyMatch(
+        notes: notes,
+        query: noteQuery,
+        filterNoMatch: true
+      )
+  }
 
-    public init(tag: TagModel, editingNote: Binding<NoteModel?>) {
-        self._editingNote = editingNote
-        self.tag = tag
-        let queryValue = tag.value
-        _notes = Query(
-            filter: #Predicate<NoteModel> { note in
-                note.tags.contains(where: { $0.value == queryValue })
-            },
-            sort: [SortDescriptor(\NoteModel.last_read, order: .reverse)],
-            animation: .default
-        )
-    }
+  public init(tag: TagModel, editingNote: Binding<NoteModel?>) {
+    self._editingNote = editingNote
+    self.tag = tag
+    let queryValue = tag.value
+    _notes = Query(
+      filter: #Predicate<NoteModel> { note in
+        note.tags.contains(where: { $0.value == queryValue })
+      },
+      sort: [SortDescriptor(\NoteModel.lastRead, order: .reverse)],
+      animation: .default
+    )
+  }
 
-    public var body: some View {
-        ZStack {
-            List(filteredNotes) { note in
-                NoteSearchResultItemView(item: note, editingNote: $editingNote)
-            }
-            if filteredNotes.isEmpty {
-                NoNotesFoundView()
-                    .searchable(text: $noteQuery, prompt: "Search notes")
-                    .navigationTitle("Notes")
-            }
-        }
-        .searchable(text: $noteQuery, prompt: "Search notes")
-        .navigationTitle("Notes")
+  public var body: some View {
+    ZStack {
+      List(filteredNotes) { note in
+        NoteSearchResultItemView(item: note, editingNote: $editingNote)
+      }
+      if filteredNotes.isEmpty {
+        NoNotesFoundView()
+          .searchable(text: $noteQuery, prompt: "Search notes")
+          .navigationTitle("Notes")
+      }
     }
+    .searchable(text: $noteQuery, prompt: "Search notes")
+    .navigationTitle("Notes")
+  }
 }
 
 #Preview {
-    NoteSearchResultsByTagView(
-        tag: TagModel(value: "myTag"),
-        editingNote: .constant(nil)
-    )
+  NoteSearchResultsByTagView(
+    tag: TagModel(value: "myTag"),
+    editingNote: .constant(nil)
+  )
 }

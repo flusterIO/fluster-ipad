@@ -8,7 +8,7 @@
 import Foundation
 
 public enum MainFullScreenCover {
-    case tagSearch(tag: TagModel)
-    case topicSearch(topic: TopicModel)
-    case subjectSearch(subject: SubjectModel)
+  case tagSearch(tag: TagModel)
+  case topicSearch(topic: TopicModel)
+  case subjectSearch(subject: SubjectModel)
 }

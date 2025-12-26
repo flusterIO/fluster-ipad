@@ -3,13 +3,18 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     parse::by_regex::regex_parsers::{
-        citation_regex_parser::CitationRegexParser, mdx_parser::MdxParser,
+        citation_regex_parser::CitationRegexParser,
+        dictionary_entry_regex_parser::DictionaryEntryRegexParser, mdx_parser::MdxParser,
         tag_regex_parser::TagRegexParser,
     },
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
-static REGEX_PARSERS: [&'static dyn MdxParser; 2] = [&TagRegexParser, &CitationRegexParser];
+static REGEX_PARSERS: [&'static dyn MdxParser; 3] = [
+    &TagRegexParser,
+    &CitationRegexParser,
+    &DictionaryEntryRegexParser,
+];
 
 #[derive(Serialize, Deserialize, uniffi::Record)]
 pub struct SwiftDataCitationSummary {
@@ -41,7 +46,7 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
     }
 
     for parser in parsers {
-        parser.parse_async(&opts, &mut result).await;
+        parser.parse_async(opts, &mut result).await;
     }
 
     result
@@ -63,10 +68,43 @@ mod tests {
 
     use fluster_core_utilities::{
         code_gen::flat_buffer::v1_flat_buffer_schema_generated::mdx_serialization::root_as_mdx_parsing_result_buffer,
-        test_utilities::get_test_mdx_content::get_welcome_to_fluster_content,
+        test_utilities::get_test_mdx_content::{
+            get_model_note_content, get_welcome_to_fluster_content,
+        },
     };
 
     use super::*;
+
+    #[tokio::test]
+    async fn parses_mdx_note_model_by_regex_successfully() {
+        let test_content = get_model_note_content();
+        let res = parse_mdx_string_by_regex(ParseMdxOptions {
+            content: test_content,
+            citations: Vec::new(),
+        })
+        .await;
+        assert!(
+            &res.is_ok(),
+            "Parses mdx content without throwing an error."
+        );
+        let binding = &res.unwrap();
+        let result = root_as_mdx_parsing_result_buffer(&binding)
+            .expect("Deserializes buffer to results without error.");
+        assert!(
+            !result
+                .citations()
+                .expect("Result has citations key.")
+                .is_empty(),
+            "Finds citations in note."
+        );
+        assert!(
+            !result
+                .dictionary_entries()
+                .expect("Result has dictionary entries.")
+                .is_empty(),
+            "Finds dictionary entries in note."
+        );
+    }
 
     #[tokio::test]
     async fn parses_mdx_by_regex_successfully() {

@@ -76,12 +76,23 @@ export function setCodeThemeLight(theme: string) {
     );
 }
 
-const resetMdxPreviewScrollPosition = (): void => {
+const resetMdxPreviewScrollPosition = (containerId?: string, scrollPositionKeys?: string[]): void => {
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.ResetPreviewScrollPosition, {
             detail: null,
         }),
     );
+    if (scrollPositionKeys) {
+        for (const k of scrollPositionKeys) {
+            window.localStorage.removeItem(k)
+        }
+    }
+    if (containerId) {
+        let em = document.getElementById(containerId)
+        if (em) {
+            em.scrollTop = 0
+        }
+    }
 };
 
 const emitMdxParsingError = (): void => {
@@ -97,15 +108,19 @@ const emitMdxParsingSuccess = (): void => {
     }))
 }
 
+export const setMdxBridgeFunctions = () => {
+    window.setCodeSyntaxTheme = setCodeTheme;
+    window.setCodeSyntaxThemeDark = setCodeThemeDark;
+    window.setCodeSyntaxThemeLight = setCodeThemeLight;
+}
+
 export const setWindowBridgeFunctions = () => {
     window.setEditorContent = setEditorContent;
     window.setEditorKeymap = setEditorKeymap;
     window.setParsedEditorContent = setParsedEditorContent;
     window.setParsedEditorContentString = setParsedEditorContentString;
-    window.setCodeSyntaxTheme = setCodeTheme;
-    window.setCodeSyntaxThemeDark = setCodeThemeDark;
-    window.setCodeSyntaxThemeLight = setCodeThemeLight;
     window.resetMdxPreviewScrollPosition = resetMdxPreviewScrollPosition;
     window.emitMdxParsingError = emitMdxParsingError;
     window.emitMdxParsingSuccess = emitMdxParsingSuccess;
+    setMdxBridgeFunctions()
 };
