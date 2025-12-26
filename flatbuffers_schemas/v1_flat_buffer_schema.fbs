@@ -25,7 +25,7 @@ namespace MdxSerialization;
 
 table CitationResultBuffer {
     citation_key:string (required);
-    body:string (required);
+    idx:ubyte;
 }
 
 table TagResultBuffer {

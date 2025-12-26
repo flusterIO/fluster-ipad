@@ -156,21 +156,38 @@ extension AppSchemaV1 {
         }
       }
       self.tags = tags
+      var citations: [BibEntryModel] = []
+      var citationsCount = results.citationsCount
+      for idx in (0..<citationsCount) {
+        if let citData = results.citations(at: idx) {
+          let citationId = citData.citationKey
+          if let existingCitation = self.citations.first(where: { cit in
+            cit.id == citationId
+          }) {
+            citations.append(existingCitation)
+          } else {
+            citations.append(
+              BibEntryModel(data: citData.body)
+            )
+          }
+        }
+      }
+      self.citations = citations
       var dictionayEntries: [DictionaryEntryModel] = []
       for idx in (0..<results.dictionaryEntriesCount) {
         if let dEntry = results.dictionaryEntries(at: idx) {
-            if let existingEntry = self.dictionaryEntries.first(where: {
-              $0.label == dEntry.label
-            }) {
-              dictionaryEntries.append(existingEntry)
-            } else {
-              dictionayEntries.append(
-                DictionaryEntryModel(
-                  id: UUID.init().uuidString,
-                  label: dEntry.label,
-                  body: dEntry.body)
-              )
-            }
+          if let existingEntry = self.dictionaryEntries.first(where: {
+            $0.label == dEntry.label
+          }) {
+            dictionaryEntries.append(existingEntry)
+          } else {
+            dictionayEntries.append(
+              DictionaryEntryModel(
+                id: UUID.init().uuidString,
+                label: dEntry.label,
+                body: dEntry.body)
+            )
+          }
         }
       }
       self.dictionaryEntries = dictionayEntries

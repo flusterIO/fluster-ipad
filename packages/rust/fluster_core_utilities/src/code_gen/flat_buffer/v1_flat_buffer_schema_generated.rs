@@ -454,7 +454,7 @@ impl<'a> flatbuffers::Follow<'a> for CitationResultBuffer<'a> {
 
 impl<'a> CitationResultBuffer<'a> {
   pub const VT_CITATION_KEY: flatbuffers::VOffsetT = 4;
-  pub const VT_BODY: flatbuffers::VOffsetT = 6;
+  pub const VT_IDX: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -466,8 +466,8 @@ impl<'a> CitationResultBuffer<'a> {
     args: &'args CitationResultBufferArgs<'args>
   ) -> flatbuffers::WIPOffset<CitationResultBuffer<'bldr>> {
     let mut builder = CitationResultBufferBuilder::new(_fbb);
-    if let Some(x) = args.body { builder.add_body(x); }
     if let Some(x) = args.citation_key { builder.add_citation_key(x); }
+    builder.add_idx(args.idx);
     builder.finish()
   }
 
@@ -480,11 +480,11 @@ impl<'a> CitationResultBuffer<'a> {
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(CitationResultBuffer::VT_CITATION_KEY, None).unwrap()}
   }
   #[inline]
-  pub fn body(&self) -> &'a str {
+  pub fn idx(&self) -> u8 {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(CitationResultBuffer::VT_BODY, None).unwrap()}
+    unsafe { self._tab.get::<u8>(CitationResultBuffer::VT_IDX, Some(0)).unwrap()}
   }
 }
 
@@ -496,21 +496,21 @@ impl flatbuffers::Verifiable for CitationResultBuffer<'_> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("citation_key", Self::VT_CITATION_KEY, true)?
-     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("body", Self::VT_BODY, true)?
+     .visit_field::<u8>("idx", Self::VT_IDX, false)?
      .finish();
     Ok(())
   }
 }
 pub struct CitationResultBufferArgs<'a> {
     pub citation_key: Option<flatbuffers::WIPOffset<&'a str>>,
-    pub body: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub idx: u8,
 }
 impl<'a> Default for CitationResultBufferArgs<'a> {
   #[inline]
   fn default() -> Self {
     CitationResultBufferArgs {
       citation_key: None, // required field
-      body: None, // required field
+      idx: 0,
     }
   }
 }
@@ -525,8 +525,8 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> CitationResultBufferBuilder<'a,
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(CitationResultBuffer::VT_CITATION_KEY, citation_key);
   }
   #[inline]
-  pub fn add_body(&mut self, body: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(CitationResultBuffer::VT_BODY, body);
+  pub fn add_idx(&mut self, idx: u8) {
+    self.fbb_.push_slot::<u8>(CitationResultBuffer::VT_IDX, idx, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> CitationResultBufferBuilder<'a, 'b, A> {
@@ -540,7 +540,6 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> CitationResultBufferBuilder<'a,
   pub fn finish(self) -> flatbuffers::WIPOffset<CitationResultBuffer<'a>> {
     let o = self.fbb_.end_table(self.start_);
     self.fbb_.required(o, CitationResultBuffer::VT_CITATION_KEY,"citation_key");
-    self.fbb_.required(o, CitationResultBuffer::VT_BODY,"body");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
@@ -549,7 +548,7 @@ impl core::fmt::Debug for CitationResultBuffer<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("CitationResultBuffer");
       ds.field("citation_key", &self.citation_key());
-      ds.field("body", &self.body());
+      ds.field("idx", &self.idx());
       ds.finish()
   }
 }

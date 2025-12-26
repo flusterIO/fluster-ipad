@@ -85,4 +85,4 @@ build_all_webviews: build_cross_language_schemas build_webview_utils build_split
 pre_ipad_build: generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews
 
 test_rust: build_cross_language_schemas
-	cargo nextest --no-capture
+	cargo nextest run --no-capture

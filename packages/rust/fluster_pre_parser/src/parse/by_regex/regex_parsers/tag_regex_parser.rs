@@ -50,10 +50,9 @@ mod tests {
     async fn parses_tags_properly() {
         let opts = ParseMdxOptions {
             citations: Vec::new(),
-            content: r#"
-        # My note
+            content: r#"# My note
 
-        This is [[#my_tag]] and [[#myOtherTag]]
+This is [[#my_tag]] and [[#myOtherTag]]
             "#
             .to_string(),
         };
@@ -68,10 +67,9 @@ mod tests {
             "Tag parser finds second result."
         );
 
-        let should_equal = r#"
-        # My note
+        let should_equal = r#"# My note
 
-        This is <AutoInsertedTag>my_tag</AutoInsertedTag> and <AutoInsertedTag>myOtherTag</AutoInsertedTag>
+This is <AutoInsertedTag>my_tag</AutoInsertedTag> and <AutoInsertedTag>myOtherTag</AutoInsertedTag>
             "#;
 
         assert_eq!(

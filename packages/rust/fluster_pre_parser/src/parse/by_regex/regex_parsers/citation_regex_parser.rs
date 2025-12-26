@@ -8,7 +8,10 @@ use crate::{
         parse_mdx_by_regex::ParseMdxOptions,
         regex_parsers::mdx_parser::{MdxParser, ParserId},
     },
-    parsing_result::{citation_result::CitationResult, mdx_parsing_result::MdxParsingResult},
+    parsing_result::{
+        citation_result::{self, CitationResult},
+        mdx_parsing_result::MdxParsingResult,
+    },
 };
 
 pub struct CitationRegexParser;
@@ -31,23 +34,22 @@ impl MdxParser for CitationRegexParser {
                     .par_iter()
                     .any(|citation_item| citation_item.citation_key == citation_key_as_string)
                 {
-                    if let Some(citation_result) =
-                        CitationResult::new(citation_key_as_string, &req.citations)
-                    {
-                        citations.push(citation_result);
-                        let x = result
-                            .get(0)
-                            .expect("Must have at least the first match group.")
-                            .as_str();
-                        new_content = new_content.replace(
-                            x,
-                            &format!(
-                                "<FlusterCitation citationKey='{}' index={{{}}} >",
-                                citation_key_as_string,
-                                citations.len()
-                            ),
-                        );
-                    }
+                    citations.push(CitationResult {
+                        citation_key: citation_key_as_string.to_string(),
+                        index: citations.len() as u8,
+                    });
+                    let x = result
+                        .get(0)
+                        .expect("Must have at least the first match group.")
+                        .as_str();
+                    new_content = new_content.replace(
+                        x,
+                        &format!(
+                            "<FlusterCitation citationKey='{}' index={{{}}} />",
+                            citation_key_as_string,
+                            citations.len()
+                        ),
+                    );
                 }
             }
         }

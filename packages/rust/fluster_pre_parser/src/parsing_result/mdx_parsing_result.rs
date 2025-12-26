@@ -76,15 +76,18 @@ impl MdxParsingResult {
         let mut citations_offsets = Vec::new();
         for citation in &self.citations {
             let key = builder.create_string(&citation.citation_key);
-            let body = builder.create_string(&citation.body);
             citations_offsets.push(CitationResultBuffer::create(
                 &mut builder,
                 &CitationResultBufferArgs {
                     citation_key: Some(key),
-                    body: Some(body),
+                    idx: citation.index,
                 },
             ));
         }
+
+        let citations_vector = builder.create_vector(&citations_offsets);
+
+        // --- Serializing Dictionary Entries ---
 
         let mut dictionary_entry_offets = Vec::new();
 
@@ -101,8 +104,6 @@ impl MdxParsingResult {
         }
 
         let dictionary_entries = builder.create_vector(&dictionary_entry_offets);
-
-        let citations_vector = builder.create_vector(&citations_offsets);
 
         let front_matter_offset = self.front_matter.as_ref().map(|fm| {
             let ignored_parsers_offsets = fm

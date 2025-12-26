@@ -29,11 +29,9 @@ citationKey(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-body():string|null
-body(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-body(optionalEncoding?:any):string|Uint8Array|null {
+idx():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
 }
 
 static startCitationResultBuffer(builder:flatbuffers.Builder) {
@@ -44,21 +42,20 @@ static addCitationKey(builder:flatbuffers.Builder, citationKeyOffset:flatbuffers
   builder.addFieldOffset(0, citationKeyOffset, 0);
 }
 
-static addBody(builder:flatbuffers.Builder, bodyOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, bodyOffset, 0);
+static addIdx(builder:flatbuffers.Builder, idx:number) {
+  builder.addFieldInt8(1, idx, 0);
 }
 
 static endCitationResultBuffer(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   builder.requiredField(offset, 4) // citation_key
-  builder.requiredField(offset, 6) // body
   return offset;
 }
 
-static createCitationResultBuffer(builder:flatbuffers.Builder, citationKeyOffset:flatbuffers.Offset, bodyOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createCitationResultBuffer(builder:flatbuffers.Builder, citationKeyOffset:flatbuffers.Offset, idx:number):flatbuffers.Offset {
   CitationResultBuffer.startCitationResultBuffer(builder);
   CitationResultBuffer.addCitationKey(builder, citationKeyOffset);
-  CitationResultBuffer.addBody(builder, bodyOffset);
+  CitationResultBuffer.addIdx(builder, idx);
   return CitationResultBuffer.endCitationResultBuffer(builder);
 }
 }

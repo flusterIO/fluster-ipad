@@ -170,34 +170,33 @@ public struct MdxSerialization_CitationResultBuffer: FlatBufferObject, Verifiabl
 
   private enum VTOFFSET: VOffset {
     case citationKey = 4
-    case body = 6
+    case idx = 6
     var v: Int32 { Int32(self.rawValue) }
     var p: VOffset { self.rawValue }
   }
 
   public var citationKey: String! { let o = _accessor.offset(VTOFFSET.citationKey.v); return _accessor.string(at: o) }
   public var citationKeySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.citationKey.v) }
-  public var body: String! { let o = _accessor.offset(VTOFFSET.body.v); return _accessor.string(at: o) }
-  public var bodySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.body.v) }
+  public var idx: UInt8 { let o = _accessor.offset(VTOFFSET.idx.v); return o == 0 ? 0 : _accessor.readBuffer(of: UInt8.self, at: o) }
   public static func startCitationResultBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 2) }
   public static func add(citationKey: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citationKey, at: VTOFFSET.citationKey.p) }
-  public static func add(body: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: body, at: VTOFFSET.body.p) }
-  public static func endCitationResultBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
+  public static func add(idx: UInt8, _ fbb: inout FlatBufferBuilder) { fbb.add(element: idx, def: 0, at: VTOFFSET.idx.p) }
+  public static func endCitationResultBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
   public static func createCitationResultBuffer(
     _ fbb: inout FlatBufferBuilder,
     citationKeyOffset citationKey: Offset,
-    bodyOffset body: Offset
+    idx: UInt8 = 0
   ) -> Offset {
     let __start = MdxSerialization_CitationResultBuffer.startCitationResultBuffer(&fbb)
     MdxSerialization_CitationResultBuffer.add(citationKey: citationKey, &fbb)
-    MdxSerialization_CitationResultBuffer.add(body: body, &fbb)
+    MdxSerialization_CitationResultBuffer.add(idx: idx, &fbb)
     return MdxSerialization_CitationResultBuffer.endCitationResultBuffer(&fbb, start: __start)
   }
 
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
     var _v = try verifier.visitTable(at: position)
     try _v.visit(field: VTOFFSET.citationKey.p, fieldName: "citationKey", required: true, type: ForwardOffset<String>.self)
-    try _v.visit(field: VTOFFSET.body.p, fieldName: "body", required: true, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.idx.p, fieldName: "idx", required: false, type: UInt8.self)
     _v.finish()
   }
 }
