@@ -138,6 +138,7 @@ extension AppSchemaV1 {
     }
     public func applyMdxParsingResults(
       results: MdxSerialization_MdxParsingResultBuffer,
+      modelContext: ModelContext
     ) {
       self.markdown.preParsedBody = results.parsedContent
       if let frontMatter = results.frontMatter {
@@ -156,23 +157,33 @@ extension AppSchemaV1 {
         }
       }
       self.tags = tags
+      // -- Citations --
       var citations: [BibEntryModel] = []
       var citationsCount = results.citationsCount
-      for idx in (0..<citationsCount) {
-        if let citData = results.citations(at: idx) {
-          let citationId = citData.citationKey
-          if let existingCitation = self.citations.first(where: { cit in
-            cit.id == citationId
-          }) {
-            citations.append(existingCitation)
-          } else {
-            citations.append(
-              BibEntryModel(data: citData.body)
-            )
-          }
+      let cits = (0..<citationsCount).compactMap { n in
+        return results.citations(at: n)
+      }
+      let entryIds = cits.isEmpty ? [] : cits.map(\.citationKey)
+      let fetchDescriptor = FetchDescriptor<BibEntryModel>(
+        predicate: #Predicate<BibEntryModel> { entry in
+          entryIds.contains(entry.citationKey)
+        }
+      )
+      let existingCitations = (try? modelContext.fetch(fetchDescriptor)) ?? []
+      cits.forEach { citationItem in
+        if let existingCitation = existingCitations.first(where: { cit in
+          cit.id == citationItem.citationKey
+        }) {
+          citations.append(existingCitation)
+        } else {
+          // TODO: Show an alert here.
+          print("Found a citation that doesn't exist. Show alert here.")
         }
       }
+
       self.citations = citations
+
+      // -- Dictionary --
       var dictionayEntries: [DictionaryEntryModel] = []
       for idx in (0..<results.dictionaryEntriesCount) {
         if let dEntry = results.dictionaryEntries(at: idx) {
@@ -235,15 +246,25 @@ extension AppSchemaV1 {
 
     public static func fromInitialDataParsingResult(
       data: MdxParsingResult,
-      existingTags: [TagModel]
+      existingTags: [TagModel],
+      existingCitations: [BibEntryModel]
     ) -> NoteModel {
       let note = NoteModel.getEmptyModel(
         noteBody: data.content,
         noteSummary: nil
       )
-      note.citations = data.citations.map({ cit in
-        BibEntryModel.fromParsingResult(data: cit)
-      })
+      for cit in data.citations {
+        if let foundEntry = existingCitations.first(where: { citItem in
+          citItem.citationKey == cit.citationKey
+        }) {
+          let citationAlreadyAppended = note.citations.contains(where: { alreadyAppendedCit in
+            alreadyAppendedCit.citationKey == foundEntry.citationKey
+          })
+          if !citationAlreadyAppended {
+            note.citations.append(foundEntry)
+          }
+        }
+      }
       note.tags = data.tags.map({ tag in
         TagModel.fromRustTagResult(t: tag, existingTags: existingTags)
       })
@@ -364,11 +385,11 @@ extension AppSchemaV1 {
       )
     }
 
-    public static func fromParsingResult(data: CitationResult)
-      -> BibEntryModel
-    {
-      BibEntryModel(id: data.citationKey, data: data.body)
-    }
+    //    public static func fromParsingResult(data: CitationResult)
+    //      -> BibEntryModel
+    //    {
+    //      BibEntryModel(id: data.citationKey, data: data.body)
+    //    }
   }
 
   @Model

@@ -218,6 +218,7 @@ extension MdxEditorWebviewInternal {
               {
                 parent.editingNote.applyMdxParsingResults(
                   results: parsingResults,
+                modelContext: self.parent.modelContext
                 )
               }
             }

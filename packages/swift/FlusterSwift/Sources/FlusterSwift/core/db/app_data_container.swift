@@ -48,21 +48,6 @@ public final class AppDataContainer {
       let existingNotes = try container.mainContext.fetch(fetchDescriptor)
 
       if !hasLaunchedPreviously && existingNotes.isEmpty {
-        let noteData = InitialNotesDataJsonDecoder.decode(
-          from: INITIAL_NOTES_DATA_PATH
-        )
-
-        if let nd = noteData {
-          nd.forEach { noteItemData in
-            let noteModel = NoteModel.fromInitialDataParsingResult(
-              data: noteItemData,
-              existingTags: []
-            )
-            container.mainContext.insert(noteModel)
-          }
-        } else {
-          fatalError("Failed to load initial notes.")
-        }
         let initialBibliographyEntries: [BibEntryModel] = [
           BibEntryModel(
             data: """
@@ -102,6 +87,23 @@ public final class AppDataContainer {
         ]
         for bibEntry in initialBibliographyEntries {
           container.mainContext.insert(bibEntry)
+        }
+
+        let noteData = InitialNotesDataJsonDecoder.decode(
+          from: INITIAL_NOTES_DATA_PATH
+        )
+
+        if let nd = noteData {
+          nd.forEach { noteItemData in
+            let noteModel = NoteModel.fromInitialDataParsingResult(
+              data: noteItemData,
+              existingTags: [],
+              existingCitations: initialBibliographyEntries
+            )
+            container.mainContext.insert(noteModel)
+          }
+        } else {
+          fatalError("Failed to load initial notes.")
         }
       }
       try container.mainContext.save()

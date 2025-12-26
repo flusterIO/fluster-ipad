@@ -80,7 +80,7 @@ impl MdxParsingResult {
                 &mut builder,
                 &CitationResultBufferArgs {
                     citation_key: Some(key),
-                    idx: citation.index,
+                    idx: citation.idx,
                 },
             ));
         }

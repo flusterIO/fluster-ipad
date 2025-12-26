@@ -88,7 +88,7 @@ mod tests {
             "Parses mdx content without throwing an error."
         );
         let binding = &res.unwrap();
-        let result = root_as_mdx_parsing_result_buffer(&binding)
+        let result = root_as_mdx_parsing_result_buffer(binding)
             .expect("Deserializes buffer to results without error.");
         assert!(
             !result
@@ -104,6 +104,13 @@ mod tests {
                 .is_empty(),
             "Finds dictionary entries in note."
         );
+        assert!(
+            result
+                .parsed_content()
+                .to_string()
+                .contains("<FlusterCitation"),
+            "Replaces citation in file."
+        )
     }
 
     #[tokio::test]

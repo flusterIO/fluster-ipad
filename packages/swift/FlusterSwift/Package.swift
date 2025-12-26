@@ -29,7 +29,8 @@ let package = Package(
     .package(
       url: "https://github.com/swiftlang/swift-testing",
       .upToNextMajor(from: "6.2.3")
-    )
+    ),
+    .package(url: "https://github.com/elai950/AlertToast", .upToNextMajor(from: "1.3.9")),
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -39,7 +40,8 @@ let package = Package(
       dependencies: [
         "SwiftyBibtex",
         .product(name: "FlusterRust", package: "FlusterRust"),
-        .product(name: "FlatBuffers", package: "flatbuffers")
+        .product(name: "FlatBuffers", package: "flatbuffers"),
+        .product(name: "AlertToast", package: "AlertToast")
       ]
     ),
     .testTarget(

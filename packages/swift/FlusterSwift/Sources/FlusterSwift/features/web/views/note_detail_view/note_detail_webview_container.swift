@@ -33,14 +33,14 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
 
     let citationsVectorOffset: [Offset] = []
 
-    for citation in note.citations {
+      for (idx, citation) in note.citations.enumerated() {
       let citationOffset =
         MdxSerialization_CitationResultBuffer.createCitationResultBuffer(
           &builder,
           citationKeyOffset: builder.create(
             string: citation.citationKey
           ),
-          bodyOffset: builder.create(string: citation.data)
+          idx: UInt8(idx),
         )
     }
 

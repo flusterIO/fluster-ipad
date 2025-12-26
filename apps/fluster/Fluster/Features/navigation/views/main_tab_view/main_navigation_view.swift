@@ -331,6 +331,7 @@ struct MainView: View {
               {
                 note.applyMdxParsingResults(
                   results: parsingResults,
+                modelContext: modelContext
                 )
               }
               Task {

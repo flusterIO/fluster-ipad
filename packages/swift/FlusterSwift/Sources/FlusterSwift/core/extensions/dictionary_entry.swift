@@ -12,14 +12,12 @@ extension DictionaryEntryResult: Codable {
   public enum CodingKeys: String, CodingKey {
     case label
     case body
-    case id
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let label = try container.decode(String.self, forKey: .label)
     let body = try container.decode(String.self, forKey: .body)
-    let id = try container.decode(String.self, forKey: .id)
 
     self.init(
       label: label,

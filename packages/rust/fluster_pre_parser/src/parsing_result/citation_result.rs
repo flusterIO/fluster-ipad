@@ -5,5 +5,5 @@ pub struct CitationResult {
     /// The parsed citation key.
     pub citation_key: String,
     /// The complete bibtex entry
-    pub index: u8,
+    pub idx: u8,
 }

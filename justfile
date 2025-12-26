@@ -45,6 +45,8 @@ build_cross_language_schemas: generate_initial_note_data
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=swift --output-folder={{justfile_directory()}}/packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/typeshare
 
+build_cross_language: build_cross_language_schemas build_fluster_rust
+
 generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data
 
 build_ipad_simulator:

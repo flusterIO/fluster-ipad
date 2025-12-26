@@ -10,10 +10,10 @@ import Foundation
 
 struct CodableCitationResult: Codable {
   public let citation_key: String
-  public let body: String
+  public let idx: UInt8
 
   static func fromRustResult(res: CitationResult) -> CodableCitationResult {
-    CodableCitationResult(citation_key: res.citationKey, body: res.body)
+      CodableCitationResult(citation_key: res.citationKey, idx: res.idx)
   }
 }
 

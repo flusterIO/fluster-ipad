@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SwiftData
 
 @MainActor
-public func getTestNote() async -> NoteModel {
+public func getTestNote(modelContext: ModelContext) async -> NoteModel {
     do {
         let testNoteUrl = try URL("file:///Users/bigsexy/Desktop/notes/content/physics/ipad_app_notes/on_the_gravitational_nature_of_time.mdx", strategy: .url)
         let fileContents = try String(contentsOf: testNoteUrl, encoding: .utf8)
@@ -19,7 +20,7 @@ public func getTestNote() async -> NoteModel {
           )
         )
         if let parsingResults = await fileContents.preParseAsMdx() {
-            res.applyMdxParsingResults(results: parsingResults)
+            res.applyMdxParsingResults(results: parsingResults, modelContext: modelContext)
         }
         return res
     } catch {

@@ -36,7 +36,7 @@ impl MdxParser for CitationRegexParser {
                 {
                     citations.push(CitationResult {
                         citation_key: citation_key_as_string.to_string(),
-                        index: citations.len() as u8,
+                        idx: citations.len() as u8,
                     });
                     let x = result
                         .get(0)
