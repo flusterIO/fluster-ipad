@@ -28,6 +28,12 @@ export const IPadCarousel = ({
 }: CarouselProps): ReactNode => {
     const items: ImageData[] = [
         {
+            image: image3,
+            id: "img-3",
+            title: "Reading View",
+            alt: "The iPad application can enter a reading view for study sessions and reviewing your notes.",
+        },
+        {
             image: image1,
             id: "img-1",
             title: "Splitview Editor",
@@ -38,12 +44,6 @@ export const IPadCarousel = ({
             id: "img-2",
             title: "Paper View",
             alt: "The iPad application is complete with Apple's first class support for the Apple pencil.",
-        },
-        {
-            image: image3,
-            id: "img-3",
-            title: "Reading View",
-            alt: "The iPad application can enter a reading view for study sessions and reviewing your notes.",
         },
         {
             image: image4,
@@ -118,7 +118,7 @@ export const IPadCarousel = ({
                         {items.map((item) => (
                             <div
                                 key={item.id}
-                                className="relative shrink-0 h-[300px] rounded-lg overflow-hidden relative flex flex-col justify-center items-center"
+                                className="relative shrink-0 h-[min(768px,80vh)] rounded-lg overflow-hidden relative flex flex-col justify-center items-center"
                                 style={{
                                     width: `calc((100% - ${(slidesToShow - 1) * 16
                                         }px) / ${slidesToShow})`,
@@ -130,9 +130,6 @@ export const IPadCarousel = ({
                                     className="w-fit h-full z-10 h-full select-none pointer-events-none object-contain"
                                     draggable={false}
                                 />
-                                <div className="absolute bottom-0 left-50 translate-x-[-50%] xl:translate-x-0 xl:left-0 xl:right-0 bg-linear-to-t from-background/60 to-transparent p-3">
-                                    <p className="text-white text-sm font-medium">{item.title}</p>
-                                </div>
                             </div>
                         ))}
                     </motion.div>
@@ -158,7 +155,6 @@ export const IPadCarousel = ({
                         <svg
                             className="w-6 h-6 z-10 stroke-white/80"
                             fill="none"
-                            /* stroke="currentColor" */
                             viewBox="0 0 24 24"
                         >
                             <path

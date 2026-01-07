@@ -11,8 +11,8 @@ const LandingPage = (): ReactNode => {
         <div className="w-full min-h-screen pb-8 flex flex-col justify-start items-center overflow-x-hidden">
             <HeroSection />
             <EverythingYouNeedSection />
-            <HighlightedFeaturesSection />
             <IpadSection />
+            <HighlightedFeaturesSection />
             <MainSponsorSection />
         </div>
     );
