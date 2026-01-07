@@ -118,17 +118,13 @@ export const IPadCarousel = ({
 
     return (
         <div className="w-full lg:p-10 sm:p-4 p-2 flex flex-col justify-center items-center">
-            <div className="flex flex-col gap-3 max-w-[640px]">
+            <div className="flex flex-col gap-3 w-[min(640px,90vw)]">
                 <div className="relative overflow-hidden rounded-lg" ref={containerRef}>
-                    <motion.div className="flex gap-4" style={{ x }}>
+                    <motion.div className="flex flex-row" style={{ x }}>
                         {items.map((item) => (
                             <div
                                 key={item.id}
-                                className="relative shrink-0 h-[min(768px,80vh)] rounded-lg overflow-hidden relative flex flex-col justify-center items-center"
-                                style={{
-                                    width: `calc((100% - ${(slidesToShow - 1) * 16
-                                        }px) / ${slidesToShow})`,
-                                }}
+                                className="relative shrink-0 h-[min(768px,80vh)] w-[min(640px,90vw)] rounded-lg overflow-hidden relative flex flex-col justify-center items-center"
                             >
                                 <Image
                                     src={item.image}
