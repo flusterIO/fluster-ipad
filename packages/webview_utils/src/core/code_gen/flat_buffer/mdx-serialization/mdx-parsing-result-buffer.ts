@@ -4,8 +4,8 @@
 
 import * as flatbuffers from 'flatbuffers';
 
+import { DictionaryEntryResultBuffer } from '../dictionary/dictionary-entry-result-buffer.js';
 import { CitationResultBuffer } from '../mdx-serialization/citation-result-buffer.js';
-import { DictionaryEntryResultBuffer } from '../mdx-serialization/dictionary-entry-result-buffer.js';
 import { FrontMatterResultBuffer } from '../mdx-serialization/front-matter-result-buffer.js';
 import { TagResultBuffer } from '../mdx-serialization/tag-result-buffer.js';
 

@@ -48,14 +48,3 @@ pub fn run() {
     )
     .expect("Failed to write path output to file.");
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn runs() {
-        run()
-        // assert_eq!(result, 4);
-    }
-}

@@ -11,7 +11,7 @@ import { AutoInsertedTag } from "../embeddable_mdx_components/auto_inserted/tag"
 import { Ul } from "../embeddable_mdx_components/ul";
 import { FlusterCitation } from "../embeddable_mdx_components/auto_inserted/fluster_citation";
 import { Admonition } from "../embeddable_mdx_components/admonition";
-import { DictionaryEntry } from "../embeddable_mdx_components/auto_inserted/dictionary_entry";
+import { DictionaryEntryComponent } from "../../dictionary/hooks/dictionary_entry";
 interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
     query: string | string[];
@@ -198,7 +198,7 @@ const items: ComponentMapItem[] = [
     },
     {
         query: "DictionaryEntry",
-        component: DictionaryEntry,
+        component: DictionaryEntryComponent,
     },
     /* { */
     /*     query: "EquationTag", */

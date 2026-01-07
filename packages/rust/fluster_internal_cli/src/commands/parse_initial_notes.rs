@@ -33,6 +33,7 @@ pub async fn parse_initial_notes() {
         let mut res = parse_mdx_string_to_mdx_result(&ParseMdxOptions {
             content: file_content.clone(),
             citations: Vec::new(),
+            note_id: None,
         })
         .await;
 

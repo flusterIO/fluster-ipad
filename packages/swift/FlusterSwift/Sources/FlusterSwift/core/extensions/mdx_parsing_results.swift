@@ -3,6 +3,7 @@ import Foundation
 
 extension MdxParsingResult: Codable {
   public enum CodingKeys: String, CodingKey {
+    case note_id
     case content
     case tags
     case front_matter
@@ -13,6 +14,7 @@ extension MdxParsingResult: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let content = try container.decode(String.self, forKey: .content)
+    let id = try container.decode(String.self, forKey: .note_id)
     let tags = try container.decode([TagResult].self, forKey: .tags)
     let frontMatter = try container.decodeIfPresent(FrontMatterResult.self, forKey: .front_matter)
     let citations = try container.decode([CitationResult].self, forKey: .citations)
@@ -20,6 +22,7 @@ extension MdxParsingResult: Codable {
       [DictionaryEntryResult].self, forKey: .dictionary_entries)
 
     self.init(
+      noteId: id,
       content: content, tags: tags, frontMatter: frontMatter, citations: citations,
       dictionaryEntries: dictionaryEntries)
   }

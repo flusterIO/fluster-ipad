@@ -1,7 +1,6 @@
 import React, { type ReactNode } from 'react'
 
 
-
 interface DictionaryEntryProps {
     label: string
     children: ReactNode

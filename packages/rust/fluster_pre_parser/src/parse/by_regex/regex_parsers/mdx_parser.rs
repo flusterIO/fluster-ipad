@@ -14,8 +14,8 @@ pub enum ParserId {
     #[serde(rename = "citations")]
     #[strum(to_string = "citations")]
     Citations,
-    #[serde(rename = "dictionaryEntry")]
-    #[strum(to_string = "dictionaryEntry")]
+    #[serde(rename = "dictionary")]
+    #[strum(to_string = "dictionary")]
     Dictionary,
 }
 

@@ -24,8 +24,8 @@ public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebvie
       let idOffset = builder.create(string: dict.id)
       let labelOffset = builder.create(string: dict.label)
       let bodyOffset = builder.create(string: dict.body)
-      let entry_offset = Dictionary_DictionaryEntryModel.createDictionaryEntryModel(
-        &builder, idOffset: idOffset, labelOffset: labelOffset, bodyOffset: bodyOffset)
+      let entry_offset = Dictionary_DictionaryEntryResultBuffer.createDictionaryEntryResultBuffer(
+        &builder, labelOffset: labelOffset, bodyOffset: bodyOffset)
       return entry_offset
     })
     let vector_offset = builder.createVector(ofOffsets: entries_offset)

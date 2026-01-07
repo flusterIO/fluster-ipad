@@ -83,11 +83,21 @@ public final class AppDataContainer {
                 doi = {10.1103/PhysRevLett.4.337},
                 url = {https://link.aps.org/doi/10.1103/PhysRevLett.4.337}
               }
-              """)
+              """),
+            BibEntryModel(
+            data: """
+                @letter{Einstein_Besso_Letter,
+                author = {Einstein, Albert},
+                year = {1955},
+                month = {March},
+                title = {{Letter to the family Michele Besso following his death}},
+                }
+                """)
         ]
         for bibEntry in initialBibliographyEntries {
           container.mainContext.insert(bibEntry)
         }
+          try container.mainContext.save()
 
         let noteData = InitialNotesDataJsonDecoder.decode(
           from: INITIAL_NOTES_DATA_PATH

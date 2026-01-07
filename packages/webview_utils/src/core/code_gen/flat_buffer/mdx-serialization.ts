@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 
 export { CitationResultBuffer } from './mdx-serialization/citation-result-buffer.js';
-export { DictionaryEntryResultBuffer } from './mdx-serialization/dictionary-entry-result-buffer.js';
 export { FrontMatterResultBuffer } from './mdx-serialization/front-matter-result-buffer.js';
 export { MdxParsingResultBuffer } from './mdx-serialization/mdx-parsing-result-buffer.js';
 export { TagResultBuffer } from './mdx-serialization/tag-result-buffer.js';

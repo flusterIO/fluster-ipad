@@ -1,9 +1,11 @@
 use flatbuffers::FlatBufferBuilder;
 use fluster_core_utilities::{
-    code_gen::flat_buffer::v1_flat_buffer_schema_generated::mdx_serialization::{
-        CitationResultBuffer, CitationResultBufferArgs, DictionaryEntryResultBuffer,
-        DictionaryEntryResultBufferArgs, FrontMatterResultBufferBuilder,
-        MdxParsingResultBufferBuilder, TagResultBuffer, TagResultBufferArgs,
+    code_gen::flat_buffer::v1_flat_buffer_schema_generated::{
+        dictionary::{DictionaryEntryResultBuffer, DictionaryEntryResultBufferArgs},
+        mdx_serialization::{
+            CitationResultBuffer, CitationResultBufferArgs, FrontMatterResultBufferBuilder,
+            MdxParsingResultBufferBuilder, TagResultBuffer, TagResultBufferArgs,
+        },
     },
     core_types::fluster_error::FlusterError,
 };
@@ -19,6 +21,7 @@ use crate::{
 
 #[derive(uniffi::Record, Serialize, Deserialize, Clone)]
 pub struct MdxParsingResult {
+    pub note_id: Option<String>,
     pub content: String,
     pub tags: Vec<TagResult>,
     pub front_matter: Option<FrontMatterResult>,
@@ -41,6 +44,7 @@ impl MdxParsingResult {
             })
             .ok();
         MdxParsingResult {
+            note_id: None,
             content: match &data {
                 Some(d) => d.content.clone(),
                 None => "".to_string(),
@@ -94,11 +98,13 @@ impl MdxParsingResult {
         for dict in &self.dictionary_entries {
             let label = builder.create_string(&dict.label);
             let body = builder.create_string(&dict.body);
+            let note_id = self.note_id.clone().map(|y| builder.create_string(&y));
             dictionary_entry_offets.push(DictionaryEntryResultBuffer::create(
                 &mut builder,
                 &DictionaryEntryResultBufferArgs {
                     label: Some(label),
                     body: Some(body),
+                    note_id,
                 },
             ))
         }

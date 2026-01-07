@@ -1,6 +1,4 @@
 use async_trait::async_trait;
-use flatbuffers::{FlatBufferBuilder, WIPOffset};
-use fluster_core_utilities::code_gen::flat_buffer::v1_flat_buffer_schema_generated::mdx_serialization::{DictionaryEntryResultBuffer, DictionaryEntryResultBufferArgs};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 
@@ -45,6 +43,7 @@ impl MdxParser for DictionaryEntryRegexParser {
                     label: title.as_str().to_string(),
                     body: body.as_str().to_string(),
                 });
+                println!("Complete Match: {}", complete_match.unwrap().as_str());
                 new_content = new_content.replace(
                     complete_match.unwrap().as_str(),
                     &format!(
@@ -58,5 +57,6 @@ impl MdxParser for DictionaryEntryRegexParser {
             }
         }
         result.dictionary_entries = results;
+        result.content = new_content
     }
 }

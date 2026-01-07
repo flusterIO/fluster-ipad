@@ -3,7 +3,7 @@ import React, { HTMLProps, useEffect, type ReactNode } from "react";
 import { useDebounceMdxParse } from "../hooks/use_debounce_mdx_parse";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
-import { AnyWebviewAction } from "@/utils/types/any_window_event";
+import type { AnyWebviewAction } from "@/utils/types/any_window_event";
 
 const loadScrollPosition = (
     element: HTMLElement,

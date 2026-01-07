@@ -4,7 +4,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { DictionaryEntryModel } from '../dictionary/dictionary-entry-model.js';
+import { DictionaryEntryResultBuffer } from '../dictionary/dictionary-entry-result-buffer.js';
 
 
 export class DictionaryData {
@@ -25,9 +25,9 @@ static getSizePrefixedRootAsDictionaryData(bb:flatbuffers.ByteBuffer, obj?:Dicti
   return (obj || new DictionaryData()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-entries(index: number, obj?:DictionaryEntryModel):DictionaryEntryModel|null {
+entries(index: number, obj?:DictionaryEntryResultBuffer):DictionaryEntryResultBuffer|null {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new DictionaryEntryModel()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new DictionaryEntryResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 entriesLength():number {

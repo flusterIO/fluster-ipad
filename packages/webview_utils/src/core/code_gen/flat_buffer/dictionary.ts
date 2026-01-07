@@ -3,6 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 
 export { DictionaryData } from './dictionary/dictionary-data.js';
-export { DictionaryEntryModel } from './dictionary/dictionary-entry-model.js';
+export { DictionaryEntryResultBuffer } from './dictionary/dictionary-entry-result-buffer.js';
 export * as NoteDetails from './mdx-serialization/note-details.js';
 export * as Request from './mdx-serialization/request.js';

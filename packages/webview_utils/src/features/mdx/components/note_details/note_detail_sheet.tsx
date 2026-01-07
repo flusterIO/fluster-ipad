@@ -2,15 +2,16 @@ import { NoteDetailWebviewActions, NoteDetailWebviewEvents } from '@/code_gen/ty
 import { H3 } from '@/shared_components/typography/typography';
 import { sendToSwift } from '@/utils/bridge/send_to_swift';
 import React, { useEffect, useMemo, type ReactNode } from 'react'
-import { NoteDetailDataBuffer } from '@/code_gen/flat_buffer/mdx-serialization/note-details';
+import { NoteDetailCitationBuffer, NoteDetailDataBuffer } from '@/code_gen/flat_buffer/mdx-serialization/note-details';
 import { LoadingComponent } from '@/shared_components/loading_component';
 import { InlineMdxContent } from '../inline_mdx_content';
-import { CitationResultBuffer, TagResultBuffer } from '@/code_gen/flat_buffer/mdx-serialization';
+import { TagResultBuffer } from '@/code_gen/flat_buffer/mdx-serialization';
 import { setWindowBridgeFunctions } from '#/editor/code_editor/types/swift_events/swift_events';
 import { setWebviewWindowBridgeFunctions } from '#/webview_container/state/swift_events/webview_swift_events';
 import { ErrorBoundary } from 'react-error-boundary';
 import { TaggableBadge } from '@/shared_components/shad/badge';
 import { cn } from '@/utils/cn';
+import { getFormattedCitations } from '../../../bibliography/methods/parse_bib_entries';
 
 setWindowBridgeFunctions();
 setWebviewWindowBridgeFunctions();
@@ -53,7 +54,7 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
         if (!data) {
             return null
         }
-        const t: CitationResultBuffer[] = []
+        const t: NoteDetailCitationBuffer[] = []
         for (let i = 0; i < data.citationsLength(); i++) {
             const x = data.citations(i)
             if (x) {
@@ -146,10 +147,16 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                     )}
                     <Subtitle>{`Citations (${data.citationsLength()})`}</Subtitle>
                     {citations?.length ? citations.map((c) => {
+                        let citationBody = c.body()
+                        if (!citationBody) {
+                            return null
+                        }
+                        const cRes = getFormattedCitations(citationBody)
+                        console.log("cRes: ", cRes)
                         return (
                             <div className="w-full px-4 py-3 rounded-lg">
                                 <div className="font-bold text-lg">
-                                    <InlineMdxContent abortIfNoMath mdx={c.body() ?? ""} />
+                                    {/* <div dangerouslySetInnerHTML={{ __html: cRes.citations[0] }} /> */}
                                 </div>
                             </div>
                         )

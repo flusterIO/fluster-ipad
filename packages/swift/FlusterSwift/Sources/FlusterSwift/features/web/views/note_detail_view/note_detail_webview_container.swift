@@ -31,17 +31,17 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
       tagVectorOffset.append(x)
     }
 
-    let citationsVectorOffset: [Offset] = []
+    var citationsVectorOffset: [Offset] = []
 
-      for (idx, citation) in note.citations.enumerated() {
+    for (idx, citation) in note.citations.enumerated() {
       let citationOffset =
-        MdxSerialization_CitationResultBuffer.createCitationResultBuffer(
+        MdxSerialization_NoteDetails_NoteDetailCitationBuffer.createNoteDetailCitationBuffer(
           &builder,
-          citationKeyOffset: builder.create(
-            string: citation.citationKey
-          ),
-          idx: UInt8(idx),
+          idOffset: builder.create(string: citation.id),
+          bodyOffset: builder.create(string: citation.data),
+          idx: UInt8(idx)
         )
+        citationsVectorOffset.append(citationOffset)
     }
 
     let dateFormatter = RelativeDateTimeFormatter()

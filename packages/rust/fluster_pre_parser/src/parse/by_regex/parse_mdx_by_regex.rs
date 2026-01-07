@@ -24,6 +24,7 @@ pub struct SwiftDataCitationSummary {
 
 #[derive(Serialize, Deserialize, uniffi::Record)]
 pub struct ParseMdxOptions {
+    pub note_id: Option<String>,
     pub content: String,
     pub citations: Vec<SwiftDataCitationSummary>,
 }
@@ -31,6 +32,7 @@ pub struct ParseMdxOptions {
 pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsingResult {
     let mut parsers = REGEX_PARSERS.to_vec();
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
+    result.note_id = opts.note_id.clone();
     if let Some(ref fm) = result.front_matter
         && !fm.ignored_parsers.is_empty()
     {
@@ -110,7 +112,14 @@ mod tests {
                 .to_string()
                 .contains("<FlusterCitation"),
             "Replaces citation in file."
-        )
+        );
+        assert!(
+            result
+                .parsed_content()
+                .to_string()
+                .contains("<DictionaryEntry"),
+            "Replaces dictionary entry in file."
+        );
     }
 
     #[tokio::test]

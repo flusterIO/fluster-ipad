@@ -19,7 +19,7 @@ public func getTestNote(modelContext: ModelContext) async -> NoteModel {
             summary: nil
           )
         )
-        if let parsingResults = await fileContents.preParseAsMdx() {
+        if let parsingResults = await fileContents.preParseAsMdx(noteId: nil) {
             res.applyMdxParsingResults(results: parsingResults, modelContext: modelContext)
         }
         return res

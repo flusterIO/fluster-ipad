@@ -14,13 +14,13 @@ extension String {
   }
 
   @MainActor
-  public func preParseAsMdxToBytes() async -> Data? {
+    public func preParseAsMdxToBytes(noteId: String?) async -> Data? {
     let modelContainer = AppDataContainer.shared
     let modelContext = modelContainer.sharedModelContainer.mainContext
     let handler = modelContainer.dataHandlerCreator()
     do {
       return try await parseMdxStringByRegex(
-        opts: ParseMdxOptions(content: self, citations: [])
+        opts: ParseMdxOptions( noteId: noteId, content: self, citations: [])
       )
     } catch {
       print("Mdx parsing error: \(error.localizedDescription)")
@@ -30,7 +30,7 @@ extension String {
 
   @MainActor
   /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
-  public func preParseAsMdx() async -> MdxSerialization_MdxParsingResultBuffer? {
-    return try? await self.preParseAsMdxToBytes()?.toMdxParsingResult()
+    public func preParseAsMdx(noteId: String?) async -> MdxSerialization_MdxParsingResultBuffer? {
+        return try? await self.preParseAsMdxToBytes(noteId: noteId)?.toMdxParsingResult()
   }
 }

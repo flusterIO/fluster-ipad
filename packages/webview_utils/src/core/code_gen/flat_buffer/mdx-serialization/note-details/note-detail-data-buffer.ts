@@ -4,7 +4,7 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-import { CitationResultBuffer } from '../../mdx-serialization/citation-result-buffer.js';
+import { NoteDetailCitationBuffer } from '../../mdx-serialization/note-details/note-detail-citation-buffer.js';
 import { TagResultBuffer } from '../../mdx-serialization/tag-result-buffer.js';
 
 
@@ -71,9 +71,9 @@ tagsLength():number {
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
-citations(index: number, obj?:CitationResultBuffer):CitationResultBuffer|null {
+citations(index: number, obj?:NoteDetailCitationBuffer):NoteDetailCitationBuffer|null {
   const offset = this.bb!.__offset(this.bb_pos, 16);
-  return offset ? (obj || new CitationResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+  return offset ? (obj || new NoteDetailCitationBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
 }
 
 citationsLength():number {

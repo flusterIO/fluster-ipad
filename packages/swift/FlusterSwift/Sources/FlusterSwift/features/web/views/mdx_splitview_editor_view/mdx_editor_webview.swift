@@ -208,7 +208,7 @@ extension MdxEditorWebviewInternal {
           Task {
             if let parsedMdx =
               await parent.editingNote.markdown
-              .body.preParseAsMdxToBytes()
+                .body.preParseAsMdxToBytes(noteId: parent.editingNote.id)
             {
               parent.container.setParsedEditorContent(
                 content: parsedMdx

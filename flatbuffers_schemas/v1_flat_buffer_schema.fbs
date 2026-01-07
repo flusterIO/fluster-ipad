@@ -11,14 +11,14 @@ table WebviewJavascriptError {
 
 namespace Dictionary;
 
-table DictionaryEntryModel {
-    id:string (required);
+table DictionaryEntryResultBuffer {
     label:string (required);
     body:string (required);
+    note_id:string;
 }
 
 table DictionaryData {
-    entries:[DictionaryEntryModel] (required);
+    entries:[DictionaryEntryResultBuffer] (required);
 }
 
 namespace MdxSerialization;
@@ -29,11 +29,6 @@ table CitationResultBuffer {
 }
 
 table TagResultBuffer {
-    body:string (required);
-}
-
-table DictionaryEntryResultBuffer {
-    label:string (required);
     body:string (required);
 }
 
@@ -48,7 +43,7 @@ table MdxParsingResultBuffer {
     tags:[TagResultBuffer] (required);
     front_matter:FrontMatterResultBuffer;
     citations:[CitationResultBuffer];
-    dictionary_entries:[DictionaryEntryResultBuffer];
+    dictionary_entries:[Dictionary.DictionaryEntryResultBuffer];
 }
 
 root_type MdxParsingResultBuffer;
@@ -62,6 +57,12 @@ table ParseMdxOptions {
 
 namespace MdxSerialization.NoteDetails;
 
+table NoteDetailCitationBuffer {
+    id:string (required);
+    body:string (required);
+    idx:ubyte;
+}
+
 table NoteDetailDataBuffer {
     note_id:string (required);
     title:string (required);
@@ -69,7 +70,7 @@ table NoteDetailDataBuffer {
     topic:string;
     subject:string;
     tags:[MdxSerialization.TagResultBuffer] (required);
-    citations:[MdxSerialization.CitationResultBuffer] (required);
+    citations:[NoteDetailCitationBuffer] (required);
     last_modified_string:string (required);
     last_read_string:string (required);
 }

@@ -320,7 +320,7 @@ struct MainView: View {
           if let note = editingNote {
             if let parsedMdx =
               await note.markdown
-              .body.preParseAsMdxToBytes()
+                .body.preParseAsMdxToBytes(noteId: note.id)
             {
               editorContainer.emitMdxParsingSuccess()
               editorContainer.setParsedEditorContent(

@@ -21,7 +21,8 @@ export const DictionaryPage = ({ data }: DictionaryPageProps): ReactNode => {
                     const entry = data.entries(i);
                     return (
                         <DictionaryEntryComponent
-                            entry={entry}
+                            label={entry?.label() ?? ""}
+                            body={entry?.body() ?? ""}
                         />
                     )
                 })}
