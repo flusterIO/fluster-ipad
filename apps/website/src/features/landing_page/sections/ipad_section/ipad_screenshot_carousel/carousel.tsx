@@ -196,6 +196,20 @@ export const IPadCarousel = ({
                             />
                         </svg>
                     </motion.button>
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                        {items.map((_, i) => (
+                            <LiquidGlassCard
+                                glowIntensity={i === index ? "lg" : "sm"}
+                                shadowIntensity="sm"
+                                borderRadius="12px"
+                                blurIntensity="lg"
+                                draggable={false}
+                                key={`pos-indc-${i}`}
+                                onClick={() => setIndex(i)}
+                                className={`h-2 rounded-full transition-all bg-muted  cursor-pointer ${i === index ? "w-8" : "w-2"}`}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

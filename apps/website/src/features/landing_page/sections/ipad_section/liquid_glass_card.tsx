@@ -1,11 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import {
-    ForwardRefComponent,
-    HTMLMotionProps,
-    motion,
-    MotionProps,
-} from "framer-motion";
+import React, { HTMLProps, useState } from "react";
+import { ForwardRefComponent, HTMLMotionProps, motion } from "framer-motion";
 
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -14,7 +9,7 @@ function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-interface LiquidGlassCardProps {
+interface LiquidGlassCardProps extends HTMLProps<HTMLDivElement> {
     children?: React.ReactNode;
     className?: string;
     draggable?: boolean;

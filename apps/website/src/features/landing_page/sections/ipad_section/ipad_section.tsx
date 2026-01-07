@@ -8,7 +8,7 @@ export const IpadSection = (): ReactNode => {
                 <div className="mb-8 text-center">
                     <div className="flex flex-col justify-center items-center">
                         <div className="text-primary text-4xl md:text-5xl font-extrabold">
-                            New{" "}
+                            New
                         </div>
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
                             Mobile App Coming Soon
