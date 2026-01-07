@@ -5,6 +5,7 @@ import image2 from "../../../../../../public/assets/images/mockups/ipad/mockups/
 import image3 from "../../../../../../public/assets/images/mockups/ipad/mockups/markdown.png";
 import image4 from "../../../../../../public/assets/images/mockups/ipad/mockups/note-bib.png";
 import image5 from "../../../../../../public/assets/images/mockups/ipad/mockups/menu.png";
+import image6 from "../../../../../../public/assets/images/mockups/ipad/mockups/note_details.png";
 import Image, { StaticImageData } from "next/image";
 import { LiquidGlassCard } from "../liquid_glass_card";
 
@@ -50,6 +51,12 @@ export const IPadCarousel = ({
             id: "img-4",
             title: "Bibliography Manager",
             alt: "For academics, students and researchers, the application integrates with a bibliography manager to organize your notes how you organize your research.",
+        },
+        {
+            image: image6,
+            id: "img-6",
+            title: "Note Details",
+            alt: "This application's note details summary view allows for linking and searching notes in a variety of ways.",
         },
         {
             image: image5,
