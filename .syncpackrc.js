@@ -85,6 +85,7 @@ const config = {
         {
             dependencies: ["tailwindcss"],
             pinVersion: "3.4.18",
+            packages: ["!@fluster/website"],
             label: "Pin tailwind version",
         },
     ],
