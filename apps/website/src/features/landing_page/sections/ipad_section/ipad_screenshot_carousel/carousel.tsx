@@ -81,7 +81,6 @@ export const IPadCarousel = ({
 
             for (const bp of sortedBreakpoints) {
                 if (width >= bp) {
-                    // @ts-ignore
                     setSlidesToShow(breakpoints[bp].slidesToShow);
                     break;
                 }
