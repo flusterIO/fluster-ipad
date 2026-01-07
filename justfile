@@ -19,6 +19,12 @@ format_swift:
 
 format: format_package_jsons format_swift
 
+build_website:
+	cd apps/website; pnpm build
+
+website_dev:
+	cd apps/website; pnpm dev
+
 generate_build_output:
 	cd {{justfile_directory()}}/apps/fluster; xcodebuild | tee xcodebuild.log | xcpretty
 
