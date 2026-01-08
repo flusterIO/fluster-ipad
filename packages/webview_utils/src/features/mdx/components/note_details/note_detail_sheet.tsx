@@ -10,8 +10,8 @@ import { setWindowBridgeFunctions } from '#/editor/code_editor/types/swift_event
 import { setWebviewWindowBridgeFunctions } from '#/webview_container/state/swift_events/webview_swift_events';
 import { ErrorBoundary } from 'react-error-boundary';
 import { TaggableBadge } from '@/shared_components/shad/badge';
-import { cn } from '@/utils/cn';
-import { getFormattedCitations } from '../../../bibliography/methods/parse_bib_entries';
+import { NoteDetailsBibliography } from './note_details_bibliography';
+import { Subtitle } from './subtitle';
 
 setWindowBridgeFunctions();
 setWebviewWindowBridgeFunctions();
@@ -20,12 +20,6 @@ declare global {
     interface WindowEventMap {
         [NoteDetailWebviewEvents.SetNoteDetails]: CustomEvent<number[]>;
     }
-}
-
-const Subtitle = ({ children, className }: { children: ReactNode, className?: string }): ReactNode => {
-    return (
-        <H3 className={cn("w-full text-muted-foreground tracking-wide", className)}>{children}</H3>
-    )
 }
 
 export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): ReactNode => {
@@ -49,22 +43,6 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
         }
         return t
     }, [data]);
-
-    const citations = useMemo(() => {
-        if (!data) {
-            return null
-        }
-        const t: NoteDetailCitationBuffer[] = []
-        for (let i = 0; i < data.citationsLength(); i++) {
-            const x = data.citations(i)
-            if (x) {
-                t.push(x)
-            } else {
-                console.error("Could not load citation")
-            }
-        }
-        return t
-    }, [data])
 
     if (!data) {
         return (
@@ -126,7 +104,7 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                                 <a
                                     className="bg-primary/70 text-primary-foreground rounded-lg px-2 py-1 cursor-pointer"
                                     onClick={() => {
-                                        let b = t.body()
+                                        const b = t.body()
                                         if (b !== null) {
                                             sendToSwift(NoteDetailWebviewActions.HandleTagClick, b)
                                         } else {
@@ -145,26 +123,9 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                             </div>
                         </div>
                     )}
-                    <Subtitle>{`Citations (${data.citationsLength()})`}</Subtitle>
-                    {citations?.length ? citations.map((c) => {
-                        let citationBody = c.body()
-                        if (!citationBody) {
-                            return null
-                        }
-                        const cRes = getFormattedCitations(citationBody)
-                        console.log("cRes: ", cRes)
-                        return (
-                            <div className="w-full px-4 py-3 rounded-lg">
-                                <div className="font-bold text-lg">
-                                    {/* <div dangerouslySetInnerHTML={{ __html: cRes.citations[0] }} /> */}
-                                </div>
-                            </div>
-                        )
-                    }) : (
-                        <div className="flex flex-row justify-center items-center px-4">
-                            <div className="text-lg text-muted-foreground">No citations</div>
-                        </div>
-                    )}
+                    <NoteDetailsBibliography
+                        bibliographyContent={Array(data.citationsLength()).fill(0).map((_, i) => data.citations(i) as NoteDetailCitationBuffer)}
+                    />
                 </div>
             </div>
         </ErrorBoundary>

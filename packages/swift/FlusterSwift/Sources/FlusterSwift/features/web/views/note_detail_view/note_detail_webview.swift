@@ -63,7 +63,7 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
         "Failed to find tag in handleTagClick: \(error)", .warning)
     }
   }
-  func handleSubjectClck(subjectValue: String) {
+  func handleSubjectClick(subjectValue: String) {
     let fetchDescriptor = FetchDescriptor<SubjectModel>(
       predicate: #Predicate<SubjectModel> { t in
         t.value == subjectValue
@@ -194,7 +194,7 @@ extension NoteDetailWebviewInternal {
         case NoteDetailWebviewActions.handleTopicClick.rawValue:
           self.parent.handleTopicClck(topicValue: message.body as! String)
         case NoteDetailWebviewActions.handleSubjectClick.rawValue:
-          self.parent.handleSubjectClck(subjectValue: message.body as! String)
+          self.parent.handleSubjectClick(subjectValue: message.body as! String)
         default:
           return
       }

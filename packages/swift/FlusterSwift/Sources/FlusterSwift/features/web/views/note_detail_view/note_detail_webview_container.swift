@@ -37,7 +37,7 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
       let citationOffset =
         MdxSerialization_NoteDetails_NoteDetailCitationBuffer.createNoteDetailCitationBuffer(
           &builder,
-          idOffset: builder.create(string: citation.id),
+          idOffset: builder.create(string: citation.citationKey ?? citation.id),
           bodyOffset: builder.create(string: citation.data),
           idx: UInt8(idx)
         )

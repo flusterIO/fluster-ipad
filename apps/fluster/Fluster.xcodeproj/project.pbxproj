@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		096E6077D45F774A99705A2C /* parse_bib_entries.ts in Resources */ = {isa = PBXBuildFile; fileRef = E7117065DE4BD9D7E310EE17 /* parse_bib_entries.ts */; };
-		57029C4D28CE3A466AD513D1 /* carousel.tsx in Resources */ = {isa = PBXBuildFile; fileRef = ED3E9B9F98D0A862292D072F /* carousel.tsx */; };
-		59ABD6FCBD62C7005AF32AB3 /* .npmrc in Resources */ = {isa = PBXBuildFile; fileRef = 530044C95D9A0B9916D30AFF /* .npmrc */; };
+		3D1543D27621E2BCEA2E4FBE /* subtitle.tsx in Resources */ = {isa = PBXBuildFile; fileRef = 7C9022E30D307985EBCBB62D /* subtitle.tsx */; };
 		79513C752EF3AF3700FF4885 /* Testing in Frameworks */ = {isa = PBXBuildFile; productRef = 79513C742EF3AF3700FF4885 /* Testing */; };
 		79513C772EF3AF3700FF4885 /* _TestDiscovery in Frameworks */ = {isa = PBXBuildFile; productRef = 79513C762EF3AF3700FF4885 /* _TestDiscovery */; };
 		79516C4D2EE893ED00573A77 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 79516C4C2EE893ED00573A77 /* splitview_mdx_editor */; };
@@ -20,11 +18,10 @@
 		79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F936DE2EE38B8000777CDB /* note_detail_webview */; };
 		79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */ = {isa = PBXBuildFile; fileRef = 79FA54412ED8BB5F00D16F68 /* initial_note_docs */; };
 		79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79FB1F542ED928FB0041E1E0 /* FlusterSwift */; };
-		DEC5DA2B1735A4B9B15DA5D0 /* liquid_glass_container.tsx in Resources */ = {isa = PBXBuildFile; fileRef = D9FC998360059E81A1C93DF7 /* liquid_glass_container.tsx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		530044C95D9A0B9916D30AFF /* .npmrc */ = {isa = PBXFileReference; name = .npmrc; path = ../../../../../../../.npmrc; sourceTree = "<group>"; };
+		530044C95D9A0B9916D30AFF /* .npmrc */ = {isa = PBXFileReference; lastKnownFileType = text; name = .npmrc; path = ../../../../../../../.npmrc; sourceTree = "<group>"; };
 		7930C3F82EDA740A0063B3DA /* standalone_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_editor; path = ../../packages/webviews/standalone_mdx_editor/standalone_mdx_editor; sourceTree = "<group>"; };
 		79516C4B2EE8933900573A77 /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
 		79516C4C2EE893ED00573A77 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
@@ -36,9 +33,11 @@
 		79F74C892EDE1EFB00E00653 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
 		79F936DE2EE38B8000777CDB /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
 		79FA54412ED8BB5F00D16F68 /* initial_note_docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = initial_note_docs; path = ../../docs/initial_note_docs; sourceTree = "<group>"; };
-		D9FC998360059E81A1C93DF7 /* liquid_glass_container.tsx */ = {isa = PBXFileReference; name = liquid_glass_container.tsx; path = ../../../../../../../../../../../../../packages/webview_utils/src/core/shared_components/apple/liquid_glass_container.tsx; sourceTree = "<group>"; };
-		E7117065DE4BD9D7E310EE17 /* parse_bib_entries.ts */ = {isa = PBXFileReference; name = parse_bib_entries.ts; path = ../../../../../../../../../../../../../packages/webview_utils/src/features/bibliography/methods/parse_bib_entries.ts; sourceTree = "<group>"; };
-		ED3E9B9F98D0A862292D072F /* carousel.tsx */ = {isa = PBXFileReference; name = carousel.tsx; path = ../../../../../../../../../../../../../../website/src/features/landing_page/sections/ipad_section/ipad_screenshot_carousel/carousel.tsx; sourceTree = "<group>"; };
+		7C9022E30D307985EBCBB62D /* subtitle.tsx */ = {isa = PBXFileReference; name = subtitle.tsx; path = ../../../../../../../../../../../../../../packages/webview_utils/src/features/mdx/components/note_details/subtitle.tsx; sourceTree = "<group>"; };
+		BD20C8180645E0AAAF3D7998 /* note_details_bibliography.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; path = note_details_bibliography.tsx; sourceTree = "<group>"; };
+		D9FC998360059E81A1C93DF7 /* liquid_glass_container.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; name = liquid_glass_container.tsx; path = ../../../../../../../../../../../../../packages/webview_utils/src/core/shared_components/apple/liquid_glass_container.tsx; sourceTree = "<group>"; };
+		E7117065DE4BD9D7E310EE17 /* parse_bib_entries.ts */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; name = parse_bib_entries.ts; path = ../../../../../../../../../../../../../packages/webview_utils/src/features/bibliography/methods/parse_bib_entries.ts; sourceTree = "<group>"; };
+		ED3E9B9F98D0A862292D072F /* carousel.tsx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.typescript; name = carousel.tsx; path = ../../../../../../../../../../../../../../website/src/features/landing_page/sections/ipad_section/ipad_screenshot_carousel/carousel.tsx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -83,8 +82,24 @@
 			children = (
 				5695929E061DA86F050DD19A /* bigsexy */,
 			);
-			name = Users;
 			path = Users;
+			sourceTree = "<group>";
+		};
+		02637FAF5556983644ACAE46 /* features */ = {
+			isa = PBXGroup;
+			children = (
+				7FBFC0176EFA3F36D554FA21 /* mdx */,
+			);
+			name = features;
+			path = features;
+			sourceTree = "<group>";
+		};
+		0387D6E66B26FE036BB2EEDB /* Desktop */ = {
+			isa = PBXGroup;
+			children = (
+				F37E56C8AA8D965B380E3143 /* swift */,
+			);
+			path = Desktop;
 			sourceTree = "<group>";
 		};
 		05AE33E79441E1918824A6C0 /* Fluster */ = {
@@ -92,7 +107,6 @@
 			children = (
 				8C33E82BD4F6177B5AC17CEC /* apps */,
 			);
-			name = Fluster;
 			path = Fluster;
 			sourceTree = "<group>";
 		};
@@ -101,7 +115,6 @@
 			children = (
 				259F68918D343F4E7CF42783 /* bibliography */,
 			);
-			name = features;
 			path = features;
 			sourceTree = "<group>";
 		};
@@ -110,7 +123,6 @@
 			children = (
 				72A5D3DB793355C0111E1A35 /* Fluster */,
 			);
-			name = swift;
 			path = swift;
 			sourceTree = "<group>";
 		};
@@ -120,7 +132,14 @@
 				25F9F72D142405615D5D7A69 /*  */,
 			);
 			name = "";
-			path = "";
+			sourceTree = "<group>";
+		};
+		0A4E768658F973833BD47D31 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				DE34AADA1E2FCC0581DC1CA3 /* Users */,
+			);
+			name = "";
 			sourceTree = "<group>";
 		};
 		0CFE062566CB33E6FEF9F7D3 /* src */ = {
@@ -128,7 +147,6 @@
 			children = (
 				BA7A3305F59DEF173355E764 /* features */,
 			);
-			name = src;
 			path = src;
 			sourceTree = "<group>";
 		};
@@ -137,7 +155,6 @@
 			children = (
 				D4C48B47708860543BE32332 /* sections */,
 			);
-			name = landing_page;
 			path = landing_page;
 			sourceTree = "<group>";
 		};
@@ -146,8 +163,16 @@
 			children = (
 				BF6BB5B3214A700C63889BA0 /* bigsexy */,
 			);
-			name = Users;
 			path = Users;
+			sourceTree = "<group>";
+		};
+		1E27E49723CD11A5B77AA647 /* note_details */ = {
+			isa = PBXGroup;
+			children = (
+				7C9022E30D307985EBCBB62D /* subtitle.tsx */,
+			);
+			name = note_details;
+			path = note_details;
 			sourceTree = "<group>";
 		};
 		22CF440B36595195F5EF7B22 /* Desktop */ = {
@@ -155,7 +180,6 @@
 			children = (
 				4D5990C2CAB67F6055414A9C /* swift */,
 			);
-			name = Desktop;
 			path = Desktop;
 			sourceTree = "<group>";
 		};
@@ -164,7 +188,6 @@
 			children = (
 				6B9A292302D22EF0DADB66AC /* sections */,
 			);
-			name = landing_page;
 			path = landing_page;
 			sourceTree = "<group>";
 		};
@@ -173,7 +196,6 @@
 			children = (
 				78B39F30745F252D1E6B61B9 /* methods */,
 			);
-			name = bibliography;
 			path = bibliography;
 			sourceTree = "<group>";
 		};
@@ -183,7 +205,6 @@
 				88A3B4AE5C3E240DC85005E2 /*  */,
 			);
 			name = "";
-			path = "";
 			sourceTree = "<group>";
 		};
 		25F9F72D142405615D5D7A69 /*  */ = {
@@ -192,7 +213,6 @@
 				01A0E571345EC8266C95553C /* Users */,
 			);
 			name = "";
-			path = "";
 			sourceTree = "<group>";
 		};
 		2F5772D7440DB2096DBD188B /*  */ = {
@@ -201,7 +221,6 @@
 				CFE0D4E506392C96A56DF55A /* Users */,
 			);
 			name = "";
-			path = "";
 			sourceTree = "<group>";
 		};
 		3B1FA027AF2E750A0C93B486 /* src */ = {
@@ -209,7 +228,6 @@
 			children = (
 				070B285D3774AA22B987E2D4 /* features */,
 			);
-			name = src;
 			path = src;
 			sourceTree = "<group>";
 		};
@@ -218,7 +236,6 @@
 			children = (
 				4D9B3A965231762F8E722A3E /* swift */,
 			);
-			name = Desktop;
 			path = Desktop;
 			sourceTree = "<group>";
 		};
@@ -227,7 +244,6 @@
 			children = (
 				A288DD3DF3ECFE041F22A765 /* packages */,
 			);
-			name = Fluster;
 			path = Fluster;
 			sourceTree = "<group>";
 		};
@@ -236,7 +252,6 @@
 			children = (
 				530044C95D9A0B9916D30AFF /* .npmrc */,
 			);
-			name = Fluster;
 			path = Fluster;
 			sourceTree = "<group>";
 		};
@@ -245,7 +260,6 @@
 			children = (
 				734ECA174004E448CF4DA99C /* swift */,
 			);
-			name = Desktop;
 			path = Desktop;
 			sourceTree = "<group>";
 		};
@@ -254,8 +268,16 @@
 			children = (
 				55FF1BBDCA4B66B82AC69AC3 /* ipad_screenshot_carousel */,
 			);
-			name = ipad_section;
 			path = ipad_section;
+			sourceTree = "<group>";
+		};
+		4628DC16EE3BE60F3E1CC5A2 /* Desktop */ = {
+			isa = PBXGroup;
+			children = (
+				C8733409A2EAA26E46E695D6 /* swift */,
+			);
+			name = Desktop;
+			path = Desktop;
 			sourceTree = "<group>";
 		};
 		484EEA612467732B602CE3D6 /*  */ = {
@@ -264,7 +286,6 @@
 				F966167748216AD4DFC8FBDB /* Users */,
 			);
 			name = "";
-			path = "";
 			sourceTree = "<group>";
 		};
 		4AFF2BB2DEC3791951D20E75 /* packages */ = {
@@ -272,8 +293,15 @@
 			children = (
 				9A34A9BC399BDD6FB0C86330 /* webview_utils */,
 			);
-			name = packages;
 			path = packages;
+			sourceTree = "<group>";
+		};
+		4CC6ACF7AEF8BAC912BE7704 /* Fluster */ = {
+			isa = PBXGroup;
+			children = (
+				8E51EC58C149DBD75A1B6419 /* packages */,
+			);
+			path = Fluster;
 			sourceTree = "<group>";
 		};
 		4D5990C2CAB67F6055414A9C /* swift */ = {
@@ -281,7 +309,6 @@
 			children = (
 				80BFF26D70D12C28CFE85C79 /* Fluster */,
 			);
-			name = swift;
 			path = swift;
 			sourceTree = "<group>";
 		};
@@ -290,8 +317,23 @@
 			children = (
 				752FCA36DF4B5E3A3BA994AA /* Fluster */,
 			);
-			name = swift;
 			path = swift;
+			sourceTree = "<group>";
+		};
+		4E1A3695A498F66AC9451A37 /* features */ = {
+			isa = PBXGroup;
+			children = (
+				C31438F6B5B76EEF0040A919 /* mdx */,
+			);
+			path = features;
+			sourceTree = "<group>";
+		};
+		4FCA5B2BE0255ED69707DD62 /* bigsexy */ = {
+			isa = PBXGroup;
+			children = (
+				0387D6E66B26FE036BB2EEDB /* Desktop */,
+			);
+			path = bigsexy;
 			sourceTree = "<group>";
 		};
 		549810F21B279F9B09A6BC51 /* shared_components */ = {
@@ -299,7 +341,6 @@
 			children = (
 				5AC7BCDB11784CBC65BF2787 /* apple */,
 			);
-			name = shared_components;
 			path = shared_components;
 			sourceTree = "<group>";
 		};
@@ -308,7 +349,6 @@
 			children = (
 				ED3E9B9F98D0A862292D072F /* carousel.tsx */,
 			);
-			name = ipad_screenshot_carousel;
 			path = ipad_screenshot_carousel;
 			sourceTree = "<group>";
 		};
@@ -317,7 +357,6 @@
 			children = (
 				9D68463886CC02D3AAC704CD /* features */,
 			);
-			name = src;
 			path = src;
 			sourceTree = "<group>";
 		};
@@ -326,8 +365,15 @@
 			children = (
 				43D142AC0FCE2F653C394B15 /* Desktop */,
 			);
-			name = bigsexy;
 			path = bigsexy;
+			sourceTree = "<group>";
+		};
+		59B77C422D5A1857644F32A1 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				0A4E768658F973833BD47D31 /*  */,
+			);
+			name = "";
 			sourceTree = "<group>";
 		};
 		5AC7BCDB11784CBC65BF2787 /* apple */ = {
@@ -335,7 +381,6 @@
 			children = (
 				D9FC998360059E81A1C93DF7 /* liquid_glass_container.tsx */,
 			);
-			name = apple;
 			path = apple;
 			sourceTree = "<group>";
 		};
@@ -345,7 +390,6 @@
 				2F5772D7440DB2096DBD188B /*  */,
 			);
 			name = "";
-			path = "";
 			sourceTree = "<group>";
 		};
 		5DC46E10A594D5B5A5152594 /* website */ = {
@@ -353,7 +397,6 @@
 			children = (
 				0CFE062566CB33E6FEF9F7D3 /* src */,
 			);
-			name = website;
 			path = website;
 			sourceTree = "<group>";
 		};
@@ -363,7 +406,14 @@
 				16A076214F7D65F20A70D897 /* Users */,
 			);
 			name = "";
-			path = "";
+			sourceTree = "<group>";
+		};
+		5EA820B9C79214DAD30A0F51 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				BD92B208FFFB487E3DDFC1D9 /* note_details */,
+			);
+			path = components;
 			sourceTree = "<group>";
 		};
 		625AC8252F99F2693D1F478A /* landing_page */ = {
@@ -371,7 +421,6 @@
 			children = (
 				8F25C8D820BD048FA2CF27B6 /* sections */,
 			);
-			name = landing_page;
 			path = landing_page;
 			sourceTree = "<group>";
 		};
@@ -380,7 +429,6 @@
 			children = (
 				930336F1A11FE94B4E48883F /* swift */,
 			);
-			name = Desktop;
 			path = Desktop;
 			sourceTree = "<group>";
 		};
@@ -389,7 +437,6 @@
 			children = (
 				93F74A2C12C792A47E7622C3 /* bigsexy */,
 			);
-			name = Users;
 			path = Users;
 			sourceTree = "<group>";
 		};
@@ -398,7 +445,6 @@
 			children = (
 				A9238FD7E9C5B203D066E789 /* swift */,
 			);
-			name = Desktop;
 			path = Desktop;
 			sourceTree = "<group>";
 		};
@@ -407,8 +453,25 @@
 			children = (
 				BDCCD4655A53CB6BAD9830EB /* ipad_section */,
 			);
-			name = sections;
 			path = sections;
+			sourceTree = "<group>";
+		};
+		6DA80A459470DB88C5D25F9D /* bigsexy */ = {
+			isa = PBXGroup;
+			children = (
+				4628DC16EE3BE60F3E1CC5A2 /* Desktop */,
+			);
+			name = bigsexy;
+			path = bigsexy;
+			sourceTree = "<group>";
+		};
+		71256898042EE9AEB051E4FF /* src */ = {
+			isa = PBXGroup;
+			children = (
+				02637FAF5556983644ACAE46 /* features */,
+			);
+			name = src;
+			path = src;
 			sourceTree = "<group>";
 		};
 		72A5D3DB793355C0111E1A35 /* Fluster */ = {
@@ -416,7 +479,6 @@
 			children = (
 				4AFF2BB2DEC3791951D20E75 /* packages */,
 			);
-			name = Fluster;
 			path = Fluster;
 			sourceTree = "<group>";
 		};
@@ -425,7 +487,6 @@
 			children = (
 				419030980D289F0E38E6E1BE /* Fluster */,
 			);
-			name = swift;
 			path = swift;
 			sourceTree = "<group>";
 		};
@@ -434,7 +495,6 @@
 			children = (
 				8F66E326612DB4D39BB5B7A5 /* apps */,
 			);
-			name = Fluster;
 			path = Fluster;
 			sourceTree = "<group>";
 		};
@@ -443,7 +503,6 @@
 			children = (
 				E7117065DE4BD9D7E310EE17 /* parse_bib_entries.ts */,
 			);
-			name = methods;
 			path = methods;
 			sourceTree = "<group>";
 		};
@@ -468,6 +527,8 @@
 				FEBFF801D137D9303F63BCD6 /*  */,
 				0835DAF8CB834DC5A7635D42 /*  */,
 				5CF07111B6B541589965D6C2 /*  */,
+				59B77C422D5A1857644F32A1 /*  */,
+				CB29C0FFEE5B8E45C3AEFBE5 /*  */,
 			);
 			sourceTree = "<group>";
 		};
@@ -487,12 +548,38 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7EDF479924EFEC9169DE8C66 /* webview_utils */ = {
+			isa = PBXGroup;
+			children = (
+				71256898042EE9AEB051E4FF /* src */,
+			);
+			name = webview_utils;
+			path = webview_utils;
+			sourceTree = "<group>";
+		};
+		7F5DB2B669FF42F858F7B62D /*  */ = {
+			isa = PBXGroup;
+			children = (
+				F24F7F815C15BA518B6DD0C6 /* Users */,
+			);
+			name = "";
+			path = "";
+			sourceTree = "<group>";
+		};
+		7FBFC0176EFA3F36D554FA21 /* mdx */ = {
+			isa = PBXGroup;
+			children = (
+				A51F174A53DD9FF3DF9A75B9 /* components */,
+			);
+			name = mdx;
+			path = mdx;
+			sourceTree = "<group>";
+		};
 		80BFF26D70D12C28CFE85C79 /* Fluster */ = {
 			isa = PBXGroup;
 			children = (
 				F54161AFE46A6F29F0B14BF8 /* apps */,
 			);
-			name = Fluster;
 			path = Fluster;
 			sourceTree = "<group>";
 		};
@@ -501,8 +588,15 @@
 			children = (
 				56551D8BC94FB7176F76DC81 /* src */,
 			);
-			name = website;
 			path = website;
+			sourceTree = "<group>";
+		};
+		856381EBDE5C215DDD80A43E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				4E1A3695A498F66AC9451A37 /* features */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		88A3B4AE5C3E240DC85005E2 /*  */ = {
@@ -511,7 +605,6 @@
 				64D50EE8A0FC9965EBF51AB2 /* Users */,
 			);
 			name = "";
-			path = "";
 			sourceTree = "<group>";
 		};
 		8C33E82BD4F6177B5AC17CEC /* apps */ = {
@@ -519,8 +612,15 @@
 			children = (
 				8495A8D913D3D4476041DBCD /* website */,
 			);
-			name = apps;
 			path = apps;
+			sourceTree = "<group>";
+		};
+		8E51EC58C149DBD75A1B6419 /* packages */ = {
+			isa = PBXGroup;
+			children = (
+				FEF86E26407DEC9E2FE00FDB /* webview_utils */,
+			);
+			path = packages;
 			sourceTree = "<group>";
 		};
 		8F25C8D820BD048FA2CF27B6 /* sections */ = {
@@ -528,7 +628,6 @@
 			children = (
 				F719DD1AF222FC476F2933A5 /* ipad_section */,
 			);
-			name = sections;
 			path = sections;
 			sourceTree = "<group>";
 		};
@@ -537,7 +636,6 @@
 			children = (
 				F5F7FE444A2F7794B2F8E6E4 /* website */,
 			);
-			name = apps;
 			path = apps;
 			sourceTree = "<group>";
 		};
@@ -546,7 +644,6 @@
 			children = (
 				05AE33E79441E1918824A6C0 /* Fluster */,
 			);
-			name = swift;
 			path = swift;
 			sourceTree = "<group>";
 		};
@@ -555,7 +652,6 @@
 			children = (
 				635A3503B7E165734BFC91EB /* Desktop */,
 			);
-			name = bigsexy;
 			path = bigsexy;
 			sourceTree = "<group>";
 		};
@@ -564,7 +660,6 @@
 			children = (
 				3B1FA027AF2E750A0C93B486 /* src */,
 			);
-			name = webview_utils;
 			path = webview_utils;
 			sourceTree = "<group>";
 		};
@@ -573,7 +668,6 @@
 			children = (
 				24CB319DA3036365B0A2079A /* landing_page */,
 			);
-			name = features;
 			path = features;
 			sourceTree = "<group>";
 		};
@@ -582,7 +676,6 @@
 			children = (
 				F030E9AAC8F374E616B571F8 /* webview_utils */,
 			);
-			name = packages;
 			path = packages;
 			sourceTree = "<group>";
 		};
@@ -591,8 +684,16 @@
 			children = (
 				69EC1B3C6D98A168CE7C1A3E /* Desktop */,
 			);
-			name = bigsexy;
 			path = bigsexy;
+			sourceTree = "<group>";
+		};
+		A51F174A53DD9FF3DF9A75B9 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				1E27E49723CD11A5B77AA647 /* note_details */,
+			);
+			name = components;
+			path = components;
 			sourceTree = "<group>";
 		};
 		A9238FD7E9C5B203D066E789 /* swift */ = {
@@ -600,7 +701,6 @@
 			children = (
 				3E456DF237D270B60E36EF07 /* Fluster */,
 			);
-			name = swift;
 			path = swift;
 			sourceTree = "<group>";
 		};
@@ -610,7 +710,6 @@
 				B693D53624DEC8DFC5BAF3B5 /* Users */,
 			);
 			name = "";
-			path = "";
 			sourceTree = "<group>";
 		};
 		B44E5513D455E07C5674C411 /* bigsexy */ = {
@@ -618,7 +717,6 @@
 			children = (
 				EF9A00ADF0C17CC0E2AA96C0 /* Desktop */,
 			);
-			name = bigsexy;
 			path = bigsexy;
 			sourceTree = "<group>";
 		};
@@ -627,7 +725,6 @@
 			children = (
 				B44E5513D455E07C5674C411 /* bigsexy */,
 			);
-			name = Users;
 			path = Users;
 			sourceTree = "<group>";
 		};
@@ -636,15 +733,21 @@
 			children = (
 				625AC8252F99F2693D1F478A /* landing_page */,
 			);
-			name = features;
 			path = features;
+			sourceTree = "<group>";
+		};
+		BD92B208FFFB487E3DDFC1D9 /* note_details */ = {
+			isa = PBXGroup;
+			children = (
+				BD20C8180645E0AAAF3D7998 /* note_details_bibliography.tsx */,
+			);
+			path = note_details;
 			sourceTree = "<group>";
 		};
 		BDCCD4655A53CB6BAD9830EB /* ipad_section */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = ipad_section;
 			path = ipad_section;
 			sourceTree = "<group>";
 		};
@@ -653,7 +756,6 @@
 			children = (
 				22CF440B36595195F5EF7B22 /* Desktop */,
 			);
-			name = bigsexy;
 			path = bigsexy;
 			sourceTree = "<group>";
 		};
@@ -663,7 +765,14 @@
 				ADFE9FB411F9C864D31C89CB /*  */,
 			);
 			name = "";
-			path = "";
+			sourceTree = "<group>";
+		};
+		C31438F6B5B76EEF0040A919 /* mdx */ = {
+			isa = PBXGroup;
+			children = (
+				5EA820B9C79214DAD30A0F51 /* components */,
+			);
+			path = mdx;
 			sourceTree = "<group>";
 		};
 		C78B2C366008F2638A612B2C /* src */ = {
@@ -671,8 +780,25 @@
 			children = (
 				EC67DB15985880725240149A /* core */,
 			);
-			name = src;
 			path = src;
+			sourceTree = "<group>";
+		};
+		C8733409A2EAA26E46E695D6 /* swift */ = {
+			isa = PBXGroup;
+			children = (
+				FC21106AD9D15C67A0BD5204 /* Fluster */,
+			);
+			name = swift;
+			path = swift;
+			sourceTree = "<group>";
+		};
+		CB29C0FFEE5B8E45C3AEFBE5 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				7F5DB2B669FF42F858F7B62D /*  */,
+			);
+			name = "";
+			path = "";
 			sourceTree = "<group>";
 		};
 		CFC7C73B6AE315B7F2FE2174 /* features */ = {
@@ -680,7 +806,6 @@
 			children = (
 				0F6D19135BC6B59972B2D00A /* landing_page */,
 			);
-			name = features;
 			path = features;
 			sourceTree = "<group>";
 		};
@@ -689,7 +814,6 @@
 			children = (
 				A37B11E24ED8EFFD1093982F /* bigsexy */,
 			);
-			name = Users;
 			path = Users;
 			sourceTree = "<group>";
 		};
@@ -698,8 +822,24 @@
 			children = (
 				45B722C2B87FD8BCB2716130 /* ipad_section */,
 			);
-			name = sections;
 			path = sections;
+			sourceTree = "<group>";
+		};
+		DE34AADA1E2FCC0581DC1CA3 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				4FCA5B2BE0255ED69707DD62 /* bigsexy */,
+			);
+			path = Users;
+			sourceTree = "<group>";
+		};
+		E4B79C28FB91AEFCC88E92E3 /* packages */ = {
+			isa = PBXGroup;
+			children = (
+				7EDF479924EFEC9169DE8C66 /* webview_utils */,
+			);
+			name = packages;
+			path = packages;
 			sourceTree = "<group>";
 		};
 		E676AEE19277EB446D7C6CA2 /* bigsexy */ = {
@@ -707,7 +847,6 @@
 			children = (
 				3BAD88F27A241751D64D3860 /* Desktop */,
 			);
-			name = bigsexy;
 			path = bigsexy;
 			sourceTree = "<group>";
 		};
@@ -716,7 +855,6 @@
 			children = (
 				549810F21B279F9B09A6BC51 /* shared_components */,
 			);
-			name = core;
 			path = core;
 			sourceTree = "<group>";
 		};
@@ -725,7 +863,6 @@
 			children = (
 				07FD343EA4BE911F37A886E3 /* swift */,
 			);
-			name = Desktop;
 			path = Desktop;
 			sourceTree = "<group>";
 		};
@@ -734,7 +871,6 @@
 			children = (
 				C78B2C366008F2638A612B2C /* src */,
 			);
-			name = webview_utils;
 			path = webview_utils;
 			sourceTree = "<group>";
 		};
@@ -743,8 +879,16 @@
 			children = (
 				CFC7C73B6AE315B7F2FE2174 /* features */,
 			);
-			name = src;
 			path = src;
+			sourceTree = "<group>";
+		};
+		F24F7F815C15BA518B6DD0C6 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				6DA80A459470DB88C5D25F9D /* bigsexy */,
+			);
+			name = Users;
+			path = Users;
 			sourceTree = "<group>";
 		};
 		F304DCB9A10D06190F9DC5AA /*  */ = {
@@ -753,7 +897,14 @@
 				5DDD02D37F8E28E97408F6AA /*  */,
 			);
 			name = "";
-			path = "";
+			sourceTree = "<group>";
+		};
+		F37E56C8AA8D965B380E3143 /* swift */ = {
+			isa = PBXGroup;
+			children = (
+				4CC6ACF7AEF8BAC912BE7704 /* Fluster */,
+			);
+			path = swift;
 			sourceTree = "<group>";
 		};
 		F54161AFE46A6F29F0B14BF8 /* apps */ = {
@@ -761,7 +912,6 @@
 			children = (
 				5DC46E10A594D5B5A5152594 /* website */,
 			);
-			name = apps;
 			path = apps;
 			sourceTree = "<group>";
 		};
@@ -770,7 +920,6 @@
 			children = (
 				F161617A7379D12852E5F3CE /* src */,
 			);
-			name = website;
 			path = website;
 			sourceTree = "<group>";
 		};
@@ -778,7 +927,6 @@
 			isa = PBXGroup;
 			children = (
 			);
-			name = ipad_section;
 			path = ipad_section;
 			sourceTree = "<group>";
 		};
@@ -787,8 +935,16 @@
 			children = (
 				E676AEE19277EB446D7C6CA2 /* bigsexy */,
 			);
-			name = Users;
 			path = Users;
+			sourceTree = "<group>";
+		};
+		FC21106AD9D15C67A0BD5204 /* Fluster */ = {
+			isa = PBXGroup;
+			children = (
+				E4B79C28FB91AEFCC88E92E3 /* packages */,
+			);
+			name = Fluster;
+			path = Fluster;
 			sourceTree = "<group>";
 		};
 		FEBFF801D137D9303F63BCD6 /*  */ = {
@@ -797,7 +953,14 @@
 				484EEA612467732B602CE3D6 /*  */,
 			);
 			name = "";
-			path = "";
+			sourceTree = "<group>";
+		};
+		FEF86E26407DEC9E2FE00FDB /* webview_utils */ = {
+			isa = PBXGroup;
+			children = (
+				856381EBDE5C215DDD80A43E /* src */,
+			);
+			path = webview_utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -882,10 +1045,7 @@
 				79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */,
 				79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */,
 				79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */,
-				096E6077D45F774A99705A2C /* parse_bib_entries.ts in Resources */,
-				57029C4D28CE3A466AD513D1 /* carousel.tsx in Resources */,
-				59ABD6FCBD62C7005AF32AB3 /* .npmrc in Resources */,
-				DEC5DA2B1735A4B9B15DA5D0 /* liquid_glass_container.tsx in Resources */,
+				3D1543D27621E2BCEA2E4FBE /* subtitle.tsx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
