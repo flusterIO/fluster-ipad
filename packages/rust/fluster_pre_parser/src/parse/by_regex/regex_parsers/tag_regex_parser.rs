@@ -50,6 +50,7 @@ mod tests {
     async fn parses_tags_properly() {
         let opts = ParseMdxOptions {
             citations: Vec::new(),
+            note_id: None,
             content: r#"# My note
 
 This is [[#my_tag]] and [[#myOtherTag]]

@@ -470,7 +470,6 @@ struct MainView: View {
               FullScreenSheetDraggableView(
                 open: showFullScreenCover,
                 content: {
-                  Text("Here")
                   NoteSearchResultsByTopicView(
                     topic: topic,
                     editingNote: $editingNote
@@ -485,6 +484,16 @@ struct MainView: View {
                     subject: subject,
                     editingNote: $editingNote
                   )
+                }
+              )
+          case .citationByKey(let bibEntry):
+              FullScreenSheetDraggableView(
+                open: showFullScreenCover,
+                content: {
+                    NoteSearchResultsByCitationView(
+                        bibEntry: bibEntry,
+                        editingNote: $editingNote
+                    )
                 }
               )
           }

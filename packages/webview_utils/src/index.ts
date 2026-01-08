@@ -9,6 +9,9 @@ export * from "./core/code_gen/typeshare/fluster_core_utilities";
 export * from "./features/webview_container/presentation/webview_container";
 export * from "./core/shared_components/loading/loading_component";
 
+//      -- Shad --
+export * from "./core/shared_components/shad/button";
+
 // -- Utils --
 export * from "./core/utils/windowUtils/get_orientation";
 export * from "./core/utils/bridge/send_to_swift";

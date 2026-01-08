@@ -11,6 +11,10 @@ body {
     color: hsl(var(--foreground));
     overscroll-behavior-block: none;
     overscroll-behavior-y: none;
+
+    & * {
+        border-color: hsl(var(--border));
+    }
 }
 
 ::-webkit-scrollbar {

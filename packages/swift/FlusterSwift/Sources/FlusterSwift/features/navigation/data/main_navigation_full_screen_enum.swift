@@ -11,4 +11,5 @@ public enum MainFullScreenCover {
   case tagSearch(tag: TagModel)
   case topicSearch(topic: TopicModel)
   case subjectSearch(subject: SubjectModel)
+  case citationByKey(citation: BibEntryModel)
 }
