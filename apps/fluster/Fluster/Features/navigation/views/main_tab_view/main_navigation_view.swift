@@ -114,7 +114,9 @@ struct MainView: View {
       ) {
         MarkdownTabView(
           editingNote: $editingNote,
-          editorContainer: editorContainer
+          editorContainer: editorContainer,
+          onNavigateToNote: nil,
+          fullScreenCover: $fullScreenCover
         )
       }
       .customizationID(IpadMainViewTab.markdown.rawValue)
@@ -320,7 +322,7 @@ struct MainView: View {
           if let note = editingNote {
             if let parsedMdx =
               await note.markdown
-                .body.preParseAsMdxToBytes(noteId: note.id)
+              .body.preParseAsMdxToBytes(noteId: note.id)
             {
               editorContainer.emitMdxParsingSuccess()
               editorContainer.setParsedEditorContent(
@@ -331,7 +333,7 @@ struct MainView: View {
               {
                 note.applyMdxParsingResults(
                   results: parsingResults,
-                modelContext: modelContext
+                  modelContext: modelContext
                 )
               }
               Task {
@@ -464,7 +466,8 @@ struct MainView: View {
                     tag: tag,
                     editingNote: $editingNote
                   )
-                }
+                },
+                fullScreenCover: $fullScreenCover
               )
             case .topicSearch(let topic):
               FullScreenSheetDraggableView(
@@ -474,7 +477,8 @@ struct MainView: View {
                     topic: topic,
                     editingNote: $editingNote
                   )
-                }
+                },
+                fullScreenCover: $fullScreenCover
               )
             case .subjectSearch(let subject):
               FullScreenSheetDraggableView(
@@ -484,17 +488,19 @@ struct MainView: View {
                     subject: subject,
                     editingNote: $editingNote
                   )
-                }
+                },
+                fullScreenCover: $fullScreenCover
               )
-          case .citationByKey(let bibEntry):
+            case .citationByKey(let bibEntry):
               FullScreenSheetDraggableView(
                 open: showFullScreenCover,
                 content: {
-                    NoteSearchResultsByCitationView(
-                        bibEntry: bibEntry,
-                        editingNote: $editingNote
-                    )
-                }
+                  NoteSearchResultsByCitationView(
+                    bibEntry: bibEntry,
+                    editingNote: $editingNote
+                  )
+                },
+                fullScreenCover: $fullScreenCover
               )
           }
         } else {

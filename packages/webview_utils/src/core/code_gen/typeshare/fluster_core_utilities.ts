@@ -51,6 +51,7 @@ export enum DictionaryWebviewStorageKeys {
 export enum MdxPreviewWebviewActions {
 	RequestNoteData = "request-note-data",
 	SetWebviewLoaded = "set-preview-webview-loaded",
+	ViewNoteByUserDefinedId = "view-note-by-user-def-id",
 }
 
 /** From swift to typescript */

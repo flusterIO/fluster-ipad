@@ -46,7 +46,6 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
   }
 
   public func handleTagClick(tagBody: String) {
-    FlusterLogger(.webview, .devOnly).log("Tag body: \(tagBody)", .info)
     let fetchDescriptor = FetchDescriptor<TagModel>(
       predicate: #Predicate<TagModel> { t in
         t.value == tagBody
@@ -137,16 +136,17 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
   public func makeCoordinator() -> Coordinator {
     Coordinator(self)
   }
-    public func handleCitationClick(citationId: String) {
-        let descriptor = FetchDescriptor<BibEntryModel>(predicate: #Predicate<BibEntryModel> { entry in
-            entry.citationKey == citationId
-        })
-        if let res = try? self.modelContext.fetch(descriptor) {
-            print("Here... ", res)
-            let entry = res.first!
-            self.fullScreenCover = .citationByKey(citation: entry)
-        }
+  public func handleCitationClick(citationId: String) {
+    let descriptor = FetchDescriptor<BibEntryModel>(
+      predicate: #Predicate<BibEntryModel> { entry in
+        entry.citationKey == citationId
+      })
+    if let res = try? self.modelContext.fetch(descriptor) {
+      print("Here... ", res)
+      let entry = res.first!
+      self.fullScreenCover = .citationByKey(citation: entry)
     }
+  }
 }
 
 @MainActor
@@ -201,12 +201,14 @@ extension NoteDetailWebviewInternal {
           handleJavascriptError(base64String: message.body as! String)
         case NoteDetailWebviewActions.requestNoteDetailData.rawValue:
           self.setInitialData()
+        case NoteDetailWebviewActions.handleTagClick.rawValue:
+          self.parent.handleTagClick(tagBody: message.body as! String)
         case NoteDetailWebviewActions.handleTopicClick.rawValue:
           self.parent.handleTopicClck(topicValue: message.body as! String)
         case NoteDetailWebviewActions.handleSubjectClick.rawValue:
           self.parent.handleSubjectClick(subjectValue: message.body as! String)
-      case NoteDetailWebviewActions.handleCitationClick.rawValue:
-        self.parent.handleCitationClick(citationId: message.body as! String)
+        case NoteDetailWebviewActions.handleCitationClick.rawValue:
+          self.parent.handleCitationClick(citationId: message.body as! String)
         default:
           return
       }

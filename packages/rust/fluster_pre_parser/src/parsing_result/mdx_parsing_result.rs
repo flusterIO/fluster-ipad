@@ -13,7 +13,10 @@ use gray_matter::{Matter, engine::YAML};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    parse::by_regex::regex_parsers::dictionary_entry_regex_parser::DictionaryEntryResult,
+    parse::by_regex::regex_parsers::{
+        dictionary_entry_regex_parser::DictionaryEntryResult,
+        note_link_regex_parser::NoteOutgoingLinkResult,
+    },
     parsing_result::{
         citation_result::CitationResult, front_matter::FrontMatterResult, tag_result::TagResult,
     },
@@ -29,6 +32,7 @@ pub struct MdxParsingResult {
     /// valid bibentries within the note, without duplicates and in the proper order.
     pub citations: Vec<CitationResult>,
     pub dictionary_entries: Vec<DictionaryEntryResult>,
+    pub outgoing_links: Vec<NoteOutgoingLinkResult>,
 }
 
 impl MdxParsingResult {
@@ -51,6 +55,7 @@ impl MdxParsingResult {
             },
             citations: Vec::new(),
             tags: Vec::new(),
+            outgoing_links: Vec::new(),
             dictionary_entries: Vec::new(),
             front_matter: match data {
                 Some(front_matter_data) => front_matter_data

@@ -101,7 +101,7 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                     {tags?.length ? (
                         <div className="flex flex-row justify-start items-center gap-4 mt-2 mb-4">
                             {tags.map((t) => (
-                                <a
+                                <button
                                     className="bg-primary/70 text-primary-foreground rounded-lg px-2 py-1 cursor-pointer"
                                     onClick={() => {
                                         const b = t.body()
@@ -113,7 +113,7 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                                     }}
                                 >
                                     {t.body()}
-                                </a>
+                                </button>
                             ))}
                         </div>
                     ) : (

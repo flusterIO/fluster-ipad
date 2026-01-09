@@ -108,7 +108,8 @@ public final class AppDataContainer {
             let noteModel = NoteModel.fromInitialDataParsingResult(
               data: noteItemData,
               existingTags: [],
-              existingCitations: initialBibliographyEntries
+              existingCitations: initialBibliographyEntries,
+              forceUserDefinedCitations: noteItemData.noteId == "onTheGravitationalNatureOfTime"
             )
             container.mainContext.insert(noteModel)
           }

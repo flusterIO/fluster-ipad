@@ -3,6 +3,8 @@ import SwiftUI
 
 struct MarkdownTabView: View {
   @Binding var editingNote: NoteModel?
+  @Binding var fullScreenCover: MainFullScreenCover?
+  var onNavigateToNote: (NoteModel) -> Void = { _ in }
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
     var editorThemeDark: CodeSyntaxTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
@@ -14,9 +16,17 @@ struct MarkdownTabView: View {
     var hasPreviouslyLaunched: Bool = false
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
   var editorContainer: MdxEditorWebviewContainer
-  init(editingNote: Binding<NoteModel?>, editorContainer: MdxEditorWebviewContainer) {
+  init(
+    editingNote: Binding<NoteModel?>, editorContainer: MdxEditorWebviewContainer,
+    onNavigateToNote: ((NoteModel) -> Void)?,
+    fullScreenCover: Binding<MainFullScreenCover?>
+  ) {
     self._editingNote = editingNote
+    self._fullScreenCover = fullScreenCover
     self.editorContainer = editorContainer
+    if onNavigateToNote != nil {
+      self.onNavigateToNote = onNavigateToNote!
+    }
   }
   var body: some View {
     if let editingNoteBinding = Binding($editingNote) {
@@ -34,6 +44,8 @@ struct MarkdownTabView: View {
           editingNote: editingNoteBinding,
           editorKeymap: $editorKeymap,
           container: editorContainer,
+          onNavigateToNote: onNavigateToNote,
+          fullScreenCover: $fullScreenCover
         )
         // TODO: Remove this. This is just for easy development.
         .onAppear {

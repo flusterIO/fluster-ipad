@@ -11,6 +11,9 @@ pub enum MdxPreviewWebviewActions {
     #[serde(rename = "set-preview-webview-loaded")]
     #[strum(to_string = "set-preview-webview-loaded")]
     SetWebviewLoaded,
+    #[serde(rename = "view-note-by-user-def-id")]
+    #[strum(to_string = "view-note-by-user-def-id")]
+    ViewNoteByUserDefinedId,
 }
 
 /// From swift to typescript

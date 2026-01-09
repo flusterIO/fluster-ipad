@@ -44,11 +44,9 @@ public struct NoteSearchResultsByTagView: View {
       }
       if filteredNotes.isEmpty {
         NoNotesFoundView()
-          .searchable(text: $noteQuery, prompt: "Search notes")
-          .navigationTitle("Notes")
       }
     }
-    .searchable(text: $noteQuery, prompt: "Search notes")
+    .searchable(text: $noteQuery, placement: .toolbar, prompt: "Search notes")
     .navigationTitle("Notes")
   }
 }

@@ -2,6 +2,10 @@ import SwiftData
 import SwiftUI
 import WebKit
 
+public enum MdxViewFullScreenCover {
+  case byTag(tagModel: BibEntryModel)
+}
+
 public enum CodeSyntaxTheme: String, Codable, CaseIterable {
   case materialLight, solarizedLight, githubLight, aura, tokyoNightDay,
     dracula, tokyoNight, materialDark, tokyoNightStorm, githubDark,
@@ -29,6 +33,8 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
   @Binding var editorThemeLight: CodeSyntaxTheme
   @Binding var editingNote: NoteModel
   @Binding var editorKeymap: EditorKeymap
+    @Binding var fullScreenCover: MainFullScreenCover?
+  var onNavigateToNote: (NoteModel) -> Void
 
   let container: MdxEditorWebviewContainer
 
@@ -40,7 +46,9 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
     editingNote: Binding<NoteModel>,
     editorKeymap: Binding<EditorKeymap>,
     container: MdxEditorWebviewContainer,
-    show: Binding<Bool>
+    show: Binding<Bool>,
+    onNavigateToNote: @escaping (NoteModel) -> Void,
+    fullScreenCover: Binding<MainFullScreenCover?>
   ) {
     self.url = url
     self._theme = theme
@@ -48,8 +56,10 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
     self._editorThemeLight = editorThemeLight
     self._editingNote = editingNote
     self._editorKeymap = editorKeymap
+      self._fullScreenCover = fullScreenCover
     self.container = container
     self._show = show
+    self.onNavigateToNote = onNavigateToNote
   }
 
   public func makeUIView(context: Context) -> WKWebView {
@@ -123,6 +133,29 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
       """
     )
   }
+  public func handleViewNoteByUserDefinedId(id: String) {
+    let fetchDescriptor = FetchDescriptor<NoteModel>(
+      predicate: #Predicate { note in
+        note.frontMatter.userDefinedId == id
+      })
+    if let notes = try? self.modelContext.fetch(fetchDescriptor) {
+      if !notes.isEmpty {
+        let note = notes.first
+        self.editingNote = note!
+        self.onNavigateToNote(note!)
+      }
+    }
+  }
+  public func handleTagClick(tagBody: String) {
+      let fetchDescriptor = FetchDescriptor<TagModel>(predicate: #Predicate<TagModel> {t in
+          t.value == tagBody
+      })
+      if let tags = try? modelContext.fetch(fetchDescriptor) {
+          if !tags.isEmpty {
+              fullScreenCover = .tagSearch(tag: tags.first!)
+          }
+      }
+  }
 }
 
 @MainActor
@@ -150,7 +183,6 @@ extension MdxEditorWebviewInternal {
       )
       parent.setInitialProperties()
       parent.container.webView.isHidden = !self.parent.show
-      //            parent.container.requestDocumentSize()
       parent.didSetInitialContent = true
     }
 
@@ -201,14 +233,13 @@ extension MdxEditorWebviewInternal {
           self.parent.show = true
         //                self.parent.webView.allowsMagnification
         case SplitviewEditorWebviewActions.onTagClick.rawValue:
-          // TODO: Handle this tag click event.
-          print("Tag clicked \(message.body as! String)")
+          parent.handleTagClick(tagBody: message.body as! String)
         case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
           print("Received request for parsed mdx content")
           Task {
             if let parsedMdx =
               await parent.editingNote.markdown
-                .body.preParseAsMdxToBytes(noteId: parent.editingNote.id)
+              .body.preParseAsMdxToBytes(noteId: parent.editingNote.id)
             {
               parent.container.setParsedEditorContent(
                 content: parsedMdx
@@ -218,11 +249,13 @@ extension MdxEditorWebviewInternal {
               {
                 parent.editingNote.applyMdxParsingResults(
                   results: parsingResults,
-                modelContext: self.parent.modelContext
+                  modelContext: self.parent.modelContext
                 )
               }
             }
           }
+        case MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue:
+          parent.handleViewNoteByUserDefinedId(id: message.body as! String)
         case SharedWebviewActions.javascriptError.rawValue:
           handleJavascriptError(base64String: message.body as! String)
         case SplitviewEditorWebviewActions.onEditorChange.rawValue:
@@ -251,6 +284,8 @@ public struct MdxEditorWebview: View {
   @Binding var editorThemeLight: CodeSyntaxTheme
   @Binding var editingNote: NoteModel
   @Binding var editorKeymap: EditorKeymap
+  @Binding var fullScreenCover: MainFullScreenCover?
+  var onNavigateToNote: (NoteModel) -> Void
   let container: MdxEditorWebviewContainer
   public init(
     url: URL,
@@ -260,6 +295,8 @@ public struct MdxEditorWebview: View {
     editingNote: Binding<NoteModel>,
     editorKeymap: Binding<EditorKeymap>,
     container: MdxEditorWebviewContainer,
+    onNavigateToNote: @escaping (NoteModel) -> Void,
+    fullScreenCover: Binding<MainFullScreenCover?>
   ) {
     self.url = url
     self._theme = theme
@@ -268,6 +305,8 @@ public struct MdxEditorWebview: View {
     self._editingNote = editingNote
     self._editorKeymap = editorKeymap
     self.container = container
+    self.onNavigateToNote = onNavigateToNote
+    self._fullScreenCover = fullScreenCover
   }
 
   public var body: some View {
@@ -280,7 +319,9 @@ public struct MdxEditorWebview: View {
         editingNote: $editingNote,
         editorKeymap: $editorKeymap,
         container: container,
-        show: $show
+        show: $show,
+        onNavigateToNote: onNavigateToNote,
+        fullScreenCover: $fullScreenCover
       )
       .disableAnimations()
       .frame(

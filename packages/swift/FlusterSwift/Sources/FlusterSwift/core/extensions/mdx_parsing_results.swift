@@ -9,6 +9,7 @@ extension MdxParsingResult: Codable {
     case front_matter
     case citations
     case dictionary_entries
+    case outgoing_links
   }
 
   public init(from decoder: Decoder) throws {
@@ -18,13 +19,16 @@ extension MdxParsingResult: Codable {
     let tags = try container.decode([TagResult].self, forKey: .tags)
     let frontMatter = try container.decodeIfPresent(FrontMatterResult.self, forKey: .front_matter)
     let citations = try container.decode([CitationResult].self, forKey: .citations)
+    let outgoing_links = try container.decode(
+      [NoteOutgoingLinkResult].self, forKey: .outgoing_links)
     let dictionaryEntries = try container.decode(
       [DictionaryEntryResult].self, forKey: .dictionary_entries)
 
     self.init(
       noteId: id,
       content: content, tags: tags, frontMatter: frontMatter, citations: citations,
-      dictionaryEntries: dictionaryEntries)
+      dictionaryEntries: dictionaryEntries, outgoingLinks: outgoing_links
+    )
   }
 
   public func encode(to encoder: any Encoder) throws {

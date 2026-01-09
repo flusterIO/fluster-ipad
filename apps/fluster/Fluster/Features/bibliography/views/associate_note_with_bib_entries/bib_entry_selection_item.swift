@@ -33,14 +33,10 @@ struct BibEntrySelectionItem: View {
       {
         if isSelected {
           if !editingNote.containsCitation(citation: entry) {
-            editingNote.citations.append(
-              self.entry
-            )
+            editingNote.addCitation(citation: self.entry, strategy: .userAdded)
           }
         } else {
-          editingNote.citations = editingNote.citations.filter({
-            $0.id != self.entry.id
-          })
+          editingNote.removeCitation(citation: self.entry)
         }
       }
     )

@@ -52,6 +52,7 @@ public enum DictionaryWebviewStorageKeys: String, Codable {
 public enum MdxPreviewWebviewActions: String, Codable {
 	case requestNoteData = "request-note-data"
 	case setWebviewLoaded = "set-preview-webview-loaded"
+	case viewNoteByUserDefinedId = "view-note-by-user-def-id"
 }
 
 /// From swift to typescript

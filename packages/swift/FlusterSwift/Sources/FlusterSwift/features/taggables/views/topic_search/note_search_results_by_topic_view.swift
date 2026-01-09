@@ -43,8 +43,6 @@ public struct NoteSearchResultsByTopicView: View {
       }
       if filteredNotes.isEmpty {
         NoNotesFoundView()
-          .searchable(text: $noteQuery, prompt: "Search notes")
-          .navigationTitle("Notes")
       }
     }
     .searchable(text: $noteQuery, prompt: "Search notes")

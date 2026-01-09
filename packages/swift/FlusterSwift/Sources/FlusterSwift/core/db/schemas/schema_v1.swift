@@ -71,6 +71,9 @@ extension AppSchemaV1 {
       return fm
     }
   }
+  public enum BibEntrySaveStrategy: String, Codable {
+    case userAdded, fromNoteContent
+  }
   @Model
   public class NoteModel {
     public var id: String
@@ -88,6 +91,8 @@ extension AppSchemaV1 {
     @Relationship(deleteRule: .cascade, inverse: \DictionaryEntryModel.note)
     public var dictionaryEntries = [DictionaryEntryModel]()
     public var bookmarked: Bool = false
+    ///  Must be a Map of `Map<citationKey ?? id, BibEntrySaveStrategy>`. The citationKey must be preferred first.
+    public var bibEntryStrategyMap = [String: BibEntrySaveStrategy]()
 
     // drawing.toDataRepresentation() to conform to Data type.
     public init(
@@ -116,6 +121,18 @@ extension AppSchemaV1 {
 
     public func containsCitation(citation: BibEntryModel) -> Bool {
       return self.citations.contains(where: { $0.id == citation.id })
+    }
+
+    public func addCitation(citation: BibEntryModel, strategy: BibEntrySaveStrategy) {
+      self.bibEntryStrategyMap[citation.citationKey ?? citation.id] = strategy
+      self.citations.appendWithoutDuplicates(item: citation)
+    }
+
+    public func removeCitation(citation: BibEntryModel) {
+      self.bibEntryStrategyMap.removeValue(forKey: citation.citationKey ?? citation.id)
+      self.citations = self.citations.filter({
+        $0.id != citation.id
+      })
     }
 
     public static func count(modelContext: ModelContext) -> Int {
@@ -159,25 +176,38 @@ extension AppSchemaV1 {
       self.tags = tags
       // -- Citations --
       var citations: [BibEntryModel] = []
-      var citationsCount = results.citationsCount
-      let cits = (0..<citationsCount).compactMap { n in
-        return results.citations(at: n)
-      }
-      let entryIds = cits.isEmpty ? [] : cits.map(\.citationKey)
-      let fetchDescriptor = FetchDescriptor<BibEntryModel>(
-        predicate: #Predicate<BibEntryModel> { entry in
-          entryIds.contains(entry.citationKey)
-        }
-      )
-      let existingCitations = (try? modelContext.fetch(fetchDescriptor)) ?? []
-      cits.forEach { citationItem in
-        if let existingCitation = existingCitations.first(where: { cit in
-          cit.id == citationItem.citationKey
-        }) {
-          citations.append(existingCitation)
+      let citationFetchDescriptor = FetchDescriptor<BibEntryModel>()
+      let allCitations = try! modelContext.fetch(citationFetchDescriptor)
+      // Save the bibEntries that were use defined since they cannot be automatically inferred from the note.
+      for (citationId, saveStrategy) in self.bibEntryStrategyMap {
+        if saveStrategy == .userAdded {
+          if let existingCitation = self.citations.first(where: { cit in
+            return cit.id == citationId
+          }) {
+            citations.append(existingCitation)
+          }
         } else {
-          // TODO: Show an alert here.
-          print("Found a citation that doesn't exist. Show alert here.")
+          // Remove all of the bibEntries that can be re-generated from the user's note content.
+          self.bibEntryStrategyMap.removeValue(forKey: citationId)
+        }
+      }
+      // Handle saving of additional bibEntries that can be generated from the note.
+      let citationsLength = results.citationsCount
+      var parsingResultCitations: [MdxSerialization_CitationResultBuffer] = []
+      for idx in (0..<citationsLength) {
+        if let citationItem = results.citations(at: idx) {
+          if let existingCitation = allCitations.first(where: { cit in
+            cit.citationKey == citationItem.citationKey
+          }) {
+            // Citation exists in datbase, can continue saving it
+            citations.append(existingCitation)
+            self.bibEntryStrategyMap[existingCitation.citationKey ?? existingCitation.id] =
+              .fromNoteContent
+          } else {
+            FlusterLogger(.dataHandling, .prodAndDev).log(
+              "Cannot find bibliography entry with the id \(citationItem.citationKey). Cannot add this entry to your note.",
+              .warning)
+          }
         }
       }
 
@@ -247,21 +277,28 @@ extension AppSchemaV1 {
     public static func fromInitialDataParsingResult(
       data: MdxParsingResult,
       existingTags: [TagModel],
-      existingCitations: [BibEntryModel]
+      existingCitations: [BibEntryModel],
+      forceUserDefinedCitations: Bool = false
     ) -> NoteModel {
       let note = NoteModel.getEmptyModel(
         noteBody: data.content,
         noteSummary: nil
       )
-      for cit in data.citations {
-        if let foundEntry = existingCitations.first(where: { citItem in
-          citItem.citationKey == cit.citationKey
-        }) {
-          let citationAlreadyAppended = note.citations.contains(where: { alreadyAppendedCit in
-            alreadyAppendedCit.citationKey == foundEntry.citationKey
-          })
-          if !citationAlreadyAppended {
-            note.citations.append(foundEntry)
+      if forceUserDefinedCitations {
+        for cit in existingCitations {
+          note.addCitation(citation: cit, strategy: .userAdded)
+        }
+      } else {
+        for cit in data.citations {
+          if let foundEntry = existingCitations.first(where: { citItem in
+            citItem.citationKey == cit.citationKey
+          }) {
+            let citationAlreadyAppended = note.citations.contains(where: { alreadyAppendedCit in
+              alreadyAppendedCit.citationKey == foundEntry.citationKey
+            })
+            if !citationAlreadyAppended {
+              note.addCitation(citation: foundEntry, strategy: .fromNoteContent)
+            }
           }
         }
       }

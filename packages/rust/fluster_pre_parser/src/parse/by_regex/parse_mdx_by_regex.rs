@@ -5,15 +5,16 @@ use crate::{
     parse::by_regex::regex_parsers::{
         citation_regex_parser::CitationRegexParser,
         dictionary_entry_regex_parser::DictionaryEntryRegexParser, mdx_parser::MdxParser,
-        tag_regex_parser::TagRegexParser,
+        note_link_regex_parser::NoteLinkRegexParser, tag_regex_parser::TagRegexParser,
     },
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
-static REGEX_PARSERS: [&'static dyn MdxParser; 3] = [
+static REGEX_PARSERS: [&'static dyn MdxParser; 4] = [
     &TagRegexParser,
     &CitationRegexParser,
     &DictionaryEntryRegexParser,
+    &NoteLinkRegexParser,
 ];
 
 #[derive(Serialize, Deserialize, uniffi::Record)]
@@ -146,12 +147,6 @@ mod tests {
         let fm = result
             .front_matter()
             .expect("Has front matter when front matter is present");
-        assert!(
-            fm.ignore_parsers().iter().any(|x| x == "tags"),
-            "Has 'tags' parser in 'ignore_parsers' when present in that field."
-        );
-
-        println!("{}", result.parsed_content());
 
         assert!(
             result

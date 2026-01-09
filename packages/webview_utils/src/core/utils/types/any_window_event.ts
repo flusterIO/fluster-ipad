@@ -1,5 +1,5 @@
-import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys, DictionaryWebviewActions, DictionaryWebviewEvents, NoteDetailWebviewActions, NoteDetailWebviewEvents, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys, DictionaryWebviewActions, DictionaryWebviewEvents, MdxPreviewWebviewActions, NoteDetailWebviewActions, NoteDetailWebviewEvents, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 
-export type AnyWebviewAction = NoteDetailWebviewActions | SplitviewEditorWebviewActions | BibtexEditorWebviewActions | DictionaryWebviewActions
+export type AnyWebviewAction = NoteDetailWebviewActions | SplitviewEditorWebviewActions | BibtexEditorWebviewActions | DictionaryWebviewActions | MdxPreviewWebviewActions
 export type AnyWebviewEvent = NoteDetailWebviewEvents | SplitviewEditorWebviewEvents | BibtexEditorWebviewEvents | DictionaryWebviewEvents
 export type AnyWebviewStorageKey = SplitviewEditorWebviewLocalStorageKeys | BibtexEditorWebviewLocalStorageKeys
