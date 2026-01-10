@@ -12,7 +12,8 @@ interface NoteLinkProps {
 
 export const NoteLink = ({ id, children }: NoteLinkProps): ReactNode => {
     return (
-        <a role="button"
+        <a
+            role="button"
             onClick={() => {
                 sendToSwift(MdxPreviewWebviewActions.ViewNoteByUserDefinedId, id)
             }}

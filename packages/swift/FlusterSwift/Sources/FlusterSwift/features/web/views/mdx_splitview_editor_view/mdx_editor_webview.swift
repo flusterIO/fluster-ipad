@@ -72,7 +72,8 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
       SplitviewEditorWebviewActions.onEditorChange.rawValue,
       SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
       SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
-      SplitviewEditorWebviewActions.onTagClick.rawValue
+      SplitviewEditorWebviewActions.onTagClick.rawValue,
+      MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue
     ]
     if colorScheme == .dark {
       webView.evaluateJavaScript(
@@ -134,6 +135,7 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
     )
   }
   public func handleViewNoteByUserDefinedId(id: String) {
+      print("Here...")
     let fetchDescriptor = FetchDescriptor<NoteModel>(
       predicate: #Predicate { note in
         note.frontMatter.userDefinedId == id
@@ -231,11 +233,9 @@ extension MdxEditorWebviewInternal {
         case SplitviewEditorWebviewActions.setWebviewLoaded.rawValue:
           self.parent.webView.isHidden = false
           self.parent.show = true
-        //                self.parent.webView.allowsMagnification
         case SplitviewEditorWebviewActions.onTagClick.rawValue:
           parent.handleTagClick(tagBody: message.body as! String)
         case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
-          print("Received request for parsed mdx content")
           Task {
             if let parsedMdx =
               await parent.editingNote.markdown
