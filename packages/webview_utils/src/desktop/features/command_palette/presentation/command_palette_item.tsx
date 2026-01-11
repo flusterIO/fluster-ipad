@@ -1,0 +1,84 @@
+import React, {
+    HTMLProps,
+    useEffect,
+    useMemo,
+    useRef,
+    type ReactNode,
+} from "react";
+import { CommandPaletteAnyEntry } from "../data/models/command_palette_any_entry";
+import { useCommandPaletteDispatch } from "../state/command_palette_provider";
+import { CommandPaletteCategory } from "../data/models/command_palette_category";
+import { appendCommandPaletteCategory } from "../state/actions/appendCommandPaletteCategory";
+import { useLocation } from "react-router";
+import { cn } from "@/utils/cn";
+import { InlineMdxContent } from "#/mdx/components/inline_mdx_content";
+
+interface CommandPaletteItemProps {
+    item: CommandPaletteAnyEntry;
+    focused: boolean;
+    /// If true, set the body as innerHTML.
+    asHtml?: boolean;
+}
+
+const CommandPaletteItem = ({
+    item,
+    focused,
+    asHtml,
+}: CommandPaletteItemProps): ReactNode => {
+    const ref = useRef<HTMLDivElement>(null!);
+    const dispatch = useCommandPaletteDispatch();
+    const location = useLocation();
+    useEffect(() => {
+        if (focused) {
+            ref.current.scrollIntoView();
+        }
+    }, [focused]);
+
+    const clearInput = (): void => {
+        window.dispatchEvent(
+            new CustomEvent("reset-command-palette-input", {
+                detail: {},
+            })
+        );
+    };
+
+    const props = useMemo(() => {
+        const _props: HTMLProps<HTMLDivElement> = {};
+
+        if (asHtml) {
+            _props.dangerouslySetInnerHTML = {
+                __html: item.label,
+            };
+        } else {
+            _props.children = <InlineMdxContent abortIfNoMath mdx={item.label} />;
+        }
+        return _props;
+    }, [asHtml, item.label]);
+
+    return (
+        <div
+            className={cn(
+                "p-2 border-l-2 select-none cursor-pointer",
+                item.itemClasses
+            )}
+            ref={ref}
+            style={{
+                borderColor: focused ? "hsl(var(--primary))" : "transparent",
+            }}
+            onClick={() => {
+                if (item instanceof CommandPaletteCategory) {
+                    appendCommandPaletteCategory(item, location, dispatch);
+                    clearInput();
+                } else if (item instanceof CommandPaletteItem || "invoke" in item) {
+                    /* @ts-expect-error -- This is the only type of invoke function available. I'll clean this up later. */
+                    item.invoke();
+                }
+            }}
+            {...props}
+        ></div>
+    );
+};
+
+CommandPaletteItem.displayName = "CommandPaletteItem";
+
+export default CommandPaletteItem;

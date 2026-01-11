@@ -1,5 +1,6 @@
 packages:
   - apps/website
+  - apps/fluster_desktop
   - packages/webviews/splitview_mdx_editor
   - packages/webviews/bibtex_editor_webview
   - packages/webviews/bib_entry_details_webview
@@ -9,3 +10,4 @@ packages:
   - packages/webviews/dictionary_webview
   - packages/webview_utils
   - packages/shared_config
+  - packages/desktop_bindings

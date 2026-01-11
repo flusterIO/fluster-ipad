@@ -39,5 +39,8 @@
     "vite-plugin-singlefile": "2.3.0",
     "vite-tsconfig-paths": "5.1.4"
   },
-  "packageManager": "pnpm@9.7.1"
+  "packageManager": "pnpm@9.7.1",
+  "dependencies": {
+    "shiki": "3.3.0"
+  }
 }

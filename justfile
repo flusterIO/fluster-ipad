@@ -92,5 +92,13 @@ build_all_webviews: build_cross_language_schemas build_webview_utils build_split
 
 pre_ipad_build: generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews
 
+generate_shiki_themes:
+	tsx scripts/write_bundled_themes.ts
+
+pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths 
+
+run_desktop_dev: pre_desktop_build
+	cd apps/fluster_desktop; cargo tauri dev
+
 test_rust: build_cross_language_schemas
 	cargo nextest run --no-capture

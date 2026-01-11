@@ -8,6 +8,7 @@ export * from "./core/code_gen/typeshare/fluster_core_utilities";
 // -- Core Components --
 export * from "./features/webview_container/presentation/webview_container";
 export * from "./core/shared_components/loading/loading_component";
+export * from "./core/shared_components/loading/splash_screen";
 
 //      -- Shad --
 export * from "./core/shared_components/shad/button";
@@ -83,3 +84,12 @@ export * from "./features/split_view_editor/components/responsive_splitview_edit
 
 // -- Bibtex Editor --
 export * from "./features/editor/code_editor/components/bibtex_editor";
+
+// -- DESKTOP --
+
+export * from "./desktop/features/navigation/data/app_routes"
+export * from "./desktop/features/navigation/data/navigation_types"
+export * from "./desktop/features/navigation/data/global_navigation_items"
+export * from "./desktop/features/scaffold/main_scaffold/presentation/main_scaffold"
+export * from "./desktop/core/resources/resource_routes"
+export * from "./desktop/features/router/main_router"
