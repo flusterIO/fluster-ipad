@@ -5,10 +5,10 @@
   "private": true,
   "scripts": {
     "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit",
     "dev": "vite",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fluster/webview_utils": "workspace:*",
@@ -16,9 +16,9 @@
     "@tailwindcss/typography": "0.5.19",
     "@tauri-apps/api": "2",
     "@tauri-apps/plugin-clipboard-manager": "2",
-    "@tauri-apps/plugin-dialog": "~2",
+    "@tauri-apps/plugin-dialog": "2",
     "@tauri-apps/plugin-opener": "2.5.3",
-    "@tauri-apps/plugin-shell": "~2",
+    "@tauri-apps/plugin-shell": "2",
     "autoprefixer": "10.4.21",
     "dayjs": "1.11.19",
     "framer-motion": "12.23.25",
