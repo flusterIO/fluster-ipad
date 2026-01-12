@@ -1,13 +1,11 @@
-import { type ReactNode } from "react";
-
-import { BrowserRouter, Route, Routes } from "react-router";
-import {
-    AppRoutes,
-    ResourceRoutes,
-    SplashScreen,
-    DashboardPage,
-    DesktopScaffold,
-} from "@fluster/webview_utils";
+import React, { useMemo, type ReactNode } from "react";
+import { AppRoutes } from "./features/router/data/app_routes";
+import { ResourceRoutes } from "./features/router/data/resource_routes";
+import { MainDesktopScaffold } from "./features/scaffold/presentation/main_desktop_scaffold";
+import { DashboardSwitch } from "./features/dashboard/presentation/dashboard_switch";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import ReduxProvider from "@/state/redux_provider";
+import { SplashScreen } from "@fluster/webview_utils";
 
 const App = (): ReactNode => {
     window.MathJax = {
@@ -24,20 +22,31 @@ const App = (): ReactNode => {
             fontURL: ResourceRoutes.mathjaxFonts,
         },
     };
+
+    const router = useMemo(() => {
+        return createBrowserRouter([
+            {
+                path: AppRoutes.splashScreen,
+                Component: SplashScreen,
+            },
+            {
+                Component: MainDesktopScaffold,
+                children: [
+                    {
+                        path: AppRoutes.dashboard,
+                        Component: DashboardSwitch,
+                    },
+                ],
+            },
+        ]);
+    }, []);
     /* useMermaidInit(); */
     /* useGlobalKeymap(); */
 
-    /* const router = useMemo(() => getDesktopRouter(), [])/* ; */
-    /* return <RouterProvider router={router} />; */
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path={AppRoutes.splash_screen} element={<SplashScreen />} />
-                <Route element={<DesktopScaffold />}>
-                    <Route index path={AppRoutes.dashboard} element={<DashboardPage />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
+        <ReduxProvider>
+            <RouterProvider router={router} />;
+        </ReduxProvider>
     );
 };
 

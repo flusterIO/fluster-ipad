@@ -103,5 +103,8 @@ pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cros
 run_desktop_dev: pre_desktop_build
 	cd apps/fluster_desktop; cargo tauri dev
 
+create_desktop_feature feature_name:
+	python scripts/create_feature_util.py {{feature_name}}
+
 test_rust: build_cross_language_schemas
 	cargo nextest run --no-capture

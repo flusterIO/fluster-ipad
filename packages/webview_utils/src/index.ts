@@ -1,5 +1,6 @@
 import "./core/styles/base.scss";
 export * from "./features/editor/code_editor/types/swift_events/swift_events";
+export * from "./core/utils/cn"
 
 // -- Types --
 export * from "./core/utils/types/any_window_event";
@@ -11,7 +12,36 @@ export * from "./core/shared_components/loading/loading_component";
 export * from "./core/shared_components/loading/splash_screen";
 
 //      -- Shad --
-export * from "./core/shared_components/shad/button";
+export * from "./core/shared_components/shad/form"
+export * from "./core/shared_components/shad/alert-dialog"
+export * from "./core/shared_components/shad/button-group"
+export * from "./core/shared_components/shad/slider"
+export * from "./core/shared_components/shad/input-group"
+export * from "./core/shared_components/shad/popover"
+export * from "./core/shared_components/shad/sheet"
+export * from "./core/shared_components/shad/label"
+export * from "./core/shared_components/shad/empty"
+export * from "./core/shared_components/shad/tooltip"
+export * from "./core/shared_components/shad/alert"
+export * from "./core/shared_components/shad/switch"
+export * from "./core/shared_components/shad/calendar"
+export * from "./core/shared_components/shad/command"
+export * from "./core/shared_components/shad/dialog"
+export * from "./core/shared_components/shad/badge"
+export * from "./core/shared_components/shad/table"
+export * from "./core/shared_components/shad/separator"
+export * from "./core/shared_components/shad/button"
+export * from "./core/shared_components/shad/checkbox"
+export * from "./core/shared_components/shad/select"
+export * from "./core/shared_components/shad/textarea"
+export * from "./core/shared_components/shad/input"
+
+//      -- Inputs --
+export * from "./core/shared_components/inputs/select/general_select/index"
+export * from "./core/shared_components/inputs/select/general_combobox/index"
+export * from "./core/shared_components/inputs/select/supported_syntax_theme/index"
+export * from "./core/shared_components/inputs/select/file_extension_glob_select/index"
+export * from "./core/shared_components/inputs/select/supported_programming_language/index"
 
 // -- Utils --
 export * from "./core/utils/windowUtils/get_orientation";
@@ -20,6 +50,7 @@ export * from "./core/state/hooks/use_webview_loaded_event";
 export * from "./features/webview_container/utils/webview_on_error";
 export * from "./features/webview_container/utils/uint8FromBase64";
 export * from "./features/webview_container/utils/uint8ToBase64";
+
 
 // -- Typography --
 export * from "./core/shared_components/typography/typography";
@@ -32,6 +63,7 @@ export * from "./core/state/hooks/use_local_storage";
 export * from "./core/state/hooks/use_event_callback";
 export * from "./core/state/hooks/use_event_listener";
 export * from "./core/state/hooks/use_screen_dimensions";
+export * from "./core/state/hooks/use_debounce"
 
 
 // -- Code Gen --
@@ -85,13 +117,5 @@ export * from "./features/split_view_editor/components/responsive_splitview_edit
 // -- Bibtex Editor --
 export * from "./features/editor/code_editor/components/bibtex_editor";
 
-// -- DESKTOP --
 
-export * from "./desktop/features/navigation/data/app_routes"
-export * from "./desktop/features/navigation/data/navigation_types"
-export * from "./desktop/features/navigation/data/global_navigation_items"
-export * from "./desktop/features/scaffold/main_scaffold/presentation/main_scaffold"
-export * from "./desktop/core/resources/resource_routes"
-export * from "./desktop/core/state/main_provider"
-export * from "./desktop/features/dashboard/presentation/temp_dashboard/temp_dashboard"
-export * from "./desktop/features/onboarding/presentation/onboarding_page"
+// -- DESKTOP --

@@ -8,7 +8,6 @@ const outputPath = path.join(
     "packages",
     "webview_utils",
     "src",
-    "desktop",
     "features",
     "code",
     "data",

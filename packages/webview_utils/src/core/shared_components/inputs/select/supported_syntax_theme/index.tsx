@@ -26,7 +26,7 @@ import { FormInputProps } from "../../types";
 import { FieldValues, PathValue } from "react-hook-form";
 import { FormField } from "../../../shad/form";
 import { Label } from "../../../shad/label";
-import { darkSyntaxThemes, lightSyntaxThemes } from "src/desktop/features/code/data/bundled_themes";
+import { darkSyntaxThemes, lightSyntaxThemes } from "src/features/code/data/bundled_themes";
 
 interface SyntaxSupportedThemeSelectProps<T extends FieldValues>
     extends FormInputProps<T> {

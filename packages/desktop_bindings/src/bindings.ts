@@ -5,36 +5,9 @@
 
 
 export const commands = {
-async pathExists(filePath: string) : Promise<boolean> {
-    return await TAURI_INVOKE("path_exists", { filePath });
-},
-async readUtf8File(fsPath: string) : Promise<Result<string, FlusterError>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("read_utf8_file", { fsPath }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
-async readFileToBytes(fsPath: string) : Promise<Result<number[], FlusterError>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("read_file_to_bytes", { fsPath }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
 async fsFileExtensionGlob(fileExtension: string, basePath: string, nThreads: string) : Promise<Result<string[], FlusterError>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("fs_file_extension_glob", { fileExtension, basePath, nThreads }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
-async getDatabasePath() : Promise<Result<string, FlusterError>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("get_database_path") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -45,11 +18,6 @@ async getDatabasePath() : Promise<Result<string, FlusterError>> {
 /** user-defined events **/
 
 
-export const events = __makeEvents__<{
-toastConfig: ToastConfig
-}>({
-toastConfig: "toast-config"
-})
 
 /** user-defined constants **/
 
@@ -57,36 +25,7 @@ toastConfig: "toast-config"
 
 /** user-defined types **/
 
-export type AiSyncSettings = { embedding_model: string; language_model: string; with_ai: boolean; max_text_split_tokens: string }
-export type AllTaggableData = { tags: SharedTaggableModel[]; topics: SharedTaggableModel[]; subjects: SharedTaggableModel[] }
-export type FlusterError = "CanaryError" | "JsonSerializationError" | "FrontMatterError" | "MdxParsingError" | { FailToReadFileSystemPath: string } | { FailToSaveFile: string } | "DataDirNotFound" | "FailToFindDataDirectory" | "FailToConnect" | "FailToCreateTable" | "FailToOpenTable" | "FailToStartDb" | "FailToDropTable" | "FailToCreateEntity" | "FailToFind" | "FailToFindById" | "FailToDelete"
-export type PaginationProps = { per_page: string; page_number: string }
-export type RecentlyAccessedNoteData = { last_read: string; file_path: string }
-export type SharedTaggableModel = { value: string; utime: string }
-export type SyncFilesystemDirectoryOptions = { 
-/**
- * The path to the user's note's directory
- */
-dir_path: string; bib_path: string | null; 
-/**
- * The stringified integer representing the number of threads.
- */
-n_threads: string; use_git_ignore: boolean; 
-/**
- * defaults to true
- */
-existing_taggables: AllTaggableData; 
-/**
- * Embeddings model to be used when syncing.
- */
-ai: AiSyncSettings; recently_accessed_notes: RecentlyAccessedNoteData[]; ollama_url: string; ollama_port: number; min_chunk_length: string; max_chunk_length: string }
-export type Test = { val: string }
-export type ToastConfig = { title: string; body: string; duration: number; variant: ToastVariant; 
-/**
- * id is required to allow items to be removed reliably. It just needs to be unique.
- */
-id: string }
-export type ToastVariant = "Success" | "Info" | "Error"
+export type FlusterError = "NotImplemented" | "CanaryError" | "JsonSerializationError" | "FailToSerialize" | "FrontMatterError" | "MdxParsingError" | { FailToReadFileSystemPath: string } | { FailToSaveFile: string } | "DataDirNotFound" | "FailToFindDataDirectory" | "FailToConnect" | "FailToCreateTable" | "FailToOpenTable" | "FailToStartDb" | "FailToDropTable" | "FailToCreateEntity" | "FailToFind" | "FailToFindById" | "FailToDelete" | "FailToReadSettings" | "FailToSaveSettings"
 
 /** tauri-specta globals **/
 
