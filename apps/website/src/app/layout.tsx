@@ -8,45 +8,45 @@ import { Analytics } from "@vercel/analytics/next";
 import { cn } from "#/core/utils/cn";
 
 const appFont = localFont({
-  variable: "--ulld-app-font",
-  src: [
-    {
-      path: "../../assets/appFont/DM_Sans/static/DMSans-Thin.ttf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "../../assets/appFont/DM_Sans/static/DMSans-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../../assets/appFont/DM_Sans/static/DMSans-Light.ttf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "../../assets/appFont/DM_Sans/static/DMSans-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../assets/appFont/DM_Sans/static/DMSans-Italic.ttf",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "../../assets/appFont/DM_Sans/static/DMSans-SemiBold.ttf",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../../assets/appFont/DM_Sans/static/DMSans-ExtraBold.ttf",
-      weight: "800",
-      style: "normal",
-    },
-  ],
-  display: "swap",
+    variable: "--ulld-app-font",
+    src: [
+        {
+            path: "../../assets/appFont/DM_Sans/static/DMSans-Thin.ttf",
+            weight: "100",
+            style: "normal",
+        },
+        {
+            path: "../../assets/appFont/DM_Sans/static/DMSans-Bold.ttf",
+            weight: "700",
+            style: "normal",
+        },
+        {
+            path: "../../assets/appFont/DM_Sans/static/DMSans-Light.ttf",
+            weight: "300",
+            style: "normal",
+        },
+        {
+            path: "../../assets/appFont/DM_Sans/static/DMSans-Regular.ttf",
+            weight: "400",
+            style: "normal",
+        },
+        {
+            path: "../../assets/appFont/DM_Sans/static/DMSans-Italic.ttf",
+            weight: "400",
+            style: "italic",
+        },
+        {
+            path: "../../assets/appFont/DM_Sans/static/DMSans-SemiBold.ttf",
+            weight: "600",
+            style: "normal",
+        },
+        {
+            path: "../../assets/appFont/DM_Sans/static/DMSans-ExtraBold.ttf",
+            weight: "800",
+            style: "normal",
+        },
+    ],
+    display: "swap",
 });
 
 /* export const metadata: Metadata = { */
@@ -55,38 +55,37 @@ const appFont = localFont({
 /* }; */
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" className={cn(appFont.variable, "dark")}>
-      <Head>
-        <title>Fluster</title>
-        <meta
-          name="description"
-          content="Free & open source academic note taking framework."
-        />
-        <meta property="og:title" content="Fluster" />
-        <meta
-          property="og:description"
-          content="Fluster is your brain's free & open source presentation layer for modern academic note taking."
-        />
-        <meta property="og:image" content="/blog/screenshots/splitview.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" type="image/x-icon" href="/assets/logo/logo.ico" />
-        <script
-          defer
-          src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
-        />
-      </Head>
-      <Analytics />
-      <body className={`antialiased background`}>
-        <FumaDocsProvider>
-          <div>{children}</div>
-        </FumaDocsProvider>
-      </body>
-      <GoogleAnalytics gaId="G-Y02PEY1GJZ" />
-    </html>
-  );
+    return (
+        <html lang="en" className={cn(appFont.variable, "dark")}>
+            <Head>
+                <title>Fluster</title>
+                <meta
+                    name="description"
+                    content="Free & open source academic note taking framework."
+                />
+                <meta property="og:title" content="Fluster" key="title" />
+                <meta
+                    property="og:description"
+                    content="Fluster is your brain's free & open source presentation layer for modern academic note taking."
+                />
+                <meta name="twitter:card" content="summary_large_image" />
+                <link rel="icon" type="image/x-icon" href="/assets/logo/logo.ico" />
+                <script
+                    defer
+                    src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
+                />
+            </Head>
+            <Analytics />
+            <body className={`antialiased background`}>
+                <FumaDocsProvider>
+                    <div>{children}</div>
+                </FumaDocsProvider>
+            </body>
+            <GoogleAnalytics gaId="G-Y02PEY1GJZ" />
+        </html>
+    );
 }
