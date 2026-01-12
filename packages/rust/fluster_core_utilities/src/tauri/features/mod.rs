@@ -1,5 +1,14 @@
+pub mod bibliography;
 pub mod database;
+pub mod dictionary;
+pub mod embedded_docs;
 pub mod file_system;
+pub mod health;
+pub mod math;
+pub mod mdx;
+pub mod media;
 pub mod notifications;
+pub mod search;
+pub mod settings;
 pub mod syncing;
 pub mod taggables;

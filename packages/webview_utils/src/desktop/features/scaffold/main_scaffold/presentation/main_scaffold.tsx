@@ -10,7 +10,7 @@ import CommandPalette from "src/desktop/features/command_palette/presentation/co
 import { CommandPaletteProvider } from "src/desktop/features/command_palette/state/command_palette_provider";
 import ConfirmationModalContainer from "src/desktop/features/notifications/confirmation/presentation/confirmation_modal/confirmation_modal_container";
 
-const DesktopScaffold = (): ReactNode => {
+export const DesktopScaffold = (): ReactNode => {
     useDevelopmentLogger();
     const location = useLocation();
     useEffect(() => {
@@ -43,5 +43,3 @@ const DesktopScaffold = (): ReactNode => {
 };
 
 DesktopScaffold.displayName = "DesktopScaffold";
-
-export default DesktopScaffold;

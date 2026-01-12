@@ -16,5 +16,6 @@ declare global {
         "request-confirmation-response": CustomEvent<ConfirmationModalProps>;
         "cancel-confirmation-request": CustomEvent<{ id: string }>;
         "show_command_palette": CustomEvent<null>;
+        "main-panel-resize": CustomEvent<null>
     }
 }

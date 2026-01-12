@@ -4,11 +4,15 @@ use thiserror::Error;
 
 #[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Type)]
 pub enum FlusterError {
+    #[error("A development-only error. This feature is not yet implemented.")]
+    NotImplemented,
     #[error("A test error used for development.")]
     CanaryError,
     // -- Serialization Errors --
     #[error("Json serialization error.")]
     JsonSerializationError,
+    #[error("Serializing to Rust failed.")]
+    FailToSerialize,
     #[error("Frontmatter error.")]
     FrontMatterError,
     #[error("Could not successfully parse this mdx content.")]
@@ -43,6 +47,11 @@ pub enum FlusterError {
     FailToFindById,
     #[error("Failed to delete an entity.")]
     FailToDelete,
+    // -- Settings
+    #[error("Failed to read settings from the database. Using defaults instead.")]
+    FailToReadSettings,
+    #[error("Failed to save settings.")]
+    FailToSaveSettings,
 }
 
 pub type FlusterResult<T> = Result<T, FlusterError>;

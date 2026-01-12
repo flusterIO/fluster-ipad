@@ -30,7 +30,7 @@ rayon = "1.11.0"
 regex = "1.12.2"
 tokio = "1.48.0"
 flatbuffers = "25.9.23"
-tauri = { version = "2", features = ["devtools", "specta", "tray-icon", "test"] }
+tauri = { version = "2", features = ["devtools", "specta", "tray-icon", "test", "protocol-asset"] }
 typeshare = "1.0.0"
 specta = { version = "=2.0.0-rc.22", features = ["chrono", "derive", "serde", "serde_json"] }
 tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }

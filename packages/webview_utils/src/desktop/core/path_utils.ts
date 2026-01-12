@@ -39,3 +39,13 @@ export const getHtmlFileURl = (pdfPath: string): string => {
     sp.set("fsPath", pdfPath);
     return `${AppRoutes.htmlFile}?${sp.toString()}`;
 };
+
+
+export const getEmbeddedDocUrl = (docId: string) =>
+    `${AppRoutes.embeddedDocs.toString()}/${encodeURI(docId)}`;
+
+export const getByEquationUrl = (equationId: string): string => {
+    const sp = new URLSearchParams();
+    sp.set("by_equation", equationId);
+    return `${AppRoutes.search}?${sp.toString()}`;
+};

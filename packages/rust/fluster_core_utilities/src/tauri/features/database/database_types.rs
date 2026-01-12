@@ -1,6 +1,5 @@
-use std::sync::MutexGuard;
-
 use lancedb::Connection;
+use tokio::sync::MutexGuard;
 
 pub type FlusterDbRaw = Connection;
 

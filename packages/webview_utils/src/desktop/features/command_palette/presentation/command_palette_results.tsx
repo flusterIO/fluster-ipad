@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ReactNode } from "react";
+import React, { useEffect, useEffectEvent, useState, type ReactNode } from "react";
 import CommandPaletteItem from "./command_palette_item";
 import {
     CommandPaletteActionType,
@@ -8,12 +8,14 @@ import {
 import { CommandPaletteAnyEntry } from "../data/models/command_palette_any_entry";
 import { Location, useLocation } from "react-router";
 
+
 const CommandPaletteResults = (): ReactNode => {
     const state = useCommandPaletteContext();
     const dispatch = useCommandPaletteDispatch();
-    const [navStackLength, setNavStackLength] = useState<number>(
+    const [navStackLength, _setNavStackLength] = useState<number>(
         state.navStack.length
     );
+    const setNavStackLength = useEffectEvent((val: number) => _setNavStackLength(val))
     const location = useLocation();
     const getItems = async (
         cb: (loc: Location) => Promise<CommandPaletteAnyEntry[]>

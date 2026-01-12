@@ -27,10 +27,12 @@ export const MdxContent = ({
     const darkMode = useDarkMode();
 
     const setParsedValue = async (initialBody: string): Promise<void> => {
+        console.log("initialBody: ", initialBody)
         try {
-            const res = await commands.parseMdxString(initialBody, null);
+            /* const res = await commands.parseMdxString(initialBody, null); */
+            const res = { status: "err" }
             if (res.status === "ok") {
-                setValue(res.data.mdx.raw_body);
+                /* setValue(res.data.mdx.raw_body); */
             }
         } catch (err) {
             console.error(err);

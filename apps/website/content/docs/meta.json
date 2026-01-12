@@ -1,7 +1,3 @@
 {
-    "pages": [
-        "user",
-        "developer",
-        "demos"
-    ]
+  "pages": ["user", "developer"]
 }

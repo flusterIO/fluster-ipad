@@ -1,4 +1,8 @@
-import { DesktopHealthReport } from "@fluster/desktop_bindings";
+// import { DesktopHealthReport } from "@fluster/desktop_bindings";
+
+type DesktopHealthReport = {
+    healthy: boolean
+}
 
 export type CombinedHealthReport = DesktopHealthReport & {
     hasSetNotesDir: boolean;

@@ -18,7 +18,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { workspace = true }
+tauri = { workspace = true, features = ["devtools", "specta", "tray-icon", "test", "protocol-asset"] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
@@ -28,6 +28,8 @@ specta-typescript = { workspace = true }
 tauri-plugin-prevent-default = "4"
 tauri-plugin-clipboard-manager = "2"
 fluster_core_utilities = { path = "../../../packages/rust/fluster_core_utilities" }
+tauri-plugin-dialog = "2"
+tauri-plugin-shell = "2"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-single-instance = "2"

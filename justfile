@@ -67,6 +67,9 @@ build_all_rust: build_cross_language_schemas
 build_fluster_rust: build_all_rust
 	cd {{justfile_directory()}}/packages/rust/fluster_rust; cargo-swift swift package -y
 
+build_fluster_core_rust_utilities: build_all_rust
+	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
+
 build_webview_utils: build_cross_language_schemas
 	pnpm run -C packages/webview_utils build
 
@@ -95,7 +98,7 @@ pre_ipad_build: generate_initial_launch_data build_cross_language_schemas genera
 generate_shiki_themes:
 	tsx scripts/write_bundled_themes.ts
 
-pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths 
+pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_core_rust_utilities build_webview_utils
 
 run_desktop_dev: pre_desktop_build
 	cd apps/fluster_desktop; cargo tauri dev

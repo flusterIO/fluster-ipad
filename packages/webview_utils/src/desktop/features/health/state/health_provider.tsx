@@ -43,14 +43,15 @@ export const HealthProvider = connector(
         );
 
         const checkHealth = async (): Promise<void> => {
-            const res = await commands.getDesktopHealthReport();
-            dispatch({
-                type: "set_health_report",
-                payload: {
-                    ...res,
-                    hasSetNotesDir: notesDirectoryIsSet,
-                },
-            });
+            console.log("notesDirectoryIsSet: ", notesDirectoryIsSet)
+            /* const res = await commands.getDesktopHealthReport(); */
+            /* dispatch({ */
+            /*     type: "set_health_report", */
+            /*     payload: { */
+            /*         ...res, */
+            /*         hasSetNotesDir: notesDirectoryIsSet, */
+            /*     }, */
+            /* }); */
         };
 
         useEventListener("request-new-health-report", () => {

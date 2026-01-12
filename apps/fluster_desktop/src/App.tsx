@@ -1,12 +1,13 @@
-import React, { useMemo, type ReactNode } from "react";
-import { RouterProvider } from "react-router";
-import { getDesktopRouter } from "@fluster/webview_utils";
+import { type ReactNode } from "react";
 
-declare global {
-    interface Window {
-        EXCALIDRAW_ASSET_PATH: string;
-    }
-}
+import { BrowserRouter, Route, Routes } from "react-router";
+import {
+    AppRoutes,
+    ResourceRoutes,
+    SplashScreen,
+    DashboardPage,
+    DesktopScaffold,
+} from "@fluster/webview_utils";
 
 const App = (): ReactNode => {
     window.MathJax = {
@@ -20,27 +21,24 @@ const App = (): ReactNode => {
         },
         chtml: {
             minScale: 0.2,
-            /* fontURL: ResourceRoutes.mathjaxFonts, */
+            fontURL: ResourceRoutes.mathjaxFonts,
         },
     };
-    window.requestIdleCallback =
-        window.requestIdleCallback ||
-        function (cb) {
-            const start = Date.now();
-            return setTimeout(function () {
-                cb({
-                    didTimeout: false,
-                    timeRemaining: function () {
-                        return Math.max(0, 50 - (Date.now() - start));
-                    },
-                });
-            }, 1);
-        };
     /* useMermaidInit(); */
     /* useGlobalKeymap(); */
 
-    const router = useMemo(() => getDesktopRouter(), []);
-    return <RouterProvider router={router} />;
+    /* const router = useMemo(() => getDesktopRouter(), [])/* ; */
+    /* return <RouterProvider router={router} />; */
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path={AppRoutes.splash_screen} element={<SplashScreen />} />
+                <Route element={<DesktopScaffold />}>
+                    <Route index path={AppRoutes.dashboard} element={<DashboardPage />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 };
 
 App.displayName = "App";

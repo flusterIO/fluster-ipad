@@ -2,17 +2,19 @@ import React, { ReactNode, useEffect, useEffectEvent, useState } from "react";
 import { CommandPaletteAnyEntry } from "../../data/command_palette_any_entry";
 import { MdxContent } from "#/mdx/components/mdx_content";
 import { MdxProviderGroup } from "#/mdx/components/mdx_provider_group";
-import { InternalEmbeddedDocsId, commands } from "@fluster/desktop_bindings";
+
+type InternalEmbeddedDocsId = string
 
 export const DocsByIdPreview = ({
     item,
 }: {
     item: CommandPaletteAnyEntry;
 }): ReactNode => {
-    const [mdxContent, setMdxContent] = useState<null | string>(null);
+    const [mdxContent] = useState<null | string>(null);
     const getData = useEffectEvent(async (docId: InternalEmbeddedDocsId): Promise<void> => {
-        const res = await commands.getEmbeddedDoc(docId);
-        setMdxContent(res);
+        console.log("docId: ", docId)
+        /* const res = await commands.getEmbeddedDoc(docId); */
+        /* setMdxContent(res); */
     })
 
     useEffect(() => {
