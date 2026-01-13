@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState, type ReactNode } from "react";
 import { AppState } from "@/state/initial_state";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { PanelLeftContainer } from "#/panel_left/presentation/panel_left_container";
 import { PanelRightContainer } from "#/panel_right/presentation/panel_right_container";
-import { cn } from "@fluster/webview_utils";
+import { cn, useDebounce } from "@fluster/webview_utils";
+import { setPanelLeftPortion } from "#/panel_left/state/panel_left_slice";
+import { setPanelRightPortion } from "#/panel_right/state/panel_right_slice";
 
 const connector = connect((state: AppState) => ({
     panelLeftWidth: state.panelLeft.width,
@@ -62,8 +64,9 @@ export const ScaffoldResizableContainer = connector(
         panelRightOpen,
         children,
     }: ScaffoldResizableContainerProps): ReactNode => {
-        const MIN_WIDTH = 100;
+        const MIN_WIDTH = 150;
         const maxWidth = window.innerWidth; // This willl need to change once sidebar navigation is added.
+        const dispatch = useDispatch();
         const [portions, setPortions] = useState<RatioData>({
             left: Math.max(maxWidth * panelLeftWidth, MIN_WIDTH),
             right: Math.max(maxWidth * panelRightWidth, MIN_WIDTH),
@@ -96,7 +99,6 @@ export const ScaffoldResizableContainer = connector(
             return () => window.removeEventListener("resize", handleWindowResize);
         }, []);
 
-        console.log("gridTemplateColumns: ", gridTemplateColumns);
         return (
             <div
                 className="w-full h-[calc(100vh-2rem)] grid"
@@ -108,7 +110,7 @@ export const ScaffoldResizableContainer = connector(
                     <>
                         <div
                             className={
-                                "px-4 py-6 bg-muted/30 pt-8 h-full rounded-tr-lg rounded-br-lg"
+                                "px-4 py-6 bg-muted/30 pt-8 h-full rounded-tr-lg rounded-br-lg select-none"
                             }
                         >
                             <PanelLeftContainer />
@@ -119,6 +121,7 @@ export const ScaffoldResizableContainer = connector(
                                     ...portions,
                                     left: Math.max(e * window.innerWidth, MIN_WIDTH),
                                 });
+                                dispatch(setPanelLeftPortion(e));
                             }}
                         />
                     </>
@@ -134,12 +137,12 @@ export const ScaffoldResizableContainer = connector(
                                     ...portions,
                                     right: Math.max(window.innerWidth * (1 - e), MIN_WIDTH),
                                 });
+                                dispatch(setPanelRightPortion(e));
                             }}
                         />
-
                         <div
                             className={cn(
-                                "px-4 py-6 bg-muted/30 pt-8 h-full rounded-tl-lg rounded-bl-lg",
+                                "px-4 py-6 bg-muted/30 pt-8 h-full rounded-tl-lg rounded-bl-lg select-none",
                             )}
                         >
                             <PanelRightContainer />

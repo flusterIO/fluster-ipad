@@ -1,3 +1,7 @@
+import { CommandPaletteState } from "#/command_palette/state/command_palette_state";
+import { initialCommandPaletteState } from "#/command_palette/state/initial_command_palette_state";
+import { initialKeymapState } from "#/keymap/state/initial_keymap_state";
+import { KeymapState } from "#/keymap/state/keymap_state";
 import { initialScaffoldState } from "#/scaffold/state/initial_scaffold_state";
 import { ScaffoldState } from "#/scaffold/state/scaffold_state";
 import { initialPanelLeftState } from "../../features/panel_left/state/initial_panel_left_state";
@@ -12,6 +16,8 @@ export interface AppState {
     panelLeft: PanelLeftState;
     panelRight: PanelRightState;
     scaffold: ScaffoldState;
+    commandPalette: CommandPaletteState;
+    keymap: KeymapState;
 }
 
 export const initialAppState: AppState = {
@@ -19,4 +25,6 @@ export const initialAppState: AppState = {
     panelLeft: initialPanelLeftState,
     panelRight: initialPanelRightState,
     scaffold: initialScaffoldState,
+    commandPalette: initialCommandPaletteState,
+    keymap: initialKeymapState,
 };

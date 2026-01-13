@@ -1,8 +1,8 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { type ReactNode } from "react";
 import { connect, useDispatch } from "react-redux";
-import { togglePanelLeft } from "../../panel_left/state/panel_left_slice";
-import { togglePanelRight } from "../../panel_right/state/panel_right_slice";
+import { setPanelLeftOpen } from "../../panel_left/state/panel_left_slice";
+import { setPanelRightOpen } from "../../panel_right/state/panel_right_slice";
 import { AppState } from "../../../core/state/initial_state";
 import { cn } from "@fluster/webview_utils";
 
@@ -32,7 +32,7 @@ const DesktopTitleBar = connector(
                         panelLeftOpen ? "text-foreground" : "text-foreground/70",
                     )}
                     onClick={() => {
-                        dispatch(togglePanelLeft());
+                        dispatch(setPanelLeftOpen("toggle"));
                     }}
                 />
                 <ChevronLeft
@@ -41,7 +41,7 @@ const DesktopTitleBar = connector(
                         panelRightOpen ? "text-foreground" : "text-foreground/70",
                     )}
                     onClick={() => {
-                        dispatch(togglePanelRight());
+                        dispatch(setPanelRightOpen("toggle"));
                     }}
                 />
             </div>

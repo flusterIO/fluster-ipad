@@ -2,6 +2,8 @@ import SettingsReducer from "../../features/settings/state/settings_state_slice"
 import PanelLeftReducer from "../../features/panel_left/state/panel_left_slice";
 import PanelRightReducer from "../../features/panel_right/state/panel_right_slice";
 import ScaffoldReducer from "../../features/scaffold/state/scaffold_state_slice";
+import CommandPaletteReducer from "../../features/command_palette/state/command_palette_state_slice";
+import KeymapReducer from "../../features/keymap/state/keymap_state_slice";
 import { Reducer, combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     persistReducer,
@@ -22,6 +24,8 @@ const reducers: Record<keyof AppState, Reducer> = {
     panelRight: PanelRightReducer,
     settings: SettingsReducer,
     scaffold: ScaffoldReducer,
+    commandPalette: CommandPaletteReducer,
+    keymap: KeymapReducer,
 };
 
 const rootReducer = combineReducers(reducers);
