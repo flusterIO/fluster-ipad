@@ -26,6 +26,12 @@ async fsFileExtensionGlob(fileExtension: string, basePath: string, nThreads: str
 /** user-defined types **/
 
 export type FlusterError = "NotImplemented" | "CanaryError" | "JsonSerializationError" | "FailToSerialize" | "FrontMatterError" | "MdxParsingError" | { FailToReadFileSystemPath: string } | { FailToSaveFile: string } | "DataDirNotFound" | "FailToFindDataDirectory" | "FailToConnect" | "FailToCreateTable" | "FailToOpenTable" | "FailToStartDb" | "FailToDropTable" | "FailToCreateEntity" | "FailToFind" | "FailToFindById" | "FailToDelete" | "FailToReadSettings" | "FailToSaveSettings"
+export type ToastConfig = { title: string; body: string; duration: number; variant: ToastVariant; 
+/**
+ * id is required to allow items to be removed reliably. It just needs to be unique.
+ */
+id: string }
+export type ToastVariant = "Success" | "Info" | "Error"
 
 /** tauri-specta globals **/
 

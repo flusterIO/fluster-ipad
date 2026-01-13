@@ -2,6 +2,8 @@ import { CommandPaletteState } from "#/command_palette/state/command_palette_sta
 import { initialCommandPaletteState } from "#/command_palette/state/initial_command_palette_state";
 import { initialKeymapState } from "#/keymap/state/initial_keymap_state";
 import { KeymapState } from "#/keymap/state/keymap_state";
+import { initialNotificationsState } from "#/notifications/state/initial_notifications_state";
+import { NotificationState } from "#/notifications/state/notifications_state";
 import { initialScaffoldState } from "#/scaffold/state/initial_scaffold_state";
 import { ScaffoldState } from "#/scaffold/state/scaffold_state";
 import { initialPanelLeftState } from "../../features/panel_left/state/initial_panel_left_state";
@@ -18,6 +20,7 @@ export interface AppState {
     scaffold: ScaffoldState;
     commandPalette: CommandPaletteState;
     keymap: KeymapState;
+    notifications: NotificationState;
 }
 
 export const initialAppState: AppState = {
@@ -27,4 +30,5 @@ export const initialAppState: AppState = {
     scaffold: initialScaffoldState,
     commandPalette: initialCommandPaletteState,
     keymap: initialKeymapState,
+    notifications: initialNotificationsState,
 };

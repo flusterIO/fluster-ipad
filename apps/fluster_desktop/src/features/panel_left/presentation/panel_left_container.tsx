@@ -29,7 +29,7 @@ export const PanelLeftContainer = connector(
     ({ panelLeft }: PanelLeftContainerProps): ReactNode => {
         const dispatch = useDispatch();
         return (
-            <div className="h-[calc(100vh-2rem)]">
+            <div className="h-[calc(100vh-2rem)] overflow-x-hidden">
                 <PanelSelect
                     onChange={(item) => dispatch(setPanelLeftPanel(item))}
                     items={panelLeftItems}

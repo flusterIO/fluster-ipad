@@ -2,6 +2,7 @@ mod core;
 mod features;
 use features::search::methods::fs_file_extension_glob::fs_file_extension_glob;
 use fluster_core_utilities::core_types::fluster_error::FlusterError;
+use fluster_core_utilities::tauri::features::notifications::toast_config::ToastConfig;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use tauri_plugin_prevent_default::Flags;
@@ -23,6 +24,7 @@ pub fn run() {
             fs_file_extension_glob
         ])
         // .events(collect_events![])
+        .typ::<ToastConfig>()
         .typ::<FlusterError>();
     let prevent = tauri_plugin_prevent_default::Builder::new()
         .with_flags(Flags::all().difference(Flags::FIND | Flags::RELOAD))

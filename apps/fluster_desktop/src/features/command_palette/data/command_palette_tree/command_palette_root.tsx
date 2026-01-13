@@ -1,4 +1,3 @@
-import { ChevronRight } from "lucide-react";
 import { CommandPaletteItem } from "../command_palette_item";
 import { setPanelLeftOpen } from "#/panel_left/state/panel_left_slice";
 import { setPanelRightOpen } from "#/panel_right/state/panel_right_slice";
@@ -8,7 +7,7 @@ export const getCommandPaletteRoot = () =>
     new CommandPaletteItem({
         label: "",
         icon: () => null,
-        children: [
+        children: async () => [
             new CommandPaletteItem({
                 label: "Panel Left (toggle)",
                 icon: IconBoxAlignLeft,

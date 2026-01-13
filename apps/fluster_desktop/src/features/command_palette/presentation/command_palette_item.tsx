@@ -22,9 +22,7 @@ export const CommandPaletteItemComponent = ({
                 focusedIndex === idx ? "border-l-primary" : "border-l-transparent",
             )}
             style={{
-                gridTemplateColumns: item.children.length
-                    ? "1.5rem 1fr 2rem"
-                    : "1.5rem 1fr",
+                gridTemplateColumns: item.children ? "1.5rem 1fr 2rem" : "1.5rem 1fr",
             }}
         >
             <Icon className="text-muted-foreground w-4 h-4" />
@@ -32,7 +30,7 @@ export const CommandPaletteItemComponent = ({
                 className="w-full text-sm"
                 dangerouslySetInnerHTML={{ __html: item.label }}
             />
-            {item.children.length ? <ChevronRight /> : null}
+            {item.children ? <ChevronRight /> : null}
         </div>
     );
 };

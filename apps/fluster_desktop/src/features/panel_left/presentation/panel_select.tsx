@@ -23,11 +23,16 @@ export const PanelSelect = <T extends AnySidePanelId>(
 ): ReactNode => {
     const form = useForm({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            item: props.items[0].label,
+        },
     });
     form.watch((formState) => {
         const formStateItem = formState.item as T | undefined;
         if (formStateItem && formStateItem !== props.value.id) {
-            const foundValue = props.items.find((item) => item.id === formStateItem);
+            const foundValue = props.items.find(
+                (item) => item.label === formStateItem,
+            );
             if (foundValue) {
                 props.onChange(foundValue);
             }
@@ -40,7 +45,7 @@ export const PanelSelect = <T extends AnySidePanelId>(
                 items={props.items.map((item) => {
                     return {
                         label: item.label,
-                        value: item.id,
+                        value: item.label,
                     };
                 })}
                 classes={{
