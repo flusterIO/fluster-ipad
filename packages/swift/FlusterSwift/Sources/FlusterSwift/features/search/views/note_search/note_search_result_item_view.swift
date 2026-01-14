@@ -8,6 +8,7 @@
 import PencilKit
 import SwiftData
 import SwiftUI
+import FlusterData
 
 public struct NoteSearchResultItemInnerView: View {
   @Binding var editingNote: NoteModel?

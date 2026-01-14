@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 import WebKit
+import FlusterData
 
 public struct NoteDetailWebviewInternal: UIViewRepresentable {
   @State private var lastNoteId: String? = nil

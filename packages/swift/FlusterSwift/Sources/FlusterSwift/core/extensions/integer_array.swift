@@ -5,7 +5,7 @@
 //  Created by Andrew on 12/2/25.
 //
 
-import FlusterRust
+import FlusterSwiftMdxParser
 import Foundation
 
 extension [Int] {

@@ -1,7 +1,8 @@
 import FlatBuffers
-import FlusterRust
+import FlusterSwiftMdxParser
 import Foundation
 import SwiftData
+import FlusterData
 
 extension String {
   public func toQuotedJavascriptString() -> String {

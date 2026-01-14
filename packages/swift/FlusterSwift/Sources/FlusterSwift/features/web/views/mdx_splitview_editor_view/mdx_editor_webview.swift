@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 import WebKit
+import FlusterData
 
 public enum MdxViewFullScreenCover {
   case byTag(tagModel: BibEntryModel)

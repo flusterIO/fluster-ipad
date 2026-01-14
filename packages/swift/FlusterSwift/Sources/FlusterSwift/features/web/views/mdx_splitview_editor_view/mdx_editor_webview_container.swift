@@ -2,6 +2,7 @@ import Combine
 import FlatBuffers
 import SwiftUI
 import WebKit
+import FlusterData
 
 @MainActor
 public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWebviewEvents> {

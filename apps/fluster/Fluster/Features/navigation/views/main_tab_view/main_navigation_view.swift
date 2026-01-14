@@ -6,7 +6,7 @@
 // swiftlint:disable file_length
 
 import FlatBuffers
-import FlusterRust
+import FlusterSwiftMdxParser
 import FlusterSwift
 import PencilKit
 import SwiftData

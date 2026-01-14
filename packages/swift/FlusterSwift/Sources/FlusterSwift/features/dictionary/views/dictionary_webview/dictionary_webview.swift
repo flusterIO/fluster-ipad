@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 import WebKit
+import FlusterData
 
 public struct DictionaryWebview: UIViewRepresentable {
   let url: URL = Bundle.main.url(

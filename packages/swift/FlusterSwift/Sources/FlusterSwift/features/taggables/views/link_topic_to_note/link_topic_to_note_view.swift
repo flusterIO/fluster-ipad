@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 public struct LinkTopicToNoteView: View {
   @Environment(\.dismiss) private var dismiss

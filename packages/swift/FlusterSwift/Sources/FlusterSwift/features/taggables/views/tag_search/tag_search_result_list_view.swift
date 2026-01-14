@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 public struct TagSearchResultList: View {
   @Query(sort: \TagModel.lastAccess, order: .reverse) private var tags: [TagModel]

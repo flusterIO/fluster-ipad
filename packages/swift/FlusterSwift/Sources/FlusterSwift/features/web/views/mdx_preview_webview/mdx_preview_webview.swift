@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 import WebKit
+import FlusterData
 
 //import FlusterS
 

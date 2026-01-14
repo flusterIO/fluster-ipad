@@ -7,6 +7,7 @@
 
 import Foundation
 import PencilKit
+import FlusterData
 
 // TODO: Move this to some place that makes sense.
 public func loadDrawing(note: NoteModel) -> PKDrawing {

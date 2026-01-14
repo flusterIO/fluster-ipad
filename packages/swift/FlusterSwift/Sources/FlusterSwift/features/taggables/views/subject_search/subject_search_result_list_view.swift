@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 public struct SubjectSearchResultListView: View {
   @Query(sort: \SubjectModel.lastAccess, order: .reverse) private
@@ -46,12 +47,12 @@ public struct SubjectSearchResultListView: View {
         NavigationLink(
           destination: {
             NoteSearchResultsBySubjectView(
-              subject: subject as! SubjectModel,
+              subject: subject,
               editingNote: $editingNote
             )
           },
           label: {
-            Text((subject as! SubjectModel).value)
+            Text((subject).value)
           }
         )
         .swipeActions(

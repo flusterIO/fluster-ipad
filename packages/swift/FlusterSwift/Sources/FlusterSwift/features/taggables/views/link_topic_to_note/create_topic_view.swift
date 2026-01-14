@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 public struct CreateTopicView: View {
   @State private var textValue: String = ""

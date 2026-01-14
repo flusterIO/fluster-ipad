@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FlusterData
 
 public enum MainFullScreenCover {
   case tagSearch(tag: TagModel)

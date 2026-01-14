@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 public struct EditNoteTaggablesView: View {
   @Environment(\.modelContext) private var modelContext

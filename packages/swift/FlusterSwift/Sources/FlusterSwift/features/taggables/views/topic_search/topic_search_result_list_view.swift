@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 public struct TopicSearchResultListView: View {
   @Query(sort: \TopicModel.lastAccess, order: .reverse) private var topics: [TopicModel]

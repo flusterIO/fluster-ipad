@@ -7,6 +7,7 @@
 
 import FlatBuffers
 import Foundation
+import FlusterData
 
 extension Data {
   public func toMdxParsingResult() -> MdxSerialization_MdxParsingResultBuffer? {

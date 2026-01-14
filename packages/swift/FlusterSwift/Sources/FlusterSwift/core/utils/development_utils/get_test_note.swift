@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import FlusterData
 
 @MainActor
 public func getTestNote(modelContext: ModelContext) async -> NoteModel {

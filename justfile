@@ -17,6 +17,11 @@ format_swift:
 	swift-format format --configuration={{justfile_directory()}}/.swift-format -ipr {{justfile_directory()}}/apps/fluster
 	swift-format format --configuration={{justfile_directory()}}/.swift-format -ipr {{justfile_directory()}}/packages/swift
 
+resolve_swift_packages:
+	cd {{justfile_directory()}}/packages/swift/FlusterData; swift package resolve
+	cd {{justfile_directory()}}/packages/swift/FlusterMdx; swift package resolve
+	cd {{justfile_directory()}}/packages/swift/FlusterSwift; swift package resolve
+
 format: format_package_jsons format_swift
 
 build_website:
@@ -45,13 +50,16 @@ generate_initial_note_data: generate_initial_note_paths
 	./target/debug/fluster_internal_cli parse-initial-notes
 
 build_cross_language_schemas: generate_initial_note_data
-	$FLAT_BUFFER_PATH -o ./packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift
+	$FLAT_BUFFER_PATH -o ./packages/swift/FlusterData/Sources/FlusterData/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift
 	$FLAT_BUFFER_PATH -o ./packages/rust/fluster_core_utilities/src/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --rust
-	$FLAT_BUFFER_PATH -o ./packages/webview_utils/src/core/code_gen//flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --ts
+	$FLAT_BUFFER_PATH -o ./packages/webview_utils/src/core/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --ts
+	$FLAT_BUFFER_PATH -o ./packages/generated/desktop_bindings/src/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --ts
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=swift --output-folder={{justfile_directory()}}/packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/typeshare
 
-build_cross_language: build_cross_language_schemas build_fluster_rust
+
+
+build_cross_language: build_cross_language_schemas build_fluster_swift_mdx_parser 
 
 generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data
 
@@ -64,8 +72,8 @@ launch_ipad_simulator: build_ipad_simulator
 build_all_rust: build_cross_language_schemas
 	cargo build
 
-build_fluster_rust: build_all_rust
-	cd {{justfile_directory()}}/packages/rust/fluster_rust; cargo-swift swift package -y
+build_fluster_swift_mdx_parser: build_all_rust
+	cd {{justfile_directory()}}/packages/rust/fluster_swift_mdx_parser; cargo-swift swift package -y
 
 build_fluster_core_rust_utilities: build_all_rust
 	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
@@ -93,15 +101,12 @@ build_bibtex_editor_webview: build_webview_utils
 
 build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview build_dictionary_webview
 
-pre_ipad_build: generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_rust build_all_webviews
+pre_ipad_build: generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_swift_mdx_parser build_all_webviews
 
 generate_shiki_themes:
 	tsx scripts/write_bundled_themes.ts
 
 pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_core_rust_utilities build_webview_utils
-
-run_desktop_dev: pre_desktop_build
-	cd apps/fluster_desktop; cargo tauri dev
 
 create_desktop_feature feature_name:
 	python scripts/create_feature_util.py {{feature_name}}

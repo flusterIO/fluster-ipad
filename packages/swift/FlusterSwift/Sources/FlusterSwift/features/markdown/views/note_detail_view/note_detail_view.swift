@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FlusterData
 
 public struct NoteDetailView: View {
   @Environment(ThemeManager.self) var themeManager: ThemeManager

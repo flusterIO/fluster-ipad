@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 public struct NoteSearchResultsByCitationView: View {
   @Query(sort: \NoteModel.lastRead, order: .reverse) private var notes: [NoteModel]
@@ -16,8 +17,7 @@ public struct NoteSearchResultsByCitationView: View {
   var filteredNotes: [NoteModel] {
     return noteQuery.isEmpty
       ? notes
-      : MdxTextUtils.sortNotesByMarkdownBodyMatch(
-        notes: notes,
+      : notes.sortNotesByMarkdownBodyMatch(
         query: noteQuery,
         filterNoMatch: true
       )

@@ -10,4 +10,5 @@ packages:
   - packages/webviews/dictionary_webview
   - packages/webview_utils
   - packages/shared_config
-  - packages/desktop_bindings
+  - packages/generated/desktop_bindings
+  - packages/swift/desktop_plugins/fluster_swift_data/

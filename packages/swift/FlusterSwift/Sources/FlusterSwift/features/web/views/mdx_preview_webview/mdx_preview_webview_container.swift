@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import SwiftUI
+import FlusterData
 
 @MainActor
 public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebviewEvents> {

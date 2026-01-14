@@ -7,7 +7,7 @@
 
 import Testing
 
-@testable import FlusterRust
+@testable import FlusterSwiftMdxParser
 @testable import FlusterSwift
 
 @Test("Decodes initial json data")

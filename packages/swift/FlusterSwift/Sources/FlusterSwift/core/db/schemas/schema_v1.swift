@@ -6,7 +6,7 @@
 //
 
 import FlatBuffers
-import FlusterRust
+import FlusterSwiftMdxParser
 import Foundation
 import PencilKit
 import SwiftData

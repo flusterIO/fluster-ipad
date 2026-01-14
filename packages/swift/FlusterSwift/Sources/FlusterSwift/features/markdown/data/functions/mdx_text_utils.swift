@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FlusterMdx
 
 public struct MdxTextUtils {
   public static func removeHeadingSyntax(val: String) -> String {
@@ -62,53 +63,5 @@ public struct MdxTextUtils {
       }
     }
     return matches.sorted { $0.depth < $1.depth }.first
-  }
-
-  /// This function assumes that all 'notes' have been validated to be a match by the database query. Otherwise  all notes will return to be a match.
-  public static func sortNotesByMarkdownBodyMatch(
-    notes: [NoteModel], query: String, filterNoMatch: Bool = true
-  )
-    -> [NoteModel]
-  {
-    var h1Results: [NoteModel] = []
-    var h2Results: [NoteModel] = []
-    var h3Results: [NoteModel] = []
-    var h4Results: [NoteModel] = []
-    var h5Results: [NoteModel] = []
-    var h6Results: [NoteModel] = []
-    var bodyResults: [NoteModel] = []
-    for note in notes {
-      let titles = getTitles(body: note.markdown.body)
-      if !titles.isEmpty {
-        if let highestMatch = getHighestMatch(
-          titleResults: titles,
-          query: query
-        ) {
-          switch highestMatch.depth {
-            case 0:
-              bodyResults.append(note)
-            case 1:
-              h1Results.append(note)
-            case 2:
-              h2Results.append(note)
-            case 3:
-              h3Results.append(note)
-            case 4:
-              h4Results.append(note)
-            case 5:
-              h5Results.append(note)
-            case 6:
-              h6Results.append(note)
-            default:
-              bodyResults.append(note)
-          }
-        } else if !filterNoMatch {
-          bodyResults.append(note)
-        }
-      }
-    }
-
-    return h1Results + h2Results + h3Results + h4Results + h5Results
-      + h6Results + bodyResults
   }
 }

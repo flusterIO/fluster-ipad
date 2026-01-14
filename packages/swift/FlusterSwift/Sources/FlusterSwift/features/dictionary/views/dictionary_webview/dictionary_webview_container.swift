@@ -7,6 +7,7 @@
 
 import FlatBuffers
 import Foundation
+import FlusterData
 
 public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebviewEvents> {
   public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {

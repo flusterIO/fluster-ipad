@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WebKit
+import FlusterData
 
 public struct BibtexEditorWebview: UIViewRepresentable {
   let url: URL = Bundle.main.url(

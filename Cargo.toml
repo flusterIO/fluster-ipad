@@ -1,12 +1,12 @@
 [workspace]
 resolver = "3"
 members = [
-    "apps/fluster_desktop/src-tauri",
-    "packages/rust/fluster_core_utilities", "packages/rust/fluster_database",
+    "packages/rust/fluster_core_utilities",
+    "packages/rust/fluster_database",
     "packages/rust/fluster_internal_cli",
     "packages/rust/fluster_lsp",
     "packages/rust/fluster_pre_parser",
-    "packages/rust/fluster_rust",
+    "packages/rust/fluster_swift_mdx_parser",
 ]
 
 

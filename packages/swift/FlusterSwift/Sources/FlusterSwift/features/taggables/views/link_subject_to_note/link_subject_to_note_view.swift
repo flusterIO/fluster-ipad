@@ -6,6 +6,7 @@
 //
 
 import SwiftData
+import FlusterData
 import SwiftUI
 
 public struct LinkSubjectToNoteView: View {

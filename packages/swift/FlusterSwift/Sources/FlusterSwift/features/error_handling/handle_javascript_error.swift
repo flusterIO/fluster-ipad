@@ -7,6 +7,7 @@
 
 import FlatBuffers
 import Foundation
+import FlusterData
 
 public func handleJavascriptError(base64String: String) {
   if var data = Data(base64Encoded: base64String) {

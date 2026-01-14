@@ -1,0 +1,51 @@
+{
+  "originHash" : "86d35e888cedae6bfaaf9d5f4ef702b9c09bb0925dd3e5bf66b5f52148985825",
+  "pins" : [
+    {
+      "identity" : "antlr4-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MaxHaertwig/ANTLR4-Swift.git",
+      "state" : {
+        "revision" : "0b4eed93b803c931db67cc30434b5531f72d50b1",
+        "version" : "4.9.1"
+      }
+    },
+    {
+      "identity" : "flatbuffers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/flatbuffers.git",
+      "state" : {
+        "revision" : "187240970746d00bbd26b0f5873ed54d2477f9f3",
+        "version" : "25.9.23"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax.git",
+      "state" : {
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
+      }
+    },
+    {
+      "identity" : "swift-testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-testing",
+      "state" : {
+        "revision" : "48a471ab313e858258ab0b9b0bf2cea55a50cefb",
+        "version" : "6.2.3"
+      }
+    },
+    {
+      "identity" : "swiftybibtex",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MaxHaertwig/SwiftyBibtex.git",
+      "state" : {
+        "revision" : "b653c01e6315cf06c2c55a8396a397cdadaddccf",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}

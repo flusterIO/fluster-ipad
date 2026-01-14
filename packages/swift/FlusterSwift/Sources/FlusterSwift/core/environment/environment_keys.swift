@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FlusterData
 
 public struct DataHandlerKey: EnvironmentKey {
   public static let defaultValue: @Sendable () async -> DataHandler? = { nil }

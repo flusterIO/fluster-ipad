@@ -5,7 +5,7 @@
 //  Created by Andrew on 12/4/25.
 //
 
-import FlusterRust
+import FlusterSwiftMdxParser
 import Foundation
 
 struct CodableCitationResult: Codable {
