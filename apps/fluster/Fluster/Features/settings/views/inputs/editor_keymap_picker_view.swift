@@ -7,6 +7,7 @@
 
 import FlusterSwift
 import SwiftUI
+import FlusterData
 
 struct EditorKeymapPickerView: View {
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base

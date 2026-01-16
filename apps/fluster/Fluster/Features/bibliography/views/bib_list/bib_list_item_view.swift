@@ -9,6 +9,7 @@ import FlusterSwift
 import SwiftData
 import SwiftUI
 import SwiftyBibtex
+import FlusterData
 
 struct BibEntryListItemView: View {
   var item: BibEntryModel

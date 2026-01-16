@@ -1,5 +1,6 @@
 import FlusterSwift
 import SwiftUI
+import FlusterData
 
 struct NoteDetailsTabView: View {
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private var hasPreviouslyLaunched:

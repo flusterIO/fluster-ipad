@@ -8,6 +8,7 @@
 import FlusterSwift
 import SwiftData
 import SwiftUI
+import FlusterData
 
 struct ByBibEntrySearchResults: View {
   @Query private var notes: [NoteModel]

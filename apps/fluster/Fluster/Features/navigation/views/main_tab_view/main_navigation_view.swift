@@ -11,6 +11,7 @@ import FlusterSwift
 import PencilKit
 import SwiftData
 import SwiftUI
+import FlusterData
 internal import os
 
 func getDrawing(data: Data?) -> PKDrawing {

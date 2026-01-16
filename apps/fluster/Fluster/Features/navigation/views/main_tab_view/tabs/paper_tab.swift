@@ -1,6 +1,7 @@
 import FlusterSwift
 import PencilKit
 import SwiftUI
+import FlusterData
 
 struct PaperTabView: View {
   @State private var toolbar: PKToolPicker = PKToolPicker()

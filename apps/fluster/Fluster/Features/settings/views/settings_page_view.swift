@@ -7,6 +7,7 @@
 
 import FlusterSwift
 import SwiftUI
+import FlusterData
 
 struct SettingsPageView: View {
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =

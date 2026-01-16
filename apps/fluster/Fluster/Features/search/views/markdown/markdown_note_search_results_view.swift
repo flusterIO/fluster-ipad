@@ -8,6 +8,8 @@
 import FlusterSwift
 import SwiftData
 import SwiftUI
+import FlusterData
+import FlusterMdx
 
 struct MarkdownNotesSearchResultsWrappedQuery: View {
   @Environment(\.modelContext) var modelContext
@@ -20,8 +22,8 @@ struct MarkdownNotesSearchResultsWrappedQuery: View {
   var sortedNotes: [NoteModel] {
     return searchQuery.isEmpty
       ? notes
-      : MdxTextUtils.sortNotesByMarkdownBodyMatch(
-        notes: notes, query: searchQuery, filterNoMatch: false)
+      : notes.sortNotesByMarkdownBodyMatch(
+        query: searchQuery, filterNoMatch: false)
   }
 
   init(editingNote: Binding<NoteModel?>, searchQuery: Binding<String>) {

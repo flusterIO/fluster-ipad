@@ -9,12 +9,20 @@ import FlusterSwiftMdxParser
 import Foundation
 import SwiftData
 
-public let INITIAL_NOTES_DATA_PATH = "initial_note_docs/initial_notes_parsed_data"
-
 @MainActor  // This was required by the mainContext key, but there's almost surely a way to do this multi-threaded. Look into this later.
 @available(iOS 17, macOS 14, *)
 public final class AppDataContainer {
-  public static let shared = AppDataContainer()
+  private let initialNotesUrl: URL
+  private static var _shared: AppDataContainer?
+
+  // Public accessor
+  public static var shared: AppDataContainer {
+    guard let instance = _shared else {
+      fatalError("SimulationEngine must be initialized with 'setup(constant:)' before use.")
+    }
+    return instance
+  }
+
   public var sharedModelContainer: ModelContainer {
     let hasLaunchedPreviously = UserDefaults.standard.bool(
       forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
@@ -75,24 +83,25 @@ public final class AppDataContainer {
                 url = {https://link.aps.org/doi/10.1103/PhysRevLett.4.337}
               }
               """),
-            BibEntryModel(
+          BibEntryModel(
             data: """
-                @letter{Einstein_Besso_Letter,
-                author = {Einstein, Albert},
-                year = {1955},
-                month = {March},
-                title = {{Letter to the family Michele Besso following his death}},
-                }
-                """)
+              @letter{Einstein_Besso_Letter,
+              author = {Einstein, Albert},
+              year = {1955},
+              month = {March},
+              title = {{Letter to the family Michele Besso following his death}},
+              }
+              """)
         ]
         for bibEntry in initialBibliographyEntries {
           container.mainContext.insert(bibEntry)
         }
-          try container.mainContext.save()
+        try container.mainContext.save()
 
         let noteData = InitialNotesDataJsonDecoder.decode(
-          from: INITIAL_NOTES_DATA_PATH
+          from: self.initialNotesUrl
         )
+
 
         if let nd = noteData {
           nd.forEach { noteItemData in
@@ -115,7 +124,9 @@ public final class AppDataContainer {
     }
   }
 
-  private init() {}
+  private init(initialNotesUrl: URL) {
+    self.initialNotesUrl = initialNotesUrl
+  }
 
   public func dataHandlerCreator() -> @Sendable () async -> DataHandler {
     let container = sharedModelContainer
@@ -123,5 +134,8 @@ public final class AppDataContainer {
       DataHandler(modelContainer: container)
     }
   }
+  public static func setup(initialNotesUrl: URL) {
+    guard _shared == nil else { return }  // Prevent re-initialization
+    _shared = AppDataContainer(initialNotesUrl: initialNotesUrl)
+  }
 }
-

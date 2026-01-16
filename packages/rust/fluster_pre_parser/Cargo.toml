@@ -8,7 +8,7 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-uniffi = { workspace = true, features = ["tokio"] }
+uniffi = { workspace = true }
 fluster_core_utilities = { workspace = true }
 serde = { workspace = true }
 async-trait = { workspace = true }

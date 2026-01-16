@@ -8,6 +8,7 @@
 import FlusterSwift
 import SwiftUI
 import SwiftyBibtex
+import FlusterData
 
 struct BibEntrySearchResultItemView: View {
   var item: BibEntryModel

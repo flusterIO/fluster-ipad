@@ -19,9 +19,19 @@ import FlusterData
 
 @main
 struct FlusterApp: App {
-  let appData = AppDataContainer.shared
+    let appData: AppDataContainer
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private var hasPreviouslyLaunched:
     Bool = false
+    
+    init() {
+        AppDataContainer.setup(
+            initialNotesUrl: Bundle.main.url(
+                forResource: "initial_note_docs/initial_notes_parsed_data",
+                withExtension: "json"
+              )!
+        )
+        self.appData = AppDataContainer.shared
+    }
 
   var body: some Scene {
     WindowGroup {
@@ -32,3 +42,4 @@ struct FlusterApp: App {
     .modelContainer(appData.sharedModelContainer)
   }
 }
+

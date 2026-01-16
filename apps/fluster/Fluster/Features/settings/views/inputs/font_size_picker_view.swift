@@ -7,6 +7,7 @@
 
 import FlusterSwift
 import SwiftUI
+import FlusterData
 
 struct FontSizePicker: View {
   @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private var webviewFontSize:

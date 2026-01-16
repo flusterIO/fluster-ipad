@@ -15,7 +15,7 @@ extension MdxParsingResult: @retroactive Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let content = try container.decode(String.self, forKey: .content)
-    let id = try container.decode(String.self, forKey: .note_id)
+    let id = try container.decodeIfPresent(String.self, forKey: .note_id)
     let tags = try container.decode([TagResult].self, forKey: .tags)
     let frontMatter = try container.decodeIfPresent(FrontMatterResult.self, forKey: .front_matter)
     let citations = try container.decode([CitationResult].self, forKey: .citations)

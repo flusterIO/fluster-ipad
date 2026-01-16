@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 struct AssociateNoteWithBibEntryView: View {
   @Query(sort: \BibEntryModel.title, animation: .default) private var bibEntries: [BibEntryModel]

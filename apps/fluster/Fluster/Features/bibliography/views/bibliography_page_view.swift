@@ -8,6 +8,7 @@
 import FlusterSwift
 import SwiftData
 import SwiftUI
+import FlusterData
 
 struct BibliographyPageInternalView: View {
   @Query var bibEntries: [BibEntryModel]

@@ -159,7 +159,6 @@
     "sass": "1.89.0",
     "typescript": "latest",
     "typescript-eslint": "8.46.4",
-    "uniffi-bindgen-react-native": "0.29.3-1",
     "vite": "7.2.4",
     "vite-plugin-dts": "4.5.4",
     "vite-tsconfig-paths": "5.1.4",

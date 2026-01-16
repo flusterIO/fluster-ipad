@@ -8,6 +8,7 @@
 import FlusterSwift
 import SwiftData
 import SwiftUI
+import FlusterData
 
 struct BibEntrySelectionItem: View {
   @State private var isSelected: Bool = false

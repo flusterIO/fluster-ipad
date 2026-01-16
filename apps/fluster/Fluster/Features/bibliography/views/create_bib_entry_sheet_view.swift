@@ -8,6 +8,7 @@
 import FlusterSwift
 import SwiftData
 import SwiftUI
+import FlusterData
 
 struct CreateBibEntrySheetView: View {
   @State private var newEntryValue: String = ""

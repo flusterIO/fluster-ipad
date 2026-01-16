@@ -9,22 +9,16 @@ import FlusterSwiftMdxParser
 import Foundation
 
 public struct InitialNotesDataJsonDecoder {
-  public static func decode(from fileName: String) -> [MdxParsingResult]? {
+  public static func decode(from url: URL) -> [MdxParsingResult]? {
     do {
-      if let url = Bundle.main.url(
-        forResource: fileName,
-        withExtension: "json"
-      ) {
-        let data = try Data(contentsOf: url)
-        let parsingResults = try JSONDecoder().decode(
-          [MdxParsingResult].self,
-          from: data
-        )
-        return parsingResults
-      } else {
-        return nil
-      }
+      let data = try Data(contentsOf: url)
+      let parsingResults = try JSONDecoder().decode(
+        [MdxParsingResult].self,
+        from: data
+      )
+      return parsingResults
     } catch {
+      print("Error: \(error)")
       return nil
     }
   }

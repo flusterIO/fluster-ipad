@@ -8,6 +8,7 @@
 import FlusterSwift
 import SwiftData
 import SwiftUI
+import FlusterData
 
 struct BibliographySearchResultsViewQueryWrapped: View {
   @StateObject private var bibtexEditorContainer =

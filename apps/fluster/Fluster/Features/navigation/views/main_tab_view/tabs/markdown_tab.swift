@@ -1,5 +1,6 @@
 import FlusterSwift
 import SwiftUI
+import FlusterData
 
 struct MarkdownTabView: View {
   @Binding var editingNote: NoteModel?
