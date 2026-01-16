@@ -12,14 +12,13 @@ import SwiftData
 public let INITIAL_NOTES_DATA_PATH = "initial_note_docs/initial_notes_parsed_data"
 
 @MainActor  // This was required by the mainContext key, but there's almost surely a way to do this multi-threaded. Look into this later.
-@available(iOS 26, *)
+@available(iOS 17, macOS 14, *)
 public final class AppDataContainer {
   public static let shared = AppDataContainer()
   public var sharedModelContainer: ModelContainer {
     let hasLaunchedPreviously = UserDefaults.standard.bool(
       forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
     )
-    print("isInitialLaunch: \(hasLaunchedPreviously)")
     let schema = Schema([
       NoteModel.self,
       BibEntryModel.self
@@ -125,3 +124,4 @@ public final class AppDataContainer {
     }
   }
 }
+

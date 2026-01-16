@@ -7,7 +7,7 @@
 
 import SwiftData
 
-@available(iOS 26, *)
+@available(iOS 26, macOS 14, *)
 public enum AppDataMigrationPlan: SchemaMigrationPlan {
   public static var schemas: [any VersionedSchema.Type] {
     [

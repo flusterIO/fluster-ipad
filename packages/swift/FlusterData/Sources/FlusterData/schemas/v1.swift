@@ -1,11 +1,10 @@
-
 import FlatBuffers
-import Foundation
-import SwiftData
-import PencilKit
-import FlusterSwiftMdxParser
-import SwiftyBibtex
 import FlusterMdx
+import FlusterSwiftMdxParser
+import Foundation
+import PencilKit
+import SwiftData
+import SwiftyBibtex
 
 public enum AppSchemaV1: VersionedSchema {
   public static var models: [any PersistentModel.Type] {
@@ -15,7 +14,7 @@ public enum AppSchemaV1: VersionedSchema {
   public static let versionIdentifier: Schema.Version = .init(1, 0, 0)
 }
 
-public extension AppSchemaV1 {
+extension AppSchemaV1 {
   @Model
   public class FrontMatter {
     public var id: String
@@ -188,7 +187,7 @@ public extension AppSchemaV1 {
       }
       // Handle saving of additional bibEntries that can be generated from the note.
       let citationsLength = results.citationsCount
-//      var parsingResultCitations: [MdxSerialization_CitationResultBuffer] = []
+      //      var parsingResultCitations: [MdxSerialization_CitationResultBuffer] = []
       for idx in (0..<citationsLength) {
         if let citationItem = results.citations(at: idx) {
           if let existingCitation = allCitations.first(where: { cit in
@@ -419,23 +418,8 @@ public extension AppSchemaV1 {
     //      BibEntryModel(id: data.citationKey, data: data.body)
     //    }
   }
-
   @Model
-  public class TaggableModel {
-    public var ctime: Date
-    public var utime: Date
-    /// lastAccess is (will be) updated each time a note is accessed that contains a given taggable to help with search ranking.
-    public var lastAccess: Date
-
-    public init(ctime: Date, utime: Date, lastAccess: Date) {
-      self.ctime = ctime
-      self.utime = utime
-      self.lastAccess = lastAccess
-    }
-  }
-  @available(iOS 26, macOS 26, *)
-  @Model
-  public class TagModel: TaggableModel {
+  public class TagModel {
     @Attribute(.unique) public var value: String
     /// This is a hack to allow searching the DB with a case insensitive string.
     /// It will store duplicate data, but a tag should be pretty short anyways.
@@ -443,6 +427,10 @@ public extension AppSchemaV1 {
     @Attribute(.unique) public var caseInsensitive: String
     @Relationship(inverse: \NoteModel.tags) public var notes: [NoteModel] =
       []
+    public var ctime: Date
+    public var utime: Date
+    /// lastAccess is (will be) updated each time a note is accessed that contains a given taggable to help with search ranking.
+    public var lastAccess: Date
     public init(
       value: String,
       ctime: Date = .now,
@@ -454,7 +442,9 @@ public extension AppSchemaV1 {
       self.value = value
       self.caseInsensitive = value.lowercased()
       self.notes = notes
-      super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
+      self.ctime = ctime
+      self.utime = utime
+      self.lastAccess = lastAccess
     }
     public static func fromRustTagResult(
       t: TagResult,
@@ -473,14 +463,18 @@ public extension AppSchemaV1 {
     }
   }
 
-  @available(iOS 26, macOS 26, *)
   @Model
-  public class SubjectModel: TaggableModel {
+  public class SubjectModel {
     @Attribute(.unique) public var value: String
     /// This is a hack to allow searching the DB with a case insensitive string. It will store duplicate data, but a tag should be pretty short anyways.
     /// This will also make sure the case insensitive string is unique.
     @Attribute(.unique) public var caseInsensitive: String
     @Relationship(inverse: \NoteModel.subject) public var notes: [NoteModel] = []
+
+    public var ctime: Date
+    public var utime: Date
+    /// lastAccess is (will be) updated each time a note is accessed that contains a given taggable to help with search ranking.
+    public var lastAccess: Date
     public init(
       value: String,
       ctime: Date = .now,
@@ -491,19 +485,25 @@ public extension AppSchemaV1 {
       self.notes = notes
       self.value = value
       self.caseInsensitive = value.lowercased()
-      super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
+      self.ctime = ctime
+      self.utime = utime
+      self.lastAccess = lastAccess
     }
   }
 
-  @available(iOS 26, macOS 26, *)
   @Model
-  public class TopicModel: TaggableModel {
+  public class TopicModel {
     @Attribute(.unique) public var value: String
     /// This is a hack to allow searching the DB with a case insensitive string. It will store duplicate data, but a tag should be pretty short anyways.
     /// This will also make sure the case insensitive string is unique.
     @Attribute(.unique) public var caseInsensitive: String
     @Relationship(inverse: \NoteModel.topic) public var notes: [NoteModel] =
       []
+
+    public var ctime: Date
+    public var utime: Date
+    /// lastAccess is (will be) updated each time a note is accessed that contains a given taggable to help with search ranking.
+    public var lastAccess: Date
     public init(
       value: String,
       ctime: Date = .now,
@@ -514,7 +514,9 @@ public extension AppSchemaV1 {
       self.value = value
       self.caseInsensitive = value.lowercased()
       self.notes = notes
-      super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
+      self.ctime = ctime
+      self.utime = utime
+      self.lastAccess = lastAccess
     }
   }
 

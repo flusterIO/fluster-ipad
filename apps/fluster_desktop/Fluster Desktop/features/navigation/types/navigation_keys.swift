@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum MainViewKey: String, CaseIterable, Codable {
-    case dashboard, settings, search
+public enum MainViewKey: String, CaseIterable, Codable {
+    case dashboard, settings, search, noteEditingPage
 }

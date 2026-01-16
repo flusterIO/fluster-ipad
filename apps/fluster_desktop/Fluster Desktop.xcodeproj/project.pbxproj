@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		79E6BEE12F19930200A82F5A /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEE02F19930200A82F5A /* FlusterData */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		798752FB2F1810BA0055ABF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79E6BEE12F19930200A82F5A /* FlusterData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +96,7 @@
 				798752EC2F1810B90055ABF1 /* Fluster Desktop */,
 				798752FD2F1810BA0055ABF1 /* Fluster DesktopTests */,
 				798753072F1810BA0055ABF1 /* Fluster DesktopUITests */,
+				79ABF78A2F185677003157C8 /* Frameworks */,
 				798752EB2F1810B90055ABF1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,6 +109,13 @@
 				798753042F1810BA0055ABF1 /* Fluster DesktopUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		79ABF78A2F185677003157C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +138,8 @@
 			);
 			name = "Fluster Desktop";
 			packageProductDependencies = (
+				79E6BEDD2F1992BC00A82F5A /* FlusterMdx */,
+				79E6BEE02F19930200A82F5A /* FlusterData */,
 			);
 			productName = "Fluster Desktop";
 			productReference = 798752EA2F1810B90055ABF1 /* Fluster Desktop.app */;
@@ -208,6 +223,11 @@
 			);
 			mainGroup = 798752E12F1810B90055ABF1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7993631E2F19889800FB95E7 /* XCLocalSwiftPackageReference "../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser" */,
+				79E6BEDC2F1992BC00A82F5A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterMdx" */,
+				79E6BEDF2F19930200A82F5A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 798752EB2F1810B90055ABF1 /* Products */;
 			projectDirPath = "";
@@ -287,6 +307,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -297,11 +318,14 @@
 				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fluster Desktop/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Fluster;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "iglooDevelopment.Fluster-Desktop";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -320,6 +344,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -330,11 +355,14 @@
 				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fluster Desktop/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Fluster;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "iglooDevelopment.Fluster-Desktop";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -588,6 +616,32 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		7993631E2F19889800FB95E7 /* XCLocalSwiftPackageReference "../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser;
+		};
+		79E6BEDC2F1992BC00A82F5A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterMdx" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/FlusterMdx;
+		};
+		79E6BEDF2F19930200A82F5A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/FlusterData;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		79E6BEDD2F1992BC00A82F5A /* FlusterMdx */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterMdx;
+		};
+		79E6BEE02F19930200A82F5A /* FlusterData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterData;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 798752E22F1810B90055ABF1 /* Project object */;
 }

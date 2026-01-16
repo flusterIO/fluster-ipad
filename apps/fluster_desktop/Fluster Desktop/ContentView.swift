@@ -5,39 +5,30 @@
 //  Created by Andrew on 1/14/26.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-    @State private var mainView: MainViewKey = .dashboard
+  @Environment(\.modelContext) private var modelContext
+  @Query private var items: [Item]
+  @State private var mainView: MainViewKey = .dashboard
 
-    var body: some View {
-        NavigationSplitView {
-            MainViewSidebar(mainView: $mainView)
-        } detail: {
-            MainViewSwitch(mainView: $mainView)
-        }
+  var body: some View {
+    NavigationSplitView {
+      MainViewSidebar(mainView: $mainView)
+    } detail: {
+      ZStack {
+        MainViewSwitch(mainView: $mainView)
+        CommandPaletteContainerView()
+      }
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
+    .onReceive(MainNavigationEventEmitter.shared.viewUpdatePublisher) { newValue in
+      mainView = newValue
     }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
+  }
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+  ContentView()
+    .modelContainer(for: Item.self, inMemory: true)
 }
