@@ -1,7 +1,7 @@
 use gray_matter::Pod;
 use serde::{Deserialize, Serialize};
 
-#[derive(uniffi::Record, Clone, Serialize, Deserialize)]
+#[derive(uniffi::Record, Debug, Clone, Serialize, Deserialize)]
 pub struct FrontMatterResult {
     pub ignored_parsers: Vec<String>,
     pub title: Option<String>,
@@ -10,7 +10,7 @@ pub struct FrontMatterResult {
 
 impl FrontMatterResult {
     fn get_ignore_parsers(data: &mut Pod) -> Vec<String> {
-        let ignore_parsers = data.remove("ignore_parsers".to_string());
+        let ignore_parsers = data.remove("ignoreParsers".to_string());
 
         if ignore_parsers.is_empty() {
             Vec::new()

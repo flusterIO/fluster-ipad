@@ -55,8 +55,11 @@ build_cross_language_schemas: generate_initial_note_data
 	$FLAT_BUFFER_PATH -o ./packages/webview_utils/src/core/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --ts
 	$FLAT_BUFFER_PATH -o ./packages/generated/desktop_bindings/src/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --ts
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
-	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=swift --output-folder={{justfile_directory()}}/packages/swift/FlusterSwift/Sources/FlusterSwift/core/code_gen/typeshare
+	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=swift --output-folder={{justfile_directory()}}/packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare
 
+
+clear_macos_database:
+	trash "/Users/bigsexy/Library/Containers/iglooDevelopment.Fluster-Desktop/Data/Library/Application Support/default.store"
 
 
 build_cross_language: build_cross_language_schemas build_fluster_swift_mdx_parser 

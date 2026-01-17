@@ -34,6 +34,7 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
     let mut parsers = REGEX_PARSERS.to_vec();
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     result.note_id = opts.note_id.clone();
+    dbg!(result.clone());
     if let Some(ref fm) = result.front_matter
         && !fm.ignored_parsers.is_empty()
     {

@@ -18,10 +18,12 @@ struct Fluster_DesktopApp: App {
   var body: some Scene {
     WindowGroup("Fluster", id: "flusterDesktop") {
       ContentView()
-//        .environment(\.createDataHandler, appData.dataHandlerCreator())
+        .toolbarBackground(.hidden, for: .automatic)
+        .environment(\.createDataHandler, appData.dataHandlerCreator())
         .preferredColorScheme(selectedTheme.colorScheme)
     }
-//    .modelContainer(appData.sharedModelContainer)
+    .windowStyle(.hiddenTitleBar)
+    .modelContainer(appData.sharedModelContainer)
   }
 }
 

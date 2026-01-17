@@ -4,6 +4,12 @@
 
 import Foundation
 
+public enum AutoTaggableType: String, Codable {
+	case tag
+	case topic
+	case subject
+}
+
 /// From typescript to swift.
 public enum BibtexEditorWebviewActions: String, Codable {
 	case requestBibtexEditorData = "request-bibtex-data"

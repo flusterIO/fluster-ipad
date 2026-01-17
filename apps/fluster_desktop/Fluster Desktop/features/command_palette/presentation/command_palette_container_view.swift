@@ -11,7 +11,7 @@ import SwiftUI
 struct CommandPaletteContainerView: View {
   @State private var open: Bool = false
   @State private var searchText: String = ""
-    @Environment(\.modelContext) private var modelContext
+  @Environment(\.modelContext) private var modelContext
 
   @FocusState private var searchFieldFocused: Bool
 
@@ -23,7 +23,9 @@ struct CommandPaletteContainerView: View {
         return searchText.isEmpty
           ? (tree.last!.hasChildren ? tree.last!.children(modelContext: modelContext) : [])
           : (tree.last!.hasChildren
-            ? tree.last!.children(modelContext: modelContext).filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+            ? tree.last!.children(modelContext: modelContext).filter {
+              $0.title.localizedCaseInsensitiveContains(searchText)
+            }
             : [])
       },
       set: { newValue in
@@ -94,10 +96,11 @@ private struct CommandPaletteView: View {
   let onCommandSelected: (CommandPaletteItem) -> Void
   @FocusState private var searchFieldFocused: Bool
   @State private var focusedIndex: Int = 0
+  @Environment(\.colorScheme) private var colorScheme: ColorScheme
 
   var body: some View {
     ZStack(alignment: .top) {
-      Color.black.opacity(0.25)
+      Color.black.opacity(colorScheme == .dark ? 0.25 : 0.125)
         .ignoresSafeArea()
         .onTapGesture { onClose() }
       VStack(spacing: 0) {
@@ -118,8 +121,12 @@ private struct CommandPaletteView: View {
               decrementFocus()
             },
             onEnter: {
-              let focusedItem = results[focusedIndex]
-              onCommandSelected(focusedItem)
+                if focusedIndex < results.count {
+                    let focusedItem = results[focusedIndex]
+                    onCommandSelected(focusedItem)
+                } else {
+                    focusedIndex = 0
+                }
             },
             onDownArrow: {
               incrementFocus()
@@ -141,9 +148,6 @@ private struct CommandPaletteView: View {
             }
           )
           .textFieldStyle(.plain)
-          .onCommand(#selector(NSResponder.deleteBackward(_:))) {
-            print("Backspace pressed")
-          }
           .focused($searchFieldFocused)
           .onAppear { searchFieldFocused = true }
         }
@@ -160,7 +164,7 @@ private struct CommandPaletteView: View {
         }
         .frame(maxHeight: 180)
       }
-      .background(.ultraThinMaterial)
+      .background(colorScheme == .dark ? .black.opacity(0.85) : .white)
       .cornerRadius(18)
       .shadow(radius: 20)
       .frame(maxWidth: 768)

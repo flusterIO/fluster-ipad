@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7931270B2F1ABA5500140215 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEDD2F1992BC00A82F5A /* FlusterMdx */; };
 		79E6BEE12F19930200A82F5A /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEE02F19930200A82F5A /* FlusterData */; };
 /* End PBXBuildFile section */
 
@@ -28,18 +29,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		798752EA2F1810B90055ABF1 /* Fluster Desktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fluster Desktop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		798752FA2F1810BA0055ABF1 /* Fluster DesktopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fluster DesktopTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		798753042F1810BA0055ABF1 /* Fluster DesktopUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fluster DesktopUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		798752EA2F1810B90055ABF1 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		798752FA2F1810BA0055ABF1 /* FlusterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlusterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		798753042F1810BA0055ABF1 /* FlusterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlusterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		7987530C2F1810BA0055ABF1 /* Exceptions for "Fluster Desktop" folder in "Fluster Desktop" target */ = {
+		7987530C2F1810BA0055ABF1 /* Exceptions for "Fluster Desktop" folder in "Fluster" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 798752E92F1810B90055ABF1 /* Fluster Desktop */;
+			target = 798752E92F1810B90055ABF1 /* Fluster */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -47,7 +48,7 @@
 		798752EC2F1810B90055ABF1 /* Fluster Desktop */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				7987530C2F1810BA0055ABF1 /* Exceptions for "Fluster Desktop" folder in "Fluster Desktop" target */,
+				7987530C2F1810BA0055ABF1 /* Exceptions for "Fluster Desktop" folder in "Fluster" target */,
 			);
 			path = "Fluster Desktop";
 			sourceTree = "<group>";
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7931270B2F1ABA5500140215 /* FlusterMdx in Frameworks */,
 				79E6BEE12F19930200A82F5A /* FlusterData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,9 +106,9 @@
 		798752EB2F1810B90055ABF1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				798752EA2F1810B90055ABF1 /* Fluster Desktop.app */,
-				798752FA2F1810BA0055ABF1 /* Fluster DesktopTests.xctest */,
-				798753042F1810BA0055ABF1 /* Fluster DesktopUITests.xctest */,
+				798752EA2F1810B90055ABF1 /* Fluster.app */,
+				798752FA2F1810BA0055ABF1 /* FlusterTests.xctest */,
+				798753042F1810BA0055ABF1 /* FlusterUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,9 +123,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		798752E92F1810B90055ABF1 /* Fluster Desktop */ = {
+		798752E92F1810B90055ABF1 /* Fluster */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7987530D2F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "Fluster Desktop" */;
+			buildConfigurationList = 7987530D2F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "Fluster" */;
 			buildPhases = (
 				798752E62F1810B90055ABF1 /* Sources */,
 				798752E72F1810B90055ABF1 /* Frameworks */,
@@ -136,18 +138,18 @@
 			fileSystemSynchronizedGroups = (
 				798752EC2F1810B90055ABF1 /* Fluster Desktop */,
 			);
-			name = "Fluster Desktop";
+			name = Fluster;
 			packageProductDependencies = (
 				79E6BEDD2F1992BC00A82F5A /* FlusterMdx */,
 				79E6BEE02F19930200A82F5A /* FlusterData */,
 			);
 			productName = "Fluster Desktop";
-			productReference = 798752EA2F1810B90055ABF1 /* Fluster Desktop.app */;
+			productReference = 798752EA2F1810B90055ABF1 /* Fluster.app */;
 			productType = "com.apple.product-type.application";
 		};
-		798752F92F1810BA0055ABF1 /* Fluster DesktopTests */ = {
+		798752F92F1810BA0055ABF1 /* FlusterTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 798753122F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "Fluster DesktopTests" */;
+			buildConfigurationList = 798753122F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "FlusterTests" */;
 			buildPhases = (
 				798752F62F1810BA0055ABF1 /* Sources */,
 				798752F72F1810BA0055ABF1 /* Frameworks */,
@@ -161,16 +163,16 @@
 			fileSystemSynchronizedGroups = (
 				798752FD2F1810BA0055ABF1 /* Fluster DesktopTests */,
 			);
-			name = "Fluster DesktopTests";
+			name = FlusterTests;
 			packageProductDependencies = (
 			);
 			productName = "Fluster DesktopTests";
-			productReference = 798752FA2F1810BA0055ABF1 /* Fluster DesktopTests.xctest */;
+			productReference = 798752FA2F1810BA0055ABF1 /* FlusterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		798753032F1810BA0055ABF1 /* Fluster DesktopUITests */ = {
+		798753032F1810BA0055ABF1 /* FlusterUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 798753152F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "Fluster DesktopUITests" */;
+			buildConfigurationList = 798753152F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "FlusterUITests" */;
 			buildPhases = (
 				798753002F1810BA0055ABF1 /* Sources */,
 				798753012F1810BA0055ABF1 /* Frameworks */,
@@ -184,11 +186,11 @@
 			fileSystemSynchronizedGroups = (
 				798753072F1810BA0055ABF1 /* Fluster DesktopUITests */,
 			);
-			name = "Fluster DesktopUITests";
+			name = FlusterUITests;
 			packageProductDependencies = (
 			);
 			productName = "Fluster DesktopUITests";
-			productReference = 798753042F1810BA0055ABF1 /* Fluster DesktopUITests.xctest */;
+			productReference = 798753042F1810BA0055ABF1 /* FlusterUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -214,7 +216,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 798752E52F1810B90055ABF1 /* Build configuration list for PBXProject "Fluster Desktop" */;
+			buildConfigurationList = 798752E52F1810B90055ABF1 /* Build configuration list for PBXProject "Fluster" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -233,9 +235,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				798752E92F1810B90055ABF1 /* Fluster Desktop */,
-				798752F92F1810BA0055ABF1 /* Fluster DesktopTests */,
-				798753032F1810BA0055ABF1 /* Fluster DesktopUITests */,
+				798752E92F1810B90055ABF1 /* Fluster */,
+				798752F92F1810BA0055ABF1 /* FlusterTests */,
+				798753032F1810BA0055ABF1 /* FlusterUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -291,12 +293,12 @@
 /* Begin PBXTargetDependency section */
 		798752FC2F1810BA0055ABF1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 798752E92F1810B90055ABF1 /* Fluster Desktop */;
+			target = 798752E92F1810B90055ABF1 /* Fluster */;
 			targetProxy = 798752FB2F1810BA0055ABF1 /* PBXContainerItemProxy */;
 		};
 		798753062F1810BA0055ABF1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 798752E92F1810B90055ABF1 /* Fluster Desktop */;
+			target = 798752E92F1810B90055ABF1 /* Fluster */;
 			targetProxy = 798753052F1810BA0055ABF1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -513,7 +515,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fluster Desktop.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Fluster Desktop";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fluster.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Fluster";
 			};
 			name = Debug;
 		};
@@ -534,7 +536,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fluster Desktop.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Fluster Desktop";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fluster.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Fluster";
 			};
 			name = Release;
 		};
@@ -579,7 +581,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		798752E52F1810B90055ABF1 /* Build configuration list for PBXProject "Fluster Desktop" */ = {
+		798752E52F1810B90055ABF1 /* Build configuration list for PBXProject "Fluster" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				798753102F1810BA0055ABF1 /* Debug */,
@@ -588,7 +590,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7987530D2F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "Fluster Desktop" */ = {
+		7987530D2F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "Fluster" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7987530E2F1810BA0055ABF1 /* Debug */,
@@ -597,7 +599,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		798753122F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "Fluster DesktopTests" */ = {
+		798753122F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "FlusterTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				798753132F1810BA0055ABF1 /* Debug */,
@@ -606,7 +608,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		798753152F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "Fluster DesktopUITests" */ = {
+		798753152F1810BA0055ABF1 /* Build configuration list for PBXNativeTarget "FlusterUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				798753162F1810BA0055ABF1 /* Debug */,

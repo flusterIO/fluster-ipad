@@ -411,12 +411,6 @@ extension AppSchemaV1 {
         body: self.data
       )
     }
-
-    //    public static func fromParsingResult(data: CitationResult)
-    //      -> BibEntryModel
-    //    {
-    //      BibEntryModel(id: data.citationKey, data: data.body)
-    //    }
   }
   @Model
   public class TagModel {
@@ -542,6 +536,20 @@ extension AppSchemaV1 {
         self._body = newBody
         self.title = MdxTextUtils.getTitle(body: newBody)
       }
+    }
+  }
+
+  // -- Desktop Stuff --
+  @Model
+  public class AutoTaggable {
+    public var glob: String
+    public var value: String
+    public var settingType: AutoTaggableType
+
+    public init(glob: String, value: String, settingType: AutoTaggableType) {
+      self.glob = glob
+      self.value = value
+      self.settingType = settingType
     }
   }
 }

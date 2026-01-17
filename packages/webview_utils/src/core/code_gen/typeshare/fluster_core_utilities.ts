@@ -3,6 +3,12 @@
 */
 
 
+export enum AutoTaggableType {
+	Tag = "tag",
+	Topic = "topic",
+	Subject = "subject",
+}
+
 /** From typescript to swift. */
 export enum BibtexEditorWebviewActions {
 	RequestBibtexEditorData = "request-bibtex-data",

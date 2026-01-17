@@ -20,7 +20,8 @@ public final class AppDataContainer {
   public var sharedModelContainer: ModelContainer {
     let schema = Schema([
       NoteModel.self,
-      BibEntryModel.self
+      BibEntryModel.self,
+      AutoTaggable.self
     ])
     let modelConfiguration = ModelConfiguration(
       schema: schema,

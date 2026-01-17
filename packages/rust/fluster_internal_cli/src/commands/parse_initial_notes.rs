@@ -43,10 +43,10 @@ pub async fn parse_initial_notes() {
 
         if let Some(fm) = res.front_matter.clone() {
             if fm.user_defined_id.is_none() {
-                println!("No front matter found in {}", p);
+                println!("No user defined id found in {}", p);
             }
         } else {
-            println!("No user defined id found in {}", p);
+            println!("No front matter found in {}", p);
         }
 
         results.push(res);

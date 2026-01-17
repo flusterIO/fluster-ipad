@@ -22,7 +22,7 @@ use crate::{
     },
 };
 
-#[derive(uniffi::Record, Serialize, Deserialize, Clone)]
+#[derive(uniffi::Record, Debug, Serialize, Deserialize, Clone)]
 pub struct MdxParsingResult {
     pub note_id: Option<String>,
     pub content: String,
