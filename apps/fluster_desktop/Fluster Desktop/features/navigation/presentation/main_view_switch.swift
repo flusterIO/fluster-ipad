@@ -11,6 +11,8 @@ struct MainViewSwitch: View {
   @Binding var mainView: MainViewKey
   var body: some View {
     switch mainView {
+      case .createNote:
+        CreateNotePage()
       case .noteEditingPage:
         EditMdxPageView()
       case .dashboard:

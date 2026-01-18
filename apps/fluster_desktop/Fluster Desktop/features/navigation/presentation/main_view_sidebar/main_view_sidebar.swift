@@ -9,36 +9,28 @@ import SwiftUI
 
 struct MainViewSidebar: View {
   @Binding var mainView: MainViewKey
+  @AppStorage(DesktopAppStorageKeys.flusterSidebarSectionOpen.rawValue) private
+    var flusterSidebarSectionOpen = false
+  @AppStorage(DesktopAppStorageKeys.noteSidebarSectionOpen.rawValue) private
+    var noteSidebarSectionOpen = false
   let items: [SidebarItem] = mainSidebarItems
   var body: some View {
-    List(selection: $mainView) {
-      ForEach(items) { item in
-        if item.children == nil {
-          Label(
-            title: {
-              Text(item.label)
-            },
-            icon: {
-              Image(systemName: item.icon)
-            })
-        } else {
-          Section(item.label) {
-            List(item.children!) { child in
-              Label(
-                title: {
-                  Text(child.label)
-                },
-                icon: {
-                  Image(systemName: child.icon)
-                })
-            }
-          }
-        }
-      }
-    }
+    CollapsableSidebarSection(
+      open: $noteSidebarSectionOpen,
+      items: noteSideBarItems,
+      mainView: $mainView,
+      title: "Note"
+    )
+    CollapsableSidebarSection(
+      open: $flusterSidebarSectionOpen,
+      items: items,
+      mainView: $mainView,
+      title: "Fluster"
+    )
     .listStyle(.sidebar)
     .navigationTitle("Fluster")
     .navigationSplitViewColumnWidth(min: 180, ideal: 200)
+    Spacer()
   }
 }
 

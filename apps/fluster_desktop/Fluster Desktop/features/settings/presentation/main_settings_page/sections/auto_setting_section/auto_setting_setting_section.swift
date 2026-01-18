@@ -17,18 +17,20 @@ struct AutoSettingSettingSection: View {
   @State private var selectedAutoTag: AutoTaggable? = nil
   @State private var editingTag: AutoTaggable? = nil
   @State private var pageIdx: Int = 0
+  @State private var perPage: Int = 10
   @Environment(\.modelContext) private var modelContext: ModelContext
 
-  var filteredAutoTags: [AutoTaggable] {
+  var filteredAutoTags: ArraySlice<AutoTaggable> {
     if searchAutoTagText.isEmpty {
-      return autoTaggables.sorted(using: sortOrder)
+      let l = autoTaggables.sorted(using: sortOrder)
+      return l[pageIdx * perPage..<min((pageIdx + 1) * perPage, l.count)]
     }
     do {
       let res = try autoTaggables.filter(
         #Predicate<AutoTaggable> { t in
           t.value.localizedStandardContains(searchAutoTagText)
         })
-      return res.sorted(using: sortOrder)
+      return res.sorted(using: sortOrder)[pageIdx * perPage..<(pageIdx + 1) * perPage]
     } catch {
       print("Error: \(error)")
       return []
@@ -36,14 +38,14 @@ struct AutoSettingSettingSection: View {
   }
 
   var body: some View {
-      let countBinding = Binding<Double>(
-        get: {
-            Double(filteredAutoTags.count)
-        },
-        set: { newValue in
-            print("Attempting to set count to \(newValue)")
-        }
-      )
+    let countBinding = Binding<Double>(
+      get: {
+        Double(filteredAutoTags.count)
+      },
+      set: { newValue in
+        print("Attempting to set count to \(newValue)")
+      }
+    )
     SettingsSection(
       title: "Auto Settings",
       subtitle:
@@ -162,7 +164,8 @@ struct AutoSettingSettingSection: View {
               .padding()
             }
           )
-            AutoSettingTableFooterView(sortOrder: $sortOrder, pageIdx: $pageIdx, count: countBinding)
+          AutoSettingTableFooterView(
+            sortOrder: $sortOrder, pageIdx: $pageIdx, count: countBinding, perPage: perPage)
         }
       }
     }

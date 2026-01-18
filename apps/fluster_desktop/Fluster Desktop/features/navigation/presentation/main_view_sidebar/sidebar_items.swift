@@ -20,3 +20,7 @@ let mainSidebarItems: [SidebarItem] = [
     SidebarItem(label: "Search", icon: "magnifyingglass.circle.fill", id: .search, children: nil),
     SidebarItem(label: "Settings", icon: "gearshape.fill", id: .settings, children: nil),
 ]
+
+let noteSideBarItems: [SidebarItem] = [
+    SidebarItem(label: "Create", icon: "plus", id: .createNote, children: nil),
+]

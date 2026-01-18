@@ -15,4 +15,7 @@ public enum DesktopAppStorageKeys: String {
   case notesDirectory
   /// Defaults to true.
   case respectGitIgnore
+  // -- UI State --
+  case noteSidebarSectionOpen
+  case flusterSidebarSectionOpen
 }

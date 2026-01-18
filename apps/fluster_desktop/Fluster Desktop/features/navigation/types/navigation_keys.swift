@@ -8,5 +8,5 @@
 import Foundation
 
 public enum MainViewKey: String, CaseIterable, Codable {
-    case dashboard, settings, search, noteEditingPage
+    case dashboard, settings, search, noteEditingPage, createNote
 }

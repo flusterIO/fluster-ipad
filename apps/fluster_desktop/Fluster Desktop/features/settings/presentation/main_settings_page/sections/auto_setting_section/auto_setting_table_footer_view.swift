@@ -12,19 +12,69 @@ struct AutoSettingTableFooterView: View {
   @Binding private var sortOrder: [KeyPathComparator<AutoTaggable>]
   @Binding private var pageIdx: Int
   @Binding private var count: Double
-  let perPage: Int = 5
+  let perPage: Int
+  var maxPage: Int {
+    return Int(ceil(count / Double(perPage)))
+    //    return Int(floor(count / Double(perPage)) - 1)
+  }
   public init(
     sortOrder: Binding<[KeyPathComparator<AutoTaggable>]>, pageIdx: Binding<Int>,
-    count: Binding<Double>
+    count: Binding<Double>,
+    perPage: Int
   ) {
     self._sortOrder = sortOrder
     self._pageIdx = pageIdx
     self._count = count
+    self.perPage = perPage
   }
+
   var body: some View {
-    HStack {
-      Text("Page \(pageIdx + 1) of \(Int(ceil(count / (Double(pageIdx + 1) * Double(perPage)))))")
+    HStack(alignment: .center) {
+      Text("Page \(pageIdx + 1) of \(maxPage + 1)")
         .font(.caption)
+      Spacer()
+      HStack {
+        Button(
+          action: {
+            decrementPageIdx()
+          },
+          label: {
+            Image(systemName: "minus")
+              .frame(width: 20, height: 20)
+          }
+        )
+        .controlSize(.large)
+        .buttonBorderShape(.capsule)
+        .disabled(pageIdx <= 0)
+        Button(
+          action: {
+            incremementPageIdx()
+          },
+          label: {
+            Image(systemName: "plus")
+              .frame(width: 20, height: 20)
+          }
+        )
+        .controlSize(.large)
+        .buttonBorderShape(.capsule)
+        .disabled(pageIdx >= self.maxPage)
+      }
+    }
+    .frame(maxWidth: .infinity)
+  }
+  func incremementPageIdx() {
+    let maxPage = self.maxPage
+    if pageIdx < maxPage {
+      pageIdx += 1
+    } else {
+      pageIdx = 0
+    }
+  }
+  func decrementPageIdx() {
+    if pageIdx > 0 {
+      pageIdx -= 1
+    } else {
+      pageIdx = self.maxPage
     }
   }
 }
@@ -33,6 +83,7 @@ struct AutoSettingTableFooterView: View {
   AutoSettingTableFooterView(
     sortOrder: .constant([KeyPathComparator(\AutoTaggable.value)]
     ), pageIdx: .constant(0),
-    count: .constant(10)
+    count: .constant(10),
+    perPage: 10
   )
 }
