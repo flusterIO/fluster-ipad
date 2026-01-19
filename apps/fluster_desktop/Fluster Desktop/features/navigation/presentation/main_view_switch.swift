@@ -8,15 +8,19 @@
 import SwiftUI
 
 struct MainViewSwitch: View {
-  @Binding var mainView: MainViewKey
+  @Environment(AppState.self) private var appState: AppState
   var body: some View {
-    switch mainView {
+    switch appState.mainView {
       case .createNote:
         CreateNotePage()
       case .noteEditingPage:
         EditMdxPageView()
       case .dashboard:
         ModularDashboardView()
+      case .globalBibliography:
+        GlobalBibliographyPageView()
+      case .bookmarks:
+        BookmarksPageView()
       case .search:
         SearchPageView()
       case .settings:
@@ -26,5 +30,5 @@ struct MainViewSwitch: View {
 }
 
 #Preview {
-  MainViewSwitch(mainView: .constant(.dashboard))
+  MainViewSwitch()
 }

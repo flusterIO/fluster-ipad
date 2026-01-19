@@ -10,8 +10,9 @@ import SwiftUI
 struct CollapsableSidebarSection: View {
   @Binding var open: Bool
   let items: [SidebarItem]
-  @Binding var mainView: MainViewKey
   let title: LocalizedStringKey
+  @Environment(AppState.self) private var appState: AppState
+
   var body: some View {
     Section(
       isExpanded: $open,
@@ -19,7 +20,7 @@ struct CollapsableSidebarSection: View {
         ForEach(items) { item in
           Button(
             action: {
-              mainView = item.id
+              appState.mainView = item.id
             },
             label: {
               HStack {
@@ -32,6 +33,14 @@ struct CollapsableSidebarSection: View {
           )
           .labelStyle(.titleAndIcon)
           .buttonStyle(.bordered)
+          .foregroundStyle(
+            appState.mainView == item.id
+            ? Color.white : Color.primary
+          )
+          .background(
+            appState.mainView == item.id
+            ? RoundedRectangle(cornerRadius: 12).fill(Color.blue) : RoundedRectangle(cornerRadius: 12).fill(Color.clear)
+          )
           .frame(maxWidth: .infinity)
         }
       },
@@ -64,7 +73,6 @@ struct CollapsableSidebarSection: View {
   CollapsableSidebarSection(
     open: .constant(true),
     items: noteSideBarItems,
-    mainView: .constant(.dashboard),
     title: "Test"
   )
 }

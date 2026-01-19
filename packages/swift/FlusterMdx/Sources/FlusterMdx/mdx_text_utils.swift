@@ -7,6 +7,15 @@ public struct MdxTextUtils {
     }
     return val.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
   }
+    public static func removeSurroundingQuotes(val: String) -> String {
+        if val.hasPrefix("\"") && val.hasSuffix("\"") {
+            return String(val.dropFirst().dropLast())
+        }
+        if val.hasPrefix("'") && val.hasSuffix("'") {
+            return String(val.dropFirst().dropLast())
+        }
+        return val
+    }
   public static func parseMarkdownTitle(titleString: String, depth: Int = 0)
     -> MdxTitleResult
   {
@@ -42,7 +51,7 @@ public struct MdxTextUtils {
     if firstTitleLine == nil {
       return nil
     }
-    return removeHeadingSyntax(val: firstTitleLine!)
+      return removeSurroundingQuotes(val: removeHeadingSyntax(val: firstTitleLine!))
   }
 
   public static func getHighestMatch(titleResults: [MdxTitleResult], query: String)

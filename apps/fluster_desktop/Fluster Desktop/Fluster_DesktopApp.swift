@@ -14,11 +14,13 @@ import UniformTypeIdentifiers
 struct Fluster_DesktopApp: App {
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
+    @State private var appState: AppState = AppState()
   let appData = AppDataContainer.shared
   var body: some Scene {
     WindowGroup("Fluster", id: "flusterDesktop") {
       ContentView()
         .toolbarBackground(.hidden, for: .automatic)
+        .environment(appState)
         .environment(\.createDataHandler, appData.dataHandlerCreator())
         .preferredColorScheme(selectedTheme.colorScheme)
     }

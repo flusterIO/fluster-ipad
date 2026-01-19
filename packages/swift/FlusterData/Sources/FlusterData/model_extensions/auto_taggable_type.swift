@@ -11,9 +11,9 @@ public extension AutoTaggableType {
     func taggableColor() -> Color {
         switch self {
         case .subject:
-           return Color.red
+           return Color.indigo
         case .topic:
-            return Color.green
+            return Color.orange
         case .tag:
             return Color.blue
             

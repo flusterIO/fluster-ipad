@@ -15,7 +15,6 @@ struct AutoSettingTableFooterView: View {
   let perPage: Int
   var maxPage: Int {
     return Int(ceil(count / Double(perPage)))
-    //    return Int(floor(count / Double(perPage)) - 1)
   }
   public init(
     sortOrder: Binding<[KeyPathComparator<AutoTaggable>]>, pageIdx: Binding<Int>,

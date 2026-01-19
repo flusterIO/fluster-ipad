@@ -7,13 +7,42 @@
 
 import SwiftUI
 
-
 struct ModularDashboardView: View {
-    var body: some View {
-        Text("Dashboard")
+  var body: some View {
+    GeometryReader { geo in
+        ScrollView {
+            VStack(alignment: .center) {
+                Grid(alignment: .center) {
+                    QuickActionDashboardSectionView(
+                        columns: geo.size.width >= 768 ? .wider : geo.size.width >= 640 ? .wide : .narrow
+                    )
+                    if geo.size.width >= 768 {
+                        GridRow {
+                            RecentNotesDashboardSectionView()
+                            VStack {
+                                TopicsDashboardSectionView()
+                                    .frame(maxWidth: 350)
+                                SubjectsDashboardSectionView()
+                                    .frame(maxWidth: 350)
+                            }
+                        }
+                    } else {
+                        RecentNotesDashboardSectionView()
+                        GridRow {
+                            TopicsDashboardSectionView()
+                            SubjectsDashboardSectionView()
+                        }
+                    }
+                }
+                .frame(maxWidth: 1080)
+                //      .frame(width: min(geo.size.width, 1080), height: geo.size.height)
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
+  }
 }
 
 #Preview {
-    ModularDashboardView()
+  ModularDashboardView()
 }

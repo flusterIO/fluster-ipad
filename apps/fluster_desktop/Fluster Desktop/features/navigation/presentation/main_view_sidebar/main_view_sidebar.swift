@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MainViewSidebar: View {
-  @Binding var mainView: MainViewKey
   @AppStorage(DesktopAppStorageKeys.flusterSidebarSectionOpen.rawValue) private
     var flusterSidebarSectionOpen = false
   @AppStorage(DesktopAppStorageKeys.noteSidebarSectionOpen.rawValue) private
@@ -18,13 +17,11 @@ struct MainViewSidebar: View {
     CollapsableSidebarSection(
       open: $noteSidebarSectionOpen,
       items: noteSideBarItems,
-      mainView: $mainView,
       title: "Note"
     )
     CollapsableSidebarSection(
       open: $flusterSidebarSectionOpen,
       items: items,
-      mainView: $mainView,
       title: "Fluster"
     )
     .listStyle(.sidebar)
@@ -35,5 +32,5 @@ struct MainViewSidebar: View {
 }
 
 #Preview {
-  MainViewSidebar(mainView: .constant(.dashboard))
+  MainViewSidebar()
 }

@@ -10,20 +10,22 @@ import SwiftUI
 
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
+  @Environment(AppState.self) private var appState: AppState
   @Query private var items: [Item]
-  @State private var mainView: MainViewKey = .dashboard
 
   var body: some View {
     NavigationSplitView {
-      MainViewSidebar(mainView: $mainView)
+      MainViewSidebar()
     } detail: {
       ZStack {
-        MainViewSwitch(mainView: $mainView)
+        NavigationStack {
+          MainViewSwitch()
+        }
         CommandPaletteContainerView()
       }
     }
     .onReceive(MainNavigationEventEmitter.shared.viewUpdatePublisher) { newValue in
-      mainView = newValue
+      appState.mainView = newValue
     }
   }
 }
