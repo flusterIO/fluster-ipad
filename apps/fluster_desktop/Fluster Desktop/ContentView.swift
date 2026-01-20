@@ -5,9 +5,9 @@
 //  Created by Andrew on 1/14/26.
 //
 
+import FlusterData
 import SwiftData
 import SwiftUI
-import FlusterData
 
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
@@ -18,11 +18,11 @@ struct ContentView: View {
     NavigationSplitView {
       MainViewSidebar()
     } detail: {
-      ZStack {
-        NavigationStack {
+      NavigationStack {
+        ZStack {
           MainViewSwitch()
+          CommandPaletteContainerView()
         }
-        CommandPaletteContainerView()
       }
     }
     .onReceive(MainNavigationEventEmitter.shared.viewUpdatePublisher) { newValue in

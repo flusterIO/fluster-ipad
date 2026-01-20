@@ -9,16 +9,12 @@ import Foundation
 import SwiftData
 
 public class SearchByNoteTitleCommandPaletteCategory: CommandPaletteItem {
-  public override init(
-    id: CommandPaletteId, title: String, icon: String, subtitle: String?, hasChildren: Bool = false
-  ) {
+  public init() {
     super.init(
       id: .parentWithNoFunctionality, title: "Search Notes by Title", icon: "", subtitle: nil,
-      hasChildren: true)
+      itemType: .children)
   }
-    public override func children(modelContext: ModelContext) -> [CommandPaletteItem] {
-    return [
-        
-    ]
+  public override func children(modelContext: ModelContext) -> [CommandPaletteItem] {
+    return []
   }
 }

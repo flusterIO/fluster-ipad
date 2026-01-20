@@ -12,6 +12,7 @@ struct CommandPaletteContainerView: View {
   @State private var open: Bool = false
   @State private var searchText: String = ""
   @Environment(\.modelContext) private var modelContext
+  @State private var commandPaletteNavigation: CommandPaletteSecondaryView? = nil
 
   @FocusState private var searchFieldFocused: Bool
 
@@ -21,8 +22,9 @@ struct CommandPaletteContainerView: View {
     let filteredCommands = Binding<[CommandPaletteItem]>(
       get: {
         return searchText.isEmpty
-          ? (tree.last!.hasChildren ? tree.last!.children(modelContext: modelContext) : [])
-          : (tree.last!.hasChildren
+          ? (tree.last!.itemType == .children
+            ? tree.last!.children(modelContext: modelContext) : [])
+          : (tree.last!.itemType == .children
             ? tree.last!.children(modelContext: modelContext).filter {
               $0.title.localizedCaseInsensitiveContains(searchText)
             }
@@ -48,10 +50,19 @@ struct CommandPaletteContainerView: View {
           },
           tree: $tree,
           onCommandSelected: { command in
-            if command.hasChildren {
+            if command.itemType == .children {
               tree.append(command)
             } else {
-              executeCommandPaletteAction(action: command.id)
+              if command.id.isNavigationId {
+                switch command.id {
+                  case .pushCommandPaletteView(let data):
+                    commandPaletteNavigation = data
+                  default:
+                    print("Error: This should never be reached.")
+                }
+              } else {
+                executeCommandPaletteAction(action: command.id)
+              }
               open = false
               tree = [CommandPaletteRoot()]
               searchText = ""
@@ -66,6 +77,19 @@ struct CommandPaletteContainerView: View {
         }
       }
     }
+    .navigationDestination(
+      item: $commandPaletteNavigation,
+      destination: { nav in
+        switch nav {
+          case .searchByTag(let tag):
+            SearchByTagView(item: tag)
+          case .searchByTopic(let topic):
+            SearchByTopicView(item: topic)
+          case .searchBySubject(let subject):
+            SearchBySubjectView(item: subject)
+        }
+      }
+    )
     .onAppear {
       // Register global keyboard shortcut
       #if os(macOS)
@@ -121,12 +145,12 @@ private struct CommandPaletteView: View {
               decrementFocus()
             },
             onEnter: {
-                if focusedIndex < results.count {
-                    let focusedItem = results[focusedIndex]
-                    onCommandSelected(focusedItem)
-                } else {
-                    focusedIndex = 0
-                }
+              if focusedIndex < results.count {
+                let focusedItem = results[focusedIndex]
+                onCommandSelected(focusedItem)
+              } else {
+                focusedIndex = 0
+              }
             },
             onDownArrow: {
               incrementFocus()
@@ -153,16 +177,24 @@ private struct CommandPaletteView: View {
         }
         .padding()
         Divider()
-        ScrollView {
-          VStack(alignment: .leading, spacing: 0) {
-            ForEach(Array(results.enumerated()), id: \.offset) { idx, command in
-              CommandPaletteItemView(
-                command: command, idx: idx, focusedIndex: $focusedIndex,
-                onCommandSelected: onCommandSelected)
+        if results.isEmpty {
+          VStack {
+            Text(tree.last?.noneFoundText ?? "No results found")
+              .font(.headline)
+              .padding()
+          }
+        } else {
+          ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+              ForEach(Array(results.enumerated()), id: \.offset) { idx, command in
+                CommandPaletteItemView(
+                  command: command, idx: idx, focusedIndex: $focusedIndex,
+                  onCommandSelected: onCommandSelected)
+              }
             }
           }
+          .frame(maxHeight: 180)
         }
-        .frame(maxHeight: 180)
       }
       .background(colorScheme == .dark ? .black : .white)
       .cornerRadius(18)

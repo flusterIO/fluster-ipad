@@ -20,7 +20,9 @@ struct CommandPaletteItemView: View {
         Label(
           title: {
             Text(command.title)
-                  .foregroundStyle(idx == focusedIndex ? (colorScheme == .dark ? Color.white : Color.black) : .secondary)
+              .foregroundStyle(
+                idx == focusedIndex
+                  ? (colorScheme == .dark ? Color.white : Color.black) : .secondary)
           },
           icon: {
             Image(systemName: command.icon)

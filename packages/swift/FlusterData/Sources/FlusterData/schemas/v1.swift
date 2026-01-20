@@ -413,7 +413,7 @@ extension AppSchemaV1 {
     }
   }
   @Model
-  public class TagModel {
+  public final class TagModel {
     @Attribute(.unique) public var value: String
     /// This is a hack to allow searching the DB with a case insensitive string.
     /// It will store duplicate data, but a tag should be pretty short anyways.
@@ -432,7 +432,6 @@ extension AppSchemaV1 {
       lastAccess: Date = .now,
       notes: [NoteModel] = []
     ) {
-      //            super.init(ctime: ctime, utime: utime, lastAccess: lastAccess)
       self.value = value
       self.caseInsensitive = value.lowercased()
       self.notes = notes
@@ -458,7 +457,7 @@ extension AppSchemaV1 {
   }
 
   @Model
-  public class SubjectModel {
+  public final class SubjectModel {
     @Attribute(.unique) public var value: String
     /// This is a hack to allow searching the DB with a case insensitive string. It will store duplicate data, but a tag should be pretty short anyways.
     /// This will also make sure the case insensitive string is unique.
@@ -486,7 +485,7 @@ extension AppSchemaV1 {
   }
 
   @Model
-  public class TopicModel {
+  public final class TopicModel {
     @Attribute(.unique) public var value: String
     /// This is a hack to allow searching the DB with a case insensitive string. It will store duplicate data, but a tag should be pretty short anyways.
     /// This will also make sure the case insensitive string is unique.
