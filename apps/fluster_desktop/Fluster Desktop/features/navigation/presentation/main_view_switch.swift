@@ -32,6 +32,7 @@ struct MainViewSwitch: View {
             .navigationTitle("Search")
       case .settings:
         MainSettingsPageView()
+            .navigationTitle("")
     }
   }
 }

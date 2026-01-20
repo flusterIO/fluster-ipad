@@ -10,6 +10,8 @@ import SwiftUI
 
 struct NoteDashboardItem: View {
   let item: NoteModel
+  @Binding var searchByTopic: TopicModel?
+  @Binding var searchBySubject: SubjectModel?
   @Environment(AppState.self) private var appState: AppState
   var body: some View {
     HStack(alignment: .center) {
@@ -23,7 +25,11 @@ struct NoteDashboardItem: View {
       VStack(alignment: .leading) {
         Text(item.markdown.title ?? item.frontMatter.title ?? "No title")
           .font(.headline)
-        NoteDashboardBottomRow(item: item)
+        NoteDashboardBottomRow(
+          item: item,
+          searchBySubject: $searchBySubject,
+          searchByTopic: $searchByTopic
+        )
       }
       Spacer()
     }
@@ -38,5 +44,7 @@ struct NoteDashboardItem: View {
 }
 
 #Preview {
-  NoteDashboardItem(item: NoteModel.fromNoteBody(noteBody: "# My note \n"))
+  NoteDashboardItem(
+    item: NoteModel.fromNoteBody(noteBody: "# My note \n"), searchByTopic: .constant(nil),
+    searchBySubject: .constant(nil))
 }

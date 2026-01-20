@@ -10,6 +10,11 @@ import SwiftUI
 
 struct NoteSearchResultItemView: View {
   let item: NoteModel
+  @Binding var searchByTopic: TopicModel?
+  @Binding var searchBySubject: SubjectModel?
+    let dismissOnNavigate: Bool
+  @Environment(AppState.self) private var appState: AppState
+    @Environment(\.dismiss) private var dismiss
   var body: some View {
     VStack(alignment: .leading) {
       Text(item.frontMatter.title ?? item.markdown.title ?? "No Title Found")
@@ -19,20 +24,28 @@ struct NoteSearchResultItemView: View {
           .font(.subheadline)
           .foregroundStyle(.secondary)
       }
-      NoteDashboardBottomRow(item: item)
+      NoteDashboardBottomRow(
+        item: item, searchBySubject: $searchBySubject, searchByTopic: $searchByTopic)
     }
     .padding()
     .frame(maxWidth: .infinity, alignment: .leading)
     .glassEffect(in: .rect(cornerRadius: 12))
     .contentShape(Rectangle())
     .onTapGesture {
-        print("Here")
+      appState.editingNote = item
+      appState.mainView = .noteViewMdx
+        if dismissOnNavigate {
+            dismiss()
+        }
     }
   }
 }
 
 #Preview {
   NoteSearchResultItemView(
-    item: NoteModel.fromNoteBody(noteBody: "# My Note")
+    item: NoteModel.fromNoteBody(noteBody: "# My Note"),
+    searchByTopic: .constant(nil),
+    searchBySubject: .constant(nil),
+    dismissOnNavigate: true
   )
 }

@@ -10,8 +10,8 @@ import SwiftUI
 
 struct NoteDashboardBottomRow: View {
   let item: NoteModel
-  @State private var searchBySubject: SubjectModel? = nil
-  @State private var searchByTopic: TopicModel? = nil
+  @Binding var searchBySubject: SubjectModel?
+  @Binding var searchByTopic: TopicModel?
   var body: some View {
     HStack(alignment: .center) {
       if let subject = item.subject {
@@ -69,11 +69,5 @@ struct NoteDashboardBottomRow: View {
         .font(.caption)
         .foregroundStyle(.secondary)
     }
-    .navigationDestination(item: $searchByTopic, destination: { topic in
-        SearchByTopicView(item: topic)
-    })
-    .navigationDestination(item: $searchBySubject, destination: { subject in
-        SearchBySubjectView(item: subject)
-   })
   }
 }

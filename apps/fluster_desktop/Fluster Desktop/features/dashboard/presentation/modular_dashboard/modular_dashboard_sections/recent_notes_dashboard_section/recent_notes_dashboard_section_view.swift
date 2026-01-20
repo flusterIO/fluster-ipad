@@ -11,6 +11,8 @@ import SwiftUI
 
 struct RecentNotesDashboardSectionView: View {
   @Query(sort: \NoteModel.lastRead, order: .reverse) private var notes: [NoteModel]
+    @State private var searchByTopic: TopicModel? = nil
+    @State private var searchBySubject: SubjectModel? = nil
   var body: some View {
     VStack(alignment: .leading) {
       VStack(alignment: .leading) {
@@ -30,7 +32,7 @@ struct RecentNotesDashboardSectionView: View {
             .font(.headline)
         } else {
           List(notes) { note in
-            NoteDashboardItem(item: note)
+            NoteDashboardItem(item: note, searchByTopic: $searchByTopic, searchBySubject: $searchBySubject)
               .frame(maxWidth: .infinity)
               .listRowBackground(Color.clear)
               .listRowSeparator(.hidden)
@@ -46,6 +48,13 @@ struct RecentNotesDashboardSectionView: View {
     }
     .padding()
     .glassEffect(in: .rect(cornerRadius: 12))
+    .navigationDestination(item: $searchByTopic, destination: { topic in
+        SearchByTopicView(item: topic)
+    })
+    .navigationDestination(item: $searchBySubject, destination: { subject in
+        SearchBySubjectView(item: subject)
+   })
+
   }
 }
 
