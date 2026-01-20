@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NoteDashboardItem: View {
   let item: NoteModel
+  @Environment(AppState.self) private var appState: AppState
   var body: some View {
     HStack(alignment: .center) {
       Image(systemName: "text.document")
@@ -22,64 +23,16 @@ struct NoteDashboardItem: View {
       VStack(alignment: .leading) {
         Text(item.markdown.title ?? item.frontMatter.title ?? "No title")
           .font(.headline)
-        HStack(alignment: .center) {
-          if let subject = item.subject {
-            NavigationLink(
-              destination: {
-                Text("Search By Subject")
-              },
-              label: {
-                Text(subject.value)
-                  .font(.caption)
-                  .padding(.horizontal, 4)
-                  .padding(.vertical, 2)
-                  .foregroundStyle(.white)
-                  .background(
-                    RoundedRectangle(cornerRadius: 12).fill(
-                      AutoTaggableType.subject.taggableColor()))
-                  .buttonStyle(.plain)
-              })
-          } else {
-            Text("No Subject")
-              .font(.caption)
-              .foregroundStyle(.secondary)
-          }
-          Text("•")
-            .font(.caption)
-          if let topic = item.topic {
-            NavigationLink(
-              destination: {
-                Text("Search By Topic")
-              },
-              label: {
-                Text(topic.value)
-                  .font(.caption)
-                  .padding(.horizontal, 4)
-                  .padding(.vertical, 2)
-                  .foregroundStyle(.white)
-                  .background(
-                    RoundedRectangle(cornerRadius: 12).fill(
-                      AutoTaggableType.topic.taggableColor()))
-              })
-            .buttonStyle(.plain)
-          } else {
-            Text("No Topic")
-              .font(.caption)
-              .foregroundStyle(.secondary)
-          }
-          Text("•")
-            .font(.caption)
-          Text(item.lastRead.formatted(date: .abbreviated, time: .shortened))
-            .font(.caption)
-            .foregroundStyle(.secondary)
-        }
+        NoteDashboardBottomRow(item: item)
       }
       Spacer()
     }
+    .contentShape(Rectangle())
     .padding()
     .glassEffect(in: .rect(cornerRadius: 12))
     .onTapGesture {
-        print("Here")
+      appState.editingNote = item
+      appState.mainView = .noteViewMdx
     }
   }
 }

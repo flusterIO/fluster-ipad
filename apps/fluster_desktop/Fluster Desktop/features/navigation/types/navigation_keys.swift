@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import FlusterData
 
-public enum MainViewKey: String, CaseIterable, Codable {
-    case dashboard, settings, search, noteEditingPage, createNote, bookmarks, globalBibliography
+public enum MainViewKey: String, Codable, Hashable {
+    case dashboard, settings, search, createNote, bookmarks, globalBibliography, noteEditingPage, noteViewMdx
 }

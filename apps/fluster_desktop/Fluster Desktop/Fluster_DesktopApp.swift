@@ -24,7 +24,7 @@ struct Fluster_DesktopApp: App {
         .environment(\.createDataHandler, appData.dataHandlerCreator())
         .preferredColorScheme(selectedTheme.colorScheme)
     }
-    .windowStyle(.hiddenTitleBar)
+    .windowStyle(.automatic)
     .modelContainer(appData.sharedModelContainer)
   }
 }

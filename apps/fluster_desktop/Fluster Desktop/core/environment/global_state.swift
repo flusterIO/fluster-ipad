@@ -7,8 +7,10 @@
 
 import Foundation
 import Observation
+import FlusterData
 
 @Observable
 class AppState {
     var mainView: MainViewKey = .dashboard
+    var editingNote: NoteModel?
 }

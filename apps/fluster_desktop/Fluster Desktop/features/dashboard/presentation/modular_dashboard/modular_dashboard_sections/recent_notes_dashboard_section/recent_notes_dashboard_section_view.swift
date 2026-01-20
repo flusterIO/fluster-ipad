@@ -32,11 +32,17 @@ struct RecentNotesDashboardSectionView: View {
           List(notes) { note in
             NoteDashboardItem(item: note)
               .frame(maxWidth: .infinity)
+              .listRowBackground(Color.clear)
+              .listRowSeparator(.hidden)
+              .listRowSeparatorTint(Color.clear)
           }
+          .scrollContentBackground(.hidden)
+          .listRowBackground(Color.clear)
+          .listRowSeparator(.hidden)
+          .listRowSeparatorTint(Color.clear)
         }
       }
       .frame(minHeight: 400)
-//      .glassEffect(in: .rect(cornerRadius: 12))
     }
     .padding()
     .glassEffect(in: .rect(cornerRadius: 12))

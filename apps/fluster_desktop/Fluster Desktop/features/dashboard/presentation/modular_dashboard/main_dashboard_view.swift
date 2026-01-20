@@ -35,7 +35,6 @@ struct ModularDashboardView: View {
                     }
                 }
                 .frame(maxWidth: 1080)
-                //      .frame(width: min(geo.size.width, 1080), height: geo.size.height)
             }
             .frame(maxWidth: .infinity)
         }

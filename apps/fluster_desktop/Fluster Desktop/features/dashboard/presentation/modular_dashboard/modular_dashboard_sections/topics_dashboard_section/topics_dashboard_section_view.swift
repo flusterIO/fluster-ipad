@@ -20,20 +20,33 @@ struct TopicsDashboardSectionView: View {
     VStack(alignment: .leading) {
       Text("Topics")
         .font(.title2)
+      Text("Click an item to search by topic.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
       List(paginatedTopics) { topic in
         NavigationLink(
           destination: {
-            Text("Here")
+              SearchByTopicView(item: topic)
+                  .navigationTitle("Notes found by topic")
           },
           label: {
-            HStack {
+            HStack(alignment: .center) {
               Circle()
                 .fill(AutoTaggableType.topic.taggableColor())
                 .frame(width: 6, height: 6)
               Text(topic.value)
             }
-          })
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .glassEffect(in: .rect(cornerRadius: 12))
+          }
+        )
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+        .listRowSeparatorTint(Color.clear)
       }
+      .scrollContentBackground(.hidden)
     }
     .padding()
     .glassEffect(in: .rect(cornerRadius: 12))

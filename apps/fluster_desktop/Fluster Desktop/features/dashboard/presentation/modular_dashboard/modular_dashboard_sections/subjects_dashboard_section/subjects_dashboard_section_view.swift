@@ -20,11 +20,14 @@ struct SubjectsDashboardSectionView: View {
     VStack(alignment: .leading) {
       Text("Subjects")
         .font(.title2)
+      Text("Click an item to search by subject.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
       List(paginatedSubjects) { subject in
         NavigationLink(
           destination: {
-            Text("Here")
-              .navigationTitle("Navigation Title Here")
+            SearchBySubjectView(item: subject)
+              .navigationTitle("Notes found by subject")
           },
           label: {
             HStack {
@@ -33,8 +36,17 @@ struct SubjectsDashboardSectionView: View {
                 .frame(width: 6, height: 6)
               Text(subject.value)
             }
-          })
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .glassEffect(in: .rect(cornerRadius: 12))
+          }
+        )
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+        .listRowSeparatorTint(Color.clear)
       }
+      .scrollContentBackground(.hidden)
     }
     .padding()
     .glassEffect(in: .rect(cornerRadius: 12))

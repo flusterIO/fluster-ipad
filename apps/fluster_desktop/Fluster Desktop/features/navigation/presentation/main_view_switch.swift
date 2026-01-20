@@ -13,16 +13,23 @@ struct MainViewSwitch: View {
     switch appState.mainView {
       case .createNote:
         CreateNotePage()
+            .navigationTitle("Create Note")
       case .noteEditingPage:
         EditMdxPageView()
       case .dashboard:
         ModularDashboardView()
+            .navigationTitle("")
       case .globalBibliography:
         GlobalBibliographyPageView()
+            .navigationTitle("Bibliography")
+    case .noteViewMdx:
+        ViewEditingNoteMdxPage()
       case .bookmarks:
         BookmarksPageView()
+            .navigationTitle("Bookmarks")
       case .search:
-        SearchPageView()
+        GlobalSearchPage()
+            .navigationTitle("Search")
       case .settings:
         MainSettingsPageView()
     }
