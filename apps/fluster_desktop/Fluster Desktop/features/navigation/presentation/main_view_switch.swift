@@ -6,33 +6,46 @@
 //
 
 import SwiftUI
+import FlusterData
 
 struct MainViewSwitch: View {
   @Environment(AppState.self) private var appState: AppState
   var body: some View {
     switch appState.mainView {
-      case .createNote:
-        CreateNotePage()
-            .navigationTitle("Create Note")
-      case .noteEditingPage:
-        EditMdxPageView()
       case .dashboard:
         ModularDashboardView()
-            .navigationTitle("")
+          .navigationTitle("")
+      case .createNote:
+        CreateNotePage()
+          .navigationTitle("Create Note")
+      case .noteEditingPage:
+        EditMdxPageView()
+          .onAppear {
+            markEditingNoteRead()
+          }
+      case .noteViewMdx:
+        ViewEditingNoteMdxPage()
+          .onAppear {
+            markEditingNoteRead()
+          }
       case .globalBibliography:
         GlobalBibliographyPageView()
-            .navigationTitle("Bibliography")
-    case .noteViewMdx:
-        ViewEditingNoteMdxPage()
+          .navigationTitle("Bibliography")
       case .bookmarks:
         BookmarksPageView()
-            .navigationTitle("Bookmarks")
+          .navigationTitle("Bookmarks")
       case .search:
         GlobalSearchPage()
-            .navigationTitle("Search")
+          .navigationTitle("Search")
       case .settings:
         MainSettingsPageView()
-            .navigationTitle("")
+          .navigationTitle("")
+    }
+  }
+
+  func markEditingNoteRead() {
+    if let editingNote = appState.editingNote {
+      editingNote.setLastRead()
     }
   }
 }

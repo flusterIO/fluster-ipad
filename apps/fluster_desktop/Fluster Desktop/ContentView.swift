@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import FlusterData
 
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext

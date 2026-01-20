@@ -164,7 +164,7 @@ private struct CommandPaletteView: View {
         }
         .frame(maxHeight: 180)
       }
-      .background(colorScheme == .dark ? .black.opacity(0.85) : .white)
+      .background(colorScheme == .dark ? .black : .white)
       .cornerRadius(18)
       .shadow(radius: 20)
       .frame(maxWidth: 768)
