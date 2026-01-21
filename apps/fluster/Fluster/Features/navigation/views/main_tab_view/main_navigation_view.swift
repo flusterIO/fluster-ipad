@@ -66,6 +66,7 @@ struct MainView: View {
   /// editingNoteId is a EditingNoteId.value protocol string. Use that class to parse this result
   /// and retrieve results since this encodes both user defined ids and uuids.
   let defaultNoteId: String = "welcomeToFluster"
+
   @StateObject private var editorContainer: MdxEditorWebviewContainer =
     MdxEditorWebviewContainer(
       bounce: false,

@@ -1,17 +1,18 @@
+import FlusterData
 import SwiftData
 import SwiftUI
 import WebKit
-import FlusterData
 
 public enum MdxViewFullScreenCover {
   case byTag(tagModel: BibEntryModel)
 }
 
-public enum CodeSyntaxTheme: String, Codable, CaseIterable {
-  case materialLight, solarizedLight, githubLight, aura, tokyoNightDay,
-    dracula, tokyoNight, materialDark, tokyoNightStorm, githubDark,
-    solarizedDark, xcodeDark, xcodeLight
-}
+// NOTE: Moved to FlusterData. Delete once sure this works.
+// public enum CodeSyntaxTheme: String, Codable, CaseIterable {
+//   case materialLight, solarizedLight, githubLight, aura, tokyoNightDay,
+//     dracula, tokyoNight, materialDark, tokyoNightStorm, githubDark,
+//     solarizedDark, xcodeDark, xcodeLight
+// }
 
 @MainActor
 public struct MdxEditorWebviewInternal: UIViewRepresentable {
@@ -34,7 +35,7 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
   @Binding var editorThemeLight: CodeSyntaxTheme
   @Binding var editingNote: NoteModel
   @Binding var editorKeymap: EditorKeymap
-    @Binding var fullScreenCover: MainFullScreenCover?
+  @Binding var fullScreenCover: MainFullScreenCover?
   var onNavigateToNote: (NoteModel) -> Void
 
   let container: MdxEditorWebviewContainer
@@ -57,7 +58,7 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
     self._editorThemeLight = editorThemeLight
     self._editingNote = editingNote
     self._editorKeymap = editorKeymap
-      self._fullScreenCover = fullScreenCover
+    self._fullScreenCover = fullScreenCover
     self.container = container
     self._show = show
     self.onNavigateToNote = onNavigateToNote
@@ -136,7 +137,7 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
     )
   }
   public func handleViewNoteByUserDefinedId(id: String) {
-      print("Here...")
+    print("Here...")
     let fetchDescriptor = FetchDescriptor<NoteModel>(
       predicate: #Predicate { note in
         note.frontMatter.userDefinedId == id
@@ -150,14 +151,15 @@ public struct MdxEditorWebviewInternal: UIViewRepresentable {
     }
   }
   public func handleTagClick(tagBody: String) {
-      let fetchDescriptor = FetchDescriptor<TagModel>(predicate: #Predicate<TagModel> {t in
-          t.value == tagBody
+    let fetchDescriptor = FetchDescriptor<TagModel>(
+      predicate: #Predicate<TagModel> { t in
+        t.value == tagBody
       })
-      if let tags = try? modelContext.fetch(fetchDescriptor) {
-          if !tags.isEmpty {
-              fullScreenCover = .tagSearch(tag: tags.first!)
-          }
+    if let tags = try? modelContext.fetch(fetchDescriptor) {
+      if !tags.isEmpty {
+        fullScreenCover = .tagSearch(tag: tags.first!)
       }
+    }
   }
 }
 
@@ -297,7 +299,7 @@ public struct MdxEditorWebview: View {
     editorKeymap: Binding<EditorKeymap>,
     container: MdxEditorWebviewContainer,
     onNavigateToNote: @escaping (NoteModel) -> Void,
-    fullScreenCover: Binding<MainFullScreenCover?>
+    fullScreenCover: Binding<MainFullScreenCover?>?
   ) {
     self.url = url
     self._theme = theme
@@ -307,7 +309,9 @@ public struct MdxEditorWebview: View {
     self._editorKeymap = editorKeymap
     self.container = container
     self.onNavigateToNote = onNavigateToNote
-    self._fullScreenCover = fullScreenCover
+    if let fs = fullScreenCover {
+      self._fullScreenCover = fs
+    }
   }
 
   public var body: some View {

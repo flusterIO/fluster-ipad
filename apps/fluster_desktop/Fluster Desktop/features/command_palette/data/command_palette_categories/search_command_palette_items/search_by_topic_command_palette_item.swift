@@ -15,7 +15,7 @@ class SearchByTopicCommandPaletteItem: CommandPaletteItem {
       id: .parentWithNoFunctionality, title: "Search by Topic", icon: "tag.fill", subtitle: nil,
       itemType: .children, noneFoundText: "No topics found.")
   }
-  public override func children(modelContext: ModelContext) -> [CommandPaletteItem] {
+    public override func children(modelContext: ModelContext, appState: AppState) -> [CommandPaletteItem] {
     let fetchDescriptor = FetchDescriptor<TopicModel>(
       sortBy: [
         SortDescriptor(\TopicModel.lastAccess, order: .reverse)

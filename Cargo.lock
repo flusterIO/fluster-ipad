@@ -8889,11 +8889,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3291800a6b06569f7d3e15bdb6dc235e0f0c8bd3eb07177f430057feb076415f"
 dependencies = [
  "anyhow",
+ "camino",
  "cargo_metadata",
- "uniffi_bindgen",
+ "clap",
+ "uniffi_bindgen 0.29.5",
  "uniffi_core",
  "uniffi_macros",
  "uniffi_pipeline",
+]
+
+[[package]]
+name = "uniffi_bindgen"
+version = "0.0.1"
+dependencies = [
+ "uniffi",
 ]
 
 [[package]]

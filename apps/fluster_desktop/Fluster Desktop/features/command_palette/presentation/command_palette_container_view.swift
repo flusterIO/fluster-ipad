@@ -12,6 +12,7 @@ struct CommandPaletteContainerView: View {
   @State private var open: Bool = false
   @State private var searchText: String = ""
   @Environment(\.modelContext) private var modelContext
+  @Environment(AppState.self) private var appState: AppState
   @State private var commandPaletteNavigation: CommandPaletteSecondaryView? = nil
 
   @FocusState private var searchFieldFocused: Bool
@@ -23,9 +24,9 @@ struct CommandPaletteContainerView: View {
       get: {
         return searchText.isEmpty
           ? (tree.last!.itemType == .children
-            ? tree.last!.children(modelContext: modelContext) : [])
+            ? tree.last!.children(modelContext: modelContext, appState: appState) : [])
           : (tree.last!.itemType == .children
-            ? tree.last!.children(modelContext: modelContext).filter {
+            ? tree.last!.children(modelContext: modelContext, appState: appState).filter {
               $0.title.localizedCaseInsensitiveContains(searchText)
             }
             : [])
@@ -50,8 +51,12 @@ struct CommandPaletteContainerView: View {
           },
           tree: $tree,
           onCommandSelected: { command in
+            if command.onAccept != nil {
+              command.onAccept!()
+            }
             if command.itemType == .children {
               tree.append(command)
+              searchText = ""
             } else {
               if command.id.isNavigationId {
                 switch command.id {

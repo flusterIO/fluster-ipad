@@ -6,14 +6,20 @@
 //
 
 import SwiftUI
-
+import WebKit
 
 struct EditMdxPageView: View {
-    var body: some View {
-        Text("Edit Mdx Page Here")
+  @Environment(AppState.self) private var appState: AppState
+
+  var body: some View {
+    if let editingNote = appState.editingNote {
+      MdxEditorWebview(editingNote: editingNote)
+    } else {
+      NoNoteSelectedView()
     }
+  }
 }
 
 #Preview {
-    EditMdxPageView()
+  EditMdxPageView()
 }

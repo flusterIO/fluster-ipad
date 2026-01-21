@@ -14,7 +14,7 @@ export const ResponsiveSplitViewEditor = (): ReactNode => {
         <>
             <CodeEditorProvider>
                 {isLandscape ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly />}
-                <div className="w-full h-full flex flex-col justify-center items-center p-8 loading-main-only">
+                <div className="w-full h-full flex flex-col justify-center items-center p-8 loading-main-only hide-desktop">
                     <LoadingComponent />
                 </div>
                 {/* <MdxParsingErrorIndicator /> */}

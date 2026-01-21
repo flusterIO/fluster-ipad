@@ -2,6 +2,14 @@
 @use "./mermaid.scss";
 @use "./shared_component_styles.scss";
 
+html,
+body {
+  overscroll-behavior: none !important;
+  overscroll-behavior-block: none !important;
+  overscroll-behavior-inline: none !important;
+  overflow: hidden;
+}
+
 #editor-panel-resize-handle {
   width: 2px;
   background-color: hsl(var(--border));
@@ -20,5 +28,17 @@
     max-width: 100%;
     padding-bottom: 1rem;
     padding-top: 1rem;
+  }
+}
+
+body.env-desktop {
+  .hide-desktop {
+    display: none;
+  }
+}
+
+body.env-ipad {
+  .hide-ipad {
+    display: none;
   }
 }

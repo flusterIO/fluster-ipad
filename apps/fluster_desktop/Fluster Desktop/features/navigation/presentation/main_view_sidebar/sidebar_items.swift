@@ -23,4 +23,7 @@ let mainSidebarItems: [SidebarItem] = [
 
 let noteSideBarItems: [SidebarItem] = [
     SidebarItem(label: "Create", icon: "plus", id: .createNote, children: nil),
+    SidebarItem(label: "Markdown", icon: "text.document", id: .noteViewMdx, children: nil),
+    SidebarItem(label: "Paper", icon: "scribble.variable", id: .paper, children: nil),
+    SidebarItem(label: "Editor", icon: "keyboard", id: .noteEditingPage, children: nil),
 ]

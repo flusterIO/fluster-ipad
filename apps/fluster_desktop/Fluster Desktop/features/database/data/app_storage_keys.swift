@@ -18,4 +18,5 @@ public enum DesktopAppStorageKeys: String {
   // -- UI State --
   case noteSidebarSectionOpen
   case flusterSidebarSectionOpen
+  case desktopWebviewTheme
 }

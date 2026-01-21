@@ -88,7 +88,7 @@ const resetMdxPreviewScrollPosition = (containerId?: string, scrollPositionKeys?
         }
     }
     if (containerId) {
-        let em = document.getElementById(containerId)
+        const em = document.getElementById(containerId)
         if (em) {
             em.scrollTop = 0
         }

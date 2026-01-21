@@ -17,8 +17,9 @@ struct NoNoteSelectedView: View {
                 .background(Circle().fill(Color.accent))
             Text("No note selected")
                 .font(.title)
-            Text("Use one of the many search features to select a note to view it's content here. Start by using ⌘-shift-p to open the command palette.")
+            Text("Use one of the many search features to select a note to view it's content here. You can start by using ⌘-shift-p to open the command palette.")
                 .font(.caption)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: 450)
     }

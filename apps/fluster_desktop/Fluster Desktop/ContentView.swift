@@ -25,6 +25,39 @@ struct ContentView: View {
         }
       }
     }
+    .onChange(
+        of: appState.editingNote?.markdown.body,
+      {
+        Task {
+            if let note = appState.editingNote {
+            if let parsedMdx =
+              await note.markdown
+              .body.preParseAsMdxToBytes(noteId: note.id)
+            {
+              if let parsingResults =
+                parsedMdx.toMdxParsingResult()
+              {
+                note.applyMdxParsingResults(
+                  results: parsingResults,
+                  modelContext: modelContext
+                )
+              }
+              Task {
+                do {
+                  try modelContext.save()
+                } catch {
+                  print(
+                    "Failed to save model context when navigating away from editor view."
+                  )
+                }
+              }
+            } else {
+              print("Could not parse mdx.")
+            }
+          }
+        }
+      }
+    )
     .onReceive(MainNavigationEventEmitter.shared.viewUpdatePublisher) { newValue in
       appState.mainView = newValue
     }

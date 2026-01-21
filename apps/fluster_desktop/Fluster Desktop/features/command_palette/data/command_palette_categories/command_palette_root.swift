@@ -13,9 +13,10 @@ public class CommandPaletteRoot: CommandPaletteItem {
         super.init(id: .root, title: "Root", icon: "house.circle", subtitle: nil, itemType: .children)
     }
     
-    override public func children(modelContext: ModelContext) -> [CommandPaletteItem] {
+    override public func children(modelContext: ModelContext, appState: AppState) -> [CommandPaletteItem] {
         return [
            CommandPaletteNavigationRoot(),
+           SearchByNoteTitleCommandPaletteItem(),
            SearchByTagCommandPaletteItem(),
            SearchByTopicCommandPaletteItem(),
            SearchBySubjectCommandPaletteItem(),

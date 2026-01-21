@@ -18,7 +18,8 @@ public class CommandPaletteItem: Identifiable, Equatable {
   public let icon: String
   public let subtitle: String?
   public let itemType: CommandPaletteItemType
-    public let noneFoundText: String
+  public let noneFoundText: String
+  public var onAccept: (() -> Void)?
   public init(
     id: CommandPaletteId, title: String, icon: String, subtitle: String?,
     itemType: CommandPaletteItemType,
@@ -29,14 +30,14 @@ public class CommandPaletteItem: Identifiable, Equatable {
     self.icon = icon
     self.subtitle = subtitle
     self.itemType = itemType
-      self.noneFoundText = noneFoundText
+    self.noneFoundText = noneFoundText
   }
 
   public static func == (lhs: CommandPaletteItem, rhs: CommandPaletteItem) -> Bool {
     return lhs.id == rhs.id && lhs.title == rhs.title && lhs.icon == rhs.icon
       && lhs.subtitle == rhs.subtitle && lhs.itemType == rhs.itemType
   }
-  public func children(modelContext: ModelContext) -> [CommandPaletteItem] {
+    public func children(modelContext: ModelContext, appState: AppState) -> [CommandPaletteItem] {
     fatalError("This should never be reached.")
   }
 }

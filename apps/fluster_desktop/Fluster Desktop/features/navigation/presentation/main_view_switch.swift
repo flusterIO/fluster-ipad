@@ -5,8 +5,8 @@
 //  Created by Andrew on 1/14/26.
 //
 
-import SwiftUI
 import FlusterData
+import SwiftUI
 
 struct MainViewSwitch: View {
   @Environment(AppState.self) private var appState: AppState
@@ -18,13 +18,18 @@ struct MainViewSwitch: View {
       case .createNote:
         CreateNotePage()
           .navigationTitle("Create Note")
+      case .paper:
+        ViewPaperPageView()
+            .navigationTitle("Paper")
       case .noteEditingPage:
         EditMdxPageView()
+          .navigationTitle("Mdx Editor")
           .onAppear {
             markEditingNoteRead()
           }
       case .noteViewMdx:
         ViewEditingNoteMdxPage()
+          .navigationTitle("View Markdown")
           .onAppear {
             markEditingNoteRead()
           }

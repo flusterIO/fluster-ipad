@@ -10,7 +10,7 @@ import Observation
 import FlusterData
 
 @Observable
-class AppState {
+public class AppState {
     var mainView: MainViewKey = .dashboard
     var editingNote: NoteModel?
 }
