@@ -14,8 +14,8 @@ import UniformTypeIdentifiers
 struct Fluster_DesktopApp: App {
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
-    @State private var appState: AppState = AppState()
-  let appData = AppDataContainer.shared
+  @State private var appState: AppState = AppState()
+  @State private var appData = AppDataContainer.shared
   var body: some Scene {
     WindowGroup("Fluster", id: "flusterDesktop") {
       ContentView()
@@ -25,12 +25,7 @@ struct Fluster_DesktopApp: App {
         .preferredColorScheme(selectedTheme.colorScheme)
     }
     .windowStyle(.automatic)
+    .windowToolbarStyle(.unified)
     .modelContainer(appData.sharedModelContainer)
-  }
-}
-
-extension UTType {
-  static var itemDocument: UTType {
-    UTType(importedAs: "com.example.item-document")
   }
 }

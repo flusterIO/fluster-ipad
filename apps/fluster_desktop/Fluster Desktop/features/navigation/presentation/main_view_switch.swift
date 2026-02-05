@@ -7,9 +7,14 @@
 
 import FlusterData
 import SwiftUI
+import WebKit
 
 struct MainViewSwitch: View {
   @Environment(AppState.self) private var appState: AppState
+  @State private var editorWebview: WKWebView = WKWebView(
+    frame: .infinite, configuration: getWebViewConfig()
+  )
+
   var body: some View {
     switch appState.mainView {
       case .dashboard:
@@ -20,9 +25,9 @@ struct MainViewSwitch: View {
           .navigationTitle("Create Note")
       case .paper:
         ViewPaperPageView()
-            .navigationTitle("Paper")
+          .navigationTitle("Paper")
       case .noteEditingPage:
-        EditMdxPageView()
+        EditMdxPageView(webview: $editorWebview)
           .navigationTitle("Mdx Editor")
           .onAppear {
             markEditingNoteRead()

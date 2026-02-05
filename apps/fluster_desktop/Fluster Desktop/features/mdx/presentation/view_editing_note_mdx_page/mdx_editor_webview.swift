@@ -13,8 +13,7 @@ import WebKit
 struct MdxEditorWebview: View {
   let editingNote: NoteModel
 
-  @State private var webView: WKWebView = WKWebView(
-    frame: .infinite, configuration: getWebViewConfig())
+  @Binding var webView: WKWebView
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
     CodeSyntaxTheme = .dracula
@@ -66,6 +65,7 @@ struct MdxEditorWebview: View {
       do {
         try await setEditorThemeDark(editorTheme: editorThemeDark)
         try await setEditorThemeLight(editorTheme: editorThemeLight)
+        try await setEditorKeymap(editorKeymap: editorKeymap)
         try await loadNote(note: editingNote)
       } catch {
         print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
@@ -125,6 +125,9 @@ struct MdxEditorWebview: View {
 
 #Preview {
   MdxEditorWebview(
-    editingNote: NoteModel.fromNoteBody(noteBody: "# My Note")
-  )
+    editingNote: NoteModel.fromNoteBody(noteBody: "# My Note"),
+    webView: .constant(
+      WKWebView(
+        frame: .infinite, configuration: getWebViewConfig())
+    ))
 }

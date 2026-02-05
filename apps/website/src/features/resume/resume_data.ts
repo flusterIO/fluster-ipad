@@ -23,13 +23,16 @@ const workHistoryItemSchema = z.object({
 
 const skillsSchema = z.record(
     z.string(),
-    z.union([z.string().array(), z.record(z.string(), z.number().min(0).max(10))])
+    z.union([
+        z.string().array(),
+        z.record(z.string(), z.number().min(0).max(10)),
+    ]),
 );
 
 const resumeDataSchema = z.object({
     intro: z.string().max(1000),
-    github: z.string().url().default("https://github.com/igloo1505"),
-    email: z.string().email().default("aiglinski414@gmail.com"),
+    github: z.string().url().default("https://github.com/flusterIO"),
+    email: z.string().email().default("andrewMueller414@gmail.com"),
     homepage: z.string().url().default("https://flusterapp.com"),
     linkedIn: z.string().url().optional(),
     dob: z.string().default("4/19/1988"),
@@ -50,7 +53,7 @@ export type ResumeDataInput = z.input<typeof resumeDataSchema>;
 
 const resumeData: ResumeDataInput = {
     intro:
-        "I've worked with typescript, React and Node for more than a decade, and have experience with Python, Go and Rust as well. I feel like I perform best when I’m challenged, and I hope to find that in my next job. I majored in Physics at the University of Wisconsin-Milwaukee, and in February of 2022 I decided to take time away from my freelance work to write a paper regarding relativity and gravity. The results of the paper that I've spent the past 3+ years working on has turned out to be more physically consistent than I had even hoped, producing multiple distinct, observable quantities that are unaccounted for by existing models of relativity. With this chapter now behind me, I'm looking forward to returning to full time work.",
+        'My name is Andrew. I\'m a 37 year old developer with more than a dozen years of experience across more than 5 languages and ecosystems. You can find my most recent work, Fluster, by visiting the home page at <a href="/">flusterapp.com</a>. I am happy to provide links to my recent freelance work to prospective employers.',
     skills: {
         "Frameworks, APIs and Libraries": {
             React: 10,
@@ -93,12 +96,12 @@ const resumeData: ResumeDataInput = {
     personalInterests: [
         "Physics & Cosmology",
         "Ancient History",
-        "Cooking (well, eating mostly)",
+        "Cooking",
         "Reading Greek mythology to my puppy",
         "Math... <span class='italic'>I know</span>",
     ],
     projectsDesc:
-        "Due to my current living situation, much of my more meaningful previous work is no longer hosted. I can provide links to the repos or video demonstrations on request.",
+        "I built Fluster partially to be an example of my recent work, but I can also provide links to recent freelance projects on request.",
     projects: [
         {
             title: "Fluster",
@@ -109,13 +112,13 @@ const resumeData: ResumeDataInput = {
     ],
     workHistory: [
         {
-            title: "Aspiring astrophysicist",
-            desc: "While working as a freelancer, I would spend most of my free time between projects reading the latest cosmology research. Having previously studied physics, not computer science, I was drawn towards these deep questions regarding the way the Universe truly works. After coming across an assumption that was made in the early days of relativity that I felt I might be able to demonstrate as false, I left paid software work and began to focus solely on formalizing this new relativistic geometry.",
+            title: "Fluster",
+            desc: "After returning to freelance work, I decided to convert a personal application into a free & open source project. While Fluster was never my full-time job, it is the one project that I continue to return to, and something I plan to continue working on for the forseable future.",
             location: "Remote",
             start: new Date("03/01/2022"),
         },
         {
-            title: "Direct Mail Inc.",
+            title: "Direct Mailers Gorup",
             desc: "Created websites to build a subscriber database for various online newsletters. Was also responsible for html email templates, an accessible sign-up and cancellation user experience and building a portal for newsletter authors.",
             location: "Milwaukee",
             start: new Date("1/1/2019"),

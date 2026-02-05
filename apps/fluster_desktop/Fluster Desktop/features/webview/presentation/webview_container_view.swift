@@ -44,6 +44,7 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     //        webView.scroll
     webView.navigationDelegate = context.coordinator
     webView.load(URLRequest(url: url))
+    webView.isInspectable = true
     return webView
   }
 

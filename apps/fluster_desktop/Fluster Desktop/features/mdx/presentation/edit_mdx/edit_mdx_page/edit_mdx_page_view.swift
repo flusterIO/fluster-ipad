@@ -10,10 +10,11 @@ import WebKit
 
 struct EditMdxPageView: View {
   @Environment(AppState.self) private var appState: AppState
+  @Binding var webview: WKWebView
 
   var body: some View {
     if let editingNote = appState.editingNote {
-      MdxEditorWebview(editingNote: editingNote)
+      MdxEditorWebview(editingNote: editingNote, webView: $webview)
     } else {
       NoNoteSelectedView()
     }
@@ -21,5 +22,9 @@ struct EditMdxPageView: View {
 }
 
 #Preview {
-  EditMdxPageView()
+  EditMdxPageView(
+    webview: .constant(
+      WKWebView(
+        frame: .infinite, configuration: getWebViewConfig()
+      )))
 }

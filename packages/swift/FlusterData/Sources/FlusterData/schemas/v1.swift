@@ -72,7 +72,7 @@ extension AppSchemaV1 {
   public class NoteModel {
     public var id: String
     @Attribute(.externalStorage) public var drawing: Data
-    public var markdown: MarkdownNote = MarkdownNote(body: "", summary: nil)
+    public var markdown: MarkdownNote
     public var frontMatter: FrontMatter = FrontMatter.emptyFrontMatter()
     public var ctime: Date
     public var utime: Date

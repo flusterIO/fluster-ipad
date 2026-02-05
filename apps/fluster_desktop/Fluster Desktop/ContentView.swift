@@ -26,10 +26,10 @@ struct ContentView: View {
       }
     }
     .onChange(
-        of: appState.editingNote?.markdown.body,
+      of: appState.editingNote?.markdown.body,
       {
         Task {
-            if let note = appState.editingNote {
+          if let note = appState.editingNote {
             if let parsedMdx =
               await note.markdown
               .body.preParseAsMdxToBytes(noteId: note.id)
@@ -41,14 +41,14 @@ struct ContentView: View {
                   results: parsingResults,
                   modelContext: modelContext
                 )
-              }
-              Task {
-                do {
-                  try modelContext.save()
-                } catch {
-                  print(
-                    "Failed to save model context when navigating away from editor view."
-                  )
+                Task {
+                  do {
+                    try modelContext.save()
+                  } catch {
+                    print(
+                      "Failed to save model context when navigating away from editor view. Error: \(error.localizedDescription)"
+                    )
+                  }
                 }
               }
             } else {

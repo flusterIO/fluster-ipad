@@ -24,7 +24,7 @@ struct MainSettingsPageView: View {
       ScrollView {
         VStack(alignment: .leading, spacing: 24) {
           // Header
-            HStack(spacing: 12) {
+          HStack(spacing: 12) {
             Image("flusterIcon")
               .resizable()
               .foregroundStyle(.tint)
@@ -65,6 +65,8 @@ struct MainSettingsPageView: View {
           AutoSettingSettingSection()
 
           UISettingSection()
+
+          EditorSettingSectionView()
         }
         .padding(.vertical, 32)
       }
