@@ -118,7 +118,7 @@ const resumeData: ResumeDataInput = {
             start: new Date("03/01/2022"),
         },
         {
-            title: "Direct Mailers Gorup",
+            title: "Direct Mailers Group",
             desc: "Created websites to build a subscriber database for various online newsletters. Was also responsible for html email templates, an accessible sign-up and cancellation user experience and building a portal for newsletter authors.",
             location: "Milwaukee",
             start: new Date("1/1/2019"),
