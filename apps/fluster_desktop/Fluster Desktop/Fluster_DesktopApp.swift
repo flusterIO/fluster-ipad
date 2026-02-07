@@ -24,6 +24,15 @@ struct Fluster_DesktopApp: App {
         .preferredColorScheme(selectedTheme.colorScheme)
     }
     .commands {
+      SidebarCommands()  // Built-in macOS commands (Cmd+Opt+S)
+
+      // Or define your own custom one:
+      CommandMenu("View") {
+        Button("Toggle Sidebar") {
+          NSApp.sendAction(#selector(NSSplitViewController.toggleSidebar(_:)), to: nil, from: nil)
+        }
+        .keyboardShortcut("l", modifiers: [.command, .shift])
+      }
       CommandMenu("Tools") {
         Button("Command Palette") {
           paletteController.toggle(modelContainer: appData.sharedModelContainer)

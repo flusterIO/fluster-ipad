@@ -137,6 +137,9 @@ private struct CommandPaletteView: View {
           .textFieldStyle(.plain)
           .focused($searchFieldFocused)
           .onAppear { searchFieldFocused = true }
+          .onDisappear {
+              focusedIndex = 0
+          }
         }
         .padding()
         Divider()
