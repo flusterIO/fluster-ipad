@@ -9,7 +9,7 @@ import FlusterData
 import SwiftUI
 
 struct ViewEditingNoteMdxPage: View {
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
   var body: some View {
     if let editingNote = appState.editingNote {
       ViewMdxNoteView(item: editingNote)

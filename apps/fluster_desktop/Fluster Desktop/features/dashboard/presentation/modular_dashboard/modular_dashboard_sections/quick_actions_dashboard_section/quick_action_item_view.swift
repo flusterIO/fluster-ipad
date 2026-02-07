@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QuickActionItemView: View {
   let item: QuickAction
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
   var body: some View {
     VStack(spacing: 4) {
       Image(systemName: item.icon)

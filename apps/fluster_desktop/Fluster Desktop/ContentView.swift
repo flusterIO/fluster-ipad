@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
   @Query private var items: [Item]
 
   var body: some View {
@@ -21,7 +21,6 @@ struct ContentView: View {
       NavigationStack {
         ZStack {
           MainViewSwitch()
-          CommandPaletteContainerView()
         }
       }
     }

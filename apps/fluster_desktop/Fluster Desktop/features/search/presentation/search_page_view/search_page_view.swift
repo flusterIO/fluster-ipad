@@ -28,22 +28,27 @@ struct SearchPageView: View {
         }
     }
     var body: some View {
-        VStack(alignment: .center) {
-            List(filteredNotes){ note in
-                NoteSearchResultItemView(item: note, searchByTopic: $searchByTopic, searchBySubject: $searchBySubject, dismissOnNavigate: true)
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
+        ScrollView {
+            VStack(alignment: .center, spacing: 20) {
+                ForEach(filteredNotes, id: \.id){ note in
+                    NoteSearchResultItemView(item: note, searchByTopic: $searchByTopic, searchBySubject: $searchBySubject, dismissOnNavigate: true)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .frame(maxWidth: 768)
+                }
+                .navigationDestination(item: $searchByTopic, destination: { topic in
+                    SearchByTopicView(item: topic)
+                })
+                .navigationDestination(item: $searchBySubject, destination: { subject in
+                    SearchBySubjectView(item: subject)
+                })
+                .searchable(text: $searchText, placement: .toolbarPrincipal, prompt: Text("Search results"))
             }
-            .navigationDestination(item: $searchByTopic, destination: { topic in
-                SearchByTopicView(item: topic)
-            })
-            .navigationDestination(item: $searchBySubject, destination: { subject in
-                SearchBySubjectView(item: subject)
-           })
-            .frame(maxWidth: 768)
-            .listStyle(.plain)
-            .searchable(text: $searchText, placement: .toolbarPrincipal, prompt: Text("Search results"))
+            .padding()
         }
+        .scrollContentBackground(.hidden)
+        .scrollIndicators(.hidden)
+        .scrollClipDisabled(true)
     }
 }
 

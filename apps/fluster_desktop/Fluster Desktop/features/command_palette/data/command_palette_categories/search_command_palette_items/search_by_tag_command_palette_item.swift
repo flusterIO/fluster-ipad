@@ -12,7 +12,7 @@ import SwiftUI
 class SearchByTagCommandPaletteItem: CommandPaletteItem {
   init() {
     super.init(
-      id: .parentWithNoFunctionality, title: "Search by Tag", icon: "tag.fill", subtitle: nil,
+      id: .parentWithNoFunctionality, uniqueId: "searchByTag", title: "Search by Tag", icon: "tag.fill", subtitle: nil,
       itemType: .children, noneFoundText: "No tags found.")
   }
     public override func children(modelContext: ModelContext, appState: AppState) -> [CommandPaletteItem] {
@@ -25,7 +25,9 @@ class SearchByTagCommandPaletteItem: CommandPaletteItem {
       let tags = try modelContext.fetch(fetchDescriptor)
       return tags.map { tag in
         CommandPaletteItem(
-          id: .pushCommandPaletteView(.searchByTag(tag)), title: tag.value, icon: "tag.fill",
+          id: .pushCommandPaletteView(.searchByTag(tag)),
+          uniqueId: "tag-\(tag.value)",
+          title: tag.value, icon: "tag.fill",
           subtitle: nil,
           itemType: .commandPaletteAction)
       }

@@ -10,7 +10,7 @@ import SwiftUI
 import WebKit
 
 struct MainViewSwitch: View {
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
   @State private var editorWebview: WKWebView = WKWebView(
     frame: .infinite, configuration: getWebViewConfig()
   )
@@ -28,7 +28,7 @@ struct MainViewSwitch: View {
           .navigationTitle("Paper")
       case .noteEditingPage:
         EditMdxPageView(webview: $editorWebview)
-          .navigationTitle("Mdx Editor")
+          .navigationTitle("Editor")
           .onAppear {
             markEditingNoteRead()
           }

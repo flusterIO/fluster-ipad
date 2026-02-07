@@ -13,7 +13,7 @@ struct NoteSearchResultItemView: View {
   @Binding var searchByTopic: TopicModel?
   @Binding var searchBySubject: SubjectModel?
     let dismissOnNavigate: Bool
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
     @Environment(\.dismiss) private var dismiss
   var body: some View {
     VStack(alignment: .leading) {

@@ -31,7 +31,7 @@ public let quickActions: [QuickAction] = [
     QuickAction(label: "Create Note", icon: "plus.rectangle.on.folder.fill", color: Color.cyan, action: { appState in
         appState.mainView = .createNote
     }),
-    QuickAction(label: "Search", icon: "plus", color: Color.pink, action: { appState in
+    QuickAction(label: "Search", icon: "magnifyingglass", color: Color.pink, action: { appState in
         appState.mainView = .search
     }),
 ]

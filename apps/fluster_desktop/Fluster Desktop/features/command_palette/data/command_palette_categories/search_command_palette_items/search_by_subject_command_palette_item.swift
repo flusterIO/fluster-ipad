@@ -12,7 +12,7 @@ import SwiftUI
 class SearchBySubjectCommandPaletteItem: CommandPaletteItem {
   init() {
     super.init(
-      id: .parentWithNoFunctionality, title: "Search by Subject", icon: "tag.fill", subtitle: nil,
+      id: .parentWithNoFunctionality, uniqueId: "searchBySubject", title: "Search by Subject", icon: "tag.fill", subtitle: nil,
       itemType: .children, noneFoundText: "No subjects found.")
   }
   public override func children(modelContext: ModelContext, appState: AppState)
@@ -27,7 +27,9 @@ class SearchBySubjectCommandPaletteItem: CommandPaletteItem {
       let subjects = try modelContext.fetch(fetchDescriptor)
       return subjects.map { subject in
         CommandPaletteItem(
-          id: .pushCommandPaletteView(.searchBySubject(subject)), title: subject.value,
+          id: .pushCommandPaletteView(.searchBySubject(subject)),
+          uniqueId: "subject-\(subject.value)",
+          title: subject.value,
           icon: "tag.fill",
           subtitle: nil,
           itemType: .commandPaletteAction)

@@ -8,9 +8,10 @@
 import Foundation
 import Observation
 import FlusterData
+import Combine
 
-@Observable
-public class AppState {
-    var mainView: MainViewKey = .dashboard
-    var editingNote: NoteModel?
+public class AppState: ObservableObject {
+    static let shared = AppState()
+    @Published var mainView: MainViewKey = .dashboard
+    @Published var editingNote: NoteModel?
 }

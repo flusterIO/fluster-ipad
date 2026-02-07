@@ -11,7 +11,7 @@ import SwiftData
 import SwiftUI
 
 struct CreateNotePage: View {
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
   @State private var titleText: String = ""
   @State private var subjectText: String = ""
   @State private var topicText: String = ""

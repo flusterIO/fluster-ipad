@@ -9,7 +9,7 @@ import SwiftUI
 import WebKit
 
 struct EditMdxPageView: View {
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
   @Binding var webview: WKWebView
 
   var body: some View {

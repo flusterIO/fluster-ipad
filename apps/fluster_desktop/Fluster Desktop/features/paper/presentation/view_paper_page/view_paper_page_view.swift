@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct ViewPaperPageView: View {
+    @EnvironmentObject private var appState: AppState
     var body: some View {
-        Text("View Paper")
+        if appState.editingNote != nil {
+            Text("View Paper")
+        } else {
+            NoNoteSelectedView()
+        }
     }
 }
 

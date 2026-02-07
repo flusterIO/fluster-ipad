@@ -14,6 +14,7 @@ public enum CommandPaletteItemType {
 
 public class CommandPaletteItem: Identifiable, Equatable {
   public let id: CommandPaletteId
+  public let uniqueId: String
   public let title: String
   public let icon: String
   public let subtitle: String?
@@ -21,11 +22,12 @@ public class CommandPaletteItem: Identifiable, Equatable {
   public let noneFoundText: String
   public var onAccept: (() -> Void)?
   public init(
-    id: CommandPaletteId, title: String, icon: String, subtitle: String?,
+    id: CommandPaletteId, uniqueId: String, title: String, icon: String, subtitle: String?,
     itemType: CommandPaletteItemType,
-    noneFoundText: String = "No results found"
+    noneFoundText: String = "No results found",
   ) {
     self.id = id
+    self.uniqueId = uniqueId
     self.title = title
     self.icon = icon
     self.subtitle = subtitle
@@ -37,7 +39,7 @@ public class CommandPaletteItem: Identifiable, Equatable {
     return lhs.id == rhs.id && lhs.title == rhs.title && lhs.icon == rhs.icon
       && lhs.subtitle == rhs.subtitle && lhs.itemType == rhs.itemType
   }
-    public func children(modelContext: ModelContext, appState: AppState) -> [CommandPaletteItem] {
+  public func children(modelContext: ModelContext, appState: AppState) -> [CommandPaletteItem] {
     fatalError("This should never be reached.")
   }
 }

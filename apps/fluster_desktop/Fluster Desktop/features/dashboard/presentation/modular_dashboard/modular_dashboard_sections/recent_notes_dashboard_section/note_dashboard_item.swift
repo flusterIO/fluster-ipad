@@ -12,7 +12,7 @@ struct NoteDashboardItem: View {
   let item: NoteModel
   @Binding var searchByTopic: TopicModel?
   @Binding var searchBySubject: SubjectModel?
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
   var body: some View {
     HStack(alignment: .center) {
       Image(systemName: "text.document")

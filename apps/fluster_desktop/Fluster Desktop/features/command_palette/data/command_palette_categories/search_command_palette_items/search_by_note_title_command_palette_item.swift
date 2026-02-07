@@ -12,7 +12,7 @@ import SwiftData
 class SearchByNoteTitleCommandPaletteItem: CommandPaletteItem {
   init() {
     super.init(
-      id: .parentWithNoFunctionality, title: "Search by title", icon: "character.text.justify", subtitle: nil,
+      id: .parentWithNoFunctionality, uniqueId: "searchByNote", title: "Search by title", icon: "character.text.justify", subtitle: nil,
       itemType: .children, noneFoundText: "No notes found.")
   }
     
@@ -21,7 +21,9 @@ class SearchByNoteTitleCommandPaletteItem: CommandPaletteItem {
         do {
             let res = try modelContext.fetch(fetchDescriptor)
             return res.map { note in
-                let item = CommandPaletteItem(id: .navigate(.noteViewMdx), title: note.frontMatter.title ?? note.markdown.title ?? "No title found", icon: "text.document", subtitle: nil, itemType: .commandPaletteAction)
+                let item = CommandPaletteItem(id: .navigate(.noteViewMdx),
+                                              uniqueId: "note-\(note.frontMatter.title ?? note.markdown.title ?? UUID().uuidString)",
+                                              title: note.frontMatter.title ?? note.markdown.title ?? "No title found", icon: "text.document", subtitle: nil, itemType: .commandPaletteAction)
                 item.onAccept = {
                     appState.editingNote = note
                 }

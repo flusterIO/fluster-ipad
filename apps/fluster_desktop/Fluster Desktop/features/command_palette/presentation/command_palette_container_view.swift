@@ -9,10 +9,12 @@ import Combine
 import SwiftUI
 
 struct CommandPaletteContainerView: View {
-  @State private var open: Bool = false
+  public var close: () -> Void
   @State private var searchText: String = ""
+  @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
+    .dark
   @Environment(\.modelContext) private var modelContext
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
   @State private var commandPaletteNavigation: CommandPaletteSecondaryView? = nil
 
   @FocusState private var searchFieldFocused: Bool
@@ -35,85 +37,44 @@ struct CommandPaletteContainerView: View {
         return
       }
     )
-    ZStack {
-      // Main content placeholder
-      Color.clear
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-      if open {
-        CommandPaletteView(
-          searchText: $searchText,
-          results: filteredCommands,
-          onClose: {
-            open = false
+      CommandPaletteView(
+        searchText: $searchText,
+        results: filteredCommands,
+        onClose: {
+          searchText = ""
+          tree = [CommandPaletteRoot()]
+          close()
+        },
+        tree: $tree,
+        onCommandSelected: { command in
+          if command.onAccept != nil {
+            command.onAccept!()
+          }
+          if command.itemType == .children {
+            tree.append(command)
             searchText = ""
-            tree = [CommandPaletteRoot()]
-          },
-          tree: $tree,
-          onCommandSelected: { command in
-            if command.onAccept != nil {
-              command.onAccept!()
-            }
-            if command.itemType == .children {
-              tree.append(command)
-              searchText = ""
-            } else {
-              if command.id.isNavigationId {
-                switch command.id {
-                  case .pushCommandPaletteView(let data):
-                    commandPaletteNavigation = data
-                  default:
-                    print("Error: This should never be reached.")
-                }
-              } else {
-                executeCommandPaletteAction(action: command.id)
+          } else {
+            if command.id.isNavigationId {
+              switch command.id {
+                case .pushCommandPaletteView(let data):
+                  commandPaletteNavigation = data
+                default:
+                  print("Error: This should never be reached.")
               }
-              open = false
-              tree = [CommandPaletteRoot()]
-              searchText = ""
+            } else {
+              executeCommandPaletteAction(action: command.id)
             }
+            tree = [CommandPaletteRoot()]
+            searchText = ""
+            close()
           }
-        )
-        .transition(.opacity.combined(with: .scale))
-        .zIndex(10)
-        .onAppear { searchFieldFocused = true }
-        .onChange(of: open) {
-          if open { searchFieldFocused = true }
         }
-      }
-    }
-    .navigationDestination(
-      item: $commandPaletteNavigation,
-      destination: { nav in
-        switch nav {
-          case .searchByTag(let tag):
-            SearchByTagView(item: tag)
-          case .searchByTopic(let topic):
-            SearchByTopicView(item: topic)
-          case .searchBySubject(let subject):
-            SearchBySubjectView(item: subject)
-        }
-      }
-    )
-    .onAppear {
-      // Register global keyboard shortcut
-      #if os(macOS)
-        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-          if event.modifierFlags.contains([.command, .shift])
-            && event.charactersIgnoringModifiers == "P"
-          {
-            open.toggle()
-            return nil
-          }
-          return event
-        }
-      #endif
-    }
-    .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ShowCommandPalette")))
-    { _ in
-      open = true
-    }
-    .background(CommandPaletteKeyboardShortcut(open: $open))
+      )
+      .environment(\.colorScheme, selectedTheme.colorScheme)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .transition(.opacity.combined(with: .scale))
+      .zIndex(10)
+      .onAppear { searchFieldFocused = true }
   }
 }
 
@@ -125,13 +86,11 @@ private struct CommandPaletteView: View {
   let onCommandSelected: (CommandPaletteItem) -> Void
   @FocusState private var searchFieldFocused: Bool
   @State private var focusedIndex: Int = 0
-  @Environment(\.colorScheme) private var colorScheme: ColorScheme
+  @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
+    .dark
 
   var body: some View {
-    ZStack(alignment: .top) {
-      Color.black.opacity(colorScheme == .dark ? 0.25 : 0.125)
-        .ignoresSafeArea()
-        .onTapGesture { onClose() }
+    ScrollViewReader { proxy in
       VStack(spacing: 0) {
         HStack {
           Image(systemName: "magnifyingglass")
@@ -188,28 +147,37 @@ private struct CommandPaletteView: View {
               .font(.headline)
               .padding()
           }
+          .frame(maxHeight: .infinity)
         } else {
           ScrollView {
             VStack(alignment: .leading, spacing: 0) {
               ForEach(Array(results.enumerated()), id: \.offset) { idx, command in
                 CommandPaletteItemView(
                   command: command, idx: idx, focusedIndex: $focusedIndex,
-                  onCommandSelected: onCommandSelected)
+                  onCommandSelected: onCommandSelected
+                )
+                .id(command.uniqueId)
               }
             }
           }
-          .frame(maxHeight: 180)
+          .scrollIndicators(.hidden)
         }
       }
-      .background(colorScheme == .dark ? .black : .white)
+      .background(selectedTheme.colorScheme == .dark ? .black : .white)
       .cornerRadius(18)
-      .shadow(radius: 20)
-      .frame(maxWidth: 768)
-      .padding(.top, 100)
-    }
-    .onAppear { searchFieldFocused = true }
-    .onExitCommand {
-      onClose()
+      .frame(maxWidth: 768, maxHeight: .infinity)
+      .onAppear { searchFieldFocused = true }
+      .onExitCommand {
+        onClose()
+      }
+      .onChange(
+        of: focusedIndex,
+        {
+          if results.count > focusedIndex {
+            let item = results[focusedIndex]
+            proxy.scrollTo(item.uniqueId, anchor: .center)
+          }
+        })
     }
   }
 
@@ -240,5 +208,5 @@ private struct CommandPaletteKeyboardShortcut: View {
 }
 
 #Preview {
-  CommandPaletteContainerView()
+  CommandPaletteContainerView(close: {})
 }

@@ -11,7 +11,7 @@ struct CollapsableSidebarSection: View {
   @Binding var open: Bool
   let items: [SidebarItem]
   let title: LocalizedStringKey
-  @Environment(AppState.self) private var appState: AppState
+  @EnvironmentObject private var appState: AppState
 
   var body: some View {
     Section(
@@ -32,14 +32,14 @@ struct CollapsableSidebarSection: View {
             }
           )
           .labelStyle(.titleAndIcon)
-          .buttonStyle(.bordered)
+          .buttonStyle(.accessoryBarAction)
           .foregroundStyle(
             appState.mainView == item.id
             ? Color.white : Color.primary
           )
           .background(
             appState.mainView == item.id
-            ? RoundedRectangle(cornerRadius: 12).fill(Color.blue) : RoundedRectangle(cornerRadius: 12).fill(Color.clear)
+            ? RoundedRectangle(cornerRadius: 8).fill(Color.blue) : RoundedRectangle(cornerRadius: 8).fill(Color.clear)
           )
           .frame(maxWidth: .infinity)
         }
