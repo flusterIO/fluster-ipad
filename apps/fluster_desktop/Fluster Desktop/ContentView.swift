@@ -13,15 +13,28 @@ struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
   @EnvironmentObject private var appState: AppState
   @Query private var items: [Item]
+  @State private var columnVisibility: NavigationSplitViewVisibility = NavigationSplitViewVisibility
+    .doubleColumn
+  @State private var paths = NavigationPath()
 
   var body: some View {
-    NavigationSplitView {
+    NavigationSplitView(columnVisibility: $columnVisibility) {
       MainViewSidebar()
     } detail: {
-      NavigationStack {
-        ZStack {
-          MainViewSwitch()
-        }
+        NavigationStack(path: $appState.commandPaletteNavigation) {
+        MainViewSwitch()
+          .navigationDestination(
+            for: CommandPaletteSecondaryView.self,
+          ) { val in
+            switch val {
+              case .searchBySubject(let subject):
+                SearchBySubjectView(item: subject)
+              case .searchByTag(let tag):
+                SearchByTagView(item: tag)
+              case .searchByTopic(let topic):
+                SearchByTopicView(item: topic)
+            }
+          }
       }
     }
     .onChange(

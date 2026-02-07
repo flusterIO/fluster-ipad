@@ -15,7 +15,7 @@ struct Fluster_DesktopApp: App {
   @StateObject private var paletteController = CommandPaletteController()
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
-    @State private var appState: AppState = AppState.shared
+  @State private var appState: AppState = AppState.shared
   @State private var appData = AppDataContainer.shared
   var body: some Scene {
     WindowGroup("Fluster", id: "flusterDesktop") {
@@ -26,7 +26,7 @@ struct Fluster_DesktopApp: App {
     .commands {
       CommandMenu("Tools") {
         Button("Command Palette") {
-            paletteController.toggle(modelContainer: appData.sharedModelContainer)
+          paletteController.toggle(modelContainer: appData.sharedModelContainer)
         }
         .keyboardShortcut("p", modifiers: [.command, .shift])
       }

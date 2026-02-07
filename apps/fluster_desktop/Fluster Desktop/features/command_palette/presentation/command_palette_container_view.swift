@@ -15,7 +15,6 @@ struct CommandPaletteContainerView: View {
     .dark
   @Environment(\.modelContext) private var modelContext
   @EnvironmentObject private var appState: AppState
-  @State private var commandPaletteNavigation: CommandPaletteSecondaryView? = nil
 
   @FocusState private var searchFieldFocused: Bool
 
@@ -57,7 +56,7 @@ struct CommandPaletteContainerView: View {
             if command.id.isNavigationId {
               switch command.id {
                 case .pushCommandPaletteView(let data):
-                  commandPaletteNavigation = data
+                  appState.commandPaletteNavigate(to: data)
                 default:
                   print("Error: This should never be reached.")
               }
