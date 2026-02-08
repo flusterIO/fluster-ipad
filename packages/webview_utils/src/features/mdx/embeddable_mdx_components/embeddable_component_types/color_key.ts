@@ -1,12 +1,13 @@
 import { CSSProperties } from "react";
 
-const colorKeys = ["primary", "secondary", "muted", "error"] as const;
-export type ColorKey = (typeof colorKeys)[number];
+export const flusterColorKeys = ["primary", "secondary", "muted", "error"] as const;
+
+export type ColorKey = (typeof flusterColorKeys)[number];
 
 /** Each string is the css string that is equivalent to that color. This may be a variable or a hex code. */
 export type ColorPair = {
-    foreground: String;
-    background: String;
+    foreground: string;
+    background: string;
 };
 
 export type WithColorKey = {
@@ -25,7 +26,7 @@ export const getColorKey = (
     props: WithColorKey,
     defaultKey: ColorKey = "primary",
 ): ColorKey => {
-    for (const k of colorKeys) {
+    for (const k of flusterColorKeys) {
         if (props[k]) {
             return k;
         }

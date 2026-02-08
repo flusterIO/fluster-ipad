@@ -8,6 +8,7 @@ members = [
     "packages/rust/fluster_pre_parser",
     "packages/rust/fluster_swift_mdx_parser", 
     "packages/rust/uniffi_bindgen",
+    "packages/rust/fluster_desktop_fs/"
 ]
 
 

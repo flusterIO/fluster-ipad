@@ -58,7 +58,7 @@ build_cross_language_schemas: generate_initial_note_data
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=swift --output-folder={{justfile_directory()}}/packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare
 
 build_desktop_fs:
-	cd {{justfile_directory()}}/packages/rust/fluster_desktop_fs; cargo swift package
+	cd {{justfile_directory()}}/packages/rust/fluster_desktop_fs; cargo swift package -y
 
 
 clear_macos_database:

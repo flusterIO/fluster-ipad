@@ -18,6 +18,7 @@ func getWebViewConfig() -> WKWebViewConfiguration {
 
 struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for iOS/iPadOS
   @Binding var webView: WKWebView
+  @Environment(\.colorScheme) private var colorScheme: ColorScheme
   let url: URL
   var messageHandlerKeys: [String]
   var messageHandler: ((String, Any) -> Void)?
@@ -29,6 +30,13 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
 
   private func makeWebView(context: Context) -> WKWebView {
     webView.isHidden = true
+    webView.setValue(false, forKey: "drawsBackground")
+    webView.underPageBackgroundColor = .clear
+    webView.wantsLayer = true
+    webView.layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor
+    if colorScheme == .dark {
+      addDarkModeScript(controller: webView.configuration.userContentController)
+    }
     addContentControllerList(
       items: messageHandlerKeys,
       controller: webView.configuration.userContentController,
@@ -48,6 +56,20 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     return webView
   }
 
+  func addDarkModeScript(controller: WKUserContentController) {
+    print("Adding dark mode script...")
+    let source = """
+          document.body.classList.add("dark")
+      """
+
+    // 2. Create the script to run at the very start (atDocumentStart)
+    let userScript = WKUserScript(
+      source: source,
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: true
+    )
+    controller.addUserScript(userScript)
+  }
   func makeCoordinator() -> Coordinator {
     Coordinator(self)
   }

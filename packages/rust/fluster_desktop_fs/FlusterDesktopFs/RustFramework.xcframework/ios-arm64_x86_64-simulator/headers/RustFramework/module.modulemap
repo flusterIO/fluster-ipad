@@ -1,0 +1,4 @@
+module fluster_desktop_fsFFI {
+    header "fluster_desktop_fsFFI.h"
+    export *
+}
