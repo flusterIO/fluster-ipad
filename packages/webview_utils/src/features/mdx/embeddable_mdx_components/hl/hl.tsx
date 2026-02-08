@@ -3,7 +3,7 @@ import {
     ColorCssMap,
     getColorKey,
     WithColorKey,
-} from "./embeddable_component_types/color_key";
+} from "../embeddable_component_types/color_key";
 
 export interface HlProps extends HTMLProps<HTMLSpanElement>, WithColorKey {
     /// A valid fluster color variable.

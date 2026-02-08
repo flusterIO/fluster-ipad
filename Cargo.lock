@@ -2638,6 +2638,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "fluster_desktop_fs"
+version = "0.1.0"
+dependencies = [
+ "uniffi",
+]
+
+[[package]]
 name = "fluster_internal_cli"
 version = "0.0.1"
 dependencies = [

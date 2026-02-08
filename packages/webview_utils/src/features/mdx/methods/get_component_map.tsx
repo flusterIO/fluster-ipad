@@ -4,15 +4,15 @@ import { H1, H2, H3, H4, P } from "@/shared_components/typography/typography";
 import { BlockQuote } from "@/shared_components/typography/block_quote";
 import { MDXComponents } from "mdx/types";
 import { InlineMdxContent } from "../components/inline_mdx_content";
-import { Hl } from "../embeddable_mdx_components/hl";
 import { MdxInput } from "../embeddable_mdx_components/html/input";
 import { AnchorTag } from "../embeddable_mdx_components/html/anchor";
 import { AutoInsertedTag } from "../embeddable_mdx_components/auto_inserted/tag";
-import { Ul } from "../embeddable_mdx_components/ul";
 import { FlusterCitation } from "../embeddable_mdx_components/auto_inserted/fluster_citation";
 import { Admonition } from "../embeddable_mdx_components/admonition";
 import { DictionaryEntryComponent } from "../../dictionary/hooks/dictionary_entry";
 import { NoteLink } from "../embeddable_mdx_components/auto_inserted/note_link";
+import { Hl } from "../embeddable_mdx_components/hl/hl";
+import { Ul } from "../embeddable_mdx_components/ul/ul";
 interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
     query: string | string[];

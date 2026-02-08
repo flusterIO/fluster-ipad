@@ -10,6 +10,10 @@ import SwiftUI
 
 struct EditorSettingSectionView: View {
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
+    @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
+      CodeSyntaxTheme = .dracula
+    @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
+      CodeSyntaxTheme = .materialLight
 
   var body: some View {
     SettingsSection(
@@ -30,6 +34,7 @@ struct EditorSettingSectionView: View {
           .pickerStyle(.segmented)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+          
       })
   }
 }

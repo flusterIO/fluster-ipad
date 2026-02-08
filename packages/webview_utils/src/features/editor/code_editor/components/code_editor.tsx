@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, type ReactNode } from "react";
 import { EditorState, Extension } from "@codemirror/state";
 import { EditorView, keymap, ViewUpdate } from "@codemirror/view";
-import { markdown } from "@codemirror/lang-markdown";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { history } from '@codemirror/commands';
 import { vim } from "@replit/codemirror-vim";
 import {
     useCodeEditorContext,
@@ -17,9 +18,19 @@ import { useEventListener } from "@/state/hooks/use_event_listener";
 import { setWindowBridgeFunctions } from "../types/swift_events/swift_events";
 import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 import { AnyWebviewAction, AnyWebviewEvent, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
+import { CodeEditorLanguage } from "../types/code_editor_types";
+import { languages } from '@codemirror/language-data';
+import { bracketMatching, foldGutter, indentOnInput } from '@codemirror/language';
+import { javascript } from '@codemirror/lang-javascript';
+import { autocompletion, closeBrackets, CompletionSource } from '@codemirror/autocomplete';
+import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
+import { bibtex } from "@citedrive/codemirror-lang-bibtex";
+import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
+import { Prec } from "@codemirror/state";
+
 
 interface CodeEditorProps {
-    language?: Extension;
+    language?: CodeEditorLanguage;
     initialValue: string;
     requestNewDataAction?: AnyWebviewAction
     updateHandler?: AnyWebviewAction
@@ -31,8 +42,9 @@ interface CodeEditorProps {
 
 setWindowBridgeFunctions();
 
+
 export const CodeEditorInner = ({
-    language = markdown(),
+    language = CodeEditorLanguage.markdown,
     initialValue,
     updateHandler = SplitviewEditorWebviewActions.OnEditorChange,
     showWebviewHandler = SplitviewEditorWebviewActions.SetWebviewLoaded,
@@ -56,13 +68,49 @@ export const CodeEditorInner = ({
             extensions.push(vim());
             extensions.push(lineNumbersRelative);
         }
+        if (language === CodeEditorLanguage.markdown) {
+
+            // 1. Your Custom Source
+            const mdxSnippetSource: CompletionSource = (context) => {
+                const word = context.matchBefore(/\w*/);
+                if (!word || (word.from === word.to && !context.explicit)) return null;
+                return {
+                    from: word.from,
+                    options: getFlusterSnippets(),
+                    filter: true
+                };
+            };
+            extensions = [
+                ...extensions,
+                markdown({ base: markdownLanguage, codeLanguages: languages }),
+                javascript({ jsx: true }),
+                bracketMatching(),
+                closeBrackets(),
+                autocompletion(),
+                Prec.high(markdownLanguage.data.of({
+                    autocomplete: mdxSnippetSource
+                })),
+                foldGutter(),
+                indentOnInput(),
+                highlightActiveLine(),
+                dropCursor(),
+                rectangularSelection(),
+            ]
+        } else if (language === CodeEditorLanguage.bibtex) {
+            extensions = [
+                ...extensions,
+                bibtex()
+            ]
+        }
         extensions = [
             ...extensions,
             keymap.of(codeEditorBaseKeymapMap[state.baseKeymap]()),
             EditorState.allowMultipleSelections.of(true),
             EditorView.lineWrapping,
-            language,
+            /* language, */
+            history(),
             codeEditorThemeMap[state.theme](),
+            // On Change Listener
             EditorView.updateListener.of((v: ViewUpdate) => {
                 if (v.docChanged) {
                     const payload = v.state.doc.toString();

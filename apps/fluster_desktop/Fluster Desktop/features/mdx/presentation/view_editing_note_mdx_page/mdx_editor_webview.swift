@@ -63,12 +63,6 @@ struct MdxEditorWebview: View {
         }
       }
     )
-    .onChange(
-        of: editingNote.markdown.preParsedBody,
-        {
-            print("Here? \(editingNote.markdown.preParsedBody)")
-        }
-    )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
   func onWebviewLoad() async {

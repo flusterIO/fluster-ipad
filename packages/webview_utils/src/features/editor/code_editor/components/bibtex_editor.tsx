@@ -12,6 +12,7 @@ import { LoadingComponent } from "@/shared_components/loading_component";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { setBibtexEditorWindowBridgeFunctions } from "../types/swift_events/bibtex_editor_swift_events";
 import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { CodeEditorLanguage } from "../types/code_editor_types";
 
 setBibtexEditorWindowBridgeFunctions();
 
@@ -47,7 +48,7 @@ const BibtexEditorInner = (): ReactNode => {
     return data.haveSetInitialValue ? (
         <CodeEditorInner
             initialValue={initialValue}
-            language={bibtex()}
+            language={CodeEditorLanguage.bibtex}
             requestNewDataAction={BibtexEditorWebviewActions.RequestBibtexEditorData}
             updateHandler={BibtexEditorWebviewActions.OnEditorChange}
             showWebviewHandler={BibtexEditorWebviewActions.SetWebviewLoaded}
