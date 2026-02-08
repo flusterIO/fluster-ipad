@@ -55,6 +55,7 @@ export function setParsedEditorContentString(payload: string) {
 }
 
 export function setEditorKeymap(keymap: string) {
+    console.log("keymap: ", keymap)
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetEditorKeymap, { detail: keymap }),
     );

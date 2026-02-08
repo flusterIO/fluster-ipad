@@ -29,11 +29,11 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
 
   private func makeWebView(context: Context) -> WKWebView {
     webView.isHidden = true
-    let config = WKWebViewConfiguration()
-    // 1. Register the handler name here
-    for handler in messageHandlerKeys {
-      config.userContentController.add(context.coordinator, name: handler)
-    }
+    addContentControllerList(
+      items: messageHandlerKeys,
+      controller: webView.configuration.userContentController,
+      coordinator: context.coordinator
+    )
 
     DispatchQueue.main.async {
       if let scrollView = webView.enclosingScrollView {
@@ -104,7 +104,9 @@ struct WebViewContainerView: View {
   var body: some View {
     ZStack {
       WebViewContainer(
-        webView: $webview, url: url, messageHandlerKeys: messageHandlerKeys,
+        webView: $webview,
+        url: url,
+        messageHandlerKeys: messageHandlerKeys,
         messageHandler: messageHandler,
         onLoad: onLoadHandler
       )

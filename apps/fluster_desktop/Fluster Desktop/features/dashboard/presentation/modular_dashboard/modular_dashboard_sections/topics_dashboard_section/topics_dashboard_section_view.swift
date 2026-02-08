@@ -46,6 +46,7 @@ struct TopicsDashboardSectionView: View {
         .listRowSeparator(.hidden)
         .listRowSeparatorTint(Color.clear)
       }
+      .frame(minHeight: 200)
       .scrollContentBackground(.hidden)
     }
     .padding()

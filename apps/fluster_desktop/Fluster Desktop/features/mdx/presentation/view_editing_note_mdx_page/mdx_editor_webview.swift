@@ -7,6 +7,7 @@
 
 import FlusterData
 import FlusterMdx
+import SwiftData
 import SwiftUI
 import WebKit
 
@@ -14,6 +15,7 @@ struct MdxEditorWebview: View {
   let editingNote: NoteModel
 
   @Binding var webView: WKWebView
+  @Environment(\.modelContext) private var modelContext: ModelContext
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
     CodeSyntaxTheme = .dracula
@@ -29,7 +31,10 @@ struct MdxEditorWebview: View {
       )!,
       messageHandlerKeys: [
         SplitviewEditorWebviewActions.onTagClick.rawValue,
-        SplitviewEditorWebviewActions.onEditorChange.rawValue
+        SplitviewEditorWebviewActions.onEditorChange.rawValue,
+        SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
+        SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue
+
       ],
       messageHandler: messageHandler,
       onLoad: onWebviewLoad
@@ -58,6 +63,12 @@ struct MdxEditorWebview: View {
         }
       }
     )
+    .onChange(
+        of: editingNote.markdown.preParsedBody,
+        {
+            print("Here? \(editingNote.markdown.preParsedBody)")
+        }
+    )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
   func onWebviewLoad() async {
@@ -67,22 +78,57 @@ struct MdxEditorWebview: View {
         try await setEditorThemeLight(editorTheme: editorThemeLight)
         try await setEditorKeymap(editorKeymap: editorKeymap)
         try await loadNote(note: editingNote)
+        print("Loaded initial editor data")
       } catch {
         print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
       }
     }
   }
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {
-    print("Handler: \(handlerKey)")
     switch handlerKey {
       case SplitviewEditorWebviewActions.onEditorChange.rawValue:
         handleEditorChange(newValue: messageBody as! String)
+      case SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue:
+        Task(priority: .high) {
+          await onWebviewLoad()
+        }
+      case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
+        Task {
+          if let parsedMdx =
+            await editingNote.markdown
+            .body.preParseAsMdxToBytes(noteId: editingNote.id)
+          {
+            do {
+              try await setParsedEditorContent(
+                note: editingNote
+              )
+            } catch {
+              print("Error: \(error.localizedDescription)")
+            }
+            if let parsingResults =
+              parsedMdx.toMdxParsingResult()
+            {
+              editingNote.applyMdxParsingResults(
+                results: parsingResults,
+                modelContext: modelContext
+              )
+            }
+          }
+        }
       default:
         return
     }
   }
   public func handleEditorChange(newValue: String) {
-    print(newValue)
+    editingNote.markdown.body = newValue
+    editingNote.setLastRead(setModified: true)
+    Task {
+      do {
+        try await setParsedEditorContentString(body: newValue)
+      } catch {
+        print("Error: \(error.localizedDescription)")
+      }
+    }
   }
   func setEditorThemeDark(editorTheme: CodeSyntaxTheme) async throws {
     try await webView.evaluateJavaScript(
@@ -109,6 +155,12 @@ struct MdxEditorWebview: View {
         window.setParsedEditorContentString(\(preParsedBody.toQuotedJavascriptString()))
         """)
     }
+  }
+  func setParsedEditorContentString(body: String) async throws {
+    try await webView.evaluateJavaScript(
+      """
+      window.setParsedEditorContentString(\(body.toQuotedJavascriptString()))
+      """)
   }
   func setEditorContent(note: NoteModel) async throws {
     let body = note.markdown.body.toQuotedJavascriptString()

@@ -1,0 +1,14 @@
+[package]
+name = "fluster_desktop_fs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["staticlib", "lib"]
+name = "fluster_desktop_fs"
+
+[dependencies]
+uniffi = "0.29"
+

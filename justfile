@@ -57,6 +57,9 @@ build_cross_language_schemas: generate_initial_note_data
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=swift --output-folder={{justfile_directory()}}/packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare
 
+build_desktop_fs:
+	cd {{justfile_directory()}}/packages/rust/fluster_desktop_fs; cargo swift package
+
 
 clear_macos_database:
 	trash "/Users/bigsexy/Library/Containers/iglooDevelopment.Fluster-Desktop/Data/Library/Application Support/default.store"
@@ -109,7 +112,7 @@ pre_ipad_build: generate_initial_launch_data build_cross_language_schemas genera
 generate_shiki_themes:
 	tsx scripts/write_bundled_themes.ts
 
-pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_core_rust_utilities build_webview_utils build_splitview_mdx_editor
+pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor
 
 create_desktop_feature feature_name:
 	python scripts/create_feature_util.py {{feature_name}}

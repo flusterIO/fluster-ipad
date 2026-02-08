@@ -34,7 +34,7 @@ struct MainViewSwitch: View {
           }
       case .noteViewMdx:
         ViewEditingNoteMdxPage()
-          .navigationTitle("View Markdown")
+          .navigationTitle("Markdown")
           .onAppear {
             markEditingNoteRead()
           }
