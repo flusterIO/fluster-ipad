@@ -18,33 +18,30 @@ impl FrontMatterResult {
             match ignore_parsers.as_vec() {
                 Ok(res) => res.iter().filter_map(|x| x.as_string().ok()).collect(),
                 Err(e) => {
-                    println!("Front Matter Error: {}", e);
+                    println!("Front Matter Error (ignored parsers): {}", e);
                     Vec::new()
                 }
             }
         }
     }
     pub fn get_title(data: &mut Pod) -> Option<String> {
-        let title = &data.remove("title".to_string());
-        if title.is_empty() {
-            None
+        if let Ok(title) = &data.remove("title".to_string()).as_string() {
+            Some(title.clone())
         } else {
-            match title.as_string() {
-                Ok(s) => Some(s),
-                Err(e) => {
-                    println!("Front Matter Error: {}", e);
-                    None
-                }
-            }
+            None
         }
     }
     pub fn get_user_defined_id(data: &mut Pod) -> Option<String> {
         let id = &data.remove("id".to_string());
-        match id.as_string() {
-            Ok(s) => Some(s),
-            Err(e) => {
-                println!("Front Matter Error: {}", e);
-                None
+        if id.is_empty() {
+            None
+        } else {
+            match id.as_string() {
+                Ok(s) => Some(s),
+                Err(e) => {
+                    println!("Front Matter Error (user_defined_id): {}", e);
+                    None
+                }
             }
         }
     }

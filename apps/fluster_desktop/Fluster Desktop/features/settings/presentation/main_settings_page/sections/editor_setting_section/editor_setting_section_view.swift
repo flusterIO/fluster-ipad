@@ -36,7 +36,7 @@ struct EditorSettingSectionView: View {
           Text("Theme").font(.headline)
             .padding(.top)
           Picker(
-            selection: $editorThemeDark,
+            selection: $editorThemeLight,
             content: {
               ForEach(CodeSyntaxTheme.allCases, id: \.rawValue) { item in
                 Text(item.toThemeLabel()).tag(item)

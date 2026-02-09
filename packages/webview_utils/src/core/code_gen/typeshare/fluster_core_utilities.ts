@@ -104,6 +104,7 @@ export enum SplitviewEditorWebviewEvents {
 	SetParsedMdxContent = "set-parsed-mdx-content",
 	SetParsedMdxContentString = "set-editor-content-str",
 	SetEditorKeymap = "set-editor-keymap",
+	SetEditorSnippetProps = "set-editor-snippet-props",
 	SetCodeTheme = "set-code-theme",
 	SetCodeThemeLight = "set-code-theme-light",
 	SetCodeThemeDark = "set-code-theme-dark",

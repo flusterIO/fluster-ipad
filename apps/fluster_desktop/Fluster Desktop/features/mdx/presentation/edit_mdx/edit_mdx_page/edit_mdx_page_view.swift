@@ -5,16 +5,23 @@
 //  Created by Andrew on 1/15/26.
 //
 
+import FlusterData
 import SwiftUI
 import WebKit
+import SwiftData
 
 struct EditMdxPageView: View {
   @EnvironmentObject private var appState: AppState
+  @Environment(\.modelContext) private var modelContext
+  var editingNote: NoteModel? {
+    guard let id = appState.editingNoteId else { return nil }
+    return modelContext.model(for: id) as? NoteModel
+  }
   @Binding var webview: WKWebView
 
   var body: some View {
-    if let editingNote = appState.editingNote {
-      MdxEditorWebview(editingNote: editingNote, webView: $webview)
+    if let _editingNote = editingNote {
+      MdxEditorWebview(editingNote: _editingNote, webView: $webview)
     } else {
       NoNoteSelectedView()
     }

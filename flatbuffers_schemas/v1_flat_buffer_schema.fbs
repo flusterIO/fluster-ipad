@@ -74,3 +74,10 @@ table NoteDetailDataBuffer {
     last_modified_string:string (required);
     last_read_string:string (required);
 }
+
+
+namespace Snippets;
+
+table GetSnippetPropsBuffer {
+    citationIds:[string] (required);
+}

@@ -5,6 +5,7 @@
 //  Created by Andrew on 1/20/26.
 //
 
+import FlatBuffers
 import FlusterData
 import FlusterMdx
 import SwiftData
@@ -13,7 +14,7 @@ import WebKit
 
 struct MdxEditorWebview: View {
   let editingNote: NoteModel
-
+  @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
   @Binding var webView: WKWebView
   @Environment(\.modelContext) private var modelContext: ModelContext
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
@@ -72,6 +73,7 @@ struct MdxEditorWebview: View {
         try await setEditorThemeLight(editorTheme: editorThemeLight)
         try await setEditorKeymap(editorKeymap: editorKeymap)
         try await loadNote(note: editingNote)
+        try await setSnippetProps()
         print("Loaded initial editor data")
       } catch {
         print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
@@ -87,7 +89,7 @@ struct MdxEditorWebview: View {
           await onWebviewLoad()
         }
       case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
-        Task {
+        Task(priority: .high) {
           if let parsedMdx =
             await editingNote.markdown
             .body.preParseAsMdxToBytes(noteId: editingNote.id)
@@ -123,6 +125,20 @@ struct MdxEditorWebview: View {
         print("Error: \(error.localizedDescription)")
       }
     }
+  }
+
+  func setSnippetProps() async throws {
+    var builder = FlatBufferBuilder(initialSize: 1024)
+    let ctiationIdsVectorOffset = builder.createVector(
+      ofStrings: bibEntries.compactMap(\.citationKey))
+    let data = Snippets_GetSnippetPropsBuffer.createGetSnippetPropsBuffer(
+      &builder, citationIdsVectorOffset: ctiationIdsVectorOffset)
+    builder.finish(offset: data)
+    let bytes: [UInt8] = Array(builder.data)
+    try await webView.evaluateJavaScript(
+      """
+      window.setSnippetProps(\(bytes))
+      """)
   }
   func setEditorThemeDark(editorTheme: CodeSyntaxTheme) async throws {
     try await webView.evaluateJavaScript(

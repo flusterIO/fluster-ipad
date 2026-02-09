@@ -1,0 +1,32 @@
+{
+    "name": "@fluster/lezer",
+    "description": "Originally a fork of lezer-markdown-obsidian, now a bunch of codemirror utilities for Fluster.",
+    "version": "0.0.3",
+    "main": "dist/index.es.js",
+    "module": "dist/index.umd.js",
+    "types": "dist/index.d.ts",
+    "type": "module",
+    "license": "MIT",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "require": "./dist/index.umd.js",
+            "import": "./dist/index.es.js"
+        }
+    },
+    "peerDependencies": {
+        "@lezer/common": "^1.0.0",
+        "@lezer/markdown": "^1.0.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.9.3",
+        "@lezer/common": "^1.0.0",
+        "@lezer/markdown": "^1.0.0"
+    },
+    "scripts": {
+        "build": "vite build"
+    }
+}

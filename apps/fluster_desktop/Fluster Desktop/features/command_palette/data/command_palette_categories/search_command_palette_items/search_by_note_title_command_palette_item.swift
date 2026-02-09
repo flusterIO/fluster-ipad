@@ -25,7 +25,7 @@ class SearchByNoteTitleCommandPaletteItem: CommandPaletteItem {
                                               uniqueId: "note-\(note.frontMatter.title ?? note.markdown.title ?? UUID().uuidString)",
                                               title: note.frontMatter.title ?? note.markdown.title ?? "No title found", icon: "text.document", subtitle: nil, itemType: .commandPaletteAction)
                 item.onAccept = {
-                    appState.editingNote = note
+                    appState.setEditingNote(editingNote: note)
                 }
                 return item
             }

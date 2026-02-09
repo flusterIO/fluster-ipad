@@ -28,7 +28,8 @@ export const SplitViewEditorInner = (): ReactNode => {
                 <MdxEditorPreview
                     id={SplitviewEditorWebviewIds.LandscapePreview}
                     className="overflow-y-auto overflow-x-hidden h-full loading-hide"
-                    scrollPositionKey={SplitviewEditorWebviewLocalStorageKeys.ScrollPositionLandscape}
+                    scrollPositionKeyLandscape={SplitviewEditorWebviewLocalStorageKeys.ScrollPositionLandscape}
+                    scrollPositionKeyPortrait={SplitviewEditorWebviewLocalStorageKeys.ScrollPositionPortrait}
                 />
                 <div className="w-full h-full flex flex-col justify-center items-center loading-only-flex">
                     <LoadingComponent />

@@ -541,3 +541,40 @@ public struct MdxSerialization_NoteDetails_NoteDetailDataBuffer: FlatBufferObjec
   }
 }
 
+public struct Snippets_GetSnippetPropsBuffer: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case citationIds = 4
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var hasCitationIds: Bool { let o = _accessor.offset(VTOFFSET.citationIds.v); return o == 0 ? false : true }
+  public var citationIdsCount: Int32 { let o = _accessor.offset(VTOFFSET.citationIds.v); return o == 0 ? 0 : _accessor.vector(count: o) }
+  public func citationIds(at index: Int32) -> String? { let o = _accessor.offset(VTOFFSET.citationIds.v); return o == 0 ? nil : _accessor.directString(at: _accessor.vector(at: o) + index * 4) }
+  public static func startGetSnippetPropsBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 1) }
+  public static func addVectorOf(citationIds: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citationIds, at: VTOFFSET.citationIds.p) }
+  public static func endGetSnippetPropsBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
+  public static func createGetSnippetPropsBuffer(
+    _ fbb: inout FlatBufferBuilder,
+    citationIdsVectorOffset citationIds: Offset
+  ) -> Offset {
+    let __start = Snippets_GetSnippetPropsBuffer.startGetSnippetPropsBuffer(&fbb)
+    Snippets_GetSnippetPropsBuffer.addVectorOf(citationIds: citationIds, &fbb)
+    return Snippets_GetSnippetPropsBuffer.endGetSnippetPropsBuffer(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.citationIds.p, fieldName: "citationIds", required: true, type: ForwardOffset<Vector<ForwardOffset<String>, String>>.self)
+    _v.finish()
+  }
+}
+

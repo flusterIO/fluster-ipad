@@ -12,6 +12,11 @@ import SwiftUI
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
   @EnvironmentObject private var appState: AppState
+  var editingNote: NoteModel? {
+    guard let id = appState.editingNoteId else { return nil }
+    return modelContext.model(for: id) as? NoteModel
+  }
+
   @Query private var items: [Item]
   @State private var columnVisibility: NavigationSplitViewVisibility = NavigationSplitViewVisibility
     .doubleColumn
@@ -21,7 +26,7 @@ struct ContentView: View {
     NavigationSplitView(columnVisibility: $columnVisibility) {
       MainViewSidebar()
     } detail: {
-        NavigationStack(path: $appState.commandPaletteNavigation) {
+      NavigationStack(path: $appState.commandPaletteNavigation) {
         MainViewSwitch()
           .navigationDestination(
             for: CommandPaletteSecondaryView.self,
@@ -38,10 +43,10 @@ struct ContentView: View {
       }
     }
     .onChange(
-      of: appState.editingNote?.markdown.body,
+      of: editingNote?.markdown.body,
       {
         Task {
-          if let note = appState.editingNote {
+          if let note = editingNote {
             if let parsedMdx =
               await note.markdown
               .body.preParseAsMdxToBytes(noteId: note.id)

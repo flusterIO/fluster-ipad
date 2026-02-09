@@ -62,6 +62,16 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
 pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<Vec<u8>> {
     let result = parse_mdx_string_to_mdx_result(&opts).await;
 
+    println!(
+        "Result: {}",
+        result
+            .clone()
+            .front_matter
+            .unwrap()
+            .title
+            .unwrap_or_else(|| "None".to_string())
+    );
+
     let data = result.serialize_to_flatbuffer();
 
     Ok(data)
@@ -73,7 +83,7 @@ mod tests {
     use fluster_core_utilities::{
         code_gen::flat_buffer::v1_flat_buffer_schema_generated::mdx_serialization::root_as_mdx_parsing_result_buffer,
         test_utilities::get_test_mdx_content::{
-            get_model_note_content, get_welcome_to_fluster_content,
+            get_test_note_content_with_everything, get_welcome_to_fluster_content,
         },
     };
 
@@ -81,7 +91,7 @@ mod tests {
 
     #[tokio::test]
     async fn parses_mdx_note_model_by_regex_successfully() {
-        let test_content = get_model_note_content();
+        let test_content = get_test_note_content_with_everything();
         let res = parse_mdx_string_by_regex(ParseMdxOptions {
             content: test_content,
             note_id: None,
@@ -95,20 +105,45 @@ mod tests {
         let binding = &res.unwrap();
         let result = root_as_mdx_parsing_result_buffer(binding)
             .expect("Deserializes buffer to results without error.");
+
+        dbg!(
+            result
+                .front_matter()
+                .expect("Finds front matter when front-matter exists.")
+                .title()
+        );
+
         assert!(
-            !result
+            result
+                .front_matter()
+                .expect("Finds front matter when front-matter exists.")
+                .title()
+                .expect("Finds front-matter title")
+                == "My Notes title",
+            "Parses title fron front-matter"
+        );
+
+        assert!(
+            result
+                .dictionary_entries()
+                .iter()
+                .any(|x| x.iter().any(|y| y.label() == "My dictionary entry")),
+            "Finds dictionary entries."
+        );
+        assert!(
+            result
+                .parsed_content()
+                .to_string()
+                .contains("<DictionaryEntry"),
+            "Replaces dictionary entries."
+        );
+        assert!(
+            result
                 .citations()
-                .expect("Result has citations key.")
-                .is_empty(),
+                .iter()
+                .any(|x| x.iter().any(|y| y.citation_key() == "myCitationHere")),
             "Finds citations in note."
         );
-        // assert!(
-        //     !result
-        //         .dictionary_entries()
-        //         .expect("Result has dictionary entries.")
-        //         .is_empty(),
-        //     "Finds dictionary entries in note."
-        // );
         assert!(
             result
                 .parsed_content()
@@ -116,13 +151,6 @@ mod tests {
                 .contains("<FlusterCitation"),
             "Replaces citation in file."
         );
-        // assert!(
-        //     result
-        //         .parsed_content()
-        //         .to_string()
-        //         .contains("<DictionaryEntry"),
-        //     "Replaces dictionary entry in file."
-        // );
     }
 
     #[tokio::test]

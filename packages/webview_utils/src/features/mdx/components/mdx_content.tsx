@@ -3,7 +3,7 @@ import React, { HTMLProps, useEffect, type ReactNode } from "react";
 import { useDebounceMdxParse } from "../hooks/use_debounce_mdx_parse";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
-import type { AnyWebviewAction } from "@/utils/types/any_window_event";
+import type { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 
 const loadScrollPosition = (
     element: HTMLElement,
@@ -20,7 +20,7 @@ export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     className?: string;
     abortIfNoMath?: boolean;
     debounceTimeout?: number;
-    scrollPositionKey?: string;
+    scrollPositionKey?: AnyWebviewStorageKey;
     showWebviewAction?: AnyWebviewAction
 }
 
@@ -63,12 +63,14 @@ export const MdxContent = ({
     }, [mdx]);
 
     const handleScroll = (e: Event): void => {
+        console.log("(e.target as HTMLElement).scrollTop.toString(): ", (e.target as HTMLElement).scrollTop.toString())
         if (scrollPositionKey) {
             window.localStorage.setItem(scrollPositionKey, (e.target as HTMLElement).scrollTop.toString())
         }
     }
 
     const handleScrollSetup = (id: string, sk: typeof scrollPositionKey): void => {
+        console.log("handleScrollSetup id: ", id)
         if (id && sk) {
             const em = document.getElementById(id);
             if (em) {
@@ -83,7 +85,7 @@ export const MdxContent = ({
 
 
     useEventListener("mdx-content-loaded", (e) => {
-        if (props.id && (e.detail === scrollPositionKey)) {
+        if (props.id && (e.detail.scollPositionKey === scrollPositionKey)) {
             handleScrollSetup(props.id, scrollPositionKey)
         }
     })

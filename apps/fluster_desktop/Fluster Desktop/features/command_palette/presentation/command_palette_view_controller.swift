@@ -3,7 +3,7 @@
 //  Fluster
 //
 //  Created by Andrew on 2/7/26.
-//
+///
 
 import AppKit
 import Combine
@@ -18,25 +18,19 @@ class CommandPaletteController: NSObject, ObservableObject {
     if let panel = panel, panel.isVisible {
       hide()
     } else {
-        show(modelContainer)
+      show(modelContainer)
     }
   }
 
   func show(_ modelContainer: ModelContainer) {
+    // Your custom SwiftUI View for the palette
+    let rootView = CommandPaletteContainerView(
+      close: { [weak self] in self?.hide() },
+    )
+    .ignoresSafeArea()
+    .environmentObject(AppState.shared)
+    .modelContainer(modelContainer)
     if panel == nil {
-      // Your custom SwiftUI View for the palette
-      let rootView = CommandPaletteContainerView(
-        close: { [weak self] in self?.hide() },
-      )
-      .ignoresSafeArea()
-//      .frame(
-//        width: CGFloat(COMMAND_PALETTE_WIDTH), height: CGFloat(COMMAND_PALETTE_HEIGHT),
-//        alignment: .top
-//      )
-//      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .environmentObject(AppState.shared)
-      .modelContainer(modelContainer)
-
       panel = CommandPalettePanel(rootView: rootView)
       panel?.center()
 
@@ -48,6 +42,8 @@ class CommandPaletteController: NSObject, ObservableObject {
       ) { [weak self] _ in
         self?.hide()
       }
+    } else {
+      panel?.contentView = NSHostingView(rootView: rootView)
     }
 
     panel?.makeKeyAndOrderFront(nil)

@@ -44,6 +44,9 @@ pub enum SplitviewEditorWebviewEvents {
     #[serde(rename = "set-editor-keymap")]
     #[strum(to_string = "set-editor-keymap")]
     SetEditorKeymap,
+    #[serde(rename = "set-editor-snippet-props")]
+    #[strum(to_string = "set-editor-snippet-props")]
+    SetEditorSnippetProps,
     #[serde(rename = "set-code-theme")]
     #[strum(to_string = "set-code-theme")]
     SetCodeTheme,

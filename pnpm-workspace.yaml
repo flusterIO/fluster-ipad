@@ -9,6 +9,7 @@ packages:
   - packages/webviews/note_detail_webview
   - packages/webviews/dictionary_webview
   - packages/webview_utils
+  - packages/typescript/lezer
   - packages/shared_config
   - packages/generated/desktop_bindings
   - packages/swift/desktop_plugins/fluster_swift_data/
