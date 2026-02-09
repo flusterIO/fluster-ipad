@@ -22,11 +22,12 @@ import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
 import { bracketMatching, foldGutter, indentOnInput } from '@codemirror/language';
 import { javascript } from '@codemirror/lang-javascript';
-import { autocompletion, closeBrackets, CompletionSource } from '@codemirror/autocomplete';
+import { autocompletion, closeBrackets, Completion, CompletionSource } from '@codemirror/autocomplete';
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
 import { bibtex } from "@citedrive/codemirror-lang-bibtex";
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
 import { Prec } from "@codemirror/state";
+import { SnippetStrategy } from "../data/snippets/snippet_types";
 
 
 interface CodeEditorProps {
@@ -76,7 +77,7 @@ export const CodeEditorInner = ({
                 if (!word || (word.from === word.to && !context.explicit)) return null;
                 return {
                     from: word.from,
-                    options: getFlusterSnippets(),
+                    options: getFlusterSnippets().filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
                     filter: true
                 };
             };

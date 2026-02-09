@@ -20,10 +20,12 @@ public struct SettingsSection<Content: View>: View {
     VStack(alignment: .leading) {
       Text(title)
         .font(.title2)
+        .padding(subtitle == nil ? .vertical : .top)
       if subtitle != nil {
         Text(subtitle!)
           .font(.caption)
           .foregroundStyle(.secondary)
+          .padding(.bottom)
       }
       Spacer(minLength: 12)
       VStack(alignment: .leading, spacing: 10) {
