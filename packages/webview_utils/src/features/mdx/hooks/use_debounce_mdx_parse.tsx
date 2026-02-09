@@ -8,14 +8,13 @@ import { ParsedMdxContent } from "../components/parsed_mdx_content";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
-import { AnyWebviewAction } from "@/utils/types/any_window_event";
-
+import { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 
 
 declare global {
 
     interface WindowEventMap {
-        "mdx-content-loaded": CustomEvent<{ id?: string }>;
+        "mdx-content-loaded": CustomEvent<{ scollPositionKey: AnyWebviewStorageKey }>;
     }
 }
 
@@ -23,7 +22,7 @@ export const useDebounceMdxParse = (
     initialValue: string = "",
     debounceTimeout: number = 300,
     /// A unique key that is passed to the mdx-content-loaded event as the detail field if present.
-    contentLoadedId: string = "mdx-content",
+    contentLoadedId: AnyWebviewStorageKey = SplitviewEditorWebviewLocalStorageKeys.ScrollPositionLandscape,
     showWebviewHandler?: AnyWebviewAction
 ) => {
     const [value, setValue] = useState<string>(initialValue);
@@ -135,7 +134,9 @@ export const useDebounceMdxParse = (
 
     useEffect(() => {
         window.dispatchEvent(new CustomEvent("mdx-content-loaded", {
-            detail: contentLoadedId
+            detail: {
+                scrollPositionKey: contentLoadedId
+            }
         }))
         /* eslint-disable-next-line -- I hate this rule but I'm too lazy to turn it off. */
     }, [mdxModule])

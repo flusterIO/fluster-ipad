@@ -7,7 +7,7 @@ import { cn } from "@/utils/cn";
 
 /** A utility component used to implement some event listeners before rendering the MdxEditorPreview component. */
 export const MdxEditorPreviewOnly = (
-    props: MdxEditorPreviewProps,
+    props: Omit<MdxEditorPreviewProps, "scrollPositionKeyLandscape" | "scrollPositionKeyPortrait">,
 ): ReactNode => {
     const dispatch = useCodeEditorDispatch();
     useEventListener(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
@@ -20,7 +20,8 @@ export const MdxEditorPreviewOnly = (
         <MdxEditorPreview
             {...props}
             className={cn("loading-main-hide h-full", props.className)}
-            scrollPositionKey={SplitviewEditorWebviewLocalStorageKeys.ScrollPositionPortrait}
+            scrollPositionKeyPortrait={SplitviewEditorWebviewLocalStorageKeys.ScrollPositionPortrait}
+            scrollPositionKeyLandscape={SplitviewEditorWebviewLocalStorageKeys.ScrollPositionLandscape}
             id={SplitviewEditorWebviewIds.PortraitPreview}
         />
     );

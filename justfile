@@ -64,6 +64,8 @@ build_desktop_fs:
 clear_macos_database:
 	trash "/Users/bigsexy/Library/Containers/iglooDevelopment.Fluster-Desktop/Data/Library/Application Support/default.store"
 
+build_fluster_lezer:
+	cd {{justfile_directory()}}/packages/typescript/lezer; pnpm build
 
 build_cross_language: build_cross_language_schemas build_fluster_swift_mdx_parser 
 
@@ -84,7 +86,7 @@ build_fluster_swift_mdx_parser: build_all_rust
 build_fluster_core_rust_utilities: build_all_rust
 	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
 
-build_webview_utils: build_cross_language_schemas
+build_webview_utils: build_cross_language_schemas build_fluster_lezer
 	pnpm run -C packages/webview_utils build
 
 build_dictionary_webview: build_cross_language_schemas build_webview_utils

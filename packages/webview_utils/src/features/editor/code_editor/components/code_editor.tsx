@@ -20,14 +20,16 @@ import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewE
 import { AnyWebviewAction, AnyWebviewEvent, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
-import { bracketMatching, foldGutter, indentOnInput } from '@codemirror/language';
-import { javascript } from '@codemirror/lang-javascript';
-import { autocompletion, closeBrackets, Completion, CompletionSource } from '@codemirror/autocomplete';
+import { bracketMatching, foldGutter, indentOnInput, syntaxTree } from '@codemirror/language';
+import { autocompletion, closeBrackets, CompletionSource } from '@codemirror/autocomplete';
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
 import { bibtex } from "@citedrive/codemirror-lang-bibtex";
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
+import { Table, TaskList } from "@lezer/markdown";
 import { Prec } from "@codemirror/state";
 import { SnippetStrategy } from "../data/snippets/snippet_types";
+import { getMathSnippets } from "../data/snippets/math_snippets";
+import { Tex } from "@fluster/lezer";
 
 
 interface CodeEditorProps {
@@ -70,26 +72,56 @@ export const CodeEditorInner = ({
             extensions.push(lineNumbersRelative);
         }
         if (language === CodeEditorLanguage.markdown) {
-
-            // 1. Your Custom Source
-            const mdxSnippetSource: CompletionSource = (context) => {
+            const mdxCompletionSource: CompletionSource = (context) => {
                 const word = context.matchBefore(/\w*/);
                 if (!word || (word.from === word.to && !context.explicit)) return null;
+                const tree = syntaxTree(context.state);
+                const node = tree.resolveInner(context.pos, -1);
+
+                // Walk up the tree to find the context
+                let curr: (typeof node | null) = node;
+                while (curr) {
+                    if (curr.name === "TexBlock" || curr.name === "TexInline") {
+                        return {
+                            from: word.from,
+                            options: getMathSnippets().map((f) => f.completion),
+                            filter: true
+                        };
+                    }
+                    /* if (curr.name.includes("JSX") || curr.name.includes("Tag")) { */
+                    /*   return { */
+                    /*     from: context.pos, */
+                    /*     options: getFlusterSnippets */
+                    /*   }; */
+                    /* } */
+                    curr = curr.parent;
+                }
                 return {
                     from: word.from,
-                    options: getFlusterSnippets().filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
+                    options: getFlusterSnippets({
+                        base: undefined,
+                        citationKeys: state.allCitationIds
+                    }).filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
                     filter: true
                 };
-            };
+            }
             extensions = [
                 ...extensions,
-                markdown({ base: markdownLanguage, codeLanguages: languages }),
-                javascript({ jsx: true }),
+                markdown({
+                    base: markdownLanguage,
+                    codeLanguages: languages,
+                    extensions: [
+                        Table,
+                        Tex,
+                        TaskList,
+                    ]
+                }),
                 bracketMatching(),
+                /* javascript({ jsx: true }), */
                 closeBrackets(),
                 autocompletion(),
                 Prec.high(markdownLanguage.data.of({
-                    autocomplete: mdxSnippetSource
+                    autocomplete: mdxCompletionSource
                 })),
                 foldGutter(),
                 indentOnInput(),
@@ -144,7 +176,7 @@ export const CodeEditorInner = ({
         haveRendered.current = true;
         sendToSwift(showWebviewHandler);
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
-    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap]);
+    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap, state.allCitationIds]);
 
     useEventListener(swiftContentEvent as keyof WindowEventMap, (e) => {
         if (view.current) {

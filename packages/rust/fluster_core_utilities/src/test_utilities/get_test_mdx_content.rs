@@ -18,3 +18,13 @@ pub fn get_model_note_content() -> String {
         .join("on_the_gravitational_nature_of_time.mdx");
     fs::read_to_string(p).expect("Could not read test mdx content.")
 }
+
+pub fn get_test_note_content_with_everything() -> String {
+    let root = env::var("FLUSTER_IOS_ROOT").expect("Cannot continue wthout a FLUSTER_IOS_ROOT environment variable set to the root of your workspace.");
+    let p = path::Path::new(&root)
+        .join("docs")
+        .join("development")
+        .join("test_content")
+        .join("main_test_content.mdx");
+    fs::read_to_string(p).expect("Could not read test mdx content.")
+}

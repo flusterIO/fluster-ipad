@@ -28,7 +28,9 @@ export const ParsedMdxContent = ({
     });
     useEffect(() => {
         window.dispatchEvent(new CustomEvent("mdx-content-loaded", {
-            detail: scrollPositionKey
+            detail: {
+                scrollPositionKey
+            }
         }))
         document.body.classList.remove("loading")
         document.body.classList.remove("loading-main")

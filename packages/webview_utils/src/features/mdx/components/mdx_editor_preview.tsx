@@ -1,13 +1,17 @@
 import { useCodeEditorContext } from "#/editor/code_editor/state/code_editor_provider";
 import React, { HTMLProps, type ReactNode } from "react";
-import { MdxContent, MdxContentProps } from "./mdx_content";
+import { MdxContent } from "./mdx_content";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 
 export type MdxEditorPreviewProps = HTMLProps<HTMLDivElement> &
-    Pick<MdxContentProps, "scrollPositionKey">;
+{
+    scrollPositionKeyLandscape: AnyWebviewStorageKey
+    scrollPositionKeyPortrait: AnyWebviewStorageKey
+};
 
 export const MdxEditorPreview = ({
     className,
@@ -46,6 +50,7 @@ export const MdxEditorPreview = ({
         <MdxContent
             id="mdx-preview"
             {...props}
+            scrollPositionKey={isEditorView ? props.scrollPositionKeyLandscape : props.scrollPositionKeyPortrait}
             className={cn(
                 "max-w-[1080px]",
                 isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",

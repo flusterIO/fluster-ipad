@@ -7,10 +7,17 @@
 
 import FlusterData
 import SwiftUI
+import SwiftData
 import WebKit
 
 struct MainViewSwitch: View {
   @EnvironmentObject private var appState: AppState
+  @Environment(\.modelContext) private var modelContext
+  var editingNote: NoteModel? {
+    guard let id = appState.editingNoteId else { return nil }
+    return modelContext.model(for: id) as? NoteModel
+  }
+
   @State private var editorWebview: WKWebView = WKWebView(
     frame: .infinite, configuration: getWebViewConfig()
   )
@@ -54,8 +61,8 @@ struct MainViewSwitch: View {
   }
 
   func markEditingNoteRead() {
-    if let editingNote = appState.editingNote {
-      editingNote.setLastRead()
+    if let _editingNote = editingNote {
+      _editingNote.setLastRead()
     }
   }
 }

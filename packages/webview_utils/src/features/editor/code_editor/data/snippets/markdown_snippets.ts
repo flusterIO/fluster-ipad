@@ -1,8 +1,22 @@
 import { CompletionSections, SnippetDefaultType } from "#/mdx/embeddable_mdx_components/embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
-import { SnippetItem, SnippetStrategy } from "./snippet_types";
+import { GetSnippetProps, SnippetItem, SnippetStrategy } from "./snippet_types";
 
-export const getMarkdownSnippets = (): SnippetItem[] => {
+const genTableOfColumns = (columns: number): string => {
+    let s = "|";
+    Array(columns).fill(0).forEach((_, i) => {
+        s += ` #{col-${i + 1}} |`
+    })
+    s += "\n|"
+    Array(columns).fill(0).forEach(() => {
+        s += " ----- |"
+    })
+    s += "\n"
+    return s
+}
+
+
+export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
     return [
         {
             strategy: SnippetStrategy.noLeadingText,
@@ -22,5 +36,62 @@ export const getMarkdownSnippets = (): SnippetItem[] => {
                 section: CompletionSections.markdown
             }),
         },
+        {
+            strategy: SnippetStrategy.noLeadingText,
+            completion: snippetCompletion("- [ ] #{Task details}", {
+                label: "task-incomplete",
+                detail: "Creates a task that is incomplete",
+                type: SnippetDefaultType.text,
+                section: CompletionSections.markdown
+            }),
+        },
+        {
+            strategy: SnippetStrategy.noLeadingText,
+            completion: snippetCompletion("- [x] #{Task details}", {
+                label: "task-complete",
+                detail: "Creates a task that is complete.",
+                type: SnippetDefaultType.text,
+                section: CompletionSections.markdown
+            }),
+        },
+        {
+            strategy: SnippetStrategy.noLeadingText,
+            completion: snippetCompletion("$#{e=mc^2}$", {
+                label: "inline-math",
+                type: SnippetDefaultType.variable,
+                detail: "Open an inline math block",
+                section: CompletionSections.markdown
+            }),
+        },
+        {
+            strategy: SnippetStrategy.noLeadingText,
+            completion: snippetCompletion("$$\n#{e=mc^2}\n$$", {
+                label: "math",
+                type: SnippetDefaultType.variable,
+                detail: "Open a math block",
+                section: CompletionSections.markdown
+            }),
+
+        },
+        ...props.citationKeys.filter((c) => c.trim().length).map((citationKey) => {
+            return {
+                strategy: SnippetStrategy.noLeadingText,
+                completion: snippetCompletion(`[[cite:${citationKey}]]`, {
+                    label: `Citation: ${citationKey}`,
+                    section: CompletionSections.markdown,
+                    type: SnippetDefaultType.text
+                })
+            } satisfies SnippetItem
+        }),
+        ...[2, 3, 4, 5].map((columns) => {
+            return {
+                strategy: SnippetStrategy.noLeadingText,
+                completion: snippetCompletion(genTableOfColumns(columns), {
+                    label: `Table (${columns} columns)`,
+                    section: CompletionSections.markdown,
+                    type: SnippetDefaultType.text
+                })
+            } satisfies SnippetItem
+        })
     ]
 }

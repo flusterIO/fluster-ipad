@@ -1,4 +1,5 @@
 import { MdxParsingResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
+import { GetSnippetPropsBuffer } from "@/code_gen/flat_buffer/snippets";
 import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
 import { ByteBuffer } from "flatbuffers";
 
@@ -10,6 +11,7 @@ declare global {
     interface WindowEventMap {
         [SplitviewEditorWebviewEvents.SetSplitviewEditorContent]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetParsedMdxContent]: CustomEvent<MdxParsingResultBuffer>;
+        [SplitviewEditorWebviewEvents.SetEditorSnippetProps]: CustomEvent<GetSnippetPropsBuffer>;
         [SplitviewEditorWebviewEvents.SetParsedMdxContentString]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetEditorKeymap]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetCodeTheme]: CustomEvent<string>;
@@ -30,6 +32,7 @@ declare global {
         resetMdxPreviewScrollPosition: typeof resetMdxPreviewScrollPosition;
         emitMdxParsingError: typeof emitMdxParsingError
         emitMdxParsingSuccess: typeof emitMdxParsingSuccess
+        setSnippetProps: typeof setParsedEditorSnippetProps;
     }
 }
 
@@ -44,6 +47,20 @@ export function setParsedEditorContent(payload: Uint8Array) {
     const buf = new ByteBuffer(data)
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, { detail: MdxParsingResultBuffer.getRootAsMdxParsingResultBuffer(buf) }),
+    );
+}
+
+
+export function setParsedEditorSnippetProps(payload: Uint8Array) {
+    const data = Uint8Array.from(payload)
+    const buf = new ByteBuffer(data)
+    window.dispatchEvent(
+        new CustomEvent(
+            SplitviewEditorWebviewEvents.SetEditorSnippetProps,
+            {
+                detail: GetSnippetPropsBuffer.getRootAsGetSnippetPropsBuffer(buf)
+            }
+        ),
     );
 }
 
@@ -102,7 +119,6 @@ const emitMdxParsingError = (): void => {
     }))
 }
 
-
 const emitMdxParsingSuccess = (): void => {
     window.dispatchEvent(new CustomEvent(SplitviewEditorWebviewEvents.EmitMdxParsingSuccess, {
         detail: null
@@ -119,6 +135,7 @@ export const setWindowBridgeFunctions = () => {
     window.setEditorContent = setEditorContent;
     window.setEditorKeymap = setEditorKeymap;
     window.setParsedEditorContent = setParsedEditorContent;
+    window.setSnippetProps = setParsedEditorSnippetProps;
     window.setParsedEditorContentString = setParsedEditorContentString;
     window.resetMdxPreviewScrollPosition = resetMdxPreviewScrollPosition;
     window.emitMdxParsingError = emitMdxParsingError;

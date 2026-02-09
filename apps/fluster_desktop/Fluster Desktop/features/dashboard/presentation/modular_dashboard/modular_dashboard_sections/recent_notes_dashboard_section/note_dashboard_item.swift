@@ -37,7 +37,7 @@ struct NoteDashboardItem: View {
     .padding()
     .glassEffect(in: .rect(cornerRadius: 12))
     .onTapGesture {
-      appState.editingNote = item
+      appState.setEditingNote(editingNote: item)
       appState.mainView = .noteViewMdx
     }
   }

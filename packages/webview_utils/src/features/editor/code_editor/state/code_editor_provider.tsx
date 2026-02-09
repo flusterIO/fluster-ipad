@@ -22,6 +22,7 @@ export interface CodeEditorState {
     theme: CodeEditorTheme;
     citations: CitationResultBuffer[]
     tags: TagResultBuffer[]
+    allCitationIds: string[];
     value: string;
     parsedValue: string | null;
     haveSetInitialValue: boolean;
@@ -33,6 +34,7 @@ const defaultInitialCodeEditorState: CodeEditorState = {
     keymap: "base",
     value: "",
     citations: [],
+    allCitationIds: [],
     tags: [],
     parsedValue: null,
     haveSetInitialValue: false,
@@ -69,6 +71,9 @@ type CodeEditorContextActions =
     | {
         type: "setParsedEditorContent";
         payload: MdxParsingResultBuffer;
+    } | {
+        type: "setAllCitationIds";
+        payload: string[]
     };
 
 export const CodeEditorDispatchContext = createContext<
@@ -122,6 +127,12 @@ export const CodeEditorContextReducer = (
             return {
                 ...state,
                 parsedValue: action.payload
+            }
+        }
+        case "setAllCitationIds": {
+            return {
+                ...state,
+                allCitationIds: action.payload
             }
         }
         case "setParsedEditorContent": {
@@ -248,6 +259,18 @@ export const CodeEditorProvider = ({
         dispatch({
             type: "setParsedEditorContentString",
             payload: e.detail
+        })
+    })
+
+    useEventListener(SplitviewEditorWebviewEvents.SetEditorSnippetProps, (e) => {
+        const ids = []
+        for (let i = 0; i <= e.detail.citationIdsLength(); i++) {
+            ids.push(e.detail.citationIds(i))
+        }
+        console.log("ids: ", ids)
+        dispatch({
+            type: "setAllCitationIds",
+            payload: ids
         })
     })
 

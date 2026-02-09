@@ -12,10 +12,10 @@ import UniformTypeIdentifiers
 
 @main
 struct Fluster_DesktopApp: App {
+    @State private var appState: AppState = AppState.shared
   @StateObject private var paletteController = CommandPaletteController()
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
-  @State private var appState: AppState = AppState.shared
   @State private var appData = AppDataContainer.shared
   var body: some Scene {
     WindowGroup("Fluster", id: "flusterDesktop") {

@@ -1528,3 +1528,112 @@ impl core::fmt::Debug for NoteDetailDataBuffer<'_> {
 }  // pub mod NoteDetails
 }  // pub mod MdxSerialization
 
+#[allow(unused_imports, dead_code)]
+pub mod snippets {
+
+  use core::mem;
+  use core::cmp::Ordering;
+
+  extern crate flatbuffers;
+  use self::flatbuffers::{EndianScalar, Follow};
+
+pub enum GetSnippetPropsBufferOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct GetSnippetPropsBuffer<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for GetSnippetPropsBuffer<'a> {
+  type Inner = GetSnippetPropsBuffer<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> GetSnippetPropsBuffer<'a> {
+  pub const VT_CITATIONIDS: flatbuffers::VOffsetT = 4;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    GetSnippetPropsBuffer { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args GetSnippetPropsBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<GetSnippetPropsBuffer<'bldr>> {
+    let mut builder = GetSnippetPropsBufferBuilder::new(_fbb);
+    if let Some(x) = args.citationIds { builder.add_citationIds(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn citationIds(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(GetSnippetPropsBuffer::VT_CITATIONIDS, None).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for GetSnippetPropsBuffer<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<&'_ str>>>>("citationIds", Self::VT_CITATIONIDS, true)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct GetSnippetPropsBufferArgs<'a> {
+    pub citationIds: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
+}
+impl<'a> Default for GetSnippetPropsBufferArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    GetSnippetPropsBufferArgs {
+      citationIds: None, // required field
+    }
+  }
+}
+
+pub struct GetSnippetPropsBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> GetSnippetPropsBufferBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_citationIds(&mut self, citationIds: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(GetSnippetPropsBuffer::VT_CITATIONIDS, citationIds);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> GetSnippetPropsBufferBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    GetSnippetPropsBufferBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<GetSnippetPropsBuffer<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, GetSnippetPropsBuffer::VT_CITATIONIDS,"citationIds");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for GetSnippetPropsBuffer<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("GetSnippetPropsBuffer");
+      ds.field("citationIds", &self.citationIds());
+      ds.finish()
+  }
+}
+}  // pub mod Snippets
+

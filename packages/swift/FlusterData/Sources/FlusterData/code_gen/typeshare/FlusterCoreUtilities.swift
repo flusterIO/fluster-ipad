@@ -105,6 +105,7 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 	case setParsedMdxContent = "set-parsed-mdx-content"
 	case setParsedMdxContentString = "set-editor-content-str"
 	case setEditorKeymap = "set-editor-keymap"
+	case setEditorSnippetProps = "set-editor-snippet-props"
 	case setCodeTheme = "set-code-theme"
 	case setCodeThemeLight = "set-code-theme-light"
 	case setCodeThemeDark = "set-code-theme-dark"

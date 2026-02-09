@@ -12,9 +12,9 @@ struct NoteSearchResultItemView: View {
   let item: NoteModel
   @Binding var searchByTopic: TopicModel?
   @Binding var searchBySubject: SubjectModel?
-    let dismissOnNavigate: Bool
+  let dismissOnNavigate: Bool
   @EnvironmentObject private var appState: AppState
-    @Environment(\.dismiss) private var dismiss
+  @Environment(\.dismiss) private var dismiss
   var body: some View {
     VStack(alignment: .leading) {
       Text(item.frontMatter.title ?? item.markdown.title ?? "No Title Found")
@@ -32,11 +32,11 @@ struct NoteSearchResultItemView: View {
     .glassEffect(in: .rect(cornerRadius: 12))
     .contentShape(Rectangle())
     .onTapGesture {
-      appState.editingNote = item
+      appState.setEditingNote(editingNote: item)
       appState.mainView = .noteViewMdx
-        if dismissOnNavigate {
-            dismiss()
-        }
+      if dismissOnNavigate {
+        dismiss()
+      }
     }
   }
 }
