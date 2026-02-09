@@ -22,57 +22,36 @@ struct MainSettingsPageView: View {
   var body: some View {
     HStack(alignment: .center) {
       ScrollView {
-        VStack(alignment: .leading, spacing: 24) {
-          // Header
-          HStack(spacing: 12) {
-            Image("flusterIcon")
-              .resizable()
-              .foregroundStyle(.tint)
-              .aspectRatio(contentMode: .fit)
-              .frame(width: 48, height: 48, alignment: .center)
+        SettingPageLogo()
+        SettingsSection(title: "Account & Profile") {
+          HStack {
+            Circle()
+              .fill(.gray.opacity(0.2))
+              .frame(width: 52, height: 52)
+              .overlay(Text("A").font(.title2))
             VStack(alignment: .leading) {
-              Text("Fluster")
-                .font(.title)
-                .fontWeight(.bold)
-              Text("Settings")
+              Text("Andrew Smith")
                 .font(.headline)
+              Text("andrew@email.com")
+                .font(.subheadline)
                 .foregroundStyle(.secondary)
             }
-            Spacer()
           }
-          .padding(.horizontal)
-          .frame(maxWidth: .infinity)
-
-          // Account & Profile
-          SettingsSection(title: "Account & Profile") {
-            HStack {
-              Circle()
-                .fill(.gray.opacity(0.2))
-                .frame(width: 52, height: 52)
-                .overlay(Text("A").font(.title2))
-              VStack(alignment: .leading) {
-                Text("Andrew Smith")
-                  .font(.headline)
-                Text("andrew@email.com")
-                  .font(.subheadline)
-                  .foregroundStyle(.secondary)
-              }
-            }
-          }
-
-          NotesDirSettingSection()
-
-          AutoSettingSettingSection()
-
-          UISettingSection()
-
-          EditorSettingSectionView()
+          .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(.vertical, 32)
+
+        NotesDirSettingSection()
+
+        AutoSettingSettingSection()
+
+        UISettingSection()
+
+        EditorSettingSectionView()
       }
-      .scrollIndicators(.hidden)
-      .frame(maxWidth: 1080)
+      .padding(.vertical, 32)
     }
+    .scrollIndicators(.hidden)
+    .frame(maxWidth: 1080)
     .formStyle(.automatic)
   }
 }

@@ -20,7 +20,7 @@ struct UISettingSection: View {
           }
         }
         .pickerStyle(.segmented)
-      }.frame(maxWidth: .infinity)
+      }.frame(maxWidth: .infinity, alignment: .leading)
     }
   }
 }

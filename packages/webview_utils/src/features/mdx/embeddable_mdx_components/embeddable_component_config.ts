@@ -2,7 +2,9 @@ import { Completion } from "@codemirror/autocomplete"
 
 
 export enum CompletionSections {
-    components = "Components"
+    components = "Components",
+    markdown = "Markdown",
+    math = "Math"
 }
 
 export enum ComponentCategory {
