@@ -34,7 +34,6 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
     let mut parsers = REGEX_PARSERS.to_vec();
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     result.note_id = opts.note_id.clone();
-    dbg!(result.clone());
     if let Some(ref fm) = result.front_matter
         && !fm.ignored_parsers.is_empty()
     {
@@ -61,16 +60,6 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
 #[uniffi::export(async_runtime = "tokio")]
 pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<Vec<u8>> {
     let result = parse_mdx_string_to_mdx_result(&opts).await;
-
-    println!(
-        "Result: {}",
-        result
-            .clone()
-            .front_matter
-            .unwrap()
-            .title
-            .unwrap_or_else(|| "None".to_string())
-    );
 
     let data = result.serialize_to_flatbuffer();
 
@@ -105,13 +94,6 @@ mod tests {
         let binding = &res.unwrap();
         let result = root_as_mdx_parsing_result_buffer(binding)
             .expect("Deserializes buffer to results without error.");
-
-        dbg!(
-            result
-                .front_matter()
-                .expect("Finds front matter when front-matter exists.")
-                .title()
-        );
 
         assert!(
             result

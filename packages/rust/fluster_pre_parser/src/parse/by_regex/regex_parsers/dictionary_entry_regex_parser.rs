@@ -43,7 +43,6 @@ impl MdxParser for DictionaryEntryRegexParser {
                     label: title.as_str().to_string(),
                     body: body.as_str().to_string(),
                 });
-                println!("Complete Match: {}", complete_match.unwrap().as_str());
                 new_content = new_content.replace(
                     complete_match.unwrap().as_str(),
                     &format!(
