@@ -7,6 +7,7 @@
 
 import FlusterData
 import Foundation
+import SwiftData
 
 public enum CommandPaletteSecondaryView: Codable, Hashable {
   case searchByTag(TagModel)
@@ -18,6 +19,7 @@ public enum CommandPaletteId: Codable, Hashable {
   case parentWithNoFunctionality
   case root, showPanelRight, createNewNote, toggleDarkMode
   case navigate(MainViewKey)
+  case viewNoteById(String)
   case pushCommandPaletteView(CommandPaletteSecondaryView)
 
   /// If true, will push a view rather than calling an action.

@@ -10,11 +10,13 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+  var editingNoteId: String?
   @Environment(\.modelContext) private var modelContext
   @EnvironmentObject private var appState: AppState
+  @Query private var notes: [NoteModel]
+
   var editingNote: NoteModel? {
-    guard let id = appState.editingNoteId else { return nil }
-    return modelContext.model(for: id) as? NoteModel
+    notes.isEmpty ? nil : notes.first!
   }
 
   @Query private var items: [Item]
@@ -22,12 +24,25 @@ struct ContentView: View {
     .doubleColumn
   @State private var paths = NavigationPath()
 
+  public init(editingNoteId: String?) {
+    self.editingNoteId = editingNoteId
+    if let _id = editingNoteId {
+      let predicate = #Predicate<NoteModel> { $0.id == _id }
+      _notes = Query(filter: predicate)
+    } else {
+      _notes = Query(
+        filter: #Predicate<NoteModel> { note in
+          false
+        })
+    }
+  }
+
   var body: some View {
     NavigationSplitView(columnVisibility: $columnVisibility) {
       MainViewSidebar()
     } detail: {
       NavigationStack(path: $appState.commandPaletteNavigation) {
-        MainViewSwitch()
+        MainViewSwitch(editingNoteId: appState.editingNoteId)
           .navigationDestination(
             for: CommandPaletteSecondaryView.self,
           ) { val in
@@ -46,10 +61,12 @@ struct ContentView: View {
       of: editingNote?.markdown.body,
       {
         Task {
-          if let note = editingNote {
+          if editingNote == nil || editingNote?.isDeleted == true {
+            return
+          }
+          if let note = editingNote, editingNoteIsValid(note: note, appState: appState) {
             if let parsedMdx =
-              await note.markdown
-              .body.preParseAsMdxToBytes(noteId: note.id)
+              await note.markdown.body.preParseAsMdxToBytes(noteId: note.id)
             {
               if let parsingResults =
                 parsedMdx.toMdxParsingResult()
@@ -58,21 +75,13 @@ struct ContentView: View {
                   results: parsingResults,
                   modelContext: modelContext
                 )
-                Task {
-                  do {
-                    try modelContext.save()
-                  } catch {
-                    print(
-                      "Failed to save model context when navigating away from editor view. Error: \(error.localizedDescription)"
-                    )
-                  }
-                }
               }
             } else {
               print("Could not parse mdx.")
             }
           }
         }
+        modelContext.saveChanges()
       }
     )
     .onReceive(MainNavigationEventEmitter.shared.viewUpdatePublisher) { newValue in
@@ -82,6 +91,6 @@ struct ContentView: View {
 }
 
 #Preview {
-  ContentView()
+  ContentView(editingNoteId: nil)
     .modelContainer(for: Item.self, inMemory: true)
 }

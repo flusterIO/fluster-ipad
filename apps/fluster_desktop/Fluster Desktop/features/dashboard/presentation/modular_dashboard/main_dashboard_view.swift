@@ -34,9 +34,15 @@ struct ModularDashboardView: View {
                 .padding(.horizontal)
               GridRow {
                 TopicsDashboardSectionView()
+                  .frame(maxWidth: .infinity)
+                  .padding(.leading)
                 SubjectsDashboardSectionView()
+                  .frame(maxWidth: .infinity)
+                  .padding(.trailing)
               }
-              .padding(.horizontal)
+              .gridCellColumns(2)
+              .gridColumnAlignment(.center)
+              .padding(.bottom)
             }
           }
           .frame(maxWidth: 1080)

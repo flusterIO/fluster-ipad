@@ -7,30 +7,43 @@
 
 import AppKit
 import Combine
+import FlusterData
 import SwiftData
 import SwiftUI
 
+@MainActor
 class CommandPaletteController: NSObject, ObservableObject {
   // We inherit from NSObject to handle window delegates if needed
   private var panel: CommandPalettePanel?
 
-  func toggle(modelContainer: ModelContainer) {
+  private var appData: AppDataContainer { AppDataContainer.shared }
+
+  func toggle(
+    appState: AppState,
+    onCommandSelected: @escaping (CommandPaletteItem) -> CommandPaletteSelectResponse
+  ) {
     if let panel = panel, panel.isVisible {
       hide()
     } else {
-      show(modelContainer)
+      show(appState, onCommandSelected)
     }
   }
 
-  func show(_ modelContainer: ModelContainer) {
+  func show(
+    _ appState: AppState,
+    _ onCommandSelected: @escaping (CommandPaletteItem) -> CommandPaletteSelectResponse
+  ) {
     // Your custom SwiftUI View for the palette
     let rootView = CommandPaletteContainerView(
       close: { [weak self] in self?.hide() },
+      onCommandSelected: onCommandSelected,
     )
     .ignoresSafeArea()
-    .environmentObject(AppState.shared)
-    .modelContainer(modelContainer)
-    if panel == nil {
+    .environmentObject(appState)
+    .modelContainer(appData.sharedModelContainer)
+    if let _panel = panel {
+      _panel.contentView = NSHostingView(rootView: rootView)
+    } else {
       panel = CommandPalettePanel(rootView: rootView)
       panel?.center()
 
@@ -39,11 +52,9 @@ class CommandPaletteController: NSObject, ObservableObject {
         forName: NSWindow.didResignKeyNotification,
         object: panel,
         queue: .main
-      ) { [weak self] _ in
-        self?.hide()
+      ) { [weak panel] _ in
+        panel?.orderOut(nil)
       }
-    } else {
-      panel?.contentView = NSHostingView(rootView: rootView)
     }
 
     panel?.makeKeyAndOrderFront(nil)

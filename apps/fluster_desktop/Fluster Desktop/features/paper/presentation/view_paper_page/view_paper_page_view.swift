@@ -12,13 +12,26 @@ import SwiftUI
 struct ViewPaperPageView: View {
   @EnvironmentObject private var appState: AppState
   @Environment(\.modelContext) private var modelContext
-  var editingNote: NoteModel? {
-    guard let id = appState.editingNoteId else { return nil }
-    return modelContext.model(for: id) as? NoteModel
+  public var editingNoteId: String?
+  @Query var notes: [NoteModel]
+  public var editingNote: NoteModel? {
+    notes.isEmpty ? nil : notes.first
+  }
+  public init(editingNoteId: String?) {
+    self.editingNoteId = editingNoteId
+    if let _id = editingNoteId {
+      let predicate = #Predicate<NoteModel> { $0.id == _id }
+      _notes = Query(filter: predicate)
+    } else {
+      _notes = Query(
+        filter: #Predicate<NoteModel> { note in
+          false
+        })
+    }
   }
 
   var body: some View {
-    if editingNote != nil {
+    if let _editingNote = editingNote, editingNoteIsValid(note: _editingNote, appState: appState) {
       Text("View Paper")
     } else {
       NoNoteSelectedView()
@@ -27,5 +40,5 @@ struct ViewPaperPageView: View {
 }
 
 #Preview {
-  ViewPaperPageView()
+  ViewPaperPageView(editingNoteId: nil)
 }

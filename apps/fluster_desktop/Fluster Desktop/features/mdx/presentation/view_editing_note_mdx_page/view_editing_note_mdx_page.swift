@@ -10,15 +10,29 @@ import SwiftData
 import SwiftUI
 
 struct ViewEditingNoteMdxPage: View {
-    @EnvironmentObject private var appState: AppState
-    @Environment(\.modelContext) private var modelContext
-    var editingNote: NoteModel? {
-      guard let id = appState.editingNoteId else { return nil }
-      return modelContext.model(for: id) as? NoteModel
+  @EnvironmentObject private var appState: AppState
+  @Environment(\.modelContext) private var modelContext
+  public var editingNoteId: String?
+  @Query private var notes: [NoteModel]
+  var editingNote: NoteModel? {
+      notes.isEmpty ? nil : notes.first!
     }
 
+  public init(editingNoteId: String?) {
+    self.editingNoteId = editingNoteId
+    if let _id = editingNoteId {
+      let predicate = #Predicate<NoteModel> { $0.id == _id }
+      _notes = Query(filter: predicate)
+    } else {
+      _notes = Query(
+        filter: #Predicate<NoteModel> { note in
+          false
+        })
+    }
+  }
+
   var body: some View {
-    if let _editingNote = editingNote {
+    if let _editingNote = editingNote, editingNoteIsValid(note: _editingNote, appState: appState) {
       ViewMdxNoteView(item: _editingNote)
     } else {
       NoNoteSelectedView()
@@ -27,5 +41,5 @@ struct ViewEditingNoteMdxPage: View {
 }
 
 #Preview {
-  ViewEditingNoteMdxPage()
+  ViewEditingNoteMdxPage(editingNoteId: nil)
 }

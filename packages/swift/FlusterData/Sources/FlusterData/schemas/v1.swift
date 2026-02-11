@@ -9,7 +9,7 @@ import SwiftyBibtex
 public enum AppSchemaV1: VersionedSchema {
   public static var models: [any PersistentModel.Type] {
     // Leaving off other models as they should be able to be inferred and this will simplify migration scripts I hope.
-    [NoteModel.self, BibEntryModel.self]
+    [NoteModel.self, BibEntryModel.self, AutoTaggable.self]
   }
   public static let versionIdentifier: Schema.Version = .init(1, 0, 0)
 }
@@ -72,7 +72,7 @@ extension AppSchemaV1 {
   public class NoteModel {
     public var id: String
     @Attribute(.externalStorage) public var drawing: Data
-    public var markdown: MarkdownNote
+    @Attribute(.externalStorage) public var markdown: MarkdownNote
     public var frontMatter: FrontMatter = FrontMatter.emptyFrontMatter()
     public var ctime: Date
     public var utime: Date
@@ -88,7 +88,7 @@ extension AppSchemaV1 {
     ///  Must be a Map of `Map<citationKey ?? id, BibEntrySaveStrategy>`. The citationKey must be preferred first.
     public var bibEntryStrategyMap = [String: BibEntrySaveStrategy]()
 
-    // drawing.toDataRepresentation() to conform to Data type.
+    /// drawing.toDataRepresentation() to conform to Data type.
     public init(
       id: String? = nil,
       drawing: Data = PKDrawing().dataRepresentation(),
@@ -300,6 +300,20 @@ extension AppSchemaV1 {
       }
 
       return note
+    }
+    public static func fetchFirstById(id: String, modelContext: ModelContext) -> NoteModel? {
+      let fetchDescriptor = FetchDescriptor<NoteModel>(
+        predicate: #Predicate<NoteModel> { note in
+          note.id == id
+        }
+      )
+      do {
+        let data = try modelContext.fetch(fetchDescriptor)
+        return data.isEmpty ? nil : data.first
+      } catch {
+        print("Error: \(error.localizedDescription)")
+        return nil
+      }
     }
   }
   @Model
@@ -551,4 +565,12 @@ extension AppSchemaV1 {
       self.settingType = settingType
     }
   }
+}
+
+public func getDevSchema() -> Schema {
+  return Schema([
+    NoteModel.self,
+    BibEntryModel.self,
+    AutoTaggable.self
+  ])
 }

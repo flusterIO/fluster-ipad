@@ -3,10 +3,12 @@
 ## Desktop
 
 - [ ] Fix issue with model container now that it's being passed to the secondary window.
+- [ ] Resume by moving all interactions with the modelContext from the command palette window to a function that executes in the primary window's context instead of trying to pass the context down piece by piece. Moving all dependence on the modelContext might resolve the current issue.
+- [ ] Add 'escape-to-close' functionality back to command palette.
 
 - [ ] Handle updating of editor state:
   - [ ] Dark Mode
-  - [ ] Editor Keymap
+  - [x] Editor Keymap
   - [ ] Editor Theme (Dark)
   - [ ] Editor Theme (Light)
 

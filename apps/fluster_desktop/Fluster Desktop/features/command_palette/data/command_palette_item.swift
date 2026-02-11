@@ -12,6 +12,7 @@ public enum CommandPaletteItemType {
   case children, commandPaletteAction
 }
 
+
 public class CommandPaletteItem: Identifiable, Equatable {
   public let id: CommandPaletteId
   public let uniqueId: String
@@ -42,4 +43,11 @@ public class CommandPaletteItem: Identifiable, Equatable {
   public func children(modelContext: ModelContext, appState: AppState) -> [CommandPaletteItem] {
     fatalError("This should never be reached.")
   }
+}
+
+
+public enum CommandPaletteSelectResponse {
+    case backToRoot
+    case clearAndClose
+    case appendToTree(CommandPaletteItem)
 }
