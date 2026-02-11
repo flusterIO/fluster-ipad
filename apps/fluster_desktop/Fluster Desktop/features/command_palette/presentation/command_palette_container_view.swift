@@ -5,18 +5,22 @@
 //  Created by Andrew on 1/14/26.
 //
 
+import AppKit
 import Combine
+import SwiftData
 import SwiftUI
 
 struct CommandPaletteContainerView: View {
   public var close: () -> Void
+  public var onCommandSelected: (CommandPaletteItem) -> CommandPaletteSelectResponse
+  @Environment(\.modelContext) private var modelContext: ModelContext
   @State private var searchText: String = ""
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
-  @Environment(\.modelContext) private var modelContext
   @EnvironmentObject private var appState: AppState
 
   @FocusState private var searchFieldFocused: Bool
+  @Environment(\.dismiss) private var dismiss
 
   @State private var tree: [CommandPaletteItem] = [CommandPaletteRoot()]
 
@@ -36,44 +40,45 @@ struct CommandPaletteContainerView: View {
         return
       }
     )
-      CommandPaletteView(
-        searchText: $searchText,
-        results: filteredCommands,
-        onClose: {
-          searchText = ""
-          tree = [CommandPaletteRoot()]
-          close()
-        },
-        tree: $tree,
-        onCommandSelected: { command in
-          if command.onAccept != nil {
-            command.onAccept!()
-          }
-          if command.itemType == .children {
-            tree.append(command)
-            searchText = ""
-          } else {
-            if command.id.isNavigationId {
-              switch command.id {
-                case .pushCommandPaletteView(let data):
-                  appState.commandPaletteNavigate(to: data)
-                default:
-                  print("Error: This should never be reached.")
-              }
-            } else {
-              executeCommandPaletteAction(action: command.id)
-            }
+    CommandPaletteView(
+      searchText: $searchText,
+      results: filteredCommands,
+      onClose: {
+        searchText = ""
+        tree = [CommandPaletteRoot()]
+        close()
+      },
+      tree: $tree,
+      onCommandSelected: { item in
+        let res = onCommandSelected(item)
+        switch res {
+          case .backToRoot:
+            tree = [CommandPaletteRoot()]
+          case .clearAndClose:
             tree = [CommandPaletteRoot()]
             searchText = ""
             close()
-          }
+          case .appendToTree(let item):
+            tree.append(item)
+            searchText = ""
         }
-      )
-      .environment(\.colorScheme, selectedTheme.colorScheme)
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .transition(.opacity.combined(with: .scale))
-      .zIndex(10)
-      .onAppear { searchFieldFocused = true }
+      }
+    )
+    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+    .environment(\.colorScheme, selectedTheme.colorScheme)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .transition(.opacity.combined(with: .scale))
+    .zIndex(10)
+    .onAppear { searchFieldFocused = true }
+    .onKeyPress { event in
+      if event.phase == .down && event.key == .escape {
+        tree = [CommandPaletteRoot()]
+        searchText = ""
+        close()
+        return .handled
+      }
+      return .ignored
+    }
   }
 }
 
@@ -87,6 +92,7 @@ private struct CommandPaletteView: View {
   @State private var focusedIndex: Int = 0
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
+  @Environment(\.dismiss) private var dismiss
 
   var body: some View {
     ScrollViewReader { proxy in
@@ -111,9 +117,8 @@ private struct CommandPaletteView: View {
               if focusedIndex < results.count {
                 let focusedItem = results[focusedIndex]
                 onCommandSelected(focusedItem)
-              } else {
-                focusedIndex = 0
               }
+              focusedIndex = 0
             },
             onDownArrow: {
               incrementFocus()
@@ -138,7 +143,7 @@ private struct CommandPaletteView: View {
           .focused($searchFieldFocused)
           .onAppear { searchFieldFocused = true }
           .onDisappear {
-              focusedIndex = 0
+            focusedIndex = 0
           }
         }
         .padding()
@@ -210,5 +215,11 @@ private struct CommandPaletteKeyboardShortcut: View {
 }
 
 #Preview {
-  CommandPaletteContainerView(close: {})
+  CommandPaletteContainerView(
+    close: {},
+    onCommandSelected: { item in
+      print("Item: \(item.title)")
+      return .clearAndClose
+    },
+  )
 }

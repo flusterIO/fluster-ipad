@@ -11,8 +11,8 @@ import SwiftUI
 
 struct RecentNotesDashboardSectionView: View {
   @Query(sort: \NoteModel.lastRead, order: .reverse) private var notes: [NoteModel]
-    @State private var searchByTopic: TopicModel? = nil
-    @State private var searchBySubject: SubjectModel? = nil
+  @State private var searchByTopic: TopicModel? = nil
+  @State private var searchBySubject: SubjectModel? = nil
   var body: some View {
     VStack(alignment: .leading) {
       VStack(alignment: .leading) {
@@ -29,14 +29,17 @@ struct RecentNotesDashboardSectionView: View {
       VStack(alignment: .center) {
         if notes.isEmpty {
           Text("No notes found")
+            .frame(maxWidth: .infinity)
             .font(.headline)
         } else {
           List(notes) { note in
-            NoteDashboardItem(item: note, searchByTopic: $searchByTopic, searchBySubject: $searchBySubject)
-              .frame(maxWidth: .infinity)
-              .listRowBackground(Color.clear)
-              .listRowSeparator(.hidden)
-              .listRowSeparatorTint(Color.clear)
+            NoteDashboardItem(
+              item: note, searchByTopic: $searchByTopic, searchBySubject: $searchBySubject
+            )
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowSeparatorTint(Color.clear)
           }
           .scrollContentBackground(.hidden)
           .listRowBackground(Color.clear)
@@ -45,16 +48,21 @@ struct RecentNotesDashboardSectionView: View {
         }
       }
       .frame(minHeight: 400)
+      .frame(maxWidth: .infinity)
     }
     .padding()
     .glassEffect(in: .rect(cornerRadius: 12))
-    .navigationDestination(item: $searchByTopic, destination: { topic in
+    .navigationDestination(
+      item: $searchByTopic,
+      destination: { topic in
         SearchByTopicView(item: topic)
-    })
-    .navigationDestination(item: $searchBySubject, destination: { subject in
+      }
+    )
+    .navigationDestination(
+      item: $searchBySubject,
+      destination: { subject in
         SearchBySubjectView(item: subject)
-   })
-
+      })
   }
 }
 

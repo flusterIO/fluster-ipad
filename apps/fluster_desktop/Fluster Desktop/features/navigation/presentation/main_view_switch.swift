@@ -6,21 +6,36 @@
 //
 
 import FlusterData
-import SwiftUI
 import SwiftData
+import SwiftUI
 import WebKit
 
 struct MainViewSwitch: View {
   @EnvironmentObject private var appState: AppState
   @Environment(\.modelContext) private var modelContext
+  public var editingNoteId: String?
+  @Query private var notes: [NoteModel]
+
   var editingNote: NoteModel? {
-    guard let id = appState.editingNoteId else { return nil }
-    return modelContext.model(for: id) as? NoteModel
+    notes.isEmpty ? nil : notes.first
   }
 
   @State private var editorWebview: WKWebView = WKWebView(
     frame: .infinite, configuration: getWebViewConfig()
   )
+
+  public init(editingNoteId: String?) {
+    self.editingNoteId = editingNoteId
+    if let _id = editingNoteId {
+      let predicate = #Predicate<NoteModel> { $0.id == _id }
+      _notes = Query(filter: predicate)
+    } else {
+      _notes = Query(
+        filter: #Predicate<NoteModel> { note in
+          false
+        })
+    }
+  }
 
   var body: some View {
     switch appState.mainView {
@@ -31,16 +46,16 @@ struct MainViewSwitch: View {
         CreateNotePage()
           .navigationTitle("Create Note")
       case .paper:
-        ViewPaperPageView()
+        ViewPaperPageView(editingNoteId: appState.editingNoteId)
           .navigationTitle("Paper")
       case .noteEditingPage:
-        EditMdxPageView(webview: $editorWebview)
+        EditMdxPageView(editingNoteId: appState.editingNoteId, webview: $editorWebview)
           .navigationTitle("Editor")
           .onAppear {
             markEditingNoteRead()
           }
       case .noteViewMdx:
-        ViewEditingNoteMdxPage()
+        ViewEditingNoteMdxPage(editingNoteId: appState.editingNoteId)
           .navigationTitle("Markdown")
           .onAppear {
             markEditingNoteRead()
@@ -61,12 +76,12 @@ struct MainViewSwitch: View {
   }
 
   func markEditingNoteRead() {
-    if let _editingNote = editingNote {
+    if let _editingNote = editingNote, editingNoteIsValid(note: _editingNote, appState: appState) {
       _editingNote.setLastRead()
     }
   }
 }
 
 #Preview {
-  MainViewSwitch()
+  MainViewSwitch(editingNoteId: nil)
 }

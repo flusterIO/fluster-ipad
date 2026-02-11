@@ -12,22 +12,29 @@ import UniformTypeIdentifiers
 
 @main
 struct Fluster_DesktopApp: App {
-    @State private var appState: AppState = AppState.shared
-  @StateObject private var paletteController = CommandPaletteController()
+  @StateObject private var appState: AppState = AppState.shared
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
-  @State private var appData = AppDataContainer.shared
+  private var appData: AppDataContainer { AppDataContainer.shared }
+  @StateObject private var paletteController = CommandPaletteController()
   var body: some Scene {
-    WindowGroup("Fluster", id: "flusterDesktop") {
-      ContentView()
+    WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
+        ContentView(editingNoteId: appState.editingNoteId)
         .toolbarBackground(.hidden, for: .automatic)
         .preferredColorScheme(selectedTheme.colorScheme)
     }
+    .environmentObject(appState)
+    .environment(\.createDataHandler, appData.dataHandlerCreator())
+    .windowStyle(.automatic)
+    .windowToolbarStyle(.unified)
+    .modelContainer(appData.sharedModelContainer)
     .commands {
-      SidebarCommands()  // Built-in macOS commands (Cmd+Opt+S)
+      SidebarCommands()
+      TextEditingCommands()
+      ToolbarCommands()
 
       // Or define your own custom one:
-      CommandMenu("View") {
+      CommandMenu("Layout") {
         Button("Toggle Sidebar") {
           NSApp.sendAction(#selector(NSSplitViewController.toggleSidebar(_:)), to: nil, from: nil)
         }
@@ -35,15 +42,61 @@ struct Fluster_DesktopApp: App {
       }
       CommandMenu("Tools") {
         Button("Command Palette") {
-          paletteController.toggle(modelContainer: appData.sharedModelContainer)
+          paletteController.toggle(
+            appState: appState,
+            onCommandSelected: handleCommandPaletteSelect
+          )
         }
         .keyboardShortcut("p", modifiers: [.command, .shift])
       }
     }
-    .environmentObject(appState)
-    .environment(\.createDataHandler, appData.dataHandlerCreator())
-    .windowStyle(.automatic)
-    .windowToolbarStyle(.unified)
-    .modelContainer(appData.sharedModelContainer)
+  }
+
+  func toggleDarkMode() {
+    let currentDarkMode =
+      UserDefaults.standard.string(forKey: DesktopAppStorageKeys.colorScheme.rawValue)
+      == AppTheme.dark.rawValue
+    if currentDarkMode {
+      UserDefaults.standard.set(
+        AppTheme.light.rawValue, forKey: DesktopAppStorageKeys.colorScheme.rawValue)
+    } else {
+      UserDefaults.standard.set(
+        AppTheme.dark.rawValue, forKey: DesktopAppStorageKeys.colorScheme.rawValue)
+    }
+  }
+
+  func handleCommandPaletteSelect(_ command: CommandPaletteItem) -> CommandPaletteSelectResponse {
+    if command.onAccept != nil {
+      command.onAccept!()
+    }
+    if command.itemType == .children {
+      return .appendToTree(command)
+    } else {
+      switch command.id {
+        case .pushCommandPaletteView(let data):
+          appState.commandPaletteNavigate(to: data)
+        case .viewNoteById(let noteId):
+          let note = NoteModel.fetchFirstById(id: noteId, modelContext: appData.sharedModelContainer.mainContext)
+          if let _note = note {
+            appState.setEditingNote(editingNote: _note)
+            appState.mainView = .noteViewMdx
+          }
+        case .navigate(let mainKey):
+          print("Would've run...")
+        //          appState.mainView = mainKey
+        //          MainNavigationEventEmitter.shared.emitChange(to: mainKey)
+        case .toggleDarkMode:
+          toggleDarkMode()
+        case .createNewNote:
+          MainNavigationEventEmitter.shared.emitChange(to: MainViewKey.noteEditingPage)
+        case .showPanelRight:
+          print("Show Panel Right")
+        case .parentWithNoFunctionality:
+          return .clearAndClose
+        case .root:
+          return .clearAndClose
+      }
+      return .clearAndClose
+    }
   }
 }

@@ -47,8 +47,10 @@ struct SubjectsDashboardSectionView: View {
         .listRowSeparatorTint(Color.clear)
       }
       .scrollContentBackground(.hidden)
+      .frame(maxWidth: .infinity)
     }
     .padding()
+    .frame(maxWidth: .infinity)
     .glassEffect(in: .rect(cornerRadius: 12))
   }
 }

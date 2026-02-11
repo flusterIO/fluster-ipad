@@ -14,6 +14,13 @@ import WebKit
 
 struct MdxEditorWebview: View {
   let editingNote: NoteModel
+  private var safeNoteBody: String? {
+    if editingNote.isDeleted {
+      return nil
+    } else {
+      return editingNote.markdown.body
+    }
+  }
   @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
   @Binding var webView: WKWebView
   @Environment(\.modelContext) private var modelContext: ModelContext
@@ -91,8 +98,7 @@ struct MdxEditorWebview: View {
       case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
         Task(priority: .high) {
           if let parsedMdx =
-            await editingNote.markdown
-            .body.preParseAsMdxToBytes(noteId: editingNote.id)
+            await safeNoteBody?.preParseAsMdxToBytes(noteId: editingNote.id)
           {
             do {
               try await setParsedEditorContent(

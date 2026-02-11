@@ -16,7 +16,9 @@ class CommandPalettePanel: NSPanel {
   init<Content: View>(rootView: Content) {
     super.init(
       contentRect: NSRect(x: 0, y: 0, width: COMMAND_PALETTE_WIDTH, height: COMMAND_PALETTE_HEIGHT),
-      styleMask: [.nonactivatingPanel, .fullSizeContentView, .resizable, .borderless, .utilityWindow],
+      styleMask: [
+        .nonactivatingPanel, .fullSizeContentView, .resizable, .borderless, .utilityWindow
+      ],
       backing: .buffered,
       defer: false
     )
@@ -30,10 +32,7 @@ class CommandPalettePanel: NSPanel {
     self.standardWindowButton(.closeButton)?.isHidden = true
     self.standardWindowButton(.miniaturizeButton)?.isHidden = true
     self.standardWindowButton(.zoomButton)?.isHidden = true
-    //
-    //    // Hide the close/minimize buttons for a clean look
-    //
-    //    self.contentView = hostingView
+    self.identifier = NSUserInterfaceItemIdentifier(DesktopWindowId.commandPalette.rawValue)
 
     self.isOpaque = false
     self.backgroundColor = .clear
@@ -44,6 +43,7 @@ class CommandPalettePanel: NSPanel {
     hostingView.layer?.backgroundColor = .clear
     // 2. Add to content view
     guard let contentView = self.contentView else { return }
+
     contentView.addSubview(hostingView)
 
     // 3. Pin edges to the window perfectly
