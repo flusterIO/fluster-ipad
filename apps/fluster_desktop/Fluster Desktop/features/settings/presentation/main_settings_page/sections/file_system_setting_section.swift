@@ -17,7 +17,7 @@ struct NotesDirSettingSection: View {
   @State private var showNotesDirPicker: Bool = false
 
   var body: some View {
-    SettingsSection(title: "File System") {
+    SettingsSection(title: "Notes") {
       VStack(alignment: .leading) {
         Text("Notes Directory")
           .font(.subheadline)
