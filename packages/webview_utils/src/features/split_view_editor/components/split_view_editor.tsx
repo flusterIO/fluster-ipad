@@ -1,10 +1,10 @@
-import { CodeEditor } from "#/editor/code_editor/components/code_editor";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import React, { type ReactNode } from "react";
 import { MdxEditorPreview } from "#/mdx/components/mdx_editor_preview";
 import { CodeEditorProvider } from "#/editor/code_editor/state/code_editor_provider";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { SplitviewEditorWebviewIds, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { CodeEditor } from "#/editor/code_editor/components/code_editor";
 
 export const SplitViewEditorInner = (): ReactNode => {
     const autoSaveId = "split-view-editor-panel-split";

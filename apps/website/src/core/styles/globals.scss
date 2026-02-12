@@ -1,4 +1,4 @@
-@use "tailwindcss";
+@import "tailwindcss";
 @source "../../../node_modules/fumadocs-ui/dist/**/*.{js,ts,tsx,jsx,mdx}";
 @source "../../../../../node_modules/fumadocs-ui/dist/**/*.{js,ts,tsx,jsx,mdx}";
 @source "../../../../../docs/website/**/*.{mdx,tsx,jsx,ts,js}";

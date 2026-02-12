@@ -14,13 +14,7 @@ interface SchemaToMarkdownItem {
     additionalContent?: string;
 }
 
-const getters: SchemaToMarkdownItem[] = [
-    {
-        outputPath: "sizable",
-        title: "Sizable",
-        getter: admonitionPropsSchemaGetter,
-    },
-];
+const getters: SchemaToMarkdownItem[] = [];
 
 const outputDir = path.resolve(__dirname, "../docs/generated/zod/");
 

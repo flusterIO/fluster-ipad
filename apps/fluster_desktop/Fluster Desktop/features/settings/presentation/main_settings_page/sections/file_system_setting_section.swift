@@ -12,6 +12,8 @@ struct NotesDirSettingSection: View {
   @AppStorage(DesktopAppStorageKeys.notesDirectory.rawValue) private var notesDirectory: String = ""
   @AppStorage(DesktopAppStorageKeys.respectGitIgnore.rawValue) private var respectGitIgnore: Bool =
     true
+  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+    DefaultNoteView = .markdown
   @State private var showNotesDirPicker: Bool = false
 
   var body: some View {
@@ -20,45 +22,62 @@ struct NotesDirSettingSection: View {
         Text("Notes Directory")
           .font(.subheadline)
           .foregroundStyle(.secondary)
-        HStack {
-          TextField(
-            text: $notesDirectory, prompt: Text("Notes Directory"),
-            label: {
-              Text("Notes Directory")
-            }
-          )
-          .textFieldStyle(.squareBorder)
-          Button(
-            action: {
-              showNotesDirPicker = true
-            },
-            label: {
-              Image(systemName: "plus.rectangle.on.folder")
-            }
-          )
-          .buttonStyle(.borderedProminent)
-        }
-        Text(
-          "This is the directory that will be synchronized with your database. This directory can contain any number of folders, each with as many supported files as you like. Unsupported files will simply be ignored. Explicitly set the fsPath in your notes front matter to override it's default location which will be set to the path relative root of this directory."
-        )
-        .font(.caption)
-        .foregroundStyle(.secondary)
-        Spacer(minLength: 32)
-        HStack(alignment: .center, spacing: 16) {
-          Toggle(
-            isOn: $respectGitIgnore,
-            label: {
-            }
-          )
-          .labelsHidden()
-          .toggleStyle(.switch)
+        VStack(alignment: .leading, spacing: 16) {
           VStack(alignment: .leading) {
-            Text("Respect .gitignore")
-              .font(.title3)
+            HStack {
+              TextField(
+                text: $notesDirectory, prompt: Text("Notes Directory"),
+                label: {
+                  Text("Notes Directory")
+                }
+              )
+              .textFieldStyle(.squareBorder)
+              Button(
+                action: {
+                  showNotesDirPicker = true
+                },
+                label: {
+                  Image(systemName: "plus.rectangle.on.folder")
+                }
+              )
+              .buttonStyle(.borderedProminent)
+            }
             Text(
-              "If true, files ignored by a .gitignore file within your notes will be ignored by Fluster as well. Be aware that some notes may be visible under file glob based search even when ignored in this manner, but they will not be saved to your database."
+              "This is the directory that will be synchronized with your database. This directory can contain any number of folders, each with as many supported files as you like. Unsupported files will simply be ignored. Explicitly set the fsPath in your notes front matter to override it's default location which will be set to the path relative root of this directory."
             )
+            .font(.caption)
             .foregroundStyle(.secondary)
+          }
+          HStack(alignment: .center, spacing: 16) {
+            Toggle(
+              isOn: $respectGitIgnore,
+              label: {
+              }
+            )
+            .labelsHidden()
+            .toggleStyle(.switch)
+            VStack(alignment: .leading) {
+              Text("Respect .gitignore")
+                .font(.title3)
+              Text(
+                "If true, files ignored by a .gitignore file within your notes will be ignored by Fluster as well. Be aware that some notes may be visible under file glob based search even when ignored in this manner, but they will not be saved to your database."
+              )
+              .foregroundStyle(.secondary)
+            }
+          }
+          VStack(alignment: .leading) {
+            Picker(
+              selection: $defaultNoteView,
+              content: {
+                ForEach(DefaultNoteView.allCases, id: \.rawValue) { item in
+                  Text(item.rawValue).tag(item)
+                }
+              },
+              label: {
+                Text("Default View")
+              })
+            Text("The view that will be shown when a not is initially selected.").font(.caption)
+              .foregroundStyle(.secondary)
           }
         }
       }
