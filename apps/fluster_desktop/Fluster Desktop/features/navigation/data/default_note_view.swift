@@ -9,6 +9,16 @@ import Foundation
 
 public enum DefaultNoteView: String, CaseIterable {
   case paper, markdown, editor
+  public func toString() -> String {
+    switch self {
+      case .editor:
+        return "Editor"
+      case .markdown:
+        return "Markdown"
+      case .paper:
+        return "Paper"
+    }
+  }
   public func toMainKey() -> MainViewKey {
     switch self {
       case .editor:

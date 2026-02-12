@@ -13,6 +13,8 @@ struct NoteDashboardItem: View {
   @Binding var searchByTopic: TopicModel?
   @Binding var searchBySubject: SubjectModel?
   @EnvironmentObject private var appState: AppState
+  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+    DefaultNoteView = .markdown
   var body: some View {
     HStack(alignment: .center) {
       Image(systemName: "text.document")
@@ -38,7 +40,7 @@ struct NoteDashboardItem: View {
     .glassEffect(in: .rect(cornerRadius: 12))
     .onTapGesture {
       appState.setEditingNote(editingNote: item)
-      appState.mainView = .noteViewMdx
+      appState.mainView = defaultNoteView.toMainKey()
     }
   }
 }

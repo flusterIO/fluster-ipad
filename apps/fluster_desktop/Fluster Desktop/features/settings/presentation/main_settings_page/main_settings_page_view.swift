@@ -50,9 +50,9 @@ struct MainSettingsPageView: View {
       }
       .padding(.vertical, 32)
     }
-    .scrollIndicators(.hidden)
     .frame(maxWidth: 1080)
-    .formStyle(.automatic)
+    .scrollIndicators(.never)
+    .formStyle(.grouped)
   }
 }
 
