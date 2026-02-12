@@ -75,6 +75,8 @@ export const getMathSnippets = (base?: string): SnippetItem[] => {
         createSymbol("ell", "Cursive l", SnippetDefaultType.variable),
         createSymbol("Im", "Imaginary Part", SnippetDefaultType.variable),
         createSymbol("Re", "Real Part", SnippetDefaultType.variable),
+        createSymbol("oplus", "Earth", SnippetDefaultType.variable),
+        createSymbol("odot", "Sun", SnippetDefaultType.variable),
     ];
 
     // 4. Accents & Diacritics

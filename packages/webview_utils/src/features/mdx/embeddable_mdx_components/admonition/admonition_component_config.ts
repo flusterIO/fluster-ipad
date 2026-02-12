@@ -9,7 +9,7 @@ export const admonitionComponentConfig: EmbeddableComponentConfig = {
     desc: "A card with a colored header that can be optionally foldable. Used to draw attention to important content.",
     snippets: () => {
         return [
-            snippetCompletion("<Admonition title=\"#{Admonition Title}\">\n#{body}\n</Admonition>", {
+            snippetCompletion("<Admonition title=\"#{Admonition Title}\">\n\n#{body}\n\n</Admonition>", {
                 section: CompletionSections.components,
                 label: "admonition",
                 detail: "An admonition that is not foldable.",
@@ -18,7 +18,7 @@ export const admonitionComponentConfig: EmbeddableComponentConfig = {
                 // `property`, `text`, `type`, and `variable`
                 type: SnippetDefaultType.function
             }),
-            snippetCompletion("<Admonition title=\"#{Admonition Title}\" foldable>\n#{body}\n</Admonition>", {
+            snippetCompletion("<Admonition title=\"#{Admonition Title}\" foldable>\n\n#{body}\n\n</Admonition>", {
                 section: CompletionSections.components,
                 label: "admonition-foldable",
                 detail: "An admonition that is foldable.",
@@ -27,7 +27,7 @@ export const admonitionComponentConfig: EmbeddableComponentConfig = {
                 // `property`, `text`, `type`, and `variable`
                 type: SnippetDefaultType.function
             }),
-            snippetCompletion("<Admonition title=\"#{Admonition Title}\" foldable folded>\n#{body}\n</Admonition>", {
+            snippetCompletion("<Admonition title=\"#{Admonition Title}\" foldable folded>\n\n#{body}\n\n</Admonition>", {
                 section: CompletionSections.components,
                 label: "admonition-folded",
                 detail: "An admonition that is foldable and starts in a folded state.",

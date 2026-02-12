@@ -49,7 +49,7 @@ struct MainViewSwitch: View {
         ViewPaperPageView(editingNoteId: appState.editingNoteId)
           .navigationTitle("Paper")
       case .noteEditingPage:
-        EditMdxPageView(editingNoteId: appState.editingNoteId, webview: $editorWebview)
+        MdxEditorWebview(editingNoteId: appState.editingNoteId, webView: $editorWebview)
           .navigationTitle("Editor")
           .onAppear {
             markEditingNoteRead()
