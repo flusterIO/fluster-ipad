@@ -301,14 +301,15 @@ extension AppSchemaV1 {
 
       return note
     }
-    public static func fetchFirstById(id: String, modelContext: ModelContext) -> NoteModel? {
+    @MainActor
+    public static func fetchFirstById(id: String, modelContainer: ModelContainer) -> NoteModel? {
       let fetchDescriptor = FetchDescriptor<NoteModel>(
         predicate: #Predicate<NoteModel> { note in
           note.id == id
         }
       )
       do {
-        let data = try modelContext.fetch(fetchDescriptor)
+        let data = try modelContainer.mainContext.fetch(fetchDescriptor)
         return data.isEmpty ? nil : data.first
       } catch {
         print("Error: \(error.localizedDescription)")

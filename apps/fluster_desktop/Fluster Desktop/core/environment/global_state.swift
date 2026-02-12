@@ -22,6 +22,10 @@ public class AppState: ObservableObject {
     self.editingNoteId = editingNote?.id
   }
 
+  func setEditingNoteId(editingNoteId: String?) {
+    self.editingNoteId = editingNoteId
+  }
+
   func commandPaletteNavigate(to route: CommandPaletteSecondaryView) {
     // Pushing to the path overlays the sidebar selection
     commandPaletteNavigation.append(route)

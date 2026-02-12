@@ -1,32 +1,32 @@
 {
-  "name": "@fluster/lezer",
-  "version": "0.0.3",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "vite build"
-  },
-  "types": "dist/index.d.ts",
-  "main": "dist/index.es.js",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
-    }
-  },
-  "devDependencies": {
-    "@lezer/common": "1.0.0",
-    "@lezer/markdown": "1.6.3",
-    "typescript": "*"
-  },
-  "peerDependencies": {
-    "@lezer/common": "1.0.0",
-    "@lezer/markdown": "1.6.3"
-  },
-  "license": "MIT",
-  "description": "Originally a fork of lezer-markdown-obsidian, now a bunch of codemirror utilities for Fluster.",
-  "module": "dist/index.umd.js"
+    "name": "@fluster/lezer",
+    "version": "0.0.3",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "vite build"
+    },
+    "types": "dist/index.d.ts",
+    "main": "dist/index.es.js",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js",
+            "require": "./dist/index.umd.js"
+        }
+    },
+    "devDependencies": {
+        "@lezer/common": "^1.0.0",
+        "@lezer/markdown": "^1.0.0",
+        "typescript": "*"
+    },
+    "peerDependencies": {
+        "@lezer/common": "^1.0.0",
+        "@lezer/markdown": "^1.0.0"
+    },
+    "license": "MIT",
+    "description": "Originally a fork of lezer-markdown-obsidian, now a bunch of codemirror utilities for Fluster.",
+    "module": "dist/index.umd.js"
 }

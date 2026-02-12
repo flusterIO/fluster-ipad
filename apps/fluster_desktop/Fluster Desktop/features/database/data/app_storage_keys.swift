@@ -11,6 +11,7 @@ public enum DesktopAppStorageKeys: String {
   case colorScheme
   case theme
   case hasLaunchedPreviously
+  case defaultNoteView
   case navigationColVisibility
   /// The notesDirectory is a string that is initially empty. This value must always be checked for it's empty status instead of a null value.
   case notesDirectory

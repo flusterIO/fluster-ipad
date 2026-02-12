@@ -1,3 +1,10 @@
+const lockedPackages = [
+    {
+        name: "",
+        version: "",
+    },
+];
+
 // @ts-check
 /** @type {import("syncpack").RcFile} */
 const config = {
@@ -88,6 +95,14 @@ const config = {
             packages: ["!@fluster/website"],
             label: "Pin tailwind version",
         },
+        ...lockedPackages.map((n) => {
+            return {
+                dependencies: [n.name],
+                pinVersion: n.version,
+                packages: ["!@fluster/website"],
+                label: `Pin ${n.name}`,
+            };
+        }),
     ],
 };
 

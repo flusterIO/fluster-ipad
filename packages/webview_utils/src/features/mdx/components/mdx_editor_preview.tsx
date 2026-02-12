@@ -6,6 +6,8 @@ import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { AnyWebviewStorageKey } from "@/utils/types/any_window_event";
+import { ErrorBoundary } from "react-error-boundary";
+import { MdxParsingErrorComponent } from "./mdx_parsing_error_component";
 
 export type MdxEditorPreviewProps = HTMLProps<HTMLDivElement> &
 {
@@ -47,18 +49,23 @@ export const MdxEditorPreview = ({
     }
 
     return (
-        <MdxContent
-            id="mdx-preview"
-            {...props}
-            scrollPositionKey={isEditorView ? props.scrollPositionKeyLandscape : props.scrollPositionKeyPortrait}
-            className={cn(
-                "max-w-[1080px]",
-                isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
-                className,
-            )}
-            mdx={parsedValue}
-            showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
-        />
+        <ErrorBoundary
+            FallbackComponent={MdxParsingErrorComponent}
+            onError={(e) => console.error("Error Boundary: ", e)}
+        >
+            <MdxContent
+                id="mdx-preview"
+                {...props}
+                scrollPositionKey={isEditorView ? props.scrollPositionKeyLandscape : props.scrollPositionKeyPortrait}
+                className={cn(
+                    "max-w-[1080px]",
+                    isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
+                    className,
+                )}
+                mdx={parsedValue}
+                showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
+            />
+        </ErrorBoundary>
     );
 };
 

@@ -15,11 +15,13 @@ struct Fluster_DesktopApp: App {
   @StateObject private var appState: AppState = AppState.shared
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
+  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+    DefaultNoteView = .markdown
   private var appData: AppDataContainer { AppDataContainer.shared }
   @StateObject private var paletteController = CommandPaletteController()
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
-        ContentView(editingNoteId: appState.editingNoteId)
+      ContentView(editingNoteId: appState.editingNoteId)
         .toolbarBackground(.hidden, for: .automatic)
         .preferredColorScheme(selectedTheme.colorScheme)
     }
@@ -76,15 +78,10 @@ struct Fluster_DesktopApp: App {
         case .pushCommandPaletteView(let data):
           appState.commandPaletteNavigate(to: data)
         case .viewNoteById(let noteId):
-          let note = NoteModel.fetchFirstById(id: noteId, modelContext: appData.sharedModelContainer.mainContext)
-          if let _note = note {
-            appState.setEditingNote(editingNote: _note)
-            appState.mainView = .noteViewMdx
-          }
+          appState.setEditingNoteId(editingNoteId: noteId)
+          appState.mainView = defaultNoteView.toMainKey()
         case .navigate(let mainKey):
-          print("Would've run...")
-        //          appState.mainView = mainKey
-        //          MainNavigationEventEmitter.shared.emitChange(to: mainKey)
+          appState.mainView = mainKey
         case .toggleDarkMode:
           toggleDarkMode()
         case .createNewNote:
