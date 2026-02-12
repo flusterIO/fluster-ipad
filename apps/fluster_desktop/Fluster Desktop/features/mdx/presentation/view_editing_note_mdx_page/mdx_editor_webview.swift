@@ -13,22 +13,37 @@ import SwiftUI
 import WebKit
 
 struct MdxEditorWebview: View {
-  let editingNote: NoteModel
-  private var safeNoteBody: String? {
-    if editingNote.isDeleted {
-      return nil
-    } else {
-      return editingNote.markdown.body
-    }
+  var editingNoteId: String?
+  @Environment(\.modelContext) private var modelContext
+  @Environment(\.colorScheme) private var colorScheme
+  @EnvironmentObject private var appState: AppState
+  @Query private var notes: [NoteModel]
+
+  var editingNote: NoteModel? {
+    notes.isEmpty ? nil : notes.first!
   }
   @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
   @Binding var webView: WKWebView
-  @Environment(\.modelContext) private var modelContext: ModelContext
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
     CodeSyntaxTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
     CodeSyntaxTheme = .materialLight
+
+  init(editingNoteId: String?, webView: Binding<WKWebView>) {
+    self.editingNoteId = editingNoteId
+    self._webView = webView
+    if let _id = editingNoteId {
+      let predicate = #Predicate<NoteModel> { $0.id == _id }
+      _notes = Query(filter: predicate)
+    } else {
+      _notes = Query(
+        filter: #Predicate<NoteModel> { note in
+          false
+        })
+    }
+  }
+
   var body: some View {
     WebViewContainerView(
       webview: $webView,
@@ -71,6 +86,11 @@ struct MdxEditorWebview: View {
         }
       }
     )
+    .onChange(of: colorScheme, {
+        Task {
+            try? await setEditorSelectedTheme(editorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
+        }
+    })
     .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
   func onWebviewLoad() async {
@@ -79,7 +99,9 @@ struct MdxEditorWebview: View {
         try await setEditorThemeDark(editorTheme: editorThemeDark)
         try await setEditorThemeLight(editorTheme: editorThemeLight)
         try await setEditorKeymap(editorKeymap: editorKeymap)
-        try await loadNote(note: editingNote)
+        if let en = editingNote {
+          try await loadNote(note: en)
+        }
         try await setSnippetProps()
         print("Loaded initial editor data")
       } catch {
@@ -97,23 +119,25 @@ struct MdxEditorWebview: View {
         }
       case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
         Task(priority: .high) {
-          if let parsedMdx =
-            await safeNoteBody?.preParseAsMdxToBytes(noteId: editingNote.id)
-          {
-            do {
-              try await setParsedEditorContent(
-                note: editingNote
-              )
-            } catch {
-              print("Error: \(error.localizedDescription)")
-            }
-            if let parsingResults =
-              parsedMdx.toMdxParsingResult()
+          if let en = editingNote {
+            if let parsedMdx =
+              await en.markdown.body.preParseAsMdxToBytes(noteId: en.id)
             {
-              editingNote.applyMdxParsingResults(
-                results: parsingResults,
-                modelContext: modelContext
-              )
+              do {
+                try await setParsedEditorContent(
+                  note: en
+                )
+              } catch {
+                print("Error: \(error.localizedDescription)")
+              }
+              if let parsingResults =
+                parsedMdx.toMdxParsingResult()
+              {
+                en.applyMdxParsingResults(
+                  results: parsingResults,
+                  modelContext: modelContext
+                )
+              }
             }
           }
         }
@@ -122,8 +146,10 @@ struct MdxEditorWebview: View {
     }
   }
   public func handleEditorChange(newValue: String) {
-    editingNote.markdown.body = newValue
-    editingNote.setLastRead(setModified: true)
+    if let en = editingNote {
+      en.markdown.body = newValue
+      en.setLastRead(setModified: true)
+    }
     Task {
       do {
         try await setParsedEditorContentString(body: newValue)
@@ -151,11 +177,24 @@ struct MdxEditorWebview: View {
       """
       window.setCodeSyntaxThemeDark("\(editorTheme.rawValue)")
       """)
+    if colorScheme == .dark {
+      try await setEditorSelectedTheme(editorTheme: editorTheme)
+    }
   }
   func setEditorThemeLight(editorTheme: CodeSyntaxTheme) async throws {
     try await webView.evaluateJavaScript(
       """
       window.setCodeSyntaxThemeLight("\(editorTheme.rawValue)")
+      """)
+    if colorScheme == .light {
+      try await setEditorSelectedTheme(editorTheme: editorTheme)
+    }
+  }
+  func setEditorSelectedTheme(editorTheme: CodeSyntaxTheme) async throws {
+    try await webView.evaluateJavaScript(
+      """
+      window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeTheme.rawValue)", "\(editorTheme.rawValue)")
+      window.setCodeSyntaxTheme("\(editorTheme.rawValue)")
       """)
   }
   func setEditorKeymap(editorKeymap: EditorKeymap) async throws {
@@ -193,7 +232,7 @@ struct MdxEditorWebview: View {
 
 #Preview {
   MdxEditorWebview(
-    editingNote: NoteModel.fromNoteBody(noteBody: "# My Note"),
+    editingNoteId: nil,
     webView: .constant(
       WKWebView(
         frame: .infinite, configuration: getWebViewConfig())

@@ -139,6 +139,11 @@ struct WebViewContainerView: View {
           .progressViewStyle(.circular)
       }
     }
+    .onAppear {
+        Task {
+          await setColorScheme(colorScheme: colorScheme)
+        }
+    }
     .onChange(
       of: colorScheme,
       {
@@ -165,17 +170,10 @@ struct WebViewContainerView: View {
   }
   func setColorScheme(colorScheme: ColorScheme) async {
     do {
-      if colorScheme == .dark {
-        try await runJavascript(
-          """
-          document.body.classList.add("dark")
-          """)
-      } else {
-        try await runJavascript(
-          """
-          document.body.classList.remove("dark")
-          """)
-      }
+      try await runJavascript(
+        """
+        window.setDarkMode(\(colorScheme == .dark ? "true" : "false"))
+        """)
     } catch {
       print("Error setting color scheme: \(error.localizedDescription)")
     }
