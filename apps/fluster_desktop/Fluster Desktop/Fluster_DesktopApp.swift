@@ -21,7 +21,7 @@ struct Fluster_DesktopApp: App {
   @StateObject private var paletteController = CommandPaletteController()
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
-      ContentView(editingNoteId: appState.editingNoteId)
+      ContentView()
         .toolbarBackground(.hidden, for: .automatic)
         .preferredColorScheme(selectedTheme.colorScheme)
     }

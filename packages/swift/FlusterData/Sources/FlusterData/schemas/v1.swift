@@ -316,6 +316,21 @@ extension AppSchemaV1 {
         return nil
       }
     }
+    @MainActor
+    public func preParse(modelContext: ModelContext) async throws {
+      if let parsedMdx =
+        await self.markdown.body.preParseAsMdxToBytes(noteId: self.id)
+      {
+        if let parsingResults =
+          parsedMdx.toMdxParsingResult()
+        {
+          self.applyMdxParsingResults(
+            results: parsingResults,
+            modelContext: modelContext
+          )
+        }
+      }
+    }
   }
   @Model
   public class DictionaryEntryModel: Identifiable {

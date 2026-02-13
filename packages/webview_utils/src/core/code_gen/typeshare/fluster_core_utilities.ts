@@ -58,6 +58,8 @@ export enum MdxPreviewWebviewActions {
 	RequestNoteData = "request-note-data",
 	SetWebviewLoaded = "set-preview-webview-loaded",
 	ViewNoteByUserDefinedId = "view-note-by-user-def-id",
+	ViewNoteById = "view-note-by--id",
+	OnTagClick = "tag-click-event",
 }
 
 /** From swift to typescript */
