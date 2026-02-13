@@ -14,6 +14,12 @@ pub enum MdxPreviewWebviewActions {
     #[serde(rename = "view-note-by-user-def-id")]
     #[strum(to_string = "view-note-by-user-def-id")]
     ViewNoteByUserDefinedId,
+    #[serde(rename = "view-note-by--id")]
+    #[strum(to_string = "view-note-by--id")]
+    ViewNoteById,
+    #[serde(rename = "tag-click-event")]
+    #[strum(to_string = "tag-click-event")]
+    OnTagClick,
 }
 
 /// From swift to typescript

@@ -86,11 +86,15 @@ struct MdxEditorWebview: View {
         }
       }
     )
-    .onChange(of: colorScheme, {
+    .onChange(
+      of: colorScheme,
+      {
         Task {
-            try? await setEditorSelectedTheme(editorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
+          try? await setEditorSelectedTheme(
+            editorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
         }
-    })
+      }
+    )
     .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
   func onWebviewLoad() async {
@@ -120,24 +124,13 @@ struct MdxEditorWebview: View {
       case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
         Task(priority: .high) {
           if let en = editingNote {
-            if let parsedMdx =
-              await en.markdown.body.preParseAsMdxToBytes(noteId: en.id)
-            {
-              do {
-                try await setParsedEditorContent(
-                  note: en
-                )
-              } catch {
-                print("Error: \(error.localizedDescription)")
-              }
-              if let parsingResults =
-                parsedMdx.toMdxParsingResult()
-              {
-                en.applyMdxParsingResults(
-                  results: parsingResults,
-                  modelContext: modelContext
-                )
-              }
+            do {
+              try await en.preParse(modelContext: modelContext)
+              try await setParsedEditorContent(
+                note: en
+              )
+            } catch {
+              print("Error: \(error.localizedDescription)")
             }
           }
         }
