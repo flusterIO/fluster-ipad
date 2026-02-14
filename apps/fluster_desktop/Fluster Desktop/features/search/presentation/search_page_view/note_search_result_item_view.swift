@@ -15,6 +15,8 @@ struct NoteSearchResultItemView: View {
   let dismissOnNavigate: Bool
   @EnvironmentObject private var appState: AppState
   @Environment(\.dismiss) private var dismiss
+  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+    DefaultNoteView = .markdown
   var body: some View {
     VStack(alignment: .leading) {
       Text(item.frontMatter.title ?? item.markdown.title ?? "No Title Found")
@@ -33,7 +35,7 @@ struct NoteSearchResultItemView: View {
     .contentShape(Rectangle())
     .onTapGesture {
       appState.setEditingNote(editingNote: item)
-      appState.mainView = .noteViewMdx
+      appState.mainView = defaultNoteView.toMainKey()
       if dismissOnNavigate {
         dismiss()
       }

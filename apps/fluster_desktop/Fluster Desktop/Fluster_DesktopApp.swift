@@ -18,7 +18,6 @@ struct Fluster_DesktopApp: App {
     DefaultNoteView = .markdown
   private var appData: AppDataContainer { AppDataContainer.shared }
   private var paletteController = CommandPaletteController()
-    @State private var editingNote: NoteModel?
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
       ContentView()
@@ -45,7 +44,6 @@ struct Fluster_DesktopApp: App {
         Button("Command Palette") {
           paletteController.toggle(
             appState: AppState.shared,
-            onCommandSelected: handleCommandPaletteSelect
           )
         }
         .keyboardShortcut("p", modifiers: [.command, .shift])
@@ -63,36 +61,6 @@ struct Fluster_DesktopApp: App {
     } else {
       UserDefaults.standard.set(
         AppTheme.dark.rawValue, forKey: DesktopAppStorageKeys.colorScheme.rawValue)
-    }
-  }
-
-  func handleCommandPaletteSelect(_ command: CommandPaletteItem) -> CommandPaletteSelectResponse {
-    if command.onAccept != nil {
-      command.onAccept!()
-    }
-    if command.itemType == .children {
-      return .appendToTree(command)
-    } else {
-      switch command.id {
-        case .pushCommandPaletteView(let data):
-          AppState.shared.commandPaletteNavigate(to: data)
-        case .viewNoteById(let noteId):
-          AppState.shared.setEditingNoteId(editingNoteId: noteId)
-          AppState.shared.mainView = defaultNoteView.toMainKey()
-        case .navigate(let mainKey):
-          AppState.shared.mainView = mainKey
-        case .toggleDarkMode:
-          toggleDarkMode()
-        case .createNewNote:
-          MainNavigationEventEmitter.shared.emitChange(to: MainViewKey.noteEditingPage)
-        case .showPanelRight:
-          print("Show Panel Right")
-        case .parentWithNoFunctionality:
-          return .clearAndClose
-        case .root:
-          return .clearAndClose
-      }
-      return .clearAndClose
     }
   }
 }

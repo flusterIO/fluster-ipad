@@ -12,8 +12,9 @@ import SwiftUI
 
 struct CommandPaletteContainerView: View {
   public var close: () -> Void
-  public var onCommandSelected: (CommandPaletteItem) -> CommandPaletteSelectResponse
   @Environment(\.modelContext) private var modelContext: ModelContext
+  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+    DefaultNoteView = .editor
   @State private var searchText: String = ""
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
@@ -49,18 +50,37 @@ struct CommandPaletteContainerView: View {
         close()
       },
       tree: $tree,
-      onCommandSelected: { item in
-        let res = onCommandSelected(item)
-        switch res {
-          case .backToRoot:
-            tree = [CommandPaletteRoot()]
-          case .clearAndClose:
-            tree = [CommandPaletteRoot()]
-            searchText = ""
-            close()
-          case .appendToTree(let item):
-            tree.append(item)
-            searchText = ""
+      onCommandSelected: { command in
+        if command.itemType == .children {
+          tree.append(command)
+          searchText = ""
+        } else {
+          switch command.id {
+            case .pushCommandPaletteView(let data):
+              AppState.shared.commandPaletteNavigate(to: data)
+            case .viewNoteById(let noteId):
+              AppState.shared.setEditingNoteId(editingNoteId: noteId)
+              AppState.shared.mainView = defaultNoteView.toMainKey()
+              closeCommandPalette()
+            case .navigate(let mainKey):
+              AppState.shared.mainView = mainKey
+              closeCommandPalette()
+            case .toggleDarkMode:
+              if selectedTheme == .dark {
+                  selectedTheme = .light
+              } else {
+                  selectedTheme = .dark
+              }
+              closeCommandPalette()
+            case .createNewNote:
+              MainNavigationEventEmitter.shared.emitChange(to: MainViewKey.noteEditingPage)
+            case .showPanelRight:
+              print("Show Panel Right")
+            case .parentWithNoFunctionality:
+              closeCommandPalette()
+            case .root:
+              closeCommandPalette()
+          }
         }
       }
     )
@@ -80,6 +100,12 @@ struct CommandPaletteContainerView: View {
       return .ignored
     }
   }
+    
+    func closeCommandPalette() {
+        tree = [CommandPaletteRoot()]
+        searchText = ""
+        close()
+    }
 }
 
 private struct CommandPaletteView: View {
@@ -217,9 +243,5 @@ private struct CommandPaletteKeyboardShortcut: View {
 #Preview {
   CommandPaletteContainerView(
     close: {},
-    onCommandSelected: { item in
-      print("Item: \(item.title)")
-      return .clearAndClose
-    },
   )
 }
