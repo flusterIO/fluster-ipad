@@ -12,6 +12,7 @@ import FlusterData
 
 //import FlusterS
 
+#if os(iOS)
 public struct MdxPreviewWebview: UIViewRepresentable {
   @State private var webView: WKWebView = WKWebView(
     frame: .zero,
@@ -174,3 +175,4 @@ extension MdxPreviewWebview {
     }
   }
 }
+#endif

@@ -10,6 +10,8 @@ import SwiftUI
 import WebKit
 import FlusterData
 
+
+#if os(iOS)
 public struct NoteDetailWebviewInternal: UIViewRepresentable {
   @State private var lastNoteId: String? = nil
   @State private var didSetInitialContent: Bool = false
@@ -309,3 +311,4 @@ public struct NoteDetailWebview: View {
     )
   }
 }
+#endif

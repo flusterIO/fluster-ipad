@@ -4,6 +4,7 @@ import SwiftUI
 import WebKit
 import FlusterData
 
+#if os(iOS)
 @MainActor
 public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWebviewEvents> {
   public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
@@ -96,3 +97,4 @@ public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWe
     }
   }
 }
+#endif

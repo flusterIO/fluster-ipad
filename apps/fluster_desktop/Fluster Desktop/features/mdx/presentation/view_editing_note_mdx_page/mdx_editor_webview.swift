@@ -62,6 +62,11 @@ struct MdxEditorWebview: View {
       messageHandler: messageHandler,
       onLoad: onWebviewLoad
     )
+    .onAppear{
+        if let en = editingNote {
+            en.setLastRead()
+        }
+    }
     .onChange(
       of: editorKeymap,
       {
@@ -95,6 +100,11 @@ struct MdxEditorWebview: View {
         }
       }
     )
+    .onChange(of: editingNote, {
+        if let en = editingNote {
+            en.setLastRead()
+        }
+    })
     .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
   func onWebviewLoad() async {

@@ -1,7 +1,10 @@
 import Combine
 import SwiftUI
 import WebKit
+import FlusterData
 
+
+#if os(iOS)
 @MainActor func getConfig() -> WKWebViewConfiguration {
   let config = WKWebViewConfiguration()
   config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
@@ -153,3 +156,4 @@ where WebviewEventsType.RawValue == String {
     }
   }
 }
+#endif

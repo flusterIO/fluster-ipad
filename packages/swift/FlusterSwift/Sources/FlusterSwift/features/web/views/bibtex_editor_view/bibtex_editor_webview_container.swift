@@ -7,6 +7,7 @@
 
 import Foundation
 
+#if os(iOS)
 public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWebviewEvents> {
   //    public override init() {}
   public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
@@ -58,3 +59,4 @@ public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWe
     self.setInitialContent(entryBody: initialValue ?? "")
   }
 }
+#endif

@@ -3,6 +3,8 @@ import SwiftData
 import SwiftUI
 import WebKit
 
+
+#if os(iOS)
 public enum MdxViewFullScreenCover {
   case byTag(tagModel: BibEntryModel)
 }
@@ -373,3 +375,4 @@ public struct MdxEditorWebview: View {
     )
   }
 }
+#endif

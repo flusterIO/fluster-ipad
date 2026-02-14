@@ -25,11 +25,11 @@ struct Fluster_DesktopApp: App {
         .toolbarBackground(.hidden, for: .automatic)
         .preferredColorScheme(selectedTheme.colorScheme)
     }
+    .modelContainer(appData.sharedModelContainer)
     .environmentObject(appState)
     .environment(\.createDataHandler, appData.dataHandlerCreator())
     .windowStyle(.automatic)
     .windowToolbarStyle(.unified)
-    .modelContainer(appData.sharedModelContainer)
     .commands {
       SidebarCommands()
       TextEditingCommands()

@@ -10,6 +10,8 @@ import Foundation
 import SwiftUI
 import FlusterData
 
+
+#if os(iOS)
 @MainActor
 public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebviewEvents> {
   //    public override init() {}
@@ -71,3 +73,4 @@ public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebvie
     }
   }
 }
+#endif

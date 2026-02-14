@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 import FlusterData
 
+#if os(iOS)
 // BETA: It looks decent but there's a bug in the button that causes the menu to open. Fix this up at some point, but I'm setting this aside for now.
 struct SubjectInputView: View {
   @Query private var subjects: [SubjectModel]
@@ -54,3 +55,4 @@ struct SubjectInputView: View {
       })
   }
 }
+#endif

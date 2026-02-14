@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 import FlusterData
 
+#if os(iOS)
 public struct EditNoteTaggablesView: View {
   @Environment(\.modelContext) private var modelContext
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
@@ -279,3 +280,4 @@ public struct EditNoteTaggablesView: View {
     case topic, subject
   }
 }
+#endif

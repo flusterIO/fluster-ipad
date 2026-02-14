@@ -51,15 +51,9 @@ struct MainViewSwitch: View {
       case .noteEditingPage:
         MdxEditorWebview(editingNoteId: appState.editingNoteId, webView: $editorWebview)
           .navigationTitle("Editor")
-          .onAppear {
-            markEditingNoteRead()
-          }
       case .noteViewMdx:
-        ViewEditingNoteMdxPage(editingNoteId: appState.editingNoteId)
+        ViewMdxNoteView(editingNoteId: appState.editingNoteId)
           .navigationTitle("Markdown")
-          .onAppear {
-            markEditingNoteRead()
-          }
       case .globalBibliography:
         GlobalBibliographyPageView()
           .navigationTitle("Bibliography")

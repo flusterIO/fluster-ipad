@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 public enum SplitViewSide {
   case left, right, none
 }
@@ -101,3 +102,4 @@ public struct SplitView<Vl: View, Vr: View>: View {
     hideSide: .none
   )
 }
+#endif

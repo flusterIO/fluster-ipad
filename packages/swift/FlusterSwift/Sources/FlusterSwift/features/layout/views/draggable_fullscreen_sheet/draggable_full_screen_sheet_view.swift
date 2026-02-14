@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+#if os(iOS)
 public struct FullScreenSheetDraggableView<Content: View>: View {
   @State private var fullScreenCoverDragDrag: CGFloat = 0
   @State private var fullScreenCoverOpacity: CGFloat = 1
@@ -69,3 +71,4 @@ public struct FullScreenSheetDraggableView<Content: View>: View {
     )
   }
 }
+#endif
