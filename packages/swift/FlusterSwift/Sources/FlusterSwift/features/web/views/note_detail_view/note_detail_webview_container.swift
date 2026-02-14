@@ -11,6 +11,7 @@ import SwiftUI
 import WebKit
 import FlusterData
 
+#if os(iOS)
 @MainActor
 public final class NoteDetailWebviewContainer: WebviewContainer<
   NoteDetailWebviewEvents
@@ -111,3 +112,4 @@ public final class NoteDetailWebviewContainer: WebviewContainer<
     self.setNoteDetails(note: note)
   }
 }
+#endif

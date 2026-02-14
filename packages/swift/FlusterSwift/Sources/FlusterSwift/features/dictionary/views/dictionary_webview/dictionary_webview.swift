@@ -10,6 +10,7 @@ import SwiftUI
 import WebKit
 import FlusterData
 
+#if os(iOS)
 public struct DictionaryWebview: UIViewRepresentable {
   let url: URL = Bundle.main.url(
     forResource: "index",
@@ -127,3 +128,4 @@ extension DictionaryWebview {
     }
   }
 }
+#endif

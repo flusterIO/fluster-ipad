@@ -3,7 +3,6 @@ import { FC } from "react";
 import { H1, H2, H3, H4, P } from "@/shared_components/typography/typography";
 import { BlockQuote } from "@/shared_components/typography/block_quote";
 import { MDXComponents } from "mdx/types";
-import { InlineMdxContent } from "../components/inline_mdx_content";
 import { MdxInput } from "../embeddable_mdx_components/html/input";
 import { AnchorTag } from "../embeddable_mdx_components/html/anchor";
 import { AutoInsertedTag } from "../embeddable_mdx_components/auto_inserted/tag";
@@ -18,7 +17,6 @@ interface ComponentMapItem {
     query: string | string[];
     /* eslint-disable-next-line  -- Need to allow any here */
     component: FC<any>;
-    requiresInlineMdx?: boolean;
 }
 
 export const componentOverrides: MDXComponents = {
@@ -98,7 +96,6 @@ const items: ComponentMapItem[] = [
     {
         query: "Admonition",
         component: Admonition,
-        requiresInlineMdx: true,
     },
     /* { */
     /*     query: "Card", */
@@ -231,12 +228,7 @@ export const getComponentMap = (mdxContent: string): MDXComponents => {
             const isIncluded = mdxContent.includes(`<${query}`);
             if (isIncluded) {
                 const C = item.component;
-                const props = {
-                    InlineMdxContent: item.requiresInlineMdx
-                        ? InlineMdxContent
-                        : undefined,
-                };
-                components[query] = (_props: object) => <C {...props} {..._props} />;
+                components[query] = (_props: object) => <C {..._props} />;
             }
         }
     }

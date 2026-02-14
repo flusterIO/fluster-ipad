@@ -8,6 +8,7 @@
 import PencilKit
 import SwiftUI
 
+#if os(iOS)
 public struct PaperView: View {
   @State private var canvasView = PKCanvasView()
   @Binding var toolbar: PKToolPicker
@@ -41,3 +42,4 @@ public struct PaperView: View {
     )
   }
 }
+#endif

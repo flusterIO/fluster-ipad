@@ -9,6 +9,8 @@ import FlatBuffers
 import Foundation
 import FlusterData
 
+
+#if os(iOS)
 public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebviewEvents> {
   public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
     self.runJavascript(
@@ -56,3 +58,4 @@ public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebvie
     self.setDictionaryContent(entries: entries)
   }
 }
+#endif

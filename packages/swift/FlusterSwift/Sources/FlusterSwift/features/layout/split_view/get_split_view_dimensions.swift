@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+#if os(iOS)
 func getSplitViewDimensions(drag: DragGesture.Value, rect: GeometryProxy)
   -> Double
 {
@@ -16,3 +17,4 @@ func getSplitViewDimensions(drag: DragGesture.Value, rect: GeometryProxy)
 
   return newRatio
 }
+#endif

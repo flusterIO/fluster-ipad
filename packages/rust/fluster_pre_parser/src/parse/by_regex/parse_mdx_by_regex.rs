@@ -17,13 +17,13 @@ static REGEX_PARSERS: [&'static dyn MdxParser; 4] = [
     &NoteLinkRegexParser,
 ];
 
-#[derive(Serialize, Deserialize, uniffi::Record)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record)]
 pub struct SwiftDataCitationSummary {
     pub citation_key: String,
     pub body: String,
 }
 
-#[derive(Serialize, Deserialize, uniffi::Record)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record)]
 pub struct ParseMdxOptions {
     pub note_id: Option<String>,
     pub content: String,

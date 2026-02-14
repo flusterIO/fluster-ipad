@@ -8,6 +8,8 @@
 import PencilKit
 import SwiftUI
 
+
+#if os(iOS)
 struct CanvasView: UIViewRepresentable {
   @Binding var toolPicker: PKToolPicker
   @Binding var drawingData: Data
@@ -58,3 +60,4 @@ struct CanvasView: UIViewRepresentable {
     }
   }
 }
+#endif

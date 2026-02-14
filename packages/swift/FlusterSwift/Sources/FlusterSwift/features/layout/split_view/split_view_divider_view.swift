@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if os(iOS)
 struct SplitViewDividerView: View {
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
   @State private var dragging: Bool = false
@@ -56,3 +57,4 @@ struct SplitViewDividerView: View {
     )
   }
 }
+#endif

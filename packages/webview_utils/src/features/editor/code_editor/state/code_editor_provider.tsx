@@ -267,7 +267,6 @@ export const CodeEditorProvider = ({
         for (let i = 0; i <= e.detail.citationIdsLength(); i++) {
             ids.push(e.detail.citationIds(i))
         }
-        console.log("ids: ", ids)
         dispatch({
             type: "setAllCitationIds",
             payload: ids

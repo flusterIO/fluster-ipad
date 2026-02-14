@@ -1,6 +1,7 @@
 import Combine
 import SwiftUI
 
+#if os(iOS)
 struct OrientationDetector: ViewModifier {
   @Binding var orientation: UIDeviceOrientation
 
@@ -63,3 +64,4 @@ extension View {
     )
   }
 }
+#endif

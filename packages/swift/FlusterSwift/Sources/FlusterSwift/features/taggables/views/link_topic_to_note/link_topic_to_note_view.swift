@@ -9,6 +9,8 @@ import SwiftData
 import SwiftUI
 import FlusterData
 
+
+#if os(iOS)
 public struct LinkTopicToNoteView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
@@ -90,3 +92,4 @@ public struct LinkTopicToNoteView: View {
 #Preview {
   LinkTopicToNoteView(selection: .constant(nil), paths: .constant([]))
 }
+#endif

@@ -8,6 +8,7 @@
 import SwiftUI
 import FlusterData
 
+#if os(iOS)
 public struct NoteDetailView: View {
   @Environment(ThemeManager.self) var themeManager: ThemeManager
   public let note: NoteModel
@@ -88,3 +89,4 @@ public struct NoteDetailView: View {
     )
   )
 }
+#endif
