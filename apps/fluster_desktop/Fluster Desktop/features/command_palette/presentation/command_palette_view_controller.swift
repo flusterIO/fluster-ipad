@@ -13,7 +13,6 @@ import SwiftUI
 
 @MainActor
 class CommandPaletteController: NSObject, ObservableObject {
-  // We inherit from NSObject to handle window delegates if needed
   private var panel: CommandPalettePanel?
 
   private var appData: AppDataContainer { AppDataContainer.shared }
@@ -33,7 +32,6 @@ class CommandPaletteController: NSObject, ObservableObject {
     _ appState: AppState,
     _ onCommandSelected: @escaping (CommandPaletteItem) -> CommandPaletteSelectResponse
   ) {
-    // Your custom SwiftUI View for the palette
     let rootView = CommandPaletteContainerView(
       close: { [weak self] in self?.hide() },
       onCommandSelected: onCommandSelected,
@@ -46,8 +44,7 @@ class CommandPaletteController: NSObject, ObservableObject {
     } else {
       panel = CommandPalettePanel(rootView: rootView)
       panel?.center()
-
-      // Optional: Hide palette if user clicks elsewhere
+      // Close on click-away
       NotificationCenter.default.addObserver(
         forName: NSWindow.didResignKeyNotification,
         object: panel,

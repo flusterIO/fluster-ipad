@@ -104,7 +104,7 @@ struct MdxEditorWebview: View {
         }
       )
       .onChange(
-        of: editingNote,
+        of: editingNote?.id,
         {
           if let en = editingNote {
             en.setLastRead()
