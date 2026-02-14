@@ -7,15 +7,36 @@ id: welcomeToFluster
 
 My name is Andrew, and I'm the creator of Fluster. Please take the time to look through these initial notes as they contain all of the information you need to get the most from this app, as it's pretty unique among note taking applications. On first launch, there will be the following notes:
 
-1. **Introduction:** This is what you're reading right now.
-2. **Components:** A note going over the available mdx components. There are snippets to help, but this is a quick visual reference.
-3. **Reference:** A quick syntax reference. It's probably worth keeping this around until you become familiar.
-4. **On The Gravitational Nature of Time:** Consider this a demo if you like, but this is a short summary of the model that inspired the creation of Fluster. The note assumes no further knowledge than basic calculus, and does my best to take the reader from Einstein's work to a modified model of relativity that gives a set of equations providing both our kinematic and cosmological velocities to well within measurement error. The problem? Gravity becomes a respulsive force. [Avi Loeb](https://scholar.google.com/citations?user=CvQxOmwAAAAJ) couldn't get that past peer review, so here we are... re-building a note taking application for the 4th time while homeless to promote the model. Feel free to just delete this if you like, but this is the reason Fluster even exists.
+1. **Welcome To Fluster:** This is what you're reading right now.
+2. **Intro to JSX:** An introduction to the 'x' in mdx. If you're already familiar with React, feel free to delete this. If not, don't worry, you don't need to know how to write the functions, just how to call them, and the provided snippets will do most of the work for you.
+3. **Quick Reference:** A quick syntax reference. 
+4. **On The Gravitational Nature of Time:** Consider this a demo if you like, but this is a short summary of the model that inspired the creation of Fluster. The note assumes no further knowledge than basic calculus, and does my best to take the reader from Einstein's work to a modified model of relativity that gives a set of 3 equations providing both our kinematic and cosmological velocities to well within measurement error. The problem? Gravity becomes a respulsive force. [Avi Loeb](https://scholar.google.com/citations?user=CvQxOmwAAAAJ) couldn't get that past peer review, so here we are... re-building a note taking application for the 4th time while homeless to promote the model. Feel free to just delete this if you like, but this is the reason Fluster even exists.
 
 ## Fluster's Strategy
 
 While in most cases user's don't care much about the architecture of the application they're using, it's relevant for Fluster. Fluster uses [mdx](https://mdxjs.com/), a superset of markdown with added support for [React](https://react.dev/) components. Fluster provides a growing list of components for you, with snippets available to help speed up typing and searchability.
 
-Here's the thing, MDX is _really_ powerful. So powerful so, that it's difficult to replicate the functionality of MDX in Apple's native language, Swift. The logical question then is well, why not just do everything in the language that makes MDX happy, Typescript? The answer, is that while Apple's support for rendering complex math and other complex components from a 'markdown' file is extremely limited, it's support for things like the Apple pencil, onboard AI, and other first-party features are unbeatable.
+Here's the thing, MDX is _really_ powerful. So powerful so, that it's difficult to replicate the functionality of MDX in Apple's native language, Swift. The logical question then is well, why not just do everything in the language that makes MDX happy, Typescript? The first public release of Fluster did, but the application became limited by it's environment. The answer, is that while Apple's support for rendering math and other complex components from a 'markdown' file is extremely limited, it's support for things like the Apple pencil, onboard AI, and other first-party features are unbeatable.
 
-The strategy Fluster takes is simple, to give users the most functionality possible by providing both rendering methods in a single application
+The strategy Fluster takes is simple, to give users the most functionality possible by providing both rendering methods in a single application, but this comes with some downsides. 
+
+- It will likely be noticable when a view is rendered in a WebView or in a native Swift view. This will be improved significantly with time, but will likely never be completely cohesive.
+- Math or other mdx features may not render or render incompletely in Swift views. This means that while adding latex to titles is technically allowed, the title in Swift views will display as a raw latex string instead of the rendered latex. I'll make an attempt to support math in Swift titles in the near future, but I'm unsure of how successful it will be. The alternative is to eventually move more content, like the search results into a Webview where title's can be rendered as MDX.
+
+It is important to note, that while your Fluster application uses a `WebView`, it does not contact any outside service and functions completely offline; we are simply rendering the MDX in a language meant for the web using code that is bundled with the application.
+
+Fluster may never offer the buttery smooth UI of applications that focus on either hand drawn or text based notes independently, but for those that require the most from their note taking application and want an app that puts functionality over form, Fluster may be your application.
+
+
+## Organization Inside of Fluster
+
+As Fluster came to be first as a personal note taking application to support my pursuit of a modified model of relativity, it naturally came to support a wide range of searching, linking and navigation techniques. First, you can insert a tag directly into your note's content as described in the 'Quick Reference' note. Clicking a tag will take you to a search page with all other notes featuring that tag.
+
+Each note can contain a block of [yaml](https://learnxinyminutes.com/yaml/) between two sets of `---` with a handful of optional properties. This block is completely optional, as are all fields within it, but it allows for the extension of the search functionality by applying either a `topic` or a `subject` to a note. See the section in the 'Quick Reference' for more information.
+
+```mdx
+---
+topic: Math
+subject: Calc2
+---
+```

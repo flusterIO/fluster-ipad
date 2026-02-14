@@ -10,6 +10,8 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+  @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
+    .dark
   @ObservedObject private var appState: AppState = AppState.shared
   @State private var columnVisibility: NavigationSplitViewVisibility = NavigationSplitViewVisibility
     .doubleColumn
@@ -34,6 +36,7 @@ struct ContentView: View {
           }
       }
     }
+    .preferredColorScheme(selectedTheme.colorScheme)
     .environmentObject(appState)
     .onReceive(MainNavigationEventEmitter.shared.viewUpdatePublisher) { newValue in
       appState.mainView = newValue

@@ -5,6 +5,7 @@
 - [ ] Move all parsing to preParse method.
   - [ ] Remove parsing on body change and just handle it on the editor change event. THis will remove the requirement for the NoteModel in the Contentview.
 - [ ] Remove `@AppStorage` from main struct to avoid modelContext issue again.
+- [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
 - [ ] Fix issue with model container now that it's being passed to the secondary window.
 - [ ] Resume by moving all interactions with the modelContext from the command palette window to a function that executes in the primary window's context instead of trying to pass the context down piece by piece. Moving all dependence on the modelContext might resolve the current issue.
 - [ ] Add 'escape-to-close' functionality back to command palette.
@@ -26,3 +27,7 @@
 ## iPad
 
 - [ ] Add script to set `WebviewEnvironment.IPad` so that the loading class will still be appended.
+
+## Documentation
+
+- [ ] Add section to `quick_reference.mdx` about front matter.
