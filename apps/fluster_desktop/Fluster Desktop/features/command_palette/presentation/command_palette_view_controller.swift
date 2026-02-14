@@ -19,22 +19,19 @@ class CommandPaletteController: NSObject, ObservableObject {
 
   func toggle(
     appState: AppState,
-    onCommandSelected: @escaping (CommandPaletteItem) -> CommandPaletteSelectResponse
   ) {
     if let panel = panel, panel.isVisible {
       hide()
     } else {
-      show(appState, onCommandSelected)
+      show(appState)
     }
   }
 
   func show(
     _ appState: AppState,
-    _ onCommandSelected: @escaping (CommandPaletteItem) -> CommandPaletteSelectResponse
   ) {
     let rootView = CommandPaletteContainerView(
       close: { [weak self] in self?.hide() },
-      onCommandSelected: onCommandSelected,
     )
     .ignoresSafeArea()
     .environmentObject(appState)
