@@ -7,6 +7,7 @@
 
 import FlusterSwift
 import SwiftUI
+import FlusterData
 
 struct ThemePickerView: View {
   @Binding var theme: WebViewTheme

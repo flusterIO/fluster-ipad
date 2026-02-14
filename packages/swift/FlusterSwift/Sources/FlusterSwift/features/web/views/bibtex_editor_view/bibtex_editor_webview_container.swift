@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FlusterData
 
 #if os(iOS)
 public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWebviewEvents> {
