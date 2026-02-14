@@ -1,6 +1,8 @@
 import { cn } from "@/utils/cn";
 import React, { type ReactNode } from "react";
 import { MdxContent, type MdxContentProps } from "./mdx_content";
+import { inlineMdxClasses } from "./inline_mdx_classes";
+
 
 export const InlineMdxContent = (
     props: MdxContentProps & {
@@ -21,7 +23,7 @@ export const InlineMdxContent = (
         <MdxContent
             {...props}
             className={cn(
-                "[&_p]:mb-0 [&_p]:mt-0 [&_p]:font-normal [&>p]:inline",
+                inlineMdxClasses,
                 props.className,
             )}
         />

@@ -18,7 +18,8 @@ struct Fluster_DesktopApp: App {
   @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
     DefaultNoteView = .markdown
   private var appData: AppDataContainer { AppDataContainer.shared }
-  @StateObject private var paletteController = CommandPaletteController()
+  private var paletteController = CommandPaletteController()
+    @State private var editingNote: NoteModel?
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
       ContentView()
