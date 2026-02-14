@@ -5,6 +5,7 @@
 //  Created by Andrew on 11/17/25.
 //
 
+import FlusterData
 import FlusterSwift
 import SwiftUI
 
@@ -15,9 +16,9 @@ struct ColorSchemePickerView: View {
 
   var body: some View {
     Picker(selection: $scheme, label: Text("Editor Theme")) {
-      ForEach(0..<ColorSchemeSelection.allCases.count) {
-        Text(ColorSchemeSelection.allCases[$0].rawValue).tag(
-          ColorSchemeSelection.allCases[$0]
+      ForEach(ColorSchemeSelection.allCases, id: \.rawValue) { item in
+        Text(item.rawValue).tag(
+          item
         )
       }
     }

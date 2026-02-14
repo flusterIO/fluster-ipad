@@ -7,6 +7,7 @@
 
 import FlusterSwift
 import SwiftUI
+import FlusterData
 
 func getEditorThemeText(editorTheme: CodeSyntaxTheme) -> String {
   switch editorTheme {
