@@ -1,5 +1,5 @@
 import { useCodeEditorContext } from "#/editor/code_editor/state/code_editor_provider";
-import React, { HTMLProps, type ReactNode } from "react";
+import React, { HTMLProps, useEffect, type ReactNode } from "react";
 import { MdxContent } from "./mdx_content";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
@@ -8,6 +8,7 @@ import { SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core
 import { AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { ErrorBoundary } from "react-error-boundary";
 import { MdxParsingErrorComponent } from "./mdx_parsing_error_component";
+import { setBodyLoading } from "./editor_dom_utils";
 
 export type MdxEditorPreviewProps = HTMLProps<HTMLDivElement> &
 {
@@ -17,6 +18,8 @@ export type MdxEditorPreviewProps = HTMLProps<HTMLDivElement> &
 
 export const MdxEditorPreview = ({
     className,
+    scrollPositionKeyPortrait,
+    scrollPositionKeyLandscape,
     ...props
 }: MdxEditorPreviewProps): ReactNode => {
     const { value, parsedValue } = useCodeEditorContext();
@@ -25,7 +28,15 @@ export const MdxEditorPreview = ({
         orientation: "landscape",
     });
 
-    if (value === "") {
+    useEffect(() => {
+        console.log("parsedValue: ", parsedValue)
+        if (parsedValue !== null) {
+            setBodyLoading(false)
+        }
+    }, [parsedValue, value])
+
+
+    if (value === "" && parsedValue === "") {
         return (
             <div className="w-full h-full flex flex-col justify-center items-center">
                 <div
@@ -56,7 +67,7 @@ export const MdxEditorPreview = ({
             <MdxContent
                 id="mdx-preview"
                 {...props}
-                scrollPositionKey={isEditorView ? props.scrollPositionKeyLandscape : props.scrollPositionKeyPortrait}
+                scrollPositionKey={isEditorView ? scrollPositionKeyLandscape : scrollPositionKeyPortrait}
                 className={cn(
                     "max-w-[1080px]",
                     isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",

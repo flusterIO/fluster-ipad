@@ -1,17 +1,11 @@
 import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "../../../webview_utils/dist/webview_utils.css";
 import "./index.css";
 import App from "./App";
-import {
-    sendOrientationSwiftEvents,
-    setOrientationListener,
-} from "@fluster/webview_utils";
+import { setWindowBridgeFunctions } from "@fluster/webview_utils";
 
-sendOrientationSwiftEvents();
-
-window.onload = () => {
-    setOrientationListener();
-};
+setWindowBridgeFunctions();
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>

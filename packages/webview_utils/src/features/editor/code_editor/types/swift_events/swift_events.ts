@@ -1,6 +1,7 @@
+import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { MdxParsingResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 import { GetSnippetPropsBuffer } from "@/code_gen/flat_buffer/snippets";
-import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
+import { SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
 import { ByteBuffer } from "flatbuffers";
 
 export interface SwiftEventMap {
@@ -65,7 +66,9 @@ export function setParsedEditorSnippetProps(payload: Uint8Array) {
 }
 
 export function setParsedEditorContentString(payload: string) {
-    document.body.classList.add("loading")
+    if (isWebviewOfEnv(WebviewEnvironment.IPad)) {
+        document.body.classList.add("loading")
+    }
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContentString, { detail: payload }),
     );

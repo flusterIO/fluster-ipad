@@ -52,7 +52,7 @@ struct MainViewSwitch: View {
         MdxEditorWebview(editingNoteId: appState.editingNoteId, webView: $editorWebview)
           .navigationTitle("Editor")
       case .noteViewMdx:
-        ViewMdxNoteView(editingNoteId: appState.editingNoteId)
+        MdxContentWebview(editingNoteId: appState.editingNoteId)
           .navigationTitle("Markdown")
       case .globalBibliography:
         GlobalBibliographyPageView()

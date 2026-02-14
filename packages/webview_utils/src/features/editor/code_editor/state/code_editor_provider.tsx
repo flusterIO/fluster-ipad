@@ -24,6 +24,7 @@ export interface CodeEditorState {
     tags: TagResultBuffer[]
     allCitationIds: string[];
     value: string;
+    /** pre-parsed editor content. */
     parsedValue: string | null;
     haveSetInitialValue: boolean;
 }
@@ -256,6 +257,7 @@ export const CodeEditorProvider = ({
     });
 
     useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContentString, (e) => {
+        console.log("e: ", e)
         dispatch({
             type: "setParsedEditorContentString",
             payload: e.detail

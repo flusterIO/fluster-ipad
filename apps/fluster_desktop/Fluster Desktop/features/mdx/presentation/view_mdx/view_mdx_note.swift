@@ -11,7 +11,7 @@ import SwiftData
 import SwiftUI
 import WebKit
 
-struct ViewMdxNoteView: View {
+struct MdxContentWebview: View {
   var editingNoteId: String?
   @State private var mdxWebview: WKWebView = WKWebView(
     frame: .infinite, configuration: getWebViewConfig()
@@ -36,27 +36,43 @@ struct ViewMdxNoteView: View {
         })
     }
   }
+
   var body: some View {
-      if editingNoteId == nil {
-          NoNoteSelectedView()
-      } else {
-          WebViewContainerView(
-            webview: $mdxWebview,
-            url: Bundle.main.url(
-                forResource: "index",
-                withExtension: "html",
-                subdirectory: "standalone_mdx_preview"
-            )!,
-            messageHandlerKeys: [
-                SplitviewEditorWebviewActions.onTagClick.rawValue,
-                SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
-                SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
-                SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue
-            ],
-            messageHandler: messageHandler,
-            onLoad: onWebviewLoad
-          )
-      }
+    if editingNoteId == nil {
+      NoNoteSelectedView()
+    } else {
+      WebViewContainerView(
+        webview: $mdxWebview,
+        url: Bundle.main.url(
+          forResource: "index",
+          withExtension: "html",
+          subdirectory: "standalone_mdx_preview"
+        )!,
+        messageHandlerKeys: [
+          SplitviewEditorWebviewActions.onTagClick.rawValue,
+          SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
+          SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
+          MdxPreviewWebviewActions.requestNoteData.rawValue
+        ],
+        messageHandler: messageHandler,
+        onLoad: onWebviewLoad
+      )
+      .onChange(
+        of: editingNote?.id,
+        {
+          Task(priority: .high) {
+            await onWebviewLoad()
+          }
+        }
+      )
+      .onChange(
+        of: editingNote?.markdown.preParsedBody,
+        {
+          Task(priority: .high) {
+            await onWebviewLoad()
+          }
+        })
+    }
   }
 
   func onWebviewLoad() async {
@@ -73,23 +89,9 @@ struct ViewMdxNoteView: View {
   }
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {
     switch handlerKey {
-      case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
+      case MdxPreviewWebviewActions.requestNoteData.rawValue:
         Task(priority: .high) {
           await self.onWebviewLoad()
-        }
-
-      case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
-        Task(priority: .high) {
-          if let en = editingNote {
-            do {
-              try await en.preParse(modelContext: modelContext)
-              try await setParsedEditorContent(
-                note: en
-              )
-            } catch {
-              print("Error: \(error.localizedDescription)")
-            }
-          }
         }
       default:
         return

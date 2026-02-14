@@ -12,6 +12,7 @@ import UniformTypeIdentifiers
 
 @main
 struct Fluster_DesktopApp: App {
+    // TODO: Remove this appstorage from this top level to avoid modelContext issues again. 
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
   @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
@@ -48,19 +49,6 @@ struct Fluster_DesktopApp: App {
         }
         .keyboardShortcut("p", modifiers: [.command, .shift])
       }
-    }
-  }
-
-  func toggleDarkMode() {
-    let currentDarkMode =
-      UserDefaults.standard.string(forKey: DesktopAppStorageKeys.colorScheme.rawValue)
-      == AppTheme.dark.rawValue
-    if currentDarkMode {
-      UserDefaults.standard.set(
-        AppTheme.light.rawValue, forKey: DesktopAppStorageKeys.colorScheme.rawValue)
-    } else {
-      UserDefaults.standard.set(
-        AppTheme.dark.rawValue, forKey: DesktopAppStorageKeys.colorScheme.rawValue)
     }
   }
 }

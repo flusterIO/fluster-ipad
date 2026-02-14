@@ -21,13 +21,10 @@ export const applyViewportBroadcastListener = (
     const height = (): string | undefined =>
         sizeElement()?.scrollHeight.toString();
     const handleResize = (): void => {
-        console.log("Sending viewport size to swift");
         const isLoading = document
-            .getElementById("webview-container")
-            ?.classList.contains("loading");
+            .body?.classList.contains("loading");
         if (!isLoading) {
             const x = height();
-            console.log("height in handleResize: ", x);
             if (x) {
                 sendToSwift(broadcastKey, x);
             }

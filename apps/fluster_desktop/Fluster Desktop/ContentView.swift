@@ -10,7 +10,7 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
-  @StateObject private var appState: AppState = AppState.shared
+  @ObservedObject private var appState: AppState = AppState.shared
   @State private var columnVisibility: NavigationSplitViewVisibility = NavigationSplitViewVisibility
     .doubleColumn
 

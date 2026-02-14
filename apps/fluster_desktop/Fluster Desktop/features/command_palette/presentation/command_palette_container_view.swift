@@ -58,6 +58,7 @@ struct CommandPaletteContainerView: View {
           switch command.id {
             case .pushCommandPaletteView(let data):
               AppState.shared.commandPaletteNavigate(to: data)
+              closeCommandPalette()
             case .viewNoteById(let noteId):
               AppState.shared.setEditingNoteId(editingNoteId: noteId)
               AppState.shared.mainView = defaultNoteView.toMainKey()
@@ -67,9 +68,9 @@ struct CommandPaletteContainerView: View {
               closeCommandPalette()
             case .toggleDarkMode:
               if selectedTheme == .dark {
-                  selectedTheme = .light
+                selectedTheme = .light
               } else {
-                  selectedTheme = .dark
+                selectedTheme = .dark
               }
               closeCommandPalette()
             case .createNewNote:
@@ -100,12 +101,12 @@ struct CommandPaletteContainerView: View {
       return .ignored
     }
   }
-    
-    func closeCommandPalette() {
-        tree = [CommandPaletteRoot()]
-        searchText = ""
-        close()
-    }
+
+  func closeCommandPalette() {
+    tree = [CommandPaletteRoot()]
+    searchText = ""
+    close()
+  }
 }
 
 private struct CommandPaletteView: View {
