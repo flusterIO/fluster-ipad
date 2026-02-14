@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState, type ReactNode } from "react";
+import React, { FC, useEffect, useEffectEvent, useMemo, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import AdmonitionTitle from "./admonition_title";
 import FoldableAdmonitionTitle from "./foldable_admonition_title";
@@ -25,17 +25,19 @@ export const Admonition = ({
     children,
     type = "primary",
     foldable,
-    title: _title,
     InlineMdxContent,
+    title: _title,
     ...props
 }: AdmonitionProps): ReactNode => {
     const [open, setOpen] = useState(foldable ? !folded : true);
     // sure to enforce the type safety for all string components before use as there's no typesafety while the mdx is rendered in live preview.
     const title = typeof _title === "string" ? _title : "";
 
+    const handleOpen = useEffectEvent((newOpen: boolean) => setOpen(newOpen))
+
     useEffect(() => {
         if (!foldable) {
-            setOpen(true);
+            handleOpen(true);
         }
     }, [foldable]);
 

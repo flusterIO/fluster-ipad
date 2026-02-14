@@ -37,22 +37,26 @@ struct ViewMdxNoteView: View {
     }
   }
   var body: some View {
-    WebViewContainerView(
-      webview: $mdxWebview,
-      url: Bundle.main.url(
-        forResource: "index",
-        withExtension: "html",
-        subdirectory: "standalone_mdx_preview"
-      )!,
-      messageHandlerKeys: [
-        SplitviewEditorWebviewActions.onTagClick.rawValue,
-        SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
-        SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
-        SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue
-      ],
-      messageHandler: messageHandler,
-      onLoad: onWebviewLoad
-    )
+      if editingNoteId == nil {
+          NoNoteSelectedView()
+      } else {
+          WebViewContainerView(
+            webview: $mdxWebview,
+            url: Bundle.main.url(
+                forResource: "index",
+                withExtension: "html",
+                subdirectory: "standalone_mdx_preview"
+            )!,
+            messageHandlerKeys: [
+                SplitviewEditorWebviewActions.onTagClick.rawValue,
+                SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
+                SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
+                SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue
+            ],
+            messageHandler: messageHandler,
+            onLoad: onWebviewLoad
+          )
+      }
   }
 
   func onWebviewLoad() async {

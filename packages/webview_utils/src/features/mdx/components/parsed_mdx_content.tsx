@@ -1,11 +1,11 @@
 import React, { HTMLProps, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useComponentMap } from "../hooks/use_component_map";
-import { H2 } from "../../../core/shared_components/typography/typography";
 import type { MDXContent } from "mdx/types";
 import { useMediaQuery } from "react-responsive";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
-import { AnyWebviewAction } from "@/utils/types/any_window_event";
+import { type AnyWebviewAction } from "@/utils/types/any_window_event";
+import { MdxParsingErrorComponent } from "./mdx_parsing_error_component";
 
 interface Props {
     MdxContentComponent: MDXContent;
@@ -45,15 +45,7 @@ export const ParsedMdxContent = ({
                 onError={(e) => {
                     console.error(`Mdx Error: ${e}`);
                 }}
-                fallback={
-                    <div className="w-full h-full flex flex-col justify-center items-center">
-                        <H2>Oh no</H2>
-                        <p className="text-foreground/80 max-w-[540px] text-center">
-                            This note cannot be parsed successfully. There is likely a syntax
-                            error in your note.{" "}
-                        </p>
-                    </div>
-                }
+                FallbackComponent={MdxParsingErrorComponent}
             >
                 <MdxContentComponent components={componentMap} />
             </ErrorBoundary>

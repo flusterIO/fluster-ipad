@@ -3,6 +3,7 @@ import React, { type ReactNode } from 'react'
 import { DictionaryEntryComponent } from './hooks/dictionary_entry'
 import { DictionaryWebviewIds } from '@/code_gen/typeshare/fluster_core_utilities'
 import { H1 } from '@/shared_components/typography/typography'
+import { InlineMdxContent } from '#/mdx/components/inline_mdx_content'
 
 
 interface DictionaryPageProps {
@@ -22,6 +23,7 @@ export const DictionaryPage = ({ data }: DictionaryPageProps): ReactNode => {
                     return (
                         <DictionaryEntryComponent
                             label={entry?.label() ?? ""}
+                            InlineMdxContent={InlineMdxContent}
                         >
                             {entry?.body() ?? ""}
                         </DictionaryEntryComponent>

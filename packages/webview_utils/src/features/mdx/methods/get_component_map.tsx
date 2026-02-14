@@ -12,6 +12,7 @@ import { DictionaryEntryComponent } from "../../dictionary/hooks/dictionary_entr
 import { NoteLink } from "../embeddable_mdx_components/auto_inserted/note_link";
 import { Hl } from "../embeddable_mdx_components/hl/hl";
 import { Ul } from "../embeddable_mdx_components/ul/ul";
+import { InlineMdxContent } from "../components/inline_mdx_content";
 interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
     query: string | string[];
@@ -95,7 +96,8 @@ const items: ComponentMapItem[] = [
     /* // -- Layout -- */
     {
         query: "Admonition",
-        component: Admonition,
+        // Required to get around circular import that I still can't find...
+        component: (props) => <Admonition {...props} InlineMdxContent={InlineMdxContent} />,
     },
     /* { */
     /*     query: "Card", */
@@ -200,7 +202,8 @@ const items: ComponentMapItem[] = [
     },
     {
         query: "DictionaryEntry",
-        component: DictionaryEntryComponent,
+        // Required to get around circular import that I still can't find...
+        component: (props) => <DictionaryEntryComponent {...props} InlineMdxContent={InlineMdxContent} />,
     },
     /* { */
     /*     query: "EquationTag", */
