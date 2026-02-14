@@ -131,3 +131,10 @@ public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
 	case scrollPositionPortrait = "splitview-editor-scroll-position-portrait"
 	case scrollPositionLandscape = "splitview-editor-scroll-position-landscape"
 }
+
+/// From typescript to swift.
+public enum WebviewEnvironment: String, Codable {
+	case macOS = "fluster-mac"
+	case iPad = "fluster-ipad"
+	case multiPlatformDesktop = "fluster-multi-platform-desktop"
+}

@@ -6,6 +6,7 @@
 //
 
 import FlusterData
+import FlusterWebviewClients
 import SwiftUI
 import WebKit
 
@@ -139,11 +140,9 @@ struct WebViewContainerView: View {
           .progressViewStyle(.circular)
       }
     }
-    .onAppear {
-        Task {
-          await setColorScheme(colorScheme: colorScheme)
-        }
-    }
+    //    .task {
+    //      await setColorScheme(colorScheme: colorScheme)
+    //    }
     .onChange(
       of: colorScheme,
       {
@@ -169,13 +168,7 @@ struct WebViewContainerView: View {
     }
   }
   func setColorScheme(colorScheme: ColorScheme) async {
-    do {
-      try await runJavascript(
-        """
-        window.setDarkMode(\(colorScheme == .dark ? "true" : "false"))
-        """)
-    } catch {
-      print("Error setting color scheme: \(error.localizedDescription)")
-    }
+    try? await WebviewContainerClient.setColorScheme(
+      colorScheme: colorScheme, evaluateJavaScript: webview.evaluateJavaScript)
   }
 }

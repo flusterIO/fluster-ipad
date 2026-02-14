@@ -131,3 +131,10 @@ export enum SplitviewEditorWebviewLocalStorageKeys {
 	ScrollPositionLandscape = "splitview-editor-scroll-position-landscape",
 }
 
+/** From typescript to swift. */
+export enum WebviewEnvironment {
+	MacOS = "fluster-mac",
+	IPad = "fluster-ipad",
+	MultiPlatformDesktop = "fluster-multi-platform-desktop",
+}
+

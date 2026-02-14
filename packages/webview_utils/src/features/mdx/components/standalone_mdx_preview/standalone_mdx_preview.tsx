@@ -1,8 +1,7 @@
-import React, { type ReactNode } from "react";
-import { useEventListener } from "@/state/hooks/use_event_listener";
+import React, { ComponentProps, type ReactNode } from "react";
 import { setMdxPreviewWindowMethods } from "./standalone_mdx_preview_swift_events";
-import { MdxContent, MdxContentProps } from "../mdx_content";
-import { useLocalStorage } from "@/state/hooks/use_local_storage";
+import { MdxEditorPreviewOnly } from "../mdx_content_preview_only";
+import { CodeEditorProvider } from "#/editor/code_editor/state/code_editor_provider";
 
 setMdxPreviewWindowMethods();
 
@@ -13,16 +12,13 @@ declare global {
 }
 
 export const MdxStandalonePreview = (
-    props: Omit<MdxContentProps, "mdx">,
+    props: ComponentProps<typeof MdxEditorPreviewOnly>,
 ): ReactNode => {
-    const [content, setContent] = useLocalStorage("mdx-preview-content", "", {
-        deserializer: (s) => s,
-        serializer: (s) => s,
-        initializeWithValue: false,
-    });
-
-    useEventListener("set-mdx-preview-content", (e) => setContent(e.detail));
-    return <MdxContent {...props} mdx={content} />;
+    return (
+        <CodeEditorProvider>
+            <MdxEditorPreviewOnly {...props} />
+        </CodeEditorProvider>
+    )
 };
 
 MdxStandalonePreview.displayName = "MdxStandalonePreview";

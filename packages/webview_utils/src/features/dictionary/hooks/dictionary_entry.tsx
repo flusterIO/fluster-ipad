@@ -1,5 +1,4 @@
 import { EditorClient } from '#/editor/code_editor/data/editor_client';
-
 import { shrinkMdxClasses } from '#/mdx/components/inline_mdx_classes';
 import type { MdxContentProps } from '#/mdx/components/mdx_content';
 import { cn } from '@/utils/cn';

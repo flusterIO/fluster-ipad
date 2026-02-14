@@ -142,7 +142,6 @@ struct MdxEditorWebview: View {
         Task(priority: .high) {
           if let en = editingNote {
             do {
-              try await en.preParse(modelContext: modelContext)
               try await setParsedEditorContent(
                 note: en
               )
