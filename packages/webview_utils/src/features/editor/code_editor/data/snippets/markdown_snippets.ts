@@ -56,6 +56,15 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
         },
         {
             strategy: SnippetStrategy.noLeadingText,
+            completion: snippetCompletion("[[##{ToDo}]]", {
+                label: "tag",
+                detail: "Creates a tag",
+                type: SnippetDefaultType.text,
+                section: CompletionSections.markdown
+            }),
+        },
+        {
+            strategy: SnippetStrategy.noLeadingText,
             completion: snippetCompletion("$#{e=mc^2}$", {
                 label: "inline-math",
                 type: SnippetDefaultType.variable,

@@ -18,23 +18,21 @@ class CommandPaletteController: NSObject, ObservableObject {
   private var appData: AppDataContainer { AppDataContainer.shared }
 
   func toggle(
-    appState: AppState,
   ) {
     if let panel = panel, panel.isVisible {
       hide()
     } else {
-      show(appState)
+      show()
     }
   }
 
   func show(
-    _ appState: AppState,
   ) {
     let rootView = CommandPaletteContainerView(
       close: { [weak self] in self?.hide() },
     )
     .ignoresSafeArea()
-    .environmentObject(appState)
+    .environmentObject(AppState.shared)
     .modelContainer(appData.sharedModelContainer)
     if let _panel = panel {
       _panel.contentView = NSHostingView(rootView: rootView)
