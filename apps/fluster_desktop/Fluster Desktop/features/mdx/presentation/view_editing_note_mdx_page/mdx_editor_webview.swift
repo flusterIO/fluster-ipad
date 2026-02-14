@@ -45,67 +45,74 @@ struct MdxEditorWebview: View {
   }
 
   var body: some View {
-    WebViewContainerView(
-      webview: $webView,
-      url: Bundle.main.url(
-        forResource: "index",
-        withExtension: "html",
-        subdirectory: "splitview_mdx_editor"
-      )!,
-      messageHandlerKeys: [
-        SplitviewEditorWebviewActions.onTagClick.rawValue,
-        SplitviewEditorWebviewActions.onEditorChange.rawValue,
-        SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
-        SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue
+    if editingNoteId == nil {
+      NoNoteSelectedView()
+    } else {
+      WebViewContainerView(
+        webview: $webView,
+        url: Bundle.main.url(
+          forResource: "index",
+          withExtension: "html",
+          subdirectory: "splitview_mdx_editor"
+        )!,
+        messageHandlerKeys: [
+          SplitviewEditorWebviewActions.onTagClick.rawValue,
+          SplitviewEditorWebviewActions.onEditorChange.rawValue,
+          SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
+          SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue
 
-      ],
-      messageHandler: messageHandler,
-      onLoad: onWebviewLoad
-    )
-    .onAppear{
+        ],
+        messageHandler: messageHandler,
+        onLoad: onWebviewLoad
+      )
+      .onAppear {
         if let en = editingNote {
-            en.setLastRead()
+          en.setLastRead()
         }
+      }
+      .onChange(
+        of: editorKeymap,
+        {
+          Task {
+            try? await setEditorKeymap(editorKeymap: editorKeymap)
+          }
+        }
+      )
+      .onChange(
+        of: editorThemeDark,
+        {
+          Task {
+            try? await setEditorThemeDark(editorTheme: editorThemeDark)
+          }
+        }
+      )
+      .onChange(
+        of: editorThemeLight,
+        {
+          Task {
+            try? await setEditorThemeLight(editorTheme: editorThemeLight)
+          }
+        }
+      )
+      .onChange(
+        of: colorScheme,
+        {
+          Task {
+            try? await setEditorSelectedTheme(
+              editorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
+          }
+        }
+      )
+      .onChange(
+        of: editingNote,
+        {
+          if let en = editingNote {
+            en.setLastRead()
+          }
+        }
+      )
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    .onChange(
-      of: editorKeymap,
-      {
-        Task {
-          try? await setEditorKeymap(editorKeymap: editorKeymap)
-        }
-      }
-    )
-    .onChange(
-      of: editorThemeDark,
-      {
-        Task {
-          try? await setEditorThemeDark(editorTheme: editorThemeDark)
-        }
-      }
-    )
-    .onChange(
-      of: editorThemeLight,
-      {
-        Task {
-          try? await setEditorThemeLight(editorTheme: editorThemeLight)
-        }
-      }
-    )
-    .onChange(
-      of: colorScheme,
-      {
-        Task {
-          try? await setEditorSelectedTheme(
-            editorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
-        }
-      }
-    )
-    .onChange(of: editingNote, {
-        if let en = editingNote {
-            en.setLastRead()
-        }
-    })
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
   func onWebviewLoad() async {
     Task {
@@ -152,12 +159,13 @@ struct MdxEditorWebview: View {
     if let en = editingNote {
       en.markdown.body = newValue
       en.setLastRead(setModified: true)
-    }
-    Task {
-      do {
-        try await setParsedEditorContentString(body: newValue)
-      } catch {
-        print("Error: \(error.localizedDescription)")
+      Task {
+        try await en.preParse(modelContext: modelContext)
+        do {
+          try await setParsedEditorContentString(body: en.markdown.preParsedBody ?? newValue)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
       }
     }
   }
