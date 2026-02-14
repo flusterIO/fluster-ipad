@@ -12,7 +12,6 @@ import UniformTypeIdentifiers
 
 @main
 struct Fluster_DesktopApp: App {
-  @StateObject private var appState: AppState = AppState.shared
   @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
   @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
@@ -27,7 +26,6 @@ struct Fluster_DesktopApp: App {
         .preferredColorScheme(selectedTheme.colorScheme)
     }
     .modelContainer(appData.sharedModelContainer)
-    .environmentObject(appState)
     .environment(\.createDataHandler, appData.dataHandlerCreator())
     .windowStyle(.automatic)
     .windowToolbarStyle(.unified)
@@ -46,7 +44,7 @@ struct Fluster_DesktopApp: App {
       CommandMenu("Tools") {
         Button("Command Palette") {
           paletteController.toggle(
-            appState: appState,
+            appState: AppState.shared,
             onCommandSelected: handleCommandPaletteSelect
           )
         }
@@ -77,12 +75,12 @@ struct Fluster_DesktopApp: App {
     } else {
       switch command.id {
         case .pushCommandPaletteView(let data):
-          appState.commandPaletteNavigate(to: data)
+          AppState.shared.commandPaletteNavigate(to: data)
         case .viewNoteById(let noteId):
-          appState.setEditingNoteId(editingNoteId: noteId)
-          appState.mainView = defaultNoteView.toMainKey()
+          AppState.shared.setEditingNoteId(editingNoteId: noteId)
+          AppState.shared.mainView = defaultNoteView.toMainKey()
         case .navigate(let mainKey):
-          appState.mainView = mainKey
+          AppState.shared.mainView = mainKey
         case .toggleDarkMode:
           toggleDarkMode()
         case .createNewNote:
