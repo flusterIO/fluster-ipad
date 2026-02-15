@@ -13,6 +13,7 @@
 		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
 		79ADEFFC2EFDBE4E00EB4E22 /* dictionary_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79ADEFFB2EFDBE4E00EB4E22 /* dictionary_webview */; };
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
+		79D841D02F4150EA004E992B /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79D841CF2F4150EA004E992B /* FlusterWebviewClients */; };
 		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
 		79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F936DE2EE38B8000777CDB /* note_detail_webview */; };
 		79FA32B52F1822EA0066B8B4 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79FA32B42F1822EA0066B8B4 /* FlusterData */; };
@@ -65,6 +66,7 @@
 				79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */,
 				79FE94F92F19C8B400B15144 /* FlusterSwiftMdxParser in Frameworks */,
 				79513C772EF3AF3700FF4885 /* _TestDiscovery in Frameworks */,
+				79D841D02F4150EA004E992B /* FlusterWebviewClients in Frameworks */,
 				79FA32B52F1822EA0066B8B4 /* FlusterData in Frameworks */,
 				79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */,
 			);
@@ -118,6 +120,7 @@
 				79513C762EF3AF3700FF4885 /* _TestDiscovery */,
 				79FA32B42F1822EA0066B8B4 /* FlusterData */,
 				79FE94F82F19C8B400B15144 /* FlusterSwiftMdxParser */,
+				79D841CF2F4150EA004E992B /* FlusterWebviewClients */,
 			);
 			productName = Fluster;
 			productReference = 79C33DCF2F19BC6400C25717 /* Fluster.app */;
@@ -154,6 +157,7 @@
 				79FB1F532ED928FB0041E1E0 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
 				79FA32B32F1822EA0066B8B4 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */,
 				79FE94F72F19C8B400B15144 /* XCLocalSwiftPackageReference "../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser" */,
+				79D841CE2F4150EA004E992B /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F70FB2EB174610012B500;
@@ -432,6 +436,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		79D841CE2F4150EA004E992B /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/FlusterWebviewClients;
+		};
 		79FA32B32F1822EA0066B8B4 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/swift/FlusterData;
@@ -493,6 +501,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */;
 			productName = SwiftyBibtex;
+		};
+		79D841CF2F4150EA004E992B /* FlusterWebviewClients */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterWebviewClients;
 		};
 		79FA32B42F1822EA0066B8B4 /* FlusterData */ = {
 			isa = XCSwiftPackageProductDependency;
