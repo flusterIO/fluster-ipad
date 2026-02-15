@@ -1,9 +1,4 @@
-const lockedPackages = [
-    {
-        name: "",
-        version: "",
-    },
-];
+const lockedPackages = [];
 
 // @ts-check
 /** @type {import("syncpack").RcFile} */
@@ -94,6 +89,12 @@ const config = {
             pinVersion: "3.4.18",
             packages: ["!@fluster/website"],
             label: "Pin tailwind version",
+        },
+        {
+            dependencies: ["@lezer/common", "@lezer/go", "@lezer/markdown"],
+            pinVersion: "^1.0.0",
+            label: "Pin lezer to latest shared peer.",
+            dependencyTypes: ["peer", "dev", "prod"],
         },
         ...lockedPackages.map((n) => {
             return {

@@ -5,7 +5,10 @@ extension FrontMatterResult: @retroactive Codable {
   public enum CodingKeys: String, CodingKey {
     case ignored_parsers,
       title,
-      user_defined_id
+      user_defined_id,
+      file_path,
+      topic,
+      subject
   }
 
   public init(from decoder: Decoder) throws {
@@ -15,6 +18,9 @@ extension FrontMatterResult: @retroactive Codable {
       forKey: .ignored_parsers
     )
     let title = try container.decodeIfPresent(String.self, forKey: .title)
+    let topic = try container.decodeIfPresent(String.self, forKey: .topic)
+    let subject = try container.decodeIfPresent(String.self, forKey: .subject)
+    let filePath = try container.decodeIfPresent(String.self, forKey: .file_path)
     let userDefinedId = try container.decodeIfPresent(
       String.self,
       forKey: .user_defined_id
@@ -23,7 +29,10 @@ extension FrontMatterResult: @retroactive Codable {
     self.init(
       ignoredParsers: ignoredParsers ?? [],
       title: title,
-      userDefinedId: userDefinedId
+      userDefinedId: userDefinedId,
+      filePath: filePath,
+      topic: topic,
+      subject: subject,
     )
   }
 

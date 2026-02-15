@@ -7,9 +7,8 @@ import {
     foldNodeProp,
 } from "@codemirror/language";
 import {
-    autocompletion,
     completeFromList,
-    Completion,
+    type Completion,
     ifIn,
     ifNotIn,
 } from "@codemirror/autocomplete";

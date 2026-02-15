@@ -34,5 +34,13 @@ export default defineConfig({
             "@": path.resolve(__dirname, "./src/core"),
             "#": path.resolve(__dirname, "./src/features"),
         },
+        dedupe: [
+            "@lezer/common",
+            "@lezer/lr",
+            "@lezer/highlight",
+            "@codemirror/language",
+            "@codemirror/state",
+            "@codemirror/view",
+        ],
     },
 });
