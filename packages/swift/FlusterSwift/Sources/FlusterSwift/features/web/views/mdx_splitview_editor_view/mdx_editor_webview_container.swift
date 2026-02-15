@@ -32,7 +32,6 @@ public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWe
     )
   }
   public func setEditorKeymap(editorKeymap: EditorKeymap) {
-    print("Applying editor keymap")
     self.runJavascript(
       """
       window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.editorKeymap.rawValue)", "\(editorKeymap.rawValue)")

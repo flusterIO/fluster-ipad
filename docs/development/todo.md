@@ -27,6 +27,7 @@
 ## iPad
 
 - [ ] Add script to set `WebviewEnvironment.IPad` so that the loading class will still be appended.
+- [ ] Make sure note can be loaded when ipad is initially in portrait view. It's currently stuck in loading mode.
 
 ## Documentation
 

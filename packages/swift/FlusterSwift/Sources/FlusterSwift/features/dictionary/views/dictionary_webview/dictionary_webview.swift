@@ -97,9 +97,7 @@ extension DictionaryWebview {
 
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
       webView.isHidden = !self.parent.show
-      print("Here 1")
       guard !parent.didSetInitialContent else { return }
-      print("Here 2")
 //
 //      let body =
 //        parent.value

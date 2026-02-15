@@ -58,7 +58,6 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
   }
 
   func addDarkModeScript(controller: WKUserContentController) {
-    print("Adding dark mode script...")
     let source = """
           document.body?.classList.add("dark")
       """
@@ -66,7 +65,7 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     // 2. Create the script to run at the very start (atDocumentStart)
     let userScript = WKUserScript(
       source: source,
-      injectionTime: .atDocumentStart,
+      injectionTime: .atDocumentEnd,
       forMainFrameOnly: true
     )
     controller.addUserScript(userScript)

@@ -67,7 +67,7 @@ clear_macos_database:
 build_fluster_lezer:
 	cd {{justfile_directory()}}/packages/typescript/lezer; pnpm build
 
-build_cross_language: build_cross_language_schemas build_fluster_swift_mdx_parser 
+build_cross_language_all: build_cross_language_schemas
 
 generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data
 
@@ -77,22 +77,22 @@ build_ipad_simulator:
 launch_ipad_simulator: build_ipad_simulator
 	cd {{justfile_directory()}}/apps/fluster; xcrun simctl launch "iPad Pro 13-inch M5 26.1" iglooDevelopment.Fluster 
 
-build_all_rust: build_cross_language_schemas
+build_all_rust: build_cross_language_all
 	cargo build
 
-build_fluster_swift_mdx_parser: build_all_rust
+build_fluster_swift_mdx_parser: build_cross_language_all
 	cd {{justfile_directory()}}/packages/rust/fluster_swift_mdx_parser; cargo-swift swift package -y
 
-build_fluster_core_rust_utilities: build_all_rust
+build_fluster_core_rust_utilities: build_cross_language_all
 	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
 
-build_webview_utils: build_cross_language_schemas build_fluster_lezer
+build_webview_utils: build_cross_language_all build_fluster_lezer
 	pnpm run -C packages/webview_utils build
 
-build_dictionary_webview: build_cross_language_schemas build_webview_utils
+build_dictionary_webview: build_cross_language_all build_webview_utils
 	pnpm run -C packages/webviews/dictionary_webview build
 
-build_note_detail_webview: build_cross_language_schemas build_webview_utils
+build_note_detail_webview: build_cross_language_all build_webview_utils
 	pnpm run -C packages/webviews/note_detail_webview build
 
 build_standalone_mdx_preview_webview: build_webview_utils
@@ -107,14 +107,14 @@ build_splitview_mdx_editor: build_webview_utils
 build_bibtex_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/bibtex_editor_webview build
 
-build_all_webviews: build_cross_language_schemas build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview build_dictionary_webview
+build_all_webviews: build_cross_language_all build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview build_dictionary_webview
 
-pre_ipad_build: generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_swift_mdx_parser build_all_webviews
+pre_ipad_build: generate_initial_launch_data build_cross_language_all generate_initial_note_paths build_fluster_swift_mdx_parser build_all_webviews
 
 generate_shiki_themes:
 	tsx scripts/write_bundled_themes.ts
 
-pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_schemas generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor build_standalone_mdx_preview_webview
+pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_all generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor build_standalone_mdx_preview_webview
 
 create_desktop_feature feature_name:
 	python scripts/create_feature_util.py {{feature_name}}
