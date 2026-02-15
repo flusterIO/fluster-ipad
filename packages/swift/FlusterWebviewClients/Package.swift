@@ -17,7 +17,6 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(path: "../FlusterSwift"),
     .package(path: "../FlusterData"),
     .package(path: "../FlusterMdx"),
     .package(
@@ -31,14 +30,13 @@ let package = Package(
     .target(
       name: "FlusterWebviewClients",
       dependencies: [
-        .product(name: "FlusterSwift", package: "FlusterSwift"),
         .product(name: "FlusterData", package: "FlusterData"),
         .product(name: "FlusterMdx", package: "FlusterMdx")
       ]
     ),
     .testTarget(
       name: "FlusterSwiftTests",
-      dependencies: ["FlusterSwift", "FlusterData", "FlusterMdx"]
+      dependencies: ["FlusterData", "FlusterMdx"]
     )
   ],
 )

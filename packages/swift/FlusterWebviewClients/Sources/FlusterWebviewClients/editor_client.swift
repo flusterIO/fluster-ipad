@@ -11,6 +11,7 @@ import SwiftData
 
 public typealias EvalJavascriptFunc = @Sendable (String) async throws -> Sendable?
 
+@MainActor
 public struct MdxEditorClient {
   public static func setEditorTheme(
     editorTheme: CodeSyntaxTheme, evaluateJavaScript: @escaping EvalJavascriptFunc

@@ -39,7 +39,11 @@ lint:
 build_internal_cli:
 	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build
 
-generate_component_docs_paths: build_internal_cli
+generate_dependency_diagram:
+	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_dark.png -t dark -b transparent
+	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_light.png -t default 
+
+generate_component_docs_paths: build_internal_cli generate_dependency_diagram
 	./target/debug/fluster_internal_cli gather-component-doc-paths
 
 generate_initial_note_paths: build_internal_cli

@@ -9,6 +9,13 @@ import { AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { ErrorBoundary } from "react-error-boundary";
 import { MdxParsingErrorComponent } from "./mdx_parsing_error_component";
 import { setBodyLoading } from "./editor_dom_utils";
+import { setMdxPreviewWindowMethods } from "./standalone_mdx_preview/standalone_mdx_preview_swift_events";
+import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/swift_events";
+
+
+setMdxPreviewWindowMethods();
+
+setWindowBridgeFunctions();
 
 export type MdxEditorPreviewProps = HTMLProps<HTMLDivElement> &
 {
@@ -29,7 +36,6 @@ export const MdxEditorPreview = ({
     });
 
     useEffect(() => {
-        console.log("parsedValue: ", parsedValue)
         if (parsedValue !== null) {
             setBodyLoading(false)
         }

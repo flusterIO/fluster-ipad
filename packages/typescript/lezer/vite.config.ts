@@ -3,11 +3,13 @@ import dts from "vite-plugin-dts";
 import { resolve } from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
+import { lezer } from "@lezer/generator/rollup";
 
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
         tsconfigPaths(),
+        lezer(),
         dts({
             insertTypesEntry: true,
             copyDtsFiles: true,

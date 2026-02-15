@@ -68,7 +68,6 @@
   "dependencies": {
     "@citation-js/plugin-bibtex": "0.7.21",
     "@citation-js/plugin-csl": "0.7.21",
-    "@citedrive/codemirror-lang-bibtex": "6.4.1",
     "@codemirror/autocomplete": "6.20.0",
     "@codemirror/commands": "6.10.0",
     "@codemirror/lang-markdown": "6.5.0",
@@ -111,6 +110,7 @@
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
     "date-fns": "4.1.0",
+    "dayjs": "1.11.19",
     "flatbuffers": "25.9.23",
     "framer-motion": "12.23.25",
     "lucide-react": "0.554.0",

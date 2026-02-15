@@ -23,6 +23,7 @@ let package = Package(
     ),
     .package(path: "../../rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser/"),
     .package(path: "../FlusterData"),
+    .package(path: "../FlusterWebviewClients"),
     .package(
       url: "https://github.com/google/flatbuffers.git",
       from: "25.9.23"
@@ -42,13 +43,14 @@ let package = Package(
         "SwiftyBibtex",
         .product(name: "FlusterSwiftMdxParser", package: "FlusterSwiftMdxParser"),
         .product(name: "FlusterData", package: "FlusterData"),
+        .product(name: "FlusterWebviewClients", package: "FlusterWebviewClients"),
         .product(name: "FlatBuffers", package: "flatbuffers"),
         .product(name: "AlertToast", package: "AlertToast")
       ]
     ),
     .testTarget(
       name: "FlusterSwiftTests",
-      dependencies: ["FlusterSwift", "FlusterSwiftMdxParser", "FlusterData"]
+      dependencies: ["FlusterSwift", "FlusterSwiftMdxParser", "FlusterData", "FlusterWebviewClients"]
     )
   ],
 )

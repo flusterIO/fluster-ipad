@@ -185,6 +185,11 @@ export const CodeEditorProvider = ({
             : defaultInitialCodeEditorState,
     );
 
+    // FIXME: Remove this
+    useEffect(() => {
+        console.log("state: ", state)
+    }, [state])
+
     const [editorKeymap] = useLocalStorage(SplitviewEditorWebviewLocalStorageKeys.EditorKeymap, "base", {
         deserializer(value) {
             return value;

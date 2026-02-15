@@ -1,32 +1,40 @@
 {
-  "name": "@fluster/lezer",
-  "version": "0.0.3",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "vite build"
-  },
-  "types": "dist/index.d.ts",
-  "main": "dist/index.es.js",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
-    }
-  },
-  "devDependencies": {
-    "@lezer/common": "1.0.0",
-    "@lezer/markdown": "1.6.3",
-    "typescript": "*"
-  },
-  "peerDependencies": {
-    "@lezer/common": "1.0.0",
-    "@lezer/markdown": "1.6.3"
-  },
-  "license": "MIT",
-  "description": "Originally a fork of lezer-markdown-obsidian, now a bunch of codemirror utilities for Fluster.",
-  "module": "dist/index.umd.js"
+    "name": "@fluster/lezer",
+    "version": "0.0.3",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "vite build",
+        "prepare": "cm-buildhelper ./src/bibtex/index.ts"
+    },
+    "types": "dist/index.d.ts",
+    "main": "dist/index.es.js",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js",
+            "require": "./dist/index.umd.js"
+        }
+    },
+    "devDependencies": {
+        "@codemirror/buildhelper": "^1.0.0",
+        "@lezer/common": "1.0.0",
+        "@lezer/markdown": "1.6.3",
+        "typescript": "*"
+    },
+    "peerDependencies": {
+        "@lezer/common": "1.0.0",
+        "@lezer/markdown": "1.6.3",
+        "@codemirror/autocomplete": "^6.0.0",
+        "@codemirror/language": "^6.6.0",
+        "@codemirror/lint": "^6.0.0",
+        "@codemirror/state": "^6.0.0",
+        "@lezer/go": "^1.0.0",
+        "bibtex-tidy": "github:flamingtempura/bibtex-tidy#83734f920a28cc69b680d8a1041d48ec8379d5ef"
+    },
+    "license": "MIT",
+    "description": "Originally a fork of lezer-markdown-obsidian, now a bunch of codemirror utilities for Fluster.",
+    "module": "dist/index.umd.js"
 }

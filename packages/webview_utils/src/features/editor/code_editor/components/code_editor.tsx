@@ -15,7 +15,6 @@ import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { setWindowBridgeFunctions } from "../types/swift_events/swift_events";
 import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 import { AnyWebviewAction, AnyWebviewEvent, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
@@ -23,13 +22,13 @@ import { languages } from '@codemirror/language-data';
 import { bracketMatching, foldGutter, indentOnInput, syntaxTree } from '@codemirror/language';
 import { autocompletion, closeBrackets, CompletionSource } from '@codemirror/autocomplete';
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
-import { bibtex } from "@citedrive/codemirror-lang-bibtex";
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
 import { Table, TaskList } from "@lezer/markdown";
 import { Prec } from "@codemirror/state";
 import { SnippetStrategy } from "../data/snippets/snippet_types";
 import { getMathSnippets } from "../data/snippets/math_snippets";
-import { Tex } from "@fluster/lezer";
+import { Tex, YAMLFrontMatter, bibtex } from "@fluster/lezer";
+import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 
 
 interface CodeEditorProps {
@@ -43,7 +42,6 @@ interface CodeEditorProps {
     initialValueStorageKey?: AnyWebviewStorageKey
 }
 
-setWindowBridgeFunctions();
 
 
 export const CodeEditorInner = ({
@@ -114,6 +112,7 @@ export const CodeEditorInner = ({
                         Table,
                         Tex,
                         TaskList,
+                        YAMLFrontMatter
                     ]
                 }),
                 bracketMatching(),
@@ -132,7 +131,10 @@ export const CodeEditorInner = ({
         } else if (language === CodeEditorLanguage.bibtex) {
             extensions = [
                 ...extensions,
-                bibtex()
+                bibtex({
+                    /* additionalExtensions:  */
+                    additionalSnippets: getBibtexSnippets()
+                })
             ]
         }
         extensions = [

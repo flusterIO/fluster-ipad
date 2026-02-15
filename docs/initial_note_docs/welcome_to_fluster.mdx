@@ -22,12 +22,12 @@ Here's the thing, MDX is _really_ powerful. So powerful so, that it's difficult 
 
 The strategy Fluster takes is simple, to give users the most functionality possible by providing both rendering methods in a single application, but this comes with some downsides. 
 
-- It will likely be noticable when a view is rendered in a WebView or in a native Swift view. This will be improved significantly with time, but will likely never be completely cohesive.
+- It will likely be noticeable when a view is rendered in a WebView or in a native Swift view. This will be improved significantly with time, but will likely never be completely cohesive.
 - Math or other mdx features may not render or render incompletely in Swift views. This means that while adding latex to titles is technically allowed, the title in Swift views will display as a raw latex string instead of the rendered latex. I'll make an attempt to support math in Swift titles in the near future, but I'm unsure of how successful it will be. The alternative is to eventually move more content, like the search results into a Webview where title's can be rendered as MDX.
 
 It is important to note, that while your Fluster application uses a `WebView`, it does not contact any outside service and functions completely offline; we are simply rendering the MDX in a language meant for the web using code that is bundled with the application.
 
-Fluster may never offer the buttery smooth UI of applications that focus on either hand drawn or text based notes independently, but for those that require the most from their note taking application and want an app that puts functionality over form, Fluster may be your application.
+Fluster may never offer the buttery smooth UI of applications that focus on either hand drawn or text based notes independently, but for those that require the most from their note taking application and want an app that puts functionality over form... if you're the type to generate plots, diagrams and other rich content in your notes only to dig through them for hours, Fluster may be what you're looking for.
 
 
 ## Organization Inside of Fluster
@@ -44,3 +44,16 @@ subject: Calc2
 ```
 
 Each of these `topic` or `subject` fields will be searchable via the command palette on Mac, or via the relevant tabs on iPad.
+
+Of course there is also text and named based search as well. Fluster uses a special mdx based sorting algorithm to sort search results based on the importance of where your matches occur for text based search, returning the most significant matches first. This title and full-text based search can be accessed via the command palette on Mac, or in the navigation bar on iPad.
+
+### Bibliography
+
+Fluster also integrates with an internal bibliography manager (plans to read data from 3rd party platforms like Zotero in the near future), with citations that can be inserted with `[[cite:myCitationId]]`. Here, `myCitationId` must match the id of an entry in your bibliography (all entries are inserted as bibtex).
+
+When a citation is added in this format, the citation's id is parsed with the rest of the markdown, and linked to that note so that notes can be search by bibliography entry as well.
+
+<Admonition title="Organization Recommendations" type="info" foldable folded>
+- Consider using a sort of structured format to the way you treat 'topics' and 'subjects'. Many apps include similar features, but with so many tagging methods available inside of Fluster, 'topics' and 'subjects' worked best for me when I was in research mode. Using one to group things into more broader contexts and the other to narrow things down worked great for keeping related notes nearby when I was struggling with a solution. For me this meant something like using a 'subject' of something like 'gravity' or 'electromagnetism' and a 'topic' of something like 'newtonian' or 'emergent-gravity'.
+- If you don't think you'll need a bibliography, consider adding simple entries for things like websites, with whatever level of specificity you think you'll need. Adding an entry for 'wikipedia' or 'youtube' will obviously be vague enough to apply to a meaningful number of notes in your content and can apply to user's with less academic notes. You can even use the website bibliography snippet to cite specific social media channels or blogs, allowing user's to group notes by almost anything on the web.
+</Admonition>

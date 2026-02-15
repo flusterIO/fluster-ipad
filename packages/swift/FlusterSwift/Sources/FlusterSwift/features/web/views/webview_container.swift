@@ -1,5 +1,6 @@
 import Combine
 import FlusterData
+import FlusterWebviewClients
 import SwiftUI
 import WebKit
 
@@ -15,11 +16,12 @@ import WebKit
   //typealias AnyWebviewAction = NoteDetailWebviewActions | SplitviewEditorWebviewActions
   @MainActor
   public class WebviewContainer<WebviewEventsType: RawRepresentable>:
-    ObservableObject
+    NSObject, ObservableObject, WKNavigationDelegate  // 1. Inherit NSObject & Delegate
   where WebviewEventsType.RawValue == String {
     public let scrollViewBounce: Bool = true
     public let scrollEnabled: Bool = false
-    var webView: WKWebView {
+    public var onLoad: (@Sendable (WKWebView) async -> Void)?
+    lazy var webView: WKWebView = {
       let config = getConfig()
       let view = WKWebView(frame: .zero, configuration: config)
       view.isHidden = true
@@ -37,19 +39,23 @@ import WebKit
       )
 
       view.configuration.userContentController.addUserScript(webviewEnvironmentScript)
+      view.navigationDelegate = self
       if #available(iOS 16.4, macOS 13.3, *) {
         view.isInspectable = true
       }
 
       return view
-    }
+    }()  // Required to be iffe instead of computed property to maintain state.
 
     public init(
-      bounce: Bool = false, scrollEnabled: Bool = false, setupWebview: ((WKWebView) -> WKWebView)?
+      bounce: Bool = false,
+      scrollEnabled: Bool = false,
+      onLoad: (@Sendable (WKWebView) async -> Void)?
     ) {
+      self.onLoad = onLoad
+      super.init()
       self.webView.scrollView.bounces = bounce
       self.webView.scrollView.isScrollEnabled = scrollEnabled
-      //        self._colorScheme = colorScheme
     }
 
     public func runJavascript(_ script: String) {
@@ -57,7 +63,7 @@ import WebKit
         if let error = error {
           print("--- Error ---")
           print("Error executing JS: \(error.localizedDescription)")
-          print("Command: \(script)")
+            print("Command: \(script.trunc(length: 200))")
           print("-------------")
         } else if let result = result {
           print("JS Result: \(result)")
@@ -125,18 +131,24 @@ import WebKit
       )
     }
     public func addClassToWebviewContainer(className: String) {
-      self.runJavascript(
-        """
-        document.getElementById("webview-container")?.classList.add("\(className)"); null;
-        """
-      )
+        Task(priority: .high) {
+          do {
+            try await WebviewContainerClient.setClassToWebviewContainer(
+              className: className, method: .append, evaluateJavaScript: webView.evaluateJavaScript)
+          } catch {
+            print("Error: \(error.localizedDescription)")
+          }
+        }
     }
     public func removeClassFromWebviewContainer(className: String) {
-      self.runJavascript(
-        """
-        document.getElementById("webview-container")?.classList.remove("\(className)"); null;
-        """
-      )
+      Task(priority: .high) {
+        do {
+          try await WebviewContainerClient.setClassToWebviewContainer(
+            className: className, method: .remove, evaluateJavaScript: webView.evaluateJavaScript)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+      }
     }
 
     public func setLoading(isLoading: Bool) {
@@ -156,6 +168,18 @@ import WebKit
           window.setScreenSize(\(width), \(height)); null;
           """
         )
+      }
+    }
+
+    // Delegate Methods
+
+    // onLoad
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+      setLoading(isLoading: false)
+      if let ol = self.onLoad {
+        Task(priority: .high) {
+          await ol(webView)
+        }
       }
     }
   }

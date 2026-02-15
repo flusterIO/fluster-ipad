@@ -1,0 +1,39 @@
+@top Bib { Entry* }
+
+@skip { space | Comment }
+
+@tokens {
+  space { @whitespace+ }
+  Comment { "%" ![\n]* }
+
+  EntryType { "@" @asciiLetter+ }
+  EntryKey { (@asciiLetter) (@asciiLetter | @digit | ( "_" | "-"))* }
+  FieldType { (@asciiLetter) (@asciiLetter | @digit | ( "_" | "-"))* }
+  FieldContent { ![{}]+ }
+  @precedence { Comment, space, FieldContent }
+}
+
+Entry {
+  EntryHeading
+  EntryValue
+  "}"
+}
+
+EntryHeading {
+  EntryType "{" EntryKey ","
+}
+
+EntryValue {
+  (Field ",")*
+  (Field)?
+}
+
+Field {
+  FieldType "=" FieldValue
+}
+
+@detectDelim FieldValue {
+  "{"
+  ( FieldValue | FieldContent )*
+  "}"
+}
