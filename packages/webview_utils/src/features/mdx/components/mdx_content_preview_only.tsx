@@ -14,7 +14,7 @@ export const MdxEditorPreviewOnly = (
         if (parsedValue === null) {
             sendToSwift(MdxPreviewWebviewActions.RequestNoteData)
         }
-    }, [])
+    }, [parsedValue])
     return (
         <MdxEditorPreview
             {...props}

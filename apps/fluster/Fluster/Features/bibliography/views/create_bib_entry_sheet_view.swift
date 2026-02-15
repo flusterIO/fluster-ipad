@@ -88,7 +88,7 @@ struct CreateBibEntrySheetView: View {
   CreateBibEntrySheetView(
     editingBibEntry: .constant(nil),
     ignoreEditingNote: true,
-    container: BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
+    container: BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true, onLoad: nil)
   )
   .environment(ThemeManager(initialTheme: FlusterDark()))
 }

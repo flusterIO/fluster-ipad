@@ -76,7 +76,8 @@ import WebKit
         SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
         SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
         SplitviewEditorWebviewActions.onTagClick.rawValue,
-        MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue
+        MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue,
+        MdxPreviewWebviewActions.requestNoteData.rawValue
       ]
       if colorScheme == .dark {
         webView.evaluateJavaScript(
@@ -125,7 +126,8 @@ import WebKit
         fontSize: webviewFontSize,
         editorThemeDark: editorThemeDark,
         editorThemeLight: editorThemeLight,
-        darkMode: colorScheme == .dark
+        darkMode: colorScheme == .dark,
+        modelContext: modelContext
       )
     }
     public func setInitialContent() {
@@ -271,6 +273,10 @@ import WebKit
             .rawValue:
             parent.setInitialProperties()
             parent.setInitialContent()
+          case MdxPreviewWebviewActions.requestNoteData
+            .rawValue:  // Required when initially in portrait mode.
+            parent.setInitialProperties()
+            parent.setInitialContent()
           default:
             return
         }
@@ -330,7 +336,7 @@ import WebKit
           container: container,
           show: $show,
           onNavigateToNote: onNavigateToNote,
-          fullScreenCover: $fullScreenCover
+          fullScreenCover: $fullScreenCover,
         )
         .disableAnimations()
         .frame(
@@ -376,5 +382,9 @@ import WebKit
         },
       )
     }
+    
+      func onLoad() async {
+          
+      }
   }
 #endif

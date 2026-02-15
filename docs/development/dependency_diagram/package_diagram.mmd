@@ -1,0 +1,10 @@
+flowchart TD
+    WebClients[FlusterWebviewClients] -->|Webview Logic| FlusterSwift[FlusterSwift]
+    FlusterRust[FlusterRust] -->|Rust Superpowers| FlusterData
+    FlusterData[FlusterData] -->|All Models| FlusterIpad[Fluster iPad]
+    FlusterSwiftMdxParser[FlusterSwiftMdxParser] --> FlusterData
+    FlusterRust -->  FlusterSwiftMdxParser
+    FlusterSwift -->|Various Swift Utilities| FlusterDesktop
+    FlusterData -->|All Models| FlusterDesktop[Fluster Desktop]
+    FlusterData --> FlusterSwift
+    FlusterSwift -->|Various Swift Utilities| FlusterIpad

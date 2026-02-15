@@ -230,7 +230,8 @@ public struct NoteDetailWebview: View {
   @State var container: NoteDetailWebviewContainer =
     NoteDetailWebviewContainer(
       bounce: true,
-      scrollEnabled: true
+      scrollEnabled: true,
+      onLoad: nil
     )
 
   @Binding var fullScreenCover: MainFullScreenCover?

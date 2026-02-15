@@ -6,12 +6,14 @@
 // swiftlint:disable file_length
 
 import FlatBuffers
-import FlusterSwiftMdxParser
+import FlusterData
 import FlusterSwift
+import FlusterSwiftMdxParser
+import FlusterWebviewClients
 import PencilKit
 import SwiftData
 import SwiftUI
-import FlusterData
+import WebKit
 internal import os
 
 func getDrawing(data: Data?) -> PKDrawing {
@@ -67,11 +69,13 @@ struct MainView: View {
   /// and retrieve results since this encodes both user defined ids and uuids.
   let defaultNoteId: String = "welcomeToFluster"
 
-  @StateObject private var editorContainer: MdxEditorWebviewContainer =
+  @StateObject private var editorContainer: MdxEditorWebviewContainer = {
     MdxEditorWebviewContainer(
       bounce: false,
-      scrollEnabled: true
+      scrollEnabled: true,
+      onLoad: nil
     )
+  }()
   @State private var themeManager: ThemeManager = ThemeManager(
     initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
   )
@@ -81,6 +85,10 @@ struct MainView: View {
   @State private var editingNote: NoteModel?
   @State private var selectedTab: IpadMainViewTab = IpadMainViewTab.notes
   @State private var findInNotePresented: Bool = false
+
+  init() {
+    self.editorContainer.onLoad = self.onEditorLoad
+  }
 
   var body: some View {
     let showFullScreenCover = Binding<Bool>(
@@ -326,7 +334,6 @@ struct MainView: View {
               await note.markdown
               .body.preParseAsMdxToBytes(noteId: note.id)
             {
-              editorContainer.emitMdxParsingSuccess()
               editorContainer.setParsedEditorContent(
                 content: parsedMdx
               )
@@ -347,11 +354,6 @@ struct MainView: View {
                   )
                 }
               }
-            } else {
-              if !silenceParsingErrors {
-                editorContainer.emitMdxParsingError()
-              }
-              print("Could not parse mdx.")
             }
           }
         }
@@ -559,6 +561,17 @@ struct MainView: View {
       return "\(editingNoteExists.id)-\(editingNoteExists.markdown.body)"
     }
     return "parse-mdx"
+  }
+  @MainActor
+  func onEditorLoad(_ webview: WKWebView) async {
+    if let en = editingNote {
+      do {
+        try await MdxEditorClient.setEditorContent(
+          note: en, evaluateJavaScript: webview.evaluateJavaScript)
+      } catch {
+        print("Error: \(error.localizedDescription)")
+      }
+    }
   }
 }
 

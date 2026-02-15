@@ -331,6 +331,19 @@ extension AppSchemaV1 {
         }
       }
     }
+    @MainActor
+    public func preParsedOrParse(modelContext: ModelContext) async -> String {
+      if let preParsed = self.markdown.preParsedBody {
+        return preParsed
+      } else {
+        do {
+          try await self.preParse(modelContext: modelContext)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+        return self.markdown.preParsedBody ?? ""
+      }
+    }
   }
   @Model
   public class DictionaryEntryModel: Identifiable {

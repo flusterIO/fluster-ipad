@@ -102,7 +102,7 @@ struct BibliographyPageView: View {
     .fluster
   @Environment(\.colorScheme) var colorScheme
   @StateObject private var bibtexEditorContainer =
-    BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
+    BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true, onLoad: nil)
   @Binding var editingNote: NoteModel?
   var body: some View {
     BibliographyPageInternalView(

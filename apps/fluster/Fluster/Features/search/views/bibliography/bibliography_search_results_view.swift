@@ -12,7 +12,7 @@ import FlusterData
 
 struct BibliographySearchResultsViewQueryWrapped: View {
   @StateObject private var bibtexEditorContainer =
-    BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true)
+    BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true, onLoad: nil)
   @Query(sort: \BibEntryModel.ctime) var bibEntries: [BibEntryModel]
   @Environment(\.modelContext) var modelContext
   @State private var confirmationModalOpen: Bool = false
@@ -115,7 +115,7 @@ struct BibliographySearchResultsViewQueryWrapped: View {
 
 struct BibliographySearchResultsView: View {
   @State private var searchQuery: String = ""
-  let bibtexEditorContainer = BibtexEditorWebviewContainer()
+  let bibtexEditorContainer = BibtexEditorWebviewContainer(onLoad: nil)
   @Binding var editingNote: NoteModel?
   var body: some View {
     BibliographySearchResultsViewQueryWrapped(
