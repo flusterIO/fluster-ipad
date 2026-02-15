@@ -13,7 +13,7 @@ importers:
         version: 3.3.0
     devDependencies:
       '@mermaid-js/mermaid-cli':
-        specifier: ^11.12.0
+        specifier: 11.12.0
         version: 11.12.0(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.2.2)(puppeteer@23.11.1(bufferutil@4.1.0)(typescript@4.9.4))(tsx@4.20.6)(yaml@2.8.2)
       '@next/eslint-plugin-next':
         specifier: 16.1.1
@@ -407,22 +407,22 @@ importers:
         version: 0.5.19(tailwindcss@3.4.18(tsx@4.20.6)(yaml@2.8.2))
       '@vitejs/plugin-react':
         specifier: 5.1.1
-        version: 5.1.1(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
+        version: 5.1.1(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
       tailwindcss:
         specifier: 3.4.18
         version: 3.4.18(tsx@4.20.6)(yaml@2.8.2)
       vite:
         specifier: 7.2.4
-        version: 7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2)
+        version: 7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2)
       vite-plugin-dts:
         specifier: 4.5.4
-        version: 4.5.4(@types/node@24.10.1)(rollup@4.55.1)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
+        version: 4.5.4(@types/node@24.10.1)(rollup@4.55.1)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
       vite-plugin-singlefile:
         specifier: 2.3.0
-        version: 2.3.0(rollup@4.55.1)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
+        version: 2.3.0(rollup@4.55.1)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
       vite-tsconfig-paths:
         specifier: 5.1.4
-        version: 5.1.4(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
+        version: 5.1.4(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
     devDependencies:
       '@types/node':
         specifier: 24.10.1
@@ -431,16 +431,16 @@ importers:
   packages/typescript/lezer:
     dependencies:
       '@codemirror/autocomplete':
-        specifier: ^6.0.0
+        specifier: 6.20.0
         version: 6.20.0
       '@codemirror/language':
-        specifier: ^6.6.0
-        version: 6.12.1
+        specifier: 6.6.0
+        version: 6.6.0
       '@codemirror/lint':
-        specifier: ^6.0.0
-        version: 6.9.2
+        specifier: 6.0.0
+        version: 6.0.0
       '@codemirror/state':
-        specifier: ^6.0.0
+        specifier: 6.5.2
         version: 6.5.2
       '@lezer/go':
         specifier: ^1.0.0
@@ -450,16 +450,13 @@ importers:
         version: https://codeload.github.com/flamingtempura/bibtex-tidy/tar.gz/83734f920a28cc69b680d8a1041d48ec8379d5ef
     devDependencies:
       '@codemirror/buildhelper':
-        specifier: ^1.0.0
-        version: 1.0.2(bufferutil@4.1.0)
-      '@lezer/common':
         specifier: 1.0.0
-        version: 1.0.0
-      '@lezer/generator':
-        specifier: ^1.8.0
-        version: 1.8.0
+        version: 1.0.0(bufferutil@4.1.0)
+      '@lezer/common':
+        specifier: ^1.0.0
+        version: 1.5.0
       '@lezer/markdown':
-        specifier: 1.6.3
+        specifier: ^1.0.0
         version: 1.6.3
       typescript:
         specifier: '*'
@@ -510,7 +507,7 @@ importers:
         specifier: 5.0.1
         version: 5.0.1(react-hook-form@7.56.3(react@19.2.0))
       '@lezer/markdown':
-        specifier: 1.6.3
+        specifier: ^1.0.0
         version: 1.6.3
       '@mdx-js/mdx':
         specifier: 3.1.0
@@ -600,7 +597,7 @@ importers:
         specifier: 4.1.0
         version: 4.1.0
       dayjs:
-        specifier: ^1.11.19
+        specifier: 1.11.19
         version: 1.11.19
       flatbuffers:
         specifier: 25.9.23
@@ -1403,8 +1400,8 @@ packages:
   '@codemirror/autocomplete@6.20.0':
     resolution: {integrity: sha512-bOwvTOIJcG5FVo5gUUupiwYh8MioPLQ4UcqbcRf7UQ98X90tCa9E1kZ3Z7tqwpZxYyOvh1YTYbmZE9RTfTp5hg==}
 
-  '@codemirror/buildhelper@1.0.2':
-    resolution: {integrity: sha512-aVewtDPZptq9dTvYqIjpu9HTEmMaKAE4VL22z5E1ycgY5e1LdAiRd5YYjqzQeqLjxpWsHy+emO3n5UUcxpUmSg==}
+  '@codemirror/buildhelper@1.0.0':
+    resolution: {integrity: sha512-tjVnizCUsDJHWZFNjQWBl4DAZrfLGSUmFEvjMkfom4eK5zyByiCITfrNHZOYZgi4xMWk2qJHS6LBWCq0IBWtmQ==}
     hasBin: true
 
   '@codemirror/commands@6.10.0':
@@ -1479,8 +1476,14 @@ packages:
   '@codemirror/language@6.12.1':
     resolution: {integrity: sha512-Fa6xkSiuGKc8XC8Cn96T+TQHYj4ZZ7RdFmXA3i9xe/3hLHfwPZdM+dqfX0Cp0zQklBKhVD8Yzc8LS45rkqcwpQ==}
 
+  '@codemirror/language@6.6.0':
+    resolution: {integrity: sha512-cwUd6lzt3MfNYOobdjf14ZkLbJcnv4WtndYaoBkbor/vF+rCNguMPK0IRtvZJG4dsWiaWPcK8x1VijhvSxnstg==}
+
   '@codemirror/legacy-modes@6.5.2':
     resolution: {integrity: sha512-/jJbwSTazlQEDOQw2FJ8LEEKVS72pU0lx6oM54kGpL8t/NJ2Jda3CZ4pcltiKTdqYSRk3ug1B3pil1gsjA6+8Q==}
+
+  '@codemirror/lint@6.0.0':
+    resolution: {integrity: sha512-nUUXcJW1Xp54kNs+a1ToPLK8MadO0rMTnJB8Zk4Z8gBdrN0kqV7uvUraU/T2yqg+grDNR38Vmy/MrhQN/RgwiA==}
 
   '@codemirror/lint@6.9.2':
     resolution: {integrity: sha512-sv3DylBiIyi+xKwRCJAAsBZZZWo82shJ/RTMymLabAdtbkV5cSKwWDeCgtUq3v8flTaXS2y1kKkICuRYtUswyQ==}
@@ -2018,9 +2021,6 @@ packages:
     resolution: {integrity: sha512-tn5SsNJnM/zwe0sW+oKBZIJVlQSaq0hIWbZ3F0Zxnhh/AsgqZseP63xRGmwdgkvpI8NyRfjvdMQnzIavTMPglA==}
     engines: {node: '>= 12.0.0'}
 
-  '@lezer/common@1.0.0':
-    resolution: {integrity: sha512-ohydQe+Hb+w4oMDvXzs8uuJd2NoA3D8YDcLiuDsLqH+yflDTPEpgCsWI3/6rH5C3BAedtH1/R51dxENldQceEA==}
-
   '@lezer/common@1.5.0':
     resolution: {integrity: sha512-PNGcolp9hr4PJdXR4ix7XtixDrClScvtSCYW3rQG106oVMOOI+jFb+0+J3mbeL/53g1Zd6s0kJzaw6Ri68GmAA==}
 
@@ -2076,8 +2076,8 @@ packages:
   '@lezer/yaml@1.0.3':
     resolution: {integrity: sha512-GuBLekbw9jDBDhGur82nuwkxKQ+a3W5H0GfaAthDXcAu+XdpS43VlnxA9E9hllkpSP5ellRDKjLLj7Lu9Wr6xA==}
 
-  '@marijn/buildtool@1.2.0':
-    resolution: {integrity: sha512-ytEK7n4NVrq6Rhq2J+N/CcvJLl6NX0bZ1qSi3w8lxZVcI4L6Y6vj1pugcTnv+YdyFNwFuACSdDesetZmQqSy1w==}
+  '@marijn/buildtool@0.1.6':
+    resolution: {integrity: sha512-rcA2wljsM24MFAwx2U5vSBrt7IdIaPh4WPRfJPS8PuCUlbuQ8Pmky4c/ec00v3YFu90rZSbkVLnPuCeb/mUEng==}
 
   '@marijn/find-cluster-break@1.0.2':
     resolution: {integrity: sha512-l0h88YhZFyKdXIFNfSWpyjStDjGHwZ/U7iobcK1cQQD8sejsONdQtTVU+1wVN1PBw40PiiHB1vA5S7VTfQiP9g==}
@@ -7953,12 +7953,17 @@ packages:
   robust-predicates@3.0.2:
     resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
 
-  rollup-plugin-dts@6.3.0:
-    resolution: {integrity: sha512-d0UrqxYd8KyZ6i3M2Nx7WOMy708qsV/7fTHMHxCMCBOAe3V/U7OMPu5GkX8hC+cmkHhzGnfeYongl1IgiooddA==}
-    engines: {node: '>=16'}
+  rollup-plugin-dts@5.3.1:
+    resolution: {integrity: sha512-gusMi+Z4gY/JaEQeXnB0RUdU82h1kF0WYzCWgVmV4p3hWXqelaKuCvcJawfeg+EKn2T1Ie+YWF2OiN1/L8bTVg==}
+    engines: {node: '>=v14.21.3'}
     peerDependencies:
-      rollup: ^3.29.4 || ^4
-      typescript: ^4.5 || ^5.0
+      rollup: ^3.0
+      typescript: ^4.1 || ^5.0
+
+  rollup@3.29.5:
+    resolution: {integrity: sha512-GVsDdsbJzzy4S/v3dqWPJ7EfvZJfCHiDqe80IyrF59LYuP+e6U1LJoUqeuqRbwAWoMNoXivMNeNAOf5E22VA1w==}
+    engines: {node: '>=14.18.0', npm: '>=8.0.0'}
+    hasBin: true
 
   rollup@4.55.1:
     resolution: {integrity: sha512-wDv/Ht1BNHB4upNbK74s9usvl7hObDnvVzknxqY/E/O3X6rW1U1rV1aENEfJ54eFZDTNo7zv1f5N4edCluH7+A==}
@@ -9196,21 +9201,21 @@ snapshots:
       '@codemirror/language': 6.12.1
       '@codemirror/lint': 6.9.2
       '@codemirror/state': 6.5.2
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
       '@lezer/go': 1.0.1
       bibtex-tidy: https://codeload.github.com/flamingtempura/bibtex-tidy/tar.gz/83734f920a28cc69b680d8a1041d48ec8379d5ef
 
   '@codemirror/autocomplete@6.20.0':
     dependencies:
-      '@codemirror/language': 6.12.1
+      '@codemirror/language': 6.6.0
       '@codemirror/state': 6.5.2
       '@codemirror/view': 6.38.7
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
 
-  '@codemirror/buildhelper@1.0.2(bufferutil@4.1.0)':
+  '@codemirror/buildhelper@1.0.0(bufferutil@4.1.0)':
     dependencies:
       '@lezer/generator': 1.8.0
-      '@marijn/buildtool': 1.2.0
+      '@marijn/buildtool': 0.1.6
       '@marijn/testtool': 0.1.3(bufferutil@4.1.0)
     transitivePeerDependencies:
       - bufferutil
@@ -9251,7 +9256,7 @@ snapshots:
       '@codemirror/autocomplete': 6.20.0
       '@codemirror/language': 6.12.1
       '@codemirror/state': 6.5.2
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
       '@lezer/go': 1.0.1
 
   '@codemirror/lang-html@6.4.11':
@@ -9262,7 +9267,7 @@ snapshots:
       '@codemirror/language': 6.12.1
       '@codemirror/state': 6.5.2
       '@codemirror/view': 6.38.7
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
       '@lezer/css': 1.3.0
       '@lezer/html': 1.3.13
 
@@ -9278,7 +9283,7 @@ snapshots:
       '@codemirror/lint': 6.9.2
       '@codemirror/state': 6.5.2
       '@codemirror/view': 6.38.7
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
       '@lezer/javascript': 1.5.4
 
   '@codemirror/lang-jinja@6.0.0':
@@ -9309,7 +9314,7 @@ snapshots:
       '@codemirror/language': 6.12.1
       '@codemirror/state': 6.5.2
       '@codemirror/view': 6.38.7
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
       '@lezer/highlight': 1.2.3
       '@lezer/lr': 1.4.7
 
@@ -9328,7 +9333,7 @@ snapshots:
       '@codemirror/lang-html': 6.4.11
       '@codemirror/language': 6.12.1
       '@codemirror/state': 6.5.2
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
       '@lezer/php': 1.0.5
 
   '@codemirror/lang-python@6.2.1':
@@ -9383,7 +9388,7 @@ snapshots:
       '@codemirror/language': 6.12.1
       '@codemirror/state': 6.5.2
       '@codemirror/view': 6.38.7
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
       '@lezer/xml': 1.0.6
 
   '@codemirror/lang-yaml@6.1.2':
@@ -9431,9 +9436,24 @@ snapshots:
       '@lezer/lr': 1.4.7
       style-mod: 4.1.3
 
+  '@codemirror/language@6.6.0':
+    dependencies:
+      '@codemirror/state': 6.5.2
+      '@codemirror/view': 6.38.7
+      '@lezer/common': 1.5.0
+      '@lezer/highlight': 1.2.3
+      '@lezer/lr': 1.4.7
+      style-mod: 4.1.3
+
   '@codemirror/legacy-modes@6.5.2':
     dependencies:
       '@codemirror/language': 6.12.1
+
+  '@codemirror/lint@6.0.0':
+    dependencies:
+      '@codemirror/state': 6.5.2
+      '@codemirror/view': 6.38.7
+      crelt: 1.0.6
 
   '@codemirror/lint@6.9.2':
     dependencies:
@@ -9699,12 +9719,6 @@ snapshots:
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
 
-  '@floating-ui/react-dom@2.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
-    dependencies:
-      '@floating-ui/dom': 1.7.4
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-
   '@floating-ui/react-dom@2.1.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@floating-ui/dom': 1.7.5
@@ -9713,7 +9727,7 @@ snapshots:
 
   '@floating-ui/react@0.26.28(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@floating-ui/react-dom': 2.1.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@floating-ui/utils': 0.2.10
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
@@ -9928,8 +9942,6 @@ snapshots:
 
   '@larsgw/wikibase-sdk@10.2.1': {}
 
-  '@lezer/common@1.0.0': {}
-
   '@lezer/common@1.5.0': {}
 
   '@lezer/cpp@1.1.5':
@@ -9985,7 +9997,7 @@ snapshots:
 
   '@lezer/lr@1.4.7':
     dependencies:
-      '@lezer/common': 1.0.0
+      '@lezer/common': 1.5.0
 
   '@lezer/markdown@1.6.3':
     dependencies:
@@ -10028,13 +10040,13 @@ snapshots:
       '@lezer/highlight': 1.2.3
       '@lezer/lr': 1.4.7
 
-  '@marijn/buildtool@1.2.0':
+  '@marijn/buildtool@0.1.6':
     dependencies:
       '@types/mocha': 9.1.1
       acorn: 8.15.0
       acorn-walk: 8.3.4
-      rollup: 4.55.1
-      rollup-plugin-dts: 6.3.0(rollup@4.55.1)(typescript@5.9.3)
+      rollup: 3.29.5
+      rollup-plugin-dts: 5.3.1(rollup@3.29.5)(typescript@5.9.3)
       typescript: 5.9.3
 
   '@marijn/find-cluster-break@1.0.2': {}
@@ -17067,13 +17079,17 @@ snapshots:
 
   robust-predicates@3.0.2: {}
 
-  rollup-plugin-dts@6.3.0(rollup@4.55.1)(typescript@5.9.3):
+  rollup-plugin-dts@5.3.1(rollup@3.29.5)(typescript@5.9.3):
     dependencies:
       magic-string: 0.30.21
-      rollup: 4.55.1
+      rollup: 3.29.5
       typescript: 5.9.3
     optionalDependencies:
       '@babel/code-frame': 7.27.1
+
+  rollup@3.29.5:
+    optionalDependencies:
+      fsevents: 2.3.3
 
   rollup@4.55.1:
     dependencies:
@@ -18125,6 +18141,25 @@ snapshots:
       d3-time: 3.1.0
       d3-timer: 3.0.1
 
+  vite-plugin-dts@4.5.4(@types/node@24.10.1)(rollup@4.55.1)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2)):
+    dependencies:
+      '@microsoft/api-extractor': 7.55.2(@types/node@24.10.1)
+      '@rollup/pluginutils': 5.3.0(rollup@4.55.1)
+      '@volar/typescript': 2.4.27
+      '@vue/language-core': 2.2.0(typescript@5.9.3)
+      compare-versions: 6.1.1
+      debug: 4.4.3(supports-color@8.1.1)
+      kolorist: 1.8.0
+      local-pkg: 1.1.2
+      magic-string: 0.30.21
+      typescript: 5.9.3
+    optionalDependencies:
+      vite: 7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - '@types/node'
+      - rollup
+      - supports-color
+
   vite-plugin-dts@4.5.4(@types/node@24.10.1)(rollup@4.55.1)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2)):
     dependencies:
       '@microsoft/api-extractor': 7.55.2(@types/node@24.10.1)
@@ -18166,6 +18201,17 @@ snapshots:
       debug: 4.4.3(supports-color@8.1.1)
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@4.9.4)
+    optionalDependencies:
+      vite: 7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2)):
+    dependencies:
+      debug: 4.4.3(supports-color@8.1.1)
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@5.9.3)
     optionalDependencies:
       vite: 7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2)
     transitivePeerDependencies:

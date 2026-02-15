@@ -132,7 +132,6 @@ export const CodeEditorInner = ({
             extensions = [
                 ...extensions,
                 bibtex({
-                    /* additionalExtensions:  */
                     additionalSnippets: getBibtexSnippets()
                 })
             ]

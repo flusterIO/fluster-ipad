@@ -57,7 +57,7 @@ impl FrontMatterResult {
             match ignore_parsers.as_vec() {
                 Ok(res) => res.iter().filter_map(|x| x.as_string().ok()).collect(),
                 Err(e) => {
-                    println!("Front Matter Error (ignored parsers): {}", e);
+                    println!("Front Matter Error ({}): {}", k, e);
                     Vec::new()
                 }
             }

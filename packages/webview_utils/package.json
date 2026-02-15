@@ -80,7 +80,7 @@
     "@fluster/desktop_bindings": "workspace:*",
     "@fluster/lezer": "workspace:*",
     "@hookform/resolvers": "5.0.1",
-    "@lezer/markdown": "1.6.3",
+    "@lezer/markdown": "^1.0.0",
     "@mdx-js/mdx": "3.1.0",
     "@mdx-js/react": "3.1.0",
     "@monaco-editor/react": "4.7.0",
