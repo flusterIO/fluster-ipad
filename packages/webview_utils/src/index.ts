@@ -86,8 +86,10 @@ export * from "./features/dictionary/hooks/use_dictionary_data"
 // -- Mdx --
 
 
-//      -- Embeddable --
+//      -- Embeddable -- (exported mostly for use in website docs)
 export * from "./features/mdx/embeddable_mdx_components/admonition/index"
+export * from "./features/mdx/embeddable_mdx_components/ul/ul"
+export * from "./features/mdx/embeddable_mdx_components/hl/hl"
 
 //      -- Mdx: Components --
 export * from "./features/mdx/components/mdx_content";

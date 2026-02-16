@@ -61,7 +61,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={cn(appFont.variable, "dark")}>
+        <html lang="en" className={`${appFont.variable} dark`}>
             <Head>
                 <title>Fluster</title>
                 <meta

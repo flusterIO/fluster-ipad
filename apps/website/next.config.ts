@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
         ignoreBuildErrors: true,
     },
     reactStrictMode: true,
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "ned.ipac.caltech.edu",
+                pathname: "/**",
+            },
+        ],
+        minimumCacheTTL: 3600,
+    },
 };
 
 export default withMDX(nextConfig);

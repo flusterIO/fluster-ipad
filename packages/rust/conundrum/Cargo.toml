@@ -1,5 +1,5 @@
 [package]
-name = "fluster_lsp"
+name = "conundrum"
 version.workspace = true
 authors.workspace = true
 description.workspace = true
@@ -8,7 +8,9 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
+chumsky = { version = "0.12.0", features = ["docsrs"] }
 crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }
+miette = { version = "7.6.0", features = ["fancy"] }
 serde.workspace = true
 serde_json.workspace = true
 tokio = { workspace = true, features = ["full"] }

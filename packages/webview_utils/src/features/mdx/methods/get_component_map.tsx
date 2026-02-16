@@ -13,7 +13,8 @@ import { NoteLink } from "../embeddable_mdx_components/auto_inserted/note_link";
 import { Hl } from "../embeddable_mdx_components/hl/hl";
 import { Ul } from "../embeddable_mdx_components/ul/ul";
 import { InlineMdxContent } from "../components/inline_mdx_content";
-interface ComponentMapItem {
+
+export interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
     query: string | string[];
     /* eslint-disable-next-line  -- Need to allow any here */
@@ -224,9 +225,10 @@ const items: ComponentMapItem[] = [
     /* }, */
 ];
 
-export const getComponentMap = (mdxContent: string): MDXComponents => {
+export const getComponentMap = (mdxContent: string, additionalComponenets: ComponentMapItem[] = []): MDXComponents => {
     const components: MDXComponents = componentOverrides;
-    for (const item of items) {
+    const x = [...items, ...additionalComponenets]
+    for (const item of x) {
         for (const query of Array.isArray(item.query) ? item.query : [item.query]) {
             const isIncluded = mdxContent.includes(`<${query}`);
             if (isIncluded) {

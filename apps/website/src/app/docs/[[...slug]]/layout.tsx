@@ -3,6 +3,7 @@ import { RootToggle } from "fumadocs-ui/components/layout/root-toggle";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { TerminalIcon, UserIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import "../../../../../../packages/webview_utils/src/core/styles/base.scss";
 import "../../../core/styles/docs.scss";
 import { source } from "#/core/mdx/sources/fumadocs_mdx/docs";
 

@@ -24,6 +24,7 @@
 ## Documentation
 
 - [ ] Add section to `quick_reference.mdx` about front matter.
+- [ ] Create 'zod' to markdown table or 'componentconfig' to markdown table component and related function. Create a component that is passed in only on docs pages that makes takes that zod schema and generates a react table.
 
 ## Website
 
@@ -34,14 +35,14 @@
 ## Language
 
 - [ ] Create package after researching architecture:
-  - [ ] [Chumsky](https://docs.rs/chumsky/latest/chumsky/guide/) for creating a parser.
-  - [ ] [Miette](https://crates.io/crates/miette) for error reporting, and possibly... at least acording to Gemini, intellisense in codemirror? It said to use the error state that includes suggestions, but that sounds sketchy before I see it.
+  - [x] [Chumsky](https://docs.rs/chumsky/latest/chumsky/guide/) for creating a parser.
+  - [x] [Miette](https://crates.io/crates/miette) for error reporting, and possibly... at least acording to Gemini, intellisense in codemirror? It said to use the error state that includes suggestions, but that sounds sketchy before I see it.
 
 ---
 
 # Today
 
-- [ ] Handle update of frontmatter parsing in rust.
-  - [ ] Generate tables from frontmatter directly for docs, dont' try to keep it up to date.
-- [ ] Create front-matter snippets mentioned in docs.
+- [ ] Verify that rest of article is good
+  - [ ] Post article to website and verify it's good in prod.
+- [ ] Make sure all iPad webviews functioning as expected, especially bibliography editor.
 - [ ] Resume finish of searchability section in docs.

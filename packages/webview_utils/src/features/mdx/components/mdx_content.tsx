@@ -4,6 +4,7 @@ import { useDebounceMdxParse } from "../hooks/use_debounce_mdx_parse";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import type { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
+import { ComponentMapItem } from "../methods/get_component_map";
 
 const loadScrollPosition = (
     element: HTMLElement,
@@ -22,6 +23,7 @@ export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     debounceTimeout?: number;
     scrollPositionKey?: AnyWebviewStorageKey;
     showWebviewAction?: AnyWebviewAction
+    additionalComponents?: ComponentMapItem[]
 }
 
 export const MdxContent = ({
@@ -31,13 +33,15 @@ export const MdxContent = ({
     scrollPositionKey,
     debounceTimeout = 300,
     showWebviewAction,
+    additionalComponents,
     ...props
 }: MdxContentProps): ReactNode => {
     const { Component, setValue } = useDebounceMdxParse(
         undefined,
         debounceTimeout,
         scrollPositionKey,
-        showWebviewAction
+        showWebviewAction,
+        additionalComponents
     );
     const [fontSizeClass, setFontSizeClass] = useLocalStorage(
         "webview-font-class",
