@@ -27,3 +27,19 @@ mjx-container {
     min-width: 0px;
   }
 }
+
+.rounded-tr {
+  border-top-right-radius: var(--radius);
+}
+
+.rounded-tl {
+  border-top-left-radius: var(--radius);
+}
+
+.rounded-br {
+  border-bottom-right-radius: var(--radius);
+}
+
+.rounded-bl {
+  border-bottom-left-radius: var(--radius);
+}

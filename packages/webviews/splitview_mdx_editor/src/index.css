@@ -9,6 +9,10 @@ body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     scrollbar-width: none;
+    overscroll-behavior: none !important;
+    overscroll-behavior-block: none !important;
+    overscroll-behavior-inline: none !important;
+    overflow: hidden;
 }
 
 ::-webkit-scrollbar {

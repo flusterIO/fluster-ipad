@@ -7,6 +7,7 @@ import {
     DocsTitle,
 } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
+import { Admonition, Ul, Hl } from "./client_mdx";
 
 export default async function Page(props: {
     params: Promise<{ slug?: string[] }>;
@@ -22,8 +23,14 @@ export default async function Page(props: {
         <DocsPage toc={page.data.toc} full={page.data.full}>
             <DocsTitle>{page.data.title}</DocsTitle>
             <DocsDescription>{page.data.description}</DocsDescription>
-            <DocsBody className="prose dark:prose-invert prose-code:before:content-none prose-code:after:content-none prose-code:bg-[--shiki-light-bg] dark:prose-code:bg-[--shiki-dark-bg] [&_code_*]:text-[--shiki-light] dark:[&_code_*]:text-[--shiki-dark]">
-                <MDX components={getMDXComponents()} />
+            <DocsBody className="@container/mdx prose dark:prose-invert w-full max-w-[1080px] px-8 prose-code:before:content-none prose-code:after:content-none prose-code:bg-[--shiki-light-bg] dark:prose-code:bg-[--shiki-dark-bg] [&_code_*]:text-[--shiki-light] dark:[&_code_*]:text-[--shiki-dark]">
+                <MDX
+                    components={getMDXComponents({
+                        Admonition,
+                        Ul,
+                        Hl,
+                    })}
+                />
             </DocsBody>
         </DocsPage>
     );

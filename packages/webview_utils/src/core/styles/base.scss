@@ -2,14 +2,6 @@
 @use "./mermaid.scss";
 @use "./shared_component_styles.scss";
 
-html,
-body {
-  overscroll-behavior: none !important;
-  overscroll-behavior-block: none !important;
-  overscroll-behavior-inline: none !important;
-  overflow: hidden;
-}
-
 #editor-panel-resize-handle {
   width: 2px;
   background-color: hsl(var(--border));

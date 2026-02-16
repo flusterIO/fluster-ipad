@@ -4,6 +4,7 @@
 @source "../../../../../docs/website/**/*.{mdx,tsx,jsx,ts,js}";
 @source "../../../content/**/*.mdx";
 @source "../../../src/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../../../../../packages/webview_utils/src/**/*.{mdx,ts,tsx}";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
 @plugin "tailwindcss-animate";
@@ -82,4 +83,9 @@ body {
   * {
     border-color: hsl(var(--border));
   }
+}
+
+html,
+body {
+  overflow-y: unset;
 }

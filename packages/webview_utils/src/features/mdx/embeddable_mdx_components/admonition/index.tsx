@@ -6,6 +6,7 @@ import { AdmonitionTitleProps, AdmonitionVariant } from "./types";
 import { getPositionableClasses } from "#/mdx/mdx_utils/get_positionable_classes";
 import { cn } from "@/utils/cn";
 import { PositionableProps } from "../embeddable_component_types/positionable";
+import { inlineMdxClasses } from "../../components/inline_mdx_classes";
 
 export interface AdmonitionProps
     extends Omit<AdmonitionTitleProps, "type">,
@@ -42,7 +43,7 @@ export const Admonition = ({
     }, [foldable]);
 
     const titleComponent = useMemo(() => {
-        return <InlineMdxContent mdx={title} />;
+        return InlineMdxContent ? <InlineMdxContent mdx={title} /> : <div className={inlineMdxClasses}>{title}</div>;
     }, [title, InlineMdxContent]);
 
     return (

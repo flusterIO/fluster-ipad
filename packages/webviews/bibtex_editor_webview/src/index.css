@@ -5,6 +5,10 @@
 html,
 body {
     background-color: hsl(var(--background));
+    overscroll-behavior: none !important;
+    overscroll-behavior-block: none !important;
+    overscroll-behavior-inline: none !important;
+    overflow: hidden;
 }
 
 #root {

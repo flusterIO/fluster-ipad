@@ -6,13 +6,15 @@ import { useMediaQuery } from "react-responsive";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { type AnyWebviewAction } from "@/utils/types/any_window_event";
 import { MdxParsingErrorComponent } from "./mdx_parsing_error_component";
+import { ComponentMapItem } from "../methods/get_component_map";
 
 interface Props {
     MdxContentComponent: MDXContent;
     raw: string;
     container?: HTMLProps<HTMLDivElement>;
-    scrollPositionKey?: string
-    showWebviewHandler?: AnyWebviewAction
+    scrollPositionKey?: string;
+    showWebviewHandler?: AnyWebviewAction;
+    additionalComponents?: ComponentMapItem[]
 }
 
 export const ParsedMdxContent = ({
@@ -20,9 +22,10 @@ export const ParsedMdxContent = ({
     raw,
     container,
     scrollPositionKey,
-    showWebviewHandler
+    showWebviewHandler,
+    additionalComponents
 }: Props) => {
-    const componentMap = useComponentMap(raw);
+    const componentMap = useComponentMap(raw, additionalComponents);
     const isLandscape = useMediaQuery({
         orientation: "landscape",
     });
