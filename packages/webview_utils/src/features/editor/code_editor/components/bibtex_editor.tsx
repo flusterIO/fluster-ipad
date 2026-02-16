@@ -1,6 +1,5 @@
 import React, { useEffect, type ReactNode } from "react";
 import { CodeEditorInner } from "./code_editor";
-import { bibtex } from "@citedrive/codemirror-lang-bibtex";
 import {
     CodeEditorProvider,
     useCodeEditorContext,
@@ -64,7 +63,7 @@ const BibtexEditorInner = (): ReactNode => {
 
 export const BibtexEditor = (): ReactNode => {
     return (
-        <CodeEditorProvider initialValueKey="bibtex-editor-initial-value">
+        <CodeEditorProvider implementation="bib-editor" initialValueKey="bibtex-editor-initial-value">
             <BibtexEditorInner />
         </CodeEditorProvider>
     );

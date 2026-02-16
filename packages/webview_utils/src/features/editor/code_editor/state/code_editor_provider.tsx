@@ -167,16 +167,22 @@ export const CodeEditorContextReducer = (
 
 CodeEditorContextReducer.displayName = "CodeEditorContextReducer";
 
+
+export type CodeEditorImplementation = "bib-editor" | "mdx-editor" | "mdx-viewer"
+
 interface CodeEditorProviderProps {
     children: ReactNode;
     initialValues?: Partial<CodeEditorState>;
     initialValueKey?: string;
+    implementation: CodeEditorImplementation
 }
+
 
 export const CodeEditorProvider = ({
     children,
     initialValues,
     initialValueKey = SplitviewEditorWebviewLocalStorageKeys.InitialValue,
+    implementation
 }: CodeEditorProviderProps) => {
     const [state, dispatch] = useReducer(
         CodeEditorContextReducer,
@@ -184,11 +190,6 @@ export const CodeEditorProvider = ({
             ? { ...initialValues, ...defaultInitialCodeEditorState }
             : defaultInitialCodeEditorState,
     );
-
-    // FIXME: Remove this
-    useEffect(() => {
-        console.log("state: ", state)
-    }, [state])
 
     const [editorKeymap] = useLocalStorage(SplitviewEditorWebviewLocalStorageKeys.EditorKeymap, "base", {
         deserializer(value) {
@@ -281,7 +282,7 @@ export const CodeEditorProvider = ({
     })
 
     useEffect(() => {
-        if (state.parsedValue === null) {
+        if (state.parsedValue === null && implementation === "mdx-editor") {
             sendToSwift(SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
     }, [state.parsedValue]);

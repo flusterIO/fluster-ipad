@@ -129,11 +129,12 @@ export const CodeEditorInner = ({
                 rectangularSelection(),
             ]
         } else if (language === CodeEditorLanguage.bibtex) {
+            /* const bt = bibtex({ */
+            /*     additionalSnippets: getBibtexSnippets() */
+            /* }); */
             extensions = [
                 ...extensions,
-                bibtex({
-                    additionalSnippets: getBibtexSnippets()
-                })
+                /* bt, */
             ]
         }
         extensions = [

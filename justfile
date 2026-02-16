@@ -111,6 +111,9 @@ build_splitview_mdx_editor: build_webview_utils
 build_bibtex_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/bibtex_editor_webview build
 
+build_fluster_language_lezer:
+	./node_modules/@lezer/generator/src/lezer-generator.cjs ./packages/typescript/lezer/src/fluster/fluster_math.grammar -o ./packages/typescript/lezer/src/fluster/fluster_math_parser.js
+
 build_all_webviews: build_cross_language_all build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview build_dictionary_webview
 
 pre_ipad_build: generate_initial_launch_data build_cross_language_all generate_initial_note_paths build_fluster_swift_mdx_parser build_all_webviews

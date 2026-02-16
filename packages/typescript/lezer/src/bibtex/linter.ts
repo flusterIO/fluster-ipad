@@ -1,8 +1,7 @@
-import { Diagnostic, linter } from "@codemirror/lint";
+import { type Diagnostic, linter } from "@codemirror/lint";
 import { tidy } from "bibtex-tidy";
 
-/// BibTeX [syntax linter](#lint.Diagnostic).
-export const bibtexLinter = linter((view) => {
+export const bibtexLinter = linter((view): Diagnostic[] => {
     let diagnostics: Diagnostic[] = [];
     let currentDocText = view.state.doc.toString();
     try {

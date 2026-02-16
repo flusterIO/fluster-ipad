@@ -2,9 +2,6 @@
 
 ## Desktop
 
-- [x] Move all parsing to preParse method.
-  - [x] Remove parsing on body change and just handle it on the editor change event. THis will remove the requirement for the NoteModel in the Contentview.
-- [x] Remove `@AppStorage` from main struct to avoid modelContext issue again.
 - [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
 - [x] Fix issue with model container now that it's being passed to the secondary window.
 - [ ] Add 'escape-to-close' functionality back to command palette.
@@ -27,6 +24,18 @@
 ## Documentation
 
 - [ ] Add section to `quick_reference.mdx` about front matter.
+
+## Website
+
+> RESUME
+
+- [ ] Update article to same article as what's included in the app if all components are imported.
+
+## Language
+
+- [ ] Create package after researching architecture:
+  - [ ] [Chumsky](https://docs.rs/chumsky/latest/chumsky/guide/) for creating a parser.
+  - [ ] [Miette](https://crates.io/crates/miette) for error reporting, and possibly... at least acording to Gemini, intellisense in codemirror? It said to use the error state that includes suggestions, but that sounds sketchy before I see it.
 
 ---
 
