@@ -13,7 +13,7 @@ export const MdxStandalonePreview = (
     props: ComponentProps<typeof MdxEditorPreviewOnly>,
 ): ReactNode => {
     return (
-        <CodeEditorProvider>
+        <CodeEditorProvider implementation="mdx-viewer">
             <MdxEditorPreviewOnly {...props} />
         </CodeEditorProvider>
     )

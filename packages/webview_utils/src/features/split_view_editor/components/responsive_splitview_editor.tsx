@@ -12,7 +12,7 @@ export const ResponsiveSplitViewEditor = (): ReactNode => {
     });
     return (
         <>
-            <CodeEditorProvider>
+            <CodeEditorProvider implementation="mdx-editor">
                 {isLandscape ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly />}
                 <div className="w-full h-full flex flex-col justify-center items-center p-8 loading-main-only hide-desktop">
                     <LoadingComponent />

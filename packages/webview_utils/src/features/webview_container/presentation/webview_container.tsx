@@ -4,12 +4,12 @@ import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { setWebviewWindowBridgeFunctions } from "../state/swift_events/webview_swift_events";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import {
     ScreenDimensions,
     useScreenDimensions,
 } from "@/state/hooks/use_screen_dimensions";
 import { AnyWebviewAction } from "@/utils/types/any_window_event";
+import { WebviewContainerProvider } from "../state/webview_provider";
 
 interface WebViewContainerProps {
     children: ReactNode;
@@ -35,12 +35,11 @@ export const WebViewContainer = ({
     className,
     children,
     shrinkHeight,
-    broadcastHeightKey,
     style,
     contentContainerClasses,
     screenDimensionCalculator,
 }: WebViewContainerProps): ReactNode => {
-    const updateDocSizeTimer = useRef<NodeJS.Timeout | null>(null);
+    /* const updateDocSizeTimer = useRef<NodeJS.Timeout | null>(null); */
     const container = useRef<HTMLDivElement>(null);
     const dimensions = useScreenDimensions(screenDimensionCalculator);
     const [darkMode, setDarkMode] = useLocalStorage("dark-mode", undefined, {
@@ -72,43 +71,42 @@ export const WebViewContainer = ({
     useEventListener("set-webview-theme", (e) => {
         setTheme(e.detail);
     });
-    useEffect(() => {
-        if (!broadcastHeightKey) {
-            return;
-        }
-        const em = container.current;
-        if (!em) {
-            return;
-        }
-        const h = em.getBoundingClientRect().height;
-        if (h) {
-            sendToSwift(broadcastHeightKey, h.toString());
-        }
+    /* useEffect(() => { */
+    /*     if (!broadcastHeightKey) { */
+    /*         return; */
+    /*     } */
+    /*     const em = container.current; */
+    /*     if (!em) { */
+    /*         return; */
+    /*     } */
+    /*     const h = em.getBoundingClientRect().height; */
+    /*     if (h) { */
+    /*         sendToSwift(broadcastHeightKey, h.toString()); */
+    /*     } */
 
-        if (!broadcastHeightKey) {
-            return;
-        }
-        const observer = new MutationObserver((mutationsList) => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === "childList") {
-                    console.log(`Child change`);
-                    if (updateDocSizeTimer.current) {
-                        clearTimeout(updateDocSizeTimer.current);
-                    }
-                    updateDocSizeTimer.current = setTimeout(() => {
-                        const h = container.current?.getBoundingClientRect().height;
-                        if (h) {
-                            sendToSwift(broadcastHeightKey, h.toString());
-                        }
-                    }, 50);
-                    /* sendToSwift(broadcastHeightKey, h.toString()); */
-                }
-            }
-        });
-        observer.observe(em, {
-            childList: true,
-        });
-    }, []);
+    /*     if (!broadcastHeightKey) { */
+    /*         return; */
+    /*     } */
+    /*     const observer = new MutationObserver((mutationsList) => { */
+    /*         for (const mutation of mutationsList) { */
+    /*             if (mutation.type === "childList") { */
+    /*                 if (updateDocSizeTimer.current) { */
+    /*                     clearTimeout(updateDocSizeTimer.current); */
+    /*                 } */
+    /*                 updateDocSizeTimer.current = setTimeout(() => { */
+    /*                     const h = container.current?.getBoundingClientRect().height; */
+    /*                     if (h) { */
+    /*                         sendToSwift(broadcastHeightKey, h.toString()); */
+    /*                     } */
+    /*                 }, 50); */
+    /*                 /* sendToSwift(broadcastHeightKey, h.toString()); */
+    /*             } */
+    /*         } */
+    /*     }); */
+    /*     observer.observe(em, { */
+    /*         childList: true, */
+    /*     }); */
+    /* }, []); */
     if (darkMode === null) {
         return (
             <div className="w-full h-full flex flex-col justify-center items-center">
@@ -142,7 +140,9 @@ export const WebViewContainer = ({
                 )}
                 ref={container}
             >
-                {children}
+                <WebviewContainerProvider>
+                    {children}
+                </WebviewContainerProvider>
             </div>
             <div
                 id="loading-indicator"

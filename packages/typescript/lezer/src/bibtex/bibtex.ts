@@ -70,7 +70,6 @@ export const bibtexLanguage = LRLanguage.define({
     },
 });
 
-/// BibLaTeX Language configuration as a [dialect](https://lezer.codemirror.net/docs/ref/#lr.ParserConfig.dialect) of [BibTeX](#lang-bibtex.bibtexLanguage).
 export const biblatexLanguage = bibtexLanguage.configure(
     { dialect: "biblatex" },
     "BibLaTeX",

@@ -91,6 +91,17 @@ const config = {
             label: "Pin tailwind version",
         },
         {
+            dependencies: [
+                "@codemirror/autocomplete",
+                "@codemirror/language",
+                "@codemirror/lint",
+                "@codemirror/state",
+            ],
+            pinVersion: "^6.0.0",
+            label: "Pin codemirror to v6",
+            dependencyTypes: ["peer", "dev", "prod"],
+        },
+        {
             dependencies: ["@lezer/common", "@lezer/go", "@lezer/markdown"],
             pinVersion: "^1.0.0",
             label: "Pin lezer to latest shared peer.",

@@ -25,12 +25,19 @@ export default defineConfig({
         commonjsOptions: {
             transformMixedEsModules: true,
         },
+        rollupOptions: {
+            external: ["react", "react-dom"],
+        },
         sourcemap: true,
         emptyOutDir: true,
     },
     resolve: {
         alias: {
             path: "path-browserify",
+            "@codemirror/state": path.resolve(
+                __dirname,
+                "../../../node_modules/@codemirror/state/dist/index.cjs",
+            ),
             "@": path.resolve(__dirname, "./src/core"),
             "#": path.resolve(__dirname, "./src/features"),
         },
