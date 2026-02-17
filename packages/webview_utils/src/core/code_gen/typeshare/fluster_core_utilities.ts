@@ -60,6 +60,9 @@ export enum MdxPreviewWebviewActions {
 	ViewNoteByUserDefinedId = "view-note-by-user-def-id",
 	ViewNoteById = "view-note-by--id",
 	OnTagClick = "tag-click-event",
+	OnTopicClick = "handle-topic-click",
+	OnSubjectClick = "handle-subject-click",
+	OnCitationClick = "handle-citation-click",
 }
 
 /** From swift to typescript */
@@ -72,10 +75,10 @@ export enum MdxPreviewWebviewEvents {
 export enum NoteDetailWebviewActions {
 	RequestNoteDetailData = "request-note-detail-data",
 	SetWebviewLoaded = "set-note-detail-webview-loaded",
-	HandleTagClick = "handle-tag-click",
-	HandleTopicClick = "handle-topic-click",
-	HandleSubjectClick = "handle-subject-click",
-	HandleCitationClick = "handle-citation-click",
+	OnTagClick = "handle-tag-click",
+	OnTopicClick = "handle-topic-click",
+	OnSubjectClick = "handle-subject-click",
+	OnCitationClick = "handle-citation-click",
 }
 
 /** From swift to typescript */
@@ -95,7 +98,6 @@ export enum SplitviewEditorWebviewActions {
 	RequestParsedMdxContent = "request-parsed-mdx",
 	OnEditorChange = "on-editor-change",
 	SetWebviewLoaded = "set-editor-webview-loaded",
-	OnTagClick = "tag-click-event",
 	SetIsLandscape = "set-is-landscape-view",
 }
 

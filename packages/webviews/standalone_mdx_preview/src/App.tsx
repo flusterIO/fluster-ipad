@@ -3,7 +3,7 @@ import React from "react";
 
 function App() {
     return (
-        <WebViewContainer>
+        <WebViewContainer className="h-fit" contentContainerClasses="h-fit">
             <MdxStandalonePreview className={"px-6 pb-12 pt-8"} />
         </WebViewContainer>
     );

@@ -13,16 +13,16 @@ pub enum NoteDetailWebviewActions {
     SetWebviewLoaded,
     #[serde(rename = "handle-tag-click")]
     #[strum(to_string = "handle-tag-click")]
-    HandleTagClick,
+    OnTagClick,
     #[serde(rename = "handle-topic-click")]
     #[strum(to_string = "handle-topic-click")]
-    HandleTopicClick,
+    OnTopicClick,
     #[serde(rename = "handle-subject-click")]
     #[strum(to_string = "handle-subject-click")]
-    HandleSubjectClick,
+    OnSubjectClick,
     #[serde(rename = "handle-citation-click")]
     #[strum(to_string = "handle-citation-click")]
-    HandleCitationClick,
+    OnCitationClick,
 }
 
 /// From swift to typescript

@@ -20,6 +20,15 @@ pub enum MdxPreviewWebviewActions {
     #[serde(rename = "tag-click-event")]
     #[strum(to_string = "tag-click-event")]
     OnTagClick,
+    #[serde(rename = "handle-topic-click")]
+    #[strum(to_string = "handle-topic-click")]
+    OnTopicClick,
+    #[serde(rename = "handle-subject-click")]
+    #[strum(to_string = "handle-subject-click")]
+    OnSubjectClick,
+    #[serde(rename = "handle-citation-click")]
+    #[strum(to_string = "handle-citation-click")]
+    OnCitationClick,
 }
 
 /// From swift to typescript

@@ -61,6 +61,9 @@ public enum MdxPreviewWebviewActions: String, Codable {
 	case viewNoteByUserDefinedId = "view-note-by-user-def-id"
 	case viewNoteById = "view-note-by--id"
 	case onTagClick = "tag-click-event"
+	case onTopicClick = "handle-topic-click"
+	case onSubjectClick = "handle-subject-click"
+	case onCitationClick = "handle-citation-click"
 }
 
 /// From swift to typescript
@@ -73,10 +76,10 @@ public enum MdxPreviewWebviewEvents: String, Codable {
 public enum NoteDetailWebviewActions: String, Codable {
 	case requestNoteDetailData = "request-note-detail-data"
 	case setWebviewLoaded = "set-note-detail-webview-loaded"
-	case handleTagClick = "handle-tag-click"
-	case handleTopicClick = "handle-topic-click"
-	case handleSubjectClick = "handle-subject-click"
-	case handleCitationClick = "handle-citation-click"
+	case onTagClick = "handle-tag-click"
+	case onTopicClick = "handle-topic-click"
+	case onSubjectClick = "handle-subject-click"
+	case onCitationClick = "handle-citation-click"
 }
 
 /// From swift to typescript
@@ -96,7 +99,6 @@ public enum SplitviewEditorWebviewActions: String, Codable {
 	case requestParsedMdxContent = "request-parsed-mdx"
 	case onEditorChange = "on-editor-change"
 	case setWebviewLoaded = "set-editor-webview-loaded"
-	case onTagClick = "tag-click-event"
 	case setIsLandscape = "set-is-landscape-view"
 }
 

@@ -53,10 +53,10 @@ struct NoteDetailWebview: View {
         )!,
         messageHandlerKeys: [
           NoteDetailWebviewActions.requestNoteDetailData.rawValue,
-          NoteDetailWebviewActions.handleTagClick.rawValue,
-          NoteDetailWebviewActions.handleTopicClick.rawValue,
-          NoteDetailWebviewActions.handleSubjectClick.rawValue,
-          NoteDetailWebviewActions.handleCitationClick.rawValue
+          NoteDetailWebviewActions.onTagClick.rawValue,
+          NoteDetailWebviewActions.onTopicClick.rawValue,
+          NoteDetailWebviewActions.onSubjectClick.rawValue,
+          NoteDetailWebviewActions.onCitationClick.rawValue
         ],
         messageHandler: messageHandler,
         onLoad: onLoad
@@ -88,13 +88,13 @@ struct NoteDetailWebview: View {
         Task(priority: .high) {
           await self.onLoad()
         }
-      case NoteDetailWebviewActions.handleTagClick.rawValue:
+      case NoteDetailWebviewActions.onTagClick.rawValue:
         self.handleTagClick(tagBody: msgBody as! String)
-      case NoteDetailWebviewActions.handleTopicClick.rawValue:
+      case NoteDetailWebviewActions.onTopicClick.rawValue:
         self.handleTopicClick(topicValue: msgBody as! String)
-      case NoteDetailWebviewActions.handleSubjectClick.rawValue:
+      case NoteDetailWebviewActions.onSubjectClick.rawValue:
         self.handleSubjectClick(subjectValue: msgBody as! String)
-      case NoteDetailWebviewActions.handleCitationClick.rawValue:
+      case NoteDetailWebviewActions.onCitationClick.rawValue:
         self.handleCitationClick(citationId: msgBody as! String)
       default:
         return

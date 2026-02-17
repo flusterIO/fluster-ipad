@@ -1,5 +1,4 @@
 import { NoteDetailWebviewActions, NoteDetailWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities';
-import { H3 } from '@/shared_components/typography/typography';
 import { sendToSwift } from '@/utils/bridge/send_to_swift';
 import React, { useEffect, useMemo, type ReactNode } from 'react'
 import { NoteDetailCitationBuffer, NoteDetailDataBuffer } from '@/code_gen/flat_buffer/mdx-serialization/note-details';
@@ -84,7 +83,7 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                             <Subtitle className="w-fit">Topic</Subtitle>
                             <TaggableBadge
                                 taggableValue={topic}
-                                clickAction={NoteDetailWebviewActions.HandleTopicClick}
+                                clickAction={NoteDetailWebviewActions.OnTopicClick}
                             />
                         </div>
                     ) : null}
@@ -93,7 +92,7 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                             <Subtitle className="w-fit">Subject</Subtitle>
                             <TaggableBadge
                                 taggableValue={subject}
-                                clickAction={NoteDetailWebviewActions.HandleSubjectClick}
+                                clickAction={NoteDetailWebviewActions.OnSubjectClick}
                             />
                         </div>
                     ) : null}
@@ -106,7 +105,7 @@ export const NoteDetailSheet = ({ data }: { data: NoteDetailDataBuffer }): React
                                     onClick={() => {
                                         const b = t.body()
                                         if (b !== null) {
-                                            sendToSwift(NoteDetailWebviewActions.HandleTagClick, b)
+                                            sendToSwift(NoteDetailWebviewActions.OnTagClick, b)
                                         } else {
                                             console.error("No tag body found")
                                         }
