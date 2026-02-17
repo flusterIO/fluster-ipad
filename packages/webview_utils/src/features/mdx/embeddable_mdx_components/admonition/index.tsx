@@ -19,6 +19,10 @@ export interface AdmonitionProps
     children: ReactNode;
     /// InlineMdxContent are passed in automatically in the component map.
     InlineMdxContent: FC<{ mdx: string }>;
+    classes?: {
+        container?: string
+        body?: string
+    }
 }
 
 export const Admonition = ({
@@ -28,6 +32,7 @@ export const Admonition = ({
     foldable,
     InlineMdxContent,
     title: _title,
+    classes = {},
     ...props
 }: AdmonitionProps): ReactNode => {
     const [open, setOpen] = useState(foldable ? !folded : true);
@@ -50,7 +55,7 @@ export const Admonition = ({
         <motion.div
             initial={folded && foldable ? "folded" : "open"}
             animate={open ? "open" : "folded"}
-            className={cn("my-4 overflow-hidden", getPositionableClasses(props))}
+            className={cn("my-4 overflow-hidden", getPositionableClasses(props), classes.container)}
         >
             {foldable ? (
                 <FoldableAdmonitionTitle
@@ -67,7 +72,7 @@ export const Admonition = ({
                 </AdmonitionTitle>
             )}
             <motion.div
-                className="rounded-bl rounded-br border-l border-b border-r bg-card text-card-foreground relative"
+                className={"rounded-bl rounded-br border-l border-b border-r bg-card text-card-foreground relative"}
                 variants={{
                     folded: {
                         height: 0,
@@ -82,7 +87,7 @@ export const Admonition = ({
                     bounce: 0,
                 }}
             >
-                <div className="p-4 [&>p]:my-0">{children}</div>
+                <div className={cn("p-4 first:mt-0 last:mb-0 admonitionBody", classes.body)}>{children}</div>
             </motion.div>
         </motion.div>
     );

@@ -5,11 +5,14 @@ ignore_parsers:
 id: onTheGravitationalNatureOfTime
 ---
 
+<Admonition
+    title="You found this!"
+    type="info"
+    dropdown
+    foldable
+>
 
-<Admonition title="Ok, so you chose to read this..." type="info" dropdown foldable>
-***Thank you!*** 
-
-I was living in my car for 3 years and 4 months while working on this model, and I'm typing this now from a homeless shelter. This model is too important to pass by, and I'm thankful that you're open minded enough to consider the possibilities.
+This is actually why Fluster exists. A few years ago I was reading over some of Einstein's work for probably the 20th time when I had a realization. He made an assumption that made far more sense before our observations that give us cosmic inflation and the Big Bang model. Einstein was insistent on a Universe that is not expanding early in his career, and I believe that led him to miss an obvious solution to several paradoxes that arise from his model.
 
 I've tried the academic approach previously, so now I'm just going to assume that everybody reading this has zero knowledge of relativity and walk you all the way through to understanding the flaws in our current interpretations and the solutions that I am proposing. Keep an open mind, think about the concepts deeply, and by the end of this I hope that some of you will see the Universe in a new light. 
 
@@ -168,12 +171,29 @@ This means that we can now solve $\gamma$ for $v$ to find
 
 $$
 \begin{align}
-v_{\omega} = \sqrt{c - \frac{1}{\gamma}} \Rightarrow \sqrt{c - \frac{1}{\left( 1 + G \frac{M_{\oplus}}{R_{\oplus}^3} \right)^2}} = 528.142 \ \frac{\text{km}}{\text{sec}}
+v_{\omega} = \sqrt{c - \frac{1}{\gamma}} 
+\end{align}
+$$
+
+And since $\xi \equiv \gamma$, we can substitute:
+
+$$
+\begin{align}
+v_{\omega} = \sqrt{c - \frac{1}{\xi}} \Rightarrow \sqrt{c - \frac{1}{\left( 1 + G \frac{M_{\oplus}}{R_{\oplus}^3} \right)^2}} = 528.142 \ \frac{\text{km}}{\text{sec}}
 \end{align}
 $$
 
 
-The above value falls almost [perfectly on top of probability curves](https://www.flusterapp.com/docs/my_work/on_the_gravitational_nature_of_time) found through direct observation, but we're not done! We can derive our kinematic velocity too.
+The above value falls almost perfectly on top of probability curves found through direct observation, but we're not done! We can derive our kinematic velocity too.
+
+
+<div className="w-full flex flex-col justify-center items-center">
+<img 
+    src="/assets/diagrams/peculiarVelocity_probabilityCurve.png"
+    className="max-w-[min(450px,90%)] w-full h-auto max-h-screen object-contain"
+/>
+        <div className="text-sm text-center text-muted-foreground max-w-[min(450px,90%)]">Image demonstrating the consistency of this value with observation. Taken from <a href="https://doi.org/10.1111/j.1365-2966.2008.13239.x">Gordon & Land</a></div>
+</div>
 
 #### Kinematic Velocity
 
@@ -183,7 +203,7 @@ $$
 p_{\alpha} = \left( x_{\alpha},\ y_{\alpha},\ z_{\alpha},\ t_{\alpha} \right) = \left( 0,\ 0,\ 0,\ 0 \right)
 $$
 
-This point $p_{\alpha}$ now would be expanded to contain the entire Universe as the Big Bang model describes, but there is one key difference in the model I am proposing: This point exists concurrently to our own, separated only by some deviation across this density axis. In other words, the 'dough' started out as the ultra-dense early Universe that gives us the Big Bang model, but that 'dough' will be the size of the Universe at which ever time is in question. The 'dough' ***is*** the Universe. 
+This point $p_{\alpha}$ now would be expanded to contain the entire Universe as the Big Bang model describes, but there is one key difference in the model I am proposing: This point exists concurrently to our own, separated only by some deviation across this density axis. In other words, the 'dough' started out as the ultra-dense early Universe that gives us the Big Bang model, but that 'dough' will be the size of the Universe at which ever time is in question. The 'dough' ***is*** the Universe, but unlike our analogy, the existence of different density states is concurrent, giving us a _real_ Euclidean distance to this point.
 
 This concurrent nature of time should be pretty self evident, even in existing models of relativity and, I argue, has been demonstrated [experimentally](https://en.wikipedia.org/wiki/Hafele%E2%80%93Keating_experiment). Consider two observers, $O_{a}$ and $O_{b}$. If $O_{a}$ and $O_{b}$ are initially very near one another so that they come close to sharing the same coordinates, $O_{a}$ and $O_{b}$ would exist at a shared time coordinate. If $O_{b}$ however was to be set into motion, $\gamma$ is applied, making it so that $O_{b}$ has progressed further along the time axis than $O_{a}$. While both existed once at a shared position along our temporal axis, they now exist concurrently at different time coordinates.
 
@@ -191,14 +211,14 @@ If we modify the equations above so we instead define $g$ not as proportional to
 
 So let us slightly modify the equation for our cosmological velocity to take into account this proportionality to motion, removing the dependence on time. This in turn removes the expansion of the 'dough', giving us our kinematic velocity.
 
-First though, we must define a 'time equivalent' quantity, since we are removing time from the equation (literally and figuratively).
+First though, we must define a 'time equivalent' quantity, since we are removing time from the equation.
 
 
 **Time equivalent quantities:**
 
 <Admonition title="For the math types" type="warn" foldable>
 
-$\dot{x}$ does not indicate a time derivative in the traditional sense. Instead, it indicates a ***fundamental*** change in displacement. This occupies the role that time previously held as a driving rate of change instead of a rate of change that is proportional to another. In the model being proposed _motion_ occupies this 4th fundamental rate of change, while the 4th temporal coordinate is indicated by a coordinate along the spatial density axis this model demonstrates.
+$\dot{x}$ does not indicate a time derivative in the traditional sense. Instead, it indicates a ***fundamental*** change in displacement. This occupies the role that time previously held as a driving rate of change instead of a rate of change that is proportional to another. In the model being proposed _motion_ occupies this 4th fundamental rate of change, while the 4th temporal coordinate is indicated by a coordinate along the spatial density axis this model demonstrates. Not only is time an emergent quantity, it's an emergent axis that arises from the dilation of space induced by motion along the 3 spatial dimensions.
 
 To demonstrate this equivalence, let's consider the proposed $\xi$. Since $\xi$ and $\gamma$ represent the same process in different reference frames, lets set them to be equivalent.
 
@@ -247,7 +267,7 @@ $$
 \end{align}
 $$
 
-In other words, $\xi \equiv \gamma$ when $v = v_{\omega}$, with all quantities being consistent with observation.
+In other words, $\xi \approx \gamma$ when $v = v_{\omega}$, with all quantities being consistent with observation and apparently indicative of a near-equilibrium state.
 
 
 </Admonition>
@@ -264,7 +284,7 @@ $$
 
 This notation is likely confusing, so let me explain. The denominator indicates the change in displacement integrated over a single unit of "time", giving a measure of length equivalent to the velocity in units of length, while the subscript $p$ indicates an integral that continues to grow as the Universe progress temporally.
 
-To put this in human language, there is no time anymore. There is only motion _through_ the "dough", and motion _of_ the "dough". When each small motion _through_ the "dough" is added up over all of the time in question, we get $\int_p \dot{x}$. This number will be proportional to time in our standard units of measure, but there is no need for time in the physical sense. Our attribution of time is largely arbitrary, albeit proportional to the rate of cosmic inflation as we currently define cosmic inflation as being proportional to time. This relationship of course becomes inverse, but this is irrelevant as $ds/dt = 1$. Since the dilation of space _is_ time, this ratio will always be 1, making the inverse of this relationship irrelevant. This is precisely why gravity lacks any apparent [aberration](https://en.wikipedia.org/wiki/Aberration_(astronomy)), why the dilation of space remains hidden from us due to our co-motion along this density axis, and why Earth, being in a near equilibrium position produces an excess dilation of space at the poles due to the lack of centripetal force that precisely cancels out the excess dilation of space due to motion at the equator.
+To put this in human language, there is no time anymore. There is only motion _through_ the "dough", and motion _of_ the "dough". When each small motion _through_ the "dough" is added up over all of the time in question, we get $\int_p \dot{x}$. This number will be proportional to time in our standard units of measure, but there is no need for time in the physical sense. Our attribution of time is largely arbitrary, albeit proportional to the rate of cosmic inflation as we currently define cosmic inflation as being proportional to time. This relationship of course becomes inverse, but this is irrelevant as $ds/dt = 1$ locally. The difference between local and non-local spatial dilation is what gives rise to the ***observable*** cosmic inflation and the Hubble parameter. Since the dilation of space _is_ time, this ratio will always be 1, making the inverse of this relationship irrelevant. This is precisely why gravity lacks any apparent [aberration](https://en.wikipedia.org/wiki/Aberration_(astronomy)), why the dilation of space remains hidden from us due to our co-motion along this density axis, and why Earth, being in a near equilibrium position produces an excess dilation of space at the poles due to the lack of centripetal force that precisely cancels out the excess dilation of space due to motion at the equator.
 
 **Time Derivative Equivalent:**
 
@@ -283,7 +303,7 @@ To put this simply, we can derive an exactly proportional time-equivalent deriva
 **Applying the time equivalent quantities to find our kinematic velocity:**
 
 
-If $\delta$ is the dilation of space in it's derivative form, let's apply the time equivalent derivative to this equation. This will make this equation proportional to motion, not time, in turn removing the motion which is only secondary to the dilation of space.
+If $\delta$ is the dilation of space in it's derivative form, let's apply the time equivalent derivative to this equation. This will make this equation proportional to motion, not time, in turn removing the motion which is only secondary to the dilation of space leaving us with only the motion that is relative to the spatial system local to the observer.
 
 Since $\delta$ in traditional models is proportional to time, $\delta$ in it's current form represents the dilation of a small quantity of space over a single unit of time, whatever the unit of time applied to $\delta$ may be.[^4] Since $v$ is also proportional to a single unit of "time", we can find a proportional value of
 
@@ -314,7 +334,7 @@ For the math types out there, it is important to note that the integral of $\tau
 
 ### Pound & Rebka
 
-The [Pound-Rebka](https://en.wikipedia.org/wiki/Pound%E2%80%93Rebka_experiment)[[cite:PoundRebka]] experiment was an experiment carried out at Harvard in which researchers setup a light clock, not too dissimilar from the one we've setup in our previous thought experiment. The difference (at least the difference that matters) is that they moved the two 'mirrors' apart from each other at a velocity that would perfectly cancel out the [Doppler shift](https://en.wikipedia.org/wiki/Doppler_effect) induced by gravity. They found a result of 
+The [Pound-Rebka](https://en.wikipedia.org/wiki/Pound%E2%80%93Rebka_experiment) experiment was an experiment carried out at Harvard in which researchers setup a light clock, not too dissimilar from the one we've setup in our previous thought experiment. The difference (at least the difference that matters) is that they moved the two 'mirrors' apart from each other at a velocity that would perfectly cancel out the [Doppler shift](https://en.wikipedia.org/wiki/Doppler_effect) induced by gravity. They found a result of 
 
 $$
 \begin{align}
@@ -339,11 +359,21 @@ Further, since both $h$ and $c$ would dilate proportionally to $\xi$ in the mode
 
 ### Bullet Cluster
 
-> Image hosted by [Caltech](https://ned.ipac.caltech.edu/level5/March15/Roos/Roos15.html). As if it's not obvious, they have no affiliation with this app or this model.
+> 
 
 The bullet cluster is a pair of galaxy clusters rapidly approaching each other. The extreme relative velocities accompanied by the extreme masses of each galaxy cluster give rise to a phenomenon that current models of relativity can't explain: The mass we see does not align with the gravitational lens.
 
-![Bullet Cluster](https://ned.ipac.caltech.edu/level5/March15/Roos/Figures/figure18.jpg)
+
+<div className="w-full flex flex-col justify-center items-center">
+<img 
+    alt="Bullet Cluster"
+    src="https://ned.ipac.caltech.edu/level5/March15/Roos/Figures/figure18.jpg"
+    className="max-w-[min(450px,90%)] w-full h-auto max-h-screen object-contain"
+/>
+    <div className="text-sm text-center text-muted-foreground max-w-[min(450px,90%)]">
+        Image hosted by [Caltech](https://ned.ipac.caltech.edu/level5/March15/Roos/Roos15.html). As if it's not obvious, they have no affiliation with this app or this model.
+    </div>
+</div>
 
 This sort of 'washing' effect is precisely what would be expected in a model in which gravity, and in turn the gravitational lens is a function of not mass alone, but of mass and velocity.
 
@@ -373,13 +403,13 @@ $$
 
 This geometry opens an entirely new concurrent dimension that life may be spread across. It now becomes possible that life exists at some location, separated only by this density axis. If you're the super-natural type, this concurrent density axis might explain certain unexplained phenomena. Everything from ghosts to the propulsion and plausibility of extraterrestrial visitors becomes more likely if an object may exist at shared spatial coordinates, separated only by a density axis coordinate. 
 
-This model of concurrency can be extended to preclude that in order to make an object's existence linear, all that is required is a 4-dimensional coordinate for each density state. As space itself dilating gives rise to a sort of higher-order time, our motion along this density axis gives rise to time as we experience it. That is to say that we our in motion along an axis that is in motion itself. This model of concurrency does not explicitly require that an object must follow a linear path in 3-dimensional space. While the temporal axis in this model is not orthogonal, this density axis shares many properties with our 3 spatial coordinates. There is nothing to prohibit an object from traveling backwards in time, so long as the progression of $\Psi$ (below) progresses linearly (down to the Plank scale) towards $\infty$.
+This model of concurrency can be extended to preclude that in order to make an object's existence linear, all that is required is a 4-dimensional coordinate for each density state. As space itself dilating gives rise to a sort of higher-order time, our motion along this density axis gives rise to time as we experience it. That is to say that we are in motion along an axis that is in motion itself. This model of concurrency does not explicitly require that an object must follow a linear path in 3-dimensional space. While the temporal axis in this model is not orthogonal, this density axis shares many properties with our 3 spatial coordinates. There is nothing to prohibit an object from traveling backwards in time, so long as the progression of $\Psi$ (below) progresses linearly (down to the Plank scale) towards $\infty$.
 
-In other words, as the Universe expands there exists a (assumingly linear, or at least linear down to the Plank scale) density axis with $n$ possible density states. Of course $n \approx \infty$ if this axis is truly linear, but even a finite $n$ trends towards $\infty$ as the Universe expands. Each object can exist at any density state $\omega$ within ${{0<\omega<n}}$ while $n \mapsto \infty$. This position of $n$ as it trends to $\infty$ gives a sort of higher-dimensional time without requiring an additional physical process. An object's existence is linear so long as it has a 4-vector for each state of $n$, with the temporal coordinate not being necessarily equivalent to $n$. This is to say that the coordinate system of the past, present and future exist concurrently. To borrow a phrase from Einstein, _"The distinction between the past, present and future is nothing but a stubbornly persistent illusion"_.[[cite:Einstein_Besso_Letter]]
+In other words, as the Universe expands there exists a (assumingly linear, or at least linear down to the Plank scale) density axis with $n$ possible density states. Of course $n \approx \infty$ if this axis is truly linear, but even a finite $n$ trends towards $\infty$ as the Universe expands. Each object can exist at any density state $\omega$ within ${{0<\omega<n}}$ while $n \mapsto \infty$. This position of $n$ as it trends to $\infty$ gives a sort of higher-dimensional time without requiring an additional physical process. An object's existence is linear so long as it has a 4-vector for each state of $n$, with the temporal coordinate not being necessarily equivalent to $n$. This is to say that the coordinate system of the past, present and future exist concurrently. To borrow a phrase from Einstein, _"The distinction between the past, present and future is nothing but a stubbornly persistent illusion"_.
 
 I will now refer to this progression of $n \mapsto \infty$ as $\Psi$. $\Psi$ is equivalent to the least dense state possible at any instant.
 
-In regards to the super-evolved galaxies described above, there is no reason to infer that _our_ origin at $p_{\alpha}$ was concurrent with another distant body. A body may have existed at this more dense state for a much longer dilation of $\Psi$, allowing for this seemingly excess temporal progression, and this body may have existed long before our own origins at $p_{\alpha}$. If this axis is concurrent, there is no reason to believe that the instant we were at $p_{\alpha}$ was concurrent to any other body. This is to say that our reliance on distance to determine the age of a body is completely flawed. There is no requirement that the distant body that emitted the light we are observing was existing at a shared temporal coordinate when it emitted the photon being received if the body's were not initially concurrent and travelling on a nearly identical trajectory at a similar velocity.
+In regards to the super-evolved galaxies described above, there is no reason to infer that _our_ origin at $p_{\alpha}$ was concurrent with another distant body. A body may have existed at this more dense state for a much longer dilation of $\Psi$, allowing for this seemingly excess temporal progression, and this body may have existed long before our own origins at $p_{\alpha}$. If this axis is concurrent, there is no reason to believe that the instant we were at $p_{\alpha}$ was concurrent to any other body. This is to say that our reliance on distance and even redshift to determine the age of a body is flawed in cases of extreme mass or velocities. There is no requirement that the distant body that emitted the light we are observing was existing at a shared temporal coordinate when it emitted the photon being received if the body's were not initially concurrent and travelling on a nearly identical trajectory at a similar velocity.
 
 To summarize, I believe that our position along this proposed density axis exists as a sort of yet unresolved equilibrium solution. This may resolve the fine-tuning paradox while opening the door to a completely new dimension of travel with sufficient technological advancements.
 
@@ -477,7 +507,7 @@ And most significantly, _nothing_ can be proportional to time. The implications 
 
 Now that you understand the principles of relativity, lets go through a thought experiment: Let there be two observers, $A$ and $B$. Let these two observers agree that $B$ should travel at some agreed upon velocity $v$ between two arbitrary points in space, $p_{1}$ and $p_{2}$. At $p_{2}$ place a time keeping device that remains visible from $p_{1}$. As $A$ remains at $p_{1}$ and watches $B$ in motion between $p_{1}$ and $p_{2}$, at what time will $B$ reach $p_{2}$? 
 
-Surely both observers must agree on the time at which $B$ reaches $p_{2}$, which I will now call $t_{\omega}$. If we were to place a camera at $p_{2}$ that captures $B$ arriving at $p_{2}$, this image must agree with the time $A$ observes $B$ reach $p_{2}$ since there are no relativistic effects impacting the image returned from $p_{2}$ to $A$ at $p_{1}$. We also ***know*** that $\gamma$ must apply to this equation. [Pound & Rebka](https://en.wikipedia.org/wiki/Pound%E2%80%93Rebka_experiment)[[cite:PoundRebka]], and [Ives & Stillwell](https://en.wikipedia.org/wiki/Ives%E2%80%93Stilwell_experiment)[[cite:IveStillwell]] have both demonstrated this additional factor of $\gamma$ experimentally.
+Surely both observers must agree on the time at which $B$ reaches $p_{2}$, which I will now call $t_{\omega}$. If we were to place a camera at $p_{2}$ that captures $B$ arriving at $p_{2}$, this image must agree with the time $A$ observes $B$ reach $p_{2}$ since there are no relativistic effects impacting the image returned from $p_{2}$ to $A$ at $p_{1}$. We also ***know*** that $\gamma$ must apply to this equation. [Pound & Rebka](https://en.wikipedia.org/wiki/Pound%E2%80%93Rebka_experiment), and [Ives & Stillwell](https://en.wikipedia.org/wiki/Ives%E2%80%93Stilwell_experiment) have both demonstrated this additional factor of $\gamma$ experimentally.
 
 So if $t_{\omega}$ must be $t_{0} + d/v \gamma$ where $d$ is the distance between $p_{1}$ and $p_{2}$, $t_{0}$ the initial time, and $v$ is the ***agreed upon*** velocity, the only possible solution to the $d=vt \gamma$ equivalence is that _distance_ dilates in the coordinate system of $B$ and that $A$ and $B$ <Ul yellow>can't</Ul> agree upon a velocity. If both $A$ and $B$ must agree on the time at which $B$ reaches $p_{2}$ and this time must be extended by an additional factor of $\gamma$, then the agreed upon velocity produces an elongated distance while the velocity decreases by a factor of $1/\gamma$ in the coordinate system of $A$ to accommodate a $d$ that is not elongated by $\gamma$. It's as if there exists some sort of drag induced by the more dense coordinate system, and in a manner similar to the way in which 4-vectors remain constant in traditional models of relativity, $d/v$ remains constant irrespective of coordinate system.
 
