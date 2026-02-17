@@ -28,9 +28,8 @@
 
 ## Website
 
-> RESUME
-
-- [ ] Update article to same article as what's included in the app if all components are imported.
+- [x] Update article to same article as what's included in the app if all components are imported.
+- [ ] Fix admonition padding issue on website and now probably in the main app.
 
 ## Language
 
