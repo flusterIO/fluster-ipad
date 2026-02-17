@@ -56,7 +56,13 @@ struct MainViewSwitch: View {
           .navigationTitle("Markdown")
       case .globalBibliography:
         GlobalBibliographyPageView()
-          .navigationTitle("Bibliography")
+          .navigationTitle("Shared Bibliography")
+      case .editingNoteBibliography:
+        EditingNoteBibliographyPageView()
+          .navigationTitle("Note Bibliography")
+      case .editingNoteDetails:
+        NoteDetailWebview()
+            .navigationTitle("Note Details")
       case .bookmarks:
         BookmarksPageView()
           .navigationTitle("Bookmarks")
