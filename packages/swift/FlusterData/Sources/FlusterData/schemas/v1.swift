@@ -344,6 +344,73 @@ extension AppSchemaV1 {
         return self.markdown.preParsedBody ?? ""
       }
     }
+    public func toNoteDetailsByteArray() -> [UInt8] {
+      var builder = FlatBufferBuilder(initialSize: 1024)
+      var noteIdOffset = builder.create(string: self.id)
+      var titleOffset = builder.create(
+        string: self.markdown.title ?? "No title found"
+      )
+      var tagVectorOffset: [Offset] = []
+
+      for t in self.tags {
+        let x = MdxSerialization_TagResultBuffer.createTagResultBuffer(
+          &builder,
+          bodyOffset: builder.create(string: t.value)
+        )
+        tagVectorOffset.append(x)
+      }
+
+      var citationsVectorOffset: [Offset] = []
+
+      for (idx, citation) in self.citations.enumerated() {
+        let citationOffset =
+          MdxSerialization_NoteDetails_NoteDetailCitationBuffer.createNoteDetailCitationBuffer(
+            &builder,
+            idOffset: builder.create(string: citation.citationKey ?? citation.id),
+            bodyOffset: builder.create(string: citation.data),
+            idx: UInt8(idx)
+          )
+        citationsVectorOffset.append(citationOffset)
+      }
+
+      let dateFormatter = RelativeDateTimeFormatter()
+      dateFormatter.unitsStyle = .full
+      dateFormatter.dateTimeStyle = .named
+      let details =
+        MdxSerialization_NoteDetails_NoteDetailDataBuffer
+        .createNoteDetailDataBuffer(
+          &builder,
+          noteIdOffset: noteIdOffset,
+          titleOffset: titleOffset,
+          summaryOffset: builder.create(string: self.markdown.summary),
+          topicOffset: builder.create(
+            string: self.topic?.value
+          ),
+          subjectOffset: builder.create(
+            string: self.subject?.value
+          ),
+          tagsVectorOffset: builder.createVector(
+            ofOffsets: tagVectorOffset
+          ),
+          citationsVectorOffset: builder.createVector(
+            ofOffsets: citationsVectorOffset
+          ),
+          lastModifiedStringOffset: builder.create(
+            string: dateFormatter.localizedString(
+              for: self.utime,
+              relativeTo: .now
+            )
+          ),
+          lastReadStringOffset: builder.create(
+            string: dateFormatter.localizedString(
+              for: self.lastRead,
+              relativeTo: .now
+            )
+          )
+        )
+      builder.finish(offset: details)
+      return builder.toBytesArray()
+    }
   }
   @Model
   public class DictionaryEntryModel: Identifiable {

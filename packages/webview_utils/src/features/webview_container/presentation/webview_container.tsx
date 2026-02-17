@@ -121,7 +121,7 @@ export const WebViewContainer = ({
                 "max-w-screen w-screen",
                 shrinkHeight ? "h-fit" : "h-screen min-h-fit",
                 className,
-                darkMode === "true" && "dark !bg-black",
+                darkMode === "true" && "dark",
             )}
             style={{
                 ...style,

@@ -49,7 +49,7 @@ struct MdxContentWebview: View {
           subdirectory: "standalone_mdx_preview"
         )!,
         messageHandlerKeys: [
-          SplitviewEditorWebviewActions.onTagClick.rawValue,
+          MdxPreviewWebviewActions.onTagClick.rawValue,
           SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
           SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
           MdxPreviewWebviewActions.requestNoteData.rawValue

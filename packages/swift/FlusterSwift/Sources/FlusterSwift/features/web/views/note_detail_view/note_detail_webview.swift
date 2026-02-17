@@ -145,7 +145,6 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
         entry.citationKey == citationId
       })
     if let res = try? self.modelContext.fetch(descriptor) {
-      print("Here... ", res)
       let entry = res.first!
       self.fullScreenCover = .citationByKey(citation: entry)
     }

@@ -46,4 +46,5 @@
 - [x] Make sure all iPad webviews functioning as expected, especially bibliography editor.
 - [x] Resume finish of searchability section in docs.
 - [ ] Resume MacOS app
+  - [ ] Fix issue with markdown page not scrolling, likely due to landscape setting that should now be applied to the codeEditor state.
 - [ ] Check response on StackOverflow about whitespace.
