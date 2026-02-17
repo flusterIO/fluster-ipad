@@ -34,3 +34,16 @@ body.env-ipad {
     display: none;
   }
 }
+
+
+/* Component utils that I'm too lazy to write in tailwind */
+
+.admonitionBody {
+  &:first-child {
+    margin-top: 0px;
+  }
+
+  &:last-child {
+    margin-top: 0px;
+  }
+}
