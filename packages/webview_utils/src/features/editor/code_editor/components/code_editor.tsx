@@ -28,7 +28,6 @@ import { Prec } from "@codemirror/state";
 import { SnippetStrategy } from "../data/snippets/snippet_types";
 import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex, YAMLFrontMatter, bibtex } from "@fluster/lezer";
-import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 
 
 interface CodeEditorProps {
@@ -98,7 +97,8 @@ export const CodeEditorInner = ({
                     from: word.from,
                     options: getFlusterSnippets({
                         base: undefined,
-                        citationKeys: state.allCitationIds
+                        citationKeys: state.allCitationIds,
+                        includeEmojiSnippets: state.snippetProps.includeEmojiSnippets
                     }).filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
                     filter: true
                 };

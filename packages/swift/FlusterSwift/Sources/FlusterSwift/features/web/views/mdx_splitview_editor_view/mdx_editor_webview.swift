@@ -340,6 +340,8 @@ import WebKit
         )
         .disableAnimations()
         .frame(
+          maxWidth: .infinity,
+          maxHeight: .infinity,
           alignment: .bottom
         )
         .scrollDisabled(true)
@@ -382,9 +384,8 @@ import WebKit
         },
       )
     }
-    
-      func onLoad() async {
-          
-      }
+
+    func onLoad() async {
+    }
   }
 #endif

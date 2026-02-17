@@ -44,4 +44,6 @@
 - [x] Verify that rest of article is good
   - [x] Post article to website and verify it's good in prod.
 - [x] Make sure all iPad webviews functioning as expected, especially bibliography editor.
-- [ ] Resume finish of searchability section in docs.
+- [x] Resume finish of searchability section in docs.
+- [ ] Resume MacOS app
+- [ ] Check response on StackOverflow about whitespace.

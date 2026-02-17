@@ -1,6 +1,6 @@
+import FlusterData
 import FlusterSwift
 import SwiftUI
-import FlusterData
 
 struct MarkdownTabView: View {
   @Binding var editingNote: NoteModel?
@@ -48,6 +48,8 @@ struct MarkdownTabView: View {
           onNavigateToNote: onNavigateToNote,
           fullScreenCover: $fullScreenCover
         )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        //                .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
         // TODO: Remove this. This is just for easy development.
         .onAppear {
           if let parsedMdx = editingNote?.markdown
