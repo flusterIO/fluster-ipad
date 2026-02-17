@@ -127,8 +127,8 @@ export enum SplitviewEditorWebviewLocalStorageKeys {
 	CodeThemeDark = "editor-code-theme-dark",
 	CodeThemeLight = "editor-code-theme-light",
 	EditorKeymap = "editor-keymap",
-	ScrollPositionPortrait = "splitview-editor-scroll-position-portrait",
-	ScrollPositionLandscape = "splitview-editor-scroll-position-landscape",
+	ScrollPositionPreviewOnly = "editor-scroll-pos-preview-only",
+	ScrollPositionSplitview = "editor-scroll-pos-splitview",
 }
 
 /** From typescript to swift. */

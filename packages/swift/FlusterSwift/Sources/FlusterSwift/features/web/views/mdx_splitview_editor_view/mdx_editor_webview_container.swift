@@ -1,10 +1,10 @@
 import Combine
 import FlatBuffers
 import FlusterData
+import FlusterWebviewClients
 import SwiftData
 import SwiftUI
 import WebKit
-import FlusterWebviewClients
 
 #if os(iOS)
   @MainActor
@@ -26,7 +26,6 @@ import FlusterWebviewClients
       )
     }
     public func setEditorDarkTheme(theme: CodeSyntaxTheme) {
-        
       self.runJavascript(
         """
         window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeThemeDark.rawValue)", "\(theme.rawValue)")
@@ -95,7 +94,7 @@ import FlusterWebviewClients
       if let _editingNote = editingNote {
         self.setInitialContent(note: _editingNote)
         if let parsedBody = _editingNote.markdown.preParsedBody {
-            print("HERERERERE")
+          print("HERERERERE")
           self.setParsedEditorContentString(content: parsedBody)
         }
       }

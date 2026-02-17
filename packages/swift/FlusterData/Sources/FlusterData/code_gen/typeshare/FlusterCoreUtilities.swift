@@ -128,8 +128,8 @@ public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
 	case codeThemeDark = "editor-code-theme-dark"
 	case codeThemeLight = "editor-code-theme-light"
 	case editorKeymap = "editor-keymap"
-	case scrollPositionPortrait = "splitview-editor-scroll-position-portrait"
-	case scrollPositionLandscape = "splitview-editor-scroll-position-landscape"
+	case scrollPositionPreviewOnly = "editor-scroll-pos-preview-only"
+	case scrollPositionSplitview = "editor-scroll-pos-splitview"
 }
 
 /// From typescript to swift.
