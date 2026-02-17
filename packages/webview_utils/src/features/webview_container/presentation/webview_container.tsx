@@ -56,6 +56,9 @@ export const WebViewContainer = ({
             setDarkMode(e.detail ? "true" : "false");
         }
     });
+    useEffect(() => {
+        document.body.classList[darkMode === "true" ? "add" : "remove"]("dark")
+    }, [darkMode])
     const [theme, setTheme] = useLocalStorage("webview-theme", "fluster", {
         deserializer(value) {
             return value;
@@ -71,42 +74,6 @@ export const WebViewContainer = ({
     useEventListener("set-webview-theme", (e) => {
         setTheme(e.detail);
     });
-    /* useEffect(() => { */
-    /*     if (!broadcastHeightKey) { */
-    /*         return; */
-    /*     } */
-    /*     const em = container.current; */
-    /*     if (!em) { */
-    /*         return; */
-    /*     } */
-    /*     const h = em.getBoundingClientRect().height; */
-    /*     if (h) { */
-    /*         sendToSwift(broadcastHeightKey, h.toString()); */
-    /*     } */
-
-    /*     if (!broadcastHeightKey) { */
-    /*         return; */
-    /*     } */
-    /*     const observer = new MutationObserver((mutationsList) => { */
-    /*         for (const mutation of mutationsList) { */
-    /*             if (mutation.type === "childList") { */
-    /*                 if (updateDocSizeTimer.current) { */
-    /*                     clearTimeout(updateDocSizeTimer.current); */
-    /*                 } */
-    /*                 updateDocSizeTimer.current = setTimeout(() => { */
-    /*                     const h = container.current?.getBoundingClientRect().height; */
-    /*                     if (h) { */
-    /*                         sendToSwift(broadcastHeightKey, h.toString()); */
-    /*                     } */
-    /*                 }, 50); */
-    /*                 /* sendToSwift(broadcastHeightKey, h.toString()); */
-    /*             } */
-    /*         } */
-    /*     }); */
-    /*     observer.observe(em, { */
-    /*         childList: true, */
-    /*     }); */
-    /* }, []); */
     if (darkMode === null) {
         return (
             <div className="w-full h-full flex flex-col justify-center items-center">

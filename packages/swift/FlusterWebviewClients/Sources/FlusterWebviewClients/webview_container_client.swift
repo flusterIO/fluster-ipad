@@ -25,7 +25,9 @@ public struct WebviewContainerClient {
       evaluateJavaScript: evaluateJavaScript)
   }
   public static func setClassToBody(
-    className: String, method: DomClassMethod, evaluateJavaScript: @escaping EvalJavascriptFunc
+    className: String,
+    method: DomClassMethod,
+    evaluateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
     try await evaluateJavaScript(
       """
@@ -52,16 +54,21 @@ public struct WebviewContainerClient {
   public static func setColorScheme(
     colorScheme: ColorScheme, evaluateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
+      print("Here...")
     try await evaluateJavaScript(
       """
-      if (window && ("setDarkMode" in window)) {
+      if (typeof window !== "undefined" && ("setDarkMode" in window)) {
           window.setDarkMode(\(colorScheme == .dark ? "true" : "false"))
       } else {
-          console.log("Could not webview container functions")
+          console.log("Could not find webview container functions")
+          window?.dispatchEvent(new CustomEvent("set-dark-mode", { detail: \(colorScheme == .dark ? "true" : "false") }));
+          window.localStorage.setItem("dark-mode", \(colorScheme == .dark ? "\"true\"" : "\"false\""))
+          document?.body?.classList?.\(colorScheme == .dark ? "add" : "remove")("dark")
+      console.log("Document.body", document.body)
       }
       """)
   }
-    public static func generalOnLoad(evaluateJavaScript: @escaping EvalJavascriptFunc) async throws {
-        try await self.setLoading(isLoading: false, evaluateJavaScript: evaluateJavaScript)
-    }
+  public static func generalOnLoad(evaluateJavaScript: @escaping EvalJavascriptFunc) async throws {
+    try await self.setLoading(isLoading: false, evaluateJavaScript: evaluateJavaScript)
+  }
 }

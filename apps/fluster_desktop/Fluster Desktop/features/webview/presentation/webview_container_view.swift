@@ -14,6 +14,7 @@ func getWebViewConfig() -> WKWebViewConfiguration {
   let config = WKWebViewConfiguration()
   config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
   config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+  //    config.
   return config
 }
 
@@ -48,9 +49,9 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
       if let scrollView = webView.enclosingScrollView {
         scrollView.horizontalScrollElasticity = .none
         scrollView.verticalScrollElasticity = .none
+        scrollView.showContextHelp(false)
       }
     }
-    //        webView.scroll
     webView.navigationDelegate = context.coordinator
     webView.load(URLRequest(url: url))
     webView.isInspectable = true
@@ -104,7 +105,7 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
       print("Web content loaded...")
       if let onLoad = parent.onLoad {
-        Task {
+        Task(priority: .high) {
           await onLoad()
         }
       }
@@ -139,9 +140,6 @@ struct WebViewContainerView: View {
           .progressViewStyle(.circular)
       }
     }
-    //    .task {
-    //      await setColorScheme(colorScheme: colorScheme)
-    //    }
     .onChange(
       of: colorScheme,
       {

@@ -40,7 +40,7 @@ export const NoteDetailsBibliography = (props: NoteDetailsBibliographyProps): Re
                                 onClick={() => {
                                     // c.id is either the citationKey of the unique database uuid. The citationKey is used if one exists (it always should), and then 
                                     // the database uuid is used as a fallback.
-                                    sendToSwift(NoteDetailWebviewActions.HandleCitationClick, c.id)
+                                    sendToSwift(NoteDetailWebviewActions.OnCitationClick, c.id)
                                 }}
                             >
                                 <div className="font-bold text-lg text-foreground" dangerouslySetInnerHTML={{ __html: c.html }} />
