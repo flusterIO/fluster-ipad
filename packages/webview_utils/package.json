@@ -30,6 +30,7 @@
   ],
   "scripts": {
     "build": "wireit",
+    "build:website": "wireit",
     "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -42,6 +43,15 @@
         "dist"
       ],
       "clean": true
+    },
+    "build:lezer": {
+      "command": "cd ../typescript/lezer && pnpm build"
+    },
+    "build:website": {
+      "dependencies": [
+        "build:lezer"
+      ],
+      "command": "pnpm build"
     }
   },
   "types": "./dist/index.d.ts",
