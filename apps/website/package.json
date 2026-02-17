@@ -26,7 +26,7 @@
     },
     "wireit": {
         "build:utils": {
-            "command": "cd ../../packages/webview_utils && pnpm build"
+            "command": "cd ../../packages/webview_utils && pnpm build:website"
         },
         "build": {
             "dependencies": [
