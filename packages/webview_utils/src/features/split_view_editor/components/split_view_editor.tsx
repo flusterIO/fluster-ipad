@@ -2,7 +2,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import React, { type ReactNode } from "react";
 import { MdxEditorPreview } from "#/mdx/components/mdx_editor_preview";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { SplitviewEditorWebviewIds, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { SplitviewEditorWebviewIds } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CodeEditor } from "#/editor/code_editor/components/code_editor";
 
 export const SplitViewEditorInner = (): ReactNode => {
@@ -27,8 +27,6 @@ export const SplitViewEditorInner = (): ReactNode => {
                 <MdxEditorPreview
                     id={SplitviewEditorWebviewIds.LandscapePreview}
                     className="overflow-y-auto overflow-x-hidden h-full loading-hide"
-                    scrollPositionKeyLandscape={SplitviewEditorWebviewLocalStorageKeys.ScrollPositionLandscape}
-                    scrollPositionKeyPortrait={SplitviewEditorWebviewLocalStorageKeys.ScrollPositionPortrait}
                 />
                 <div className="w-full h-full flex flex-col justify-center items-center loading-only-flex">
                     <LoadingComponent />

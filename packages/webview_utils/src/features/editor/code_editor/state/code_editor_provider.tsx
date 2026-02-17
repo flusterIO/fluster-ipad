@@ -15,6 +15,15 @@ import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CitationResultBuffer, MdxParsingResultBuffer, TagResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
+import { useMediaQuery } from "react-responsive";
+
+
+export enum EditorView {
+    /** Set to pending initially to allow reading from media query. */
+    Pending,
+    Splitview,
+    PreviewOnly,
+}
 
 export interface CodeEditorState {
     keymap: string;
@@ -27,6 +36,7 @@ export interface CodeEditorState {
     /** pre-parsed editor content. */
     parsedValue: string | null;
     haveSetInitialValue: boolean;
+    editorView: EditorView
 }
 
 const defaultInitialCodeEditorState: CodeEditorState = {
@@ -39,6 +49,7 @@ const defaultInitialCodeEditorState: CodeEditorState = {
     tags: [],
     parsedValue: null,
     haveSetInitialValue: false,
+    editorView: EditorView.Pending
 };
 
 export const CodeEditorContext = createContext<CodeEditorState>(
@@ -75,6 +86,9 @@ type CodeEditorContextActions =
     } | {
         type: "setAllCitationIds";
         payload: string[]
+    } | {
+        type: "setEditorView",
+        payload: EditorView
     };
 
 export const CodeEditorDispatchContext = createContext<
@@ -159,6 +173,12 @@ export const CodeEditorContextReducer = (
                 tags
             };
         }
+        case "setEditorView": {
+            return {
+                ...state,
+                editorView: action.payload
+            }
+        }
         default: {
             return state;
         }
@@ -190,6 +210,17 @@ export const CodeEditorProvider = ({
             ? { ...initialValues, ...defaultInitialCodeEditorState }
             : defaultInitialCodeEditorState,
     );
+
+    const isEditorView = useMediaQuery({
+        orientation: "landscape",
+    });
+
+    useEffect(() => {
+        dispatch({
+            type: "setEditorView",
+            payload: isEditorView ? EditorView.Splitview : EditorView.PreviewOnly
+        })
+    }, [isEditorView])
 
     const [editorKeymap] = useLocalStorage(SplitviewEditorWebviewLocalStorageKeys.EditorKeymap, "base", {
         deserializer(value) {
@@ -286,6 +317,8 @@ export const CodeEditorProvider = ({
             sendToSwift(SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
     }, [state.parsedValue]);
+
+
 
     return (
         <CodeEditorContext.Provider value={state}>

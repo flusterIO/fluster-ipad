@@ -88,12 +88,12 @@ pub enum SplitviewEditorWebviewLocalStorageKeys {
     #[serde(rename = "editor-keymap")]
     #[strum(to_string = "editor-keymap")]
     EditorKeymap,
-    #[serde(rename = "splitview-editor-scroll-position-portrait")]
-    #[strum(to_string = "splitview-editor-scroll-position-portrait")]
-    ScrollPositionPortrait,
-    #[serde(rename = "splitview-editor-scroll-position-landscape")]
-    #[strum(to_string = "splitview-editor-scroll-position-landscape")]
-    ScrollPositionLandscape,
+    #[serde(rename = "editor-scroll-pos-preview-only")]
+    #[strum(to_string = "editor-scroll-pos-preview-only")]
+    ScrollPositionPreviewOnly,
+    #[serde(rename = "editor-scroll-pos-splitview")]
+    #[strum(to_string = "editor-scroll-pos-splitview")]
+    ScrollPositionSplitview,
 }
 
 #[typeshare]

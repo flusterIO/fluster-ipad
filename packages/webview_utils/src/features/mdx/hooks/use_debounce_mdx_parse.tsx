@@ -23,7 +23,7 @@ export const useDebounceMdxParse = (
     initialValue: string = "",
     debounceTimeout: number = 300,
     /// A unique key that is passed to the mdx-content-loaded event as the detail field if present.
-    contentLoadedId: AnyWebviewStorageKey = SplitviewEditorWebviewLocalStorageKeys.ScrollPositionLandscape,
+    contentLoadedId: string,
     showWebviewHandler?: AnyWebviewAction,
     additionalComponents?: ComponentMapItem[]
 ) => {

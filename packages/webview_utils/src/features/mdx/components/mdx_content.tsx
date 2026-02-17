@@ -1,27 +1,17 @@
 import { cn } from "@/utils/cn";
-import React, { HTMLProps, useEffect, type ReactNode } from "react";
+import React, { HTMLProps, useEffect, useId, type ReactNode } from "react";
 import { useDebounceMdxParse } from "../hooks/use_debounce_mdx_parse";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
-import type { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
+import type { AnyWebviewAction } from "@/utils/types/any_window_event";
 import { ComponentMapItem } from "../methods/get_component_map";
-
-const loadScrollPosition = (
-    element: HTMLElement,
-    storageKey: string,
-) => {
-    const savedPosition = localStorage.getItem(storageKey);
-    if (savedPosition) {
-        element.scrollTop = parseInt(savedPosition);
-    }
-};
+import { mdxClasses } from "./inline_mdx_classes";
 
 export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     mdx: string;
     className?: string;
     abortIfNoMath?: boolean;
     debounceTimeout?: number;
-    scrollPositionKey?: AnyWebviewStorageKey;
     showWebviewAction?: AnyWebviewAction
     additionalComponents?: ComponentMapItem[]
 }
@@ -30,16 +20,16 @@ export const MdxContent = ({
     mdx,
     className,
     abortIfNoMath,
-    scrollPositionKey,
     debounceTimeout = 300,
     showWebviewAction,
     additionalComponents,
     ...props
 }: MdxContentProps): ReactNode => {
+    const id = useId()
     const { Component, setValue } = useDebounceMdxParse(
         undefined,
         debounceTimeout,
-        scrollPositionKey,
+        id,
         showWebviewAction,
         additionalComponents
     );
@@ -66,36 +56,9 @@ export const MdxContent = ({
         /* eslint-disable-next-line  -- I hate that this rule applies to functions... */
     }, [mdx]);
 
-    const handleScroll = (e: Event): void => {
-        console.log("(e.target as HTMLElement).scrollTop.toString(): ", (e.target as HTMLElement).scrollTop.toString())
-        if (scrollPositionKey) {
-            window.localStorage.setItem(scrollPositionKey, (e.target as HTMLElement).scrollTop.toString())
-        }
-    }
-
-    const handleScrollSetup = (id: string, sk: typeof scrollPositionKey): void => {
-        console.log("handleScrollSetup id: ", id)
-        if (id && sk) {
-            const em = document.getElementById(id);
-            if (em) {
-                loadScrollPosition(em, sk);
-                em.removeEventListener("scroll", handleScroll)
-                em.addEventListener("scroll", handleScroll)
-            } else {
-                console.log(`Can't find the fucking element...`);
-            }
-        }
-    }
-
-
-    useEventListener("mdx-content-loaded", (e) => {
-        if (props.id && (e.detail.scollPositionKey === scrollPositionKey)) {
-            handleScrollSetup(props.id, scrollPositionKey)
-        }
-    })
-
     const classes = cn(
-        "mdx-content block overflow-y-hidden h-auto max-h-fit prose dark:prose-invert prose-p:text-foreground prose-code:before:content-none prose-code:after:content-none prose-code:bg-[var(--shiki-light-bg)] dark:prose-code:bg-[var(--shiki-dark-bg)] [&_code_*]:text-[var(--shiki-light)] dark:[&_code_*]:text-[var(--shiki-dark)] w-full max-w-full @container/mdx prose-code:p-2 prose-pre:bg-transparent dark:prose-pre:bg-transparent",
+        "mdx-content block overflow-y-hidden h-auto max-h-fit w-full max-w-full @container/mdx prose-code:p-2 prose-pre:bg-transparent dark:prose-pre:bg-transparent",
+        mdxClasses,
         fontSizeClass,
         className,
     );

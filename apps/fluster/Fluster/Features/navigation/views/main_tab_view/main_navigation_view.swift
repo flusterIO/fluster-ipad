@@ -69,13 +69,11 @@ struct MainView: View {
   /// and retrieve results since this encodes both user defined ids and uuids.
   let defaultNoteId: String = "welcomeToFluster"
 
-  @StateObject private var editorContainer: MdxEditorWebviewContainer = {
-    MdxEditorWebviewContainer(
-      bounce: false,
-      scrollEnabled: true,
-      onLoad: nil
-    )
-  }()
+  @StateObject private var editorContainer: MdxEditorWebviewContainer = MdxEditorWebviewContainer(
+    bounce: false,
+    scrollEnabled: true,
+    onLoad: nil
+  )
   @State private var themeManager: ThemeManager = ThemeManager(
     initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
   )
@@ -315,8 +313,8 @@ struct MainView: View {
         editorContainer.resetScrollPosition(
           containerId: "mdx-preview",
           scrollStorageKeys: [
-            SplitviewEditorWebviewLocalStorageKeys.scrollPositionLandscape.rawValue,
-            SplitviewEditorWebviewLocalStorageKeys.scrollPositionPortrait.rawValue
+            SplitviewEditorWebviewLocalStorageKeys.scrollPositionSplitview.rawValue,
+            SplitviewEditorWebviewLocalStorageKeys.scrollPositionPreviewOnly.rawValue
           ])
         if let note = editingNote {
           editorContainer.setInitialContent(note: note)
