@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FlusterData
 
 struct CollapsableSidebarSection: View {
   @Binding var open: Bool
@@ -24,7 +25,7 @@ struct CollapsableSidebarSection: View {
             },
             label: {
               HStack {
-                Image(systemName: item.icon)
+                  Image(systemName: item.icon.toSfIcon())
                 Text(item.label)
               }
               .padding(.vertical, 4)
