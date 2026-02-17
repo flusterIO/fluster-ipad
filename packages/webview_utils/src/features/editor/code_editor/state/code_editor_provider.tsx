@@ -16,7 +16,10 @@ import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CitationResultBuffer, MdxParsingResultBuffer, TagResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 import { useMediaQuery } from "react-responsive";
+import { GetSnippetProps } from "../data/snippets/snippet_types";
 
+
+type SnippetPropsState = Required<Omit<GetSnippetProps, "base" | "citationKeys">>
 
 export enum EditorView {
     /** Set to pending initially to allow reading from media query. */
@@ -37,6 +40,7 @@ export interface CodeEditorState {
     parsedValue: string | null;
     haveSetInitialValue: boolean;
     editorView: EditorView
+    snippetProps: SnippetPropsState
 }
 
 const defaultInitialCodeEditorState: CodeEditorState = {
@@ -49,7 +53,11 @@ const defaultInitialCodeEditorState: CodeEditorState = {
     tags: [],
     parsedValue: null,
     haveSetInitialValue: false,
-    editorView: EditorView.Pending
+    editorView: EditorView.Pending,
+    snippetProps: {
+        // Default snippet state.
+        includeEmojiSnippets: true
+    }
 };
 
 export const CodeEditorContext = createContext<CodeEditorState>(
@@ -89,6 +97,9 @@ type CodeEditorContextActions =
     } | {
         type: "setEditorView",
         payload: EditorView
+    } | {
+        type: "setSnippetProps",
+        payload: SnippetPropsState
     };
 
 export const CodeEditorDispatchContext = createContext<
@@ -179,6 +190,15 @@ export const CodeEditorContextReducer = (
                 editorView: action.payload
             }
         }
+        case "setSnippetProps": {
+            return {
+                ...state,
+                snippetProps: {
+                    ...state.snippetProps,
+                    ...action.payload
+                }
+            }
+        }
         default: {
             return state;
         }
@@ -198,6 +218,12 @@ interface CodeEditorProviderProps {
 }
 
 
+
+/**
+ * Still need to add the following methods from Swift:
+ * - [ ] setSnippetProps 
+ *   - Still need to create action in rust, flat buffer type and all serialization from Swift.
+ */
 export const CodeEditorProvider = ({
     children,
     initialValues,
