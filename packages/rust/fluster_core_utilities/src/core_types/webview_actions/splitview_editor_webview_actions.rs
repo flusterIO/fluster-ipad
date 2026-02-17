@@ -17,9 +17,6 @@ pub enum SplitviewEditorWebviewActions {
     #[serde(rename = "set-editor-webview-loaded")]
     #[strum(to_string = "set-editor-webview-loaded")]
     SetWebviewLoaded,
-    #[serde(rename = "tag-click-event")]
-    #[strum(to_string = "tag-click-event")]
-    OnTagClick,
     #[serde(rename = "set-is-landscape-view")]
     #[strum(to_string = "set-is-landscape-view")]
     SetIsLandscape,

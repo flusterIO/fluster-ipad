@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		79196E382F44EBEE001AEFEB /* note_detail_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79196E372F44EBEE001AEFEB /* note_detail_webview */; };
 		7931270B2F1ABA5500140215 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEDD2F1992BC00A82F5A /* FlusterMdx */; };
 		7970D3762F1FE24300A734F4 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 7970D3752F1FE24300A734F4 /* splitview_mdx_editor */; };
 		7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7970D3872F201A2F00A734F4 /* WebKit.framework */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		79196E372F44EBEE001AEFEB /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
 		7970D3752F1FE24300A734F4 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
 		7970D3872F201A2F00A734F4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		798752EA2F1810B90055ABF1 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +106,7 @@
 		798752E12F1810B90055ABF1 = {
 			isa = PBXGroup;
 			children = (
+				79196E372F44EBEE001AEFEB /* note_detail_webview */,
 				79CB006E2F40008600C7BDFB /* standalone_mdx_preview */,
 				7970D3752F1FE24300A734F4 /* splitview_mdx_editor */,
 				798752EC2F1810B90055ABF1 /* Fluster Desktop */,
@@ -262,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79196E382F44EBEE001AEFEB /* note_detail_webview in Resources */,
 				79CB006F2F40008600C7BDFB /* standalone_mdx_preview in Resources */,
 				7970D3762F1FE24300A734F4 /* splitview_mdx_editor in Resources */,
 			);

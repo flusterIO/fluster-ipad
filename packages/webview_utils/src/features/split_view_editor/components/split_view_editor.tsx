@@ -19,7 +19,7 @@ export const SplitViewEditorInner = (): ReactNode => {
             <PanelResizeHandle id="editor-panel-resize-handle" />
             <Panel
                 id="editor-output-panel"
-                className="bg-white dark:bg-black"
+                /* className="bg-white dark:bg-black" */
                 order={2}
                 defaultSize={50}
                 minSize={10}

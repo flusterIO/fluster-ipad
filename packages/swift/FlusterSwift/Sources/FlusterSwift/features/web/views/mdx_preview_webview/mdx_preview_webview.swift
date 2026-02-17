@@ -65,7 +65,7 @@ public struct MdxPreviewWebview: UIViewRepresentable {
     let controllers = [
       SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
       SplitviewEditorWebviewActions.setIsLandscape.rawValue,
-      SplitviewEditorWebviewActions.onTagClick.rawValue,
+      MdxPreviewWebviewActions.onTagClick.rawValue,
       SplitviewEditorWebviewActions.setWebviewLoaded.rawValue
 
     ]
@@ -154,7 +154,7 @@ extension MdxPreviewWebview {
       didReceive message: WKScriptMessage
     ) {
       switch message.name {
-        case SplitviewEditorWebviewActions.onTagClick.rawValue:
+        case MdxPreviewWebviewActions.onTagClick.rawValue:
           parent.handleTagClick(tagValue: message.body as! String)
         //            case "set-preview-viewport-height":
         //                if let n = NumberFormatter().number(

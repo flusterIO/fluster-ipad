@@ -75,7 +75,7 @@ import WebKit
         SplitviewEditorWebviewActions.onEditorChange.rawValue,
         SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
         SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
-        SplitviewEditorWebviewActions.onTagClick.rawValue,
+        MdxPreviewWebviewActions.onTagClick.rawValue,
         MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue,
         MdxPreviewWebviewActions.requestNoteData.rawValue
       ]
@@ -239,7 +239,7 @@ import WebKit
           case SplitviewEditorWebviewActions.setWebviewLoaded.rawValue:
             self.parent.webView.isHidden = false
             self.parent.show = true
-          case SplitviewEditorWebviewActions.onTagClick.rawValue:
+          case MdxPreviewWebviewActions.onTagClick.rawValue:
             parent.handleTagClick(tagBody: message.body as! String)
           case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
             Task {

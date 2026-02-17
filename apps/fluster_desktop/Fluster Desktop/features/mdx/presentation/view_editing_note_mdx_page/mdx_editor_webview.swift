@@ -56,7 +56,7 @@ struct MdxEditorWebview: View {
           subdirectory: "splitview_mdx_editor"
         )!,
         messageHandlerKeys: [
-          SplitviewEditorWebviewActions.onTagClick.rawValue,
+          MdxPreviewWebviewActions.onTagClick.rawValue,
           SplitviewEditorWebviewActions.onEditorChange.rawValue,
           SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
           SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue
