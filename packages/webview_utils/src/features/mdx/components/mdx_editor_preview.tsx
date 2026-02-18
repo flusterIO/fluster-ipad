@@ -38,7 +38,6 @@ export const MdxEditorPreview = ({
             return
         }
         const newProp = e.detail * (ref.current.scrollHeight - ref.current.clientHeight)
-        console.log("newProp: ", newProp)
         ref.current.scrollTop = newProp
     })
 
