@@ -28,10 +28,8 @@ public enum FlusterCategoryIcon: Codable {
         return "scribble.variable"
       case .markdown:
         return "text.document"
-      case .bibliography:
-        return "book.pages"
       case .noteDetails:
-        return "eye"
+        return "text.page.badge.magnifyingglass"
     }
   }
 }

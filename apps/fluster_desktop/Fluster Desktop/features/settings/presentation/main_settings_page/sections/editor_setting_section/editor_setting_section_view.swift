@@ -14,6 +14,8 @@ struct EditorSettingSectionView: View {
     CodeSyntaxTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
     CodeSyntaxTheme = .materialLight
+  @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private var lockEditorScroll:
+    Bool = false
 
   var body: some View {
     SettingsSection(
@@ -57,6 +59,12 @@ struct EditorSettingSectionView: View {
               Text("Dark")
             }
           )
+          SwitchGroup(
+            isOn: $lockEditorScroll, title: "Lock Editor Scroll",
+            desc:
+              "Lock the editor scroll to automatically scroll the preview portionally to the scroll position of the editor. This calculates position based on percentage so estimates may not be perfect. This feature is still finicky, but will be improved significantly once the app is released or I'm less homeless."
+          )
+          .padding(.top)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
       })

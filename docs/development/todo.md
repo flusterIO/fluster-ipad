@@ -21,6 +21,12 @@
 - [ ] Add script to set `WebviewEnvironment.IPad` so that the loading class will still be appended.
 - [ ] Make sure note can be loaded when ipad is initially in portrait view. It's currently stuck in loading mode.
 
+## Webviews
+
+### Note Details
+
+- [ ] Make sure all taggables have a 'cursor-pointer' class to indicate they are clickable.
+
 ## Documentation
 
 - [ ] Add section to `quick_reference.mdx` about front matter.
@@ -44,4 +50,5 @@
 - [ ] Resume MacOS app
   - [ ] Implement desktop app paperkit.
   - [ ] Move iPad drawing from pencilkit to paperkit for more note-taking style annotations.
+  - [ ] Get bibtex snippets working.
 - [ ] Check response on StackOverflow about whitespace.

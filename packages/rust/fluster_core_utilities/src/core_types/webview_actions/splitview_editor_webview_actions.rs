@@ -62,6 +62,9 @@ pub enum SplitviewEditorWebviewEvents {
     #[serde(rename = "mdx-parsing-success")]
     #[strum(to_string = "mdx-parsing-success")]
     EmitMdxParsingSuccess,
+    #[serde(rename = "set-webview-preview-scroll-lock")]
+    #[strum(to_string = "set-webview-preview-scroll-lock")]
+    SetWebviewPreviewScrollLock,
 }
 
 #[typeshare]

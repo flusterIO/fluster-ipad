@@ -1,3 +1,4 @@
+import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
 import { ScreenDimensions } from "@/state/hooks/use_screen_dimensions";
 
 
@@ -8,7 +9,7 @@ declare global {
         "set-webview-theme": CustomEvent<string>;
         "set-webview-font-size": CustomEvent<string>;
         "set-screen-size": CustomEvent<ScreenDimensions>;
-        "lock-editor-scroll-to-preview": CustomEvent<boolean>;
+        [SplitviewEditorWebviewEvents.SetWebviewPreviewScrollLock]: CustomEvent<boolean>
     }
     interface Window {
         setDarkMode: typeof setDarkMode;
@@ -51,7 +52,7 @@ export function setScreenSize(width: number, height: number) {
 
 const setLockWebviewScrollToPreview = (lock: boolean): void => {
     window.dispatchEvent(
-        new CustomEvent("lock-editor-scroll-to-preview", {
+        new CustomEvent(SplitviewEditorWebviewEvents.SetWebviewPreviewScrollLock, {
             detail: lock
         })
     )

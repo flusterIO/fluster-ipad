@@ -49,7 +49,7 @@ public struct MdxEditorClient {
   ) async throws {
     try await evaluateJavaScript(
       """
-      window.setLockWebviewScrollToPreview(\(lock ? "true" : "false"))
+      window.setLockEditorScrollToPreview(\(lock ? "true" : "false"))
       """)
   }
 }
