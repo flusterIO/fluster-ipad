@@ -55,6 +55,16 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     webView.navigationDelegate = context.coordinator
     webView.load(URLRequest(url: url))
     webView.isInspectable = true
+    let source = """
+      document.body?.classList.add("\(WebviewEnvironment.macOS.rawValue)")
+      """
+    let webviewEnvironmentScript = WKUserScript(
+      source: source,
+      injectionTime: .atDocumentEnd,
+      forMainFrameOnly: true
+    )
+    webView.configuration.userContentController.addUserScript(webviewEnvironmentScript)
+
     return webView
   }
 

@@ -8,7 +8,7 @@
 import Foundation
 
 public enum DefaultNoteView: String, CaseIterable {
-  case paper, markdown, editor
+  case paper, markdown, editor, details
   public func toString() -> String {
     switch self {
       case .editor:
@@ -17,6 +17,8 @@ public enum DefaultNoteView: String, CaseIterable {
         return "Markdown"
       case .paper:
         return "Paper"
+      case .details:
+        return "Details"
     }
   }
   public func toMainKey() -> MainViewKey {
@@ -27,6 +29,8 @@ public enum DefaultNoteView: String, CaseIterable {
         return .noteViewMdx
       case .paper:
         return .paper
+      case .details:
+        return .editingNoteDetails
     }
   }
 }

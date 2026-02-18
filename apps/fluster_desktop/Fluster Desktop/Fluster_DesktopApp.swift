@@ -10,6 +10,21 @@ import SwiftData
 import SwiftUI
 import UniformTypeIdentifiers
 
+struct WindowAccessor: NSViewRepresentable {
+  var color: NSColor
+
+  func makeNSView(context: Context) -> NSView {
+    let view = NSView()
+    DispatchQueue.main.async {
+      // Reaches up to the parent window
+      view.window?.backgroundColor = color
+    }
+    return view
+  }
+
+  func updateNSView(_ nsView: NSView, context: Context) {}
+}
+
 @main
 struct Fluster_DesktopApp: App {
   private var appData: AppDataContainer { AppDataContainer.shared }
@@ -17,6 +32,7 @@ struct Fluster_DesktopApp: App {
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
       ContentView()
+        .background(WindowAccessor(color: NSColor.windowBackground))
         .toolbarBackground(.hidden, for: .automatic)
     }
     .modelContainer(appData.sharedModelContainer)

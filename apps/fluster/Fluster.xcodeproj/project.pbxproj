@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		792755712F4540E2004476E6 /* Redline in Frameworks */ = {isa = PBXBuildFile; productRef = 792755702F4540E2004476E6 /* Redline */; };
 		79513C752EF3AF3700FF4885 /* Testing in Frameworks */ = {isa = PBXBuildFile; productRef = 79513C742EF3AF3700FF4885 /* Testing */; };
 		79513C772EF3AF3700FF4885 /* _TestDiscovery in Frameworks */ = {isa = PBXBuildFile; productRef = 79513C762EF3AF3700FF4885 /* _TestDiscovery */; };
 		79516C4D2EE893ED00573A77 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 79516C4C2EE893ED00573A77 /* splitview_mdx_editor */; };
@@ -61,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				792755712F4540E2004476E6 /* Redline in Frameworks */,
 				796F71232EB185380012B500 /* SVGView in Frameworks */,
 				79513C752EF3AF3700FF4885 /* Testing in Frameworks */,
 				79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */,
@@ -121,6 +123,7 @@
 				79FA32B42F1822EA0066B8B4 /* FlusterData */,
 				79FE94F82F19C8B400B15144 /* FlusterSwiftMdxParser */,
 				79D841CF2F4150EA004E992B /* FlusterWebviewClients */,
+				792755702F4540E2004476E6 /* Redline */,
 			);
 			productName = Fluster;
 			productReference = 79C33DCF2F19BC6400C25717 /* Fluster.app */;
@@ -158,6 +161,7 @@
 				79FA32B32F1822EA0066B8B4 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */,
 				79FE94F72F19C8B400B15144 /* XCLocalSwiftPackageReference "../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser" */,
 				79D841CE2F4150EA004E992B /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */,
+				7927556F2F4540E2004476E6 /* XCRemoteSwiftPackageReference "Redline" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F70FB2EB174610012B500;
@@ -455,6 +459,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7927556F2F4540E2004476E6 /* XCRemoteSwiftPackageReference "Redline" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/robb/Redline";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		79513C732EF3AF3700FF4885 /* XCRemoteSwiftPackageReference "swift-testing" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swiftlang/swift-testing";
@@ -482,6 +494,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		792755702F4540E2004476E6 /* Redline */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7927556F2F4540E2004476E6 /* XCRemoteSwiftPackageReference "Redline" */;
+			productName = Redline;
+		};
 		79513C742EF3AF3700FF4885 /* Testing */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 79513C732EF3AF3700FF4885 /* XCRemoteSwiftPackageReference "swift-testing" */;

@@ -18,7 +18,7 @@ import WebKit
   >
   {
     public func setNoteDetails(note: NoteModel) {
-      let bytes = noteModel.toNoteDetailsByteArray()
+      let bytes = note.toNoteDetailsByteArray()
       self.runJavascript(
         """
         window.dispatchEvent(

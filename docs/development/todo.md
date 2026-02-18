@@ -41,10 +41,7 @@
 
 # Today
 
-- [x] Verify that rest of article is good
-  - [x] Post article to website and verify it's good in prod.
-- [x] Make sure all iPad webviews functioning as expected, especially bibliography editor.
-- [x] Resume finish of searchability section in docs.
 - [ ] Resume MacOS app
-  - [ ] Fix issue with markdown page not scrolling, likely due to landscape setting that should now be applied to the codeEditor state.
+  - [ ] Implement desktop app paperkit.
+  - [ ] Move iPad drawing from pencilkit to paperkit for more note-taking style annotations.
 - [ ] Check response on StackOverflow about whitespace.

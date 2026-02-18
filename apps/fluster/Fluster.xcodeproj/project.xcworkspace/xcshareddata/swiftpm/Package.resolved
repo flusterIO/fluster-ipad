@@ -1,70 +1,78 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "AlertToast",
-        "repositoryURL": "https://github.com/elai950/AlertToast",
-        "state": {
-          "branch": null,
-          "revision": "b39252eacd159904afd7d718bba0afabb87f2f2f",
-          "version": "1.3.9"
-        }
-      },
-      {
-        "package": "Antlr4",
-        "repositoryURL": "https://github.com/MaxHaertwig/ANTLR4-Swift.git",
-        "state": {
-          "branch": null,
-          "revision": "0b4eed93b803c931db67cc30434b5531f72d50b1",
-          "version": "4.9.1"
-        }
-      },
-      {
-        "package": "FlatBuffers",
-        "repositoryURL": "https://github.com/google/flatbuffers.git",
-        "state": {
-          "branch": null,
-          "revision": "187240970746d00bbd26b0f5873ed54d2477f9f3",
-          "version": "25.9.23"
-        }
-      },
-      {
-        "package": "SVGView",
-        "repositoryURL": "https://github.com/exyte/SVGView",
-        "state": {
-          "branch": null,
-          "revision": "6465962facdd25cb96eaebc35603afa2f15d2c0d",
-          "version": "1.0.6"
-        }
-      },
-      {
-        "package": "swift-syntax",
-        "repositoryURL": "https://github.com/swiftlang/swift-syntax.git",
-        "state": {
-          "branch": null,
-          "revision": "4799286537280063c85a32f09884cfbca301b1a1",
-          "version": "602.0.0"
-        }
-      },
-      {
-        "package": "swift-testing",
-        "repositoryURL": "https://github.com/swiftlang/swift-testing",
-        "state": {
-          "branch": null,
-          "revision": "48a471ab313e858258ab0b9b0bf2cea55a50cefb",
-          "version": "6.2.3"
-        }
-      },
-      {
-        "package": "SwiftyBibtex",
-        "repositoryURL": "https://github.com/MaxHaertwig/SwiftyBibtex.git",
-        "state": {
-          "branch": null,
-          "revision": "b653c01e6315cf06c2c55a8396a397cdadaddccf",
-          "version": "1.0.0"
-        }
+  "originHash" : "158e2721a5f6b3c8cb6cb15c1588516bf7745496186d78309dc3e2dbd187e1d0",
+  "pins" : [
+    {
+      "identity" : "alerttoast",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/elai950/AlertToast",
+      "state" : {
+        "revision" : "b39252eacd159904afd7d718bba0afabb87f2f2f",
+        "version" : "1.3.9"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "antlr4-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MaxHaertwig/ANTLR4-Swift.git",
+      "state" : {
+        "revision" : "0b4eed93b803c931db67cc30434b5531f72d50b1",
+        "version" : "4.9.1"
+      }
+    },
+    {
+      "identity" : "flatbuffers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/flatbuffers.git",
+      "state" : {
+        "revision" : "187240970746d00bbd26b0f5873ed54d2477f9f3",
+        "version" : "25.9.23"
+      }
+    },
+    {
+      "identity" : "redline",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/robb/Redline",
+      "state" : {
+        "branch" : "main",
+        "revision" : "3da505c314d7316cc22e78eeda970b0c7f318b87"
+      }
+    },
+    {
+      "identity" : "svgview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/SVGView",
+      "state" : {
+        "revision" : "6465962facdd25cb96eaebc35603afa2f15d2c0d",
+        "version" : "1.0.6"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax.git",
+      "state" : {
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
+      }
+    },
+    {
+      "identity" : "swift-testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-testing",
+      "state" : {
+        "revision" : "48a471ab313e858258ab0b9b0bf2cea55a50cefb",
+        "version" : "6.2.3"
+      }
+    },
+    {
+      "identity" : "swiftybibtex",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MaxHaertwig/SwiftyBibtex.git",
+      "state" : {
+        "revision" : "b653c01e6315cf06c2c55a8396a397cdadaddccf",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
 }
