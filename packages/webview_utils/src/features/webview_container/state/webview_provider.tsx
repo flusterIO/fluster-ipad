@@ -1,6 +1,7 @@
 "use client"
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
+import { useEventListener } from "@/state/hooks/use_event_listener";
 import { ReactNode, createContext, useReducer, useContext } from "react";
 
 export interface WebviewContainerState {
@@ -11,7 +12,7 @@ const getInitialEnv = (): WebviewEnvironment | null => {
     if (!document.body) {
         return null
     }
-    let items = [WebviewEnvironment.IPad, WebviewEnvironment.MacOS, WebviewEnvironment.MultiPlatformDesktop]
+    const items = [WebviewEnvironment.IPad, WebviewEnvironment.MacOS, WebviewEnvironment.MultiPlatformDesktop]
     for (const item of items) {
 
         if (isWebviewOfEnv(item)) {
@@ -27,7 +28,10 @@ const defaultInitialValues: WebviewContainerState = {
 
 export const WebviewContainerContext = createContext<WebviewContainerState>(defaultInitialValues);
 
-type WebviewContainerContextActions = { type: "set-webview-environment", payload: WebviewEnvironment }
+type WebviewContainerContextActions = { type: "set-webview-environment", payload: WebviewEnvironment } | {
+    type: "set-lock-editor-scroll-to-preview",
+    payload: boolean
+}
 
 export const WebviewContainerDispatchContext = createContext<React.Dispatch<WebviewContainerContextActions>>(null!);
 
@@ -64,6 +68,13 @@ export const WebviewContainerProvider = ({ children, initialValues }: WebviewCon
             ? { ...initialValues, ...defaultInitialValues }
             : defaultInitialValues,
     );
+
+    useEventListener("lock-editor-scroll-to-preview", (e) => {
+        dispatch({
+            type: "set-lock-editor-scroll-to-preview",
+            payload: e.detail
+        })
+    })
 
     return (
         <WebviewContainerContext.Provider value={state} >

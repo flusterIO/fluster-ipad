@@ -8,12 +8,14 @@ declare global {
         "set-webview-theme": CustomEvent<string>;
         "set-webview-font-size": CustomEvent<string>;
         "set-screen-size": CustomEvent<ScreenDimensions>;
+        "lock-editor-scroll-to-preview": CustomEvent<boolean>;
     }
     interface Window {
         setDarkMode: typeof setDarkMode;
         setWebviewTheme: typeof setWebviewTheme;
         setWebViewFontSize: typeof setWebViewFontSize;
         setScreenSize: typeof setScreenSize;
+        setLockEditorScrollToPreview: typeof setLockWebviewScrollToPreview
     }
 }
 
@@ -46,9 +48,19 @@ export function setScreenSize(width: number, height: number) {
     );
 }
 
+
+const setLockWebviewScrollToPreview = (lock: boolean): void => {
+    window.dispatchEvent(
+        new CustomEvent("lock-editor-scroll-to-preview", {
+            detail: lock
+        })
+    )
+}
+
 export const setWebviewWindowBridgeFunctions = () => {
     window.setDarkMode = setDarkMode;
     window.setWebviewTheme = setWebviewTheme;
     window.setWebViewFontSize = setWebViewFontSize;
     window.setScreenSize = setScreenSize;
+    window.setLockEditorScrollToPreview = setLockWebviewScrollToPreview;
 };

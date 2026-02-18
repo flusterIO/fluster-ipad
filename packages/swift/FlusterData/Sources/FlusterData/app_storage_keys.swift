@@ -15,5 +15,6 @@ public enum AppStorageKeys: String {
     tabviewCustomization,
     hasLaunchedPreviously,
     splitViewEditorSplit,
-    silenceParsingErrors
+    silenceParsingErrors,
+    lockEditorScrollToPreview
 }

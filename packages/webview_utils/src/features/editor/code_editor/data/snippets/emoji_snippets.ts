@@ -904,6 +904,7 @@ export const getEmojiSnippets = (): SnippetItem[] => {
             strategy: SnippetStrategy.noLeadingText,
             completion: snippetCompletion(`:${item.value}:`, {
                 label: `Emoji(${item.category.toLowerCase()}): ${item.value}`,
+                boost: -50,
                 section: CompletionSections.emoji,
                 type: SnippetDefaultType.enum
             })

@@ -24,7 +24,8 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 label: "link",
                 detail: "A markdown link",
                 type: SnippetDefaultType.text,
-                section: CompletionSections.markdown
+                section: CompletionSections.markdown,
+                boost: 50
             }),
         },
         {
@@ -33,7 +34,8 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 label: "dictionary-entry",
                 detail: "Create a dictionary entry using the Fluster syntax.",
                 type: SnippetDefaultType.text,
-                section: CompletionSections.markdown
+                section: CompletionSections.markdown,
+                boost: 50
             }),
         },
         {
@@ -42,7 +44,8 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 label: "task-incomplete",
                 detail: "Creates a task that is incomplete",
                 type: SnippetDefaultType.text,
-                section: CompletionSections.markdown
+                section: CompletionSections.markdown,
+                boost: 50
             }),
         },
         {
@@ -51,6 +54,7 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 label: "task-complete",
                 detail: "Creates a task that is complete.",
                 type: SnippetDefaultType.text,
+                boost: 50,
                 section: CompletionSections.markdown
             }),
         },
@@ -60,6 +64,7 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 label: "tag",
                 detail: "Creates a tag",
                 type: SnippetDefaultType.text,
+                boost: 50,
                 section: CompletionSections.markdown
             }),
         },
@@ -69,6 +74,7 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 label: "inline-math",
                 type: SnippetDefaultType.variable,
                 detail: "Open an inline math block",
+                boost: 50,
                 section: CompletionSections.markdown
             }),
         },
@@ -78,6 +84,7 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 label: "math",
                 type: SnippetDefaultType.variable,
                 detail: "Open a math block",
+                boost: 50,
                 section: CompletionSections.markdown
             }),
 
@@ -88,6 +95,7 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 completion: snippetCompletion(`[[cite:${citationKey}]]`, {
                     label: `Citation: ${citationKey}`,
                     section: CompletionSections.markdown,
+                    boost: 50,
                     type: SnippetDefaultType.text
                 })
             } satisfies SnippetItem
@@ -98,6 +106,7 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
                 completion: snippetCompletion(genTableOfColumns(columns), {
                     label: `Table (${columns} columns)`,
                     section: CompletionSections.markdown,
+                    boost: 50,
                     type: SnippetDefaultType.text
                 })
             } satisfies SnippetItem

@@ -8,6 +8,7 @@
 import FlatBuffers
 import FlusterData
 import FlusterMdx
+import FlusterWebviewClients
 import SwiftData
 import SwiftUI
 import WebKit
@@ -29,6 +30,8 @@ struct MdxEditorWebview: View {
     CodeSyntaxTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
     CodeSyntaxTheme = .materialLight
+  @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private
+    var lockEditorScrollToPreview: Bool = false
 
   init(editingNoteId: String?, webView: Binding<WKWebView>) {
     self.editingNoteId = editingNoteId
@@ -103,6 +106,14 @@ struct MdxEditorWebview: View {
         }
       )
       .onChange(
+        of: lockEditorScrollToPreview,
+        {
+          Task {
+            try? await setLockEditorScrollToPreview(lock: lockEditorScrollToPreview)
+          }
+        }
+      )
+      .onChange(
         of: editingNote?.id,
         {
           if let en = editingNote {
@@ -119,6 +130,7 @@ struct MdxEditorWebview: View {
         try await setEditorThemeDark(editorTheme: editorThemeDark)
         try await setEditorThemeLight(editorTheme: editorThemeLight)
         try await setEditorKeymap(editorKeymap: editorKeymap)
+        try await setLockEditorScrollToPreview(lock: lockEditorScrollToPreview)
         if let en = editingNote {
           try await loadNote(note: en)
         }
@@ -232,6 +244,10 @@ struct MdxEditorWebview: View {
       """
       window.setEditorContent(\(body))
       """)
+  }
+  func setLockEditorScrollToPreview(lock: Bool) async throws {
+    try await MdxEditorClient.setLockEditorScrollToPreview(
+      lock, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func loadNote(note: NoteModel) async throws {
     try await setParsedEditorContent(note: note)
