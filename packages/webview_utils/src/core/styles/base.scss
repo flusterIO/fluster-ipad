@@ -16,6 +16,10 @@ body.dark {
   }
 }
 
+.scroll-target {
+  scroll-behavior: smooth;
+}
+
 #editor-panel-resize-handle {
   width: 2px;
   background-color: hsl(var(--border));

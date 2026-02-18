@@ -12,18 +12,24 @@ struct MainViewSidebar: View {
     var flusterSidebarSectionOpen = false
   @AppStorage(DesktopAppStorageKeys.noteSidebarSectionOpen.rawValue) private
     var noteSidebarSectionOpen = false
-  let items: [SidebarItem] = mainSidebarItems
   var body: some View {
-    CollapsableSidebarSection(
-      open: $noteSidebarSectionOpen,
-      items: noteSideBarItems,
-      title: "Note"
-    )
-    CollapsableSidebarSection(
-      open: $flusterSidebarSectionOpen,
-      items: items,
-      title: "Fluster"
-    )
+      Group {
+          CollapsableSidebarSection(
+            open: $noteSidebarSectionOpen,
+            items: noteSideBarItems,
+            title: "Note"
+          )
+          CollapsableSidebarSection(
+            open: $flusterSidebarSectionOpen,
+            items: mainSidebarItems,
+            title: "Fluster"
+          )
+          CollapsableSidebarSection(
+            open: $flusterSidebarSectionOpen,
+            items: globalSearchSidebarItems,
+            title: "Global Search"
+          )
+      }
     .listStyle(.sidebar)
     .navigationTitle("Fluster")
     .navigationSplitViewColumnWidth(min: 180, ideal: 200)

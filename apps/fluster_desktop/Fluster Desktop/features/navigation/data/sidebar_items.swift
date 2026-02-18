@@ -21,6 +21,10 @@ let mainSidebarItems: [SidebarItem] = [
   SidebarItem(label: "Settings", icon: .settings, id: .settings, children: nil)
 ]
 
+let globalSearchSidebarItems: [SidebarItem] = [
+  SidebarItem(label: "Bibliography", icon: .bibliography, id: .globalBibliography, children: nil)
+]
+
 let noteSideBarItems: [SidebarItem] = [
   SidebarItem(label: "Editor", icon: .editor, id: .noteEditingPage, children: nil),
   SidebarItem(label: "Paper", icon: .paper, id: .paper, children: nil),
@@ -29,5 +33,5 @@ let noteSideBarItems: [SidebarItem] = [
     label: "Bibliography", icon: .bibliography, id: .editingNoteBibliography, children: nil),
   SidebarItem(
     label: "Details", icon: .noteDetails, id: .editingNoteDetails, children: nil),
-  SidebarItem(label: "Create", icon: .create, id: .createNote, children: nil),
+  SidebarItem(label: "Create", icon: .create, id: .createNote, children: nil)
 ]

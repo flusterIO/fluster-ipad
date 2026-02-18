@@ -13,6 +13,7 @@ public enum CommandPaletteSecondaryView: Codable, Hashable {
   case searchByTag(TagModel)
   case searchByTopic(TopicModel)
   case searchBySubject(SubjectModel)
+  case createBibEntry
 }
 
 public enum CommandPaletteId: Codable, Hashable {

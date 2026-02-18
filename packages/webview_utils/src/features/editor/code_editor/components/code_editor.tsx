@@ -20,17 +20,17 @@ import { AnyWebviewAction, AnyWebviewEvent, AnyWebviewStorageKey } from "@/utils
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
 import { bracketMatching, foldGutter, indentOnInput, syntaxTree } from '@codemirror/language';
-import { autocompletion, closeBrackets, CompletionSource } from '@codemirror/autocomplete';
+import { autocompletion, closeBrackets, completeFromList, CompletionSource } from '@codemirror/autocomplete';
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
 import { Table, TaskList } from "@lezer/markdown";
 import { Prec } from "@codemirror/state";
-import { SnippetStrategy } from "../data/snippets/snippet_types";
+import { GetSnippetProps, SnippetStrategy } from "../data/snippets/snippet_types";
 import { getMathSnippets } from "../data/snippets/math_snippets";
-import { Tex, YAMLFrontMatter, bibtex } from "@fluster/lezer";
-import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
+import { Tex, YAMLFrontMatter } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
-
+import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
+import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
 
 interface CodeEditorProps {
     language?: CodeEditorLanguage;
@@ -73,6 +73,11 @@ export const CodeEditorInner = ({
             extensions.push(vim());
             extensions.push(lineNumbersRelative);
         }
+        const snippetProps: GetSnippetProps = {
+            base: undefined,
+            citationKeys: state.allCitationIds,
+            includeEmojiSnippets: state.snippetProps.includeEmojiSnippets
+        }
         if (language === CodeEditorLanguage.markdown) {
             const mdxCompletionSource: CompletionSource = (context) => {
                 const word = context.matchBefore(/\w*/);
@@ -101,11 +106,7 @@ export const CodeEditorInner = ({
                 }
                 return {
                     from: word.from,
-                    options: getFlusterSnippets({
-                        base: undefined,
-                        citationKeys: state.allCitationIds,
-                        includeEmojiSnippets: state.snippetProps.includeEmojiSnippets
-                    }).filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
+                    options: getFlusterSnippets(snippetProps).filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
                     filter: true,
 
                 };
@@ -122,26 +123,23 @@ export const CodeEditorInner = ({
                         YAMLFrontMatter
                     ]
                 }),
-                bracketMatching(),
-                /* javascript({ jsx: true }), */
-                closeBrackets(),
-                autocompletion(),
                 Prec.high(markdownLanguage.data.of({
                     autocomplete: mdxCompletionSource
                 })),
-                foldGutter(),
-                indentOnInput(),
-                highlightActiveLine(),
-                dropCursor(),
-                rectangularSelection(),
             ]
         } else if (language === CodeEditorLanguage.bibtex) {
-            const bt = bibtex({
-                additionalSnippets: getBibtexSnippets()
-            });
+            /* const bt = bibtex({ */
+            /*     additionalSnippets: getBibtexSnippets() */
+            /* }); */
+            const snippets = getBibtexSnippets()
             extensions = [
                 ...extensions,
-                bt,
+                bibtex(),
+                Prec.high(
+                    bibtexLanguage.data.of({
+                        autocomplete: completeFromList(snippets)
+                    })
+                )
             ]
         }
         if (state.lockEditorScrollToPreview) {
@@ -149,6 +147,14 @@ export const CodeEditorInner = ({
         }
         extensions = [
             ...extensions,
+            bracketMatching(),
+            closeBrackets(),
+            autocompletion(),
+            foldGutter(),
+            indentOnInput(),
+            highlightActiveLine(),
+            dropCursor(),
+            rectangularSelection(),
             keymap.of(codeEditorBaseKeymapMap[state.baseKeymap]()),
             EditorState.allowMultipleSelections.of(true),
             EditorView.lineWrapping,
