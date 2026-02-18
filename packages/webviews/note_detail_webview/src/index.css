@@ -25,7 +25,6 @@ body {
 #root {
     height: 100vh;
     width: 100vw;
-    background-color: hsl(var(--background));
     color: hsl(var(--foreground));
 }
 

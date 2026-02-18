@@ -2,6 +2,20 @@
 @use "./mermaid.scss";
 @use "./shared_component_styles.scss";
 
+
+root {
+  --background-override: 213 39% 9%;
+}
+
+// Temporarly override the background window color to black. Find a better color later for the desktop window.
+body.dark {
+  background-color: black;
+
+  &.fluster-mac {
+    background-color: hsl(var(--background-override))
+  }
+}
+
 #editor-panel-resize-handle {
   width: 2px;
   background-color: hsl(var(--border));
@@ -23,13 +37,15 @@
   }
 }
 
-body.env-desktop {
+body.fluster-mac {
+
   .hide-desktop {
     display: none;
   }
 }
 
-body.env-ipad {
+body.fluster-ipad {
+
   .hide-ipad {
     display: none;
   }

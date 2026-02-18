@@ -9,9 +9,9 @@ import "./index.css";
 function App() {
     return (
         <WebViewContainer
-            style={{
-                backgroundColor: "hsl(var(--background))",
-            }}
+            /* style={{ */
+            /*     backgroundColor: "hsl(var(--background))", */
+            /* }} */
             contentContainerClasses="h-full"
         >
             <ResponsiveSplitViewEditor />

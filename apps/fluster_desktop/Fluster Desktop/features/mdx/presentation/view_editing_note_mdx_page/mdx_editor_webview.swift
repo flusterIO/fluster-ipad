@@ -60,7 +60,6 @@ struct MdxEditorWebview: View {
           SplitviewEditorWebviewActions.onEditorChange.rawValue,
           SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
           SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue
-
         ],
         messageHandler: messageHandler,
         onLoad: onWebviewLoad

@@ -52,9 +52,9 @@ public struct WebviewContainerClient {
     }
   }
   public static func setColorScheme(
-    colorScheme: ColorScheme, evaluateJavaScript: @escaping EvalJavascriptFunc
+    colorScheme: ColorScheme,
+    evaluateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
-      print("Here...")
     try await evaluateJavaScript(
       """
       if (typeof window !== "undefined" && ("setDarkMode" in window)) {
@@ -64,7 +64,6 @@ public struct WebviewContainerClient {
           window?.dispatchEvent(new CustomEvent("set-dark-mode", { detail: \(colorScheme == .dark ? "true" : "false") }));
           window.localStorage.setItem("dark-mode", \(colorScheme == .dark ? "\"true\"" : "\"false\""))
           document?.body?.classList?.\(colorScheme == .dark ? "add" : "remove")("dark")
-      console.log("Document.body", document.body)
       }
       """)
   }

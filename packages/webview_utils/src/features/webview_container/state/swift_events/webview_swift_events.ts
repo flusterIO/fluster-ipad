@@ -20,10 +20,6 @@ declare global {
 export function setDarkMode(darkMode: boolean) {
     window.dispatchEvent(new CustomEvent("set-dark-mode", { detail: darkMode }));
     window.localStorage.setItem("dark-mode", darkMode ? "true" : "false")
-    // const h = document.querySelector("html")
-    // if (h) {
-    //     h.style.backgroundColor = darkMode ? "black" : "white"
-    // }
 }
 
 export function setWebviewTheme(webviewTheme: string) {

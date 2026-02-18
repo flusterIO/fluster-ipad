@@ -76,11 +76,11 @@ export const Admonition = ({
                 variants={{
                     folded: {
                         height: 0,
-                        /* opacity: 0, */
+                        opacity: 0,
                     },
                     open: {
                         height: "fit-content",
-                        /* opacity: 1, */
+                        opacity: 1,
                     },
                 }}
                 transition={{

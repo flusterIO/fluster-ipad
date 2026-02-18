@@ -107,10 +107,10 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
     let editorContentControllers = [
       NoteDetailWebviewActions.requestNoteDetailData.rawValue,
       NoteDetailWebviewActions.setWebviewLoaded.rawValue,
-      NoteDetailWebviewActions.handleTagClick.rawValue,
-      NoteDetailWebviewActions.handleTopicClick.rawValue,
-      NoteDetailWebviewActions.handleSubjectClick.rawValue,
-      NoteDetailWebviewActions.handleCitationClick.rawValue
+      NoteDetailWebviewActions.onTagClick.rawValue,
+      NoteDetailWebviewActions.onTopicClick.rawValue,
+      NoteDetailWebviewActions.onSubjectClick.rawValue,
+      NoteDetailWebviewActions.onCitationClick.rawValue
     ]
     for controllerName in editorContentControllers {
       addUserContentController(
@@ -203,13 +203,13 @@ extension NoteDetailWebviewInternal {
           handleJavascriptError(base64String: message.body as! String)
         case NoteDetailWebviewActions.requestNoteDetailData.rawValue:
           self.setInitialData()
-        case NoteDetailWebviewActions.handleTagClick.rawValue:
+        case NoteDetailWebviewActions.onTagClick.rawValue:
           self.parent.handleTagClick(tagBody: message.body as! String)
-        case NoteDetailWebviewActions.handleTopicClick.rawValue:
+        case NoteDetailWebviewActions.onTopicClick.rawValue:
           self.parent.handleTopicClck(topicValue: message.body as! String)
-        case NoteDetailWebviewActions.handleSubjectClick.rawValue:
+        case NoteDetailWebviewActions.onSubjectClick.rawValue:
           self.parent.handleSubjectClick(subjectValue: message.body as! String)
-        case NoteDetailWebviewActions.handleCitationClick.rawValue:
+        case NoteDetailWebviewActions.onCitationClick.rawValue:
           self.parent.handleCitationClick(citationId: message.body as! String)
         default:
           return
