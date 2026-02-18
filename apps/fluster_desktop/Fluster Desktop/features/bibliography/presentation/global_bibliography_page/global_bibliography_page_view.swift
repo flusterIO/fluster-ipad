@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import FlusterData
+import SwiftData
 
 struct GlobalBibliographyPageView: View {
+    @Query(sort: \BibEntryModel.title, order: .forward) var entries: [BibEntryModel]
     var body: some View {
-        Text("Global bibliography page view here.")
+        BibliographyEntryListView(entries: entries)
     }
 }
 

@@ -58,7 +58,7 @@ struct MainViewSwitch: View {
         GlobalBibliographyPageView()
           .navigationTitle("Shared Bibliography")
       case .editingNoteBibliography:
-        EditingNoteBibliographyPageView()
+        EditingNoteBibliographyPageView(editingNoteId: appState.editingNoteId)
           .navigationTitle("Note Bibliography")
       case .editingNoteDetails:
         NoteDetailWebview(editingNoteId: appState.editingNoteId)

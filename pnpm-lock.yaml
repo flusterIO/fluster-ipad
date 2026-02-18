@@ -89,7 +89,7 @@ importers:
         version: 0.9.1(typescript@5.9.3)
       '@content-collections/mdx':
         specifier: 0.2.2
-        version: 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@content-collections/next':
         specifier: 0.2.4
         version: 0.2.4(@content-collections/core@0.9.1(typescript@5.9.3))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))
@@ -98,7 +98,7 @@ importers:
         version: link:../../packages/webview_utils
       '@fumadocs/content-collections':
         specifier: 1.2.1
-        version: 1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
+        version: 1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       '@hookform/resolvers':
         specifier: 5.0.1
         version: 5.0.1(react-hook-form@7.56.3(react@19.2.0))
@@ -245,7 +245,7 @@ importers:
         version: 3.0.2(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       fumadocs-mdx:
         specifier: 11.6.9
-        version: 11.6.9(acorn@8.15.0)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
+        version: 11.6.9(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
       fumadocs-python:
         specifier: 0.0.3
         version: 0.0.3(@types/react@19.2.2)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-ui@15.8.3(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(tailwindcss@4.1.10))
@@ -482,6 +482,9 @@ importers:
       '@citation-js/plugin-csl':
         specifier: 0.7.21
         version: 0.7.21(@citation-js/core@0.7.21)
+      '@citedrive/codemirror-lang-bibtex':
+        specifier: 6.4.1
+        version: 6.4.1
       '@codemirror/autocomplete':
         specifier: ^6.0.0
         version: 6.20.0
@@ -731,16 +734,16 @@ importers:
         version: 19.2.2(@types/react@19.2.2)
       '@vitejs/plugin-react':
         specifier: 5.1.1
-        version: 5.1.1(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
+        version: 5.1.1(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
       eslint:
         specifier: 9.39.1
-        version: 9.39.1(jiti@2.6.1)
+        version: 9.39.1(jiti@1.21.7)
       eslint-plugin-react-hooks:
         specifier: 7.0.1
-        version: 7.0.1(eslint@9.39.1(jiti@2.6.1))
+        version: 7.0.1(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-react-refresh:
         specifier: 0.4.24
-        version: 0.4.24(eslint@9.39.1(jiti@2.6.1))
+        version: 0.4.24(eslint@9.39.1(jiti@1.21.7))
       globals:
         specifier: 16.5.0
         version: 16.5.0
@@ -752,16 +755,16 @@ importers:
         version: 5.9.3
       typescript-eslint:
         specifier: 8.46.4
-        version: 8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+        version: 8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
       vite:
         specifier: 7.2.4
-        version: 7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)
+        version: 7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)
       vite-plugin-dts:
         specifier: 4.5.4
-        version: 4.5.4(@types/node@24.10.1)(rollup@4.57.1)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
+        version: 4.5.4(@types/node@24.10.1)(rollup@4.57.1)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
       vite-tsconfig-paths:
         specifier: 5.1.4
-        version: 5.1.4(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
+        version: 5.1.4(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
       wireit:
         specifier: 0.14.12
         version: 0.14.12
@@ -9278,11 +9281,11 @@ snapshots:
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
 
-  '@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
       esbuild: 0.25.12
-      mdx-bundler: 10.1.1(acorn@8.15.0)(esbuild@0.25.12)
+      mdx-bundler: 10.1.1(esbuild@0.25.12)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
       unified: 11.0.5
@@ -9519,10 +9522,10 @@ snapshots:
 
   '@fortawesome/fontawesome-free@6.7.2': {}
 
-  '@fumadocs/content-collections@1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
+  '@fumadocs/content-collections@1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
-      '@content-collections/mdx': 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@content-collections/mdx': 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       fumadocs-core: 15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
   '@glideapps/ts-necessities@2.2.3': {}
@@ -9830,7 +9833,7 @@ snapshots:
 
   '@mathjax/mathjax-newcm-font@4.1.0': {}
 
-  '@mdx-js/esbuild@3.1.1(acorn@8.15.0)(esbuild@0.25.12)':
+  '@mdx-js/esbuild@3.1.1(esbuild@0.25.12)':
     dependencies:
       '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
       '@types/unist': 3.0.3
@@ -11827,6 +11830,23 @@ snapshots:
       '@types/node': 24.10.1
     optional: true
 
+  '@typescript-eslint/eslint-plugin@8.46.4(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)':
+    dependencies:
+      '@eslint-community/regexpp': 4.12.2
+      '@typescript-eslint/parser': 8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.46.4
+      '@typescript-eslint/type-utils': 8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      '@typescript-eslint/visitor-keys': 8.46.4
+      eslint: 9.39.1(jiti@1.21.7)
+      graphemer: 1.4.0
+      ignore: 7.0.5
+      natural-compare: 1.4.0
+      ts-api-utils: 2.4.0(typescript@5.9.3)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
   '@typescript-eslint/eslint-plugin@8.46.4(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
@@ -11872,6 +11892,18 @@ snapshots:
       ignore: 7.0.5
       natural-compare: 1.4.0
       ts-api-utils: 2.4.0(typescript@5.9.3)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
+  '@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)':
+    dependencies:
+      '@typescript-eslint/scope-manager': 8.46.4
+      '@typescript-eslint/types': 8.46.4
+      '@typescript-eslint/typescript-estree': 8.46.4(typescript@5.9.3)
+      '@typescript-eslint/visitor-keys': 8.46.4
+      debug: 4.4.3
+      eslint: 9.39.1(jiti@1.21.7)
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
@@ -11961,6 +11993,18 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
+  '@typescript-eslint/type-utils@8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)':
+    dependencies:
+      '@typescript-eslint/types': 8.46.4
+      '@typescript-eslint/typescript-estree': 8.46.4(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      debug: 4.4.3
+      eslint: 9.39.1(jiti@1.21.7)
+      ts-api-utils: 2.4.0(typescript@5.9.3)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
   '@typescript-eslint/type-utils@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/types': 8.46.4
@@ -12043,6 +12087,17 @@ snapshots:
       semver: 7.7.4
       tinyglobby: 0.2.15
       ts-api-utils: 2.4.0(typescript@5.9.3)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
+  '@typescript-eslint/utils@8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)':
+    dependencies:
+      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.1(jiti@1.21.7))
+      '@typescript-eslint/scope-manager': 8.46.4
+      '@typescript-eslint/types': 8.46.4
+      '@typescript-eslint/typescript-estree': 8.46.4(typescript@5.9.3)
+      eslint: 9.39.1(jiti@1.21.7)
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
@@ -13427,7 +13482,7 @@ snapshots:
       eslint: 9.39.1(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.39.1(jiti@2.6.1))
@@ -13472,7 +13527,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -13527,7 +13582,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -13623,6 +13678,10 @@ snapshots:
       zod-validation-error: 4.0.2(zod@4.3.6)
     transitivePeerDependencies:
       - supports-color
+
+  eslint-plugin-react-refresh@0.4.24(eslint@9.39.1(jiti@1.21.7)):
+    dependencies:
+      eslint: 9.39.1(jiti@1.21.7)
 
   eslint-plugin-react-refresh@0.4.24(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
@@ -14020,7 +14079,7 @@ snapshots:
       unist-util-visit: 5.1.0
       zod: 4.3.6
 
-  fumadocs-mdx@11.6.9(acorn@8.15.0)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
+  fumadocs-mdx@11.6.9(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
     dependencies:
       '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
       '@standard-schema/spec': 1.1.0
@@ -15164,12 +15223,12 @@ snapshots:
     dependencies:
       '@types/mdast': 4.0.4
 
-  mdx-bundler@10.1.1(acorn@8.15.0)(esbuild@0.25.12):
+  mdx-bundler@10.1.1(esbuild@0.25.12):
     dependencies:
       '@babel/runtime': 7.28.6
       '@esbuild-plugins/node-resolve': 0.2.2(esbuild@0.25.12)
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@mdx-js/esbuild': 3.1.1(acorn@8.15.0)(esbuild@0.25.12)
+      '@mdx-js/esbuild': 3.1.1(esbuild@0.25.12)
       esbuild: 0.25.12
       gray-matter: 4.0.3
       remark-frontmatter: 5.0.0
@@ -17481,6 +17540,17 @@ snapshots:
 
   typed-query-selector@2.12.0: {}
 
+  typescript-eslint@8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3):
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 8.46.4(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      '@typescript-eslint/typescript-estree': 8.46.4(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.46.4(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      eslint: 9.39.1(jiti@1.21.7)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
   typescript-eslint@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
       '@typescript-eslint/eslint-plugin': 8.46.4(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
@@ -17695,6 +17765,25 @@ snapshots:
       d3-time: 3.1.0
       d3-timer: 3.0.1
 
+  vite-plugin-dts@4.5.4(@types/node@24.10.1)(rollup@4.57.1)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
+    dependencies:
+      '@microsoft/api-extractor': 7.56.3(@types/node@24.10.1)
+      '@rollup/pluginutils': 5.3.0(rollup@4.57.1)
+      '@volar/typescript': 2.4.28
+      '@vue/language-core': 2.2.0(typescript@5.9.3)
+      compare-versions: 6.1.1
+      debug: 4.4.3
+      kolorist: 1.8.0
+      local-pkg: 1.1.2
+      magic-string: 0.30.21
+      typescript: 5.9.3
+    optionalDependencies:
+      vite: 7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - '@types/node'
+      - rollup
+      - supports-color
+
   vite-plugin-dts@4.5.4(@types/node@24.10.1)(rollup@4.57.1)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
     dependencies:
       '@microsoft/api-extractor': 7.56.3(@types/node@24.10.1)
@@ -17736,6 +17825,17 @@ snapshots:
       debug: 4.4.3
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@4.9.4)
+    optionalDependencies:
+      vite: 7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
+    dependencies:
+      debug: 4.4.3
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@5.9.3)
     optionalDependencies:
       vite: 7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.30.2)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)
     transitivePeerDependencies:

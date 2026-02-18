@@ -11,6 +11,7 @@
 		7931270B2F1ABA5500140215 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEDD2F1992BC00A82F5A /* FlusterMdx */; };
 		7970D3762F1FE24300A734F4 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 7970D3752F1FE24300A734F4 /* splitview_mdx_editor */; };
 		7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7970D3872F201A2F00A734F4 /* WebKit.framework */; };
+		79BC1C562F46627300E8A9AA /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79BC1C552F46627300E8A9AA /* bibtex_editor_webview */; };
 		79CB006F2F40008600C7BDFB /* standalone_mdx_preview in Resources */ = {isa = PBXBuildFile; fileRef = 79CB006E2F40008600C7BDFB /* standalone_mdx_preview */; };
 		79CB00722F4000F700C7BDFB /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79CB00712F4000F700C7BDFB /* FlusterWebviewClients */; };
 		79E6BEE12F19930200A82F5A /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEE02F19930200A82F5A /* FlusterData */; };
@@ -40,6 +41,7 @@
 		798752EA2F1810B90055ABF1 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		798752FA2F1810BA0055ABF1 /* FlusterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlusterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		798753042F1810BA0055ABF1 /* FlusterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlusterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		79BC1C552F46627300E8A9AA /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
 		79CB006E2F40008600C7BDFB /* standalone_mdx_preview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +108,7 @@
 		798752E12F1810B90055ABF1 = {
 			isa = PBXGroup;
 			children = (
+				79BC1C552F46627300E8A9AA /* bibtex_editor_webview */,
 				79196E372F44EBEE001AEFEB /* note_detail_webview */,
 				79CB006E2F40008600C7BDFB /* standalone_mdx_preview */,
 				7970D3752F1FE24300A734F4 /* splitview_mdx_editor */,
@@ -265,6 +268,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79BC1C562F46627300E8A9AA /* bibtex_editor_webview in Resources */,
 				79196E382F44EBEE001AEFEB /* note_detail_webview in Resources */,
 				79CB006F2F40008600C7BDFB /* standalone_mdx_preview in Resources */,
 				7970D3762F1FE24300A734F4 /* splitview_mdx_editor in Resources */,

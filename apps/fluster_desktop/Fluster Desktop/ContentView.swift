@@ -32,6 +32,8 @@ struct ContentView: View {
                 SearchByTagView(item: tag)
               case .searchByTopic(let topic):
                 SearchByTopicView(item: topic)
+              case .createBibEntry:
+                CreateBibEntryView(editingItem: nil)
             }
           }
       }
