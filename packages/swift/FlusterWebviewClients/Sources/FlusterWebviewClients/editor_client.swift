@@ -43,4 +43,13 @@ public struct MdxEditorClient {
       window.setEditorContent(\(body))
       """)
   }
+
+  public static func setLockEditorScrollToPreview(
+    _ lock: Bool, evaluateJavaScript: @escaping EvalJavascriptFunc
+  ) async throws {
+    try await evaluateJavaScript(
+      """
+      window.setLockWebviewScrollToPreview(\(lock ? "true" : "false"))
+      """)
+  }
 }

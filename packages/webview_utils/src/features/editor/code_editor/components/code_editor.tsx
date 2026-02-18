@@ -78,6 +78,7 @@ export const CodeEditorInner = ({
                 // Walk up the tree to find the context
                 let curr: (typeof node | null) = node;
                 while (curr) {
+                    console.log("curr.name: ", curr.name)
                     if (curr.name === "TexBlock" || curr.name === "TexInline") {
                         return {
                             from: word.from,
@@ -100,7 +101,8 @@ export const CodeEditorInner = ({
                         citationKeys: state.allCitationIds,
                         includeEmojiSnippets: state.snippetProps.includeEmojiSnippets
                     }).filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
-                    filter: true
+                    filter: true,
+
                 };
             }
             extensions = [

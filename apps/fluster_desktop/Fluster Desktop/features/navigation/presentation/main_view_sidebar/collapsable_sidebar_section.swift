@@ -5,8 +5,8 @@
 //  Created by Andrew on 1/17/26.
 //
 
-import SwiftUI
 import FlusterData
+import SwiftUI
 
 struct CollapsableSidebarSection: View {
   @Binding var open: Bool
@@ -16,33 +16,35 @@ struct CollapsableSidebarSection: View {
 
   var body: some View {
     Section(
-      isExpanded: $open,
       content: {
-        ForEach(items) { item in
-          Button(
-            action: {
-              appState.mainView = item.id
-            },
-            label: {
-              HStack {
+        if open {
+          ForEach(items) { item in
+            Button(
+              action: {
+                appState.mainView = item.id
+              },
+              label: {
+                HStack {
                   Image(systemName: item.icon.toSfIcon())
-                Text(item.label)
+                  Text(item.label)
+                }
+                .padding(.vertical, 4)
+                .frame(maxWidth: .infinity, alignment: .leading)
               }
-              .padding(.vertical, 4)
-              .frame(maxWidth: .infinity, alignment: .leading)
-            }
-          )
-          .labelStyle(.titleAndIcon)
-          .buttonStyle(.accessoryBarAction)
-          .foregroundStyle(
-            appState.mainView == item.id
-            ? Color.white : Color.primary
-          )
-          .background(
-            appState.mainView == item.id
-            ? RoundedRectangle(cornerRadius: 8).fill(Color.blue) : RoundedRectangle(cornerRadius: 8).fill(Color.clear)
-          )
-          .frame(maxWidth: .infinity)
+            )
+            .labelStyle(.titleAndIcon)
+            .buttonStyle(.accessoryBarAction)
+            .foregroundStyle(
+              appState.mainView == item.id
+                ? Color.white : Color.primary
+            )
+            .background(
+              appState.mainView == item.id
+                ? RoundedRectangle(cornerRadius: 8).fill(Color.blue)
+                : RoundedRectangle(cornerRadius: 8).fill(Color.clear)
+            )
+            .frame(maxWidth: .infinity)
+          }
         }
       },
       header: {
