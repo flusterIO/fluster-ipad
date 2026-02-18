@@ -28,10 +28,7 @@ const defaultInitialValues: WebviewContainerState = {
 
 export const WebviewContainerContext = createContext<WebviewContainerState>(defaultInitialValues);
 
-type WebviewContainerContextActions = { type: "set-webview-environment", payload: WebviewEnvironment } | {
-    type: "set-lock-editor-scroll-to-preview",
-    payload: boolean
-}
+type WebviewContainerContextActions = { type: "set-webview-environment", payload: WebviewEnvironment }
 
 export const WebviewContainerDispatchContext = createContext<React.Dispatch<WebviewContainerContextActions>>(null!);
 
@@ -68,13 +65,6 @@ export const WebviewContainerProvider = ({ children, initialValues }: WebviewCon
             ? { ...initialValues, ...defaultInitialValues }
             : defaultInitialValues,
     );
-
-    useEventListener("lock-editor-scroll-to-preview", (e) => {
-        dispatch({
-            type: "set-lock-editor-scroll-to-preview",
-            payload: e.detail
-        })
-    })
 
     return (
         <WebviewContainerContext.Provider value={state} >

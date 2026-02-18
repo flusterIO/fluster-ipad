@@ -116,6 +116,7 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 	case resetPreviewScrollPosition = "reset-mdx-preview-scroll-position"
 	case emitMdxParsingError = "mdx-parsing-error"
 	case emitMdxParsingSuccess = "mdx-parsing-success"
+	case setWebviewPreviewScrollLock = "set-webview-preview-scroll-lock"
 }
 
 public enum SplitviewEditorWebviewIds: String, Codable {

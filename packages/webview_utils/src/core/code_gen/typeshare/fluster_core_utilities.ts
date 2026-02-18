@@ -115,6 +115,7 @@ export enum SplitviewEditorWebviewEvents {
 	ResetPreviewScrollPosition = "reset-mdx-preview-scroll-position",
 	EmitMdxParsingError = "mdx-parsing-error",
 	EmitMdxParsingSuccess = "mdx-parsing-success",
+	SetWebviewPreviewScrollLock = "set-webview-preview-scroll-lock",
 }
 
 export enum SplitviewEditorWebviewIds {

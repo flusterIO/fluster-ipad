@@ -14,6 +14,7 @@ export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     debounceTimeout?: number;
     showWebviewAction?: AnyWebviewAction
     additionalComponents?: ComponentMapItem[]
+    lockToEditorScroll?: boolean
 }
 
 export const MdxContent = ({
@@ -22,6 +23,7 @@ export const MdxContent = ({
     abortIfNoMath,
     debounceTimeout = 300,
     showWebviewAction,
+    lockToEditorScroll,
     additionalComponents,
     ...props
 }: MdxContentProps): ReactNode => {
@@ -53,8 +55,25 @@ export const MdxContent = ({
 
     useEffect(() => {
         setValue(mdx);
-        /* eslint-disable-next-line  -- I hate that this rule applies to functions... */
+        /* eslint-disable-next-line */
     }, [mdx]);
+
+
+    const requestEditorScrollPosition = (): void => {
+        window.dispatchEvent(new CustomEvent("request-editor-scroll-proportion", { detail: null }))
+    }
+
+    useEffect(() => {
+        if (lockToEditorScroll) {
+            requestEditorScrollPosition()
+        }
+    }, [lockToEditorScroll, mdx])
+
+    useEffect(() => {
+        if (window.MathJax) {
+            window.MathJax.Hub.Queue(requestEditorScrollPosition)
+        }
+    }, [])
 
     const classes = cn(
         "mdx-content block overflow-y-hidden h-auto max-h-fit w-full max-w-full @container/mdx prose-code:p-2 prose-pre:bg-transparent dark:prose-pre:bg-transparent",

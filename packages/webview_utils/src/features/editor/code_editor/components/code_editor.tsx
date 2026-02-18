@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, type ReactNode } from "react";
+import React, { useEffect, useId, useRef, type ReactNode } from "react";
 import { EditorState, Extension } from "@codemirror/state";
 import { EditorView, keymap, ViewUpdate } from "@codemirror/view";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
@@ -28,6 +28,8 @@ import { Prec } from "@codemirror/state";
 import { SnippetStrategy } from "../data/snippets/snippet_types";
 import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex, YAMLFrontMatter, bibtex } from "@fluster/lezer";
+import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
+import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 
 
 interface CodeEditorProps {
@@ -55,7 +57,10 @@ export const CodeEditorInner = ({
     const state = useCodeEditorContext();
     const dispatch = useCodeEditorDispatch();
     const timer = useRef<NodeJS.Timeout | null>(null);
-    const view = useRef<EditorView | null>(null);
+    const viewRef = useRef<EditorView | null>(null)
+
+
+
 
     useEffect(() => {
         const em = document.getElementById(containerId)!
@@ -131,13 +136,16 @@ export const CodeEditorInner = ({
                 rectangularSelection(),
             ]
         } else if (language === CodeEditorLanguage.bibtex) {
-            /* const bt = bibtex({ */
-            /*     additionalSnippets: getBibtexSnippets() */
-            /* }); */
+            const bt = bibtex({
+                additionalSnippets: getBibtexSnippets()
+            });
             extensions = [
                 ...extensions,
-                /* bt, */
+                bt,
             ]
+        }
+        if (state.lockEditorScrollToPreview) {
+            extensions.push(scrollPlugin)
         }
         extensions = [
             ...extensions,
@@ -176,23 +184,30 @@ export const CodeEditorInner = ({
             parent: em,
         });
         _view.focus();
-        view.current = _view;
+        viewRef.current = _view;
         haveRendered.current = true;
         sendToSwift(showWebviewHandler);
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
-    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap, state.allCitationIds]);
+    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap, state.allCitationIds, state.lockEditorScrollToPreview]);
 
     useEventListener(swiftContentEvent as keyof WindowEventMap, (e) => {
-        if (view.current) {
-            view.current.dispatch({
+        if (viewRef.current) {
+            viewRef.current.dispatch({
                 changes: {
                     from: 0,
-                    to: view.current.state.doc.length,
+                    to: viewRef.current.state.doc.length,
                     insert: "detail" in e ? e.detail : "",
                 },
             });
         }
     });
+
+
+    useEventListener("request-editor-scroll-proportion", () => {
+        if (viewRef.current?.scrollDOM) {
+            sendEditorScrollDOMEvent(viewRef.current.scrollDOM!)
+        }
+    })
 
     return <div className="h-full w-full" id={containerId} />;
 };

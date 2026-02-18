@@ -41,6 +41,7 @@ export interface CodeEditorState {
     haveSetInitialValue: boolean;
     editorView: EditorView
     snippetProps: SnippetPropsState
+    lockEditorScrollToPreview: boolean
 }
 
 const defaultInitialCodeEditorState: CodeEditorState = {
@@ -57,7 +58,8 @@ const defaultInitialCodeEditorState: CodeEditorState = {
     snippetProps: {
         // Default snippet state.
         includeEmojiSnippets: true
-    }
+    },
+    lockEditorScrollToPreview: false
 };
 
 export const CodeEditorContext = createContext<CodeEditorState>(
@@ -100,6 +102,9 @@ type CodeEditorContextActions =
     } | {
         type: "setSnippetProps",
         payload: SnippetPropsState
+    } | {
+        type: "setLockEditorScrollToPreview",
+        payload: boolean
     };
 
 export const CodeEditorDispatchContext = createContext<
@@ -197,6 +202,12 @@ export const CodeEditorContextReducer = (
                     ...state.snippetProps,
                     ...action.payload
                 }
+            }
+        }
+        case "setLockEditorScrollToPreview": {
+            return {
+                ...state,
+                lockEditorScrollToPreview: action.payload
             }
         }
         default: {
@@ -320,7 +331,6 @@ export const CodeEditorProvider = ({
     });
 
     useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContentString, (e) => {
-        console.log("e: ", e)
         dispatch({
             type: "setParsedEditorContentString",
             payload: e.detail
@@ -338,11 +348,20 @@ export const CodeEditorProvider = ({
         })
     })
 
+    useEventListener(SplitviewEditorWebviewEvents.SetWebviewPreviewScrollLock, (e) => {
+        console.log(`Received event preview-editor scroll lock event: `, e.detail)
+        dispatch({
+            type: "setLockEditorScrollToPreview",
+            payload: e.detail
+        })
+    })
+
     useEffect(() => {
         if (state.parsedValue === null && implementation === "mdx-editor") {
             sendToSwift(SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
     }, [state.parsedValue]);
+
 
 
 
