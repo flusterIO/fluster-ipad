@@ -194,35 +194,26 @@ struct MdxEditorWebview: View {
       """)
   }
   func setEditorThemeDark(editorTheme: CodeSyntaxTheme) async throws {
-    try await webView.evaluateJavaScript(
-      """
-      window.setCodeSyntaxThemeDark("\(editorTheme.rawValue)")
-      """)
+    try await MdxEditorClient.setEditorThemeDark(
+      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
     if colorScheme == .dark {
       try await setEditorSelectedTheme(editorTheme: editorTheme)
     }
   }
   func setEditorThemeLight(editorTheme: CodeSyntaxTheme) async throws {
-    try await webView.evaluateJavaScript(
-      """
-      window.setCodeSyntaxThemeLight("\(editorTheme.rawValue)")
-      """)
+    try await MdxEditorClient.setEditorThemeLight(
+      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
     if colorScheme == .light {
       try await setEditorSelectedTheme(editorTheme: editorTheme)
     }
   }
   func setEditorSelectedTheme(editorTheme: CodeSyntaxTheme) async throws {
-    try await webView.evaluateJavaScript(
-      """
-      window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeTheme.rawValue)", "\(editorTheme.rawValue)")
-      window.setCodeSyntaxTheme("\(editorTheme.rawValue)")
-      """)
+    try await MdxEditorClient.setEditorTheme(
+      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func setEditorKeymap(editorKeymap: EditorKeymap) async throws {
-    try await webView.evaluateJavaScript(
-      """
-      window.setEditorKeymap("\(editorKeymap.rawValue)")
-      """)
+    try await MdxEditorClient.setEditorKeymap(
+      keymap: editorKeymap, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func setParsedEditorContent(note: NoteModel) async throws {
     if let preParsedBody = note.markdown.preParsedBody {

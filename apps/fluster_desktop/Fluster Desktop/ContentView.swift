@@ -33,7 +33,8 @@ struct ContentView: View {
               case .searchByTopic(let topic):
                 SearchByTopicView(item: topic)
               case .createBibEntry:
-                CreateBibEntryView(editingItem: nil)
+                BibtexEditorWebview(
+                  editingNoteId: appState.editingNoteId, editingBibEntry: .constant(nil))
             }
           }
       }

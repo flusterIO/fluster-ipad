@@ -26,6 +26,13 @@ export const MdxCheckbox = (props: MdxCheckboxProps): ReactNode => {
             ref={ref}
             disabled={props.disabled}
             checked={props.checked || props.defaultChecked}
+            onChange={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+            }}
+            onCheckedChange={() => {
+                // Disable checkbox change in mdx without applying disabled styles.
+            }}
         />
     );
 };
