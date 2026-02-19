@@ -6,16 +6,16 @@
 //
 
 import FlusterData
+import PaperKit
 import SwiftData
 import SwiftUI
-import PaperKit
 
 struct ViewPaperPageView: View {
   @EnvironmentObject private var appState: AppState
   @Environment(\.modelContext) private var modelContext
   public var editingNoteId: String?
   @Query var notes: [NoteModel]
-//    @State private var markup: PaperMarkup = PaperMarkup.
+  //    @State private var markup: PaperMarkup = PaperMarkup.
   public var editingNote: NoteModel? {
     notes.isEmpty ? nil : notes.first
   }
@@ -34,11 +34,7 @@ struct ViewPaperPageView: View {
 
   var body: some View {
     if let _editingNote = editingNote, editingNoteIsValid(note: _editingNote, appState: appState) {
-      Text("View Paper")
-        GeometryReader { geo in
-            Text("Paper....")
-//            PaperView(paperMarkup: markup)
-        }
+      PaperView(editingNote: _editingNote)
     } else {
       NoNoteSelectedView()
     }

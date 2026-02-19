@@ -5,24 +5,48 @@
 //  Created by Andrew on 2/17/26.
 //
 
+import FlusterData
 import PaperKit
+import PencilKit
 import SwiftUI
 
 struct PaperView: View {
-  @Binding private var paperMarkup: PaperMarkup?
+  public var editingNote: NoteModel
+  @State private var focusedPageIndex: Int = 0
   var body: some View {
     GeometryReader { geometry in
-      NavigationStack {
-        Group {
-          if let markup = paperMarkup {
+      Group {
+        if focusedPageIndex < editingNote.paper.count {
+          let item = editingNote.paper[focusedPageIndex]
+          if let markup = try? PaperMarkup(dataRepresentation: item.markup) {
             PaperMarkupView(markup: markup)
-          } else {
-            Color.clear
           }
+        } else {
+          Color.clear
         }
       }
-      .onAppear {
-        paperMarkup = PaperMarkup(bounds: geometry.frame(in: .local))
+      .onChange(
+        of: focusedPageIndex,
+        {
+          Task {
+            await handleFocusIndexPageCreation(geometry)
+          }
+        }
+      )
+      .task {
+        await handleFocusIndexPageCreation(geometry)
+      }
+    }
+  }
+
+  func handleFocusIndexPageCreation(_ geometry: GeometryProxy) async {
+    if focusedPageIndex >= editingNote.paper.count {
+      let markup = PaperMarkup(bounds: geometry.frame(in: .local))
+      do {
+        let data = try await markup.dataRepresentation()
+        self.editingNote.paper.append(PaperModel(markup: data))
+      } catch {
+        print("Error handling paper creation: \(error.localizedDescription)")
       }
     }
   }
@@ -49,9 +73,9 @@ struct PaperMarkupView: NSViewControllerRepresentable {
 
     func paperMarkupViewControllerDidUpdateDrawing(_ controller: PaperMarkupViewController) {
       // Sync back to the source of truth
-//      DispatchQueue.main.async {
-//        self.parent.drawing = controller.markup.drawing
-//      }
+      //      DispatchQueue.main.async {
+      //        self.parent.drawing = controller.markup.drawing
+      //      }
     }
   }
 }
