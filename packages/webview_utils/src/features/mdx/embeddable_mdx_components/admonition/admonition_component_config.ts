@@ -13,27 +13,24 @@ export const admonitionComponentConfig: EmbeddableComponentConfig = {
                 section: CompletionSections.components,
                 label: "admonition",
                 detail: "An admonition that is not foldable.",
-                // `class`, `constant`, `enum`,
-                // `function`, `interface`, `keyword`, `method`, `namespace`,
-                // `property`, `text`, `type`, and `variable`
+                type: SnippetDefaultType.function
+            }),
+            snippetCompletion("<Admonition title=\"#{Admonition Title}\" sidebar right>\n\n#{body}\n\n</Admonition>", {
+                section: CompletionSections.components,
+                label: "admonition-sidebar",
+                detail: "An admonition that aligns to the side on wide viewports.",
                 type: SnippetDefaultType.function
             }),
             snippetCompletion("<Admonition title=\"#{Admonition Title}\" foldable>\n\n#{body}\n\n</Admonition>", {
                 section: CompletionSections.components,
                 label: "admonition-foldable",
                 detail: "An admonition that is foldable.",
-                // `class`, `constant`, `enum`,
-                // `function`, `interface`, `keyword`, `method`, `namespace`,
-                // `property`, `text`, `type`, and `variable`
                 type: SnippetDefaultType.function
             }),
             snippetCompletion("<Admonition title=\"#{Admonition Title}\" foldable folded>\n\n#{body}\n\n</Admonition>", {
                 section: CompletionSections.components,
                 label: "admonition-folded",
                 detail: "An admonition that is foldable and starts in a folded state.",
-                // `class`, `constant`, `enum`,
-                // `function`, `interface`, `keyword`, `method`, `namespace`,
-                // `property`, `text`, `type`, and `variable`
                 type: SnippetDefaultType.function
             }),
         ]

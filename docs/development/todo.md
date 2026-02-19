@@ -31,6 +31,7 @@
 
 - [ ] Add section to `quick_reference.mdx` about front matter.
 - [ ] Create 'zod' to markdown table or 'componentconfig' to markdown table component and related function. Create a component that is passed in only on docs pages that makes takes that zod schema and generates a react table.
+- [ ] Use `Component?` and `Component??` similar to iPython with a new PreParser and automatically insert component documentation here.
 
 ## Website
 
