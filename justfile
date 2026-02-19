@@ -64,6 +64,8 @@ build_cross_language_schemas: generate_initial_note_data
 build_desktop_fs:
 	cd {{justfile_directory()}}/packages/rust/fluster_desktop_fs; cargo swift package -y
 
+build_fluster_bibliography:
+	cd {{justfile_directory()}}/packages/rust/fluster_bibliography; cargo swift package -y
 
 clear_macos_database:
 	trash "/Users/bigsexy/Library/Containers/iglooDevelopment.Fluster-Desktop/Data/Library/Application Support/default.store"
@@ -116,12 +118,12 @@ build_fluster_language_lezer:
 
 build_all_webviews: build_cross_language_all build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview build_dictionary_webview
 
-pre_ipad_build: generate_initial_launch_data build_cross_language_all generate_initial_note_paths build_fluster_swift_mdx_parser build_all_webviews
+pre_ipad_build: generate_initial_launch_data build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_swift_mdx_parser build_all_webviews
 
 generate_shiki_themes:
 	tsx scripts/write_bundled_themes.ts
 
-pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_all generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor build_standalone_mdx_preview_webview build_bibtex_editor_webview
+pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor build_standalone_mdx_preview_webview build_bibtex_editor_webview
 
 create_desktop_feature feature_name:
 	python scripts/create_feature_util.py {{feature_name}}

@@ -13,6 +13,30 @@ public typealias EvalJavascriptFunc = @Sendable (String) async throws -> Sendabl
 
 @MainActor
 public struct MdxEditorClient {
+  public static func setEditorKeymap(keymap: EditorKeymap, evaluateJavaScript: EvalJavascriptFunc)
+    async throws
+  {
+    try await evaluateJavaScript(
+      """
+      window.setEditorKeymap("\(keymap.rawValue)")
+      """)
+  }
+  public static func setEditorThemeLight(
+    editorTheme: CodeSyntaxTheme, evaluateJavaScript: EvalJavascriptFunc
+  ) async throws {
+    try await evaluateJavaScript(
+      """
+      window.setCodeSyntaxThemeLight("\(editorTheme.rawValue)")
+      """)
+  }
+  public static func setEditorThemeDark(
+    editorTheme: CodeSyntaxTheme, evaluateJavaScript: EvalJavascriptFunc
+  ) async throws {
+    try await evaluateJavaScript(
+      """
+      window.setCodeSyntaxThemeDark("\(editorTheme.rawValue)")
+      """)
+  }
   public static func setEditorTheme(
     editorTheme: CodeSyntaxTheme, evaluateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {

@@ -17,7 +17,7 @@ export const getBibtexSnippets = (): Completion[] => {
             label: "@website",
             detail: "BibTeX website entry",
             type: SnippetDefaultType.text,
-            // section: COmpl
+            section: "Entry"
         }),
     ]
 }

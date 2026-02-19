@@ -2,6 +2,7 @@ import FlatBuffers
 import FlusterMdx
 import FlusterSwiftMdxParser
 import Foundation
+import PaperKit
 import PencilKit
 import SwiftData
 import SwiftyBibtex
@@ -69,9 +70,33 @@ extension AppSchemaV1 {
     case userAdded, fromNoteContent
   }
   @Model
+  public class PaperModel {
+    @Attribute(.externalStorage) public var drawing: Data
+    @Attribute(.externalStorage) public var markup: PaperMarkup
+    @Attribute(.externalStorage) public var thumbnail: CGImage?
+    public var note: NoteModel
+    public init(
+      drawing: Data = PKDrawing().dataRepresentation(),
+    ) {
+    }
+    public func generateThumbnail() async {
+      let thumbnailSize = CGSize(width: 200, height: 200)
+      let size = CGSize(width: 200, height: 200)
+      if let context = CGContext(width: 200, height: 200) {
+        context.setFillColor(gray: 1, alpha: 1)
+        //            See https://www.youtube.com/watch?v=A31vmupv1eo at 8:15 to figure this out...
+        //            context.fill(renderer.format.bounds)
+        await self.markup.draw(in: context, frame: CGRect(origin: .zero, size: size))
+        thumbnail = context.makeImage()
+      }
+    }
+  }
+  @Model
   public class NoteModel {
     public var id: String
-    @Attribute(.externalStorage) public var drawing: Data
+    @Relationship(inverse: \PaperModel.note)
+    public var paper = [PaperModel]()
+    //    @Attribute(.externalStorage) public var drawing: Data
     @Attribute(.externalStorage) public var markdown: MarkdownNote
     public var frontMatter: FrontMatter = FrontMatter.emptyFrontMatter()
     public var ctime: Date
@@ -91,7 +116,7 @@ extension AppSchemaV1 {
     /// drawing.toDataRepresentation() to conform to Data type.
     public init(
       id: String? = nil,
-      drawing: Data = PKDrawing().dataRepresentation(),
+      drawing: [PaperModel] = [PaperModel](),
       markdown: MarkdownNote = MarkdownNote(body: "", summary: nil),
       ctime: Date = .now,
       utime: Date = .now,
@@ -102,7 +127,7 @@ extension AppSchemaV1 {
       citations: [BibEntryModel] = [BibEntryModel]()
     ) {
       self.id = id ?? UUID.init().uuidString
-      self.drawing = drawing
+      self.paper = drawing
       self.markdown = markdown
       self.ctime = ctime
       self.utime = utime
@@ -142,7 +167,6 @@ extension AppSchemaV1 {
 
     public static func fromNoteBody(noteBody: String) -> NoteModel {
       let note = NoteModel(
-        drawing: PKDrawing().dataRepresentation(),
         markdown: MarkdownNote(body: noteBody, summary: nil)
       )
       return note
@@ -259,7 +283,6 @@ extension AppSchemaV1 {
       noteSummary: String? = nil
     ) -> NoteModel {
       NoteModel(
-        drawing: PKDrawing().dataRepresentation(),
         markdown: MarkdownNote(body: noteBody, summary: noteSummary)
       )
     }
