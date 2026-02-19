@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 let COMMAND_PALETTE_WIDTH: Int = 600
-let COMMAND_PALETTE_HEIGHT: Int = 400
+let COMMAND_PALETTE_HEIGHT: Int = 250
 
 class CommandPalettePanel: NSPanel {
   init<Content: View>(rootView: Content) {

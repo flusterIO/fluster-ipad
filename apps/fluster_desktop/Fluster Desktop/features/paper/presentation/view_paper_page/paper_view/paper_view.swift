@@ -53,13 +53,15 @@ struct PaperView: View {
 }
 
 struct PaperMarkupView: NSViewControllerRepresentable {
-  typealias NSViewControllerType = PaperMarkupViewController
+  typealias NSViewControllerType = MacPaperContainerViewController
   let markup: PaperMarkup
-  func makeNSViewController(context: Context) -> PaperMarkupViewController {
-    return PaperMarkupViewController(markup: markup, supportedFeatureSet: .latest)
+
+  func makeNSViewController(context: Context) -> MacPaperContainerViewController {
+    return MacPaperContainerViewController(markup: markup)
   }
 
-  func updateNSViewController(_ nsViewController: PaperMarkupViewController, context: Context) {
+  func updateNSViewController(_ nsViewController: MacPaperContainerViewController, context: Context)
+  {
     print("Updating paper...")
   }
 
@@ -71,11 +73,6 @@ struct PaperMarkupView: NSViewControllerRepresentable {
     var parent: PaperMarkupView
     init(_ parent: PaperMarkupView) { self.parent = parent }
 
-    func paperMarkupViewControllerDidUpdateDrawing(_ controller: PaperMarkupViewController) {
-      // Sync back to the source of truth
-      //      DispatchQueue.main.async {
-      //        self.parent.drawing = controller.markup.drawing
-      //      }
-    }
+    // Your delegate methods to sync the drawing back to NoteModel
   }
 }
