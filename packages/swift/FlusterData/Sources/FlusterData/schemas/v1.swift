@@ -72,29 +72,30 @@ extension AppSchemaV1 {
   @Model
   public class PaperModel {
     @Attribute(.externalStorage) public var drawing: Data
-    @Attribute(.externalStorage) public var markup: PaperMarkup
-    @Attribute(.externalStorage) public var thumbnail: CGImage?
-    public var note: NoteModel
+    @Attribute(.externalStorage) public var markup: Data
+    //    @Attribute(.externalStorage) public var thumbnail: CGImage?
     public init(
+      markup: Data,
       drawing: Data = PKDrawing().dataRepresentation(),
     ) {
+      self.markup = markup
+      self.drawing = drawing
     }
-    public func generateThumbnail() async {
-      let thumbnailSize = CGSize(width: 200, height: 200)
-      let size = CGSize(width: 200, height: 200)
-      if let context = CGContext(width: 200, height: 200) {
-        context.setFillColor(gray: 1, alpha: 1)
-        //            See https://www.youtube.com/watch?v=A31vmupv1eo at 8:15 to figure this out...
-        //            context.fill(renderer.format.bounds)
-        await self.markup.draw(in: context, frame: CGRect(origin: .zero, size: size))
-        thumbnail = context.makeImage()
-      }
-    }
+    //    public func generateThumbnail() async {
+    //      let thumbnailSize = CGSize(width: 200, height: 200)
+    //      let size = CGSize(width: 200, height: 200)
+    //      if let context = CGContext(width: 200, height: 200) {
+    //        context.setFillColor(gray: 1, alpha: 1)
+    //        //            See https://www.youtube.com/watch?v=A31vmupv1eo at 8:15 to figure this out...
+    //        //            context.fill(renderer.format.bounds)
+    //        await self.markup.draw(in: context, frame: CGRect(origin: .zero, size: size))
+    //        thumbnail = context.makeImage()
+    //      }
+    //    }
   }
   @Model
   public class NoteModel {
     public var id: String
-    @Relationship(inverse: \PaperModel.note)
     public var paper = [PaperModel]()
     //    @Attribute(.externalStorage) public var drawing: Data
     @Attribute(.externalStorage) public var markdown: MarkdownNote
