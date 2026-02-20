@@ -82,7 +82,7 @@ struct PaperView: View {
                   content: {
                     Button(
                       action: {
-                          showDeletePageConfirmation = true
+                        showDeletePageConfirmation = true
                       },
                       label: {
                         Label(
@@ -99,12 +99,12 @@ struct PaperView: View {
                       actions: {
                         Button(
                           action: {
-                              editingNote.paper.remove(at: focusedPageIndex)
-                              if focusedPageIndex > 0 {
-                                  focusedPageIndex = focusedPageIndex - 1
-                              } else {
-                                  focusedPageIndex = 0
-                              }
+                            editingNote.paper.remove(at: focusedPageIndex)
+                            if focusedPageIndex > 0 {
+                              focusedPageIndex = focusedPageIndex - 1
+                            } else {
+                              focusedPageIndex = 0
+                            }
                           },
                           label: {
                             Label(
@@ -185,16 +185,29 @@ struct PaperView: View {
 }
 
 struct PaperMarkupView: NSViewControllerRepresentable {
-  typealias NSViewControllerType = MacPaperContainer
+  typealias NSViewControllerType = MacPaperNsViewController
   @Binding public var markup: PaperMarkup
+  @State private var container: MacPaperNsViewController?
 
-  func makeNSViewController(context: Context) -> MacPaperContainer {
-    let container = MacPaperContainer(markup: $markup)
+  func makeNSViewController(context: Context) -> MacPaperNsViewController {
+    let container = MacPaperNsViewController(markup: $markup)
+//    self.container = container
+//        Task { [weak self] in
+//            container.observeValue(forKeyPath: "markup", of: nil, change: nil, context: nil)
+//          for model in await container.observeValues(for: \.markup) {
+//            self?.save(model)
+//          }
+//        }
     return container
   }
 
-  func updateNSViewController(_ nsViewController: MacPaperContainer, context: Context) {
+  func updateNSViewController(_ nsViewController: MacPaperNsViewController, context: Context) {
     print("Updating paper...")
+    context.coordinator.parent = self
+//      if let c = container {
+//          c.update(with: markup)
+//      }
+
     //      nsViewController.
     //      context.
     //      self.markup
