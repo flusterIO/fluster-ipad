@@ -33,10 +33,19 @@ struct ViewPaperPageView: View {
   }
 
   var body: some View {
-    if let _editingNote = editingNote, editingNoteIsValid(note: _editingNote, appState: appState) {
-      PaperView(editingNote: _editingNote)
+    if var _editingNote = editingNote, editingNoteIsValid(note: _editingNote, appState: appState) {
+      let noteBinding = Binding<NoteModel>(
+        get: {
+          _editingNote
+        },
+        set: { newValue in
+          _editingNote = newValue
+        }
+      )
+      PaperView(editingNote: noteBinding)
     } else {
       NoNoteSelectedView()
+        .navigationTitle("Paper")
     }
   }
 }

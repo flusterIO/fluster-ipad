@@ -47,7 +47,6 @@ struct MainViewSwitch: View {
           .navigationTitle("Create Note")
       case .paper:
         ViewPaperPageView(editingNoteId: appState.editingNoteId)
-          .navigationTitle("Paper")
       case .noteEditingPage:
         MdxEditorWebview(editingNoteId: appState.editingNoteId, webView: $editorWebview)
           .navigationTitle("Editor")

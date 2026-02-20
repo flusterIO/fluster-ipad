@@ -11,20 +11,139 @@ import PencilKit
 import SwiftUI
 
 struct PaperView: View {
-  public var editingNote: NoteModel
+  @Binding public var editingNote: NoteModel
   @State private var focusedPageIndex: Int = 0
+  @State private var showDeletePageConfirmation: Bool = false
   var body: some View {
     GeometryReader { geometry in
       Group {
         if focusedPageIndex < editingNote.paper.count {
           let item = editingNote.paper[focusedPageIndex]
-          if let markup = try? PaperMarkup(dataRepresentation: item.markup) {
+          if let _markup = try? PaperMarkup(dataRepresentation: item.markup) {
+            let markup = Binding<PaperMarkup>(
+              get: {
+                _markup
+              },
+              set: { newValue in
+                print("Updated here too?")
+                Task(priority: .high) {
+                  await handlePaperMarkupChange(newValue)
+                }
+              })
             PaperMarkupView(markup: markup)
+              .toolbar(content: {
+                ToolbarItem(
+                  placement: .primaryAction,
+                  content: {
+                    Button(
+                      action: {
+                        if focusedPageIndex >= 1 {
+                          focusedPageIndex = focusedPageIndex - 1
+                        }
+                      },
+                      label: {
+                        Label(
+                          title: {
+                            Text("Previous")
+                          },
+                          icon: {
+                            Image(systemName: "chevron.left")
+                          })
+                      }
+                    )
+                    .disabled(focusedPageIndex <= 0)
+                  })
+                ToolbarItem(
+                  placement: .primaryAction,
+                  content: {
+                    Button(
+                      action: {
+                        if focusedPageIndex < editingNote.paper.count - 1 {
+                          focusedPageIndex = focusedPageIndex + 1
+                        }
+                      },
+                      label: {
+                        Label(
+                          title: {
+                            Text("Next")
+                          },
+                          icon: {
+                            Image(systemName: "chevron.right")
+                          })
+                      }
+                    )
+                    .disabled(focusedPageIndex >= editingNote.paper.count - 1)
+                    .onAppear {
+                      print(focusedPageIndex, editingNote.paper.count - 1)
+                    }
+                  })
+                ToolbarItem(
+                  placement: .destructiveAction,
+                  content: {
+                    Button(
+                      action: {
+                          showDeletePageConfirmation = true
+                      },
+                      label: {
+                        Label(
+                          title: {
+                            Text("Delete Page")
+                          },
+                          icon: {
+                            Image(systemName: "trash")
+                          })
+                      }
+                    )
+                    .confirmationDialog(
+                      "Are you sure?", isPresented: $showDeletePageConfirmation,
+                      actions: {
+                        Button(
+                          action: {
+                              editingNote.paper.remove(at: focusedPageIndex)
+                              if focusedPageIndex > 0 {
+                                  focusedPageIndex = focusedPageIndex - 1
+                              } else {
+                                  focusedPageIndex = 0
+                              }
+                          },
+                          label: {
+                            Label(
+                              title: {
+                                Text("Delete")
+                              },
+                              icon: {
+                                Image(systemName: "trash")
+                              })
+                          }
+                        )
+                      }
+                    )
+                    .disabled(editingNote.paper.count <= 1)
+                  })
+                ToolbarItem(
+                  placement: .primaryAction,
+                  content: {
+                    Button(
+                      action: {
+                        focusedPageIndex = editingNote.paper.count
+                      },
+                      label: {
+                        Label(
+                          title: {
+                            Text("Create")
+                          },
+                          icon: {
+                            Image(systemName: "plus")
+                          })
+                      })
+                  })
+              })
           }
         } else {
           Color.clear
         }
       }
+      .navigationTitle("Paper \(focusedPageIndex + 1) of \(editingNote.paper.count)")
       .onChange(
         of: focusedPageIndex,
         {
@@ -36,6 +155,19 @@ struct PaperView: View {
       .task {
         await handleFocusIndexPageCreation(geometry)
       }
+    }
+  }
+
+  func handlePaperMarkupChange(_ markup: PaperMarkup) async {
+    if focusedPageIndex < editingNote.paper.count {
+      do {
+        let data = try await markup.dataRepresentation()
+        editingNote.paper[focusedPageIndex].markup = data
+      } catch {
+        print("Error: \(error.localizedDescription)")
+      }
+    } else {
+      print("Attempted to set paper markup on a non-existent sheet.")
     }
   }
 
@@ -53,16 +185,19 @@ struct PaperView: View {
 }
 
 struct PaperMarkupView: NSViewControllerRepresentable {
-  typealias NSViewControllerType = MacPaperContainerViewController
-  let markup: PaperMarkup
+  typealias NSViewControllerType = MacPaperContainer
+  @Binding public var markup: PaperMarkup
 
-  func makeNSViewController(context: Context) -> MacPaperContainerViewController {
-    return MacPaperContainerViewController(markup: markup)
+  func makeNSViewController(context: Context) -> MacPaperContainer {
+    let container = MacPaperContainer(markup: $markup)
+    return container
   }
 
-  func updateNSViewController(_ nsViewController: MacPaperContainerViewController, context: Context)
-  {
+  func updateNSViewController(_ nsViewController: MacPaperContainer, context: Context) {
     print("Updating paper...")
+    //      nsViewController.
+    //      context.
+    //      self.markup
   }
 
   func makeCoordinator() -> Coordinator {
@@ -72,7 +207,5 @@ struct PaperMarkupView: NSViewControllerRepresentable {
   class Coordinator: NSObject {
     var parent: PaperMarkupView
     init(_ parent: PaperMarkupView) { self.parent = parent }
-
-    // Your delegate methods to sync the drawing back to NoteModel
   }
 }
