@@ -7,9 +7,10 @@
 
 import AppKit
 import PaperKit
+import PencilKit
 import SwiftUI
 
-class MacPaperContainer: NSViewController {
+class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Delegate {
   @Binding public var markup: PaperMarkup
   var paperViewController: PaperMarkupViewController!
   var toolbarViewController: MarkupToolbarViewController!
@@ -31,8 +32,12 @@ class MacPaperContainer: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    var features = FeatureSet.latest
+    // HDR according to Apple. I'd be lying if I said understood this...
+    features.colorMaximumLinearExposure = 4
+
     // 1. Setup the main Paper canvas
-    paperViewController = PaperMarkupViewController(markup: markup, supportedFeatureSet: .latest)
+    paperViewController = PaperMarkupViewController(markup: markup, supportedFeatureSet: features)
     addChild(paperViewController)
     view.addSubview(paperViewController.view)
 
@@ -44,8 +49,10 @@ class MacPaperContainer: NSViewController {
       paperViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ])
 
+    paperViewController.delegate = self
+
     // 2. Setup the macOS-specific toolbar for tools and markup insertion
-    toolbarViewController = MarkupToolbarViewController(supportedFeatureSet: .latest)
+    toolbarViewController = MarkupToolbarViewController(supportedFeatureSet: features)
 
     // Link the toolbar to the canvas so it knows what to edit
     toolbarViewController.delegate = paperViewController
@@ -59,14 +66,30 @@ class MacPaperContainer: NSViewController {
       toolbarViewController.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
       toolbarViewController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor)
     ])
-      
   }
-    
-    func update(with newMarkup: PaperMarkup) {
-        self.markup = newMarkup
-            
-            // 2. Load the new markup into your actual canvas view
-            // Example: paperView.markup = newMarkup
-            // Example: paperView.setNeedsDisplay()
-        }
+
+  //  private func initializeMarkupModel(with canvasSize: CGSize) {
+  //    let bounds = CGRect(origin: .zero, size: canvasSize)
+  //    markupModel = PaperMarkup(bounds: bounds)
+  //  }
+  //  func clearCanvas() {
+  //    // Re-initialize the model with a new empty drawing.
+  //    initializeMarkupModel(with: canvasSize)
+  //    markupModel?.drawing = PKDrawing()
+  //
+  //    // Update the view controller with the new, empty model.
+  //    paperViewController.markup = markupModel
+  //  }
+
+  func undoLastAction() {
+    paperViewController.undoManager?.undo()
+  }
+
+  func paperMarkupViewControllerDidChangeMarkup(
+    _ paperMarkupViewController: PaperMarkupViewController
+  ) {
+    if let markup = paperMarkupViewController.markup {
+      self.markup = markup
+    }
+  }
 }
