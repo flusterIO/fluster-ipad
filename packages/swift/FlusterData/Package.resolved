@@ -1,15 +1,6 @@
 {
-  "originHash" : "86d35e888cedae6bfaaf9d5f4ef702b9c09bb0925dd3e5bf66b5f52148985825",
+  "originHash" : "b3de374fe52c0579e8fe6b71f21c8a3a9ef1d3d1996d3d8e5924c81b20cd8773",
   "pins" : [
-    {
-      "identity" : "antlr4-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MaxHaertwig/ANTLR4-Swift.git",
-      "state" : {
-        "revision" : "0b4eed93b803c931db67cc30434b5531f72d50b1",
-        "version" : "4.9.1"
-      }
-    },
     {
       "identity" : "flatbuffers",
       "kind" : "remoteSourceControl",
@@ -35,15 +26,6 @@
       "state" : {
         "revision" : "48a471ab313e858258ab0b9b0bf2cea55a50cefb",
         "version" : "6.2.3"
-      }
-    },
-    {
-      "identity" : "swiftybibtex",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MaxHaertwig/SwiftyBibtex.git",
-      "state" : {
-        "revision" : "b653c01e6315cf06c2c55a8396a397cdadaddccf",
-        "version" : "1.0.0"
       }
     }
   ],

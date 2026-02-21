@@ -1,3 +1,4 @@
+#[uniffi::export]
 pub fn split_biblatex_to_raw_strings(file_content: &str) -> Vec<String> {
     let mut entries: Vec<String> = Vec::new();
     let mut current_entry = String::new();

@@ -61,11 +61,12 @@ build_cross_language_schemas: generate_initial_note_data
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=swift --output-folder={{justfile_directory()}}/packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare
 
+
 build_desktop_fs:
-	cd {{justfile_directory()}}/packages/rust/fluster_desktop_fs; cargo swift package -y
+	cd {{justfile_directory()}}/packages/rust/fluster_desktop_fs; cargo swift package -y --xcframework-name FlusterDT
 
 build_fluster_bibliography:
-	cd {{justfile_directory()}}/packages/rust/fluster_bibliography; cargo swift package -y
+	cd {{justfile_directory()}}/packages/rust/fluster_bibliography; cargo swift package -y --xcframework-name FlusterBib
 
 clear_macos_database:
 	trash "/Users/bigsexy/Library/Containers/iglooDevelopment.Fluster-Desktop/Data/Library/Application Support/default.store"
@@ -87,7 +88,7 @@ build_all_rust: build_cross_language_all
 	cargo build
 
 build_fluster_swift_mdx_parser: build_cross_language_all
-	cd {{justfile_directory()}}/packages/rust/fluster_swift_mdx_parser; cargo-swift swift package -y
+	cd {{justfile_directory()}}/packages/rust/fluster_swift_mdx_parser; cargo-swift swift package -y --xcframework-name FlusterSwiftMdxParse
 
 build_fluster_core_rust_utilities: build_cross_language_all
 	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build

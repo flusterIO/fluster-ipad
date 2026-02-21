@@ -18,11 +18,8 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../../rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser/"),
+    .package(path: "../../rust/fluster_bibliography/FlusterBibliography/"),
     .package(path: "../FlusterMdx/"),
-    .package(
-      url: "https://github.com/MaxHaertwig/SwiftyBibtex.git",
-      .upToNextMajor(from: "1.0.0")
-    ),
     .package(
       url: "https://github.com/google/flatbuffers.git",
       exact: "25.9.23"
@@ -38,15 +35,15 @@ let package = Package(
     .target(
       name: "FlusterData",
       dependencies: [
-        "SwiftyBibtex",
         .product(name: "FlusterSwiftMdxParser", package: "FlusterSwiftMdxParser"),
+        .product(name: "FlusterBibliography", package: "FlusterBibliography"),
         .product(name: "FlusterMdx", package: "FlusterMdx"),
         .product(name: "FlatBuffers", package: "flatbuffers")
       ]
     ),
     .testTarget(
       name: "FlusterDataTests",
-      dependencies: ["FlusterData", "FlusterSwiftMdxParser", "FlusterMdx"]
+      dependencies: ["FlusterData", "FlusterSwiftMdxParser", "FlusterMdx", "FlusterBibliography"]
     )
   ],
 )
