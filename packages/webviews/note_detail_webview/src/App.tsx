@@ -37,12 +37,7 @@ function App() {
     }, [data]);
 
     return (
-        <WebViewContainer
-            style={{
-                backgroundColor: "hsl(var(--background))",
-            }}
-            contentContainerClasses="h-full"
-        >
+        <WebViewContainer contentContainerClasses="h-full">
             {data ? (
                 <NoteDetailSheet data={data} />
             ) : (

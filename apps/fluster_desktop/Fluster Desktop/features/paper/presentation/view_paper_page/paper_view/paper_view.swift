@@ -30,7 +30,7 @@ struct PaperView: View {
                   await handlePaperMarkupChange(newValue)
                 }
               })
-            PaperMarkupView(markup: markup)
+            PaperMarkupView(markup: markup, focusedIndex: $focusedPageIndex)
               .toolbar(content: {
                 ToolbarItem(
                   placement: .primaryAction,
@@ -187,30 +187,36 @@ struct PaperView: View {
 struct PaperMarkupView: NSViewControllerRepresentable {
   typealias NSViewControllerType = MacPaperNsViewController
   @Binding public var markup: PaperMarkup
-  @State private var container: MacPaperNsViewController?
+  @State private var previousFocusedIndex: Int = -1
+  @Binding public var focusedIndex: Int
+  //  let controller: MacPaperNsViewController?
 
   func makeNSViewController(context: Context) -> MacPaperNsViewController {
-    let container = MacPaperNsViewController(markup: $markup)
-//    self.container = container
-//        Task { [weak self] in
-//            container.observeValue(forKeyPath: "markup", of: nil, change: nil, context: nil)
-//          for model in await container.observeValues(for: \.markup) {
-//            self?.save(model)
-//          }
-//        }
+    let container = MacPaperNsViewController(markup: $markup, focusedIndex: $focusedIndex)
     return container
   }
 
   func updateNSViewController(_ nsViewController: MacPaperNsViewController, context: Context) {
     print("Updating paper...")
     context.coordinator.parent = self
-//      if let c = container {
-//          c.update(with: markup)
-//      }
+    if focusedIndex != previousFocusedIndex {
+      resetMarkupContent(on: nsViewController)
+      // Probably ok because it's only being executed when they're not equivalent.
+      previousFocusedIndex = focusedIndex
+    }
+    //    nsViewController.markup = markup
+    //      if let c = self.controller {
+    //          c.markup = markup
+    //      }
+    //    if focusedIndex != previousFocusedIndex {
+    //      previousFocusedIndex = focusedIndex
+    //      nsViewController.markup = markup
+    //    }
+  }
 
-    //      nsViewController.
-    //      context.
-    //      self.markup
+  private func resetMarkupContent(on nsViewController: MacPaperNsViewController) {
+    print("Resetting PaperMarkup content for page index: \(focusedIndex)")
+    nsViewController.update(with: markup)
   }
 
   func makeCoordinator() -> Coordinator {

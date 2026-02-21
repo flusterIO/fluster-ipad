@@ -12,11 +12,13 @@ import SwiftUI
 
 class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Delegate {
   @Binding public var markup: PaperMarkup
+  @Binding public var focusedIndex: Int
   var paperViewController: PaperMarkupViewController!
   var toolbarViewController: MarkupToolbarViewController!
 
-  init(markup: Binding<PaperMarkup>) {
+  init(markup: Binding<PaperMarkup>, focusedIndex: Binding<Int>) {
     self._markup = markup
+    self._focusedIndex = focusedIndex
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -92,4 +94,8 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
       self.markup = markup
     }
   }
+    
+    public func update(with markup: PaperMarkup) {
+        self.markup = markup
+    }
 }

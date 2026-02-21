@@ -10,9 +10,11 @@ root {
 // Temporarly override the background window color to black. Find a better color later for the desktop window.
 body.dark {
   background-color: black;
+  --background: black;
 
   &.fluster-mac {
-    background-color: hsl(var(--background-override))
+    background-color: hsl(var(--background-override));
+    --background: var(--background-override);
   }
 }
 
