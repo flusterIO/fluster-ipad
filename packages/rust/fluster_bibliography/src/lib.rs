@@ -1,13 +1,12 @@
 uniffi::setup_scaffolding!();
 
 use hayagriva::{
-    citationberg::{Bibliography, IndependentStyle, LocaleFile, Style, StyleClass},
+    citationberg::{IndependentStyle, LocaleFile, StyleClass},
     io::from_biblatex_str,
-    BibliographyDriver, BibliographyRequest, BufWriteFormat, CitationItem, CitationRequest,
-    CitePurpose, Entry, Formatting,
+    BibliographyDriver, BibliographyRequest, BufWriteFormat, CitationItem, CitationRequest, Entry,
 };
 use serde::{Deserialize, Serialize};
-use std::ops::Index;
+use std::{ops::Index, sync::Arc};
 
 use crate::{
     data::{
@@ -54,6 +53,7 @@ impl BibEntryData {
         Self { body }
     }
 
+    #[uniffi::method]
     pub fn format_bibliography_citation(
         &self,
         csl_format: EmbeddedCslFile,
@@ -98,6 +98,7 @@ impl BibEntryData {
         }
     }
 
+    #[uniffi::method]
     pub fn format_inline_citation(&self, csl_format: EmbeddedCslFile) -> Option<String> {
         if let Some(entry) = bib_entry_to_entry(self) {
             let locale = EmbeddedData::get_csl_locale();
@@ -124,11 +125,12 @@ impl BibEntryData {
     }
 }
 
-pub fn parse_biblatex_string(biblatex_content: String) -> Vec<BibEntryData> {
+#[uniffi::export]
+pub fn parse_biblatex_string(biblatex_content: String) -> Vec<Arc<BibEntryData>> {
     split_biblatex_file_by_entries::split_biblatex_to_raw_strings(&biblatex_content)
         .iter()
-        .map(|entry_string| BibEntryData::new(entry_string.clone()))
-        .collect::<Vec<BibEntryData>>()
+        .map(|entry_string| Arc::new(BibEntryData::new(entry_string.clone())))
+        .collect::<Vec<Arc<BibEntryData>>>()
 }
 
 #[cfg(test)]
@@ -158,7 +160,6 @@ mod tests {
             formatted_citation.is_some(),
             "Gets formatted citation when a bibliography entry is present."
         )
-        // assert!(entries.len() == 3, "Returns proper number of items");
     }
 
     #[test]

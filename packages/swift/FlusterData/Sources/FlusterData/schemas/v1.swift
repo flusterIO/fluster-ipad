@@ -1,11 +1,11 @@
 import FlatBuffers
+import FlusterBibliography
 import FlusterMdx
 import FlusterSwiftMdxParser
 import Foundation
 import PaperKit
 import PencilKit
 import SwiftData
-import SwiftyBibtex
 
 public enum AppSchemaV1: VersionedSchema {
   public static var models: [any PersistentModel.Type] {
@@ -499,43 +499,43 @@ extension AppSchemaV1 {
         self.title = self.getTitle()
       }
     }
-    public func parse() -> SwiftyBibtex.BibtexResult? {
-      let result = try? SwiftyBibtex.parse(self.data)
-      if result != nil {
-        for warning in result!.warnings {
-          print(warning.message)
-        }
-        if result!.publications.count == 1 {
-          return result
-        }
-      }
+    public func parse() -> String? {
+//      let result = try? SwiftyBibtex.parse(self.data)
+//      if result != nil {
+//        for warning in result!.warnings {
+//          print(warning.message)
+//        }
+//        if result!.publications.count == 1 {
+//          return result
+//        }
+//      }
       return nil
     }
 
     public func getCitationKey() -> String? {
-      let result = try? SwiftyBibtex.parse(self.data)
-      if result != nil {
-        for warning in result!.warnings {
-          print(warning.message)
-        }
-        if result!.publications.count == 1 {
-          return result!.publications[0].citationKey
-        }
-      }
+//      let result = try? SwiftyBibtex.parse(self.data)
+//      if result != nil {
+//        for warning in result!.warnings {
+//          print(warning.message)
+//        }
+//        if result!.publications.count == 1 {
+//          return result!.publications[0].citationKey
+//        }
+//      }
       return nil
     }
 
     public func getTitle() -> String {
-      let result = try? SwiftyBibtex.parse(self.data)
-      if result != nil {
-        for warning in result!.warnings {
-          print(warning.message)
-        }
-        if result!.publications.count == 1 {
-          return result!.publications[0].fields["title"]
-            ?? "No title found"
-        }
-      }
+//      let result = try? SwiftyBibtex.parse(self.data)
+//      if result != nil {
+//        for warning in result!.warnings {
+//          print(warning.message)
+//        }
+//        if result!.publications.count == 1 {
+//          return result!.publications[0].fields["title"]
+//            ?? "No title found"
+//        }
+//      }
       return "No title found"
     }
 
@@ -544,6 +544,11 @@ extension AppSchemaV1 {
         citationKey: self.id,
         body: self.data
       )
+    }
+
+    public func toFormattedCitation() -> String? {
+      //        FlusterBibliography.
+    return nil
     }
   }
   @Model
