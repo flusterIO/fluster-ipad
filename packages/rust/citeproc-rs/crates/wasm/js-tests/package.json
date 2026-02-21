@@ -1,0 +1,24 @@
+{
+  "name": "js-tests",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test-node-only": "FIREFOX_BINARY_PATH='' jest --verbose",
+    "test": ". ./firefox-env && jest --verbose",
+    "build": "./build.sh"
+  },
+  "dependencies": {
+    "@types/jest": "^27.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-typescript": "^7.10.4",
+    "babel-jest": "^27.3.1",
+    "geckodriver": "^2.0.4",
+    "jest": "^27.3.1",
+    "jest-environment-node": "^27.3.1",
+    "selenium-webdriver": "^4.0.0-beta.3"
+  }
+}

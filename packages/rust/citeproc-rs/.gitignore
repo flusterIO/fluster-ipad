@@ -1,0 +1,7 @@
+pkg
+target
+**/*.rs.bk
+wasm-pack.log
+*.bench
+.DS_Store
+.snapshots

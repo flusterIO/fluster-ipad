@@ -87,7 +87,7 @@ export const Admonition = ({
                     bounce: 0,
                 }}
             >
-                <div className={cn("p-4 first:mt-0 last:mb-0 admonitionBody", classes.body)}>{children}</div>
+                <div className={cn("p-4 first:mt-0 last:mb-0 admonitionBody inline-mdx", classes.body)}>{children}</div>
             </motion.div>
         </motion.div>
     );

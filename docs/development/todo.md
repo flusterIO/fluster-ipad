@@ -3,6 +3,10 @@
 ## Desktop
 
 - [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
+- [ ] Resume work on new bibliography Rust package. Create the necessary functions to transform a bibtex entry to it's formatted representation.
+  - [ ] Use that formatted citation to create a new field.
+  - [ ] Create necessary functions to read value from data, use this to populate a 'notes' or description section in the search result card.
+  - [ ] Then work on iPad paperkit implementation. There seems to be more documentation for that, so try to get that working first before handling state update on mac.
 - [x] Fix issue with model container now that it's being passed to the secondary window.
 - [ ] Add 'escape-to-close' functionality back to command palette.
 

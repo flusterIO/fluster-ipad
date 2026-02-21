@@ -25,8 +25,7 @@ struct PaperView: View {
                 _markup
               },
               set: { newValue in
-                print("Updated here too?")
-                Task(priority: .high) {
+                Task(priority: .userInitiated) {
                   await handlePaperMarkupChange(newValue)
                 }
               })
@@ -159,9 +158,10 @@ struct PaperView: View {
   }
 
   func handlePaperMarkupChange(_ markup: PaperMarkup) async {
-    if focusedPageIndex < editingNote.paper.count {
+      if focusedPageIndex < editingNote.paper.count && focusedPageIndex >= 0 {
       do {
         let data = try await markup.dataRepresentation()
+        print("Saving editing note markup as data representation...")
         editingNote.paper[focusedPageIndex].markup = data
       } catch {
         print("Error: \(error.localizedDescription)")

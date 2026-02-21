@@ -2,4 +2,4 @@ export const mdxClasses = "prose dark:prose-invert prose-p:text-foreground prose
 
 export const shrinkMdxClasses = "[&_p]:mb-0 [&_p]:mt-0 [&_p]:font-normal"
 
-export const inlineMdxClasses = `${shrinkMdxClasses} [&>p]:inline`
+export const inlineMdxClasses = `${shrinkMdxClasses} [&>p]:my-0 inline-mdx`
