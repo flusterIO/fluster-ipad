@@ -86,7 +86,6 @@ struct NoteSearchResultItemView: View {
 #Preview {
   NoteSearchResultItemView(
     item: NoteModel(
-      drawing: PKDrawing.init().dataRepresentation(),
       markdown: MarkdownNote(body: "# My Note title", summary: nil)
     ),
     editingNote: .constant(nil)

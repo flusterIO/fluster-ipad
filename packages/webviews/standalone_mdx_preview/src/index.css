@@ -5,7 +5,7 @@
 html,
 body {
     width: 100vw;
-    background-color: hsl(var(--background));
+    /* background-color: hsl(var(--background)); */
     overscroll-behavior: none;
     overscroll-behavior-block: none;
     overscroll-behavior-inline: none;

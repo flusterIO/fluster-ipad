@@ -19,13 +19,14 @@ struct PaperTabView: View {
   }
   var body: some View {
     if let unwrappedEditingNote = Binding($editingNote) {
-      PaperView(
-        toolbar: $toolbar,
-        drawingData: unwrappedEditingNote.drawing,
-        activeTab: $selectedTab
-      )
-      .backgroundExtensionEffect()
-      .ignoresSafeArea()
+        Text("Paper goes back here...")
+//      PaperView(
+//        toolbar: $toolbar,
+//        drawingData: unwrappedEditingNote.paper,
+//        activeTab: $selectedTab
+//      )
+//      .backgroundExtensionEffect()
+//      .ignoresSafeArea()
     } else {
       if hasPreviouslyLaunched {
         SelectNoteToContinueView()

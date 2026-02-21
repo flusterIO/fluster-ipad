@@ -344,6 +344,7 @@ import WebKit
           maxHeight: .infinity,
           alignment: .bottom
         )
+        .ignoresSafeArea(edges: .bottom)
         .scrollDisabled(true)
         if !show {
           ProgressView()
