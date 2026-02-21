@@ -10,13 +10,6 @@ members = [
     "packages/rust/uniffi_bindgen",
     "packages/rust/fluster_desktop_fs/",
     "packages/rust/fluster_bibliography",
-    "packages/rust/citeproc-rs/crates/csl",
-    "packages/rust/citeproc-rs/crates/io",
-    "packages/rust/citeproc-rs/crates/db",
-    "packages/rust/citeproc-rs/crates/proc",
-    "packages/rust/citeproc-rs/crates/wasm",
-    "packages/rust/citeproc-rs/crates/citeproc",
-    "packages/rust/citeproc-rs/bindings/ffi",
 ]
 
 
