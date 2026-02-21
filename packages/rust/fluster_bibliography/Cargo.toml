@@ -13,7 +13,6 @@ name = "fluster_bibliography"
 hayagriva = { version = "0.9.1", features = ["strum"] }
 uniffi = "0.29"
 fluster_core_utilities = { path = "../fluster_core_utilities/" }
-citeproc = { path = "../citeproc-rs/crates/citeproc/" }
 log = "0.4.29"
 rayon.workspace = true
 rust-embed = "8.11.0"

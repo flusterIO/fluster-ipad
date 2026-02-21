@@ -1,4 +1,0 @@
-module CiteprocRs {
-    header "citeproc_rs.h"
-    export *
-}

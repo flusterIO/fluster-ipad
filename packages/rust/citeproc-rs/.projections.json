@@ -1,6 +1,0 @@
-{
-  "**/Cargo.toml": {"type": "cargo"},
-  "crates/citeproc-proc/src/*.rs": {"type": "proc"},
-  "crates/citeproc/tests/data/humans/*.yml": {"type": "test"},
-  "crates/citeproc/tests/data/test-suite/processor-tests/humans/*.txt": {"type": "test"}
-}
