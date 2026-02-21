@@ -18,6 +18,7 @@ body.dark {
   }
 }
 
+
 .scroll-target {
   scroll-behavior: smooth;
 }
@@ -42,6 +43,18 @@ body.dark {
     padding-top: 1rem;
   }
 }
+
+
+.inline-mdx {
+  &:first-of-type(p) {
+    margin-top: 0;
+  }
+
+  &:last-of-type(p) {
+    margin-bottom: 0;
+  }
+}
+
 
 body.fluster-mac {
 

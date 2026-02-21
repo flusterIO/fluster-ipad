@@ -341,7 +341,7 @@ import WebKit
         .disableAnimations()
         .frame(
           maxWidth: .infinity,
-          maxHeight: .infinity,
+//          maxHeight: .infinity,
           alignment: .bottom
         )
         .ignoresSafeArea(edges: .bottom)
