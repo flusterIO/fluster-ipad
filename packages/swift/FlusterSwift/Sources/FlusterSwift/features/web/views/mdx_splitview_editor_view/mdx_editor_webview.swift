@@ -71,7 +71,6 @@ import WebKit
 
       webView.layer.needsDisplayOnBoundsChange = true
       webView.underPageBackgroundColor = .clear
-      webView.layer.backgroundColor = .init(red: 1, green: 0, blue: 0, alpha: 1)
       // -- Begin new attempts to get rid of overscroll --
       // This will obviously cause issues in light mode, but testing to see if this resolves the issue.
 //      webView.layer.masksToBounds = true
