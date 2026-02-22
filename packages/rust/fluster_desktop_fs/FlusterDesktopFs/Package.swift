@@ -18,11 +18,11 @@ let package = Package(
     ],
     dependencies: [ ],
     targets: [
-        .binaryTarget(name: "RustFramework", path: "./RustFramework.xcframework"),
+        .binaryTarget(name: "FlusterDT", path: "./FlusterDT.xcframework"),
         .target(
             name: "FlusterDesktopFs",
             dependencies: [
-                .target(name: "RustFramework")
+                .target(name: "FlusterDT")
             ]
         ),
     ]

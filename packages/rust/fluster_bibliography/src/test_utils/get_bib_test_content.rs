@@ -1,4 +1,5 @@
-/// Written by AI.
+use std::fs;
+
 pub fn get_bib_test_content() -> String {
     r#"@Article{Newton2026DivergentGravity,
   author       = {Newton, Isaac and Mach, Ernst and Doe, Jane},
@@ -79,4 +80,41 @@ pub fn get_bib_test_content() -> String {
 }
 
         "#.to_string()
+}
+
+pub fn get_test_csl_content(file_name: Option<String>) -> String {
+    let _fn = file_name.unwrap_or("apa.csl".to_string());
+    let this_file = file!();
+    println!("File: {}", this_file);
+    let p = std::path::Path::new(this_file);
+    let x = p
+        .parent()
+        .unwrap()
+        .parent()
+        .unwrap()
+        .parent()
+        .unwrap()
+        .join("bibliography_embedded")
+        .join("csl")
+        .join(_fn);
+
+    println!("X: {}", x.display());
+    std::fs::read_to_string(x).expect("Must return test csl content")
+}
+
+pub fn get_test_csl_locale() -> String {
+    let this_file = file!();
+    let p = std::path::Path::new(this_file);
+    let x = p
+        .parent()
+        .unwrap()
+        .parent()
+        .unwrap()
+        .parent()
+        .unwrap()
+        .join("bibliography_embedded")
+        .join("csl_locale")
+        .join("en_us.xml");
+    println!("X: {}", x.display());
+    std::fs::read_to_string(x).expect("Must return test csl locale")
 }

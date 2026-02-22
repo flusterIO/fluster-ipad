@@ -5,6 +5,7 @@
 //  Created by Andrew on 2/18/26.
 //
 
+import FlusterBibliography
 import FlusterData
 import FlusterWebviewClients
 import SwiftData
@@ -70,8 +71,11 @@ struct BibtexEditorWebview: View {
     .sheet(
       isPresented: $showCantSaveEmpty,
       content: {
-        Text("You can't save an empty file. Please enter valid bibtex.")
-          .padding()
+        NotificationConfirmationContainerView(
+          buttonText: "Go back",
+          content: {
+            Text("You can't save an empty file. Please enter valid biblatex.")
+          })
       }
     )
     .toolbar(content: {
@@ -135,11 +139,14 @@ struct BibtexEditorWebview: View {
       if newItemData.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
         showCantSaveEmpty = true
       } else {
-        let item = BibEntryModel(data: newItemData)
-        if let en = editingNote, associateWithEditingNote {
-          en.citations.append(item)
-        } else {
-          modelContext.insert(item)
+        let splitByEntry = FlusterBibliography.splitBiblatexToRawStrings(fileContent: newItemData)
+        for entryText in splitByEntry {
+          let item = BibEntryModel(data: entryText)
+          if let en = editingNote, associateWithEditingNote {
+            en.citations.append(item)
+          } else {
+            modelContext.insert(item)
+          }
         }
         dismiss()
       }

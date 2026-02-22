@@ -454,11 +454,14 @@ extension AppSchemaV1 {
       self.note = note
     }
   }
+
+  public enum CitationUsage {
+    case inlineText, fullBibliography
+  }
   @Model
-  public class BibEntryModel: Identifiable {
+  public final class BibEntryModel: Identifiable {
     @Attribute(.unique) public var id: String
     @Attribute(.unique) public var citationKey: String?
-    public var htmlFormattedCitation: String?
     // swiftlint:disable:next identifier_name
     public var _data: String
     public var ctime: Date
@@ -466,7 +469,8 @@ extension AppSchemaV1 {
     /// The time a note with this bibliography entry was last accessed.
     public var lastAccess: Date
     public var notes = [NoteModel]()
-    public var title: String
+    // title is required to be saved for alphabetizing.
+    public var title = ""
     public init(
       id: String? = nil,
       data: String,
@@ -481,12 +485,9 @@ extension AppSchemaV1 {
       self.utime = utime
       self.notes = notes
       self.lastAccess = lastAccess
-      // TODO: Figure out how to get the html formatted citation in rust and use that to generate
-      //  a formatted citation for each item that can then be passed to the webview for bibliography creation.
-      self.htmlFormattedCitation = nil
       self.title = ""  // Required to avoid an 'using self before all properties are initialized' error
       self.citationKey = self.getCitationKey()
-      self.title = self.getTitle()
+      self.title = getTitle()
     }
 
     /// The bibtex string representing the item's data.
@@ -499,44 +500,35 @@ extension AppSchemaV1 {
         self.title = self.getTitle()
       }
     }
+
+    public func toBiblatexData() -> BibEntryData? {
+      let res = FlusterBibliography.parseBiblatexString(biblatexContent: self.data)
+      if res.isEmpty {
+        return nil
+      } else {
+        return res[0]
+      }
+    }
+
     public func parse() -> String? {
-//      let result = try? SwiftyBibtex.parse(self.data)
-//      if result != nil {
-//        for warning in result!.warnings {
-//          print(warning.message)
-//        }
-//        if result!.publications.count == 1 {
-//          return result
-//        }
-//      }
+      //      let result = try? SwiftyBibtex.parse(self.data)
+      //      if result != nil {
+      //        for warning in result!.warnings {
+      //          print(warning.message)
+      //        }
+      //        if result!.publications.count == 1 {
+      //          return result
+      //        }
+      //      }
       return nil
     }
 
     public func getCitationKey() -> String? {
-//      let result = try? SwiftyBibtex.parse(self.data)
-//      if result != nil {
-//        for warning in result!.warnings {
-//          print(warning.message)
-//        }
-//        if result!.publications.count == 1 {
-//          return result!.publications[0].citationKey
-//        }
-//      }
-      return nil
+      self.toBiblatexData()?.getCitationKey()
     }
 
     public func getTitle() -> String {
-//      let result = try? SwiftyBibtex.parse(self.data)
-//      if result != nil {
-//        for warning in result!.warnings {
-//          print(warning.message)
-//        }
-//        if result!.publications.count == 1 {
-//          return result!.publications[0].fields["title"]
-//            ?? "No title found"
-//        }
-//      }
-      return "No title found"
+      return self.toBiblatexData()?.getTitle() ?? "No title found"
     }
 
     public func toCitationSummary() -> SwiftDataCitationSummary {
@@ -546,9 +538,18 @@ extension AppSchemaV1 {
       )
     }
 
-    public func toFormattedCitation() -> String? {
-      //        FlusterBibliography.
-    return nil
+    public func toFormattedCitation(
+      _ usage: CitationUsage, _ renderMethod: RenderMethod, _ format: EmbeddedCslFileSwift
+    ) -> String? {
+      if usage == .fullBibliography {
+        return self.toBiblatexData()?.formatBibliographyCitation(
+          cslContent: format.toFlusterBibliographyCslFile(), cslLocale: getCslLocaleFileContent(),
+          renderMethod: renderMethod)
+      } else {
+        return self.toBiblatexData()?.formatInlineCitation(
+          cslContent: format.toFlusterBibliographyCslFile(), cslLocale: getCslLocaleFileContent(),
+          renderMethod: renderMethod)
+      }
     }
   }
   @Model
