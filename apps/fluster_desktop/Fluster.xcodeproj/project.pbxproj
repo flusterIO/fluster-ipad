@@ -14,6 +14,7 @@
 		794FD46B2F4A492100F8194A /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD46A2F4A492100F8194A /* FlusterSwift */; };
 		7970D3762F1FE24300A734F4 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 7970D3752F1FE24300A734F4 /* splitview_mdx_editor */; };
 		7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7970D3872F201A2F00A734F4 /* WebKit.framework */; };
+		79A1B99A2F4A60B200B451B2 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79A1B9992F4A60B200B451B2 /* bibliography_embedded */; };
 		79BC1C562F46627300E8A9AA /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79BC1C552F46627300E8A9AA /* bibtex_editor_webview */; };
 		79CB006F2F40008600C7BDFB /* standalone_mdx_preview in Resources */ = {isa = PBXBuildFile; fileRef = 79CB006E2F40008600C7BDFB /* standalone_mdx_preview */; };
 		79CB00722F4000F700C7BDFB /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79CB00712F4000F700C7BDFB /* FlusterWebviewClients */; };
@@ -44,6 +45,8 @@
 		798752EA2F1810B90055ABF1 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		798752FA2F1810BA0055ABF1 /* FlusterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlusterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		798753042F1810BA0055ABF1 /* FlusterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlusterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		79A1B9972F4A608D00B451B2 /* embedded */ = {isa = PBXFileReference; lastKnownFileType = folder; name = embedded; path = ../../packages/rust/fluster_bibliography/embedded; sourceTree = "<group>"; };
+		79A1B9992F4A60B200B451B2 /* bibliography_embedded */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibliography_embedded; path = ../../packages/rust/fluster_bibliography/bibliography_embedded; sourceTree = "<group>"; };
 		79BC1C552F46627300E8A9AA /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
 		79CB006E2F40008600C7BDFB /* standalone_mdx_preview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,6 +117,8 @@
 		798752E12F1810B90055ABF1 = {
 			isa = PBXGroup;
 			children = (
+				79A1B9992F4A60B200B451B2 /* bibliography_embedded */,
+				79A1B9972F4A608D00B451B2 /* embedded */,
 				79BC1C552F46627300E8A9AA /* bibtex_editor_webview */,
 				79196E372F44EBEE001AEFEB /* note_detail_webview */,
 				79CB006E2F40008600C7BDFB /* standalone_mdx_preview */,
@@ -277,6 +282,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79A1B99A2F4A60B200B451B2 /* bibliography_embedded in Resources */,
 				79BC1C562F46627300E8A9AA /* bibtex_editor_webview in Resources */,
 				79196E382F44EBEE001AEFEB /* note_detail_webview in Resources */,
 				79CB006F2F40008600C7BDFB /* standalone_mdx_preview in Resources */,
@@ -560,7 +566,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H27PZFYGUZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "iglooDevelopment.Fluster-DesktopTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -581,7 +587,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H27PZFYGUZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "iglooDevelopment.Fluster-DesktopTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -601,6 +607,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H27PZFYGUZ;
 				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "iglooDevelopment.Fluster-DesktopUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -620,6 +627,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H27PZFYGUZ;
 				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "iglooDevelopment.Fluster-DesktopUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

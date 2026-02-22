@@ -39,6 +39,24 @@ struct EditingNoteBibliographyPageView: View {
         BibliographyEntryListView(entries: entries)
       }
     }.toolbar(content: {
+        
+        ToolbarItem(
+          id: "associate-bib-entry", placement: .primaryAction,
+          content: {
+            Button(
+              action: {
+                AppState.shared.commandPaletteNavigate(to: .associateByEntriesWithEditingNote)
+              },
+              label: {
+                Label(
+                  title: {
+                    Text("Associate")
+                  },
+                  icon: {
+                    Image(systemName: "link")
+                  })
+              })
+          })
       ToolbarItem(
         id: "add-bib-entry", placement: .primaryAction,
         content: {

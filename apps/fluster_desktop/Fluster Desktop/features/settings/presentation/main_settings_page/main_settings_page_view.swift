@@ -41,6 +41,8 @@ struct MainSettingsPageView: View {
         }
 
         NotesDirSettingSection()
+          
+        BibliographySettingSectionView()
 
         AutoSettingSettingSection()
 

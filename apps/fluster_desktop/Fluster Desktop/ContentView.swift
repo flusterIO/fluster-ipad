@@ -32,6 +32,10 @@ struct ContentView: View {
                 SearchByTagView(item: tag)
               case .searchByTopic(let topic):
                 SearchByTopicView(item: topic)
+              case .searchByCitation(let citation):
+                SearchByCitationView(citation: citation)
+              case .associateByEntriesWithEditingNote:
+                AssociateNoteWithBibEntryView()
               case .createBibEntry:
                 BibtexEditorWebview(
                   editingNoteId: appState.editingNoteId, editingBibEntry: .constant(nil))
@@ -45,9 +49,4 @@ struct ContentView: View {
       appState.mainView = newValue
     }
   }
-}
-
-#Preview {
-  ContentView()
-    .modelContainer(for: Item.self, inMemory: true)
 }

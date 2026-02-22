@@ -13,6 +13,8 @@ struct CollapsableSidebarSection: View {
   let items: [SidebarItem]
   let title: LocalizedStringKey
   @EnvironmentObject private var appState: AppState
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.isPresented) private var isPresented
 
   var body: some View {
     Section(
@@ -22,6 +24,10 @@ struct CollapsableSidebarSection: View {
             Button(
               action: {
                 appState.mainView = item.id
+                if !appState.commandPaletteNavigation.isEmpty {
+                  appState.commandPaletteNavigation.removeLast(
+                    appState.commandPaletteNavigation.count)
+                }
               },
               label: {
                 HStack {

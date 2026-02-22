@@ -1,31 +1,27 @@
 uniffi::setup_scaffolding!();
 
 use hayagriva::{
-    citationberg::{IndependentStyle, LocaleFile, StyleClass},
+    citationberg::{IndependentStyle, LocaleFile},
     io::from_biblatex_str,
+    lang::{SentenceCase, TitleCase},
     BibliographyDriver, BibliographyRequest, BufWriteFormat, CitationItem, CitationRequest, Entry,
 };
-use serde::{Deserialize, Serialize};
 use std::{ops::Index, sync::Arc};
 
-use crate::{
-    data::{
-        constants::RenderMethod, embedded_csl_file::EmbeddedCslFile, embedded_data::EmbeddedData,
-    },
-    string_utils::split_biblatex_file_by_entries,
-};
+use crate::{data::constants::RenderMethod, string_utils::split_biblatex_file_by_entries};
 mod data;
 mod string_utils;
 mod test_utils;
 
 // ... classes with methods ...
-#[derive(uniffi::Object, Debug, Deserialize, Serialize)]
+#[derive(uniffi::Object, Debug)]
 pub struct BibEntryData {
     body: String,
+    entry: Option<Entry>,
 }
 
-fn bib_entry_to_entry(entry: &BibEntryData) -> Option<Entry> {
-    if let Ok(res) = from_biblatex_str(&entry.body) {
+fn bib_entry_to_entry(body: &str) -> Option<Entry> {
+    if let Ok(res) = from_biblatex_str(body) {
         let key = res.keys().collect::<Vec<&str>>()[0];
         let entry = res.get(key).cloned();
         return entry;
@@ -40,35 +36,28 @@ fn render_method_to_format(render_method: RenderMethod) -> BufWriteFormat {
     }
 }
 
-// // Return a json serializable string. Use Rust to read values directly from the bib entry if needed
-// // instead of parsing it into a map because of the awkward, largely unknown shape.
-// #[uniffi::export]
-// pub fn parse_bib_entry(bib_entry_body: String) {}
-
 #[uniffi::export]
 impl BibEntryData {
     // Constructors need to be annotated as such
     #[uniffi::constructor]
     pub fn new(body: String) -> Self {
-        Self { body }
+        let entry = bib_entry_to_entry(&body);
+        Self { body, entry }
     }
 
     #[uniffi::method]
     pub fn format_bibliography_citation(
         &self,
-        csl_format: EmbeddedCslFile,
+        csl_content: String,
+        csl_locale: String,
         render_method: RenderMethod,
     ) -> Option<String> {
-        if let Some(entry) = bib_entry_to_entry(self) {
-            let locale = EmbeddedData::get_csl_locale();
-            let locale_files = [LocaleFile::from_xml(&locale).unwrap().into()];
-            let style_file_content = EmbeddedData::get_embedded_csl_file(csl_format);
-            let mut style = IndependentStyle::from_xml(&style_file_content).unwrap();
-
-            style.settings.class = StyleClass::Note;
+        if let Some(entry) = &self.entry {
+            let locale_files = [LocaleFile::from_xml(&csl_locale).unwrap().into()];
+            let style = IndependentStyle::from_xml(&csl_content).unwrap();
 
             let mut driver = BibliographyDriver::new();
-            let items = vec![CitationItem::with_entry(&entry)];
+            let items = vec![CitationItem::with_entry(entry)];
             driver.citation(CitationRequest::from_items(items, &style, &locale_files));
             let result = driver.finish(BibliographyRequest {
                 style: &style,
@@ -76,7 +65,6 @@ impl BibEntryData {
                 locale_files: &locale_files,
             });
 
-            // println!("Result: {:#?}", result);
             if let Some(bib) = result.bibliography {
                 if bib.items.is_empty() {
                     None
@@ -99,15 +87,18 @@ impl BibEntryData {
     }
 
     #[uniffi::method]
-    pub fn format_inline_citation(&self, csl_format: EmbeddedCslFile) -> Option<String> {
-        if let Some(entry) = bib_entry_to_entry(self) {
-            let locale = EmbeddedData::get_csl_locale();
-            let locale_files = [LocaleFile::from_xml(&locale).unwrap().into()];
-            let style = EmbeddedData::get_embedded_csl_file(csl_format);
-            let style = IndependentStyle::from_xml(&style).unwrap();
+    pub fn format_inline_citation(
+        &self,
+        csl_content: String,
+        csl_locale: String,
+        render_method: RenderMethod,
+    ) -> Option<String> {
+        if let Some(entry) = &self.entry {
+            let locale_files = [LocaleFile::from_xml(&csl_locale).unwrap().into()];
+            let style = IndependentStyle::from_xml(&csl_content).unwrap();
 
             let mut driver = BibliographyDriver::new();
-            let items = vec![CitationItem::with_entry(&entry)];
+            let items = vec![CitationItem::with_entry(entry)];
             driver.citation(CitationRequest::from_items(items, &style, &locale_files));
             let result = driver.finish(BibliographyRequest {
                 style: &style,
@@ -117,7 +108,92 @@ impl BibEntryData {
             if result.citations.is_empty() {
                 None
             } else {
-                Some(result.citations.index(0).citation.to_string())
+                let mut output = String::new();
+                let _ = result
+                    .citations
+                    .index(0)
+                    .citation
+                    .write_buf(&mut output, render_method_to_format(render_method));
+
+                Some(output)
+            }
+        } else {
+            None
+        }
+    }
+
+    #[uniffi::method]
+    pub fn get_citation_key(&self) -> Option<String> {
+        self.entry.clone().map(|x| x.key().to_string())
+    }
+
+    #[uniffi::method]
+    pub fn get_title(&self) -> Option<String> {
+        if let Some(entry) = &self.entry {
+            if let Some(title) = entry.title() {
+                let formatted = title.format_title_case(TitleCase::new());
+                Some(formatted)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
+    #[uniffi::method]
+    pub fn get_note(&self) -> Option<String> {
+        if let Some(entry) = &self.entry {
+            if let Some(title) = entry.note() {
+                let formatted = title.format_sentence_case(SentenceCase::new());
+                Some(formatted)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
+    #[uniffi::method]
+    pub fn get_abstract(&self) -> Option<String> {
+        if let Some(entry) = &self.entry {
+            if let Some(title) = entry.abstract_() {
+                let formatted = title.format_sentence_case(SentenceCase::new());
+                Some(formatted)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
+    #[uniffi::method]
+    pub fn get_authors(&self) -> Option<Vec<String>> {
+        if let Some(entry) = &self.entry {
+            if let Some(people) = entry.authors() {
+                let mut res: Vec<String> = Vec::new();
+                for person in people {
+                    res.push(person.name.clone());
+                }
+                Some(res)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
+    #[uniffi::method]
+    pub fn get_url(&self) -> Option<String> {
+        if let Some(entry) = &self.entry {
+            if let Some(_url) = entry.url() {
+                let u = _url.to_string();
+                Some(u)
+            } else {
+                None
             }
         } else {
             None
@@ -137,7 +213,7 @@ pub fn parse_biblatex_string(biblatex_content: String) -> Vec<Arc<BibEntryData>>
 mod tests {
     use std::ops::Index;
 
-    use strum::IntoEnumIterator;
+    use crate::test_utils::get_bib_test_content::{get_test_csl_content, get_test_csl_locale};
 
     use super::*;
 
@@ -153,8 +229,18 @@ mod tests {
         let test_content = test_utils::get_bib_test_content::get_bib_test_content();
         let entries = parse_biblatex_string(test_content);
         let entry = entries.index(0);
+        let csl = get_test_csl_content(None);
+        let csl_locale = get_test_csl_locale();
 
-        let formatted_citation = entry.format_inline_citation(EmbeddedCslFile::Apa);
+        let formatted_citation =
+            entry.format_inline_citation(csl.clone(), csl_locale.clone(), RenderMethod::Html);
+
+        assert!(
+            formatted_citation.is_some(),
+            "Gets formatted citation when a bibliography entry is present."
+        );
+        let formatted_citation =
+            entry.format_inline_citation(csl, csl_locale, RenderMethod::Plaintext);
 
         assert!(
             formatted_citation.is_some(),
@@ -167,29 +253,28 @@ mod tests {
         let test_content = test_utils::get_bib_test_content::get_bib_test_content();
         let entries = parse_biblatex_string(test_content);
         let entry = entries.index(0);
+        let csl = get_test_csl_content(None);
+        let csl_locale = get_test_csl_locale();
 
-        for csl in EmbeddedCslFile::iter() {
-            let formatted_citation = entry.format_bibliography_citation(csl, RenderMethod::Html);
-            println!(
-                "Formatted Citation (html): {}",
-                formatted_citation.clone().unwrap_or("None".to_string())
-            );
-            assert!(
-                formatted_citation.is_some(),
-                "Gets formatted citation when a bibliography entry is present."
-            )
-        }
-        for csl in EmbeddedCslFile::iter() {
-            let formatted_citation =
-                entry.format_bibliography_citation(csl, RenderMethod::Plaintext);
-            println!(
-                "Formatted Citation (plain): {}",
-                formatted_citation.clone().unwrap_or("None".to_string())
-            );
-            assert!(
-                formatted_citation.is_some(),
-                "Gets formatted citation when a bibliography entry is present."
-            )
-        }
+        let formatted_citation =
+            entry.format_bibliography_citation(csl.clone(), csl_locale.clone(), RenderMethod::Html);
+        println!(
+            "Formatted Citation (html): {}",
+            formatted_citation.clone().unwrap_or("None".to_string())
+        );
+        assert!(
+            formatted_citation.is_some(),
+            "Gets formatted citation when a bibliography entry is present."
+        );
+        let formatted_citation =
+            entry.format_bibliography_citation(csl, csl_locale, RenderMethod::Plaintext);
+        println!(
+            "Formatted Citation (plain): {}",
+            formatted_citation.clone().unwrap_or("None".to_string())
+        );
+        assert!(
+            formatted_citation.is_some(),
+            "Gets formatted citation when a bibliography entry is present."
+        )
     }
 }

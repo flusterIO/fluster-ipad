@@ -6,12 +6,22 @@
 //
 
 import Testing
-@testable import Fluster_Desktop
+@testable import Fluster
+@testable import FlusterBibliography
+@testable import FlusterData
 
 struct Fluster_DesktopTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test func readsEmbedddCslFiles() async throws {
+        EmbeddedCslFileSwift.allCases.forEach{ csl in
+            let f = csl.toFlusterBibliographyCslFile()
+            assert(!f.isEmpty, "\(csl.rawValue) is not empty.")
+        }
+    }
+    
+    @Test func getsEmbededCslLocaleFile() async throws {
+        let res = getCslLocaleFileContent()
+        assert(!res.isEmpty, "Csl Locale file content is not empty.")
     }
 
 }

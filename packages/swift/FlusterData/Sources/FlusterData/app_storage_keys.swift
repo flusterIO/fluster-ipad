@@ -16,5 +16,6 @@ public enum AppStorageKeys: String {
     hasLaunchedPreviously,
     splitViewEditorSplit,
     silenceParsingErrors,
-    lockEditorScrollToPreview
+    lockEditorScrollToPreview,
+    embeddedCslFile
 }
