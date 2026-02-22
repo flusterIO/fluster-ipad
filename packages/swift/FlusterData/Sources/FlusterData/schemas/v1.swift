@@ -94,7 +94,7 @@ extension AppSchemaV1 {
     //    }
   }
   @Model
-  public class NoteModel {
+    public class NoteModel {
     public var id: String
     public var paper = [PaperModel]()
     //    @Attribute(.externalStorage) public var drawing: Data

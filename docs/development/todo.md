@@ -2,13 +2,16 @@
 
 ## Desktop
 
+**_RESUME_**
+
+- [ ] Pick back up by handling this horrible user experience when a bib entry is associated with a note.
 - [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
-- [ ] Resume work on new bibliography Rust package. Create the necessary functions to transform a bibtex entry to it's formatted representation.
+- [ ] Resume work on new bibliography rust package. Create the necessary functions to transform a bibtex entry to it's formatted representation.
   - [ ] Use that formatted citation to create a new field.
   - [ ] Create necessary functions to read value from data, use this to populate a 'notes' or description section in the search result card.
   - [ ] Then work on iPad paperkit implementation. There seems to be more documentation for that, so try to get that working first before handling state update on mac.
 - [x] Fix issue with model container now that it's being passed to the secondary window.
-- [ ] Add 'escape-to-close' functionality back to command palette.
+- [x] Add 'escape-to-close' functionality back to command palette.
 
 - [x] Fix issue with dictionary entry parsing. This might be applicable to all 'pre-parsing' functionality.
 
@@ -20,9 +23,6 @@
 
 ## iPad
 
-- [ ] **_RESUME_** tomorrow by getting iPad webviews back in order.
-  - [ ] Move the iPad implementation to the much cleaner setup used in the desktop app with the functions being passed in as clean onLoad and messageHandler functions in the parent webview struct.
-- [ ] Add script to set `WebviewEnvironment.IPad` so that the loading class will still be appended.
 - [ ] Make sure note can be loaded when ipad is initially in portrait view. It's currently stuck in loading mode.
 
 ## Webviews

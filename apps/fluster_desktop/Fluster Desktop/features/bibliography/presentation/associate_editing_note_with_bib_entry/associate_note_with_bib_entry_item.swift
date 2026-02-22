@@ -9,11 +9,20 @@ import FlusterBibliography
 import FlusterData
 import SwiftUI
 
+struct BibSummaryData {
+  let title: String
+  let summary: String?
+}
+
 struct AssociateNoteWithBibEntryItemView: View {
   let item: BibEntryModel
+  var itemId: String {
+    item.id
+  }
   let editingNote: NoteModel
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
+  @State private var data: BibSummaryData? = nil
   var body: some View {
     let isIncluded = Binding<Bool>(
       get: {
@@ -21,13 +30,14 @@ struct AssociateNoteWithBibEntryItemView: View {
       },
       set: { newValue in
         if newValue {
-          self.addEntry()
+          Task(priority: .userInitiated) {
+            self.addEntry()
+          }
         } else {
           self.removeEntry()
         }
       }
     )
-    let entryData = item.toBiblatexData()
     HStack(alignment: .center) {
       Toggle(
         isOn: isIncluded,
@@ -36,14 +46,10 @@ struct AssociateNoteWithBibEntryItemView: View {
       .labelsHidden()
       .toggleStyle(.switch)
       VStack(alignment: .leading) {
-        Text(item.toFormattedCitation(.fullBibliography, .plaintext, cslFile) ?? item.getTitle())
+        Text(data?.title ?? "No title found")
           .font(.headline)
-        if let note = entryData?.getNote() {
+        if let note = data?.summary {
           Text(note)
-            .font(.footnote)
-            .opacity(0.8)
-        } else if let abstract = entryData?.getAbstract() {
-          Text(abstract)
             .font(.footnote)
             .opacity(0.8)
         }
@@ -53,6 +59,25 @@ struct AssociateNoteWithBibEntryItemView: View {
     }
     .padding()
     .glassEffect(in: .rect(cornerRadius: 16))
+    .task {
+      if self.data == nil {
+          let entryData = parseBiblatexString(biblatexContent: item.data).first
+          let cslContent = cslFile.toFlusterBibliographyCslFile()
+        Task.detached {
+          if let res = entryData {
+            let s = res.formatBibliographyCitation(
+              cslContent: cslContent,
+              cslLocale: getCslLocaleFileContent(), renderMethod: .plaintext)
+            let _data = BibSummaryData(
+              title: s ?? res.getTitle() ?? "No title found",
+              summary: res.getNote() ?? res.getAbstract())
+            await MainActor.run {
+              self.data = _data
+            }
+          }
+        }
+      }
+    }
   }
 
   func removeEntry() {
@@ -63,6 +88,7 @@ struct AssociateNoteWithBibEntryItemView: View {
           entry.id != itemId
         })
       self.editingNote.citations = newCitations
+      self.editingNote.setLastRead(setModified: true)
     } catch {
       print("Error: \(error.localizedDescription)")
     }
@@ -78,6 +104,7 @@ struct AssociateNoteWithBibEntryItemView: View {
   func addEntry() {
     if !self.isIncluded() {
       self.editingNote.citations.append(self.item)
+      self.editingNote.setLastRead(setModified: true)
     }
   }
 }
