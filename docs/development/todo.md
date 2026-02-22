@@ -5,6 +5,7 @@
 **_RESUME_**
 
 - [ ] Pick back up by handling this horrible user experience when a bib entry is associated with a note.
+  - [ ] Move list to lazy list. This is almost surely rendering every item in the list causing the big freeze.
 - [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
 - [ ] Resume work on new bibliography rust package. Create the necessary functions to transform a bibtex entry to it's formatted representation.
   - [ ] Use that formatted citation to create a new field.

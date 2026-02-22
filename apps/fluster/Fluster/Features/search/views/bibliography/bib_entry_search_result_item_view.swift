@@ -5,16 +5,16 @@
 //  Created by Andrew on 11/9/25.
 //
 
+import FlusterData
 import FlusterSwift
 import SwiftUI
 import SwiftyBibtex
-import FlusterData
 
 struct BibEntrySearchResultItemView: View {
   var item: BibEntryModel
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text(item.parse()?.publications[0].fields["title"] ?? "--")
+      Text(item.getTitle())
         .font(.subheadline)
         .fontWeight(.bold)
         .lineLimit(2)

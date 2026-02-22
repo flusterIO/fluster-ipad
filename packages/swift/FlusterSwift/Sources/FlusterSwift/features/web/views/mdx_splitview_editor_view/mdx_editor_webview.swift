@@ -18,7 +18,7 @@ import WebKit
   @MainActor
   public struct MdxEditorWebviewInternal: UIViewRepresentable {
     @State private var webView: WKWebView = WKWebView(
-      frame: .zero,
+      frame: .infinite,
       configuration: getConfig()
     )
     @State private var didSetInitialContent = false
@@ -68,6 +68,35 @@ import WebKit
     public func makeUIView(context: Context) -> WKWebView {
       let webView = container.webView
       webView.isHidden = true
+
+      webView.layer.needsDisplayOnBoundsChange = true
+      webView.underPageBackgroundColor = .clear
+      webView.layer.backgroundColor = .init(red: 1, green: 0, blue: 0, alpha: 1)
+      // -- Begin new attempts to get rid of overscroll --
+      // This will obviously cause issues in light mode, but testing to see if this resolves the issue.
+//      webView.layer.masksToBounds = true
+//      webView.layer.bounds = CGRect(
+//        origin: .zero,
+//        size: CGSize(width: .infinity, heighk: UIScreen.current?.bounds.height ?? .infinity))
+//      webView.layer.frame = CGRect(
+//        origin: .zero,
+//        size: CGSize(width: .infinity, height: UIScreen.current?.bounds.height ?? .infinity))
+//
+//      webView.layer.frame = CGRect(
+//        origin: .zero,
+//        size: CGSize(width: .infinity, height: UIScreen.current?.bounds.height ?? .infinity))
+//      webView.scrollView.contentOffset = .zero
+//      webView.scrollView.contentInsetAdjustmentBehavior = .never
+//      webView.scrollView.scrollIndicatorInsets = .zero
+//      webView.scrollView.isScrollEnabled = false
+//      webView.scrollView.contentInset = .zero
+
+      // -- End new attempts --
+
+      webView.scrollView.bounces = false
+      webView.scrollView.showsVerticalScrollIndicator = false
+      webView.scrollView.showsHorizontalScrollIndicator = false
+      webView.scrollView.zoomScale = 1
 
       webView.navigationDelegate = context.coordinator
       let editorContentControllers = [
@@ -140,7 +169,6 @@ import WebKit
       )
     }
     public func handleViewNoteByUserDefinedId(id: String) {
-      print("Here...")
       let fetchDescriptor = FetchDescriptor<NoteModel>(
         predicate: #Predicate { note in
           note.frontMatter.userDefinedId == id
@@ -341,7 +369,7 @@ import WebKit
         .disableAnimations()
         .frame(
           maxWidth: .infinity,
-//          maxHeight: .infinity,
+          //          maxHeight: .infinity,
           alignment: .bottom
         )
         .ignoresSafeArea(edges: .bottom)

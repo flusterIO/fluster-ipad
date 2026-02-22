@@ -84,10 +84,6 @@ struct MainView: View {
   @State private var selectedTab: IpadMainViewTab = IpadMainViewTab.notes
   @State private var findInNotePresented: Bool = false
 
-  init() {
-    self.editorContainer.onLoad = self.onEditorLoad
-  }
-
   var body: some View {
     let showFullScreenCover = Binding<Bool>(
       get: { self.fullScreenCover != nil },
@@ -126,6 +122,7 @@ struct MainView: View {
           onNavigateToNote: nil,
           fullScreenCover: $fullScreenCover
         )
+        .scrollDisabled(true)
       }
       .customizationID(IpadMainViewTab.markdown.rawValue)
       .defaultVisibility(.visible, for: .tabBar)
@@ -433,6 +430,7 @@ struct MainView: View {
       }
     )
     .onAppear {
+      editorContainer.onLoad = self.onEditorLoad
       handleColorSchemeChange(newScheme: colorScheme)
       handleThemeChange(newTheme: theme)
       handleColorSchemeSelectionChange()
@@ -577,3 +575,4 @@ struct MainView: View {
   MainView()
     .environment(ThemeManager(initialTheme: FlusterDark()))
 }
+
