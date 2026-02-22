@@ -42,6 +42,7 @@ struct BibliographyEntrySearchResultListItemView: View {
           .font(.headline)
           .padding(.horizontal)
           .padding((data.note != nil || data.abstract != nil) ? .top : .vertical)
+          .frame(maxWidth: .infinity)
         if let note = data.note {
           Text(note).font(.footnote)
             .lineLimit(3)
