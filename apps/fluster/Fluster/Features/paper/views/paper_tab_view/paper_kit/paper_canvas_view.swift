@@ -1,13 +1,15 @@
 import SwiftUI
 import PaperKit
 import PencilKit
+import FlusterSwift
 
 struct PaperCanvasView: UIViewControllerRepresentable {
     @Binding var canvasData: Data
+    let canvasBounds: CGRect
     
     func makeUIViewController(context: Context) -> PaperContainerViewController {
         // 1. Initialize with the screen bounds to ensure non-zero size
-        let markup = PaperMarkup(bounds: UIScreen.main.bounds)
+        let markup = PaperMarkup(bounds: canvasBounds)
         let paperVC = PaperMarkupViewController(markup: markup, supportedFeatureSet: .latest)
         
         // 2. Use our custom container to manage the lifecycle
