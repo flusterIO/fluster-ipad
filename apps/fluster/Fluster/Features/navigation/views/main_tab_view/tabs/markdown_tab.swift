@@ -48,6 +48,7 @@ struct MarkdownTabView: View {
           onNavigateToNote: onNavigateToNote,
           fullScreenCover: $fullScreenCover
         )
+        .toolbarVisibility(.hidden, for: .navigationBar)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         //                .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
         // TODO: Remove this. This is just for easy development.

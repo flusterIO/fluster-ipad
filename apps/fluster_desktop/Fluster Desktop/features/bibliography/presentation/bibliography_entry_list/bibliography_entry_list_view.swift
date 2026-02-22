@@ -30,13 +30,12 @@ struct BibliographyEntryListView: View {
           .font(.headline)
           .padding()
       }
-
       List(filteredEntries, id: \.id) { entry in
         BibliographyEntrySearchResultListItemView(item: entry)
+          .listStyle(.plain)
+          .listRowSeparator(.hidden)
       }
-      .scrollIndicators(.hidden)
-      .listStyle(.plain)
-      .listRowSeparator(.hidden)
+      .scrollIndicators(.never)
       .scrollContentBackground(.hidden)
       .frame(maxWidth: 768)
       .searchable(text: $searchQuery, placement: .toolbarPrincipal, prompt: "Search bibliography")

@@ -15,7 +15,7 @@ struct BibliographySettingSectionView: View {
             VStack(alignment: .leading) {
                 Picker(selection: $embeddedCslFile, content: {
                     ForEach(EmbeddedCslFileSwift.allCases, id: \.rawValue) { item in
-                        Text(item.rawValue)
+                        Text(item.rawValue).tag(item)
                     }
                 }, label: {
                     Text("Citation Format")

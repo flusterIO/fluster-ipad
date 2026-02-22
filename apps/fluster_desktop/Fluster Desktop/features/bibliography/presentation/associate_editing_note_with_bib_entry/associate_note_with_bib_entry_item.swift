@@ -48,8 +48,11 @@ struct AssociateNoteWithBibEntryItemView: View {
       VStack(alignment: .leading) {
         Text(data?.title ?? "No title found")
           .font(.headline)
+          .frame(maxWidth: .infinity, alignment: .leading)
         if let note = data?.summary {
           Text(note)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .lineLimit(5)
             .font(.footnote)
             .opacity(0.8)
         }
@@ -61,8 +64,8 @@ struct AssociateNoteWithBibEntryItemView: View {
     .glassEffect(in: .rect(cornerRadius: 16))
     .task {
       if self.data == nil {
-          let entryData = parseBiblatexString(biblatexContent: item.data).first
-          let cslContent = cslFile.toFlusterBibliographyCslFile()
+        let entryData = parseBiblatexString(biblatexContent: item.data).first
+        let cslContent = cslFile.toFlusterBibliographyCslFile()
         Task.detached {
           if let res = entryData {
             let s = res.formatBibliographyCitation(

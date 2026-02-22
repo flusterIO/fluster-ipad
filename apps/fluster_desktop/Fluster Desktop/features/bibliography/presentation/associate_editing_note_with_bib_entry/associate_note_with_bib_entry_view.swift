@@ -57,13 +57,14 @@ struct AssociateNoteWithBibEntryView: View {
       if let en = editingNote {
         List(filteredEntries, id: \.id) { item in
           AssociateNoteWithBibEntryItemView(item: item, editingNote: en)
+            .listStyle(.plain)
+            .listRowSeparator(.hidden)
         }
         .searchable(
           text: $searchQuery, placement: .toolbarPrincipal, prompt: "Search bibliography entries"
         )
         .scrollContentBackground(.hidden)
-        .listStyle(.plain)
-        .listRowSeparator(.hidden)
+        .scrollIndicators(.never)
         .frame(maxWidth: 768)
       } else {
         NoNoteSelectedView()

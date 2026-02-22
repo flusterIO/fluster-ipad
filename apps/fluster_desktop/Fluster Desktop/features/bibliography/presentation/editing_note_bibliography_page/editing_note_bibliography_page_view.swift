@@ -39,7 +39,6 @@ struct EditingNoteBibliographyPageView: View {
         BibliographyEntryListView(entries: entries)
       }
     }.toolbar(content: {
-        
         ToolbarItem(
           id: "associate-bib-entry", placement: .primaryAction,
           content: {

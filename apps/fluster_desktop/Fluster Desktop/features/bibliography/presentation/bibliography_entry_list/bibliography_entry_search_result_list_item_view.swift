@@ -42,7 +42,7 @@ struct BibliographyEntrySearchResultListItemView: View {
           .font(.headline)
           .padding(.horizontal)
           .padding((data.note != nil || data.abstract != nil) ? .top : .vertical)
-          .frame(maxWidth: .infinity)
+          .frame(maxWidth: .infinity, alignment: .leading)
         if let note = data.note {
           Text(note).font(.footnote)
             .lineLimit(3)
@@ -62,7 +62,6 @@ struct BibliographyEntrySearchResultListItemView: View {
       }
       .frame(maxWidth: .infinity)
       .glassEffect(in: .rect(cornerRadius: 16))
-      .padding()
       .onTapGesture {
         AppState.shared.commandPaletteNavigate(to: .searchByCitation(item))
       }
