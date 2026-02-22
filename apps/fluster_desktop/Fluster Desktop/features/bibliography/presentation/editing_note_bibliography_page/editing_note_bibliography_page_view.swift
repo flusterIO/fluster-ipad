@@ -34,7 +34,7 @@ struct EditingNoteBibliographyPageView: View {
   var body: some View {
     Group {
       if editingNoteId == nil {
-        NoNoteSelectedView()
+          NoNoteSelectedView()
       } else {
         BibliographyEntryListView(entries: entries)
       }

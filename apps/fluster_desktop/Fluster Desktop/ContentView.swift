@@ -35,7 +35,7 @@ struct ContentView: View {
               case .searchByCitation(let citation):
                 SearchByCitationView(citation: citation)
               case .associateByEntriesWithEditingNote:
-                AssociateNoteWithBibEntryView()
+                AssociateNoteWithBibEntryView(editingNoteId: appState.editingNoteId)
               case .createBibEntry:
                 BibtexEditorWebview(
                   editingNoteId: appState.editingNoteId, editingBibEntry: .constant(nil))
