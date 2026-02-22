@@ -132,7 +132,6 @@ import WebKit
           """
         )
       }
-
       return webView
     }
 
