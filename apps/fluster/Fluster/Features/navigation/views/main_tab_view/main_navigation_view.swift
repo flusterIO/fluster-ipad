@@ -106,7 +106,7 @@ struct MainView: View {
       ) {
         PaperTabView(
           editingNote: $editingNote,
-          selectedTab: $selectedTab
+//          selectedTab: $selectedTab
         )
       }
       .customizationID(IpadMainViewTab.paper.rawValue)
