@@ -12,7 +12,11 @@ import SwiftUI
 
 class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Delegate {
   @Binding public var markup: PaperMarkup
-  @Binding public var focusedIndex: Int
+  @Binding public var focusedIndex: Int {
+    didSet {
+      handleFocusIndexChange()
+    }
+  }
   var paperViewController: PaperMarkupViewController!
   var toolbarViewController: MarkupToolbarViewController!
 
@@ -83,6 +87,10 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
   //    paperViewController.markup = markupModel
   //  }
 
+  func handleFocusIndexChange() {
+    print("Focused index change...")
+  }
+
   func undoLastAction() {
     paperViewController.undoManager?.undo()
   }
@@ -94,8 +102,8 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
       self.markup = markup
     }
   }
-    
-    public func update(with markup: PaperMarkup) {
-        self.markup = markup
-    }
+
+  public func update(with markup: PaperMarkup) {
+    self.markup = markup
+  }
 }

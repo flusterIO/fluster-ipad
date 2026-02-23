@@ -35,7 +35,6 @@ struct CommandPaletteItemView: View {
     }
     .buttonStyle(.borderless)
     .focused($isFocused)
-//    .padding(.horizontal)
     .padding(.vertical, 4)
     .clipShape(.rect(cornerRadius: 0))
     .background(RoundedRectangle(cornerRadius: 0).fill(Color.accentColor.opacity(0.02)))
