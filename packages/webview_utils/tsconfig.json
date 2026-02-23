@@ -37,7 +37,8 @@
         }
     },
     "exclude": [
-        "dist"
+        "dist",
+        "tailwind.config.ts"
     ],
     "include": [
         "src",

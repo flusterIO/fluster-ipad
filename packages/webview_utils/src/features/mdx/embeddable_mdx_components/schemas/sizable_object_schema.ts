@@ -2,9 +2,9 @@ import { z } from "zod";
 import { sizablePropSchema, sizablePropsMapTransform } from "./sizable_props_schema";
 
 const _sizableObjectSchema = {
-    right: z.boolean("'right' must be a boolean.").optional().transform((a) => a ? "float-right" : ""),
-    left: z.boolean("'left' must be a boolean.").optional().transform((a) => a ? "float-left" : ""),
-    center: z.boolean("'center' must be a boolean.").optional().transform((a) => a ? "mx-auto" : ""),
+    right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "@mdxExanded/mdx:float-right" : ""),
+    left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "@mdxExanded/mdx:float-left" : ""),
+    center: z.boolean({ message: "'center' must be a boolean." }).optional().transform((a) => a ? "mx-auto" : ""),
     text: sizablePropSchema("text").optional().transform(sizablePropsMapTransform({
         none: "text-xs",
         small: "text-sm",
@@ -16,13 +16,13 @@ const _sizableObjectSchema = {
         full: "text-7xl",
     })),
     width: sizablePropSchema("width").optional().transform(sizablePropsMapTransform({
-        none: "w-0",
-        small: "max-w-xs",
-        smedium: "max-w-sm",
-        medium: "max-w-md",
-        large: "max-w-lg",
-        xl: "max-w-2xl",
-        xxl: "max-w-4xl",
+        none: "@mdxExanded/mdx:w-0",
+        small: "@[450px]/mdx:w-xs",
+        smedium: "@[550px]/mdx:w-sm",
+        medium: "@[650px]/mdx:w-md",
+        large: "@[700px]/mdx:w-lg",
+        xl: "@[768px]/mdx:w-2xl",
+        xxl: "@[1080px]/mdx:w-4xl",
         full: "w-full",
     })),
     height: sizablePropSchema("height").optional().transform(sizablePropsMapTransform({
@@ -190,5 +190,5 @@ export const getSizalbeObjectClasses = (data: z.output<typeof sizableObjectSchem
     })
 
 
-    return classes.join(" ")
+    return classes.filter((a) => a.length).join(" ")
 }
