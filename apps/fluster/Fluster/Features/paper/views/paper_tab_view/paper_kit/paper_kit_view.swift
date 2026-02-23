@@ -26,7 +26,6 @@ struct PaperKitView: View {
             }
           )
           .navigationTitle("Page \(focusedPageIndex + 1) of \(editingNote.paper.count)")
-//          .navigationBarTitleDisplayMode(.inline)
           .onDisappear {
             // In a real app, you would pass a save action via an Environment
             // key or trigger the Coordinator's save method before dismissing.
