@@ -94,7 +94,7 @@ extension AppSchemaV1 {
     //    }
   }
   @Model
-    public class NoteModel {
+  public class NoteModel {
     public var id: String
     public var paper = [PaperModel]()
     //    @Attribute(.externalStorage) public var drawing: Data
@@ -229,7 +229,7 @@ extension AppSchemaV1 {
       self.citations = citations
 
       // -- Dictionary --
-      var dictionayEntries: [DictionaryEntryModel] = []
+      var dictionaryEntries: [DictionaryEntryModel] = []
       for idx in (0..<results.dictionaryEntriesCount) {
         if let dEntry = results.dictionaryEntries(at: idx) {
           if let existingEntry = self.dictionaryEntries.first(where: {
@@ -237,7 +237,7 @@ extension AppSchemaV1 {
           }) {
             dictionaryEntries.append(existingEntry)
           } else {
-            dictionayEntries.append(
+            dictionaryEntries.append(
               DictionaryEntryModel(
                 id: UUID.init().uuidString,
                 label: dEntry.label,
@@ -246,7 +246,14 @@ extension AppSchemaV1 {
           }
         }
       }
-      self.dictionaryEntries = dictionayEntries
+      // Come back and improve this with a batch operation or by somehow avoiding this last loop all together when you have time.
+      self.dictionaryEntries.forEach { existingEntry in
+        if !dictionaryEntries.contains(where: { $0.label == existingEntry.label }) {
+          modelContext.delete(existingEntry)
+        }
+      }
+
+      self.dictionaryEntries = dictionaryEntries
     }
     public func diassociateBibEntry(bibEntry: BibEntryModel) {
       self.citations.removeAll {
@@ -342,17 +349,32 @@ extension AppSchemaV1 {
     }
     @MainActor
     public func preParse(modelContext: ModelContext) async throws {
-      if let parsedMdx =
-        await self.markdown.body.preParseAsMdxToBytes(noteId: self.id)
-      {
-        if let parsingResults =
-          parsedMdx.toMdxParsingResult()
-        {
-          self.applyMdxParsingResults(
-            results: parsingResults,
-            modelContext: modelContext
+      let _id = self.id
+      let _body = self.markdown.body
+      let res: Task<Data?, Never> = try await Task.detached {
+        do {
+          let res = try await parseMdxStringByRegex(
+            opts: ParseMdxOptions(noteId: _id, content: _body, citations: [])
           )
+          return res
+        } catch {
+          print("Mdx parsing error: \(error.localizedDescription)")
         }
+        return nil
+      }
+      do {
+        if let parsedMdx = try await res.value {
+          if let parsingResults =
+            parsedMdx.toMdxParsingResult()
+          {
+            self.applyMdxParsingResults(
+              results: parsingResults,
+              modelContext: modelContext
+            )
+          }
+        }
+      } catch {
+        print("Error: \(error.localizedDescription)")
       }
     }
     @MainActor

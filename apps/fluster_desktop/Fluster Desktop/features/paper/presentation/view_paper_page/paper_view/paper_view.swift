@@ -158,7 +158,7 @@ struct PaperView: View {
   }
 
   func handlePaperMarkupChange(_ markup: PaperMarkup) async {
-      if focusedPageIndex < editingNote.paper.count && focusedPageIndex >= 0 {
+    if focusedPageIndex < editingNote.paper.count && focusedPageIndex >= 0 {
       do {
         let data = try await markup.dataRepresentation()
         print("Saving editing note markup as data representation...")
@@ -187,9 +187,7 @@ struct PaperView: View {
 struct PaperMarkupView: NSViewControllerRepresentable {
   typealias NSViewControllerType = MacPaperNsViewController
   @Binding public var markup: PaperMarkup
-  @State private var previousFocusedIndex: Int = -1
   @Binding public var focusedIndex: Int
-  //  let controller: MacPaperNsViewController?
 
   func makeNSViewController(context: Context) -> MacPaperNsViewController {
     let container = MacPaperNsViewController(markup: $markup, focusedIndex: $focusedIndex)
@@ -197,13 +195,9 @@ struct PaperMarkupView: NSViewControllerRepresentable {
   }
 
   func updateNSViewController(_ nsViewController: MacPaperNsViewController, context: Context) {
-    print("Updating paper...")
     context.coordinator.parent = self
-    if focusedIndex != previousFocusedIndex {
-      resetMarkupContent(on: nsViewController)
-      // Probably ok because it's only being executed when they're not equivalent.
-      previousFocusedIndex = focusedIndex
-    }
+//    markup = nsViewController.markup
+    //      context.coordinator.
     //    nsViewController.markup = markup
     //      if let c = self.controller {
     //          c.markup = markup

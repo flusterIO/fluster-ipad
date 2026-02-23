@@ -61,7 +61,10 @@ struct MainViewSwitch: View {
           .navigationTitle("Note Bibliography")
       case .editingNoteDetails:
         NoteDetailWebview(editingNoteId: appState.editingNoteId)
-            .navigationTitle("Note Details")
+          .navigationTitle("Note Details")
+      case .globalDictionary:
+        DictionaryPageView()
+          .navigationTitle("Dictionary")
       case .bookmarks:
         BookmarksPageView()
           .navigationTitle("Bookmarks")

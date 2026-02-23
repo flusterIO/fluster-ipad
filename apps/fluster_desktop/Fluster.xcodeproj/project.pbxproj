@@ -12,6 +12,7 @@
 		794FD4652F4A489100F8194A /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4642F4A489100F8194A /* FlusterMdx */; };
 		794FD4682F4A48AF00F8194A /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4672F4A48AF00F8194A /* FlusterWebviewClients */; };
 		794FD46B2F4A492100F8194A /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD46A2F4A492100F8194A /* FlusterSwift */; };
+		7969B85C2F4CA45C00B42E50 /* dictionary_webview in Resources */ = {isa = PBXBuildFile; fileRef = 7969B85B2F4CA45C00B42E50 /* dictionary_webview */; };
 		7970D3762F1FE24300A734F4 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 7970D3752F1FE24300A734F4 /* splitview_mdx_editor */; };
 		7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7970D3872F201A2F00A734F4 /* WebKit.framework */; };
 		79A1B99A2F4A60B200B451B2 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79A1B9992F4A60B200B451B2 /* bibliography_embedded */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		79196E372F44EBEE001AEFEB /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
+		7969B85B2F4CA45C00B42E50 /* dictionary_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dictionary_webview; path = ../../packages/webviews/dictionary_webview/dictionary_webview; sourceTree = "<group>"; };
 		7970D3752F1FE24300A734F4 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
 		7970D3872F201A2F00A734F4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		798752EA2F1810B90055ABF1 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +119,7 @@
 		798752E12F1810B90055ABF1 = {
 			isa = PBXGroup;
 			children = (
+				7969B85B2F4CA45C00B42E50 /* dictionary_webview */,
 				79A1B9992F4A60B200B451B2 /* bibliography_embedded */,
 				79A1B9972F4A608D00B451B2 /* embedded */,
 				79BC1C552F46627300E8A9AA /* bibtex_editor_webview */,
@@ -282,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7969B85C2F4CA45C00B42E50 /* dictionary_webview in Resources */,
 				79A1B99A2F4A60B200B451B2 /* bibliography_embedded in Resources */,
 				79BC1C562F46627300E8A9AA /* bibtex_editor_webview in Resources */,
 				79196E382F44EBEE001AEFEB /* note_detail_webview in Resources */,

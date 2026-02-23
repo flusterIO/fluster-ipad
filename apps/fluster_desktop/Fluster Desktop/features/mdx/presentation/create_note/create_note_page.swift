@@ -120,7 +120,7 @@ struct CreateNotePage: View {
               action: {
                 // Handle create note here
                 if !titleText.isEmpty {
-                  let item = NoteModel.fromNoteBody(noteBody: "# \"\(titleText)\"")
+                  let item = NoteModel.fromNoteBody(noteBody: "# \(titleText)")
                   if !subjectText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     let sl = subjectText.lowercased()
                     let existingSubject = subjects.first(where: { $0.value.lowercased() == sl })
