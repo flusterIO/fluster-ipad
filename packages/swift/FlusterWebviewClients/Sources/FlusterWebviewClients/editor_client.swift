@@ -52,7 +52,7 @@ public struct MdxEditorClient {
     if let preParsedBody = note.markdown.preParsedBody {
       try await evaluateJavaScript(
         """
-        window.setParsedEditorContentString(\(preParsedBody.toQuotedJavascriptString()))
+        window.setParsedEditorContentString(\(preParsedBody.toFlatBufferSerializedString()))
         """)
     }
   }
