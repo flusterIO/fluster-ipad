@@ -183,6 +183,104 @@ impl core::fmt::Debug for WebviewJavascriptError<'_> {
       ds.finish()
   }
 }
+pub enum SerializedStringOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct SerializedString<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for SerializedString<'a> {
+  type Inner = SerializedString<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> SerializedString<'a> {
+  pub const VT_BODY: flatbuffers::VOffsetT = 4;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    SerializedString { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args SerializedStringArgs<'args>
+  ) -> flatbuffers::WIPOffset<SerializedString<'bldr>> {
+    let mut builder = SerializedStringBuilder::new(_fbb);
+    if let Some(x) = args.body { builder.add_body(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn body(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(SerializedString::VT_BODY, None).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for SerializedString<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("body", Self::VT_BODY, true)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct SerializedStringArgs<'a> {
+    pub body: Option<flatbuffers::WIPOffset<&'a str>>,
+}
+impl<'a> Default for SerializedStringArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    SerializedStringArgs {
+      body: None, // required field
+    }
+  }
+}
+
+pub struct SerializedStringBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SerializedStringBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_body(&mut self, body: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(SerializedString::VT_BODY, body);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SerializedStringBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    SerializedStringBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<SerializedString<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, SerializedString::VT_BODY,"body");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for SerializedString<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("SerializedString");
+      ds.field("body", &self.body());
+      ds.finish()
+  }
+}
 }  // pub mod SharedWebviewData
 
 #[allow(unused_imports, dead_code)]

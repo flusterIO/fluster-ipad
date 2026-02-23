@@ -9,6 +9,10 @@ table WebviewJavascriptError {
     error:string;
 }
 
+table SerializedString {
+    body:string (required);
+}
+
 namespace Dictionary;
 
 table DictionaryEntryResultBuffer {

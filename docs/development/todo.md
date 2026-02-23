@@ -1,5 +1,9 @@
 # To-Do
 
+## Cross-Platform
+
+- [ ] Move all editor interactions that user defined data to go through flatbuffers for serialization. It seems like it can break in some circumstances, and this will improve reliability _significantly_.
+
 ## Desktop
 
 **_RESUME_**

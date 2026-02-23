@@ -24,6 +24,7 @@ export const DictionaryPage = ({ data }: DictionaryPageProps): ReactNode => {
                         <DictionaryEntryComponent
                             label={entry?.label() ?? ""}
                             InlineMdxContent={InlineMdxContent}
+                            noteId={entry?.noteId() ?? undefined}
                         >
                             <MdxContent
                                 mdx={entry?.body() ?? ""}

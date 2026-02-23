@@ -217,16 +217,17 @@ struct MdxEditorWebview: View {
   }
   func setParsedEditorContent(note: NoteModel) async throws {
     if let preParsedBody = note.markdown.preParsedBody {
-      try await webView.evaluateJavaScript(
-        """
-        window.setParsedEditorContentString(\(preParsedBody.toQuotedJavascriptString()))
-        """)
+      do {
+        try await setParsedEditorContentString(body: preParsedBody)
+      } catch {
+        print("Error: \(error.localizedDescription)")
+      }
     }
   }
   func setParsedEditorContentString(body: String) async throws {
     try await webView.evaluateJavaScript(
       """
-      window.setParsedEditorContentString(\(body.toQuotedJavascriptString()))
+      window.setParsedEditorContentString(\(body.toFlatBufferSerializedString()))
       """)
   }
   func setEditorContent(note: NoteModel) async throws {
