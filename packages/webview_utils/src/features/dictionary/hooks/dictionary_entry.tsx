@@ -8,7 +8,7 @@ import React, { FC, type ReactNode } from 'react'
 interface DictionaryEntryComponentProps {
     /* entry: DictionaryEntryModel | null */
     label: string;
-    children: string;
+    children: ReactNode;
     /** noteId matches the id field on the NoteModel, note the user provided id. */
     noteId?: string;
     InlineMdxContent: FC<MdxContentProps>;

@@ -14,12 +14,7 @@ setMdxBridgeFunctions();
 function App() {
     const data = useDictionaryData();
     return (
-        <WebViewContainer
-            style={{
-                backgroundColor: "hsl(var(--background))",
-            }}
-            contentContainerClasses="h-full"
-        >
+        <WebViewContainer contentContainerClasses="h-full">
             {data ? (
                 <DictionaryPage data={data} />
             ) : (
