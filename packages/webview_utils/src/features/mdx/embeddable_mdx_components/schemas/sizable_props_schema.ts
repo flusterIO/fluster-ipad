@@ -13,7 +13,7 @@ export const sizableOptions = [
 ] as const;
 
 export const sizablePropSchema = (labelKey: string) => z.enum(sizableOptions, {
-    message: `Valid ${labelKey} options are one of ${sizableOptions.map((n) => `"${n}"`).join(", ")}.`
+    message: `Valid ${labelKey} options are one of ${sizableOptions.map((n) => `"${n}"`).join(", ")}`
 })
 
 

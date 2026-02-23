@@ -7,23 +7,24 @@ import { getPositionableClasses } from "#/mdx/mdx_utils/get_positionable_classes
 import { cn } from "@/utils/cn";
 import { PositionableProps } from "../embeddable_component_types/positionable";
 import { inlineMdxClasses } from "../../components/inline_mdx_classes";
+import { sizablePropSchema } from "../schemas/sizable_props_schema";
 
-export interface AdmonitionProps
+export type AdmonitionProps
     extends Omit<AdmonitionTitleProps, "type">,
     PositionableProps {
-    type?: AdmonitionVariant;
+    type ?: AdmonitionVariant;
     /// Start the admonition in a folded state.
-    folded?: boolean;
+    folded ?: boolean;
     /// Whether or not to make the admonition foldable.
-    foldable?: boolean;
+    foldable ?: boolean;
     children: ReactNode;
     /// InlineMdxContent are passed in automatically in the component map.
     InlineMdxContent: FC<{ mdx: string }>;
-    classes?: {
+    classes ?: {
         container?: string
         body?: string
     }
-}
+} & SizableInput
 
 export const Admonition = ({
     folded,

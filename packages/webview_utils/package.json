@@ -112,6 +112,7 @@
     "@replit/codemirror-vscode-keymap": "6.0.2",
     "@shikijs/transformers": "3.4.2",
     "@tabler/icons-react": "3.36.1",
+    "@tailwindcss/container-queries": "0.1.1",
     "@tanstack/react-table": "8.21.3",
     "@uiw/codemirror-extensions-line-numbers-relative": "4.25.3",
     "@uiw/codemirror-theme-bbedit": "4.25.3",
