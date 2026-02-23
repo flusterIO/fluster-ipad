@@ -183,18 +183,17 @@ private struct CommandPaletteView: View {
           }
           .frame(maxHeight: .infinity)
         } else {
-          ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-              ForEach(Array(results.enumerated()), id: \.offset) { idx, command in
-                CommandPaletteItemView(
-                  command: command, idx: idx, focusedIndex: $focusedIndex,
-                  onCommandSelected: onCommandSelected
-                )
-                .id(command.uniqueId)
-              }
-            }
+          List(Array(results.enumerated()), id: \.offset) { idx, command in
+            CommandPaletteItemView(
+              command: command, idx: idx, focusedIndex: $focusedIndex,
+              onCommandSelected: onCommandSelected
+            )
+            .id(command.uniqueId)
+            .listStyle(.plain)
+            .listRowSeparator(.hidden)
           }
-          .scrollIndicators(.hidden)
+          .scrollIndicators(.never)
+          .scrollContentBackground(.hidden)
         }
       }
       .background(selectedTheme.colorScheme == .dark ? .black : .white)

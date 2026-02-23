@@ -95,7 +95,6 @@ class PaperContainerViewController: UIViewController, PaperMarkupViewController.
   func paperMarkupViewControllerDidChangeMarkup(
     _ paperMarkupViewController: PaperMarkupViewController
   ) {
-      print("Saving markup...")
     if let _markup = paperMarkupViewController.markup {
       Task {
         if let dataRep = try? await _markup.dataRepresentation() {
