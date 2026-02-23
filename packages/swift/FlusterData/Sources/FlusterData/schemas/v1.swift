@@ -347,6 +347,7 @@ extension AppSchemaV1 {
         return nil
       }
     }
+
     @MainActor
     public func preParse(modelContext: ModelContext) async throws {
       let _id = self.id
