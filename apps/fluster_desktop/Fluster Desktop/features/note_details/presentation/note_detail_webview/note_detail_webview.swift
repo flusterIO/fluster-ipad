@@ -17,6 +17,7 @@ struct NoteDetailWebview: View {
     frame: .infinite, configuration: getWebViewConfig()
   )
   @Query var notes: [NoteModel]
+  @Environment(\.modelContext) private var modelContext: ModelContext
   var editingNote: NoteModel? {
     notes.isEmpty ? nil : notes.first
   }
@@ -67,19 +68,67 @@ struct NoteDetailWebview: View {
   }
 
   func handleTagClick(tagBody: String) {
-    print("Tag Body: \(tagBody)")
+    var descriptor = FetchDescriptor<TagModel>(
+      predicate: #Predicate<TagModel> { tag in
+        tag.value == tagBody
+      }
+    )
+    descriptor.fetchLimit = 1
+    do {
+      if let tag = try modelContext.fetch(descriptor).first {
+        AppState.shared.commandPaletteNavigate(to: .searchByTag(tag))
+      }
+    } catch {
+      print("Error: \(error.localizedDescription)")
+    }
   }
 
   func handleTopicClick(topicValue: String) {
-    print("Topic Value: \(topicValue)")
+    var descriptor = FetchDescriptor<TopicModel>(
+      predicate: #Predicate<TopicModel> { topic in
+        topic.value == topicValue
+      }
+    )
+    descriptor.fetchLimit = 1
+    do {
+      if let topic = try modelContext.fetch(descriptor).first {
+        AppState.shared.commandPaletteNavigate(to: .searchByTopic(topic))
+      }
+    } catch {
+      print("Error: \(error.localizedDescription)")
+    }
   }
 
   func handleSubjectClick(subjectValue: String) {
-    print("Subject Value: \(subjectValue)")
+    var descriptor = FetchDescriptor<SubjectModel>(
+      predicate: #Predicate<SubjectModel> { subject in
+        subject.value == subjectValue
+      }
+    )
+    descriptor.fetchLimit = 1
+    do {
+      if let subject = try modelContext.fetch(descriptor).first {
+        AppState.shared.commandPaletteNavigate(to: .searchBySubject(subject))
+      }
+    } catch {
+      print("Error: \(error.localizedDescription)")
+    }
   }
 
   func handleCitationClick(citationId: String) {
-    print("Citation Id: \(citationId)")
+    var descriptor = FetchDescriptor<BibEntryModel>(
+      predicate: #Predicate<BibEntryModel> { entry in
+        entry.id == citationId
+      }
+    )
+    descriptor.fetchLimit = 1
+    do {
+      if let bibEntry = try modelContext.fetch(descriptor).first {
+        AppState.shared.commandPaletteNavigate(to: .searchByCitation(bibEntry))
+      }
+    } catch {
+      print("Error: \(error.localizedDescription)")
+    }
   }
 
   func messageHandler(msgKey: String, msgBody: Any) {

@@ -1,8 +1,8 @@
 import FlatBuffers
+import FlusterData
 import FlusterSwiftMdxParser
 import Foundation
 import SwiftData
-import FlusterData
 
 extension String {
   public func toQuotedJavascriptString() -> String {
@@ -14,11 +14,23 @@ extension String {
     return self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
   }
 
+  public func toFlatBufferSerializedString() -> [UInt8] {
+    var builder = FlatBufferBuilder(initialSize: 1024)
+
+    let bodyOffset = builder.create(string: self)
+    let serializedStringStart = SharedWebviewData_SerializedString.startSerializedString(&builder)
+    SharedWebviewData_SerializedString.add(body: bodyOffset, &builder)
+    let serializedString = SharedWebviewData_SerializedString.endSerializedString(
+      &builder, start: serializedStringStart)
+    builder.finish(offset: serializedString)
+    return builder.sizedByteArray
+  }
+
   @MainActor
-    public func preParseAsMdxToBytes(noteId: String?) async -> Data? {
+  public func preParseAsMdxToBytes(noteId: String?) async -> Data? {
     do {
       return try await parseMdxStringByRegex(
-        opts: ParseMdxOptions( noteId: noteId, content: self, citations: [])
+        opts: ParseMdxOptions(noteId: noteId, content: self, citations: [])
       )
     } catch {
       print("Mdx parsing error: \(error.localizedDescription)")
@@ -28,7 +40,7 @@ extension String {
 
   @MainActor
   /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
-    public func preParseAsMdx(noteId: String?) async -> MdxSerialization_MdxParsingResultBuffer? {
-        return await self.preParseAsMdxToBytes(noteId: noteId)?.toMdxParsingResult()
+  public func preParseAsMdx(noteId: String?) async -> MdxSerialization_MdxParsingResultBuffer? {
+    return await self.preParseAsMdxToBytes(noteId: noteId)?.toMdxParsingResult()
   }
 }

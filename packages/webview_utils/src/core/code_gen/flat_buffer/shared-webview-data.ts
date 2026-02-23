@@ -2,6 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 
+export { SerializedString } from './shared-webview-data/serialized-string.js';
 export { WebviewJavascriptError } from './shared-webview-data/webview-javascript-error.js';
 export * as NoteDetails from './mdx-serialization/note-details.js';
 export * as Request from './mdx-serialization/request.js';

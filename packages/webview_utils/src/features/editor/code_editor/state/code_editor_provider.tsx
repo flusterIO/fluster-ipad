@@ -333,7 +333,7 @@ export const CodeEditorProvider = ({
     useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContentString, (e) => {
         dispatch({
             type: "setParsedEditorContentString",
-            payload: e.detail
+            payload: e.detail.body() ?? ""
         })
     })
 

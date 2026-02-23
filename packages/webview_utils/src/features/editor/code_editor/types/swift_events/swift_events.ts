@@ -1,5 +1,6 @@
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { MdxParsingResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
+import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
 import { GetSnippetPropsBuffer } from "@/code_gen/flat_buffer/snippets";
 import { SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
 import { ByteBuffer } from "flatbuffers";
@@ -13,7 +14,7 @@ declare global {
         [SplitviewEditorWebviewEvents.SetSplitviewEditorContent]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetParsedMdxContent]: CustomEvent<MdxParsingResultBuffer>;
         [SplitviewEditorWebviewEvents.SetEditorSnippetProps]: CustomEvent<GetSnippetPropsBuffer>;
-        [SplitviewEditorWebviewEvents.SetParsedMdxContentString]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetParsedMdxContentString]: CustomEvent<SerializedString>;
         [SplitviewEditorWebviewEvents.SetEditorKeymap]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetCodeTheme]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetCodeThemeLight]: CustomEvent<string>;
@@ -65,12 +66,15 @@ export function setParsedEditorSnippetProps(payload: Uint8Array) {
     );
 }
 
-export function setParsedEditorContentString(payload: string) {
+export function setParsedEditorContentString(payload: Uint8Array) {
     if (isWebviewOfEnv(WebviewEnvironment.IPad)) {
         document.body.classList.add("loading")
     }
+
+    const data = Uint8Array.from(payload)
+    const buf = new ByteBuffer(data)
     window.dispatchEvent(
-        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContentString, { detail: payload }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContentString, { detail: SerializedString.getRootAsSerializedString(buf) }),
     );
 }
 
