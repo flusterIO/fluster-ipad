@@ -12,30 +12,10 @@ import WebKit
 
 struct MainViewSwitch: View {
   @EnvironmentObject private var appState: AppState
-  @Environment(\.modelContext) private var modelContext
-  public var editingNoteId: String?
-  @Query private var notes: [NoteModel]
-
-  var editingNote: NoteModel? {
-    notes.isEmpty ? nil : notes.first
-  }
 
   @State private var editorWebview: WKWebView = WKWebView(
     frame: .infinite, configuration: getWebViewConfig()
   )
-
-  public init(editingNoteId: String?) {
-    self.editingNoteId = editingNoteId
-    if let _id = editingNoteId {
-      let predicate = #Predicate<NoteModel> { $0.id == _id }
-      _notes = Query(filter: predicate)
-    } else {
-      _notes = Query(
-        filter: #Predicate<NoteModel> { note in
-          false
-        })
-    }
-  }
 
   var body: some View {
     switch appState.mainView {
@@ -76,14 +56,8 @@ struct MainViewSwitch: View {
           .navigationTitle("")
     }
   }
-
-  func markEditingNoteRead() {
-    if let _editingNote = editingNote, editingNoteIsValid(note: _editingNote, appState: appState) {
-      _editingNote.setLastRead()
-    }
-  }
 }
 
 #Preview {
-  MainViewSwitch(editingNoteId: nil)
+  MainViewSwitch()
 }

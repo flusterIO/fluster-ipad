@@ -12,7 +12,9 @@ import SwiftUI
 
 struct PaperView: View {
   @Binding public var editingNote: NoteModel
-  @State private var focusedPageIndex: Int = 0
+  @Binding public var focusedPageIndex: Int
+  /// previousFocusedPageIndex == focusedPageIndex after page based initalization is complete.
+  @State private var previousFocusedPageIndex: Int = -1
   @State private var showDeletePageConfirmation: Bool = false
   var body: some View {
     GeometryReader { geometry in
@@ -26,10 +28,20 @@ struct PaperView: View {
               },
               set: { newValue in
                 Task(priority: .userInitiated) {
-                  await handlePaperMarkupChange(newValue)
+                  await handlePaperMarkupChange(item, newValue)
                 }
+                return
               })
             PaperMarkupView(markup: markup, focusedIndex: $focusedPageIndex)
+              .onAppear {
+                self.previousFocusedPageIndex = focusedPageIndex
+              }
+              .onChange(
+                of: focusedPageIndex,
+                {
+                  self.previousFocusedPageIndex = focusedPageIndex
+                }
+              )
               .toolbar(content: {
                 ToolbarItem(
                   placement: .primaryAction,
@@ -157,12 +169,17 @@ struct PaperView: View {
     }
   }
 
-  func handlePaperMarkupChange(_ markup: PaperMarkup) async {
+  func handlePaperMarkupChange(_ item: PaperModel, _ markup: PaperMarkup) async {
+    if focusedPageIndex != previousFocusedPageIndex {
+      // Page not yet initialized...
+      return
+    }
     if focusedPageIndex < editingNote.paper.count && focusedPageIndex >= 0 {
       do {
+        editingNote.setLastRead(setModified: true)
         let data = try await markup.dataRepresentation()
         print("Saving editing note markup as data representation...")
-        editingNote.paper[focusedPageIndex].markup = data
+        item.markup = data
       } catch {
         print("Error: \(error.localizedDescription)")
       }
@@ -196,7 +213,13 @@ struct PaperMarkupView: NSViewControllerRepresentable {
 
   func updateNSViewController(_ nsViewController: MacPaperNsViewController, context: Context) {
     context.coordinator.parent = self
-//    markup = nsViewController.markup
+    if context.coordinator.lastPageIndex != focusedIndex {
+      print("Updating PaperMarkup content for page index: \(focusedIndex)")
+      // Clear the canvas before loading new markup content to avoid residual drawings.
+      clearAndLoadMarkup(on: nsViewController, with: $markup.wrappedValue)
+      context.coordinator.lastPageIndex = focusedIndex
+    }
+    //    markup = nsViewController.markup
     //      context.coordinator.
     //    nsViewController.markup = markup
     //      if let c = self.controller {
@@ -208,8 +231,15 @@ struct PaperMarkupView: NSViewControllerRepresentable {
     //    }
   }
 
-  private func resetMarkupContent(on nsViewController: MacPaperNsViewController) {
-    print("Resetting PaperMarkup content for page index: \(focusedIndex)")
+  /// Clears the canvas and loads the specified PaperMarkup content.
+  /// - Parameters:
+  ///   - nsViewController: The MacPaperNsViewController instance managing the canvas.
+  ///   - markup: The PaperMarkup data to load into the canvas.
+  private func clearAndLoadMarkup(
+    on nsViewController: MacPaperNsViewController, with markup: PaperMarkup
+  ) {
+    print("Loading markup for page index: \(focusedIndex)")
+    // Just update (replace) the visible canvas with the model's markup—do not clear the saved data!
     nsViewController.update(with: markup)
   }
 
@@ -219,6 +249,10 @@ struct PaperMarkupView: NSViewControllerRepresentable {
 
   class Coordinator: NSObject {
     var parent: PaperMarkupView
-    init(_ parent: PaperMarkupView) { self.parent = parent }
+    var lastPageIndex: Int
+    init(_ parent: PaperMarkupView) {
+      self.parent = parent
+      self.lastPageIndex = parent.focusedIndex
+    }
   }
 }

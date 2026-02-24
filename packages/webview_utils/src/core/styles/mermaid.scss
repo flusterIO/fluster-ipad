@@ -1,4 +1,7 @@
 svg[role="graphics-document document"] {
+  text {
+    fill: hsl(var(--foreground)) !important;
+  }
 
   .marker,
   #filled-head {

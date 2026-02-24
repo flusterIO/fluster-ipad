@@ -15,7 +15,7 @@ const AdmonitionTitle = (props: Props): ReactNode => {
     return (
         <div
             className={cn(
-                "w-full p-2 rounded-tl rounded-tr relative cursor-pointer z-[1] min-h-[42px] font-semibold grid place-items-center",
+                "w-full p-2 rounded-tl rounded-tr relative z-[1] min-h-[42px] font-semibold grid place-items-center",
                 getTitleVariantClasses(props.type)
             )}
             style={{

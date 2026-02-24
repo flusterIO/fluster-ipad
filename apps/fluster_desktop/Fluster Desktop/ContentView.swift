@@ -21,7 +21,7 @@ struct ContentView: View {
       MainViewSidebar()
     } detail: {
       NavigationStack(path: $appState.commandPaletteNavigation) {
-        MainViewSwitch(editingNoteId: appState.editingNoteId)
+        MainViewSwitch()
           .navigationDestination(
             for: CommandPaletteSecondaryView.self,
           ) { val in

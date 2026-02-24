@@ -89,6 +89,21 @@ export const getMarkdownSnippets = (props: GetSnippetProps): SnippetItem[] => {
             }),
 
         },
+        {
+            strategy: SnippetStrategy.noLeadingText,
+            completion: snippetCompletion(`\`\`\`mermaid
+---
+title: #{Simple sample}
+---
+#{stateDiagram-v2}
+\`\`\` `, {
+                label: "mermaid",
+                type: SnippetDefaultType.variable,
+                detail: "Creates a mermaid code block",
+                boost: 50,
+                section: CompletionSections.markdown
+            })
+        },
         ...props.citationKeys.filter((c) => c.trim().length).map((citationKey) => {
             return {
                 strategy: SnippetStrategy.noLeadingText,

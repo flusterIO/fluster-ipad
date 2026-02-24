@@ -9,7 +9,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import emoji from "remark-emoji";
 import rehypeSlug from "rehype-slug";
 import rehypeVideo from "rehype-video";
-import rehypeMermaid from "rehype-mermaid";
+import rehypeMermaid, { RehypeMermaidOptions } from "rehype-mermaid";
 
 export const mathOptions = {
     tex: {
@@ -95,18 +95,16 @@ const rehypePlugins = ({
             rehypeMermaid,
             {
                 strategy: "inline-svg",
-                dark: darkMode,
+                dark: darkMode ? true : undefined,
                 colorScheme: darkMode ? "dark" : "light",
                 mermaidConfig: {
-                    // output: "svg",
-                    /* theme: { light: 'dark', dark: 'dark' }, */
-                    mermaid: {
-                        background: "hsl(var(--background))",
-                        // themeVariables: mermaidTheme.dark,
-                        //         theme: "dark",
+                    darkMode,
+                    theme: "base",
+                    themeVariables: {
+                        background: "hsl(var(--background))"
                     },
                 },
-            },
+            } satisfies RehypeMermaidOptions,
         ],
         [
             rehypePrettyCode as any,
