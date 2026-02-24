@@ -27,7 +27,7 @@ export const DictionaryEntryComponent = ({ children, label, noteId, InlineMdxCon
                 }}
                 mdx={label}
             />
-            <div className={cn("w-full ml-4", shrinkMdxClasses)}>
+            <div className={cn("w-full pl-4", shrinkMdxClasses)}>
                 {children}
             </div>
         </div>

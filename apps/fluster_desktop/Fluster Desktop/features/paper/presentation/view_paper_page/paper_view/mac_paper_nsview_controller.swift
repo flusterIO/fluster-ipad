@@ -78,15 +78,6 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
   //    let bounds = CGRect(origin: .zero, size: canvasSize)
   //    markupModel = PaperMarkup(bounds: bounds)
   //  }
-  //  func clearCanvas() {
-  //    // Re-initialize the model with a new empty drawing.
-  //    initializeMarkupModel(with: canvasSize)
-  //    markupModel?.drawing = PKDrawing()
-  //
-  //    // Update the view controller with the new, empty model.
-  //    paperViewController.markup = markupModel
-  //  }
-
   func handleFocusIndexChange() {
     print("Focused index change...")
   }
@@ -105,5 +96,13 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
 
   public func update(with markup: PaperMarkup) {
     self.markup = markup
+  }
+  
+  public func clearCanvas() {
+    // Re-initialize PaperMarkup with the existing bounds (retain size, clear content)
+    let bounds = markup.bounds
+    let emptyMarkup = PaperMarkup(bounds: bounds)
+    self.markup = emptyMarkup
+    paperViewController.markup = emptyMarkup
   }
 }

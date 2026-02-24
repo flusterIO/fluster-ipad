@@ -14,6 +14,7 @@ struct ViewPaperPageView: View {
   @EnvironmentObject private var appState: AppState
   @Environment(\.modelContext) private var modelContext
   public var editingNoteId: String?
+  @State private var focusedPageIndex: Int = 0
   @Query var notes: [NoteModel]
   //    @State private var markup: PaperMarkup = PaperMarkup.
   public var editingNote: NoteModel? {
@@ -42,7 +43,20 @@ struct ViewPaperPageView: View {
           _editingNote = newValue
         }
       )
-      PaperView(editingNote: noteBinding)
+      PaperView(editingNote: noteBinding, focusedPageIndex: $focusedPageIndex)
+        .id(focusedPageIndex)
+        .onAppear {
+          if let en = editingNote {
+            en.setLastRead()
+          }
+        }
+        .onChange(
+          of: editingNote?.id,
+          {
+            if let en = editingNote {
+              en.setLastRead()
+            }
+          })
     } else {
       NoNoteSelectedView()
         .navigationTitle("Paper")

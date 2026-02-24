@@ -14,7 +14,7 @@ export const Admonition = ({
     ...props
 }: AdmonitionPropsInput & WithChildren & WithInlineMdx): ReactNode => {
     const {
-        title: _title, classes = {}, foldable, folded, type, parsedContainerClasses
+        title: _title, classes, foldable, folded, type, parsedContainerClasses
     } = admonitionPropsSchema.parse(props)
     const [open, setOpen] = useState(foldable ? !folded : true);
     // sure to enforce the type safety for all string components before use as there's no typesafety while the mdx is rendered in live preview.
