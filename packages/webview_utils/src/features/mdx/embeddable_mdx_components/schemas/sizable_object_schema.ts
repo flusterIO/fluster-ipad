@@ -2,9 +2,10 @@ import { z } from "zod";
 import { sizablePropSchema, sizablePropsMapTransform } from "./sizable_props_schema";
 
 const _sizableObjectSchema = {
-    right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "@mdxExanded/mdx:float-right" : ""),
-    left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "@mdxExanded/mdx:float-left" : ""),
-    center: z.boolean({ message: "'center' must be a boolean." }).optional().transform((a) => a ? "mx-auto" : ""),
+    right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "float-right ml-4 mr-0" : ""),
+    left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "float-left mr-4 ml-0" : ""),
+    sidebar: z.boolean({ message: "'sidebar' is a boolean propertery." }).optional().transform((a) => a ? "w-full min-w-full @expandedMdx/mdx:w-1/3 @[768px]/mdx:min-w-[33%]" : ""),
+    center: z.boolean({ message: "'center' must be a boolean." }).optional().transform((a) => a ? "mx-auto block" : ""),
     text: sizablePropSchema("text").optional().transform(sizablePropsMapTransform({
         none: "text-xs",
         small: "text-sm",
@@ -182,7 +183,7 @@ export const sizableObjectSchema = z.object(_sizableObjectSchema);
 
 export type SizableObject = z.infer<typeof sizableObjectSchema>
 
-export const getSizalbeObjectClasses = (data: z.output<typeof sizableObjectSchema>) => {
+export const getSizableObjectClasses = (data: z.output<typeof sizableObjectSchema>) => {
     const classes: string[] = []
 
     Object.keys(_sizableObjectSchema).forEach((k) => {

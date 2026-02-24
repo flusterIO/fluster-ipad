@@ -49,7 +49,7 @@ struct AutoSettingSettingSection: View {
     SettingsSection(
       title: "Auto Settings",
       subtitle:
-        "Use auto-settings to apply tags, topics or subjects to notes based on their file path. The glob you provide will be joined with your notes directory. All notes that satisfy the glob you provide will have the relevant tag, topic or subject applied automatically."
+        "This is a feature from the file system based implementation of Fluster. Now that the data is primarly database driven this is less applicable, but this will become usable again when the file system integration is available."
     ) {
       HStack(alignment: .bottom) {
         VStack(alignment: .leading) {
