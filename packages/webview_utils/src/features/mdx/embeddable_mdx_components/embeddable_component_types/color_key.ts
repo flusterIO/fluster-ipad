@@ -1,5 +1,8 @@
 import { CSSProperties } from "react";
 
+
+// TODO: Remove all references to everything in this file now that zod is being used for all properties.
+
 export const flusterColorKeys = ["primary", "secondary", "muted", "error"] as const;
 
 export type ColorKey = (typeof flusterColorKeys)[number];

@@ -1,6 +1,28 @@
 import { z } from "zod";
 import { sizablePropSchema, sizablePropsMapTransform } from "./sizable_props_schema";
 
+export const defaultWidthTransform = {
+    none: "w-full @mdxExanded/mdx:w-0",
+    small: "w-full @[450px]/mdx:w-[320px]",
+    smedium: "w-full @[550px]/mdx:w-[384px]]",
+    medium: "w-full @[650px]/mdx:w-[448px]",
+    large: "w-full @[700px]/mdx:w-[576px]",
+    xl: "w-full @[768px]/mdx:w-[672px]",
+    xxl: "w-full @[1080px]/mdx:w-[896px]",
+    full: "w-full",
+}
+
+export const defaultHeightTransform = {
+    none: "h-fit",
+    small: "h-24",
+    smedium: "h-32",
+    medium: "h-48",
+    large: "h-64",
+    xl: "h-96",
+    xxl: "h-screen",
+    full: "h-full",
+}
+
 const _sizableObjectSchema = {
     right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "float-right ml-4 mr-0" : ""),
     left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "float-left mr-4 ml-0" : ""),
@@ -16,26 +38,8 @@ const _sizableObjectSchema = {
         xxl: "text-4xl",
         full: "text-7xl",
     })),
-    width: sizablePropSchema("width").optional().transform(sizablePropsMapTransform({
-        none: "@mdxExanded/mdx:w-0",
-        small: "@[450px]/mdx:w-xs",
-        smedium: "@[550px]/mdx:w-sm",
-        medium: "@[650px]/mdx:w-md",
-        large: "@[700px]/mdx:w-lg",
-        xl: "@[768px]/mdx:w-2xl",
-        xxl: "@[1080px]/mdx:w-4xl",
-        full: "w-full",
-    })),
-    height: sizablePropSchema("height").optional().transform(sizablePropsMapTransform({
-        none: "h-0",
-        small: "h-24",
-        smedium: "h-32",
-        medium: "h-48",
-        large: "h-64",
-        xl: "h-96",
-        xxl: "h-screen",
-        full: "h-full",
-    })),
+    width: sizablePropSchema("width").optional().transform(sizablePropsMapTransform(defaultWidthTransform)),
+    height: sizablePropSchema("height").optional().transform(sizablePropsMapTransform(defaultHeightTransform)),
     margin: sizablePropSchema("margin").optional().transform(sizablePropsMapTransform({
         none: "m-0",
         small: "m-2",

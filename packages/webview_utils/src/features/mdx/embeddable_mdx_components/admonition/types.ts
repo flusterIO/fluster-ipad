@@ -1,11 +1,7 @@
+import { Emphasis } from "../schemas/emphasis_schema";
+
 export interface AdmonitionTitleProps {
-    type: AdmonitionVariant;
+    type: Emphasis;
     title: string;
 }
 
-export type AdmonitionVariant =
-    | "info"
-    | "error"
-    | "warn"
-    | "success"
-    | "primary";

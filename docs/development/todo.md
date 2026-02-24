@@ -8,6 +8,10 @@
 
 **_RESUME_**
 
+- [ ] Handle rest of zod based props
+  - [ ] Make sure `Emphasis` based colors are working being set from talwind color variable.
+  - [ ] Make sure sizable props are working, particularly with admonition.
+  - [ ] Make sure `@expandedMdx/mdx:w-1/3` or similar props are working. They're already in use in the admonition component.
 - [ ] Pick back up by handling this horrible user experience when a bib entry is associated with a note.
   - [ ] Move list to lazy list. This is almost surely rendering every item in the list causing the big freeze.
 - [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
