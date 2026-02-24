@@ -4,6 +4,7 @@ import { EmbeddableCardProps, EmbeddableCardPropsInput } from './embeddable_card
 
 
 export const EmbeddableCard = (props: EmbeddableCardPropsInput): ReactNode => {
+    console.log("props: ", props)
     return (
         <div></div>
     )

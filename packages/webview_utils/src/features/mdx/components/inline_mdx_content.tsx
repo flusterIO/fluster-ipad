@@ -31,3 +31,8 @@ export const InlineMdxContent = (
 };
 
 InlineMdxContent.displayName = "InlineMdxContent";
+
+
+export type WithInlineMdx = {
+    InlineMdxContent: typeof InlineMdxContent
+}

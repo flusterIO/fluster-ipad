@@ -13,6 +13,8 @@ import { NoteLink } from "../embeddable_mdx_components/auto_inserted/note_link";
 import { Hl } from "../embeddable_mdx_components/hl/hl";
 import { Ul } from "../embeddable_mdx_components/ul/ul";
 import { InlineMdxContent } from "../components/inline_mdx_content";
+import { ErrorBoundary } from "react-error-boundary";
+import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 
 export interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
@@ -233,7 +235,7 @@ export const getComponentMap = (mdxContent: string, additionalComponenets: Compo
             const isIncluded = mdxContent.includes(`<${query}`);
             if (isIncluded) {
                 const C = item.component;
-                components[query] = (_props: object) => <C {..._props} />;
+                components[query] = (_props: object) => <ErrorBoundary FallbackComponent={(errorProps) => <InContentErrorReport {...errorProps} componentName={query} />}><C {..._props} /></ErrorBoundary>;
             }
         }
     }
