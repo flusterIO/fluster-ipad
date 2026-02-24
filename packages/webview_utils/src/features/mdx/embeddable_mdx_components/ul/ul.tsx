@@ -21,7 +21,7 @@ export const Ul = ({ children, ...props }: UlProps): ReactNode => {
                 paddingRight: "1ch",
                 ...props.style,
             }}
-            className={cn("[&_*]:text-inherit underline", parsedClasses)}
+            className={cn("[&_*]:text-inherit underline", ...parsedClasses)}
         >
             {children}
         </span>

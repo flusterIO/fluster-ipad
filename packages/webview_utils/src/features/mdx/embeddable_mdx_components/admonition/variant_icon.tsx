@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { BadgeAlert, CircleCheck, Hand, Info, Microscope, TriangleAlertIcon } from "lucide-react";
+import { BadgeAlert, BellRing, CircleCheck, Hand, Info, Microscope, TriangleAlertIcon } from "lucide-react";
 import { Emphasis } from "../schemas/emphasis_schema";
 
 interface AdmonitionVariantIconProps {
@@ -9,7 +9,7 @@ interface AdmonitionVariantIconProps {
 
 const AdmonitionVariantIcon = (
     props: AdmonitionVariantIconProps
-): ReactNode => {
+): NonNullable<ReactNode> => {
     switch (props.variant) {
         case "info":
             return <Info className={props.className} />;
@@ -25,6 +25,8 @@ const AdmonitionVariantIcon = (
             return <BadgeAlert className={props.className} />
         case "research":
             return <Microscope className={props.className} />
+        case "highlight":
+            return <BellRing className={props.className} />
     }
 };
 

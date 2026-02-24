@@ -8,9 +8,12 @@ const _emphasisSchema = {
     primary: z.boolean({ message: `The primary field is a boolean.` }).optional(),
     important: z.boolean({ message: `The important field is a boolean.` }).optional(),
     research: z.boolean({ message: `The research field is a boolean.` }).optional(),
+    highlight: z.boolean({ message: `The highlight field is a boolean.` }).optional(),
 } satisfies Record<string, ZodOptional<ZodBoolean>>
 
-export const emphasisSchema = z.object(_emphasisSchema)
+export const emphasisSchema = z.object(_emphasisSchema, {
+    message: `All components that accept an 'emphasis' take a list of optional boolean properties, where this list is: ${Object.keys(_emphasisSchema).map((k) => `"${k}"`).join(", ")}`
+})
 
 
 export const getEmphasisOptions = () => Object.keys(_emphasisSchema) as (keyof typeof _emphasisSchema)[]
@@ -75,6 +78,8 @@ export const emphasisBackgroundTransform = (defaultKey: Emphasis): EmphasisTrans
                 return "bg-emphasisResearch text-emphasisResearchForeground"
             case "primary":
                 return "bg-primary text-primary-foreground"
+            case "highlight":
+                return "bg-emphasisHighlight text-emphasisiHighlightForeground"
 
         }
     }
