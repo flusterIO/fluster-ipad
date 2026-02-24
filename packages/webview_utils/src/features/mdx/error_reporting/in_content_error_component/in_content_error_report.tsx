@@ -2,7 +2,7 @@ import React, { useState, type ReactNode } from 'react'
 import { FallbackProps } from 'react-error-boundary'
 import { ZodError } from 'zod'
 import { InContentErrorReportItem } from './in_content_error_report_item'
-import { CircleX, TriangleAlert, XIcon } from 'lucide-react'
+import { CircleX, TriangleAlert } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 

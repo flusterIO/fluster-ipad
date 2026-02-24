@@ -1,9 +1,9 @@
 import React, { type ReactNode } from "react";
-import { AdmonitionVariant } from "./types";
-import { CircleCheck, Hand, Info, TriangleAlertIcon } from "lucide-react";
+import { BadgeAlert, CircleCheck, Hand, Info, Microscope, TriangleAlertIcon } from "lucide-react";
+import { Emphasis } from "../schemas/emphasis_schema";
 
 interface AdmonitionVariantIconProps {
-    variant: AdmonitionVariant;
+    variant: Emphasis;
     className?: string;
 }
 
@@ -21,6 +21,10 @@ const AdmonitionVariantIcon = (
             return <CircleCheck className={props.className} />;
         case "primary":
             return <Info className={props.className} />;
+        case "important":
+            return <BadgeAlert className={props.className} />
+        case "research":
+            return <Microscope className={props.className} />
     }
 };
 

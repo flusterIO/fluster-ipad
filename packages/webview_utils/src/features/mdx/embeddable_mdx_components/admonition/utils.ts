@@ -1,16 +1,20 @@
-import { AdmonitionVariant } from "./types";
+import { Emphasis } from "../schemas/emphasis_schema";
 
-export const getTitleVariantClasses = (variant: AdmonitionVariant): string => {
+export const getTitleVariantClasses = (variant: Emphasis): string => {
     switch (variant) {
         case "success":
-            return "bg-[hsl(var(--success))] text-[hsl(var(--success-foreground))] [&_p]:text-[hsl(var(--success-foreground))]";
+            return "bg-emphasisSuccess text-emphasisSuccessForeground [&_p]:text-emphasisSuccessForeground";
         case "info":
-            return "bg-[hsl(var(--info))] text-[hsl(var(--info-foreground))] [&_p]:text-[hsl(var(--info-foreground))]";
+            return "bg-emphasisInfo text-emphasisInfoForeground [&_p]:text-emphasisInfoForeground";
         case "error":
-            return "bg-[hsl(var(--error))] text-[hsl(var(--error-foreground))] [&_p]:text-[hsl(var(--error-foreground))]";
+            return "bg-emphasisError text-emphasisErrorForeground [&_p]:text-emphasisErrorForeground";
         case "warn":
-            return "bg-[hsl(var(--warning))] text-[hsl(var(--warning-foreground))] [&_p]:text-[hsl(var(--warning-foreground))]";
+            return "bg-emphasisWarn text-emphasisWarnForeground [&_p]:text-emphasisWarnForeground";
         case "primary":
-            return "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] [&_p]:text-[hsl(var(--primary-foreground))]";
+            return "bg-primary text-primary-foreground [&_p]:text-primary-foreground";
+        case "research":
+            return "bg-emphasisResearch text-emphasisResearchForeground [&_p]:text-emphasisResearchForeground"
+        case "important":
+            return "bg-emphasisImportant text-emphasisImportantForeground [&_p]:text-emphasisImportantForeground"
     }
 };

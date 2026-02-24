@@ -1,9 +1,9 @@
 import React, { HTMLProps, type ReactNode } from "react";
 import {
-    ColorCssMap,
-    getColorKey,
     WithColorKey,
 } from "../embeddable_component_types/color_key";
+import { hlPropsSchema } from "./hl_props_schema";
+import { cn } from "@/utils/cn";
 
 export interface HlProps extends HTMLProps<HTMLSpanElement>, WithColorKey {
     /// A valid fluster color variable.
@@ -12,25 +12,7 @@ export interface HlProps extends HTMLProps<HTMLSpanElement>, WithColorKey {
 }
 
 export const Hl = ({ children, ...props }: HlProps): ReactNode => {
-    const styleMap: ColorCssMap = {
-        primary: {
-            backgroundColor: "hsl(var(--primary))",
-            color: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-            backgroundColor: "hsl(var(--secondary))",
-            color: "hsl(var(--secondary-foreground))",
-        },
-        error: {
-            backgroundColor: "hsl(var(--destructive))",
-            color: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-            backgroundColor: "hsl(var(--muted)/40)",
-            color: "hsl(var(--muted-foreground))",
-        },
-    };
-    const colorKey = getColorKey(props, "primary");
+    const colorClasses = hlPropsSchema.parse(props)
     return (
         <span
             {...props}
@@ -38,10 +20,9 @@ export const Hl = ({ children, ...props }: HlProps): ReactNode => {
                 paddingLeft: "0.2rem",
                 paddingRight: "0.2rem",
                 borderRadius: "4px",
-                ...styleMap[colorKey],
                 ...props.style,
             }}
-            className="[&_*]:text-inherit"
+            className={cn("[&_*]:text-inherit", colorClasses)}
         >
             {children}
         </span>

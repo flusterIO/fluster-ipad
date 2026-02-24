@@ -4,17 +4,44 @@
 
 
 root {
-  --background-override: 213 39% 9%;
+  --desktop-background-match: 213 39% 9%;
 }
 
-// Temporarly override the background window color to black. Find a better color later for the desktop window.
+
+body {
+  --emphasis-info: 221.0 100.0% 65.0%;
+  --emphasis-info-foreground: 0 0% 100%;
+  --emphasis-error: 0.0 100.0% 50.0%;
+  --emphasis-error-foreground: 0 0% 100%;
+  --emphasis-warn: 35.0 100.0% 50.0%;
+  --emphasis-warn-foreground: 222.2 84% 4.9%;
+  --emphasis-success: 142 100% 40%;
+  --emphasis-success-foreground: 0 0% 100%;
+  --emphasis-important: 270.0 100.0% 55.0%;
+  --emphasis-important-foreground: 0 0% 100%;
+  --emphasis-research: 185.0 100.0% 40.0%;
+  --emphasis-research-foreground: 222.2 84% 4.9%;
+}
+
 body.dark {
+  --emphasis-info: 221.0 100.0% 65.0%;
+  --emphasis-info-foreground: 0 0% 100%;
+  --emphasis-error: 0.0 100.0% 65.0%;
+  --emphasis-error-foreground: 0 0% 100%;
+  --emphasis-warn: 40.0 100.0% 60.0%;
+  --emphasis-warn-foreground: 222.2 84% 4.9%;
+  --emphasis-success: 142 100% 50%;
+  --emphasis-success-foreground: 222.2 84% 4.9%;
+  --emphasis-important: 270.0 100.0% 70.0%;
+  --emphasis-important-foreground: 0 0% 100%;
+  --emphasis-research: 185.0 100.0% 50.0%;
+  --emphasis-research-foreground: 222.2 84% 4.9%;
   background-color: black;
   --background: black;
 
   &.fluster-mac {
-    background-color: hsl(var(--background-override));
-    --background: var(--background-override);
+    background-color: hsl(var(--desktop-background-match));
+    --background: var(--desktop-background-match);
   }
 }
 
