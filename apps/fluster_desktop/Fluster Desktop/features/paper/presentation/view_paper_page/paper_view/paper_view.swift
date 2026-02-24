@@ -13,8 +13,6 @@ import SwiftUI
 struct PaperView: View {
   @Binding public var editingNote: NoteModel
   @Binding public var focusedPageIndex: Int
-  /// previousFocusedPageIndex == focusedPageIndex after page based initalization is complete.
-  @State private var previousFocusedPageIndex: Int = -1
   @State private var showDeletePageConfirmation: Bool = false
   var body: some View {
     GeometryReader { geometry in
@@ -28,20 +26,11 @@ struct PaperView: View {
               },
               set: { newValue in
                 Task(priority: .userInitiated) {
-                  await handlePaperMarkupChange(item, newValue)
+                  await handlePaperMarkupChange(newValue)
                 }
                 return
               })
             PaperMarkupView(markup: markup, focusedIndex: $focusedPageIndex)
-              .onAppear {
-                self.previousFocusedPageIndex = focusedPageIndex
-              }
-              .onChange(
-                of: focusedPageIndex,
-                {
-                  self.previousFocusedPageIndex = focusedPageIndex
-                }
-              )
               .toolbar(content: {
                 ToolbarItem(
                   placement: .primaryAction,
@@ -169,17 +158,13 @@ struct PaperView: View {
     }
   }
 
-  func handlePaperMarkupChange(_ item: PaperModel, _ markup: PaperMarkup) async {
-    if focusedPageIndex != previousFocusedPageIndex {
-      // Page not yet initialized...
-      return
-    }
+  func handlePaperMarkupChange(_ markup: PaperMarkup) async {
     if focusedPageIndex < editingNote.paper.count && focusedPageIndex >= 0 {
       do {
         editingNote.setLastRead(setModified: true)
         let data = try await markup.dataRepresentation()
         print("Saving editing note markup as data representation...")
-        item.markup = data
+        editingNote.paper[focusedPageIndex].markup = data
       } catch {
         print("Error: \(error.localizedDescription)")
       }
