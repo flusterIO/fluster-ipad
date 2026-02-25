@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef, type ReactNode } from "react";
+import React, { useEffect, useEffectEvent, useId, useRef, useState, type ReactNode } from "react";
 import { EditorState, Extension } from "@codemirror/state";
 import { EditorView, keymap, ViewUpdate } from "@codemirror/view";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
@@ -15,7 +15,7 @@ import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { BibtexEditorWebviewEvents, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 import { AnyWebviewAction, AnyWebviewEvent, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
@@ -31,6 +31,8 @@ import { Tex, YAMLFrontMatter } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
+import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
+import { stringToSerializedString } from "#/serialization/methods/string_to_serialized_string";
 
 interface CodeEditorProps {
     language?: CodeEditorLanguage;
@@ -38,7 +40,7 @@ interface CodeEditorProps {
     requestNewDataAction?: AnyWebviewAction
     updateHandler?: AnyWebviewAction
     showWebviewHandler?: AnyWebviewAction
-    swiftContentEvent?: AnyWebviewEvent
+    swiftContentEvent?: SplitviewEditorWebviewEvents.SetSplitviewEditorContent | BibtexEditorWebviewEvents.SetBibtexEditorContent
     containerId?: string;
     initialValueStorageKey?: AnyWebviewStorageKey
 }
@@ -221,27 +223,32 @@ export const CodeEditorInner = ({
 export const CodeEditor = (
     props: Omit<CodeEditorProps, "initialValue">,
 ): ReactNode => {
+    const [initialRender, setInitialRender] = useState(true)
     const [initialValue, setInitialValue] = useLocalStorage(
         props.initialValueStorageKey ?? SplitviewEditorWebviewLocalStorageKeys.InitialValue,
         undefined,
         {
             deserializer(value) {
-                return value;
+                const toArray = JSON.parse(value)
+                return SerializedString.getRootAsSerializedString(toArray).body() ?? ""
             },
             serializer(value) {
-                return value;
+                const arr = stringToSerializedString(value)
+                return arr.toString()
             },
             initializeWithValue: false,
         },
     );
+    const handleInitialRender = useEffectEvent(() => setInitialRender(false))
     useEffect(() => {
-        if (!initialValue) {
+        if (!initialValue || initialRender) {
             sendToSwift(props.requestNewDataAction ?? SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
+        handleInitialRender()
         /* eslint-disable-next-line  -- I hate this rule */
-    }, [initialValue]);
-    useEventListener((props.swiftContentEvent ?? SplitviewEditorWebviewEvents.SetSplitviewEditorContent) as keyof WindowEventMap, (e) => {
-        setInitialValue("detail" in e ? e.detail : "");
+    }, [initialValue, initialRender]);
+    useEventListener(props.swiftContentEvent ?? SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
+        setInitialValue(e.detail.body() ?? "");
     });
     return initialValue ? (
         <CodeEditorInner {...props} initialValue={initialValue} />

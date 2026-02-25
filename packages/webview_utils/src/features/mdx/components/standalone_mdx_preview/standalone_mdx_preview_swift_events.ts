@@ -1,4 +1,6 @@
+import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
 import { SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
+import { ByteBuffer } from "flatbuffers";
 
 declare global {
     interface Window {
@@ -6,10 +8,13 @@ declare global {
     }
 }
 
-const setMdxPreviewContent = (mdxContent: string): void => {
+const setMdxPreviewContent = (mdxContent: Uint8Array): void => {
+    const data = Uint8Array.from(mdxContent)
+    const buf = new ByteBuffer(data)
+
     window.dispatchEvent(
-        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, {
-            detail: mdxContent,
+        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContentString, {
+            detail: SerializedString.getRootAsSerializedString(buf),
         }),
     );
 };

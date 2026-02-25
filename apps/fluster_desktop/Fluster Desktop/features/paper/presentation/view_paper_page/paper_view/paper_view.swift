@@ -204,16 +204,6 @@ struct PaperMarkupView: NSViewControllerRepresentable {
       clearAndLoadMarkup(on: nsViewController, with: $markup.wrappedValue)
       context.coordinator.lastPageIndex = focusedIndex
     }
-    //    markup = nsViewController.markup
-    //      context.coordinator.
-    //    nsViewController.markup = markup
-    //      if let c = self.controller {
-    //          c.markup = markup
-    //      }
-    //    if focusedIndex != previousFocusedIndex {
-    //      previousFocusedIndex = focusedIndex
-    //      nsViewController.markup = markup
-    //    }
   }
 
   /// Clears the canvas and loads the specified PaperMarkup content.

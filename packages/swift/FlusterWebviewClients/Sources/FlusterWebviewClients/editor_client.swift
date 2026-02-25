@@ -61,7 +61,7 @@ public struct MdxEditorClient {
     note: NoteModel,
     evaluateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
-    let body = note.markdown.body.toQuotedJavascriptString()
+    let body = note.markdown.body.toFlatBufferSerializedString()
     try await evaluateJavaScript(
       """
       window.setEditorContent(\(body))

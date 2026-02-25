@@ -3,5 +3,5 @@ import path from "path";
 
 export default getBaseTailwindConfig({
     content: [path.resolve(__dirname, "./src/**/*.{ts,tsx,mdx}")],
-    includeWebUtils: true,
+    includeWebUtils: false,
 });

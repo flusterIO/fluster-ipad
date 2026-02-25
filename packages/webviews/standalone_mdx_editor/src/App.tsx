@@ -1,4 +1,5 @@
 import { CodeEditor, WebViewContainer } from "@fluster/webview_utils";
+import "../../../webview_utils/dist/styles.css";
 import React from "react";
 
 function App() {

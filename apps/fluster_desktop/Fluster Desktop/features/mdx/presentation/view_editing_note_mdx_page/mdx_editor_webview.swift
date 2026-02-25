@@ -231,7 +231,7 @@ struct MdxEditorWebview: View {
       """)
   }
   func setEditorContent(note: NoteModel) async throws {
-    let body = note.markdown.body.toQuotedJavascriptString()
+    let body = note.markdown.body.toFlatBufferSerializedString()
     try await webView.evaluateJavaScript(
       """
       window.setEditorContent(\(body))
