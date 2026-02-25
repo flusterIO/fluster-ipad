@@ -11,7 +11,7 @@ export interface SwiftEventMap {
 
 declare global {
     interface WindowEventMap {
-        [SplitviewEditorWebviewEvents.SetSplitviewEditorContent]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetSplitviewEditorContent]: CustomEvent<SerializedString>;
         [SplitviewEditorWebviewEvents.SetParsedMdxContent]: CustomEvent<MdxParsingResultBuffer>;
         [SplitviewEditorWebviewEvents.SetEditorSnippetProps]: CustomEvent<GetSnippetPropsBuffer>;
         [SplitviewEditorWebviewEvents.SetParsedMdxContentString]: CustomEvent<SerializedString>;
@@ -38,9 +38,11 @@ declare global {
     }
 }
 
-export function setEditorContent(payload: string) {
+export function setEditorContent(payload: Uint8Array) {
+    const data = Uint8Array.from(payload)
+    const buf = new ByteBuffer(data)
     window.dispatchEvent(
-        new CustomEvent(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, { detail: payload }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, { detail: SerializedString.getRootAsSerializedString(buf) }),
     );
 }
 

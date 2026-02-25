@@ -12,7 +12,7 @@ import SwiftUI
 
 struct PaperTabView: View {
   @State private var toolbar: PKToolPicker = PKToolPicker()
-    @State private var showDeletePageConfirmation: Bool = false
+  @State private var showDeletePageConfirmation: Bool = false
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
     var hasPreviouslyLaunched: Bool = false
@@ -27,6 +27,7 @@ struct PaperTabView: View {
     NavigationStack {
       if let en = Binding($editingNote) {
         PaperKitView(editingNote: en, focusedPageIndex: $focusedPageIndex)
+          .id(focusedPageIndex)
           .toolbar {
             ToolbarItem(id: "prev-page", placement: .primaryAction) {
               Button(
@@ -43,7 +44,8 @@ struct PaperTabView: View {
                     icon: {
                       Image(systemName: "chevron.left")
                     })
-                })
+                }
+              )
               .disabled(focusedPageIndex <= 0)
             }
             ToolbarItem(id: "next-page", placement: .primaryAction) {
@@ -63,7 +65,8 @@ struct PaperTabView: View {
                     icon: {
                       Image(systemName: "chevron.right")
                     })
-                })
+                }
+              )
               .disabled(focusedPageIndex >= en.paper.count - 1)
             }
             ToolbarItem(

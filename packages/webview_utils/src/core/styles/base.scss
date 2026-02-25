@@ -1,6 +1,11 @@
 @use "./themes.scss";
 @use "./mermaid.scss";
 @use "./shared_component_styles.scss";
+@import 'fumadocs-ui/css/shadcn.css';
+@import 'fumadocs-ui/css/preset.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 
 root {

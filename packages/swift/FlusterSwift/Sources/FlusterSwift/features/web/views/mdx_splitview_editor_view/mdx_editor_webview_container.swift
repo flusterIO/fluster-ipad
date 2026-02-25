@@ -42,16 +42,18 @@ import WebKit
       )
     }
     public func setInitialContent(note: NoteModel) {
+      let arr = note.markdown.body.toFlatBufferSerializedString()
       self.runJavascript(
         """
-        window.setEditorContent(\(note.markdown.body.toQuotedJavascriptString()))
+        window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue)", "\(arr)")
+        window.setEditorContent(\(arr))
         """
       )
     }
     public func setParsedEditorContentString(content: String) {
       self.runJavascript(
         """
-        window.setParsedEditorContentString(\(content.toQuotedJavascriptString()))
+        window.setParsedEditorContentString(\(content.toFlatBufferSerializedString()))
         """)
     }
     public func emitMdxParsingError() {

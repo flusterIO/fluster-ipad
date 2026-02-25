@@ -36,10 +36,9 @@ public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWe
       """)
   }
   public func setInitialContent(entryBody: String) {
-    let body = entryBody.toQuotedJavascriptString()
+    let body = entryBody.toFlatBufferSerializedString()
     self.runJavascript(
       """
-      window.localStorage.setItem("\(BibtexEditorWebviewLocalStorageKeys.initialValue.rawValue)", \(body))
       window.setBibtexEditorContent(\(body))
       """
     )

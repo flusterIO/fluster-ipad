@@ -6,7 +6,7 @@ import {
     WebViewContainer,
     LoadingComponent,
 } from "@fluster/webview_utils";
-import "../../../webview_utils/dist/webview_utils.css";
+import "../../../webview_utils/dist/styles.css";
 import "./index.css";
 
 setMdxBridgeFunctions();

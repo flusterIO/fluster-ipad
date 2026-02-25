@@ -30,6 +30,7 @@
   ],
   "scripts": {
     "build": "wireit",
+    "build:tailwind": "wireit",
     "build:website": "wireit",
     "dev": "vite",
     "lint": "eslint .",
@@ -38,11 +39,20 @@
   },
   "wireit": {
     "build": {
+      "dependencies": [
+        "build:typescript",
+        "build:tailwind"
+      ]
+    },
+    "build:typescript": {
       "command": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
       "output": [
         "dist"
       ],
       "clean": true
+    },
+    "build:tailwind": {
+      "command": "pnpm tailwind -i ./src/core/styles/base.scss -o ./dist/styles.css -m"
     },
     "build:lezer": {
       "command": "cd ../typescript/lezer && pnpm build"
@@ -126,6 +136,7 @@
     "dayjs": "1.11.19",
     "flatbuffers": "25.9.23",
     "framer-motion": "12.23.25",
+    "fumadocs-ui": "15.8.3",
     "lucide-react": "0.554.0",
     "path-browserify": "1.0.1",
     "react": "19.2.0",
@@ -157,9 +168,12 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.1",
+    "@faker-js/faker": "10.3.0",
+    "@fluster/shared_config": "workspace:*",
     "@next/eslint-plugin-next": "16.1.1",
     "@shikijs/monaco": "3.4.2",
     "@tailwindcss/typography": "0.5.19",
+    "@tailwindcss/vite": "4.2.1",
     "@types/mdx": "2.0.13",
     "@types/node": "24.10.1",
     "@types/react": "19.2.2",
@@ -172,7 +186,6 @@
     "sass": "1.89.0",
     "typescript": "latest",
     "typescript-eslint": "8.46.4",
-    "vite": "7.2.4",
     "vite-plugin-dts": "4.5.4",
     "vite-tsconfig-paths": "5.1.4",
     "wireit": "0.14.12"

@@ -32,10 +32,11 @@ const BibtexEditorInner = (): ReactNode => {
         },
     );
     useEventListener(BibtexEditorWebviewEvents.SetBibtexEditorContent, (e) => {
-        setInitialValue(e.detail);
+        const body = e.detail.body()
+        setInitialValue(body ?? "");
         dispatch({
             type: "setInitialEditorValue",
-            payload: e.detail,
+            payload: body ?? "",
         });
     });
 

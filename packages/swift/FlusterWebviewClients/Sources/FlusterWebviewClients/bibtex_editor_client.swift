@@ -26,10 +26,9 @@ public class BibtexEditorClient {
       """)
   }
   public static func setBibEntryContent(entryBody: String, evalutateJavaScript: EvalJavascriptFunc ) async throws {
-    let body = entryBody.toQuotedJavascriptString()
+    let body = entryBody.toFlatBufferSerializedString()
     try await evalutateJavaScript(
       """
-      window.localStorage.setItem("\(BibtexEditorWebviewLocalStorageKeys.initialValue.rawValue)", \(body))
       window.setBibtexEditorContent(\(body))
       """
     )

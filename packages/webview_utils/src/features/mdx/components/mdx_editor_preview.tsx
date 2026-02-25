@@ -5,8 +5,6 @@ import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
-import { ErrorBoundary } from "react-error-boundary";
-import { MdxParsingErrorComponent } from "./mdx_parsing_error_component";
 import { setBodyLoading } from "./editor_dom_utils";
 import { setMdxPreviewWindowMethods } from "./standalone_mdx_preview/standalone_mdx_preview_swift_events";
 import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/swift_events";
@@ -73,24 +71,19 @@ export const MdxEditorPreview = ({
     }
 
     return (
-        <ErrorBoundary
-            FallbackComponent={MdxParsingErrorComponent}
-            onError={(e) => console.error("Error Boundary: ", e)}
-        >
-            <MdxContent
-                id="mdx-preview"
-                {...props}
-                ref={ref}
-                className={cn(
-                    "max-w-[1080px]",
-                    isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
-                    className,
-                )}
-                lockToEditorScroll={lockEditorScrollToPreview}
-                mdx={parsedValue}
-                showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
-            />
-        </ErrorBoundary>
+        <MdxContent
+            id="mdx-preview"
+            {...props}
+            ref={ref}
+            className={cn(
+                "max-w-[1080px]",
+                isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
+                className,
+            )}
+            lockToEditorScroll={lockEditorScrollToPreview}
+            mdx={parsedValue}
+            showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
+        />
     );
 };
 

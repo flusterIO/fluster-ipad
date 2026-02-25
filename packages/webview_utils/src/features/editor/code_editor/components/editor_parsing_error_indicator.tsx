@@ -5,6 +5,8 @@ import React, { useState, type ReactNode } from 'react'
 import { motion } from "framer-motion"
 
 
+
+// Deprecated, I think. This is not handled by the InContentErrorComponentn
 export const MdxParsingErrorIndicator = (): ReactNode => {
     const [open, setOpen] = useState(false)
     useEventListener(SplitviewEditorWebviewEvents.EmitMdxParsingSuccess, () => setOpen(false))

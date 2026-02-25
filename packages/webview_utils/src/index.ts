@@ -1,4 +1,3 @@
-import "./core/styles/base.scss";
 export * from "./features/editor/code_editor/types/swift_events/swift_events";
 export * from "./core/utils/cn"
 
@@ -45,7 +44,7 @@ export * from "./core/shared_components/inputs/select/file_extension_glob_select
 export * from "./core/shared_components/inputs/select/supported_programming_language/index"
 
 // -- Utils --
-export * from "./core/utils/windowUtils/get_orientation";
+export * from "./core/utils/window_utils/get_orientation";
 export * from "./core/utils/bridge/send_to_swift";
 export * from "./core/state/hooks/use_webview_loaded_event";
 export * from "./features/webview_container/utils/webview_on_error";
@@ -54,6 +53,9 @@ export * from "./features/webview_container/utils/uint8ToBase64";
 export * from "./core/shared_components/utility/modal_backdrop"
 export * from "./core/utils/on_enter"
 export * from "./core/utils/smart_case_contains"
+
+// -- Development Utils --
+export * from "./core/utils/window_utils/development_window_utils/development_window_util_component";
 
 
 // -- Typography --

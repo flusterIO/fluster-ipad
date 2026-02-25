@@ -71,26 +71,6 @@ import WebKit
 
       webView.layer.needsDisplayOnBoundsChange = true
       webView.underPageBackgroundColor = .clear
-      // -- Begin new attempts to get rid of overscroll --
-      // This will obviously cause issues in light mode, but testing to see if this resolves the issue.
-//      webView.layer.masksToBounds = true
-//      webView.layer.bounds = CGRect(
-//        origin: .zero,
-//        size: CGSize(width: .infinity, heighk: UIScreen.current?.bounds.height ?? .infinity))
-//      webView.layer.frame = CGRect(
-//        origin: .zero,
-//        size: CGSize(width: .infinity, height: UIScreen.current?.bounds.height ?? .infinity))
-//
-//      webView.layer.frame = CGRect(
-//        origin: .zero,
-//        size: CGSize(width: .infinity, height: UIScreen.current?.bounds.height ?? .infinity))
-//      webView.scrollView.contentOffset = .zero
-//      webView.scrollView.contentInsetAdjustmentBehavior = .never
-//      webView.scrollView.scrollIndicatorInsets = .zero
-//      webView.scrollView.isScrollEnabled = false
-//      webView.scrollView.contentInset = .zero
-
-      // -- End new attempts --
 
       webView.scrollView.bounces = false
       webView.scrollView.showsVerticalScrollIndicator = false
@@ -158,10 +138,9 @@ import WebKit
       )
     }
     public func setInitialContent() {
-      let s = editingNote.markdown.body.toQuotedJavascriptString() ?? "''"
+      let s = editingNote.markdown.body.toFlatBufferSerializedString()
       container.runJavascript(
         """
-        window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue)", \(s))
         window.setEditorContent(\(s))
         """
       )

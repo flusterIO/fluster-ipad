@@ -110,7 +110,7 @@ public struct MdxPreviewWebview: UIViewRepresentable {
       container.runJavascript(
         """
         window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.parsedMdxData.rawValue)", "")
-        window.setEditorContent("")
+        window.setEditorContent(\("".toFlatBufferSerializedString()))
         """
       )
     }
