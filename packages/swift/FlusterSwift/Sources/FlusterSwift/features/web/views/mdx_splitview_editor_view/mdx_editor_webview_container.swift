@@ -45,7 +45,6 @@ import WebKit
       let arr = note.markdown.body.toFlatBufferSerializedString()
       self.runJavascript(
         """
-        window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue)", "\(arr)")
         window.setEditorContent(\(arr))
         """
       )

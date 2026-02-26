@@ -6,7 +6,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 import tailwind from "@tailwindcss/vite";
 
-const isProd = process.env.FLUSTER_PROD_BUILD === "true";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -20,22 +19,12 @@ export default defineConfig({
         }),
     ],
     build: {
-        lib: {
-            entry: resolve(__dirname, "src/index.ts"),
-            // formats: ["es"],
-            name: "fluster",
-            fileName: (c) => `index.${c}.js`,
-        },
+        outDir: "dist_dev",
         commonjsOptions: {
             transformMixedEsModules: true,
         },
-        rollupOptions: {
-            external: ["react", "react-dom"],
-        },
         sourcemap: true,
         emptyOutDir: false,
-        minify: isProd ? "esbuild" : undefined,
-        cssMinify: isProd ? "lightningcss" : undefined
     },
     resolve: {
         alias: {

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../../features/mdx/embeddable_mdx_components/auto_inserted/auto_inserted_code_block/code_block_styles.scss";
 @import "./themes.scss";
 @import "./mermaid.scss";
 @import "./shared_component_styles.scss";
@@ -13,8 +14,8 @@
 @source "../../../../webviews/standalone_mdx_preview/src/**/*.{ts,tsx,mdx}";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
-/* @import 'fumadocs-ui/css/neutral.css'; */
-/* @import 'fumadocs-ui/css/preset.css'; */
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
 
 
 root {
