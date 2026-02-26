@@ -189,11 +189,6 @@ import WebKit
         // On Load
         guard !parent.didSetInitialContent else { return }
 
-        webView.evaluateJavaScript(
-          """
-          window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue)", \(parent.editingNote.markdown.body.toQuotedJavascriptString() ?? "''"));
-          """
-        )
         parent.setInitialProperties()
         parent.container.webView.isHidden = !self.parent.show
         parent.didSetInitialContent = true

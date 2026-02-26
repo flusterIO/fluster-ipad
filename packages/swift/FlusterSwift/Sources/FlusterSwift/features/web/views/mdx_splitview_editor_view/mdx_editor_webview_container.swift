@@ -9,6 +9,7 @@ import WebKit
 #if os(iOS)
   @MainActor
   public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWebviewEvents> {
+    @Environment(\.modelContext) private var modelContext: ModelContext
     public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
       self.runJavascript(
         """
@@ -49,6 +50,7 @@ import WebKit
         """
       )
     }
+    /// Sets the editor's preview content with a 'pre-parsed' string.
     public func setParsedEditorContentString(content: String) {
       self.runJavascript(
         """
@@ -95,8 +97,19 @@ import WebKit
       if let _editingNote = editingNote {
         self.setInitialContent(note: _editingNote)
         if let parsedBody = _editingNote.markdown.preParsedBody {
-          print("HERERERERE")
           self.setParsedEditorContentString(content: parsedBody)
+        } else {
+          // If it doesn't exist, try to parse the body again.
+          Task {
+            do {
+              try await _editingNote.preParse(modelContext: modelContext)
+              if let newlyParsedBody = _editingNote.markdown.preParsedBody {
+                self.setParsedEditorContentString(content: newlyParsedBody)
+              }
+            } catch {
+              print("Error: \(error.localizedDescription)")
+            }
+          }
         }
       }
     }

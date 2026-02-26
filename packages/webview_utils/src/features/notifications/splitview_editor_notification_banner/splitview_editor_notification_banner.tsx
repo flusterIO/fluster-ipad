@@ -1,10 +1,10 @@
-import { EditorNotificationBanner, useCodeEditorContext } from '#/editor/code_editor/state/code_editor_provider'
 import React, { useEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { useSplitviewEditorNotificationContext, useSplitviewEditorNotificationDispatch } from './splitview_editor_notification_banner_provider'
 import { AnimatePresence, motion } from "framer-motion";
 import { XIcon } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { EditorNotificationBanner } from './types';
 
 
 
@@ -19,15 +19,14 @@ const BannerNotificationItem = ({ item }: { item: EditorNotificationBanner }): R
         })
     }
 
-
-    /* useEffect(() => { */
-    /*     if (item.timeout) { */
-    /*         if (timer.current) { */
-    /*             clearTimeout(timer.current) */
-    /*         } */
-    /*         timer.current = setTimeout(removeSelf, item.timeout) */
-    /*     } */
-    /* }, []) */
+    useEffect(() => {
+        if (item.timeout) {
+            if (timer.current) {
+                clearTimeout(timer.current)
+            }
+            timer.current = setTimeout(removeSelf, item.timeout)
+        }
+    }, [])
     return (
         <motion.div
             layout
