@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @import "../../features/mdx/embeddable_mdx_components/auto_inserted/auto_inserted_code_block/code_block_styles.scss";
-@import "./themes.scss";
 @import "./mermaid.scss";
 @import "./shared_component_styles.scss";
 @import "./fd_themes.scss";
+@import "./themes.scss";
 @source "../../**/*.{mdx,tsx,ts}";
 @source "../../../../../docs/**/*.{mdx,tsx,ts}";
 @source "../../../../webviews/bib_entry_details_webview/src/**/*.{ts,tsx,mdx}";
@@ -23,50 +23,7 @@ root {
 }
 
 
-@layer base {
-  :root {
-    --emphasis-info: 221.0 100.0% 65.0%;
-    --emphasis-info-foreground: 0 0% 100%;
-    --emphasis-error: 0.0 100.0% 50.0%;
-    --emphasis-error-foreground: 0 0% 100%;
-    --emphasis-warn: 20.0 100.0% 55.0%;
-    --emphasis-warn-foreground: 222.2 84% 4.9%;
-    --emphasis-success: 142 100% 40%;
-    --emphasis-success-foreground: 0 0% 100%;
-    --emphasis-important: 270.0 100.0% 55.0%;
-    --emphasis-important-foreground: 0 0% 100%;
-    --emphasis-research: 185.0 100.0% 40.0%;
-    --emphasis-research-foreground: 0 0% 100%;
-    --emphasis-highlight: 60 100% 48%;
-    --emphasis-highlight-foreground: 222.2 84% 4.9%;
-    --fluster-math-font-size: 1.2rem;
-  }
-
-  body.dark {
-    --emphasis-info: 221.0 100.0% 65.0%;
-    --emphasis-info-foreground: 0 0% 100%;
-    --emphasis-error: 0.0 100.0% 65.0%;
-    --emphasis-error-foreground: 0 0% 100%;
-    --emphasis-warn: 20.0 100.0% 55.0%;
-    --emphasis-warn-foreground: 222.2 84% 4.9%;
-    --emphasis-success: 142 100% 50%;
-    --emphasis-success-foreground: 222.2 84% 4.9%;
-    --emphasis-important: 270.0 100.0% 70.0%;
-    --emphasis-important-foreground: 0 0% 100%;
-    --emphasis-research: 185.0 100.0% 50.0%;
-    --emphasis-research-foreground: 222.2 84% 4.9%;
-    background-color: black;
-    --background: black;
-
-    &.fluster-mac {
-      background-color: hsl(var(--desktop-background-match));
-      --background: var(--desktop-background-match);
-    }
-  }
-}
-
-
-@theme {
+@theme inline {
   --radius: var(--radius);
   --color-brand: hsl(var(--brand));
   --color-background: hsl(var(--background));
@@ -75,10 +32,6 @@ root {
   --color-card-foreground: hsl(var(--card-foreground));
   --color-popover: hsl(var(--popover));
   --color-primary: hsl(var(--primary));
-  --color-primary-rgb: var(--primary-rgb);
-  --color-primary-h: var(--primary-h);
-  --color-primary-s: var(--primary-s);
-  --color-primary-l: var(--primary-l);
   --color-primary-foreground: hsl(var(--primary-foreground));
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
@@ -104,6 +57,8 @@ root {
   --color-emphasis-important-foreground: hsl(var(--emphasis-important-foreground));
   --color-emphasis-research: hsl(var(--emphasis-research));
   --color-emphasis-research-foreground: hsl(var(--emphasis-research-foreground));
+  --color-emphasis-highlight: hsl(var(--emphasis-highlight));
+  --color-emphasis-highlight-foreground: hsl(var(--emphasis-highlight-foreground));
   --color-fd-background: hsl(0, 0%, 96%);
   --color-fd-foreground: hsl(0, 0%, 3.9%);
   --color-fd-muted: hsl(0, 0%, 96.1%);
@@ -113,7 +68,6 @@ root {
   --color-fd-card: hsl(0, 0%, 94.7%);
   --color-fd-card-foreground: hsl(0, 0%, 3.9%);
   --color-fd-border: hsla(0, 0%, 80%, 50%);
-  --color-fd-primary: hsl(0, 0%, 9%);
   --color-fd-primary-foreground: hsl(0, 0%, 98%);
   --color-fd-secondary: hsl(0, 0%, 93.1%);
   --color-fd-secondary-foreground: hsl(0, 0%, 9%);
