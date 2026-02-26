@@ -3,6 +3,8 @@ import typography from "@tailwindcss/typography";
 import containerQueries from "@tailwindcss/container-queries";
 import path from "path";
 
+
+// TODO: Remove all references to thisi entire file nowthat everything is being handled in the utils package.
 if (!process.env.FLUSTER_IOS_ROOT) {
     console.log(
         `Cannot continue without FLUSTER_IOS_ROOT environment variable set to the root of the workspace directory.`,
@@ -98,20 +100,6 @@ export const getBaseTailwindConfig = (
                     hint: "hsl(var(--fluster-hint))",
                     error: "hsl(var(--fluster-error))",
                     link: "hsl(var(--general-link-color))",
-                    emphasisInfo: "hsl(var(--emphasis-info))",
-                    emphasisError: "hsl(var(--emphasis-error))",
-                    emphasisWarn: "hsl(var(--emphasis-warn))",
-                    emphasisSuccess: "hsl(var(--emphasis-success))",
-                    emphasisImportant: "hsl(var(--emphasis-important))",
-                    emphasisHighlight: "hsl(var(--emphasis-highlight))",
-                    emphasisResearch: "hsl(var(--emphasis-research))",
-                    emphasisInfoForeground: "hsl(var(--emphasis-info-foreground))",
-                    emphasisErrorForeground: "hsl(var(--emphasis-error-foreground))",
-                    emphasisWarnForeground: "hsl(var(--emphasis-warn-foreground))",
-                    emphasisSuccessForeground: "hsl(var(--emphasis-success-foreground))",
-                    emphasisImportantForeground: "hsl(var(--emphasis-important-foreground))",
-                    emphasisResearchForeground: "hsl(var(--emphasis-research-foreground))",
-                    emphasisHighlightForeground: "hsl(var(--emphasis-highlight-foreground))",
                 }),
                 maxWidth: {
                     content: "1440px",

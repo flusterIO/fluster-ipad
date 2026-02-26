@@ -54,6 +54,9 @@ public struct MdxEditorClient {
         """
         window.setParsedEditorContentString(\(preParsedBody.toFlatBufferSerializedString()))
         """)
+    } else {
+        // TODO: Parse again here. That requires passing in modelContext and I'm in a hurry,
+        // but that needs to be done here.
     }
   }
 

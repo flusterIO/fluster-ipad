@@ -172,7 +172,7 @@ struct MdxEditorWebview: View {
       Task {
         try await en.preParse(modelContext: modelContext)
         do {
-          try await setParsedEditorContentString(body: en.markdown.preParsedBody ?? newValue)
+          try await setParsedEditorContent(note: en)
         } catch {
           print("Error: \(error.localizedDescription)")
         }
@@ -216,26 +216,12 @@ struct MdxEditorWebview: View {
       keymap: editorKeymap, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func setParsedEditorContent(note: NoteModel) async throws {
-    if let preParsedBody = note.markdown.preParsedBody {
-      do {
-        try await setParsedEditorContentString(body: preParsedBody)
-      } catch {
-        print("Error: \(error.localizedDescription)")
-      }
-    }
-  }
-  func setParsedEditorContentString(body: String) async throws {
-    try await webView.evaluateJavaScript(
-      """
-      window.setParsedEditorContentString(\(body.toFlatBufferSerializedString()))
-      """)
+    try await MdxEditorClient.setParsedEditorContent(
+      note: note, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func setEditorContent(note: NoteModel) async throws {
-    let body = note.markdown.body.toFlatBufferSerializedString()
-    try await webView.evaluateJavaScript(
-      """
-      window.setEditorContent(\(body))
-      """)
+    try await MdxEditorClient.setEditorContent(
+      note: note, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func setLockEditorScrollToPreview(lock: Bool) async throws {
     try await MdxEditorClient.setLockEditorScrollToPreview(
