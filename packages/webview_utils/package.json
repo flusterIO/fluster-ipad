@@ -32,7 +32,7 @@
     "build": "wireit",
     "build:tailwind": "wireit",
     "build:website": "wireit",
-    "dev": "vite",
+    "dev": "vite -c ./vite_dev.config.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
@@ -123,6 +123,7 @@
     "@shikijs/transformers": "3.4.2",
     "@tabler/icons-react": "3.36.1",
     "@tailwindcss/container-queries": "0.1.1",
+    "@tailwindcss/postcss": "4.1.10",
     "@tanstack/react-table": "8.21.3",
     "@uiw/codemirror-extensions-line-numbers-relative": "4.25.3",
     "@uiw/codemirror-theme-bbedit": "4.25.3",

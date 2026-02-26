@@ -219,7 +219,7 @@ export const CodeEditorContextReducer = (
 CodeEditorContextReducer.displayName = "CodeEditorContextReducer";
 
 
-export type CodeEditorImplementation = "bib-editor" | "mdx-editor" | "mdx-viewer"
+export type CodeEditorImplementation = "bib-editor" | "mdx-editor" | "mdx-viewer" | "development"
 
 interface CodeEditorProviderProps {
     children: ReactNode;

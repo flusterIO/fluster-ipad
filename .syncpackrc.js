@@ -85,12 +85,6 @@ const config = {
             label: "Pin react-table",
         },
         {
-            dependencies: ["tailwindcss"],
-            pinVersion: "3.4.18",
-            packages: ["!@fluster/website"],
-            label: "Pin tailwind version",
-        },
-        {
             dependencies: [
                 "@codemirror/autocomplete",
                 "@codemirror/language",

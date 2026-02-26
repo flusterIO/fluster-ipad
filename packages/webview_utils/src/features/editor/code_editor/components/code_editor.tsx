@@ -32,7 +32,7 @@ import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/stat
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
 import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
-import { localStorageSerializedStringDeserializer, localStorageSerializedStringSerializer, stringToSerializedString } from "#/serialization/methods/string_to_serialized_string";
+import { stringToSerializedString } from "#/serialization/methods/string_to_serialized_string";
 
 interface CodeEditorProps {
     language?: CodeEditorLanguage;
@@ -228,8 +228,12 @@ export const CodeEditor = (
         props.initialValueStorageKey ?? SplitviewEditorWebviewLocalStorageKeys.InitialValue,
         undefined,
         {
-            deserializer: localStorageSerializedStringDeserializer,
-            serializer: localStorageSerializedStringSerializer,
+            deserializer(value) {
+                return value
+            },
+            serializer(value) {
+                return value
+            },
             initializeWithValue: false,
         },
     );
