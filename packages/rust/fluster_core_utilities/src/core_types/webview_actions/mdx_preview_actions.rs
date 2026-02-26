@@ -29,6 +29,9 @@ pub enum MdxPreviewWebviewActions {
     #[serde(rename = "handle-citation-click")]
     #[strum(to_string = "handle-citation-click")]
     OnCitationClick,
+    #[serde(rename = "show-user-facing-notification")]
+    #[strum(to_string = "show-user-facing-notification")]
+    ShowUserFacingNotification,
 }
 
 /// From swift to typescript

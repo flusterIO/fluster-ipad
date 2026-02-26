@@ -15,6 +15,7 @@ import { Ul } from "../embeddable_mdx_components/ul/ul";
 import { InlineMdxContent } from "../components/inline_mdx_content";
 import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
+import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
 
 export interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
@@ -35,14 +36,7 @@ export const componentOverrides: MDXComponents = {
     a: AnchorTag,
     /* hr: Hr, */
     input: MdxInput,
-    /* pre: ({ */
-    /*     /* eslint-disable-next-line  -- Need to destructure */
-    /*     ref, */
-    /*     ...props }) => ( */
-    /*     <CodeBlock {...props}> */
-    /*         <Pre>{props.children}</Pre> */
-    /*     </CodeBlock> */
-    /* ), */
+    pre: AutoInsertedCodeBlock,
 };
 
 const items: ComponentMapItem[] = [

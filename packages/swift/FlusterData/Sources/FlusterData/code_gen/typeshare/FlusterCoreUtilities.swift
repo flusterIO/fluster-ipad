@@ -64,6 +64,7 @@ public enum MdxPreviewWebviewActions: String, Codable {
 	case onTopicClick = "handle-topic-click"
 	case onSubjectClick = "handle-subject-click"
 	case onCitationClick = "handle-citation-click"
+	case showUserFacingNotification = "show-user-facing-notification"
 }
 
 /// From swift to typescript

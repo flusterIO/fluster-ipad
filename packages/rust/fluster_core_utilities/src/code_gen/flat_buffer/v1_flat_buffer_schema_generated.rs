@@ -526,6 +526,235 @@ impl core::fmt::Debug for DictionaryData<'_> {
 }  // pub mod Dictionary
 
 #[allow(unused_imports, dead_code)]
+pub mod notifications {
+
+  use core::mem;
+  use core::cmp::Ordering;
+
+  extern crate flatbuffers;
+  use self::flatbuffers::{EndianScalar, Follow};
+
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+pub const ENUM_MIN_USER_FACING_NOTIFICATION_VARIANT: i8 = 1;
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+pub const ENUM_MAX_USER_FACING_NOTIFICATION_VARIANT: i8 = 2;
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+#[allow(non_camel_case_types)]
+pub const ENUM_VALUES_USER_FACING_NOTIFICATION_VARIANT: [UserFacingNotificationVariant; 2] = [
+  UserFacingNotificationVariant::Toast,
+  UserFacingNotificationVariant::DismissableModal,
+];
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+#[repr(transparent)]
+pub struct UserFacingNotificationVariant(pub i8);
+#[allow(non_upper_case_globals)]
+impl UserFacingNotificationVariant {
+  pub const Toast: Self = Self(1);
+  pub const DismissableModal: Self = Self(2);
+
+  pub const ENUM_MIN: i8 = 1;
+  pub const ENUM_MAX: i8 = 2;
+  pub const ENUM_VALUES: &'static [Self] = &[
+    Self::Toast,
+    Self::DismissableModal,
+  ];
+  /// Returns the variant's name or "" if unknown.
+  pub fn variant_name(self) -> Option<&'static str> {
+    match self {
+      Self::Toast => Some("Toast"),
+      Self::DismissableModal => Some("DismissableModal"),
+      _ => None,
+    }
+  }
+}
+impl core::fmt::Debug for UserFacingNotificationVariant {
+  fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+    if let Some(name) = self.variant_name() {
+      f.write_str(name)
+    } else {
+      f.write_fmt(format_args!("<UNKNOWN {:?}>", self.0))
+    }
+  }
+}
+impl<'a> flatbuffers::Follow<'a> for UserFacingNotificationVariant {
+  type Inner = Self;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    let b = unsafe { flatbuffers::read_scalar_at::<i8>(buf, loc) };
+    Self(b)
+  }
+}
+
+impl flatbuffers::Push for UserFacingNotificationVariant {
+    type Output = UserFacingNotificationVariant;
+    #[inline]
+    unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
+        unsafe { flatbuffers::emplace_scalar::<i8>(dst, self.0); }
+    }
+}
+
+impl flatbuffers::EndianScalar for UserFacingNotificationVariant {
+  type Scalar = i8;
+  #[inline]
+  fn to_little_endian(self) -> i8 {
+    self.0.to_le()
+  }
+  #[inline]
+  #[allow(clippy::wrong_self_convention)]
+  fn from_little_endian(v: i8) -> Self {
+    let b = i8::from_le(v);
+    Self(b)
+  }
+}
+
+impl<'a> flatbuffers::Verifiable for UserFacingNotificationVariant {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    i8::run_verifier(v, pos)
+  }
+}
+
+impl flatbuffers::SimpleToVerifyInSlice for UserFacingNotificationVariant {}
+pub enum UserFacingNotificationOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct UserFacingNotification<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for UserFacingNotification<'a> {
+  type Inner = UserFacingNotification<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> UserFacingNotification<'a> {
+  pub const VT_TITLE: flatbuffers::VOffsetT = 4;
+  pub const VT_BODY: flatbuffers::VOffsetT = 6;
+  pub const VT_VARIANT: flatbuffers::VOffsetT = 8;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    UserFacingNotification { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args UserFacingNotificationArgs<'args>
+  ) -> flatbuffers::WIPOffset<UserFacingNotification<'bldr>> {
+    let mut builder = UserFacingNotificationBuilder::new(_fbb);
+    if let Some(x) = args.body { builder.add_body(x); }
+    if let Some(x) = args.title { builder.add_title(x); }
+    builder.add_variant(args.variant);
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn title(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(UserFacingNotification::VT_TITLE, None).unwrap()}
+  }
+  #[inline]
+  pub fn body(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(UserFacingNotification::VT_BODY, None).unwrap()}
+  }
+  #[inline]
+  pub fn variant(&self) -> UserFacingNotificationVariant {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<UserFacingNotificationVariant>(UserFacingNotification::VT_VARIANT, Some(UserFacingNotificationVariant::Toast)).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for UserFacingNotification<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("title", Self::VT_TITLE, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("body", Self::VT_BODY, true)?
+     .visit_field::<UserFacingNotificationVariant>("variant", Self::VT_VARIANT, false)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct UserFacingNotificationArgs<'a> {
+    pub title: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub body: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub variant: UserFacingNotificationVariant,
+}
+impl<'a> Default for UserFacingNotificationArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    UserFacingNotificationArgs {
+      title: None, // required field
+      body: None, // required field
+      variant: UserFacingNotificationVariant::Toast,
+    }
+  }
+}
+
+pub struct UserFacingNotificationBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> UserFacingNotificationBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_title(&mut self, title: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(UserFacingNotification::VT_TITLE, title);
+  }
+  #[inline]
+  pub fn add_body(&mut self, body: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(UserFacingNotification::VT_BODY, body);
+  }
+  #[inline]
+  pub fn add_variant(&mut self, variant: UserFacingNotificationVariant) {
+    self.fbb_.push_slot::<UserFacingNotificationVariant>(UserFacingNotification::VT_VARIANT, variant, UserFacingNotificationVariant::Toast);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> UserFacingNotificationBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    UserFacingNotificationBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<UserFacingNotification<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, UserFacingNotification::VT_TITLE,"title");
+    self.fbb_.required(o, UserFacingNotification::VT_BODY,"body");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for UserFacingNotification<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("UserFacingNotification");
+      ds.field("title", &self.title());
+      ds.field("body", &self.body());
+      ds.field("variant", &self.variant());
+      ds.finish()
+  }
+}
+}  // pub mod Notifications
+
+#[allow(unused_imports, dead_code)]
 pub mod mdx_serialization {
 
   use core::mem;

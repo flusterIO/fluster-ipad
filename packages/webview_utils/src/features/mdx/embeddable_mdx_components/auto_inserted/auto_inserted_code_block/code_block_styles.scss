@@ -1,12 +1,18 @@
 figure[data-rehype-pretty-code-figure] {
-  background-color: hsl(var(--fd-card));
-  color: hsl(var(--fd-card-foreground));
-  @apply rounded;
+  background-color: var(--color-fd-card);
+  color: var(--color-fd-card-foreground);
+  @apply rounded border;
+
+  figcaption {
+    padding: 0 0.5rem;
+    color: var(--color-fd-card-foreground) / 0.8;
+  }
+
+  pre {
+    padding: 0.5rem;
+  }
 
   code {
-    text {
-      padding: 0 0.5rem;
-      color: hsl(var(--fd-card-foreground) / 0.8);
-    }
+    @apply rounded;
   }
 }

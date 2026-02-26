@@ -11,6 +11,11 @@ const x = (data: MyType): number => {
     return y / Math.random()
 }
 \`\`\`
+`, `
+# Block Quote
+
+> This is my block quote here.
+> That continues here.
 `
 ]
 

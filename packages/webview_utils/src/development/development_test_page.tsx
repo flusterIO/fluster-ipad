@@ -1,12 +1,11 @@
 import { useCodeEditorDispatch } from '#/editor/code_editor/state/code_editor_provider'
-import { MdxEditorPreviewOnly } from '#/mdx/components/mdx_content_preview_only'
+import { ResponsiveSplitViewEditor } from '#/split_view_editor/components/responsive_splitview_editor'
+import { SplitviewEditorWebviewLocalStorageKeys } from '@/code_gen/typeshare/fluster_core_utilities'
 import { getFakeNoteContent } from '@/utils/window_utils/development_window_utils/test_methods/set_test_content'
 import React, { useEffect, type ReactNode } from 'react'
 
 
-
-
-export const DevelopmentTestPage = (): ReactNode => {
+const HandleEditorState = (): ReactNode => {
     const testContent = getFakeNoteContent()
     const dispatch = useCodeEditorDispatch()
     useEffect(() => {
@@ -14,10 +13,19 @@ export const DevelopmentTestPage = (): ReactNode => {
             type: "setParsedEditorContentString",
             payload: testContent
         })
-    }, [testContent])
+        window.localStorage.setItem("dark-mode", "true")
+        window.localStorage.setItem(SplitviewEditorWebviewLocalStorageKeys.InitialValue, testContent)
+    }, [testContent, dispatch])
+    return null
+}
+
+
+
+export const DevelopmentTestPage = (): ReactNode => {
     return (
-        <MdxEditorPreviewOnly
-        />
+        <ResponsiveSplitViewEditor>
+            <HandleEditorState />
+        </ResponsiveSplitViewEditor>
     )
 }
 

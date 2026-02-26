@@ -35,7 +35,7 @@ const BibtexEditorInner = (): ReactNode => {
         const body = e.detail.body()
         setInitialValue(body ?? "");
         dispatch({
-            type: "setInitialEditorValue",
+            type: "setEditorValue",
             payload: body ?? "",
         });
     });
@@ -45,6 +45,7 @@ const BibtexEditorInner = (): ReactNode => {
             sendToSwift(BibtexEditorWebviewActions.RequestBibtexEditorData, "");
         }
     }, [data.haveSetInitialValue]);
+
     return data.haveSetInitialValue ? (
         <CodeEditorInner
             initialValue={initialValue}

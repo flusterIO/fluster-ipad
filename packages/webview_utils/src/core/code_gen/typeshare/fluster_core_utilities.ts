@@ -63,6 +63,7 @@ export enum MdxPreviewWebviewActions {
 	OnTopicClick = "handle-topic-click",
 	OnSubjectClick = "handle-subject-click",
 	OnCitationClick = "handle-citation-click",
+	ShowUserFacingNotification = "show-user-facing-notification",
 }
 
 /** From swift to typescript */
