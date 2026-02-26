@@ -1,6 +1,5 @@
 import React from "react";
 import {
-    DevelopmentWindowUtils,
     ResponsiveSplitViewEditor,
     WebViewContainer,
 } from "@fluster/webview_utils";
@@ -10,7 +9,6 @@ import "./index.css";
 function App() {
     return (
         <WebViewContainer contentContainerClasses="h-full">
-            <DevelopmentWindowUtils />
             <ResponsiveSplitViewEditor />
         </WebViewContainer>
     );

@@ -10,3 +10,16 @@ export const stringToSerializedString = (s: string): Uint8Array => {
     builder.finish(serializedOffset)
     return builder.asUint8Array()
 }
+
+
+
+export const localStorageSerializedStringDeserializer = (value: string) => {
+    const toArray = JSON.parse(value)
+    return SerializedString.getRootAsSerializedString(toArray).body() ?? ""
+}
+
+
+export const localStorageSerializedStringSerializer = (value: string) => {
+    const arr = stringToSerializedString(value)
+    return `[${arr.toString()}]`
+}

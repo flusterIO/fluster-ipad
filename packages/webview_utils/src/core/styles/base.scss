@@ -1,11 +1,20 @@
-@use "./themes.scss";
-@use "./mermaid.scss";
-@use "./shared_component_styles.scss";
-@import 'fumadocs-ui/css/shadcn.css';
-@import 'fumadocs-ui/css/preset.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "./themes.scss";
+@import "./mermaid.scss";
+@import "./shared_component_styles.scss";
+@source "../../**/*.{mdx,tsx,ts}";
+@source "../../../../../docs/**/*.{mdx,tsx,ts}";
+@source "../../../../webviews/bib_entry_details_webview/src/**/*.{ts,tsx,mdx}";
+@source "../../../../webviews/splitview_mdx_editor/src/**/*.{ts,tsx,mdx}";
+@source "../../../../webviews/standalone_mdx_editor/src/**/*.{ts,tsx,mdx}";
+@source "../../../../webviews/note_detail_webview/src/**/*.{ts,tsx,mdx}";
+@source "../../../../webviews/bibtex_editor_webview/src/**/*.{ts,tsx,mdx}";
+@source "../../../../webviews/dictionary_webview/src/**/*.{ts,tsx,mdx}";
+@source "../../../../webviews/standalone_mdx_preview/src/**/*.{ts,tsx,mdx}";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/container-queries";
+/* @import 'fumadocs-ui/css/neutral.css'; */
+/* @import 'fumadocs-ui/css/preset.css'; */
 
 
 root {
@@ -13,43 +22,89 @@ root {
 }
 
 
-body {
-  --emphasis-info: 221.0 100.0% 65.0%;
-  --emphasis-info-foreground: 0 0% 100%;
-  --emphasis-error: 0.0 100.0% 50.0%;
-  --emphasis-error-foreground: 0 0% 100%;
-  --emphasis-warn: 20.0 100.0% 55.0%;
-  --emphasis-warn-foreground: 222.2 84% 4.9%;
-  --emphasis-success: 142 100% 40%;
-  --emphasis-success-foreground: 0 0% 100%;
-  --emphasis-important: 270.0 100.0% 55.0%;
-  --emphasis-important-foreground: 0 0% 100%;
-  --emphasis-research: 185.0 100.0% 40.0%;
-  --emphasis-research-foreground: 0 0% 100%;
-  --emphasis-highlight: 60 100% 48%;
-  --emphasis-highlight-foreground: 222.2 84% 4.9%;
+@layer base {
+  body {
+    --emphasis-info: 221.0 100.0% 65.0%;
+    --emphasis-info-foreground: 0 0% 100%;
+    --emphasis-error: 0.0 100.0% 50.0%;
+    --emphasis-error-foreground: 0 0% 100%;
+    --emphasis-warn: 20.0 100.0% 55.0%;
+    --emphasis-warn-foreground: 222.2 84% 4.9%;
+    --emphasis-success: 142 100% 40%;
+    --emphasis-success-foreground: 0 0% 100%;
+    --emphasis-important: 270.0 100.0% 55.0%;
+    --emphasis-important-foreground: 0 0% 100%;
+    --emphasis-research: 185.0 100.0% 40.0%;
+    --emphasis-research-foreground: 0 0% 100%;
+    --emphasis-highlight: 60 100% 48%;
+    --emphasis-highlight-foreground: 222.2 84% 4.9%;
+  }
+
+  body.dark {
+    --emphasis-info: 221.0 100.0% 65.0%;
+    --emphasis-info-foreground: 0 0% 100%;
+    --emphasis-error: 0.0 100.0% 65.0%;
+    --emphasis-error-foreground: 0 0% 100%;
+    --emphasis-warn: 20.0 100.0% 55.0%;
+    --emphasis-warn-foreground: 222.2 84% 4.9%;
+    --emphasis-success: 142 100% 50%;
+    --emphasis-success-foreground: 222.2 84% 4.9%;
+    --emphasis-important: 270.0 100.0% 70.0%;
+    --emphasis-important-foreground: 0 0% 100%;
+    --emphasis-research: 185.0 100.0% 50.0%;
+    --emphasis-research-foreground: 222.2 84% 4.9%;
+    background-color: black;
+    --background: black;
+
+    &.fluster-mac {
+      background-color: hsl(var(--desktop-background-match));
+      --background: var(--desktop-background-match);
+    }
+  }
+
 }
 
-body.dark {
-  --emphasis-info: 221.0 100.0% 65.0%;
-  --emphasis-info-foreground: 0 0% 100%;
-  --emphasis-error: 0.0 100.0% 65.0%;
-  --emphasis-error-foreground: 0 0% 100%;
-  --emphasis-warn: 20.0 100.0% 55.0%;
-  --emphasis-warn-foreground: 222.2 84% 4.9%;
-  --emphasis-success: 142 100% 50%;
-  --emphasis-success-foreground: 222.2 84% 4.9%;
-  --emphasis-important: 270.0 100.0% 70.0%;
-  --emphasis-important-foreground: 0 0% 100%;
-  --emphasis-research: 185.0 100.0% 50.0%;
-  --emphasis-research-foreground: 222.2 84% 4.9%;
-  background-color: black;
-  --background: black;
 
-  &.fluster-mac {
-    background-color: hsl(var(--desktop-background-match));
-    --background: var(--desktop-background-match);
-  }
+@theme {
+  --radius: hsl(var(--radius));
+  --color-brand: hsl(var(--brand));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-primary: hsl(var(--primary));
+  --color-primary-rgb: hsl(var(--primary-rgb));
+  --color-primary-h: hsl(var(--primary-h));
+  --color-primary-s: hsl(var(--primary-s));
+  --color-primary-l: hsl(var(--primary-l));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-general-link-color: hsl(var(--general-link-color));
+  --color-hint: hsl(var(--fluster-hint));
+  --color-fluster-hint: hsl(var(--fluster-hint));
+  --color-emphasis-info: hsl(var(--emphasis-info));
+  --color-emphasis-info-foreground: hsl(var(--emphasis-info-foreground));
+  --color-emphasis-error: hsl(var(--emphasis-error));
+  --color-emphasis-error-foreground: hsl(var(--emphasis-error-foreground));
+  --color-emphasis-warn: hsl(var(--emphasis-warn));
+  --color-emphasis-warn-foreground: hsl(var(--emphasis-warn-foreground));
+  --color-emphasis-success: hsl(var(--emphasis-success));
+  --color-emphasis-success-foreground: hsl(var(--emphasis-success-foreground));
+  --color-emphasis-important: hsl(var(--emphasis-important));
+  --color-emphasis-important-foreground: hsl(var(--emphasis-important-foreground));
+  --color-emphasis-research: hsl(var(--emphasis-research));
+  --color-emphasis-research-foreground: hsl(var(--emphasis-research-foreground));
 }
 
 

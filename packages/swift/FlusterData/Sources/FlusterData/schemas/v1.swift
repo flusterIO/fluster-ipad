@@ -482,11 +482,28 @@ extension AppSchemaV1 {
     case inlineText, fullBibliography
   }
   @Model
+  public final class FormattedCitation {
+    public var formattedHtml: String
+    public var formattedPlainText: String
+    public var cslFormatId: String
+    public var bibEntry: BibEntryModel?
+
+    public init(
+      formattedHtml: String, formattedPlainText: String, cslFormatId: String,
+      bibEntry: BibEntryModel?
+    ) {
+      self.formattedHtml = formattedHtml
+      self.formattedPlainText = formattedPlainText
+      self.cslFormatId = cslFormatId
+      self.bibEntry = bibEntry
+    }
+  }
+  @Model
   public final class BibEntryModel: Identifiable {
     @Attribute(.unique) public var id: String
     @Attribute(.unique) public var citationKey: String?
     // swiftlint:disable:next identifier_name
-    public var _data: String
+    private(set) var _data: String
     public var ctime: Date
     public var utime: Date
     /// The time a note with this bibliography entry was last accessed.
@@ -494,6 +511,7 @@ extension AppSchemaV1 {
     public var notes = [NoteModel]()
     // title is required to be saved for alphabetizing.
     public var title = ""
+    private var formatted: FormattedCitation?
     public init(
       id: String? = nil,
       data: String,
@@ -533,6 +551,26 @@ extension AppSchemaV1 {
       }
     }
 
+    public func toFormattedCitation(cslFormat: EmbeddedCslFileSwift) -> FormattedCitation? {
+      if let entry = self.toBiblatexData() {
+        let cslContent = cslFormat.toFlusterBibliographyCslFile()
+        let localContent = getCslLocaleFileContent()
+        let htmlFormatted = entry.formatBibliographyCitation(
+          cslContent: cslContent, cslLocale: localContent, renderMethod: .html)
+        let plainTextFormatted = entry.formatBibliographyCitation(
+          cslContent: cslContent, cslLocale: localContent, renderMethod: .html)
+        if let formattedHtml = htmlFormatted, let formattedPlainText = plainTextFormatted {
+          let formattedCitation = FormattedCitation(
+            formattedHtml: formattedHtml, formattedPlainText: formattedPlainText,
+            cslFormatId: cslFormat.rawValue, bibEntry: self
+          )
+          self.formatted = formattedCitation
+          return formattedCitation
+        }
+      }
+      return nil
+    }
+
     public func parse() -> String? {
       //      let result = try? SwiftyBibtex.parse(self.data)
       //      if result != nil {
@@ -559,6 +597,19 @@ extension AppSchemaV1 {
         citationKey: self.id,
         body: self.data
       )
+    }
+
+    /// Gets the 'formattedCitation', parsing the new one only if the format has changed. This allows parsing the data on the 'data' change, and then being sure it's accurate for that data BibEntryModel the whole time the format.cslFormatId field matches the current csl format. This should speed up performance quite a bit on the bibliography pages.
+    public func safelyGetFormatted(activeCslFormat: EmbeddedCslFileSwift) -> FormattedCitation? {
+      if let currentFormattedCitiation = self.formatted,
+        currentFormattedCitiation.cslFormatId == activeCslFormat.rawValue
+      {
+        return currentFormattedCitiation
+      } else {
+        let newlyFormattedCitation = self.toFormattedCitation(cslFormat: activeCslFormat, )
+        self.formatted = newlyFormattedCitation
+        return newlyFormattedCitation
+      }
     }
 
     public func toFormattedCitation(
