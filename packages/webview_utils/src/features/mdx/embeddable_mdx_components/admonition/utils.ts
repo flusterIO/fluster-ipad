@@ -3,20 +3,20 @@ import { Emphasis } from "../schemas/emphasis_schema";
 export const getTitleVariantClasses = (variant: Emphasis): string => {
     switch (variant) {
         case "success":
-            return "bg-emphasisSuccess text-emphasisSuccessForeground [&_p]:text-emphasisSuccessForeground";
+            return "bg-emphasis-success text-emphasis-success-foreground [&_p]:text-emphasis-success-foreground";
         case "info":
-            return "bg-emphasisInfo text-emphasisInfoForeground [&_p]:text-emphasisInfoForeground";
+            return "bg-emphasis-info text-emphasis-info-foreground [&_p]:text-emphasis-info-foreground";
         case "error":
-            return "bg-emphasisError text-emphasisErrorForeground [&_p]:text-emphasisErrorForeground";
+            return "bg-emphasis-error text-emphasis-error-foreground [&_p]:text-emphasis-error-foreground";
         case "warn":
-            return "bg-emphasisWarn text-emphasisWarnForeground [&_p]:text-emphasisWarnForeground";
+            return "bg-emphasis-warn text-emphasis-warn-foreground [&_p]:text-emphasis-warn-foreground";
         case "primary":
             return "bg-primary text-primary-foreground [&_p]:text-primary-foreground";
         case "research":
-            return "bg-emphasisResearch text-emphasisResearchForeground [&_p]:text-emphasisResearchForeground"
+            return "bg-emphasis-research text-emphasis-research-foreground [&_p]:text-emphasis-research-foreground"
         case "important":
-            return "bg-emphasisImportant text-emphasisImportantForeground [&_p]:text-emphasisImportantForeground"
+            return "bg-emphasis-important text-emphasis-important-foreground [&_p]:text-emphasis-important-foreground"
         case "highlight":
-            return "bg-emphasisHighlight text-emphasisHighlightForeground [&_p]:text-emphasisHighlightForeground"
+            return "bg-emphasis-highlight text-emphasis-highlight-foreground [&_p]:text-emphasis-highlight-foreground"
     }
 };

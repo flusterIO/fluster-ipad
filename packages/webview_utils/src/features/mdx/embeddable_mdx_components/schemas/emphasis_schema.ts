@@ -65,21 +65,21 @@ export const emphasisBackgroundTransform = (defaultKey: Emphasis): EmphasisTrans
         }
         switch (firstKey) {
             case "info":
-                return "bg-emphasisInfo text-emphasisInfoForeground"
+                return "bg-emphasis-info text-emphasis-info-foreground"
             case "error":
-                return "bg-emphasisError text-emphasisErrorForeground"
+                return "bg-emphasis-error text-emphasis-error-foreground"
             case "warn":
-                return "bg-emphasisWarn text-emphasisWarnForeground"
+                return "bg-emphasis-warn text-emphasis-warn-foreground"
             case "success":
-                return "bg-emphasisSuccess text-emphasisSuccessForeground"
+                return "bg-emphasis-success text-emphasis-success-foreground"
             case "important":
-                return "bg-emphasisImportant text-emphasisImportantForeground"
+                return "bg-emphasis-important text-emphasis-important-foreground"
             case "research":
-                return "bg-emphasisResearch text-emphasisResearchForeground"
+                return "bg-emphasis-research text-emphasis-research-foreground"
             case "primary":
                 return "bg-primary text-primary-foreground"
             case "highlight":
-                return "bg-emphasisHighlight text-emphasisiHighlightForeground"
+                return "bg-emphasis-highlight text-emphasisiHighlightForeground"
 
         }
     }

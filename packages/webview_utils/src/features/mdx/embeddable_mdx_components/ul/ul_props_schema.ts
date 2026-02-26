@@ -12,20 +12,20 @@ export const ulPropsSchema = emphasisSchema.extend({
     const thicknessClass = c.thick ? "decoration-2" : c.thicker ? "decoration-4" : "decoration-1"
     switch (firstKey) {
         case "info":
-            return ["decoration-emphasisInfo", thicknessClass]
+            return ["decoration-emphasis-info", thicknessClass]
         case "error":
-            return ["decoration-emphasisError", thicknessClass]
+            return ["decoration-emphasis-error", thicknessClass]
         case "warn":
-            return ["decoration-emphasisWarn", thicknessClass]
+            return ["decoration-emphasis-warn", thicknessClass]
         case "success":
-            return ["decoration-emphasisSuccess", thicknessClass]
+            return ["decoration-emphasis-success", thicknessClass]
         case "important":
-            return ["decoration-emphasisImportant", thicknessClass]
+            return ["decoration-emphasis-important", thicknessClass]
         case "research":
-            return ["decoration-emphasisResearch", thicknessClass]
+            return ["decoration-emphasis-research", thicknessClass]
         case "primary":
             return ["decoration-primary", thicknessClass]
         case "highlight":
-            return ["decoration-emphasisHighlight", thicknessClass]
+            return ["decoration-emphasis-highlight", thicknessClass]
     }
 })
