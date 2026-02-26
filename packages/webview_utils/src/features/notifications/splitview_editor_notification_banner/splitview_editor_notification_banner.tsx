@@ -12,23 +12,26 @@ const BannerNotificationItem = ({ item }: { item: EditorNotificationBanner }): R
     const timer = useRef<NodeJS.Timeout | null>(null);
     const dispatch = useSplitviewEditorNotificationDispatch()
 
-    useEffect(() => {
-        if (item.timeout) {
-            if (timer.current) {
-                clearTimeout(timer.current)
-            }
-            timer.current = setTimeout(() => {
-                dispatch({
-                    type: "removeEditorNotifcationBannerById",
-                    payload: item.id
-                })
-            }, item.timeout)
-        }
-    }, [])
+    const removeSelf = (): void => {
+        dispatch({
+            type: "removeEditorNotifcationBannerById",
+            payload: item.id
+        })
+    }
+
+
+    /* useEffect(() => { */
+    /*     if (item.timeout) { */
+    /*         if (timer.current) { */
+    /*             clearTimeout(timer.current) */
+    /*         } */
+    /*         timer.current = setTimeout(removeSelf, item.timeout) */
+    /*     } */
+    /* }, []) */
     return (
         <motion.div
             layout
-            className="w-fit max-w-[min(540px,90vw)] px-4 py-2 bg-fd-card rounded border relative"
+            className="min-w-fit w-full max-w-[min(540px,90vw)] px-4 py-2 bg-fd-card rounded border relative"
             initial={{
                 x: "-100%",
                 opacity: 0,
@@ -41,6 +44,17 @@ const BannerNotificationItem = ({ item }: { item: EditorNotificationBanner }): R
                 x: -500,
                 opacity: 0
             }}
+            draggable
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.1}
+            onDragEnd={(_, info) => {
+                if (info.offset.x > 100) {
+                    removeSelf()
+                } else if (info.offset.x < -100) {
+                    removeSelf()
+                }
+            }}
         >
             <div className="font-bold text-sm text-fd-card-foreground pr-4">{item.title}</div>
             {item.body ? (
@@ -48,10 +62,7 @@ const BannerNotificationItem = ({ item }: { item: EditorNotificationBanner }): R
             ) : null}
             <XIcon
                 className="absolute top-2 right-2 w-3 h-3 text-fd-card-foreground/80 cursor-pointer"
-                onClick={() => dispatch({
-                    type: "removeEditorNotifcationBannerById",
-                    payload: item.id
-                })}
+                onClick={removeSelf}
             />
         </motion.div>
     )
@@ -62,7 +73,7 @@ export const SplitviewEditorNotificationBanner = (): ReactNode => {
     const { banners } = useSplitviewEditorNotificationContext()
     return createPortal(
         <div
-            className={cn("w-fit h-fit z-999 fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center gap-y-2 max-h-screen overflow-y-auto", banners.length && "p-4")}
+            className={cn("w-fit h-fit z-999 fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center gap-y-2 max-h-screen", banners.length && "p-4 overflow-x-visible overflow-y-auto")}
         >
             <AnimatePresence>
                 {banners.map((b) => {
