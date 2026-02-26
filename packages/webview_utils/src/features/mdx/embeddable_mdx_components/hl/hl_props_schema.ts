@@ -2,4 +2,4 @@ import { emphasisBackgroundTransform, emphasisSchema } from "../schemas/emphasis
 
 
 
-export const hlPropsSchema = emphasisSchema.transform(emphasisBackgroundTransform("primary"))
+export const hlPropsSchema = emphasisSchema.transform(emphasisBackgroundTransform("highlight"))

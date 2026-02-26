@@ -246,7 +246,7 @@ export const CodeEditor = (
         /* eslint-disable-next-line  -- I hate this rule */
     }, [initialValue, initialRender]);
     useEventListener(props.swiftContentEvent ?? SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
-        setInitialValue(e.detail.body() ?? "");
+        setInitialValue(e.detail);
     });
     return initialValue ? (
         <CodeEditorInner {...props} initialValue={initialValue} />

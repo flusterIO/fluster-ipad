@@ -3,9 +3,9 @@ import { BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys } from "
 import { ByteBuffer } from "flatbuffers";
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+
     interface WindowEventMap {
-        [BibtexEditorWebviewEvents.SetBibtexEditorContent]: CustomEvent<SerializedString>;
+        [BibtexEditorWebviewEvents.SetBibtexEditorContent]: CustomEvent<string>;
     }
     interface Window {
         setBibtexEditorContent: typeof setBibtexEditorContent;
@@ -21,7 +21,7 @@ export function setBibtexEditorContent(payload: Uint8Array) {
     const data = Uint8Array.from(payload)
     const buf = new ByteBuffer(data)
     window.dispatchEvent(
-        new CustomEvent(BibtexEditorWebviewEvents.SetBibtexEditorContent, { detail: SerializedString.getRootAsSerializedString(buf) }),
+        new CustomEvent(BibtexEditorWebviewEvents.SetBibtexEditorContent, { detail: SerializedString.getRootAsSerializedString(buf).body() ?? "" }),
     );
 }
 

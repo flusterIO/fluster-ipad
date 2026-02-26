@@ -15,7 +15,8 @@ struct DictionaryPageView: View {
   @State private var webview: WKWebView = WKWebView(
     frame: .infinite, configuration: getWebViewConfig()
   )
-  @Query(sort: \DictionaryEntryModel.label, order: .forward) private var entries: [DictionaryEntryModel]
+  @Query(sort: \DictionaryEntryModel.label, order: .forward) private var entries:
+    [DictionaryEntryModel]
   var body: some View {
     WebViewContainerView(
       webview: $webview,
@@ -43,7 +44,7 @@ struct DictionaryPageView: View {
       let labelOffset = builder.create(string: dict.label)
       let bodyOffset = builder.create(string: dict.body)
       let entry_offset = Dictionary_DictionaryEntryResultBuffer.createDictionaryEntryResultBuffer(
-        &builder, labelOffset: labelOffset, bodyOffset: bodyOffset)
+        &builder, labelOffset: labelOffset, bodyOffset: bodyOffset, noteIdOffset: idOffset)
       return entry_offset
     })
     let vector_offset = builder.createVector(ofOffsets: entries_offset)
@@ -55,7 +56,6 @@ struct DictionaryPageView: View {
       do {
         try await webview.evaluateJavaScript(
           """
-          window.localStorage.setItem("\(DictionaryWebviewStorageKeys.dictionaryData.rawValue)", `\(bytes)`);
           window.dispatchEvent(new CustomEvent("\(DictionaryWebviewEvents.setDictionaryData.rawValue)", {
               detail: \(bytes)
           }))
@@ -77,7 +77,7 @@ struct DictionaryPageView: View {
       }
     }
   }
-    
+
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {
     switch handlerKey {
       case MdxPreviewWebviewActions.requestNoteData.rawValue:
@@ -93,5 +93,4 @@ struct DictionaryPageView: View {
         return
     }
   }
-    
 }

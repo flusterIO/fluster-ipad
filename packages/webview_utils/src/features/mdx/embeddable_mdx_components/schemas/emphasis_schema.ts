@@ -79,7 +79,7 @@ export const emphasisBackgroundTransform = (defaultKey: Emphasis): EmphasisTrans
             case "primary":
                 return "bg-primary text-primary-foreground"
             case "highlight":
-                return "bg-emphasis-highlight text-emphasisiHighlightForeground"
+                return "bg-emphasis-highlight text-emphasis-highlight-foreground"
 
         }
     }
