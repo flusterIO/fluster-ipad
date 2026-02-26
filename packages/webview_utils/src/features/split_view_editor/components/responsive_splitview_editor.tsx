@@ -4,6 +4,7 @@ import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { EditorScrollPersistor } from "#/mdx/hooks/use_persist_mdx_editor_scroll";
+import { SplitviewEditorNotificationHandler } from "#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner_provider";
 
 
 const EditorBody = (): ReactNode => {
@@ -17,16 +18,21 @@ const EditorBody = (): ReactNode => {
 }
 
 
-export const ResponsiveSplitViewEditor = (): ReactNode => {
+
+/**
+ * ResponsiveSplitViewEditor accepts children only for development so that the editor state can be modified.
+ */
+export const ResponsiveSplitViewEditor = ({ children }: { children: ReactNode }): ReactNode => {
     return (
         <>
             <CodeEditorProvider implementation="mdx-editor">
+                <SplitviewEditorNotificationHandler />
                 <EditorBody />
                 <div className="w-full h-full flex flex-col justify-center items-center p-8 loading-main-only hide-desktop">
                     <LoadingComponent />
                 </div>
                 <EditorScrollPersistor />
-                {/* <MdxParsingErrorIndicator /> */}
+                {children}
             </CodeEditorProvider>
         </>
     );

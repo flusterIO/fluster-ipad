@@ -15,7 +15,8 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
 @import 'fumadocs-ui/css/neutral.css';
-@import 'fumadocs-ui/css/preset.css';
+@import 'fumadocs-ui/css/solar.css';
+/* @import 'fumadocs-ui/css/preset.css'; */
 
 
 root {
@@ -145,6 +146,15 @@ root {
   }
 }
 
+body {
+  scrollbar-width: none;
+
+  & * {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
 
 body.fluster-mac {
 

@@ -59,7 +59,7 @@ const defaultInitialCodeEditorState: CodeEditorState = {
         // Default snippet state.
         includeEmojiSnippets: true
     },
-    lockEditorScrollToPreview: false
+    lockEditorScrollToPreview: false,
 };
 
 export const CodeEditorContext = createContext<CodeEditorState>(
@@ -87,7 +87,7 @@ type CodeEditorContextActions =
         type: "setParsedEditorContentString",
         payload: string
     } | {
-        type: "setInitialEditorValue";
+        type: "setEditorValue";
         payload: string;
     }
     | {
@@ -144,10 +144,7 @@ export const CodeEditorContextReducer = (
                 baseKeymap: action.payload,
             };
         }
-        case "setInitialEditorValue": {
-            if (state.haveSetInitialValue) {
-                return state;
-            }
+        case "setEditorValue": {
             return {
                 ...state,
                 haveSetInitialValue: true,
@@ -209,9 +206,6 @@ export const CodeEditorContextReducer = (
                 ...state,
                 lockEditorScrollToPreview: action.payload
             }
-        }
-        default: {
-            return state;
         }
     }
 };
@@ -317,7 +311,7 @@ export const CodeEditorProvider = ({
     useEffect(() => {
         if (!state.haveSetInitialValue && typeof initialValue === "string") {
             dispatch({
-                type: "setInitialEditorValue",
+                type: "setEditorValue",
                 payload: initialValue,
             });
         }

@@ -8,6 +8,18 @@ import Common
 
 import FlatBuffers
 
+public enum Notifications_UserFacingNotificationVariant: Int8, Enum, Verifiable {
+  public typealias T = Int8
+  public static var byteSize: Int { return MemoryLayout<Int8>.size }
+  public var value: Int8 { return self.rawValue }
+  case toast = 1
+  case dismissablemodal = 2
+
+  public static var max: Notifications_UserFacingNotificationVariant { return .dismissablemodal }
+  public static var min: Notifications_UserFacingNotificationVariant { return .toast }
+}
+
+
 public struct SharedWebviewData_WebviewJavascriptError: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
@@ -191,6 +203,55 @@ public struct Dictionary_DictionaryData: FlatBufferObject, Verifiable {
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
     var _v = try verifier.visitTable(at: position)
     try _v.visit(field: VTOFFSET.entries.p, fieldName: "entries", required: true, type: ForwardOffset<Vector<ForwardOffset<Dictionary_DictionaryEntryResultBuffer>, Dictionary_DictionaryEntryResultBuffer>>.self)
+    _v.finish()
+  }
+}
+
+public struct Notifications_UserFacingNotification: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case title = 4
+    case body = 6
+    case variant = 8
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var title: String! { let o = _accessor.offset(VTOFFSET.title.v); return _accessor.string(at: o) }
+  public var titleSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.title.v) }
+  public var body: String! { let o = _accessor.offset(VTOFFSET.body.v); return _accessor.string(at: o) }
+  public var bodySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.body.v) }
+  public var variant: Notifications_UserFacingNotificationVariant { let o = _accessor.offset(VTOFFSET.variant.v); return o == 0 ? .toast : Notifications_UserFacingNotificationVariant(rawValue: _accessor.readBuffer(of: Int8.self, at: o)) ?? .toast }
+  public static func startUserFacingNotification(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 3) }
+  public static func add(title: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: title, at: VTOFFSET.title.p) }
+  public static func add(body: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: body, at: VTOFFSET.body.p) }
+  public static func add(variant: Notifications_UserFacingNotificationVariant, _ fbb: inout FlatBufferBuilder) { fbb.add(element: variant.rawValue, def: 1, at: VTOFFSET.variant.p) }
+  public static func endUserFacingNotification(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
+  public static func createUserFacingNotification(
+    _ fbb: inout FlatBufferBuilder,
+    titleOffset title: Offset,
+    bodyOffset body: Offset,
+    variant: Notifications_UserFacingNotificationVariant = .toast
+  ) -> Offset {
+    let __start = Notifications_UserFacingNotification.startUserFacingNotification(&fbb)
+    Notifications_UserFacingNotification.add(title: title, &fbb)
+    Notifications_UserFacingNotification.add(body: body, &fbb)
+    Notifications_UserFacingNotification.add(variant: variant, &fbb)
+    return Notifications_UserFacingNotification.endUserFacingNotification(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.title.p, fieldName: "title", required: true, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.body.p, fieldName: "body", required: true, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.variant.p, fieldName: "variant", required: false, type: Notifications_UserFacingNotificationVariant.self)
     _v.finish()
   }
 }

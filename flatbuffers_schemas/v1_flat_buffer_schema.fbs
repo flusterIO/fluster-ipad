@@ -25,6 +25,16 @@ table DictionaryData {
     entries:[DictionaryEntryResultBuffer] (required);
 }
 
+namespace Notifications;
+
+enum UserFacingNotificationVariant : byte { Toast = 1, DismissableModal }
+
+table UserFacingNotification {
+    title:string (required);
+    body:string (required);
+    variant:UserFacingNotificationVariant = Toast;
+}
+
 namespace MdxSerialization;
 
 table CitationResultBuffer {
