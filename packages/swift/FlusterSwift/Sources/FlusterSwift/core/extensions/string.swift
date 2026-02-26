@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct Message: Codable {
+  let content: String
+}
+
 extension String {
   func trunc(length: Int, trailing: String = "...") -> String {
     let maxLength = length - trailing.count
@@ -15,4 +19,5 @@ extension String {
     }
     return String(self.prefix(maxLength)) + trailing
   }
+
 }
