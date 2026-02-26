@@ -36,14 +36,14 @@ export const componentOverrides: MDXComponents = {
     a: AnchorTag,
     /* hr: Hr, */
     input: MdxInput,
-    pre: ({
-        /* eslint-disable-next-line  -- Need to destructure */
-        ref,
-        ...props }) => (
-        <CodeBlock {...props}>
-            <Pre>{props.children}</Pre>
-        </CodeBlock>
-    ),
+    /* pre: ({ */
+    /*     /* eslint-disable-next-line  -- Need to destructure */
+    /*     ref, */
+    /*     ...props }) => ( */
+    /*     <CodeBlock {...props}> */
+    /*         <Pre>{props.children}</Pre> */
+    /*     </CodeBlock> */
+    /* ), */
 };
 
 const items: ComponentMapItem[] = [

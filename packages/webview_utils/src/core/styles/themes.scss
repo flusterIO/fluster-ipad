@@ -763,7 +763,6 @@ body[data-fluster-theme="blue"] {
 }
 
 body {
-  background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family:
     system-ui,
@@ -781,8 +780,4 @@ body {
   * {
     border-color: hsl(var(--border));
   }
-}
-
-main {
-  background-color: hsl(var(--background)) !important;
 }
