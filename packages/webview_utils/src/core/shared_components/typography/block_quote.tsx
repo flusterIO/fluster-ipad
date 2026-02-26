@@ -4,10 +4,9 @@ type BlockQuoteProps = HTMLProps<HTMLElement>;
 export const BlockQuote = (props: BlockQuoteProps): ReactNode => {
     return (
         <div
-            className="border-primary pl-2"
+            className="border-primary! pl-2"
             style={{
                 borderLeftWidth: "4px",
-                borderLeftColor: "hsl(var(--primary))",
             }}
         >
             {props.children}
