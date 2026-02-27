@@ -19,14 +19,14 @@ const BannerNotificationItem = ({ item }: { item: EditorNotificationBanner }): R
         })
     }
 
-    /* useEffect(() => { */
-    /*     if (item.timeout) { */
-    /*         if (timer.current) { */
-    /*             clearTimeout(timer.current) */
-    /*         } */
-    /*         timer.current = setTimeout(removeSelf, item.timeout) */
-    /*     } */
-    /* }, []) */
+    useEffect(() => {
+        if (item.timeout) {
+            if (timer.current) {
+                clearTimeout(timer.current)
+            }
+            timer.current = setTimeout(removeSelf, item.timeout)
+        }
+    }, [])
     return (
         <motion.div
             layout
@@ -41,6 +41,7 @@ const BannerNotificationItem = ({ item }: { item: EditorNotificationBanner }): R
             }}
             exit={{
                 x: -500,
+                scale: 0,
                 opacity: 0
             }}
             draggable

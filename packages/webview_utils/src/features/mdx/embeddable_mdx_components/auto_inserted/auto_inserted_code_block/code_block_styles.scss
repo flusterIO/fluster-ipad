@@ -1,5 +1,14 @@
+.auto-codeblock-icon {
+  display: none;
+}
+
 figure[data-rehype-pretty-code-figure] {
+  .auto-codeblock-icon.hovered {
+    display: flex;
+  }
+
   background-color: var(--color-fd-card);
+  position: relative;
   color: var(--color-fd-card-foreground);
   @apply rounded border;
 
