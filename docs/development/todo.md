@@ -13,7 +13,6 @@
 
 **_RESUME_**
 
-- [ ] Pick back up by handling cancelation of parsing task using `.task(id: ...)` method.
 - [ ] Work on AI summarization.
 - [ ] Review [this](https://www.ditto.com/blog/running-a-react-web-app-in-an-ios-app) and see how difficult it would be to get rid of this single page build issue. That would expand the capabilities almost infinitely...
 - [ ] Handle rest of zod based props
