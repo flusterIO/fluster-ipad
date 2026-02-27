@@ -4,11 +4,12 @@ import { MdxContent } from "./mdx_content";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { MdxPreviewWebviewActions, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { setBodyLoading } from "./editor_dom_utils";
 import { setMdxPreviewWindowMethods } from "./standalone_mdx_preview/standalone_mdx_preview_swift_events";
 import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/swift_events";
 import { useEventListener } from "@/state/hooks/use_event_listener";
+import { sendToSwift } from "@/utils/bridge/send_to_swift";
 
 
 setMdxPreviewWindowMethods();
@@ -41,15 +42,25 @@ export const MdxEditorPreview = ({
     })
 
     useEffect(() => {
-        if (parsedValue !== null) {
+        if (typeof parsedValue === "string") {
             setBodyLoading(false)
+        } else {
+            sendToSwift(MdxPreviewWebviewActions.RequestNoteData)
         }
     }, [parsedValue, value])
 
 
-    if (value === "" && parsedValue === "") {
+    if (typeof parsedValue !== "string") {
         return (
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className="w-full h-full flex flex-col justify-center items-center mdx-preview-loading-container">
+                <LoadingComponent />
+            </div>
+        );
+    }
+
+    if (parsedValue === "") {
+        return (
+            <div className="w-full h-full flex flex-col justify-center items-center note-content-empty-container">
                 <div
                     className="text-xl font-semibold"
                     style={{
@@ -58,14 +69,6 @@ export const MdxEditorPreview = ({
                 >
                     Content Empty
                 </div>
-            </div>
-        );
-    }
-
-    if (!parsedValue || parsedValue === "") {
-        return (
-            <div className="w-full h-full flex flex-col justify-center items-center">
-                <LoadingComponent />
             </div>
         );
     }

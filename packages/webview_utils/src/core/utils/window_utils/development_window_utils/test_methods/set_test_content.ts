@@ -46,6 +46,6 @@ export const getFakeNoteContent = (paragraphs: number = 10): string => {
 export const loadFakeNote = () => {
     const body = getFakeNoteContent()
     const bytes = stringToSerializedString(body)
-    window.setEditorContent(bytes)
+    window.setEditorContent(body)
     window.setParsedEditorContentString(bytes)
 }

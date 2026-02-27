@@ -94,6 +94,11 @@ public enum SharedWebviewActions: String, Codable {
 	case javascriptError = "javascript-error"
 }
 
+/// Events
+public enum SharedWebviewEvents: String, Codable {
+	case localStorageWrite = "broadcast-local-storage"
+}
+
 /// From typescript to swift.
 public enum SplitviewEditorWebviewActions: String, Codable {
 	case requestSplitviewEditorData = "request-editor-data"

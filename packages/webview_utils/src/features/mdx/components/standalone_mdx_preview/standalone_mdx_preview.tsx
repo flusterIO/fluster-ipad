@@ -2,7 +2,6 @@ import React, { ComponentProps, type ReactNode } from "react";
 import { MdxEditorPreviewOnly } from "../mdx_content_preview_only";
 import { CodeEditorProvider } from "#/editor/code_editor/state/code_editor_provider";
 
-
 declare global {
     interface WindowEventMap {
         "set-mdx-preview-content": CustomEvent<string>;
@@ -10,11 +9,11 @@ declare global {
 }
 
 export const MdxStandalonePreview = (
-    props: ComponentProps<typeof MdxEditorPreviewOnly>,
+    props: Omit<ComponentProps<typeof MdxEditorPreviewOnly>, "implementation">,
 ): ReactNode => {
     return (
         <CodeEditorProvider implementation="mdx-viewer">
-            <MdxEditorPreviewOnly {...props} />
+            <MdxEditorPreviewOnly {...props} implementation="mdx-viewer" />
         </CodeEditorProvider>
     )
 };

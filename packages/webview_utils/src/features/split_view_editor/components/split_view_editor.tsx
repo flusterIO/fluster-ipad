@@ -11,7 +11,7 @@ export const SplitViewEditorInner = (): ReactNode => {
         <PanelGroup
             autoSaveId={autoSaveId}
             direction="horizontal"
-            className="w-screen h-screen loading-main-hide"
+            className="w-screen! h-screen! loading-main-hide"
         >
             <Panel id="editor-panel" order={1} defaultSize={50} minSize={10}>
                 <CodeEditor />
@@ -26,7 +26,7 @@ export const SplitViewEditorInner = (): ReactNode => {
             >
                 <MdxEditorPreview
                     id={SplitviewEditorWebviewIds.LandscapePreview}
-                    className="overflow-y-auto overflow-x-hidden h-full loading-hide"
+                    className="overflow-y-auto overflow-x-hidden h-full min-h-screen loading-hide"
                 />
                 <div className="w-full h-full flex flex-col justify-center items-center loading-only-flex">
                     <LoadingComponent />

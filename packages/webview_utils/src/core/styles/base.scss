@@ -3,6 +3,7 @@
 @import "./mermaid.scss";
 @import "./shared_component_styles.scss";
 @import "./themes.scss";
+@import "./editor.scss";
 @source "../../**/*.{mdx,tsx,ts}";
 @source "../../../../../docs/**/*.{mdx,tsx,ts}";
 @source "../../../../webviews/bib_entry_details_webview/src/**/*.{ts,tsx,mdx}";

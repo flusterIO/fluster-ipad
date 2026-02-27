@@ -9,3 +9,12 @@ pub enum SharedWebviewActions {
     #[strum(to_string = "javascript-error")]
     JavascriptError,
 }
+
+/// Events
+#[typeshare]
+#[derive(strum_macros::Display, Serialize, Deserialize)]
+pub enum SharedWebviewEvents {
+    #[serde(rename = "broadcast-local-storage")]
+    #[strum(to_string = "broadcast-local-storage")]
+    LocalStorageWrite,
+}

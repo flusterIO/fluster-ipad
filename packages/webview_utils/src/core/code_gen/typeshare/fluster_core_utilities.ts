@@ -93,6 +93,11 @@ export enum SharedWebviewActions {
 	JavascriptError = "javascript-error",
 }
 
+/** Events */
+export enum SharedWebviewEvents {
+	LocalStorageWrite = "broadcast-local-storage",
+}
+
 /** From typescript to swift. */
 export enum SplitviewEditorWebviewActions {
 	RequestSplitviewEditorData = "request-editor-data",

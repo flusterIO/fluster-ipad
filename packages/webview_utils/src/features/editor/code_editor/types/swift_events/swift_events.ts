@@ -1,9 +1,7 @@
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
-import { MdxParsingResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
-import { MdxParsingResult } from "@/code_gen/flat_buffer/mdx-serialization/mdx-parsing-result";
 import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
 import { GetSnippetPropsBuffer } from "@/code_gen/flat_buffer/snippets";
-import { SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
+import { SharedWebviewActions, SharedWebviewEvents, SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
 import { ByteBuffer } from "flatbuffers";
 
 export interface SwiftEventMap {
@@ -22,6 +20,7 @@ declare global {
         [SplitviewEditorWebviewEvents.ResetPreviewScrollPosition]: CustomEvent<null>;
         [SplitviewEditorWebviewEvents.EmitMdxParsingError]: CustomEvent<null>
         [SplitviewEditorWebviewEvents.EmitMdxParsingSuccess]: CustomEvent<null>
+        [SharedWebviewEvents.LocalStorageWrite]: CustomEvent<null>
     }
     interface Window {
         setEditorContent: typeof setEditorContent;
@@ -37,14 +36,12 @@ declare global {
     }
 }
 
-export function setEditorContent(payload: Uint8Array) {
-    const data = Uint8Array.from(payload)
-    const buf = new ByteBuffer(data)
+
+export function setEditorContent(payload: string) {
     window.dispatchEvent(
-        new CustomEvent(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, { detail: SerializedString.getRootAsSerializedString(buf).body() ?? "" }),
+        new CustomEvent(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, { detail: payload }),
     );
 }
-
 
 export function setParsedEditorSnippetProps(payload: Uint8Array) {
     const data = Uint8Array.from(payload)
