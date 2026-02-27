@@ -25,7 +25,7 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
             </pre>
             <div
                 role="button"
-                className={cn("auto-codeblock-icon absolute top-4 right-4 transition-opacity duration-300", hovered && "opacity-1000 hovered iflex-col justify-center items-center")}
+                className={cn("auto-codeblock-icon absolute top-2 right-2 transition-opacity duration-300", hovered && "opacity-1000 hovered iflex-col justify-center items-center")}
                 onClick={async (e) => {
                     e.stopPropagation()
                     e.preventDefault()

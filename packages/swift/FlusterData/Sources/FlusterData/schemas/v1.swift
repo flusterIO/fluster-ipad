@@ -503,7 +503,7 @@ extension AppSchemaV1 {
     @Attribute(.unique) public var id: String
     @Attribute(.unique) public var citationKey: String?
     // swiftlint:disable:next identifier_name
-    private(set) var _data: String
+    public private(set) var _data: String
     public var ctime: Date
     public var utime: Date
     /// The time a note with this bibliography entry was last accessed.

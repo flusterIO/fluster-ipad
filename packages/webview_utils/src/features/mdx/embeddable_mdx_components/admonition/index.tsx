@@ -54,7 +54,7 @@ export const Admonition = ({
                 </AdmonitionTitle>
             )}
             <motion.div
-                className={"rounded-bl rounded-br border-l border-b border-r bg-card text-card-foreground relative"}
+                className={"rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground relative"}
                 variants={{
                     folded: {
                         height: 0,

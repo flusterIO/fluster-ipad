@@ -5,15 +5,15 @@
 //  Created by Andrew on 11/5/25.
 //
 
+import FlusterData
 import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterData
 
 struct BibliographySearchResultsViewQueryWrapped: View {
   @StateObject private var bibtexEditorContainer =
     BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true, onLoad: nil)
-  @Query(sort: \BibEntryModel.ctime) var bibEntries: [BibEntryModel]
+  @Query() var bibEntries: [BibEntryModel]
   @Environment(\.modelContext) var modelContext
   @State private var confirmationModalOpen: Bool = false
   @State private var deletingBibEntry: BibEntryModel? = nil
@@ -28,7 +28,7 @@ struct BibliographySearchResultsViewQueryWrapped: View {
       let query_cantUseGetterInPredicate = searchQuery.wrappedValue
       _bibEntries = Query(
         filter: #Predicate<BibEntryModel> { entry in
-          entry.data.localizedStandardContains(
+          entry._data.localizedStandardContains(
             query_cantUseGetterInPredicate
           )
         },
