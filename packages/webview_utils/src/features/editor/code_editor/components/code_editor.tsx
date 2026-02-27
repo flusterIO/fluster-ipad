@@ -31,8 +31,6 @@ import { Tex, YAMLFrontMatter } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
-import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
-import { stringToSerializedString } from "#/serialization/methods/string_to_serialized_string";
 
 interface CodeEditorProps {
     language?: CodeEditorLanguage;
@@ -217,14 +215,14 @@ export const CodeEditorInner = ({
         }
     })
 
-    return <div className="h-full w-full" id={containerId} />;
+    return <div className="h-full w-full mdx-editor-container" id={containerId} />;
 };
 
 export const CodeEditor = (
     props: Omit<CodeEditorProps, "initialValue">,
 ): ReactNode => {
     const [initialRender, setInitialRender] = useState(true)
-    const [initialValue, setInitialValue] = useLocalStorage(
+    const [initialValue] = useLocalStorage(
         props.initialValueStorageKey ?? SplitviewEditorWebviewLocalStorageKeys.InitialValue,
         undefined,
         {
@@ -234,21 +232,28 @@ export const CodeEditor = (
             serializer(value) {
                 return value
             },
-            initializeWithValue: false,
+            initializeWithValue: true,
         },
     );
+
     const handleInitialRender = useEffectEvent(() => setInitialRender(false))
+
     useEffect(() => {
-        if (!initialValue || initialRender) {
+        console.log("initialValue: ", initialValue)
+        if (typeof initialValue !== "string" || initialRender) {
             sendToSwift(props.requestNewDataAction ?? SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
         handleInitialRender()
         /* eslint-disable-next-line  -- I hate this rule */
     }, [initialValue, initialRender]);
-    useEventListener(props.swiftContentEvent ?? SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => {
-        setInitialValue(e.detail);
-    });
-    return initialValue ? (
+
+
+    // Deprecating this in favor of using local storage directly from Swift.
+    /* useEventListener(props.swiftContentEvent ?? SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => { */
+    /*     setInitialValue(e.detail); */
+    /* }); */
+
+    return typeof initialValue === "string" ? (
         <CodeEditorInner {...props} initialValue={initialValue} />
     ) : (
         <div className="w-full h-full flex flex-col justify-center items-center">

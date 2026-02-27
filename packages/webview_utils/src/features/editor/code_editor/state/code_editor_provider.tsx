@@ -123,6 +123,7 @@ export const CodeEditorContextReducer = (
         case "setValue": {
             return {
                 ...state,
+                haveSetInitialValue: true,
                 value: action.payload,
             };
         }
@@ -154,6 +155,7 @@ export const CodeEditorContextReducer = (
         case "setParsedEditorContentString": {
             return {
                 ...state,
+                haveSetInitialValue: true,
                 parsedValue: action.payload
             }
         }
@@ -351,7 +353,7 @@ export const CodeEditorProvider = ({
     })
 
     useEffect(() => {
-        if (state.parsedValue === null && implementation === "mdx-editor") {
+        if (typeof state.parsedValue !== "string" && implementation === "mdx-editor") {
             sendToSwift(SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
     }, [state.parsedValue]);

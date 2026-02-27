@@ -6,8 +6,27 @@ import SwiftData
 
 extension String {
   public func toQuotedJavascriptString() -> String {
-    return
-      "`\(self.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "`", with: "\\`"))`"
+    func backupParseString(s: String) -> String {
+      return
+        "`\(s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "`", with: "\\`"))`"
+    }
+    //    return
+    //      "`\(self.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "`", with: "\\`"))`"
+    do {
+      // Encode the string directly into JSON data
+      let data = try JSONEncoder().encode(self)
+
+      // Convert the data back to a Swift String
+      guard let jsonString = String(data: data, encoding: .utf8) else {
+        return backupParseString(s: self)
+      }
+
+      // Note: jsonString already includes the bounding double quotes ("")
+      return jsonString
+    } catch {
+      print("Failed to escape string: \(error)")
+      return backupParseString(s: self)
+    }
   }
 
   public func isTrimmedEmpty() -> Bool {
@@ -16,7 +35,6 @@ extension String {
 
   public func toFlatBufferSerializedString() -> [UInt8] {
     var builder = FlatBufferBuilder(initialSize: 1024)
-
     let bodyOffset = builder.create(string: self)
     let serializedStringStart = SharedWebviewData_SerializedString.startSerializedString(&builder)
     SharedWebviewData_SerializedString.add(body: bodyOffset, &builder)

@@ -105,6 +105,8 @@ extension AppSchemaV1 {
     public var bookmarked: Bool = false
     ///  Must be a Map of `Map<citationKey ?? id, BibEntrySaveStrategy>`. The citationKey must be preferred first.
     public var bibEntryStrategyMap = [String: BibEntrySaveStrategy]()
+    /// Future proofing for now.
+    public var protected: Bool = false
 
     /// drawing.toDataRepresentation() to conform to Data type.
     public init(
@@ -191,7 +193,7 @@ extension AppSchemaV1 {
       var citations: [BibEntryModel] = []
       let citationFetchDescriptor = FetchDescriptor<BibEntryModel>()
       let allCitations = try! modelContext.fetch(citationFetchDescriptor)
-      // Save the bibEntries that were use defined since they cannot be automatically inferred from the note.
+      // Make sure the bibEntries that were user defined are not deleted since they cannot be automatically inferred from the note.
       for (citationId, saveStrategy) in self.bibEntryStrategyMap {
         if saveStrategy == .userAdded {
           if let existingCitation = self.citations.first(where: { cit in

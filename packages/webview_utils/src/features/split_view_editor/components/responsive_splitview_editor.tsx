@@ -13,7 +13,7 @@ const EditorBody = (): ReactNode => {
         return null
     }
     return (
-        editorView === EditorView.Splitview ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly />
+        editorView === EditorView.Splitview ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly implementation="mdx-editor" />
     )
 }
 

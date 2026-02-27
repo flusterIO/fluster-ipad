@@ -60,12 +60,41 @@ struct MdxEditorWebview: View {
         )!,
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,
+          MdxPreviewWebviewActions.requestNoteData.rawValue,
           SplitviewEditorWebviewActions.onEditorChange.rawValue,
           SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
           SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue
         ],
         messageHandler: messageHandler,
         onLoad: onWebviewLoad
+      )
+      .task(
+        id: editingNote?.markdown._body, priority: .userInitiated,
+        {
+          // Parse editing note body every time body is changed.
+          // Doing things this way will make the task automatically cancellable
+          // when the next change event is fired.
+          if let en = editingNote {
+            do {
+              try await en.preParse(modelContext: modelContext)
+            } catch {
+              print("Error: \(error.localizedDescription)")
+            }
+          }
+        }
+      )
+      .task(
+        id: editingNote?.markdown.preParsedBody,
+        {
+          // When a preParse method succeeds, send the updated parsed content to the editor.
+          if let en = editingNote {
+            do {
+              try await setParsedEditorContentString(note: en)
+            } catch {
+              print("Error: \(error.localizedDescription)")
+            }
+          }
+        }
       )
       .onAppear {
         if let en = editingNote {
@@ -149,6 +178,16 @@ struct MdxEditorWebview: View {
         Task(priority: .high) {
           await onWebviewLoad()
         }
+      case MdxPreviewWebviewActions.requestNoteData.rawValue:
+        if let en = editingNote {
+          Task(priority: .high) {
+            do {
+              try await self.setParsedEditorContentString(note: en)
+            } catch {
+              print("Error: \(error.localizedDescription)")
+            }
+          }
+        }
       case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
         Task(priority: .high) {
           if let en = editingNote {
@@ -166,17 +205,12 @@ struct MdxEditorWebview: View {
     }
   }
   public func handleEditorChange(newValue: String) {
+    // Don't worry about actually parsing the data. That's all
+    // being handled by async tasks managed by SwiftUI for better
+    // cancellation management, since it's running onChange.
     if let en = editingNote {
       en.markdown.body = newValue
       en.setLastRead(setModified: true)
-      Task {
-        try await en.preParse(modelContext: modelContext)
-        do {
-          try await setParsedEditorContentString(note: en)
-        } catch {
-          print("Error: \(error.localizedDescription)")
-        }
-      }
     }
   }
 
@@ -187,10 +221,9 @@ struct MdxEditorWebview: View {
     let data = Snippets_GetSnippetPropsBuffer.createGetSnippetPropsBuffer(
       &builder, citationIdsVectorOffset: ctiationIdsVectorOffset)
     builder.finish(offset: data)
-    let bytes: [UInt8] = Array(builder.data)
     try await webView.evaluateJavaScript(
       """
-      window.setSnippetProps(\(bytes))
+      window.setSnippetProps(\(builder.sizedByteArray))
       """)
   }
   func setEditorThemeDark(editorTheme: CodeSyntaxTheme) async throws {
@@ -228,8 +261,8 @@ struct MdxEditorWebview: View {
       lock, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func loadNote(note: NoteModel) async throws {
-    try await setParsedEditorContentString(note: note)
     try await setEditorContent(note: note)
+    try await setParsedEditorContentString(note: note)
   }
 }
 

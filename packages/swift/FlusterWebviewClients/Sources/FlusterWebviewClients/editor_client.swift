@@ -13,6 +13,20 @@ public typealias EvalJavascriptFunc = @Sendable (String) async throws -> Sendabl
 
 @MainActor
 public struct MdxEditorClient {
+  /// Pass in an un-parsed string for the data. It will be converted to a javascript compliant string internally.
+  public static func saveToLocalStorage(
+    storageKey: String, data: String, evaluateJavaScript: EvalJavascriptFunc
+  ) async throws {
+    try await evaluateJavaScript(
+      """
+      window.localStorage.setItem("\(storageKey)", \(data.toQuotedJavascriptString()))
+      window.dispatchEvent(
+          new CustomEvent("\(SharedWebviewEvents.localStorageWrite.rawValue)", {
+              detail: null
+          })
+      )
+      """)
+  }
   public static func setEditorKeymap(keymap: EditorKeymap, evaluateJavaScript: EvalJavascriptFunc)
     async throws
   {
@@ -55,20 +69,20 @@ public struct MdxEditorClient {
         window.setParsedEditorContentString(\(preParsedBody.toFlatBufferSerializedString()))
         """)
     } else {
-        // TODO: Parse again here. That requires passing in modelContext and I'm in a hurry,
-        // but that needs to be done here.
+      // TODO: Parse again here. That requires passing in modelContext and I'm in a hurry,
+      // but that needs to be done here.
     }
   }
 
+  /// Sets the actual editor's content, not the pre-parsed preview content.
   public static func setEditorContent(
     note: NoteModel,
     evaluateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
-    let body = note.markdown.body.toFlatBufferSerializedString()
-    try await evaluateJavaScript(
-      """
-      window.setEditorContent(\(body))
-      """)
+    try await self.saveToLocalStorage(
+      storageKey: SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue,
+      data: note.markdown.body,
+      evaluateJavaScript: evaluateJavaScript)
   }
 
   public static func setLockEditorScrollToPreview(
