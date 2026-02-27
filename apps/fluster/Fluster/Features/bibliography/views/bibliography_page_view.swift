@@ -5,17 +5,34 @@
 //  Created by Andrew on 10/29/25.
 //
 
+import FlusterData
 import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterData
 
 struct BibliographyPageInternalView: View {
   @Query var bibEntries: [BibEntryModel]
   @State var associateNoteModalPresented: Bool = false
   @Binding var editingBibEntry: BibEntryModel?
   @Binding var editingNote: NoteModel?
+  @State private var searchQuery: String = ""
   let bibtexEditorContainer: BibtexEditorWebviewContainer
+  var filteredEntries: [BibEntryModel] {
+    if searchQuery.isEmpty {
+      return editingNote?.citations ?? []
+    } else {
+      do {
+        let res = try (editingNote?.citations ?? []).filter(
+          #Predicate<BibEntryModel> { entry in
+            entry._data.localizedStandardContains(searchQuery)
+          })
+        return res
+      } catch {
+        print("Error: \(error.localizedDescription)")
+        return editingNote?.citations ?? []
+      }
+    }
+  }
 
   var body: some View {
     if let _editingNote = editingNote {
@@ -31,42 +48,45 @@ struct BibliographyPageInternalView: View {
           .navigationTitle("Note Bibliography")
         } else {
           BibListView(
-            items: _editingNote.citations,
+            items: filteredEntries,
             editingBibEntry: $editingBibEntry,
             editingNote: $editingNote,
             editorContainer: bibtexEditorContainer
           )
+          .searchable(text: $searchQuery, placement: .automatic, prompt: "Search")
           .toolbar {
-            ToolbarItem(content: {
-              NavigationLink(
-                destination: {
-                  CreateBibEntrySheetView(
-                    editingBibEntry: .constant(nil),
-                    ignoreEditingNote: false,
-                    container: bibtexEditorContainer
-                  )
-                },
-                label: {
-                  Label(
-                    "Create",
-                    systemImage: "plus"
-                  )
-                }
-              )
-            })
-            ToolbarItem(content: {
-              Button(
-                action: {
-                  associateNoteModalPresented = true
-                },
-                label: {
-                  Label(
-                    "Search",
-                    systemImage: "magnifyingglass"
-                  )
-                }
-              )
-            })
+            ToolbarItem(
+              content: {
+                NavigationLink(
+                  destination: {
+                    CreateBibEntrySheetView(
+                      editingBibEntry: .constant(nil),
+                      ignoreEditingNote: false,
+                      container: bibtexEditorContainer
+                    )
+                  },
+                  label: {
+                    Label(
+                      "Create",
+                      systemImage: "plus"
+                    )
+                  }
+                )
+              })
+            ToolbarItem(
+              content: {
+                Button(
+                  action: {
+                    associateNoteModalPresented = true
+                  },
+                  label: {
+                    Label(
+                      "Link",
+                      systemImage: "link"
+                    )
+                  }
+                )
+              })
           }
           .navigationTitle("Note Bibliography")
         }
