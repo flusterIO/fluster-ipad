@@ -46,7 +46,7 @@ public struct MdxEditorClient {
       window.setCodeSyntaxTheme("\(editorTheme.rawValue)")
       """)
   }
-  public static func setParsedEditorContent(
+  public static func setParsedEditorContentString(
     note: NoteModel, evaluateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
     if let preParsedBody = note.markdown.preParsedBody {

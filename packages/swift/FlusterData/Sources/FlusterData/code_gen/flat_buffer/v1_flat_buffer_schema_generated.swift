@@ -347,6 +347,7 @@ public struct MdxSerialization_FrontMatterResultBuffer: FlatBufferObject, Verifi
     case ignoreParsers = 4
     case title = 6
     case userDefinedId = 8
+    case fsPath = 10
     var v: Int32 { Int32(self.rawValue) }
     var p: VOffset { self.rawValue }
   }
@@ -358,21 +359,26 @@ public struct MdxSerialization_FrontMatterResultBuffer: FlatBufferObject, Verifi
   public var titleSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.title.v) }
   public var userDefinedId: String? { let o = _accessor.offset(VTOFFSET.userDefinedId.v); return o == 0 ? nil : _accessor.string(at: o) }
   public var userDefinedIdSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.userDefinedId.v) }
-  public static func startFrontMatterResultBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 3) }
+  public var fsPath: String? { let o = _accessor.offset(VTOFFSET.fsPath.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var fsPathSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.fsPath.v) }
+  public static func startFrontMatterResultBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 4) }
   public static func addVectorOf(ignoreParsers: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: ignoreParsers, at: VTOFFSET.ignoreParsers.p) }
   public static func add(title: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: title, at: VTOFFSET.title.p) }
   public static func add(userDefinedId: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: userDefinedId, at: VTOFFSET.userDefinedId.p) }
+  public static func add(fsPath: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: fsPath, at: VTOFFSET.fsPath.p) }
   public static func endFrontMatterResultBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
   public static func createFrontMatterResultBuffer(
     _ fbb: inout FlatBufferBuilder,
     ignoreParsersVectorOffset ignoreParsers: Offset,
     titleOffset title: Offset = Offset(),
-    userDefinedIdOffset userDefinedId: Offset = Offset()
+    userDefinedIdOffset userDefinedId: Offset = Offset(),
+    fsPathOffset fsPath: Offset = Offset()
   ) -> Offset {
     let __start = MdxSerialization_FrontMatterResultBuffer.startFrontMatterResultBuffer(&fbb)
     MdxSerialization_FrontMatterResultBuffer.addVectorOf(ignoreParsers: ignoreParsers, &fbb)
     MdxSerialization_FrontMatterResultBuffer.add(title: title, &fbb)
     MdxSerialization_FrontMatterResultBuffer.add(userDefinedId: userDefinedId, &fbb)
+    MdxSerialization_FrontMatterResultBuffer.add(fsPath: fsPath, &fbb)
     return MdxSerialization_FrontMatterResultBuffer.endFrontMatterResultBuffer(&fbb, start: __start)
   }
 
@@ -381,6 +387,7 @@ public struct MdxSerialization_FrontMatterResultBuffer: FlatBufferObject, Verifi
     try _v.visit(field: VTOFFSET.ignoreParsers.p, fieldName: "ignoreParsers", required: true, type: ForwardOffset<Vector<ForwardOffset<String>, String>>.self)
     try _v.visit(field: VTOFFSET.title.p, fieldName: "title", required: false, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.userDefinedId.p, fieldName: "userDefinedId", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.fsPath.p, fieldName: "fsPath", required: false, type: ForwardOffset<String>.self)
     _v.finish()
   }
 }

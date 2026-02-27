@@ -106,7 +106,7 @@ struct MainView: View {
       ) {
         PaperTabView(
           editingNote: $editingNote,
-//          selectedTab: $selectedTab
+          //          selectedTab: $selectedTab
         )
       }
       .customizationID(IpadMainViewTab.paper.rawValue)
@@ -322,33 +322,16 @@ struct MainView: View {
       of: editingNote?.markdown.body,
       {
         Task {
-          // NOTE: Don't set the last read state with setModified: true here.
-          // It's being set in the event to avoid setting it on the initial render.
           if let note = editingNote {
-            if let parsedMdx =
-              await note.markdown
-              .body.preParseAsMdxToBytes(noteId: note.id)
-            {
-              editorContainer.setParsedEditorContent(
-                content: parsedMdx
+            do {
+              try await note.preParse(modelContext: modelContext)
+              editorContainer.setParsedEditorContentString(
+                content: note.markdown.preParsedBody ?? note.markdown.body)
+              try modelContext.save()
+            } catch {
+              print(
+                "Failed to save model context when navigating away from editor view."
               )
-              if let parsingResults =
-                parsedMdx.toMdxParsingResult()
-              {
-                note.applyMdxParsingResults(
-                  results: parsingResults,
-                  modelContext: modelContext
-                )
-              }
-              Task {
-                do {
-                  try modelContext.save()
-                } catch {
-                  print(
-                    "Failed to save model context when navigating away from editor view."
-                  )
-                }
-              }
             }
           }
         }
@@ -575,4 +558,3 @@ struct MainView: View {
   MainView()
     .environment(ThemeManager(initialTheme: FlusterDark()))
 }
-

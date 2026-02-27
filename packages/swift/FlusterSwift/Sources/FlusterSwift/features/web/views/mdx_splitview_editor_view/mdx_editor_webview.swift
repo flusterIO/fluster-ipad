@@ -242,23 +242,15 @@ import WebKit
           case MdxPreviewWebviewActions.onTagClick.rawValue:
             parent.handleTagClick(tagBody: message.body as! String)
           case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
-            Task {
-              if let parsedMdx =
-                await parent.editingNote.markdown
-                .body.preParseAsMdxToBytes(noteId: parent.editingNote.id)
-              {
-                parent.container.setParsedEditorContent(
-                  content: parsedMdx
-                )
-                if let parsingResults =
-                  parsedMdx.toMdxParsingResult()
-                {
-                  parent.editingNote.applyMdxParsingResults(
-                    results: parsingResults,
-                    modelContext: self.parent.modelContext
-                  )
+            do {
+                Task {
+                    try await parent.editingNote.preParse(modelContext: parent.modelContext)
+                    parent.container.setParsedEditorContentString(
+                        content: parent.editingNote.markdown.preParsedBody
+                        ?? parent.editingNote.markdown.body)
                 }
-              }
+            } catch {
+                print("Error: \(error.localizedDescription)")
             }
           case MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue:
             parent.handleViewNoteByUserDefinedId(id: message.body as! String)

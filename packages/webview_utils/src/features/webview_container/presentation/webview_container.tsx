@@ -86,7 +86,7 @@ export const WebViewContainer = ({
             id="webview-container"
             className={cn(
                 "max-w-screen w-screen",
-                shrinkHeight ? "h-fit" : "h-screen min-h-fit",
+                shrinkHeight ? "h-fit" : "h-fit min-h-screen",
                 className,
                 darkMode === "true" && "dark",
             )}
@@ -102,7 +102,7 @@ export const WebViewContainer = ({
                 id="webview-content-wrapper"
                 className={cn(
                     "w-full load-hide",
-                    shrinkHeight ? "h-fit" : "h-screen min-h-fit",
+                    shrinkHeight ? "h-fit" : "h-fit min-h-screen",
                     contentContainerClasses,
                 )}
                 ref={container}
@@ -113,7 +113,7 @@ export const WebViewContainer = ({
             </div>
             <div
                 id="loading-indicator"
-                className="w-full h-full flex flex-col justify-center items-center loading load-show"
+                className="w-screen h-screen flex flex-col justify-center items-center loading load-show fixed top-0 left-0 right-0 bottom-0"
             >
                 <LoadingComponent className="w-fit h-fit" />
             </div>

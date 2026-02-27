@@ -1,4 +1,3 @@
-use fluster_core_utilities::core_types::fluster_error::FlusterResult;
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -57,23 +56,15 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
 
 /// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
 /// based approach but will work for now.
-#[uniffi::export(async_runtime = "tokio")]
-pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> FlusterResult<Vec<u8>> {
-    let result = parse_mdx_string_to_mdx_result(&opts).await;
-
-    let data = result.serialize_to_flatbuffer();
-
-    Ok(data)
+pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> MdxParsingResult {
+    parse_mdx_string_to_mdx_result(&opts).await
 }
 
 #[cfg(test)]
 mod tests {
 
-    use fluster_core_utilities::{
-        code_gen::flat_buffer::v1_flat_buffer_schema_generated::mdx_serialization::root_as_mdx_parsing_result_buffer,
-        test_utilities::get_test_mdx_content::{
-            get_test_note_content_with_everything, get_welcome_to_fluster_content,
-        },
+    use fluster_core_utilities::test_utilities::get_test_mdx_content::{
+        get_test_note_content_with_everything, get_welcome_to_fluster_content,
     };
 
     use super::*;
@@ -88,49 +79,32 @@ mod tests {
         })
         .await;
         assert!(
-            &res.is_ok(),
-            "Parses mdx content without throwing an error."
-        );
-        let binding = &res.unwrap();
-        let result = root_as_mdx_parsing_result_buffer(binding)
-            .expect("Deserializes buffer to results without error.");
-
-        assert!(
-            result
-                .front_matter()
+            res.front_matter
                 .expect("Finds front matter when front-matter exists.")
-                .title()
+                .title
                 .expect("Finds front-matter title")
                 == "My Notes title",
             "Parses title fron front-matter"
         );
 
         assert!(
-            result
-                .dictionary_entries()
+            res.dictionary_entries
                 .iter()
-                .any(|x| x.iter().any(|y| y.label() == "My dictionary entry")),
+                .any(|x| x.label == "My dictionary entry"),
             "Finds dictionary entries."
         );
         assert!(
-            result
-                .parsed_content()
-                .to_string()
-                .contains("<DictionaryEntry"),
+            res.content.to_string().contains("<DictionaryEntry"),
             "Replaces dictionary entries."
         );
         assert!(
-            result
-                .citations()
+            res.citations
                 .iter()
-                .any(|x| x.iter().any(|y| y.citation_key() == "myCitationHere")),
+                .any(|x| x.citation_key == "myCitationHere"),
             "Finds citations in note."
         );
         assert!(
-            result
-                .parsed_content()
-                .to_string()
-                .contains("<FlusterCitation"),
+            res.content.to_string().contains("<FlusterCitation"),
             "Replaces citation in file."
         );
     }
@@ -145,31 +119,20 @@ mod tests {
         })
         .await;
         assert!(
-            &res.is_ok(),
-            "Parses mdx content without throwing an error."
-        );
-        let binding = res.unwrap();
-        let result = root_as_mdx_parsing_result_buffer(&binding)
-            .expect("Deseralizes returned data without throwing an error.");
-        assert!(
-            result.front_matter().is_some(),
+            res.front_matter.is_some(),
             "Has front matter when front matter is present"
         );
-        let fm = result
-            .front_matter()
+        let fm = res
+            .front_matter
             .expect("Has front matter when front matter is present");
 
         assert!(
-            result
-                .parsed_content()
-                .to_string()
-                .contains("<AutoInsertedTag"),
+            res.content.to_string().contains("<AutoInsertedTag"),
             "Replaces tag in file."
         );
 
         assert!(
-            fm.user_defined_id()
-                .is_some_and(|x| x == "welcomeToFluster"),
+            fm.user_defined_id.is_some_and(|x| x == "welcomeToFluster"),
             "Note parses user defined id as expected"
         )
         // assert_eq!(result, 4);

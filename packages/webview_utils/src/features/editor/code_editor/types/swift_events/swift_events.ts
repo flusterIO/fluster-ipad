@@ -1,5 +1,6 @@
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { MdxParsingResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
+import { MdxParsingResult } from "@/code_gen/flat_buffer/mdx-serialization/mdx-parsing-result";
 import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
 import { GetSnippetPropsBuffer } from "@/code_gen/flat_buffer/snippets";
 import { SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
@@ -12,7 +13,6 @@ export interface SwiftEventMap {
 declare global {
     interface WindowEventMap {
         [SplitviewEditorWebviewEvents.SetSplitviewEditorContent]: CustomEvent<string>;
-        [SplitviewEditorWebviewEvents.SetParsedMdxContent]: CustomEvent<MdxParsingResultBuffer>;
         [SplitviewEditorWebviewEvents.SetEditorSnippetProps]: CustomEvent<GetSnippetPropsBuffer>;
         [SplitviewEditorWebviewEvents.SetParsedMdxContentString]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetEditorKeymap]: CustomEvent<string>;
@@ -25,7 +25,6 @@ declare global {
     }
     interface Window {
         setEditorContent: typeof setEditorContent;
-        setParsedEditorContent: typeof setParsedEditorContent;
         setParsedEditorContentString: typeof setParsedEditorContentString;
         setEditorKeymap: typeof setEditorKeymap;
         setCodeSyntaxTheme: typeof setCodeTheme;
@@ -43,15 +42,6 @@ export function setEditorContent(payload: Uint8Array) {
     const buf = new ByteBuffer(data)
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetSplitviewEditorContent, { detail: SerializedString.getRootAsSerializedString(buf).body() ?? "" }),
-    );
-}
-
-
-export function setParsedEditorContent(payload: Uint8Array) {
-    const data = Uint8Array.from(payload)
-    const buf = new ByteBuffer(data)
-    window.dispatchEvent(
-        new CustomEvent(SplitviewEditorWebviewEvents.SetParsedMdxContent, { detail: MdxParsingResultBuffer.getRootAsMdxParsingResultBuffer(buf) }),
     );
 }
 
@@ -143,7 +133,6 @@ export const setMdxBridgeFunctions = () => {
 export const setWindowBridgeFunctions = () => {
     window.setEditorContent = setEditorContent;
     window.setEditorKeymap = setEditorKeymap;
-    window.setParsedEditorContent = setParsedEditorContent;
     window.setSnippetProps = setParsedEditorSnippetProps;
     window.setParsedEditorContentString = setParsedEditorContentString;
     window.resetMdxPreviewScrollPosition = resetMdxPreviewScrollPosition;
