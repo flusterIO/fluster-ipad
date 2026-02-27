@@ -12,12 +12,16 @@ import SwiftyBibtex
 
 struct BibEntrySearchResultItemView: View {
   var item: BibEntryModel
+  @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFormat: EmbeddedCslFileSwift =
+    .apa
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text(item.getTitle())
-        .font(.subheadline)
-        .fontWeight(.bold)
-        .lineLimit(2)
+      Text(
+        item.safelyGetFormatted(activeCslFormat: cslFormat)?.formattedPlainText ?? item.getTitle()
+      )
+      .font(.subheadline)
+      .fontWeight(.bold)
+      .lineLimit(2)
       Text(
         item.ctime.formatted(date: .complete, time: .shortened)
       )

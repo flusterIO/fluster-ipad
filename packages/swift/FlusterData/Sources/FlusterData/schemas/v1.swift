@@ -558,7 +558,7 @@ extension AppSchemaV1 {
         let htmlFormatted = entry.formatBibliographyCitation(
           cslContent: cslContent, cslLocale: localContent, renderMethod: .html)
         let plainTextFormatted = entry.formatBibliographyCitation(
-          cslContent: cslContent, cslLocale: localContent, renderMethod: .html)
+          cslContent: cslContent, cslLocale: localContent, renderMethod: .plaintext)
         if let formattedHtml = htmlFormatted, let formattedPlainText = plainTextFormatted {
           let formattedCitation = FormattedCitation(
             formattedHtml: formattedHtml, formattedPlainText: formattedPlainText,

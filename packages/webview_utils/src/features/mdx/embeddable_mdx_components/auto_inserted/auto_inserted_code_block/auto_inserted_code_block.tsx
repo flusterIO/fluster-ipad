@@ -14,16 +14,18 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
         return ref.current?.getAttribute("data-language") as BundledTheme | undefined
     }
     return (
-        <pre
-            className={cn("rounded relative", className)}
-            {...props}
-            onClick={() => setHovered(!hovered)}
-            ref={ref}
-        >
-            {children}
+        <>
+            <pre
+                className={cn("rounded", className)}
+                {...props}
+                onClick={() => setHovered(!hovered)}
+                ref={ref}
+            >
+                {children}
+            </pre>
             <div
                 role="button"
-                className={cn("absolute top-4 right-4 transition-opacity duration-300", hovered ? "hidden opacity-0" : "flex flex-col justify-center items-center opacity-100")}
+                className={cn("auto-codeblock-icon absolute top-4 right-4 transition-opacity duration-300", hovered && "opacity-1000 hovered iflex-col justify-center items-center")}
                 onClick={async (e) => {
                     e.stopPropagation()
                     e.preventDefault()
@@ -45,7 +47,7 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
                     className={cn("w-5 h-5 p-1", hovered && "opacity-100")}
                 />
             </div>
-        </pre>
+        </>
     )
 }
 

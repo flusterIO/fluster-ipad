@@ -15,6 +15,7 @@
 		79ADEFFC2EFDBE4E00EB4E22 /* dictionary_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79ADEFFB2EFDBE4E00EB4E22 /* dictionary_webview */; };
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79D841D02F4150EA004E992B /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79D841CF2F4150EA004E992B /* FlusterWebviewClients */; };
+		79EF658C2F5133F10019E6E8 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79EF658B2F5133F10019E6E8 /* bibliography_embedded */; };
 		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
 		79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F936DE2EE38B8000777CDB /* note_detail_webview */; };
 		79FA32B52F1822EA0066B8B4 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79FA32B42F1822EA0066B8B4 /* FlusterData */; };
@@ -30,6 +31,7 @@
 		79AC14432EDB4D1700E3773F /* standalone_mdx_preview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview; sourceTree = "<group>"; };
 		79ADEFFB2EFDBE4E00EB4E22 /* dictionary_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dictionary_webview; path = ../../packages/webviews/dictionary_webview/dictionary_webview; sourceTree = "<group>"; };
 		79C33DCF2F19BC6400C25717 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EF658B2F5133F10019E6E8 /* bibliography_embedded */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibliography_embedded; path = ../../packages/rust/fluster_bibliography/bibliography_embedded; sourceTree = "<group>"; };
 		79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
 		79F74C892EDE1EFB00E00653 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
 		79F936DE2EE38B8000777CDB /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 		796F70FB2EB174610012B500 = {
 			isa = PBXGroup;
 			children = (
+				79EF658B2F5133F10019E6E8 /* bibliography_embedded */,
 				79ADEFFB2EFDBE4E00EB4E22 /* dictionary_webview */,
 				79516C4C2EE893ED00573A77 /* splitview_mdx_editor */,
 				79F936DE2EE38B8000777CDB /* note_detail_webview */,
@@ -178,6 +181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79EF658C2F5133F10019E6E8 /* bibliography_embedded in Resources */,
 				79ADEFFC2EFDBE4E00EB4E22 /* dictionary_webview in Resources */,
 				79516C4D2EE893ED00573A77 /* splitview_mdx_editor in Resources */,
 				79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */,

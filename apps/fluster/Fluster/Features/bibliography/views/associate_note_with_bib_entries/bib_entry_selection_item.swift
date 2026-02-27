@@ -5,13 +5,15 @@
 //  Created by Andrew on 11/24/25.
 //
 
+import FlusterData
 import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterData
 
 struct BibEntrySelectionItem: View {
   @State private var isSelected: Bool = false
+  @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFormat: EmbeddedCslFileSwift =
+    .apa
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
   @Bindable var editingNote: NoteModel
   let entry: BibEntryModel
@@ -21,7 +23,9 @@ struct BibEntrySelectionItem: View {
       Toggle(
         isOn: $isSelected,
         label: {
-          Text(entry.getTitle())
+          Text(
+            entry.safelyGetFormatted(activeCslFormat: cslFormat)?.formattedPlainText
+              ?? entry.getTitle())
         }
       )
       .tint(themeManager.theme.primary)

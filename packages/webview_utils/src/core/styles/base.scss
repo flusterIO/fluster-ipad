@@ -2,7 +2,6 @@
 @import "../../features/mdx/embeddable_mdx_components/auto_inserted/auto_inserted_code_block/code_block_styles.scss";
 @import "./mermaid.scss";
 @import "./shared_component_styles.scss";
-@import "./fd_themes.scss";
 @import "./themes.scss";
 @source "../../**/*.{mdx,tsx,ts}";
 @source "../../../../../docs/**/*.{mdx,tsx,ts}";
@@ -15,7 +14,6 @@
 @source "../../../../webviews/standalone_mdx_preview/src/**/*.{ts,tsx,mdx}";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
-/* @import 'fumadocs-ui/css/preset.css'; */
 
 
 root {
@@ -59,23 +57,23 @@ root {
   --color-emphasis-research-foreground: hsl(var(--emphasis-research-foreground));
   --color-emphasis-highlight: hsl(var(--emphasis-highlight));
   --color-emphasis-highlight-foreground: hsl(var(--emphasis-highlight-foreground));
-  --color-fd-background: hsl(0, 0%, 96%);
-  --color-fd-foreground: hsl(0, 0%, 3.9%);
-  --color-fd-muted: hsl(0, 0%, 96.1%);
-  --color-fd-muted-foreground: hsl(0, 0%, 45.1%);
-  --color-fd-popover: hsl(0, 0%, 98%);
-  --color-fd-popover-foreground: hsl(0, 0%, 15.1%);
-  --color-fd-card: hsl(0, 0%, 94.7%);
-  --color-fd-card-foreground: hsl(0, 0%, 3.9%);
-  --color-fd-border: hsla(0, 0%, 80%, 50%);
-  --color-fd-primary-foreground: hsl(0, 0%, 98%);
-  --color-fd-secondary: hsl(0, 0%, 93.1%);
-  --color-fd-secondary-foreground: hsl(0, 0%, 9%);
-  --color-fd-accent: hsla(0, 0%, 82%, 50%);
-  --color-fd-accent-foreground: hsl(0, 0%, 9%);
-  --color-fd-ring: hsl(0, 0%, 63.9%);
-  --color-fd-primary: oklch(0.487 0.083 262.691);
-  --color-fd-article: hsl(0, 0%, 97%);
+  --color-fd-background: var(--color-fd-background);
+  --color-fd-foreground: var(--color-fd-foreground);
+  --color-fd-muted: var(--color-fd-muted);
+  --color-fd-muted-foreground: var(--color-fd-muted-foreground);
+  --color-fd-popover: var(--color-fd-popover);
+  --color-fd-popover-foreground: var(--color-fd-popover-foreground);
+  --color-fd-card: var(--color-fd-card);
+  --color-fd-card-foreground: var(--color-fd-card-foreground);
+  --color-fd-border: var(--color-fd-border);
+  --color-fd-primary-foreground: var(--color-fd-primary-foreground);
+  --color-fd-secondary: var(--color-fd-secondary);
+  --color-fd-secondary-foreground: var(--color-fd-secondary-foreground);
+  --color-fd-accent: var(--color-fd-accent);
+  --color-fd-accent-foreground: var(--color-fd-accent-foreground);
+  --color-fd-ring: var(--color-fd-ring);
+  --color-fd-primary: var(--color-fd-primary);
+  --color-fd-article: var(--color-fd-article);
 }
 
 

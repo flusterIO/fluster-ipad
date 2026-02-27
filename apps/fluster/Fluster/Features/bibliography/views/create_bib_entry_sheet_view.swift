@@ -5,10 +5,11 @@
 //  Created by Andrew on 11/3/25.
 //
 
+import FlusterBibliography
+import FlusterData
 import FlusterSwift
 import SwiftData
 import SwiftUI
-import FlusterData
 
 struct CreateBibEntrySheetView: View {
   @State private var newEntryValue: String = ""
@@ -58,12 +59,15 @@ struct CreateBibEntrySheetView: View {
             return
           }
           if editingBibEntry == nil {
-            // -- If the model should be created new. --
-            let newEntry = BibEntryModel(data: inputValue)
-            if let _editingNote = editingNote, !ignoreEditingNote {
-              _editingNote.addCitation(citation: newEntry, strategy: .userAdded)
-            } else {
-              modelContext.insert(newEntry)
+            let splitContent = splitBiblatexToRawStrings(fileContent: inputValue)
+            for bibEntryText in splitContent {
+              // -- If the model should be created new. --
+              let newEntry = BibEntryModel(data: bibEntryText)
+              if let _editingNote = editingNote, !ignoreEditingNote {
+                _editingNote.addCitation(citation: newEntry, strategy: .userAdded)
+              } else {
+                modelContext.insert(newEntry)
+              }
             }
             newEntryValue = ""
             container.clearEditorData()

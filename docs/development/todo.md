@@ -13,10 +13,11 @@
 
 **_RESUME_**
 
+- [ ] Review [this](https://www.ditto.com/blog/running-a-react-web-app-in-an-ios-app) and see how difficult it would be to get rid of this single page build issue. That would expand the capabilities almost infinitely...
 - [ ] Handle rest of zod based props
-  - [ ] Make sure `Emphasis` based colors are working being set from talwind color variable.
-  - [ ] Make sure sizable props are working, particularly with admonition.
-  - [ ] Make sure `@expandedMdx/mdx:w-1/3` or similar props are working. They're already in use in the admonition component.
+  - [x] Make sure `Emphasis` based colors are working being set from talwind color variable.
+  - [x] Make sure sizable props are working, particularly with admonition.
+  - [x] Make sure `@expandedMdx/mdx:w-1/3` or similar props are working. They're already in use in the admonition component.
 - [ ] Pick back up by handling this horrible user experience when a bib entry is associated with a note.
   - [ ] Move list to lazy list. This is almost surely rendering every item in the list causing the big freeze.
 - [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
