@@ -995,6 +995,7 @@ impl<'a> FrontMatterResultBuffer<'a> {
   pub const VT_IGNORE_PARSERS: flatbuffers::VOffsetT = 4;
   pub const VT_TITLE: flatbuffers::VOffsetT = 6;
   pub const VT_USER_DEFINED_ID: flatbuffers::VOffsetT = 8;
+  pub const VT_FS_PATH: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -1006,6 +1007,7 @@ impl<'a> FrontMatterResultBuffer<'a> {
     args: &'args FrontMatterResultBufferArgs<'args>
   ) -> flatbuffers::WIPOffset<FrontMatterResultBuffer<'bldr>> {
     let mut builder = FrontMatterResultBufferBuilder::new(_fbb);
+    if let Some(x) = args.fs_path { builder.add_fs_path(x); }
     if let Some(x) = args.user_defined_id { builder.add_user_defined_id(x); }
     if let Some(x) = args.title { builder.add_title(x); }
     if let Some(x) = args.ignore_parsers { builder.add_ignore_parsers(x); }
@@ -1034,6 +1036,13 @@ impl<'a> FrontMatterResultBuffer<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FrontMatterResultBuffer::VT_USER_DEFINED_ID, None)}
   }
+  #[inline]
+  pub fn fs_path(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(FrontMatterResultBuffer::VT_FS_PATH, None)}
+  }
 }
 
 impl flatbuffers::Verifiable for FrontMatterResultBuffer<'_> {
@@ -1046,6 +1055,7 @@ impl flatbuffers::Verifiable for FrontMatterResultBuffer<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<&'_ str>>>>("ignore_parsers", Self::VT_IGNORE_PARSERS, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("title", Self::VT_TITLE, false)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("user_defined_id", Self::VT_USER_DEFINED_ID, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("fs_path", Self::VT_FS_PATH, false)?
      .finish();
     Ok(())
   }
@@ -1054,6 +1064,7 @@ pub struct FrontMatterResultBufferArgs<'a> {
     pub ignore_parsers: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
     pub title: Option<flatbuffers::WIPOffset<&'a str>>,
     pub user_defined_id: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub fs_path: Option<flatbuffers::WIPOffset<&'a str>>,
 }
 impl<'a> Default for FrontMatterResultBufferArgs<'a> {
   #[inline]
@@ -1062,6 +1073,7 @@ impl<'a> Default for FrontMatterResultBufferArgs<'a> {
       ignore_parsers: None, // required field
       title: None,
       user_defined_id: None,
+      fs_path: None,
     }
   }
 }
@@ -1082,6 +1094,10 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> FrontMatterResultBufferBuilder<
   #[inline]
   pub fn add_user_defined_id(&mut self, user_defined_id: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FrontMatterResultBuffer::VT_USER_DEFINED_ID, user_defined_id);
+  }
+  #[inline]
+  pub fn add_fs_path(&mut self, fs_path: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(FrontMatterResultBuffer::VT_FS_PATH, fs_path);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> FrontMatterResultBufferBuilder<'a, 'b, A> {
@@ -1105,6 +1121,7 @@ impl core::fmt::Debug for FrontMatterResultBuffer<'_> {
       ds.field("ignore_parsers", &self.ignore_parsers());
       ds.field("title", &self.title());
       ds.field("user_defined_id", &self.user_defined_id());
+      ds.field("fs_path", &self.fs_path());
       ds.finish()
   }
 }

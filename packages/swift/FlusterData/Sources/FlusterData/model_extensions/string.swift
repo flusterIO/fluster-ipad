@@ -27,20 +27,15 @@ extension String {
   }
 
   @MainActor
-  public func preParseAsMdxToBytes(noteId: String?) async -> Data? {
+  /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
+  public func preParseAsMdx(noteId: String?) async -> MdxParsingResult? {
     do {
-      return try await parseMdxStringByRegex(
-        opts: ParseMdxOptions(noteId: noteId, content: self, citations: [])
-      )
+      let res = await FlusterSwiftMdxParser.preParseMdx(
+        options: ParseMdxOptions(noteId: noteId, content: self, citations: []))
+      return res
     } catch {
-      print("Mdx parsing error: \(error.localizedDescription)")
+      print("Error: \(error.localizedDescription)")
     }
     return nil
-  }
-
-  @MainActor
-  /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
-  public func preParseAsMdx(noteId: String?) async -> MdxSerialization_MdxParsingResultBuffer? {
-    return await self.preParseAsMdxToBytes(noteId: noteId)?.toMdxParsingResult()
   }
 }

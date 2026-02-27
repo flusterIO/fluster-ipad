@@ -175,7 +175,7 @@ struct PaperView: View {
 
   func handleFocusIndexPageCreation(_ geometry: GeometryProxy) async {
     if focusedPageIndex >= editingNote.paper.count {
-      let markup = PaperMarkup(bounds: geometry.frame(in: .local))
+        let markup = PaperMarkup(bounds: CGRect(origin: .zero, size: getPaperMarkupBounds()))
       do {
         let data = try await markup.dataRepresentation()
         self.editingNote.paper.append(PaperModel(markup: data))

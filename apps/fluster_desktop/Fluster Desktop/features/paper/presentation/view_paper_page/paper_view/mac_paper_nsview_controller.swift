@@ -55,6 +55,13 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
       paperViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ])
 
+    paperViewController.zoomRange = 0.3...10
+
+    if #available(macOS 26.1, *) {
+      paperViewController.showsVerticalScrollIndicator = false
+      paperViewController.showsHorizontalScrollIndicator = false
+    }
+
     paperViewController.delegate = self
 
     // 2. Setup the macOS-specific toolbar for tools and markup insertion
@@ -97,7 +104,7 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
   public func update(with markup: PaperMarkup) {
     self.markup = markup
   }
-  
+
   public func clearCanvas() {
     // Re-initialize PaperMarkup with the existing bounds (retain size, clear content)
     let bounds = markup.bounds

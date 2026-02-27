@@ -94,13 +94,16 @@ struct BibliographyPageInternalView: View {
       .fullScreenCover(
         isPresented: $associateNoteModalPresented,
         content: {
-          if let editingNoteExists = editingNote {
-            @Bindable var editingNoteBinding = editingNoteExists
+          if let editingNoteBinding = Binding($editingNote) {
             NavigationStack {
               AssociateNoteWithBibEntryView(
                 editingNote: editingNoteBinding,
                 open: $associateNoteModalPresented
               )
+            }
+          } else {
+            Color.clear.onAppear {
+              associateNoteModalPresented = false
             }
           }
         }

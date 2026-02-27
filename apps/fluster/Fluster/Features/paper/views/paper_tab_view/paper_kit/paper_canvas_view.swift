@@ -16,7 +16,7 @@ struct PaperCanvasView: UIViewControllerRepresentable {
     if !canvasData.isEmpty, let restored = try? PaperMarkup(dataRepresentation: canvasData) {
       markup = restored
     } else {
-      markup = PaperMarkup(bounds: canvasBounds)
+      markup = PaperMarkup(bounds: CGRect(origin: .zero, size: getPaperMarkupBounds()))
     }
 
     let features: FeatureSet = .latest

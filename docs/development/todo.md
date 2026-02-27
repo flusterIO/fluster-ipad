@@ -13,6 +13,7 @@
 
 **_RESUME_**
 
+- [ ] Start moving away from flatbuffers if at all possible for complex types. Start using uniffi as much as possible to generate types directly from Rust instead of trying to match types like you've been doing with the front matter.
 - [ ] Review [this](https://www.ditto.com/blog/running-a-react-web-app-in-an-ios-app) and see how difficult it would be to get rid of this single page build issue. That would expand the capabilities almost infinitely...
 - [ ] Handle rest of zod based props
   - [x] Make sure `Emphasis` based colors are working being set from talwind color variable.

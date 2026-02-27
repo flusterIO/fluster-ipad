@@ -48,8 +48,15 @@ userDefinedId(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+fsPath():string|null
+fsPath(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+fsPath(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startFrontMatterResultBuffer(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addIgnoreParsers(builder:flatbuffers.Builder, ignoreParsersOffset:flatbuffers.Offset) {
@@ -76,17 +83,22 @@ static addUserDefinedId(builder:flatbuffers.Builder, userDefinedIdOffset:flatbuf
   builder.addFieldOffset(2, userDefinedIdOffset, 0);
 }
 
+static addFsPath(builder:flatbuffers.Builder, fsPathOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(3, fsPathOffset, 0);
+}
+
 static endFrontMatterResultBuffer(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   builder.requiredField(offset, 4) // ignore_parsers
   return offset;
 }
 
-static createFrontMatterResultBuffer(builder:flatbuffers.Builder, ignoreParsersOffset:flatbuffers.Offset, titleOffset:flatbuffers.Offset, userDefinedIdOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createFrontMatterResultBuffer(builder:flatbuffers.Builder, ignoreParsersOffset:flatbuffers.Offset, titleOffset:flatbuffers.Offset, userDefinedIdOffset:flatbuffers.Offset, fsPathOffset:flatbuffers.Offset):flatbuffers.Offset {
   FrontMatterResultBuffer.startFrontMatterResultBuffer(builder);
   FrontMatterResultBuffer.addIgnoreParsers(builder, ignoreParsersOffset);
   FrontMatterResultBuffer.addTitle(builder, titleOffset);
   FrontMatterResultBuffer.addUserDefinedId(builder, userDefinedIdOffset);
+  FrontMatterResultBuffer.addFsPath(builder, fsPathOffset);
   return FrontMatterResultBuffer.endFrontMatterResultBuffer(builder);
 }
 }

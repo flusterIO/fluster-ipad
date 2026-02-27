@@ -79,7 +79,7 @@ struct MdxContentWebview: View {
     Task {
       do {
         if let en = editingNote {
-          try await setParsedEditorContent(note: en)
+          try await setParsedEditorContentString(note: en)
         }
         print("Loaded initial editor data")
       } catch {
@@ -98,8 +98,8 @@ struct MdxContentWebview: View {
     }
   }
 
-  func setParsedEditorContent(note: NoteModel) async throws {
-    try await MdxEditorClient.setParsedEditorContent(
+  func setParsedEditorContentString(note: NoteModel) async throws {
+    try await MdxEditorClient.setParsedEditorContentString(
       note: note,
       evaluateJavaScript: mdxWebview.evaluateJavaScript
     )

@@ -30,7 +30,7 @@ public struct NoteSearchResultItemInnerView: View {
         .font(.subheadline)
         .opacity(editingNote?.id == item.id ? 1 : 0)
       VStack(alignment: .leading) {
-        Text(item.markdown.title ?? "--")
+          Text(item.getPreferedTitle())
           .font(.headline)
           .lineLimit(2)
         Text(item.ctime.formatted(date: .complete, time: .shortened))

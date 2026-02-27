@@ -15,7 +15,7 @@ struct BibEntrySelectionItem: View {
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFormat: EmbeddedCslFileSwift =
     .apa
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
-  @Bindable var editingNote: NoteModel
+  @Binding var editingNote: NoteModel
   let entry: BibEntryModel
 
   var body: some View {

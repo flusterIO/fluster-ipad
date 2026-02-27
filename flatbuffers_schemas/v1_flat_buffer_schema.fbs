@@ -50,6 +50,7 @@ table FrontMatterResultBuffer {
     ignore_parsers:[string] (required);
     title:string;
     user_defined_id:string;
+    fs_path:string;
 }
 
 table MdxParsingResultBuffer {

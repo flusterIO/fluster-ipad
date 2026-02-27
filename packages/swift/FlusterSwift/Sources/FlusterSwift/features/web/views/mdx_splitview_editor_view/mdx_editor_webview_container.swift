@@ -69,13 +69,6 @@ import WebKit
         window.emitMdxParsingSuccess()
         """)
     }
-    public func setParsedEditorContent(content: Data) {
-      let bytes: [UInt8] = Array(content)
-      self.runJavascript(
-        """
-        window.setParsedEditorContent(\(bytes))
-        """)
-    }
     public func setInitialProperties(
       editingNote: NoteModel?,
       codeEditorTheme: CodeSyntaxTheme,

@@ -153,7 +153,7 @@ struct MdxEditorWebview: View {
         Task(priority: .high) {
           if let en = editingNote {
             do {
-              try await setParsedEditorContent(
+              try await setParsedEditorContentString(
                 note: en
               )
             } catch {
@@ -172,7 +172,7 @@ struct MdxEditorWebview: View {
       Task {
         try await en.preParse(modelContext: modelContext)
         do {
-          try await setParsedEditorContent(note: en)
+          try await setParsedEditorContentString(note: en)
         } catch {
           print("Error: \(error.localizedDescription)")
         }
@@ -215,8 +215,8 @@ struct MdxEditorWebview: View {
     try await MdxEditorClient.setEditorKeymap(
       keymap: editorKeymap, evaluateJavaScript: webView.evaluateJavaScript)
   }
-  func setParsedEditorContent(note: NoteModel) async throws {
-    try await MdxEditorClient.setParsedEditorContent(
+  func setParsedEditorContentString(note: NoteModel) async throws {
+    try await MdxEditorClient.setParsedEditorContentString(
       note: note, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func setEditorContent(note: NoteModel) async throws {
@@ -228,7 +228,7 @@ struct MdxEditorWebview: View {
       lock, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func loadNote(note: NoteModel) async throws {
-    try await setParsedEditorContent(note: note)
+    try await setParsedEditorContentString(note: note)
     try await setEditorContent(note: note)
   }
 }

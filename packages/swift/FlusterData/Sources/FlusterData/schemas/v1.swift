@@ -21,11 +21,13 @@ extension AppSchemaV1 {
     public var id: String
     public var title: String?
     public var userDefinedId: String?
+    public var fsPath: String?
     public var ignoreParsers: [String] = []
 
-    init(id: String, title: String? = nil, userDefinedId: String? = nil) {
+    init(id: String, title: String? = nil, fsPath: String? = nil, userDefinedId: String? = nil) {
       self.id = id
       self.title = title
+      self.fsPath = fsPath
       self.userDefinedId = userDefinedId
     }
 
@@ -35,16 +37,6 @@ extension AppSchemaV1 {
         title: nil,
         userDefinedId: nil
       )
-    }
-    public func applyRustFrontMatterResult(
-      res: MdxSerialization_FrontMatterResultBuffer
-    ) {
-      if res.title != nil, !res.title!.isEmpty {
-        self.title = res.title
-      }
-      if res.userDefinedId != nil, !res.userDefinedId!.isEmpty {
-        self.userDefinedId = res.userDefinedId
-      }
     }
     public func applyParsingResult(
       res: FrontMatterResult
@@ -143,6 +135,9 @@ extension AppSchemaV1 {
       return self.citations.contains(where: { $0.id == citation.id })
     }
 
+    /// Appends a citation to the citation list, replacing an item by citationKey if that item already exists.
+    ///  This leads to a behavior where any new bibliography entry with a given citationKey will override
+    ///  a previous entry if they share the same citationKey.
     public func addCitation(citation: BibEntryModel, strategy: BibEntrySaveStrategy) {
       self.bibEntryStrategyMap[citation.citationKey ?? citation.id] = strategy
       self.citations.appendWithoutDuplicates(item: citation)
@@ -173,23 +168,22 @@ extension AppSchemaV1 {
       return note
     }
     public func applyMdxParsingResults(
-      results: MdxSerialization_MdxParsingResultBuffer,
+      results: MdxParsingResult,
       modelContext: ModelContext
     ) {
-      self.markdown.preParsedBody = results.parsedContent
+      self.markdown.preParsedBody = results.content
       if let frontMatter = results.frontMatter {
-        self.frontMatter.applyRustFrontMatterResult(res: frontMatter)
+        self.frontMatter.applyParsingResult(res: frontMatter)
       }
       var tags: [TagModel] = []
-      for idx in (0..<results.tagsCount) {
-        if let tag = results.tags(at: idx) {
-          if let existingResult = self.tags.first(where: {
-            $0.value == tag.body
-          }) {
-            tags.append(existingResult)
-          } else {
-            tags.append(TagModel(value: tag.body))
-          }
+      for idx in (0..<results.tags.count) {
+        let tag = results.tags[idx]
+        if let existingResult = self.tags.first(where: {
+          $0.value == tag.body
+        }) {
+          tags.append(existingResult)
+        } else {
+          tags.append(TagModel(value: tag.body))
         }
       }
       self.tags = tags
@@ -211,18 +205,17 @@ extension AppSchemaV1 {
         }
       }
       // Handle saving of additional bibEntries that can be generated from the note.
-      let citationsLength = results.citationsCount
+      let citationsLength = results.citations.count
       //      var parsingResultCitations: [MdxSerialization_CitationResultBuffer] = []
       for idx in (0..<citationsLength) {
-        if let citationItem = results.citations(at: idx) {
-          if let existingCitation = allCitations.first(where: { cit in
-            cit.citationKey == citationItem.citationKey
-          }) {
-            // Citation exists in datbase, can continue saving it
-            citations.append(existingCitation)
-            self.bibEntryStrategyMap[existingCitation.citationKey ?? existingCitation.id] =
-              .fromNoteContent
-          }
+        let citationItem = results.citations[idx]
+        if let existingCitation = allCitations.first(where: { cit in
+          cit.citationKey == citationItem.citationKey
+        }) {
+          // Citation exists in datbase, can continue saving it
+          citations.append(existingCitation)
+          self.bibEntryStrategyMap[existingCitation.citationKey ?? existingCitation.id] =
+            .fromNoteContent
         }
       }
 
@@ -230,20 +223,19 @@ extension AppSchemaV1 {
 
       // -- Dictionary --
       var dictionaryEntries: [DictionaryEntryModel] = []
-      for idx in (0..<results.dictionaryEntriesCount) {
-        if let dEntry = results.dictionaryEntries(at: idx) {
-          if let existingEntry = self.dictionaryEntries.first(where: {
-            $0.label == dEntry.label
-          }) {
-            dictionaryEntries.append(existingEntry)
-          } else {
-            dictionaryEntries.append(
-              DictionaryEntryModel(
-                id: UUID.init().uuidString,
-                label: dEntry.label,
-                body: dEntry.body)
-            )
-          }
+      for idx in (0..<results.dictionaryEntries.count) {
+        let dEntry = results.dictionaryEntries[idx]
+        if let existingEntry = self.dictionaryEntries.first(where: {
+          $0.label == dEntry.label
+        }) {
+          dictionaryEntries.append(existingEntry)
+        } else {
+          dictionaryEntries.append(
+            DictionaryEntryModel(
+              id: UUID.init().uuidString,
+              label: dEntry.label,
+              body: dEntry.body)
+          )
         }
       }
       // Come back and improve this with a batch operation or by somehow avoiding this last loop all together when you have time.
@@ -352,11 +344,10 @@ extension AppSchemaV1 {
     public func preParse(modelContext: ModelContext) async throws {
       let _id = self.id
       let _body = self.markdown.body
-      let res: Task<Data?, Never> = try await Task.detached {
+      let res: Task<MdxParsingResult?, Never> = try await Task.detached {
         do {
-          let res = try await parseMdxStringByRegex(
-            opts: ParseMdxOptions(noteId: _id, content: _body, citations: [])
-          )
+          let res = try await FlusterSwiftMdxParser.preParseMdx(
+            options: ParseMdxOptions(noteId: _id, content: _body, citations: []))
           return res
         } catch {
           print("Mdx parsing error: \(error.localizedDescription)")
@@ -365,14 +356,10 @@ extension AppSchemaV1 {
       }
       do {
         if let parsedMdx = try await res.value {
-          if let parsingResults =
-            parsedMdx.toMdxParsingResult()
-          {
-            self.applyMdxParsingResults(
-              results: parsingResults,
-              modelContext: modelContext
-            )
-          }
+          self.applyMdxParsingResults(
+            results: parsedMdx,
+            modelContext: modelContext
+          )
         }
       } catch {
         print("Error: \(error.localizedDescription)")
@@ -457,6 +444,12 @@ extension AppSchemaV1 {
         )
       builder.finish(offset: details)
       return builder.toBytesArray()
+    }
+
+    /// Returns a label for the note sufficient for use in 'title' use cases.
+    /// This prefers front matter to markdown content if it exists.
+    public func getPreferedTitle() -> String {
+      return self.frontMatter.title ?? self.markdown.title ?? "No title found"
     }
   }
   @Model

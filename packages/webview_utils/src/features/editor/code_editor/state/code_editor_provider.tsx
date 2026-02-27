@@ -317,12 +317,12 @@ export const CodeEditorProvider = ({
         }
     }, [initialValue, state.haveSetInitialValue]);
 
-    useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContent, (e) => {
-        dispatch({
-            type: "setParsedEditorContent",
-            payload: e.detail,
-        });
-    });
+    /* useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContent, (e) => { */
+    /*     dispatch({ */
+    /*         type: "setParsedEditorContent", */
+    /*         payload: e.detail, */
+    /*     }); */
+    /* }); */
 
     useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContentString, (e) => {
         dispatch({
