@@ -1,4 +1,4 @@
-import type { PluginOption, UserConfig } from "vite";
+import type { BuildEnvironmentOptions, PluginOption, UserConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { viteSingleFile } from "vite-plugin-singlefile";
@@ -18,6 +18,7 @@ export interface WebviewViteConfig {
         tailwind?: boolean
     },
     base?: string;
+    build?: Omit<BuildEnvironmentOptions, "outDir" | "minify" | "cssMinify">
     // plugins: ReturnType<typeof getConfigPlugins>
 }
 
@@ -44,6 +45,7 @@ export const getWebviewViteConfig = (config: WebviewViteConfig): UserConfig => {
             outDir: config.outputDir,
             minify: isProd ? "esbuild" : undefined,
             cssMinify: isProd ? "lightningcss" : undefined,
+            ...config.build
         },
     } satisfies UserConfig;
 };

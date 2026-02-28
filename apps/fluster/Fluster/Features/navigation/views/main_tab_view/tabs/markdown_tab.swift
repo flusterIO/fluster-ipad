@@ -35,9 +35,9 @@ struct MarkdownTabView: View {
         MdxEditorWebview(
           url:
             Bundle.main.url(
-              forResource: "index",
+              forResource: "index_ipad",
               withExtension: "html",
-              subdirectory: "splitview_mdx_editor"
+              subdirectory: "splitview_mdx_editor_ipad"
             )!,
           theme: $theme,
           editorThemeDark: $editorThemeDark,

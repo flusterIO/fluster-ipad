@@ -56,6 +56,8 @@ export function setParsedEditorSnippetProps(payload: Uint8Array) {
     );
 }
 
+
+// TODO: Now that strings are serializing properly as f--king strings, go back to just using a string here for simplicity's sake.
 export function setParsedEditorContentString(payload: Uint8Array) {
     if (isWebviewOfEnv(WebviewEnvironment.IPad)) {
         document.body.classList.add("loading")

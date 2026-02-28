@@ -99,11 +99,26 @@ build_webview_utils: build_cross_language_all build_fluster_lezer
 build_dictionary_webview: build_cross_language_all build_webview_utils
 	pnpm run -C packages/webviews/dictionary_webview build
 
+build_dictionary_webview_mac: build_cross_language_all build_webview_utils
+	pnpm run -C packages/webviews/dictionary_webview build:mac
+
+build_dictionary_webview_ipad: build_cross_language_all build_webview_utils
+	pnpm run -C packages/webviews/dictionary_webview build:ipad
+
 build_note_detail_webview: build_cross_language_all build_webview_utils
 	pnpm run -C packages/webviews/note_detail_webview build
 
-build_standalone_mdx_preview_webview: build_webview_utils
-	pnpm run -C packages/webviews/standalone_mdx_preview build
+build_note_detail_webview_ipad: build_cross_language_all build_webview_utils
+	pnpm run -C packages/webviews/note_detail_webview build:ipad
+
+build_note_detail_webview_mac: build_cross_language_all build_webview_utils
+	pnpm run -C packages/webviews/note_detail_webview build:mac
+
+build_standalone_mdx_preview_webview_ipad: build_webview_utils
+	pnpm run -C packages/webviews/standalone_mdx_preview build:ipad
+
+build_standalone_mdx_preview_webview_mac: build_webview_utils
+	pnpm run -C packages/webviews/standalone_mdx_preview build:mac
 
 build_standalone_mdx_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/standalone_mdx_editor build
@@ -111,23 +126,31 @@ build_standalone_mdx_editor_webview: build_webview_utils
 build_splitview_mdx_editor: build_webview_utils 
 	cd {{justfile_directory()}}/packages/webviews/splitview_mdx_editor; pnpm build
 
+
+build_splitview_mdx_editor_mac: build_webview_utils 
+	cd {{justfile_directory()}}/packages/webviews/splitview_mdx_editor; pnpm build:mac
+build_splitview_mdx_editor_ipad: build_webview_utils 
+	cd {{justfile_directory()}}/packages/webviews/splitview_mdx_editor; pnpm build:ipad
+
 build_bibtex_editor_webview: build_webview_utils
 	pnpm run -C packages/webviews/bibtex_editor_webview build
+
+build_bibtex_editor_webview_ipad: build_webview_utils
+	pnpm run -C packages/webviews/bibtex_editor_webview build:ipad
+build_bibtex_editor_webview_mac: build_webview_utils
+	pnpm run -C packages/webviews/bibtex_editor_webview build:mac
 
 build_fluster_language_lezer:
 	./node_modules/@lezer/generator/src/lezer-generator.cjs ./packages/typescript/lezer/src/fluster/fluster_math.grammar -o ./packages/typescript/lezer/src/fluster/fluster_math_parser.js
 
 build_all_webviews: build_cross_language_all build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview build_dictionary_webview
 
-pre_ipad_build: generate_initial_launch_data build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_swift_mdx_parser build_all_webviews
+pre_ipad_build: generate_initial_launch_data build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_swift_mdx_parser build_splitview_mdx_editor_ipad build_bibtex_editor_webview_ipad build_note_detail_webview_ipad build_dictionary_webview_ipad
 
 generate_shiki_themes:
 	tsx scripts/write_bundled_themes.ts
 
-pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor build_standalone_mdx_preview_webview build_bibtex_editor_webview build_dictionary_webview
-
-create_desktop_feature feature_name:
-	python scripts/create_feature_util.py {{feature_name}}
+pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor_mac build_standalone_mdx_preview_webview_mac build_bibtex_editor_webview_mac build_dictionary_webview_mac build_note_detail_webview_mac
 
 test_rust: build_cross_language_schemas
 	cargo nextest run --no-capture

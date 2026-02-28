@@ -50,7 +50,7 @@ import WebKit
         """
       )
     }
-    /// Sets the editor's preview content with a 'pre-parsed' string.
+    /// Deprecated in favor of MdxEditorClient
     public func setParsedEditorContentString(content: String) {
       self.runJavascript(
         """

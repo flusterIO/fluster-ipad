@@ -44,9 +44,9 @@ struct MdxContentWebview: View {
       WebViewContainerView(
         webview: $mdxWebview,
         url: Bundle.main.url(
-          forResource: "index",
+          forResource: "index_mac",
           withExtension: "html",
-          subdirectory: "standalone_mdx_preview"
+          subdirectory: "standalone_mdx_preview_mac"
         )!,
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,

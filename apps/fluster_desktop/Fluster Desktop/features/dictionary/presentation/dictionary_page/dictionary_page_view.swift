@@ -21,9 +21,9 @@ struct DictionaryPageView: View {
     WebViewContainerView(
       webview: $webview,
       url: Bundle.main.url(
-        forResource: "index",
+        forResource: "index_mac",
         withExtension: "html",
-        subdirectory: "dictionary_webview"
+        subdirectory: "dictionary_webview_mac"
       )!,
       messageHandlerKeys: [
         MdxPreviewWebviewActions.onTagClick.rawValue,

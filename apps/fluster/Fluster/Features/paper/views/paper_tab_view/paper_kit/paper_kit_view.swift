@@ -26,11 +26,6 @@ struct PaperKitView: View {
             }
           )
           .navigationTitle("Page \(focusedPageIndex + 1) of \(editingNote.paper.count)")
-          .onDisappear {
-            // In a real app, you would pass a save action via an Environment
-            // key or trigger the Coordinator's save method before dismissing.
-            print("Canvas dismissed. Trigger save sequence here.")
-          }
         } else {
           Color.clear
         }

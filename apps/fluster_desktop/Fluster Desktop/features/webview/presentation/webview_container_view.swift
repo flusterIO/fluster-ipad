@@ -148,7 +148,7 @@ struct WebViewContainerView: View {
       if !show {
         ProgressView("Loading...")
           .tint(Color.accent)
-          .foregroundStyle(.accent)
+          .foregroundStyle(.foreground)
           .progressViewStyle(.circular)
       }
     }

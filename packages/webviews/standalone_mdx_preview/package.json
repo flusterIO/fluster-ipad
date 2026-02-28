@@ -25,10 +25,26 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsc -b && vite build",
+    "build": "wireit",
+    "build:ipad": "wireit",
+    "build:mac": "wireit",
     "dev": "vite dev",
     "lint": "eslint .",
     "preview": "vite preview"
+  },
+  "wireit": {
+    "build:mac": {
+      "command": "tsc -b && vite build -c ./vite_mac.config.ts"
+    },
+    "build:ipad": {
+      "command": "tsc -b && vite build -c ./vite_ipad.config.ts"
+    },
+    "build": {
+      "dependencies": [
+        "build:mac",
+        "build:ipad"
+      ]
+    }
   },
   "dependencies": {
     "@fluster/webview_utils": "workspace:*",

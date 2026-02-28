@@ -10,14 +10,14 @@
 		792755712F4540E2004476E6 /* Redline in Frameworks */ = {isa = PBXBuildFile; productRef = 792755702F4540E2004476E6 /* Redline */; };
 		79513C752EF3AF3700FF4885 /* Testing in Frameworks */ = {isa = PBXBuildFile; productRef = 79513C742EF3AF3700FF4885 /* Testing */; };
 		79513C772EF3AF3700FF4885 /* _TestDiscovery in Frameworks */ = {isa = PBXBuildFile; productRef = 79513C762EF3AF3700FF4885 /* _TestDiscovery */; };
-		79516C4D2EE893ED00573A77 /* splitview_mdx_editor in Resources */ = {isa = PBXBuildFile; fileRef = 79516C4C2EE893ED00573A77 /* splitview_mdx_editor */; };
 		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
-		79ADEFFC2EFDBE4E00EB4E22 /* dictionary_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79ADEFFB2EFDBE4E00EB4E22 /* dictionary_webview */; };
+		79C1227C2F536562000CDCFA /* bibtex_editor_webview_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C122782F536562000CDCFA /* bibtex_editor_webview_ipad */; };
+		79C1227D2F536562000CDCFA /* dictionary_webview_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C122792F536562000CDCFA /* dictionary_webview_ipad */; };
+		79C1227E2F536562000CDCFA /* note_detail_webview_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C1227A2F536562000CDCFA /* note_detail_webview_ipad */; };
+		79C1227F2F536562000CDCFA /* splitview_mdx_editor_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C1227B2F536562000CDCFA /* splitview_mdx_editor_ipad */; };
 		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79D841D02F4150EA004E992B /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79D841CF2F4150EA004E992B /* FlusterWebviewClients */; };
 		79EF658C2F5133F10019E6E8 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79EF658B2F5133F10019E6E8 /* bibliography_embedded */; };
-		79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */; };
-		79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */ = {isa = PBXBuildFile; fileRef = 79F936DE2EE38B8000777CDB /* note_detail_webview */; };
 		79FA32B52F1822EA0066B8B4 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79FA32B42F1822EA0066B8B4 /* FlusterData */; };
 		79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */ = {isa = PBXBuildFile; fileRef = 79FA54412ED8BB5F00D16F68 /* initial_note_docs */; };
 		79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79FB1F542ED928FB0041E1E0 /* FlusterSwift */; };
@@ -30,6 +30,11 @@
 		79516C4C2EE893ED00573A77 /* splitview_mdx_editor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor; sourceTree = "<group>"; };
 		79AC14432EDB4D1700E3773F /* standalone_mdx_preview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview; sourceTree = "<group>"; };
 		79ADEFFB2EFDBE4E00EB4E22 /* dictionary_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dictionary_webview; path = ../../packages/webviews/dictionary_webview/dictionary_webview; sourceTree = "<group>"; };
+		79C122752F536520000CDCFA /* Fluster.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Fluster.xcodeproj; sourceTree = "<group>"; };
+		79C122782F536562000CDCFA /* bibtex_editor_webview_ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview_ipad; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview_ipad; sourceTree = "<group>"; };
+		79C122792F536562000CDCFA /* dictionary_webview_ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dictionary_webview_ipad; path = ../../packages/webviews/dictionary_webview/dictionary_webview_ipad; sourceTree = "<group>"; };
+		79C1227A2F536562000CDCFA /* note_detail_webview_ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview_ipad; path = ../../packages/webviews/note_detail_webview/note_detail_webview_ipad; sourceTree = "<group>"; };
+		79C1227B2F536562000CDCFA /* splitview_mdx_editor_ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor_ipad; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor_ipad; sourceTree = "<group>"; };
 		79C33DCF2F19BC6400C25717 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79EF658B2F5133F10019E6E8 /* bibliography_embedded */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibliography_embedded; path = ../../packages/rust/fluster_bibliography/bibliography_embedded; sourceTree = "<group>"; };
 		79F130FE2ED218DE0082BA65 /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
@@ -82,6 +87,11 @@
 		796F70FB2EB174610012B500 = {
 			isa = PBXGroup;
 			children = (
+				79C122782F536562000CDCFA /* bibtex_editor_webview_ipad */,
+				79C122792F536562000CDCFA /* dictionary_webview_ipad */,
+				79C1227A2F536562000CDCFA /* note_detail_webview_ipad */,
+				79C1227B2F536562000CDCFA /* splitview_mdx_editor_ipad */,
+				79C122752F536520000CDCFA /* Fluster.xcodeproj */,
 				79EF658B2F5133F10019E6E8 /* bibliography_embedded */,
 				79ADEFFB2EFDBE4E00EB4E22 /* dictionary_webview */,
 				79516C4C2EE893ED00573A77 /* splitview_mdx_editor */,
@@ -95,6 +105,11 @@
 				796F71062EB174610012B500 /* Fluster */,
 				79C33DCF2F19BC6400C25717 /* Fluster.app */,
 			);
+			sourceTree = "<group>";
+		};
+		79C122762F536520000CDCFA /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +184,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F70FB2EB174610012B500;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 79C122762F536520000CDCFA /* Products */;
+					ProjectRef = 79C122752F536520000CDCFA /* Fluster.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				796F71032EB174610012B500 /* Fluster */,
@@ -181,12 +202,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79C1227C2F536562000CDCFA /* bibtex_editor_webview_ipad in Resources */,
+				79C1227D2F536562000CDCFA /* dictionary_webview_ipad in Resources */,
+				79C1227E2F536562000CDCFA /* note_detail_webview_ipad in Resources */,
+				79C1227F2F536562000CDCFA /* splitview_mdx_editor_ipad in Resources */,
 				79EF658C2F5133F10019E6E8 /* bibliography_embedded in Resources */,
-				79ADEFFC2EFDBE4E00EB4E22 /* dictionary_webview in Resources */,
-				79516C4D2EE893ED00573A77 /* splitview_mdx_editor in Resources */,
-				79F936DF2EE38B8000777CDB /* note_detail_webview in Resources */,
 				79FA54422ED8BB5F00D16F68 /* initial_note_docs in Resources */,
-				79F130FF2ED218DE0082BA65 /* bibtex_editor_webview in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
