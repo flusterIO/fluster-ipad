@@ -6,10 +6,11 @@ import {
 
 const config: WebviewViteConfig = {
     outputDir: "splitview_mdx_editor",
+    singleFile: false,
     plugins: {
-        tailwind: true,
+        tailwind: false,
     },
-    // singleFile: false,
+    base: "./",
 };
 
 export default defineConfig(getWebviewViteConfig(config));

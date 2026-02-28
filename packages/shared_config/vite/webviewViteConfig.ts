@@ -16,7 +16,8 @@ export interface WebviewViteConfig {
     outputDir: string;
     plugins?: {
         tailwind?: boolean
-    }
+    },
+    base?: string;
     // plugins: ReturnType<typeof getConfigPlugins>
 }
 
@@ -37,6 +38,7 @@ export const getWebviewViteConfig = (config: WebviewViteConfig): UserConfig => {
         }))
     }
     return {
+        base: config.base,
         plugins,
         build: {
             outDir: config.outputDir,

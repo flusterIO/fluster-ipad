@@ -14,7 +14,6 @@ func getWebViewConfig() -> WKWebViewConfiguration {
   let config = WKWebViewConfiguration()
   config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
   config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
-  //    config.
   return config
 }
 
@@ -28,7 +27,9 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
 
   typealias ViewType = WKWebView
   func makeNSView(context: Context) -> WKWebView { makeWebView(context: context) }
-  func updateNSView(_ nsView: WKWebView, context: Context) {}
+  func updateNSView(_ nsView: WKWebView, context: Context) {
+    //      nsView.loadFileURL(url, allowingReadAccessTo: url)
+  }
 
   private func makeWebView(context: Context) -> WKWebView {
     webView.isHidden = true
@@ -53,7 +54,7 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
       }
     }
     webView.navigationDelegate = context.coordinator
-    webView.load(URLRequest(url: url))
+
     webView.isInspectable = true
     let source = """
       document.body?.classList.add("\(WebviewEnvironment.macOS.rawValue)")
@@ -65,6 +66,7 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     )
     webView.configuration.userContentController.addUserScript(webviewEnvironmentScript)
 
+    webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
     return webView
   }
 
@@ -146,7 +148,7 @@ struct WebViewContainerView: View {
       if !show {
         ProgressView("Loading...")
           .tint(Color.accent)
-          .foregroundStyle(.foreground)
+          .foregroundStyle(.accent)
           .progressViewStyle(.circular)
       }
     }
