@@ -103,7 +103,7 @@ import WebKit
       }
 
       // Loading the page only once
-      webView.loadFileURL(url, allowingReadAccessTo: url)
+      webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
 
       if colorScheme == .dark {
         webView.evaluateJavaScript(
@@ -243,14 +243,14 @@ import WebKit
             parent.handleTagClick(tagBody: message.body as! String)
           case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
             do {
-                Task {
-                    try await parent.editingNote.preParse(modelContext: parent.modelContext)
-                    parent.container.setParsedEditorContentString(
-                        content: parent.editingNote.markdown.preParsedBody
-                        ?? parent.editingNote.markdown.body)
-                }
+              Task {
+                try await parent.editingNote.preParse(modelContext: parent.modelContext)
+                parent.container.setParsedEditorContentString(
+                  content: parent.editingNote.markdown.preParsedBody
+                    ?? parent.editingNote.markdown.body)
+              }
             } catch {
-                print("Error: \(error.localizedDescription)")
+              print("Error: \(error.localizedDescription)")
             }
           case MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue:
             parent.handleViewNoteByUserDefinedId(id: message.body as! String)
