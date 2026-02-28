@@ -9,6 +9,7 @@ import Foundation
 
 public typealias NoteModel = AppSchemaV1.NoteModel
 public typealias BibEntryModel = AppSchemaV1.BibEntryModel
+public typealias FormattedCitation = AppSchemaV1.FormattedCitation
 public typealias PaperModel = AppSchemaV1.PaperModel
 public typealias SubjectModel = AppSchemaV1.SubjectModel
 public typealias TagModel = AppSchemaV1.TagModel

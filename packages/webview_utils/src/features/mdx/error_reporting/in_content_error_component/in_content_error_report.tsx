@@ -11,6 +11,7 @@ export const InContentErrorReport = (props: FallbackProps & { componentName: str
     if (!(props.error instanceof ZodError) || props.error.isEmpty) {
         return null
     }
+    console.log("Error Props: ", props)
     return (
         <AnimatePresence>
             {show ? (

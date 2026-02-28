@@ -14,7 +14,8 @@ figure[data-rehype-pretty-code-figure] {
 
   figcaption {
     padding: 0 0.5rem;
-    color: var(--color-fd-card-foreground) / 0.8;
+    color: var(--color-fd-card-foreground);
+    opacity: 0.8;
   }
 
   pre {

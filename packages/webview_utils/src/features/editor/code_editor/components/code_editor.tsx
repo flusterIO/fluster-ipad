@@ -1,4 +1,4 @@
-import React, { useEffect, useEffectEvent, useId, useRef, useState, type ReactNode } from "react";
+import React, { useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
 import { EditorState, Extension } from "@codemirror/state";
 import { EditorView, keymap, ViewUpdate } from "@codemirror/view";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
@@ -16,18 +16,17 @@ import { LoadingComponent } from "@/shared_components/loading_component";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { BibtexEditorWebviewEvents, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
-import { AnyWebviewAction, AnyWebviewEvent, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
+import { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
 import { bracketMatching, foldGutter, indentOnInput, syntaxTree } from '@codemirror/language';
 import { autocompletion, closeBrackets, completeFromList, CompletionSource } from '@codemirror/autocomplete';
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
-import { Table, TaskList } from "@lezer/markdown";
 import { Prec } from "@codemirror/state";
 import { GetSnippetProps, SnippetStrategy } from "../data/snippets/snippet_types";
 import { getMathSnippets } from "../data/snippets/math_snippets";
-import { Tex, YAMLFrontMatter } from "@fluster/lezer";
+import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
@@ -88,7 +87,6 @@ export const CodeEditorInner = ({
                 // Walk up the tree to find the context
                 let curr: (typeof node | null) = node;
                 while (curr) {
-                    console.log("curr.name: ", curr.name)
                     if (curr.name === "TexBlock" || curr.name === "TexInline") {
                         return {
                             from: word.from,
@@ -117,10 +115,10 @@ export const CodeEditorInner = ({
                     base: markdownLanguage,
                     codeLanguages: languages,
                     extensions: [
-                        Table,
                         Tex,
-                        TaskList,
-                        YAMLFrontMatter
+                        /* Table, */
+                        /* TaskList, */
+                        /* YAMLFrontMatter */
                     ]
                 }),
                 Prec.high(markdownLanguage.data.of({
@@ -128,9 +126,6 @@ export const CodeEditorInner = ({
                 })),
             ]
         } else if (language === CodeEditorLanguage.bibtex) {
-            /* const bt = bibtex({ */
-            /*     additionalSnippets: getBibtexSnippets() */
-            /* }); */
             const snippets = getBibtexSnippets()
             extensions = [
                 ...extensions,
