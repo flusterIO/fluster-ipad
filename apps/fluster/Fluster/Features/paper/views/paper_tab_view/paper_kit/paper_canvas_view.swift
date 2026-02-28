@@ -1,6 +1,7 @@
 import PaperKit
 import PencilKit
 import SwiftUI
+import FlusterData
 
 struct PaperCanvasView: UIViewControllerRepresentable {
   @Binding var canvasData: Data
