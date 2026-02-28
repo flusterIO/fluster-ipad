@@ -6,8 +6,8 @@ export const defaultWidthTransform = {
     small: "w-full @[450px]/mdx:w-[320px]",
     smedium: "w-full @[550px]/mdx:w-[384px]]",
     medium: "w-full @[650px]/mdx:w-[448px]",
-    large: "w-full @[700px]/mdx:w-[576px]",
-    xl: "w-full @[768px]/mdx:w-[672px]",
+    large: "w-full @[768px]/mdx:w-[576px]",
+    xl: "w-full @[1080px]/mdx:w-[672px]",
     xxl: "w-full @[1080px]/mdx:w-[896px]",
     full: "w-full",
 }
@@ -26,7 +26,7 @@ export const defaultHeightTransform = {
 const _sizableObjectSchema = {
     right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "float-right ml-4 mr-0" : ""),
     left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "float-left mr-4 ml-0" : ""),
-    sidebar: z.boolean({ message: "'sidebar' is a boolean propertery." }).optional().transform((a) => a ? "w-full min-w-full @expandedMdx/mdx:w-1/3 @[768px]/mdx:min-w-[33%]" : ""),
+    sidebar: z.boolean({ message: "'sidebar' is a boolean property." }).optional().transform((a) => a ? "w-full min-w-full @[768px]/mdx:w-1/3 @[768px]/mdx:min-w-[33%]" : ""),
     center: z.boolean({ message: "'center' must be a boolean." }).optional().transform((a) => a ? "mx-auto block" : ""),
     text: sizablePropSchema("text").optional().transform(sizablePropsMapTransform({
         none: "text-xs",

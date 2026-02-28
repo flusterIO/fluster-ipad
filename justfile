@@ -126,7 +126,6 @@ build_standalone_mdx_editor_webview: build_webview_utils
 build_splitview_mdx_editor: build_webview_utils 
 	cd {{justfile_directory()}}/packages/webviews/splitview_mdx_editor; pnpm build
 
-
 build_splitview_mdx_editor_mac: build_webview_utils 
 	cd {{justfile_directory()}}/packages/webviews/splitview_mdx_editor; pnpm build:mac
 build_splitview_mdx_editor_ipad: build_webview_utils 

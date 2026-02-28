@@ -9,36 +9,19 @@ import FlusterBibliography
 import FlusterData
 import SwiftUI
 
-struct FormattedCitationData {
-  let title: String?
-  let url: String?
-  let note: String?
-  let abstract: String?
-  let formatted: String?
-}
-
 struct BibliographyEntrySearchResultListItemView: View {
   let item: BibEntryModel
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
 
-  var citationData: FormattedCitationData? {
-    if let data = item.toBiblatexData() {
-      FormattedCitationData(
-        title: data.getTitle(), url: data.getUrl(), note: data.getNote(),
-        abstract: data.getAbstract(),
-        formatted: data.formatBibliographyCitation(
-          cslContent: cslFile.toFlusterBibliographyCslFile(), cslLocale: getCslLocaleFileContent(),
-          renderMethod: .plaintext))
-    } else {
-      nil
-    }
+  var citationData: FormattedCitation? {
+      item.safelyGetFormatted(activeCslFormat: cslFile)
   }
 
   var body: some View {
     if let data = citationData {
       VStack(alignment: .leading) {
-        Text(data.formatted ?? data.title ?? "No title found")
+        Text(data.formattedPlainText)
           .font(.headline)
           .padding(.horizontal)
           .padding((data.note != nil || data.abstract != nil) ? .top : .vertical)
@@ -70,9 +53,3 @@ struct BibliographyEntrySearchResultListItemView: View {
     }
   }
 }
-
-//#Preview {
-//    BibliographyEntrySearchResultListItemView(item: BibEntryModel(
-//        data: <#T##String#>
-//    ))
-//}

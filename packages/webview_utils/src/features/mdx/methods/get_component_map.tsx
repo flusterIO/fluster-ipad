@@ -16,6 +16,7 @@ import { InlineMdxContent } from "../components/inline_mdx_content";
 import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
+import { EmbeddableCard } from "../embeddable_mdx_components/card/embeddable_card";
 
 export interface ComponentMapItem {
     /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
@@ -103,11 +104,10 @@ const items: ComponentMapItem[] = [
         // Required to get around circular import that I still can't find...
         component: (props) => <Admonition {...props} InlineMdxContent={InlineMdxContent} />,
     },
-    /* { */
-    /*     query: "Card", */
-    /*     component: EmbeddableCard, */
-    /*     requiresInlineMdx: true, */
-    /* }, */
+    {
+        query: "Card",
+        component: (props) => <EmbeddableCard {...props} InlineMdxContent={InlineMdxContent} />,
+    },
     /* { */
     /*     query: "Grid", */
     /*     component: Grid, */

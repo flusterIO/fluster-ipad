@@ -482,14 +482,28 @@ extension AppSchemaV1 {
     public var formattedPlainText: String
     public var cslFormatId: String
     public var bibEntry: BibEntryModel?
+    public var title: String?
+    public var note: String?
+    public var abstract: String?
+    public var url: String?
 
     public init(
-      formattedHtml: String, formattedPlainText: String, cslFormatId: String,
+      formattedHtml: String,
+      formattedPlainText: String,
+      cslFormatId: String,
+      title: String?,
+      note: String?,
+      abstract: String?,
+      url: String?,
       bibEntry: BibEntryModel?
     ) {
       self.formattedHtml = formattedHtml
       self.formattedPlainText = formattedPlainText
       self.cslFormatId = cslFormatId
+      self.title = title
+      self.note = note
+      self.abstract = abstract
+      self.url = url
       self.bibEntry = bibEntry
     }
   }
@@ -554,10 +568,19 @@ extension AppSchemaV1 {
           cslContent: cslContent, cslLocale: localContent, renderMethod: .html)
         let plainTextFormatted = entry.formatBibliographyCitation(
           cslContent: cslContent, cslLocale: localContent, renderMethod: .plaintext)
+        let title = entry.getTitle()
+        let abstract = entry.getAbstract()
+        let url = entry.getUrl()
+        let note = entry.getNote()
         if let formattedHtml = htmlFormatted, let formattedPlainText = plainTextFormatted {
           let formattedCitation = FormattedCitation(
             formattedHtml: formattedHtml, formattedPlainText: formattedPlainText,
-            cslFormatId: cslFormat.rawValue, bibEntry: self
+            cslFormatId: cslFormat.rawValue,
+            title: title,
+            note: note,
+            abstract: abstract,
+            url: url,
+            bibEntry: self
           )
           self.formatted = formattedCitation
           return formattedCitation

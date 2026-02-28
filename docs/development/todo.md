@@ -9,6 +9,11 @@
 
 - [ ] Move all editor interactions that user defined data to go through flatbuffers for serialization. It seems like it can break in some circumstances, and this will improve reliability _significantly_.
 
+### Embedded Components
+
+- [ ] Responsive Grid
+- [ ] `CenterCard` that centers the content within it, or a plain, 'fd-card-background' container with sizableObject props and some decent defaults with a default 'flex-center' behavior.
+
 ## Desktop
 
 - [ ] Work on AI summarization.
@@ -16,7 +21,6 @@
 - [ ] Handle rest of zod based props
   - [x] Make sure `Emphasis` based colors are working being set from talwind color variable.
   - [x] Make sure sizable props are working, particularly with admonition.
-  - [x] Make sure `@expandedMdx/mdx:w-1/3` or similar props are working. They're already in use in the admonition component.
 - [ ] Pick back up by handling this horrible user experience when a bib entry is associated with a note.
   - [ ] Move list to lazy list. This is almost surely rendering every item in the list causing the big freeze.
 - [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
