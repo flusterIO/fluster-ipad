@@ -56,9 +56,9 @@ struct BibtexEditorWebview: View {
     WebViewContainerView(
       webview: $webView,
       url: Bundle.main.url(
-        forResource: "index",
+        forResource: "index_mac",
         withExtension: "html",
-        subdirectory: "bibtex_editor_webview"
+        subdirectory: "bibtex_editor_webview_mac"
       )!,
       messageHandlerKeys: [
         BibtexEditorWebviewActions.onEditorChange.rawValue,

@@ -13,9 +13,9 @@ import FlusterData
 #if os(iOS)
 public struct DictionaryWebview: UIViewRepresentable {
   let url: URL = Bundle.main.url(
-    forResource: "index",
+    forResource: "index_ipad",
     withExtension: "html",
-    subdirectory: "dictionary_webview"
+    subdirectory: "dictionary_webview_ipad"
   )!
   @Query(sort: \DictionaryEntryModel.label, order: .forward) private var dictionaryEntries:
     [DictionaryEntryModel]

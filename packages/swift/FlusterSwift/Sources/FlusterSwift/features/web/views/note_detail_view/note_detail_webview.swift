@@ -22,9 +22,9 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
   @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
     var webviewFontSize: WebviewFontSize = .base
   public let url: URL = Bundle.main.url(
-    forResource: "index",
+    forResource: "index_ipad",
     withExtension: "html",
-    subdirectory: "note_detail_webview"
+    subdirectory: "note_detail_webview_ipad"
   )!
 
   //    @Binding public var tagQuery: String

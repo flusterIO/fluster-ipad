@@ -215,7 +215,7 @@ export const CodeEditorInner = ({
         }
     })
 
-    return <div className="h-full w-full mdx-editor-container" id={containerId} />;
+    return <div className="h-screen w-full mdx-editor-container" id={containerId} />;
 };
 
 export const CodeEditor = (

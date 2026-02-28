@@ -5,13 +5,12 @@ import Foundation
 import SwiftData
 
 extension String {
+  /// Returns a string that's able to be sent through a javascript string that's *already* surrounded by quotes.
   public func toQuotedJavascriptString() -> String {
     func backupParseString(s: String) -> String {
       return
         "`\(s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "`", with: "\\`"))`"
     }
-    //    return
-    //      "`\(self.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "`", with: "\\`"))`"
     do {
       // Encode the string directly into JSON data
       let data = try JSONEncoder().encode(self)
@@ -48,7 +47,7 @@ extension String {
   /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
   public func preParseAsMdx(noteId: String?) async -> MdxParsingResult? {
     do {
-      let res = await FlusterSwiftMdxParser.preParseMdx(
+      let res = try await preParseMdx(
         options: ParseMdxOptions(noteId: noteId, content: self, citations: []))
       return res
     } catch {

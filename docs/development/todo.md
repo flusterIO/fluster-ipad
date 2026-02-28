@@ -11,8 +11,6 @@
 
 ## Desktop
 
-**_RESUME_**
-
 - [ ] Work on AI summarization.
 - [ ] Review [this](https://www.ditto.com/blog/running-a-react-web-app-in-an-ios-app) and see how difficult it would be to get rid of this single page build issue. That would expand the capabilities almost infinitely...
 - [ ] Handle rest of zod based props
@@ -28,17 +26,16 @@
   - [ ] Then work on iPad paperkit implementation. There seems to be more documentation for that, so try to get that working first before handling state update on mac.
 - [x] Fix issue with model container now that it's being passed to the secondary window.
 - [x] Add 'escape-to-close' functionality back to command palette.
-
 - [x] Fix issue with dictionary entry parsing. This might be applicable to all 'pre-parsing' functionality.
-
 - [ ] Implement error handling method similar to red-thread for all embeddable components that aren't auto inserted.
-
 - [ ] Handle scroll restoration on desktop app while in landscape mode.
-
 - [ ] Work on syncing method to create notes from file system.
 
 ## iPad
 
+**_RESUME_**
+
+- [ ] Fix issue with bibliography entries not being associated with note properly.
 - [ ] Make sure note can be loaded when ipad is initially in portrait view. It's currently stuck in loading mode.
 
 ## Webviews

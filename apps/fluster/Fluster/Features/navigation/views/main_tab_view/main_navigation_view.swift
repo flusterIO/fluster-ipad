@@ -318,25 +318,23 @@ struct MainView: View {
         }
       }
     )
-    .onChange(
-      of: editingNote?.markdown.body,
-      {
-        Task {
-          if let note = editingNote {
-            do {
-              try await note.preParse(modelContext: modelContext)
-              editorContainer.setParsedEditorContentString(
-                content: note.markdown.preParsedBody ?? note.markdown.body)
-              try modelContext.save()
-            } catch {
-              print(
-                "Failed to save model context when navigating away from editor view."
-              )
-            }
-          }
-        }
-      }
-    )
+//    .task(
+//      id: editingNote?.markdown.body,
+//      {
+//        if let note = editingNote {
+//          do {
+//            try await note.preParse(modelContext: modelContext)
+//            try await MdxEditorClient.setParsedEditorContentString(
+//              note: note, evaluateJavaScript: editorContainer.webview.evaluateJavaScript)
+//            try modelContext.save()
+//          } catch {
+//            print(
+//              "Failed to save model context when navigating away from editor view."
+//            )
+//          }
+//        }
+//      }
+//    )
     .onChange(
       of: editorThemeDark,
       {

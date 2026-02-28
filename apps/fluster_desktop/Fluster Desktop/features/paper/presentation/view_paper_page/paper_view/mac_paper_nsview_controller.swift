@@ -8,6 +8,7 @@
 import AppKit
 import PaperKit
 import PencilKit
+import FlusterData
 import SwiftUI
 
 class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Delegate {
@@ -108,7 +109,7 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
   public func clearCanvas() {
     // Re-initialize PaperMarkup with the existing bounds (retain size, clear content)
     let bounds = markup.bounds
-    let emptyMarkup = PaperMarkup(bounds: bounds)
+    let emptyMarkup = PaperMarkup(bounds: CGRect(origin: .zero, size: getPaperMarkupBounds()))
     self.markup = emptyMarkup
     paperViewController.markup = emptyMarkup
   }

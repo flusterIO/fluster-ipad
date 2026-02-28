@@ -12,9 +12,9 @@ import WebKit
 #if os(iOS)
   public struct BibtexEditorWebview: UIViewRepresentable {
     let url: URL = Bundle.main.url(
-      forResource: "index",
+      forResource: "index_ipad",
       withExtension: "html",
-      subdirectory: "bibtex_editor_webview"
+      subdirectory: "bibtex_editor_webview_ipad"
     )!
     @State private var webView: WKWebView = WKWebView(
       frame: .zero,
