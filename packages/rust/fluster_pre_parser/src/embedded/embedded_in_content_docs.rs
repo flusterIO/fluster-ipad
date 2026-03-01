@@ -24,8 +24,8 @@ impl EmbeddedInContentDocs {
         }
     }
     pub fn get_incontent_docs_by_id(
-        id: InContentDocumentationId,
-        format: InContentDocumentationFormat,
+        id: &InContentDocumentationId,
+        format: &InContentDocumentationFormat,
     ) -> String {
         if let Some(res) = EmbeddedInContentDocs::get(&id.to_embedded_file_name(format))
             && let Ok(body) = std::str::from_utf8(res.data.as_ref())

@@ -3,13 +3,17 @@ use serde::{Deserialize, Serialize};
 use crate::{
     parse::by_regex::regex_parsers::{
         citation_regex_parser::CitationRegexParser,
-        dictionary_entry_regex_parser::DictionaryEntryRegexParser, mdx_parser::MdxParser,
+        dictionary_entry_regex_parser::DictionaryEntryRegexParser,
+        embedded_docs_parser::EmbeddedInContentDocsParser, mdx_parser::MdxParser,
         note_link_regex_parser::NoteLinkRegexParser, tag_regex_parser::TagRegexParser,
     },
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
-static REGEX_PARSERS: [&'static dyn MdxParser; 4] = [
+static REGEX_PARSERS: [&'static dyn MdxParser; 5] = [
+    // Keep the EmbeddedInContentDocsParser first to allow the inserted content to then be parsed
+    // if needed.
+    &EmbeddedInContentDocsParser,
     &TagRegexParser,
     &CitationRegexParser,
     &DictionaryEntryRegexParser,

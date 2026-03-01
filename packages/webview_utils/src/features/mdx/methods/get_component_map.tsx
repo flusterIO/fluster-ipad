@@ -26,6 +26,7 @@ import { gridComponentNames } from "../embeddable_mdx_components/grid/embeddable
 import { utilityContainerComponentNames } from "../embeddable_mdx_components/container/embeddable_utility_container_component_config";
 import { ulComponentNames } from "../embeddable_mdx_components/ul/ul_component_config";
 import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_config";
+import { InContentDocumentationContainer } from "#/in_content_documentation/presentation/in_content_documentation_container";
 
 enum ComponentItemType {
     userInserted,
@@ -237,6 +238,11 @@ const items: ComponentMapItem[] = [
         componentType: ComponentItemType.autoInserted,
         // Required to get around circular import that I still can't find...
         component: (props) => <DictionaryEntryComponent {...props} InlineMdxContent={InlineMdxContent} />,
+    },
+    {
+        query: ["InContentDocumentationContainer"],
+        componentType: ComponentItemType.autoInserted,
+        component: InContentDocumentationContainer
     },
     /* { */
     /*     query: "EquationTag", */

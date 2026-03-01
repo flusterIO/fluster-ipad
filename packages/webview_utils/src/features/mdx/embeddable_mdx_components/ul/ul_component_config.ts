@@ -9,7 +9,7 @@ export const ulComponentNames = [EmbeddableComponentName.Ul, EmbeddableComponent
 export const ulComponentConfig: EmbeddableComponentConfig = {
     name: ulComponentNames,
     categories: [ComponentCategory.attention],
-    desc: "Underline; Underline text in a variety of colors.",
+    desc: "Underline text in a variety of colors.",
     id: EmbeddableComponentId.Ul,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/ul/underline_component_docs.mdx",
     snippets: () => {

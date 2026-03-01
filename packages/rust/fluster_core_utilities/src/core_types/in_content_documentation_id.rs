@@ -4,7 +4,17 @@ use serde::{Deserialize, Serialize};
 use strum::EnumIter;
 use typeshare::typeshare;
 
-/// From typescript to swift.
+#[typeshare]
+#[derive(strum_macros::Display, Clone, EnumIter, Serialize, Deserialize)]
+pub enum InContentDocumentationSource {
+    #[serde(rename = "component")]
+    #[strum(to_string = "component")]
+    ComponentDocs,
+    #[serde(rename = "internal-docs")]
+    #[strum(to_string = "internal-docs")]
+    InternalDocs,
+}
+
 #[typeshare]
 #[derive(strum_macros::Display, Clone, EnumIter, Serialize, Deserialize)]
 pub enum InContentDocumentationFormat {
@@ -16,21 +26,24 @@ pub enum InContentDocumentationFormat {
     Short,
 }
 
-/// From typescript to swift.
 #[typeshare]
 #[derive(strum_macros::Display, EnumIter, Serialize, Deserialize)]
 pub enum InContentDocumentationId {
-    #[serde(rename = "markdown")]
-    #[strum(to_string = "markdown")]
+    #[serde(rename = "Markdown")]
+    #[strum(to_string = "Markdown")]
     Markdown,
-    #[serde(rename = "documentation-docs")]
-    #[strum(to_string = "documentation-docs")]
+    #[serde(rename = "Docs")]
+    #[strum(to_string = "Docs")]
     Docs,
 }
 
 impl InContentDocumentationId {
     pub fn to_embedded_file_name(self, format: InContentDocumentationFormat) -> String {
-        format!("{}-{}.mdx", self, format)
+        let base_file_name = match self {
+            InContentDocumentationId::Markdown => "markdown",
+            InContentDocumentationId::Docs => "documentation-docs",
+        };
+        format!("{}-{}.mdx", base_file_name, format)
     }
 }
 

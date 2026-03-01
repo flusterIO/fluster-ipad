@@ -1,11 +1,15 @@
 import { embeddableComponentConfigs } from "#/mdx/embeddable_mdx_components/component_configs";
+import { getDocumentationSnippets } from "./documentation_snippets";
 import { getEmojiSnippets } from "./emoji_snippets";
 import { getMarkdownSnippets } from "./markdown_snippets";
 import { GetSnippetProps, SnippetItem, SnippetStrategy } from "./snippet_types";
 
 
 export const getFlusterSnippets = (props: GetSnippetProps): SnippetItem[] => {
-    let items: SnippetItem[] = getMarkdownSnippets(props);
+    let items: SnippetItem[] = [
+        ...getMarkdownSnippets(props),
+        ...getDocumentationSnippets()
+    ]
     if (props.includeEmojiSnippets) {
         items = [
             ...items,
