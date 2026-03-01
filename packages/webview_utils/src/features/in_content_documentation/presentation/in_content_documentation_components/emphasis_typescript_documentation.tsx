@@ -6,7 +6,7 @@ export const InContentDocsEmphasisTypeList = (): ReactNode => {
     const options = getEmphasisOptions()
     return (
         <div
-            className="w-fit h-fit flex flex-col justify-center items-center"
+            className="w-fit h-fit flex flex-col justify-start items-start"
         >
             {options.map((o) => {
                 return (

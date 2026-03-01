@@ -10,6 +10,7 @@ extension MdxParsingResult: @retroactive Codable {
     case citations
     case dictionary_entries
     case outgoing_links
+    case ignore_all_parsers
   }
 
   public init(from decoder: Decoder) throws {
@@ -19,6 +20,7 @@ extension MdxParsingResult: @retroactive Codable {
     let tags = try container.decode([TagResult].self, forKey: .tags)
     let frontMatter = try container.decodeIfPresent(FrontMatterResult.self, forKey: .front_matter)
     let citations = try container.decode([CitationResult].self, forKey: .citations)
+    let ignoreAllParsers = try container.decode(Bool.self, forKey: .ignore_all_parsers)
     let outgoing_links = try container.decode(
       [NoteOutgoingLinkResult].self, forKey: .outgoing_links)
     let dictionaryEntries = try container.decode(
@@ -26,8 +28,13 @@ extension MdxParsingResult: @retroactive Codable {
 
     self.init(
       noteId: id,
-      content: content, tags: tags, frontMatter: frontMatter, citations: citations,
-      dictionaryEntries: dictionaryEntries, outgoingLinks: outgoing_links
+      content: content,
+      tags: tags,
+      frontMatter: frontMatter,
+      citations: citations,
+      dictionaryEntries: dictionaryEntries,
+      outgoingLinks: outgoing_links,
+      ignoreAllParsers: ignoreAllParsers
     )
   }
 

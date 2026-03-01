@@ -1,6 +1,6 @@
 # Grid
 
-The `Grid` component is a _container_ component similar to the `Container` component, but the `Grid` component also a set of properties designed to create flexible and responsive grid layouts that can respond to any screen size.
+The `Grid` component is a _container_ component similar to the `Container` component, but the `Grid` component also allows a set of properties designed to create flexible and responsive grid layouts that can respond to any screen size.
 
 To achieve this grid layout, the component accepts each of the `SizableOption` properties ("none", "small", "smedium", etc...) as an optional number or string. If a field is a string, it must be a css compliant string, but in most cases you will likely want to use a number to represent the number of columns at that screen size. Not _all_ of the `SizableOption` fields are required either. **Fluster** goes through a progression, first looking for the value you provided, then for the next smallest size with a value, and then if it still doesn't find any, it resorts to a Fluster default for that screen size. 
 

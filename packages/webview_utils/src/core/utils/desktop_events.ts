@@ -1,7 +1,7 @@
 declare global {
 
     interface WindowEventMap {
-        "main-panel-resize": CustomEvent<null>;
+        "main-panel-resize": CustomEvent<number[]>;
     }
 }
 

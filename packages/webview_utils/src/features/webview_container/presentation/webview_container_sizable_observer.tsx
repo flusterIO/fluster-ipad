@@ -25,7 +25,10 @@ export const WebviewContainerSizableObserver = ({ ref }: WebviewContainerSizable
             }
         }
     }
-    useEventListener("main-panel-resize", onResize)
+    useEventListener("main-panel-resize", (e) => {
+        console.log(`Panel resize: `, e.detail)
+        onResize()
+    })
     useEffect(() => {
         onResize()
         window.addEventListener('resize', onResize)

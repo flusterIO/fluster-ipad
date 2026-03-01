@@ -33,6 +33,9 @@ pub struct MdxParsingResult {
     pub citations: Vec<CitationResult>,
     pub dictionary_entries: Vec<DictionaryEntryResult>,
     pub outgoing_links: Vec<NoteOutgoingLinkResult>,
+    /// Always set to false initially, but can be set to true by certain parsers to avoid further
+    /// parsing.
+    pub ignore_all_parsers: bool,
 }
 
 impl MdxParsingResult {
@@ -63,6 +66,7 @@ impl MdxParsingResult {
                     .map(FrontMatterResult::from_gray_matter),
                 None => None,
             },
+            ignore_all_parsers: false,
         }
     }
 

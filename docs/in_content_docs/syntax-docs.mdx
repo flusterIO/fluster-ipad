@@ -11,13 +11,14 @@ title: My optional note title
 ```
 
 
+````long-docs
 | Property | Description |
 | -------- | ----------- |
 | title | An optional string that will override the title found through the note's content if present. |
 | summary | An optional summary of the note. This will be displayed along with the title in search results. |
 | id | An optional id for the note that can be used for dynamic linking via the `[myLink](note:myNoteId)` syntax. |
 | ignoreParsers | Used mostly for internal development, can be a list of parsers that will not be applied to the note. Valid options are a list of 'tags', 'citations', 'note_link' and/or 'dictionary'. |
-
+````
 
 ### Tags 
 
@@ -29,7 +30,9 @@ This is my tag [[#myTag]] called 'myTag'.
 
 ### Citations
 
+```long-docs
 > Citations are alphabetized by the optional 'title' field. All entries without this field will appear grouped at "No title found".
+```
 
 The citation key must match the bibliography entry key in your bibliography. For example:
 
@@ -37,6 +40,7 @@ The citation key must match the bibliography entry key in your bibliography. For
 As you can see, according to Ives & Stillwell [[cite:IvesStillwell]]...
 ```
 
+````long-docs
 Will work with the bibliography entry:
 
 ```bibtex
@@ -57,6 +61,7 @@ Will work with the bibliography entry:
 }                
 ```
 
+````
 
 ### Dictionary Entries
 
@@ -69,4 +74,6 @@ I can insert any mdx content I like here.
 ```
 ````
 
+````long-docs
 These entries will automatically collected and inserted into your user defined dictionary.
+````

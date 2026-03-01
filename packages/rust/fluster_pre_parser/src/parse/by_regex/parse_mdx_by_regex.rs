@@ -12,7 +12,7 @@ use crate::{
 
 static REGEX_PARSERS: [&'static dyn MdxParser; 5] = [
     // Keep the EmbeddedInContentDocsParser first to allow the inserted content to then be parsed
-    // if needed.
+    // if needed and to set the ignore_all field if neccessary.
     &EmbeddedInContentDocsParser,
     &TagRegexParser,
     &CitationRegexParser,
@@ -52,7 +52,9 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
     }
 
     for parser in parsers {
-        parser.parse_async(opts, &mut result).await;
+        if !result.ignore_all_parsers {
+            parser.parse_async(opts, &mut result).await;
+        }
     }
 
     result

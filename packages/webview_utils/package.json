@@ -35,6 +35,7 @@
     "dev": "vite -c ./vite_dev.config.ts",
     "lint": "eslint .",
     "preview": "vite preview",
+    "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "wireit": {
@@ -184,11 +185,13 @@
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-refresh": "0.4.24",
     "globals": "16.5.0",
+    "matchers": "link:@testing-library/jest-dom/matchers",
     "sass": "1.89.0",
     "typescript": "latest",
     "typescript-eslint": "8.46.4",
     "vite-plugin-dts": "4.5.4",
     "vite-tsconfig-paths": "5.1.4",
+    "vitest": "4.0.18",
     "wireit": "0.14.12"
   },
   "prettier": "../shared_config/prettier.config.ts",

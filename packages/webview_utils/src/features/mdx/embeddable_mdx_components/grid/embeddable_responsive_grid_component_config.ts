@@ -14,7 +14,7 @@ export const embeddableGridComponentConfig: EmbeddableComponentConfig = {
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/grid/grid_component_docs.mdx",
     snippets: () => {
         return [
-            snippetCompletion(`<Grid none={#{1}} medium={#{2}} large={#{2}} full={#{3}}>\n\n#{Body}\n\n</Grid>`, {
+            snippetCompletion(`<Grid none={#{1}} medium={#{2}} large={#{3}} full={#{4}}>\n\n#{Body}\n\n</Grid>`, {
                 label: "grid-container",
                 section: CompletionSections.components,
                 type: SnippetDefaultType.function
