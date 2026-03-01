@@ -1,3 +1,4 @@
+import { EmbeddableComponentId, EmbeddableComponentName } from "@/code_gen/typeshare/fluster_core_utilities";
 import { Completion } from "@codemirror/autocomplete"
 
 
@@ -13,11 +14,14 @@ export enum ComponentCategory {
     attention = "Attention"
 }
 
-export enum EmbeddableComponentId {
-    admonition,
-    hl,
-    ul
-}
+// export enum EmbeddableComponentId {
+//     admonition = "admonition",
+//     hl = "hl",
+//     ul = "ul",
+//     card = "card",
+//     grid = "grid",
+//     utlityContainer = "utlityContainer",
+// }
 
 export enum SnippetDefaultType {
     class = "class",
@@ -36,12 +40,19 @@ export enum SnippetDefaultType {
 
 
 export interface EmbeddableComponentConfig {
+    /**
+     * id field is required since some components can have multiple names, even if multiple names aren't assignable to each component.
+     */
     id: EmbeddableComponentId
     /** Categories ranked in order of priority. The first element may be used as a default value, so order matters here. */
     categories: ComponentCategory[]
-    title: string;
+    /**
+     * name is an array to allow for multiple names to be used for each component, since there is little additional import cost.
+     * @readonly to encourage exporting a constant array to be used in the get_component_map file.
+     */
+    name: readonly EmbeddableComponentName[];
     desc?: string;
-    /** An optional path to a mdx or md file for component specific documentation and examples. Path is relative to the monorepo route. */
-    docsPath?: string;
+    /** A path to a mdx or md file for component specific documentation and examples. Path is relative to the monorepo route. */
+    docsPath: string;
     snippets?: () => Completion[]
 }

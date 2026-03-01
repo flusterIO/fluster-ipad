@@ -27,5 +27,7 @@ export const ulPropsSchema = emphasisSchema.extend({
             return ["decoration-primary", thicknessClass]
         case "highlight":
             return ["decoration-emphasis-highlight", thicknessClass]
+        case "card":
+            return ["decoration-fd-card", thicknessClass]
     }
 })

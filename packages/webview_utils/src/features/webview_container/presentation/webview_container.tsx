@@ -10,6 +10,7 @@ import {
 } from "@/state/hooks/use_screen_dimensions";
 import { AnyWebviewAction } from "@/utils/types/any_window_event";
 import { WebviewContainerProvider } from "../state/webview_provider";
+import { WebviewContainerSizableObserver } from "./webview_container_sizable_observer";
 
 interface WebViewContainerProps {
     children: ReactNode;
@@ -108,6 +109,7 @@ export const WebViewContainer = ({
                 ref={container}
             >
                 <WebviewContainerProvider>
+                    <WebviewContainerSizableObserver ref={container} />
                     {children}
                 </WebviewContainerProvider>
             </div>

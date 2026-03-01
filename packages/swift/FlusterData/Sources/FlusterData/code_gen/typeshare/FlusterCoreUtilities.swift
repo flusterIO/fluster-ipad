@@ -55,6 +55,40 @@ public enum DictionaryWebviewStorageKeys: String, Codable {
 }
 
 /// From typescript to swift.
+public enum EmbeddableComponentId: String, Codable {
+	case admonition
+	case hl = "highlight"
+	case ul = "underline"
+	case card
+	case grid
+	case utlityContainer = "util-container"
+}
+
+/// From typescript to swift.
+public enum EmbeddableComponentName: String, Codable {
+	case admonition = "Admonition"
+	case hl = "Hl"
+	case hl = "HL"
+	case ul = "Ul"
+	case ul = "UL"
+	case card = "Card"
+	case grid = "Grid"
+	case utlityContainer = "Container"
+}
+
+/// From typescript to swift.
+public enum InContentDocumentationFormat: String, Codable {
+	case full
+	case short
+}
+
+/// From typescript to swift.
+public enum InContentDocumentationId: String, Codable {
+	case markdown
+	case docs = "documentation-docs"
+}
+
+/// From typescript to swift.
 public enum MdxPreviewWebviewActions: String, Codable {
 	case requestNoteData = "request-note-data"
 	case setWebviewLoaded = "set-preview-webview-loaded"

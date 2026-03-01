@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 
+
+/**
+ * This sizableOptions array will be guaranteed to stay in order from smallest to largest.
+ */
 export const sizableOptions = [
     "none",
     "small",
@@ -17,6 +21,7 @@ export const sizablePropSchema = (labelKey: string) => z.enum(sizableOptions, {
 })
 
 
+export type SizableOption = typeof sizableOptions[number]
 export type SizableInput = z.infer<ReturnType<typeof sizablePropSchema>>
 export type SizeablePropsTransform = (value: SizableInput | undefined) => string
 

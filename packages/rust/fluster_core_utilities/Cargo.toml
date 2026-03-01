@@ -37,6 +37,7 @@ gray_matter = "0.3.2"
 ndarray = { version = "0.17.2", features = ["rayon"] }
 rayon.workspace = true
 regex.workspace = true
+lazy_static = "1.5.0"
 
 [profile.release]
 lto = "fat"

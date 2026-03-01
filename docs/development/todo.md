@@ -13,6 +13,16 @@
 
 - [ ] Responsive Grid
 - [ ] `CenterCard` that centers the content within it, or a plain, 'fd-card-background' container with sizableObject props and some decent defaults with a default 'flex-center' behavior.
+- [ ] `Hr` that accepts children to inline as small text.
+
+#### Documentation
+
+**_CURRENT_**
+
+- [ ] Handle `InContentDocumentationContainer`'s retreival of embedded docs.
+- [ ] Use an `Enum` to define component names so that they can be used to create a new parser that can check for `new line<component-name>?` or `\n<component-name>??` to print out the embedded docs like Jupyter. You can insert the component documentation directly from the parser package.
+- [ ] Create new 'documentation' parser and add that to the list. Make sure there is an option to disable it in some cases to improve performance on inline mdx.
+- [ ] Create `InContentDocumentation` component that creates a card that accepts optional properties, and the children as markdown to create the necessary docs. Consider restyling the prose text size here to make things more 'docs' like... straight and to the point.
 
 ## Desktop
 

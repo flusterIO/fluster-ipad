@@ -89,3 +89,5 @@ apps/website/node_modules
 packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser
 packages/rust/fluster_bibliography/FlusterBibliography
 .nvim/xcodebuild/
+docs/component_docs/
+packages/rust/fluster_pre_parser/src/embedded/component_docs/

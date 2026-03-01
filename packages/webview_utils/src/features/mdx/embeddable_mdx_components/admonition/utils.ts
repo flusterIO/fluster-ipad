@@ -18,5 +18,7 @@ export const getTitleVariantClasses = (variant: Emphasis): string => {
             return "bg-emphasis-important text-emphasis-important-foreground [&_p]:text-emphasis-important-foreground"
         case "highlight":
             return "bg-emphasis-highlight text-emphasis-highlight-foreground [&_p]:text-emphasis-highlight-foreground"
+        case "card":
+            return "bg-fd-card text-fd-card-foreground [&_p]:text-fd-card-foreground"
     }
 };

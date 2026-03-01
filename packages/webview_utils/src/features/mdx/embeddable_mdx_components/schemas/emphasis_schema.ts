@@ -9,6 +9,7 @@ const _emphasisSchema = {
     important: z.boolean({ message: `The important field is a boolean.` }).optional(),
     research: z.boolean({ message: `The research field is a boolean.` }).optional(),
     highlight: z.boolean({ message: `The highlight field is a boolean.` }).optional(),
+    card: z.boolean({ message: `The 'card' field is a boolean.` }).optional(),
 } satisfies Record<string, ZodOptional<ZodBoolean>>
 
 export const emphasisSchema = z.object(_emphasisSchema, {
@@ -52,36 +53,41 @@ export const emphasisMapTransform = (classMap: Record<Emphasis, string>): Emphas
 }
 
 
+export const emphasisToBackgroundClasses = (emphasis: Emphasis) => {
+    switch (emphasis) {
+        case "info":
+            return "bg-emphasis-info text-emphasis-info-foreground"
+        case "error":
+            return "bg-emphasis-error text-emphasis-error-foreground"
+        case "warn":
+            return "bg-emphasis-warn text-emphasis-warn-foreground"
+        case "success":
+            return "bg-emphasis-success text-emphasis-success-foreground"
+        case "important":
+            return "bg-emphasis-important text-emphasis-important-foreground"
+        case "research":
+            return "bg-emphasis-research text-emphasis-research-foreground"
+        case "primary":
+            return "bg-primary text-primary-foreground"
+        case "highlight":
+            return "bg-emphasis-highlight text-emphasis-highlight-foreground"
+        case "card":
+            return "bg-fd-card text-fd-card-foreground"
+
+    }
+}
+
 
 /**
  * The transformation to be used in something like a `Hl`
  * component, *not* in something lke a `ColorText` component.
  */
-export const emphasisBackgroundTransform = (defaultKey: Emphasis): EmphasisTransform => {
+export const emphasisBackgroundTransform = <T extends Emphasis | undefined>(defaultKey: T): EmphasisTransform => {
     return (k): string => {
         const firstKey = getFirstEmphasisKey(k) ?? defaultKey
         if (!firstKey) {
             return ""
         }
-        switch (firstKey) {
-            case "info":
-                return "bg-emphasis-info text-emphasis-info-foreground"
-            case "error":
-                return "bg-emphasis-error text-emphasis-error-foreground"
-            case "warn":
-                return "bg-emphasis-warn text-emphasis-warn-foreground"
-            case "success":
-                return "bg-emphasis-success text-emphasis-success-foreground"
-            case "important":
-                return "bg-emphasis-important text-emphasis-important-foreground"
-            case "research":
-                return "bg-emphasis-research text-emphasis-research-foreground"
-            case "primary":
-                return "bg-primary text-primary-foreground"
-            case "highlight":
-                return "bg-emphasis-highlight text-emphasis-highlight-foreground"
-
-        }
+        return emphasisToBackgroundClasses(firstKey)
     }
 }
-

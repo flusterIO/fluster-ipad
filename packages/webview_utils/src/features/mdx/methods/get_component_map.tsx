@@ -17,13 +17,32 @@ import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
 import { EmbeddableCard } from "../embeddable_mdx_components/card/embeddable_card";
+import { EmbeddableResponsiveGrid } from "../embeddable_mdx_components/grid/embeddable_responsive_grid";
+import { EmbeddableUtilityContainer } from "../embeddable_mdx_components/container/embeddable_utility_container";
+import { EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
+import { admonitionComponentNames } from "../embeddable_mdx_components/admonition/admonition_component_config";
+import { cardComponentNames } from "../embeddable_mdx_components/card/embeddable_card_component_config";
+import { gridComponentNames } from "../embeddable_mdx_components/grid/embeddable_responsive_grid_component_config";
+import { utilityContainerComponentNames } from "../embeddable_mdx_components/container/embeddable_utility_container_component_config";
+import { ulComponentNames } from "../embeddable_mdx_components/ul/ul_component_config";
+import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_config";
 
-export interface ComponentMapItem {
-    /// A regex that will return true if this component is to be included in the component map. This will be prepended with a `<`, so the name should match the component as it will be used in the user's note.
-    query: string | string[];
-    /* eslint-disable-next-line  -- Need to allow any here */
-    component: FC<any>;
+enum ComponentItemType {
+    userInserted,
+    autoInserted,
 }
+
+export type ComponentMapItem = {
+    componentType: ComponentItemType.autoInserted,
+    query: string[],
+    /* eslint-disable-next-line  -- Not worth typing this. */
+    component: FC<any>
+} | {
+    componentType: ComponentItemType.userInserted,
+    query: readonly EmbeddableComponentName[],
+    /* eslint-disable-next-line  -- Not worth typing this. */
+    component: FC<any>
+};
 
 export const componentOverrides: MDXComponents = {
     h1: H1,
@@ -42,10 +61,11 @@ export const componentOverrides: MDXComponents = {
 
 const items: ComponentMapItem[] = [
     // -- Utility --
-    /* { */
-    /*     query: "Div", */
-    /*     component: Div, */
-    /* }, */
+    {
+        query: utilityContainerComponentNames,
+        componentType: ComponentItemType.userInserted,
+        component: EmbeddableUtilityContainer,
+    },
     /* { */
     /*     query: "EqRef", */
     /*     component: EqRef, */
@@ -100,18 +120,21 @@ const items: ComponentMapItem[] = [
     /* }, */
     /* // -- Layout -- */
     {
-        query: "Admonition",
+        query: admonitionComponentNames,
+        componentType: ComponentItemType.userInserted,
         // Required to get around circular import that I still can't find...
         component: (props) => <Admonition {...props} InlineMdxContent={InlineMdxContent} />,
     },
     {
-        query: "Card",
+        query: cardComponentNames,
+        componentType: ComponentItemType.userInserted,
         component: (props) => <EmbeddableCard {...props} InlineMdxContent={InlineMdxContent} />,
     },
-    /* { */
-    /*     query: "Grid", */
-    /*     component: Grid, */
-    /* }, */
+    {
+        query: gridComponentNames,
+        componentType: ComponentItemType.userInserted,
+        component: EmbeddableResponsiveGrid,
+    },
     /* { */
     /*     query: "GridItem", */
     /*     component: GridItem, */
@@ -131,11 +154,13 @@ const items: ComponentMapItem[] = [
     /*     component: Hint, */
     /* }, */
     {
-        query: "Ul",
+        query: ulComponentNames,
+        componentType: ComponentItemType.userInserted,
         component: Ul,
     },
     {
-        query: ["Hl", "HL"],
+        query: hlComponentNames,
+        componentType: ComponentItemType.userInserted,
         component: Hl,
     },
     /* { */
@@ -193,19 +218,23 @@ const items: ComponentMapItem[] = [
     /*     component: InlineCitation, */
     /* }, */
     {
-        query: "NoteLink",
+        query: ["NoteLink"],
+        componentType: ComponentItemType.autoInserted,
         component: NoteLink
     },
     {
-        query: "AutoInsertedTag",
+        query: ["AutoInsertedTag"],
+        componentType: ComponentItemType.autoInserted,
         component: AutoInsertedTag,
     },
     {
-        query: "FlusterCitation",
+        query: ["FlusterCitation"],
+        componentType: ComponentItemType.autoInserted,
         component: FlusterCitation,
     },
     {
-        query: "DictionaryEntry",
+        query: ["DictionaryEntry"],
+        componentType: ComponentItemType.autoInserted,
         // Required to get around circular import that I still can't find...
         component: (props) => <DictionaryEntryComponent {...props} InlineMdxContent={InlineMdxContent} />,
     },
@@ -232,7 +261,7 @@ export const getComponentMap = (mdxContent: string, additionalComponenets: Compo
     const components: MDXComponents = componentOverrides;
     const x = [...items, ...additionalComponenets]
     for (const item of x) {
-        for (const query of Array.isArray(item.query) ? item.query : [item.query]) {
+        for (const query of item.query) {
             const isIncluded = mdxContent.includes(`<${query}`);
             if (isIncluded) {
                 const C = item.component;

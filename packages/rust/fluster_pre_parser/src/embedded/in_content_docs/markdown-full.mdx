@@ -1,0 +1,189 @@
+# The Comprehensive Guide to Markdown
+
+> AI Generated
+
+Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. 
+
+This tutorial covers everything from basic formatting to advanced extended syntax.
+
+---
+
+## 1. Text Formatting (Emphasis)
+
+You can easily emphasize text using asterisks `*` or underscores `_`.
+
+### Bold
+To make text bold, wrap it in double asterisks or double underscores.
+**Example:**
+This is **bold text** and this is also __bold text__.
+
+### Italic
+To italicize text, wrap it in a single asterisk or underscore.
+**Example:**
+This is *italic text* and this is also _italic text_.
+
+### Strikethrough
+To strike through text, use double tildes `~~`.
+**Example:**
+This is ~~strikethrough text~~.
+
+### Combined Emphasis
+You can combine these easily!
+**Example:**
+This is ***bold and italic*** text.
+
+---
+
+## 2. Headings
+
+Headings are created by adding one to six hash symbols `#` before your heading text. The number of hashes dictates the heading level.
+
+```markdown
+# Heading 1 (Largest)
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6 (Smallest)
+```
+
+---
+
+## 3. Lists
+
+Markdown supports ordered (numbered) and unordered (bulleted) lists.
+
+### Unordered Lists
+Use asterisks `*`, pluses `+`, or hyphens `-` for bullet points.
+
+```markdown
+* Item 1
+* Item 2
+  * Nested Item 2a (Indent with 2 spaces)
+  * Nested Item 2b
+* Item 3
+```
+
+### Ordered Lists
+Use numbers followed by periods.
+
+```markdown
+1. First step
+2. Second step
+   1. Sub-step A
+   2. Sub-step B
+3. Third step
+```
+
+### Task Lists
+You can create actionable to-do lists using brackets `[ ]` and `[x]`.
+
+```markdown
+- [x] Write the tutorial
+- [ ] Review the tutorial
+- [ ] Publish to blog
+```
+
+---
+
+## 4. Links and Images
+
+### Links
+To create a link, enclose the link text in brackets `[ ]`, and then the URL in parentheses `( )`.
+
+**Syntax:** `[Link Text](URL)`
+**Example:** [Google](https://www.google.com)
+
+### Images
+Images are almost identical to links, but they start with an exclamation mark `!`.
+
+**Syntax:** `![Alt Text](Image URL)`
+**Example:** ![Markdown Logo](https://markdown-here.com/img/icon256.png)
+
+---
+
+## 5. Blockquotes
+
+To quote a block of text, use the greater-than sign `>`.
+
+```markdown
+> "Simplicity is the ultimate sophistication."
+> — Leonardo da Vinci
+```
+
+You can also nest blockquotes:
+
+```markdown
+> This is the first level of quoting.
+>> This is nested blockquote.
+```
+
+---
+
+## 6. Code 
+
+You can format text as code to share programming snippets.
+
+### Inline Code
+For a quick inline command, wrap the text in single backticks `` ` ``.
+
+**Example:** To install the package, run `npm install`.
+
+### Code Blocks
+For larger blocks of code, use three backticks ` ``` ` or indent with four spaces. You can also specify the programming language right after the opening backticks for syntax highlighting.
+
+```python
+def fibonacci(n):
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+    
+    sequence = [0, 1]
+    while len(sequence) < n:
+        sequence.append(sequence[-1] + sequence[-2])
+    return sequence
+
+print(fibonacci(10))
+```
+
+---
+
+## 7. Tables
+
+You can create tables by assembling a list of words and dividing them with hyphens `-` (for the first row), and separating each column with a pipe `|`.
+
+```markdown
+| Syntax    | Description | Example     |
+| :-------- | :---------- | :---------- |
+| Header    | Title       | Here's this |
+| Paragraph | Text        | And more    |
+```
+
+*Note: The colons `:` in the header separator row dictate alignment (left, center, or right).*
+
+---
+
+## 8. Mathematics
+
+Many modern Markdown renderers (like GitHub, Obsidian, and standard MathJax setups) support LaTeX math rendering. 
+
+Inline math uses single dollar signs `$`. 
+**Example:** The equation for a line is $y = mx + b$.
+
+For block-level math, as requested by your preferences, ensure the double dollar signs `$$` are placed on a separate line.
+
+**Example:**
+$$
+f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi)\,e^{2 \pi i \xi x} \,d\xi
+$$
+
+---
+
+## 9. Horizontal Rules
+
+To create a thematic break or horizontal line, use three or more asterisks `***`, dashes `---`, or underscores `___` on a line by themselves.
+
+```markdown
+---
+```
