@@ -27,6 +27,8 @@ const AdmonitionVariantIcon = (
             return <Microscope className={props.className} />
         case "highlight":
             return <BellRing className={props.className} />
+        case "card":
+            return <Info className={props.className} />
     }
 };
 

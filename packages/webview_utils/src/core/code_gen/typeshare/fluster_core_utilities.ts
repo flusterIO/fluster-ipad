@@ -54,6 +54,40 @@ export enum DictionaryWebviewStorageKeys {
 }
 
 /** From typescript to swift. */
+export enum EmbeddableComponentId {
+	Admonition = "admonition",
+	Hl = "highlight",
+	Ul = "underline",
+	Card = "card",
+	Grid = "grid",
+	UtlityContainer = "util-container",
+}
+
+/** From typescript to swift. */
+export enum EmbeddableComponentName {
+	Admonition = "Admonition",
+	Hl = "Hl",
+	HL = "HL",
+	Ul = "Ul",
+	UL = "UL",
+	Card = "Card",
+	Grid = "Grid",
+	UtlityContainer = "Container",
+}
+
+/** From typescript to swift. */
+export enum InContentDocumentationFormat {
+	Full = "full",
+	Short = "short",
+}
+
+/** From typescript to swift. */
+export enum InContentDocumentationId {
+	Markdown = "markdown",
+	Docs = "documentation-docs",
+}
+
+/** From typescript to swift. */
 export enum MdxPreviewWebviewActions {
 	RequestNoteData = "request-note-data",
 	SetWebviewLoaded = "set-preview-webview-loaded",

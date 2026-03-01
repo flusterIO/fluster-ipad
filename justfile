@@ -39,14 +39,19 @@ lint:
 build_internal_cli:
 	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build
 
+gather_component_docs:
+	tsx {{justfile_directory()}}/scripts/gather_component_docs.ts
+
 generate_dependency_diagram:
 	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_dark.png -t dark -b transparent
 	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_light.png -t default 
 
+
+## Deprecated, now that component docs are being gathered by typescript, I think?
 generate_component_docs_paths: build_internal_cli generate_dependency_diagram
 	./target/debug/fluster_internal_cli gather-component-doc-paths
 
-generate_initial_note_paths: build_internal_cli
+generate_initial_note_paths: build_internal_cli gather_component_docs
 	tsx {{justfile_directory()}}/scripts/generate_initial_note_paths.ts
 
 generate_initial_note_data: generate_initial_note_paths
@@ -87,13 +92,16 @@ launch_ipad_simulator: build_ipad_simulator
 build_all_rust: build_cross_language_all
 	cargo build
 
+build_fluster_pre_parser:
+	cd {{justfile_directory()}}/packages/rust/fluster_pre_parser; cargo build
+
 build_fluster_swift_mdx_parser: build_cross_language_all
 	cd {{justfile_directory()}}/packages/rust/fluster_swift_mdx_parser; cargo-swift swift package -y --xcframework-name FlusterSwiftMdxParse
 
 build_fluster_core_rust_utilities: build_cross_language_all
 	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
 
-build_webview_utils: build_cross_language_all build_fluster_lezer
+build_webview_utils: build_cross_language_all build_fluster_lezer gather_component_docs
 	pnpm run -C packages/webview_utils build
 
 build_dictionary_webview: build_cross_language_all build_webview_utils

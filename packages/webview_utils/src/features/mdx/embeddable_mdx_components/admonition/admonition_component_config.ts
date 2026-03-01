@@ -1,15 +1,20 @@
-import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, EmbeddableComponentId, SnippetDefaultType } from "../embeddable_component_config";
+import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
+import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
+
+
+export const admonitionComponentNames = [EmbeddableComponentName.Admonition] as const
 
 
 export const admonitionComponentConfig: EmbeddableComponentConfig = {
-    id: EmbeddableComponentId.admonition,
+    id: EmbeddableComponentId.Admonition,
     categories: [ComponentCategory.layout, ComponentCategory.attention],
-    title: "Admonition",
+    name: admonitionComponentNames,
     desc: "A card with a colored header that can be optionally foldable. Used to draw attention to important content.",
+    docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/admonition/admonition_component_docs.mdx",
     snippets: () => {
-        let items = [
+        const items = [
             snippetCompletion("<Admonition title=\"#{Admonition Title}\">\n\n#{body}\n\n</Admonition>", {
                 section: CompletionSections.components,
                 label: "admonition",
@@ -37,7 +42,7 @@ export const admonitionComponentConfig: EmbeddableComponentConfig = {
         ]
         for (const emphasis of getEmphasisOptions()) {
             items.push(
-                snippetCompletion(`<Admonition title=\"#{Admonition Title}\" foldable ${emphasis}>\n\n#{body}\n\n</Admonition>`, {
+                snippetCompletion(`<Admonition title="#{Admonition Title}" foldable ${emphasis}>\n\n#{body}\n\n</Admonition>`, {
                     section: CompletionSections.components,
                     label: `admonition-${emphasis}`,
                     detail: `A foldable Admonition of the ${emphasis} variant.`,
