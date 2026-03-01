@@ -1,8 +1,10 @@
 import { z } from "zod";
-import { sizablePropSchema, sizablePropsMapTransform } from "./sizable_props_schema";
+import { SizableOptionRecord, sizablePropSchema, sizablePropsMapTransform } from "./sizable_props_schema";
 import { componentNeverProperty } from "./component_never_property";
 
-export const defaultWidthTransform = {
+
+
+export const defaultWidthTransform: SizableOptionRecord<string> = {
     none: "w-full @mdxExanded/mdx:w-0",
     small: "w-full @[450px]/mdx:w-[320px]",
     smedium: "w-full @[550px]/mdx:w-[384px]]",
@@ -11,9 +13,10 @@ export const defaultWidthTransform = {
     xl: "w-full @[1080px]/mdx:w-[672px]",
     xxl: "w-full @[1080px]/mdx:w-[896px]",
     full: "w-full",
+    fit: "w-fit"
 }
 
-export const defaultHeightTransform = {
+export const defaultHeightTransform: SizableOptionRecord<string> = {
     none: "h-fit",
     small: "h-24",
     smedium: "h-32",
@@ -22,15 +25,29 @@ export const defaultHeightTransform = {
     xl: "h-96",
     xxl: "h-screen",
     full: "h-full",
+    fit: "h-fit"
 }
 
 const _sizableObjectSchema = {
+    hideMathLabels: z.boolean().optional().transform((a) => a ? "hide-math-labels" : "").describe("Hides the MathJax labels in all child components."),
     right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "float-right ml-4 mr-0" : ""),
     left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "float-left mr-4 ml-0" : ""),
     sidebar: z.boolean({ message: "'sidebar' is a boolean property." }).optional().transform((a) => a ? "w-full min-w-full @[768px]/mdx:w-1/3 @[768px]/mdx:min-w-[33%]" : ""),
     center: componentNeverProperty("You're probably looking for either 'centerContent' to center this component's children, or 'centerSelf' to attempt to center this component itself.").transform(() => ""),
-    centerStart: z.boolean({ message: "'center' must be a boolean." }).optional().transform((a) => a ? "mx-auto block" : ""),
-    centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "flex flex-col justify-center items-center" : "").describe("Centers the content of this component's children, not the component itself."),
+    centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block" : ""),
+    centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "flex flex-col justify-center items-center text-center [&>p]:text-center" : "").describe("Centers the content of this component's children, not the component itself."),
+    border: z.boolean().optional().transform((k) => k ? "border" : ""),
+    rounded: sizablePropSchema("rounded").optional().transform(sizablePropsMapTransform({
+        none: "rounded-none",
+        small: "rounded-sm",
+        smedium: "rounded-sm",
+        medium: "rounded-medium",
+        large: "rounded-lg",
+        xl: "rounded-2xl",
+        xxl: "rounded-4xl",
+        full: "rounded-full",
+        fit: "rounded-[100%]"
+    })),
     text: sizablePropSchema("text").optional().transform(sizablePropsMapTransform({
         none: "text-xs",
         small: "text-sm",
@@ -40,6 +57,7 @@ const _sizableObjectSchema = {
         xl: "text-2xl",
         xxl: "text-4xl",
         full: "text-7xl",
+        fit: "w-full text-center"
     })),
     width: sizablePropSchema("width").optional().transform(sizablePropsMapTransform(defaultWidthTransform)),
     height: sizablePropSchema("height").optional().transform(sizablePropsMapTransform(defaultHeightTransform)),
@@ -52,6 +70,7 @@ const _sizableObjectSchema = {
         xl: "m-8",
         xxl: "m-12",
         full: "m-16",
+        fit: "m-0"
     })),
     marginLeft: sizablePropSchema("marginLeft").optional().transform(sizablePropsMapTransform({
         none: "ml-0",
@@ -62,6 +81,7 @@ const _sizableObjectSchema = {
         xl: "ml-8",
         xxl: "ml-12",
         full: "ml-16",
+        fit: "ml-auto"
     })),
     marginRight: sizablePropSchema("marginRight").optional().transform(sizablePropsMapTransform({
         none: "mr-0",
@@ -72,6 +92,7 @@ const _sizableObjectSchema = {
         xl: "mr-8",
         xxl: "mr-12",
         full: "mr-16",
+        fit: "mr-auto"
     })),
     marginTop: sizablePropSchema("marginTop").optional().transform(sizablePropsMapTransform({
         none: "mt-0",
@@ -82,6 +103,7 @@ const _sizableObjectSchema = {
         xl: "mt-8",
         xxl: "mt-12",
         full: "mt-16",
+        fit: "mt-auto"
     })),
     marginBottom: sizablePropSchema("marginBottom").optional().transform(sizablePropsMapTransform({
         none: "mb-0",
@@ -92,6 +114,7 @@ const _sizableObjectSchema = {
         xl: "mb-8",
         xxl: "mb-12",
         full: "mb-16",
+        fit: "mb-auto"
     })),
     marginX: sizablePropSchema("marginX").optional().transform(sizablePropsMapTransform({
         none: "mx-0",
@@ -102,6 +125,7 @@ const _sizableObjectSchema = {
         xl: "mx-8",
         xxl: "mx-12",
         full: "mx-16",
+        fit: "mx-auto"
     })),
     marginY: sizablePropSchema("marginY").optional().transform(sizablePropsMapTransform({
         none: "my-0",
@@ -112,6 +136,7 @@ const _sizableObjectSchema = {
         xl: "my-8",
         xxl: "my-12",
         full: "my-16",
+        fit: "my-auto"
     })),
     padding: sizablePropSchema("padding").optional().transform(sizablePropsMapTransform({
         none: "p-0",
@@ -122,6 +147,7 @@ const _sizableObjectSchema = {
         xl: "p-8",
         xxl: "p-12",
         full: "p-16",
+        fit: "p-0"
     })),
     paddingLeft: sizablePropSchema("paddingLeft").optional().transform(sizablePropsMapTransform({
         none: "pl-0",
@@ -132,6 +158,7 @@ const _sizableObjectSchema = {
         xl: "pl-8",
         xxl: "pl-12",
         full: "pl-16",
+        fit: "pl-0"
     })),
     paddingRight: sizablePropSchema("paddingRight").optional().transform(sizablePropsMapTransform({
         none: "pr-0",
@@ -142,6 +169,7 @@ const _sizableObjectSchema = {
         xl: "pr-8",
         xxl: "pr-12",
         full: "pr-16",
+        fit: "pr-0"
     })),
     paddingTop: sizablePropSchema("paddingTop").optional().transform(sizablePropsMapTransform({
         none: "pt-0",
@@ -152,6 +180,7 @@ const _sizableObjectSchema = {
         xl: "pt-8",
         xxl: "pt-12",
         full: "pt-16",
+        fit: "pt-0"
     })),
     paddingBottom: sizablePropSchema("paddingBottom").optional().transform(sizablePropsMapTransform({
         none: "pb-0",
@@ -162,6 +191,7 @@ const _sizableObjectSchema = {
         xl: "pb-8",
         xxl: "pb-12",
         full: "pb-16",
+        fit: "pb-0"
     })),
     paddingX: sizablePropSchema("paddingX").optional().transform(sizablePropsMapTransform({
         none: "px-0",
@@ -172,6 +202,7 @@ const _sizableObjectSchema = {
         xl: "px-8",
         xxl: "px-12",
         full: "px-16",
+        fit: "px-0"
     })),
     paddingY: sizablePropSchema("paddingY").optional().transform(sizablePropsMapTransform({
         none: "py-0",
@@ -182,6 +213,7 @@ const _sizableObjectSchema = {
         xl: "py-8",
         xxl: "py-12",
         full: "py-16",
+        fit: "py-0"
     })),
     gap: sizablePropSchema("paddingY").optional().transform(sizablePropsMapTransform({
         none: "gap-0",
@@ -192,6 +224,7 @@ const _sizableObjectSchema = {
         xl: "gap-8",
         xxl: "gap-12",
         full: "gap-16",
+        fit: "gap-0"
     })),
     gapX: sizablePropSchema("paddingY").optional().transform(sizablePropsMapTransform({
         none: "gap-x-0",
@@ -202,6 +235,7 @@ const _sizableObjectSchema = {
         xl: "gap-x-8",
         xxl: "gap-x-12",
         full: "gap-x-16",
+        fit: "gap-0"
     })),
     gapY: sizablePropSchema("paddingY").optional().transform(sizablePropsMapTransform({
         none: "gap-y-0",
@@ -212,6 +246,7 @@ const _sizableObjectSchema = {
         xl: "gap-y-8",
         xxl: "gap-y-12",
         full: "gap-y-16",
+        fit: "gap-0"
     })),
 }
 
@@ -220,7 +255,7 @@ export const sizableObjectSchema = z.object(_sizableObjectSchema);
 
 export type SizableObject = z.infer<typeof sizableObjectSchema>
 
-export const getSizableObjectClasses = (data: z.output<typeof sizableObjectSchema>) => {
+export const getSizableObjectClasses = (data: { [K in keyof SizableObject]: string }) => {
     const classes: string[] = []
 
     Object.keys(_sizableObjectSchema).forEach((k) => {

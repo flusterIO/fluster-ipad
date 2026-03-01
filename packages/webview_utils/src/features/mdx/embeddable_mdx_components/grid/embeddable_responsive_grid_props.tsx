@@ -12,18 +12,13 @@ export const breakpointBySize: { [K in SizableOption]: number } = {
     large: 768,
     xl: 896,
     xxl: 1024,
+    fit: 0,
     full: 1080
 }
 
 
 
-
-export const getSmallestSizableBreakpointByWidth = (w: number): SizableOption | undefined => {
-    return sizableOptions.toReversed().find((f) => breakpointBySize[f] < w)
-}
-
-
-export const defaultColumnsByBreakSize: { [K in SizableOption]: number } = {
+export const defaultColumnsByBreakSize: { [K in SizableOption]: number | string } = {
     none: 1,
     small: 1,
     smedium: 1,
@@ -31,7 +26,8 @@ export const defaultColumnsByBreakSize: { [K in SizableOption]: number } = {
     large: 2,
     xl: 2,
     xxl: 2,
-    full: 3
+    full: 3,
+    fit: -1
 }
 
 
@@ -44,6 +40,7 @@ const schema = {
     xl: z.number({ message: "'xl' is a number that represents the number of columns when the viewport is " }).int("The 'xl' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
     xxl: z.number({ message: "'xxl' is a number that represents the number of columns when the viewport is " }).int("The 'xxl' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
     full: z.number({ message: "'full' is a number that represents the number of columns when the viewport is " }).int("The 'full' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
+    fit: z.number({ message: "This property is pretty much here for compatibility in this case. " }).int().or(z.string({ message: "This field can be any valid css string as well." })).optional()
 } satisfies { [K in SizableOption]: z.ZodOptional<z.ZodUnion<[z.ZodNumber, z.ZodString]>> }
 
 const columnSchema = {
@@ -57,19 +54,26 @@ const columnSchema = {
             xl: cols,
             xxl: cols,
             full: cols,
-        }
+            fit: cols
+        } satisfies { [K in SizableOption]: typeof cols }
     })
 }
 
 
-const x = sizableObjectSchema.extend(schema)
-const y = sizableObjectSchema.extend(columnSchema)
+const modifiedSizableSchema = sizableObjectSchema.extend({
+    centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block w-fit" : ""),
+    centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "w-full place-items-center" : "").describe("Centers the content of this component's children, not the component itself."),
+})
+
+
+const x = modifiedSizableSchema.extend(schema)
+const y = modifiedSizableSchema.extend(columnSchema)
 
 
 /**
  * Returns the item at the `SizableOption` key if it exists, and if not walks down the `SizableOption` heirarchy until the next smallest value that was set. If none smaller are found, it defaults to the default value.
  */
-const getSmallerItemOrDefault = (idx: number, reversedSizableObjects: SizableOption[], data: { [K in SizableOption]?: number | undefined | string }, defaultValue: number = 1): number | string => {
+const getSmallerItemOrDefault = (idx: number, reversedSizableObjects: SizableOption[], data: { [K in SizableOption]?: number | undefined | string }, defaultValue: number | string = 1): number | string => {
     const size = reversedSizableObjects[idx]
     const value = data[size]
     if (typeof value !== "undefined" && value !== null) {
@@ -85,6 +89,11 @@ const getSmallerItemOrDefault = (idx: number, reversedSizableObjects: SizableOpt
 }
 
 
+export const getSmallestSizableBreakpointByWidth = (w: number): SizableOption | undefined => {
+    return sizableOptions.toReversed().find((f) => breakpointBySize[f] <= w)
+}
+
+
 const getColumns = (data: { [K in SizableOption]?: number | undefined | string }): { [K in SizableOption]: number | string } => {
     const reversedSizableObjects = sizableOptions.toReversed()
     return {
@@ -96,6 +105,8 @@ const getColumns = (data: { [K in SizableOption]?: number | undefined | string }
         xl: getSmallerItemOrDefault(sizableOptions.indexOf("xl"), reversedSizableObjects, data, defaultColumnsByBreakSize.xl),
         xxl: getSmallerItemOrDefault(sizableOptions.indexOf("xxl"), reversedSizableObjects, data, defaultColumnsByBreakSize.xxl),
         full: getSmallerItemOrDefault(sizableOptions.indexOf("full"), reversedSizableObjects, data, defaultColumnsByBreakSize.full),
+        // Fit won't be used directly, but applied some unique properties if the boolean is true.
+        fit: ""
     }
 }
 

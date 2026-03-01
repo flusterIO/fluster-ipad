@@ -1,19 +1,13 @@
 # To-Do
 
-## Fixes Before Moving Forward
-
-- [ ] Make sure editor works on all platforms.
-- [ ] Make sure `fd-xyz` based classes are working.
-
-## Cross-Platform
-
-- [ ] Move all editor interactions that user defined data to go through flatbuffers for serialization. It seems like it can break in some circumstances, and this will improve reliability _significantly_.
-
 ### Embedded Components
 
 - [ ] Responsive Grid
+  - [ ] This is currently completely non-functional. Handle the column gathering function tomorrow.
 - [ ] `CenterCard` that centers the content within it, or a plain, 'fd-card-background' container with sizableObject props and some decent defaults with a default 'flex-center' behavior.
 - [ ] `Hr` that accepts children to inline as small text.
+  - [ ] Already started, but need to handle all of the config boilerplate.
+- [ ] `Tabs` component that just accepts children and a context provider to set the tab content, not a prop from the user.
 
 #### Documentation
 
@@ -74,6 +68,21 @@
 - [ ] Create package after researching architecture:
   - [x] [Chumsky](https://docs.rs/chumsky/latest/chumsky/guide/) for creating a parser.
   - [x] [Miette](https://crates.io/crates/miette) for error reporting, and possibly... at least acording to Gemini, intellisense in codemirror? It said to use the error state that includes suggestions, but that sounds sketchy before I see it.
+
+---
+
+## Release
+
+### Pre-Release Checklist
+
+- [ ] All tests passing
+  - [ ] Swift
+  - [ ] Typescript
+  - [ ] Rust
+
+#### Post Release
+
+- [ ] Review [this](https://www.youtube.com/watch?v=fkeUvZ4NRhg) link and the section at ~5:00 about creating 'Nominations' for being featured by Apple's editor team. There's a special section for talking about the back story of the app, and this app certainly has a back story...
 
 ---
 

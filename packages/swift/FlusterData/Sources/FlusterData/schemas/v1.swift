@@ -173,6 +173,7 @@ extension AppSchemaV1 {
       results: MdxParsingResult,
       modelContext: ModelContext
     ) {
+      self.markdown.isEdited = false
       self.markdown.preParsedBody = results.content
       if let frontMatter = results.frontMatter {
         self.frontMatter.applyParsingResult(res: frontMatter)
@@ -365,6 +366,12 @@ extension AppSchemaV1 {
         }
       } catch {
         print("Error: \(error.localizedDescription)")
+      }
+    }
+    @MainActor
+    public func preParseIfEdited(modelContext: ModelContext) async throws {
+      if self.markdown.isEdited {
+        try await self.preParse(modelContext: modelContext)
       }
     }
     @MainActor
@@ -752,6 +759,7 @@ extension AppSchemaV1 {
     public var preParsedBody: String?
     public var title: String?
     public var summary: String?
+    public var isEdited: Bool = false
 
     public init(body: String, summary: String?) {
       self._body = body
@@ -765,6 +773,7 @@ extension AppSchemaV1 {
       }
       set(newBody) {
         self._body = newBody
+        self.isEdited = true
         self.title = MdxTextUtils.getTitle(body: newBody)
       }
     }

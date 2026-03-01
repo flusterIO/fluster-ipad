@@ -83,6 +83,9 @@ public enum InContentDocumentationFormat: String, Codable {
 public enum InContentDocumentationId: String, Codable {
 	case markdown = "Markdown"
 	case docs = "Docs"
+	case syntax = "Syntax"
+	case sizableObject = "Sizable"
+	case emphasis = "Emphasis"
 }
 
 public enum InContentDocumentationSource: String, Codable {

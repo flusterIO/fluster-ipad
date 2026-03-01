@@ -21,6 +21,7 @@ import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_c
 enum ComponentItemType {
     userInserted,
     autoInserted,
+    documentation
 }
 
 export type ComponentMapItem = {
@@ -31,6 +32,11 @@ export type ComponentMapItem = {
 } | {
     componentType: ComponentItemType.userInserted,
     query: readonly EmbeddableComponentName[],
+    /* eslint-disable-next-line  -- Not worth typing this. */
+    importComponent: () => Promise<FC<any>>;
+} | {
+    componentType: ComponentItemType.documentation,
+    query: string[],
     /* eslint-disable-next-line  -- Not worth typing this. */
     importComponent: () => Promise<FC<any>>;
 };
@@ -256,6 +262,13 @@ const items: ComponentMapItem[] = [
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
             return import("../../in_content_documentation/presentation/in_content_documentation_container").then((a) => a.InContentDocumentationContainer)
+        }
+    },
+    {
+        query: ["InContentDocumenationSchemaTable"],
+        componentType: ComponentItemType.documentation,
+        importComponent: async () => {
+            return import("../../in_content_documentation/presentation/in_content_documentation_schema_table/in_content_documentation_schema_table").then((a) => a.InContentDocumenationSchemaTable)
         }
     },
     /* { */

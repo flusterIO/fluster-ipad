@@ -7,7 +7,7 @@ import { WithInlineMdx } from '#/mdx/components/inline_mdx_content'
 
 
 export const EmbeddableCard = ({ children, InlineMdxContent, ...props }: EmbeddableCardPropsInput & WithChildren & WithInlineMdx): ReactNode => {
-    const { title, desc, containerClasses, shrink } = embeddableCardProps.parse(props)
+    const { title, desc, containerClasses, shrink, centerContent } = embeddableCardProps.parse(props)
     return (
         <Card className={containerClasses} size={shrink ? "sm" : "default"}>
             <CardHeader>
@@ -24,7 +24,9 @@ export const EmbeddableCard = ({ children, InlineMdxContent, ...props }: Embedda
                     </CardDescription>
                 ) : null}
             </CardHeader>
-            <CardContent>
+            <CardContent
+                className={centerContent ? "flex flex-col justify-center items-center" : undefined}
+            >
                 {children}
             </CardContent>
         </Card>
