@@ -7,14 +7,14 @@ use crate::core_types::component_constants::{
 };
 
 lazy_static! {
-    static ref COMPONENT_NAME_ID_MAP: HashMap<EmbeddableComponentName, EmbeddableComponentId> = {
+    pub static ref COMPONENT_NAME_ID_MAP: HashMap<EmbeddableComponentName, EmbeddableComponentId> = {
         let mut map = HashMap::new();
         map.insert(EmbeddableComponentName::Card, EmbeddableComponentId::Card);
         map.insert(EmbeddableComponentName::Grid, EmbeddableComponentId::Grid);
         map.insert(EmbeddableComponentName::Ul, EmbeddableComponentId::Ul);
         map.insert(EmbeddableComponentName::Hl, EmbeddableComponentId::Hl);
         map.insert(EmbeddableComponentName::UL, EmbeddableComponentId::Ul);
-        map.insert(EmbeddableComponentName::HL, EmbeddableComponentId::Hl);
+        map.insert(EmbeddableComponentName::Hl, EmbeddableComponentId::Hl);
         map.insert(
             EmbeddableComponentName::UtlityContainer,
             EmbeddableComponentId::UtlityContainer,

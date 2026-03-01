@@ -20,6 +20,9 @@ pub enum ParserId {
     #[serde(rename = "note_link")]
     #[strum(to_string = "note_link")]
     NoteLink,
+    #[serde(rename = "docs")]
+    #[strum(to_string = "docs")]
+    Documentation,
 }
 
 #[async_trait]

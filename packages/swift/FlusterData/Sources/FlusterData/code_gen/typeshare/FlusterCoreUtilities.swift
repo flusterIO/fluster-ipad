@@ -64,7 +64,6 @@ public enum EmbeddableComponentId: String, Codable {
 	case utlityContainer = "util-container"
 }
 
-/// From typescript to swift.
 public enum EmbeddableComponentName: String, Codable {
 	case admonition = "Admonition"
 	case hl = "Hl"
@@ -76,16 +75,19 @@ public enum EmbeddableComponentName: String, Codable {
 	case utlityContainer = "Container"
 }
 
-/// From typescript to swift.
 public enum InContentDocumentationFormat: String, Codable {
 	case full
 	case short
 }
 
-/// From typescript to swift.
 public enum InContentDocumentationId: String, Codable {
 	case markdown
 	case docs = "documentation-docs"
+}
+
+public enum InContentDocumentationSource: String, Codable {
+	case componentDocs = "component"
+	case internalDocs = "internal-docs"
 }
 
 /// From typescript to swift.

@@ -21,6 +21,7 @@ flatbuffers.workspace = true
 chrono = { workspace = true }
 rust-embed = { version = "8.11.0", features = ["compression"] }
 phf = { version = "0.13.1", features = ["macros"] }
+strum = { version = "0.27.2", features = ["derive"] }
 
 
 [profile.release]

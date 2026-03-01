@@ -6,7 +6,9 @@ use crate::core_types::in_content_documentation_id::InContentDocumentationFormat
 
 /// From typescript to swift.
 #[typeshare]
-#[derive(strum_macros::Display, PartialEq, Eq, Hash, EnumIter, Serialize, Deserialize)]
+#[derive(
+    strum_macros::Display, PartialEq, Eq, Hash, Clone, Copy, EnumIter, Serialize, Deserialize,
+)]
 pub enum EmbeddableComponentId {
     #[serde(rename = "admonition")]
     #[strum(to_string = "admonition")]
@@ -30,7 +32,7 @@ pub enum EmbeddableComponentId {
 
 impl EmbeddableComponentId {
     // Must match the file in the embedded directory.
-    pub fn to_embedded_file_name(self, format: InContentDocumentationFormat) -> String {
+    pub fn to_embedded_file_name(self, format: &InContentDocumentationFormat) -> String {
         format!("{}-{}.mdx", self, format)
     }
 }
@@ -60,7 +62,7 @@ mod tests {
             .expect("Reads 'component_docs' notes directory without throwing an error.");
         for doc_format in InContentDocumentationFormat::iter() {
             for id in EmbeddableComponentId::iter() {
-                let file_name_should_exist = id.to_embedded_file_name(doc_format.clone());
+                let file_name_should_exist = id.to_embedded_file_name(&doc_format.clone());
                 assert!(
                     file_names.iter().any(|x| x == &file_name_should_exist),
                     "The {} does not appear to exist.",

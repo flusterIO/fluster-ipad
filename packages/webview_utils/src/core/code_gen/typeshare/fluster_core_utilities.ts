@@ -63,7 +63,6 @@ export enum EmbeddableComponentId {
 	UtlityContainer = "util-container",
 }
 
-/** From typescript to swift. */
 export enum EmbeddableComponentName {
 	Admonition = "Admonition",
 	Hl = "Hl",
@@ -75,16 +74,19 @@ export enum EmbeddableComponentName {
 	UtlityContainer = "Container",
 }
 
-/** From typescript to swift. */
 export enum InContentDocumentationFormat {
 	Full = "full",
 	Short = "short",
 }
 
-/** From typescript to swift. */
 export enum InContentDocumentationId {
 	Markdown = "markdown",
 	Docs = "documentation-docs",
+}
+
+export enum InContentDocumentationSource {
+	ComponentDocs = "component",
+	InternalDocs = "internal-docs",
 }
 
 /** From typescript to swift. */
