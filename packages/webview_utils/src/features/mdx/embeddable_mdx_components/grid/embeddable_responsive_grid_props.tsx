@@ -1,5 +1,5 @@
 import { getSizableObjectClasses, sizableObjectSchema } from "../schemas/sizable_object_schema"
-import { z, ZodAny, ZodNumber, ZodOptional } from "zod"
+import { z } from "zod"
 import { SizableOption, sizableOptions } from "../schemas/sizable_props_schema"
 
 
@@ -27,7 +27,7 @@ export const defaultColumnsByBreakSize: { [K in SizableOption]: number | string 
     xl: 2,
     xxl: 2,
     full: 3,
-    fit: -1
+    fit: ""
 }
 
 
@@ -73,9 +73,12 @@ const y = modifiedSizableSchema.extend(columnSchema)
 /**
  * Returns the item at the `SizableOption` key if it exists, and if not walks down the `SizableOption` heirarchy until the next smallest value that was set. If none smaller are found, it defaults to the default value.
  */
-const getSmallerItemOrDefault = (idx: number, reversedSizableObjects: SizableOption[], data: { [K in SizableOption]?: number | undefined | string }, defaultValue: number | string = 1): number | string => {
-    const size = reversedSizableObjects[idx]
+const getSmallerItemOrDefault = (idx: number, data: { [K in SizableOption]?: number | undefined | string }, defaultValue: number | string = 1, log: boolean = false): number | string => {
+    const size = sizableOptions[idx]
     const value = data[size]
+    if (log) {
+        console.log("size, value, idx: ", size, value, idx)
+    }
     if (typeof value !== "undefined" && value !== null) {
         return value
     }
@@ -84,7 +87,7 @@ const getSmallerItemOrDefault = (idx: number, reversedSizableObjects: SizableOpt
         return defaultValue
     }
 
-    return getSmallerItemOrDefault(idx - 1, reversedSizableObjects, data, defaultValue)
+    return getSmallerItemOrDefault(idx - 1, data, defaultValue, log)
 
 }
 
@@ -94,19 +97,18 @@ export const getSmallestSizableBreakpointByWidth = (w: number): SizableOption | 
 }
 
 
-const getColumns = (data: { [K in SizableOption]?: number | undefined | string }): { [K in SizableOption]: number | string } => {
-    const reversedSizableObjects = sizableOptions.toReversed()
+export const getColumns = (data: { [K in SizableOption]?: number | undefined | string }): { [K in SizableOption]: number | string } => {
     return {
-        none: getSmallerItemOrDefault(sizableOptions.indexOf("none"), reversedSizableObjects, data, defaultColumnsByBreakSize.none),
-        small: getSmallerItemOrDefault(sizableOptions.indexOf("small"), reversedSizableObjects, data, defaultColumnsByBreakSize.small),
-        smedium: getSmallerItemOrDefault(sizableOptions.indexOf("smedium"), reversedSizableObjects, data, defaultColumnsByBreakSize.smedium),
-        medium: getSmallerItemOrDefault(sizableOptions.indexOf("medium"), reversedSizableObjects, data, defaultColumnsByBreakSize.medium),
-        large: getSmallerItemOrDefault(sizableOptions.indexOf("large"), reversedSizableObjects, data, defaultColumnsByBreakSize.large),
-        xl: getSmallerItemOrDefault(sizableOptions.indexOf("xl"), reversedSizableObjects, data, defaultColumnsByBreakSize.xl),
-        xxl: getSmallerItemOrDefault(sizableOptions.indexOf("xxl"), reversedSizableObjects, data, defaultColumnsByBreakSize.xxl),
-        full: getSmallerItemOrDefault(sizableOptions.indexOf("full"), reversedSizableObjects, data, defaultColumnsByBreakSize.full),
+        none: getSmallerItemOrDefault(sizableOptions.indexOf("none"), data, defaultColumnsByBreakSize.none),
+        small: getSmallerItemOrDefault(sizableOptions.indexOf("small"), data, defaultColumnsByBreakSize.small),
+        smedium: getSmallerItemOrDefault(sizableOptions.indexOf("smedium"), data, defaultColumnsByBreakSize.smedium),
+        medium: getSmallerItemOrDefault(sizableOptions.indexOf("medium"), data, defaultColumnsByBreakSize.medium),
+        large: getSmallerItemOrDefault(sizableOptions.indexOf("large"), data, defaultColumnsByBreakSize.large),
+        xl: getSmallerItemOrDefault(sizableOptions.indexOf("xl"), data, defaultColumnsByBreakSize.xl),
+        xxl: getSmallerItemOrDefault(sizableOptions.indexOf("xxl"), data, defaultColumnsByBreakSize.xxl),
+        full: getSmallerItemOrDefault(sizableOptions.indexOf("full"), data, defaultColumnsByBreakSize.full, true),
         // Fit won't be used directly, but applied some unique properties if the boolean is true.
-        fit: ""
+        fit: defaultColumnsByBreakSize.fit
     }
 }
 

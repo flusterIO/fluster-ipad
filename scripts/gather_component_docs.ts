@@ -1,7 +1,6 @@
 import { embeddableComponentConfigs } from "../packages/webview_utils/src/features/mdx/embeddable_mdx_components/component_configs";
 import fs from "fs";
 import path from "path";
-import { DocumentationPair } from "./documentation/types";
 import { markdownContentToDocumentationPair } from "./documentation/markdown_content_to_documentation_pair";
 
 const monoRepoRoot = path.resolve(__dirname, "../");
@@ -9,8 +8,6 @@ const outputDir = path.resolve(
     monoRepoRoot,
     "./packages/rust/fluster_pre_parser/src/embedded/component_docs/",
 );
-
-const COMPONENT_DOCS_FULL_DOCS_SPLITTER = "<<FULLDOCS>>";
 
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);

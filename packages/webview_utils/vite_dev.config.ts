@@ -1,13 +1,11 @@
-import { defineConfig } from "vite";
+import { defineConfig, defaultExclude } from "vitest/config";
 import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
-import { resolve } from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 import tailwind from "@tailwindcss/vite";
 
 
-// https://vite.dev/config/
 export default defineConfig({
     plugins: [
         react(),
@@ -33,4 +31,14 @@ export default defineConfig({
             "#": path.resolve(__dirname, "./src/features"),
         },
     },
+    test: {
+        globals: true,
+        environment: "jsdom",
+        setupFiles: ['./vitest.setup.ts'],
+        exclude: [...defaultExclude],
+        coverage: {
+            provider: "v8",
+            reporter: ["text", "json", "html"]
+        }
+    }
 });

@@ -12,6 +12,11 @@ export const SplitViewEditorInner = (): ReactNode => {
             autoSaveId={autoSaveId}
             direction="horizontal"
             className="w-screen! h-screen! loading-main-hide"
+            onLayout={(layout) => {
+                window.dispatchEvent(new CustomEvent("main-panel-resize", {
+                    detail: layout
+                }))
+            }}
         >
             <Panel id="editor-panel" order={1} defaultSize={50} minSize={10}>
                 <CodeEditor />
