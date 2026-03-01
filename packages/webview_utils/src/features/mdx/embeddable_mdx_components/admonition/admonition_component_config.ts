@@ -2,6 +2,7 @@ import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, Snipp
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
+import { admonitionPropsSchema } from "./admonition_props_schema";
 
 
 export const admonitionComponentNames = [EmbeddableComponentName.Admonition] as const
@@ -11,6 +12,7 @@ export const admonitionComponentConfig: EmbeddableComponentConfig = {
     id: EmbeddableComponentId.Admonition,
     categories: [ComponentCategory.layout, ComponentCategory.attention],
     name: admonitionComponentNames,
+    schema: admonitionPropsSchema,
     desc: "A card with a colored header that can be optionally foldable. Used to draw attention to important content.",
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/admonition/admonition_component_docs.mdx",
     snippets: () => {

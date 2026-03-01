@@ -1,6 +1,6 @@
 use fluster_core_utilities::core_types::{
     component_constants::component_ids::EmbeddableComponentId,
-    in_content_documentation_id::InContentDocumentationFormat,
+    documentation_constants::in_content_documentation_id::InContentDocumentationFormat,
 };
 use rust_embed::Embed;
 

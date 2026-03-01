@@ -1,5 +1,7 @@
 import { EmbeddableComponentId, EmbeddableComponentName } from "@/code_gen/typeshare/fluster_core_utilities";
 import { Completion } from "@codemirror/autocomplete"
+import { ZodAny } from "zod";
+import { AnyComponentSchema } from "./any_component_schema";
 
 
 export enum CompletionSections {
@@ -54,5 +56,9 @@ export interface EmbeddableComponentConfig {
     desc?: string;
     /** A path to a mdx or md file for component specific documentation and examples. Path is relative to the monorepo route. */
     docsPath: string;
+    /**
+     * The props schema used to parse this component's props. This is also used for documentation generation.
+     */
+    schema: AnyComponentSchema;
     snippets?: () => Completion[]
 }

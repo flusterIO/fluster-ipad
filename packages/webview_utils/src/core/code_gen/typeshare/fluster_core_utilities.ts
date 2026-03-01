@@ -82,6 +82,9 @@ export enum InContentDocumentationFormat {
 export enum InContentDocumentationId {
 	Markdown = "Markdown",
 	Docs = "Docs",
+	Syntax = "Syntax",
+	SizableObject = "Sizable",
+	Emphasis = "Emphasis",
 }
 
 export enum InContentDocumentationSource {

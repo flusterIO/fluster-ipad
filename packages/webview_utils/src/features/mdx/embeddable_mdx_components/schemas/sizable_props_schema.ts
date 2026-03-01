@@ -13,6 +13,7 @@ export const sizableOptions = [
     "large",
     "xl",
     "xxl",
+    "fit",
     "full"
 ] as const;
 
@@ -22,6 +23,7 @@ export const sizablePropSchema = (labelKey: string) => z.enum(sizableOptions, {
 
 
 export type SizableOption = typeof sizableOptions[number]
+export type SizableOptionRecord<T> = { [K in SizableOption]: T }
 export type SizableInput = z.infer<ReturnType<typeof sizablePropSchema>>
 export type SizeablePropsTransform = (value: SizableInput | undefined) => string
 

@@ -47,13 +47,17 @@ generate_dependency_diagram:
 	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_light.png -t default 
 
 
+write_in_content_docs_by_id:
+	tsx {{justfile_directory()}}/scripts/documentation/write_content_by_in_content_doc_id.ts
+
+
 ## Deprecated, now that component docs are being gathered by typescript, I think?
 generate_component_docs_paths: build_internal_cli generate_dependency_diagram
 
 generate_initial_note_paths: build_internal_cli gather_component_docs
 	tsx {{justfile_directory()}}/scripts/generate_initial_note_paths.ts
 
-generate_initial_note_data: generate_initial_note_paths
+generate_initial_note_data: generate_initial_note_paths write_in_content_docs_by_id
 	cp /Users/bigsexy/Desktop/notes/content/physics/ipad_app_notes/on_the_gravitational_nature_of_time.mdx /Users/bigsexy/Desktop/swift/Fluster/docs/initial_note_docs/on_the_gravitational_nature_of_time.mdx
 	./target/debug/fluster_internal_cli parse-initial-notes
 
@@ -80,7 +84,7 @@ build_fluster_lezer:
 
 build_cross_language_all: build_cross_language_schemas
 
-generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data
+generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data write_in_content_docs_by_id
 
 build_ipad_simulator:
 	cd {{justfile_directory()}}/apps/fluster; xcodebuild -destination "platform=iOS Simulator,name=iPad Pro 13-inch M5 26.1" -scheme Fluster build
@@ -94,7 +98,7 @@ build_all_rust: build_cross_language_all
 build_fluster_pre_parser:
 	cd {{justfile_directory()}}/packages/rust/fluster_pre_parser; cargo build
 
-build_fluster_swift_mdx_parser: build_cross_language_all
+build_fluster_swift_mdx_parser: build_cross_language_all build_fluster_pre_parser
 	cd {{justfile_directory()}}/packages/rust/fluster_swift_mdx_parser; cargo-swift swift package -y --xcframework-name FlusterSwiftMdxParse
 
 build_fluster_core_rust_utilities: build_cross_language_all
@@ -156,7 +160,7 @@ pre_ipad_build: generate_initial_launch_data build_cross_language_all build_flus
 generate_shiki_themes:
 	tsx scripts/write_bundled_themes.ts
 
-pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor_mac build_standalone_mdx_preview_webview_mac build_bibtex_editor_webview_mac build_dictionary_webview_mac build_note_detail_webview_mac
+pre_desktop_build: generate_shiki_themes generate_initial_launch_data build_fluster_swift_mdx_parser build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor_mac build_standalone_mdx_preview_webview_mac build_bibtex_editor_webview_mac build_dictionary_webview_mac build_note_detail_webview_mac
 
 test_rust: build_cross_language_schemas
 	cargo nextest run --no-capture

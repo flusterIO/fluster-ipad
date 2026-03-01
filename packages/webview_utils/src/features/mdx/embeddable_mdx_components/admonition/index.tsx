@@ -14,7 +14,7 @@ export const Admonition = ({
     ...props
 }: AdmonitionPropsInput & WithChildren & WithInlineMdx): ReactNode => {
     const {
-        title: _title, classes, foldable, folded, type, parsedContainerClasses
+        title: _title, classes, foldable, folded, type, parsedContainerClasses, centerContent
     } = admonitionPropsSchema.parse(props)
     const [open, setOpen] = useState(foldable ? !folded : true);
     // sure to enforce the type safety for all string components before use as there's no typesafety while the mdx is rendered in live preview.
@@ -69,7 +69,7 @@ export const Admonition = ({
                     bounce: 0,
                 }}
             >
-                <div className={cn("p-4 first:mt-0 last:mb-0 admonitionBody inline-mdx", classes.body)}>{children}</div>
+                <div className={cn("p-4 first:mt-0 last:mb-0 admonitionBody inline-mdx", classes.body, centerContent && "flex flex-col justify-center items-center")}>{children}</div>
             </motion.div>
         </motion.div>
     );

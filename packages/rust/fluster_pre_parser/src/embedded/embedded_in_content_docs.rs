@@ -1,9 +1,9 @@
-use fluster_core_utilities::core_types::in_content_documentation_id::{
+use fluster_core_utilities::core_types::documentation_constants::in_content_documentation_id::{
     InContentDocumentationFormat, InContentDocumentationId,
 };
-use rust_embed::Embed;
+use rust_embed::RustEmbed;
 
-#[derive(Embed)]
+#[derive(RustEmbed)]
 #[folder = "src/embedded/in_content_docs/"]
 pub struct EmbeddedInContentDocs;
 
@@ -33,5 +33,33 @@ impl EmbeddedInContentDocs {
             return body.to_string();
         }
         MDX_DOCUMENTATION_ERROR_TEXT.to_string()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use strum::IntoEnumIterator;
+
+    use super::*;
+
+    #[test]
+    fn gets_in_content_docs_by_id() {
+        for format_name in InContentDocumentationFormat::iter() {
+            for id in InContentDocumentationId::iter() {
+                let res = EmbeddedInContentDocs::get_incontent_docs_by_id(&id, &format_name);
+                assert!(
+                    !res.is_empty(),
+                    "Found non-empty content for the component with the id {}",
+                    id
+                );
+                assert!(
+                    res != MDX_DOCUMENTATION_ERROR_TEXT,
+                    "Received proper text content for the component with the id '{}' and format {}",
+                    id,
+                    format_name
+                );
+            }
+        }
+        // assert_eq!(result, 4);
     }
 }

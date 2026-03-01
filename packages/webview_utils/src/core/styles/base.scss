@@ -153,6 +153,12 @@ body.fluster-ipad {
   }
 }
 
+.hide-math-labels {
+  mjx-labels {
+    display: none;
+  }
+}
+
 
 /* Component utils that I'm too lazy to write in tailwind */
 

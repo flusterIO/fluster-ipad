@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use strum::EnumIter;
 use typeshare::typeshare;
 
-use crate::core_types::in_content_documentation_id::InContentDocumentationFormat;
+use crate::core_types::documentation_constants::in_content_documentation_id::InContentDocumentationFormat;
 
 /// From typescript to swift.
 #[typeshare]
@@ -42,7 +42,7 @@ mod tests {
     use strum::IntoEnumIterator;
 
     use crate::{
-        core_types::in_content_documentation_id::get_file_names_in_dir,
+        core_types::documentation_constants::in_content_documentation_id::get_file_names_in_dir,
         test_utilities::get_workspace_root::get_workspace_root,
     };
 

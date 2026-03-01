@@ -5,7 +5,7 @@ use strum::EnumIter;
 use typeshare::typeshare;
 
 #[typeshare]
-#[derive(strum_macros::Display, Clone, EnumIter, Serialize, Deserialize)]
+#[derive(strum_macros::Display, uniffi::Enum, Clone, EnumIter, Serialize, Deserialize)]
 pub enum InContentDocumentationSource {
     #[serde(rename = "component")]
     #[strum(to_string = "component")]
@@ -16,7 +16,7 @@ pub enum InContentDocumentationSource {
 }
 
 #[typeshare]
-#[derive(strum_macros::Display, Clone, EnumIter, Serialize, Deserialize)]
+#[derive(strum_macros::Display, uniffi::Enum, Clone, EnumIter, Serialize, Deserialize)]
 pub enum InContentDocumentationFormat {
     #[serde(rename = "full")]
     #[strum(to_string = "full")]
@@ -27,7 +27,7 @@ pub enum InContentDocumentationFormat {
 }
 
 #[typeshare]
-#[derive(strum_macros::Display, Clone, Copy, EnumIter, Serialize, Deserialize)]
+#[derive(strum_macros::Display, uniffi::Enum, Clone, Copy, EnumIter, Serialize, Deserialize)]
 pub enum InContentDocumentationId {
     #[serde(rename = "Markdown")]
     #[strum(to_string = "Markdown")]
@@ -35,13 +35,25 @@ pub enum InContentDocumentationId {
     #[serde(rename = "Docs")]
     #[strum(to_string = "Docs")]
     Docs,
+    #[serde(rename = "Syntax")]
+    #[strum(to_string = "Syntax")]
+    Syntax,
+    #[serde(rename = "Sizable")]
+    #[strum(to_string = "Sizable")]
+    SizableObject,
+    #[serde(rename = "Emphasis")]
+    #[strum(to_string = "Emphasis")]
+    Emphasis,
 }
 
 impl InContentDocumentationId {
     pub fn to_embedded_file_name(self, format: &InContentDocumentationFormat) -> String {
         let base_file_name = match self {
-            InContentDocumentationId::Markdown => "markdown",
+            InContentDocumentationId::Markdown => "markdown-docs",
             InContentDocumentationId::Docs => "documentation-docs",
+            InContentDocumentationId::SizableObject => "sizable-object-docs",
+            InContentDocumentationId::Emphasis => "emphasis-docs",
+            InContentDocumentationId::Syntax => "syntax-docs",
         };
         format!("{}-{}.mdx", base_file_name, format)
     }
@@ -94,7 +106,7 @@ mod tests {
             .expect("Reads 'in_content' notes directory without throwing an error.");
         for doc_format in InContentDocumentationFormat::iter() {
             for id in InContentDocumentationId::iter() {
-                let file_name_should_exist = id.to_embedded_file_name(doc_format.clone());
+                let file_name_should_exist = id.to_embedded_file_name(&doc_format.clone());
                 assert!(
                     file_names.iter().any(|x| x == &file_name_should_exist),
                     "The {} does not appear to exist.",

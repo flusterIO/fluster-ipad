@@ -57,6 +57,15 @@ struct MdxContentWebview: View {
         messageHandler: messageHandler,
         onLoad: onWebviewLoad
       )
+      .task {
+        if let en = editingNote {
+          do {
+            try await en.preParseIfEdited(modelContext: modelContext)
+          } catch {
+            print("Error: \(error.localizedDescription)")
+          }
+        }
+      }
       .onChange(
         of: editingNote?.id,
         {
