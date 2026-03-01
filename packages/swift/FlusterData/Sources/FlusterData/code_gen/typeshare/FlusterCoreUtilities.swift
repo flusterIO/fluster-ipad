@@ -4,6 +4,13 @@
 
 import Foundation
 
+public enum AutoInsertedComponentName: String, Codable {
+	case noteLink = "NoteLink"
+	case autoInsertedTag = "AutoInsertedTag"
+	case flusterCitation = "FlusterCitation"
+	case dictionaryEntry = "DictionaryEntry"
+}
+
 public enum AutoTaggableType: String, Codable {
 	case tag
 	case topic
@@ -52,6 +59,12 @@ public enum DictionaryWebviewStorageKeys: String, Codable {
 	case scrollPositionPortrait = "dict-scroll-pos-portrait"
 	case scrollPositionLandscape = "dict-scroll-pos-landscape"
 	case dictionaryData = "dict-data"
+}
+
+public enum DocumentationComponentName: String, Codable {
+	case inContentDocumentationContainer = "InContentDocumentationContainer"
+	case inContentDocumenationSchemaTable = "InContentDocumenationSchemaTable"
+	case inContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList"
 }
 
 /// From typescript to swift.

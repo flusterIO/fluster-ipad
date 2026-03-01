@@ -5,7 +5,7 @@ Any documents placed in the `docs/in_content_docs/` directory will be copied to 
 Each input file is parsed for the following syntax:
 
 ````
-```docs-long
+```long-docs
 This is my 'long docs only' content here.
 ```
 ````

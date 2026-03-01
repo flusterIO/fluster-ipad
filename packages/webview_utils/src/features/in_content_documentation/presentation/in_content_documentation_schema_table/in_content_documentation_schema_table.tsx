@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import { z } from "zod"
-import { sizableObjectSchema } from '../../../mdx/embeddable_mdx_components/schemas/sizable_object_schema';
+import { _sizableObjectSchema, sizableObjectSchema } from '../../../mdx/embeddable_mdx_components/schemas/sizable_object_schema';
+import { embeddableResponsiveGridPropsSchema } from '#/mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props';
 
 
-type ZodSchemaTableKey = "sizable-object"
+type ZodSchemaTableKey = "sizable-object" | "grid-props"
 
 interface ZodTableProps {
 
@@ -17,13 +18,13 @@ export type SchemaRow = {
     description: string;
 };
 
-function flattenZodSchema(schema: z.ZodTypeAny, prefix = ""): SchemaRow[] {
+function flattenZodSchema(schema: z.ZodTypeAny, keys: string[], prefix = ""): SchemaRow[] {
     if (!(schema instanceof z.ZodObject)) return [];
 
     const rows: SchemaRow[] = [];
     const shape = schema.shape;
 
-    for (const key in shape) {
+    for (const key in keys) {
         const field = shape[key];
         const name = prefix ? `${prefix}.${key}` : key;
 
@@ -46,7 +47,7 @@ function flattenZodSchema(schema: z.ZodTypeAny, prefix = ""): SchemaRow[] {
         if (typeName === "Object") {
             rows.push(...flattenZodSchema(
                 /* eslint-disable-next-line  -- Need to use any here. */
-                coreType as z.ZodObject<any>, name));
+                coreType as z.ZodObject<any>, Object.keys(coreType), name));
         }
     }
     return rows;
@@ -54,10 +55,11 @@ function flattenZodSchema(schema: z.ZodTypeAny, prefix = ""): SchemaRow[] {
 
 export const InContentDocumenationSchemaTable: React.FC<ZodTableProps> = ({ schema }) => {
     /* eslint-disable-next-line  -- Need to use any here */
-    const schemaMap: { [K in ZodSchemaTableKey]: z.ZodObject<any> } = {
-        "sizable-object": sizableObjectSchema
+    const schemaMap: { [K in ZodSchemaTableKey]: z.ZodTypeAny } = {
+        "sizable-object": sizableObjectSchema,
+        "grid-props": embeddableResponsiveGridPropsSchema
     }
-    const data = useMemo(() => flattenZodSchema(schemaMap[schema]), [schema, schemaMap]);
+    const data = useMemo(() => flattenZodSchema(schemaMap[schema], Object.keys(_sizableObjectSchema)), [schema, schemaMap]);
 
     return (
         <div className="overflow-hidden rounded-lg border border-gray-200 shadow-sm">

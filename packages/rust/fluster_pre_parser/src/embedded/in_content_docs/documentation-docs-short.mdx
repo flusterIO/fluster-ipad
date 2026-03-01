@@ -11,14 +11,4 @@ Trigger documentation by placing specific keywords followed by either 1 or 2 `?`
 | `Syntax??` | A reference to Fluster specific syntax. |
 
 
-### Component Property Models
 
-Many of the components share certain property models between them, making the application of propeties more predictable. Because of this, it doesn't make sense to document each property in the shared classes independently.
-
-In other words, if components A and B accept properties $P_a$ and $P_b$, where $P_{a}$ and $P_{b}$ both extend `SizableObject`, it would just be confusing to the user to list all of the `SizableObject` properties mixed in with the properties that are unique to $P_{a}$ or $P_{b}$. For that reason, we document the largest of those shared models separately.
-
-
-| Trigger | Desc | Used in |
-| ------- | ---- | ------- |
-| `Sizable??` | The core styling model, especially for container components. | `Card`, <br/> `Container`, <br /> `Admonition`, <br/> etc.. |
-| `Emphasis??` | A list of boolean properties that can apply unique styles like `info` or `important`. | `Highlight`, <br /> `Underline`, <br /> `Admonition`, <br /> ... |

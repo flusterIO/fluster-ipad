@@ -71,6 +71,13 @@
 
 ---
 
+## Performance
+
+- [ ] Move all of regex queries in the `get_component_map` file to a `HashMap<String, bool>` that is generate in Rust now that the component names are being set as an enum.
+  - [ ] Just create another enum that handles the internal & documentation components and use those instead of strings, and then write the Rust code to query for each and return a hashmap of `<ComponentName, bool>` along with the parsing results so that whole pre-render query can be moved to a lookup table.
+
+---
+
 ## Release
 
 ### Pre-Release Checklist

@@ -10,13 +10,14 @@ import { InlineMdxContent } from "../components/inline_mdx_content";
 import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
-import { EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
+import { DocumentationComponentName, EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
 import { admonitionComponentNames } from "../embeddable_mdx_components/admonition/admonition_component_config";
 import { cardComponentNames } from "../embeddable_mdx_components/card/embeddable_card_component_config";
 import { gridComponentNames } from "../embeddable_mdx_components/grid/embeddable_responsive_grid_component_config";
 import { utilityContainerComponentNames } from "../embeddable_mdx_components/container/embeddable_utility_container_component_config";
 import { ulComponentNames } from "../embeddable_mdx_components/ul/ul_component_config";
 import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_config";
+import { AutoInsertedComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities"
 
 enum ComponentItemType {
     userInserted,
@@ -26,7 +27,7 @@ enum ComponentItemType {
 
 export type ComponentMapItem = {
     componentType: ComponentItemType.autoInserted,
-    query: string[],
+    query: AutoInsertedComponentName[],
     /* eslint-disable-next-line  -- Not worth typing this. */
     importComponent: () => Promise<FC<any>>;
 } | {
@@ -36,7 +37,7 @@ export type ComponentMapItem = {
     importComponent: () => Promise<FC<any>>;
 } | {
     componentType: ComponentItemType.documentation,
-    query: string[],
+    query: DocumentationComponentName[],
     /* eslint-disable-next-line  -- Not worth typing this. */
     importComponent: () => Promise<FC<any>>;
 };
@@ -230,64 +231,54 @@ const items: ComponentMapItem[] = [
     /*     component: InlineCitation, */
     /* }, */
     {
-        query: ["NoteLink"],
+        query: [AutoInsertedComponentName.NoteLink],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
             return import("../embeddable_mdx_components/auto_inserted/note_link").then((a) => a.NoteLink)
         }
     },
     {
-        query: ["AutoInsertedTag"],
+        query: [AutoInsertedComponentName.AutoInsertedTag],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
             return import("../embeddable_mdx_components/auto_inserted/tag").then((a) => a.AutoInsertedTag)
         }
     },
     {
-        query: ["FlusterCitation"],
+        query: [AutoInsertedComponentName.FlusterCitation],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
             return import("../embeddable_mdx_components/auto_inserted/fluster_citation").then((a) => a.FlusterCitation)
         }
     },
     {
-        query: ["DictionaryEntry"],
+        query: [AutoInsertedComponentName.DictionaryEntry],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
             return import("../../dictionary/hooks/dictionary_entry").then((a) => a.DictionaryEntryComponent)
         }
     },
     {
-        query: ["InContentDocumentationContainer"],
-        componentType: ComponentItemType.autoInserted,
+        query: [DocumentationComponentName.InContentDocumentationContainer],
+        componentType: ComponentItemType.documentation,
         importComponent: async () => {
             return import("../../in_content_documentation/presentation/in_content_documentation_container").then((a) => a.InContentDocumentationContainer)
         }
     },
     {
-        query: ["InContentDocumenationSchemaTable"],
+        query: [DocumentationComponentName.InContentDocumenationSchemaTable],
         componentType: ComponentItemType.documentation,
         importComponent: async () => {
             return import("../../in_content_documentation/presentation/in_content_documentation_schema_table/in_content_documentation_schema_table").then((a) => a.InContentDocumenationSchemaTable)
         }
     },
-    /* { */
-    /*     query: "EquationTag", */
-    /*     component: EquationTag, */
-    /* }, */
-    /* { */
-    /*     query: "VideoTimestampLink", */
-    /*     component: VideoTimestampLink, */
-    /* }, */
-    /* { */
-    /*     query: "AudioTimestampLink", */
-    /*     component: AudioTimestampLink, */
-    /* }, */
-    /* // -- Documentation Only -- */
-    /* { */
-    /*     query: "AppRoute", */
-    /*     component: AppRoute, */
-    /* }, */
+    {
+        query: [DocumentationComponentName.InContentDocsEmphasisTypeList],
+        componentType: ComponentItemType.documentation,
+        importComponent: async () => {
+            return import("../../in_content_documentation/presentation/in_content_documentation_components/emphasis_typescript_documentation").then((a) => a.InContentDocsEmphasisTypeList)
+        }
+    }
 ];
 
 export const getComponentMap = async (mdxContent: string, additionalComponenets: ComponentMapItem[] = []): Promise<MDXComponents> => {

@@ -22,13 +22,13 @@ export const markdownContentToDocumentationPair = (
     const matches = getMatches(content);
     let shortDocs = content;
     matches.forEach((block) => {
-        if (block.label === "docs-long") {
+        if (block.label === "long-docs") {
             shortDocs = shortDocs.replace(block.fullMatch, "");
         }
     });
     let longDocs = content;
     matches.forEach((block) => {
-        if (block.label === "docs-long") {
+        if (block.label === "long-docs") {
             longDocs = longDocs.replace(block.fullMatch, block.content);
         }
     });
