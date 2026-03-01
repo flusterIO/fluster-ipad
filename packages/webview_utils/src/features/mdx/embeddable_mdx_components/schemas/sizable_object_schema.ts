@@ -28,7 +28,7 @@ export const defaultHeightTransform: SizableOptionRecord<string> = {
     fit: "h-fit"
 }
 
-const _sizableObjectSchema = {
+export const _sizableObjectSchema = {
     hideMathLabels: z.boolean().optional().transform((a) => a ? "hide-math-labels" : "").describe("Hides the MathJax labels in all child components."),
     right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "float-right ml-4 mr-0" : ""),
     left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "float-left mr-4 ml-0" : ""),

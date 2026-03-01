@@ -3,6 +3,13 @@
 */
 
 
+export enum AutoInsertedComponentName {
+	NoteLink = "NoteLink",
+	AutoInsertedTag = "AutoInsertedTag",
+	FlusterCitation = "FlusterCitation",
+	DictionaryEntry = "DictionaryEntry",
+}
+
 export enum AutoTaggableType {
 	Tag = "tag",
 	Topic = "topic",
@@ -51,6 +58,12 @@ export enum DictionaryWebviewStorageKeys {
 	ScrollPositionPortrait = "dict-scroll-pos-portrait",
 	ScrollPositionLandscape = "dict-scroll-pos-landscape",
 	DictionaryData = "dict-data",
+}
+
+export enum DocumentationComponentName {
+	InContentDocumentationContainer = "InContentDocumentationContainer",
+	InContentDocumenationSchemaTable = "InContentDocumenationSchemaTable",
+	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
 }
 
 /** From typescript to swift. */
