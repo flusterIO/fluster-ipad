@@ -5,20 +5,11 @@ import { BlockQuote } from "@/shared_components/typography/block_quote";
 import { MDXComponents } from "mdx/types";
 import { MdxInput } from "../embeddable_mdx_components/html/input";
 import { AnchorTag } from "../embeddable_mdx_components/html/anchor";
-import { AutoInsertedTag } from "../embeddable_mdx_components/auto_inserted/tag";
-import { FlusterCitation } from "../embeddable_mdx_components/auto_inserted/fluster_citation";
-import { Admonition } from "../embeddable_mdx_components/admonition";
-import { DictionaryEntryComponent } from "../../dictionary/hooks/dictionary_entry";
-import { NoteLink } from "../embeddable_mdx_components/auto_inserted/note_link";
 import { Hl } from "../embeddable_mdx_components/hl/hl";
-import { Ul } from "../embeddable_mdx_components/ul/ul";
 import { InlineMdxContent } from "../components/inline_mdx_content";
 import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
-import { EmbeddableCard } from "../embeddable_mdx_components/card/embeddable_card";
-import { EmbeddableResponsiveGrid } from "../embeddable_mdx_components/grid/embeddable_responsive_grid";
-import { EmbeddableUtilityContainer } from "../embeddable_mdx_components/container/embeddable_utility_container";
 import { EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
 import { admonitionComponentNames } from "../embeddable_mdx_components/admonition/admonition_component_config";
 import { cardComponentNames } from "../embeddable_mdx_components/card/embeddable_card_component_config";
@@ -26,7 +17,6 @@ import { gridComponentNames } from "../embeddable_mdx_components/grid/embeddable
 import { utilityContainerComponentNames } from "../embeddable_mdx_components/container/embeddable_utility_container_component_config";
 import { ulComponentNames } from "../embeddable_mdx_components/ul/ul_component_config";
 import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_config";
-import { InContentDocumentationContainer } from "#/in_content_documentation/presentation/in_content_documentation_container";
 
 enum ComponentItemType {
     userInserted,
@@ -37,12 +27,12 @@ export type ComponentMapItem = {
     componentType: ComponentItemType.autoInserted,
     query: string[],
     /* eslint-disable-next-line  -- Not worth typing this. */
-    component: FC<any>
+    importComponent: () => Promise<FC<any>>;
 } | {
     componentType: ComponentItemType.userInserted,
     query: readonly EmbeddableComponentName[],
     /* eslint-disable-next-line  -- Not worth typing this. */
-    component: FC<any>
+    importComponent: () => Promise<FC<any>>;
 };
 
 export const componentOverrides: MDXComponents = {
@@ -65,7 +55,9 @@ const items: ComponentMapItem[] = [
     {
         query: utilityContainerComponentNames,
         componentType: ComponentItemType.userInserted,
-        component: EmbeddableUtilityContainer,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/container/embeddable_utility_container").then((a) => a.EmbeddableUtilityContainer)
+        }
     },
     /* { */
     /*     query: "EqRef", */
@@ -124,17 +116,26 @@ const items: ComponentMapItem[] = [
         query: admonitionComponentNames,
         componentType: ComponentItemType.userInserted,
         // Required to get around circular import that I still can't find...
-        component: (props) => <Admonition {...props} InlineMdxContent={InlineMdxContent} />,
+        /* component: (props) => <Admonition {...props} InlineMdxContent={InlineMdxContent} />, */
+        importComponent: async () => {
+            const Component = await import("../embeddable_mdx_components/admonition").then((a) => a.Admonition)
+            return (p) => <Component {...p} InlineMdxContent={InlineMdxContent} />
+        }
     },
     {
         query: cardComponentNames,
         componentType: ComponentItemType.userInserted,
-        component: (props) => <EmbeddableCard {...props} InlineMdxContent={InlineMdxContent} />,
+        importComponent: async () => {
+            const Component = await import("../embeddable_mdx_components/card/embeddable_card").then((a) => a.EmbeddableCard)
+            return (p) => <Component {...p} InlineMdxContent={InlineMdxContent} />
+        }
     },
     {
         query: gridComponentNames,
         componentType: ComponentItemType.userInserted,
-        component: EmbeddableResponsiveGrid,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/grid/embeddable_responsive_grid").then((a) => a.EmbeddableResponsiveGrid)
+        }
     },
     /* { */
     /*     query: "GridItem", */
@@ -157,12 +158,16 @@ const items: ComponentMapItem[] = [
     {
         query: ulComponentNames,
         componentType: ComponentItemType.userInserted,
-        component: Ul,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/ul/ul").then((a) => a.Ul)
+        }
     },
     {
         query: hlComponentNames,
         componentType: ComponentItemType.userInserted,
-        component: Hl,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/hl/hl").then((a) => a.Hl)
+        }
     },
     /* { */
     /*     query: "Quote", */
@@ -221,28 +226,37 @@ const items: ComponentMapItem[] = [
     {
         query: ["NoteLink"],
         componentType: ComponentItemType.autoInserted,
-        component: NoteLink
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/auto_inserted/note_link").then((a) => a.NoteLink)
+        }
     },
     {
         query: ["AutoInsertedTag"],
         componentType: ComponentItemType.autoInserted,
-        component: AutoInsertedTag,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/auto_inserted/tag").then((a) => a.AutoInsertedTag)
+        }
     },
     {
         query: ["FlusterCitation"],
         componentType: ComponentItemType.autoInserted,
-        component: FlusterCitation,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/auto_inserted/fluster_citation").then((a) => a.FlusterCitation)
+        }
     },
     {
         query: ["DictionaryEntry"],
         componentType: ComponentItemType.autoInserted,
-        // Required to get around circular import that I still can't find...
-        component: (props) => <DictionaryEntryComponent {...props} InlineMdxContent={InlineMdxContent} />,
+        importComponent: async () => {
+            return import("../../dictionary/hooks/dictionary_entry").then((a) => a.DictionaryEntryComponent)
+        }
     },
     {
         query: ["InContentDocumentationContainer"],
         componentType: ComponentItemType.autoInserted,
-        component: InContentDocumentationContainer
+        importComponent: async () => {
+            return import("../../in_content_documentation/presentation/in_content_documentation_container").then((a) => a.InContentDocumentationContainer)
+        }
     },
     /* { */
     /*     query: "EquationTag", */
@@ -263,14 +277,14 @@ const items: ComponentMapItem[] = [
     /* }, */
 ];
 
-export const getComponentMap = (mdxContent: string, additionalComponenets: ComponentMapItem[] = []): MDXComponents => {
+export const getComponentMap = async (mdxContent: string, additionalComponenets: ComponentMapItem[] = []): Promise<MDXComponents> => {
     const components: MDXComponents = componentOverrides;
     const x = [...items, ...additionalComponenets]
     for (const item of x) {
         for (const query of item.query) {
             const isIncluded = mdxContent.includes(`<${query}`);
             if (isIncluded) {
-                const C = item.component;
+                const C = await item.importComponent()
                 components[query] = (_props: object) => <ErrorBoundary FallbackComponent={(errorProps) => <InContentErrorReport {...errorProps} componentName={query} />}><C {..._props} /></ErrorBoundary>;
             }
         }

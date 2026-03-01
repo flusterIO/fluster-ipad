@@ -11,15 +11,15 @@ pub enum EmbeddableComponentName {
     #[serde(rename = "Hl")]
     #[strum(to_string = "Hl")]
     Hl,
-    #[serde(rename = "HL")]
-    #[strum(to_string = "HL")]
-    HL,
+    #[serde(rename = "Highlight")]
+    #[strum(to_string = "Highlight")]
+    Highlight,
     #[serde(rename = "Ul")]
     #[strum(to_string = "Ul")]
     Ul,
-    #[serde(rename = "UL")]
-    #[strum(to_string = "UL")]
-    UL,
+    #[serde(rename = "Underline")]
+    #[strum(to_string = "Underline")]
+    Underline,
     #[serde(rename = "Card")]
     #[strum(to_string = "Card")]
     Card,

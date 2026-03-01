@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { sizablePropSchema, sizablePropsMapTransform } from "./sizable_props_schema";
+import { componentNeverProperty } from "./component_never_property";
 
 export const defaultWidthTransform = {
     none: "w-full @mdxExanded/mdx:w-0",
@@ -27,7 +28,7 @@ const _sizableObjectSchema = {
     right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "float-right ml-4 mr-0" : ""),
     left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "float-left mr-4 ml-0" : ""),
     sidebar: z.boolean({ message: "'sidebar' is a boolean property." }).optional().transform((a) => a ? "w-full min-w-full @[768px]/mdx:w-1/3 @[768px]/mdx:min-w-[33%]" : ""),
-    center: z.never({ message: "You're probably looking for either 'centerContent' to center this component's children, or 'centerSelf' to attempt to center this component itself." }),
+    center: componentNeverProperty("You're probably looking for either 'centerContent' to center this component's children, or 'centerSelf' to attempt to center this component itself.").transform(() => ""),
     centerStart: z.boolean({ message: "'center' must be a boolean." }).optional().transform((a) => a ? "mx-auto block" : ""),
     centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "flex flex-col justify-center items-center" : "").describe("Centers the content of this component's children, not the component itself."),
     text: sizablePropSchema("text").optional().transform(sizablePropsMapTransform({

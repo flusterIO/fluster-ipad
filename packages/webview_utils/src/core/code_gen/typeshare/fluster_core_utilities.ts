@@ -66,9 +66,9 @@ export enum EmbeddableComponentId {
 export enum EmbeddableComponentName {
 	Admonition = "Admonition",
 	Hl = "Hl",
-	HL = "HL",
+	Highlight = "Highlight",
 	Ul = "Ul",
-	UL = "UL",
+	Underline = "Underline",
 	Card = "Card",
 	Grid = "Grid",
 	UtlityContainer = "Container",
@@ -80,8 +80,8 @@ export enum InContentDocumentationFormat {
 }
 
 export enum InContentDocumentationId {
-	Markdown = "markdown",
-	Docs = "documentation-docs",
+	Markdown = "Markdown",
+	Docs = "Docs",
 }
 
 export enum InContentDocumentationSource {

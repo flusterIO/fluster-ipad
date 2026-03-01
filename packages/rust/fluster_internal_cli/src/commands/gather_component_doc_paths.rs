@@ -10,6 +10,7 @@ struct ComponentDocsData {
 
 const IGNORE_DIRS: [&str; 2] = ["node_modules/", "target/"];
 
+// Deprecated. This whole package is pretty much deprecated...
 pub fn run() {
     let root = get_workspace_root();
     let mut b = WalkBuilder::new(&root);

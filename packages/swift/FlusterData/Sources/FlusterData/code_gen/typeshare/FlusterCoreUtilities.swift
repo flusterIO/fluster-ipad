@@ -67,9 +67,9 @@ public enum EmbeddableComponentId: String, Codable {
 public enum EmbeddableComponentName: String, Codable {
 	case admonition = "Admonition"
 	case hl = "Hl"
-	case hl = "HL"
+	case highlight = "Highlight"
 	case ul = "Ul"
-	case ul = "UL"
+	case underline = "Underline"
 	case card = "Card"
 	case grid = "Grid"
 	case utlityContainer = "Container"
@@ -81,8 +81,8 @@ public enum InContentDocumentationFormat: String, Codable {
 }
 
 public enum InContentDocumentationId: String, Codable {
-	case markdown
-	case docs = "documentation-docs"
+	case markdown = "Markdown"
+	case docs = "Docs"
 }
 
 public enum InContentDocumentationSource: String, Codable {

@@ -27,7 +27,7 @@ pub enum InContentDocumentationFormat {
 }
 
 #[typeshare]
-#[derive(strum_macros::Display, EnumIter, Serialize, Deserialize)]
+#[derive(strum_macros::Display, Clone, Copy, EnumIter, Serialize, Deserialize)]
 pub enum InContentDocumentationId {
     #[serde(rename = "Markdown")]
     #[strum(to_string = "Markdown")]
@@ -38,7 +38,7 @@ pub enum InContentDocumentationId {
 }
 
 impl InContentDocumentationId {
-    pub fn to_embedded_file_name(self, format: InContentDocumentationFormat) -> String {
+    pub fn to_embedded_file_name(self, format: &InContentDocumentationFormat) -> String {
         let base_file_name = match self {
             InContentDocumentationId::Markdown => "markdown",
             InContentDocumentationId::Docs => "documentation-docs",

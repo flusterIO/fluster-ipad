@@ -16,7 +16,7 @@ export const InContentErrorReport = (props: FallbackProps & { componentName: str
         <AnimatePresence>
             {show ? (
                 <motion.div
-                    className="w-full max-w-[768px] mx-auto block border border-destructive/30 rounded-lg pb-2"
+                    className="w-full max-w-[768px] mx-auto block border border-destructive/30 rounded-lg pb-2 my-8"
                     key={props.error.toString()}
                     exit={{
                         height: 0,
