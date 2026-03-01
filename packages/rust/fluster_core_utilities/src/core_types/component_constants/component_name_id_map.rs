@@ -12,12 +12,14 @@ lazy_static! {
         map.insert(EmbeddableComponentName::Card, EmbeddableComponentId::Card);
         map.insert(EmbeddableComponentName::Grid, EmbeddableComponentId::Grid);
         map.insert(EmbeddableComponentName::Ul, EmbeddableComponentId::Ul);
-        map.insert(EmbeddableComponentName::Hl, EmbeddableComponentId::Hl);
-        map.insert(EmbeddableComponentName::UL, EmbeddableComponentId::Ul);
+        map.insert(
+            EmbeddableComponentName::Underline,
+            EmbeddableComponentId::Ul,
+        );
         map.insert(EmbeddableComponentName::Hl, EmbeddableComponentId::Hl);
         map.insert(
-            EmbeddableComponentName::UtlityContainer,
-            EmbeddableComponentId::UtlityContainer,
+            EmbeddableComponentName::Highlight,
+            EmbeddableComponentId::Hl,
         );
         map.insert(
             EmbeddableComponentName::UtlityContainer,

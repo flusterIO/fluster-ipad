@@ -4,7 +4,7 @@ import { getEmphasisOptions } from "../schemas/emphasis_schema";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 
 
-export const hlComponentNames = [EmbeddableComponentName.Hl, EmbeddableComponentName.HL] as const
+export const hlComponentNames = [EmbeddableComponentName.Hl, EmbeddableComponentName.Highlight] as const
 
 export const hlComponentConfig: EmbeddableComponentConfig = {
     name: hlComponentNames,

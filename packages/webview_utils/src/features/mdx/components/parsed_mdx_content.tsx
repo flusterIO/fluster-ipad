@@ -1,9 +1,10 @@
-import React, { HTMLProps, useEffect } from "react";
+import React, { HTMLProps, useEffect, useRef, useState } from "react";
 import { useComponentMap } from "../hooks/use_component_map";
-import type { MDXContent } from "mdx/types";
+import { MDXComponents, type MDXContent } from "mdx/types";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { type AnyWebviewAction } from "@/utils/types/any_window_event";
-import { ComponentMapItem } from "../methods/get_component_map";
+import { ComponentMapItem, getComponentMap } from "../methods/get_component_map";
+import { LoadingComponent } from "@/shared_components/loading_component";
 
 interface Props {
     MdxContentComponent: MDXContent;
@@ -22,7 +23,17 @@ export const ParsedMdxContent = ({
     showWebviewHandler,
     additionalComponents
 }: Props) => {
-    const componentMap = useComponentMap(raw, additionalComponents);
+    /* const componentMap = useComponentMap(raw, additionalComponents); */
+    const [components, setComponents] = useState<MDXComponents | null>(null)
+    const timer = useRef<NodeJS.Timeout | null>(null)
+    useEffect(() => {
+        const handleComponentMap = async (): Promise<void> => {
+            setComponents(null)
+            const res = await getComponentMap(raw, additionalComponents)
+            setComponents(res)
+        }
+        handleComponentMap()
+    }, [raw])
     useEffect(() => {
         window.dispatchEvent(new CustomEvent("mdx-content-loaded", {
             detail: {
@@ -36,9 +47,16 @@ export const ParsedMdxContent = ({
         }
         /* eslint-disable-next-line  -- Don't actually want this to run on change of orientation... just the original */
     }, [MdxContentComponent, scrollPositionKey])
+    if (!components) {
+        return (
+            <div className="w-full h-full flex flex-col justify-center items-center">
+                <LoadingComponent />
+            </div>
+        )
+    }
     return (
         <div {...container}>
-            <MdxContentComponent components={componentMap} />
+            <MdxContentComponent components={components} />
         </div>
     );
 };

@@ -49,7 +49,6 @@ generate_dependency_diagram:
 
 ## Deprecated, now that component docs are being gathered by typescript, I think?
 generate_component_docs_paths: build_internal_cli generate_dependency_diagram
-	./target/debug/fluster_internal_cli gather-component-doc-paths
 
 generate_initial_note_paths: build_internal_cli gather_component_docs
 	tsx {{justfile_directory()}}/scripts/generate_initial_note_paths.ts
