@@ -1,5 +1,9 @@
 # To-Do
 
+## Bug Log
+
+- [ ] Fix issue with bibliography entries not being associated with note properly.
+
 ### Embedded Components
 
 - [ ] Responsive Grid
@@ -8,6 +12,7 @@
 - [ ] `Hr` that accepts children to inline as small text.
   - [ ] Already started, but need to handle all of the config boilerplate.
 - [ ] `Tabs` component that just accepts children and a context provider to set the tab content, not a prop from the user.
+- [ ] Add `glass` schema that extends the emphasis schema with an additional `glass` property.
 
 #### Documentation
 
@@ -17,7 +22,6 @@
 
 ## Desktop
 
-- [ ] Handle opening of external url's in default browser.
 - [ ] Work on AI summarization.
 - [ ] Review [this](https://www.ditto.com/blog/running-a-react-web-app-in-an-ios-app) and see how difficult it would be to get rid of this single page build issue. That would expand the capabilities almost infinitely...
 - [ ] Handle rest of zod based props

@@ -151,6 +151,10 @@ export enum SharedWebviewEvents {
 	LocalStorageWrite = "broadcast-local-storage",
 }
 
+export enum SplitviewEditorDomIds {
+	MdxPreview = "mdx-preview",
+}
+
 /** From typescript to swift. */
 export enum SplitviewEditorWebviewActions {
 	RequestSplitviewEditorData = "request-editor-data",
@@ -175,11 +179,6 @@ export enum SplitviewEditorWebviewEvents {
 	EmitMdxParsingError = "mdx-parsing-error",
 	EmitMdxParsingSuccess = "mdx-parsing-success",
 	SetWebviewPreviewScrollLock = "set-webview-preview-scroll-lock",
-}
-
-export enum SplitviewEditorWebviewIds {
-	PortraitPreview = "mdx-preview-portrait",
-	LandscapePreview = "mdx-preview-landscape",
 }
 
 export enum SplitviewEditorWebviewLocalStorageKeys {

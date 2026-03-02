@@ -152,6 +152,10 @@ public enum SharedWebviewEvents: String, Codable {
 	case localStorageWrite = "broadcast-local-storage"
 }
 
+public enum SplitviewEditorDomIds: String, Codable {
+	case mdxPreview = "mdx-preview"
+}
+
 /// From typescript to swift.
 public enum SplitviewEditorWebviewActions: String, Codable {
 	case requestSplitviewEditorData = "request-editor-data"
@@ -176,11 +180,6 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 	case emitMdxParsingError = "mdx-parsing-error"
 	case emitMdxParsingSuccess = "mdx-parsing-success"
 	case setWebviewPreviewScrollLock = "set-webview-preview-scroll-lock"
-}
-
-public enum SplitviewEditorWebviewIds: String, Codable {
-	case portraitPreview = "mdx-preview-portrait"
-	case landscapePreview = "mdx-preview-landscape"
 }
 
 public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {

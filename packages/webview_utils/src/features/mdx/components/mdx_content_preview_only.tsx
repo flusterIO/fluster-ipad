@@ -21,7 +21,6 @@ export const MdxEditorPreviewOnly = (
         <MdxEditorPreview
             {...props}
             className={cn("loading-hide h-full mx-auto", props.className, `implementation-${props.implementation}`)}
-            id={SplitviewEditorWebviewIds.PortraitPreview}
         />
     );
 };

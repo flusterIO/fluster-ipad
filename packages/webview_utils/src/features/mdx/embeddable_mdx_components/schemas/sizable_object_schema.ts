@@ -5,7 +5,7 @@ import { componentNeverProperty } from "./component_never_property";
 
 
 export const defaultWidthTransform: SizableOptionRecord<string> = {
-    none: "w-full @mdxExanded/mdx:w-0",
+    none: "w-full @[768px]/mdx:hidden",
     small: "w-full @[450px]/mdx:w-[320px]",
     smedium: "w-full @[550px]/mdx:w-[384px]]",
     medium: "w-full @[650px]/mdx:w-[448px]",
@@ -30,13 +30,13 @@ export const defaultHeightTransform: SizableOptionRecord<string> = {
 
 export const _sizableObjectSchema = {
     hideMathLabels: z.boolean().optional().transform((a) => a ? "hide-math-labels" : "").describe("Hides the MathJax labels in all child components."),
-    right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "float-right ml-4 mr-0" : ""),
-    left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "float-left mr-4 ml-0" : ""),
-    sidebar: z.boolean({ message: "'sidebar' is a boolean property." }).optional().transform((a) => a ? "w-full min-w-full @[768px]/mdx:w-1/3 @[768px]/mdx:min-w-[33%]" : ""),
-    center: componentNeverProperty("You're probably looking for either 'centerContent' to center this component's children, or 'centerSelf' to attempt to center this component itself.").transform(() => ""),
+    right: z.boolean({ message: "'right' must be a boolean." }).optional().transform((a) => a ? "float-right ml-4 mr-0" : "").describe("'Floats' the component to the right. This is often combined with `width` or the `sidebar` property to create sidebar layouts."),
+    left: z.boolean({ message: "'left' must be a boolean." }).optional().transform((a) => a ? "float-left mr-4 ml-0" : "").describe("'Floats' the component to the left. This is often combined with `width` or the `sidebar` property to create sidebar layouts."),
+    sidebar: z.boolean({ message: "'sidebar' is a boolean property." }).optional().transform((a) => a ? "w-full min-w-full @[768px]/mdx:w-1/3 @[768px]/mdx:min-w-[33%]" : "").describe('A utility property that sets a responsive max-width to create sidebar like layouts on large screens while allowing for full-width when the window is smaller.'),
+    center: componentNeverProperty("You're probably looking for either 'centerContent' to center this component's children, or 'centerSelf' to attempt to center this component itself.").transform(() => "").describe("This will _never_ work. This is put here only as an error trigger to notify users of `centerSelf` and `centerContent`"),
     centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block" : ""),
     centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "flex flex-col justify-center items-center text-center [&>p]:text-center" : "").describe("Centers the content of this component's children, not the component itself."),
-    border: z.boolean().optional().transform((k) => k ? "border" : ""),
+    border: z.boolean().optional().transform((k) => k ? "border" : "").describe("Add a small, muted border to the object."),
     rounded: sizablePropSchema("rounded").optional().transform(sizablePropsMapTransform({
         none: "rounded-none",
         small: "rounded-sm",
@@ -47,7 +47,7 @@ export const _sizableObjectSchema = {
         xxl: "rounded-4xl",
         full: "rounded-full",
         fit: "rounded-[100%]"
-    })),
+    })).describe("Rounds the corners of the container. Use `rounded=\"full\"` or `rounded=\"fit\"` to create a completely circular component, useful for some image layouts."),
     text: sizablePropSchema("text").optional().transform(sizablePropsMapTransform({
         none: "text-xs",
         small: "text-sm",
@@ -58,9 +58,9 @@ export const _sizableObjectSchema = {
         xxl: "text-4xl",
         full: "text-7xl",
         fit: "w-full text-center"
-    })),
-    width: sizablePropSchema("width").optional().transform(sizablePropsMapTransform(defaultWidthTransform)),
-    height: sizablePropSchema("height").optional().transform(sizablePropsMapTransform(defaultHeightTransform)),
+    })).describe("Change the text content of the container's children. Beware though, some edge cases might not respond as expected."),
+    width: sizablePropSchema("width").optional().transform(sizablePropsMapTransform(defaultWidthTransform)).describe("Set some custom width properties to create responsive layouts."),
+    height: sizablePropSchema("height").optional().transform(sizablePropsMapTransform(defaultHeightTransform)).describe("Set some custom height properties to create responsive layouts."),
     margin: sizablePropSchema("margin").optional().transform(sizablePropsMapTransform({
         none: "m-0",
         small: "m-2",
@@ -71,7 +71,7 @@ export const _sizableObjectSchema = {
         xxl: "m-12",
         full: "m-16",
         fit: "m-0"
-    })),
+    })).describe("Add some padding around the **outside** of an object. If you are looking to create space on the _inside_ of an object you are looking for `padding`."),
     marginLeft: sizablePropSchema("marginLeft").optional().transform(sizablePropsMapTransform({
         none: "ml-0",
         small: "ml-2",
@@ -148,7 +148,7 @@ export const _sizableObjectSchema = {
         xxl: "p-12",
         full: "p-16",
         fit: "p-0"
-    })),
+    })).describe("Create padding on the _inside_ of an object. If you are trying to create space _around_ an object. you are probably looking for `margin`."),
     paddingLeft: sizablePropSchema("paddingLeft").optional().transform(sizablePropsMapTransform({
         none: "pl-0",
         small: "pl-2",
@@ -225,7 +225,7 @@ export const _sizableObjectSchema = {
         xxl: "gap-12",
         full: "gap-16",
         fit: "gap-0"
-    })),
+    })).describe("When in Grid mode or in some other select layouts, this property create a gap between _all_ children."),
     gapX: sizablePropSchema("paddingY").optional().transform(sizablePropsMapTransform({
         none: "gap-x-0",
         small: "gap-x-2",

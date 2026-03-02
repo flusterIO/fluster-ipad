@@ -1,13 +1,3 @@
-## Sizable Objects
-
-
-The `SizableObject` model describes a long list of properties that are applied to many components throughout Fluster. This class takes some common language terms like `small` or `smedium` and turns them into valid code.
-
-Beware, however, that this is far from perfect. Every developer knows the challenge of centering a div, and it's difficult to write code that will look good in all circumstances without requiring _you_ to write more. Fluster does it's best 
-
-
-### Properties
-
 
 #### hideMathLabels
 
@@ -22,7 +12,7 @@ Hides the MathJax labels in all child components.
 **Boolean** 
 
 
-
+'Floats' the component to the right. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
 
 
 #### left
@@ -30,7 +20,7 @@ Hides the MathJax labels in all child components.
 **Boolean** 
 
 
-
+'Floats' the component to the left. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
 
 
 #### sidebar
@@ -38,7 +28,7 @@ Hides the MathJax labels in all child components.
 **Boolean** 
 
 
-
+A utility property that sets a responsive max-width to create sidebar like layouts on large screens while allowing for full-width when the window is smaller.
 
 
 #### centerSelf
@@ -62,12 +52,15 @@ Centers the content of this component's children, not the component itself.
 **Boolean** 
 
 
-
+Add a small, muted border to the object.
 
 
 #### rounded
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -79,12 +72,15 @@ Centers the content of this component's children, not the component itself.
 - full
 
 
-
+Rounds the corners of the container. Use `rounded="full"` or `rounded="fit"` to create a completely circular component, useful for some image layouts.
 
 
 #### text
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -96,12 +92,15 @@ Centers the content of this component's children, not the component itself.
 - full
 
 
-
+Change the text content of the container's children. Beware though, some edge cases might not respond as expected.
 
 
 #### width
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -113,12 +112,15 @@ Centers the content of this component's children, not the component itself.
 - full
 
 
-
+Set some custom width properties to create responsive layouts.
 
 
 #### height
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -130,12 +132,15 @@ Centers the content of this component's children, not the component itself.
 - full
 
 
-
+Set some custom height properties to create responsive layouts.
 
 
 #### margin
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -147,12 +152,15 @@ Centers the content of this component's children, not the component itself.
 - full
 
 
-
+Add some padding around the **outside** of an object. If you are looking to create space on the _inside_ of an object you are looking for `padding`.
 
 
 #### marginLeft
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -170,6 +178,9 @@ Centers the content of this component's children, not the component itself.
 #### marginRight
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -187,6 +198,9 @@ Centers the content of this component's children, not the component itself.
 #### marginTop
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -204,6 +218,9 @@ Centers the content of this component's children, not the component itself.
 #### marginBottom
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -221,6 +238,9 @@ Centers the content of this component's children, not the component itself.
 #### marginX
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -238,6 +258,9 @@ Centers the content of this component's children, not the component itself.
 #### marginY
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -255,6 +278,9 @@ Centers the content of this component's children, not the component itself.
 #### padding
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -266,12 +292,15 @@ Centers the content of this component's children, not the component itself.
 - full
 
 
-
+Create padding on the _inside_ of an object. If you are trying to create space _around_ an object. you are probably looking for `margin`.
 
 
 #### paddingLeft
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -289,6 +318,9 @@ Centers the content of this component's children, not the component itself.
 #### paddingRight
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -306,6 +338,9 @@ Centers the content of this component's children, not the component itself.
 #### paddingTop
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -323,6 +358,9 @@ Centers the content of this component's children, not the component itself.
 #### paddingBottom
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -340,6 +378,9 @@ Centers the content of this component's children, not the component itself.
 #### paddingX
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -357,6 +398,9 @@ Centers the content of this component's children, not the component itself.
 #### paddingY
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -374,6 +418,9 @@ Centers the content of this component's children, not the component itself.
 #### gap
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -385,12 +432,15 @@ Centers the content of this component's children, not the component itself.
 - full
 
 
-
+When in Grid mode or in some other select layouts, this property create a gap between _all_ children.
 
 
 #### gapX
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -408,6 +458,9 @@ Centers the content of this component's children, not the component itself.
 #### gapY
 
 **Enum:**
+
+One of the following:
+
 - none
 - small
 - smedium
@@ -417,8 +470,6 @@ Centers the content of this component's children, not the component itself.
 - xxl
 - fit
 - full
-
-
 
 
 
