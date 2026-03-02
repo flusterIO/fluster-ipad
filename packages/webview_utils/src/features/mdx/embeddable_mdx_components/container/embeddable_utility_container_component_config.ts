@@ -1,7 +1,8 @@
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
-import { embeddableUtiltyContainerProps } from "./embeddable_utility_container_props";
+import { EmbeddableUtilityContainerPropsInput, embeddableUtiltyContainerProps } from "./embeddable_utility_container_props";
+import { KeysOfType } from "@/utils/types/utility_types";
 
 export const utilityContainerComponentNames = [EmbeddableComponentName.UtlityContainer] as const;
 
@@ -20,5 +21,23 @@ export const embeddableUtilityContainerComponentConfig: EmbeddableComponentConfi
                 type: SnippetDefaultType.function
             }),
         ]
+    },
+    generateTestContent: async (faker, utils) => {
+        return `
+<Container ${utils.randomBooleanProperties([
+            "sidebar",
+            "border",
+            "hideMathLabels",
+            "centerSelf",
+            "sidebar",
+            "fit",
+            "right",
+        ] satisfies (KeysOfType<EmbeddableUtilityContainerPropsInput, boolean>)[])} ${utils.randomEmphasis()}>
+${faker.lorem.paragraphs({ min: 1, max: 10 })}
+</Container>
+`
+    },
+    testProps: {
+        quantityScalar: 3
     }
 }

@@ -17,6 +17,13 @@ public enum AutoTaggableType: String, Codable {
 	case subject
 }
 
+public enum BenchmarkMagnitude: String, Codable {
+	case five = "Five"
+	case ten = "Ten"
+	case twenty = "Twenty"
+	case fifty = "Fifty"
+}
+
 /// From typescript to swift.
 public enum BibtexEditorWebviewActions: String, Codable {
 	case requestBibtexEditorData = "request-bibtex-data"

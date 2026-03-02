@@ -1,5 +1,9 @@
 use std::{env, fs, path};
 
+use crate::core_types::development_utils::benchmark_magnitudes::{
+    BenchmarkGeneratedDateString, BenchmarkMagnitude,
+};
+
 pub fn get_welcome_to_fluster_content() -> String {
     let root = env::var("FLUSTER_IOS_ROOT").expect("Cannot continue wthout a FLUSTER_IOS_ROOT environment variable set to the root of your workspace.");
     let p = path::Path::new(&root)
@@ -29,12 +33,18 @@ pub fn get_test_note_content_with_everything() -> String {
     fs::read_to_string(p).expect("Could not read test mdx content.")
 }
 
-pub fn get_unchanging_benchmark_test_content() -> String {
+pub fn get_unchanging_benchmark_test_content(
+    magnitude: BenchmarkMagnitude,
+    benchmark_date: &BenchmarkGeneratedDateString,
+) -> String {
     let root = env::var("FLUSTER_IOS_ROOT").expect("Cannot continue wthout a FLUSTER_IOS_ROOT environment variable set to the root of your workspace.");
     let p = path::Path::new(&root)
         .join("docs")
         .join("development")
-        .join("test_content")
-        .join("unchanging_benchmark_content.mdx");
+        .join("generated_benchmark_content")
+        .join(format!(
+            "benchmark_{}_{}.mdx",
+            benchmark_date, magnitude as u32
+        ));
     fs::read_to_string(p).expect("Could not read test mdx content.")
 }

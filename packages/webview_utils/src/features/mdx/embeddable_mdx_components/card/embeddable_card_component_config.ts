@@ -26,5 +26,15 @@ export const embeddableCardComponentConfig: EmbeddableComponentConfig = {
                 type: SnippetDefaultType.function
             }),
         ]
+    },
+    generateTestContent: async (faker, utils) => {
+        return `
+<Card title="${faker.lorem.words({ min: 1, max: 20 })}" ${utils.randomEmphasis()} ${utils.valueIfRandomProablity(`desc="${faker.lorem.sentences({ min: 1, max: 3 })}"`)}>
+${faker.lorem.paragraphs({ min: 1, max: 5 })}
+</Card>
+`
+    },
+    testProps: {
+        quantityScalar: 0.8
     }
 }
