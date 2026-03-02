@@ -2,6 +2,8 @@ import { EmbeddableComponentId, EmbeddableComponentName } from "@/code_gen/types
 import { Completion } from "@codemirror/autocomplete"
 import { ZodAny } from "zod";
 import { AnyComponentSchema } from "./any_component_schema";
+import { Faker } from "@faker-js/faker";
+import { TestStringUtilities } from "src/development/test_string_utilities";
 
 
 export enum CompletionSections {
@@ -41,6 +43,14 @@ export enum SnippetDefaultType {
 }
 
 
+export interface ComponentConfigTestData {
+    /**
+     * A scalar representing how many times this component is likely to occur relative to an Admonition of 1. A 'Hl' component might be higher, a plot component lower.
+     */
+    quantityScalar: number;
+}
+
+
 export interface EmbeddableComponentConfig {
     /**
      * id field is required since some components can have multiple names, even if multiple names aren't assignable to each component.
@@ -60,5 +70,10 @@ export interface EmbeddableComponentConfig {
      * The props schema used to parse this component's props. This is also used for documentation generation.
      */
     schema: AnyComponentSchema;
+    /**
+     * Generates a single item in mdx syntax with properties applied randomly.
+     */
+    generateTestContent: (faker: Faker, stringUtils: TestStringUtilities) => Promise<string>;
     snippets?: () => Completion[]
+    testProps: ComponentConfigTestData
 }

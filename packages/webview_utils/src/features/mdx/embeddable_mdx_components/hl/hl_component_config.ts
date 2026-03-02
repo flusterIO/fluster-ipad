@@ -22,5 +22,12 @@ export const hlComponentConfig: EmbeddableComponentConfig = {
                 type: SnippetDefaultType.function
             })
         })
+    },
+    generateTestContent: async (faker, utils) => {
+        return `<Hl ${utils.randomEmphasis()}>${faker.lorem.words({ min: 1, max: 5 })}</Hl>`
+    },
+
+    testProps: {
+        quantityScalar: 2
     }
 }

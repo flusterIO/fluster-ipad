@@ -9,3 +9,7 @@ export type MutableArray<T> = T extends ReadonlyArray<infer U> ? U[] : Array<T[k
 
 
 export type Mutable<T> = { -readonly [K in keyof T]: T[K] };
+
+export type KeysOfType<T, J> = Exclude<{
+    [K in keyof T]: NonNullable<T[K]> extends J ? K : never
+}[keyof T], undefined>;

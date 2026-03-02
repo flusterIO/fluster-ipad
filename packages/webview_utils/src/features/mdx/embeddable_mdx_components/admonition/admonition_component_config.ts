@@ -2,11 +2,11 @@ import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, Snipp
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
-import { admonitionPropsSchema } from "./admonition_props_schema";
+import { AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
+import { KeysOfType, ObjectWithKeysOfType } from "@/utils/types/utility_types";
 
 
 export const admonitionComponentNames = [EmbeddableComponentName.Admonition] as const
-
 
 export const admonitionComponentConfig: EmbeddableComponentConfig = {
     id: EmbeddableComponentId.Admonition,
@@ -53,5 +53,24 @@ export const admonitionComponentConfig: EmbeddableComponentConfig = {
             )
         }
         return items
+    },
+    generateTestContent: async (faker, utils) => {
+        return `
+<Admonition ${utils.randomBooleanProperties([
+            "sidebar",
+            "border",
+            "sidebar",
+            "hideMathLabels",
+            "foldable",
+            "folded",
+            "centerSelf",
+            "centerContent"
+        ] satisfies (KeysOfType<AdmonitionPropsInput, boolean>)[])} ${utils.randomEmphasis()}>
+${faker.lorem.paragraphs({ min: 1, max: 10 })}
+</Admonition>
+`
+    },
+    testProps: {
+        quantityScalar: 1
     }
     }

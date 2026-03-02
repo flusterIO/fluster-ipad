@@ -16,6 +16,13 @@ export enum AutoTaggableType {
 	Subject = "subject",
 }
 
+export enum BenchmarkMagnitude {
+	Five = "Five",
+	Ten = "Ten",
+	Twenty = "Twenty",
+	Fifty = "Fifty",
+}
+
 /** From typescript to swift. */
 export enum BibtexEditorWebviewActions {
 	RequestBibtexEditorData = "request-bibtex-data",

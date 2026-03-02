@@ -32,5 +32,12 @@ export const ulComponentConfig: EmbeddableComponentConfig = {
 
         )
         return items
+    },
+    generateTestContent: async (faker, utils) => {
+        return `<Ul ${utils.randomEmphasis()}>${faker.lorem.words({ min: 1, max: 5 })}</Ul>`
+    },
+
+    testProps: {
+        quantityScalar: 2
     }
 }
