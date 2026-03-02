@@ -17,6 +17,11 @@ export const sizableOptions = [
     "full"
 ] as const;
 
+
+
+/**
+ * An enum of all sizableOptions
+ */
 export const sizablePropSchema = (labelKey: string) => z.enum(sizableOptions, {
     message: `Valid ${labelKey} options are one of ${sizableOptions.map((n) => `"${n}"`).join(", ")}`
 })
@@ -24,7 +29,8 @@ export const sizablePropSchema = (labelKey: string) => z.enum(sizableOptions, {
 
 export type SizableOption = typeof sizableOptions[number]
 export type SizableOptionRecord<T> = { [K in SizableOption]: T }
-export type SizableInput = z.infer<ReturnType<typeof sizablePropSchema>>
+export type SizableInput = z.input<ReturnType<typeof sizablePropSchema>>
+export type SizablePropsSchema = z.infer<ReturnType<typeof sizablePropSchema>>
 export type SizeablePropsTransform = (value: SizableInput | undefined) => string
 
 

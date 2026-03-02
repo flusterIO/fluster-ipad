@@ -1,5 +1,6 @@
 import { ZodTypeAny } from "zod";
 import { sizableObjectSchema } from "../../../mdx/embeddable_mdx_components/schemas/sizable_object_schema";
+import { embeddableResponsivieGridPropsSchemaUnion } from "../../../mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props";
 
 
 export interface ZodSchemaSource {
@@ -16,5 +17,10 @@ export const zodSchemaSources: ZodSchemaSource[] = [
         schema: sizableObjectSchema,
         ignore: ["center"],
         outputPath: "sizable-object-properties.mdx"
+    },
+    {
+        schema: embeddableResponsivieGridPropsSchemaUnion,
+        ignore: ["center"],
+        outputPath: "embeddable-responsive-grid-properties.mdx"
     }
 ]

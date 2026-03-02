@@ -33,6 +33,8 @@ pub struct ParseMdxOptions {
     pub citations: Vec<SwiftDataCitationSummary>,
 }
 
+/// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
+/// based approach but will work for now.
 pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsingResult {
     let mut parsers = REGEX_PARSERS.to_vec();
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
@@ -60,12 +62,6 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
     result
 }
 
-/// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
-/// based approach but will work for now.
-pub async fn parse_mdx_string_by_regex(opts: ParseMdxOptions) -> MdxParsingResult {
-    parse_mdx_string_to_mdx_result(&opts).await
-}
-
 #[cfg(test)]
 mod tests {
 
@@ -78,7 +74,7 @@ mod tests {
     #[tokio::test]
     async fn parses_mdx_note_model_by_regex_successfully() {
         let test_content = get_test_note_content_with_everything();
-        let res = parse_mdx_string_by_regex(ParseMdxOptions {
+        let res = parse_mdx_string_to_mdx_result(&ParseMdxOptions {
             content: test_content,
             note_id: None,
             citations: Vec::new(),
@@ -118,7 +114,7 @@ mod tests {
     #[tokio::test]
     async fn parses_mdx_by_regex_successfully() {
         let test_content = get_welcome_to_fluster_content();
-        let res = parse_mdx_string_by_regex(ParseMdxOptions {
+        let res = parse_mdx_string_to_mdx_result(&ParseMdxOptions {
             content: test_content,
             note_id: None,
             citations: Vec::new(),

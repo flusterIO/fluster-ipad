@@ -39,19 +39,22 @@ lint:
 build_internal_cli:
 	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build
 
-gather_component_docs:
+
+gather_component_docs: write_zod_schema_docs
 	tsx {{justfile_directory()}}/scripts/gather_component_docs.ts
 
 generate_dependency_diagram:
 	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_dark.png -t dark -b transparent
 	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_light.png -t default 
 
-write_zod_schema_docs:
+write_zod_schema_docs: 
 	tsx {{justfile_directory()}}/scripts/documentation/write_zod_schema_to_markdown.ts
 
 
-write_in_content_docs_by_id:
+write_in_content_docs_by_id: write_zod_schema_docs gather_component_docs write_zod_schema_docs
 	tsx {{justfile_directory()}}/scripts/documentation/write_content_by_in_content_doc_id.ts
+
+generate_docs: write_in_content_docs_by_id write_zod_schema_docs generate_dependency_diagram gather_component_docs
 
 
 ## Deprecated, now that component docs are being gathered by typescript, I think?

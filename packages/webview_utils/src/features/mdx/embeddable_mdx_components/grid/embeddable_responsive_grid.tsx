@@ -8,7 +8,7 @@ import { WithChildren } from '@/utils/types/utility_types'
 
 export const EmbeddableResponsiveGrid = ({ children, ...props }: EmbeddableResponsiveGridPropsInput & WithChildren): ReactNode => {
     const { size } = useWebviewContainerContext()
-    const { columns, containerClasses } = embeddableResponsiveGridPropsSchema.parse(props)
+    const { columns, containerClasses, responsiveTemplateColumns, responsive } = embeddableResponsiveGridPropsSchema.parse(props)
 
     useEffect(() => {
         console.log("columns: ", columns)
@@ -22,7 +22,7 @@ export const EmbeddableResponsiveGrid = ({ children, ...props }: EmbeddableRespo
         <div
             className={cn("grid w-full p-4", containerClasses)}
             style={{
-                gridTemplateColumns: typeof nColumns === "string" ? nColumns : `repeat(${nColumns}, 1fr)`
+                gridTemplateColumns: responsive ? responsiveTemplateColumns : typeof nColumns === "string" ? nColumns : `repeat(${nColumns}, 1fr)`
             }}
         >
             {children}
