@@ -1,3 +1,4 @@
+import { replaceDocumentationContentMarkerByFilePath } from "./replace_documentation_content_by_marker";
 import { DocumentationPair } from "./types";
 
 const codeBlockRegex = /(?:^|\n)(`{3,})(.*?)\n([\s\S]*?)\n\1/g;
@@ -17,8 +18,9 @@ const getMatches = (input: string) => {
  * Takes the file content of some internal documentation, and removes the long-doc code blocks accordingly.
  */
 export const markdownContentToDocumentationPair = (
-    content: string,
+    _content: string,
 ): DocumentationPair => {
+    const content = replaceDocumentationContentMarkerByFilePath(_content);
     const matches = getMatches(content);
     let shortDocs = content;
     matches.forEach((block) => {

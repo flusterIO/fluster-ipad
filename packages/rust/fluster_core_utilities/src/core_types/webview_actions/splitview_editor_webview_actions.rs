@@ -98,11 +98,8 @@ pub enum SplitviewEditorWebviewLocalStorageKeys {
 
 #[typeshare]
 #[derive(strum_macros::Display, Serialize, Deserialize)]
-pub enum SplitviewEditorWebviewIds {
-    #[serde(rename = "mdx-preview-portrait")]
-    #[strum(to_string = "mdx-preview-portrait")]
-    PortraitPreview,
-    #[serde(rename = "mdx-preview-landscape")]
-    #[strum(to_string = "mdx-preview-landscape")]
-    LandscapePreview,
+pub enum SplitviewEditorDomIds {
+    #[serde(rename = "mdx-preview")]
+    #[strum(to_string = "mdx-preview")]
+    MdxPreview,
 }

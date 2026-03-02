@@ -4,7 +4,7 @@ import { MdxContent } from "./mdx_content";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { MdxPreviewWebviewActions, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { MdxPreviewWebviewActions, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { setBodyLoading } from "./editor_dom_utils";
 import { setMdxPreviewWindowMethods } from "./standalone_mdx_preview/standalone_mdx_preview_swift_events";
 import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/swift_events";
@@ -16,7 +16,7 @@ setMdxPreviewWindowMethods();
 
 setWindowBridgeFunctions();
 
-export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref">
+export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id">
 
 export const MdxEditorPreview = ({
     className,
@@ -75,7 +75,7 @@ export const MdxEditorPreview = ({
 
     return (
         <MdxContent
-            id="mdx-preview"
+            id={SplitviewEditorDomIds.MdxPreview}
             {...props}
             ref={ref}
             className={cn(
