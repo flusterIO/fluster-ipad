@@ -1,6 +1,6 @@
 import React, { useEffect, type ReactNode } from "react";
 import { MdxEditorPreview, MdxEditorPreviewProps } from "./mdx_editor_preview";
-import { MdxPreviewWebviewActions, SplitviewEditorWebviewIds } from "@/code_gen/typeshare/fluster_core_utilities";
+import { MdxPreviewWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { cn } from "@/utils/cn";
 import { CodeEditorImplementation, useCodeEditorContext } from "#/editor/code_editor/state/code_editor_provider";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";

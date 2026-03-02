@@ -109,7 +109,7 @@ export const WebViewContainer = ({
                 ref={container}
             >
                 <WebviewContainerProvider>
-                    <WebviewContainerSizableObserver ref={container} />
+                    <WebviewContainerSizableObserver />
                     {children}
                 </WebviewContainerProvider>
             </div>

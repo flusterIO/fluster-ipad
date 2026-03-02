@@ -2,7 +2,6 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import React, { type ReactNode } from "react";
 import { MdxEditorPreview } from "#/mdx/components/mdx_editor_preview";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { SplitviewEditorDomIds, SplitviewEditorWebviewIds } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CodeEditor } from "#/editor/code_editor/components/code_editor";
 
 export const SplitViewEditorInner = (): ReactNode => {

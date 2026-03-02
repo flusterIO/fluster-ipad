@@ -28,3 +28,13 @@ pub fn get_test_note_content_with_everything() -> String {
         .join("main_test_content.mdx");
     fs::read_to_string(p).expect("Could not read test mdx content.")
 }
+
+pub fn get_unchanging_benchmark_test_content() -> String {
+    let root = env::var("FLUSTER_IOS_ROOT").expect("Cannot continue wthout a FLUSTER_IOS_ROOT environment variable set to the root of your workspace.");
+    let p = path::Path::new(&root)
+        .join("docs")
+        .join("development")
+        .join("test_content")
+        .join("unchanging_benchmark_content.mdx");
+    fs::read_to_string(p).expect("Could not read test mdx content.")
+}

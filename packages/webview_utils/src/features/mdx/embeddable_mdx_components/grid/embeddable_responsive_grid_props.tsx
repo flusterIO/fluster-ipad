@@ -1,6 +1,7 @@
 import { getSizableObjectClasses, sizableObjectSchema } from "../schemas/sizable_object_schema"
 import { z } from "zod"
-import { SizableOption, sizableOptions } from "../schemas/sizable_props_schema"
+import { SizableOption, sizableOptions, sizablePropSchema, SizablePropsSchema } from "../schemas/sizable_props_schema"
+import { Mutable, MutableArray } from "../../../../core/utils/types/utility_types"
 
 
 
@@ -50,7 +51,6 @@ export const defaultColumnsByBreakSize: { [K in SizableOption]: number | string 
     fit: ""
 }
 
-
 const schema = {
     none: z.number({ message: "'none' is a number that represents the number of columns when the viewport is " }).int("The 'none' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
     small: z.number({ message: "'small' is a number that represents the number of columns when the viewport is " }).int("The 'small' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
@@ -60,8 +60,9 @@ const schema = {
     xl: z.number({ message: "'xl' is a number that represents the number of columns when the viewport is " }).int("The 'xl' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
     xxl: z.number({ message: "'xxl' is a number that represents the number of columns when the viewport is " }).int("The 'xxl' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
     full: z.number({ message: "'full' is a number that represents the number of columns when the viewport is " }).int("The 'full' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
-    fit: z.number({ message: "This property is pretty much here for compatibility in this case. " }).int().or(z.string({ message: "This field can be any valid css string as well." })).optional()
-} satisfies { [K in SizableOption]: z.ZodOptional<z.ZodUnion<[z.ZodNumber, z.ZodString]>> }
+    fit: z.boolean({ message: "If true while 'responsive' is set this will cause items to expand to fill the empty space." }).optional(),
+    responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional()
+} satisfies { [K in Exclude<SizableOption, "fit" | "responsive">]: z.ZodOptional<z.ZodUnion<[z.ZodNumber, z.ZodString]>> } & { fit: z.ZodOptional<z.ZodBoolean>, responsive: z.ZodOptional<z.ZodUnion<[z.ZodBoolean, z.ZodEnum<Mutable<typeof sizableOptions>>]>> }
 
 const columnSchema = {
     columns: z.number().int().transform((cols) => {
@@ -83,6 +84,8 @@ const columnSchema = {
 const modifiedSizableSchema = sizableObjectSchema.extend({
     centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block w-fit" : ""),
     centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "w-full place-items-center" : "").describe("Centers the content of this component's children, not the component itself."),
+    fit: z.boolean({ message: "If true while 'responsive' is set this will cause items to expand to fill the empty space." }).optional(),
+    responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional()
 })
 
 
@@ -116,7 +119,7 @@ export const getSmallestSizableBreakpointByWidth = (w: number): SizableOption | 
 }
 
 
-export const getColumns = (data: { [K in SizableOption]?: number | undefined | string }): { [K in SizableOption]: number | string } => {
+export const getColumns = (data: { [K in Exclude<SizableOption, "fit">]?: number | undefined | string }): { [K in SizableOption]: number | string } => {
     return {
         none: getSmallerItemOrDefault(sizableOptions.indexOf("none"), data, defaultColumnsByBreakSize.none),
         small: getSmallerItemOrDefault(sizableOptions.indexOf("small"), data, defaultColumnsByBreakSize.small),
@@ -132,12 +135,40 @@ export const getColumns = (data: { [K in SizableOption]?: number | undefined | s
 }
 
 
-export const embeddableResponsiveGridPropsSchema = y.or(x).transform((c) => {
+export const embeddableResponsivieGridPropsSchemaUnion = y.or(x)
+
+
+const responsiveSizableGridMap: { [K in SizableOption]: number } = {
+    none: 0,           // No minimum (will collapse)
+    small: 120,        // Very narrow items (e.g., small cards/icons)
+    smedium: 180,      // Compact items
+    medium: 240,       // Standard card size
+    large: 320,        // Substantial items (mobile-width)
+    xl: 480,           // Half-page width on many screens
+    xxl: 640,          // Large hero or feature sections
+    fit: 800,          // Likely to force 1 column on tablets
+    full: 1200,
+}
+
+const getResponsiveClasses = (data: z.infer<typeof embeddableResponsivieGridPropsSchemaUnion>,): string | undefined => {
+    const sizing = data.fit ? "auto-fit" : "auto-fill"
+    if (typeof data.responsive === "number") {
+        return `repeat(${sizing}, minmax(${data.responsive}px, 1fr))`
+    }
+    if (typeof data.responsive === "string" && data.responsive in responsiveSizableGridMap) {
+        return `repeat(${sizing}, minmax(${responsiveSizableGridMap[data.responsive]}px, 1fr))`
+    }
+    return ""
+}
+
+
+export const embeddableResponsiveGridPropsSchema = embeddableResponsivieGridPropsSchemaUnion.transform((c) => {
     const columns = "columns" in c ? c.columns : getColumns(c)
     return {
         ...c,
         columns,
-        containerClasses: getSizableObjectClasses(c)
+        containerClasses: getSizableObjectClasses(c),
+        responsiveTemplateColumns: typeof c.responsive !== "undefined" ? getResponsiveClasses(c) : undefined
     }
 })
 

@@ -23,7 +23,16 @@ rust-embed = { version = "8.11.0", features = ["compression", "debug-embed"] }
 phf = { version = "0.13.1", features = ["macros"] }
 strum = { version = "0.27.2", features = ["derive"] }
 insta = "1.46.3"
+criterion = { version = "0.8.2", features = ["async_tokio"] }
 
 
 [profile.release]
 lto = "fat"
+
+
+[dev-dependencies]
+criterion = { version = "0.8.2", features = ["html_reports"] }
+
+[[bench]]
+name = "parse_by_regex"
+harness = false
