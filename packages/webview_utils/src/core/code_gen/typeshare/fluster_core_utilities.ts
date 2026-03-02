@@ -96,6 +96,7 @@ export enum InContentDocumentationId {
 	Markdown = "Markdown",
 	Docs = "Docs",
 	Syntax = "Syntax",
+	Jsx = "Jsx",
 	SizableObject = "Sizable",
 	Emphasis = "Emphasis",
 }

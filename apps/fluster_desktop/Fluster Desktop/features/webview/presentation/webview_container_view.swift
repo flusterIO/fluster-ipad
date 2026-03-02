@@ -109,6 +109,26 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
       }
     }
     func webView(
+      _ webView: WKWebView,
+      decidePolicyFor navigationAction: WKNavigationAction,
+      decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
+      // Check if the navigation was triggered by a user clicking a link
+      if navigationAction.navigationType == .linkActivated {
+        if let url = navigationAction.request.url {
+          // Open the URL in the system default browser
+          NSWorkspace.shared.open(url)
+
+          // Cancel the navigation within the webview
+          decisionHandler(.cancel)
+          return
+        }
+      }
+
+      // Allow other types of navigation (like the initial load)
+      decisionHandler(.allow)
+    }
+    func webView(
       _ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!,
       withError error: Error
     ) {

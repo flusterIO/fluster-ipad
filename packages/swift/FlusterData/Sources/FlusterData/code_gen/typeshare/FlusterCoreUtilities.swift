@@ -97,6 +97,7 @@ public enum InContentDocumentationId: String, Codable {
 	case markdown = "Markdown"
 	case docs = "Docs"
 	case syntax = "Syntax"
+	case jsx = "Jsx"
 	case sizableObject = "Sizable"
 	case emphasis = "Emphasis"
 }

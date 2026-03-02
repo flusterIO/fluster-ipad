@@ -108,6 +108,11 @@ impl EmbeddedInContentDocsParser {
                     // Short docs inserted here
                 }
             }
+        } else {
+            eprintln!(
+                "Failed to find a component name id map entry for the {} component",
+                name
+            );
         }
     }
 }

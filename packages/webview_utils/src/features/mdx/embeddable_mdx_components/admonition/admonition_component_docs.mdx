@@ -1,5 +1,27 @@
 ## Admonition
 
-<Admonition title="This is an admonition component" primary>
+```long-docs
+An 'admonition' is a component used to draw attention to important content. It can be made to be foldable, folded by default, and/or shifted off to the side on wide screens.
+```
+
+```tsx
+<Admonition title="This is an admonition component" important foldable>
     This is an admonition's body.
 </Admonition>
+```
+
+<Admonition title="This is an admonition component" important foldable>
+    This is an admonition's body.
+</Admonition>
+
+
+| Property | Type | Default |
+| -------- | ---- | ------- |
+| title | `string` | undefined (required) | 
+| children | mdx | undefined (required) | 
+| foldable | `boolean` | false | 
+| folded (default folded) | `boolean` | false | 
+
+```long-docs
+The properties for this component also extend the `SizableObject` model and the `EmphasisMap` model. See the `Emphasis??` and `Sizable??` docs for more information.
+```

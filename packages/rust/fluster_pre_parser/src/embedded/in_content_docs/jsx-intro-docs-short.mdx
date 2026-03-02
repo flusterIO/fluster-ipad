@@ -1,0 +1,135 @@
+## Intro to Jsx
+
+
+
+
+
+
+## Components
+
+
+
+
+#### Examples
+
+This `Card` component accepts `children`, so we use the `>` closing bracket on the opening tag.
+
+```tsx title="components.mdx"
+<Card title="My title" desc="My optional description">
+This is my card's body.
+</Card>
+```
+
+This fictitious `Slider` component (there are no components that make sense to self close, _yet_) does not accept any children, so we don't need the closing tag and we can write it as:
+
+```tsx title="components.mdx"
+<Slider min={0} max={5} />
+```
+
+### Strings
+
+[See these docs](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Strings) for a much more thorough explanation
+
+
+
+#### Examples
+
+```tsx title="strings.mdx"
+<Card
+    // I can wrap the title with single quotes, 
+    // double quotes or backticks.
+    title='My title'
+    // But because this has an apostrophe, I can't
+    // use the single quotes here without escaping it.
+    desc={`This is my description's content.`}
+>
+...
+```
+
+If we _really_ wanted to use single quotes inside of another pair of single quotes, or double quotes inside of double quotes, we can do that as:
+
+```tsx title="strings.mdx"
+<Card 
+    // If I really need to include matching quotations within the string itself,
+    // I have to lead it with a leading `\` character.
+    desc={"This is my \"quotation\" here"}
+/>
+```
+
+## Booleans
+
+
+
+
+
+```tsx title="booleans.mdx"
+<Card 
+    shrink={true}
+    important
+>
+...
+```
+
+## Numbers
+
+
+
+```tsx
+<Grid medium={2} >
+...
+```
+
+
+
+
+## Arrays
+
+
+
+```tsx title="arrays.mdx"
+// This is an empty array. 
+// This pie plot is sad because it has no data, but the syntax is valid.
+<PiePlot data={[]} />
+```
+
+
+
+```tsx title="arrays.mdx"
+<MyFakeComponent 
+    myArrayOfNumbers={[1, 2, 3, 4, 5]}
+    myArrayOfStrings={["One", "two", "three", "four", "five"]}
+    myArrayOfObjects={[
+        {
+            body: "My body",
+            value: 2
+        },
+        {
+            body: "My other body",
+            value: 3
+        }
+    ]}
+/>
+```
+
+
+
+
+## Objects
+
+
+
+```tsx
+<MyFakeComponent 
+    // Notice that there are 2 `{{}}` here.
+    // 1 is required for jsx, the other for javascript.
+    // Confusing... I know.
+    myObjectProperty={{
+        name: "My name",
+        value: 2,
+        address: {
+            street: "1 Main Street",
+            city: "North Pole"
+        }
+    }}
+/>
+```

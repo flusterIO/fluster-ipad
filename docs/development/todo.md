@@ -1,9 +1,5 @@
 # To-Do
 
-## Current Bugs
-
-- [ ] Admonition docs not working.
-
 ### Embedded Components
 
 - [ ] Responsive Grid
@@ -17,13 +13,11 @@
 
 **_CURRENT_**
 
-- [ ] Handle `InContentDocumentationContainer`'s retreival of embedded docs.
-- [ ] Use an `Enum` to define component names so that they can be used to create a new parser that can check for `new line<component-name>?` or `\n<component-name>??` to print out the embedded docs like Jupyter. You can insert the component documentation directly from the parser package.
-- [ ] Create new 'documentation' parser and add that to the list. Make sure there is an option to disable it in some cases to improve performance on inline mdx.
-- [ ] Create `InContentDocumentation` component that creates a card that accepts optional properties, and the children as markdown to create the necessary docs. Consider restyling the prose text size here to make things more 'docs' like... straight and to the point.
+- [ ] Handle `SizableObject` documentation.
 
 ## Desktop
 
+- [ ] Handle opening of external url's in default browser.
 - [ ] Work on AI summarization.
 - [ ] Review [this](https://www.ditto.com/blog/running-a-react-web-app-in-an-ios-app) and see how difficult it would be to get rid of this single page build issue. That would expand the capabilities almost infinitely...
 - [ ] Handle rest of zod based props

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { SizableOption } from '../schemas/sizable_props_schema';
-import { defaultColumnsByBreakSize, getColumns } from './embeddable_responsive_grid_props';
+import { breakpointBySize, defaultColumnsByBreakSize, getColumns, getSmallestSizableBreakpointByWidth } from './embeddable_responsive_grid_props';
+import { TestInputItem } from '../../../../development/test_types';
 
 
 interface TestItem {
@@ -42,6 +43,33 @@ describe('getColumns returns the proper next smallest column', () => {
         for (const testItem of items) {
             const res = getColumns(testItem.input)
             expect(res).toEqual(testItem.expected)
+        }
+    });
+});
+
+
+
+describe('getSmallestSizableBreakpointByWidth returns the proper width', () => {
+    const input: TestInputItem<typeof getSmallestSizableBreakpointByWidth>[] = [
+        {
+            input: [
+                0
+            ],
+            expected: "none"
+        },
+        ...Object.entries(breakpointBySize).map((bp) => {
+            return {
+                input: [
+                    bp[1]
+                ],
+                expected: bp[0] as keyof typeof breakpointBySize
+            } satisfies TestInputItem<typeof getSmallestSizableBreakpointByWidth>
+        })
+    ]
+    it('Maps over test input and returns proper output', () => {
+        for (const testItem of input) {
+            const res = getSmallestSizableBreakpointByWidth(...testItem.input)
+            expect(breakpointBySize[res!]).toEqual(breakpointBySize[testItem.expected!])
         }
     });
 });

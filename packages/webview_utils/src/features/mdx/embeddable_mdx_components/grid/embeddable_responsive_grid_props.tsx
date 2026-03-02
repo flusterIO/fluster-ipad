@@ -12,8 +12,28 @@ export const breakpointBySize: { [K in SizableOption]: number } = {
     large: 768,
     xl: 896,
     xxl: 1024,
+    /**
+     * Have to carve out a unique path for `fit` in some cases because the breakpoint is out of order.
+     */
     fit: 0,
     full: 1080
+}
+
+
+
+/**
+ * Used for sorting
+ */
+export const sizableMagnitudeMap: { [K in SizableOption]: number } = {
+    none: 0,
+    small: 1,
+    smedium: 2,
+    medium: 3,
+    large: 4,
+    xl: 5,
+    xxl: 6,
+    fit: 7,
+    full: 8,
 }
 
 
@@ -90,7 +110,9 @@ const getSmallerItemOrDefault = (idx: number, data: { [K in SizableOption]?: num
 
 
 export const getSmallestSizableBreakpointByWidth = (w: number): SizableOption | undefined => {
-    return sizableOptions.toReversed().find((f) => breakpointBySize[f] <= w)
+    return sizableOptions.toReversed().filter((n) => n !== "fit").find((f) => {
+        return breakpointBySize[f] <= w
+    })
 }
 
 
