@@ -73,12 +73,9 @@ const y = modifiedSizableSchema.extend(columnSchema)
 /**
  * Returns the item at the `SizableOption` key if it exists, and if not walks down the `SizableOption` heirarchy until the next smallest value that was set. If none smaller are found, it defaults to the default value.
  */
-const getSmallerItemOrDefault = (idx: number, data: { [K in SizableOption]?: number | undefined | string }, defaultValue: number | string = 1, log: boolean = false): number | string => {
+const getSmallerItemOrDefault = (idx: number, data: { [K in SizableOption]?: number | undefined | string }, defaultValue: number | string = 1): number | string => {
     const size = sizableOptions[idx]
     const value = data[size]
-    if (log) {
-        console.log("size, value, idx: ", size, value, idx)
-    }
     if (typeof value !== "undefined" && value !== null) {
         return value
     }
@@ -87,7 +84,7 @@ const getSmallerItemOrDefault = (idx: number, data: { [K in SizableOption]?: num
         return defaultValue
     }
 
-    return getSmallerItemOrDefault(idx - 1, data, defaultValue, log)
+    return getSmallerItemOrDefault(idx - 1, data, defaultValue)
 
 }
 
@@ -106,7 +103,7 @@ export const getColumns = (data: { [K in SizableOption]?: number | undefined | s
         large: getSmallerItemOrDefault(sizableOptions.indexOf("large"), data, defaultColumnsByBreakSize.large),
         xl: getSmallerItemOrDefault(sizableOptions.indexOf("xl"), data, defaultColumnsByBreakSize.xl),
         xxl: getSmallerItemOrDefault(sizableOptions.indexOf("xxl"), data, defaultColumnsByBreakSize.xxl),
-        full: getSmallerItemOrDefault(sizableOptions.indexOf("full"), data, defaultColumnsByBreakSize.full, true),
+        full: getSmallerItemOrDefault(sizableOptions.indexOf("full"), data, defaultColumnsByBreakSize.full),
         // Fit won't be used directly, but applied some unique properties if the boolean is true.
         fit: defaultColumnsByBreakSize.fit
     }
