@@ -1,0 +1,169 @@
+## Intro to Jsx
+
+
+
+If you've never written jsx or any other programming language, don't worry. You don't _need_ to know much of it, but Fluster will make many features available to you. How far you take this dive into javascript and jsx is up to you and your academic goals, but some basic familiarity will take Fluster from just another markdown application to something truly powerful.
+
+While plotting components accept parameters like functions in javascript, you can still get much out of Fluster by understanding the basics of a few property types.
+
+**Documented Properties**
+
+- Strings
+- Booleans
+- Numbers
+- Arrays (lists)
+- Objects
+
+
+While I encourage you to learn to write basic mathematical functions in Javascript for the plotting components included in Fluster if they fit your use case, I'll leave that explanation to a solid [youtube video](https://www.youtube.com/watch?v=BI1o2H9z9fo) but your go-to source of information if you choose to move more into this is like going to be the [Mozilla Developer docs](https://developer.mozilla.org/).
+
+
+
+
+## Components
+
+Components are the core of jsx, and a fundamental reason of why the language is so popular. Jsx allows us to organize 'code' in a format that makes it incredibly easy to read, very unlike the tradtional code that makes up the jsx components behind the scenes.
+
+Fluster provides a long list of components for you, and wth snippets to help with each component, you'll rarely have to write a component by hand. That doesn't mean however that it's not beneficial to know how to edit them for the inevitable moment when you delete the wrong quotation mark or bracket. If you've written any programming language, or even if you haven't, this is _not_ as big of an ask as it my seem. On your end, you don't _need_ to know javascript or jsx, although it expands the capablities of Fluster, but your notes will be _calling_ functions that are written for you. All you need to know is the name of the function, and the properties that function accepts... and **bam** :boom: Your markdown notes are now more capable than they've ever been.
+
+Each component includes a set of short and long documentation that can be accessed using the `?` or `??` syntax, snippets to help with auto-completion, syntax highlighting within the editor, and some hopefully helpful error messages to help when you provide an incorrect property.
+
+Here are the core pieces of information you need to know as it pertains to calling a jsx function.
+
+
+- Components will always start with a `<` and a capital letter. Fluster also renders html, which uses a similar syntax in lowercase.
+- Components can accept any number of properties. While components traditionally each have their own set of properties, Fluster bundles them into common, repeated models for familiarity, while some components still accept unique properties.
+- `Children` is a unique property, being wrapped _between_ the component. This is a big part of what makes jsx so readable, as we insert regular mdx content _inside_ of the component where that content will actually render.
+  - If a component **does** accept _children_, it's opening tag is closed with a single `>`, if it does not accept children the component accepts a shorthand where the second tag is not needed at all, and the first tag can be closed with a `/>`.
+
+
+#### Examples
+
+This `Card` component accepts `children`, so we use the `>` closing bracket on the opening tag.
+
+```tsx title="components.mdx"
+<Card title="My title" desc="My optional description">
+This is my card's body.
+</Card>
+```
+
+This fictitious `Slider` component (there are no components that make sense to self close, _yet_) does not accept any children, so we don't need the closing tag and we can write it as:
+
+```tsx title="components.mdx"
+<Slider min={0} max={5} />
+```
+
+### Strings
+
+[See these docs](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Strings) for a much more thorough explanation
+
+Unfortunately, string's are the most common property (title's, description's, etc.) but they're also the only one that's remotely challenging.
+
+1. The single quote `'`, the double quote `"` and the backtick `\`` are interchangeable, but the opening and closing quotation must match.
+2. The `\` character is a special character, sometimes giving the character in front of it super powers (`\n` creates a new line, `\t` creates a tab). If you want to include a quotation that is used to wrap your string within the string itself, escape it with this character just before the quotation within your string, but in reality... just wrap the string with a different type of quotations.
+3. If you want to include new lines, you ***must*** use the backtick (top left of an English keyboard). Other quotations will break if you include a new line within the quotation.
+4. To use the backticks, you _must_ wrap the value in `{}` brackets to give something like ``title={`My title`}``. Wrapping the value in these curly brackets is optional for the other two types of quotations.
+
+#### Examples
+
+```tsx title="strings.mdx"
+<Card
+    // I can wrap the title with single quotes, 
+    // double quotes or backticks.
+    title='My title'
+    // But because this has an apostrophe, I can't
+    // use the single quotes here without escaping it.
+    desc={`This is my description's content.`}
+>
+...
+```
+
+If we _really_ wanted to use single quotes inside of another pair of single quotes, or double quotes inside of double quotes, we can do that as:
+
+```tsx title="strings.mdx"
+<Card 
+    // If I really need to include matching quotations within the string itself,
+    // I have to lead it with a leading `\` character.
+    desc={"This is my \"quotation\" here"}
+/>
+```
+
+## Booleans
+
+
+Booleans are just true or false values, indicated by `true` or `false` in lowercase. To make things easier, jsx allows a shorthand syntax where when a property is `false` by default, it can be set true by simply passing the property's name.
+
+This gives a situation where in the following code, `shrink` and `important` will both evaluate to true.
+
+
+```tsx title="booleans.mdx"
+<Card 
+    shrink={true}
+    important
+>
+...
+```
+
+## Numbers
+
+Numbers in javascript are straight-forward, defined exactly as you'd expect. One important property to note however, is that to provide a number as a value to a jsx property, you _must_ wrap the value in curly brackets. This gives something that looks like:
+
+```tsx
+<Grid medium={2} >
+...
+```
+
+It's important to note here that there is a small distinction between integers and floats (decimals) made by Fluster, despite the fact that javascript really doesn't care much. To enforce some css (style language) level requirements, Fluster will notify you if you provide a float where a decimal is expected, meaning that `2.0` and `2` are not the same in some rare edge cases.
+
+
+## Arrays
+
+Arrays are just lists and are familiar to every programmer, and thankfully, they're incredibly easy to worh with in javascript. Like numbers, the value must be wrapped in a set of `{}` brackets, but inside of those brackets, the actual `Array` notation requires another set of **square** brackets. This ends up looking like the following:
+
+```tsx title="arrays.mdx"
+// This is an empty array. 
+// This pie plot is sad because it has no data, but the syntax is valid.
+<PiePlot data={[]} />
+```
+
+To include values within the array, just seperate the normal javascript syntax (not necessarily jsx syntax, so no extra curly brackets everywhere) of whatever data type you're trying to insert.
+
+```tsx title="arrays.mdx"
+<MyFakeComponent 
+    myArrayOfNumbers={[1, 2, 3, 4, 5]}
+    myArrayOfStrings={["One", "two", "three", "four", "five"]}
+    myArrayOfObjects={[
+        {
+            body: "My body",
+            value: 2
+        },
+        {
+            body: "My other body",
+            value: 3
+        }
+    ]}
+/>
+```
+
+
+What is much more likely however, is that whatever arrays you do work with inside of Fluster will be generated for you. There is currently a math extension that is in beta that will provide a very [numpy](https://numpy.org/doc/stable/) like array interface for plotting and mathematical calculations directly within your note.
+
+## Objects
+
+'Objects' are at the core of most programming languages, and javascript is no exception. This subject does however start to bridge the gap between what is required to use Fluster and what is the beginning of a software career, but I would encourage more advanced users to learn more [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects). Objects are defined as a set of key-value pairs, where the value can be almost anything, including another object.
+
+```tsx
+<MyFakeComponent 
+    // Notice that there are 2 `{{}}` here.
+    // 1 is required for jsx, the other for javascript.
+    // Confusing... I know.
+    myObjectProperty={{
+        name: "My name",
+        value: 2,
+        address: {
+            street: "1 Main Street",
+            city: "North Pole"
+        }
+    }}
+/>
+```

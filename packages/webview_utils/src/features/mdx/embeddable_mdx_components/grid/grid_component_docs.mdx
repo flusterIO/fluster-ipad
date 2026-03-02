@@ -1,7 +1,61 @@
-# Grid
+## Grid
 
+
+```long-docs
 The `Grid` component is a _container_ component similar to the `Container` component, but the `Grid` component also allows a set of properties designed to create flexible and responsive grid layouts that can respond to any screen size.
+```
 
-To achieve this grid layout, the component accepts each of the `SizableOption` properties ("none", "small", "smedium", etc...) as an optional number or string. If a field is a string, it must be a css compliant string, but in most cases you will likely want to use a number to represent the number of columns at that screen size. Not _all_ of the `SizableOption` fields are required either. **Fluster** goes through a progression, first looking for the value you provided, then for the next smallest size with a value, and then if it still doesn't find any, it resorts to a Fluster default for that screen size. 
+To achieve this grid layout, the component accepts each of the `SizableOption` properties ("none", "small", "smedium", etc...) as an optional number or string. If a field is a string, it must be a css compliant string, but in most cases you will likely want to use a number to represent the number of columns at that screen size. Not _all_ of the `SizableOption` fields are required either. **Fluster** goes through a progression, first looking for the value you provided, then for the next smallest size with a value, and then if it still doesn't find any, it resorts to a Fluster default for that screen size. It's very difficult to design something that looks good by default under all use cases, so set each property as needed.
 
+````long-docs
 > To get the 'grid' effect you can't just write multiple columns, you need to break up the 'children' into 2 or more 'child' container components like a `Card`, a `Container`, an `Admonition`, or even another `Grid`. Basically any component that has stuff that goes inside of it.
+````
+
+### Examples
+
+```tsx
+<Grid none={1} medium={1} large={1} full={2}>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="xl">
+
+$$
+\delta = 2 G \frac{M_\oplus}{R_\oplus} \hat{R}
+$$
+
+</Container>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="xl">
+
+$$
+\gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
+$$
+
+
+</Container>
+
+</Grid>
+```
+
+#### Output
+
+
+<Grid none={1} medium={1} large={1} full={2}>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large">
+
+$$
+\delta = 2 G \frac{M_\oplus}{R_\oplus} \hat{R}
+$$
+
+</Container>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large">
+
+$$
+\gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
+$$
+
+
+</Container>
+
+</Grid>
