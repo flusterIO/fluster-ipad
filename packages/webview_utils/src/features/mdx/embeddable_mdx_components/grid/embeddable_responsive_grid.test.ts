@@ -29,12 +29,16 @@ const items: TestItem[] = [
             xxl: 2,
             fit: defaultColumnsByBreakSize.fit,
             full: 2,
-        }
+        },
+    },
+    {
+        input: {},
+        expected: defaultColumnsByBreakSize
     }
 ]
 
 describe('getColumns returns the proper next smallest column', () => {
-    it('should add two numbers correctly', () => {
+    it('Maps over test input and returns proper output', () => {
         for (const testItem of items) {
             const res = getColumns(testItem.input)
             expect(res).toEqual(testItem.expected)

@@ -38,6 +38,9 @@ pub enum InContentDocumentationId {
     #[serde(rename = "Syntax")]
     #[strum(to_string = "Syntax")]
     Syntax,
+    #[serde(rename = "Jsx")]
+    #[strum(to_string = "Jsx")]
+    Jsx,
     #[serde(rename = "Sizable")]
     #[strum(to_string = "Sizable")]
     SizableObject,
@@ -54,6 +57,7 @@ impl InContentDocumentationId {
             InContentDocumentationId::SizableObject => "sizable-object-docs",
             InContentDocumentationId::Emphasis => "emphasis-docs",
             InContentDocumentationId::Syntax => "syntax-docs",
+            InContentDocumentationId::Jsx => "jsx-intro-docs",
         };
         format!("{}-{}.mdx", base_file_name, format)
     }
