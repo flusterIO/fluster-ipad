@@ -10,6 +10,7 @@ import { useEventListener } from "@/state/hooks/use_event_listener";
 import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 import { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { ComponentMapItem } from "../methods/get_component_map";
+import { WebviewClient } from "../../webview_container/data/webview_client";
 
 
 declare global {
@@ -97,10 +98,11 @@ export const useDebounceMdxParse = (
     ): Promise<void> => {
         try {
             await handleParse(_value, darkCodeTheme, lightCodeTheme);
+            setHasParsed(true);
         } catch (err) {
             console.error("Error: ", err);
+            return
         }
-        setHasParsed(true);
     };
 
     useEffect(() => {
@@ -136,11 +138,7 @@ export const useDebounceMdxParse = (
         );
 
     useEffect(() => {
-        window.dispatchEvent(new CustomEvent("mdx-content-loaded", {
-            detail: {
-                scrollPositionKey: contentLoadedId
-            }
-        }))
+        WebviewClient.setMdxContentLoaded(contentLoadedId)
         /* eslint-disable-next-line -- I hate this rule but I'm too lazy to turn it off. */
     }, [mdxModule])
 
@@ -148,6 +146,6 @@ export const useDebounceMdxParse = (
         value,
         setValue,
         Component,
-        isReady: Boolean(mdxModule),
+        isReady: Boolean(mdxModule && hasParsed),
     };
 };

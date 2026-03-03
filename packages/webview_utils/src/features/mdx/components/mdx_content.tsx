@@ -3,19 +3,9 @@ import React, { HTMLProps, useEffect, useId, type ReactNode } from "react";
 import { useDebounceMdxParse } from "../hooks/use_debounce_mdx_parse";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
-import type { AnyWebviewAction } from "@/utils/types/any_window_event";
-import { ComponentMapItem } from "../methods/get_component_map";
 import { mdxClasses } from "./inline_mdx_classes";
+import { MdxContentProps } from "./mdx_content_types";
 
-export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
-    mdx: string;
-    className?: string;
-    abortIfNoMath?: boolean;
-    debounceTimeout?: number;
-    showWebviewAction?: AnyWebviewAction
-    additionalComponents?: ComponentMapItem[]
-    lockToEditorScroll?: boolean
-}
 
 export const MdxContent = ({
     mdx,

@@ -4,6 +4,7 @@ import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core
 import { embeddableResponsiveGridPropsSchema } from "./embeddable_responsive_grid_props";
 import { EmbeddableUtilityContainerPropsInput } from "../container/embeddable_utility_container_props";
 import { KeysOfType } from "@/utils/types/utility_types";
+import { SizableOption, sizableOptions } from "../schemas/sizable_props_schema";
 
 export const gridComponentNames = [EmbeddableComponentName.Grid] as const;
 
@@ -23,9 +24,9 @@ export const embeddableGridComponentConfig: EmbeddableComponentConfig = {
             }),
         ]
     },
-    generateTestContent: async (_, utils) => {
+    generateTestContent: async (faker, utils) => {
         return `
-<Grid ${utils.randomBooleanProperties([
+<Grid ${faker.helpers.arrayElement(["large", "medium", "xl", "xxl", "full"] satisfies SizableOption[])}={2} gap="${faker.helpers.arrayElement(sizableOptions)}" ${utils.randomBooleanProperties([
             "sidebar",
             "border",
             "hideMathLabels",
@@ -36,7 +37,7 @@ export const embeddableGridComponentConfig: EmbeddableComponentConfig = {
         ] satisfies (KeysOfType<EmbeddableUtilityContainerPropsInput, boolean>)[])} ${utils.randomEmphasis()}>
 ${Array(Math.floor(Math.random() * 12)).fill(0).map((_, i) => {
             return `\n<Container centerContent>${i + 1}</Container>\n`
-        })}
+        }).join("\n")}
 </Grid>
 `
     },

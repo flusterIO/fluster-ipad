@@ -18,6 +18,8 @@ import { utilityContainerComponentNames } from "../embeddable_mdx_components/con
 import { ulComponentNames } from "../embeddable_mdx_components/ul/ul_component_config";
 import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_config";
 import { AutoInsertedComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities"
+import { hrComponentNames } from "../embeddable_mdx_components/hr/hr_component_config";
+import { embeddableHintComponentNames } from "../embeddable_mdx_components/hint/hint_component_config";
 
 enum ComponentItemType {
     userInserted,
@@ -130,6 +132,13 @@ const items: ComponentMapItem[] = [
         }
     },
     {
+        query: hrComponentNames,
+        componentType: ComponentItemType.userInserted,
+        importComponent: async () => {
+            return await import("../embeddable_mdx_components/hr/embedded_hr_with_children").then((a) => a.EmbeddedHrWithChildren)
+        }
+    },
+    {
         query: cardComponentNames,
         componentType: ComponentItemType.userInserted,
         importComponent: async () => {
@@ -158,10 +167,13 @@ const items: ComponentMapItem[] = [
     /*     component: Small, */
     /* }, */
     /* // -- Attention Getters -- */
-    /* { */
-    /*     query: "Hint", */
-    /*     component: Hint, */
-    /* }, */
+    {
+        query: embeddableHintComponentNames,
+        componentType: ComponentItemType.userInserted,
+        importComponent: async () => {
+            return await import("../embeddable_mdx_components/hint/embeddable_hint_component").then((a) => a.EmbeddableHintComponent)
+        }
+    },
     {
         query: ulComponentNames,
         componentType: ComponentItemType.userInserted,
@@ -263,13 +275,6 @@ const items: ComponentMapItem[] = [
         componentType: ComponentItemType.documentation,
         importComponent: async () => {
             return import("../../in_content_documentation/presentation/in_content_documentation_container").then((a) => a.InContentDocumentationContainer)
-        }
-    },
-    {
-        query: [DocumentationComponentName.InContentDocumenationSchemaTable],
-        componentType: ComponentItemType.documentation,
-        importComponent: async () => {
-            return import("../../in_content_documentation/presentation/in_content_documentation_schema_table/in_content_documentation_schema_table").then((a) => a.InContentDocumenationSchemaTable)
         }
     },
     {

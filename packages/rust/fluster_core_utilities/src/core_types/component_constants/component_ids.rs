@@ -31,6 +31,9 @@ pub enum EmbeddableComponentId {
     #[serde(rename = "hr-with-children")]
     #[strum(to_string = "hr-with-children")]
     HrWithChildren,
+    #[serde(rename = "embeddable-hint-component")]
+    #[strum(to_string = "embeddable-hint-component")]
+    Hint,
 }
 
 impl EmbeddableComponentId {

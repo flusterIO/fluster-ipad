@@ -32,4 +32,7 @@ pub enum EmbeddableComponentName {
     #[serde(rename = "Hr")]
     #[strum(to_string = "Hr")]
     HrWithChildren,
+    #[serde(rename = "Hint")]
+    #[strum(to_string = "Hint")]
+    Hint,
 }

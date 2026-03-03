@@ -2,6 +2,7 @@ import { getSizableObjectClasses, sizableObjectSchema } from "../schemas/sizable
 import { z } from "zod"
 import { SizableOption, sizableOptions, sizablePropSchema, sizablePropsMapTransform } from "../schemas/sizable_props_schema"
 import { Mutable } from "../../../../core/utils/types/utility_types"
+import { emphasisBackgroundTransform, emphasisSchema } from "../schemas/emphasis_schema"
 
 
 
@@ -81,23 +82,25 @@ const columnSchema = {
 }
 
 
-const modifiedSizableSchema = sizableObjectSchema.extend({
-    centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block w-fit" : ""),
-    centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "w-full place-items-center" : "").describe("Centers the content of this component's children, not the component itself."),
-    fit: z.boolean({ message: "If true while 'responsive' is set this will cause items to expand to fill the empty space." }).optional(),
-    responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional(),
-    gap: sizablePropSchema("gap").default("medium").transform(sizablePropsMapTransform({
-        none: "gap-0",
-        small: "gap-2",
-        smedium: "gap-3",
-        medium: "gap-4",
-        large: "gap-6",
-        xl: "gap-8",
-        xxl: "gap-12",
-        full: "gap-16",
-        fit: "gap-0"
-    })).describe("When in Grid mode or in some other select layouts, this property create a gap between _all_ children."),
-})
+const modifiedSizableSchema = sizableObjectSchema
+    .merge(emphasisSchema)
+    .extend({
+        centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block w-fit" : ""),
+        centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "w-full place-items-center" : "").describe("Centers the content of this component's children, not the component itself."),
+        fit: z.boolean({ message: "If true while 'responsive' is set this will cause items to expand to fill the empty space." }).optional(),
+        responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional(),
+        gap: sizablePropSchema("gap").default("medium").transform(sizablePropsMapTransform({
+            none: "gap-0",
+            small: "gap-2",
+            medium: "gap-4",
+            smedium: "gap-5",
+            large: "gap-6",
+            xl: "gap-8",
+            xxl: "gap-12",
+            full: "gap-16",
+            fit: "gap-0"
+        })).describe("When in Grid mode or in some other select layouts, this property create a gap between _all_ children."),
+    })
 
 
 const x = modifiedSizableSchema.extend(schema)
@@ -140,8 +143,8 @@ export const getColumns = (data: { [K in Exclude<SizableOption, "fit">]?: number
         xl: getSmallerItemOrDefault(sizableOptions.indexOf("xl"), data, defaultColumnsByBreakSize.xl),
         xxl: getSmallerItemOrDefault(sizableOptions.indexOf("xxl"), data, defaultColumnsByBreakSize.xxl),
         full: getSmallerItemOrDefault(sizableOptions.indexOf("full"), data, defaultColumnsByBreakSize.full),
-        // Fit won't be used directly, but applied some unique properties if the boolean is true.
-        fit: defaultColumnsByBreakSize.fit
+        // Since 'fit' is being applied as a boolean in the grid RAM layout, it's being ignored here as a 'width' parameter.
+        fit: defaultColumnsByBreakSize.full
     }
 }
 
@@ -161,7 +164,7 @@ const responsiveSizableGridMap: { [K in SizableOption]: number } = {
     full: 1200,
 }
 
-const getResponsiveClasses = (data: z.infer<typeof embeddableResponsivieGridPropsSchemaUnion>,): string | undefined => {
+const getResponsiveStyles = (data: z.infer<typeof embeddableResponsivieGridPropsSchemaUnion>,): string | undefined => {
     const sizing = data.fit ? "auto-fit" : "auto-fill"
     if (typeof data.responsive === "number") {
         return `repeat(${sizing}, minmax(${data.responsive}px, 1fr))`
@@ -178,8 +181,9 @@ export const embeddableResponsiveGridPropsSchema = embeddableResponsivieGridProp
     return {
         ...c,
         columns,
+        emphasisClasses: emphasisBackgroundTransform(undefined)(c),
         containerClasses: getSizableObjectClasses(c),
-        responsiveTemplateColumns: typeof c.responsive !== "undefined" ? getResponsiveClasses(c) : undefined
+        responsiveTemplateColumns: typeof c.responsive !== "undefined" ? getResponsiveStyles(c) : undefined
     }
 })
 

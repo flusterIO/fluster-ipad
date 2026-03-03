@@ -76,7 +76,6 @@ public enum DictionaryWebviewStorageKeys: String, Codable {
 
 public enum DocumentationComponentName: String, Codable {
 	case inContentDocumentationContainer = "InContentDocumentationContainer"
-	case inContentDocumenationSchemaTable = "InContentDocumenationSchemaTable"
 	case inContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList"
 }
 
@@ -89,6 +88,7 @@ public enum EmbeddableComponentId: String, Codable {
 	case grid
 	case utlityContainer = "util-container"
 	case hrWithChildren = "hr-with-children"
+	case hint = "embeddable-hint-component"
 }
 
 public enum EmbeddableComponentName: String, Codable {
@@ -101,6 +101,7 @@ public enum EmbeddableComponentName: String, Codable {
 	case grid = "Grid"
 	case utlityContainer = "Container"
 	case hrWithChildren = "Hr"
+	case hint = "Hint"
 }
 
 public enum InContentDocumentationFormat: String, Codable {
