@@ -77,7 +77,6 @@ export enum DictionaryWebviewStorageKeys {
 
 export enum DocumentationComponentName {
 	InContentDocumentationContainer = "InContentDocumentationContainer",
-	InContentDocumenationSchemaTable = "InContentDocumenationSchemaTable",
 	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
 }
 
@@ -90,6 +89,7 @@ export enum EmbeddableComponentId {
 	Grid = "grid",
 	UtlityContainer = "util-container",
 	HrWithChildren = "hr-with-children",
+	Hint = "embeddable-hint-component",
 }
 
 export enum EmbeddableComponentName {
@@ -102,6 +102,7 @@ export enum EmbeddableComponentName {
 	Grid = "Grid",
 	UtlityContainer = "Container",
 	HrWithChildren = "Hr",
+	Hint = "Hint",
 }
 
 export enum InContentDocumentationFormat {

@@ -1,6 +1,5 @@
 import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
-import { getEmphasisOptions } from "../schemas/emphasis_schema";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { hrPropsSchema } from "./hr_props_schema";
 
@@ -15,13 +14,11 @@ export const hrComponentConfig: EmbeddableComponentConfig = {
     schema: hrPropsSchema,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hr/hr_component_docs.mdx",
     snippets: () => {
-        return getEmphasisOptions().map((c) => {
-            return snippetCompletion(`<Hl content="${c}" />`, {
-                label: `divider-with-label`,
-                section: CompletionSections.components,
-                type: SnippetDefaultType.function
-            })
-        })
+        return [snippetCompletion(`<Hl content="#{Label}" />`, {
+            label: `divider-with-label`,
+            section: CompletionSections.components,
+            type: SnippetDefaultType.function
+        })]
     },
     generateTestContent: async (faker, utils) => {
         return `<Hr ${utils.valueIfRandomProablity(`content={'${faker.lorem.words({ min: 1, max: 8 })}'}`)} />`

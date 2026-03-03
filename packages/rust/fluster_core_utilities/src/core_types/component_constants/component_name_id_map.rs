@@ -17,6 +17,7 @@ lazy_static! {
             EmbeddableComponentId::Ul,
         );
         map.insert(EmbeddableComponentName::Hl, EmbeddableComponentId::Hl);
+        map.insert(EmbeddableComponentName::Hint, EmbeddableComponentId::Hint);
         map.insert(
             EmbeddableComponentName::Highlight,
             EmbeddableComponentId::Hl,

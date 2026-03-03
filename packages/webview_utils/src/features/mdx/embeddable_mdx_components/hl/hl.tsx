@@ -17,8 +17,8 @@ export const Hl = ({ children, ...props }: HlProps): ReactNode => {
         <span
             {...props}
             style={{
-                /* paddingLeft: "0.2rem", */
-                /* paddingRight: "0.2rem", */
+                paddingLeft: "0.2rem",
+                paddingRight: "0.2rem",
                 borderRadius: "4px",
                 ...props.style,
             }}

@@ -8,9 +8,6 @@ pub enum DocumentationComponentName {
     #[serde(rename = "InContentDocumentationContainer")]
     #[strum(to_string = "InContentDocumentationContainer")]
     InContentDocumentationContainer,
-    #[serde(rename = "InContentDocumenationSchemaTable")]
-    #[strum(to_string = "InContentDocumenationSchemaTable")]
-    InContentDocumenationSchemaTable,
     #[serde(rename = "InContentDocsEmphasisTypeList")]
     #[strum(to_string = "InContentDocsEmphasisTypeList")]
     InContentDocsEmphasisTypeList,

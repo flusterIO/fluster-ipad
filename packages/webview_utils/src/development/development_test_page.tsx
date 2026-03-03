@@ -6,16 +6,19 @@ import React, { useEffect, type ReactNode } from 'react'
 
 
 const HandleEditorState = (): ReactNode => {
-    const testContent = getFakeNoteContent()
     const dispatch = useCodeEditorDispatch()
     useEffect(() => {
-        dispatch({
-            type: "setParsedEditorContentString",
-            payload: testContent
-        })
-        window.localStorage.setItem("dark-mode", "true")
-        window.localStorage.setItem(SplitviewEditorWebviewLocalStorageKeys.InitialValue, testContent)
-    }, [testContent, dispatch])
+        const loadTestContent = async (): Promise<void> => {
+            const testContent = await getFakeNoteContent()
+            dispatch({
+                type: "setParsedEditorContentString",
+                payload: testContent
+            })
+            window.localStorage.setItem("dark-mode", "true")
+            window.localStorage.setItem(SplitviewEditorWebviewLocalStorageKeys.InitialValue, testContent)
+        }
+        loadTestContent()
+    }, [dispatch])
     return null
 }
 

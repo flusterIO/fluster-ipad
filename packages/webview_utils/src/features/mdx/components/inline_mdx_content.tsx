@@ -1,7 +1,8 @@
 import { cn } from "@/utils/cn";
 import React, { type ReactNode } from "react";
-import { MdxContent, type MdxContentProps } from "./mdx_content";
+import { MdxContent } from "./mdx_content";
 import { inlineMdxClasses } from "./inline_mdx_classes";
+import { MdxContentProps } from "./mdx_content_types";
 
 
 export const InlineMdxContent = (

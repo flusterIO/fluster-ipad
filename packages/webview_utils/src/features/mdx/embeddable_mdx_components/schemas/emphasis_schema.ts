@@ -56,24 +56,48 @@ export const emphasisMapTransform = (classMap: Record<Emphasis, string>): Emphas
 export const emphasisToBackgroundClasses = (emphasis: Emphasis) => {
     switch (emphasis) {
         case "info":
-            return "bg-emphasis-info text-emphasis-info-foreground"
+            return "bg-emphasis-info text-emphasis-info-foreground [&>p]:text-emphasis-info-foreground"
         case "error":
-            return "bg-emphasis-error text-emphasis-error-foreground"
+            return "bg-emphasis-error text-emphasis-error-foreground [&>p]:text-emphasis-error-foreground"
         case "warn":
-            return "bg-emphasis-warn text-emphasis-warn-foreground"
+            return "bg-emphasis-warn text-emphasis-warn-foreground [&>p]:text-emphasis-warn-foreground"
         case "success":
-            return "bg-emphasis-success text-emphasis-success-foreground"
+            return "bg-emphasis-success text-emphasis-success-foreground [&>p]:text-emphasis-success-foreground"
         case "important":
-            return "bg-emphasis-important text-emphasis-important-foreground"
+            return "bg-emphasis-important text-emphasis-important-foreground [&>p]:text-emphasis-important-foreground"
         case "research":
-            return "bg-emphasis-research text-emphasis-research-foreground"
+            return "bg-emphasis-research text-emphasis-research-foreground [&>p]:text-emphasis-research-foreground"
         case "primary":
-            return "bg-primary text-primary-foreground"
+            return "bg-primary text-primary-foreground [&>p]:text-primary-foreground"
         case "highlight":
-            return "bg-emphasis-highlight text-emphasis-highlight-foreground"
+            return "bg-emphasis-highlight text-emphasis-highlight-foreground [&>p]:text-emphasis-highlight-foreground"
         case "card":
-            return "bg-fd-card text-fd-card-foreground"
+            return "bg-fd-card text-fd-card-foreground [&>p]:text-fd-card-foreground"
 
+    }
+}
+
+
+export const emphasisToForegroundClasses = (emphasis: Emphasis) => {
+    switch (emphasis) {
+        case "info":
+            return "text-emphasis-info [&>p]:text-emphasis-info"
+        case "error":
+            return "text-emphasis-error [&>p]:text-emphasis-error"
+        case "warn":
+            return "text-emphasis-warn [&>p]:text-emphasis-warn"
+        case "success":
+            return "text-emphasis-success [&>p]:text-emphasis-success"
+        case "important":
+            return "text-emphasis-important [&>p]:text-emphasis-important"
+        case "research":
+            return "text-emphasis-research [&>p]:text-emphasis-research"
+        case "primary":
+            return "text-primary [&>p]:text-primary"
+        case "highlight":
+            return "text-emphasis-highlight [&>p]:text-emphasis-highlight"
+        case "card":
+            return "text-fd-card [&>p]:text-fd-card"
     }
 }
 
@@ -89,5 +113,20 @@ export const emphasisBackgroundTransform = <T extends Emphasis | undefined>(defa
             return ""
         }
         return emphasisToBackgroundClasses(firstKey)
+    }
+}
+
+
+/**
+ * The transformation to be used in something like a `Hint`
+ * or colored text component.
+ */
+export const emphasisForegroundTransform = <T extends Emphasis | undefined>(defaultKey: T): EmphasisTransform => {
+    return (k): string => {
+        const firstKey = getFirstEmphasisKey(k) ?? defaultKey
+        if (!firstKey) {
+            return ""
+        }
+        return emphasisToForegroundClasses(firstKey)
     }
 }

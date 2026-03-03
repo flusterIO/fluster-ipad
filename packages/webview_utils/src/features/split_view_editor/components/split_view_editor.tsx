@@ -3,6 +3,7 @@ import React, { type ReactNode } from "react";
 import { MdxEditorPreview } from "#/mdx/components/mdx_editor_preview";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { CodeEditor } from "#/editor/code_editor/components/code_editor";
+import { WebviewClient } from "#/webview_container/data/webview_client";
 
 export const SplitViewEditorInner = (): ReactNode => {
     const autoSaveId = "split-view-editor-panel-split";
@@ -12,9 +13,7 @@ export const SplitViewEditorInner = (): ReactNode => {
             direction="horizontal"
             className="w-screen! h-screen! loading-main-hide"
             onLayout={(layout) => {
-                window.dispatchEvent(new CustomEvent("main-panel-resize", {
-                    detail: layout
-                }))
+                WebviewClient.sendPanelGroupResize(layout)
             }}
         >
             <Panel id="editor-panel" order={1} defaultSize={50} minSize={10}>
@@ -23,7 +22,7 @@ export const SplitViewEditorInner = (): ReactNode => {
             <PanelResizeHandle id="editor-panel-resize-handle" />
             <Panel
                 id="editor-output-panel"
-                /* className="bg-white dark:bg-black" */
+                className="relative"
                 order={2}
                 defaultSize={50}
                 minSize={10}

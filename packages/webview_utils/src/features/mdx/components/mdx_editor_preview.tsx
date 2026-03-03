@@ -1,5 +1,5 @@
 import { useCodeEditorContext } from "#/editor/code_editor/state/code_editor_provider";
-import React, { HTMLProps, useEffect, useRef, type ReactNode } from "react";
+import React, { HTMLProps, useEffect, useId, useRef, type ReactNode } from "react";
 import { MdxContent } from "./mdx_content";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
@@ -32,6 +32,7 @@ export const MdxEditorPreview = ({
 }: MdxEditorPreviewProps): ReactNode => {
     const { value, parsedValue, lockEditorScrollToPreview } = useCodeEditorContext();
     const ref = useRef<null | HTMLDivElement>(null)
+    const id = useId()
 
     const isEditorView = useMediaQuery({
         orientation: "landscape",
@@ -84,9 +85,8 @@ export const MdxEditorPreview = ({
     return (
         <ErrorBoundary
             onError={(e) => console.error("Error: ", e)}
-            FallbackComponent={PreviewLevelErrorReport}
+            FallbackComponent={(p) => <PreviewLevelErrorReport {...p} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />}
         >
-
             <MdxContent
                 id={SplitviewEditorDomIds.MdxPreview}
                 {...props}

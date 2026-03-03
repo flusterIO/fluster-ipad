@@ -2,22 +2,22 @@ import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, Snipp
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
-import { hlPropsSchema } from "./hl_props_schema";
+import { embeddableHintComponentPropsSchema } from "./hint_props_schema";
 
 
-export const hlComponentNames = [EmbeddableComponentName.Hl, EmbeddableComponentName.Highlight] as const
+export const embeddableHintComponentNames = [EmbeddableComponentName.Hint] as const
 
-export const hlComponentConfig: EmbeddableComponentConfig = {
-    name: hlComponentNames,
+export const embeddableHintComponentConfig: EmbeddableComponentConfig = {
+    name: embeddableHintComponentNames,
     categories: [ComponentCategory.attention],
-    desc: "Highlight the background of text in a variety of colors.",
-    id: EmbeddableComponentId.Hl,
-    schema: hlPropsSchema,
-    docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hl/hl_component_docs.mdx",
+    desc: "Add some subtle, colored text to draw attention to smaller content.",
+    id: EmbeddableComponentId.Hint,
+    schema: embeddableHintComponentPropsSchema,
+    docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hint/embeddable_hint_component_docs.mdx",
     snippets: () => {
         return getEmphasisOptions().map((c) => {
-            return snippetCompletion(`<Hl ${c}>#{content}</Hl>#{}`, {
-                label: `highlight-${c}`,
+            return snippetCompletion(`<Hint ${c}>\n#{content}\n</Hint>#{}`, {
+                label: `hint-${c}`,
                 section: CompletionSections.components,
                 type: SnippetDefaultType.function
             })
