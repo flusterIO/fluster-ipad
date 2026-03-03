@@ -1,4 +1,23 @@
+import { CSSProperties } from "react";
 import { z, ZodBoolean, ZodOptional } from "zod";
+
+
+export interface ZodStylesGroup {
+    css: Partial<CSSProperties>
+    classes: string
+}
+
+export const emphasisOptions = [
+    "info",
+    "error",
+    "warn",
+    "success",
+    "primary",
+    "important",
+    "research",
+    "highlight",
+    "card",
+] as const;
 
 const _emphasisSchema = {
     info: z.boolean({ message: `The info field is a boolean.` }).optional(),
@@ -10,22 +29,25 @@ const _emphasisSchema = {
     research: z.boolean({ message: `The research field is a boolean.` }).optional(),
     highlight: z.boolean({ message: `The highlight field is a boolean.` }).optional(),
     card: z.boolean({ message: `The 'card' field is a boolean.` }).optional(),
-} satisfies Record<string, ZodOptional<ZodBoolean>>
+} satisfies { [K in typeof emphasisOptions[number]]: ZodOptional<ZodBoolean> }
 
 export const emphasisSchema = z.object(_emphasisSchema, {
-    message: `All components that accept an 'emphasis' take a list of optional boolean properties, where this list is: ${Object.keys(_emphasisSchema).map((k) => `"${k}"`).join(", ")}`
+    message: `All components that accept an 'emphasis' take a list of optional boolean properties, where this list is: ${emphasisOptions.map((k) => `"${k}"`).join(", ")}`
+}).extend({
+    color: z.enum(emphasisOptions).optional()
 })
 
 
-export const getEmphasisOptions = () => Object.keys(_emphasisSchema) as (keyof typeof _emphasisSchema)[]
+export const getEmphasisOptions = () => emphasisOptions
 
 export type EmphasisSchema = z.infer<typeof emphasisSchema>
-export type Emphasis = keyof EmphasisSchema
+export type Emphasis = typeof emphasisOptions[number]
 
 export type EmphasisTransform = (k: { [K in Emphasis]?: boolean }) => string
+export type EmphasisTransformToGroup = (k: { [K in Emphasis]?: boolean }) => ZodStylesGroup
 
 export const getFirstEmphasisKey = (data: { [K in Emphasis]?: boolean | undefined }): Emphasis | undefined => {
-    for (const k of getEmphasisOptions()) {
+    for (const k of emphasisOptions) {
         if (data[k] === true) {
             return k
         }
@@ -43,7 +65,7 @@ export const emphasisClassMapTransform = (classMap: Record<Emphasis, string>): E
 export const emphasisMapTransform = (classMap: Record<Emphasis, string>): EmphasisTransform => {
     return (data) => {
         const classes: string[] = []
-        for (const k of getEmphasisOptions()) {
+        for (const k of emphasisOptions) {
             if (data[k]) {
                 classes.push(classMap[k])
             }
@@ -73,11 +95,14 @@ export const emphasisToBackgroundClasses = (emphasis: Emphasis) => {
             return "bg-emphasis-highlight text-emphasis-highlight-foreground [&>p]:text-emphasis-highlight-foreground"
         case "card":
             return "bg-fd-card text-fd-card-foreground [&>p]:text-fd-card-foreground"
-
     }
 }
 
 
+/**
+ * Since the emphasisoBackgroundClasses transform applies both foreground and background colors
+ * for compatibility, this property _must_ always be set **after** the background property to allow the user to override those settings.
+ */
 export const emphasisToForegroundClasses = (emphasis: Emphasis) => {
     switch (emphasis) {
         case "info":
@@ -121,12 +146,33 @@ export const emphasisBackgroundTransform = <T extends Emphasis | undefined>(defa
  * The transformation to be used in something like a `Hint`
  * or colored text component.
  */
-export const emphasisForegroundTransform = <T extends Emphasis | undefined>(defaultKey: T): EmphasisTransform => {
-    return (k): string => {
-        const firstKey = getFirstEmphasisKey(k) ?? defaultKey
-        if (!firstKey) {
-            return ""
+export const emphasisForegroundTransform = <T extends Emphasis | string | undefined>(defaultKey: T): EmphasisTransformToGroup => {
+    return (k): ZodStylesGroup => {
+        const firstKey = getFirstEmphasisKey(k)
+        if (!firstKey && typeof k === "string") {
+            return {
+                classes: "",
+                css: {
+                    backgroundColor: k
+                }
+            }
         }
-        return emphasisToForegroundClasses(firstKey)
+        if (!firstKey) {
+            if (!defaultKey) {
+                return {
+                    classes: "",
+                    css: {}
+                }
+            }
+        } else {
+            return {
+                classes: emphasisToForegroundClasses(firstKey),
+                css: {},
+            }
+        }
+        return {
+            css: {},
+            classes: ""
+        }
     }
 }

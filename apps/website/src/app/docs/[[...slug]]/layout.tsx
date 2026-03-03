@@ -15,30 +15,35 @@ export default function Layout({ children }: { children: ReactNode }) {
             containerProps={{
                 className: "[&_#nd-sidebar>div[data-fdid]]:w-full",
             }}
+            /* nav={{ */
+            /*     title: "Fluster", */
+            /* }} */
+            githubUrl="https://github.com/flusterIO"
             sidebar={{
                 banner: (
                     <RootToggle
-                        className="bg-background"
+                        className="place-items-center first:flex first:justify-center first:items-center py-0"
+                        /* popover="auto" */
                         options={[
                             {
                                 title: "User",
                                 description: "User Documentation",
                                 url: "/docs/user",
                                 props: {
-                                    className:
-                                        "bg-popover hover:bg-muted/80 transition-colors duration-150",
+                                    /* className: */
+                                    /*     "bg-popover hover:bg-muted/80 transition-colors duration-150", */
                                 },
-                                icon: <UserIcon />,
+                                icon: <UserIcon className="w-5 h-5" />,
                             },
                             {
                                 title: "Developer",
                                 description: "Developer Documentation",
                                 url: "/docs/developer",
                                 props: {
-                                    className:
-                                        "bg-popover hover:bg-muted/80 transition-colors duration-150",
+                                    /* className: */
+                                    /*     "bg-popover hover:bg-muted/80 transition-colors duration-150", */
                                 },
-                                icon: <TerminalIcon />,
+                                icon: <TerminalIcon className="w-5 h-5" />,
                             },
                         ]}
                     />
