@@ -49,10 +49,14 @@ export const sizablePropsMapTransform = (data: Record<SizableInput, string>): Si
 }
 
 
-export const sizablePropsOrBooleanTransform = (data: Record<SizableInput, string>): SizeableOrBooleanPropsTransform => {
+/**
+ * @param defaultValue - The css class to be applied when a user provides true.
+ */
+export const sizablePropsOrBooleanTransform = (data: Record<SizableInput, string>,
+    defaultValue: string): SizeableOrBooleanPropsTransform => {
     return (val): string => {
         if (val === true) {
-            return "rounded"
+            return defaultValue
         }
         if (typeof val === "string" && val in data) {
             return data[val]

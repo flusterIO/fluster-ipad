@@ -17,7 +17,7 @@ export const replaceDocumentationContentMarkerByFilePath = (
         console.log("match: ", match.groups);
         console.log("filePath: ", filePath);
         const outputPath = path.resolve(root, filePath);
-        assert(fs.existsSync(outputPath));
+        assert(fs.existsSync(outputPath), `Failed to find file at ${outputPath}`);
         const generatedContentToInsert = fs.readFileSync(outputPath, {
             encoding: "utf-8",
         });

@@ -37,17 +37,39 @@ export const _sizableObjectSchema = {
     centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block" : ""),
     centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "flex flex-col justify-center items-center text-center [&>p]:text-center" : "").describe("Centers the content of this component's children, not the component itself."),
     border: z.boolean().optional().transform((k) => k ? "border" : "").describe("Add a small, muted border to the object."),
+    inShadow: sizablePropsSchemaOrBool("rounded").optional().transform(sizablePropsOrBooleanTransform({
+        none: "inset-shadow-none",
+        small: "inset-shadow-xxs",
+        smedium: "inset-shadow-xxs",
+        medium: "inset-shadow-xs",
+        large: "inset-shadow-xs",
+        xl: "inset-shadow-xs",
+        xxl: "inset-shadow-sm",
+        full: "inset-shadow-sm",
+        fit: "inset-shadow-current"
+    }, "inset-shadow-xs")).describe("Casts an inset shadow from the object."),
+    shadow: sizablePropsSchemaOrBool("rounded").optional().transform(sizablePropsOrBooleanTransform({
+        none: "shadow-none",
+        small: "shadow-2xs",
+        smedium: "shadow-sm",
+        medium: "shadow-md",
+        large: "shadow-lg",
+        xl: "shadow-2xl",
+        xxl: "shadow-2xl",
+        full: "shadow-2xl",
+        fit: "shadow-md"
+    }, "shadow-md")).describe("Casts a shadow from the object."),
     rounded: sizablePropsSchemaOrBool("rounded").optional().transform(sizablePropsOrBooleanTransform({
         none: "rounded-none",
         small: "rounded-sm",
         smedium: "rounded-sm",
-        medium: "rounded-medium",
+        medium: "rounded-md",
         large: "rounded-lg",
         xl: "rounded-2xl",
         xxl: "rounded-4xl",
         full: "rounded-full",
         fit: "rounded-[100%]"
-    })).describe("Rounds the corners of the container. Use `rounded=\"full\"` or `rounded=\"fit\"` to create a completely circular component, useful for some image layouts."),
+    }, "rounded")).describe("Rounds the corners of the container. Use `rounded=\"full\"` or `rounded=\"fit\"` to create a completely circular component, useful for some image layouts."),
     text: sizablePropSchema("text").optional().transform(sizablePropsMapTransform({
         none: "text-xs",
         small: "text-sm",
@@ -215,7 +237,7 @@ export const _sizableObjectSchema = {
         full: "py-16",
         fit: "py-0"
     })),
-    gap: sizablePropSchema("paddingY").optional().transform(sizablePropsMapTransform({
+    gap: sizablePropSchema("gap").optional().transform(sizablePropsMapTransform({
         none: "gap-0",
         small: "gap-2",
         smedium: "gap-3",
@@ -226,7 +248,7 @@ export const _sizableObjectSchema = {
         full: "gap-16",
         fit: "gap-0"
     })).describe("When in Grid mode or in some other select layouts, this property create a gap between _all_ children."),
-    gapX: sizablePropSchema("paddingY").optional().transform(sizablePropsMapTransform({
+    gapX: sizablePropSchema("gapX").optional().transform(sizablePropsMapTransform({
         none: "gap-x-0",
         small: "gap-x-2",
         smedium: "gap-x-3",
@@ -237,7 +259,7 @@ export const _sizableObjectSchema = {
         full: "gap-x-16",
         fit: "gap-0"
     })),
-    gapY: sizablePropSchema("paddingY").optional().transform(sizablePropsMapTransform({
+    gapY: sizablePropSchema("gapY").optional().transform(sizablePropsMapTransform({
         none: "gap-y-0",
         small: "gap-y-2",
         smedium: "gap-y-3",

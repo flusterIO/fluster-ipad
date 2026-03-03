@@ -1,1 +1,28 @@
 ## Card
+
+````long-docs
+The `Card` component is similar to an admonition in it's application, but it's far more subtle, falling somewhere between an `Admonition` component and an unstyled `Container` component.
+
+The properties extend `SizableObject`, with an additional **required** `title` property, an optional `desc` (description) property, and an additional `centerBody` (boolean) property that will center the card's body, but not it's title.
+````
+
+### Examples
+
+````tsx title="card.mdx"
+<Card 
+    title="This is my card's title with $\delta$ latex"
+    desc="This is an optional description"
+>
+
+This is just regular mdx here.
+
+</Card>
+````
+
+
+````long-docs
+### Properties
+
+<<DOCUMENTATION_CONSTANT:docs/generated/zod/embeddable-card-properties.mdx>>
+
+````

@@ -3,6 +3,7 @@
 ## Bug Log
 
 - [ ] Fix issue with bibliography entries not being associated with note properly.
+- [ ] Create 'paper' button on desktop is creating 2 pages.
 
 ### Embedded Components
 
@@ -14,12 +15,21 @@
 - [ ] `Tabs` component that just accepts children and a context provider to set the tab content, not a prop from the user.
 - [ ] Add `glass` schema that extends the emphasis schema with an additional `glass` property.
 
+#### AI
+
+- [ ] Create 'triggers', similar in concept to the `Docs??` concept that can be replaced with on-board AI generated content. Make it look like a code snippet to trigger the replacement just for future's sake, but this will also make sure that this line doesn't appear alone anywhere just by coincidence.
+  - [ ] `FlusterAI.generateStudyGuide()`
+  - [ ] `FlusterAI.createFlashCards()`
+- [ ] Make sure ai-triggers can be set to 1 of 3 modes:
+  - [ ] `auto`
+  - [ ] `confirm`
+  - [ ] `never`
+
 #### Documentation
 
 **_CURRENT_**
 
-- [ ] Handle `SizableObject` documentation.
-- [ ] Create embedded Emoji reference note.
+- [ ] Card component documentation
 
 ## Desktop
 

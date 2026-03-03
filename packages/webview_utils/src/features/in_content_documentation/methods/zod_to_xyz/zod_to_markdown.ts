@@ -12,7 +12,7 @@ const fileHeader = `
 
 
 export const writeZodSchemaMarkdown = (item: ZodSchemaSource) => {
-    const handler = new ZodToMarkdownHandler(item.ignore, fileHeader)
+    const handler = new ZodToMarkdownHandler([], fileHeader)
     handler.zodSchemaToMarkdown(item.schema)
     const outputDir = path.resolve(__dirname, "../../../../../../../docs/generated/zod")
     fs.writeFileSync(path.join(outputDir, item.outputPath), handler.body, { encoding: "utf-8" });
