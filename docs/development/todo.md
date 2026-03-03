@@ -2,6 +2,9 @@
 
 ## Bug Log
 
+**_ PRIORITY PRIORITY PRIORITY _**
+
+- [ ] Make absolute sure the editor does not completely fail when the note fails to parse when an invalid component is attempted to render. There absolutely _needs_ to be a backup... the note just can't be lost forever.
 - [ ] Fix issue with bibliography entries not being associated with note properly.
 - [ ] Create 'paper' button on desktop is creating 2 pages.
 

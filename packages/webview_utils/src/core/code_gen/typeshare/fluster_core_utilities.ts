@@ -89,6 +89,7 @@ export enum EmbeddableComponentId {
 	Card = "card",
 	Grid = "grid",
 	UtlityContainer = "util-container",
+	HrWithChildren = "hr-with-children",
 }
 
 export enum EmbeddableComponentName {
