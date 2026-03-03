@@ -10,6 +10,10 @@ const outputDir = path.resolve(
     "../../docs/development/generated_benchmark_content/",
 );
 
+/**
+ * Disabling function call at bottom of file and not adding to justfile to avoid overwriting existing benchmark data and muddying up the data.
+ * Come back and write more content when more components have been added.
+ */
 const writeBenchmarkData = async () => {
     for await (const k of standardBenchmarkLengths) {
         const content = await getBenchmarkContent(k);
@@ -25,4 +29,4 @@ const writeBenchmarkData = async () => {
     }
 };
 
-writeBenchmarkData();
+// writeBenchmarkData();

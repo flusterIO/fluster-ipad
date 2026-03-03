@@ -16,6 +16,14 @@ export enum AutoTaggableType {
 	Subject = "subject",
 }
 
+/**
+ * Represents the date given some generated mdx benchmark content
+ * as the content will need to grow as components are added.
+ */
+export enum BenchmarkGeneratedDateString {
+	Initial = "2_2_2026",
+}
+
 export enum BenchmarkMagnitude {
 	Five = "Five",
 	Ten = "Ten",
@@ -106,6 +114,7 @@ export enum InContentDocumentationId {
 	Jsx = "Jsx",
 	SizableObject = "Sizable",
 	Emphasis = "Emphasis",
+	Emoji = "Emoji",
 }
 
 export enum InContentDocumentationSource {

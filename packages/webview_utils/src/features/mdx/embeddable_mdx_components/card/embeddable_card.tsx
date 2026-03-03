@@ -3,11 +3,12 @@ import { embeddableCardProps, EmbeddableCardPropsInput } from './embeddable_card
 import { WithChildren } from '@/utils/types/utility_types'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared_components/shad/card'
 import { WithInlineMdx } from '#/mdx/components/inline_mdx_content'
+import { cn } from '../../../../core/utils/cn'
 
 
 
 export const EmbeddableCard = ({ children, InlineMdxContent, ...props }: EmbeddableCardPropsInput & WithChildren & WithInlineMdx): ReactNode => {
-    const { title, desc, containerClasses, shrink, centerContent } = embeddableCardProps.parse(props)
+    const { title, desc, containerClasses, shrink, centerContent, centerBody } = embeddableCardProps.parse(props)
     return (
         <Card className={containerClasses} size={shrink ? "sm" : "default"}>
             <CardHeader>
@@ -25,7 +26,7 @@ export const EmbeddableCard = ({ children, InlineMdxContent, ...props }: Embedda
                 ) : null}
             </CardHeader>
             <CardContent
-                className={centerContent ? "flex flex-col justify-center items-center" : undefined}
+                className={cn(centerContent ? "flex flex-col justify-center items-center" : undefined, centerBody && "w-full h-fit flex flex-col justify-center items-center")}
             >
                 {children}
             </CardContent>

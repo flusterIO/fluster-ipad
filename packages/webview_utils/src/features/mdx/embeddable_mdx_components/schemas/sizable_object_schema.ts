@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SizableOptionRecord, sizablePropSchema, sizablePropsMapTransform } from "./sizable_props_schema";
+import { SizableOptionRecord, sizablePropSchema, sizablePropsMapTransform, sizablePropsOrBooleanTransform, sizablePropsSchemaOrBool } from "./sizable_props_schema";
 import { componentNeverProperty } from "./component_never_property";
 
 
@@ -37,7 +37,7 @@ export const _sizableObjectSchema = {
     centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block" : ""),
     centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "flex flex-col justify-center items-center text-center [&>p]:text-center" : "").describe("Centers the content of this component's children, not the component itself."),
     border: z.boolean().optional().transform((k) => k ? "border" : "").describe("Add a small, muted border to the object."),
-    rounded: sizablePropSchema("rounded").optional().transform(sizablePropsMapTransform({
+    rounded: sizablePropsSchemaOrBool("rounded").optional().transform(sizablePropsOrBooleanTransform({
         none: "rounded-none",
         small: "rounded-sm",
         smedium: "rounded-sm",
@@ -255,11 +255,13 @@ export const sizableObjectSchema = z.object(_sizableObjectSchema);
 
 export type SizableObject = z.infer<typeof sizableObjectSchema>
 
-export const getSizableObjectClasses = (data: { [K in keyof SizableObject]: string }) => {
+export const getSizableObjectClasses = (data: { [K in keyof SizableObject]: string }, ignoreSizableKeys: (keyof typeof _sizableObjectSchema)[] | null = null) => {
     const classes: string[] = []
 
     Object.keys(_sizableObjectSchema).forEach((k) => {
-        classes.push(data[k as keyof typeof _sizableObjectSchema])
+        if (!ignoreSizableKeys || (ignoreSizableKeys && !ignoreSizableKeys.includes(k as keyof typeof _sizableObjectSchema))) {
+            classes.push(data[k as keyof typeof _sizableObjectSchema])
+        }
     })
 
 

@@ -27,13 +27,37 @@ export const sizablePropSchema = (labelKey: string) => z.enum(sizableOptions, {
 })
 
 
+export const sizablePropsSchemaOrBool = (labelKey: string) => z.enum(
+    sizableOptions, {
+    message: `Valid ${labelKey} options are one of ${sizableOptions.map((n) => `"${n}"`).join(", ")}`
+}
+).or(z.boolean({ message: `The ${labelKey} property can also be a boolean.` }))
+
+
 export type SizableOption = typeof sizableOptions[number]
 export type SizableOptionRecord<T> = { [K in SizableOption]: T }
 export type SizableInput = z.input<ReturnType<typeof sizablePropSchema>>
 export type SizablePropsSchema = z.infer<ReturnType<typeof sizablePropSchema>>
+export type SizableOrBooleanInput = z.input<ReturnType<typeof sizablePropsSchemaOrBool>>
+export type SizableOrBooleanPropsSchema = z.infer<ReturnType<typeof sizablePropsSchemaOrBool>>
 export type SizeablePropsTransform = (value: SizableInput | undefined) => string
+export type SizeableOrBooleanPropsTransform = (value: SizableOrBooleanInput | undefined) => string
 
 
 export const sizablePropsMapTransform = (data: Record<SizableInput, string>): SizeablePropsTransform => {
     return (val) => val ? data[val] : ""
 }
+
+
+export const sizablePropsOrBooleanTransform = (data: Record<SizableInput, string>): SizeableOrBooleanPropsTransform => {
+    return (val): string => {
+        if (val === true) {
+            return "rounded"
+        }
+        if (typeof val === "string" && val in data) {
+            return data[val]
+        }
+        return ""
+    }
+}
+

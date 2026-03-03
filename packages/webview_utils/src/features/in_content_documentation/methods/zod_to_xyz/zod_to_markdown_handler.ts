@@ -34,7 +34,6 @@ export class ZodToMarkdownHandler {
 
     logNumber(data: z.ZodNumberDef) {
         this.body += `\n**Number**`
-        console.log("data: ", data)
         if (data.description) {
             this.body += ` ${data.description}\n\n`
         } else {
@@ -58,6 +57,10 @@ export class ZodToMarkdownHandler {
         })
     }
 
+    logDescription(desc: string) {
+        this.body += `\n${desc}\n`
+    }
+
 
 
     async logMarkdown(content: string): Promise<void> {
@@ -71,13 +74,16 @@ export class ZodToMarkdownHandler {
     }
 
     logZodObject(item: z.ZodObject<z.ZodRawShape>) {
-        // const s = ""
 
         const shape = item._def.shape()
         const itemKeys = Object.keys(shape).filter((k) => !this.ignoreKeys.includes(k))
         for (const itemKey of itemKeys) {
             const itemData = shape[itemKey]
+            console.log("itemData: ", itemData)
             this.logPropertyKey(itemKey)
+            if (typeof itemData._def.description === "string") {
+                this.logDescription(itemData._def.description as string)
+            }
             this.anyZodToMarkdown(itemData)
             //                 s += `
             // #### ${itemKey}
@@ -88,6 +94,9 @@ export class ZodToMarkdownHandler {
             // `
         }
         // this.body += s
+    }
+    logAny() {
+        this.body += "\n**Any**\n"
     }
 
     logString(item: z.ZodStringDef, optional: boolean | null = null) {
@@ -104,7 +113,6 @@ export class ZodToMarkdownHandler {
     }
     /* eslint-disable-next-line  -- Need to use any here. */
     anyZodToMarkdown(itemType: any, optional: boolean | null = null): void {
-        console.log("itemType instanceof ZodEnum: ", itemType instanceof z.ZodObject)
         if (!itemType) {
             console.error("Called anyZodToMarkdown witha nullish type.")
         }
@@ -112,7 +120,6 @@ export class ZodToMarkdownHandler {
             return this.logZodObject(itemType)
         }
         if (itemType instanceof z.ZodEffects) {
-            console.count(`Returning ZodEffects?`)
             return this.anyZodToMarkdown(itemType.innerType())
         }
         if (itemType instanceof z.ZodBoolean || itemType?.typeName === "ZodBoolean") {
@@ -135,6 +142,11 @@ export class ZodToMarkdownHandler {
         }
         if (itemType instanceof z.ZodString) {
             return this.logString(itemType._def)
+        }
+        if (itemType instanceof z.ZodAny) {
+            // Don't log anythng for 'any' yet, always try to guide the user.
+            return
+            // return this.logAny()
         }
         if (!itemType?.typeName) {
             console.log("Without type: ", itemType)
