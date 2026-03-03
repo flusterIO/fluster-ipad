@@ -21,23 +21,13 @@ export const defaultContactPurpose =
 
 export const defaultContactType = contactTypes[0];
 
-export const businessContactFormDefaultValues = {
-    companyName: "",
-    contactName: "",
-    contactPreference: defaultContactType,
-    message: "",
-    email: "",
-    phone: "",
-    purpose: defaultContactPurpose,
-};
-
 export const businessInterestFormSchema = z.object({
     companyName: z.string().min(3, "Please provide a company name."),
     contactName: z.string().min(3, "Who is the person reaching out?"),
     contactPreference: z.enum(contactTypes).default(defaultContactType),
     message: z.string().min(20, "Please provide more information."),
-    email: z.string().email().optional(),
-    phone: z.string().optional(),
+    email: z.string().email(),
+    phone: z.string(),
     purpose: z.enum(contactPurposes).default(defaultContactPurpose),
 });
 
@@ -46,3 +36,13 @@ export type BusinessInterestData = z.infer<typeof businessInterestFormSchema>;
 export type ValidatedBusinessInterest = z.output<
     typeof businessInterestFormSchema
 >;
+
+export const businessContactFormDefaultValues: ValidatedBusinessInterest = {
+    companyName: "",
+    contactName: "",
+    contactPreference: defaultContactType,
+    message: "",
+    email: "",
+    phone: "",
+    purpose: defaultContactPurpose,
+};

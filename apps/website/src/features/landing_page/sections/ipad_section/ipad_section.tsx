@@ -11,12 +11,13 @@ export const IpadSection = (): ReactNode => {
                             New
                         </div>
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
-                            Mobile App Coming Soon
+                            iPad & MacOS Apps Coming Soon
                         </h2>
                     </div>
                     <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                        The iPad application is 90% complete, and should be available as
-                        soon as I get a job so I can afford an Apple developer license.
+                        The iPad & MacOS applications are 90% complete, and should be
+                        available as soon as I come up with enough money to actually launch
+                        the applications.
                     </p>
                 </div>
                 <div className="w-full">

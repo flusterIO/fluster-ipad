@@ -15,21 +15,20 @@ export default function Layout({ children }: { children: ReactNode }) {
             containerProps={{
                 className: "[&_#nd-sidebar>div[data-fdid]]:w-full",
             }}
-            /* nav={{ */
-            /*     title: "Fluster", */
-            /* }} */
             githubUrl="https://github.com/flusterIO"
             sidebar={{
                 banner: (
                     <RootToggle
-                        className="place-items-center first:flex first:justify-center first:items-center py-0"
+                        className="py-0 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:justify-center"
                         /* popover="auto" */
                         options={[
                             {
                                 title: "User",
-                                description: "User Documentation",
+                                description: "For everyone",
                                 url: "/docs/user",
                                 props: {
+                                    /* className: */
+                                    /*     "relative flex flex-col justify-center items-center", */
                                     /* className: */
                                     /*     "bg-popover hover:bg-muted/80 transition-colors duration-150", */
                                 },
@@ -37,7 +36,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                             },
                             {
                                 title: "Developer",
-                                description: "Developer Documentation",
+                                description: "For developers, coming soon...",
                                 url: "/docs/developer",
                                 props: {
                                     /* className: */

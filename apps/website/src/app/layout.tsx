@@ -1,11 +1,9 @@
-/* import "../core/styles/themes.scss"; */
 import "../core/styles/globals.scss";
 import localFont from "next/font/local";
 import FumaDocsProvider from "#/features/docs/fuma_docs_provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
-import { cn } from "#/core/utils/cn";
 import { Metadata } from "next";
 
 const appFont = localFont({

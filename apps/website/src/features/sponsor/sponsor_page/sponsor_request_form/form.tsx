@@ -2,6 +2,8 @@
 import React, { ReactNode, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+    businessContactFormDefaultValues,
+    BusinessInterestData,
     businessInterestFormSchema,
     contactPurposes,
     contactTypes,
@@ -87,11 +89,11 @@ const BusinessInterestForm = () => {
     const [open, setOpen] = useState(false);
     const form = useForm({
         resolver: zodResolver(businessInterestFormSchema),
-        /* defaultValues: businessContactFormDefaultValues, */
+        defaultValues: businessContactFormDefaultValues,
     });
     /* const { toast } = useToast(); */
 
-    const handleSubmit = async (vals: ValidatedBusinessInterest) => {
+    const handleSubmit = async (vals: BusinessInterestData) => {
         setOpen(true);
         copyStringToClipboard(vals.message);
         console.log("vals: ", vals);
