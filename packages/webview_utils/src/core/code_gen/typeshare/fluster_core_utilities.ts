@@ -100,6 +100,7 @@ export enum EmbeddableComponentName {
 	Card = "Card",
 	Grid = "Grid",
 	UtlityContainer = "Container",
+	HrWithChildren = "Hr",
 }
 
 export enum InContentDocumentationFormat {

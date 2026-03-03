@@ -4,6 +4,7 @@ import { embeddableUtilityContainerComponentConfig } from "./container/embeddabl
 import { EmbeddableComponentConfig } from "./embeddable_component_config";
 import { embeddableGridComponentConfig } from "./grid/embeddable_responsive_grid_component_config";
 import { hlComponentConfig } from "./hl/hl_component_config";
+import { hrComponentConfig } from "./hr/hr_component_config";
 import { ulComponentConfig } from "./ul/ul_component_config";
 
 export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
@@ -12,5 +13,6 @@ export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
     ulComponentConfig,
     embeddableCardComponentConfig,
     embeddableUtilityContainerComponentConfig,
-    embeddableGridComponentConfig
+    embeddableGridComponentConfig,
+    hrComponentConfig
 ]

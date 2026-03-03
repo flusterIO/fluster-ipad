@@ -99,6 +99,7 @@ public enum EmbeddableComponentName: String, Codable {
 	case card = "Card"
 	case grid = "Grid"
 	case utlityContainer = "Container"
+	case hrWithChildren = "Hr"
 }
 
 public enum InContentDocumentationFormat: String, Codable {

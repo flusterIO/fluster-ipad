@@ -26,6 +26,10 @@ lazy_static! {
             EmbeddableComponentId::Admonition,
         );
         map.insert(
+            EmbeddableComponentName::HrWithChildren,
+            EmbeddableComponentId::HrWithChildren,
+        );
+        map.insert(
             EmbeddableComponentName::UtlityContainer,
             EmbeddableComponentId::UtlityContainer,
         );

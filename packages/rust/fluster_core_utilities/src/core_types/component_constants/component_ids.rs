@@ -28,6 +28,9 @@ pub enum EmbeddableComponentId {
     #[serde(rename = "util-container")]
     #[strum(to_string = "util-container")]
     UtlityContainer,
+    #[serde(rename = "hr-with-children")]
+    #[strum(to_string = "hr-with-children")]
+    HrWithChildren,
 }
 
 impl EmbeddableComponentId {
