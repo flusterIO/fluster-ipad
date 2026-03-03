@@ -525,8 +525,8 @@ importers:
         specifier: workspace:*
         version: link:../typescript/lezer
       '@hookform/resolvers':
-        specifier: 5.0.1
-        version: 5.0.1(react-hook-form@7.56.3(react@19.2.0))
+        specifier: 5.2.2
+        version: 5.2.2(react-hook-form@7.56.3(react@19.2.0))
       '@lezer/markdown':
         specifier: ^1.0.0
         version: 1.6.3
@@ -1888,11 +1888,6 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       tailwindcss: ^3.0 || ^4.0
-
-  '@hookform/resolvers@5.0.1':
-    resolution: {integrity: sha512-u/+Jp83luQNx9AdyW2fIPGY6Y7NG68eN2ZW8FOJYL+M0i4s49+refdJdOp/A9n9HFQtQs3HIDHQvX3ZET2o7YA==}
-    peerDependencies:
-      react-hook-form: ^7.55.0
 
   '@hookform/resolvers@5.2.2':
     resolution: {integrity: sha512-A/IxlMLShx3KjV/HeTcTfaMxdwy690+L/ZADoeaTltLx+CVuzkeVIPuybK3jrRfw7YZnmdKsVVHAlEPIAEUNlA==}
@@ -4788,8 +4783,8 @@ packages:
     engines: {node: '>12'}
     hasBin: true
 
-  bibtex-tidy@git+https://git@github.com:flamingtempura/bibtex-tidy.git#83734f920a28cc69b680d8a1041d48ec8379d5ef:
-    resolution: {commit: 83734f920a28cc69b680d8a1041d48ec8379d5ef, repo: git@github.com:flamingtempura/bibtex-tidy.git, type: git}
+  bibtex-tidy@https://codeload.github.com/flamingtempura/bibtex-tidy/tar.gz/83734f920a28cc69b680d8a1041d48ec8379d5ef:
+    resolution: {tarball: https://codeload.github.com/flamingtempura/bibtex-tidy/tar.gz/83734f920a28cc69b680d8a1041d48ec8379d5ef}
     version: 1.14.0
     engines: {node: '>12'}
     hasBin: true
@@ -9539,7 +9534,7 @@ snapshots:
       '@codemirror/state': 6.5.4
       '@lezer/common': 1.5.1
       '@lezer/go': 1.0.1
-      bibtex-tidy: git+https://git@github.com:flamingtempura/bibtex-tidy.git#83734f920a28cc69b680d8a1041d48ec8379d5ef
+      bibtex-tidy: https://codeload.github.com/flamingtempura/bibtex-tidy/tar.gz/83734f920a28cc69b680d8a1041d48ec8379d5ef
 
   '@codemirror/autocomplete@6.20.0':
     dependencies:
@@ -10109,11 +10104,6 @@ snapshots:
   '@headlessui/tailwindcss@0.2.2(tailwindcss@3.4.19(tsx@4.20.6)(yaml@2.8.2))':
     dependencies:
       tailwindcss: 3.4.19(tsx@4.20.6)(yaml@2.8.2)
-
-  '@hookform/resolvers@5.0.1(react-hook-form@7.56.3(react@19.2.0))':
-    dependencies:
-      '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.56.3(react@19.2.0)
 
   '@hookform/resolvers@5.2.2(react-hook-form@7.56.3(react@19.2.0))':
     dependencies:
@@ -13249,7 +13239,7 @@ snapshots:
 
   bibtex-tidy@1.14.0: {}
 
-  bibtex-tidy@git+https://git@github.com:flamingtempura/bibtex-tidy.git#83734f920a28cc69b680d8a1041d48ec8379d5ef: {}
+  bibtex-tidy@https://codeload.github.com/flamingtempura/bibtex-tidy/tar.gz/83734f920a28cc69b680d8a1041d48ec8379d5ef: {}
 
   bidi-js@1.0.3:
     dependencies:
