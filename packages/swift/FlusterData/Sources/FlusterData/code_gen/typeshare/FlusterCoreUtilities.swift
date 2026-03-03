@@ -88,6 +88,7 @@ public enum EmbeddableComponentId: String, Codable {
 	case card
 	case grid
 	case utlityContainer = "util-container"
+	case hrWithChildren = "hr-with-children"
 }
 
 public enum EmbeddableComponentName: String, Codable {

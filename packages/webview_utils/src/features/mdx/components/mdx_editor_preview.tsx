@@ -10,14 +10,22 @@ import { setMdxPreviewWindowMethods } from "./standalone_mdx_preview/standalone_
 import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/swift_events";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
+import { ErrorBoundary } from "react-error-boundary";
+import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
 
 
 setMdxPreviewWindowMethods();
 
 setWindowBridgeFunctions();
 
+
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id">
 
+/**
+ * For use _only_ in the primary mdx preview views, either the standalone-preview webview
+ * or the splitview editor. 
+ * **Do NOT** use this for anything else, as certain state will be inconsistent.
+ */
 export const MdxEditorPreview = ({
     className,
     ...props
@@ -74,19 +82,25 @@ export const MdxEditorPreview = ({
     }
 
     return (
-        <MdxContent
-            id={SplitviewEditorDomIds.MdxPreview}
-            {...props}
-            ref={ref}
-            className={cn(
-                "max-w-[1080px]",
-                isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
-                className,
-            )}
-            lockToEditorScroll={lockEditorScrollToPreview}
-            mdx={parsedValue}
-            showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
-        />
+        <ErrorBoundary
+            onError={(e) => console.error("Error: ", e)}
+            FallbackComponent={PreviewLevelErrorReport}
+        >
+
+            <MdxContent
+                id={SplitviewEditorDomIds.MdxPreview}
+                {...props}
+                ref={ref}
+                className={cn(
+                    "max-w-[1080px]",
+                    isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
+                    className,
+                )}
+                lockToEditorScroll={lockEditorScrollToPreview}
+                mdx={parsedValue}
+                showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
+            />
+        </ErrorBoundary>
     );
 };
 
