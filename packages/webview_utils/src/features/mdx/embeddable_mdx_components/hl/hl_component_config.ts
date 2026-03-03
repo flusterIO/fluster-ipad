@@ -10,7 +10,7 @@ export const hlComponentNames = [EmbeddableComponentName.Hl, EmbeddableComponent
 export const hlComponentConfig: EmbeddableComponentConfig = {
     name: hlComponentNames,
     categories: [ComponentCategory.attention],
-    desc: "Highlight; Highlight the background text in a variety of colors.",
+    desc: "Highlight the background of text in a variety of colors.",
     id: EmbeddableComponentId.Hl,
     schema: hlPropsSchema,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hl/hl_component_docs.mdx",

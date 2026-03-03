@@ -62,7 +62,7 @@ export interface EmbeddableComponentConfig {
      * name is an array to allow for multiple names to be used for each component, since there is little additional import cost.
      * @readonly to encourage exporting a constant array to be used in the get_component_map file.
      */
-    name: readonly EmbeddableComponentName[];
+    name: readonly [EmbeddableComponentName, ...EmbeddableComponentName[]];
     desc?: string;
     /** A path to a mdx or md file for component specific documentation and examples. Path is relative to the monorepo route. */
     docsPath: string;

@@ -9,11 +9,10 @@
 
 - [ ] Responsive Grid
   - [ ] This is currently completely non-functional. Handle the column gathering function tomorrow.
-- [ ] `CenterCard` that centers the content within it, or a plain, 'fd-card-background' container with sizableObject props and some decent defaults with a default 'flex-center' behavior.
 - [ ] `Hr` that accepts children to inline as small text.
   - [ ] Already started, but need to handle all of the config boilerplate.
 - [ ] `Tabs` component that just accepts children and a context provider to set the tab content, not a prop from the user.
-- [ ] Add `glass` schema that extends the emphasis schema with an additional `glass` property.
+- [ ] Add `glass` schema that extends the emphasis schema with an additional `glass` property. Make sure that text actually looks good on top of the container.
 
 #### AI
 
