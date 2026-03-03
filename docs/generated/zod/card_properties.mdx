@@ -1,14 +1,3 @@
-## Sizable Objects
-
-
-The `SizableObject` model describes a long list of properties that are applied to many components throughout Fluster. This class takes some common language terms like `small` or `smedium` and turns them into valid code.
-
-Beware, however, that this is far from perfect. Every developer knows the challenge of centering a div, and it's difficult to write code that will look good in all circumstances without requiring _you_ to write more. Fluster does it's best to find a good balance between customizability and ease of use, but this is just the start. These components will continue to be refined to allow for a wide range of use cases.
-
-
-
-### Properties
-
 
 > The following section was generated directly from code. That means the properties will always reflect the current state of the application, but on the other hand, they might not be formatted as neatly as the rest of the content.
 
@@ -398,4 +387,28 @@ When in Grid mode or in some other select layouts, this property create a gap be
 - fit
 - full
 
+#### title
 
+
+**String**
+
+#### desc
+
+
+An optional 'description' or 'subtitle' for the Card component.
+
+**String**
+
+#### shrink
+
+
+'shrink' is a property that when set to true will apply a set of styles to make the card smaller and more compact.
+
+**Boolean (optional)**
+
+#### centerBody
+
+
+'centerBody' center's the body of the card without affecting the card's title.
+
+**Boolean (optional)**

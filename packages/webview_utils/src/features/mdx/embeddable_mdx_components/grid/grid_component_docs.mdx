@@ -13,10 +13,14 @@ To achieve this grid layout, the component accepts each of the `SizableOption` p
 
 ### Examples
 
-```tsx
-<Grid none={1} medium={1} large={1} full={2}>
+````long-docs
+If you're in the split-view editor, try dragging the window pane to be more/less wide to see the responsive grid collapse and expand according to the number of columns at each screen size.
+````
 
-<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="xl">
+```tsx
+<Grid none={1} medium={1} large={2}>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large">
 
 $$
 \delta = 2 G \frac{M_\oplus}{R_\oplus} \hat{R}
@@ -24,7 +28,7 @@ $$
 
 </Container>
 
-<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="xl">
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large">
 
 $$
 \gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
@@ -39,7 +43,7 @@ $$
 #### Output
 
 
-<Grid none={1} medium={1} large={1} full={2}>
+<Grid none={1} medium={1} large={2}>
 
 <Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large">
 
@@ -69,6 +73,6 @@ This option is great when you have a large number of columns and you want them t
 
 ### Properties
 
-<<DOCUMENTATION_CONSTANT:docs/generated/zod/embeddable-responsive-grid-properties.mdx>>
+<<DOCUMENTATION_CONSTANT:docs/generated/zod/grid_properties.mdx>>
 
 ```

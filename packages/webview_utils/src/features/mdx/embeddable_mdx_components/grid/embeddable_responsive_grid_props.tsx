@@ -1,7 +1,7 @@
 import { getSizableObjectClasses, sizableObjectSchema } from "../schemas/sizable_object_schema"
 import { z } from "zod"
-import { SizableOption, sizableOptions, sizablePropSchema, SizablePropsSchema } from "../schemas/sizable_props_schema"
-import { Mutable, MutableArray } from "../../../../core/utils/types/utility_types"
+import { SizableOption, sizableOptions, sizablePropSchema, sizablePropsMapTransform } from "../schemas/sizable_props_schema"
+import { Mutable } from "../../../../core/utils/types/utility_types"
 
 
 
@@ -61,7 +61,7 @@ const schema = {
     xxl: z.number({ message: "'xxl' is a number that represents the number of columns when the viewport is " }).int("The 'xxl' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
     full: z.number({ message: "'full' is a number that represents the number of columns when the viewport is " }).int("The 'full' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
     fit: z.boolean({ message: "If true while 'responsive' is set this will cause items to expand to fill the empty space." }).optional(),
-    responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional()
+    responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional(),
 } satisfies { [K in Exclude<SizableOption, "fit" | "responsive">]: z.ZodOptional<z.ZodUnion<[z.ZodNumber, z.ZodString]>> } & { fit: z.ZodOptional<z.ZodBoolean>, responsive: z.ZodOptional<z.ZodUnion<[z.ZodBoolean, z.ZodEnum<Mutable<typeof sizableOptions>>]>> }
 
 const columnSchema = {
@@ -85,7 +85,18 @@ const modifiedSizableSchema = sizableObjectSchema.extend({
     centerSelf: z.boolean({ message: "'centerSelf' must be a boolean." }).optional().transform((a) => a ? "mx-auto block w-fit" : ""),
     centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "w-full place-items-center" : "").describe("Centers the content of this component's children, not the component itself."),
     fit: z.boolean({ message: "If true while 'responsive' is set this will cause items to expand to fill the empty space." }).optional(),
-    responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional()
+    responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional(),
+    gap: sizablePropSchema("gap").default("medium").transform(sizablePropsMapTransform({
+        none: "gap-0",
+        small: "gap-2",
+        smedium: "gap-3",
+        medium: "gap-4",
+        large: "gap-6",
+        xl: "gap-8",
+        xxl: "gap-12",
+        full: "gap-16",
+        fit: "gap-0"
+    })).describe("When in Grid mode or in some other select layouts, this property create a gap between _all_ children."),
 })
 
 

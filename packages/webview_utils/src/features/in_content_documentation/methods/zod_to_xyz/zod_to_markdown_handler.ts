@@ -21,8 +21,14 @@ export class ZodToMarkdownHandler {
         this.body += `\n**Boolean${optional === true ? " (optional)" : ""}**\n`
     }
 
-    logZodEnum(values: (string | number)[], optional: boolean | null = null) {
-        let s = `\n**Enum${optional === true ? " (optional)" : ""}:** One of the following:\n\n`
+    /* eslint-disable-next-line  -- Need to use any here. */
+    logZodEnum(values: (string | number)[], optional: boolean | null = null, defaultValue: any | null = null) {
+        let s = `\n**Enum${optional === true ? " (optional)" : ""}:** One of the following:\n`
+        if (["string", "number"].includes(typeof defaultValue)) {
+            s += `**Default:** ${defaultValue}`
+        } else {
+            s += "\n"
+        }
         assert(Array.isArray(values), "Found an enum without values")
         for (const option of values!) {
             assert(["string", "number"].includes(typeof option), "Found a zod venum value that isn't a valid type.")
@@ -112,9 +118,16 @@ export class ZodToMarkdownHandler {
         this.body += `\n<Hr>${seperatorContent}</Hr>\n`
     }
     /* eslint-disable-next-line  -- Need to use any here. */
-    anyZodToMarkdown(itemType: any, optional: boolean | null = null): void {
+    anyZodToMarkdown(itemType: any, optional: boolean | null = null, defaultValue: any = undefined): void {
         if (!itemType) {
             console.error("Called anyZodToMarkdown witha nullish type.")
+        }
+        if (itemType instanceof z.ZodEnum) {
+            return this.logZodEnum(itemType._def.values, optional, defaultValue)
+        }
+        if (defaultValue) {
+            console.log("defaultValue: ", defaultValue)
+            throw new Error(`Found a default value that is being sent to a type that hasn't implemented value to markdown method that handles the default value yet.`)
         }
         if (itemType instanceof z.ZodObject) {
             return this.logZodObject(itemType)
@@ -127,9 +140,6 @@ export class ZodToMarkdownHandler {
         }
         if (itemType?.typeName === "ZodEnum") {
             return this.logZodEnum(itemType.values!, optional)
-        }
-        if (itemType instanceof z.ZodEnum) {
-            return this.logZodEnum(itemType._def.values, optional)
         }
         if (itemType instanceof z.ZodUnion) {
             return this.logZodUnion(itemType, optional)
@@ -147,6 +157,19 @@ export class ZodToMarkdownHandler {
             // Don't log anythng for 'any' yet, always try to guide the user.
             return
             // return this.logAny()
+        }
+        if (itemType instanceof z.ZodDefault) {
+            const d = itemType._def.defaultValue()
+            console.log("itemType: ", itemType)
+
+            console.log("d: ", d)
+            // assert(typeof d === "object" && Object.keys(d).length === 0, "If this is triggered, there's a default value that isn't an empty object that should probably be documented.")
+
+            if (typeof d === "object" && Object.keys(d).length === 0) {
+                return
+            } else {
+                return this.anyZodToMarkdown(itemType._def.innerType, undefined, d)
+            }
         }
         if (!itemType?.typeName) {
             console.log("Without type: ", itemType)
@@ -181,7 +204,7 @@ export class ZodToMarkdownHandler {
         const s = this.body
         this.anyZodToMarkdown(schema)
 
-        this.logMarkdown(this.body)
+        // this.logMarkdown(this.body)
         return s
     }
 }

@@ -5,22 +5,35 @@
 #### hideMathLabels
 
 
+Hides the MathJax labels in all child components.
+
 **Boolean (optional)**
 
 #### right
 
+
+'Floats' the component to the right. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
 
 **Boolean (optional)**
 
 #### left
 
 
+'Floats' the component to the left. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
 **Boolean (optional)**
 
 #### sidebar
 
 
+A utility property that sets a responsive max-width to create sidebar like layouts on large screens while allowing for full-width when the window is smaller.
+
 **Boolean (optional)**
+
+#### center
+
+
+This will _never_ work. This is put here only as an error trigger to notify users of `centerSelf` and `centerContent`
 
 #### centerSelf
 
@@ -30,15 +43,21 @@
 #### centerContent
 
 
+Centers the content of this component's children, not the component itself.
+
 **Boolean (optional)**
 
 #### border
 
 
+Add a small, muted border to the object.
+
 **Boolean (optional)**
 
 #### rounded
 
+
+Rounds the corners of the container. Use `rounded="full"` or `rounded="fit"` to create a completely circular component, useful for some image layouts.
 
 **Union (optional): One of the following types**
 
@@ -59,6 +78,8 @@ undefined
 #### text
 
 
+Change the text content of the container's children. Beware though, some edge cases might not respond as expected.
+
 **Enum (optional):** One of the following:
 
 - none
@@ -73,6 +94,8 @@ undefined
 
 #### width
 
+
+Set some custom width properties to create responsive layouts.
 
 **Enum (optional):** One of the following:
 
@@ -89,6 +112,8 @@ undefined
 #### height
 
 
+Set some custom height properties to create responsive layouts.
+
 **Enum (optional):** One of the following:
 
 - none
@@ -103,6 +128,8 @@ undefined
 
 #### margin
 
+
+Add some padding around the **outside** of an object. If you are looking to create space on the _inside_ of an object you are looking for `padding`.
 
 **Enum (optional):** One of the following:
 
@@ -209,6 +236,8 @@ undefined
 #### padding
 
 
+Create padding on the _inside_ of an object. If you are trying to create space _around_ an object. you are probably looking for `margin`.
+
 **Enum (optional):** One of the following:
 
 - none
@@ -313,6 +342,8 @@ undefined
 
 #### gap
 
+
+When in Grid mode or in some other select layouts, this property create a gap between _all_ children.
 
 **Enum (optional):** One of the following:
 

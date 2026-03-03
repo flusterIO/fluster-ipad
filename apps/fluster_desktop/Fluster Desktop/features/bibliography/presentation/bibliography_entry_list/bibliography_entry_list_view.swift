@@ -30,10 +30,14 @@ struct BibliographyEntryListView: View {
           .font(.headline)
           .padding()
       }
-      List(filteredEntries, id: \.id) { entry in
-        BibliographyEntrySearchResultListItemView(item: entry)
-          .listStyle(.plain)
-          .listRowSeparator(.hidden)
+      ScrollView {
+        LazyVStack(alignment: .center, spacing: 16, pinnedViews: .sectionHeaders) {
+          ForEach(filteredEntries, id: \.id) { entry in
+            BibliographyEntrySearchResultListItemView(item: entry)
+              .listStyle(.plain)
+              .listRowSeparator(.hidden)
+          }
+        }
       }
       .scrollIndicators(.never)
       .scrollContentBackground(.hidden)
