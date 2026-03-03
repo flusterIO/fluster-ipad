@@ -3,7 +3,7 @@ import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
-import { KeysOfType, ObjectWithKeysOfType } from "@/utils/types/utility_types";
+import { KeysOfType } from "@/utils/types/utility_types";
 
 
 export const admonitionComponentNames = [EmbeddableComponentName.Admonition] as const

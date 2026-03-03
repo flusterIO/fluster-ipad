@@ -19,6 +19,7 @@
 **_CURRENT_**
 
 - [ ] Handle `SizableObject` documentation.
+- [ ] Create embedded Emoji reference note.
 
 ## Desktop
 

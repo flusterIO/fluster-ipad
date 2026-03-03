@@ -17,6 +17,12 @@ public enum AutoTaggableType: String, Codable {
 	case subject
 }
 
+/// Represents the date given some generated mdx benchmark content
+/// as the content will need to grow as components are added.
+public enum BenchmarkGeneratedDateString: String, Codable {
+	case initial = "2_2_2026"
+}
+
 public enum BenchmarkMagnitude: String, Codable {
 	case five = "Five"
 	case ten = "Ten"
@@ -107,6 +113,7 @@ public enum InContentDocumentationId: String, Codable {
 	case jsx = "Jsx"
 	case sizableObject = "Sizable"
 	case emphasis = "Emphasis"
+	case emoji = "Emoji"
 }
 
 public enum InContentDocumentationSource: String, Codable {
