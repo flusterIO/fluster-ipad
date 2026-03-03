@@ -12,7 +12,7 @@ export const embeddableHintComponentPropsSchema = emphasisSchema
         return {
             ...c,
             containerClasses: getSizableObjectClasses(c),
-            textClasses: emphasisForegroundTransform("success")(c)
+            textGroup: emphasisForegroundTransform("success")(c)
         }
     })
 
