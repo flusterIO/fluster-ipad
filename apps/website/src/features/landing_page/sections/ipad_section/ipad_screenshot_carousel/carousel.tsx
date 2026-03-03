@@ -6,6 +6,9 @@ import image3 from "../../../../../../public/assets/images/mockups/ipad/mockups/
 import image4 from "../../../../../../public/assets/images/mockups/ipad/mockups/note-bib.png";
 import image5 from "../../../../../../public/assets/images/mockups/ipad/mockups/menu.png";
 import image6 from "../../../../../../public/assets/images/mockups/ipad/mockups/note_details.png";
+import image7 from "../../../../../../public/assets/images/mockups/mac/mockups/mac_editor-front.png";
+import image8 from "../../../../../../public/assets/images/mockups/mac/mockups/mac_docs_example-front.png";
+import image9 from "../../../../../../public/assets/images/mockups/mac/mockups/mac_dashboard-front.png";
 import Image, { StaticImageData } from "next/image";
 import { LiquidGlassCard } from "../liquid_glass_card";
 
@@ -29,10 +32,22 @@ export const IPadCarousel = ({
 }: CarouselProps): ReactNode => {
     const items: ImageData[] = [
         {
+            image: image7,
+            id: "img-7",
+            title: "Mac Editor",
+            alt: "The new, built-in MacOS code editor features snippets, code completion, syntax highlighting and more.",
+        },
+        {
             image: image3,
             id: "img-3",
             title: "Reading View",
             alt: "The iPad application can enter a reading view for study sessions and reviewing your notes.",
+        },
+        {
+            image: image8,
+            id: "img-8",
+            title: "Builtin Documentation",
+            alt: "The new high-performance parser includes documentation available for each component directly within your notes for a very Jupyter or IPython like experience.",
         },
         {
             image: image1,
@@ -63,6 +78,12 @@ export const IPadCarousel = ({
             id: "img-5",
             title: "Familiar Features",
             alt: "The iPad application integrates closely with the desktop applications to share a variety of ways to link and search your notes",
+        },
+        {
+            image: image9,
+            id: "img-9",
+            title: "MacOS Dashboard",
+            alt: "Both the MacOS and iPad application have their own varient of a dashboard for the user to use as the home for all of their notes.",
         },
     ];
     const [index, setIndex] = useState(0);

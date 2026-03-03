@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { HTMLMotionProps, motion } from "framer-motion";
+import React, { HTMLProps, useState } from "react";
 
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -9,15 +8,13 @@ function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-interface LiquidGlassCardProps extends Omit<HTMLMotionProps<"div">, "onClick"> {
+interface LiquidGlassCardProps extends Omit<HTMLProps<HTMLDivElement>, "onClick"> {
     children?: React.ReactNode;
     className?: string;
     draggable?: boolean;
     expandable?: boolean;
     width?: string;
     height?: string;
-    expandedWidth?: string;
-    expandedHeight?: string;
     blurIntensity?: "sm" | "md" | "lg" | "xl";
     shadowIntensity?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
     borderRadius?: string;
@@ -31,22 +28,12 @@ export const LiquidGlassCard = ({
     expandable = false,
     width,
     height,
-    expandedWidth,
-    expandedHeight,
     blurIntensity = "xl",
     borderRadius = "32px",
     glowIntensity = "sm",
     shadowIntensity = "md",
     ...props
 }: LiquidGlassCardProps) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    const handleToggleExpansion: HTMLMotionProps<"div">["onClick"] = (e) => {
-        if (!expandable) return;
-        // Don't toggle if clicking on interactive elements
-        if ((e.target as HTMLDivElement).closest("a, button, input, select, textarea")) return;
-        setIsExpanded(!isExpanded);
-    };
 
     const blurClasses = {
         sm: "backdrop-blur-xs",
@@ -77,56 +64,6 @@ export const LiquidGlassCard = ({
             "0 4px 4px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 0, 0, 0.08), 0 0 60px rgba(255, 255, 255, 0.3)",
     };
 
-    const containerVariants: HTMLMotionProps<"div">["variants"] = expandable
-        ? {
-            collapsed: {
-                width: width || "auto",
-                height: height || "auto",
-                transition: {
-                    duration: 0.4,
-                    ease: [0.5, 1.5, 0.5, 1],
-                },
-            },
-            expanded: {
-                width: expandedWidth || "auto",
-                height: expandedHeight || "auto",
-                transition: {
-                    duration: 0.4,
-                    ease: [0.5, 1.5, 0.5, 1],
-                },
-            },
-        }
-        : {};
-
-
-    const motionProps: HTMLMotionProps<"div"> =
-        draggable || expandable
-            ? {
-                variants: expandable ? containerVariants : undefined,
-                animate: expandable
-                    ? isExpanded
-                        ? "expanded"
-                        : "collapsed"
-                    : undefined,
-                onClick: expandable ? handleToggleExpansion : undefined,
-                drag: draggable,
-                dragConstraints: draggable
-                    ? { left: 0, right: 0, top: 0, bottom: 0 }
-                    : undefined,
-                dragElastic: draggable ? 0.3 : undefined,
-                dragTransition: draggable
-                    ? {
-                        bounceStiffness: 300,
-                        bounceDamping: 10,
-                        power: 0.3,
-                    }
-                    : undefined,
-                whileDrag: draggable ? { scale: 1.02 } : undefined,
-                whileHover: { scale: 1.01 },
-                whileTap: { scale: 0.98 },
-            }
-            : {};
-
     return (
         <>
             <svg className="hidden">
@@ -155,7 +92,7 @@ export const LiquidGlassCard = ({
                     </filter>
                 </defs>
             </svg>
-            <motion.div
+            <div
                 className={cn(
                     `relative ${draggable ? "cursor-grab active:cursor-grabbing" : ""} ${expandable ? "cursor-pointer" : ""}`,
                     className,
@@ -165,7 +102,6 @@ export const LiquidGlassCard = ({
                     ...(width && !expandable && { width }),
                     ...(height && !expandable && { height }),
                 }}
-                {...motionProps}
                 {...props}
             >
                 {/* Bend Layer (Backdrop blur with distortion) */}
@@ -197,7 +133,7 @@ export const LiquidGlassCard = ({
 
                 {/* Content */}
                 {children}
-            </motion.div>
+            </div>
         </>
     );
 };
