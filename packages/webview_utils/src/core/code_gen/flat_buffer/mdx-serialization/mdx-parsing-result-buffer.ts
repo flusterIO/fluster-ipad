@@ -7,142 +7,169 @@ import * as flatbuffers from 'flatbuffers';
 import { DictionaryEntryResultBuffer } from '../dictionary/dictionary-entry-result-buffer.js';
 import { CitationResultBuffer } from '../mdx-serialization/citation-result-buffer.js';
 import { FrontMatterResultBuffer } from '../mdx-serialization/front-matter-result-buffer.js';
+import { SecondaryAiParseRequest } from '../mdx-serialization/secondary-ai-parse-request.js';
 import { TagResultBuffer } from '../mdx-serialization/tag-result-buffer.js';
 
 
-export class MdxParsingResultBuffer {
-  bb: flatbuffers.ByteBuffer|null = null;
-  bb_pos = 0;
-  __init(i:number, bb:flatbuffers.ByteBuffer):MdxParsingResultBuffer {
-  this.bb_pos = i;
-  this.bb = bb;
-  return this;
-}
+export class ParsedMdxDataTypescriptSafe {
+    bb: flatbuffers.ByteBuffer | null = null;
+    bb_pos = 0;
+    __init(i: number, bb: flatbuffers.ByteBuffer): ParsedMdxDataTypescriptSafe {
+        this.bb_pos = i;
+        this.bb = bb;
+        return this;
+    }
 
-static getRootAsMdxParsingResultBuffer(bb:flatbuffers.ByteBuffer, obj?:MdxParsingResultBuffer):MdxParsingResultBuffer {
-  return (obj || new MdxParsingResultBuffer()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-}
+    static getRootAsParsedMdxDataTypescriptSafe(bb: flatbuffers.ByteBuffer, obj?: ParsedMdxDataTypescriptSafe): ParsedMdxDataTypescriptSafe {
+        return (obj || new ParsedMdxDataTypescriptSafe()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
 
-static getSizePrefixedRootAsMdxParsingResultBuffer(bb:flatbuffers.ByteBuffer, obj?:MdxParsingResultBuffer):MdxParsingResultBuffer {
-  bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new MdxParsingResultBuffer()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-}
+    static getSizePrefixedRootAsParsedMdxDataTypescriptSafe(bb: flatbuffers.ByteBuffer, obj?: ParsedMdxDataTypescriptSafe): ParsedMdxDataTypescriptSafe {
+        bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+        return (obj || new ParsedMdxDataTypescriptSafe()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
 
-parsedContent():string|null
-parsedContent(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-parsedContent(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
+    parsedContent(): string | null
+    parsedContent(optionalEncoding: flatbuffers.Encoding): string | Uint8Array | null
+    parsedContent(optionalEncoding?: any): string | Uint8Array | null {
+        const offset = this.bb!.__offset(this.bb_pos, 4);
+        return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
 
-tags(index: number, obj?:TagResultBuffer):TagResultBuffer|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new TagResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
-}
+    tags(index: number, obj?: TagResultBuffer): TagResultBuffer | null {
+        const offset = this.bb!.__offset(this.bb_pos, 6);
+        return offset ? (obj || new TagResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+    }
 
-tagsLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
-}
+    tagsLength(): number {
+        const offset = this.bb!.__offset(this.bb_pos, 6);
+        return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+    }
 
-frontMatter(obj?:FrontMatterResultBuffer):FrontMatterResultBuffer|null {
-  const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? (obj || new FrontMatterResultBuffer()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-}
+    frontMatter(obj?: FrontMatterResultBuffer): FrontMatterResultBuffer | null {
+        const offset = this.bb!.__offset(this.bb_pos, 8);
+        return offset ? (obj || new FrontMatterResultBuffer()).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
+    }
 
-citations(index: number, obj?:CitationResultBuffer):CitationResultBuffer|null {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? (obj || new CitationResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
-}
+    citations(index: number, obj?: CitationResultBuffer): CitationResultBuffer | null {
+        const offset = this.bb!.__offset(this.bb_pos, 10);
+        return offset ? (obj || new CitationResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+    }
 
-citationsLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
-}
+    citationsLength(): number {
+        const offset = this.bb!.__offset(this.bb_pos, 10);
+        return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+    }
 
-dictionaryEntries(index: number, obj?:DictionaryEntryResultBuffer):DictionaryEntryResultBuffer|null {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? (obj || new DictionaryEntryResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
-}
+    dictionaryEntries(index: number, obj?: DictionaryEntryResultBuffer): DictionaryEntryResultBuffer | null {
+        const offset = this.bb!.__offset(this.bb_pos, 12);
+        return offset ? (obj || new DictionaryEntryResultBuffer()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+    }
 
-dictionaryEntriesLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 12);
-  return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
-}
+    dictionaryEntriesLength(): number {
+        const offset = this.bb!.__offset(this.bb_pos, 12);
+        return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+    }
 
-static startMdxParsingResultBuffer(builder:flatbuffers.Builder) {
-  builder.startObject(5);
-}
+    requiresSecondaryAiParse(index: number, obj?: SecondaryAiParseRequest): SecondaryAiParseRequest | null {
+        const offset = this.bb!.__offset(this.bb_pos, 14);
+        return offset ? (obj || new SecondaryAiParseRequest()).__init(this.bb!.__indirect(this.bb!.__vector(this.bb_pos + offset) + index * 4), this.bb!) : null;
+    }
 
-static addParsedContent(builder:flatbuffers.Builder, parsedContentOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, parsedContentOffset, 0);
-}
+    requiresSecondaryAiParseLength(): number {
+        const offset = this.bb!.__offset(this.bb_pos, 14);
+        return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
+    }
 
-static addTags(builder:flatbuffers.Builder, tagsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, tagsOffset, 0);
-}
+    static startParsedMdxDataTypescriptSafe(builder: flatbuffers.Builder) {
+        builder.startObject(6);
+    }
 
-static createTagsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
-  }
-  return builder.endVector();
-}
+    static addParsedContent(builder: flatbuffers.Builder, parsedContentOffset: flatbuffers.Offset) {
+        builder.addFieldOffset(0, parsedContentOffset, 0);
+    }
 
-static startTagsVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
-}
+    static addTags(builder: flatbuffers.Builder, tagsOffset: flatbuffers.Offset) {
+        builder.addFieldOffset(1, tagsOffset, 0);
+    }
 
-static addFrontMatter(builder:flatbuffers.Builder, frontMatterOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, frontMatterOffset, 0);
-}
+    static createTagsVector(builder: flatbuffers.Builder, data: flatbuffers.Offset[]): flatbuffers.Offset {
+        builder.startVector(4, data.length, 4);
+        for (let i = data.length - 1; i >= 0; i--) {
+            builder.addOffset(data[i]!);
+        }
+        return builder.endVector();
+    }
 
-static addCitations(builder:flatbuffers.Builder, citationsOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(3, citationsOffset, 0);
-}
+    static startTagsVector(builder: flatbuffers.Builder, numElems: number) {
+        builder.startVector(4, numElems, 4);
+    }
 
-static createCitationsVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
-  }
-  return builder.endVector();
-}
+    static addFrontMatter(builder: flatbuffers.Builder, frontMatterOffset: flatbuffers.Offset) {
+        builder.addFieldOffset(2, frontMatterOffset, 0);
+    }
 
-static startCitationsVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
-}
+    static addCitations(builder: flatbuffers.Builder, citationsOffset: flatbuffers.Offset) {
+        builder.addFieldOffset(3, citationsOffset, 0);
+    }
 
-static addDictionaryEntries(builder:flatbuffers.Builder, dictionaryEntriesOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(4, dictionaryEntriesOffset, 0);
-}
+    static createCitationsVector(builder: flatbuffers.Builder, data: flatbuffers.Offset[]): flatbuffers.Offset {
+        builder.startVector(4, data.length, 4);
+        for (let i = data.length - 1; i >= 0; i--) {
+            builder.addOffset(data[i]!);
+        }
+        return builder.endVector();
+    }
 
-static createDictionaryEntriesVector(builder:flatbuffers.Builder, data:flatbuffers.Offset[]):flatbuffers.Offset {
-  builder.startVector(4, data.length, 4);
-  for (let i = data.length - 1; i >= 0; i--) {
-    builder.addOffset(data[i]!);
-  }
-  return builder.endVector();
-}
+    static startCitationsVector(builder: flatbuffers.Builder, numElems: number) {
+        builder.startVector(4, numElems, 4);
+    }
 
-static startDictionaryEntriesVector(builder:flatbuffers.Builder, numElems:number) {
-  builder.startVector(4, numElems, 4);
-}
+    static addDictionaryEntries(builder: flatbuffers.Builder, dictionaryEntriesOffset: flatbuffers.Offset) {
+        builder.addFieldOffset(4, dictionaryEntriesOffset, 0);
+    }
 
-static endMdxParsingResultBuffer(builder:flatbuffers.Builder):flatbuffers.Offset {
-  const offset = builder.endObject();
-  builder.requiredField(offset, 4) // parsed_content
-  builder.requiredField(offset, 6) // tags
-  return offset;
-}
+    static createDictionaryEntriesVector(builder: flatbuffers.Builder, data: flatbuffers.Offset[]): flatbuffers.Offset {
+        builder.startVector(4, data.length, 4);
+        for (let i = data.length - 1; i >= 0; i--) {
+            builder.addOffset(data[i]!);
+        }
+        return builder.endVector();
+    }
 
-static finishMdxParsingResultBufferBuffer(builder:flatbuffers.Builder, offset:flatbuffers.Offset) {
-  builder.finish(offset);
-}
+    static startDictionaryEntriesVector(builder: flatbuffers.Builder, numElems: number) {
+        builder.startVector(4, numElems, 4);
+    }
 
-static finishSizePrefixedMdxParsingResultBufferBuffer(builder:flatbuffers.Builder, offset:flatbuffers.Offset) {
-  builder.finish(offset, undefined, true);
-}
+    static addRequiresSecondaryAiParse(builder: flatbuffers.Builder, requiresSecondaryAiParseOffset: flatbuffers.Offset) {
+        builder.addFieldOffset(5, requiresSecondaryAiParseOffset, 0);
+    }
+
+    static createRequiresSecondaryAiParseVector(builder: flatbuffers.Builder, data: flatbuffers.Offset[]): flatbuffers.Offset {
+        builder.startVector(4, data.length, 4);
+        for (let i = data.length - 1; i >= 0; i--) {
+            builder.addOffset(data[i]!);
+        }
+        return builder.endVector();
+    }
+
+    static startRequiresSecondaryAiParseVector(builder: flatbuffers.Builder, numElems: number) {
+        builder.startVector(4, numElems, 4);
+    }
+
+    static endParsedMdxDataTypescriptSafe(builder: flatbuffers.Builder): flatbuffers.Offset {
+        const offset = builder.endObject();
+        builder.requiredField(offset, 4) // parsed_content
+        builder.requiredField(offset, 6) // tags
+        return offset;
+    }
+
+    static finishParsedMdxDataTypescriptSafeBuffer(builder: flatbuffers.Builder, offset: flatbuffers.Offset) {
+        builder.finish(offset);
+    }
+
+    static finishSizePrefixedParsedMdxDataTypescriptSafeBuffer(builder: flatbuffers.Builder, offset: flatbuffers.Offset) {
+        builder.finish(offset, undefined, true);
+    }
 
 }

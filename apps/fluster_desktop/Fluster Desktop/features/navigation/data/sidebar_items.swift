@@ -22,6 +22,7 @@ let mainSidebarItems: [SidebarItem] = [
 ]
 
 let globalSearchSidebarItems: [SidebarItem] = [
+  SidebarItem(label: "Bookmarks", icon: .bookmarks, id: .bookmarks, children: nil),
   SidebarItem(label: "Bibliography", icon: .bibliography, id: .globalBibliography, children: nil),
   SidebarItem(label: "Dictionary", icon: .dictionary, id: .globalDictionary, children: nil),
 ]

@@ -11,7 +11,7 @@ interface InContentDocumentationContainerProps {
 
 export const InContentDocumentationContainer = ({ children }: InContentDocumentationContainerProps): ReactNode => {
     return (
-        <div className="w-full border rounded p-4 bg-fd-card text-fd-card-foreground my-8 border-primary/40">
+        <div className="w-full border rounded p-4 bg-fd-card text-fd-card-foreground my-8 border-primary/40 inline-block">
             {children}
         </div>
     )

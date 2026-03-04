@@ -105,12 +105,15 @@ export class ZodToMarkdownHandler {
         this.body += "\n**Any**\n"
     }
 
-    logString(item: z.ZodStringDef, optional: boolean | null = null) {
+    logString(item: z.ZodStringDef, optional: boolean | null = null, defaultValue: string | number) {
         this.body += `\n**String${optional === true ? " (optional)" : ""}**`
-        if (item.description) {
-            this.body += ` ${item.description}\n\n`
+        if (defaultValue) {
+            this.body += ` The default is value "${defaultValue}".\n\n`
         } else {
             this.body += "\n"
+        }
+        if (item.description) {
+            this.body += `- ${item.description}`
         }
     }
 
@@ -125,8 +128,12 @@ export class ZodToMarkdownHandler {
         if (itemType instanceof z.ZodEnum) {
             return this.logZodEnum(itemType._def.values, optional, defaultValue)
         }
+        if (itemType instanceof z.ZodString) {
+            return this.logString(itemType._def, optional, defaultValue)
+        }
         if (defaultValue) {
-            console.log("defaultValue: ", defaultValue)
+            console.log("itemType: ", itemType)
+            console.warn("defaultValue: ", defaultValue)
             throw new Error(`Found a default value that is being sent to a type that hasn't implemented value to markdown method that handles the default value yet.`)
         }
         if (itemType instanceof z.ZodObject) {
@@ -149,9 +156,6 @@ export class ZodToMarkdownHandler {
         }
         if (itemType instanceof z.ZodNumber) {
             return this.logNumber(itemType._def)
-        }
-        if (itemType instanceof z.ZodString) {
-            return this.logString(itemType._def)
         }
         if (itemType instanceof z.ZodAny) {
             // Don't log anythng for 'any' yet, always try to guide the user.

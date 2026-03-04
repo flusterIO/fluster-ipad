@@ -13,3 +13,7 @@ exports[`Parses zod schemas and returns valid markdown strings > Maps over test 
 exports[`Parses zod schemas and returns valid markdown strings > Maps over test input and returns proper output 6`] = `""`;
 
 exports[`Parses zod schemas and returns valid markdown strings > Maps over test input and returns proper output 7`] = `""`;
+
+exports[`Parses zod schemas and returns valid markdown strings > Maps over test input and returns proper output 8`] = `""`;
+
+exports[`Parses zod schemas and returns valid markdown strings > Maps over test input and returns proper output 9`] = `""`;

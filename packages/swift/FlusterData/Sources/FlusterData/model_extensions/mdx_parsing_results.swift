@@ -11,6 +11,7 @@ extension MdxParsingResult: @retroactive Codable {
     case dictionary_entries
     case outgoing_links
     case ignore_all_parsers
+    case ai_parsing_requests
   }
 
   public init(from decoder: Decoder) throws {
@@ -25,6 +26,8 @@ extension MdxParsingResult: @retroactive Codable {
       [NoteOutgoingLinkResult].self, forKey: .outgoing_links)
     let dictionaryEntries = try container.decode(
       [DictionaryEntryResult].self, forKey: .dictionary_entries)
+    let aiParsingRequests = try container.decode(
+      [AiSerializationRequestPhase1].self, forKey: .ai_parsing_requests)
 
     self.init(
       noteId: id,
@@ -34,7 +37,8 @@ extension MdxParsingResult: @retroactive Codable {
       citations: citations,
       dictionaryEntries: dictionaryEntries,
       outgoingLinks: outgoing_links,
-      ignoreAllParsers: ignoreAllParsers
+      ignoreAllParsers: ignoreAllParsers,
+      aiSecondaryParseRequests: aiParsingRequests
     )
   }
 

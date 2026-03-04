@@ -48,7 +48,7 @@ export const defaultColumnsByBreakSize: { [K in SizableOption]: number | string 
     large: 2,
     xl: 2,
     xxl: 2,
-    full: 3,
+    full: 2,
     fit: ""
 }
 

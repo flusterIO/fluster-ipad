@@ -1,7 +1,5 @@
 import { ZodTypeAny } from "zod";
 import { sizableObjectSchema } from "../../../mdx/embeddable_mdx_components/schemas/sizable_object_schema";
-import { embeddableResponsivieGridPropsSchemaUnion } from "../../../mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props";
-import { embeddableCardPropsSchema } from "../../../mdx/embeddable_mdx_components/card/embeddable_card_props";
 import { embeddableComponentConfigs } from "../../../mdx/embeddable_mdx_components/component_configs";
 
 

@@ -117,6 +117,7 @@ public enum InContentDocumentationId: String, Codable {
 	case sizableObject = "Sizable"
 	case emphasis = "Emphasis"
 	case emoji = "Emoji"
+	case components = "Components"
 }
 
 public enum InContentDocumentationSource: String, Codable {

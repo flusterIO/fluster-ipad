@@ -142,11 +142,12 @@ export const emphasisBackgroundTransform = <T extends Emphasis | undefined>(defa
 }
 
 
+export type EmphasisTransformDefaultKey = Emphasis | Partial<CSSProperties> | undefined
 /**
  * The transformation to be used in something like a `Hint`
  * or colored text component.
  */
-export const emphasisForegroundTransform = <T extends Emphasis | string | undefined>(defaultKey: T): EmphasisTransformToGroup => {
+export const emphasisForegroundTransform = <T extends EmphasisTransformDefaultKey>(defaultKey: T): EmphasisTransformToGroup => {
     return (k): ZodStylesGroup => {
         const firstKey = getFirstEmphasisKey(k)
         if (!firstKey && typeof k === "string") {
@@ -162,6 +163,18 @@ export const emphasisForegroundTransform = <T extends Emphasis | string | undefi
                 return {
                     classes: "",
                     css: {}
+                }
+            } else {
+                if (typeof defaultKey === "string") {
+                    return {
+                        css: {},
+                        classes: emphasisToForegroundClasses(defaultKey)
+                    }
+                } if (typeof defaultKey === "object") {
+                    return {
+                        css: defaultKey,
+                        classes: ""
+                    }
                 }
             }
         } else {

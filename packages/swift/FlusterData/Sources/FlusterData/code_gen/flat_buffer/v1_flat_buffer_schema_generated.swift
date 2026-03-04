@@ -392,7 +392,7 @@ public struct MdxSerialization_FrontMatterResultBuffer: FlatBufferObject, Verifi
   }
 }
 
-public struct MdxSerialization_MdxParsingResultBuffer: FlatBufferObject, Verifiable {
+public struct MdxSerialization_ParsedMdxDataTypescriptSafe: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
   public var __buffer: ByteBuffer! { return _accessor.bb }
@@ -423,14 +423,14 @@ public struct MdxSerialization_MdxParsingResultBuffer: FlatBufferObject, Verifia
   public var hasDictionaryEntries: Bool { let o = _accessor.offset(VTOFFSET.dictionaryEntries.v); return o == 0 ? false : true }
   public var dictionaryEntriesCount: Int32 { let o = _accessor.offset(VTOFFSET.dictionaryEntries.v); return o == 0 ? 0 : _accessor.vector(count: o) }
   public func dictionaryEntries(at index: Int32) -> Dictionary_DictionaryEntryResultBuffer? { let o = _accessor.offset(VTOFFSET.dictionaryEntries.v); return o == 0 ? nil : Dictionary_DictionaryEntryResultBuffer(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
-  public static func startMdxParsingResultBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 5) }
+  public static func startParsedMdxDataTypescriptSafe(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 5) }
   public static func add(parsedContent: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: parsedContent, at: VTOFFSET.parsedContent.p) }
   public static func addVectorOf(tags: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: tags, at: VTOFFSET.tags.p) }
   public static func add(frontMatter: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: frontMatter, at: VTOFFSET.frontMatter.p) }
   public static func addVectorOf(citations: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citations, at: VTOFFSET.citations.p) }
   public static func addVectorOf(dictionaryEntries: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: dictionaryEntries, at: VTOFFSET.dictionaryEntries.p) }
-  public static func endMdxParsingResultBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
-  public static func createMdxParsingResultBuffer(
+  public static func endParsedMdxDataTypescriptSafe(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
+  public static func createParsedMdxDataTypescriptSafe(
     _ fbb: inout FlatBufferBuilder,
     parsedContentOffset parsedContent: Offset,
     tagsVectorOffset tags: Offset,
@@ -438,13 +438,13 @@ public struct MdxSerialization_MdxParsingResultBuffer: FlatBufferObject, Verifia
     citationsVectorOffset citations: Offset = Offset(),
     dictionaryEntriesVectorOffset dictionaryEntries: Offset = Offset()
   ) -> Offset {
-    let __start = MdxSerialization_MdxParsingResultBuffer.startMdxParsingResultBuffer(&fbb)
-    MdxSerialization_MdxParsingResultBuffer.add(parsedContent: parsedContent, &fbb)
-    MdxSerialization_MdxParsingResultBuffer.addVectorOf(tags: tags, &fbb)
-    MdxSerialization_MdxParsingResultBuffer.add(frontMatter: frontMatter, &fbb)
-    MdxSerialization_MdxParsingResultBuffer.addVectorOf(citations: citations, &fbb)
-    MdxSerialization_MdxParsingResultBuffer.addVectorOf(dictionaryEntries: dictionaryEntries, &fbb)
-    return MdxSerialization_MdxParsingResultBuffer.endMdxParsingResultBuffer(&fbb, start: __start)
+    let __start = MdxSerialization_ParsedMdxDataTypescriptSafe.startParsedMdxDataTypescriptSafe(&fbb)
+    MdxSerialization_ParsedMdxDataTypescriptSafe.add(parsedContent: parsedContent, &fbb)
+    MdxSerialization_ParsedMdxDataTypescriptSafe.addVectorOf(tags: tags, &fbb)
+    MdxSerialization_ParsedMdxDataTypescriptSafe.add(frontMatter: frontMatter, &fbb)
+    MdxSerialization_ParsedMdxDataTypescriptSafe.addVectorOf(citations: citations, &fbb)
+    MdxSerialization_ParsedMdxDataTypescriptSafe.addVectorOf(dictionaryEntries: dictionaryEntries, &fbb)
+    return MdxSerialization_ParsedMdxDataTypescriptSafe.endParsedMdxDataTypescriptSafe(&fbb, start: __start)
   }
 
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {

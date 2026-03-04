@@ -10,11 +10,11 @@ import Foundation
 import FlusterData
 
 extension Data {
-  public func toMdxParsingResult() -> MdxSerialization_MdxParsingResultBuffer? {
+  public func toMdxParsingResult() -> MdxSerialization_ParsedMdxDataTypescriptSafe? {
     do {
       let byteArray: [UInt8] = Array(self)
       var buf = ByteBuffer.init(bytes: byteArray)
-      let mdxRes: MdxSerialization_MdxParsingResultBuffer? =
+      let mdxRes: MdxSerialization_ParsedMdxDataTypescriptSafe? =
         try getCheckedRoot(byteBuffer: &buf)
       return mdxRes
     } catch {

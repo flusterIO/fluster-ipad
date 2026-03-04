@@ -49,6 +49,7 @@ struct ModularDashboardView: View {
         }
         .frame(maxWidth: .infinity)
       }
+      .scrollIndicators(.never)
     }
   }
 }

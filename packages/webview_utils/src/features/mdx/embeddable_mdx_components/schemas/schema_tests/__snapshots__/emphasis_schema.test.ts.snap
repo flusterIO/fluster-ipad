@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Returns proper emphasis properties from varied css/class input. > Maps over test input and returns proper output 1`] = `[Function]`;
+
+exports[`Returns proper emphasis properties from varied css/class input. > Maps over test input and returns proper output 2`] = `[Function]`;

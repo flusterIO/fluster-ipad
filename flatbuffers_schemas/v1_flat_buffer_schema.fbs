@@ -53,7 +53,7 @@ table FrontMatterResultBuffer {
     fs_path:string;
 }
 
-table MdxParsingResultBuffer {
+table ParsedMdxDataTypescriptSafe {
     parsed_content:string (required);
     tags:[TagResultBuffer] (required);
     front_matter:FrontMatterResultBuffer;
@@ -61,7 +61,7 @@ table MdxParsingResultBuffer {
     dictionary_entries:[Dictionary.DictionaryEntryResultBuffer];
 }
 
-root_type MdxParsingResultBuffer;
+root_type ParsedMdxDataTypescriptSafe;
 
 namespace MdxSerialization.Request;
 

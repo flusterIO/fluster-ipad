@@ -1,14 +1,13 @@
 import React, { type ReactNode } from 'react'
-import { emphasisToBackgroundClasses, getEmphasisOptions } from '../../../mdx/embeddable_mdx_components/schemas/emphasis_schema'
+import { emphasisOptions, emphasisToBackgroundClasses } from '../../../mdx/embeddable_mdx_components/schemas/emphasis_schema'
 import { cn } from '../../../../core/utils/cn'
 
 export const InContentDocsEmphasisTypeList = (): ReactNode => {
-    const options = getEmphasisOptions()
     return (
         <div
-            className="w-fit h-fit flex flex-col justify-start items-start"
+            className="w-fit h-fit flex flex-col justify-start items-start gap-y-2"
         >
-            {options.map((o) => {
+            {emphasisOptions.map((o) => {
                 return (
                     <div className="grid grid-cols-[auto_1fr] gap-x-4" key={o}>
                         <div

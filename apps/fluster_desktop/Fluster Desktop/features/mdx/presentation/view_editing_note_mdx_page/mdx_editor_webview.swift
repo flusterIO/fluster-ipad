@@ -68,6 +68,33 @@ struct MdxEditorWebview: View {
         messageHandler: messageHandler,
         onLoad: onWebviewLoad
       )
+      .toolbar {
+        ToolbarItem(
+          placement: .primaryAction,
+          content: {
+            Button(
+              action: {
+                if let en = editingNote {
+                  en.bookmarked = !en.bookmarked
+                }
+              },
+              label: {
+                Label(
+                  title: {
+                    Text("Bookmark")
+                  },
+                  icon: {
+                      if let en = editingNote, en.bookmarked {
+                          Image(systemName: "bookmark.fill")
+                              .foregroundStyle(.primary)
+                      } else {
+                          Image(systemName: "bookmark")
+                      }
+                  })
+              }
+            )
+          })
+      }
       .task(
         id: editingNote?.markdown._body, priority: .userInitiated,
         {

@@ -11,11 +11,8 @@
 ### Embedded Components
 
 - [ ] Responsive Grid
-  - [ ] This is currently completely non-functional. Handle the column gathering function tomorrow.
-- [ ] `Hr` that accepts children to inline as small text.
-  - [ ] Already started, but need to handle all of the config boilerplate.
 - [ ] `Tabs` component that just accepts children and a context provider to set the tab content, not a prop from the user.
-- [ ] Add `glass` schema that extends the emphasis schema with an additional `glass` property. Make sure that text actually looks good on top of the container.
+- [ ] Flip-card like component for studying. This will obviously become a lot more useful once sharing is enabled, although notes could be generated with a server scale AI an integrated with the app easily.
 
 #### AI
 
@@ -111,8 +108,8 @@
 
 # Today
 
-- [ ] Resume MacOS app
-  - [ ] Implement desktop app paperkit.
-  - [ ] Move iPad drawing from pencilkit to paperkit for more note-taking style annotations.
-  - [ ] Get bibtex snippets working.
-- [ ] Check response on StackOverflow about whitespace.
+- [ ] Handle AI parser
+  - [ ] Handle serialization of new structs.
+  - [ ] Implement parser in rust.
+  - [ ] Test parser against multiple depths and input keys.
+  - [ ] Generate enum from user input & indicate choice to user before sending action back to Swift.
