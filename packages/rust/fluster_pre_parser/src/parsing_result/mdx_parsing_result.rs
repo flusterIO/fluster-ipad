@@ -4,7 +4,7 @@ use fluster_core_utilities::{
         dictionary::{DictionaryEntryResultBuffer, DictionaryEntryResultBufferArgs},
         mdx_serialization::{
             CitationResultBuffer, CitationResultBufferArgs, FrontMatterResultBufferBuilder,
-            MdxParsingResultBufferBuilder, TagResultBuffer, TagResultBufferArgs,
+            ParsedMdxDataTypescriptSafeBuilder, TagResultBuffer, TagResultBufferArgs,
         },
     },
     core_types::fluster_error::FlusterError,
@@ -18,7 +18,8 @@ use crate::{
         note_link_regex_parser::NoteOutgoingLinkResult,
     },
     parsing_result::{
-        citation_result::CitationResult, front_matter::FrontMatterResult, tag_result::TagResult,
+        ai_serialization_request::AiSerializationRequestPhase1, citation_result::CitationResult,
+        front_matter::FrontMatterResult, tag_result::TagResult,
     },
 };
 
@@ -36,6 +37,7 @@ pub struct MdxParsingResult {
     /// Always set to false initially, but can be set to true by certain parsers to avoid further
     /// parsing.
     pub ignore_all_parsers: bool,
+    pub ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
 }
 
 impl MdxParsingResult {
@@ -67,9 +69,11 @@ impl MdxParsingResult {
                 None => None,
             },
             ignore_all_parsers: false,
+            ai_secondary_parse_requests: Vec::new(),
         }
     }
 
+    // Deprecated? Fucking hell I hope so...
     pub fn serialize_to_flatbuffer(&self) -> Vec<u8> {
         let mut builder: FlatBufferBuilder = FlatBufferBuilder::new();
         let content = builder.create_string(&self.content);
@@ -144,14 +148,26 @@ impl MdxParsingResult {
             fmb.finish()
         });
 
-        let mut mdx_builder = MdxParsingResultBufferBuilder::new(&mut builder);
+        // let ai_parsing_requests_builder = SecondaryAiParseRequestBuilder::new(&mut builder);
+
+        // ai_parsing_requests_builder.add_type_(SecondaryAiParsingRequestType::CreateStudyGuide);
+
+        // let ai_secondary_parse_requests = builder.create_vector(&unimplemented_ai_parsing_requests);
+
+        // let requires_ai_parse = builder.create
+
+        let mut mdx_builder = ParsedMdxDataTypescriptSafeBuilder::new(&mut builder);
         mdx_builder.add_parsed_content(content);
         mdx_builder.add_tags(tags_vector);
         mdx_builder.add_dictionary_entries(dictionary_entries);
+
         if let Some(front_matter_offset) = front_matter_offset {
             mdx_builder.add_front_matter(front_matter_offset);
         }
         mdx_builder.add_citations(citations_vector);
+
+        // mdx_builder.add_requires_secondary_ai_parse(ai_secondary_parse_requests);
+
         let mdx_parsing_result_buff = mdx_builder.finish();
         builder.finish(mdx_parsing_result_buff, None);
         builder.finished_data().to_vec()

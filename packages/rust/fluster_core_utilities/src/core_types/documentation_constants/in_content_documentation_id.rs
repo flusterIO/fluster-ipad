@@ -50,6 +50,9 @@ pub enum InContentDocumentationId {
     #[serde(rename = "Emoji")]
     #[strum(to_string = "Emoji")]
     Emoji,
+    #[serde(rename = "Components")]
+    #[strum(to_string = "Components")]
+    Components,
 }
 
 impl InContentDocumentationId {
@@ -62,6 +65,7 @@ impl InContentDocumentationId {
             InContentDocumentationId::Syntax => "syntax-docs",
             InContentDocumentationId::Jsx => "jsx-intro-docs",
             InContentDocumentationId::Emoji => "emoji-docs",
+            InContentDocumentationId::Components => "generated-component-list",
         };
         format!("{}-{}.mdx", base_file_name, format)
     }

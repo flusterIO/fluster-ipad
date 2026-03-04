@@ -46,9 +46,13 @@ build_internal_cli:
 gather_component_docs: write_zod_schema_docs write_component_list_note
 	tsx {{justfile_directory()}}/scripts/gather_component_docs.ts
 
-generate_dependency_diagram:
+generate_documentation_diagrams:
 	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_dark.png -t dark -b transparent
 	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/dependency_diagram/package_diagram.mmd -o ./docs/development/dependency_diagram/package_diagram_light.png -t default 
+	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/ai_parser_sequence/ai_parser_diagram.mmd -o ./docs/development/ai_parser_sequence/package_diagram_dark.png -t dark -b transparent
+	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/ai_parser_sequence/ai_parser_diagram.mmd -o ./docs/development/ai_parser_sequence/package_diagram_light.png -t default 
+	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/rust_parsing_sequence/rust_parsing_sequence.mmd -o ./docs/development/rust_parsing_sequence/rust_parsing_diagram_dark.png -t dark -b transparent
+	./node_modules/@mermaid-js/mermaid-cli/src/cli.js -i ./docs/development/rust_parsing_sequence/rust_parsing_sequence.mmd -o ./docs/development/rust_parsing_sequence/rust_parsing_diagram_light.png -t default 
 
 write_component_list_note:
 	tsx {{justfile_directory()}}/scripts/documentation/write_embeddable_component_list_note.ts
@@ -60,11 +64,11 @@ write_zod_schema_docs:
 write_in_content_docs_by_id: write_zod_schema_docs gather_component_docs write_zod_schema_docs
 	tsx {{justfile_directory()}}/scripts/documentation/write_content_by_in_content_doc_id.ts
 
-generate_docs: write_in_content_docs_by_id write_zod_schema_docs generate_dependency_diagram gather_component_docs write_component_list_note
+generate_docs: write_in_content_docs_by_id write_zod_schema_docs generate_documentation_diagrams gather_component_docs write_component_list_note
 
 
 ## Deprecated, now that component docs are being gathered by typescript, I think?
-generate_component_docs_paths: build_internal_cli generate_dependency_diagram
+generate_component_docs_paths: build_internal_cli generate_documentation_diagrams 
 
 generate_initial_note_paths: build_internal_cli gather_component_docs
 	tsx {{justfile_directory()}}/scripts/generate_initial_note_paths.ts

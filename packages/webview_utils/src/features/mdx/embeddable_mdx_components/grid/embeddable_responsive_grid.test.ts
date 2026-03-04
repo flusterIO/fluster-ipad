@@ -28,13 +28,16 @@ const items: TestItem[] = [
             large: 2,
             xl: 2,
             xxl: 2,
-            fit: defaultColumnsByBreakSize.fit,
+            fit: defaultColumnsByBreakSize.full,
             full: 2,
         },
     },
     {
         input: {},
-        expected: defaultColumnsByBreakSize
+        expected: {
+            ...defaultColumnsByBreakSize,
+            fit: defaultColumnsByBreakSize.full
+        }
     }
 ]
 

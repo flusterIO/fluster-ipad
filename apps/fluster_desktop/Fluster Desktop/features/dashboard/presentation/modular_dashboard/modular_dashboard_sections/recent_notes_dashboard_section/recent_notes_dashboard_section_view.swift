@@ -41,6 +41,7 @@ struct RecentNotesDashboardSectionView: View {
             .listRowSeparator(.hidden)
             .listRowSeparatorTint(Color.clear)
           }
+          .scrollIndicators(.never)
           .scrollContentBackground(.hidden)
           .listRowBackground(Color.clear)
           .listRowSeparator(.hidden)

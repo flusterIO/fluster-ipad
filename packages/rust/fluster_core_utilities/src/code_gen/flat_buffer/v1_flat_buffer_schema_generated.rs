@@ -1125,22 +1125,22 @@ impl core::fmt::Debug for FrontMatterResultBuffer<'_> {
       ds.finish()
   }
 }
-pub enum MdxParsingResultBufferOffset {}
+pub enum ParsedMdxDataTypescriptSafeOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
-pub struct MdxParsingResultBuffer<'a> {
+pub struct ParsedMdxDataTypescriptSafe<'a> {
   pub _tab: flatbuffers::Table<'a>,
 }
 
-impl<'a> flatbuffers::Follow<'a> for MdxParsingResultBuffer<'a> {
-  type Inner = MdxParsingResultBuffer<'a>;
+impl<'a> flatbuffers::Follow<'a> for ParsedMdxDataTypescriptSafe<'a> {
+  type Inner = ParsedMdxDataTypescriptSafe<'a>;
   #[inline]
   unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
     Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
   }
 }
 
-impl<'a> MdxParsingResultBuffer<'a> {
+impl<'a> ParsedMdxDataTypescriptSafe<'a> {
   pub const VT_PARSED_CONTENT: flatbuffers::VOffsetT = 4;
   pub const VT_TAGS: flatbuffers::VOffsetT = 6;
   pub const VT_FRONT_MATTER: flatbuffers::VOffsetT = 8;
@@ -1149,14 +1149,14 @@ impl<'a> MdxParsingResultBuffer<'a> {
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
-    MdxParsingResultBuffer { _tab: table }
+    ParsedMdxDataTypescriptSafe { _tab: table }
   }
   #[allow(unused_mut)]
   pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
     _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
-    args: &'args MdxParsingResultBufferArgs<'args>
-  ) -> flatbuffers::WIPOffset<MdxParsingResultBuffer<'bldr>> {
-    let mut builder = MdxParsingResultBufferBuilder::new(_fbb);
+    args: &'args ParsedMdxDataTypescriptSafeArgs<'args>
+  ) -> flatbuffers::WIPOffset<ParsedMdxDataTypescriptSafe<'bldr>> {
+    let mut builder = ParsedMdxDataTypescriptSafeBuilder::new(_fbb);
     if let Some(x) = args.dictionary_entries { builder.add_dictionary_entries(x); }
     if let Some(x) = args.citations { builder.add_citations(x); }
     if let Some(x) = args.front_matter { builder.add_front_matter(x); }
@@ -1171,39 +1171,39 @@ impl<'a> MdxParsingResultBuffer<'a> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(MdxParsingResultBuffer::VT_PARSED_CONTENT, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(ParsedMdxDataTypescriptSafe::VT_PARSED_CONTENT, None).unwrap()}
   }
   #[inline]
   pub fn tags(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResultBuffer<'a>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResultBuffer>>>>(MdxParsingResultBuffer::VT_TAGS, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResultBuffer>>>>(ParsedMdxDataTypescriptSafe::VT_TAGS, None).unwrap()}
   }
   #[inline]
   pub fn front_matter(&self) -> Option<FrontMatterResultBuffer<'a>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FrontMatterResultBuffer>>(MdxParsingResultBuffer::VT_FRONT_MATTER, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<FrontMatterResultBuffer>>(ParsedMdxDataTypescriptSafe::VT_FRONT_MATTER, None)}
   }
   #[inline]
   pub fn citations(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer>>>>(MdxParsingResultBuffer::VT_CITATIONS, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer>>>>(ParsedMdxDataTypescriptSafe::VT_CITATIONS, None)}
   }
   #[inline]
   pub fn dictionary_entries(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::dictionary::DictionaryEntryResultBuffer<'a>>>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::dictionary::DictionaryEntryResultBuffer>>>>(MdxParsingResultBuffer::VT_DICTIONARY_ENTRIES, None)}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::dictionary::DictionaryEntryResultBuffer>>>>(ParsedMdxDataTypescriptSafe::VT_DICTIONARY_ENTRIES, None)}
   }
 }
 
-impl flatbuffers::Verifiable for MdxParsingResultBuffer<'_> {
+impl flatbuffers::Verifiable for ParsedMdxDataTypescriptSafe<'_> {
   #[inline]
   fn run_verifier(
     v: &mut flatbuffers::Verifier, pos: usize
@@ -1219,17 +1219,17 @@ impl flatbuffers::Verifiable for MdxParsingResultBuffer<'_> {
     Ok(())
   }
 }
-pub struct MdxParsingResultBufferArgs<'a> {
+pub struct ParsedMdxDataTypescriptSafeArgs<'a> {
     pub parsed_content: Option<flatbuffers::WIPOffset<&'a str>>,
     pub tags: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<TagResultBuffer<'a>>>>>,
     pub front_matter: Option<flatbuffers::WIPOffset<FrontMatterResultBuffer<'a>>>,
     pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<CitationResultBuffer<'a>>>>>,
     pub dictionary_entries: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<super::dictionary::DictionaryEntryResultBuffer<'a>>>>>,
 }
-impl<'a> Default for MdxParsingResultBufferArgs<'a> {
+impl<'a> Default for ParsedMdxDataTypescriptSafeArgs<'a> {
   #[inline]
   fn default() -> Self {
-    MdxParsingResultBufferArgs {
+    ParsedMdxDataTypescriptSafeArgs {
       parsed_content: None, // required field
       tags: None, // required field
       front_matter: None,
@@ -1239,51 +1239,51 @@ impl<'a> Default for MdxParsingResultBufferArgs<'a> {
   }
 }
 
-pub struct MdxParsingResultBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+pub struct ParsedMdxDataTypescriptSafeBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
   fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
   start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
 }
-impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> MdxParsingResultBufferBuilder<'a, 'b, A> {
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> ParsedMdxDataTypescriptSafeBuilder<'a, 'b, A> {
   #[inline]
   pub fn add_parsed_content(&mut self, parsed_content: flatbuffers::WIPOffset<&'b  str>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_PARSED_CONTENT, parsed_content);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ParsedMdxDataTypescriptSafe::VT_PARSED_CONTENT, parsed_content);
   }
   #[inline]
   pub fn add_tags(&mut self, tags: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<TagResultBuffer<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_TAGS, tags);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ParsedMdxDataTypescriptSafe::VT_TAGS, tags);
   }
   #[inline]
   pub fn add_front_matter(&mut self, front_matter: flatbuffers::WIPOffset<FrontMatterResultBuffer<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FrontMatterResultBuffer>>(MdxParsingResultBuffer::VT_FRONT_MATTER, front_matter);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<FrontMatterResultBuffer>>(ParsedMdxDataTypescriptSafe::VT_FRONT_MATTER, front_matter);
   }
   #[inline]
   pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<CitationResultBuffer<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_CITATIONS, citations);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ParsedMdxDataTypescriptSafe::VT_CITATIONS, citations);
   }
   #[inline]
   pub fn add_dictionary_entries(&mut self, dictionary_entries: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<super::dictionary::DictionaryEntryResultBuffer<'b >>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(MdxParsingResultBuffer::VT_DICTIONARY_ENTRIES, dictionary_entries);
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(ParsedMdxDataTypescriptSafe::VT_DICTIONARY_ENTRIES, dictionary_entries);
   }
   #[inline]
-  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> MdxParsingResultBufferBuilder<'a, 'b, A> {
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> ParsedMdxDataTypescriptSafeBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
-    MdxParsingResultBufferBuilder {
+    ParsedMdxDataTypescriptSafeBuilder {
       fbb_: _fbb,
       start_: start,
     }
   }
   #[inline]
-  pub fn finish(self) -> flatbuffers::WIPOffset<MdxParsingResultBuffer<'a>> {
+  pub fn finish(self) -> flatbuffers::WIPOffset<ParsedMdxDataTypescriptSafe<'a>> {
     let o = self.fbb_.end_table(self.start_);
-    self.fbb_.required(o, MdxParsingResultBuffer::VT_PARSED_CONTENT,"parsed_content");
-    self.fbb_.required(o, MdxParsingResultBuffer::VT_TAGS,"tags");
+    self.fbb_.required(o, ParsedMdxDataTypescriptSafe::VT_PARSED_CONTENT,"parsed_content");
+    self.fbb_.required(o, ParsedMdxDataTypescriptSafe::VT_TAGS,"tags");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
 
-impl core::fmt::Debug for MdxParsingResultBuffer<'_> {
+impl core::fmt::Debug for ParsedMdxDataTypescriptSafe<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    let mut ds = f.debug_struct("MdxParsingResultBuffer");
+    let mut ds = f.debug_struct("ParsedMdxDataTypescriptSafe");
       ds.field("parsed_content", &self.parsed_content());
       ds.field("tags", &self.tags());
       ds.field("front_matter", &self.front_matter());
@@ -1293,74 +1293,74 @@ impl core::fmt::Debug for MdxParsingResultBuffer<'_> {
   }
 }
 #[inline]
-/// Verifies that a buffer of bytes contains a `MdxParsingResultBuffer`
+/// Verifies that a buffer of bytes contains a `ParsedMdxDataTypescriptSafe`
 /// and returns it.
 /// Note that verification is still experimental and may not
 /// catch every error, or be maximally performant. For the
 /// previous, unchecked, behavior use
-/// `root_as_mdx_parsing_result_buffer_unchecked`.
-pub fn root_as_mdx_parsing_result_buffer(buf: &[u8]) -> Result<MdxParsingResultBuffer, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::root::<MdxParsingResultBuffer>(buf)
+/// `root_as_parsed_mdx_data_typescript_safe_unchecked`.
+pub fn root_as_parsed_mdx_data_typescript_safe(buf: &[u8]) -> Result<ParsedMdxDataTypescriptSafe, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::root::<ParsedMdxDataTypescriptSafe>(buf)
 }
 #[inline]
 /// Verifies that a buffer of bytes contains a size prefixed
-/// `MdxParsingResultBuffer` and returns it.
+/// `ParsedMdxDataTypescriptSafe` and returns it.
 /// Note that verification is still experimental and may not
 /// catch every error, or be maximally performant. For the
 /// previous, unchecked, behavior use
-/// `size_prefixed_root_as_mdx_parsing_result_buffer_unchecked`.
-pub fn size_prefixed_root_as_mdx_parsing_result_buffer(buf: &[u8]) -> Result<MdxParsingResultBuffer, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::size_prefixed_root::<MdxParsingResultBuffer>(buf)
+/// `size_prefixed_root_as_parsed_mdx_data_typescript_safe_unchecked`.
+pub fn size_prefixed_root_as_parsed_mdx_data_typescript_safe(buf: &[u8]) -> Result<ParsedMdxDataTypescriptSafe, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::size_prefixed_root::<ParsedMdxDataTypescriptSafe>(buf)
 }
 #[inline]
 /// Verifies, with the given options, that a buffer of bytes
-/// contains a `MdxParsingResultBuffer` and returns it.
+/// contains a `ParsedMdxDataTypescriptSafe` and returns it.
 /// Note that verification is still experimental and may not
 /// catch every error, or be maximally performant. For the
 /// previous, unchecked, behavior use
-/// `root_as_mdx_parsing_result_buffer_unchecked`.
-pub fn root_as_mdx_parsing_result_buffer_with_opts<'b, 'o>(
+/// `root_as_parsed_mdx_data_typescript_safe_unchecked`.
+pub fn root_as_parsed_mdx_data_typescript_safe_with_opts<'b, 'o>(
   opts: &'o flatbuffers::VerifierOptions,
   buf: &'b [u8],
-) -> Result<MdxParsingResultBuffer<'b>, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::root_with_opts::<MdxParsingResultBuffer<'b>>(opts, buf)
+) -> Result<ParsedMdxDataTypescriptSafe<'b>, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::root_with_opts::<ParsedMdxDataTypescriptSafe<'b>>(opts, buf)
 }
 #[inline]
 /// Verifies, with the given verifier options, that a buffer of
-/// bytes contains a size prefixed `MdxParsingResultBuffer` and returns
+/// bytes contains a size prefixed `ParsedMdxDataTypescriptSafe` and returns
 /// it. Note that verification is still experimental and may not
 /// catch every error, or be maximally performant. For the
 /// previous, unchecked, behavior use
-/// `root_as_mdx_parsing_result_buffer_unchecked`.
-pub fn size_prefixed_root_as_mdx_parsing_result_buffer_with_opts<'b, 'o>(
+/// `root_as_parsed_mdx_data_typescript_safe_unchecked`.
+pub fn size_prefixed_root_as_parsed_mdx_data_typescript_safe_with_opts<'b, 'o>(
   opts: &'o flatbuffers::VerifierOptions,
   buf: &'b [u8],
-) -> Result<MdxParsingResultBuffer<'b>, flatbuffers::InvalidFlatbuffer> {
-  flatbuffers::size_prefixed_root_with_opts::<MdxParsingResultBuffer<'b>>(opts, buf)
+) -> Result<ParsedMdxDataTypescriptSafe<'b>, flatbuffers::InvalidFlatbuffer> {
+  flatbuffers::size_prefixed_root_with_opts::<ParsedMdxDataTypescriptSafe<'b>>(opts, buf)
 }
 #[inline]
-/// Assumes, without verification, that a buffer of bytes contains a MdxParsingResultBuffer and returns it.
+/// Assumes, without verification, that a buffer of bytes contains a ParsedMdxDataTypescriptSafe and returns it.
 /// # Safety
-/// Callers must trust the given bytes do indeed contain a valid `MdxParsingResultBuffer`.
-pub unsafe fn root_as_mdx_parsing_result_buffer_unchecked(buf: &[u8]) -> MdxParsingResultBuffer {
-  unsafe { flatbuffers::root_unchecked::<MdxParsingResultBuffer>(buf) }
+/// Callers must trust the given bytes do indeed contain a valid `ParsedMdxDataTypescriptSafe`.
+pub unsafe fn root_as_parsed_mdx_data_typescript_safe_unchecked(buf: &[u8]) -> ParsedMdxDataTypescriptSafe {
+  unsafe { flatbuffers::root_unchecked::<ParsedMdxDataTypescriptSafe>(buf) }
 }
 #[inline]
-/// Assumes, without verification, that a buffer of bytes contains a size prefixed MdxParsingResultBuffer and returns it.
+/// Assumes, without verification, that a buffer of bytes contains a size prefixed ParsedMdxDataTypescriptSafe and returns it.
 /// # Safety
-/// Callers must trust the given bytes do indeed contain a valid size prefixed `MdxParsingResultBuffer`.
-pub unsafe fn size_prefixed_root_as_mdx_parsing_result_buffer_unchecked(buf: &[u8]) -> MdxParsingResultBuffer {
-  unsafe { flatbuffers::size_prefixed_root_unchecked::<MdxParsingResultBuffer>(buf) }
+/// Callers must trust the given bytes do indeed contain a valid size prefixed `ParsedMdxDataTypescriptSafe`.
+pub unsafe fn size_prefixed_root_as_parsed_mdx_data_typescript_safe_unchecked(buf: &[u8]) -> ParsedMdxDataTypescriptSafe {
+  unsafe { flatbuffers::size_prefixed_root_unchecked::<ParsedMdxDataTypescriptSafe>(buf) }
 }
 #[inline]
-pub fn finish_mdx_parsing_result_buffer_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(
+pub fn finish_parsed_mdx_data_typescript_safe_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(
     fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
-    root: flatbuffers::WIPOffset<MdxParsingResultBuffer<'a>>) {
+    root: flatbuffers::WIPOffset<ParsedMdxDataTypescriptSafe<'a>>) {
   fbb.finish(root, None);
 }
 
 #[inline]
-pub fn finish_size_prefixed_mdx_parsing_result_buffer_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>, root: flatbuffers::WIPOffset<MdxParsingResultBuffer<'a>>) {
+pub fn finish_size_prefixed_parsed_mdx_data_typescript_safe_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>, root: flatbuffers::WIPOffset<ParsedMdxDataTypescriptSafe<'a>>) {
   fbb.finish_size_prefixed(root, None);
 }
 #[allow(unused_imports, dead_code)]

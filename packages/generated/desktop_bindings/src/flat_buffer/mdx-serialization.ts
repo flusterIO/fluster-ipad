@@ -4,7 +4,7 @@
 
 export { CitationResultBuffer } from './mdx-serialization/citation-result-buffer.js';
 export { FrontMatterResultBuffer } from './mdx-serialization/front-matter-result-buffer.js';
-export { MdxParsingResultBuffer } from './mdx-serialization/mdx-parsing-result-buffer.js';
+export { ParsedMdxDataTypescriptSafe } from './mdx-serialization/parsed-mdx-data-typescript-safe.js';
 export { TagResultBuffer } from './mdx-serialization/tag-result-buffer.js';
 export * as NoteDetails from './mdx-serialization/note-details.js';
 export * as Request from './mdx-serialization/request.js';

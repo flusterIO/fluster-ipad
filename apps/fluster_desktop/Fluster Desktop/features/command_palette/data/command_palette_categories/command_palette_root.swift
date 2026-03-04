@@ -20,6 +20,7 @@ public class CommandPaletteRoot: CommandPaletteItem {
            SearchByTagCommandPaletteItem(),
            SearchByTopicCommandPaletteItem(),
            SearchBySubjectCommandPaletteItem(),
+           SearchBookmarksCommandPaletteItem(),
            CommandPaletteItem(id: .toggleDarkMode, uniqueId: "toggle-dark-mode", title: "Toggle Dark Mode", icon: "moon.fill", subtitle: nil, itemType: .commandPaletteAction)
         ]
     }

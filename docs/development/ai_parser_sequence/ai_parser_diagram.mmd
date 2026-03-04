@@ -1,0 +1,7 @@
+sequenceDiagram
+    Swift->>Rust: Sends parse request
+    Rust->>Swift: Rust responds with array of possible AISyncRequestPhase1
+    Swift->>Rust: Swift sends another parse request to Rust with an AISyncRequestPhase2
+    Swift->>Typescript: Swift sends parsing result to update rest of data
+    Rust->>Swift: Rust parses the content again, making sure the tag is still there and replacing it.
+    Swift->>Typescript: Swift finally updates the webview with AI generated content.

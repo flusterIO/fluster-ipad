@@ -24,6 +24,7 @@ phf = { version = "0.13.1", features = ["macros"] }
 strum = { version = "0.27.2", features = ["derive"] }
 insta = "1.46.3"
 criterion = { version = "0.8.2", features = ["async_tokio"] }
+fancy-regex = "0.17.0"
 
 
 [profile.release]

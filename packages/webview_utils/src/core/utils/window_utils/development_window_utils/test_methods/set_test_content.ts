@@ -59,6 +59,9 @@ As a paragraph
 <Hint>
 Cursus quisque imperdiet morbi et quisque dignissim, diam, lectus dignissim. Consequat elit congue molestie rhoncus, lectus condimentum rutrum eget lectus. Parturient leo lectus risus faucibus vitae risus consequat, convallis arcu. Praesent dignissim, eu maecenas porttitor semper, ut convallis dui integer. Iaculis, tristique natoque lorem condimentum libero auctor massa, hac velit.
 </Hint>
+`,
+        `
+<InContentDocsEmphasisTypeList />
 `
     ]
     for (const emphasis of getEmphasisOptions()) {

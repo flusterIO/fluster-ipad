@@ -14,7 +14,7 @@ import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
-import { CitationResultBuffer, MdxParsingResultBuffer, TagResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
+import { CitationResultBuffer, ParsedMdxDataTypescriptSafe, TagResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 import { useMediaQuery } from "react-responsive";
 import { GetSnippetProps } from "../data/snippets/snippet_types";
 
@@ -92,7 +92,7 @@ type CodeEditorContextActions =
     }
     | {
         type: "setParsedEditorContent";
-        payload: MdxParsingResultBuffer;
+        payload: ParsedMdxDataTypescriptSafe;
     } | {
         type: "setAllCitationIds";
         payload: string[]

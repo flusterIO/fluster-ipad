@@ -9,7 +9,7 @@ import Foundation
 
 public enum FlusterCategoryIcon: Codable {
   case dashboard, search, settings, create, editor, paper, markdown, bibliography, noteDetails,
-    dictionary
+    dictionary, bookmarks
 
   public func toSfIcon() -> String {
     switch self {
@@ -33,6 +33,8 @@ public enum FlusterCategoryIcon: Codable {
         return "text.page.badge.magnifyingglass"
       case .dictionary:
         return "character.book.closed"
+      case .bookmarks:
+        return "bookmark"
     }
   }
 }

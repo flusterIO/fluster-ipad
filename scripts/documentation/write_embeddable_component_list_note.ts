@@ -9,13 +9,13 @@ let content = `
  All components have provided snippets and documentation available via the \`??\` syntax.
 \`\`\`
 
+
+| Component | Description |
+| --------- | ----------- |
 `;
 
 for (const k of embeddableComponentConfigs) {
-    content += `- ${k.name[0]}\n`;
-    if (k.desc) {
-        content += `  - ${k.desc!}\n`;
-    }
+    content += `| ${k.name.map((x, i, a) => `\`${x}\`${i < a.length - 1 ? "," : ""}`).join("<br />")} | ${k.desc} |\n`;
 }
 
 console.log(content);

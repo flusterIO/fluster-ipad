@@ -8,7 +8,7 @@ export const EmbeddableUtilityContainer = ({ children, style, ...props }: Embedd
     const { containerClasses, emphasisBackgroundClasses } = embeddableUtiltyContainerProps.parse(props)
     return (
         <div
-            className={cn("w-full my-6", emphasisBackgroundClasses, containerClasses)}
+            className={cn("w-full my-6 inline-block", emphasisBackgroundClasses, containerClasses)}
             style={style}
         >
             {children}

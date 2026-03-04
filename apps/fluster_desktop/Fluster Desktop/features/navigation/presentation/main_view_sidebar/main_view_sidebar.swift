@@ -13,23 +13,26 @@ struct MainViewSidebar: View {
   @AppStorage(DesktopAppStorageKeys.noteSidebarSectionOpen.rawValue) private
     var noteSidebarSectionOpen = false
   var body: some View {
+    ScrollView {
       Group {
-          CollapsableSidebarSection(
-            open: $noteSidebarSectionOpen,
-            items: noteSideBarItems,
-            title: "Note"
-          )
-          CollapsableSidebarSection(
-            open: $flusterSidebarSectionOpen,
-            items: mainSidebarItems,
-            title: "Fluster"
-          )
-          CollapsableSidebarSection(
-            open: $flusterSidebarSectionOpen,
-            items: globalSearchSidebarItems,
-            title: "Global Search"
-          )
+        CollapsableSidebarSection(
+          open: $noteSidebarSectionOpen,
+          items: noteSideBarItems,
+          title: "Note"
+        )
+        CollapsableSidebarSection(
+          open: $flusterSidebarSectionOpen,
+          items: mainSidebarItems,
+          title: "Fluster"
+        )
+        CollapsableSidebarSection(
+          open: $flusterSidebarSectionOpen,
+          items: globalSearchSidebarItems,
+          title: "Global Search"
+        )
       }
+    }
+    .scrollIndicators(.never)
     .listStyle(.sidebar)
     .navigationTitle("Fluster")
     .navigationSplitViewColumnWidth(min: 180, ideal: 200)

@@ -63,7 +63,7 @@ export interface EmbeddableComponentConfig {
      * @readonly to encourage exporting a constant array to be used in the get_component_map file.
      */
     name: readonly [EmbeddableComponentName, ...EmbeddableComponentName[]];
-    desc?: string;
+    desc: string;
     /** A path to a mdx or md file for component specific documentation and examples. Path is relative to the monorepo route. */
     docsPath: string;
     /**

@@ -1,0 +1,4 @@
+sequenceDiagram
+    Swift->>Rust: Sends parse request (ParseMdxOptions)
+    Rust->>Swift: Rust parses data to mdx (MdxParsingResult)
+    Swift->>Typescript: Swift sends the data as a buffer to Typescript (MdxParsingResultBuffer)

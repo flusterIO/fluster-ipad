@@ -118,6 +118,7 @@ export enum InContentDocumentationId {
 	SizableObject = "Sizable",
 	Emphasis = "Emphasis",
 	Emoji = "Emoji",
+	Components = "Components",
 }
 
 export enum InContentDocumentationSource {
