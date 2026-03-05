@@ -1,7 +1,7 @@
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
 import { GetSnippetPropsBuffer } from "@/code_gen/flat_buffer/snippets";
-import { SharedWebviewActions, SharedWebviewEvents, SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
+import { CodeEditorKeymap, CodeEditorTheme, SharedWebviewEvents, SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
 import { ByteBuffer } from "flatbuffers";
 
 export interface SwiftEventMap {
@@ -13,10 +13,10 @@ declare global {
         [SplitviewEditorWebviewEvents.SetSplitviewEditorContent]: CustomEvent<string>;
         [SplitviewEditorWebviewEvents.SetEditorSnippetProps]: CustomEvent<GetSnippetPropsBuffer>;
         [SplitviewEditorWebviewEvents.SetParsedMdxContentString]: CustomEvent<string>;
-        [SplitviewEditorWebviewEvents.SetEditorKeymap]: CustomEvent<string>;
-        [SplitviewEditorWebviewEvents.SetCodeTheme]: CustomEvent<string>;
-        [SplitviewEditorWebviewEvents.SetCodeThemeLight]: CustomEvent<string>;
-        [SplitviewEditorWebviewEvents.SetCodeThemeDark]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.SetEditorKeymap]: CustomEvent<CodeEditorKeymap>;
+        [SplitviewEditorWebviewEvents.SetCodeTheme]: CustomEvent<CodeEditorTheme>;
+        [SplitviewEditorWebviewEvents.SetCodeThemeLight]: CustomEvent<CodeEditorTheme>;
+        [SplitviewEditorWebviewEvents.SetCodeThemeDark]: CustomEvent<CodeEditorTheme>;
         [SplitviewEditorWebviewEvents.ResetPreviewScrollPosition]: CustomEvent<null>;
         [SplitviewEditorWebviewEvents.EmitMdxParsingError]: CustomEvent<null>
         [SplitviewEditorWebviewEvents.EmitMdxParsingSuccess]: CustomEvent<null>
@@ -70,23 +70,23 @@ export function setParsedEditorContentString(payload: Uint8Array) {
     );
 }
 
-export function setEditorKeymap(keymap: string) {
+export function setEditorKeymap(keymap: CodeEditorKeymap) {
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetEditorKeymap, { detail: keymap }),
     );
 }
 
-export function setCodeTheme(theme: string) {
+export function setCodeTheme(theme: CodeEditorTheme) {
     window.dispatchEvent(new CustomEvent(SplitviewEditorWebviewEvents.SetCodeTheme, { detail: theme }));
 }
 
-export function setCodeThemeDark(theme: string) {
+export function setCodeThemeDark(theme: CodeEditorTheme) {
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetCodeThemeDark, { detail: theme }),
     );
 }
 
-export function setCodeThemeLight(theme: string) {
+export function setCodeThemeLight(theme: CodeEditorTheme) {
     window.dispatchEvent(
         new CustomEvent(SplitviewEditorWebviewEvents.SetCodeThemeLight, { detail: theme }),
     );

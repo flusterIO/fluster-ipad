@@ -11,7 +11,7 @@ import FlusterData
 #if os(iOS)
 public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWebviewEvents> {
   //    public override init() {}
-  public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
+  public func emitEditorThemeEvent(theme: CodeEditorTheme) {
     print("Changing editor theme event")
     self.runJavascript(
       """
@@ -20,7 +20,7 @@ public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWe
       """
     )
   }
-  public func setEditorKeymap(editorKeymap: EditorKeymap) {
+  public func setEditorKeymap(editorKeymap: CodeEditorKeymap) {
     print("Applying editor keymap")
     self.runJavascript(
       """
@@ -45,8 +45,8 @@ public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWe
   }
   public func setInitialProperties(
     initialValue: String?,
-    codeEditorTheme: CodeSyntaxTheme,
-    editorKeymap: EditorKeymap,
+    codeEditorTheme: CodeEditorTheme,
+    editorKeymap: CodeEditorKeymap,
     theme: WebViewTheme,
     fontSize: WebviewFontSize,
     darkMode: Bool

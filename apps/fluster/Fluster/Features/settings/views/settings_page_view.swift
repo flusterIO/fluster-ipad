@@ -13,9 +13,9 @@ struct SettingsPageView: View {
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
     .fluster
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-    var editorThemeDark: CodeSyntaxTheme = .dracula
+    var editorThemeDark: CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-    var editorThemeLight: CodeSyntaxTheme = .githubLight
+    var editorThemeLight: CodeEditorTheme = .githubLight
   @AppStorage(AppStorageKeys.colorScheme.rawValue) private
     var colorSchemeSelection: ColorSchemeSelection = .dark
   @AppStorage(AppStorageKeys.silenceParsingErrors.rawValue) private

@@ -3,12 +3,12 @@ import { defaultWidthTransform, getSizableObjectClasses, sizableObjectSchema } f
 import { reactNodeSchema } from "../schemas/read_node_schema";
 import { classRecordSchema } from "../schemas/class_record_schema";
 import { emphasisSchema, getFirstEmphasisKey } from "../schemas/emphasis_schema";
-import { sizablePropSchema, sizablePropsMapTransform } from "../schemas/sizable_props_schema";
+import { SizableOption, sizablePropSchema, sizablePropsMapTransform } from "../schemas/sizable_props_schema";
 
 export const admonitionPropsSchema = sizableObjectSchema
     .merge(emphasisSchema)
     .extend({
-        width: sizablePropSchema("width").default("full").transform(sizablePropsMapTransform(defaultWidthTransform)),
+        width: sizablePropSchema("width").default(SizableOption.Full).transform(sizablePropsMapTransform(defaultWidthTransform)),
         title: reactNodeSchema("title"),
         folded: z.boolean({ message: "'folded' must be a boolean." }).optional(),
         foldable: z.boolean({ message: "'foldable' is a boolean." }).optional(),

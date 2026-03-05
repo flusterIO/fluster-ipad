@@ -1,8 +1,5 @@
-public enum CodeSyntaxTheme: String, Codable, CaseIterable {
-  case materialLight, solarizedLight, githubLight, aura, tokyoNightDay,
-    dracula, tokyoNight, materialDark, tokyoNightStorm, githubDark,
-    solarizedDark, xcodeDark, xcodeLight
-
+/// Deprecated... moved everythng to Rust
+extension CodeEditorTheme {
   public func toThemeLabel() -> String {
     switch self {
       case .githubDark:

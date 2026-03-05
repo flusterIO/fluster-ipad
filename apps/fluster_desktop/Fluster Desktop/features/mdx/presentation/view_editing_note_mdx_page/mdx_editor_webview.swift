@@ -17,7 +17,7 @@ import WebKit
 struct MdxEditorWebview: View {
   var editingNoteId: String?
   @Environment(\.modelContext) private var modelContext
-  @Environment(\.colorScheme) private var colorScheme
+  @Environment(\.colorScheme) public var colorScheme
   @EnvironmentObject private var appState: AppState
   @Query private var notes: [NoteModel]
 
@@ -26,15 +26,18 @@ struct MdxEditorWebview: View {
   }
   @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
   @Binding var webView: WKWebView
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
+    .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
-    CodeSyntaxTheme = .dracula
+    CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
-    CodeSyntaxTheme = .materialLight
+    CodeEditorTheme = .materialLight
   @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private
     var lockEditorScrollToPreview: Bool = false
   @AppStorage(AppStorageKeys.editorSaveMethod.rawValue) private var editorSaveMethod:
     EditorSaveMethod = .onChange
+  @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
+    .apa
 
   init(editingNoteId: String?, webView: Binding<WKWebView>) {
     self.editingNoteId = editingNoteId
@@ -119,7 +122,19 @@ struct MdxEditorWebview: View {
           // When a preParse method succeeds, send the updated parsed content to the editor.
           if let en = editingNote {
             do {
-              try await setParsedEditorContentString(note: en)
+              try await en.preParseIfEdited(modelContext: modelContext)
+              let citations: [EditorCitation] = en.citations.compactMap { cit in
+                return cit.toEditorCitation(activeCslFile: cslFile)
+              }
+              try await EditorState.setParsedMdxContent(
+                parsedMdxContent: en.markdown.preParsedBody ?? "",
+                citations: citations,
+                eval: webView.evaluateJavaScript
+              )
+              // Deprecating this approach entirely in favor of just a handful of buffer based onChange events and the rest
+              // as serialized json in less performance critical situations for cross-language compatibility and the ability
+              //  to more easily interact with webview state from the lower-level languages.
+              //              try await setParsedEditorContentString(note: en)
             } catch {
               print("Error: \(error.localizedDescription)")
             }
@@ -135,7 +150,7 @@ struct MdxEditorWebview: View {
         of: editorKeymap,
         {
           Task {
-            try? await setEditorKeymap(editorKeymap: editorKeymap)
+            try? await setCodeEditorKeymap(editorKeymap: editorKeymap)
           }
         }
       )
@@ -190,26 +205,32 @@ struct MdxEditorWebview: View {
     }
   }
   func onWebviewLoad() async {
-    Task {
-      do {
-        // TODO: Move this all to a single state update now that we're working with React state directly.
-        try await setEditorThemeDark(editorTheme: editorThemeDark)
-        try await setEditorThemeLight(editorTheme: editorThemeLight)
-        try await setEditorKeymap(editorKeymap: editorKeymap)
-        try await setLockEditorScrollToPreview(lock: lockEditorScrollToPreview)
-        try await setEditorSaveMethod(saveMethod: editorSaveMethod)
-        if let en = editingNote {
-          try await loadNote(note: en)
+    if let en = editingNote {
+      Task {
+        do {
+          try await en.preParse(modelContext: modelContext)
+          try await EditorState.setInitialEditorState(
+            payload: EditorInitialStatePayload(
+              note_id: en.id,
+              keymap: editorKeymap,
+              theme: colorScheme == .dark ? editorThemeDark : editorThemeLight,
+              allCitationIds: bibEntries.compactMap(\.citationKey),
+              value: en.markdown.body,
+              parsedValue: en.markdown.preParsedBody ?? "",
+              haveSetInitialValue: true,
+              snippetProps: SnippetState(includeEmojiSnippets: true),
+              lockEditorScrollToPreview: lockEditorScrollToPreview,
+              saveMethod: editorSaveMethod),
+            eval: webView.evaluateJavaScript
+          )
+        } catch {
+          print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
         }
-        try await setSnippetProps()
-        print("Loaded initial editor data")
-      } catch {
-        print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
       }
     }
   }
   public func setEditorSaveMethod(saveMethod: EditorSaveMethod) async throws {
-    try await EditorStateManager.setEditorSaveMethod(
+    try await EditorState.setEditorSaveMethod(
       saveMethod: saveMethod, eval: webView.evaluateJavaScript)
   }
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {
@@ -267,44 +288,6 @@ struct MdxEditorWebview: View {
       """
       window.setSnippetProps(\(builder.sizedByteArray))
       """)
-  }
-  func setEditorThemeDark(editorTheme: CodeSyntaxTheme) async throws {
-    try await MdxEditorClient.setEditorThemeDark(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
-    if colorScheme == .dark {
-      try await setEditorSelectedTheme(editorTheme: editorTheme)
-    }
-  }
-  func setEditorThemeLight(editorTheme: CodeSyntaxTheme) async throws {
-    try await MdxEditorClient.setEditorThemeLight(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
-    if colorScheme == .light {
-      try await setEditorSelectedTheme(editorTheme: editorTheme)
-    }
-  }
-  func setEditorSelectedTheme(editorTheme: CodeSyntaxTheme) async throws {
-    try await MdxEditorClient.setEditorTheme(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
-  }
-  func setEditorKeymap(editorKeymap: EditorKeymap) async throws {
-    try await MdxEditorClient.setEditorKeymap(
-      keymap: editorKeymap, evaluateJavaScript: webView.evaluateJavaScript)
-  }
-  func setParsedEditorContentString(note: NoteModel) async throws {
-    try await MdxEditorClient.setParsedEditorContentString(
-      note: note, evaluateJavaScript: webView.evaluateJavaScript)
-  }
-  func setEditorContent(note: NoteModel) async throws {
-    try await MdxEditorClient.setEditorContent(
-      note: note, evaluateJavaScript: webView.evaluateJavaScript)
-  }
-  func setLockEditorScrollToPreview(lock: Bool) async throws {
-    try await MdxEditorClient.setLockEditorScrollToPreview(
-      lock, evaluateJavaScript: webView.evaluateJavaScript)
-  }
-  func loadNote(note: NoteModel) async throws {
-    try await setEditorContent(note: note)
-    try await setParsedEditorContentString(note: note)
   }
 }
 

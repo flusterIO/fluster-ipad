@@ -3,7 +3,7 @@ use typeshare::typeshare;
 
 /// From typescript to swift.
 #[typeshare]
-#[derive(strum_macros::Display, Serialize, Deserialize)]
+#[derive(uniffi::Enum, strum_macros::Display, Serialize, Deserialize)]
 pub enum WebviewEnvironment {
     #[serde(rename = "fluster-mac")]
     #[strum(to_string = "fluster-mac")]

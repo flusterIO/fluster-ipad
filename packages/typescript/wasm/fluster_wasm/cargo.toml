@@ -1,0 +1,14 @@
+[package]
+edition.workspace = true
+name = "fluster_wasm"
+publish = false
+version.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[lints]
+workspace = true
+
+[dependencies]
+wasm-bindgen = "0.2.114"

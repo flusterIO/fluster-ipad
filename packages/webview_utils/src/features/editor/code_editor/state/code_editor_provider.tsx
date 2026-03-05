@@ -5,6 +5,7 @@ import React, {
     useContext,
     useEffect,
 } from "react";
+import json from 'superjson';
 import {
     CodeEditorBaseKeymap,
     CodeEditorTheme,
@@ -13,55 +14,35 @@ import {
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
-import { EditorStateActions, EditorSaveMethod, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys, SetEditorInitialStateEditorAction, SetEditorSaveMethodEditorAction, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
-import { CitationResultBuffer, ParsedMdxDataTypescriptSafe, TagResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
+import { EditorStateActions, EditorSaveMethod, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys, SetEditorInitialStateEditorAction, SetEditorSaveMethodEditorAction, EditorView, EditorState, CodeEditorKeymap, EditorCitation } from "@/code_gen/typeshare/fluster_core_utilities";
 import { useMediaQuery } from "react-responsive";
 import { GetSnippetProps } from "../data/snippets/snippet_types";
-import { AnyCrossLanguageEditorAction } from "#/split_view_editor/state/cross_language_state/cross_language_state_types";
+import { AnyCrossLanguageBufferEditorAction, AnyCrossLanguageEditorAction } from "#/split_view_editor/state/cross_language_state/cross_language_state_types";
+import { BindEditorStateToLocalStorage } from "./bind_editor_state_to_local_storage";
+import { OnParsedContentChangeEventBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
+import { ByteBuffer } from "flatbuffers";
 
 
 declare global {
     interface WindowEventMap {
         [SplitviewEditorWebviewEvents.EditorStateUpdate]: CustomEvent<string>;
+        [SplitviewEditorWebviewEvents.EditorStateParsedContentUpdate]: CustomEvent<number[]>;
     }
 }
 
 type SnippetPropsState = Required<Omit<GetSnippetProps, "base" | "citationKeys">>
 
-export interface CodeEditorState {
-    /**
-     * Required for verification before saving manually as the async, back-forth approach with the AI parser
-     * might allow tme for things to change.
-     * This might resolve some DB issues that popped up during dev too... not sure if they're just dev tool things or real issues.
-     */
-    note_id: string | null;
-    keymap: string;
-    baseKeymap: CodeEditorBaseKeymap;
-    theme: CodeEditorTheme;
-    citations: CitationResultBuffer[]
-    tags: TagResultBuffer[]
-    allCitationIds: string[];
-    value: string;
-    /** pre-parsed editor content. */
-    parsedValue: string | null;
-    haveSetInitialValue: boolean;
-    editorView: EditorView
-    snippetProps: SnippetPropsState
-    lockEditorScrollToPreview: boolean
-    /// Everything below here has been moved to the new state management setup with Swift passing partial state directly instead of random data that needs to be parsed individually.
-    saveMethod: EditorSaveMethod
-}
 
-const defaultInitialCodeEditorState: CodeEditorState = {
-    note_id: null,
+const defaultInitialCodeEditorState: EditorState = {
+    note_id: undefined,
     baseKeymap: CodeEditorBaseKeymap.Default,
     theme: CodeEditorTheme.Dracula,
-    keymap: "base",
+    keymap: CodeEditorKeymap.Base,
     value: "",
     citations: [],
     allCitationIds: [],
     tags: [],
-    parsedValue: null,
+    parsedValue: undefined,
     haveSetInitialValue: false,
     editorView: EditorView.Pending,
     snippetProps: {
@@ -75,7 +56,7 @@ const defaultInitialCodeEditorState: CodeEditorState = {
     saveMethod: EditorSaveMethod.OnChange
 };
 
-export const CodeEditorContext = createContext<CodeEditorState>(
+export const CodeEditorContext = createContext<EditorState>(
     defaultInitialCodeEditorState,
 );
 
@@ -94,7 +75,7 @@ export type CodeEditorContextActions =
     }
     | {
         type: "setKeymap";
-        payload: string;
+        payload: CodeEditorKeymap;
     }
     | {
         type: "setParsedEditorContentString",
@@ -102,10 +83,6 @@ export type CodeEditorContextActions =
     } | {
         type: "setEditorValue";
         payload: string;
-    }
-    | {
-        type: "setParsedEditorContent";
-        payload: ParsedMdxDataTypescriptSafe;
     } | {
         type: "setAllCitationIds";
         payload: string[]
@@ -116,9 +93,12 @@ export type CodeEditorContextActions =
         type: "setSnippetProps",
         payload: SnippetPropsState
     } | {
+        type: "loadSavedState",
+        payload: EditorState
+    } | {
         type: "setLockEditorScrollToPreview",
         payload: boolean
-    } | AnyCrossLanguageEditorAction;
+    } | AnyCrossLanguageBufferEditorAction | AnyCrossLanguageEditorAction;
 
 export const CodeEditorDispatchContext = createContext<
     React.Dispatch<CodeEditorContextActions>
@@ -129,9 +109,10 @@ export const useCodeEditorDispatch = () =>
     useContext(CodeEditorDispatchContext);
 
 export const CodeEditorContextReducer = (
-    state: CodeEditorState,
+    state: EditorState,
     action: CodeEditorContextActions,
-): CodeEditorState => {
+): EditorState => {
+    console.log("Editor Action: ", action)
     switch (action.type) {
         case EditorStateActions.SetEditorSaveMethod: {
             return {
@@ -144,6 +125,29 @@ export const CodeEditorContextReducer = (
                 ...state,
                 ...(action as SetEditorInitialStateEditorAction).payload
             }
+        }
+        case EditorStateActions.SetParsedEditorContent: {
+            const parsedContent = action.payload.parsedContent() ?? state.parsedValue
+            const citations: EditorCitation[] = []
+            for (let i = 0; i < action.payload.citationsLength(); i++) {
+                const cit = action.payload.citations(i)
+                const citation_key = cit?.citationKey()
+                const html = cit?.html()
+                if (cit && citation_key && html) {
+                    citations.push({
+                        html,
+                        citation_key
+                    })
+                }
+            }
+            return {
+                ...state,
+                parsedValue: parsedContent,
+                citations: citations
+            }
+        }
+        case "loadSavedState": {
+            return action.payload
         }
         /// TODO: Handle setting of all of these types with new EditorStateHandler and the Swift partial-state approach..
         case "setValue": {
@@ -191,29 +195,6 @@ export const CodeEditorContextReducer = (
                 allCitationIds: action.payload
             }
         }
-        case "setParsedEditorContent": {
-            const content = action.payload.parsedContent()
-            const citations: CitationResultBuffer[] = [];
-            for (let i = 0; i < action.payload.citationsLength(); i++) {
-                const cit = action.payload.citations(i)
-                if (cit) {
-                    citations.push()
-                }
-            }
-            const tags: TagResultBuffer[] = []
-            for (let i = 0; i < action.payload.tagsLength(); i++) {
-                const tag = action.payload.tags(i)
-                if (tag) {
-                    tags.push()
-                }
-            }
-            return {
-                ...state,
-                parsedValue: content ? content : state.parsedValue,
-                citations,
-                tags
-            };
-        }
         case "setEditorView": {
             return {
                 ...state,
@@ -245,7 +226,7 @@ export type CodeEditorImplementation = "bib-editor" | "mdx-editor" | "mdx-viewer
 
 interface CodeEditorProviderProps {
     children: ReactNode;
-    initialValues?: Partial<CodeEditorState>;
+    initialValues?: Partial<EditorState>;
     initialValueKey?: string;
     implementation: CodeEditorImplementation
 }
@@ -271,9 +252,19 @@ export const CodeEditorProvider = ({
     );
 
     useEventListener(SplitviewEditorWebviewEvents.EditorStateUpdate, (e) => {
-        dispatch(JSON.parse(e.detail) as AnyCrossLanguageEditorAction)
+        dispatch(json.parse(e.detail) as AnyCrossLanguageEditorAction)
     })
 
+    useEventListener(SplitviewEditorWebviewEvents.EditorStateParsedContentUpdate, (e) => {
+
+        const data = Uint8Array.from(e.detail)
+        const buf = new ByteBuffer(data)
+        const onChangeEvent = OnParsedContentChangeEventBuffer.getRootAsOnParsedContentChangeEventBuffer(buf)
+        dispatch({
+            type: EditorStateActions.SetParsedEditorContent,
+            payload: onChangeEvent
+        })
+    })
     const isEditorView = useMediaQuery({
         orientation: "landscape",
     });
@@ -285,19 +276,13 @@ export const CodeEditorProvider = ({
         })
     }, [isEditorView])
 
-    const [editorKeymap] = useLocalStorage(SplitviewEditorWebviewLocalStorageKeys.EditorKeymap, "base", {
-        deserializer(value) {
-            return value;
-        },
-        serializer(value) {
-            return value;
-        },
+    const [editorKeymap] = useLocalStorage<CodeEditorKeymap>(SplitviewEditorWebviewLocalStorageKeys.EditorKeymap, CodeEditorKeymap.Base, {
         initializeWithValue: false,
     });
     useEffect(() => {
         dispatch({
             type: "setKeymap",
-            payload: editorKeymap,
+            payload: editorKeymap as CodeEditorKeymap,
         });
     }, [editorKeymap]);
 
@@ -394,6 +379,7 @@ export const CodeEditorProvider = ({
     return (
         <CodeEditorContext.Provider value={state}>
             <CodeEditorDispatchContext.Provider value={dispatch}>
+                <BindEditorStateToLocalStorage />
                 {children}
             </CodeEditorDispatchContext.Provider>
         </CodeEditorContext.Provider>

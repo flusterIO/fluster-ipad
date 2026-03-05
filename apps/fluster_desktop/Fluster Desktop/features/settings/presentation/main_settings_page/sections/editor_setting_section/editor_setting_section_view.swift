@@ -9,11 +9,11 @@ import FlusterData
 import SwiftUI
 
 struct EditorSettingSectionView: View {
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
-    CodeSyntaxTheme = .dracula
+    CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
-    CodeSyntaxTheme = .materialLight
+    CodeEditorTheme = .materialLight
   @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private var lockEditorScroll:
     Bool = false
 
@@ -26,9 +26,9 @@ struct EditorSettingSectionView: View {
           Picker(
             selection: $editorKeymap,
             content: {
-              Text("Basic").tag(EditorKeymap.base)
-              Text("Vim").tag(EditorKeymap.vim)
-              Text("Emacs").tag(EditorKeymap.emacs)
+              Text("Basic").tag(CodeEditorKeymap.base)
+              Text("Vim").tag(CodeEditorKeymap.vim)
+              Text("Emacs").tag(CodeEditorKeymap.emacs)
             },
             label: {
               Text("Keymap Scheme")
@@ -40,7 +40,7 @@ struct EditorSettingSectionView: View {
           Picker(
             selection: $editorThemeLight,
             content: {
-              ForEach(CodeSyntaxTheme.allCases, id: \.rawValue) { item in
+              ForEach(CodeEditorTheme.allCases, id: \.rawValue) { item in
                 Text(item.toThemeLabel()).tag(item)
               }
             },
@@ -51,7 +51,7 @@ struct EditorSettingSectionView: View {
           Picker(
             selection: $editorThemeDark,
             content: {
-              ForEach(CodeSyntaxTheme.allCases, id: \.rawValue) { item in
+              ForEach(CodeEditorTheme.allCases, id: \.rawValue) { item in
                 Text(item.toThemeLabel()).tag(item)
               }
             },

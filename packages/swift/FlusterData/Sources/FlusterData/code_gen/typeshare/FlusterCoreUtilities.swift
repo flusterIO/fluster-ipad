@@ -19,34 +19,22 @@ public struct CodeBlockParsingResult: Codable {
 /// Basically a Partial<BibEntryModel> that's cross language, to be sent to the
 /// editor.
 public struct EditorCitation: Codable {
-	public let key: String
+	public let citation_key: String
 	public let html: String
 
-	public init(key: String, html: String) {
-		self.key = key
+	public init(citation_key: String, html: String) {
+		self.citation_key = citation_key
 		self.html = html
 	}
 }
 
-public enum EditorStateActions: String, Codable {
-	case setEditorSaveMethod = "set-editor-save-method"
-	case setInitialEditorState = "set-initial-editor-state"
+public enum CodeEditorKeymap: String, Codable, CaseIterable {
+	case vim
+	case base
+	case emacs
 }
 
-public struct EditorInitialStatePayload: Codable {
-	public let type: EditorStateActions
-
-	public init(type: EditorStateActions) {
-		self.type = type
-	}
-}
-
-public enum CodeEditorBaseKeymap: String, Codable {
-	case `default`
-	case vsCode
-}
-
-public enum CodeEditorTheme: String, Codable {
+public enum CodeEditorTheme: String, Codable, CaseIterable {
 	case materialLight
 	case solarizedLight
 	case solarizedDark
@@ -62,6 +50,50 @@ public enum CodeEditorTheme: String, Codable {
 	case xcodeDark
 }
 
+public struct SnippetState: Codable {
+	public let includeEmojiSnippets: Bool
+
+	public init(includeEmojiSnippets: Bool) {
+		self.includeEmojiSnippets = includeEmojiSnippets
+	}
+}
+
+public enum EditorSaveMethod: String, Codable {
+	case onSave = "on-save"
+	case onChange = "on-change"
+}
+
+public struct EditorInitialStatePayload: Codable {
+	public let note_id: String
+	public let keymap: CodeEditorKeymap
+	public let theme: CodeEditorTheme
+	public let allCitationIds: [String]
+	public let value: String
+	public let parsedValue: String
+	public let haveSetInitialValue: Bool
+	public let snippetProps: SnippetState
+	public let lockEditorScrollToPreview: Bool
+	public let saveMethod: EditorSaveMethod
+
+	public init(note_id: String, keymap: CodeEditorKeymap, theme: CodeEditorTheme, allCitationIds: [String], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
+		self.note_id = note_id
+		self.keymap = keymap
+		self.theme = theme
+		self.allCitationIds = allCitationIds
+		self.value = value
+		self.parsedValue = parsedValue
+		self.haveSetInitialValue = haveSetInitialValue
+		self.snippetProps = snippetProps
+		self.lockEditorScrollToPreview = lockEditorScrollToPreview
+		self.saveMethod = saveMethod
+	}
+}
+
+public enum CodeEditorBaseKeymap: String, Codable {
+	case `default`
+	case vsCode
+}
+
 /// Basically a Partial<TagModel> that's cross language, to be sent to the
 /// editor.
 public struct EditorTag: Codable {
@@ -72,27 +104,48 @@ public struct EditorTag: Codable {
 	}
 }
 
+public enum EditorView: String, Codable {
+	case pending = "Pending"
+	case splitview = "Splitview"
+	case previewOnly = "PreviewOnly"
+}
+
 public struct EditorState: Codable {
+	/// * Required for verification before saving manually as the async,
+	/// back-forth approach with the AI parser
+	/// might allow tme for things to change.
+	/// This might resolve some DB issues that popped up
+	/// during dev too... not sure if they're just dev tool things or real issues.
 	public let note_id: String?
 	public let baseKeymap: CodeEditorBaseKeymap
 	public let citations: [EditorCitation]
+	public let keymap: CodeEditorKeymap
 	public let theme: CodeEditorTheme
 	public let tags: [EditorTag]
 	public let allCitationIds: [String]
 	public let value: String
 	public let parsedValue: String?
 	public let haveSetInitialValue: Bool
+	public let editorView: EditorView
+	public let snippetProps: SnippetState
+	public let lockEditorScrollToPreview: Bool
+	public let saveMethod: EditorSaveMethod
 
-	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], theme: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool) {
+	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], keymap: CodeEditorKeymap, theme: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool, editorView: EditorView, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
 		self.note_id = note_id
 		self.baseKeymap = baseKeymap
 		self.citations = citations
+		self.keymap = keymap
 		self.theme = theme
 		self.tags = tags
 		self.allCitationIds = allCitationIds
 		self.value = value
 		self.parsedValue = parsedValue
 		self.haveSetInitialValue = haveSetInitialValue
+		self.editorView = editorView
+		self.snippetProps = snippetProps
+		self.lockEditorScrollToPreview = lockEditorScrollToPreview
+		self.saveMethod = saveMethod
 	}
 }
 
@@ -108,6 +161,13 @@ public struct ManualSaveRequestEvent: Codable {
 	}
 }
 
+public enum EditorStateActions: String, Codable {
+	case setEditorSaveMethod = "set-editor-save-method"
+	case setInitialEditorState = "set-initial-editor-state"
+	/// This is the 'onChange' method that's executed _after_ the content is parsed.
+	case setParsedEditorContent = "set-parsed-editor-content"
+}
+
 public struct SetEditorInitialStateEditorAction: Codable {
 	public let type: EditorStateActions
 	public let payload: EditorInitialStatePayload
@@ -118,11 +178,6 @@ public struct SetEditorInitialStateEditorAction: Codable {
 	}
 }
 
-public enum EditorSaveMethod: String, Codable {
-	case onSave = "on-save"
-	case onChange = "on-change"
-}
-
 public struct SetEditorSaveMethodEditorAction: Codable {
 	public let type: EditorStateActions
 	public let payload: EditorSaveMethod
@@ -130,6 +185,48 @@ public struct SetEditorSaveMethodEditorAction: Codable {
 	public init(type: EditorStateActions, payload: EditorSaveMethod) {
 		self.type = type
 		self.payload = payload
+	}
+}
+
+public struct SetParsedMdxContentEditorAction: Codable {
+	public let type: EditorStateActions
+	/// The serialized flatbuffer for the OnParsedContentChangeEventBuffer table.
+	public let payload: [UInt8]
+
+	public init(type: EditorStateActions, payload: [UInt8]) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+/// From typescript to swift.
+public enum WebviewEnvironment: String, Codable {
+	case macOS = "fluster-mac"
+	case iPad = "fluster-ipad"
+	case multiPlatformDesktop = "fluster-multi-platform-desktop"
+}
+
+public enum SizableOption: String, Codable {
+	case none
+	case small
+	case smedium
+	case medium
+	case large
+	case xl
+	case xxl
+	case fit
+	case full
+}
+
+public struct WebviewContainerState: Codable {
+	public let environment: WebviewEnvironment?
+	public let size: SizableOption
+	public let wasm_loaded: Bool
+
+	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool) {
+		self.environment = environment
+		self.size = size
+		self.wasm_loaded = wasm_loaded
 	}
 }
 
@@ -181,12 +278,6 @@ public enum BibtexEditorWebviewLocalStorageKeys: String, Codable {
 	case initialValue = "bibtex-editor-initial-value"
 }
 
-public enum CodeEditorKeymap: String, Codable {
-	case vim
-	case base
-	case emacs
-}
-
 /// From typescript to swift.
 public enum DictionaryWebviewActions: String, Codable {
 	case requestDictionaryData = "request-dictionary-data"
@@ -213,12 +304,6 @@ public enum DictionaryWebviewStorageKeys: String, Codable {
 public enum DocumentationComponentName: String, Codable {
 	case inContentDocumentationContainer = "InContentDocumentationContainer"
 	case inContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList"
-}
-
-public enum EditorView: String, Codable {
-	case pending = "Pending"
-	case splitview = "Splitview"
-	case previewOnly = "PreviewOnly"
 }
 
 /// From typescript to swift.
@@ -342,6 +427,7 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 	case emitMdxParsingSuccess = "mdx-parsing-success"
 	case setWebviewPreviewScrollLock = "set-webview-preview-scroll-lock"
 	case editorStateUpdate = "cross-lang-editor-update"
+	case editorStateParsedContentUpdate = "editor-parsed-content-update"
 }
 
 public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
@@ -353,11 +439,5 @@ public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
 	case editorKeymap = "editor-keymap"
 	case scrollPositionPreviewOnly = "editor-scroll-pos-preview-only"
 	case scrollPositionSplitview = "editor-scroll-pos-splitview"
-}
-
-/// From typescript to swift.
-public enum WebviewEnvironment: String, Codable {
-	case macOS = "fluster-mac"
-	case iPad = "fluster-ipad"
-	case multiPlatformDesktop = "fluster-multi-platform-desktop"
+	case editorState = "editor-state"
 }

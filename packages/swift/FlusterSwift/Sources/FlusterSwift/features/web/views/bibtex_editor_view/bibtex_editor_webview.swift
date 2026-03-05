@@ -31,10 +31,10 @@ import WebKit
     @State private var didSetInitialContent = false
     @State var haveSetInitialContent: Bool = false
     @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-      var editorThemeDark: CodeSyntaxTheme = .dracula
+      var editorThemeDark: CodeEditorTheme = .dracula
     @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-      var editorThemeLight: CodeSyntaxTheme = .githubLight
-    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
+      var editorThemeLight: CodeEditorTheme = .githubLight
+    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
     @Binding var value: String
     let container: BibtexEditorWebviewContainer
 
