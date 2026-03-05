@@ -21,6 +21,7 @@ resolve_swift_packages:
 	cd {{justfile_directory()}}/packages/swift/FlusterData; swift package resolve
 	cd {{justfile_directory()}}/packages/swift/FlusterMdx; swift package resolve
 	cd {{justfile_directory()}}/packages/swift/FlusterSwift; swift package resolve
+	cd {{justfile_directory()}}/packages/swift/FlusterAI; swift package resolve
 
 format: format_package_jsons format_swift
 
@@ -98,7 +99,7 @@ clear_macos_database:
 build_fluster_lezer:
 	cd {{justfile_directory()}}/packages/typescript/lezer; pnpm build
 
-build_cross_language_all: build_cross_language_schemas
+build_cross_language_all: build_cross_language_schemas 
 
 generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data write_in_content_docs_by_id
 

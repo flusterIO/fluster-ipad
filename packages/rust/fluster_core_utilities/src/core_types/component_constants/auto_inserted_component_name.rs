@@ -17,4 +17,7 @@ pub enum AutoInsertedComponentName {
     #[serde(rename = "DictionaryEntry")]
     #[strum(to_string = "DictionaryEntry")]
     DictionaryEntry,
+    #[serde(rename = "FlusterAiParsePendingContainer")]
+    #[strum(to_string = "FlusterAiParsePendingContainer")]
+    FlusterAiParsePendingContainer,
 }

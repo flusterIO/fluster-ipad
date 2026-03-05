@@ -20,6 +20,9 @@ pub enum SplitviewEditorWebviewActions {
     #[serde(rename = "set-is-landscape-view")]
     #[strum(to_string = "set-is-landscape-view")]
     SetIsLandscape,
+    #[serde(rename = "manual-save-req")]
+    #[strum(to_string = "manual-save-req")]
+    ManualSaveRequest,
 }
 
 /// From swift to typescript
@@ -65,6 +68,9 @@ pub enum SplitviewEditorWebviewEvents {
     #[serde(rename = "set-webview-preview-scroll-lock")]
     #[strum(to_string = "set-webview-preview-scroll-lock")]
     SetWebviewPreviewScrollLock,
+    #[serde(rename = "cross-lang-editor-update")]
+    #[strum(to_string = "cross-lang-editor-update")]
+    EditorStateUpdate,
 }
 
 #[typeshare]

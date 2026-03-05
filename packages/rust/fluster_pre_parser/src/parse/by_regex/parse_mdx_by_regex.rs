@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     parse::by_regex::regex_parsers::{
-        citation_regex_parser::CitationRegexParser,
+        ai_trigger_parser::AiTriggerParser, citation_regex_parser::CitationRegexParser,
         dictionary_entry_regex_parser::DictionaryEntryRegexParser,
         embedded_docs_parser::EmbeddedInContentDocsParser, mdx_parser::MdxParser,
         note_link_regex_parser::NoteLinkRegexParser, tag_regex_parser::TagRegexParser,
@@ -10,7 +10,7 @@ use crate::{
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
-static REGEX_PARSERS: [&'static dyn MdxParser; 5] = [
+static REGEX_PARSERS: [&'static dyn MdxParser; 6] = [
     // Keep the EmbeddedInContentDocsParser first to allow the inserted content to then be parsed
     // if needed and to set the ignore_all field if neccessary.
     &EmbeddedInContentDocsParser,
@@ -18,6 +18,7 @@ static REGEX_PARSERS: [&'static dyn MdxParser; 5] = [
     &CitationRegexParser,
     &DictionaryEntryRegexParser,
     &NoteLinkRegexParser,
+    &AiTriggerParser,
 ];
 
 #[derive(Serialize, Deserialize, Debug, uniffi::Record)]

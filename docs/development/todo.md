@@ -108,6 +108,10 @@
 
 # Today
 
+- [ ] Handle editor `ParsingEvent` enum and make sure that that can be set by the user. Don't even make auto-render the default on mac...
+
+- [ ] While moving all editor state to Rust for complete cross-language serialization, get rid of the `setParsedEditorContent` function first. This should all be handled by the state manager now.
+
 - [ ] Handle AI parser
   - [ ] Handle serialization of new structs.
   - [ ] Implement parser in rust.

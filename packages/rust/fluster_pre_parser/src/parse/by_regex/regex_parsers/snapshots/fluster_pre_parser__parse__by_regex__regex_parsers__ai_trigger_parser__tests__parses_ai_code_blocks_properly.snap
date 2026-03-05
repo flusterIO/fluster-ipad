@@ -1,0 +1,8 @@
+---
+source: packages/rust/fluster_pre_parser/src/parse/by_regex/regex_parsers/ai_trigger_parser.rs
+expression: initial_result.content
+---
+# My note
+<FlusterAiParsePendingContainer stringifiedResult="{"full_match":"\n````fluster-ai\nCan you help me summarize this note please?\n````","language_tag":"fluster-ai","block_content":"Can you help me summarize this note please?"}">
+Can you help me summarize this note please?
+</FlusterAiParsePendingContainer>

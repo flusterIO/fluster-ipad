@@ -14,7 +14,7 @@ export const hrComponentConfig: EmbeddableComponentConfig = {
     schema: hrPropsSchema,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hr/hr_component_docs.mdx",
     snippets: () => {
-        return [snippetCompletion(`<Hl content="#{Label}" />`, {
+        return [snippetCompletion(`<Hr> #{Section} </Hr>`, {
             label: `divider-with-label`,
             section: CompletionSections.components,
             type: SnippetDefaultType.function

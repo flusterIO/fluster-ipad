@@ -23,6 +23,9 @@ pub enum ParserId {
     #[serde(rename = "docs")]
     #[strum(to_string = "docs")]
     Documentation,
+    #[serde(rename = "ai")]
+    #[strum(to_string = "ai")]
+    AiTrigger,
 }
 
 #[async_trait]

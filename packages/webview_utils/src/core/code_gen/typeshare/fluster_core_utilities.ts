@@ -3,11 +3,101 @@
 */
 
 
+export interface CodeBlockParsingResult {
+	full_match: string;
+	language_tag: string;
+	block_content: string;
+}
+
+/**
+ * Basically a Partial<BibEntryModel> that's cross language, to be sent to the
+ * editor.
+ */
+export interface EditorCitation {
+	key: string;
+	html: string;
+}
+
+export enum EditorStateActions {
+	SetEditorSaveMethod = "set-editor-save-method",
+	SetInitialEditorState = "set-initial-editor-state",
+}
+
+export interface EditorInitialStatePayload {
+	type: EditorStateActions;
+}
+
+export enum CodeEditorBaseKeymap {
+	Default = "default",
+	VsCode = "vsCode",
+}
+
+export enum CodeEditorTheme {
+	MaterialLight = "materialLight",
+	SolarizedLight = "solarizedLight",
+	SolarizedDark = "solarizedDark",
+	GithubLight = "githubLight",
+	Aura = "aura",
+	TokyoNightDay = "tokyoNightDay",
+	XcodeLight = "xcodeLight",
+	Dracula = "dracula",
+	TokyoNight = "tokyoNight",
+	MaterialDark = "materialDark",
+	TokyoNightStorm = "tokyoNightStorm",
+	GithubDark = "githubDark",
+	XcodeDark = "xcodeDark",
+}
+
+/**
+ * Basically a Partial<TagModel> that's cross language, to be sent to the
+ * editor.
+ */
+export interface EditorTag {
+	body: string;
+}
+
+export interface EditorState {
+	note_id?: string;
+	baseKeymap: CodeEditorBaseKeymap;
+	citations: EditorCitation[];
+	theme: CodeEditorTheme;
+	tags: EditorTag[];
+	allCitationIds: string[];
+	value: string;
+	parsedValue?: string;
+	haveSetInitialValue: boolean;
+}
+
+export interface ManualSaveRequestEvent {
+	current_note_content: string;
+	/**
+	 * note_id is required to verify the note before updating the note's data since there's so
+	 * much async shit going on.
+	 */
+	note_id: string;
+}
+
+export interface SetEditorInitialStateEditorAction {
+	type: EditorStateActions;
+	payload: EditorInitialStatePayload;
+}
+
+export enum EditorSaveMethod {
+	OnSave = "on-save",
+	OnChange = "on-change",
+}
+
+export interface SetEditorSaveMethodEditorAction {
+	type: EditorStateActions;
+	payload: EditorSaveMethod;
+}
+
 export enum AutoInsertedComponentName {
 	NoteLink = "NoteLink",
 	AutoInsertedTag = "AutoInsertedTag",
 	FlusterCitation = "FlusterCitation",
 	DictionaryEntry = "DictionaryEntry",
+	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
 }
 
 export enum AutoTaggableType {
@@ -52,6 +142,12 @@ export enum BibtexEditorWebviewLocalStorageKeys {
 	InitialValue = "bibtex-editor-initial-value",
 }
 
+export enum CodeEditorKeymap {
+	Vim = "vim",
+	Base = "base",
+	Emacs = "emacs",
+}
+
 /** From typescript to swift. */
 export enum DictionaryWebviewActions {
 	RequestDictionaryData = "request-dictionary-data",
@@ -78,6 +174,12 @@ export enum DictionaryWebviewStorageKeys {
 export enum DocumentationComponentName {
 	InContentDocumentationContainer = "InContentDocumentationContainer",
 	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
+}
+
+export enum EditorView {
+	Pending = "Pending",
+	Splitview = "Splitview",
+	PreviewOnly = "PreviewOnly",
 }
 
 /** From typescript to swift. */
@@ -182,6 +284,7 @@ export enum SplitviewEditorWebviewActions {
 	OnEditorChange = "on-editor-change",
 	SetWebviewLoaded = "set-editor-webview-loaded",
 	SetIsLandscape = "set-is-landscape-view",
+	ManualSaveRequest = "manual-save-req",
 }
 
 /** From swift to typescript */
@@ -199,6 +302,7 @@ export enum SplitviewEditorWebviewEvents {
 	EmitMdxParsingError = "mdx-parsing-error",
 	EmitMdxParsingSuccess = "mdx-parsing-success",
 	SetWebviewPreviewScrollLock = "set-webview-preview-scroll-lock",
+	EditorStateUpdate = "cross-lang-editor-update",
 }
 
 export enum SplitviewEditorWebviewLocalStorageKeys {

@@ -30,6 +30,7 @@ import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
+import { useEditorKeymap } from "./editor_keymap";
 
 interface CodeEditorProps {
     language?: CodeEditorLanguage;
@@ -41,6 +42,7 @@ interface CodeEditorProps {
     containerId?: string;
     initialValueStorageKey?: AnyWebviewStorageKey
 }
+
 
 
 
@@ -57,6 +59,8 @@ export const CodeEditorInner = ({
     const dispatch = useCodeEditorDispatch();
     const timer = useRef<NodeJS.Timeout | null>(null);
     const viewRef = useRef<EditorView | null>(null)
+
+    const editorKeymap = useEditorKeymap();
 
 
 
@@ -80,6 +84,7 @@ export const CodeEditorInner = ({
         if (language === CodeEditorLanguage.markdown) {
             const mdxCompletionSource: CompletionSource = (context) => {
                 const word = context.matchBefore(/\w*/);
+
                 if (!word || (word.from === word.to && !context.explicit)) return null;
                 const tree = syntaxTree(context.state);
                 const node = tree.resolveInner(context.pos, -1);
@@ -93,6 +98,8 @@ export const CodeEditorInner = ({
                             options: getMathSnippets().map((f) => f.completion),
                             filter: true
                         };
+                    } else {
+                        console.log("curr: ", curr)
                     }
                     /* if (curr.name.includes("JSX") || curr.name.includes("Tag")) { */
                     /*   return { */
@@ -151,6 +158,7 @@ export const CodeEditorInner = ({
             dropCursor(),
             rectangularSelection(),
             keymap.of(codeEditorBaseKeymapMap[state.baseKeymap]()),
+            keymap.of(editorKeymap),
             EditorState.allowMultipleSelections.of(true),
             EditorView.lineWrapping,
             /* language, */
@@ -189,7 +197,7 @@ export const CodeEditorInner = ({
         haveRendered.current = true;
         sendToSwift(showWebviewHandler);
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
-    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap, state.allCitationIds, state.lockEditorScrollToPreview]);
+    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap, state.allCitationIds, state.lockEditorScrollToPreview, editorKeymap]);
 
     useEventListener(swiftContentEvent as keyof WindowEventMap, (e) => {
         if (viewRef.current) {
@@ -234,7 +242,6 @@ export const CodeEditor = (
     const handleInitialRender = useEffectEvent(() => setInitialRender(false))
 
     useEffect(() => {
-        console.log("initialValue: ", initialValue)
         if (typeof initialValue !== "string" || initialRender) {
             sendToSwift(props.requestNewDataAction ?? SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
