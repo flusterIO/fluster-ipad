@@ -1,23 +1,18 @@
 import { defineConfig } from "vite";
 import {
-  WebviewViteConfig,
-  getWebviewViteConfig,
-} from "@fluster/shared_config/webviewVite";
+    type WasmViteConfig,
+    getWasmViteConfig,
+} from "@fluster/shared_config/vite";
 
-const config: WebviewViteConfig = {
-  outputDir: "splitview_mdx_editor_mac",
-  plugins: {
-    tailwind: false,
-  },
-  singleFile: false,
-  base: "./",
-  build: {
-    rollupOptions: {
-      input: {
-        main: "./index_mac.html",
-      },
+const config: WasmViteConfig = {
+    outputDir: "splitview_mdx_editor_mac",
+    build: {
+        rollupOptions: {
+            input: {
+                main: "./index_mac.html",
+            },
+        },
     },
-  },
 };
 
-export default defineConfig(getWebviewViteConfig(config));
+export default defineConfig(getWasmViteConfig(config));

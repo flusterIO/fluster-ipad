@@ -8,10 +8,7 @@ use crate::{
         parse_mdx_by_regex::ParseMdxOptions,
         regex_parsers::mdx_parser::{MdxParser, ParserId},
     },
-    parsing_result::{
-        citation_result::{self, CitationResult},
-        mdx_parsing_result::MdxParsingResult,
-    },
+    parsing_result::{citation_result::CitationResult, mdx_parsing_result::MdxParsingResult},
 };
 
 pub struct CitationRegexParser;
@@ -21,7 +18,7 @@ impl MdxParser for CitationRegexParser {
     fn parser_id(&self) -> ParserId {
         ParserId::Citations
     }
-    async fn parse_async(&self, req: &ParseMdxOptions, result: &mut MdxParsingResult) {
+    async fn parse_async(&self, _req: &ParseMdxOptions, result: &mut MdxParsingResult) {
         let r = Regex::new(r#"\[\[cite:(?<citation_id>[^\]]+)\]\]"#)
             .expect("Creates regex without throwing an error.");
 

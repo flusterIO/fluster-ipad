@@ -45,7 +45,7 @@ build_internal_cli:
 
 build_fluster_wasm:
 	# cd {{justfile_directory()}}/packages/typescript/wasm/fluster_wasm; pnpm build
-	cd {{justfile_directory()}}/packages/typescript/wasm/fluster_wasm; wasm-pack build --target web
+	cd {{justfile_directory()}}/packages/typescript/wasm/fluster_wasm; pnpm build
 
 gather_component_docs: write_zod_schema_docs write_component_list_note
 	tsx {{justfile_directory()}}/scripts/gather_component_docs.ts
@@ -125,7 +125,7 @@ build_fluster_swift_mdx_parser: build_cross_language_all build_fluster_pre_parse
 build_fluster_core_rust_utilities: build_cross_language_all
 	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
 
-build_webview_utils: build_cross_language_all build_fluster_lezer gather_component_docs
+build_webview_utils: build_cross_language_all build_fluster_lezer gather_component_docs build_fluster_wasm
 	pnpm run -C packages/webview_utils build
 
 build_dictionary_webview: build_cross_language_all build_webview_utils

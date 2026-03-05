@@ -4,9 +4,9 @@
 
 
 export interface CodeBlockParsingResult {
-    full_match: string;
-    language_tag: string;
-    block_content: string;
+	full_match: string;
+	language_tag: string;
+	block_content: string;
 }
 
 /**
@@ -14,57 +14,57 @@ export interface CodeBlockParsingResult {
  * editor.
  */
 export interface EditorCitation {
-    citation_key: string;
-    html: string;
+	citation_key: string;
+	html: string;
 }
 
 export enum CodeEditorKeymap {
-    Vim = "vim",
-    Base = "base",
-    Emacs = "emacs",
+	Vim = "vim",
+	Base = "base",
+	Emacs = "emacs",
 }
 
 export enum CodeEditorTheme {
-    MaterialLight = "materialLight",
-    SolarizedLight = "solarizedLight",
-    SolarizedDark = "solarizedDark",
-    GithubLight = "githubLight",
-    Aura = "aura",
-    TokyoNightDay = "tokyoNightDay",
-    XcodeLight = "xcodeLight",
-    Dracula = "dracula",
-    TokyoNight = "tokyoNight",
-    MaterialDark = "materialDark",
-    TokyoNightStorm = "tokyoNightStorm",
-    GithubDark = "githubDark",
-    XcodeDark = "xcodeDark",
+	MaterialLight = "materialLight",
+	SolarizedLight = "solarizedLight",
+	SolarizedDark = "solarizedDark",
+	GithubLight = "githubLight",
+	Aura = "aura",
+	TokyoNightDay = "tokyoNightDay",
+	XcodeLight = "xcodeLight",
+	Dracula = "dracula",
+	TokyoNight = "tokyoNight",
+	MaterialDark = "materialDark",
+	TokyoNightStorm = "tokyoNightStorm",
+	GithubDark = "githubDark",
+	XcodeDark = "xcodeDark",
 }
 
 export interface SnippetState {
-    includeEmojiSnippets: boolean;
+	includeEmojiSnippets: boolean;
 }
 
 export enum EditorSaveMethod {
-    OnSave = "on-save",
-    OnChange = "on-change",
+	OnSave = "on-save",
+	OnChange = "on-change",
 }
 
 export interface EditorInitialStatePayload {
-    note_id: string;
-    keymap: CodeEditorKeymap;
-    theme: CodeEditorTheme;
-    allCitationIds: string[];
-    value: string;
-    parsedValue: string;
-    haveSetInitialValue: boolean;
-    snippetProps: SnippetState;
-    lockEditorScrollToPreview: boolean;
-    saveMethod: EditorSaveMethod;
+	note_id: string;
+	keymap: CodeEditorKeymap;
+	theme: CodeEditorTheme;
+	allCitationIds: string[];
+	value: string;
+	parsedValue: string;
+	haveSetInitialValue: boolean;
+	snippetProps: SnippetState;
+	lockEditorScrollToPreview: boolean;
+	saveMethod: EditorSaveMethod;
 }
 
 export enum CodeEditorBaseKeymap {
-    Default = "default",
-    VsCode = "vsCode",
+	Default = "default",
+	VsCode = "vsCode",
 }
 
 /**
@@ -72,108 +72,108 @@ export enum CodeEditorBaseKeymap {
  * editor.
  */
 export interface EditorTag {
-    body: string;
+	body: string;
 }
 
 export enum EditorView {
-    Pending = "Pending",
-    Splitview = "Splitview",
-    PreviewOnly = "PreviewOnly",
+	Pending = "Pending",
+	Splitview = "Splitview",
+	PreviewOnly = "PreviewOnly",
 }
 
 export interface EditorState {
-    /**
-     * * Required for verification before saving manually as the async,
-     * back-forth approach with the AI parser
-     * might allow tme for things to change.
-     * This might resolve some DB issues that popped up
-     * during dev too... not sure if they're just dev tool things or real issues.
-     */
-    note_id?: string;
-    baseKeymap: CodeEditorBaseKeymap;
-    citations: EditorCitation[];
-    keymap: CodeEditorKeymap;
-    theme: CodeEditorTheme;
-    tags: EditorTag[];
-    allCitationIds: string[];
-    value: string;
-    parsedValue?: string;
-    haveSetInitialValue: boolean;
-    editorView: EditorView;
-    snippetProps: SnippetState;
-    lockEditorScrollToPreview: boolean;
-    saveMethod: EditorSaveMethod;
+	/**
+	 * * Required for verification before saving manually as the async,
+	 * back-forth approach with the AI parser
+	 * might allow tme for things to change.
+	 * This might resolve some DB issues that popped up
+	 * during dev too... not sure if they're just dev tool things or real issues.
+	 */
+	note_id?: string;
+	baseKeymap: CodeEditorBaseKeymap;
+	citations: EditorCitation[];
+	keymap: CodeEditorKeymap;
+	theme: CodeEditorTheme;
+	tags: EditorTag[];
+	allCitationIds: string[];
+	value: string;
+	parsedValue?: string;
+	haveSetInitialValue: boolean;
+	editorView: EditorView;
+	snippetProps: SnippetState;
+	lockEditorScrollToPreview: boolean;
+	saveMethod: EditorSaveMethod;
 }
 
 export interface ManualSaveRequestEvent {
-    current_note_content: string;
-    /**
-     * note_id is required to verify the note before updating the note's data since there's so
-     * much async shit going on.
-     */
-    note_id: string;
+	current_note_content: string;
+	/**
+	 * note_id is required to verify the note before updating the note's data since there's so
+	 * much async shit going on.
+	 */
+	note_id: string;
 }
 
 export enum EditorStateActions {
-    SetEditorSaveMethod = "set-editor-save-method",
-    SetInitialEditorState = "set-initial-editor-state",
-    /** This is the 'onChange' method that's executed _after_ the content is parsed. */
-    SetParsedEditorContent = "set-parsed-editor-content",
+	SetEditorSaveMethod = "set-editor-save-method",
+	SetInitialEditorState = "set-initial-editor-state",
+	/** This is the 'onChange' method that's executed _after_ the content is parsed. */
+	SetParsedEditorContent = "set-parsed-editor-content",
 }
 
 export interface SetEditorInitialStateEditorAction {
-    type: EditorStateActions;
-    payload: EditorInitialStatePayload;
+	type: EditorStateActions;
+	payload: EditorInitialStatePayload;
 }
 
 export interface SetEditorSaveMethodEditorAction {
-    type: EditorStateActions;
-    payload: EditorSaveMethod;
+	type: EditorStateActions;
+	payload: EditorSaveMethod;
 }
 
 export interface SetParsedMdxContentEditorAction {
-    type: EditorStateActions;
-    /** The serialized flatbuffer for the OnParsedContentChangeEventBuffer table. */
-    payload: number[];
+	type: EditorStateActions;
+	/** The serialized flatbuffer for the OnParsedContentChangeEventBuffer table. */
+	payload: number[];
 }
 
 /** From typescript to swift. */
 export enum WebviewEnvironment {
-    MacOS = "fluster-mac",
-    IPad = "fluster-ipad",
-    MultiPlatformDesktop = "fluster-multi-platform-desktop",
+	MacOS = "fluster-mac",
+	IPad = "fluster-ipad",
+	MultiPlatformDesktop = "fluster-multi-platform-desktop",
 }
 
 export enum SizableOption {
-    None = "none",
-    Small = "small",
-    Smedium = "smedium",
-    Medium = "medium",
-    Large = "large",
-    Xl = "xl",
-    Xxl = "xxl",
-    Fit = "fit",
-    Full = "full",
+	None = "none",
+	Small = "small",
+	Smedium = "smedium",
+	Medium = "medium",
+	Large = "large",
+	Xl = "xl",
+	Xxl = "xxl",
+	Fit = "fit",
+	Full = "full",
 }
 
 export interface WebviewContainerState {
-    environment?: WebviewEnvironment;
-    size: SizableOption;
-    wasm_loaded: boolean;
+	environment?: WebviewEnvironment;
+	size: SizableOption;
+	wasm_loaded: boolean;
 }
 
 export enum AutoInsertedComponentName {
-    NoteLink = "NoteLink",
-    AutoInsertedTag = "AutoInsertedTag",
-    FlusterCitation = "FlusterCitation",
-    DictionaryEntry = "DictionaryEntry",
-    FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
+	NoteLink = "NoteLink",
+	AutoInsertedTag = "AutoInsertedTag",
+	FlusterCitation = "FlusterCitation",
+	DictionaryEntry = "DictionaryEntry",
+	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
 }
 
 export enum AutoTaggableType {
-    Tag = "tag",
-    Topic = "topic",
-    Subject = "subject",
+	Tag = "tag",
+	Topic = "topic",
+	Subject = "subject",
 }
 
 /**
@@ -181,198 +181,198 @@ export enum AutoTaggableType {
  * as the content will need to grow as components are added.
  */
 export enum BenchmarkGeneratedDateString {
-    Initial = "2_2_2026",
+	Initial = "2_2_2026",
 }
 
 export enum BenchmarkMagnitude {
-    Five = "Five",
-    Ten = "Ten",
-    Twenty = "Twenty",
-    Fifty = "Fifty",
+	Five = "Five",
+	Ten = "Ten",
+	Twenty = "Twenty",
+	Fifty = "Fifty",
 }
 
 /** From typescript to swift. */
 export enum BibtexEditorWebviewActions {
-    RequestBibtexEditorData = "request-bibtex-data",
-    SetWebviewLoaded = "set-bibtex-webview-loaded",
-    OnEditorChange = "on-bib-editor-change",
+	RequestBibtexEditorData = "request-bibtex-data",
+	SetWebviewLoaded = "set-bibtex-webview-loaded",
+	OnEditorChange = "on-bib-editor-change",
 }
 
 /** From swift to typescript */
 export enum BibtexEditorWebviewEvents {
-    SetInitialColorScheme = "set-bib-initial-color-scheme",
-    SetBibtexEditorContent = "set-bibtex-data",
-    SetEditorKeymap = "set-bib-editor-keymap",
-    SetCodeTheme = "set-bib-code-theme",
-    SetCodeThemeLight = "set-bib-code-theme-light",
-    SetCodeThemeDark = "set-bib-code-theme-dark",
+	SetInitialColorScheme = "set-bib-initial-color-scheme",
+	SetBibtexEditorContent = "set-bibtex-data",
+	SetEditorKeymap = "set-bib-editor-keymap",
+	SetCodeTheme = "set-bib-code-theme",
+	SetCodeThemeLight = "set-bib-code-theme-light",
+	SetCodeThemeDark = "set-bib-code-theme-dark",
 }
 
 export enum BibtexEditorWebviewLocalStorageKeys {
-    InitialValue = "bibtex-editor-initial-value",
+	InitialValue = "bibtex-editor-initial-value",
 }
 
 /** From typescript to swift. */
 export enum DictionaryWebviewActions {
-    RequestDictionaryData = "request-dictionary-data",
-    SetWebviewLoaded = "set-webview-loaded",
+	RequestDictionaryData = "request-dictionary-data",
+	SetWebviewLoaded = "set-webview-loaded",
 }
 
 /** From swift to typescript */
 export enum DictionaryWebviewEvents {
-    SetInitialColorScheme = "set-initial-color-scheme",
-    SetDictionaryData = "set-dictionary-data",
-    SetCodeTheme = "set-code-theme",
+	SetInitialColorScheme = "set-initial-color-scheme",
+	SetDictionaryData = "set-dictionary-data",
+	SetCodeTheme = "set-code-theme",
 }
 
 export enum DictionaryWebviewIds {
-    DictionaryContainer = "dictionary-container",
+	DictionaryContainer = "dictionary-container",
 }
 
 export enum DictionaryWebviewStorageKeys {
-    ScrollPositionPortrait = "dict-scroll-pos-portrait",
-    ScrollPositionLandscape = "dict-scroll-pos-landscape",
-    DictionaryData = "dict-data",
+	ScrollPositionPortrait = "dict-scroll-pos-portrait",
+	ScrollPositionLandscape = "dict-scroll-pos-landscape",
+	DictionaryData = "dict-data",
 }
 
 export enum DocumentationComponentName {
-    InContentDocumentationContainer = "InContentDocumentationContainer",
-    InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
+	InContentDocumentationContainer = "InContentDocumentationContainer",
+	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
 }
 
 /** From typescript to swift. */
 export enum EmbeddableComponentId {
-    Admonition = "admonition",
-    Hl = "highlight",
-    Ul = "underline",
-    Card = "card",
-    Grid = "grid",
-    UtlityContainer = "util-container",
-    HrWithChildren = "hr-with-children",
-    Hint = "embeddable-hint-component",
+	Admonition = "admonition",
+	Hl = "highlight",
+	Ul = "underline",
+	Card = "card",
+	Grid = "grid",
+	UtlityContainer = "util-container",
+	HrWithChildren = "hr-with-children",
+	Hint = "embeddable-hint-component",
 }
 
 export enum EmbeddableComponentName {
-    Admonition = "Admonition",
-    Hl = "Hl",
-    Highlight = "Highlight",
-    Ul = "Ul",
-    Underline = "Underline",
-    Card = "Card",
-    Grid = "Grid",
-    UtlityContainer = "Container",
-    HrWithChildren = "Hr",
-    Hint = "Hint",
+	Admonition = "Admonition",
+	Hl = "Hl",
+	Highlight = "Highlight",
+	Ul = "Ul",
+	Underline = "Underline",
+	Card = "Card",
+	Grid = "Grid",
+	UtlityContainer = "Container",
+	HrWithChildren = "Hr",
+	Hint = "Hint",
 }
 
 export enum InContentDocumentationFormat {
-    Full = "full",
-    Short = "short",
+	Full = "full",
+	Short = "short",
 }
 
 export enum InContentDocumentationId {
-    Markdown = "Markdown",
-    Docs = "Docs",
-    Syntax = "Syntax",
-    Jsx = "Jsx",
-    SizableObject = "Sizable",
-    Emphasis = "Emphasis",
-    Emoji = "Emoji",
-    Components = "Components",
+	Markdown = "Markdown",
+	Docs = "Docs",
+	Syntax = "Syntax",
+	Jsx = "Jsx",
+	SizableObject = "Sizable",
+	Emphasis = "Emphasis",
+	Emoji = "Emoji",
+	Components = "Components",
 }
 
 export enum InContentDocumentationSource {
-    ComponentDocs = "component",
-    InternalDocs = "internal-docs",
+	ComponentDocs = "component",
+	InternalDocs = "internal-docs",
 }
 
 /** From typescript to swift. */
 export enum MdxPreviewWebviewActions {
-    RequestNoteData = "request-note-data",
-    SetWebviewLoaded = "set-preview-webview-loaded",
-    ViewNoteByUserDefinedId = "view-note-by-user-def-id",
-    ViewNoteById = "view-note-by--id",
-    OnTagClick = "tag-click-event",
-    OnTopicClick = "handle-topic-click",
-    OnSubjectClick = "handle-subject-click",
-    OnCitationClick = "handle-citation-click",
-    ShowUserFacingNotification = "show-user-facing-notification",
+	RequestNoteData = "request-note-data",
+	SetWebviewLoaded = "set-preview-webview-loaded",
+	ViewNoteByUserDefinedId = "view-note-by-user-def-id",
+	ViewNoteById = "view-note-by--id",
+	OnTagClick = "tag-click-event",
+	OnTopicClick = "handle-topic-click",
+	OnSubjectClick = "handle-subject-click",
+	OnCitationClick = "handle-citation-click",
+	ShowUserFacingNotification = "show-user-facing-notification",
 }
 
 /** From swift to typescript */
 export enum MdxPreviewWebviewEvents {
-    SetInitialColorScheme = "set-initial-color-scheme",
-    SetPreviewContent = "set-mdx-preview-content",
+	SetInitialColorScheme = "set-initial-color-scheme",
+	SetPreviewContent = "set-mdx-preview-content",
 }
 
 /** From typescript to swift. */
 export enum NoteDetailWebviewActions {
-    RequestNoteDetailData = "request-note-detail-data",
-    SetWebviewLoaded = "set-note-detail-webview-loaded",
-    OnTagClick = "handle-tag-click",
-    OnTopicClick = "handle-topic-click",
-    OnSubjectClick = "handle-subject-click",
-    OnCitationClick = "handle-citation-click",
+	RequestNoteDetailData = "request-note-detail-data",
+	SetWebviewLoaded = "set-note-detail-webview-loaded",
+	OnTagClick = "handle-tag-click",
+	OnTopicClick = "handle-topic-click",
+	OnSubjectClick = "handle-subject-click",
+	OnCitationClick = "handle-citation-click",
 }
 
 /** From swift to typescript */
 export enum NoteDetailWebviewEvents {
-    SetInitialColorScheme = "set-initial-color-scheme",
-    SetNoteDetails = "set-note-details",
+	SetInitialColorScheme = "set-initial-color-scheme",
+	SetNoteDetails = "set-note-details",
 }
 
 /** From typescript to swift. */
 export enum SharedWebviewActions {
-    JavascriptError = "javascript-error",
+	JavascriptError = "javascript-error",
 }
 
 /** Events */
 export enum SharedWebviewEvents {
-    LocalStorageWrite = "broadcast-local-storage",
+	LocalStorageWrite = "broadcast-local-storage",
 }
 
 export enum SplitviewEditorDomIds {
-    MdxPreview = "mdx-preview",
+	MdxPreview = "mdx-preview",
 }
 
 /** From typescript to swift. */
 export enum SplitviewEditorWebviewActions {
-    RequestSplitviewEditorData = "request-editor-data",
-    RequestParsedMdxContent = "request-parsed-mdx",
-    OnEditorChange = "on-editor-change",
-    SetWebviewLoaded = "set-editor-webview-loaded",
-    SetIsLandscape = "set-is-landscape-view",
-    ManualSaveRequest = "manual-save-req",
+	RequestSplitviewEditorData = "request-editor-data",
+	RequestParsedMdxContent = "request-parsed-mdx",
+	OnEditorChange = "on-editor-change",
+	SetWebviewLoaded = "set-editor-webview-loaded",
+	SetIsLandscape = "set-is-landscape-view",
+	ManualSaveRequest = "manual-save-req",
 }
 
 /** From swift to typescript */
 export enum SplitviewEditorWebviewEvents {
-    SetInitialColorScheme = "set-initial-color-scheme",
-    SetSplitviewEditorContent = "set-editor-content",
-    SetParsedMdxContent = "set-parsed-mdx-content",
-    SetParsedMdxContentString = "set-editor-content-str",
-    SetEditorKeymap = "set-editor-keymap",
-    SetEditorSnippetProps = "set-editor-snippet-props",
-    SetCodeTheme = "set-code-theme",
-    SetCodeThemeLight = "set-code-theme-light",
-    SetCodeThemeDark = "set-code-theme-dark",
-    ResetPreviewScrollPosition = "reset-mdx-preview-scroll-position",
-    EmitMdxParsingError = "mdx-parsing-error",
-    EmitMdxParsingSuccess = "mdx-parsing-success",
-    SetWebviewPreviewScrollLock = "set-webview-preview-scroll-lock",
-    EditorStateUpdate = "cross-lang-editor-update",
-    EditorStateParsedContentUpdate = "editor-parsed-content-update",
+	SetInitialColorScheme = "set-initial-color-scheme",
+	SetSplitviewEditorContent = "set-editor-content",
+	SetParsedMdxContent = "set-parsed-mdx-content",
+	SetParsedMdxContentString = "set-editor-content-str",
+	SetEditorKeymap = "set-editor-keymap",
+	SetEditorSnippetProps = "set-editor-snippet-props",
+	SetCodeTheme = "set-code-theme",
+	SetCodeThemeLight = "set-code-theme-light",
+	SetCodeThemeDark = "set-code-theme-dark",
+	ResetPreviewScrollPosition = "reset-mdx-preview-scroll-position",
+	EmitMdxParsingError = "mdx-parsing-error",
+	EmitMdxParsingSuccess = "mdx-parsing-success",
+	SetWebviewPreviewScrollLock = "set-webview-preview-scroll-lock",
+	EditorStateUpdate = "cross-lang-editor-update",
+	EditorStateParsedContentUpdate = "editor-parsed-content-update",
 }
 
 export enum SplitviewEditorWebviewLocalStorageKeys {
-    InitialValue = "editor-initial-value",
-    ParsedMdxData = "parsed-mdx-data",
-    CodeTheme = "editor-code-theme",
-    CodeThemeDark = "editor-code-theme-dark",
-    CodeThemeLight = "editor-code-theme-light",
-    EditorKeymap = "editor-keymap",
-    ScrollPositionPreviewOnly = "editor-scroll-pos-preview-only",
-    ScrollPositionSplitview = "editor-scroll-pos-splitview",
-    EditorState = "editor-state",
+	InitialValue = "editor-initial-value",
+	ParsedMdxData = "parsed-mdx-data",
+	CodeTheme = "editor-code-theme",
+	CodeThemeDark = "editor-code-theme-dark",
+	CodeThemeLight = "editor-code-theme-light",
+	EditorKeymap = "editor-keymap",
+	ScrollPositionPreviewOnly = "editor-scroll-pos-preview-only",
+	ScrollPositionSplitview = "editor-scroll-pos-splitview",
+	EditorState = "editor-state",
 }
 
