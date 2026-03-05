@@ -71,6 +71,9 @@ pub enum SplitviewEditorWebviewEvents {
     #[serde(rename = "cross-lang-editor-update")]
     #[strum(to_string = "cross-lang-editor-update")]
     EditorStateUpdate,
+    #[serde(rename = "editor-parsed-content-update")]
+    #[strum(to_string = "editor-parsed-content-update")]
+    EditorStateParsedContentUpdate,
 }
 
 #[typeshare]
@@ -100,6 +103,9 @@ pub enum SplitviewEditorWebviewLocalStorageKeys {
     #[serde(rename = "editor-scroll-pos-splitview")]
     #[strum(to_string = "editor-scroll-pos-splitview")]
     ScrollPositionSplitview,
+    #[serde(rename = "editor-state")]
+    #[strum(to_string = "editor-state")]
+    EditorState,
 }
 
 #[typeshare]

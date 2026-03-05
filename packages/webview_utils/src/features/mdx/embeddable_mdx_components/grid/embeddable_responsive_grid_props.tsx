@@ -89,7 +89,7 @@ const modifiedSizableSchema = sizableObjectSchema
         centerContent: z.boolean({ message: "'centerContent' must be a boolean." }).optional().transform((a) => a ? "w-full place-items-center" : "").describe("Centers the content of this component's children, not the component itself."),
         fit: z.boolean({ message: "If true while 'responsive' is set this will cause items to expand to fill the empty space." }).optional(),
         responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional(),
-        gap: sizablePropSchema("gap").default("medium").transform(sizablePropsMapTransform({
+        gap: sizablePropSchema("gap").default(SizableOption.Medium).transform(sizablePropsMapTransform({
             none: "gap-0",
             small: "gap-2",
             medium: "gap-4",
@@ -135,14 +135,14 @@ export const getSmallestSizableBreakpointByWidth = (w: number): SizableOption | 
 
 export const getColumns = (data: { [K in Exclude<SizableOption, "fit">]?: number | undefined | string }): { [K in SizableOption]: number | string } => {
     return {
-        none: getSmallerItemOrDefault(sizableOptions.indexOf("none"), data, defaultColumnsByBreakSize.none),
-        small: getSmallerItemOrDefault(sizableOptions.indexOf("small"), data, defaultColumnsByBreakSize.small),
-        smedium: getSmallerItemOrDefault(sizableOptions.indexOf("smedium"), data, defaultColumnsByBreakSize.smedium),
-        medium: getSmallerItemOrDefault(sizableOptions.indexOf("medium"), data, defaultColumnsByBreakSize.medium),
-        large: getSmallerItemOrDefault(sizableOptions.indexOf("large"), data, defaultColumnsByBreakSize.large),
-        xl: getSmallerItemOrDefault(sizableOptions.indexOf("xl"), data, defaultColumnsByBreakSize.xl),
-        xxl: getSmallerItemOrDefault(sizableOptions.indexOf("xxl"), data, defaultColumnsByBreakSize.xxl),
-        full: getSmallerItemOrDefault(sizableOptions.indexOf("full"), data, defaultColumnsByBreakSize.full),
+        none: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.None), data, defaultColumnsByBreakSize.none),
+        small: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.Small), data, defaultColumnsByBreakSize.small),
+        smedium: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.Smedium), data, defaultColumnsByBreakSize.smedium),
+        medium: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.Medium), data, defaultColumnsByBreakSize.medium),
+        large: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.Large), data, defaultColumnsByBreakSize.large),
+        xl: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.Xl), data, defaultColumnsByBreakSize.xl),
+        xxl: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.Xxl), data, defaultColumnsByBreakSize.xxl),
+        full: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.Full), data, defaultColumnsByBreakSize.full),
         // Since 'fit' is being applied as a boolean in the grid RAM layout, it's being ignored here as a 'width' parameter.
         fit: defaultColumnsByBreakSize.full
     }

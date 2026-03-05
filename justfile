@@ -43,6 +43,9 @@ lint:
 build_internal_cli:
 	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build
 
+build_fluster_wasm:
+	# cd {{justfile_directory()}}/packages/typescript/wasm/fluster_wasm; pnpm build
+	cd {{justfile_directory()}}/packages/typescript/wasm/fluster_wasm; wasm-pack build --target web
 
 gather_component_docs: write_zod_schema_docs write_component_list_note
 	tsx {{justfile_directory()}}/scripts/gather_component_docs.ts
@@ -100,6 +103,7 @@ build_fluster_lezer:
 	cd {{justfile_directory()}}/packages/typescript/lezer; pnpm build
 
 build_cross_language_all: build_cross_language_schemas 
+	tsx {{justfile_directory()}}/scripts/post_cross_language_modifications.ts
 
 generate_initial_launch_data: generate_initial_note_paths generate_component_docs_paths generate_initial_note_data write_in_content_docs_by_id
 

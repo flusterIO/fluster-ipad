@@ -1,6 +1,7 @@
 [workspace]
 resolver = "3"
 members = [
+    "./packages/typescript/wasm/fluster_wasm",
     "packages/rust/fluster_core_utilities",
     "packages/rust/fluster_database",
     "packages/rust/fluster_internal_cli",

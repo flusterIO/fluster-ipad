@@ -878,6 +878,122 @@ impl core::fmt::Debug for CitationResultBuffer<'_> {
       ds.finish()
   }
 }
+pub enum EditorCitationBufferOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct EditorCitationBuffer<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for EditorCitationBuffer<'a> {
+  type Inner = EditorCitationBuffer<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> EditorCitationBuffer<'a> {
+  pub const VT_CITATION_KEY: flatbuffers::VOffsetT = 4;
+  pub const VT_HTML: flatbuffers::VOffsetT = 6;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    EditorCitationBuffer { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args EditorCitationBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<EditorCitationBuffer<'bldr>> {
+    let mut builder = EditorCitationBufferBuilder::new(_fbb);
+    if let Some(x) = args.html { builder.add_html(x); }
+    if let Some(x) = args.citation_key { builder.add_citation_key(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn citation_key(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorCitationBuffer::VT_CITATION_KEY, None).unwrap()}
+  }
+  #[inline]
+  pub fn html(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorCitationBuffer::VT_HTML, None).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for EditorCitationBuffer<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("citation_key", Self::VT_CITATION_KEY, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("html", Self::VT_HTML, true)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct EditorCitationBufferArgs<'a> {
+    pub citation_key: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub html: Option<flatbuffers::WIPOffset<&'a str>>,
+}
+impl<'a> Default for EditorCitationBufferArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    EditorCitationBufferArgs {
+      citation_key: None, // required field
+      html: None, // required field
+    }
+  }
+}
+
+pub struct EditorCitationBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> EditorCitationBufferBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_citation_key(&mut self, citation_key: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorCitationBuffer::VT_CITATION_KEY, citation_key);
+  }
+  #[inline]
+  pub fn add_html(&mut self, html: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorCitationBuffer::VT_HTML, html);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> EditorCitationBufferBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    EditorCitationBufferBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<EditorCitationBuffer<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, EditorCitationBuffer::VT_CITATION_KEY,"citation_key");
+    self.fbb_.required(o, EditorCitationBuffer::VT_HTML,"html");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for EditorCitationBuffer<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("EditorCitationBuffer");
+      ds.field("citation_key", &self.citation_key());
+      ds.field("html", &self.html());
+      ds.finish()
+  }
+}
 pub enum TagResultBufferOffset {}
 #[derive(Copy, Clone, PartialEq)]
 
@@ -1122,6 +1238,121 @@ impl core::fmt::Debug for FrontMatterResultBuffer<'_> {
       ds.field("title", &self.title());
       ds.field("user_defined_id", &self.user_defined_id());
       ds.field("fs_path", &self.fs_path());
+      ds.finish()
+  }
+}
+pub enum OnParsedContentChangeEventBufferOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct OnParsedContentChangeEventBuffer<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for OnParsedContentChangeEventBuffer<'a> {
+  type Inner = OnParsedContentChangeEventBuffer<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> OnParsedContentChangeEventBuffer<'a> {
+  pub const VT_PARSED_CONTENT: flatbuffers::VOffsetT = 4;
+  pub const VT_CITATIONS: flatbuffers::VOffsetT = 6;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    OnParsedContentChangeEventBuffer { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args OnParsedContentChangeEventBufferArgs<'args>
+  ) -> flatbuffers::WIPOffset<OnParsedContentChangeEventBuffer<'bldr>> {
+    let mut builder = OnParsedContentChangeEventBufferBuilder::new(_fbb);
+    if let Some(x) = args.citations { builder.add_citations(x); }
+    if let Some(x) = args.parsed_content { builder.add_parsed_content(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn parsed_content(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(OnParsedContentChangeEventBuffer::VT_PARSED_CONTENT, None).unwrap()}
+  }
+  #[inline]
+  pub fn citations(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorCitationBuffer<'a>>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorCitationBuffer>>>>(OnParsedContentChangeEventBuffer::VT_CITATIONS, None)}
+  }
+}
+
+impl flatbuffers::Verifiable for OnParsedContentChangeEventBuffer<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("parsed_content", Self::VT_PARSED_CONTENT, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<EditorCitationBuffer>>>>("citations", Self::VT_CITATIONS, false)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct OnParsedContentChangeEventBufferArgs<'a> {
+    pub parsed_content: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorCitationBuffer<'a>>>>>,
+}
+impl<'a> Default for OnParsedContentChangeEventBufferArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    OnParsedContentChangeEventBufferArgs {
+      parsed_content: None, // required field
+      citations: None,
+    }
+  }
+}
+
+pub struct OnParsedContentChangeEventBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> OnParsedContentChangeEventBufferBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_parsed_content(&mut self, parsed_content: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(OnParsedContentChangeEventBuffer::VT_PARSED_CONTENT, parsed_content);
+  }
+  #[inline]
+  pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<EditorCitationBuffer<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(OnParsedContentChangeEventBuffer::VT_CITATIONS, citations);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> OnParsedContentChangeEventBufferBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    OnParsedContentChangeEventBufferBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<OnParsedContentChangeEventBuffer<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, OnParsedContentChangeEventBuffer::VT_PARSED_CONTENT,"parsed_content");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for OnParsedContentChangeEventBuffer<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("OnParsedContentChangeEventBuffer");
+      ds.field("parsed_content", &self.parsed_content());
+      ds.field("citations", &self.citations());
       ds.finish()
   }
 }

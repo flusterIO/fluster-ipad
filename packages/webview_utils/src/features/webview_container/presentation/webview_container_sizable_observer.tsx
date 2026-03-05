@@ -2,7 +2,7 @@ import React, { useEffect, type ReactNode } from 'react'
 import { useWebviewContainerContext, useWebviewContainerDispatch } from '../state/webview_provider'
 import { getSmallestSizableBreakpointByWidth } from '#/mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props'
 import { useEventListener } from '@/state/hooks/use_event_listener'
-import { SplitviewEditorDomIds } from '../../../core/code_gen/typeshare/fluster_core_utilities'
+import { SizableOption, SplitviewEditorDomIds } from '../../../core/code_gen/typeshare/fluster_core_utilities'
 
 
 export const WebviewContainerSizableObserver = (): ReactNode => {
@@ -15,7 +15,7 @@ export const WebviewContainerSizableObserver = (): ReactNode => {
             return
         } else {
             const width = em.getBoundingClientRect().width
-            const smallestSize = getSmallestSizableBreakpointByWidth(width) ?? "full"
+            const smallestSize = getSmallestSizableBreakpointByWidth(width) ?? SizableOption.Full
             if (smallestSize !== state.size) {
                 dispatch({
                     type: "set-webview-size",

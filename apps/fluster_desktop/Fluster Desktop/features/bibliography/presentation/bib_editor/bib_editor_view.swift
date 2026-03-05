@@ -23,11 +23,11 @@ struct BibtexEditorWebview: View {
   @Environment(\.modelContext) private var modelContext: ModelContext
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @Environment(\.dismiss) private var dismiss
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
-    CodeSyntaxTheme = .dracula
+    CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
-    CodeSyntaxTheme = .materialLight
+    CodeEditorTheme = .materialLight
   /// If associateWithEditingNote == true, *new* BibEntryModel will be associated with the note currently being edited.
   let associateWithEditingNote: Bool = true
   @Query private var notes: [NoteModel]
@@ -152,25 +152,25 @@ struct BibtexEditorWebview: View {
       }
     }
   }
-  func setEditorThemeDark(editorTheme: CodeSyntaxTheme) async throws {
+  func setEditorThemeDark(editorTheme: CodeEditorTheme) async throws {
     try await MdxEditorClient.setEditorThemeDark(
       editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
     if colorScheme == .dark {
       try await setEditorSelectedTheme(editorTheme: editorTheme)
     }
   }
-  func setEditorThemeLight(editorTheme: CodeSyntaxTheme) async throws {
+  func setEditorThemeLight(editorTheme: CodeEditorTheme) async throws {
     try await MdxEditorClient.setEditorThemeLight(
       editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
     if colorScheme == .light {
       try await setEditorSelectedTheme(editorTheme: editorTheme)
     }
   }
-  func setEditorSelectedTheme(editorTheme: CodeSyntaxTheme) async throws {
+  func setEditorSelectedTheme(editorTheme: CodeEditorTheme) async throws {
     try await MdxEditorClient.setEditorTheme(
       editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
   }
-  func setEditorKeymap(editorKeymap: EditorKeymap) async throws {
+  func setEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
     try await MdxEditorClient.setEditorKeymap(
       keymap: editorKeymap, evaluateJavaScript: webView.evaluateJavaScript)
   }

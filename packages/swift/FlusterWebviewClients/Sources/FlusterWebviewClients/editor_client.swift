@@ -27,7 +27,7 @@ public struct MdxEditorClient {
       )
       """)
   }
-  public static func setEditorKeymap(keymap: EditorKeymap, evaluateJavaScript: EvalJavascriptFunc)
+  public static func setEditorKeymap(keymap: CodeEditorKeymap, evaluateJavaScript: EvalJavascriptFunc)
     async throws
   {
     try await evaluateJavaScript(
@@ -36,7 +36,7 @@ public struct MdxEditorClient {
       """)
   }
   public static func setEditorThemeLight(
-    editorTheme: CodeSyntaxTheme, evaluateJavaScript: EvalJavascriptFunc
+    editorTheme: CodeEditorTheme, evaluateJavaScript: EvalJavascriptFunc
   ) async throws {
     try await evaluateJavaScript(
       """
@@ -44,7 +44,7 @@ public struct MdxEditorClient {
       """)
   }
   public static func setEditorThemeDark(
-    editorTheme: CodeSyntaxTheme, evaluateJavaScript: EvalJavascriptFunc
+    editorTheme: CodeEditorTheme, evaluateJavaScript: EvalJavascriptFunc
   ) async throws {
     try await evaluateJavaScript(
       """
@@ -52,7 +52,7 @@ public struct MdxEditorClient {
       """)
   }
   public static func setEditorTheme(
-    editorTheme: CodeSyntaxTheme, evaluateJavaScript: @escaping EvalJavascriptFunc
+    editorTheme: CodeEditorTheme, evaluateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
     try await evaluateJavaScript(
       """

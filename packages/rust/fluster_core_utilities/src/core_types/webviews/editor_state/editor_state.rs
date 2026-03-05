@@ -4,7 +4,9 @@ use uniffi::{Enum, Record};
 
 use crate::core_types::webviews::{
     editor_save_method::EditorSaveMethod,
-    editor_state::{editor_theme::CodeEditorTheme, snippet_state::SnippetState},
+    editor_state::{
+        editor_keymap::CodeEditorKeymap, editor_theme::CodeEditorTheme, snippet_state::SnippetState,
+    },
 };
 
 #[typeshare]
@@ -12,7 +14,7 @@ use crate::core_types::webviews::{
 /// Basically a Partial<BibEntryModel> that's cross language, to be sent to the
 /// editor.
 pub struct EditorCitation {
-    pub key: String,
+    pub citation_key: String,
     pub html: String,
 }
 
@@ -46,10 +48,16 @@ pub enum CodeEditorBaseKeymap {
 #[typeshare]
 #[derive(Record, Serialize, Deserialize)]
 pub struct EditorState {
+    /// * Required for verification before saving manually as the async,
+    /// back-forth approach with the AI parser
+    ///  might allow tme for things to change.
+    /// This might resolve some DB issues that popped up
+    /// during dev too... not sure if they're just dev tool things or real issues.
     pub note_id: Option<String>,
     #[serde(rename = "baseKeymap")]
     pub base_keymap: CodeEditorBaseKeymap,
     pub citations: Vec<EditorCitation>,
+    pub keymap: CodeEditorKeymap,
     pub theme: CodeEditorTheme,
     pub tags: Vec<EditorTag>,
     #[serde(rename = "allCitationIds")]

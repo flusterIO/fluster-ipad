@@ -117,10 +117,10 @@ struct BibliographyPageInternalView: View {
 struct BibliographyPageView: View {
   @State private var editingBibEntry: BibEntryModel? = nil
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-    var editorThemeDark: CodeSyntaxTheme = .dracula
+    var editorThemeDark: CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-    var editorThemeLight: CodeSyntaxTheme = .githubLight
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
+    var editorThemeLight: CodeEditorTheme = .githubLight
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
     .fluster
   @Environment(\.colorScheme) var colorScheme

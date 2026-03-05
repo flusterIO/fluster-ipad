@@ -27,7 +27,7 @@ impl MdxParser for AiTriggerParser {
                 "<{} stringifiedResult={}>\n{}\n</{}>",
                 AutoInsertedComponentName::FlusterAiParsePendingContainer,
                 serde_json::to_string(c)
-                    .map(|x| format!("{{'{}'}}", x))
+                    .map(|x| format!("'{}'", x))
                     .unwrap_or("{null}".to_string()),
                 c.block_content,
                 AutoInsertedComponentName::FlusterAiParsePendingContainer

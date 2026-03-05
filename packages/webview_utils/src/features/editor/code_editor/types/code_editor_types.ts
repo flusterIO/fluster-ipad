@@ -16,14 +16,6 @@ export enum CodeEditorLanguage {
     bibtex,
 }
 
-declare global {
-    interface WindowEventMap {
-        "set-code-theme": CustomEvent<string>;
-        "set-editor-keymap": CustomEvent<string>;
-        "set-initial-editor-content": CustomEvent<string>;
-    }
-}
-
 export {
     CodeEditorTheme
 }

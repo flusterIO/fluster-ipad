@@ -298,6 +298,49 @@ public struct MdxSerialization_CitationResultBuffer: FlatBufferObject, Verifiabl
   }
 }
 
+public struct MdxSerialization_EditorCitationBuffer: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case citationKey = 4
+    case html = 6
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var citationKey: String! { let o = _accessor.offset(VTOFFSET.citationKey.v); return _accessor.string(at: o) }
+  public var citationKeySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.citationKey.v) }
+  public var html: String! { let o = _accessor.offset(VTOFFSET.html.v); return _accessor.string(at: o) }
+  public var htmlSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.html.v) }
+  public static func startEditorCitationBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 2) }
+  public static func add(citationKey: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citationKey, at: VTOFFSET.citationKey.p) }
+  public static func add(html: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: html, at: VTOFFSET.html.p) }
+  public static func endEditorCitationBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
+  public static func createEditorCitationBuffer(
+    _ fbb: inout FlatBufferBuilder,
+    citationKeyOffset citationKey: Offset,
+    htmlOffset html: Offset
+  ) -> Offset {
+    let __start = MdxSerialization_EditorCitationBuffer.startEditorCitationBuffer(&fbb)
+    MdxSerialization_EditorCitationBuffer.add(citationKey: citationKey, &fbb)
+    MdxSerialization_EditorCitationBuffer.add(html: html, &fbb)
+    return MdxSerialization_EditorCitationBuffer.endEditorCitationBuffer(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.citationKey.p, fieldName: "citationKey", required: true, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.html.p, fieldName: "html", required: true, type: ForwardOffset<String>.self)
+    _v.finish()
+  }
+}
+
 public struct MdxSerialization_TagResultBuffer: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
@@ -388,6 +431,50 @@ public struct MdxSerialization_FrontMatterResultBuffer: FlatBufferObject, Verifi
     try _v.visit(field: VTOFFSET.title.p, fieldName: "title", required: false, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.userDefinedId.p, fieldName: "userDefinedId", required: false, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.fsPath.p, fieldName: "fsPath", required: false, type: ForwardOffset<String>.self)
+    _v.finish()
+  }
+}
+
+public struct MdxSerialization_OnParsedContentChangeEventBuffer: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case parsedContent = 4
+    case citations = 6
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var parsedContent: String! { let o = _accessor.offset(VTOFFSET.parsedContent.v); return _accessor.string(at: o) }
+  public var parsedContentSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.parsedContent.v) }
+  public var hasCitations: Bool { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? false : true }
+  public var citationsCount: Int32 { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? 0 : _accessor.vector(count: o) }
+  public func citations(at index: Int32) -> MdxSerialization_EditorCitationBuffer? { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? nil : MdxSerialization_EditorCitationBuffer(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
+  public static func startOnParsedContentChangeEventBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 2) }
+  public static func add(parsedContent: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: parsedContent, at: VTOFFSET.parsedContent.p) }
+  public static func addVectorOf(citations: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citations, at: VTOFFSET.citations.p) }
+  public static func endOnParsedContentChangeEventBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
+  public static func createOnParsedContentChangeEventBuffer(
+    _ fbb: inout FlatBufferBuilder,
+    parsedContentOffset parsedContent: Offset,
+    citationsVectorOffset citations: Offset = Offset()
+  ) -> Offset {
+    let __start = MdxSerialization_OnParsedContentChangeEventBuffer.startOnParsedContentChangeEventBuffer(&fbb)
+    MdxSerialization_OnParsedContentChangeEventBuffer.add(parsedContent: parsedContent, &fbb)
+    MdxSerialization_OnParsedContentChangeEventBuffer.addVectorOf(citations: citations, &fbb)
+    return MdxSerialization_OnParsedContentChangeEventBuffer.endOnParsedContentChangeEventBuffer(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.parsedContent.p, fieldName: "parsedContent", required: true, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: false, type: ForwardOffset<Vector<ForwardOffset<MdxSerialization_EditorCitationBuffer>, MdxSerialization_EditorCitationBuffer>>.self)
     _v.finish()
   }
 }

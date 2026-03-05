@@ -7,12 +7,12 @@ struct MarkdownTabView: View {
   @Binding var fullScreenCover: MainFullScreenCover?
   var onNavigateToNote: (NoteModel) -> Void = { _ in }
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-    var editorThemeDark: CodeSyntaxTheme = .dracula
+    var editorThemeDark: CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-    var editorThemeLight: CodeSyntaxTheme = .githubLight
+    var editorThemeLight: CodeEditorTheme = .githubLight
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
     .fluster
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
     var hasPreviouslyLaunched: Bool = false
   @Environment(ThemeManager.self) private var themeManager: ThemeManager

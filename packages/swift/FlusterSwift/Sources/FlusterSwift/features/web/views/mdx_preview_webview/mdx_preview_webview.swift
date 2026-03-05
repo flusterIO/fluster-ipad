@@ -27,10 +27,10 @@ public struct MdxPreviewWebview: UIViewRepresentable {
     var webviewFontSize: WebviewFontSize = .base
   let url: URL
   @Binding var theme: WebViewTheme
-  @Binding var editorThemeDark: CodeSyntaxTheme
-  @Binding var editorThemeLight: CodeSyntaxTheme
+  @Binding var editorThemeDark: CodeEditorTheme
+  @Binding var editorThemeLight: CodeEditorTheme
   @Binding var editingNote: NoteModel?
-  @Binding var editorKeymap: EditorKeymap
+  @Binding var editorKeymap: CodeEditorKeymap
   @Binding var shouldShowEditor: Bool
   @Binding var viewportHeight: CGFloat
 
@@ -39,8 +39,8 @@ public struct MdxPreviewWebview: UIViewRepresentable {
   public init(
     url: URL,
     theme: Binding<WebViewTheme>,
-    editorThemeDark: Binding<CodeSyntaxTheme>,
-    editorThemeLight: Binding<CodeSyntaxTheme>,
+    editorThemeDark: Binding<CodeEditorTheme>,
+    editorThemeLight: Binding<CodeEditorTheme>,
     editingNote: Binding<NoteModel?>,
     editorKeymap: Binding<EditorKeymap>,
     shouldShowEditor: Binding<Bool>,

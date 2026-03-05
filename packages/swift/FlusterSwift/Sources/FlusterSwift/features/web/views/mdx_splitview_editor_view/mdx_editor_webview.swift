@@ -32,10 +32,10 @@ import WebKit
     let url: URL
     @Binding var show: Bool
     @Binding var theme: WebViewTheme
-    @Binding var editorThemeDark: CodeSyntaxTheme
-    @Binding var editorThemeLight: CodeSyntaxTheme
+    @Binding var editorThemeDark: CodeEditorTheme
+    @Binding var editorThemeLight: CodeEditorTheme
     @Binding var editingNote: NoteModel
-    @Binding var editorKeymap: EditorKeymap
+    @Binding var editorKeymap: CodeEditorKeymap
     @Binding var fullScreenCover: MainFullScreenCover?
     var onNavigateToNote: (NoteModel) -> Void
 
@@ -44,8 +44,8 @@ import WebKit
     public init(
       url: URL,
       theme: Binding<WebViewTheme>,
-      editorThemeDark: Binding<CodeSyntaxTheme>,
-      editorThemeLight: Binding<CodeSyntaxTheme>,
+      editorThemeDark: Binding<CodeEditorTheme>,
+      editorThemeLight: Binding<CodeEditorTheme>,
       editingNote: Binding<NoteModel>,
       editorKeymap: Binding<EditorKeymap>,
       container: MdxEditorWebviewContainer,
@@ -282,18 +282,18 @@ import WebKit
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
     let url: URL
     @Binding var theme: WebViewTheme
-    @Binding var editorThemeDark: CodeSyntaxTheme
-    @Binding var editorThemeLight: CodeSyntaxTheme
+    @Binding var editorThemeDark: CodeEditorTheme
+    @Binding var editorThemeLight: CodeEditorTheme
     @Binding var editingNote: NoteModel
-    @Binding var editorKeymap: EditorKeymap
+    @Binding var editorKeymap: CodeEditorKeymap
     @Binding var fullScreenCover: MainFullScreenCover?
     var onNavigateToNote: (NoteModel) -> Void
     let container: MdxEditorWebviewContainer
     public init(
       url: URL,
       theme: Binding<WebViewTheme>,
-      editorThemeDark: Binding<CodeSyntaxTheme>,
-      editorThemeLight: Binding<CodeSyntaxTheme>,
+      editorThemeDark: Binding<CodeEditorTheme>,
+      editorThemeLight: Binding<CodeEditorTheme>,
       editingNote: Binding<NoteModel>,
       editorKeymap: Binding<EditorKeymap>,
       container: MdxEditorWebviewContainer,

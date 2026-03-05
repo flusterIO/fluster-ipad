@@ -1,0 +1,44 @@
+import fs from "fs";
+import assert from "node:assert";
+import path from "path";
+
+interface Replacer {
+    query: string;
+    replaceWith: string;
+}
+
+const replacers: Record<string, Replacer[]> = {
+    "packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare/FlusterCoreUtilities.swift":
+        [
+            {
+                query: `public enum CodeEditorTheme: String, Codable {`,
+                replaceWith: `public enum CodeEditorTheme: String, Codable, CaseIterable {`,
+            },
+            {
+                query: `public enum CodeEditorKeymap: String, Codable {`,
+                replaceWith: `public enum CodeEditorKeymap: String, Codable, CaseIterable {`,
+            },
+        ],
+};
+
+export const replaceStuff = (replacers: Replacer[], filePath: string) => {
+    const fp = path.resolve(path.resolve(__dirname, "../"), filePath);
+    let content = fs.readFileSync(fp, {
+        encoding: "utf-8",
+    });
+
+    console.log("content: ", content);
+    for (const replacer of replacers) {
+        assert(
+            content.includes(replacer.query),
+            `Attempted to modify generated content that doesn't exist: ${replacer.query}`,
+        );
+        content = content.replaceAll(replacer.query, replacer.replaceWith);
+    }
+
+    fs.writeFileSync(fp, content, { encoding: "utf-8" });
+};
+
+for (const fp in replacers) {
+    replaceStuff(replacers[fp], fp);
+}

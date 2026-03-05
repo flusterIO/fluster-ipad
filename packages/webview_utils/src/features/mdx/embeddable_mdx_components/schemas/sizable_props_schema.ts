@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SizableOption } from "../../../../core/code_gen/typeshare/fluster_core_utilities"
 
 
 
@@ -6,16 +7,16 @@ import { z } from "zod";
  * This sizableOptions array will be guaranteed to stay in order from smallest to largest.
  */
 export const sizableOptions = [
-    "none",
-    "small",
-    "smedium",
-    "medium",
-    "large",
-    "xl",
-    "xxl",
-    "fit",
-    "full"
-] as const;
+    SizableOption.None,
+    SizableOption.Small,
+    SizableOption.Smedium,
+    SizableOption.Medium,
+    SizableOption.Large,
+    SizableOption.Xl,
+    SizableOption.Xxl,
+    SizableOption.Fit,
+    SizableOption.Full,
+] as const satisfies SizableOption[];
 
 
 
@@ -34,7 +35,9 @@ export const sizablePropsSchemaOrBool = (labelKey: string) => z.enum(
 ).or(z.boolean({ message: `The ${labelKey} property can also be a boolean.` }))
 
 
-export type SizableOption = typeof sizableOptions[number]
+export {
+    SizableOption
+}
 export type SizableOptionRecord<T> = { [K in SizableOption]: T }
 export type SizableInput = z.input<ReturnType<typeof sizablePropSchema>>
 export type SizablePropsSchema = z.infer<ReturnType<typeof sizablePropSchema>>

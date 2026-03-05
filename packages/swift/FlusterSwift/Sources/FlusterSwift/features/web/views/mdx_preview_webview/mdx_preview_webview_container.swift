@@ -15,7 +15,7 @@ import FlusterData
 @MainActor
 public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebviewEvents> {
   //    public override init() {}
-  public func setEditorLightTheme(theme: CodeSyntaxTheme) {
+  public func setEditorLightTheme(theme: CodeEditorTheme) {
     self.runJavascript(
       """
       window.localStorage.setItem("code-theme-light", "\(theme.rawValue)")
@@ -23,7 +23,7 @@ public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebvie
       """
     )
   }
-  public func setEditorDarkTheme(theme: CodeSyntaxTheme) {
+  public func setEditorDarkTheme(theme: CodeEditorTheme) {
     self.runJavascript(
       """
       window.localStorage.setItem("code-theme-dark", "\(theme.rawValue)")
@@ -51,12 +51,12 @@ public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebvie
 //  }
   public func setInitialProperties(
     editingNote: NoteModel?,
-    codeEditorTheme: CodeSyntaxTheme,
-    editorKeymap: EditorKeymap,
+    codeEditorTheme: CodeEditorTheme,
+    editorKeymap: CodeEditorKeymap,
     theme: WebViewTheme,
     fontSize: WebviewFontSize,
-    editorThemeDark: CodeSyntaxTheme,
-    editorThemeLight: CodeSyntaxTheme,
+    editorThemeDark: CodeEditorTheme,
+    editorThemeLight: CodeEditorTheme,
     darkMode: Bool
   ) {
     // TODO: Implement this initial data in a minimal way.

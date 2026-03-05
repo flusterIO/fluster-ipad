@@ -10,4 +10,8 @@ pub enum EditorStateActions {
     #[serde(rename = "set-initial-editor-state")]
     #[strum(to_string = "set-initial-editor-state")]
     SetInitialEditorState,
+    #[serde(rename = "set-parsed-editor-content")]
+    #[strum(to_string = "set-parsed-editor-content")]
+    /// This is the 'onChange' method that's executed _after_ the content is parsed.
+    SetParsedEditorContent,
 }

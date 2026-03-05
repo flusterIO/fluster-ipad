@@ -13,3 +13,4 @@ packages:
   - packages/shared_config
   - packages/generated/desktop_bindings
   - packages/swift/desktop_plugins/fluster_swift_data/
+  - packages/typescript/wasm/fluster_wasm/

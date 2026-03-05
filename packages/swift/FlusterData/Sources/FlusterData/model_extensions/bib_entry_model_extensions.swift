@@ -25,6 +25,17 @@ extension [BibEntryModel] {
   }
 }
 
+extension BibEntryModel {
+  public func toEditorCitation(activeCslFile: EmbeddedCslFileSwift) -> EditorCitation? {
+    if let citationKey = self.citationKey {
+      if let formatted = self.safelyGetFormatted(activeCslFormat: activeCslFile) {
+        return EditorCitation(citation_key: citationKey, html: formatted.formattedHtml)
+      }
+    }
+    return nil
+  }
+}
+
 extension BibEntryModel: Codable {
   public enum CodingKeys: String, CodingKey {
     case id, citationKey, data, ctime, utime, lastAccess

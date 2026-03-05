@@ -9,7 +9,7 @@ export const useEditorKeymap = (): readonly KeyBinding[] => {
     const noteId = useRef<string | null>(null);
     useEffect(() => {
         // Hack to make this available in the function.
-        noteId.current = note_id
+        noteId.current = note_id ?? null
     }, [note_id])
     return [{
         key: "Mod-S",

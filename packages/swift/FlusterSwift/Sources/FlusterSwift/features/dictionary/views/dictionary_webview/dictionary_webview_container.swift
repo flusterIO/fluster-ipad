@@ -12,7 +12,7 @@ import FlusterData
 
 #if os(iOS)
 public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebviewEvents> {
-  public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
+  public func emitEditorThemeEvent(theme: CodeEditorTheme) {
     self.runJavascript(
       """
       window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeTheme.rawValue)", "\(theme.rawValue)")
@@ -47,7 +47,7 @@ public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebvie
   }
   public func setInitialProperties(
     entries: [DictionaryEntryModel],
-    codeEditorTheme: CodeSyntaxTheme,
+    codeEditorTheme: CodeEditorTheme,
     theme: WebViewTheme,
     fontSize: WebviewFontSize,
     darkMode: Bool

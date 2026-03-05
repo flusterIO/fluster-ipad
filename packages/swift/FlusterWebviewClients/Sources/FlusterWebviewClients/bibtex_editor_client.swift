@@ -3,7 +3,7 @@ import FlusterData
 
 
 public class BibtexEditorClient {
-    public static func emitEditorThemeEvent(theme: CodeSyntaxTheme, evalutateJavaScript: EvalJavascriptFunc) async throws {
+    public static func emitEditorThemeEvent(theme: CodeEditorTheme, evalutateJavaScript: EvalJavascriptFunc) async throws {
     try await evalutateJavaScript(
       """
       window.localStorage.setItem("\(BibtexEditorWebviewEvents.setCodeTheme.rawValue)", "\(theme.rawValue)")
@@ -11,7 +11,7 @@ public class BibtexEditorClient {
       """
     )
   }
-  public static func setEditorKeymap(editorKeymap: EditorKeymap, evalutateJavaScript: EvalJavascriptFunc ) async throws {
+  public static func setEditorKeymap(editorKeymap: CodeEditorKeymap, evalutateJavaScript: EvalJavascriptFunc ) async throws {
     try await evalutateJavaScript(
       """
       window.localStorage.setItem("\(BibtexEditorWebviewEvents.setEditorKeymap.rawValue)", "\(editorKeymap.rawValue)")

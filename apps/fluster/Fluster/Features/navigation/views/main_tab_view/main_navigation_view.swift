@@ -59,10 +59,10 @@ struct MainView: View {
   @AppStorage(AppStorageKeys.colorScheme.rawValue) private
     var colorSchemeSelection: ColorSchemeSelection = .dark
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-    var editorThemeDark: CodeSyntaxTheme = .dracula
+    var editorThemeDark: CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-    var editorThemeLight: CodeSyntaxTheme = .githubLight
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: EditorKeymap = .base
+    var editorThemeLight: CodeEditorTheme = .githubLight
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
   @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
     var tabviewCustomization: TabViewCustomization
   /// editingNoteId is a EditingNoteId.value protocol string. Use that class to parse this result

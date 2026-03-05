@@ -10,7 +10,7 @@ import WebKit
   @MainActor
   public final class MdxEditorWebviewContainer: WebviewContainer<SplitviewEditorWebviewEvents> {
     @Environment(\.modelContext) private var modelContext: ModelContext
-    public func emitEditorThemeEvent(theme: CodeSyntaxTheme) {
+    public func emitEditorThemeEvent(theme: CodeEditorTheme) {
       self.runJavascript(
         """
         window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeTheme.rawValue)", "\(theme.rawValue)")
@@ -18,7 +18,7 @@ import WebKit
         """
       )
     }
-    public func setEditorLightTheme(theme: CodeSyntaxTheme) {
+    public func setEditorLightTheme(theme: CodeEditorTheme) {
       self.runJavascript(
         """
         window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeThemeLight.rawValue)", "\(theme.rawValue)")
@@ -26,7 +26,7 @@ import WebKit
         """
       )
     }
-    public func setEditorDarkTheme(theme: CodeSyntaxTheme) {
+    public func setEditorDarkTheme(theme: CodeEditorTheme) {
       self.runJavascript(
         """
         window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeThemeDark.rawValue)", "\(theme.rawValue)")
@@ -34,7 +34,7 @@ import WebKit
         """
       )
     }
-    public func setEditorKeymap(editorKeymap: EditorKeymap) {
+    public func setEditorKeymap(editorKeymap: CodeEditorKeymap) {
       self.runJavascript(
         """
         window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.editorKeymap.rawValue)", "\(editorKeymap.rawValue)")
@@ -71,12 +71,12 @@ import WebKit
     }
     public func setInitialProperties(
       editingNote: NoteModel?,
-      codeEditorTheme: CodeSyntaxTheme,
-      editorKeymap: EditorKeymap,
+      codeEditorTheme: CodeEditorTheme,
+      editorKeymap: CodeEditorKeymap,
       theme: WebViewTheme,
       fontSize: WebviewFontSize,
-      editorThemeDark: CodeSyntaxTheme,
-      editorThemeLight: CodeSyntaxTheme,
+      editorThemeDark: CodeEditorTheme,
+      editorThemeLight: CodeEditorTheme,
       darkMode: Bool,
       modelContext: ModelContext
     ) {

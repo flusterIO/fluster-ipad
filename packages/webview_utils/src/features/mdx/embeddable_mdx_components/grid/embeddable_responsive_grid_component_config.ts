@@ -26,7 +26,7 @@ export const embeddableGridComponentConfig: EmbeddableComponentConfig = {
     },
     generateTestContent: async (faker, utils) => {
         return `
-<Grid ${faker.helpers.arrayElement(["large", "medium", "xl", "xxl", "full"] satisfies SizableOption[])}={2} gap="${faker.helpers.arrayElement(sizableOptions)}" ${utils.randomBooleanProperties([
+<Grid ${faker.helpers.arrayElement([SizableOption.Full, SizableOption.Medium, SizableOption.Small, SizableOption.Fit])}={2} gap="${faker.helpers.arrayElement(sizableOptions)}" ${utils.randomBooleanProperties([
             "sidebar",
             "border",
             "hideMathLabels",

@@ -2,13 +2,8 @@
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { getSmallestSizableBreakpointByWidth } from "#/mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props";
 import { SizableOption } from "#/mdx/embeddable_mdx_components/schemas/sizable_props_schema";
-import { WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
+import { WebviewEnvironment, WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { ReactNode, createContext, useReducer, useContext } from "react";
-
-export interface WebviewContainerState {
-    environment: WebviewEnvironment | null
-    size: SizableOption | null
-}
 
 const getInitialEnv = (): WebviewEnvironment | null => {
     if (!document.body) {
@@ -25,8 +20,9 @@ const getInitialEnv = (): WebviewEnvironment | null => {
 }
 
 const defaultInitialValues: WebviewContainerState = {
-    environment: getInitialEnv(),
-    size: getSmallestSizableBreakpointByWidth(window.innerWidth) ?? null
+    environment: getInitialEnv() ?? undefined,
+    size: getSmallestSizableBreakpointByWidth(window.innerWidth) ?? SizableOption.None,
+    wasm_loaded: false
 }
 
 export const WebviewContainerContext = createContext<WebviewContainerState>(defaultInitialValues);

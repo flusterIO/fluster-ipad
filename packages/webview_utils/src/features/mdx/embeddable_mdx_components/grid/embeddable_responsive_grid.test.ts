@@ -58,7 +58,7 @@ describe('getSmallestSizableBreakpointByWidth returns the proper width', () => {
             input: [
                 0
             ],
-            expected: "none"
+            expected: SizableOption.None
         },
         ...Object.entries(breakpointBySize).map((bp) => {
             return {
