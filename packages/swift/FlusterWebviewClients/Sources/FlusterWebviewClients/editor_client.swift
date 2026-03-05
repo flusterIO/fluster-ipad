@@ -93,4 +93,13 @@ public struct MdxEditorClient {
       window.setLockEditorScrollToPreview(\(lock ? "true" : "false"))
       """)
   }
+  // -- New Editor State Model --
+    /// Takes a stringified `AnyCrossLanguageEditorAction` to be sent to the cross-language state update handler.
+    public static func sendEditorStateUpdate(data: String, evalulateJavaScript: @escaping EvalJavascriptFunc) async throws {
+        try await evalulateJavaScript("""
+            window.dispatchEvent(new CustomEvent("\(SplitviewEditorWebviewEvents.editorStateUpdate.rawValue)", {
+                detail: '\(data)'
+            }))
+            """)
+    }
 }

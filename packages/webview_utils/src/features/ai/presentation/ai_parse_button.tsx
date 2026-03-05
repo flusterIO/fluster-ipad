@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react'
+import React from 'react'
 import { ChevronRightIcon } from 'lucide-react'
 
 
@@ -16,4 +16,4 @@ export const FlusterAiParseButton = () => {
 
 
 
-FlusterAiParseButton.displayName = "FlusterAiParsePendingContainer"
+FlusterAiParseButton.displayName = "FlusterAiParseButton"

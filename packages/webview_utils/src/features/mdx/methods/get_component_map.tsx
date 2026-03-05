@@ -153,19 +153,7 @@ const items: ComponentMapItem[] = [
             return import("../embeddable_mdx_components/grid/embeddable_responsive_grid").then((a) => a.EmbeddableResponsiveGrid)
         }
     },
-    /* { */
-    /*     query: "GridItem", */
-    /*     component: GridItem, */
-    /* }, */
-    /* { */
-    /*     query: "Center", */
-    /*     component: Center, */
-    /* }, */
     /* // -- Text -- */
-    /* { */
-    /*     query: "Small", */
-    /*     component: Small, */
-    /* }, */
     /* // -- Attention Getters -- */
     {
         query: embeddableHintComponentNames,
@@ -271,6 +259,13 @@ const items: ComponentMapItem[] = [
         }
     },
     {
+        query: [AutoInsertedComponentName.FlusterAiParsePendingContainer],
+        componentType: ComponentItemType.autoInserted,
+        importComponent: async () => {
+            return import("../../ai/presentation/ai_parse_pending_container").then((a) => a.FlusterAiParsePendingContainer)
+        }
+    },
+    {
         query: [DocumentationComponentName.InContentDocumentationContainer],
         componentType: ComponentItemType.documentation,
         importComponent: async () => {
@@ -283,7 +278,7 @@ const items: ComponentMapItem[] = [
         importComponent: async () => {
             return import("../../in_content_documentation/presentation/in_content_documentation_components/emphasis_typescript_documentation").then((a) => a.InContentDocsEmphasisTypeList)
         }
-    }
+    },
 ];
 
 export const getComponentMap = async (mdxContent: string, additionalComponenets: ComponentMapItem[] = []): Promise<MDXComponents> => {

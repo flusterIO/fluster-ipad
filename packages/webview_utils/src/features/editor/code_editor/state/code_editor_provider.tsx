@@ -13,22 +13,28 @@ import {
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
-import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { EditorStateActions, EditorSaveMethod, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys, SetEditorInitialStateEditorAction, SetEditorSaveMethodEditorAction, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CitationResultBuffer, ParsedMdxDataTypescriptSafe, TagResultBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 import { useMediaQuery } from "react-responsive";
 import { GetSnippetProps } from "../data/snippets/snippet_types";
+import { AnyCrossLanguageEditorAction } from "#/split_view_editor/state/cross_language_state/cross_language_state_types";
 
+
+declare global {
+    interface WindowEventMap {
+        [SplitviewEditorWebviewEvents.EditorStateUpdate]: CustomEvent<string>;
+    }
+}
 
 type SnippetPropsState = Required<Omit<GetSnippetProps, "base" | "citationKeys">>
 
-export enum EditorView {
-    /** Set to pending initially to allow reading from media query. */
-    Pending,
-    Splitview,
-    PreviewOnly,
-}
-
 export interface CodeEditorState {
+    /**
+     * Required for verification before saving manually as the async, back-forth approach with the AI parser
+     * might allow tme for things to change.
+     * This might resolve some DB issues that popped up during dev too... not sure if they're just dev tool things or real issues.
+     */
+    note_id: string | null;
     keymap: string;
     baseKeymap: CodeEditorBaseKeymap;
     theme: CodeEditorTheme;
@@ -42,11 +48,14 @@ export interface CodeEditorState {
     editorView: EditorView
     snippetProps: SnippetPropsState
     lockEditorScrollToPreview: boolean
+    /// Everything below here has been moved to the new state management setup with Swift passing partial state directly instead of random data that needs to be parsed individually.
+    saveMethod: EditorSaveMethod
 }
 
 const defaultInitialCodeEditorState: CodeEditorState = {
-    baseKeymap: CodeEditorBaseKeymap.default,
-    theme: CodeEditorTheme.dracula,
+    note_id: null,
+    baseKeymap: CodeEditorBaseKeymap.Default,
+    theme: CodeEditorTheme.Dracula,
     keymap: "base",
     value: "",
     citations: [],
@@ -60,13 +69,17 @@ const defaultInitialCodeEditorState: CodeEditorState = {
         includeEmojiSnippets: true
     },
     lockEditorScrollToPreview: false,
+    /**
+     * Leave this set to onChange by default to encourage user's to explore the app early on, but mention in the opening note that it can be changed.
+     */
+    saveMethod: EditorSaveMethod.OnChange
 };
 
 export const CodeEditorContext = createContext<CodeEditorState>(
     defaultInitialCodeEditorState,
 );
 
-type CodeEditorContextActions =
+export type CodeEditorContextActions =
     | {
         type: "setValue";
         payload: string;
@@ -105,7 +118,7 @@ type CodeEditorContextActions =
     } | {
         type: "setLockEditorScrollToPreview",
         payload: boolean
-    };
+    } | AnyCrossLanguageEditorAction;
 
 export const CodeEditorDispatchContext = createContext<
     React.Dispatch<CodeEditorContextActions>
@@ -120,6 +133,19 @@ export const CodeEditorContextReducer = (
     action: CodeEditorContextActions,
 ): CodeEditorState => {
     switch (action.type) {
+        case EditorStateActions.SetEditorSaveMethod: {
+            return {
+                ...state,
+                saveMethod: (action as SetEditorSaveMethodEditorAction).payload
+            }
+        }
+        case EditorStateActions.SetInitialEditorState: {
+            return {
+                ...state,
+                ...(action as SetEditorInitialStateEditorAction).payload
+            }
+        }
+        /// TODO: Handle setting of all of these types with new EditorStateHandler and the Swift partial-state approach..
         case "setValue": {
             return {
                 ...state,
@@ -244,6 +270,10 @@ export const CodeEditorProvider = ({
             : defaultInitialCodeEditorState,
     );
 
+    useEventListener(SplitviewEditorWebviewEvents.EditorStateUpdate, (e) => {
+        dispatch(JSON.parse(e.detail) as AnyCrossLanguageEditorAction)
+    })
+
     const isEditorView = useMediaQuery({
         orientation: "landscape",
     });
@@ -297,9 +327,9 @@ export const CodeEditorProvider = ({
     useEffect(() => {
         handleTheme(editorTheme);
     }, [editorTheme]);
-    useEventListener(SplitviewEditorWebviewEvents.SetCodeTheme, (e) => {
-        handleTheme(e.detail);
-    });
+    /* useEventListener(SplitviewEditorWebviewEvents.SetCodeTheme, (e) => { */
+    /*     handleTheme(e.detail); */
+    /* }); */
 
     const [initialValue] = useLocalStorage(initialValueKey, undefined, {
         deserializer(value) {
@@ -369,3 +399,8 @@ export const CodeEditorProvider = ({
         </CodeEditorContext.Provider>
     );
 };
+
+
+export {
+    EditorView
+}

@@ -4,11 +4,141 @@
 
 import Foundation
 
+public struct CodeBlockParsingResult: Codable {
+	public let full_match: String
+	public let language_tag: String
+	public let block_content: String
+
+	public init(full_match: String, language_tag: String, block_content: String) {
+		self.full_match = full_match
+		self.language_tag = language_tag
+		self.block_content = block_content
+	}
+}
+
+/// Basically a Partial<BibEntryModel> that's cross language, to be sent to the
+/// editor.
+public struct EditorCitation: Codable {
+	public let key: String
+	public let html: String
+
+	public init(key: String, html: String) {
+		self.key = key
+		self.html = html
+	}
+}
+
+public enum EditorStateActions: String, Codable {
+	case setEditorSaveMethod = "set-editor-save-method"
+	case setInitialEditorState = "set-initial-editor-state"
+}
+
+public struct EditorInitialStatePayload: Codable {
+	public let type: EditorStateActions
+
+	public init(type: EditorStateActions) {
+		self.type = type
+	}
+}
+
+public enum CodeEditorBaseKeymap: String, Codable {
+	case `default`
+	case vsCode
+}
+
+public enum CodeEditorTheme: String, Codable {
+	case materialLight
+	case solarizedLight
+	case solarizedDark
+	case githubLight
+	case aura
+	case tokyoNightDay
+	case xcodeLight
+	case dracula
+	case tokyoNight
+	case materialDark
+	case tokyoNightStorm
+	case githubDark
+	case xcodeDark
+}
+
+/// Basically a Partial<TagModel> that's cross language, to be sent to the
+/// editor.
+public struct EditorTag: Codable {
+	public let body: String
+
+	public init(body: String) {
+		self.body = body
+	}
+}
+
+public struct EditorState: Codable {
+	public let note_id: String?
+	public let baseKeymap: CodeEditorBaseKeymap
+	public let citations: [EditorCitation]
+	public let theme: CodeEditorTheme
+	public let tags: [EditorTag]
+	public let allCitationIds: [String]
+	public let value: String
+	public let parsedValue: String?
+	public let haveSetInitialValue: Bool
+
+	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], theme: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool) {
+		self.note_id = note_id
+		self.baseKeymap = baseKeymap
+		self.citations = citations
+		self.theme = theme
+		self.tags = tags
+		self.allCitationIds = allCitationIds
+		self.value = value
+		self.parsedValue = parsedValue
+		self.haveSetInitialValue = haveSetInitialValue
+	}
+}
+
+public struct ManualSaveRequestEvent: Codable {
+	public let current_note_content: String
+	/// note_id is required to verify the note before updating the note's data since there's so
+	/// much async shit going on.
+	public let note_id: String
+
+	public init(current_note_content: String, note_id: String) {
+		self.current_note_content = current_note_content
+		self.note_id = note_id
+	}
+}
+
+public struct SetEditorInitialStateEditorAction: Codable {
+	public let type: EditorStateActions
+	public let payload: EditorInitialStatePayload
+
+	public init(type: EditorStateActions, payload: EditorInitialStatePayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public enum EditorSaveMethod: String, Codable {
+	case onSave = "on-save"
+	case onChange = "on-change"
+}
+
+public struct SetEditorSaveMethodEditorAction: Codable {
+	public let type: EditorStateActions
+	public let payload: EditorSaveMethod
+
+	public init(type: EditorStateActions, payload: EditorSaveMethod) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
 public enum AutoInsertedComponentName: String, Codable {
 	case noteLink = "NoteLink"
 	case autoInsertedTag = "AutoInsertedTag"
 	case flusterCitation = "FlusterCitation"
 	case dictionaryEntry = "DictionaryEntry"
+	case flusterAiParsePendingContainer = "FlusterAiParsePendingContainer"
 }
 
 public enum AutoTaggableType: String, Codable {
@@ -51,6 +181,12 @@ public enum BibtexEditorWebviewLocalStorageKeys: String, Codable {
 	case initialValue = "bibtex-editor-initial-value"
 }
 
+public enum CodeEditorKeymap: String, Codable {
+	case vim
+	case base
+	case emacs
+}
+
 /// From typescript to swift.
 public enum DictionaryWebviewActions: String, Codable {
 	case requestDictionaryData = "request-dictionary-data"
@@ -77,6 +213,12 @@ public enum DictionaryWebviewStorageKeys: String, Codable {
 public enum DocumentationComponentName: String, Codable {
 	case inContentDocumentationContainer = "InContentDocumentationContainer"
 	case inContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList"
+}
+
+public enum EditorView: String, Codable {
+	case pending = "Pending"
+	case splitview = "Splitview"
+	case previewOnly = "PreviewOnly"
 }
 
 /// From typescript to swift.
@@ -181,6 +323,7 @@ public enum SplitviewEditorWebviewActions: String, Codable {
 	case onEditorChange = "on-editor-change"
 	case setWebviewLoaded = "set-editor-webview-loaded"
 	case setIsLandscape = "set-is-landscape-view"
+	case manualSaveRequest = "manual-save-req"
 }
 
 /// From swift to typescript
@@ -198,6 +341,7 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 	case emitMdxParsingError = "mdx-parsing-error"
 	case emitMdxParsingSuccess = "mdx-parsing-success"
 	case setWebviewPreviewScrollLock = "set-webview-preview-scroll-lock"
+	case editorStateUpdate = "cross-lang-editor-update"
 }
 
 public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {

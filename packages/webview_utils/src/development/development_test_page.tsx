@@ -1,5 +1,6 @@
-import { AiParsePendingContainer } from '#/ai/presentation/ai_parse_pending_container'
 import React, { useEffect, type ReactNode } from 'react'
+import { FlusterAiParsePendingContainer } from '../features/ai/presentation/ai_parse_pending_container'
+import { CodeBlockParsingResult } from '@/code_gen/typeshare/fluster_core_utilities'
 
 
 
@@ -38,11 +39,12 @@ Summarize this note please.
 export const DevelopmentTestPage = (): ReactNode => {
     return (
         <div className="w-full h-full flex flex-col min-h-screen justify-center items-center">
-            <AiParsePendingContainer >
-                # AI
-
-                Please help me generate a summary of this note.
-            </AiParsePendingContainer>
+            <FlusterAiParsePendingContainer stringifiedResult={JSON.stringify({
+                block_content: "# Physics & Math \nCan you help me study?",
+                full_match: "```fluster-ai\n# Physics & Math \nCan you help me study?",
+                language_tag: "fluster-ai"
+            } satisfies CodeBlockParsingResult)}>
+            </FlusterAiParsePendingContainer>
         </div>
     )
 }

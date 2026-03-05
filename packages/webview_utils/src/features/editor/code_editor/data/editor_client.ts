@@ -1,4 +1,4 @@
-import { MdxPreviewWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { ManualSaveRequestEvent, MdxPreviewWebviewActions, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 
 export class EditorClient {
@@ -7,5 +7,8 @@ export class EditorClient {
     }
     static handleTagClick(tagValue: string) {
         sendToSwift(MdxPreviewWebviewActions.OnTagClick, tagValue);
+    }
+    static sendManualSaveRequest(data: ManualSaveRequestEvent) {
+        sendToSwift(SplitviewEditorWebviewActions.ManualSaveRequest, JSON.stringify(data))
     }
 }

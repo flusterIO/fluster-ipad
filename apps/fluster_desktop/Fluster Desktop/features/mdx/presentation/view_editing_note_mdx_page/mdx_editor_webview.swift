@@ -8,6 +8,7 @@
 import FlatBuffers
 import FlusterData
 import FlusterMdx
+import FlusterSwift
 import FlusterWebviewClients
 import SwiftData
 import SwiftUI
@@ -32,6 +33,8 @@ struct MdxEditorWebview: View {
     CodeSyntaxTheme = .materialLight
   @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private
     var lockEditorScrollToPreview: Bool = false
+  @AppStorage(AppStorageKeys.editorSaveMethod.rawValue) private var editorSaveMethod:
+    EditorSaveMethod = .onChange
 
   init(editingNoteId: String?, webView: Binding<WKWebView>) {
     self.editingNoteId = editingNoteId
@@ -84,12 +87,12 @@ struct MdxEditorWebview: View {
                     Text("Bookmark")
                   },
                   icon: {
-                      if let en = editingNote, en.bookmarked {
-                          Image(systemName: "bookmark.fill")
-                              .foregroundStyle(.primary)
-                      } else {
-                          Image(systemName: "bookmark")
-                      }
+                    if let en = editingNote, en.bookmarked {
+                      Image(systemName: "bookmark.fill")
+                        .foregroundStyle(.primary)
+                    } else {
+                      Image(systemName: "bookmark")
+                    }
                   })
               }
             )
@@ -169,6 +172,12 @@ struct MdxEditorWebview: View {
           }
         }
       )
+      .task(
+        id: editorSaveMethod,
+        {
+          try? await setEditorSaveMethod(saveMethod: editorSaveMethod)
+        }
+      )
       .onChange(
         of: editingNote?.id,
         {
@@ -183,10 +192,12 @@ struct MdxEditorWebview: View {
   func onWebviewLoad() async {
     Task {
       do {
+        // TODO: Move this all to a single state update now that we're working with React state directly.
         try await setEditorThemeDark(editorTheme: editorThemeDark)
         try await setEditorThemeLight(editorTheme: editorThemeLight)
         try await setEditorKeymap(editorKeymap: editorKeymap)
         try await setLockEditorScrollToPreview(lock: lockEditorScrollToPreview)
+        try await setEditorSaveMethod(saveMethod: editorSaveMethod)
         if let en = editingNote {
           try await loadNote(note: en)
         }
@@ -196,6 +207,10 @@ struct MdxEditorWebview: View {
         print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
       }
     }
+  }
+  public func setEditorSaveMethod(saveMethod: EditorSaveMethod) async throws {
+    try await EditorStateManager.setEditorSaveMethod(
+      saveMethod: saveMethod, eval: webView.evaluateJavaScript)
   }
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {
     switch handlerKey {

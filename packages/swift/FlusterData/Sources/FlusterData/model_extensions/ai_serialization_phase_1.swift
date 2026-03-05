@@ -10,7 +10,7 @@ import Foundation
 
 extension AiSerializationRequestType: @retroactive Codable {
   enum MatchingStringKeys: String, Codable {
-    case createNoteSpecificStudyGuide
+    case createNoteSpecificStudyGuide, recommendSearch, summarizeNote
   }
   public init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()
@@ -18,6 +18,10 @@ extension AiSerializationRequestType: @retroactive Codable {
     switch stored {
       case MatchingStringKeys.createNoteSpecificStudyGuide:
         self = .createNoteSpecificStudyGuide
+      case MatchingStringKeys.recommendSearch:
+        self = .recommendResearch
+      case MatchingStringKeys.summarizeNote:
+        self = .summarizeNote
     }
   }
 
@@ -26,23 +30,52 @@ extension AiSerializationRequestType: @retroactive Codable {
     switch self {
       case .createNoteSpecificStudyGuide:
         try container.encode(MatchingStringKeys.createNoteSpecificStudyGuide)
+      case .recommendResearch:
+        try container.encode(MatchingStringKeys.recommendSearch)
+      case .summarizeNote:
+        try container.encode(MatchingStringKeys.summarizeNote)
     }
+  }
+}
+
+extension FlusterSwiftMdxParser.CodeBlockParsingResult: @retroactive Codable {
+  public enum CodingKeys: String, CodingKey {
+    case fullMatch,
+      languageTag,
+      blockContent
+  }
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let fullMatch = try container.decode(String.self, forKey: .fullMatch)
+    let langTag = try container.decode(String.self, forKey: .languageTag)
+    let blockContent = try container.decode(String.self, forKey: .blockContent)
+    self.init(
+      fullMatch: fullMatch, languageTag: langTag, blockContent: blockContent
+    )
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(self.blockContent, forKey: .blockContent)
+    try container.encode(self.fullMatch, forKey: .fullMatch)
+    try container.encode(self.languageTag, forKey: .languageTag)
   }
 }
 
 extension AiSerializationRequestPhase1: @retroactive Codable {
   public enum CodingKeys: String, CodingKey {
-    case requestType
+    case parsingResult
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    let requestType = try container.decode(AiSerializationRequestType.self, forKey: .requestType)
-    self.init(requestType: requestType)
+    let codeBlockResult = try container.decode(
+      FlusterSwiftMdxParser.CodeBlockParsingResult.self, forKey: .parsingResult)
+    self.init(parsingResult: codeBlockResult)
   }
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.requestType, forKey: .requestType)
+    try container.encode(self.parsingResult, forKey: .parsingResult)
   }
 }
