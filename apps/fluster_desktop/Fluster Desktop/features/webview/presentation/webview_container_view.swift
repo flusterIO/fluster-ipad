@@ -14,6 +14,7 @@ func getWebViewConfig() -> WKWebViewConfiguration {
   let config = WKWebViewConfiguration()
   config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
   config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+  config.setURLSchemeHandler(WasmSchemeHandler(), forURLScheme: "app")
   return config
 }
 
@@ -66,7 +67,9 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     )
     webView.configuration.userContentController.addUserScript(webviewEnvironmentScript)
 
-    webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+    //    webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+    let request = URLRequest(url: url)
+    webView.load(request)
     return webView
   }
 
