@@ -30,7 +30,7 @@ import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
-import { useEditorKeymap } from "./editor_keymap";
+import { EditorClient } from "../data/editor_client";
 
 interface CodeEditorProps {
     language?: CodeEditorLanguage;
@@ -59,8 +59,6 @@ export const CodeEditorInner = ({
     const dispatch = useCodeEditorDispatch();
     const timer = useRef<NodeJS.Timeout | null>(null);
     const viewRef = useRef<EditorView | null>(null)
-
-    const editorKeymap = useEditorKeymap();
 
 
 
@@ -158,7 +156,42 @@ export const CodeEditorInner = ({
             dropCursor(),
             rectangularSelection(),
             keymap.of(codeEditorBaseKeymapMap[state.baseKeymap]()),
-            keymap.of(editorKeymap),
+            keymap.of([{
+                key: "Mod-S",
+                run: (view) => {
+                    const content = view.state.doc.toString()
+                    if (state.note_id) {
+                        EditorClient.sendManualSaveRequest({
+                            note_id: state.note_id,
+                            current_note_content: content
+                        })
+                        return true;
+                    } else {
+                        return false
+                    }
+                },
+                preventDefault: true
+            },
+                // {
+                // TODO: Use this to allow the user to refresh the previous *without* refreshing the editor.
+                //     key: "Ctrl-R", // Example: Capture Ctrl-R
+                //     run: (view) => {
+                //         console.log("Ctrl-R was pressed!");
+                //         // Perform your custom action here
+                //         return true; // Return true to indicate the event was handled
+                //     },
+                //     // Prevent default browser behavior (like refreshing the page for Ctrl-R)
+                //     preventDefault: true
+                // }
+                /* { */
+                /*     key: "any", // A specific "any" key can be used for every keypress */
+                /*     run: (view, event) => { */
+                /*         console.log("A key was pressed:", event.key); */
+                /*         // Returning false (or nothing) lets other keymaps or default behavior continue */
+                /*         return false; */
+                /*     } */
+                /* } */
+            ]),
             EditorState.allowMultipleSelections.of(true),
             EditorView.lineWrapping,
             /* language, */
@@ -197,7 +230,7 @@ export const CodeEditorInner = ({
         haveRendered.current = true;
         sendToSwift(showWebviewHandler);
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
-    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap, state.allCitationIds, state.lockEditorScrollToPreview, editorKeymap]);
+    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap, state.allCitationIds, state.lockEditorScrollToPreview, state.note_id]);
 
     useEventListener(swiftContentEvent as keyof WindowEventMap, (e) => {
         if (viewRef.current) {
@@ -210,7 +243,6 @@ export const CodeEditorInner = ({
             });
         }
     });
-
 
     useEventListener("request-editor-scroll-proportion", () => {
         if (viewRef.current?.scrollDOM) {
@@ -247,13 +279,8 @@ export const CodeEditor = (
         }
         handleInitialRender()
         /* eslint-disable-next-line  -- I hate this rule */
-    }, [initialValue, initialRender]);
+    }, [initialRender, initialValue]);
 
-
-    // Deprecating this in favor of using local storage directly from Swift.
-    /* useEventListener(props.swiftContentEvent ?? SplitviewEditorWebviewEvents.SetSplitviewEditorContent, (e) => { */
-    /*     setInitialValue(e.detail); */
-    /* }); */
 
     return typeof initialValue === "string" ? (
         <CodeEditorInner {...props} initialValue={initialValue} />

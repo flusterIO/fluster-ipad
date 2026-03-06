@@ -1,32 +1,10 @@
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
+use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 
 use crate::{
     parse::by_regex::parse_mdx_by_regex::ParseMdxOptions,
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
-
-#[derive(Serialize, Deserialize, PartialEq, strum_macros::Display)]
-pub enum ParserId {
-    #[serde(rename = "tags")]
-    #[strum(to_string = "tags")]
-    Tags,
-    #[serde(rename = "citations")]
-    #[strum(to_string = "citations")]
-    Citations,
-    #[serde(rename = "dictionary")]
-    #[strum(to_string = "dictionary")]
-    Dictionary,
-    #[serde(rename = "note_link")]
-    #[strum(to_string = "note_link")]
-    NoteLink,
-    #[serde(rename = "docs")]
-    #[strum(to_string = "docs")]
-    Documentation,
-    #[serde(rename = "ai")]
-    #[strum(to_string = "ai")]
-    AiTrigger,
-}
 
 #[async_trait]
 pub trait MdxParser: Sync {

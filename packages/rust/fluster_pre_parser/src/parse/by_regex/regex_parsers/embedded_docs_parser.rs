@@ -7,6 +7,7 @@ use fluster_core_utilities::core_types::{
     documentation_constants::in_content_documentation_id::{
         InContentDocumentationFormat, InContentDocumentationId,
     },
+    syntax::parser_ids::ParserId,
 };
 use strum::IntoEnumIterator;
 
@@ -15,10 +16,7 @@ use crate::{
         embedded_component_docs::EmbeddedComponentDocs,
         embedded_in_content_docs::EmbeddedInContentDocs,
     },
-    parse::by_regex::{
-        parse_mdx_by_regex::ParseMdxOptions,
-        regex_parsers::mdx_parser::{MdxParser, ParserId},
-    },
+    parse::by_regex::{parse_mdx_by_regex::ParseMdxOptions, regex_parsers::mdx_parser::MdxParser},
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 

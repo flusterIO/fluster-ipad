@@ -1,15 +1,15 @@
 {
     "name": "@fluster/wasm",
+    "type": "module",
     "scripts": {
         "build": "wireit",
         "dev": "webpack serve"
     },
     "wireit": {
         "build": {
-            "command": "RUSTFLAGS=\"-C target-feature=+bulk-memory\" wasm-pack build --target web ./"
+            "command": "RUSTFLAGS=\"-C target-feature=+bulk-memory\" wasm-pack build --target web ./ && webpack"
         }
     },
-    "type": "module",
     "exports": {
         ".": {
             "types": "./pkg/index.js",

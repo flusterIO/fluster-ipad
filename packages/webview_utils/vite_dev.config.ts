@@ -4,8 +4,6 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 import tailwind from "@tailwindcss/vite";
-import wasm from "vite-plugin-wasm";
-import topLevelAwait from "vite-plugin-top-level-await";
 
 export default defineConfig({
     plugins: [
@@ -16,8 +14,6 @@ export default defineConfig({
             insertTypesEntry: true,
             copyDtsFiles: true,
         }),
-        // wasm(),
-        // topLevelAwait()
     ],
     build: {
         outDir: "dist_dev",

@@ -1,4 +1,5 @@
 import { embeddableComponentConfigs } from "../../packages/webview_utils/src/features/mdx/embeddable_mdx_components/component_configs";
+import { ParserId } from "../../packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities";
 import { faker } from "@faker-js/faker";
 import { TestStringUtilities } from "../../packages/webview_utils/src/development/test_string_utilities";
 

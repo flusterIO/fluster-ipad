@@ -1,13 +1,11 @@
 use async_trait::async_trait;
+use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use rayon::prelude::*;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    parse::by_regex::{
-        parse_mdx_by_regex::ParseMdxOptions,
-        regex_parsers::mdx_parser::{MdxParser, ParserId},
-    },
+    parse::by_regex::{parse_mdx_by_regex::ParseMdxOptions, regex_parsers::mdx_parser::MdxParser},
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 

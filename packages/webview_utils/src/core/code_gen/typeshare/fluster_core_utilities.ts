@@ -321,6 +321,15 @@ export enum NoteDetailWebviewEvents {
 	SetNoteDetails = "set-note-details",
 }
 
+export enum ParserId {
+	Tags = "tags",
+	Citations = "citations",
+	Dictionary = "dictionary",
+	NoteLink = "note_link",
+	Documentation = "docs",
+	AiTrigger = "ai",
+}
+
 /** From typescript to swift. */
 export enum SharedWebviewActions {
 	JavascriptError = "javascript-error",

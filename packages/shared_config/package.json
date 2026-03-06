@@ -1,32 +1,32 @@
 {
-    "name": "@fluster/shared_config",
-    "version": "1.0.0",
-    "keywords": [],
-    "author": "",
-    "type": "module",
-    "files": [
-        "./"
-    ],
-    "exports": {
-        "./webviewVite": "./vite/webviewViteConfig.ts",
-        "./wasm": "./vite/wasmViteConfig.ts",
-        "./getTailwindBaseConfig": "./tailwind/getTailwindConfig.ts",
-        "./prettier": "./prettier.config.ts",
-        "./loadEnv": "./build_utils/load_monorepo_env.ts"
-    },
-    "dependencies": {
-        "@tailwindcss/container-queries": "0.1.1",
-        "@tailwindcss/typography": "0.5.19",
-        "@tailwindcss/vite": "4.2.1",
-        "@vitejs/plugin-react": "5.1.1",
-        "tailwindcss": "4.2.1",
-        "vite-plugin-dts": "4.5.4",
-        "vite-plugin-singlefile": "2.3.0",
-        "vite-tsconfig-paths": "5.1.4"
-    },
-    "devDependencies": {
-        "@types/node": "24.10.1"
-    },
-    "license": "MIT",
-    "description": "Shared config files used internally by Fluster."
+  "name": "@fluster/shared_config",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "files": [
+    "./"
+  ],
+  "exports": {
+    "./webviewVite": "./vite/webviewViteConfig.ts",
+    "./wasm": "./vite/wasmViteConfig.ts",
+    "./getTailwindBaseConfig": "./tailwind/getTailwindConfig.ts",
+    "./prettier": "./prettier.config.ts",
+    "./loadEnv": "./build_utils/load_monorepo_env.ts"
+  },
+  "dependencies": {
+    "@tailwindcss/container-queries": "0.1.1",
+    "@tailwindcss/typography": "0.5.19",
+    "@tailwindcss/vite": "4.2.1",
+    "@vitejs/plugin-react": "5.1.1",
+    "tailwindcss": "4.2.1",
+    "vite-plugin-dts": "4.5.4",
+    "vite-plugin-singlefile": "2.3.0",
+    "vite-tsconfig-paths": "5.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1"
+  },
+  "license": "MIT",
+  "description": "Shared config files used internally by Fluster."
 }

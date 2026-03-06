@@ -2,8 +2,7 @@ use crate::{
     parse::by_regex::{
         parse_mdx_by_regex::ParseMdxOptions,
         regex_parsers::{
-            mdx_parser::{MdxParser, ParserId},
-            utility_parsers::code_block_parser::CodeBlockParser,
+            mdx_parser::MdxParser, utility_parsers::code_block_parser::CodeBlockParser,
         },
     },
     parsing_result::{
@@ -12,7 +11,10 @@ use crate::{
     },
 };
 use async_trait::async_trait;
-use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
+use fluster_core_utilities::core_types::{
+    component_constants::auto_inserted_component_name::AutoInsertedComponentName,
+    syntax::parser_ids::ParserId,
+};
 
 pub struct AiTriggerParser;
 

@@ -30,6 +30,9 @@ extension EditorState {
   public static func setInitialEditorState(
     payload: EditorInitialStatePayload, eval: @escaping EvalJavascriptFunc
   ) async throws {
+    try await MdxEditorClient.saveToLocalStorage(
+      storageKey: SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue, data: payload.value,
+      evaluateJavaScript: eval)
     let action = SetEditorInitialStateEditorAction(type: .setInitialEditorState, payload: payload)
     if let parsedData = EditorState.encodeData(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)

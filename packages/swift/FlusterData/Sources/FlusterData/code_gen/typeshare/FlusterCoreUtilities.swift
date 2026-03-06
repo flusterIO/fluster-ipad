@@ -387,6 +387,15 @@ public enum NoteDetailWebviewEvents: String, Codable {
 	case setNoteDetails = "set-note-details"
 }
 
+public enum ParserId: String, Codable {
+	case tags
+	case citations
+	case dictionary
+	case noteLink = "note_link"
+	case documentation = "docs"
+	case aiTrigger = "ai"
+}
+
 /// From typescript to swift.
 public enum SharedWebviewActions: String, Codable {
 	case javascriptError = "javascript-error"

@@ -58,7 +58,7 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
   private func getMimeType(for ext: String) -> String {
     print("Extension: \(ext)")
     switch ext.lowercased() {
-      case "wasm": return "application/wasm"  // Essential for your Rust code
+      case "wasm": return "application/wasm"
       case "js": return "application/javascript"
       case "html": return "text/html"
       case "css": return "text/css"

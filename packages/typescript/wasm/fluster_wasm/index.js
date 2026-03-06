@@ -1,9 +1,3 @@
-import init from "./pkg/";
-
 export const initializeFlusterWasm = async () => {
-  try {
-    await init();
-  } catch (err) {
-    console.error("Error: ", err);
-  }
+    import("./pkg/index.js").then((init) => init());
 };
