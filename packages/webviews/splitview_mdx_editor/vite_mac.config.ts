@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import {
     type WasmViteConfig,
     getWasmViteConfig,
-} from "@fluster/shared_config/vite";
+} from "@fluster/shared_config/wasm";
 
 const config: WasmViteConfig = {
     outputDir: "splitview_mdx_editor_mac",

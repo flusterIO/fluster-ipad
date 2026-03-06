@@ -92,3 +92,4 @@ packages/rust/fluster_bibliography/FlusterBibliography
 docs/component_docs/
 packages/rust/fluster_pre_parser/src/embedded/component_docs/
 packages/typescript/wasm/fluster_wasm/dist/
+packages/typescript/wasm/fluster_wasm/pkg/

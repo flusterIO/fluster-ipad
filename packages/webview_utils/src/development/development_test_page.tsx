@@ -1,7 +1,6 @@
-import React, { useEffect, type ReactNode } from 'react'
+import React, { type ReactNode } from 'react'
 import { FlusterAiParsePendingContainer } from '../features/ai/presentation/ai_parse_pending_container'
 import { CodeBlockParsingResult } from '@/code_gen/typeshare/fluster_core_utilities'
-
 
 
 const testContent = `

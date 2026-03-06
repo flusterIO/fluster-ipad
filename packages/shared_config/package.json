@@ -9,7 +9,7 @@
     ],
     "exports": {
         "./webviewVite": "./vite/webviewViteConfig.ts",
-        "./vite": "./vite/wasmViteConfig.ts",
+        "./wasm": "./vite/wasmViteConfig.ts",
         "./getTailwindBaseConfig": "./tailwind/getTailwindConfig.ts",
         "./prettier": "./prettier.config.ts",
         "./loadEnv": "./build_utils/load_monorepo_env.ts"

@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
-import { resolve } from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 import wasm from "vite-plugin-wasm";
@@ -21,8 +20,8 @@ export default defineConfig({
             insertTypesEntry: true,
             copyDtsFiles: true,
         }),
-        wasm(),
-        topLevelAwait()
+        // wasm(),
+        // topLevelAwait()
     ],
     build: {
         lib: {
@@ -32,7 +31,6 @@ export default defineConfig({
                 wasm: path.resolve(__dirname, "src/wasm_index.ts"),
             },
             formats: ["es"],
-            // [name] will resolve to 'main' or 'wasm'
             fileName: (format, entryName) => `${entryName}.${format}.js`,
         },
         commonjsOptions: {
@@ -40,10 +38,10 @@ export default defineConfig({
         },
         rollupOptions: {
             external: ["react", "react-dom", "react/jsx-runtime"],
-            output: {
-                // Keep the assets (like .wasm) with predictable names
-                assetFileNames: "assets/[name][extname]",
-            }
+            // output: {
+            //     // Keep the assets (like .wasm) with predictable names
+            //     assetFileNames: "assets/[name][extname]",
+            // }
         },
         sourcemap: true,
         emptyOutDir: false,
