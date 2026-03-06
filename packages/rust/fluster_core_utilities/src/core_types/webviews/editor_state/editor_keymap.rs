@@ -5,7 +5,7 @@ use uniffi::Enum;
 // TODO: Override the Swift enum with this now that all editor state is being lifted to Rust, at
 // least for typing & codegen.
 #[typeshare]
-#[derive(Enum, strum_macros::Display, Serialize, Deserialize)]
+#[derive(Enum, strum_macros::Display, Serialize, Deserialize, Clone)]
 pub enum CodeEditorKeymap {
     #[serde(rename = "vim")]
     #[strum(to_string = "vim")]
@@ -17,4 +17,3 @@ pub enum CodeEditorKeymap {
     #[strum(to_string = "emacs")]
     Emacs,
 }
-

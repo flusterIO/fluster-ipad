@@ -1,12 +1,18 @@
 import React from "react";
-import { BibtexEditor, WebViewContainer } from "@fluster/webview_utils";
+import {
+    BibtexEditor,
+    MdxEditorGlobalProvider,
+    WebViewContainer,
+} from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
 import "./index.css";
 
 function App() {
     return (
         <WebViewContainer contentContainerClasses="h-full">
-            <BibtexEditor />
+            <MdxEditorGlobalProvider>
+                <BibtexEditor />
+            </MdxEditorGlobalProvider>
         </WebViewContainer>
     );
 }

@@ -8,6 +8,7 @@ import { EditorClient } from "../data/editor_client";
 //     const { note_id } = useCodeEditorContext();
 //     const noteId = useRef<string | null>(null);
 //     useEffect(() => {
+//
 //         // Hack to make this available in the function.
 //         noteId.current = note_id ?? null
 //     }, [note_id])

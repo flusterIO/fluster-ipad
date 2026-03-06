@@ -10,7 +10,7 @@ use crate::core_types::webviews::{
 };
 
 #[typeshare]
-#[derive(Record, Serialize, Deserialize)]
+#[derive(Record, Serialize, Deserialize, Clone)]
 /// Basically a Partial<BibEntryModel> that's cross language, to be sent to the
 /// editor.
 pub struct EditorCitation {
@@ -19,7 +19,7 @@ pub struct EditorCitation {
 }
 
 #[typeshare]
-#[derive(Record, Serialize, Deserialize)]
+#[derive(Record, Serialize, Deserialize, Clone)]
 /// Basically a Partial<TagModel> that's cross language, to be sent to the
 /// editor.
 pub struct EditorTag {
@@ -27,7 +27,7 @@ pub struct EditorTag {
 }
 
 #[typeshare]
-#[derive(Enum, Serialize, Deserialize)]
+#[derive(Enum, Serialize, Deserialize, Clone)]
 pub enum EditorView {
     Pending,
     Splitview,
@@ -35,7 +35,7 @@ pub enum EditorView {
 }
 
 #[typeshare]
-#[derive(Enum, strum_macros::Display, Serialize, Deserialize)]
+#[derive(Enum, strum_macros::Display, Serialize, Deserialize, Clone)]
 pub enum CodeEditorBaseKeymap {
     #[serde(rename = "default")]
     #[strum(to_string = "default")]
@@ -46,7 +46,7 @@ pub enum CodeEditorBaseKeymap {
 }
 
 #[typeshare]
-#[derive(Record, Serialize, Deserialize)]
+#[derive(Record, Serialize, Deserialize, Clone)]
 pub struct EditorState {
     /// * Required for verification before saving manually as the async,
     /// back-forth approach with the AI parser
@@ -75,4 +75,6 @@ pub struct EditorState {
     pub lock_editor_scroll_to_preview: bool,
     #[serde(rename = "saveMethod")]
     pub save_method: EditorSaveMethod,
+    #[serde(rename = "autoSaveTimeout")]
+    pub auto_save_timeout: u32,
 }

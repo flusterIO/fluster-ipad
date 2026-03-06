@@ -20,6 +20,31 @@ public enum Notifications_UserFacingNotificationVariant: Int8, Enum, Verifiable 
 }
 
 
+public enum StateReflection_EditorSaveMethodReflection: Int8, Enum, Verifiable {
+  public typealias T = Int8
+  public static var byteSize: Int { return MemoryLayout<Int8>.size }
+  public var value: Int8 { return self.rawValue }
+  case onsave = 1
+  case onchange = 2
+
+  public static var max: StateReflection_EditorSaveMethodReflection { return .onchange }
+  public static var min: StateReflection_EditorSaveMethodReflection { return .onsave }
+}
+
+
+public enum StateReflection_EditorViewReflection: Int8, Enum, Verifiable {
+  public typealias T = Int8
+  public static var byteSize: Int { return MemoryLayout<Int8>.size }
+  public var value: Int8 { return self.rawValue }
+  case pending = 1
+  case splitview = 2
+  case previewonly = 3
+
+  public static var max: StateReflection_EditorViewReflection { return .previewonly }
+  public static var min: StateReflection_EditorViewReflection { return .pending }
+}
+
+
 public struct SharedWebviewData_WebviewJavascriptError: FlatBufferObject, Verifiable {
 
   static func validateVersion() { FlatBuffersVersion_25_9_23() }
@@ -765,6 +790,254 @@ public struct Snippets_GetSnippetPropsBuffer: FlatBufferObject, Verifiable {
   public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
     var _v = try verifier.visitTable(at: position)
     try _v.visit(field: VTOFFSET.citationIds.p, fieldName: "citationIds", required: true, type: ForwardOffset<Vector<ForwardOffset<String>, String>>.self)
+    _v.finish()
+  }
+}
+
+public struct StateReflection_EditorCitationReflection: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case citationKey = 4
+    case html = 6
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var citationKey: String! { let o = _accessor.offset(VTOFFSET.citationKey.v); return _accessor.string(at: o) }
+  public var citationKeySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.citationKey.v) }
+  public var html: String! { let o = _accessor.offset(VTOFFSET.html.v); return _accessor.string(at: o) }
+  public var htmlSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.html.v) }
+  public static func startEditorCitationReflection(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 2) }
+  public static func add(citationKey: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citationKey, at: VTOFFSET.citationKey.p) }
+  public static func add(html: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: html, at: VTOFFSET.html.p) }
+  public static func endEditorCitationReflection(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
+  public static func createEditorCitationReflection(
+    _ fbb: inout FlatBufferBuilder,
+    citationKeyOffset citationKey: Offset,
+    htmlOffset html: Offset
+  ) -> Offset {
+    let __start = StateReflection_EditorCitationReflection.startEditorCitationReflection(&fbb)
+    StateReflection_EditorCitationReflection.add(citationKey: citationKey, &fbb)
+    StateReflection_EditorCitationReflection.add(html: html, &fbb)
+    return StateReflection_EditorCitationReflection.endEditorCitationReflection(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.citationKey.p, fieldName: "citationKey", required: true, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.html.p, fieldName: "html", required: true, type: ForwardOffset<String>.self)
+    _v.finish()
+  }
+}
+
+public struct StateReflection_EditorTagReflection: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case body = 4
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var body: String! { let o = _accessor.offset(VTOFFSET.body.v); return _accessor.string(at: o) }
+  public var bodySegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.body.v) }
+  public static func startEditorTagReflection(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 1) }
+  public static func add(body: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: body, at: VTOFFSET.body.p) }
+  public static func endEditorTagReflection(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4]); return end }
+  public static func createEditorTagReflection(
+    _ fbb: inout FlatBufferBuilder,
+    bodyOffset body: Offset
+  ) -> Offset {
+    let __start = StateReflection_EditorTagReflection.startEditorTagReflection(&fbb)
+    StateReflection_EditorTagReflection.add(body: body, &fbb)
+    return StateReflection_EditorTagReflection.endEditorTagReflection(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.body.p, fieldName: "body", required: true, type: ForwardOffset<String>.self)
+    _v.finish()
+  }
+}
+
+public struct StateReflection_SnippetStateReflection: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case includeEmojiSnippets = 4
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var includeEmojiSnippets: Bool { let o = _accessor.offset(VTOFFSET.includeEmojiSnippets.v); return o == 0 ? false : _accessor.readBuffer(of: Bool.self, at: o) }
+  public static func startSnippetStateReflection(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 1) }
+  public static func add(includeEmojiSnippets: Bool, _ fbb: inout FlatBufferBuilder) { fbb.add(element: includeEmojiSnippets, def: false,
+   at: VTOFFSET.includeEmojiSnippets.p) }
+  public static func endSnippetStateReflection(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); return end }
+  public static func createSnippetStateReflection(
+    _ fbb: inout FlatBufferBuilder,
+    includeEmojiSnippets: Bool = false
+  ) -> Offset {
+    let __start = StateReflection_SnippetStateReflection.startSnippetStateReflection(&fbb)
+    StateReflection_SnippetStateReflection.add(includeEmojiSnippets: includeEmojiSnippets, &fbb)
+    return StateReflection_SnippetStateReflection.endSnippetStateReflection(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.includeEmojiSnippets.p, fieldName: "includeEmojiSnippets", required: false, type: Bool.self)
+    _v.finish()
+  }
+}
+
+public struct StateReflection_EditorStateReflection: FlatBufferObject, Verifiable {
+
+  static func validateVersion() { FlatBuffersVersion_25_9_23() }
+  public var __buffer: ByteBuffer! { return _accessor.bb }
+  private var _accessor: Table
+
+  private init(_ t: Table) { _accessor = t }
+  public init(_ bb: ByteBuffer, o: Int32) { _accessor = Table(bb: bb, position: o) }
+
+  private enum VTOFFSET: VOffset {
+    case noteId = 4
+    case baseKeymap = 6
+    case citations = 8
+    case keymap = 10
+    case theme = 12
+    case tags = 14
+    case allCitationIds = 16
+    case value = 18
+    case parsedValue = 20
+    case haveSetInitialValue = 22
+    case editorView = 24
+    case snippetProps = 26
+    case lockEditorScrollToPreview = 28
+    case saveMethod = 30
+    case autoSaveTimeout = 32
+    var v: Int32 { Int32(self.rawValue) }
+    var p: VOffset { self.rawValue }
+  }
+
+  public var noteId: String? { let o = _accessor.offset(VTOFFSET.noteId.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var noteIdSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.noteId.v) }
+  public var baseKeymap: String? { let o = _accessor.offset(VTOFFSET.baseKeymap.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var baseKeymapSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.baseKeymap.v) }
+  public var hasCitations: Bool { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? false : true }
+  public var citationsCount: Int32 { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? 0 : _accessor.vector(count: o) }
+  public func citations(at index: Int32) -> StateReflection_EditorCitationReflection? { let o = _accessor.offset(VTOFFSET.citations.v); return o == 0 ? nil : StateReflection_EditorCitationReflection(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
+  public var keymap: String? { let o = _accessor.offset(VTOFFSET.keymap.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var keymapSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.keymap.v) }
+  public var theme: String? { let o = _accessor.offset(VTOFFSET.theme.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var themeSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.theme.v) }
+  public var hasTags: Bool { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? false : true }
+  public var tagsCount: Int32 { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? 0 : _accessor.vector(count: o) }
+  public func tags(at index: Int32) -> StateReflection_EditorTagReflection? { let o = _accessor.offset(VTOFFSET.tags.v); return o == 0 ? nil : StateReflection_EditorTagReflection(_accessor.bb, o: _accessor.indirect(_accessor.vector(at: o) + index * 4)) }
+  public var hasAllCitationIds: Bool { let o = _accessor.offset(VTOFFSET.allCitationIds.v); return o == 0 ? false : true }
+  public var allCitationIdsCount: Int32 { let o = _accessor.offset(VTOFFSET.allCitationIds.v); return o == 0 ? 0 : _accessor.vector(count: o) }
+  public func allCitationIds(at index: Int32) -> String? { let o = _accessor.offset(VTOFFSET.allCitationIds.v); return o == 0 ? nil : _accessor.directString(at: _accessor.vector(at: o) + index * 4) }
+  public var value: String! { let o = _accessor.offset(VTOFFSET.value.v); return _accessor.string(at: o) }
+  public var valueSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.value.v) }
+  public var parsedValue: String? { let o = _accessor.offset(VTOFFSET.parsedValue.v); return o == 0 ? nil : _accessor.string(at: o) }
+  public var parsedValueSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.parsedValue.v) }
+  public var haveSetInitialValue: Bool { let o = _accessor.offset(VTOFFSET.haveSetInitialValue.v); return o == 0 ? false : _accessor.readBuffer(of: Bool.self, at: o) }
+  public var editorView: StateReflection_EditorViewReflection { let o = _accessor.offset(VTOFFSET.editorView.v); return o == 0 ? .pending : StateReflection_EditorViewReflection(rawValue: _accessor.readBuffer(of: Int8.self, at: o)) ?? .pending }
+  public var snippetProps: StateReflection_SnippetStateReflection? { let o = _accessor.offset(VTOFFSET.snippetProps.v); return o == 0 ? nil : StateReflection_SnippetStateReflection(_accessor.bb, o: _accessor.indirect(o + _accessor.position)) }
+  public var lockEditorScrollToPreview: Bool { let o = _accessor.offset(VTOFFSET.lockEditorScrollToPreview.v); return o == 0 ? false : _accessor.readBuffer(of: Bool.self, at: o) }
+  public var saveMethod: StateReflection_EditorSaveMethodReflection { let o = _accessor.offset(VTOFFSET.saveMethod.v); return o == 0 ? .onchange : StateReflection_EditorSaveMethodReflection(rawValue: _accessor.readBuffer(of: Int8.self, at: o)) ?? .onchange }
+  public var autoSaveTimeout: UInt32 { let o = _accessor.offset(VTOFFSET.autoSaveTimeout.v); return o == 0 ? 0 : _accessor.readBuffer(of: UInt32.self, at: o) }
+  public static func startEditorStateReflection(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 15) }
+  public static func add(noteId: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: noteId, at: VTOFFSET.noteId.p) }
+  public static func add(baseKeymap: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: baseKeymap, at: VTOFFSET.baseKeymap.p) }
+  public static func addVectorOf(citations: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citations, at: VTOFFSET.citations.p) }
+  public static func add(keymap: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: keymap, at: VTOFFSET.keymap.p) }
+  public static func add(theme: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: theme, at: VTOFFSET.theme.p) }
+  public static func addVectorOf(tags: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: tags, at: VTOFFSET.tags.p) }
+  public static func addVectorOf(allCitationIds: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: allCitationIds, at: VTOFFSET.allCitationIds.p) }
+  public static func add(value: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: value, at: VTOFFSET.value.p) }
+  public static func add(parsedValue: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: parsedValue, at: VTOFFSET.parsedValue.p) }
+  public static func add(haveSetInitialValue: Bool, _ fbb: inout FlatBufferBuilder) { fbb.add(element: haveSetInitialValue, def: false,
+   at: VTOFFSET.haveSetInitialValue.p) }
+  public static func add(editorView: StateReflection_EditorViewReflection, _ fbb: inout FlatBufferBuilder) { fbb.add(element: editorView.rawValue, def: 1, at: VTOFFSET.editorView.p) }
+  public static func add(snippetProps: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: snippetProps, at: VTOFFSET.snippetProps.p) }
+  public static func add(lockEditorScrollToPreview: Bool, _ fbb: inout FlatBufferBuilder) { fbb.add(element: lockEditorScrollToPreview, def: false,
+   at: VTOFFSET.lockEditorScrollToPreview.p) }
+  public static func add(saveMethod: StateReflection_EditorSaveMethodReflection, _ fbb: inout FlatBufferBuilder) { fbb.add(element: saveMethod.rawValue, def: 2, at: VTOFFSET.saveMethod.p) }
+  public static func add(autoSaveTimeout: UInt32, _ fbb: inout FlatBufferBuilder) { fbb.add(element: autoSaveTimeout, def: 0, at: VTOFFSET.autoSaveTimeout.p) }
+  public static func endEditorStateReflection(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [18]); return end }
+  public static func createEditorStateReflection(
+    _ fbb: inout FlatBufferBuilder,
+    noteIdOffset noteId: Offset = Offset(),
+    baseKeymapOffset baseKeymap: Offset = Offset(),
+    citationsVectorOffset citations: Offset = Offset(),
+    keymapOffset keymap: Offset = Offset(),
+    themeOffset theme: Offset = Offset(),
+    tagsVectorOffset tags: Offset = Offset(),
+    allCitationIdsVectorOffset allCitationIds: Offset = Offset(),
+    valueOffset value: Offset,
+    parsedValueOffset parsedValue: Offset = Offset(),
+    haveSetInitialValue: Bool = false,
+    editorView: StateReflection_EditorViewReflection = .pending,
+    snippetPropsOffset snippetProps: Offset = Offset(),
+    lockEditorScrollToPreview: Bool = false,
+    saveMethod: StateReflection_EditorSaveMethodReflection = .onchange,
+    autoSaveTimeout: UInt32 = 0
+  ) -> Offset {
+    let __start = StateReflection_EditorStateReflection.startEditorStateReflection(&fbb)
+    StateReflection_EditorStateReflection.add(noteId: noteId, &fbb)
+    StateReflection_EditorStateReflection.add(baseKeymap: baseKeymap, &fbb)
+    StateReflection_EditorStateReflection.addVectorOf(citations: citations, &fbb)
+    StateReflection_EditorStateReflection.add(keymap: keymap, &fbb)
+    StateReflection_EditorStateReflection.add(theme: theme, &fbb)
+    StateReflection_EditorStateReflection.addVectorOf(tags: tags, &fbb)
+    StateReflection_EditorStateReflection.addVectorOf(allCitationIds: allCitationIds, &fbb)
+    StateReflection_EditorStateReflection.add(value: value, &fbb)
+    StateReflection_EditorStateReflection.add(parsedValue: parsedValue, &fbb)
+    StateReflection_EditorStateReflection.add(haveSetInitialValue: haveSetInitialValue, &fbb)
+    StateReflection_EditorStateReflection.add(editorView: editorView, &fbb)
+    StateReflection_EditorStateReflection.add(snippetProps: snippetProps, &fbb)
+    StateReflection_EditorStateReflection.add(lockEditorScrollToPreview: lockEditorScrollToPreview, &fbb)
+    StateReflection_EditorStateReflection.add(saveMethod: saveMethod, &fbb)
+    StateReflection_EditorStateReflection.add(autoSaveTimeout: autoSaveTimeout, &fbb)
+    return StateReflection_EditorStateReflection.endEditorStateReflection(&fbb, start: __start)
+  }
+
+  public static func verify<T>(_ verifier: inout Verifier, at position: Int, of type: T.Type) throws where T: Verifiable {
+    var _v = try verifier.visitTable(at: position)
+    try _v.visit(field: VTOFFSET.noteId.p, fieldName: "noteId", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.baseKeymap.p, fieldName: "baseKeymap", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.citations.p, fieldName: "citations", required: false, type: ForwardOffset<Vector<ForwardOffset<StateReflection_EditorCitationReflection>, StateReflection_EditorCitationReflection>>.self)
+    try _v.visit(field: VTOFFSET.keymap.p, fieldName: "keymap", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.theme.p, fieldName: "theme", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.tags.p, fieldName: "tags", required: false, type: ForwardOffset<Vector<ForwardOffset<StateReflection_EditorTagReflection>, StateReflection_EditorTagReflection>>.self)
+    try _v.visit(field: VTOFFSET.allCitationIds.p, fieldName: "allCitationIds", required: false, type: ForwardOffset<Vector<ForwardOffset<String>, String>>.self)
+    try _v.visit(field: VTOFFSET.value.p, fieldName: "value", required: true, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.parsedValue.p, fieldName: "parsedValue", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.haveSetInitialValue.p, fieldName: "haveSetInitialValue", required: false, type: Bool.self)
+    try _v.visit(field: VTOFFSET.editorView.p, fieldName: "editorView", required: false, type: StateReflection_EditorViewReflection.self)
+    try _v.visit(field: VTOFFSET.snippetProps.p, fieldName: "snippetProps", required: false, type: ForwardOffset<StateReflection_SnippetStateReflection>.self)
+    try _v.visit(field: VTOFFSET.lockEditorScrollToPreview.p, fieldName: "lockEditorScrollToPreview", required: false, type: Bool.self)
+    try _v.visit(field: VTOFFSET.saveMethod.p, fieldName: "saveMethod", required: false, type: StateReflection_EditorSaveMethodReflection.self)
+    try _v.visit(field: VTOFFSET.autoSaveTimeout.p, fieldName: "autoSaveTimeout", required: false, type: UInt32.self)
     _v.finish()
   }
 }

@@ -7,3 +7,4 @@ export * as MdxSerialization from './mdx-serialization.js';
 export * as Notifications from './notifications.js';
 export * as SharedWebviewData from './shared-webview-data.js';
 export * as Snippets from './snippets.js';
+export * as StateReflection from './state-reflection.js';

@@ -1,0 +1,596 @@
+[
+    {
+        "note_id": "note-eb742f",
+        "baseKeymap": "default",
+        "citations": [
+            {
+                "citation_key": "react-docs-2026",
+                "html": "<span class='cite-link'><a href='#react-docs'>React Core Team, 2026</a></span>"
+            }
+        ],
+        "keymap": "vim",
+        "theme": "dracula",
+        "tags": [
+            {
+                "body": "react"
+            },
+            {
+                "body": "mdx"
+            }
+        ],
+        "allCitationIds": [
+            "react-docs-2026"
+        ],
+        "value": "# Introduction to React in MDX\n\n<Card title=\"Component State\">\nState allows components to create, update, and use data internally. In our MDX app, this is very useful!\n</Card>\n\n<Admonition title=\"Warning\">\nDo not mutate state directly! Always use the setter function provided by `useState`.\n</Admonition>",
+        "parsedValue": "<h1>Introduction to React in MDX</h1><div class='mdx-card' data-title='Component State'>...</div><div class='mdx-admonition' data-title='Warning'>...</div>",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 3000
+    },
+    {
+        "note_id": null,
+        "baseKeymap": "vsCode",
+        "citations": [],
+        "keymap": "vim",
+        "theme": "dracula",
+        "tags": [
+            {
+                "body": "rust"
+            },
+            {
+                "body": "systems"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# Rust Borrow Checker\n\n<Card title=\"Ownership Rules\">\n1. Each value in Rust has a variable that’s called its owner.\n2. There can only be one owner at a time.\n</Card>\n\n<Admonition title=\"Important\">\nWhen the owner goes out of scope, the value will be dropped.\n</Admonition>",
+        "parsedValue": null,
+        "haveSetInitialValue": false,
+        "editorView": "Pending",
+        "snippetProps": {
+            "includeEmojiSnippets": false
+        },
+        "lockEditorScrollToPreview": false,
+        "saveMethod": "on-save",
+        "autoSaveTimeout": 5000
+    },
+    {
+        "note_id": "note-f823ca",
+        "baseKeymap": "default",
+        "citations": [
+            {
+                "citation_key": "css-tricks-flex",
+                "html": "<span class='cite-link'>CSS-Tricks Flexbox Guide</span>"
+            }
+        ],
+        "keymap": "emacs",
+        "theme": "xcodeDark",
+        "tags": [
+            {
+                "body": "css"
+            },
+            {
+                "body": "design"
+            }
+        ],
+        "allCitationIds": [
+            "css-tricks-flex"
+        ],
+        "value": "# Flexbox Basics\n\n<Card title=\"Flex Container\">\nSetting `display: flex` creates a block-level flex container, establishing a new flex formatting context for its direct children.\n</Card>\n\n<Admonition title=\"Pro Tip\">\nUse `align-items: center` to vertically align elements effortlessly.\n</Admonition>",
+        "parsedValue": "<h1>Flexbox Basics</h1>...",
+        "haveSetInitialValue": true,
+        "editorView": "PreviewOnly",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 1500
+    },
+    {
+        "note_id": "note-55cd91",
+        "baseKeymap": "vsCode",
+        "citations": [],
+        "keymap": "vim",
+        "theme": "solarizedDark",
+        "tags": [
+            {
+                "body": "api"
+            },
+            {
+                "body": "backend"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# Authentication API Docs\n\n<Card title=\"Endpoints\">\nThe primary login endpoint is `POST /api/v1/auth/login`. It expects a JSON payload containing `email` and `password`.\n</Card>\n\n<Admonition title=\"Security Context\">\nAlways send JWT tokens via HTTPS and store them securely in HttpOnly cookies to prevent XSS attacks.\n</Admonition>",
+        "parsedValue": "<h1>Authentication API Docs</h1>...",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 3000
+    },
+    {
+        "note_id": "note-c0ffee",
+        "baseKeymap": "default",
+        "citations": [
+            {
+                "citation_key": "db-internals-2020",
+                "html": "<span>Database Internals (Petrov, 2020)</span>"
+            },
+            {
+                "citation_key": "b-tree-paper",
+                "html": "<span>B-Tree indexing fundamentals</span>"
+            }
+        ],
+        "keymap": "vim",
+        "theme": "githubLight",
+        "tags": [
+            {
+                "body": "database"
+            },
+            {
+                "body": "performance"
+            }
+        ],
+        "allCitationIds": [
+            "db-internals-2020",
+            "b-tree-paper"
+        ],
+        "value": "# Indexing Strategy\n\n<Card title=\"B-Trees\">\nMost relational databases use B-Trees for default indexing to keep data sorted and allow searches, sequential access, insertions, and deletions in logarithmic time.\n</Card>\n\n<Admonition title=\"Performance Note\">\nBeware of over-indexing. Too many indexes can significantly slow down write operations (`INSERT`, `UPDATE`, `DELETE`).\n</Admonition>",
+        "parsedValue": "<h1>Indexing Strategy</h1>...",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": false
+        },
+        "lockEditorScrollToPreview": false,
+        "saveMethod": "on-save",
+        "autoSaveTimeout": 0
+    },
+    {
+        "note_id": "note-bada55",
+        "baseKeymap": "vsCode",
+        "citations": [],
+        "keymap": "vim",
+        "theme": "dracula",
+        "tags": [
+            {
+                "body": "docker"
+            },
+            {
+                "body": "devops"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# Docker Volumes\n\n<Card title=\"Persisting Data\">\nVolumes are the preferred mechanism for persisting data generated by and used by Docker containers. They are completely managed by Docker.\n</Card>\n\n<Admonition title=\"Warning\">\nBind mounts depend on the host machine's directory structure, which can cause cross-platform compatibility issues.\n</Admonition>",
+        "parsedValue": null,
+        "haveSetInitialValue": false,
+        "editorView": "Pending",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-save",
+        "autoSaveTimeout": 10000
+    },
+    {
+        "note_id": "note-010101",
+        "baseKeymap": "default",
+        "citations": [],
+        "keymap": "emacs",
+        "theme": "xcodeDark",
+        "tags": [
+            {
+                "body": "git"
+            },
+            {
+                "body": "workflow"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# Git Rebase Interactive\n\n<Card title=\"Rewriting History\">\nRebasing allows you to squash commits, edit commit messages, and reorder history using the `git rebase -i` command.\n</Card>\n\n<Admonition title=\"Danger Zone\">\nNever rebase commits that have already been pushed to a public or shared repository. You will overwrite history others might be basing their work on!\n</Admonition>",
+        "parsedValue": "<h1>Git Rebase Interactive</h1>...",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 2000
+    },
+    {
+        "note_id": "note-777xyz",
+        "baseKeymap": "vsCode",
+        "citations": [
+            {
+                "citation_key": "jest-mocks",
+                "html": "<a href='https://jestjs.io'>Jest Documentation</a>"
+            }
+        ],
+        "keymap": "vim",
+        "theme": "xcodeDark",
+        "tags": [
+            {
+                "body": "testing"
+            },
+            {
+                "body": "javascript"
+            }
+        ],
+        "allCitationIds": [
+            "jest-mocks"
+        ],
+        "value": "# Jest Mocks\n\n<Card title=\"Mock Functions\">\nMock functions allow you to test links between code by erasing the actual implementation of a function, capturing calls, and setting up return values.\n</Card>\n\n<Admonition title=\"Info\">\nUse `jest.fn()` to create a basic mock, and `jest.spyOn()` if you need to watch an existing object method while optionally maintaining its original behavior.\n</Admonition>",
+        "parsedValue": "<h1>Jest Mocks</h1>...",
+        "haveSetInitialValue": true,
+        "editorView": "PreviewOnly",
+        "snippetProps": {
+            "includeEmojiSnippets": false
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 1000
+    },
+    {
+        "note_id": null,
+        "baseKeymap": "default",
+        "citations": [
+            {
+                "citation_key": "w3c-aria",
+                "html": "<cite>W3C ARIA Authoring Practices</cite>"
+            }
+        ],
+        "keymap": "vim",
+        "theme": "githubLight",
+        "tags": [
+            {
+                "body": "a11y"
+            },
+            {
+                "body": "html"
+            }
+        ],
+        "allCitationIds": [
+            "w3c-aria"
+        ],
+        "value": "# Web Accessibility: ARIA Roles\n\n<Card title=\"Navigation Role\">\nThe `navigation` landmark role is used for major navigational blocks. Screen readers use these to skip directly to navigation.\n</Card>\n\n<Admonition title=\"Best Practice\">\nNative HTML elements (like `<nav>`) are always preferred over adding ARIA roles to non-semantic `<div>` elements.\n</Admonition>",
+        "parsedValue": "<h1>Web Accessibility: ARIA Roles</h1>...",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-save",
+        "autoSaveTimeout": 5000
+    },
+    {
+        "note_id": "note-424242",
+        "baseKeymap": "vsCode",
+        "citations": [],
+        "keymap": "emacs",
+        "theme": "dracula",
+        "tags": [
+            {
+                "body": "typescript"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# TypeScript Utility Types\n\n<Card title=\"Partial<Type>\">\nConstructs a type with all properties of `Type` set to optional. This utility returns a type that represents all subsets of a given type.\n</Card>\n\n<Admonition title=\"Note\">\n`Omit<Type, Keys>` is great for removing sensitive fields (like passwords) from a User interface type before returning it to the client.\n</Admonition>",
+        "parsedValue": "<h1>TypeScript Utility Types</h1>...",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 2500
+    },
+    {
+        "note_id": "note-eb742f",
+        "baseKeymap": "default",
+        "citations": [
+            {
+                "citation_key": "react-docs-2026",
+                "html": "<span class='cite-link'><a href='#react-docs'>React Core Team, 2026</a></span>"
+            }
+        ],
+        "keymap": "vim",
+        "theme": "dracula",
+        "tags": [
+            {
+                "body": "react"
+            },
+            {
+                "body": "mdx"
+            }
+        ],
+        "allCitationIds": [
+            "react-docs-2026"
+        ],
+        "value": "# Introduction to React in MDX\n\n<Card title=\"Component State\">\nState allows components to create, update, and use data internally. In our MDX app, this is very useful!\n</Card>\n\n<Admonition title=\"Warning\">\nDo not mutate state directly! Always use the setter function provided by `useState`.\n</Admonition>",
+        "parsedValue": "# Introduction to React in MDX\n\n<Card title=\"Component State\">\nState allows components to create, update, and use data internally. In our MDX app, this is very useful!\n</Card>\n\n<Admonition title=\"Warning\">\nDo not mutate state directly! Always use the setter function provided by `useState`.\n</Admonition>",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 3000
+    },
+    {
+        "note_id": null,
+        "baseKeymap": "vsCode",
+        "citations": [],
+        "keymap": "vim",
+        "theme": "dracula",
+        "tags": [
+            {
+                "body": "rust"
+            },
+            {
+                "body": "systems"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# Rust Borrow Checker\n\n<Card title=\"Ownership Rules\">\n1. Each value in Rust has a variable that’s called its owner.\n2. There can only be one owner at a time.\n</Card>\n\n<Admonition title=\"Important\">\nWhen the owner goes out of scope, the value will be dropped.\n</Admonition>",
+        "parsedValue": "# Rust Borrow Checker\n\n<Card title=\"Ownership Rules\">\n1. Each value in Rust has a variable that’s called its owner.\n2. There can only be one owner at a time.\n</Card>\n\n<Admonition title=\"Important\">\nWhen the owner goes out of scope, the value will be dropped.\n</Admonition>",
+        "haveSetInitialValue": false,
+        "editorView": "Pending",
+        "snippetProps": {
+            "includeEmojiSnippets": false
+        },
+        "lockEditorScrollToPreview": false,
+        "saveMethod": "on-save",
+        "autoSaveTimeout": 5000
+    },
+    {
+        "note_id": "note-f823ca",
+        "baseKeymap": "default",
+        "citations": [
+            {
+                "citation_key": "css-tricks-flex",
+                "html": "<span class='cite-link'>CSS-Tricks Flexbox Guide</span>"
+            }
+        ],
+        "keymap": "emacs",
+        "theme": "xcodeDark",
+        "tags": [
+            {
+                "body": "css"
+            },
+            {
+                "body": "design"
+            }
+        ],
+        "allCitationIds": [
+            "css-tricks-flex"
+        ],
+        "value": "# Flexbox Basics\n\n<Card title=\"Flex Container\">\nSetting `display: flex` creates a block-level flex container, establishing a new flex formatting context for its direct children.\n</Card>\n\n<Admonition title=\"Pro Tip\">\nUse `align-items: center` to vertically align elements effortlessly.\n</Admonition>",
+        "parsedValue": "# Flexbox Basics\n\n<Card title=\"Flex Container\">\nSetting `display: flex` creates a block-level flex container, establishing a new flex formatting context for its direct children.\n</Card>\n\n<Admonition title=\"Pro Tip\">\nUse `align-items: center` to vertically align elements effortlessly.\n</Admonition>",
+        "haveSetInitialValue": true,
+        "editorView": "PreviewOnly",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 1500
+    },
+    {
+        "note_id": "note-55cd91",
+        "baseKeymap": "vsCode",
+        "citations": [],
+        "keymap": "vim",
+        "theme": "solarizedDark",
+        "tags": [
+            {
+                "body": "api"
+            },
+            {
+                "body": "backend"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# Authentication API Docs\n\n<Card title=\"Endpoints\">\nThe primary login endpoint is `POST /api/v1/auth/login`. It expects a JSON payload containing `email` and `password`.\n</Card>\n\n<Admonition title=\"Security Context\">\nAlways send JWT tokens via HTTPS and store them securely in HttpOnly cookies to prevent XSS attacks.\n</Admonition>",
+        "parsedValue": "# Authentication API Docs\n\n<Card title=\"Endpoints\">\nThe primary login endpoint is `POST /api/v1/auth/login`. It expects a JSON payload containing `email` and `password`.\n</Card>\n\n<Admonition title=\"Security Context\">\nAlways send JWT tokens via HTTPS and store them securely in HttpOnly cookies to prevent XSS attacks.\n</Admonition>",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 3000
+    },
+    {
+        "note_id": "note-c0ffee",
+        "baseKeymap": "default",
+        "citations": [
+            {
+                "citation_key": "db-internals-2020",
+                "html": "<span>Database Internals (Petrov, 2020)</span>"
+            },
+            {
+                "citation_key": "b-tree-paper",
+                "html": "<span>B-Tree indexing fundamentals</span>"
+            }
+        ],
+        "keymap": "vim",
+        "theme": "githubLight",
+        "tags": [
+            {
+                "body": "database"
+            },
+            {
+                "body": "performance"
+            }
+        ],
+        "allCitationIds": [
+            "db-internals-2020",
+            "b-tree-paper"
+        ],
+        "value": "# Indexing Strategy\n\n<Card title=\"B-Trees\">\nMost relational databases use B-Trees for default indexing to keep data sorted and allow searches, sequential access, insertions, and deletions in logarithmic time.\n</Card>\n\n<Admonition title=\"Performance Note\">\nBeware of over-indexing. Too many indexes can significantly slow down write operations (`INSERT`, `UPDATE`, `DELETE`).\n</Admonition>",
+        "parsedValue": "# Indexing Strategy\n\n<Card title=\"B-Trees\">\nMost relational databases use B-Trees for default indexing to keep data sorted and allow searches, sequential access, insertions, and deletions in logarithmic time.\n</Card>\n\n<Admonition title=\"Performance Note\">\nBeware of over-indexing. Too many indexes can significantly slow down write operations (`INSERT`, `UPDATE`, `DELETE`).\n</Admonition>",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": false
+        },
+        "lockEditorScrollToPreview": false,
+        "saveMethod": "on-save",
+        "autoSaveTimeout": 0
+    },
+    {
+        "note_id": "note-bada55",
+        "baseKeymap": "vsCode",
+        "citations": [],
+        "keymap": "vim",
+        "theme": "dracula",
+        "tags": [
+            {
+                "body": "docker"
+            },
+            {
+                "body": "devops"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# Docker Volumes\n\n<Card title=\"Persisting Data\">\nVolumes are the preferred mechanism for persisting data generated by and used by Docker containers. They are completely managed by Docker.\n</Card>\n\n<Admonition title=\"Warning\">\nBind mounts depend on the host machine's directory structure, which can cause cross-platform compatibility issues.\n</Admonition>",
+        "parsedValue": "# Docker Volumes\n\n<Card title=\"Persisting Data\">\nVolumes are the preferred mechanism for persisting data generated by and used by Docker containers. They are completely managed by Docker.\n</Card>\n\n<Admonition title=\"Warning\">\nBind mounts depend on the host machine's directory structure, which can cause cross-platform compatibility issues.\n</Admonition>",
+        "haveSetInitialValue": false,
+        "editorView": "Pending",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-save",
+        "autoSaveTimeout": 10000
+    },
+    {
+        "note_id": "note-010101",
+        "baseKeymap": "default",
+        "citations": [],
+        "keymap": "emacs",
+        "theme": "xcodeDark",
+        "tags": [
+            {
+                "body": "git"
+            },
+            {
+                "body": "workflow"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# Git Rebase Interactive\n\n<Card title=\"Rewriting History\">\nRebasing allows you to squash commits, edit commit messages, and reorder history using the `git rebase -i` command.\n</Card>\n\n<Admonition title=\"Danger Zone\">\nNever rebase commits that have already been pushed to a public or shared repository. You will overwrite history others might be basing their work on!\n</Admonition>",
+        "parsedValue": "# Git Rebase Interactive\n\n<Card title=\"Rewriting History\">\nRebasing allows you to squash commits, edit commit messages, and reorder history using the `git rebase -i` command.\n</Card>\n\n<Admonition title=\"Danger Zone\">\nNever rebase commits that have already been pushed to a public or shared repository. You will overwrite history others might be basing their work on!\n</Admonition>",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 2000
+    },
+    {
+        "note_id": "note-777xyz",
+        "baseKeymap": "vsCode",
+        "citations": [
+            {
+                "citation_key": "jest-mocks",
+                "html": "<a href='https://jestjs.io'>Jest Documentation</a>"
+            }
+        ],
+        "keymap": "vim",
+        "theme": "xcodeDark",
+        "tags": [
+            {
+                "body": "testing"
+            },
+            {
+                "body": "javascript"
+            }
+        ],
+        "allCitationIds": [
+            "jest-mocks"
+        ],
+        "value": "# Jest Mocks\n\n<Card title=\"Mock Functions\">\nMock functions allow you to test links between code by erasing the actual implementation of a function, capturing calls, and setting up return values.\n</Card>\n\n<Admonition title=\"Info\">\nUse `jest.fn()` to create a basic mock, and `jest.spyOn()` if you need to watch an existing object method while optionally maintaining its original behavior.\n</Admonition>",
+        "parsedValue": "# Jest Mocks\n\n<Card title=\"Mock Functions\">\nMock functions allow you to test links between code by erasing the actual implementation of a function, capturing calls, and setting up return values.\n</Card>\n\n<Admonition title=\"Info\">\nUse `jest.fn()` to create a basic mock, and `jest.spyOn()` if you need to watch an existing object method while optionally maintaining its original behavior.\n</Admonition>",
+        "haveSetInitialValue": true,
+        "editorView": "PreviewOnly",
+        "snippetProps": {
+            "includeEmojiSnippets": false
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 1000
+    },
+    {
+        "note_id": null,
+        "baseKeymap": "default",
+        "citations": [
+            {
+                "citation_key": "w3c-aria",
+                "html": "<cite>W3C ARIA Authoring Practices</cite>"
+            }
+        ],
+        "keymap": "vim",
+        "theme": "githubLight",
+        "tags": [
+            {
+                "body": "a11y"
+            },
+            {
+                "body": "html"
+            }
+        ],
+        "allCitationIds": [
+            "w3c-aria"
+        ],
+        "value": "# Web Accessibility: ARIA Roles\n\n<Card title=\"Navigation Role\">\nThe `navigation` landmark role is used for major navigational blocks. Screen readers use these to skip directly to navigation.\n</Card>\n\n<Admonition title=\"Best Practice\">\nNative HTML elements (like `<nav>`) are always preferred over adding ARIA roles to non-semantic `<div>` elements.\n</Admonition>",
+        "parsedValue": "# Web Accessibility: ARIA Roles\n\n<Card title=\"Navigation Role\">\nThe `navigation` landmark role is used for major navigational blocks. Screen readers use these to skip directly to navigation.\n</Card>\n\n<Admonition title=\"Best Practice\">\nNative HTML elements (like `<nav>`) are always preferred over adding ARIA roles to non-semantic `<div>` elements.\n</Admonition>",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-save",
+        "autoSaveTimeout": 5000
+    },
+    {
+        "note_id": "note-424242",
+        "baseKeymap": "vsCode",
+        "citations": [],
+        "keymap": "emacs",
+        "theme": "dracula",
+        "tags": [
+            {
+                "body": "typescript"
+            }
+        ],
+        "allCitationIds": [],
+        "value": "# TypeScript Utility Types\n\n<Card title=\"Partial<Type>\">\nConstructs a type with all properties of `Type` set to optional. This utility returns a type that represents all subsets of a given type.\n</Card>\n\n<Admonition title=\"Note\">\n`Omit<Type, Keys>` is great for removing sensitive fields (like passwords) from a User interface type before returning it to the client.\n</Admonition>",
+        "parsedValue": "# TypeScript Utility Types\n\n<Card title=\"Partial<Type>\">\nConstructs a type with all properties of `Type` set to optional. This utility returns a type that represents all subsets of a given type.\n</Card>\n\n<Admonition title=\"Note\">\n`Omit<Type, Keys>` is great for removing sensitive fields (like passwords) from a User interface type before returning it to the client.\n</Admonition>",
+        "haveSetInitialValue": true,
+        "editorView": "Splitview",
+        "snippetProps": {
+            "includeEmojiSnippets": true
+        },
+        "lockEditorScrollToPreview": true,
+        "saveMethod": "on-change",
+        "autoSaveTimeout": 2500
+    }
+]

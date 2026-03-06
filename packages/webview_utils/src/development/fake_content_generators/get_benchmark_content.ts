@@ -1,7 +1,6 @@
-import { embeddableComponentConfigs } from "../../packages/webview_utils/src/features/mdx/embeddable_mdx_components/component_configs";
-import { ParserId } from "../../packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities";
+import { embeddableComponentConfigs } from "#/mdx/embeddable_mdx_components/component_configs";
 import { faker } from "@faker-js/faker";
-import { TestStringUtilities } from "../../packages/webview_utils/src/development/test_string_utilities";
+import { TestStringUtilities } from "../test_string_utilities";
 
 export const standardBenchmarkLengths = [5, 10, 20, 50];
 
@@ -17,7 +16,7 @@ export const getBenchmarkContent = async (
 ) => {
     const stringUtils = new TestStringUtilities();
 
-    let paragraphs = Array(length * 3)
+    const paragraphs = Array(length * 3)
         .fill(0)
         .map((c, i) => {
             return faker.lorem.paragraphs(1);

@@ -3,8 +3,7 @@ import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
-import wasm from "vite-plugin-wasm";
-import topLevelAwait from "vite-plugin-top-level-await";
+import codspeedPlugin from "@codspeed/vitest-plugin";
 import tailwind from "@tailwindcss/vite";
 
 const isProd = process.env.FLUSTER_PROD_BUILD === "true";
@@ -20,6 +19,7 @@ export default defineConfig({
             insertTypesEntry: true,
             copyDtsFiles: true,
         }),
+        codspeedPlugin()
         // wasm(),
         // topLevelAwait()
     ],

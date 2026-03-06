@@ -1,4 +1,6 @@
 use serde::{Deserialize, Serialize};
+use uniffi::SwiftBindingGenerator;
+use wasm_bindgen::prelude::*;
 
 use crate::{
     parse::by_regex::regex_parsers::{
@@ -21,17 +23,48 @@ static REGEX_PARSERS: [&'static dyn MdxParser; 6] = [
     &AiTriggerParser,
 ];
 
+#[wasm_bindgen]
 #[derive(Serialize, Deserialize, Debug, uniffi::Record)]
 pub struct SwiftDataCitationSummary {
-    pub citation_key: String,
-    pub body: String,
+    citation_key: String,
+    body: String,
 }
 
+impl SwiftDataCitationSummary {
+    #[wasm_bindgen(getter)]
+    pub fn citation_key(&self) -> String {
+        self.citation_key
+    }
+    #[wasm_bindgen(setter)]
+    pub fn set_citation_key(&mut self, citation_key: String) {
+        self.citation_key = citation_key
+    }
+}
+
+#[wasm_bindgen]
 #[derive(Serialize, Deserialize, Debug, uniffi::Record)]
 pub struct ParseMdxOptions {
     pub note_id: Option<String>,
     pub content: String,
     pub citations: Vec<SwiftDataCitationSummary>,
+}
+
+#[wasm_bindgen]
+impl ParseMdxOptions {
+    #[wasm_bindgen(getter)]
+    pub fn content(&self) -> String {
+        self.content.clone()
+    }
+    #[wasm_bindgen(setter)]
+    pub fn set_content(&mut self, content: String) {
+        self.content = content
+    }
+    #[wasm_bindgen(getter)]
+    pub fn citations(&self) -> Vec<SwiftDataCitationSummary> {
+        let y = self.citations.to_vec().iter().for_each(|x| x.clone());
+    }
+    #[wasm_bindgen(setter)]
+    pub fn set_citations(&self, citations: Vec<SwiftDataCitationSummary>) {}
 }
 
 /// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
@@ -66,8 +99,11 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
 #[cfg(test)]
 mod tests {
 
-    use fluster_core_utilities::test_utilities::get_test_mdx_content::{
-        get_test_note_content_with_everything, get_welcome_to_fluster_content,
+    use fluster_core_utilities::{
+        core_types::webviews::editor_state::editor_state::EditorState,
+        test_utilities::get_test_mdx_content::{
+            get_test_note_content_with_everything, get_welcome_to_fluster_content,
+        },
     };
 
     use super::*;
@@ -121,6 +157,7 @@ mod tests {
             citations: Vec::new(),
         })
         .await;
+
         assert!(
             res.front_matter.is_some(),
             "Has front matter when front matter is present"

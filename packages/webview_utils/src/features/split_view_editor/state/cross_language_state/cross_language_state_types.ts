@@ -12,3 +12,6 @@ export type AnyCrossLanguageBufferEditorAction = {
     type: EditorStateActions.SetParsedEditorContent,
     payload: OnParsedContentChangeEventBuffer
 }
+
+
+export type AnyCrossLanguageEditorActionOfAnyType = AnyCrossLanguageEditorAction | AnyCrossLanguageBufferEditorAction

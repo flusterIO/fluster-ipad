@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use strum::EnumIter;
+use strum::{EnumIter, IntoEnumIterator};
 use typeshare::typeshare;
 
 #[typeshare]
@@ -24,5 +24,9 @@ pub enum BenchmarkGeneratedDateString {
 impl BenchmarkGeneratedDateString {
     pub fn get_latest() -> Self {
         BenchmarkGeneratedDateString::Initial
+    }
+
+    pub fn string_is_valid_date(s: &str) -> bool {
+        BenchmarkGeneratedDateString::iter().any(|x| &x.to_string() == s)
     }
 }

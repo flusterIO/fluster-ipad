@@ -21,6 +21,7 @@
     "shiki": "3.3.0"
   },
   "devDependencies": {
+    "@codspeed/vitest-plugin": "^5.2.0",
     "@faker-js/faker": "10.3.0",
     "@mermaid-js/mermaid-cli": "11.12.0",
     "@next/eslint-plugin-next": "16.1.1",
@@ -29,7 +30,7 @@
     "@types/node": "24.10.1",
     "@types/react": "19.2.2",
     "@vitejs/plugin-react": "5.1.1",
-    "@welldone-software/why-did-you-render": "^10.0.1",
+    "@welldone-software/why-did-you-render": "10.0.1",
     "autoprefixer": "10.4.21",
     "eslint-config-next": "15.3.2",
     "eslint-plugin-react-hooks": "7.0.1",

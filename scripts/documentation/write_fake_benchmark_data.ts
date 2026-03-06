@@ -1,7 +1,7 @@
 import {
     getBenchmarkContent,
     standardBenchmarkLengths,
-} from "./get_fake_benchmark_content";
+} from "../../packages/webview_utils/src/development/fake_content_generators/get_benchmark_content";
 import path from "path";
 import fs from "fs";
 

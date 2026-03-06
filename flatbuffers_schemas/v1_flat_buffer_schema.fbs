@@ -104,5 +104,45 @@ table NoteDetailDataBuffer {
 namespace Snippets;
 
 table GetSnippetPropsBuffer {
-    citationIds:[string] (required);
+    citation_ids:[string] (required);
+}
+
+
+namespace StateReflection;
+
+table EditorCitationReflection {
+    citation_key:string (required);
+    html:string (required);
+}
+
+table EditorTagReflection {
+    body:string (required);
+}
+
+/// THIS toString METHOD WILL NOT MATCH THE RUST, TYPESCRIPT, or RUST EQUIVALENT!!!
+enum EditorSaveMethodReflection : byte { OnSave = 1, OnChange }
+
+/// THIS toString METHOD WILL NOT MATCH THE RUST, TYPESCRIPT, or RUST EQUIVALENT!!!
+enum EditorViewReflection : byte { Pending = 1, Splitview, PreviewOnly }
+
+table SnippetStateReflection {
+    include_emoji_snippets:bool;
+}
+
+table EditorStateReflection {
+    note_id:string;
+    base_keymap:string;
+    citations:[EditorCitationReflection];
+    keymap:string;
+    theme:string;
+    tags:[EditorTagReflection];
+    all_citation_ids:[string];
+    value:string (required);
+    parsed_value:string;
+    have_set_initial_value:bool;
+    editor_view:EditorViewReflection = Pending;
+    snippet_props:SnippetStateReflection;
+    lock_editor_scroll_to_preview:bool;
+    save_method:EditorSaveMethodReflection = OnChange;
+    auto_save_timeout:uint;
 }

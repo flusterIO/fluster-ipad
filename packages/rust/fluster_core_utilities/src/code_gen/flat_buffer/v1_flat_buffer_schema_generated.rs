@@ -2128,7 +2128,7 @@ impl<'a> flatbuffers::Follow<'a> for GetSnippetPropsBuffer<'a> {
 }
 
 impl<'a> GetSnippetPropsBuffer<'a> {
-  pub const VT_CITATIONIDS: flatbuffers::VOffsetT = 4;
+  pub const VT_CITATION_IDS: flatbuffers::VOffsetT = 4;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -2140,17 +2140,17 @@ impl<'a> GetSnippetPropsBuffer<'a> {
     args: &'args GetSnippetPropsBufferArgs<'args>
   ) -> flatbuffers::WIPOffset<GetSnippetPropsBuffer<'bldr>> {
     let mut builder = GetSnippetPropsBufferBuilder::new(_fbb);
-    if let Some(x) = args.citationIds { builder.add_citationIds(x); }
+    if let Some(x) = args.citation_ids { builder.add_citation_ids(x); }
     builder.finish()
   }
 
 
   #[inline]
-  pub fn citationIds(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>> {
+  pub fn citation_ids(&self) -> flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>> {
     // Safety:
     // Created from valid Table for this object
     // which contains a valid value in this slot
-    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(GetSnippetPropsBuffer::VT_CITATIONIDS, None).unwrap()}
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(GetSnippetPropsBuffer::VT_CITATION_IDS, None).unwrap()}
   }
 }
 
@@ -2161,19 +2161,19 @@ impl flatbuffers::Verifiable for GetSnippetPropsBuffer<'_> {
   ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
     use self::flatbuffers::Verifiable;
     v.visit_table(pos)?
-     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<&'_ str>>>>("citationIds", Self::VT_CITATIONIDS, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<&'_ str>>>>("citation_ids", Self::VT_CITATION_IDS, true)?
      .finish();
     Ok(())
   }
 }
 pub struct GetSnippetPropsBufferArgs<'a> {
-    pub citationIds: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
+    pub citation_ids: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
 }
 impl<'a> Default for GetSnippetPropsBufferArgs<'a> {
   #[inline]
   fn default() -> Self {
     GetSnippetPropsBufferArgs {
-      citationIds: None, // required field
+      citation_ids: None, // required field
     }
   }
 }
@@ -2184,8 +2184,8 @@ pub struct GetSnippetPropsBufferBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 
 }
 impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> GetSnippetPropsBufferBuilder<'a, 'b, A> {
   #[inline]
-  pub fn add_citationIds(&mut self, citationIds: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(GetSnippetPropsBuffer::VT_CITATIONIDS, citationIds);
+  pub fn add_citation_ids(&mut self, citation_ids: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(GetSnippetPropsBuffer::VT_CITATION_IDS, citation_ids);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> GetSnippetPropsBufferBuilder<'a, 'b, A> {
@@ -2198,7 +2198,7 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> GetSnippetPropsBufferBuilder<'a
   #[inline]
   pub fn finish(self) -> flatbuffers::WIPOffset<GetSnippetPropsBuffer<'a>> {
     let o = self.fbb_.end_table(self.start_);
-    self.fbb_.required(o, GetSnippetPropsBuffer::VT_CITATIONIDS,"citationIds");
+    self.fbb_.required(o, GetSnippetPropsBuffer::VT_CITATION_IDS,"citation_ids");
     flatbuffers::WIPOffset::new(o.value())
   }
 }
@@ -2206,9 +2206,841 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> GetSnippetPropsBufferBuilder<'a
 impl core::fmt::Debug for GetSnippetPropsBuffer<'_> {
   fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
     let mut ds = f.debug_struct("GetSnippetPropsBuffer");
-      ds.field("citationIds", &self.citationIds());
+      ds.field("citation_ids", &self.citation_ids());
       ds.finish()
   }
 }
 }  // pub mod Snippets
+
+#[allow(unused_imports, dead_code)]
+pub mod state_reflection {
+
+  use core::mem;
+  use core::cmp::Ordering;
+
+  extern crate flatbuffers;
+  use self::flatbuffers::{EndianScalar, Follow};
+
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+pub const ENUM_MIN_EDITOR_SAVE_METHOD_REFLECTION: i8 = 1;
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+pub const ENUM_MAX_EDITOR_SAVE_METHOD_REFLECTION: i8 = 2;
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+#[allow(non_camel_case_types)]
+pub const ENUM_VALUES_EDITOR_SAVE_METHOD_REFLECTION: [EditorSaveMethodReflection; 2] = [
+  EditorSaveMethodReflection::OnSave,
+  EditorSaveMethodReflection::OnChange,
+];
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+#[repr(transparent)]
+pub struct EditorSaveMethodReflection(pub i8);
+#[allow(non_upper_case_globals)]
+impl EditorSaveMethodReflection {
+  pub const OnSave: Self = Self(1);
+  pub const OnChange: Self = Self(2);
+
+  pub const ENUM_MIN: i8 = 1;
+  pub const ENUM_MAX: i8 = 2;
+  pub const ENUM_VALUES: &'static [Self] = &[
+    Self::OnSave,
+    Self::OnChange,
+  ];
+  /// Returns the variant's name or "" if unknown.
+  pub fn variant_name(self) -> Option<&'static str> {
+    match self {
+      Self::OnSave => Some("OnSave"),
+      Self::OnChange => Some("OnChange"),
+      _ => None,
+    }
+  }
+}
+impl core::fmt::Debug for EditorSaveMethodReflection {
+  fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+    if let Some(name) = self.variant_name() {
+      f.write_str(name)
+    } else {
+      f.write_fmt(format_args!("<UNKNOWN {:?}>", self.0))
+    }
+  }
+}
+impl<'a> flatbuffers::Follow<'a> for EditorSaveMethodReflection {
+  type Inner = Self;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    let b = unsafe { flatbuffers::read_scalar_at::<i8>(buf, loc) };
+    Self(b)
+  }
+}
+
+impl flatbuffers::Push for EditorSaveMethodReflection {
+    type Output = EditorSaveMethodReflection;
+    #[inline]
+    unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
+        unsafe { flatbuffers::emplace_scalar::<i8>(dst, self.0); }
+    }
+}
+
+impl flatbuffers::EndianScalar for EditorSaveMethodReflection {
+  type Scalar = i8;
+  #[inline]
+  fn to_little_endian(self) -> i8 {
+    self.0.to_le()
+  }
+  #[inline]
+  #[allow(clippy::wrong_self_convention)]
+  fn from_little_endian(v: i8) -> Self {
+    let b = i8::from_le(v);
+    Self(b)
+  }
+}
+
+impl<'a> flatbuffers::Verifiable for EditorSaveMethodReflection {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    i8::run_verifier(v, pos)
+  }
+}
+
+impl flatbuffers::SimpleToVerifyInSlice for EditorSaveMethodReflection {}
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+pub const ENUM_MIN_EDITOR_VIEW_REFLECTION: i8 = 1;
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+pub const ENUM_MAX_EDITOR_VIEW_REFLECTION: i8 = 3;
+#[deprecated(since = "2.0.0", note = "Use associated constants instead. This will no longer be generated in 2021.")]
+#[allow(non_camel_case_types)]
+pub const ENUM_VALUES_EDITOR_VIEW_REFLECTION: [EditorViewReflection; 3] = [
+  EditorViewReflection::Pending,
+  EditorViewReflection::Splitview,
+  EditorViewReflection::PreviewOnly,
+];
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+#[repr(transparent)]
+pub struct EditorViewReflection(pub i8);
+#[allow(non_upper_case_globals)]
+impl EditorViewReflection {
+  pub const Pending: Self = Self(1);
+  pub const Splitview: Self = Self(2);
+  pub const PreviewOnly: Self = Self(3);
+
+  pub const ENUM_MIN: i8 = 1;
+  pub const ENUM_MAX: i8 = 3;
+  pub const ENUM_VALUES: &'static [Self] = &[
+    Self::Pending,
+    Self::Splitview,
+    Self::PreviewOnly,
+  ];
+  /// Returns the variant's name or "" if unknown.
+  pub fn variant_name(self) -> Option<&'static str> {
+    match self {
+      Self::Pending => Some("Pending"),
+      Self::Splitview => Some("Splitview"),
+      Self::PreviewOnly => Some("PreviewOnly"),
+      _ => None,
+    }
+  }
+}
+impl core::fmt::Debug for EditorViewReflection {
+  fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+    if let Some(name) = self.variant_name() {
+      f.write_str(name)
+    } else {
+      f.write_fmt(format_args!("<UNKNOWN {:?}>", self.0))
+    }
+  }
+}
+impl<'a> flatbuffers::Follow<'a> for EditorViewReflection {
+  type Inner = Self;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    let b = unsafe { flatbuffers::read_scalar_at::<i8>(buf, loc) };
+    Self(b)
+  }
+}
+
+impl flatbuffers::Push for EditorViewReflection {
+    type Output = EditorViewReflection;
+    #[inline]
+    unsafe fn push(&self, dst: &mut [u8], _written_len: usize) {
+        unsafe { flatbuffers::emplace_scalar::<i8>(dst, self.0); }
+    }
+}
+
+impl flatbuffers::EndianScalar for EditorViewReflection {
+  type Scalar = i8;
+  #[inline]
+  fn to_little_endian(self) -> i8 {
+    self.0.to_le()
+  }
+  #[inline]
+  #[allow(clippy::wrong_self_convention)]
+  fn from_little_endian(v: i8) -> Self {
+    let b = i8::from_le(v);
+    Self(b)
+  }
+}
+
+impl<'a> flatbuffers::Verifiable for EditorViewReflection {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    i8::run_verifier(v, pos)
+  }
+}
+
+impl flatbuffers::SimpleToVerifyInSlice for EditorViewReflection {}
+pub enum EditorCitationReflectionOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct EditorCitationReflection<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for EditorCitationReflection<'a> {
+  type Inner = EditorCitationReflection<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> EditorCitationReflection<'a> {
+  pub const VT_CITATION_KEY: flatbuffers::VOffsetT = 4;
+  pub const VT_HTML: flatbuffers::VOffsetT = 6;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    EditorCitationReflection { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args EditorCitationReflectionArgs<'args>
+  ) -> flatbuffers::WIPOffset<EditorCitationReflection<'bldr>> {
+    let mut builder = EditorCitationReflectionBuilder::new(_fbb);
+    if let Some(x) = args.html { builder.add_html(x); }
+    if let Some(x) = args.citation_key { builder.add_citation_key(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn citation_key(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorCitationReflection::VT_CITATION_KEY, None).unwrap()}
+  }
+  #[inline]
+  pub fn html(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorCitationReflection::VT_HTML, None).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for EditorCitationReflection<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("citation_key", Self::VT_CITATION_KEY, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("html", Self::VT_HTML, true)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct EditorCitationReflectionArgs<'a> {
+    pub citation_key: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub html: Option<flatbuffers::WIPOffset<&'a str>>,
+}
+impl<'a> Default for EditorCitationReflectionArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    EditorCitationReflectionArgs {
+      citation_key: None, // required field
+      html: None, // required field
+    }
+  }
+}
+
+pub struct EditorCitationReflectionBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> EditorCitationReflectionBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_citation_key(&mut self, citation_key: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorCitationReflection::VT_CITATION_KEY, citation_key);
+  }
+  #[inline]
+  pub fn add_html(&mut self, html: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorCitationReflection::VT_HTML, html);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> EditorCitationReflectionBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    EditorCitationReflectionBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<EditorCitationReflection<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, EditorCitationReflection::VT_CITATION_KEY,"citation_key");
+    self.fbb_.required(o, EditorCitationReflection::VT_HTML,"html");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for EditorCitationReflection<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("EditorCitationReflection");
+      ds.field("citation_key", &self.citation_key());
+      ds.field("html", &self.html());
+      ds.finish()
+  }
+}
+pub enum EditorTagReflectionOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct EditorTagReflection<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for EditorTagReflection<'a> {
+  type Inner = EditorTagReflection<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> EditorTagReflection<'a> {
+  pub const VT_BODY: flatbuffers::VOffsetT = 4;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    EditorTagReflection { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args EditorTagReflectionArgs<'args>
+  ) -> flatbuffers::WIPOffset<EditorTagReflection<'bldr>> {
+    let mut builder = EditorTagReflectionBuilder::new(_fbb);
+    if let Some(x) = args.body { builder.add_body(x); }
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn body(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorTagReflection::VT_BODY, None).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for EditorTagReflection<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("body", Self::VT_BODY, true)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct EditorTagReflectionArgs<'a> {
+    pub body: Option<flatbuffers::WIPOffset<&'a str>>,
+}
+impl<'a> Default for EditorTagReflectionArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    EditorTagReflectionArgs {
+      body: None, // required field
+    }
+  }
+}
+
+pub struct EditorTagReflectionBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> EditorTagReflectionBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_body(&mut self, body: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorTagReflection::VT_BODY, body);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> EditorTagReflectionBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    EditorTagReflectionBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<EditorTagReflection<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, EditorTagReflection::VT_BODY,"body");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for EditorTagReflection<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("EditorTagReflection");
+      ds.field("body", &self.body());
+      ds.finish()
+  }
+}
+pub enum SnippetStateReflectionOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct SnippetStateReflection<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for SnippetStateReflection<'a> {
+  type Inner = SnippetStateReflection<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> SnippetStateReflection<'a> {
+  pub const VT_INCLUDE_EMOJI_SNIPPETS: flatbuffers::VOffsetT = 4;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    SnippetStateReflection { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args SnippetStateReflectionArgs
+  ) -> flatbuffers::WIPOffset<SnippetStateReflection<'bldr>> {
+    let mut builder = SnippetStateReflectionBuilder::new(_fbb);
+    builder.add_include_emoji_snippets(args.include_emoji_snippets);
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn include_emoji_snippets(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(SnippetStateReflection::VT_INCLUDE_EMOJI_SNIPPETS, Some(false)).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for SnippetStateReflection<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<bool>("include_emoji_snippets", Self::VT_INCLUDE_EMOJI_SNIPPETS, false)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct SnippetStateReflectionArgs {
+    pub include_emoji_snippets: bool,
+}
+impl<'a> Default for SnippetStateReflectionArgs {
+  #[inline]
+  fn default() -> Self {
+    SnippetStateReflectionArgs {
+      include_emoji_snippets: false,
+    }
+  }
+}
+
+pub struct SnippetStateReflectionBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> SnippetStateReflectionBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_include_emoji_snippets(&mut self, include_emoji_snippets: bool) {
+    self.fbb_.push_slot::<bool>(SnippetStateReflection::VT_INCLUDE_EMOJI_SNIPPETS, include_emoji_snippets, false);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> SnippetStateReflectionBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    SnippetStateReflectionBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<SnippetStateReflection<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for SnippetStateReflection<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("SnippetStateReflection");
+      ds.field("include_emoji_snippets", &self.include_emoji_snippets());
+      ds.finish()
+  }
+}
+pub enum EditorStateReflectionOffset {}
+#[derive(Copy, Clone, PartialEq)]
+
+pub struct EditorStateReflection<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for EditorStateReflection<'a> {
+  type Inner = EditorStateReflection<'a>;
+  #[inline]
+  unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+    Self { _tab: unsafe { flatbuffers::Table::new(buf, loc) } }
+  }
+}
+
+impl<'a> EditorStateReflection<'a> {
+  pub const VT_NOTE_ID: flatbuffers::VOffsetT = 4;
+  pub const VT_BASE_KEYMAP: flatbuffers::VOffsetT = 6;
+  pub const VT_CITATIONS: flatbuffers::VOffsetT = 8;
+  pub const VT_KEYMAP: flatbuffers::VOffsetT = 10;
+  pub const VT_THEME: flatbuffers::VOffsetT = 12;
+  pub const VT_TAGS: flatbuffers::VOffsetT = 14;
+  pub const VT_ALL_CITATION_IDS: flatbuffers::VOffsetT = 16;
+  pub const VT_VALUE: flatbuffers::VOffsetT = 18;
+  pub const VT_PARSED_VALUE: flatbuffers::VOffsetT = 20;
+  pub const VT_HAVE_SET_INITIAL_VALUE: flatbuffers::VOffsetT = 22;
+  pub const VT_EDITOR_VIEW: flatbuffers::VOffsetT = 24;
+  pub const VT_SNIPPET_PROPS: flatbuffers::VOffsetT = 26;
+  pub const VT_LOCK_EDITOR_SCROLL_TO_PREVIEW: flatbuffers::VOffsetT = 28;
+  pub const VT_SAVE_METHOD: flatbuffers::VOffsetT = 30;
+  pub const VT_AUTO_SAVE_TIMEOUT: flatbuffers::VOffsetT = 32;
+
+  #[inline]
+  pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+    EditorStateReflection { _tab: table }
+  }
+  #[allow(unused_mut)]
+  pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr, A: flatbuffers::Allocator + 'bldr>(
+    _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr, A>,
+    args: &'args EditorStateReflectionArgs<'args>
+  ) -> flatbuffers::WIPOffset<EditorStateReflection<'bldr>> {
+    let mut builder = EditorStateReflectionBuilder::new(_fbb);
+    builder.add_auto_save_timeout(args.auto_save_timeout);
+    if let Some(x) = args.snippet_props { builder.add_snippet_props(x); }
+    if let Some(x) = args.parsed_value { builder.add_parsed_value(x); }
+    if let Some(x) = args.value { builder.add_value(x); }
+    if let Some(x) = args.all_citation_ids { builder.add_all_citation_ids(x); }
+    if let Some(x) = args.tags { builder.add_tags(x); }
+    if let Some(x) = args.theme { builder.add_theme(x); }
+    if let Some(x) = args.keymap { builder.add_keymap(x); }
+    if let Some(x) = args.citations { builder.add_citations(x); }
+    if let Some(x) = args.base_keymap { builder.add_base_keymap(x); }
+    if let Some(x) = args.note_id { builder.add_note_id(x); }
+    builder.add_save_method(args.save_method);
+    builder.add_lock_editor_scroll_to_preview(args.lock_editor_scroll_to_preview);
+    builder.add_editor_view(args.editor_view);
+    builder.add_have_set_initial_value(args.have_set_initial_value);
+    builder.finish()
+  }
+
+
+  #[inline]
+  pub fn note_id(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorStateReflection::VT_NOTE_ID, None)}
+  }
+  #[inline]
+  pub fn base_keymap(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorStateReflection::VT_BASE_KEYMAP, None)}
+  }
+  #[inline]
+  pub fn citations(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorCitationReflection<'a>>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorCitationReflection>>>>(EditorStateReflection::VT_CITATIONS, None)}
+  }
+  #[inline]
+  pub fn keymap(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorStateReflection::VT_KEYMAP, None)}
+  }
+  #[inline]
+  pub fn theme(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorStateReflection::VT_THEME, None)}
+  }
+  #[inline]
+  pub fn tags(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorTagReflection<'a>>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorTagReflection>>>>(EditorStateReflection::VT_TAGS, None)}
+  }
+  #[inline]
+  pub fn all_citation_ids(&self) -> Option<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>(EditorStateReflection::VT_ALL_CITATION_IDS, None)}
+  }
+  #[inline]
+  pub fn value(&self) -> &'a str {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorStateReflection::VT_VALUE, None).unwrap()}
+  }
+  #[inline]
+  pub fn parsed_value(&self) -> Option<&'a str> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorStateReflection::VT_PARSED_VALUE, None)}
+  }
+  #[inline]
+  pub fn have_set_initial_value(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(EditorStateReflection::VT_HAVE_SET_INITIAL_VALUE, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn editor_view(&self) -> EditorViewReflection {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<EditorViewReflection>(EditorStateReflection::VT_EDITOR_VIEW, Some(EditorViewReflection::Pending)).unwrap()}
+  }
+  #[inline]
+  pub fn snippet_props(&self) -> Option<SnippetStateReflection<'a>> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<SnippetStateReflection>>(EditorStateReflection::VT_SNIPPET_PROPS, None)}
+  }
+  #[inline]
+  pub fn lock_editor_scroll_to_preview(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(EditorStateReflection::VT_LOCK_EDITOR_SCROLL_TO_PREVIEW, Some(false)).unwrap()}
+  }
+  #[inline]
+  pub fn save_method(&self) -> EditorSaveMethodReflection {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<EditorSaveMethodReflection>(EditorStateReflection::VT_SAVE_METHOD, Some(EditorSaveMethodReflection::OnChange)).unwrap()}
+  }
+  #[inline]
+  pub fn auto_save_timeout(&self) -> u32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u32>(EditorStateReflection::VT_AUTO_SAVE_TIMEOUT, Some(0)).unwrap()}
+  }
+}
+
+impl flatbuffers::Verifiable for EditorStateReflection<'_> {
+  #[inline]
+  fn run_verifier(
+    v: &mut flatbuffers::Verifier, pos: usize
+  ) -> Result<(), flatbuffers::InvalidFlatbuffer> {
+    use self::flatbuffers::Verifiable;
+    v.visit_table(pos)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("note_id", Self::VT_NOTE_ID, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("base_keymap", Self::VT_BASE_KEYMAP, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<EditorCitationReflection>>>>("citations", Self::VT_CITATIONS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("keymap", Self::VT_KEYMAP, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("theme", Self::VT_THEME, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<EditorTagReflection>>>>("tags", Self::VT_TAGS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<flatbuffers::Vector<'_, flatbuffers::ForwardsUOffset<&'_ str>>>>("all_citation_ids", Self::VT_ALL_CITATION_IDS, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("value", Self::VT_VALUE, true)?
+     .visit_field::<flatbuffers::ForwardsUOffset<&str>>("parsed_value", Self::VT_PARSED_VALUE, false)?
+     .visit_field::<bool>("have_set_initial_value", Self::VT_HAVE_SET_INITIAL_VALUE, false)?
+     .visit_field::<EditorViewReflection>("editor_view", Self::VT_EDITOR_VIEW, false)?
+     .visit_field::<flatbuffers::ForwardsUOffset<SnippetStateReflection>>("snippet_props", Self::VT_SNIPPET_PROPS, false)?
+     .visit_field::<bool>("lock_editor_scroll_to_preview", Self::VT_LOCK_EDITOR_SCROLL_TO_PREVIEW, false)?
+     .visit_field::<EditorSaveMethodReflection>("save_method", Self::VT_SAVE_METHOD, false)?
+     .visit_field::<u32>("auto_save_timeout", Self::VT_AUTO_SAVE_TIMEOUT, false)?
+     .finish();
+    Ok(())
+  }
+}
+pub struct EditorStateReflectionArgs<'a> {
+    pub note_id: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub base_keymap: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub citations: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorCitationReflection<'a>>>>>,
+    pub keymap: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub theme: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub tags: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EditorTagReflection<'a>>>>>,
+    pub all_citation_ids: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<&'a str>>>>,
+    pub value: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub parsed_value: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub have_set_initial_value: bool,
+    pub editor_view: EditorViewReflection,
+    pub snippet_props: Option<flatbuffers::WIPOffset<SnippetStateReflection<'a>>>,
+    pub lock_editor_scroll_to_preview: bool,
+    pub save_method: EditorSaveMethodReflection,
+    pub auto_save_timeout: u32,
+}
+impl<'a> Default for EditorStateReflectionArgs<'a> {
+  #[inline]
+  fn default() -> Self {
+    EditorStateReflectionArgs {
+      note_id: None,
+      base_keymap: None,
+      citations: None,
+      keymap: None,
+      theme: None,
+      tags: None,
+      all_citation_ids: None,
+      value: None, // required field
+      parsed_value: None,
+      have_set_initial_value: false,
+      editor_view: EditorViewReflection::Pending,
+      snippet_props: None,
+      lock_editor_scroll_to_preview: false,
+      save_method: EditorSaveMethodReflection::OnChange,
+      auto_save_timeout: 0,
+    }
+  }
+}
+
+pub struct EditorStateReflectionBuilder<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a, A>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> EditorStateReflectionBuilder<'a, 'b, A> {
+  #[inline]
+  pub fn add_note_id(&mut self, note_id: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_NOTE_ID, note_id);
+  }
+  #[inline]
+  pub fn add_base_keymap(&mut self, base_keymap: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_BASE_KEYMAP, base_keymap);
+  }
+  #[inline]
+  pub fn add_citations(&mut self, citations: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<EditorCitationReflection<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_CITATIONS, citations);
+  }
+  #[inline]
+  pub fn add_keymap(&mut self, keymap: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_KEYMAP, keymap);
+  }
+  #[inline]
+  pub fn add_theme(&mut self, theme: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_THEME, theme);
+  }
+  #[inline]
+  pub fn add_tags(&mut self, tags: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<EditorTagReflection<'b >>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_TAGS, tags);
+  }
+  #[inline]
+  pub fn add_all_citation_ids(&mut self, all_citation_ids: flatbuffers::WIPOffset<flatbuffers::Vector<'b , flatbuffers::ForwardsUOffset<&'b  str>>>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_ALL_CITATION_IDS, all_citation_ids);
+  }
+  #[inline]
+  pub fn add_value(&mut self, value: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_VALUE, value);
+  }
+  #[inline]
+  pub fn add_parsed_value(&mut self, parsed_value: flatbuffers::WIPOffset<&'b  str>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorStateReflection::VT_PARSED_VALUE, parsed_value);
+  }
+  #[inline]
+  pub fn add_have_set_initial_value(&mut self, have_set_initial_value: bool) {
+    self.fbb_.push_slot::<bool>(EditorStateReflection::VT_HAVE_SET_INITIAL_VALUE, have_set_initial_value, false);
+  }
+  #[inline]
+  pub fn add_editor_view(&mut self, editor_view: EditorViewReflection) {
+    self.fbb_.push_slot::<EditorViewReflection>(EditorStateReflection::VT_EDITOR_VIEW, editor_view, EditorViewReflection::Pending);
+  }
+  #[inline]
+  pub fn add_snippet_props(&mut self, snippet_props: flatbuffers::WIPOffset<SnippetStateReflection<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<SnippetStateReflection>>(EditorStateReflection::VT_SNIPPET_PROPS, snippet_props);
+  }
+  #[inline]
+  pub fn add_lock_editor_scroll_to_preview(&mut self, lock_editor_scroll_to_preview: bool) {
+    self.fbb_.push_slot::<bool>(EditorStateReflection::VT_LOCK_EDITOR_SCROLL_TO_PREVIEW, lock_editor_scroll_to_preview, false);
+  }
+  #[inline]
+  pub fn add_save_method(&mut self, save_method: EditorSaveMethodReflection) {
+    self.fbb_.push_slot::<EditorSaveMethodReflection>(EditorStateReflection::VT_SAVE_METHOD, save_method, EditorSaveMethodReflection::OnChange);
+  }
+  #[inline]
+  pub fn add_auto_save_timeout(&mut self, auto_save_timeout: u32) {
+    self.fbb_.push_slot::<u32>(EditorStateReflection::VT_AUTO_SAVE_TIMEOUT, auto_save_timeout, 0);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> EditorStateReflectionBuilder<'a, 'b, A> {
+    let start = _fbb.start_table();
+    EditorStateReflectionBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<EditorStateReflection<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    self.fbb_.required(o, EditorStateReflection::VT_VALUE,"value");
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+impl core::fmt::Debug for EditorStateReflection<'_> {
+  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    let mut ds = f.debug_struct("EditorStateReflection");
+      ds.field("note_id", &self.note_id());
+      ds.field("base_keymap", &self.base_keymap());
+      ds.field("citations", &self.citations());
+      ds.field("keymap", &self.keymap());
+      ds.field("theme", &self.theme());
+      ds.field("tags", &self.tags());
+      ds.field("all_citation_ids", &self.all_citation_ids());
+      ds.field("value", &self.value());
+      ds.field("parsed_value", &self.parsed_value());
+      ds.field("have_set_initial_value", &self.have_set_initial_value());
+      ds.field("editor_view", &self.editor_view());
+      ds.field("snippet_props", &self.snippet_props());
+      ds.field("lock_editor_scroll_to_preview", &self.lock_editor_scroll_to_preview());
+      ds.field("save_method", &self.save_method());
+      ds.field("auto_save_timeout", &self.auto_save_timeout());
+      ds.finish()
+  }
+}
+}  // pub mod StateReflection
 

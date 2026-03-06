@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@citedrive/codemirror-lang-bibtex": "6.4.1",
+    "@fluster/wasm": "workspace:*",
     "@fluster/webview_utils": "workspace:*",
     "autoprefixer": "10.4.21",
     "postcss": "8.5.3",

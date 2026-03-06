@@ -41,4 +41,5 @@ pub struct WebviewContainerState {
     pub environment: Option<WebviewEnvironment>,
     pub size: SizableOption,
     pub wasm_loaded: bool,
+    pub dark_mode: bool,
 }

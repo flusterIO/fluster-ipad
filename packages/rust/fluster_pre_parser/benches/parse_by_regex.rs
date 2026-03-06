@@ -12,6 +12,23 @@ use strum::IntoEnumIterator;
 use tokio::runtime::Runtime;
 
 fn pre_parse_by_regex_benchmark(c: &mut Criterion) {
+    let root = env!("CARGO_MANIFEST_DIR");
+    let which_file_to_execute_path = std::path::Path::new(root)
+        .join("docs")
+        .join("development")
+        .join("script_inputs")
+        .join("benchmark_current_file.txt");
+    let which_file_to_test = std::fs::read_to_string(which_file_to_execute_path)
+        .expect("Reads cross-language 'benchmark_current_file.txt' file.");
+    let which_file_is_in_enum =
+        BenchmarkGeneratedDateString::string_is_valid_date(&which_file_to_test);
+
+    if !which_file_is_in_enum {
+        eprintln!(
+            "The {} date is not in the Rust enum. This is required for data exploration later.",
+            which_file_to_test
+        )
+    }
     let rt = Runtime::new().unwrap();
     let benchmark_date = BenchmarkGeneratedDateString::get_latest();
 

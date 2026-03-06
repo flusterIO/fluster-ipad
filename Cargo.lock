@@ -2851,6 +2851,8 @@ dependencies = [
  "rayon",
  "regex",
  "serde",
+ "serde-wasm-bindgen",
+ "serde_json",
  "specta",
  "strum 0.27.2",
  "strum_macros 0.27.2",
@@ -2861,6 +2863,7 @@ dependencies = [
  "typeshare",
  "uniffi",
  "uuid",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -2926,6 +2929,7 @@ dependencies = [
  "strum_macros 0.27.2",
  "tokio",
  "uniffi",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -2947,6 +2951,8 @@ dependencies = [
 name = "fluster_wasm"
 version = "0.0.1"
 dependencies = [
+ "fluster_core_utilities",
+ "fluster_pre_parser",
  "wasm-bindgen",
 ]
 
@@ -7671,6 +7677,17 @@ dependencies = [
  "serde",
  "serde_core",
  "typeid",
+]
+
+[[package]]
+name = "serde-wasm-bindgen"
+version = "0.6.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8302e169f0eddcc139c70f139d19d6467353af16f9fce27e8c30158036a1e16b"
+dependencies = [
+ "js-sys",
+ "serde",
+ "wasm-bindgen",
 ]
 
 [[package]]

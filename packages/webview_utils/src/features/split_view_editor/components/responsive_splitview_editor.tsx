@@ -18,6 +18,7 @@ const EditorBody = (): ReactNode => {
 }
 
 
+/* </CodeEditorProvider> */
 
 /**
  * ResponsiveSplitViewEditor accepts children only for development so that the editor state can be modified.
@@ -25,15 +26,13 @@ const EditorBody = (): ReactNode => {
 export const ResponsiveSplitViewEditor = ({ children = null }: { children?: ReactNode }): ReactNode => {
     return (
         <>
-            <CodeEditorProvider implementation="mdx-editor">
-                <SplitviewEditorNotificationHandler />
-                <EditorBody />
-                <div className="w-full h-full flex flex-col justify-center items-center p-8 loading-main-only hide-desktop">
-                    <LoadingComponent />
-                </div>
-                <EditorScrollPersistor />
-                {children}
-            </CodeEditorProvider>
+            <SplitviewEditorNotificationHandler />
+            <EditorBody />
+            <div className="w-full h-full flex flex-col justify-center items-center p-8 loading-main-only hide-desktop">
+                <LoadingComponent />
+            </div>
+            <EditorScrollPersistor />
+            {children}
         </>
     );
 };

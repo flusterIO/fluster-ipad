@@ -1,21 +1,16 @@
 import React, { useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
-import { EditorState, Extension } from "@codemirror/state";
-import { EditorView, keymap, ViewUpdate } from "@codemirror/view";
+import { Extension, EditorState as CodeMirrorEditorState } from "@codemirror/state";
+import { EditorView, keymap as codemirrorKeymap, ViewUpdate } from "@codemirror/view";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { history } from '@codemirror/commands';
 import { vim } from "@replit/codemirror-vim";
-import {
-    useCodeEditorContext,
-    useCodeEditorDispatch,
-} from "../state/code_editor_provider";
 import { codeEditorBaseKeymapMap } from "../data/code_editor_base_keymap_map";
 import { codeEditorThemeMap } from "../data/code_editor_theme_map";
 import { lineNumbersRelative } from "@uiw/codemirror-extensions-line-numbers-relative";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { BibtexEditorWebviewEvents, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { BibtexEditorWebviewEvents, EditorState, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
 import { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
@@ -31,10 +26,24 @@ import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/stat
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
 import { EditorClient } from "../data/editor_client";
+import { connect, useDispatch } from 'react-redux';
+import { handleEditorChange } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
 
-interface CodeEditorProps {
+const connector = connect((state: EditorState) => ({
+    baseKeymap: state.baseKeymap,
+    allCitationIds: state.allCitationIds,
+    theme: state.theme,
+    keymap: state.keymap,
+    value: state.value,
+    lockEditorScrollToPreviiew: state.lockEditorScrollToPreview,
+    snippetProps: state.snippetProps,
+    note_id: state.note_id,
+    haveSetInitialValue: state.haveSetInitialValue,
+    autoSaveTimeout: state.autoSaveTimeout
+}))
+
+interface CodeEditorProps extends Pick<EditorState, "baseKeymap" | "allCitationIds" | "theme" | "keymap" | "value" | "lockEditorScrollToPreview" | "snippetProps" | "note_id" | "haveSetInitialValue" | "autoSaveTimeout"> {
     language?: CodeEditorLanguage;
-    initialValue: string;
     requestNewDataAction?: AnyWebviewAction
     updateHandler?: AnyWebviewAction
     showWebviewHandler?: AnyWebviewAction
@@ -44,22 +53,26 @@ interface CodeEditorProps {
 }
 
 
-
-
-export const CodeEditorInner = ({
+export const CodeEditorInner = connector(({
     language = CodeEditorLanguage.markdown,
-    initialValue,
     updateHandler = SplitviewEditorWebviewActions.OnEditorChange,
     showWebviewHandler = SplitviewEditorWebviewActions.SetWebviewLoaded,
     swiftContentEvent = SplitviewEditorWebviewEvents.SetSplitviewEditorContent,
-    containerId = "code-editor-container"
+    containerId = "code-editor-container",
+    keymap,
+    baseKeymap,
+    theme,
+    value,
+    haveSetInitialValue,
+    lockEditorScrollToPreview,
+    snippetProps,
+    note_id,
+    allCitationIds,
 }: CodeEditorProps): ReactNode => {
     const haveRendered = useRef(false);
-    const state = useCodeEditorContext();
-    const dispatch = useCodeEditorDispatch();
     const timer = useRef<NodeJS.Timeout | null>(null);
     const viewRef = useRef<EditorView | null>(null)
-
+    const dispatch = useDispatch()
 
 
 
@@ -70,14 +83,14 @@ export const CodeEditorInner = ({
             em.replaceChildren();
         }
         let extensions: Extension[] = [];
-        if (state.keymap === "vim") {
+        if (keymap === "vim") {
             extensions.push(vim());
             extensions.push(lineNumbersRelative);
         }
-        const snippetProps: GetSnippetProps = {
+        const _snippetProps: GetSnippetProps = {
             base: undefined,
-            citationKeys: state.allCitationIds,
-            includeEmojiSnippets: state.snippetProps.includeEmojiSnippets
+            citationKeys: allCitationIds,
+            includeEmojiSnippets: snippetProps.includeEmojiSnippets
         }
         if (language === CodeEditorLanguage.markdown) {
             const mdxCompletionSource: CompletionSource = (context) => {
@@ -109,7 +122,7 @@ export const CodeEditorInner = ({
                 }
                 return {
                     from: word.from,
-                    options: getFlusterSnippets(snippetProps).filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
+                    options: getFlusterSnippets(_snippetProps).filter((x) => x.strategy === SnippetStrategy.noLeadingText).map((n) => n.completion),
                     filter: true,
 
                 };
@@ -142,7 +155,7 @@ export const CodeEditorInner = ({
                 )
             ]
         }
-        if (state.lockEditorScrollToPreview) {
+        if (lockEditorScrollToPreview) {
             extensions.push(scrollPlugin)
         }
         extensions = [
@@ -155,14 +168,19 @@ export const CodeEditorInner = ({
             highlightActiveLine(),
             dropCursor(),
             rectangularSelection(),
-            keymap.of(codeEditorBaseKeymapMap[state.baseKeymap]()),
-            keymap.of([{
+            codemirrorKeymap.of(codeEditorBaseKeymapMap[baseKeymap]()),
+            CodeMirrorEditorState.allowMultipleSelections.of(true),
+            EditorView.lineWrapping,
+            /* language, */
+            history(),
+            codeEditorThemeMap[theme](),
+            codemirrorKeymap.of([{
                 key: "Mod-S",
                 run: (view) => {
                     const content = view.state.doc.toString()
-                    if (state.note_id) {
+                    if (note_id) {
                         EditorClient.sendManualSaveRequest({
-                            note_id: state.note_id,
+                            note_id: note_id,
                             current_note_content: content
                         })
                         return true;
@@ -172,31 +190,7 @@ export const CodeEditorInner = ({
                 },
                 preventDefault: true
             },
-                // {
-                // TODO: Use this to allow the user to refresh the previous *without* refreshing the editor.
-                //     key: "Ctrl-R", // Example: Capture Ctrl-R
-                //     run: (view) => {
-                //         console.log("Ctrl-R was pressed!");
-                //         // Perform your custom action here
-                //         return true; // Return true to indicate the event was handled
-                //     },
-                //     // Prevent default browser behavior (like refreshing the page for Ctrl-R)
-                //     preventDefault: true
-                // }
-                /* { */
-                /*     key: "any", // A specific "any" key can be used for every keypress */
-                /*     run: (view, event) => { */
-                /*         console.log("A key was pressed:", event.key); */
-                /*         // Returning false (or nothing) lets other keymaps or default behavior continue */
-                /*         return false; */
-                /*     } */
-                /* } */
             ]),
-            EditorState.allowMultipleSelections.of(true),
-            EditorView.lineWrapping,
-            /* language, */
-            history(),
-            codeEditorThemeMap[state.theme](),
             // On Change Listener
             EditorView.updateListener.of((v: ViewUpdate) => {
                 if (v.docChanged) {
@@ -204,20 +198,15 @@ export const CodeEditorInner = ({
                     if (timer.current) {
                         clearTimeout(timer.current);
                     }
-                    if (payload !== initialValue) {
-                        timer.current = setTimeout(() => {
-                            sendToSwift(updateHandler, payload);
-                        }, 500);
-                    }
-                    dispatch({
-                        type: "setValue",
-                        payload,
-                    });
+                    timer.current = setTimeout(() => {
+                        sendToSwift(updateHandler, payload);
+                    },);
+                    dispatch(handleEditorChange(payload));
                 }
             }),
         ];
-        const startState = EditorState.create({
-            doc: initialValue,
+        const startState = CodeMirrorEditorState.create({
+            doc: value,
             extensions,
         });
 
@@ -230,7 +219,7 @@ export const CodeEditorInner = ({
         haveRendered.current = true;
         sendToSwift(showWebviewHandler);
         /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
-    }, [state.baseKeymap, state.theme, state.haveSetInitialValue, state.keymap, state.allCitationIds, state.lockEditorScrollToPreview, state.note_id]);
+    }, [baseKeymap, theme, haveSetInitialValue, keymap, allCitationIds, lockEditorScrollToPreview, note_id]);
 
     useEventListener(swiftContentEvent as keyof WindowEventMap, (e) => {
         if (viewRef.current) {
@@ -251,44 +240,36 @@ export const CodeEditorInner = ({
     })
 
     return <div className="h-screen w-full mdx-editor-container" id={containerId} />;
-};
+});
 
-export const CodeEditor = (
-    props: Omit<CodeEditorProps, "initialValue">,
+
+const connectorOuter = connect((state: EditorState) => ({
+    note_id: state.note_id,
+}))
+
+export const CodeEditor = connectorOuter((
+    props: Omit<CodeEditorProps, "initialValue"> & Pick<EditorState, "note_id" | "value">,
 ): ReactNode => {
     const [initialRender, setInitialRender] = useState(true)
-    const [initialValue] = useLocalStorage(
-        props.initialValueStorageKey ?? SplitviewEditorWebviewLocalStorageKeys.InitialValue,
-        undefined,
-        {
-            deserializer(value) {
-                return value
-            },
-            serializer(value) {
-                return value
-            },
-            initializeWithValue: true,
-        },
-    );
 
     const handleInitialRender = useEffectEvent(() => setInitialRender(false))
 
     useEffect(() => {
-        if (typeof initialValue !== "string" || initialRender) {
+        if (!props.note_id || initialRender) {
             sendToSwift(props.requestNewDataAction ?? SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
         handleInitialRender()
         /* eslint-disable-next-line  -- I hate this rule */
-    }, [initialRender, initialValue]);
+    }, [props.note_id, initialRender]);
 
 
-    return typeof initialValue === "string" ? (
-        <CodeEditorInner {...props} initialValue={initialValue} />
+    return typeof props.value === "string" ? (
+        <CodeEditorInner {...props} />
     ) : (
         <div className="w-full h-full flex flex-col justify-center items-center">
             <LoadingComponent />
         </div>
     );
-};
+});
 
 CodeEditor.displayName = "CodeEditor";

@@ -14,13 +14,14 @@ import {
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
-import { EditorStateActions, EditorSaveMethod, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys, SetEditorInitialStateEditorAction, SetEditorSaveMethodEditorAction, EditorView, EditorState, CodeEditorKeymap, EditorCitation } from "@/code_gen/typeshare/fluster_core_utilities";
+import { EditorStateActions, EditorSaveMethod, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys, EditorView, EditorState, CodeEditorKeymap, EditorCitation } from "@/code_gen/typeshare/fluster_core_utilities";
 import { useMediaQuery } from "react-responsive";
 import { GetSnippetProps } from "../data/snippets/snippet_types";
 import { AnyCrossLanguageBufferEditorAction, AnyCrossLanguageEditorAction } from "#/split_view_editor/state/cross_language_state/cross_language_state_types";
 import { BindEditorStateToLocalStorage } from "./bind_editor_state_to_local_storage";
 import { OnParsedContentChangeEventBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 import { ByteBuffer } from "flatbuffers";
+import { useCodeEditorView } from "./hooks/use_editor_view_type";
 
 
 declare global {
@@ -53,7 +54,8 @@ const defaultInitialCodeEditorState: EditorState = {
     /**
      * Leave this set to onChange by default to encourage user's to explore the app early on, but mention in the opening note that it can be changed.
      */
-    saveMethod: EditorSaveMethod.OnChange
+    saveMethod: EditorSaveMethod.OnChange,
+    autoSaveTimeout: 500
 };
 
 export const CodeEditorContext = createContext<EditorState>(
@@ -117,13 +119,13 @@ export const CodeEditorContextReducer = (
         case EditorStateActions.SetEditorSaveMethod: {
             return {
                 ...state,
-                saveMethod: (action as SetEditorSaveMethodEditorAction).payload
+                saveMethod: action.payload
             }
         }
         case EditorStateActions.SetInitialEditorState: {
             return {
                 ...state,
-                ...(action as SetEditorInitialStateEditorAction).payload
+                ...action.payload
             }
         }
         case EditorStateActions.SetParsedEditorContent: {
@@ -241,7 +243,7 @@ interface CodeEditorProviderProps {
 export const CodeEditorProvider = ({
     children,
     initialValues,
-    initialValueKey = SplitviewEditorWebviewLocalStorageKeys.InitialValue,
+    /* initialValueKey = SplitviewEditorWebviewLocalStorageKeys.InitialValue, */
     implementation
 }: CodeEditorProviderProps) => {
     const [state, dispatch] = useReducer(
@@ -250,6 +252,8 @@ export const CodeEditorProvider = ({
             ? { ...initialValues, ...defaultInitialCodeEditorState }
             : defaultInitialCodeEditorState,
     );
+
+    useCodeEditorView(dispatch)
 
     useEventListener(SplitviewEditorWebviewEvents.EditorStateUpdate, (e) => {
         dispatch(json.parse(e.detail) as AnyCrossLanguageEditorAction)
@@ -265,74 +269,63 @@ export const CodeEditorProvider = ({
             payload: onChangeEvent
         })
     })
-    const isEditorView = useMediaQuery({
-        orientation: "landscape",
-    });
 
-    useEffect(() => {
-        dispatch({
-            type: "setEditorView",
-            payload: isEditorView ? EditorView.Splitview : EditorView.PreviewOnly
-        })
-    }, [isEditorView])
+    /* const [editorKeymap] = useLocalStorage<CodeEditorKeymap>(SplitviewEditorWebviewLocalStorageKeys.EditorKeymap, CodeEditorKeymap.Base, { */
+    /*     initializeWithValue: false, */
+    /* }); */
+    /* useEffect(() => { */
+    /*     dispatch({ */
+    /*         type: "setKeymap", */
+    /*         payload: editorKeymap as CodeEditorKeymap, */
+    /*     }); */
+    /* }, [editorKeymap]); */
 
-    const [editorKeymap] = useLocalStorage<CodeEditorKeymap>(SplitviewEditorWebviewLocalStorageKeys.EditorKeymap, CodeEditorKeymap.Base, {
-        initializeWithValue: false,
-    });
-    useEffect(() => {
-        dispatch({
-            type: "setKeymap",
-            payload: editorKeymap as CodeEditorKeymap,
-        });
-    }, [editorKeymap]);
-
-    useEventListener(SplitviewEditorWebviewEvents.SetEditorKeymap, (e) => {
-        dispatch({
-            type: "setKeymap",
-            payload: e.detail,
-        });
-    });
-
-    const [editorTheme] = useLocalStorage(SplitviewEditorWebviewLocalStorageKeys.CodeTheme, undefined, {
-        deserializer(value) {
-            return value;
-        },
-        serializer(value) {
-            return value;
-        },
-        initializeWithValue: false,
-    });
-    const handleTheme = (t: string): void => {
-        const payload = stringToCodeEditorTheme((t as string) ?? "dracula");
-        dispatch({
-            type: "setTheme",
-            payload,
-        });
-    };
-    useEffect(() => {
-        handleTheme(editorTheme);
-    }, [editorTheme]);
+    /* useEventListener(SplitviewEditorWebviewEvents.SetEditorKeymap, (e) => { */
+    /*     dispatch({ */
+    /*         type: "setKeymap", */
+    /*         payload: e.detail, */
+    /*     }); */
+    /* }); */
+    /* const [editorTheme] = useLocalStorage(SplitviewEditorWebviewLocalStorageKeys.CodeTheme, undefined, { */
+    /*     deserializer(value) { */
+    /*         return value; */
+    /*     }, */
+    /*     serializer(value) { */
+    /*         return value; */
+    /*     }, */
+    /*     initializeWithValue: false, */
+    /* }); */
+    /* const handleTheme = (t: string): void => { */
+    /*     const payload = stringToCodeEditorTheme((t as string) ?? "dracula"); */
+    /*     dispatch({ */
+    /*         type: "setTheme", */
+    /*         payload, */
+    /*     }); */
+    /* }; */
+    /* useEffect(() => { */
+    /*     handleTheme(editorTheme); */
+    /* }, [editorTheme]); */
     /* useEventListener(SplitviewEditorWebviewEvents.SetCodeTheme, (e) => { */
     /*     handleTheme(e.detail); */
     /* }); */
 
-    const [initialValue] = useLocalStorage(initialValueKey, undefined, {
-        deserializer(value) {
-            return value;
-        },
-        serializer(value) {
-            return value;
-        },
-        initializeWithValue: false,
-    });
-    useEffect(() => {
-        if (!state.haveSetInitialValue && typeof initialValue === "string") {
-            dispatch({
-                type: "setEditorValue",
-                payload: initialValue,
-            });
-        }
-    }, [initialValue, state.haveSetInitialValue]);
+    /* const [initialValue] = useLocalStorage(initialValueKey, undefined, { */
+    /*     deserializer(value) { */
+    /*         return value; */
+    /*     }, */
+    /*     serializer(value) { */
+    /*         return value; */
+    /*     }, */
+    /*     initializeWithValue: false, */
+    /* }); */
+    /* useEffect(() => { */
+    /*     if (!state.haveSetInitialValue && typeof initialValue === "string") { */
+    /*         dispatch({ */
+    /*             type: "setEditorValue", */
+    /*             payload: initialValue, */
+    /*         }); */
+    /*     } */
+    /* }, [initialValue, state.haveSetInitialValue]); */
 
     /* useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContent, (e) => { */
     /*     dispatch({ */
@@ -341,31 +334,31 @@ export const CodeEditorProvider = ({
     /*     }); */
     /* }); */
 
-    useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContentString, (e) => {
-        dispatch({
-            type: "setParsedEditorContentString",
-            payload: e.detail
-        })
-    })
+    /* useEventListener(SplitviewEditorWebviewEvents.SetParsedMdxContentString, (e) => { */
+    /*     dispatch({ */
+    /*         type: "setParsedEditorContentString", */
+    /*         payload: e.detail */
+    /*     }) */
+    /* }) */
 
-    useEventListener(SplitviewEditorWebviewEvents.SetEditorSnippetProps, (e) => {
-        const ids = []
-        for (let i = 0; i <= e.detail.citationIdsLength(); i++) {
-            ids.push(e.detail.citationIds(i))
-        }
-        dispatch({
-            type: "setAllCitationIds",
-            payload: ids
-        })
-    })
+    /* useEventListener(SplitviewEditorWebviewEvents.SetEditorSnippetProps, (e) => { */
+    /*     const ids = [] */
+    /*     for (let i = 0; i <= e.detail.citationIdsLength(); i++) { */
+    /*         ids.push(e.detail.citationIds(i)) */
+    /*     } */
+    /*     dispatch({ */
+    /*         type: "setAllCitationIds", */
+    /*         payload: ids */
+    /*     }) */
+    /* }) */
 
-    useEventListener(SplitviewEditorWebviewEvents.SetWebviewPreviewScrollLock, (e) => {
-        console.log(`Received event preview-editor scroll lock event: `, e.detail)
-        dispatch({
-            type: "setLockEditorScrollToPreview",
-            payload: e.detail
-        })
-    })
+    /* useEventListener(SplitviewEditorWebviewEvents.SetWebviewPreviewScrollLock, (e) => { */
+    /*     console.log(`Received event preview-editor scroll lock event: `, e.detail) */
+    /*     dispatch({ */
+    /*         type: "setLockEditorScrollToPreview", */
+    /*         payload: e.detail */
+    /*     }) */
+    /* }) */
 
     useEffect(() => {
         if (typeof state.parsedValue !== "string" && implementation === "mdx-editor") {

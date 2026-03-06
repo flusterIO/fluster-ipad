@@ -130,8 +130,9 @@ public struct EditorState: Codable {
 	public let snippetProps: SnippetState
 	public let lockEditorScrollToPreview: Bool
 	public let saveMethod: EditorSaveMethod
+	public let autoSaveTimeout: UInt32
 
-	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], keymap: CodeEditorKeymap, theme: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool, editorView: EditorView, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
+	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], keymap: CodeEditorKeymap, theme: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool, editorView: EditorView, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod, autoSaveTimeout: UInt32) {
 		self.note_id = note_id
 		self.baseKeymap = baseKeymap
 		self.citations = citations
@@ -146,6 +147,7 @@ public struct EditorState: Codable {
 		self.snippetProps = snippetProps
 		self.lockEditorScrollToPreview = lockEditorScrollToPreview
 		self.saveMethod = saveMethod
+		self.autoSaveTimeout = autoSaveTimeout
 	}
 }
 
@@ -178,11 +180,47 @@ public struct SetEditorInitialStateEditorAction: Codable {
 	}
 }
 
+public struct SetEditorKeymapPayload: Codable {
+	public let keymap: CodeEditorKeymap
+
+	public init(keymap: CodeEditorKeymap) {
+		self.keymap = keymap
+	}
+}
+
+public struct SetEditorKeymapAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetEditorKeymapPayload
+
+	public init(type: EditorStateActions, payload: SetEditorKeymapPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
 public struct SetEditorSaveMethodEditorAction: Codable {
 	public let type: EditorStateActions
 	public let payload: EditorSaveMethod
 
 	public init(type: EditorStateActions, payload: EditorSaveMethod) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetEditorThemePayload: Codable {
+	public let theme: CodeEditorTheme
+
+	public init(theme: CodeEditorTheme) {
+		self.theme = theme
+	}
+}
+
+public struct SetEditorThemeAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetEditorThemePayload
+
+	public init(type: EditorStateActions, payload: SetEditorThemePayload) {
 		self.type = type
 		self.payload = payload
 	}
@@ -222,11 +260,13 @@ public struct WebviewContainerState: Codable {
 	public let environment: WebviewEnvironment?
 	public let size: SizableOption
 	public let wasm_loaded: Bool
+	public let dark_mode: Bool
 
-	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool) {
+	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool) {
 		self.environment = environment
 		self.size = size
 		self.wasm_loaded = wasm_loaded
+		self.dark_mode = dark_mode
 	}
 }
 

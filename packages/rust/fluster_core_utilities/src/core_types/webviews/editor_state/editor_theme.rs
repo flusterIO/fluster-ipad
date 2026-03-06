@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
 #[typeshare]
-#[derive(uniffi::Enum, Serialize, Deserialize)]
+#[derive(uniffi::Enum, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub enum CodeEditorTheme {
     // Light
@@ -21,4 +21,3 @@ pub enum CodeEditorTheme {
     GithubDark,
     XcodeDark,
 }
-

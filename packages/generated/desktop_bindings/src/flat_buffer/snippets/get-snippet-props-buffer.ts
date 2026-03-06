@@ -56,7 +56,7 @@ static startCitationIdsVector(builder:flatbuffers.Builder, numElems:number) {
 
 static endGetSnippetPropsBuffer(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
-  builder.requiredField(offset, 4) // citationIds
+  builder.requiredField(offset, 4) // citation_ids
   return offset;
 }
 

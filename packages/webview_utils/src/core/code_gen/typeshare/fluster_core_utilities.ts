@@ -103,6 +103,7 @@ export interface EditorState {
 	snippetProps: SnippetState;
 	lockEditorScrollToPreview: boolean;
 	saveMethod: EditorSaveMethod;
+	autoSaveTimeout: number;
 }
 
 export interface ManualSaveRequestEvent {
@@ -126,9 +127,27 @@ export interface SetEditorInitialStateEditorAction {
 	payload: EditorInitialStatePayload;
 }
 
+export interface SetEditorKeymapPayload {
+	keymap: CodeEditorKeymap;
+}
+
+export interface SetEditorKeymapAction {
+	type: EditorStateActions;
+	payload: SetEditorKeymapPayload;
+}
+
 export interface SetEditorSaveMethodEditorAction {
 	type: EditorStateActions;
 	payload: EditorSaveMethod;
+}
+
+export interface SetEditorThemePayload {
+	theme: CodeEditorTheme;
+}
+
+export interface SetEditorThemeAction {
+	type: EditorStateActions;
+	payload: SetEditorThemePayload;
 }
 
 export interface SetParsedMdxContentEditorAction {
@@ -160,6 +179,7 @@ export interface WebviewContainerState {
 	environment?: WebviewEnvironment;
 	size: SizableOption;
 	wasm_loaded: boolean;
+	dark_mode: boolean;
 }
 
 export enum AutoInsertedComponentName {

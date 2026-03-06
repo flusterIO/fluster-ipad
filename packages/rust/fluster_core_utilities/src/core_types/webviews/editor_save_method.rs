@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
 #[typeshare]
-#[derive(uniffi::Enum, strum_macros::Display, Serialize, Deserialize)]
+#[derive(uniffi::Enum, strum_macros::Display, Serialize, Deserialize, Clone)]
 pub enum EditorSaveMethod {
     #[serde(rename = "on-save")]
     #[strum(to_string = "on-save")]

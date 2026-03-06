@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 import tailwind from "@tailwindcss/vite";
+import codspeedPlugin from "@codspeed/vitest-plugin";
 
 export default defineConfig({
     plugins: [
@@ -14,6 +15,7 @@ export default defineConfig({
             insertTypesEntry: true,
             copyDtsFiles: true,
         }),
+        codspeedPlugin()
     ],
     build: {
         outDir: "dist_dev",
