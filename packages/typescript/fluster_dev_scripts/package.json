@@ -1,0 +1,14 @@
+{
+  "name": "@fluster/fluster_dev_scripts",
+  "version": "0.0.1",
+  "packageManager": "pnpm@9.7.1",
+  "scripts": {
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@types/glob": "^9.0.0",
+    "consola": "^3.4.2",
+    "console-table-printer": "^2.15.0",
+    "glob": "^13.0.6"
+  }
+}

@@ -35,7 +35,7 @@ const connector = connect((state: EditorState) => ({
     theme: state.theme,
     keymap: state.keymap,
     value: state.value,
-    lockEditorScrollToPreviiew: state.lockEditorScrollToPreview,
+    lockEditorScrollToPreview: state.lockEditorScrollToPreview,
     snippetProps: state.snippetProps,
     note_id: state.note_id,
     haveSetInitialValue: state.haveSetInitialValue,

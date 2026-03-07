@@ -1,0 +1,63 @@
+// @ts-check
+/** @type { import("eslint").Linter.Config[] } */
+module.exports = {
+    root: true,
+    files: ["apps/**/*.{ts,tsx}", "packages/**/*.{ts,tsx}"],
+    ignores: [
+        "packages/rust/fluster_rust/FlusterRust/",
+        "packages/webviews/*/node_modules/",
+        "packages/webviews/*/build/",
+        "packages/webviews/*/node_modules/",
+        "packages/webviews/bibtex_editor_webview/bibtex_editor_webview_ipad/",
+        "packages/webviews/bibtex_editor_webview/bibtex_editor_webview_mac/",
+        "packages/webviews/reference_note_webview/reference_note_webview/",
+        "packages/webviews/standalone_mdx_editor/standalone_mdx_editor/",
+        "packages/webviews/note_detail_webview/note_detail_webview_ipad/",
+        "packages/webviews/note_detail_webview/note_detail_webview_mac/",
+        "packages/webviews/standalone_mdx_preview/standalone_mdx_preview_mac/",
+        "packages/webviews/standalone_mdx_preview/standalone_mdx_preview_ipad/",
+        "packages/webviews/splitview_mdx_editor/splitview_mdx_editor_mac/",
+        "packages/webviews/splitview_mdx_editor/splitview_mdx_editor_ipad/",
+        "packages/webviews/dictionary_webview/dictionary_webview_mac/",
+        "packages/webviews/dictionary_webview/dictionary_webview_ipad/",
+        "packages/webview_utils/dist_dev/",
+        "apps/website/node_modules/",
+        "packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser/",
+        "packages/rust/fluster_bibliography/FlusterBibliography/",
+        ".nvim/xcodebuild/",
+        "docs/component_docs/",
+        "packages/rust/fluster_pre_parser/src/embedded/component_docs/",
+        "packages/typescript/wasm/fluster_wasm/dist/",
+        "packages/typescript/wasm/fluster_wasm/pkg/",
+        "packages/rust/wasm/fluster_wasm/dist/",
+    ],
+    env: {
+        browser: true,
+        es6: true,
+        node: true,
+    },
+    extends: [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+    ],
+    globals: {
+        Atomics: "readonly",
+        SharedArrayBuffer: "readonly",
+    },
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true,
+        },
+        ecmaVersion: 2018,
+        sourceType: "module",
+    },
+    plugins: ["react", "@typescript-eslint"],
+    rules: {
+        indent: ["error", "tab"],
+        "linebreak-style": ["error", "unix"],
+        quotes: ["error", "double"],
+        semi: ["error", "never"],
+    },
+};

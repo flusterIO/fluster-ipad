@@ -1,6 +1,6 @@
 {
   "name": "@fluster/webview_utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [
     "academic",
     "fluster",
@@ -213,5 +213,6 @@
     "wireit": "0.14.12"
   },
   "prettier": "../shared_config/prettier.config.ts",
+  "packageManager": "pnpm@9.7.1",
   "license": "MIT"
 }

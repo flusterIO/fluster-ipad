@@ -1,6 +1,6 @@
 {
-  "name": "bib_entry_details_webview",
-  "version": "0.0.0",
+  "name": "@fluster/bib_entry_details_webview",
+  "version": "0.0.1",
   "type": "module",
   "private": true,
   "scripts": {
@@ -27,5 +27,6 @@
     "typescript": "latest",
     "typescript-eslint": "8.46.4",
     "vite": "7.2.4"
-  }
+  },
+  "packageManager": "pnpm@9.7.1"
 }

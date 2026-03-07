@@ -5,7 +5,6 @@ import {
     useCodeEditorContext,
     useCodeEditorDispatch,
 } from "../state/code_editor_provider";
-import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
@@ -18,21 +17,7 @@ setBibtexEditorWindowBridgeFunctions();
 const BibtexEditorInner = (): ReactNode => {
     const data = useCodeEditorContext();
     const dispatch = useCodeEditorDispatch();
-    const [initialValue, setInitialValue] = useLocalStorage(
-        BibtexEditorWebviewLocalStorageKeys.InitialValue,
-        undefined,
-        {
-            deserializer(value) {
-                return value;
-            },
-            serializer(value) {
-                return value;
-            },
-            initializeWithValue: false,
-        },
-    );
     useEventListener(BibtexEditorWebviewEvents.SetBibtexEditorContent, (e) => {
-        setInitialValue(e.detail);
         dispatch({
             type: "setEditorValue",
             payload: e.detail,
@@ -47,7 +32,6 @@ const BibtexEditorInner = (): ReactNode => {
 
     return data.haveSetInitialValue ? (
         <CodeEditorInner
-            initialValue={initialValue}
             language={CodeEditorLanguage.bibtex}
             requestNewDataAction={BibtexEditorWebviewActions.RequestBibtexEditorData}
             updateHandler={BibtexEditorWebviewActions.OnEditorChange}

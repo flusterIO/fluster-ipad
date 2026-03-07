@@ -10,6 +10,7 @@ packages:
   - packages/webviews/dictionary_webview
   - packages/webview_utils
   - packages/typescript/lezer
+  - packages/typescript/fluster_dev_scripts
   - packages/shared_config
   - packages/generated/desktop_bindings
   - packages/swift/desktop_plugins/fluster_swift_data/

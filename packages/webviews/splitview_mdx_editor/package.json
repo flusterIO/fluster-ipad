@@ -1,6 +1,6 @@
 {
   "name": "@fluster/editor_webview",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [
     "academic",
     "fluster",
@@ -73,5 +73,6 @@
     "vite-plugin-singlefile": "2.3.0",
     "wireit": "0.14.12"
   },
+  "packageManager": "pnpm@9.7.1",
   "license": "UNLICENSED"
 }

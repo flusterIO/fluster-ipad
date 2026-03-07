@@ -18,7 +18,7 @@ export const getBenchmarkContent = async (
 
     const paragraphs = Array(length * 3)
         .fill(0)
-        .map((c, i) => {
+        .map(() => {
             return faker.lorem.paragraphs(1);
         });
     const insertRandomly = (value: string): void => {
@@ -34,7 +34,6 @@ export const getBenchmarkContent = async (
             .fill(0)
             .forEach(async () => {
                 const s = await config.generateTestContent(faker, stringUtils);
-                // console.log("s: ", s);
                 insertRandomly(s);
             });
     }
