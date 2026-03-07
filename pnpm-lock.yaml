@@ -54,6 +54,9 @@ importers:
       husky:
         specifier: 9.1.7
         version: 9.1.7
+      markdown-table:
+        specifier: ^3.0.4
+        version: 3.0.4
       postcss:
         specifier: 8.5.3
         version: 8.5.3
@@ -104,7 +107,7 @@ importers:
         version: 0.9.1(typescript@5.9.3)
       '@content-collections/mdx':
         specifier: 0.2.2
-        version: 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@content-collections/next':
         specifier: 0.2.4
         version: 0.2.4(@content-collections/core@0.9.1(typescript@5.9.3))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))
@@ -113,7 +116,7 @@ importers:
         version: link:../../packages/webview_utils
       '@fumadocs/content-collections':
         specifier: 1.2.1
-        version: 1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
+        version: 1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       '@hookform/resolvers':
         specifier: 5.2.2
         version: 5.2.2(react-hook-form@7.56.3(react@19.2.0))
@@ -260,7 +263,7 @@ importers:
         version: 3.0.2(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       fumadocs-mdx:
         specifier: 11.6.9
-        version: 11.6.9(acorn@8.15.0)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
+        version: 11.6.9(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
       fumadocs-python:
         specifier: 0.0.3
         version: 0.0.3(@types/react@19.2.2)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-ui@15.8.3(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1))
@@ -424,6 +427,33 @@ importers:
 
   packages/generated/desktop_bindings: {}
 
+  packages/rust/wasm/fluster_wasm:
+    devDependencies:
+      '@types/webpack':
+        specifier: 5.28.5
+        version: 5.28.5(@swc/core@1.15.18(@swc/helpers@0.5.18))(webpack-cli@6.0.1(webpack-dev-server@5.2.3)(webpack@5.105.4))
+      '@types/webpack-dev-server':
+        specifier: 4.7.2
+        version: 4.7.2(bufferutil@4.1.0)(tslib@2.8.1)(webpack-cli@6.0.1(webpack-dev-server@5.2.3)(webpack@5.105.4))(webpack@5.105.4(@swc/core@1.15.18(@swc/helpers@0.5.18))(webpack-cli@6.0.1))
+      '@wasm-tool/wasm-pack-plugin':
+        specifier: 1.7.0
+        version: 1.7.0
+      html-webpack-plugin:
+        specifier: 5.6.6
+        version: 5.6.6(webpack@5.105.4(@swc/core@1.15.18(@swc/helpers@0.5.18))(webpack-cli@6.0.1))
+      ts-node:
+        specifier: 10.9.2
+        version: 10.9.2(@swc/core@1.15.18(@swc/helpers@0.5.18))(@swc/wasm@1.15.18)(@types/node@24.10.1)(typescript@5.9.3)
+      webpack:
+        specifier: 5.105.4
+        version: 5.105.4(@swc/core@1.15.18(@swc/helpers@0.5.18))(webpack-cli@6.0.1)
+      webpack-cli:
+        specifier: 6.0.1
+        version: 6.0.1(webpack-dev-server@5.2.3)(webpack@5.105.4)
+      webpack-dev-server:
+        specifier: 5.2.3
+        version: 5.2.3(bufferutil@4.1.0)(tslib@2.8.1)(webpack-cli@6.0.1)(webpack@5.105.4)
+
   packages/shared_config:
     dependencies:
       '@tailwindcss/container-queries':
@@ -565,7 +595,7 @@ importers:
         version: link:../typescript/lezer
       '@fluster/wasm':
         specifier: workspace:*
-        version: link:../typescript/wasm/fluster_wasm
+        version: link:../rust/wasm/fluster_wasm
       '@hookform/resolvers':
         specifier: 5.2.2
         version: 5.2.2(react-hook-form@7.56.3(react@19.2.0))
@@ -933,7 +963,7 @@ importers:
         version: 6.4.1
       '@fluster/wasm':
         specifier: workspace:*
-        version: link:../../typescript/wasm/fluster_wasm
+        version: link:../../rust/wasm/fluster_wasm
       '@fluster/webview_utils':
         specifier: workspace:*
         version: link:../../webview_utils
@@ -1137,7 +1167,7 @@ importers:
     dependencies:
       '@fluster/wasm':
         specifier: workspace:*
-        version: link:../../typescript/wasm/fluster_wasm
+        version: link:../../rust/wasm/fluster_wasm
       '@fluster/webview_utils':
         specifier: workspace:*
         version: link:../../webview_utils
@@ -5058,11 +5088,6 @@ packages:
   acorn-walk@8.3.4:
     resolution: {integrity: sha512-ueEepnujpqee2o5aIYnvHU6C0A42MNdsIDeqy5BydrkuC5R1ZuUFnm27EeFJGoEHJQgn3uleRvmTXaJgfXbt4g==}
     engines: {node: '>=0.4.0'}
-
-  acorn@8.15.0:
-    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
 
   acorn@8.16.0:
     resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
@@ -11221,11 +11246,11 @@ snapshots:
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
 
-  '@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
       esbuild: 0.25.12
-      mdx-bundler: 10.1.1(acorn@8.15.0)(esbuild@0.25.12)
+      mdx-bundler: 10.1.1(esbuild@0.25.12)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
       unified: 11.0.5
@@ -11490,10 +11515,10 @@ snapshots:
 
   '@fortawesome/fontawesome-free@6.7.2': {}
 
-  '@fumadocs/content-collections@1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
+  '@fumadocs/content-collections@1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
-      '@content-collections/mdx': 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@content-collections/mdx': 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       fumadocs-core: 15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
   '@glideapps/ts-necessities@2.2.3': {}
@@ -11930,44 +11955,14 @@ snapshots:
 
   '@mathjax/mathjax-newcm-font@4.1.0': {}
 
-  '@mdx-js/esbuild@3.1.1(acorn@8.15.0)(esbuild@0.25.12)':
+  '@mdx-js/esbuild@3.1.1(esbuild@0.25.12)':
     dependencies:
-      '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
+      '@mdx-js/mdx': 3.1.0(acorn@8.16.0)
       '@types/unist': 3.0.3
       esbuild: 0.25.12
       source-map: 0.7.6
       vfile: 6.0.3
       vfile-message: 4.0.3
-    transitivePeerDependencies:
-      - acorn
-      - supports-color
-
-  '@mdx-js/mdx@3.1.0(acorn@8.15.0)':
-    dependencies:
-      '@types/estree': 1.0.8
-      '@types/estree-jsx': 1.0.5
-      '@types/hast': 3.0.4
-      '@types/mdx': 2.0.13
-      collapse-white-space: 2.1.0
-      devlop: 1.1.0
-      estree-util-is-identifier-name: 3.0.0
-      estree-util-scope: 1.0.0
-      estree-walker: 3.0.3
-      hast-util-to-jsx-runtime: 2.3.6
-      markdown-extensions: 2.0.0
-      recma-build-jsx: 1.0.0
-      recma-jsx: 1.0.1(acorn@8.15.0)
-      recma-stringify: 1.0.0
-      rehype-recma: 1.0.0
-      remark-mdx: 3.1.1
-      remark-parse: 11.0.0
-      remark-rehype: 11.1.2
-      source-map: 0.7.6
-      unified: 11.0.5
-      unist-util-position-from-estree: 2.0.0
-      unist-util-stringify-position: 4.0.0
-      unist-util-visit: 5.1.0
-      vfile: 6.0.3
     transitivePeerDependencies:
       - acorn
       - supports-color
@@ -13735,7 +13730,7 @@ snapshots:
   '@tailwindcss/node@4.1.10':
     dependencies:
       '@ampproject/remapping': 2.3.0
-      enhanced-resolve: 5.19.0
+      enhanced-resolve: 5.20.0
       jiti: 2.6.1
       lightningcss: 1.30.1
       magic-string: 0.30.21
@@ -13755,7 +13750,7 @@ snapshots:
   '@tailwindcss/node@4.2.1':
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      enhanced-resolve: 5.19.0
+      enhanced-resolve: 5.20.0
       jiti: 2.6.1
       lightningcss: 1.31.1
       magic-string: 0.30.21
@@ -14983,10 +14978,6 @@ snapshots:
     dependencies:
       acorn: 8.16.0
 
-  acorn-jsx@5.3.2(acorn@8.15.0):
-    dependencies:
-      acorn: 8.15.0
-
   acorn-jsx@5.3.2(acorn@8.16.0):
     dependencies:
       acorn: 8.16.0
@@ -14994,8 +14985,6 @@ snapshots:
   acorn-walk@8.3.4:
     dependencies:
       acorn: 8.16.0
-
-  acorn@8.15.0: {}
 
   acorn@8.16.0: {}
 
@@ -16720,8 +16709,8 @@ snapshots:
 
   espree@10.4.0:
     dependencies:
-      acorn: 8.15.0
-      acorn-jsx: 5.3.2(acorn@8.15.0)
+      acorn: 8.16.0
+      acorn-jsx: 5.3.2(acorn@8.16.0)
       eslint-visitor-keys: 4.2.1
 
   esprima@4.0.1: {}
@@ -17061,9 +17050,9 @@ snapshots:
       unist-util-visit: 5.1.0
       zod: 4.3.6
 
-  fumadocs-mdx@11.6.9(acorn@8.15.0)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
+  fumadocs-mdx@11.6.9(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@1.21.7)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
     dependencies:
-      '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
+      '@mdx-js/mdx': 3.1.0(acorn@8.16.0)
       '@standard-schema/spec': 1.1.0
       chokidar: 4.0.3
       esbuild: 0.25.12
@@ -18454,12 +18443,12 @@ snapshots:
 
   mdn-data@2.12.2: {}
 
-  mdx-bundler@10.1.1(acorn@8.15.0)(esbuild@0.25.12):
+  mdx-bundler@10.1.1(esbuild@0.25.12):
     dependencies:
       '@babel/runtime': 7.28.6
       '@esbuild-plugins/node-resolve': 0.2.2(esbuild@0.25.12)
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@mdx-js/esbuild': 3.1.1(acorn@8.15.0)(esbuild@0.25.12)
+      '@mdx-js/esbuild': 3.1.1(esbuild@0.25.12)
       esbuild: 0.25.12
       gray-matter: 4.0.3
       remark-frontmatter: 5.0.0
@@ -19900,15 +19889,6 @@ snapshots:
       '@types/estree': 1.0.8
       estree-util-build-jsx: 3.0.1
       vfile: 6.0.3
-
-  recma-jsx@1.0.1(acorn@8.15.0):
-    dependencies:
-      acorn: 8.15.0
-      acorn-jsx: 5.3.2(acorn@8.15.0)
-      estree-util-to-js: 2.0.0
-      recma-parse: 1.0.0
-      recma-stringify: 1.0.0
-      unified: 11.0.5
 
   recma-jsx@1.0.1(acorn@8.16.0):
     dependencies:

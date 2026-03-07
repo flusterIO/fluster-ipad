@@ -108,8 +108,8 @@
 
 # Today
 
+- [ ] Take care of condition integration with tokio while there's still not much to do.
 - [ ] Move each editor to a unique instance of a persistent global redux provider.
-
 - [ ] Handle editor `ParsingEvent` enum and make sure that that can be set by the user. Don't even make auto-render the default on mac...
 - Go back to `MdxEditorWebview` task that handles pre parsing and implement proper buffer.
 - [ ] While moving all editor state to Rust for complete cross-language serialization, get rid of the `setParsedEditorContent` function first. This should all be handled by the state manager now.

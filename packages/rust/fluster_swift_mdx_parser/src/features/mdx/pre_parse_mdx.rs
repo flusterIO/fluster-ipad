@@ -4,7 +4,7 @@ use fluster_core_utilities::core_types::{
     },
     fluster_error::{FlusterError, FlusterResult},
 };
-use tokio;
+use tokio::task::spawn;
 
 use fluster_pre_parser::{
     embedded::embedded_in_content_docs::EmbeddedInContentDocs,
@@ -14,10 +14,9 @@ use fluster_pre_parser::{
 
 #[uniffi::export(async_runtime = "tokio")]
 pub async fn pre_parse_mdx(options: ParseMdxOptions) -> FlusterResult<MdxParsingResult> {
-    let x = tokio::task::spawn(async move { parse_mdx_string_to_mdx_result(&options).await }).await;
+    let x = spawn(async move { parse_mdx_string_to_mdx_result(&options).await }).await;
     x.map_err(|_| FlusterError::MdxParsingError)
 }
-
 
 #[uniffi::export(async_runtime = "tokio")]
 pub async fn get_embedded_docs_by_id(
