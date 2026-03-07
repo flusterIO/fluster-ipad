@@ -9,3 +9,5 @@ After building a cross platform desktop version of [Fluster](https://github.com/
 The goal is to maintain full mdx support, while integrating Apple's amazing pencilkit to allow full hand-drawn documents alongside any mdx documents. From there, the mdx content will be fed to onboard AI models for various tasks. Unfortunately, passing the hand drawn content to language models would require quite a bit of finagling and will take some time, but using the mdx content alongside hand drawn content, while linking the two together seamlessly, we can provide a full set of AI features while providing the structured output that mdx provides, while still allowing the free-flow thinking that hand drawn documents give.
 
 This app will hopefully be ready for release in early 2026.
+
+![test](./apps/website/public/assets/images/mockups/mac/mockups/mac_editor-front.png)
