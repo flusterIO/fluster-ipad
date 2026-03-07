@@ -3,16 +3,18 @@ use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use rayon::prelude::*;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
+use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     parse::by_regex::{parse_mdx_by_regex::ParseMdxOptions, regex_parsers::mdx_parser::MdxParser},
     parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
+#[wasm_bindgen]
 #[derive(Serialize, Deserialize, Debug, Clone, uniffi::Record)]
 pub struct NoteOutgoingLinkResult {
     /// The user defined id on the target note.
-    pub link_to_note_id: String,
+    pub(crate) link_to_note_id: String,
 }
 
 pub struct NoteLinkRegexParser;

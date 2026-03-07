@@ -11,6 +11,7 @@ use fluster_core_utilities::{
 };
 use gray_matter::{Matter, engine::YAML};
 use serde::{Deserialize, Serialize};
+use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 
 use crate::{
     parse::by_regex::regex_parsers::{
@@ -18,29 +19,95 @@ use crate::{
         note_link_regex_parser::NoteOutgoingLinkResult,
     },
     parsing_result::{
-        ai_serialization_request::AiSerializationRequestPhase1, citation_result::CitationResult,
-        front_matter::FrontMatterResult, tag_result::TagResult,
+        ai_serialization_request::AiSerializationRequestPhase1,
+        citation_result::CitationResult,
+        front_matter::{FrontMatterParser, FrontMatterResult},
+        tag_result::TagResult,
     },
 };
 
+#[wasm_bindgen]
 #[derive(uniffi::Record, Debug, Serialize, Deserialize, Clone)]
 pub struct MdxParsingResult {
-    pub note_id: Option<String>,
-    pub content: String,
-    pub tags: Vec<TagResult>,
-    pub front_matter: Option<FrontMatterResult>,
+    pub(crate) note_id: Option<String>,
+    pub(crate) content: String,
+    pub(crate) tags: Vec<TagResult>,
+    pub(crate) front_matter: Option<FrontMatterResult>,
     /// bibliography_string is a string representing the concatenated bibtex entries of all
     /// valid bibentries within the note, without duplicates and in the proper order.
-    pub citations: Vec<CitationResult>,
-    pub dictionary_entries: Vec<DictionaryEntryResult>,
-    pub outgoing_links: Vec<NoteOutgoingLinkResult>,
+    pub(crate) citations: Vec<CitationResult>,
+    pub(crate) dictionary_entries: Vec<DictionaryEntryResult>,
+    pub(crate) outgoing_links: Vec<NoteOutgoingLinkResult>,
     /// Always set to false initially, but can be set to true by certain parsers to avoid further
     /// parsing.
-    pub ignore_all_parsers: bool,
-    pub ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
+    pub(crate) ignore_all_parsers: bool,
+    pub(crate) ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
 }
 
+#[wasm_bindgen]
 impl MdxParsingResult {
+    #[wasm_bindgen(constructor)]
+    pub fn new(
+        note_id: Option<String>,
+        content: String,
+        tags: Vec<TagResult>,
+        front_matter: Option<FrontMatterResult>,
+        citations: Vec<CitationResult>,
+        dictionary_entries: Vec<DictionaryEntryResult>,
+        outgoing_links: Vec<NoteOutgoingLinkResult>,
+        ignore_all_parsers: bool,
+        ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
+    ) -> Self {
+        MdxParsingResult {
+            note_id,
+            content,
+            tags,
+            front_matter,
+            citations,
+            dictionary_entries,
+            outgoing_links,
+            ignore_all_parsers,
+            ai_secondary_parse_requests,
+        }
+    }
+
+    pub fn set_content(&mut self, content: String) {
+        self.content = content;
+    }
+
+    pub fn get_content_rust(&self) -> String {
+        self.content.clone()
+    }
+
+    pub fn set_front_matter(&mut self, front_matter: Option<FrontMatterResult>) {
+        self.front_matter = front_matter;
+    }
+
+    pub fn get_front_matter_rust(&self) -> Option<FrontMatterResult> {
+        self.front_matter.clone()
+    }
+    /// GETTER: Converts the entire Rust struct into a native JS Object.
+    /// This is O(n) but allows TypeScript to access nested fields like
+    /// `citations` and `tags` instantly without further WASM calls.
+    #[wasm_bindgen(getter)]
+    pub fn json(&self) -> JsValue {
+        serde_wasm_bindgen::to_value(&self).unwrap_or(JsValue::NULL)
+    }
+
+    /// SETTER: Updates the Rust struct from a JavaScript object.
+    /// This is vital for your Swift-to-JS-to-Rust pipeline.
+    #[wasm_bindgen(setter)]
+    pub fn set_from_json(&mut self, val: JsValue) {
+        if let Ok(new_data) = serde_wasm_bindgen::from_value::<MdxParsingResult>(val) {
+            *self = new_data;
+        }
+    }
+
+    #[wasm_bindgen(js_name = getCitations)]
+    pub fn get_citations(&self) -> JsValue {
+        serde_wasm_bindgen::to_value(&self.citations).unwrap_or(JsValue::UNDEFINED)
+    }
+
     /// This will not return a parsed item, but rather an empty template that can be passed to a
     /// series of MdxParsers to apply the necessary properties and changes.
     pub fn from_initial_mdx_content(content: &str) -> MdxParsingResult {

@@ -27,6 +27,10 @@ criterion = { version = "0.8.2", features = ["async_tokio"] }
 fancy-regex = "0.17.0"
 serde_json.workspace = true
 wasm-bindgen = "0.2.114"
+web-sys = "0.3.91"
+js-sys = "0.3.91"
+gloo = "0.11.0"
+serde-wasm-bindgen = "0.6.5"
 
 
 [profile.release]

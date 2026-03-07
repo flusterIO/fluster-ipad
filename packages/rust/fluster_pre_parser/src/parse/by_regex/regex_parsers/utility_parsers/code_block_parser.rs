@@ -18,7 +18,7 @@ impl CodeBlockParser {
         let results = CodeBlockParser::parse_async(content, language_key).await;
         for code_block_result in &results {
             let replace_with = replacer(code_block_result);
-            *content = content.replace(&code_block_result.full_match, &replace_with);
+            *content = content.replace(&code_block_result.get_full_match_rust(), &replace_with);
         }
         results
     }
@@ -30,11 +30,11 @@ impl CodeBlockParser {
             let language = captures.get(2).map_or("", |m| m.as_str());
             let code_content = captures.get(3).map_or("", |m| m.as_str());
             if language == language_key {
-                results.push(CodeBlockParsingResult {
-                    full_match: full_match.to_string(),
-                    language_tag: language.to_string(),
-                    block_content: code_content.to_string(),
-                });
+                results.push(CodeBlockParsingResult::new(
+                    full_match.to_string(),
+                    language.to_string(),
+                    code_content.to_string(),
+                ));
             }
         }
         results

@@ -31,7 +31,7 @@ impl MdxParser for AiTriggerParser {
                 serde_json::to_string(c)
                     .map(|x| format!("'{}'", x))
                     .unwrap_or("{null}".to_string()),
-                c.block_content,
+                c.get_block_content_rust(),
                 AutoInsertedComponentName::FlusterAiParsePendingContainer
             )
         })
@@ -56,18 +56,19 @@ mod tests {
 
     #[tokio::test]
     async fn parses_ai_code_blocks_properly() {
-        let opts = ParseMdxOptions {
-            citations: Vec::new(),
-            note_id: None,
-            content: r#"# My note
+        let opts = ParseMdxOptions::new(
+            Vec::new(),
+            None,
+            r#"# My note
 
 ````fluster-ai
 Can you help me summarize this note please?
 ````
             "#
             .to_string(),
-        };
-        let mut initial_result = MdxParsingResult::from_initial_mdx_content(&opts.content.clone());
+        );
+        let mut initial_result =
+            MdxParsingResult::from_initial_mdx_content(&opts.get_content_rust());
 
         AiTriggerParser {}
             .parse_async(&opts, &mut initial_result)

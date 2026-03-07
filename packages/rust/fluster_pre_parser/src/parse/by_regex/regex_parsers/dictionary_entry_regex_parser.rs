@@ -2,6 +2,7 @@ use async_trait::async_trait;
 use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
+use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     parse::{
@@ -13,11 +14,12 @@ use crate::{
 
 pub struct DictionaryEntryRegexParser;
 
+#[wasm_bindgen]
 #[derive(Serialize, Deserialize, Debug, Clone, uniffi::Record)]
 pub struct DictionaryEntryResult {
     /// Primary Key
-    pub label: String,
-    pub body: String,
+    pub(crate) label: String,
+    pub(crate) body: String,
 }
 
 #[async_trait]

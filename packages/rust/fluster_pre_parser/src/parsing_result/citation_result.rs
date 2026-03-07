@@ -1,9 +1,11 @@
 use serde::{Deserialize, Serialize};
+use wasm_bindgen::prelude::wasm_bindgen;
 
+#[wasm_bindgen]
 #[derive(uniffi::Record, Debug, Serialize, Deserialize, Clone)]
 pub struct CitationResult {
     /// The parsed citation key.
-    pub citation_key: String,
+    pub(crate) citation_key: String,
     /// The complete bibtex entry
-    pub idx: u8,
+    pub(crate) idx: u8,
 }

@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use uniffi::SwiftBindingGenerator;
 use wasm_bindgen::prelude::*;
 
 use crate::{
@@ -30,10 +29,11 @@ pub struct SwiftDataCitationSummary {
     body: String,
 }
 
+#[wasm_bindgen]
 impl SwiftDataCitationSummary {
     #[wasm_bindgen(getter)]
-    pub fn citation_key(&self) -> String {
-        self.citation_key
+    pub fn citation_key(&self) -> *const u8 {
+        self.citation_key.as_ptr()
     }
     #[wasm_bindgen(setter)]
     pub fn set_citation_key(&mut self, citation_key: String) {
@@ -41,30 +41,55 @@ impl SwiftDataCitationSummary {
     }
 }
 
+// impl SwiftDataCitationSummary {
+//     #[wasm_bindgen(getter)]
+//     pub fn citation_key(&self) -> String {
+//         self.citation_key
+//     }
+// }
+
 #[wasm_bindgen]
 #[derive(Serialize, Deserialize, Debug, uniffi::Record)]
 pub struct ParseMdxOptions {
-    pub note_id: Option<String>,
-    pub content: String,
-    pub citations: Vec<SwiftDataCitationSummary>,
+    pub(crate) note_id: Option<String>,
+    pub(crate) content: String,
+    pub(crate) citations: Vec<SwiftDataCitationSummary>,
 }
 
 #[wasm_bindgen]
 impl ParseMdxOptions {
-    #[wasm_bindgen(getter)]
-    pub fn content(&self) -> String {
+    #[wasm_bindgen(constructor)]
+    pub fn new(
+        note_id: Option<String>,
+        citations: Vec<SwiftDataCitationSummary>,
+        content: String,
+    ) -> Self {
+        ParseMdxOptions {
+            note_id,
+            content,
+            citations,
+        }
+    }
+
+    pub fn get_content_rust(&self) -> String {
         self.content.clone()
+    }
+    #[wasm_bindgen(getter)]
+    pub fn content(&self) -> *const u8 {
+        self.content.as_ptr()
     }
     #[wasm_bindgen(setter)]
     pub fn set_content(&mut self, content: String) {
         self.content = content
     }
     #[wasm_bindgen(getter)]
-    pub fn citations(&self) -> Vec<SwiftDataCitationSummary> {
-        let y = self.citations.to_vec().iter().for_each(|x| x.clone());
+    pub fn citations(&self) -> JsValue {
+        serde_wasm_bindgen::to_value(&self.citations).unwrap_or(JsValue::null())
     }
     #[wasm_bindgen(setter)]
-    pub fn set_citations(&self, citations: Vec<SwiftDataCitationSummary>) {}
+    pub fn set_citations(&mut self, citations: Vec<SwiftDataCitationSummary>) {
+        self.citations = citations
+    }
 }
 
 /// ignore_parsing maps to the ParserId enum. This method will eventually be deprecated and replaced by an lsp based approach but this will be a faster way to get up and running.
@@ -99,11 +124,8 @@ pub async fn parse_mdx_string_to_mdx_result(opts: &ParseMdxOptions) -> MdxParsin
 #[cfg(test)]
 mod tests {
 
-    use fluster_core_utilities::{
-        core_types::webviews::editor_state::editor_state::EditorState,
-        test_utilities::get_test_mdx_content::{
-            get_test_note_content_with_everything, get_welcome_to_fluster_content,
-        },
+    use fluster_core_utilities::test_utilities::get_test_mdx_content::{
+        get_test_note_content_with_everything, get_welcome_to_fluster_content,
     };
 
     use super::*;

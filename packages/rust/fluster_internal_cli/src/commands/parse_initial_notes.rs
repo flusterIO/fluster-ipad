@@ -30,19 +30,19 @@ pub async fn parse_initial_notes() {
                 .expect("Converts path to string without throwing an error.")
         );
         let file_content = fs::read_to_string(_p).expect("Failed to read mdx file.");
-        let mut res = parse_mdx_string_to_mdx_result(&ParseMdxOptions {
-            content: file_content.clone(),
-            citations: Vec::new(),
-            note_id: None,
-        })
+        let mut res = parse_mdx_string_to_mdx_result(&ParseMdxOptions::new(
+            None,
+            Vec::new(),
+            file_content.clone(),
+        ))
         .await;
 
         // Need to re-assign file_content to _content so that the front-matter is still present
         // during the seeding of the initial note data.
-        res.content = file_content;
+        res.set_content(file_content);
 
-        if let Some(fm) = res.front_matter.clone() {
-            if fm.user_defined_id.is_none() {
+        if let Some(fm) = res.get_front_matter_rust().clone() {
+            if fm.get_user_defined_id_rust().is_none() {
                 println!("No user defined id found in {}", p);
             }
         } else {
