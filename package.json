@@ -35,7 +35,7 @@
     "eslint-config-next": "15.3.2",
     "eslint-plugin-react-hooks": "7.0.1",
     "husky": "9.1.7",
-    "markdown-table": "^3.0.4",
+    "markdown-table": "3.0.4",
     "postcss": "8.5.3",
     "prettier": "3.7.4",
     "prettier-plugin-tailwindcss": "0.7.2",
