@@ -2232,6 +2232,7 @@ pub const ENUM_VALUES_EDITOR_SAVE_METHOD_REFLECTION: [EditorSaveMethodReflection
   EditorSaveMethodReflection::OnChange,
 ];
 
+/// THIS toString METHOD WILL NOT MATCH THE RUST, TYPESCRIPT, or RUST EQUIVALENT!!!
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct EditorSaveMethodReflection(pub i8);
@@ -2318,6 +2319,7 @@ pub const ENUM_VALUES_EDITOR_VIEW_REFLECTION: [EditorViewReflection; 3] = [
   EditorViewReflection::PreviewOnly,
 ];
 
+/// THIS toString METHOD WILL NOT MATCH THE RUST, TYPESCRIPT, or RUST EQUIVALENT!!!
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 #[repr(transparent)]
 pub struct EditorViewReflection(pub i8);

@@ -13,8 +13,14 @@ crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }
 miette = { version = "7.6.0", features = ["fancy"] }
 serde.workspace = true
 serde_json.workspace = true
-tokio = { workspace = true, features = ["full"] }
 tower-lsp = "0.20.0"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1.0", features = ["full"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }
+
 
 [lints]
 workspace = true

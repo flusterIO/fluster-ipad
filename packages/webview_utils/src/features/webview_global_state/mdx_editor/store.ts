@@ -5,14 +5,12 @@ import { persistStore, persistReducer, PersistConfig } from "redux-persist"
 import webviewContainerReducer, { setDarkMode } from '../shared/webview_container_global_state/webview_container_slice';
 import { WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
 import { initialMdxEditorState } from './initial_mdx_editor_state';
+import { darkModeListenerMiddleware } from '../shared/webview_container_global_state/side_effects/dark_mode_side_effect';
 
 const rootReducer = combineReducers({
     editor: editorReducer,
     container: webviewContainerReducer
-    // physics: physicsReducer
 });
-
-
 
 export type MdxEditorAppState = ReturnType<typeof rootReducer>
 
@@ -59,7 +57,7 @@ export const createFlusterStore = (webviewEnv: WebviewEnvironment) => {
                 serializableCheck: {
                     ignoredActions: ["persist/PERSIST", "persist/REHYDRATE", "persist/REGISTER"],
                 },
-            }).prepend(listener.middleware),
+            }).prepend(listener.middleware).prepend(darkModeListenerMiddleware.middleware),
     });
     const persistor = persistStore(store);
     return { store, persistor };

@@ -2,6 +2,9 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 
+/**
+ * THIS toString METHOD WILL NOT MATCH THE RUST, TYPESCRIPT, or RUST EQUIVALENT!!!
+ */
 export enum EditorViewReflection {
   Pending = 1,
   Splitview = 2,

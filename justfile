@@ -44,8 +44,7 @@ build_internal_cli:
 	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build
 
 build_fluster_wasm:
-	# cd {{justfile_directory()}}/packages/typescript/wasm/fluster_wasm; pnpm build
-	cd {{justfile_directory()}}/packages/typescript/wasm/fluster_wasm; pnpm build
+	cd {{justfile_directory()}}/packages/rust/wasm/fluster_wasm; pnpm build
 
 gather_component_docs: write_zod_schema_docs write_component_list_note
 	tsx {{justfile_directory()}}/scripts/gather_component_docs.ts

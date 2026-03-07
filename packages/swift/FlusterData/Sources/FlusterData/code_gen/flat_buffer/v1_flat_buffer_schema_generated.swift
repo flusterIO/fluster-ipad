@@ -20,6 +20,7 @@ public enum Notifications_UserFacingNotificationVariant: Int8, Enum, Verifiable 
 }
 
 
+///  THIS toString METHOD WILL NOT MATCH THE RUST, TYPESCRIPT, or RUST EQUIVALENT!!!
 public enum StateReflection_EditorSaveMethodReflection: Int8, Enum, Verifiable {
   public typealias T = Int8
   public static var byteSize: Int { return MemoryLayout<Int8>.size }
@@ -32,6 +33,7 @@ public enum StateReflection_EditorSaveMethodReflection: Int8, Enum, Verifiable {
 }
 
 
+///  THIS toString METHOD WILL NOT MATCH THE RUST, TYPESCRIPT, or RUST EQUIVALENT!!!
 public enum StateReflection_EditorViewReflection: Int8, Enum, Verifiable {
   public typealias T = Int8
   public static var byteSize: Int { return MemoryLayout<Int8>.size }

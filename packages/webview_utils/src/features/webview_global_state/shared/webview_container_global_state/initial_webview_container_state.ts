@@ -1,4 +1,4 @@
-import { SizableOption, WebviewContainerState, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
+import { SizableOption, WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export const initialWebviewContainerState: Omit<WebviewContainerState, "environment"> = {
     size: SizableOption.None,
