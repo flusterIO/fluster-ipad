@@ -33,6 +33,7 @@ fn pre_parse_by_regex_benchmark(c: &mut Criterion) {
             which_file_to_test
         )
     }
+
     let rt = Runtime::new().unwrap();
     let benchmark_date = BenchmarkGeneratedDateString::get_latest();
 
