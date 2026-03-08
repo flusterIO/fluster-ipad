@@ -57,13 +57,11 @@ const rl = readline.createInterface({
 console.log("Listening for Criterion benchmark data...");
 
 rl.on("line", (line) => {
-    // Cargo might print build status (non-JSON) before the benchmark runs,
-    // so we wrap the parser in a try-catch to safely ignore compilation noise.
     try {
         const data = JSON.parse(line) as BenchmarkDataPartial;
         data.testedOn = new Date().valueOf();
         data.fileTested = currentFilePath;
-        data.flusterChangeNote = changeLogContent ?? "";
+        data.flusterChangeNote = changeLogContent;
         // Criterion outputs various "reasons". We usually care about the final results.
         if (data.reason === "benchmark-complete") {
             const benchName = data.id;
@@ -90,11 +88,9 @@ rl.on("line", (line) => {
             fs.writeFileSync(outputPath, JSON.stringify(fileData, null, 2), {
                 encoding: "utf-8",
             });
-
-            // Add your custom logic here (e.g., save to DB, fail CI if too slow)
         }
     } catch (error) {
-        // Ignore lines that aren't valid JSON (like standard Cargo build output)
+        console.log("Error: ", error);
     }
 });
 
