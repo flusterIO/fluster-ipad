@@ -3,7 +3,10 @@ use fluster_core_utilities::{
     core_types::development_utils::benchmark_magnitudes::{
         BenchmarkGeneratedDateString, BenchmarkMagnitude,
     },
-    test_utilities::get_test_mdx_content::get_unchanging_benchmark_test_content,
+    test_utilities::{
+        get_test_mdx_content::get_unchanging_benchmark_test_content,
+        get_workspace_root::get_workspace_root,
+    },
 };
 use fluster_pre_parser::parse::by_regex::parse_mdx_by_regex::{
     ParseMdxOptions, parse_mdx_string_to_mdx_result,
@@ -12,8 +15,9 @@ use strum::IntoEnumIterator;
 use tokio::runtime::Runtime;
 
 fn pre_parse_by_regex_benchmark(c: &mut Criterion) {
-    let root = env!("CARGO_MANIFEST_DIR");
-    let which_file_to_execute_path = std::path::Path::new(root)
+    let root = get_workspace_root();
+    println!("Root: {root}");
+    let which_file_to_execute_path = std::path::Path::new(&root)
         .join("docs")
         .join("development")
         .join("script_inputs")
@@ -33,19 +37,27 @@ fn pre_parse_by_regex_benchmark(c: &mut Criterion) {
     let benchmark_date = BenchmarkGeneratedDateString::get_latest();
 
     BenchmarkMagnitude::iter().for_each(|mag| {
+        let file_name = &format!("parse_mdx_by_regex_{:?}", mag.clone() as u32);
         c.bench_function(
-            &format!("parse_mdx_by_regex_{:?}", mag.clone() as u32),
+            // docs/development/generated_benchmark_content/
+            std::path::Path::new(&root)
+                .join("docs")
+                .join("development")
+                .join("generated_benchmark_content")
+                .join(file_name)
+                .to_str()
+                .unwrap(),
             |b| {
                 b.to_async(&rt).iter_batched(
                     // 1. SETUP: This runs before the timer starts
                     || get_unchanging_benchmark_test_content(mag.clone(), &benchmark_date),
                     // 2. MEASUREMENT: This is what is timed
                     |file_content| async move {
-                        parse_mdx_string_to_mdx_result(&ParseMdxOptions {
-                            content: file_content,
-                            note_id: None,
-                            citations: Vec::new(),
-                        })
+                        parse_mdx_string_to_mdx_result(&ParseMdxOptions::new(
+                            None,
+                            Vec::new(),
+                            file_content,
+                        ))
                         .await
                     },
                     // 3. BATCH SIZE: Controls how many setups happen at once

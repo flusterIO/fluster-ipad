@@ -62,10 +62,10 @@ Can you please generate a summary of this note.
         assert!(res.len() == 1, "Finds one result when one is present.");
         let item = res.index(0);
         assert!(
-            item.language_tag == "fluster-ai",
+            item.clone().get_lang_rust() == "fluster-ai",
             "Finds the fluster-ai tag."
         );
-        assert_snapshot!(item.block_content);
+        assert_snapshot!(item.get_block_content_rust());
         // assert_eq!(result, 4);
     }
 }

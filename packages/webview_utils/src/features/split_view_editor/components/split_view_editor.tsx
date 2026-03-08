@@ -17,7 +17,8 @@ export const SplitViewEditorInner = (): ReactNode => {
             }}
         >
             <Panel id="editor-panel" order={1} defaultSize={50} minSize={10}>
-                <CodeEditor />
+                <CodeEditor
+                />
             </Panel>
             <PanelResizeHandle id="editor-panel-resize-handle" />
             <Panel

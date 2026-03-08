@@ -31,6 +31,9 @@ impl CodeBlockParsingResult {
     pub fn get_full_match_rust(&self) -> String {
         self.full_match.clone()
     }
+    pub fn get_lang_rust(self) -> String {
+        self.language_tag
+    }
     #[wasm_bindgen(getter)]
     pub fn full_match(&self) -> JsValue {
         serde_wasm_bindgen::to_value(&self.full_match).unwrap_or(JsValue::undefined())

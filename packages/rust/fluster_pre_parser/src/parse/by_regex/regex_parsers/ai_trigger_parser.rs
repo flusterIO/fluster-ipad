@@ -50,15 +50,13 @@ impl MdxParser for AiTriggerParser {
 #[cfg(test)]
 mod tests {
 
-    use std::ops::Index;
-
     use super::*;
 
     #[tokio::test]
     async fn parses_ai_code_blocks_properly() {
         let opts = ParseMdxOptions::new(
-            Vec::new(),
             None,
+            Vec::new(),
             r#"# My note
 
 ````fluster-ai

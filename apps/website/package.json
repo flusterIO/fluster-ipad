@@ -1,15 +1,6 @@
 {
   "name": "@fluster/website",
   "version": "0.0.1",
-  "packageManager": "pnpm@9.7.1",
-  "scripts": {
-    "build": "wireit",
-    "dev": "next dev",
-    "lint": "next lint",
-    "start": "next start",
-    "transpileTailwind": "tsc -p ./tsconfig.tailwind.json",
-    "typecheck": "tsc --noEmit -p ./tsconfig.json"
-  },
   "funding": [
     {
       "type": "paypal",
@@ -25,6 +16,14 @@
     }
   ],
   "private": true,
+  "scripts": {
+    "build": "wireit",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start",
+    "transpileTailwind": "tsc -p ./tsconfig.tailwind.json",
+    "typecheck": "tsc --noEmit -p ./tsconfig.json"
+  },
   "wireit": {
     "build:utils": {
       "command": "cd ../../packages/webview_utils && pnpm build:website"
@@ -146,5 +145,6 @@
     "tailwindcss-animate": "1.0.7",
     "typescript": "*",
     "wireit": "0.14.12"
-  }
+  },
+  "packageManager": "pnpm@9.7.1"
 }

@@ -1,7 +1,6 @@
 {
   "name": "@fluster/shared_config",
   "version": "0.0.1",
-  "packageManager": "pnpm@9.7.1",
   "keywords": [],
   "author": "",
   "type": "module",
@@ -28,6 +27,7 @@
   "devDependencies": {
     "@types/node": "24.10.1"
   },
+  "packageManager": "pnpm@9.7.1",
   "license": "MIT",
   "description": "Shared config files used internally by Fluster."
 }

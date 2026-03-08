@@ -1,12 +1,11 @@
 {
   "name": "@fluster/wasm",
   "version": "0.0.1",
-  "packageManager": "pnpm@9.7.1",
+  "type": "module",
   "scripts": {
     "build": "wireit",
     "dev": "webpack serve"
   },
-  "type": "module",
   "wireit": {
     "build": {
       "command": "RUSTFLAGS=\"-C target-feature=+bulk-memory\" wasm-pack build --target web ./ && webpack"
@@ -33,5 +32,6 @@
     "webpack": "5.105.4",
     "webpack-cli": "6.0.1",
     "webpack-dev-server": "5.2.3"
-  }
+  },
+  "packageManager": "pnpm@9.7.1"
 }

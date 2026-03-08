@@ -1,15 +1,14 @@
 {
   "name": "@fluster/lezer",
   "version": "0.0.1",
-  "packageManager": "pnpm@9.7.1",
-  "scripts": {
-    "build": "vite build",
-    "typecheck": "tsc --noEmit"
-  },
   "type": "module",
   "files": [
     "dist"
   ],
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
   "types": "dist/index.d.ts",
   "main": "dist/index.es.js",
   "exports": {
@@ -35,6 +34,7 @@
     "@lezer/markdown": "^1.0.0",
     "bibtex-tidy": "1.14.0"
   },
+  "packageManager": "pnpm@9.7.1",
   "license": "MIT",
   "description": "Originally a fork of lezer-markdown-obsidian, now a bunch of codemirror utilities for Fluster.",
   "module": "dist/index.umd.js"
