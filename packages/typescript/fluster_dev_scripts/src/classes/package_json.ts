@@ -1,6 +1,7 @@
 import { consola } from "consola";
 import fs, { readFileSync } from "fs";
 import { globSync } from "glob";
+import path from "path";
 import { z } from "zod";
 
 const packageJsonSchema = z.object({
@@ -11,7 +12,63 @@ const packageJsonSchema = z.object({
     // scripts: z.record(z.string(), z.string()),
     scripts: z.any(),
 });
+
+/**
+ * The *value* of each item is a query to be usred in a
+ * regular expression while retrieving the file, not nencessarily
+ * the name of the file.
+ */
+export enum SpecialFile {
+    eslint = "eslint",
+}
+
 export type PackageJsonPartial = z.infer<typeof packageJsonSchema>;
+
+export class ProjectRootDir {
+    rootDir: string;
+    constructor(rootDir: string) {
+        this.rootDir = rootDir;
+    }
+
+    read_dir() {
+        return fs.readdirSync(this.rootDir);
+    }
+
+    getSpecialFilePath(specialFile: SpecialFile) {
+        const reg = new RegExp(specialFile, "gi");
+        const file = this.read_dir().find((f) => reg.test(f));
+        if (!file) {
+            consola.warn(
+                `No ${specialFile} match found for the ${this.rootDir} directory.`,
+            );
+            return;
+        }
+        return path.join(this.rootDir, file);
+    }
+
+    readSpecialFile(specialFile: SpecialFile) {
+        const file = this.getSpecialFilePath(specialFile);
+        if (!file) {
+            return;
+        }
+        return fs.readFileSync(file!, {
+            encoding: "utf-8",
+        });
+    }
+    writeSpecialFile(specialFile: SpecialFile, content: string) {
+        const filePath = this.getSpecialFilePath(specialFile);
+        if (!filePath) {
+            return;
+        }
+        fs.writeFileSync(filePath, content, { encoding: "utf-8" });
+    }
+
+    writeDirRelativeFile(file: string, content: string) {
+        fs.writeFileSync(path.join(this.rootDir, file), content, {
+            encoding: "utf-8",
+        });
+    }
+}
 
 export class PackageJson {
     data: PackageJsonPartial;
@@ -36,6 +93,10 @@ export class PackageJson {
                 this.data = data;
             }
         }
+    }
+
+    projectRootDir(): ProjectRootDir {
+        return new ProjectRootDir(path.dirname(this.fp));
     }
 
     validatePath(fp: string) {

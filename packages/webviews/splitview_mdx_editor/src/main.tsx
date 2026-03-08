@@ -6,15 +6,19 @@ import { handleSwiftAction } from "@fluster/webview_utils";
 import flusterWasm from "@fluster/wasm/fluster";
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface Window {
         handleSwiftAction: typeof handleSwiftAction;
     }
 }
 
 window.handleSwiftAction = handleSwiftAction;
-flusterWasm().then((a) => console.log("Wasm Output: ", a));
 
+/* eslint-disable-next-line  -- Calling it a forbidden promise makes it sound worse than it is. */
+flusterWasm().then((a) => {
+    console.log("Wasm Output: ", a);
+});
+
+/* eslint-disable-next-line  -- It'll be there... I promise. */
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <App />

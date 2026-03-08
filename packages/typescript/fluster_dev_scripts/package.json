@@ -6,9 +6,10 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@types/glob": "^9.0.0",
-    "consola": "^3.4.2",
-    "console-table-printer": "^2.15.0",
-    "glob": "^13.0.6"
+    "@types/glob": "9.0.0",
+    "consola": "3.4.2",
+    "console-table-printer": "2.15.0",
+    "glob": "13.0.6",
+    "ts-deepmerge": "7.0.3"
   }
 }

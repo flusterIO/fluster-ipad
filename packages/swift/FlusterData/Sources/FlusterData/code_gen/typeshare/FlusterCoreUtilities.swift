@@ -278,12 +278,6 @@ public enum AutoInsertedComponentName: String, Codable {
 	case flusterAiParsePendingContainer = "FlusterAiParsePendingContainer"
 }
 
-public enum AutoTaggableType: String, Codable {
-	case tag
-	case topic
-	case subject
-}
-
 /// Represents the date given some generated mdx benchmark content
 /// as the content will need to grow as components are added.
 public enum BenchmarkGeneratedDateString: String, Codable {

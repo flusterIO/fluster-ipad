@@ -1,4 +1,4 @@
-import { CodeEditorProvider, EditorView, useCodeEditorContext } from "#/editor/code_editor/state/code_editor_provider";
+import { EditorView, useCodeEditorContext } from "#/editor/code_editor/state/code_editor_provider";
 import React, { type ReactNode } from "react";
 import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";

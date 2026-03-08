@@ -14,6 +14,7 @@ export * from "./core/shared_components/loading/splash_screen";
 export * from "./features/webview_global_state/mdx_editor/provider"
 export * from "./features/webview_global_state/mdx_editor/state/editor_state_slice"
 export * from "./features/webview_global_state/mdx_editor/provider.tsx"
+export * from "./features/webview_global_state/mdx_editor/store.ts"
 
 //      -- Shad --
 export * from "./core/shared_components/shad/form"

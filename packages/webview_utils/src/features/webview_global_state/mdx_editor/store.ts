@@ -1,9 +1,9 @@
 import { combineReducers, configureStore, createListenerMiddleware } from '@reduxjs/toolkit'
 import editorReducer from './state/editor_state_slice'
 import storage from "redux-persist/lib/storage";
-import { persistStore, persistReducer, PersistConfig } from "redux-persist"
+import { persistStore, persistReducer, type PersistConfig } from "redux-persist"
 import webviewContainerReducer, { setDarkMode } from '../shared/webview_container_global_state/webview_container_slice';
-import { WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
+import { type WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
 import { initialMdxEditorState } from './initial_mdx_editor_state';
 import { darkModeListenerMiddleware } from '../shared/webview_container_global_state/side_effects/dark_mode_side_effect';
 

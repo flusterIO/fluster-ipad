@@ -1,12 +1,12 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import { setDarkMode } from '../webview_container_slice';
-import { MdxEditorAppState } from '#/webview_global_state/mdx_editor/store';
+import { type MdxEditorAppState } from '#/webview_global_state/mdx_editor/store';
 
-export const listenerMiddleware = createListenerMiddleware();
+export const darkModeListenerMiddleware = createListenerMiddleware();
 
-listenerMiddleware.startListening({
+darkModeListenerMiddleware.startListening({
     matcher: isAnyOf(setDarkMode),
-    effect: async (_, listenerApi) => {
+    effect: (_, listenerApi) => {
         const isDark = (listenerApi.getState() as MdxEditorAppState).container.dark_mode;
         if (isDark) {
             document.body.classList.add('dark');

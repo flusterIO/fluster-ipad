@@ -14,10 +14,7 @@ flatbuffers = { workspace = true }
 serde.workspace = true
 strum_macros = "0.27.2"
 typeshare.workspace = true
-specta = { workspace = true }
 chrono = { workspace = true }
-tauri = { workspace = true }
-tauri-specta = {workspace = true}
 glob = "0.3.3"
 ignore = "0.4.25"
 crossbeam = { version = "0.8.4", features = [

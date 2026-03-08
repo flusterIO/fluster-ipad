@@ -1,6 +1,6 @@
-import React, { useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
-import { Extension, EditorState as CodeMirrorEditorState } from "@codemirror/state";
-import { EditorView, keymap as codemirrorKeymap, ViewUpdate } from "@codemirror/view";
+import React, { type ComponentProps, useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
+import { type Extension, EditorState as CodeMirrorEditorState } from "@codemirror/state";
+import { EditorView, keymap as codemirrorKeymap, type ViewUpdate } from "@codemirror/view";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { history } from '@codemirror/commands';
 import { vim } from "@replit/codemirror-vim";
@@ -10,37 +10,40 @@ import { lineNumbersRelative } from "@uiw/codemirror-extensions-line-numbers-rel
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { BibtexEditorWebviewEvents, EditorState, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
-import { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
+import { type BibtexEditorWebviewEvents, type EditorState, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type AnyWebviewAction, type AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
 import { bracketMatching, foldGutter, indentOnInput, syntaxTree } from '@codemirror/language';
-import { autocompletion, closeBrackets, completeFromList, CompletionSource } from '@codemirror/autocomplete';
+import { autocompletion, closeBrackets, completeFromList, type CompletionSource } from '@codemirror/autocomplete';
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
 import { Prec } from "@codemirror/state";
-import { GetSnippetProps, SnippetStrategy } from "../data/snippets/snippet_types";
+import { type GetSnippetProps, SnippetStrategy } from "../data/snippets/snippet_types";
 import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
 import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
 import { EditorClient } from "../data/editor_client";
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { connect } from "react-redux"
 import { handleEditorChange } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
+import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
 
-const connector = connect((state: EditorState) => ({
-    baseKeymap: state.baseKeymap,
-    allCitationIds: state.allCitationIds,
-    theme: state.theme,
-    keymap: state.keymap,
-    value: state.value,
-    lockEditorScrollToPreview: state.lockEditorScrollToPreview,
-    snippetProps: state.snippetProps,
-    note_id: state.note_id,
-    haveSetInitialValue: state.haveSetInitialValue,
-    autoSaveTimeout: state.autoSaveTimeout
+const connector = connect((state: MdxEditorAppState) => ({
+    baseKeymap: state.editor.baseKeymap,
+    allCitationIds: state.editor.allCitationIds,
+    theme: state.editor.theme,
+    keymap: state.editor.keymap,
+    value: state.editor.value,
+    lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview,
+    snippetProps: state.editor.snippetProps,
+    note_id: state.editor.note_id,
+    haveSetInitialValue: state.editor.haveSetInitialValue,
+    autoSaveTimeout: state.editor.autoSaveTimeout
 }))
+
 
 interface CodeEditorProps extends Pick<EditorState, "baseKeymap" | "allCitationIds" | "theme" | "keymap" | "value" | "lockEditorScrollToPreview" | "snippetProps" | "note_id" | "haveSetInitialValue" | "autoSaveTimeout"> {
     language?: CodeEditorLanguage;
@@ -77,7 +80,10 @@ export const CodeEditorInner = connector(({
 
 
     useEffect(() => {
-        const em = document.getElementById(containerId)!
+        const em = document.getElementById(containerId);
+        if (!em) {
+            return
+        }
         if (haveRendered.current) {
             haveRendered.current = false;
             em.replaceChildren();
@@ -143,7 +149,7 @@ export const CodeEditorInner = connector(({
                     autocomplete: mdxCompletionSource
                 })),
             ]
-        } else if (language === CodeEditorLanguage.bibtex) {
+        } else {
             const snippets = getBibtexSnippets()
             extensions = [
                 ...extensions,
@@ -218,7 +224,7 @@ export const CodeEditorInner = connector(({
         viewRef.current = _view;
         haveRendered.current = true;
         sendToSwift(showWebviewHandler);
-        /* eslint-disable-next-line  -- Don't want to run it on the other value change. */
+
     }, [baseKeymap, theme, haveSetInitialValue, keymap, allCitationIds, lockEditorScrollToPreview, note_id]);
 
     useEventListener(swiftContentEvent as keyof WindowEventMap, (e) => {
@@ -229,13 +235,14 @@ export const CodeEditorInner = connector(({
                     to: viewRef.current.state.doc.length,
                     insert: "detail" in e ? e.detail : "",
                 },
+
             });
         }
     });
 
     useEventListener("request-editor-scroll-proportion", () => {
         if (viewRef.current?.scrollDOM) {
-            sendEditorScrollDOMEvent(viewRef.current.scrollDOM!)
+            sendEditorScrollDOMEvent(viewRef.current.scrollDOM)
         }
     })
 
@@ -243,23 +250,25 @@ export const CodeEditorInner = connector(({
 });
 
 
-const connectorOuter = connect((state: EditorState) => ({
-    note_id: state.note_id,
+const connectorOuter = connect((state: MdxEditorAppState) => ({
+    note_id: state.editor.note_id,
+    value: state.editor.value
 }))
 
+
 export const CodeEditor = connectorOuter((
-    props: Omit<CodeEditorProps, "initialValue"> & Pick<EditorState, "note_id" | "value">,
+    props: ComponentProps<typeof CodeEditorInner> & Pick<EditorState, "value" | "note_id">,
 ): ReactNode => {
     const [initialRender, setInitialRender] = useState(true)
 
-    const handleInitialRender = useEffectEvent(() => setInitialRender(false))
+    const handleInitialRender = useEffectEvent(() => { setInitialRender(false); })
 
     useEffect(() => {
         if (!props.note_id || initialRender) {
             sendToSwift(props.requestNewDataAction ?? SplitviewEditorWebviewActions.RequestSplitviewEditorData);
         }
         handleInitialRender()
-        /* eslint-disable-next-line  -- I hate this rule */
+
     }, [props.note_id, initialRender]);
 
 

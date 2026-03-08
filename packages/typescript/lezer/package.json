@@ -33,7 +33,7 @@
     "@lezer/common": "^1.0.0",
     "@lezer/go": "^1.0.0",
     "@lezer/markdown": "^1.0.0",
-    "bibtex-tidy": "latest"
+    "bibtex-tidy": "1.14.0"
   },
   "license": "MIT",
   "description": "Originally a fork of lezer-markdown-obsidian, now a bunch of codemirror utilities for Fluster.",

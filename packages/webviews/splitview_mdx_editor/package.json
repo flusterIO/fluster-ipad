@@ -33,10 +33,10 @@
   },
   "wireit": {
     "build:ipad": {
-      "command": "tsc -b && vite build -c ./vite_ipad.config.ts"
+      "command": "FLUSTER_BUILD_ENV=ipad tsc -b && vite build -c ./vite_ipad.config.ts"
     },
     "build:mac": {
-      "command": "tsc -b && vite build -c ./vite_mac.config.ts"
+      "command": "FLUSTER_BUILD_ENV=macos tsc -b && vite build -c ./vite_mac.config.ts"
     },
     "build": {
       "dependencies": [

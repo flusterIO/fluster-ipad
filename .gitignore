@@ -85,6 +85,7 @@ packages/webviews/splitview_mdx_editor/splitview_mdx_editor_ipad/
 packages/webviews/dictionary_webview/dictionary_webview_mac/
 packages/webviews/dictionary_webview/dictionary_webview_ipad/
 packages/webview_utils/dist_dev/
+packages/webview_utils/dev/
 apps/website/node_modules
 packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser
 packages/rust/fluster_bibliography/FlusterBibliography

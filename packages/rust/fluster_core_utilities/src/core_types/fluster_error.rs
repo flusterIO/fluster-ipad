@@ -1,8 +1,7 @@
 use serde::{Deserialize, Serialize};
-use specta::Type;
 use thiserror::Error;
 
-#[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Type)]
+#[derive(Debug, Error, uniffi::Error, Serialize, Deserialize)]
 pub enum FlusterError {
     #[error("A development-only error. This feature is not yet implemented.")]
     NotImplemented,

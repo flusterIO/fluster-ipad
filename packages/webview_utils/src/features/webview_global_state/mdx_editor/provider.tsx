@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux'
 import React, { type ReactNode } from 'react'
-import { MdxEditorPersistor, MdxEditorStore } from './store'
+import { type MdxEditorPersistor, type MdxEditorStore } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { LoadingComponent } from '@/shared_components/loading/loading_component'
 

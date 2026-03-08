@@ -2,13 +2,10 @@
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { getSmallestSizableBreakpointByWidth } from "#/mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props";
 import { SizableOption } from "#/mdx/embeddable_mdx_components/schemas/sizable_props_schema";
-import { WebviewEnvironment, WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
-import { ReactNode, createContext, useReducer, useContext } from "react";
+import { WebviewEnvironment, type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type ReactNode, createContext, useReducer, useContext } from "react";
 
 const getInitialEnv = (): WebviewEnvironment | null => {
-    if (!document.body) {
-        return null
-    }
     const items = [WebviewEnvironment.IPad, WebviewEnvironment.MacOS, WebviewEnvironment.MultiPlatformDesktop]
     for (const item of items) {
 
@@ -19,13 +16,14 @@ const getInitialEnv = (): WebviewEnvironment | null => {
     return null
 }
 
-const defaultInitialValues: WebviewContainerState = {
+const initialWebviewContainerState: WebviewContainerState = {
     environment: getInitialEnv() ?? undefined,
     size: getSmallestSizableBreakpointByWidth(window.innerWidth) ?? SizableOption.None,
+    dark_mode: true,
     wasm_loaded: false
 }
 
-export const WebviewContainerContext = createContext<WebviewContainerState>(defaultInitialValues);
+export const WebviewContainerContext = createContext<WebviewContainerState>(initialWebviewContainerState);
 
 type WebviewContainerContextActions = { type: "set-webview-environment", payload: WebviewEnvironment } | {
     type: "set-webview-size",
@@ -70,8 +68,8 @@ export const WebviewContainerProvider = ({ children, initialValues }: WebviewCon
     const [state, dispatch] = useReducer(
         WebviewContainerContextReducer,
         initialValues
-            ? { ...initialValues, ...defaultInitialValues }
-            : defaultInitialValues,
+            ? { ...initialValues, ...initialWebviewContainerState }
+            : initialWebviewContainerState,
     );
 
     return (

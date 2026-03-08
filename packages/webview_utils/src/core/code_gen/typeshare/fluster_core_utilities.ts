@@ -190,12 +190,6 @@ export enum AutoInsertedComponentName {
 	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
 }
 
-export enum AutoTaggableType {
-	Tag = "tag",
-	Topic = "topic",
-	Subject = "subject",
-}
-
 /**
  * Represents the date given some generated mdx benchmark content
  * as the content will need to grow as components are added.
