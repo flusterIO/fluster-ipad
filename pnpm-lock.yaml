@@ -64,10 +64,10 @@ importers:
         specifier: 9.1.7
         version: 9.1.7
       ignorepatterns:
-        specifier: ^5.6.0
+        specifier: 5.6.0
         version: 5.6.0
       jiti:
-        specifier: ^2.6.1
+        specifier: 2.6.1
         version: 2.6.1
       markdown-table:
         specifier: 3.0.4
@@ -97,7 +97,7 @@ importers:
         specifier: 4.20.6
         version: 4.20.6
       typescript:
-        specifier: ^5.9.3
+        specifier: '*'
         version: 5.9.3
       typescript-eslint:
         specifier: 8.46.4
@@ -128,7 +128,7 @@ importers:
         version: 0.9.1(typescript@5.9.3)
       '@content-collections/mdx':
         specifier: 0.2.2
-        version: 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.16.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@content-collections/next':
         specifier: 0.2.4
         version: 0.2.4(@content-collections/core@0.9.1(typescript@5.9.3))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))
@@ -137,7 +137,7 @@ importers:
         version: link:../../packages/webview_utils
       '@fumadocs/content-collections':
         specifier: 1.2.1
-        version: 1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
+        version: 1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.16.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       '@hookform/resolvers':
         specifier: 5.2.2
         version: 5.2.2(react-hook-form@7.56.3(react@19.2.0))
@@ -284,7 +284,7 @@ importers:
         version: 3.0.2(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       fumadocs-mdx:
         specifier: 11.6.9
-        version: 11.6.9(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
+        version: 11.6.9(acorn@8.16.0)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
       fumadocs-python:
         specifier: 0.0.3
         version: 0.0.3(@types/react@19.2.2)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-ui@15.8.3(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1))
@@ -850,7 +850,7 @@ importers:
         specifier: 4.2.1
         version: 4.2.1(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
       '@types/benchmark':
-        specifier: ^2.1.5
+        specifier: 2.1.5
         version: 2.1.5
       '@types/marked-terminal':
         specifier: 6.1.1
@@ -874,7 +874,7 @@ importers:
         specifier: 10.0.1
         version: 10.0.1(react@19.2.0)
       benchmark:
-        specifier: ^2.1.4
+        specifier: 2.1.4
         version: 2.1.4
       consolemd:
         specifier: 0.3.0
@@ -904,7 +904,7 @@ importers:
         specifier: link:@testing-library/jest-dom/matchers
         version: link:@testing-library/jest-dom/matchers
       microtime:
-        specifier: ^3.1.1
+        specifier: 3.1.1
         version: 3.1.1
       sass:
         specifier: 1.89.0
@@ -11406,11 +11406,11 @@ snapshots:
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
 
-  '@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.16.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
       esbuild: 0.25.12
-      mdx-bundler: 10.1.1(esbuild@0.25.12)
+      mdx-bundler: 10.1.1(acorn@8.16.0)(esbuild@0.25.12)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
       unified: 11.0.5
@@ -11670,10 +11670,10 @@ snapshots:
 
   '@fortawesome/fontawesome-free@6.7.2': {}
 
-  '@fumadocs/content-collections@1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
+  '@fumadocs/content-collections@1.2.1(@content-collections/core@0.9.1(typescript@5.9.3))(@content-collections/mdx@0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.16.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
       '@content-collections/core': 0.9.1(typescript@5.9.3)
-      '@content-collections/mdx': 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@content-collections/mdx': 0.2.2(@content-collections/core@0.9.1(typescript@5.9.3))(acorn@8.16.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       fumadocs-core: 15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
   '@glideapps/ts-necessities@2.2.3': {}
@@ -12110,7 +12110,7 @@ snapshots:
 
   '@mathjax/mathjax-newcm-font@4.1.0': {}
 
-  '@mdx-js/esbuild@3.1.1(esbuild@0.25.12)':
+  '@mdx-js/esbuild@3.1.1(acorn@8.16.0)(esbuild@0.25.12)':
     dependencies:
       '@mdx-js/mdx': 3.1.0(acorn@8.16.0)
       '@types/unist': 3.0.3
@@ -16955,7 +16955,7 @@ snapshots:
       unist-util-visit: 5.1.0
       zod: 4.3.6
 
-  fumadocs-mdx@11.6.9(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
+  fumadocs-mdx@11.6.9(acorn@8.16.0)(fumadocs-core@15.8.3(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2)):
     dependencies:
       '@mdx-js/mdx': 3.1.0(acorn@8.16.0)
       '@standard-schema/spec': 1.1.0
@@ -18356,12 +18356,12 @@ snapshots:
 
   mdn-data@2.12.2: {}
 
-  mdx-bundler@10.1.1(esbuild@0.25.12):
+  mdx-bundler@10.1.1(acorn@8.16.0)(esbuild@0.25.12):
     dependencies:
       '@babel/runtime': 7.28.6
       '@esbuild-plugins/node-resolve': 0.2.2(esbuild@0.25.12)
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@mdx-js/esbuild': 3.1.1(esbuild@0.25.12)
+      '@mdx-js/esbuild': 3.1.1(acorn@8.16.0)(esbuild@0.25.12)
       esbuild: 0.25.12
       gray-matter: 4.0.3
       remark-frontmatter: 5.0.0
