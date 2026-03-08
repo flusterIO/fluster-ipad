@@ -3,18 +3,20 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { handleSwiftAction } from "@fluster/webview_utils";
-import flusterWasm from "@fluster/wasm/fluster";
+import flusterWasm from "@fluster/wasm";
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface Window {
         handleSwiftAction: typeof handleSwiftAction;
     }
 }
 
 window.handleSwiftAction = handleSwiftAction;
-flusterWasm().then((a) => console.log("Wasm Output: ", a));
+void flusterWasm().then((a) => {
+    console.log("Wasm Output: ", a);
+});
 
+/* eslint-disable-next-line  -- It'll be there, I promise. */
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <App />

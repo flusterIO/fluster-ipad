@@ -1,36 +1,35 @@
 import React, { useEffect, type ReactNode } from "react";
 import { CodeEditorInner } from "./code_editor";
-import {
-    CodeEditorProvider,
-    useCodeEditorContext,
-    useCodeEditorDispatch,
-} from "../state/code_editor_provider";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { setBibtexEditorWindowBridgeFunctions } from "../types/swift_events/bibtex_editor_swift_events";
-import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
+import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CodeEditorLanguage } from "../types/code_editor_types";
+import { connect, useDispatch } from 'react-redux';
+import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
+import { handleEditorChange } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
 
 setBibtexEditorWindowBridgeFunctions();
 
-const BibtexEditorInner = (): ReactNode => {
-    const data = useCodeEditorContext();
-    const dispatch = useCodeEditorDispatch();
+const connector = connect((state: MdxEditorAppState) => ({
+    havSetInitialValue: state.editor.haveSetInitialValue,
+}))
+
+
+export const BibtexEditor = connector(({ haveSetInitialValue }: Pick<EditorState, "haveSetInitialValue">): ReactNode => {
+    const dispatch = useDispatch()
     useEventListener(BibtexEditorWebviewEvents.SetBibtexEditorContent, (e) => {
-        dispatch({
-            type: "setEditorValue",
-            payload: e.detail,
-        });
+        dispatch(handleEditorChange(e.detail))
     });
 
     useEffect(() => {
-        if (!data.haveSetInitialValue) {
+        if (!haveSetInitialValue) {
             sendToSwift(BibtexEditorWebviewActions.RequestBibtexEditorData, "");
         }
-    }, [data.haveSetInitialValue]);
+    }, [haveSetInitialValue]);
 
-    return data.haveSetInitialValue ? (
+    return haveSetInitialValue ? (
         <CodeEditorInner
             language={CodeEditorLanguage.bibtex}
             requestNewDataAction={BibtexEditorWebviewActions.RequestBibtexEditorData}
@@ -44,14 +43,6 @@ const BibtexEditorInner = (): ReactNode => {
             <LoadingComponent />
         </div>
     );
-};
-
-export const BibtexEditor = (): ReactNode => {
-    return (
-        <CodeEditorProvider implementation="bib-editor" initialValueKey="bibtex-editor-initial-value">
-            <BibtexEditorInner />
-        </CodeEditorProvider>
-    );
-};
+});
 
 BibtexEditor.displayName = "BibtexEditor";

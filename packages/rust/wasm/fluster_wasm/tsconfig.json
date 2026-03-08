@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "bundler",
+        "module": "ESNext",
+        "target": "ESNext"
+    },
+    "include": [
+        "src_typescript"
+    ]
+}

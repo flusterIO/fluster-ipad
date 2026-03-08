@@ -85,6 +85,45 @@ extension AppSchemaV1 {
     //      }
     //    }
   }
+
+  public enum R3AxisId: String, Codable {
+    case x, y, z
+  }
+
+  /// A label and description of an axis of the 3-d
+  /// @param desc: required to be fed to the AI.
+  /// @param label: Text displayed on plot
+  @Model
+  public class R3AxisData {
+    public var label: String
+    public var desc: String
+    public var R3AxisId: R3AxisId
+    /// A value between 0..1. The vector is nto necessarily normalized, but the vector of any
+    /// invidual component should not exceed 1.
+    public var value: Float
+    public init(label: String, desc: String, value: Float, R3AxisId: R3AxisId) {
+      self.label = label
+      self.desc = desc
+      self.R3AxisId = R3AxisId
+      self.value = value
+    }
+  }
+
+  @Model
+  /// A R3 vector used to plot the note in 3-d space. Kind of a hack to use the minimal onboard
+  /// AI as a visual vector store since it defiitely can't handle 768 dimensions.
+  public class NoteVec3 {
+    public var x: R3AxisData
+    public var y: R3AxisData
+    public var z: R3AxisData
+
+    public init(x: R3AxisData, y: R3AxisData, z: R3AxisData) {
+      self.x = x
+      self.y = y
+      self.z = z
+    }
+  }
+
   @Model
   public class NoteModel {
     public var id: String
@@ -107,6 +146,7 @@ extension AppSchemaV1 {
     public var bibEntryStrategyMap = [String: BibEntrySaveStrategy]()
     /// Future proofing for now.
     public var protected: Bool = false
+    public var r3_vec: NoteVec3
 
     /// drawing.toDataRepresentation() to conform to Data type.
     public init(
@@ -119,7 +159,12 @@ extension AppSchemaV1 {
       subject: SubjectModel? = nil,
       topic: TopicModel? = nil,
       tags: [TagModel] = [TagModel](),
-      citations: [BibEntryModel] = [BibEntryModel]()
+      citations: [BibEntryModel] = [BibEntryModel](),
+      r3_vec: NoteVec3 = NoteVec3(
+        x: R3AxisData(label: "X", desc: "Math & Physics", value: 0, R3AxisId: .x),
+        y: R3AxisData(
+            label: "Y", desc: "Personal Notes, Journaling and Unstructured Notes", value: 0, R3AxisId: .y),
+        z: R3AxisData(label: "Z", desc: "Business, Health & Personal Planning", value: 0, R3AxisId: .z))
     ) {
       self.id = id ?? UUID.init().uuidString
       self.paper = drawing
@@ -131,6 +176,7 @@ extension AppSchemaV1 {
       self.topic = topic
       self.tags = tags
       self.citations = citations
+      self.r3_vec = r3_vec
     }
 
     public func containsCitation(citation: BibEntryModel) -> Bool {

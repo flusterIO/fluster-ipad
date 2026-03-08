@@ -1,8 +1,10 @@
 use serde::{Deserialize, Serialize};
+use typeshare::typeshare;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-#[wasm_bindgen]
-#[derive(uniffi::Enum, strum_macros::Display, Deserialize, Serialize)]
+#[wasm_bindgen] // Typescript
+#[typeshare] // Swift
+#[derive(strum_macros::Display, Deserialize, Serialize)]
 pub enum AutoTaggableType {
     #[serde(rename = "tag")]
     #[strum(to_string = "tag")]

@@ -120,6 +120,7 @@ export enum EditorStateActions {
 	SetInitialEditorState = "set-initial-editor-state",
 	/** This is the 'onChange' method that's executed _after_ the content is parsed. */
 	SetParsedEditorContent = "set-parsed-editor-content",
+	SetEditorKeymap = "set-initial-editor-keymap",
 }
 
 export interface SetEditorInitialStateEditorAction {
@@ -188,6 +189,12 @@ export enum AutoInsertedComponentName {
 	FlusterCitation = "FlusterCitation",
 	DictionaryEntry = "DictionaryEntry",
 	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
+}
+
+export enum AutoTaggableType {
+	Tag = "tag",
+	Topic = "topic",
+	Subject = "subject",
 }
 
 /**

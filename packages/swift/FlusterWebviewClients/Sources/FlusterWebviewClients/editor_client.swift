@@ -27,13 +27,16 @@ public struct MdxEditorClient {
       )
       """)
   }
-  public static func setEditorKeymap(keymap: CodeEditorKeymap, evaluateJavaScript: EvalJavascriptFunc)
+  public static func setEditorKeymap(
+    keymap: CodeEditorKeymap, evaluateJavaScript: @escaping EvalJavascriptFunc
+  )
     async throws
   {
-    try await evaluateJavaScript(
-      """
-      window.setEditorKeymap("\(keymap.rawValue)")
-      """)
+    try await EditorState.setEditorKeymap(keymap: keymap, eval: evaluateJavaScript)
+    //    try await evaluateJavaScript(
+    //      """
+    //      window.setEditorKeymap("\(keymap.rawValue)")
+    //      """)
   }
   public static func setEditorThemeLight(
     editorTheme: CodeEditorTheme, evaluateJavaScript: EvalJavascriptFunc
@@ -94,12 +97,15 @@ public struct MdxEditorClient {
       """)
   }
   // -- New Editor State Model --
-    /// Takes a stringified `AnyCrossLanguageEditorAction` to be sent to the cross-language state update handler.
-    public static func sendEditorStateUpdate(data: String, evalulateJavaScript: @escaping EvalJavascriptFunc) async throws {
-        try await evalulateJavaScript("""
-            window.dispatchEvent(new CustomEvent("\(SplitviewEditorWebviewEvents.editorStateUpdate.rawValue)", {
-                detail: '\(data)'
-            }))
-            """)
-    }
+  /// Takes a stringified `AnyCrossLanguageEditorAction` to be sent to the cross-language state update handler.
+  public static func sendEditorStateUpdate(
+    data: String, evalulateJavaScript: @escaping EvalJavascriptFunc
+  ) async throws {
+    try await evalulateJavaScript(
+      """
+      window.dispatchEvent(new CustomEvent("\(SplitviewEditorWebviewEvents.editorStateUpdate.rawValue)", {
+          detail: '\(data)'
+      }))
+      """)
+  }
 }

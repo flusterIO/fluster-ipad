@@ -1,4 +1,4 @@
-import { CodeEditorBaseKeymap, CodeEditorKeymap, CodeEditorTheme, EditorSaveMethod, EditorState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
+import { CodeEditorBaseKeymap, CodeEditorKeymap, CodeEditorTheme, EditorSaveMethod, type EditorState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export const initialEditorState: EditorState = {
     value: "",

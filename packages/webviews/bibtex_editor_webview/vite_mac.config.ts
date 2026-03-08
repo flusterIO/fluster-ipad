@@ -1,23 +1,20 @@
 import { defineConfig } from "vite";
 import {
-  WebviewViteConfig,
-  getWebviewViteConfig,
-} from "@fluster/shared_config/webviewVite";
+    getWasmViteConfig,
+    WasmViteConfig,
+} from "@fluster/shared_config/wasm";
+import path from 'path'
 
-const config: WebviewViteConfig = {
-  outputDir: "bibtex_editor_webview_mac",
-  singleFile: false,
-  plugins: {
-    tailwind: false,
-  },
-  base: "./",
-  build: {
-    rollupOptions: {
-      input: {
-        main: "./index_mac.html",
-      },
+const config: WasmViteConfig = {
+    outputDir: "bibtex_editor_webview_mac",
+    wasmPackagePath: path.resolve(__dirname, "../../rust/wasm/fluster_wasm"),
+    build: {
+        rollupOptions: {
+            input: {
+                main: "./index_mac.html",
+            },
+        },
     },
-  },
 };
 
-export default defineConfig(getWebviewViteConfig(config));
+export default defineConfig(getWasmViteConfig(config));

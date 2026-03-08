@@ -60,11 +60,6 @@ struct MdxEditorWebview: View {
       WebViewContainerView(
         webview: $webView,
         url: URL(string: "app://splitview_mdx_editor_mac/index_mac.html")!,
-//        url: Bundle.main.url(
-//          forResource: "app://index_mac",
-//          withExtension: "html",
-//          subdirectory: "splitview_mdx_editor_mac",
-//        )!,
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,
           MdxPreviewWebviewActions.requestNoteData.rawValue,

@@ -3,7 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { handleSwiftAction } from "@fluster/webview_utils";
-import flusterWasm from "@fluster/wasm/fluster";
+import flusterWasm from "@fluster/wasm";
 
 declare global {
     interface Window {
@@ -13,9 +13,8 @@ declare global {
 
 window.handleSwiftAction = handleSwiftAction;
 
-/* eslint-disable-next-line  -- Calling it a forbidden promise makes it sound worse than it is. */
-flusterWasm().then((a) => {
-    console.log("Wasm Output: ", a);
+void flusterWasm().then(() => {
+    console.log("Wasm loaded...");
 });
 
 /* eslint-disable-next-line  -- It'll be there... I promise. */

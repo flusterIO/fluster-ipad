@@ -10,10 +10,12 @@ import "../../../webview_utils/dist/styles.css";
 import "./index.css";
 
 const storeData = createFlusterStore(
-    process.env.FLUSTER_BUILD_ENV === "ipad"
+    import.meta.env.FLUSTER_BUILD_ENV === "ipad"
         ? WebviewEnvironment.IPad
         : WebviewEnvironment.MacOS,
 );
+
+console.log("storeData: ", storeData)
 
 function App() {
     return (

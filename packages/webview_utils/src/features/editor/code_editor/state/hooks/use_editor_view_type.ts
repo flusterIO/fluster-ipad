@@ -1,16 +1,16 @@
+import { setEditorView } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
+import { EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { EditorView, type useCodeEditorDispatch } from "../code_editor_provider";
 
-export const useCodeEditorView = (dispatch: ReturnType<typeof useCodeEditorDispatch>) => {
+export const useCodeEditorView = () => {
+    const dispatch = useDispatch()
     const isEditorView = useMediaQuery({
         orientation: "landscape",
     });
 
     useEffect(() => {
-        dispatch({
-            type: "setEditorView",
-            payload: isEditorView ? EditorView.Splitview : EditorView.PreviewOnly
-        })
+        dispatch(setEditorView(isEditorView ? EditorView.Splitview : EditorView.PreviewOnly))
     }, [isEditorView])
 }

@@ -26,6 +26,7 @@
         "note_detail_webview"
     ],
     "include": [
-        "src"
+        "src",
+        "vite-env.d.ts"
     ]
 }

@@ -127,6 +127,7 @@ export * from "./features/editor/code_editor/components/code_editor";
 //      -- Split View: Components
 export * from "./features/split_view_editor/components/split_view_editor";
 export * from "./features/split_view_editor/components/responsive_splitview_editor";
+export * from "./features/mdx/components/mdx_content_preview_only"
 
 // -- Bibtex Editor --
 export * from "./features/editor/code_editor/components/bibtex_editor";

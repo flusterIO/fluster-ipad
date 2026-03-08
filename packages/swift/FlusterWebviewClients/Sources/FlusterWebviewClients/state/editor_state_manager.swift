@@ -10,7 +10,9 @@ import FlusterData
 import Foundation
 
 /// Takes common Swift language objects, creates an `AnyCrossLanguageEditorAction` and sends it to Typescript.
+@MainActor
 extension EditorState {
+  /// A simple utility function for encoding data.
   public static func encodeData(data: Encodable) -> String? {
     let encoder = JSONEncoder()
     #if DEBUG
@@ -66,6 +68,16 @@ extension EditorState {
     saveMethod: EditorSaveMethod, eval: @escaping EvalJavascriptFunc
   ) async throws {
     let action = SetEditorSaveMethodEditorAction(type: .setEditorSaveMethod, payload: saveMethod)
+    if let parsedData = EditorState.encodeData(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
+
+  public static func setEditorKeymap(keymap: CodeEditorKeymap, eval: @escaping EvalJavascriptFunc)
+    async throws
+  {
+    let action = SetEditorKeymapAction(
+      type: EditorStateActions.setEditorKeymap, payload: SetEditorKeymapPayload(keymap: keymap))
     if let parsedData = EditorState.encodeData(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }

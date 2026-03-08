@@ -37,12 +37,23 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
       subdirectory: finalSubdirectory),
       let data = try? Data(contentsOf: fileUrl)
     {
-      let response = URLResponse(
+      //      let response = URLResponse(
+      //        url: url,
+      //        mimeType: getMimeType(for: fileExtension),
+      //        expectedContentLength: data.count,
+      //        textEncodingName: nil
+      //      )
+      let response = HTTPURLResponse(
         url: url,
-        mimeType: getMimeType(for: fileExtension),
-        expectedContentLength: data.count,
-        textEncodingName: nil)
-
+        statusCode: 200,
+        httpVersion: "HTTP/1.1",
+        headerFields: [
+          "Content-Type": getMimeType(for: fileExtension),
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "*",
+          "Access-Control-Allow-Headers": "*"
+        ]
+      )!
       urlSchemeTask.didReceive(response)
       urlSchemeTask.didReceive(data)
       urlSchemeTask.didFinish()
@@ -59,7 +70,7 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
     print("Extension: \(ext)")
     switch ext.lowercased() {
       case "wasm": return "application/wasm"
-      case "js": return "application/javascript"
+      case "js", "mjs": return "application/javascript"
       case "html": return "text/html"
       case "css": return "text/css"
       default: return "application/octet-stream"

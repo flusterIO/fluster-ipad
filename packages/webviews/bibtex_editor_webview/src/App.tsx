@@ -10,7 +10,7 @@ import "../../../webview_utils/dist/styles.css";
 import "./index.css";
 
 const storeData = createFlusterStore(
-    process.env.FLUSTER_BUILD_ENV === "ipad"
+    import.meta.env.FLUSTER_BUILD_ENV === "ipad"
         ? WebviewEnvironment.IPad
         : WebviewEnvironment.MacOS,
 );
@@ -22,7 +22,7 @@ function App() {
                 store={storeData.store}
                 persistor={storeData.persistor}
             >
-                <BibtexEditor />
+                <BibtexEditor haveSetInitialValue={false} />
             </MdxEditorGlobalProvider>
         </WebViewContainer>
     );

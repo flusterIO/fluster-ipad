@@ -28,6 +28,7 @@
         "splitview_mdx_editor"
     ],
     "include": [
-        "src"
+        "src",
+        "vite-env.d.ts"
     ]
 }

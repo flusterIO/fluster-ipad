@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { initialWebviewContainerState } from './initial_webview_container_state'
-import { SizableOption, WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities'
+import { type SizableOption, type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities'
 
 export interface CounterState {
     value: number

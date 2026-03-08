@@ -14,4 +14,7 @@ pub enum EditorStateActions {
     #[strum(to_string = "set-parsed-editor-content")]
     /// This is the 'onChange' method that's executed _after_ the content is parsed.
     SetParsedEditorContent,
+    #[serde(rename = "set-initial-editor-keymap")]
+    #[strum(to_string = "set-initial-editor-keymap")]
+    SetEditorKeymap,
 }

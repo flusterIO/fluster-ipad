@@ -26,6 +26,7 @@
         "standalone_mdx_preview"
     ],
     "include": [
-        "src"
+        "src",
+        "vite-env.d.ts"
     ]
 }

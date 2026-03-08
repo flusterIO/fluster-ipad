@@ -12,6 +12,7 @@ interface MdxEditorGlobalProviderProps {
 }
 
 export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEditorGlobalProviderProps): ReactNode => {
+    console.log("store: ", store)
     return (
         <Provider
             store={store}

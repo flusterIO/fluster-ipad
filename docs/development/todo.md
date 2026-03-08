@@ -108,13 +108,9 @@
 
 # Today
 
-- [ ] Need to modify all imports importing:
-  - [ ] `standalone_mdx_preview`
-  - [ ] `standalone_mdx_editor`
-  - [ ] `dictionary_webview`
-  - [ ] `bibtex_editor_webview`
-  - [ ] `bib_entry_details_webview`
-
+- [ ] Add this in tomorrow now that web assembly is setup! Create a special code block that can handle latex and output svg's!
+  - [Docs](https://docs.rs/rust_tikz/0.1.0/rust_tikz/)
+  - [ ] Add an optional `transparent` flag that will use Rust to make the background of the generated svg transparent.
 - [ ] Take care of condition integration with tokio while there's still not much to do.
 - [ ] Move each editor to a unique instance of a persistent global redux provider.
 - [ ] Handle editor `ParsingEvent` enum and make sure that that can be set by the user. Don't even make auto-render the default on mac...

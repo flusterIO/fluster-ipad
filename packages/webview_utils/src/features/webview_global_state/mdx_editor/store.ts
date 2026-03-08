@@ -3,9 +3,9 @@ import editorReducer from './state/editor_state_slice'
 import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer, type PersistConfig } from "redux-persist"
 import webviewContainerReducer, { setDarkMode } from '../shared/webview_container_global_state/webview_container_slice';
-import { type WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
-import { initialMdxEditorState } from './initial_mdx_editor_state';
+import { type WebviewContainerState, type WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
 import { darkModeListenerMiddleware } from '../shared/webview_container_global_state/side_effects/dark_mode_side_effect';
+import { type EditorState } from '@codemirror/state';
 
 const rootReducer = combineReducers({
     editor: editorReducer,
@@ -17,15 +17,14 @@ export type MdxEditorAppState = ReturnType<typeof rootReducer>
 const persistConfig: PersistConfig<MdxEditorAppState> = {
     key: "fluster_mdx_editor",
     storage,
-    blacklist: ["editor.note_id"],
+    blacklist: ["editor.note_id", "container.wasm_loaded", "container.size"] as (`editor.${keyof EditorState}` | `container.${keyof WebviewContainerState}`)[],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Add custom middleware here if needed
 // Export a factory instead of a singleton
 export const createFlusterStore = (webviewEnv: WebviewEnvironment) => {
-    initialMdxEditorState.container.environment = webviewEnv
-    const isProd = process.env.FLUSTER_PROD_BUILD === "true";
+    const isProd = import.meta.env.FLUSTER_PROD_BUILD === "true";
     const listener = createListenerMiddleware({
         extra: {
             /**

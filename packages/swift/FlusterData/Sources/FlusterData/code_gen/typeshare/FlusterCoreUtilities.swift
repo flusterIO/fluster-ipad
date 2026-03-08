@@ -168,6 +168,7 @@ public enum EditorStateActions: String, Codable {
 	case setInitialEditorState = "set-initial-editor-state"
 	/// This is the 'onChange' method that's executed _after_ the content is parsed.
 	case setParsedEditorContent = "set-parsed-editor-content"
+	case setEditorKeymap = "set-initial-editor-keymap"
 }
 
 public struct SetEditorInitialStateEditorAction: Codable {
@@ -276,6 +277,12 @@ public enum AutoInsertedComponentName: String, Codable {
 	case flusterCitation = "FlusterCitation"
 	case dictionaryEntry = "DictionaryEntry"
 	case flusterAiParsePendingContainer = "FlusterAiParsePendingContainer"
+}
+
+public enum AutoTaggableType: String, Codable {
+	case tag
+	case topic
+	case subject
 }
 
 /// Represents the date given some generated mdx benchmark content
