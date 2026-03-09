@@ -607,6 +607,19 @@ extension AppSchemaV1 {
     }
   }
   @Model
+  public final class ComponentData {
+    /// The `id` field provided directly to the component by the user.
+    @Attribute(.unique) public var id: String
+    @Attribute(.externalStorage) public var data: Data
+    /// Used for keeping track of potentially deleted components.
+    public var lastRender: Date
+    public init(id: String, data: Data, lastRender: Date) {
+      self.id = id
+      self.data = data
+      self.lastRender = lastRender
+    }
+  }
+  @Model
   public final class BibEntryModel: Identifiable {
     @Attribute(.unique) public var id: String
     @Attribute(.unique) public var citationKey: String?

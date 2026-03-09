@@ -3,6 +3,7 @@ export * from "./core/utils/cn"
 //
 // -- Setup --
 export * from "./features/webview_global_state/mdx_editor/serialization/handle_editor_state_parsed_content_update"
+export * from "./features/split_view_editor/state/cross_language_state/cross_language_state_types"
 
 // -- Types --
 export * from "./core/utils/types/any_window_event";

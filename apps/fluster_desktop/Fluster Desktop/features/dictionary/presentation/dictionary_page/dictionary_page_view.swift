@@ -73,7 +73,7 @@ struct DictionaryPageView: View {
         try await setDictionaryContent(entries: entries)
         print("Loaded initial editor data")
       } catch {
-        print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
+        print("Error initializing Mdx Editor Webview: \(error.localizedDescription)")
       }
     }
   }

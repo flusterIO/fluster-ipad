@@ -35,6 +35,7 @@
     "@vitejs/plugin-react": "5.1.1",
     "@welldone-software/why-did-you-render": "10.0.1",
     "autoprefixer": "10.4.21",
+    "consola": "3.4.2",
     "eslint": "9.39.1",
     "eslint-config-next": "15.3.2",
     "eslint-plugin-react-hooks": "7.0.1",

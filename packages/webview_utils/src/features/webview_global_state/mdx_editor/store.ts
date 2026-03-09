@@ -45,12 +45,22 @@ export const createFlusterStore = () => {
                 .prepend(emptyParsedValueListenerMiddleware.middleware)
         ,
     });
+    if (import.meta.env.FLUSTER_PROD_BUILD !== "true") {
+        window.store = store
+    }
     const persistor = persistStore(store);
     return { store, persistor };
 };
+
 
 
 export type MdxEditorStore = ReturnType<typeof createFlusterStore>["store"]
 export type MdxEditorPersistor = ReturnType<typeof createFlusterStore>["persistor"]
 export type AppDispatch = MdxEditorStore["dispatch"]
 
+declare global {
+
+    interface Window {
+        "store": MdxEditorStore | undefined
+    }
+}

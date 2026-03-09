@@ -1,4 +1,4 @@
-import React, { type ReactNode } from "react";
+import React, { useEffect, useRef, type ReactNode } from "react";
 import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
 import { LoadingComponent } from "@/shared_components/loading_component";
@@ -6,8 +6,13 @@ import { EditorScrollPersistor } from "#/mdx/hooks/use_persist_mdx_editor_scroll
 import { SplitviewEditorNotificationHandler } from "#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner_provider";
 import { useSelector } from "react-redux";
 import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
-import { CodeEditorImplementation, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
-import { cn } from "@/utils/cn";
+import { CodeEditorImplementation, EditorView, SplitviewEditorWebviewActions, EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { sendToSwift } from "@/utils/bridge/send_to_swift";
+import {connect} from 'react-redux';
+
+
+const DEBOUNCE_TIMEOUT = 100
+const MAX_TIME = 5000
 
 
 /**
@@ -24,6 +29,44 @@ const EditorBody = (): ReactNode => {
 }
 
 
+
+const connectorLoadingIndicator = connect((state: MdxEditorAppState) => ({
+    noteId: state.editor.note_id,
+}))
+
+
+const LoadingIndicatorAndListener = connectorLoadingIndicator(({note_id}: Pick<EditorState, "note_id">): ReactNode => {
+    const timer = useRef<null | NodeJS.Timeout>(null)
+    const requestDataRecursively = (idx: number): void => {
+        if (timer.current) {
+            clearTimeout(timer.current)
+        }
+        if (idx > MAX_TIME / DEBOUNCE_TIMEOUT || note_id) {
+            // TODO: Handle this error better. This should never be reached, but it needs to be handled better.
+            return
+        }
+        timer.current = setTimeout(() => {
+            sendToSwift(SplitviewEditorWebviewActions.RequestSplitviewEditorData)
+            requestDataRecursively(idx + 1)
+        }, DEBOUNCE_TIMEOUT)
+    }
+
+    useEffect(() => {
+        requestDataRecursively(0)
+        return () => {
+            if (timer.current) {
+                clearTimeout(timer.current)
+            }
+        }
+    }, [])
+    return (
+        <div className={"w-screen h-screen fixed top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center p-4"}>
+            <LoadingComponent />
+        </div>
+    )
+})
+
+
 /**
  * ResponsiveSplitViewEditor accepts children only for development so that the editor state can be modified.
  */
@@ -33,9 +76,7 @@ export const ResponsiveSplitViewEditor = ({ children = null }: { children?: Reac
         <>
             <SplitviewEditorNotificationHandler />
             {noteId ? <EditorBody /> : (
-                <div className={cn("w-screen h-screen fixed top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center p-4", noteId && "hidden")}>
-                    <LoadingComponent />
-                </div>
+                <LoadingIndicatorAndListener />
             )}
             <EditorScrollPersistor />
             {children}

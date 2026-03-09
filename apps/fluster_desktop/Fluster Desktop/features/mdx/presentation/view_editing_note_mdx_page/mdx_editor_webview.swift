@@ -205,7 +205,7 @@ struct MdxEditorWebview: View {
       Task {
         do {
           try await en.preParse(modelContext: modelContext)
-          try await EditorState.setInitialEditorState(
+         try await EditorState.setInitialEditorState(
             payload: EditorInitialStatePayload(
               note_id: en.id,
               keymap: editorKeymap,
@@ -220,7 +220,7 @@ struct MdxEditorWebview: View {
             eval: webView.evaluateJavaScript
           )
         } catch {
-          print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
+          print("Error initializing Mdx Editor Webview: \(error.localizedDescription)")
         }
       }
     }
@@ -234,7 +234,7 @@ struct MdxEditorWebview: View {
       case SplitviewEditorWebviewActions.onEditorChange.rawValue:
         handleEditorChange(newValue: messageBody as! String)
       case SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue:
-        Task(priority: .high) {
+        Task(priority: .userInitiated) {
           await onWebviewLoad()
         }
       case MdxPreviewWebviewActions.requestNoteData.rawValue:

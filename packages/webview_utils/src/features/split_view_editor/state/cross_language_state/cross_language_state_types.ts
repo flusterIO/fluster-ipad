@@ -1,17 +1,24 @@
-import { OnParsedContentChangeEventBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
-import { EditorStateActions, SetEditorInitialStateEditorAction, SetEditorSaveMethodEditorAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type ByteBuffer } from "flatbuffers";
 
-export type AnyCrossLanguageEditorAction = {
+
+interface EditorSaveActionRefined extends SetEditorSaveMethodEditorAction {
     type: EditorStateActions.SetEditorSaveMethod
-    payload: SetEditorSaveMethodEditorAction["payload"]
-} | {
-    type: EditorStateActions.SetInitialEditorState,
-    payload: SetEditorInitialStateEditorAction["payload"]
 }
-export type AnyCrossLanguageBufferEditorAction = {
+
+interface EditorInitialStateActionRefined extends SetEditorInitialStateEditorAction {
+    type: EditorStateActions.SetInitialEditorState,
+}
+
+export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined;
+
+export interface AnyCrossLanguageBufferEditorAction {
     type: EditorStateActions.SetParsedEditorContent,
-    payload: OnParsedContentChangeEventBuffer
+    payload: ByteBuffer
 }
 
 
 export type AnyCrossLanguageEditorActionOfAnyType = AnyCrossLanguageEditorAction | AnyCrossLanguageBufferEditorAction
+
+
+

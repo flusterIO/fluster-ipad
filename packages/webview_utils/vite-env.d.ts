@@ -8,6 +8,7 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
     readonly FLUSTER_BUILD_ENV: FlusterBuildEnvironment
+    readonly FLUSTER_PROD_BUILD: "true" | undefined
 }
 
 // interface ImportMeta {

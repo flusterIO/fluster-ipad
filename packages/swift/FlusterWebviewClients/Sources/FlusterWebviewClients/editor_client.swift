@@ -101,11 +101,11 @@ public struct MdxEditorClient {
   public static func sendEditorStateUpdate(
     data: String, evalulateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
-    try await evalulateJavaScript(
+    print("Data: \(data)")
+    let res = try await evalulateJavaScript(
       """
-      window.dispatchEvent(new CustomEvent("\(SplitviewEditorWebviewEvents.editorStateUpdate.rawValue)", {
-          detail: '\(data)'
-      }))
+      typeof window.handleSwiftAction
       """)
+    print("Res: \(res)")
   }
 }

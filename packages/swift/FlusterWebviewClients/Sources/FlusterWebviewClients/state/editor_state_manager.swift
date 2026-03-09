@@ -13,7 +13,7 @@ import Foundation
 @MainActor
 extension EditorState {
   /// A simple utility function for encoding data.
-  public static func encodeData(data: Encodable) -> String? {
+  public static func encodeAction(data: Encodable) -> String? {
     let encoder = JSONEncoder()
     #if DEBUG
       encoder.outputFormatting = .prettyPrinted
@@ -32,12 +32,12 @@ extension EditorState {
   public static func setInitialEditorState(
     payload: EditorInitialStatePayload, eval: @escaping EvalJavascriptFunc
   ) async throws {
-    try await MdxEditorClient.saveToLocalStorage(
-      storageKey: SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue, data: payload.value,
-      evaluateJavaScript: eval)
+    //    try await MdxEditorClient.saveToLocalStorage(
+    //      storageKey: SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue, data: payload.value,
+    //      evaluateJavaScript: eval)
     let action = SetEditorInitialStateEditorAction(type: .setInitialEditorState, payload: payload)
-    if let parsedData = EditorState.encodeData(data: action) {
-      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    if let parsedAction = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedAction, evalulateJavaScript: eval)
     }
   }
 
@@ -58,9 +58,7 @@ extension EditorState {
     builder.finish(offset: data)
     try await eval(
       """
-      window.dispatchEvent(new CustomEvent("\(SplitviewEditorWebviewEvents.editorStateParsedContentUpdate.rawValue)", {
-          detail: \(builder.sizedByteArray)
-      }))
+      window.handleEditorStateParsedContentUpdate(\(builder.sizedByteArray))
       """)
   }
 
@@ -68,7 +66,7 @@ extension EditorState {
     saveMethod: EditorSaveMethod, eval: @escaping EvalJavascriptFunc
   ) async throws {
     let action = SetEditorSaveMethodEditorAction(type: .setEditorSaveMethod, payload: saveMethod)
-    if let parsedData = EditorState.encodeData(data: action) {
+    if let parsedData = EditorState.encodeAction(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }
   }
@@ -78,7 +76,7 @@ extension EditorState {
   {
     let action = SetEditorKeymapAction(
       type: EditorStateActions.setEditorKeymap, payload: SetEditorKeymapPayload(keymap: keymap))
-    if let parsedData = EditorState.encodeData(data: action) {
+    if let parsedData = EditorState.encodeAction(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }
   }
