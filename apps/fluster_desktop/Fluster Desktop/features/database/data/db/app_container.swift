@@ -5,9 +5,10 @@
 //  Created by Andrew on 1/15/26.
 //
 
+import FlusterData
 import Foundation
 import SwiftData
-import FlusterData
+
 //import FlusterMdx
 //import FlusterSwiftMdxParser
 //import FlusterData
@@ -18,14 +19,10 @@ import FlusterData
 public final class AppDataContainer {
   public static let shared = AppDataContainer()
   public var sharedModelContainer: ModelContainer {
-    let schema = Schema([
-      NoteModel.self,
-      BibEntryModel.self,
-      AutoTaggable.self
-    ])
+    let schema = Schema(AppSchemaV1.models)
     let modelConfiguration = ModelConfiguration(
       schema: schema,
-      isStoredInMemoryOnly: false
+      isStoredInMemoryOnly: false,
     )
     do {
       let container = try ModelContainer(

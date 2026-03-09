@@ -17,7 +17,6 @@ public func getTestNote(modelContext: ModelContext) async -> NoteModel {
         let res = NoteModel(
           markdown: MarkdownNote(
             body: fileContents,
-            summary: nil
           )
         )
         if let parsingResults = await fileContents.preParseAsMdx(noteId: nil) {

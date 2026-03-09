@@ -4,18 +4,21 @@ import {
     MdxEditorGlobalProvider,
     WebViewContainer,
     createFlusterStore,
-    WebviewEnvironment,
+    handleEditorStateParsedContentUpdate,
 } from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
 import "./index.css";
 
-const storeData = createFlusterStore(
-    import.meta.env.FLUSTER_BUILD_ENV === "ipad"
-        ? WebviewEnvironment.IPad
-        : WebviewEnvironment.MacOS,
-);
+const storeData = createFlusterStore();
 
-console.log("storeData: ", storeData)
+declare global {
+    interface Window {
+        handleEditorStateParsedContentUpdate: (data: number[]) => void;
+    }
+}
+
+window.handleEditorStateParsedContentUpdate =
+    handleEditorStateParsedContentUpdate;
 
 function App() {
     return (

@@ -2,8 +2,8 @@
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { getSmallestSizableBreakpointByWidth } from "#/mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props";
 import { SizableOption } from "#/mdx/embeddable_mdx_components/schemas/sizable_props_schema";
-import { WebviewEnvironment, type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
-import { type ReactNode, createContext, useReducer, useContext } from "react";
+import { CodeEditorImplementation, WebviewEnvironment, type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
+import React, { type ReactNode, createContext, useReducer, useContext } from "react";
 
 const getInitialEnv = (): WebviewEnvironment | null => {
     const items = [WebviewEnvironment.IPad, WebviewEnvironment.MacOS, WebviewEnvironment.MultiPlatformDesktop]
@@ -20,7 +20,8 @@ const initialWebviewContainerState: WebviewContainerState = {
     environment: getInitialEnv() ?? undefined,
     size: getSmallestSizableBreakpointByWidth(window.innerWidth) ?? SizableOption.None,
     dark_mode: true,
-    wasm_loaded: false
+    wasm_loaded: false,
+    editorImplementation: CodeEditorImplementation.Development
 }
 
 export const WebviewContainerContext = createContext<WebviewContainerState>(initialWebviewContainerState);
@@ -30,6 +31,7 @@ type WebviewContainerContextActions = { type: "set-webview-environment", payload
     payload: SizableOption
 }
 
+/* eslint-disable-next-line  -- Been using this snippet for a while and I ain't stoppiing now. */
 export const WebviewContainerDispatchContext = createContext<React.Dispatch<WebviewContainerContextActions>>(null!);
 
 

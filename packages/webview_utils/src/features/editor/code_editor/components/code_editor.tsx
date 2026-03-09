@@ -233,7 +233,7 @@ export const CodeEditorInner = connector(({
                 changes: {
                     from: 0,
                     to: viewRef.current.state.doc.length,
-                    insert: "detail" in e ? e.detail : "",
+                    insert: "detail" in e ? (e.detail as string) : "",
                 },
 
             });
@@ -259,18 +259,6 @@ const connectorOuter = connect((state: MdxEditorAppState) => ({
 export const CodeEditor = connectorOuter((
     props: ComponentProps<typeof CodeEditorInner> & Pick<EditorState, "value" | "note_id">,
 ): ReactNode => {
-    const [initialRender, setInitialRender] = useState(true)
-
-    const handleInitialRender = useEffectEvent(() => { setInitialRender(false); })
-
-    useEffect(() => {
-        if (!props.note_id || initialRender) {
-            sendToSwift(props.requestNewDataAction ?? SplitviewEditorWebviewActions.RequestSplitviewEditorData);
-        }
-        handleInitialRender()
-
-    }, [props.note_id, initialRender]);
-
 
     return typeof props.value === "string" ? (
         <CodeEditorInner {...props} />

@@ -8,7 +8,8 @@ extension FrontMatterResult: @retroactive Codable {
       user_defined_id,
       file_path,
       topic,
-      subject
+      subject,
+      summary
   }
 
   public init(from decoder: Decoder) throws {
@@ -21,6 +22,7 @@ extension FrontMatterResult: @retroactive Codable {
     let topic = try container.decodeIfPresent(String.self, forKey: .topic)
     let subject = try container.decodeIfPresent(String.self, forKey: .subject)
     let filePath = try container.decodeIfPresent(String.self, forKey: .file_path)
+    let summary = try container.decodeIfPresent(NoteSummary.self, forKey: .summary)
     let userDefinedId = try container.decodeIfPresent(
       String.self,
       forKey: .user_defined_id

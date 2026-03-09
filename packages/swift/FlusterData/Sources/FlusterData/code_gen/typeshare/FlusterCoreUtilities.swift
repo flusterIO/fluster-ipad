@@ -257,18 +257,32 @@ public enum SizableOption: String, Codable {
 	case full
 }
 
+public enum CodeEditorImplementation: String, Codable {
+	case bibEditor = "bib-editor"
+	case mdxEditor = "mdx-editor"
+	case mdxViewer = "mdx-viewer"
+	case development
+	case awaitingData = "pending"
+}
+
 public struct WebviewContainerState: Codable {
 	public let environment: WebviewEnvironment?
 	public let size: SizableOption
 	public let wasm_loaded: Bool
 	public let dark_mode: Bool
+	public let editorImplementation: CodeEditorImplementation
 
-	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool) {
+	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool, editorImplementation: CodeEditorImplementation) {
 		self.environment = environment
 		self.size = size
 		self.wasm_loaded = wasm_loaded
 		self.dark_mode = dark_mode
+		self.editorImplementation = editorImplementation
 	}
+}
+
+public enum AiNoteInteractionType: String, Codable {
+	case generateSummary = "generate-summary"
 }
 
 public enum AutoInsertedComponentName: String, Codable {

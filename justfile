@@ -96,7 +96,7 @@ build_fluster_bibliography:
 	cd {{justfile_directory()}}/packages/rust/fluster_bibliography; cargo swift package -y --xcframework-name FlusterBib
 
 clear_macos_database:
-	trash "/Users/bigsexy/Library/Containers/iglooDevelopment.Fluster-Desktop/Data/Library/Application Support/default.store"
+	trash "/Users/bigsexy/Library/Containers/iglooDevelopment.Fluster-Desktop/Data/Library/Application Support/default.store*"
 
 build_fluster_lezer:
 	cd {{justfile_directory()}}/packages/typescript/lezer; pnpm build

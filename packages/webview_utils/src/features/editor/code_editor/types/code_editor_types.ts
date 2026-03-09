@@ -20,5 +20,3 @@ export {
     CodeEditorTheme
 }
 
-
-export type CodeEditorImplementation = "bib-editor" | "mdx-editor" | "mdx-viewer" | "development"

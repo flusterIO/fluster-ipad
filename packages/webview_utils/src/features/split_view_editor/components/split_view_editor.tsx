@@ -4,9 +4,12 @@ import { MdxEditorPreview } from "#/mdx/components/mdx_editor_preview";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { CodeEditor } from "#/editor/code_editor/components/code_editor";
 import { WebviewClient } from "#/webview_container/data/webview_client";
+import { useSelector } from "react-redux";
+import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
 
 export const SplitViewEditorInner = (): ReactNode => {
     const autoSaveId = "split-view-editor-panel-split";
+    const parsedValue = useSelector((state: MdxEditorAppState) => state.editor.parsedValue)
     return (
         <PanelGroup
             autoSaveId={autoSaveId}
@@ -28,12 +31,14 @@ export const SplitViewEditorInner = (): ReactNode => {
                 defaultSize={50}
                 minSize={10}
             >
-                <MdxEditorPreview
-                    className="overflow-y-auto overflow-x-hidden h-full min-h-screen loading-hide"
-                />
-                <div className="w-full h-full flex flex-col justify-center items-center loading-only-flex">
-                    <LoadingComponent />
-                </div>
+                {parsedValue ? (
+                    <MdxEditorPreview
+                        className="overflow-y-auto overflow-x-hidden h-full min-h-screen"
+                    />) : (
+                    <div className="w-full h-full flex flex-col justify-center items-center">
+                        <LoadingComponent />
+                    </div>
+                )}
             </Panel>
         </PanelGroup>
     );

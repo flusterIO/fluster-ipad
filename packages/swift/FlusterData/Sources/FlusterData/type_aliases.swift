@@ -17,3 +17,5 @@ public typealias TopicModel = AppSchemaV1.TopicModel
 public typealias MarkdownNote = AppSchemaV1.MarkdownNote
 public typealias DictionaryEntryModel = AppSchemaV1.DictionaryEntryModel
 public typealias AutoTaggable = AppSchemaV1.AutoTaggable
+public typealias NoteSummary = AppSchemaV1.NoteSummary
+public typealias NoteSummaryGenerationMethod = AppSchemaV1.NoteSummaryGenerationMethod

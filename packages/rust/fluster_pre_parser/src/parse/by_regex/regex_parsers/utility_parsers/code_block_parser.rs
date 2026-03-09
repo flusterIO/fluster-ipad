@@ -1,5 +1,5 @@
 use fancy_regex::Regex;
-use fluster_core_utilities::core_types::ai::CodeBlockParsingResult;
+use fluster_core_utilities::core_types::ai::code_block_parsing_result::CodeBlockParsingResult;
 pub struct CodeBlockParser {}
 
 impl CodeBlockParser {

@@ -29,6 +29,10 @@ struct WindowAccessor: NSViewRepresentable {
 struct Fluster_DesktopApp: App {
   private var appData: AppDataContainer { AppDataContainer.shared }
   private var paletteController = CommandPaletteController()
+  var x: Int {
+    print("Stored: \(appData.sharedModelContainer.mainContext.sqliteCommand)")
+    return 1
+  }
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
       ContentView()

@@ -5,7 +5,6 @@ import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { type EditorState, MdxPreviewWebviewActions, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { setBodyLoading } from "./editor_dom_utils";
-import { setMdxPreviewWindowMethods } from "./standalone_mdx_preview/standalone_mdx_preview_swift_events";
 import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/swift_events";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
@@ -14,8 +13,6 @@ import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_
 import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
 import { connect } from "react-redux";
 
-
-setMdxPreviewWindowMethods();
 
 setWindowBridgeFunctions();
 

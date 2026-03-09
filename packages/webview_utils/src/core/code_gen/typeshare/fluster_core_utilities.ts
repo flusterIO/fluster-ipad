@@ -176,11 +176,24 @@ export enum SizableOption {
 	Full = "full",
 }
 
+export enum CodeEditorImplementation {
+	BibEditor = "bib-editor",
+	MdxEditor = "mdx-editor",
+	MdxViewer = "mdx-viewer",
+	Development = "development",
+	AwaitingData = "pending",
+}
+
 export interface WebviewContainerState {
 	environment?: WebviewEnvironment;
 	size: SizableOption;
 	wasm_loaded: boolean;
 	dark_mode: boolean;
+	editorImplementation: CodeEditorImplementation;
+}
+
+export enum AiNoteInteractionType {
+	GenerateSummary = "generate-summary",
 }
 
 export enum AutoInsertedComponentName {

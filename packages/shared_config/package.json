@@ -22,7 +22,7 @@
     "tailwindcss": "4.2.1",
     "vite-plugin-dts": "4.5.4",
     "vite-plugin-singlefile": "2.3.0",
-    "vite-plugin-wasm-pack": "^0.1.12",
+    "vite-plugin-wasm-pack": "0.1.12",
     "vite-tsconfig-paths": "5.1.4"
   },
   "devDependencies": {

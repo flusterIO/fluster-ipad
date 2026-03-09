@@ -4,16 +4,11 @@ import {
     createFlusterStore,
     MdxEditorGlobalProvider,
     WebViewContainer,
-    WebviewEnvironment,
 } from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
 import "./index.css";
 
-const storeData = createFlusterStore(
-    import.meta.env.FLUSTER_BUILD_ENV === "ipad"
-        ? WebviewEnvironment.IPad
-        : WebviewEnvironment.MacOS,
-);
+const storeData = createFlusterStore();
 
 function App() {
     return (

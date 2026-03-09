@@ -96,3 +96,4 @@ packages/typescript/wasm/fluster_wasm/dist/
 packages/typescript/wasm/fluster_wasm/pkg/
 packages/rust/wasm/fluster_wasm/dist/
 packages/rust/fluster_desktop_fs/FlusterDesktopFs/
+development_database_output/

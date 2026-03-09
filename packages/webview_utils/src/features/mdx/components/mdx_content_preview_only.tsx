@@ -1,11 +1,10 @@
 import React, { useEffect, type ReactNode } from "react";
 import { MdxEditorPreview, type MdxEditorPreviewProps } from "./mdx_editor_preview";
-import { MdxPreviewWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type CodeEditorImplementation, MdxPreviewWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { cn } from "@/utils/cn";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { useSelector } from "react-redux";
 import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
-import { type CodeEditorImplementation } from "#/editor/code_editor/types/code_editor_types";
 
 /** A utility component used to implement some event listeners before rendering the MdxEditorPreview component. */
 export const MdxEditorPreviewOnly = (

@@ -1,4 +1,4 @@
-use fluster_core_utilities::core_types::ai::CodeBlockParsingResult;
+use fluster_core_utilities::core_types::ai::code_block_parsing_result::CodeBlockParsingResult;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 

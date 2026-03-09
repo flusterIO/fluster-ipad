@@ -1,10 +1,11 @@
 use crate::core_types::webview_environment::WebviewEnvironment;
 use serde::{Deserialize, Serialize};
+use strum_macros::Display;
 use typeshare::typeshare;
 use uniffi::{Enum, Record};
 
 #[typeshare]
-#[derive(Enum, strum_macros::Display, Serialize, Deserialize)]
+#[derive(Enum, Display, Serialize, Deserialize)]
 pub enum SizableOption {
     #[serde(rename = "none")]
     #[strum(to_string = "none")]
@@ -36,10 +37,32 @@ pub enum SizableOption {
 }
 
 #[typeshare]
+#[derive(Enum, Display, Serialize, Deserialize)]
+pub enum CodeEditorImplementation {
+    #[serde(rename = "bib-editor")]
+    #[strum(to_string = "bib-editor")]
+    BibEditor,
+    #[serde(rename = "mdx-editor")]
+    #[strum(to_string = "mdx-editor")]
+    MdxEditor,
+    #[serde(rename = "mdx-viewer")]
+    #[strum(to_string = "mdx-viewer")]
+    MdxViewer,
+    #[serde(rename = "development")]
+    #[strum(to_string = "development")]
+    Development,
+    #[serde(rename = "pending")]
+    #[strum(to_string = "pending")]
+    AwaitingData,
+}
+
+#[typeshare]
 #[derive(Record, Serialize, Deserialize)]
 pub struct WebviewContainerState {
     pub environment: Option<WebviewEnvironment>,
     pub size: SizableOption,
     pub wasm_loaded: bool,
     pub dark_mode: bool,
+    #[serde(rename = "editorImplementation")]
+    pub editor_implementation: CodeEditorImplementation,
 }

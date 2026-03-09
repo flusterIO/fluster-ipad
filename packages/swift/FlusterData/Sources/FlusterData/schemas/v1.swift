@@ -10,32 +10,76 @@ import SwiftData
 public enum AppSchemaV1: VersionedSchema {
   public static var models: [any PersistentModel.Type] {
     // Leaving off other models as they should be able to be inferred and this will simplify migration scripts I hope.
-    [NoteModel.self, BibEntryModel.self, AutoTaggable.self]
+    return [
+      NoteModel.self,
+      BibEntryModel.self,
+      AutoTaggable.self,
+      NoteSummary.self,
+      FrontMatter.self
+    ]
   }
   public static let versionIdentifier: Schema.Version = .init(1, 0, 0)
 }
 
 extension AppSchemaV1 {
+  public enum NoteSummaryGenerationMethod: String, Codable {
+    case user, flusterAi
+  }
   @Model
-  public class FrontMatter {
+  final public class NoteSummary {
+    public var generationMethod: NoteSummaryGenerationMethod
+    public var body: String
+    public var ctime: Date
+    public init(
+      generationMethod: NoteSummaryGenerationMethod,
+      body: String,
+      ctime: Date
+    ) {
+      self.generationMethod = generationMethod
+      self.body = body
+      self.ctime = ctime
+    }
+  }
+  @Model
+  public class AiInteractionRequest {
+    public var requestType: AiNoteInteractionType
+    public var ctime: Date
+    public init(requestType: AiNoteInteractionType, ctime: Date) {
+      self.requestType = requestType
+      self.ctime = ctime
+    }
+  }
+  @Model
+  final public class FrontMatter {
     public var id: String
     public var title: String?
     public var userDefinedId: String?
     public var fsPath: String?
     public var ignoreParsers: [String] = []
+    public var summary: NoteSummary? = nil
+    public var aiSummaryRequest: AiInteractionRequest? = nil
 
-    init(id: String, title: String? = nil, fsPath: String? = nil, userDefinedId: String? = nil) {
+    init(
+      id: String,
+      title: String? = nil,
+      fsPath: String? = nil,
+      userDefinedId: String? = nil,
+      summary: NoteSummary? = nil
+    ) {
       self.id = id
       self.title = title
       self.fsPath = fsPath
       self.userDefinedId = userDefinedId
+      self.summary = summary
     }
 
     public static func emptyFrontMatter() -> FrontMatter {
       return FrontMatter(
         id: UUID().uuidString,
         title: nil,
-        userDefinedId: nil
+        fsPath: nil,
+        userDefinedId: nil,
+        summary: nil
       )
     }
     public func applyParsingResult(
@@ -129,8 +173,8 @@ extension AppSchemaV1 {
     public var id: String
     public var paper = [PaperModel]()
     //    @Attribute(.externalStorage) public var drawing: Data
-    @Attribute(.externalStorage) public var markdown: MarkdownNote
-    public var frontMatter: FrontMatter = FrontMatter.emptyFrontMatter()
+    public var markdown: MarkdownNote
+    public var frontMatter: FrontMatter
     public var ctime: Date
     public var utime: Date
     public var lastRead: Date
@@ -152,7 +196,7 @@ extension AppSchemaV1 {
     public init(
       id: String? = nil,
       drawing: [PaperModel] = [PaperModel](),
-      markdown: MarkdownNote = MarkdownNote(body: "", summary: nil),
+      markdown: MarkdownNote = MarkdownNote(body: ""),
       ctime: Date = .now,
       utime: Date = .now,
       lastRead: Date = .now,
@@ -163,8 +207,10 @@ extension AppSchemaV1 {
       r3_vec: NoteVec3 = NoteVec3(
         x: R3AxisData(label: "X", desc: "Math & Physics", value: 0, R3AxisId: .x),
         y: R3AxisData(
-            label: "Y", desc: "Personal Notes, Journaling and Unstructured Notes", value: 0, R3AxisId: .y),
-        z: R3AxisData(label: "Z", desc: "Business, Health & Personal Planning", value: 0, R3AxisId: .z))
+          label: "Y", desc: "Personal Notes, Journaling and Unstructured Notes", value: 0,
+          R3AxisId: .y),
+        z: R3AxisData(
+          label: "Z", desc: "Business, Health & Personal Planning", value: 0, R3AxisId: .z))
     ) {
       self.id = id ?? UUID.init().uuidString
       self.paper = drawing
@@ -177,6 +223,7 @@ extension AppSchemaV1 {
       self.tags = tags
       self.citations = citations
       self.r3_vec = r3_vec
+      self.frontMatter = FrontMatter.emptyFrontMatter()
     }
 
     public func containsCitation(citation: BibEntryModel) -> Bool {
@@ -211,7 +258,7 @@ extension AppSchemaV1 {
 
     public static func fromNoteBody(noteBody: String) -> NoteModel {
       let note = NoteModel(
-        markdown: MarkdownNote(body: noteBody, summary: nil)
+        markdown: MarkdownNote(body: noteBody)
       )
       return note
     }
@@ -329,10 +376,9 @@ extension AppSchemaV1 {
     }
     public static func getEmptyModel(
       noteBody: String = "",
-      noteSummary: String? = nil
     ) -> NoteModel {
       NoteModel(
-        markdown: MarkdownNote(body: noteBody, summary: noteSummary)
+        markdown: MarkdownNote(body: noteBody)
       )
     }
 
@@ -344,7 +390,6 @@ extension AppSchemaV1 {
     ) -> NoteModel {
       let note = NoteModel.getEmptyModel(
         noteBody: data.content,
-        noteSummary: nil
       )
       if forceUserDefinedCitations {
         for cit in existingCitations {
@@ -465,13 +510,14 @@ extension AppSchemaV1 {
       let dateFormatter = RelativeDateTimeFormatter()
       dateFormatter.unitsStyle = .full
       dateFormatter.dateTimeStyle = .named
+      let noteSummary: String? = self.frontMatter.summary?.body
       let details =
         MdxSerialization_NoteDetails_NoteDetailDataBuffer
         .createNoteDetailDataBuffer(
           &builder,
           noteIdOffset: noteIdOffset,
           titleOffset: titleOffset,
-          summaryOffset: builder.create(string: self.markdown.summary),
+          summaryOffset: builder.create(string: noteSummary),
           topicOffset: builder.create(
             string: self.topic?.value
           ),
@@ -800,16 +846,14 @@ extension AppSchemaV1 {
 
   @Model
   public class MarkdownNote {
-    public var _body: String
+    @Attribute(.externalStorage) public var _body: String
     /// This will be required later when building for architecture's that don't support rust since the parser is being written in rust. It can also be used for some performance improvements.
-    public var preParsedBody: String?
+    @Attribute(.externalStorage) public var preParsedBody: String?
     public var title: String?
-    public var summary: String?
     public var isEdited: Bool = false
 
-    public init(body: String, summary: String?) {
+    public init(body: String) {
       self._body = body
-      self.summary = summary
       self.title = MdxTextUtils.getTitle(body: body)
     }
 

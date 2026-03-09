@@ -1,13 +1,36 @@
-import { WebViewContainer, MdxEditorPreviewOnly } from "@fluster/webview_utils";
+import {
+    WebViewContainer,
+    MdxEditorPreviewOnly,
+    createFlusterStore,
+    handleEditorStateParsedContentUpdate,
+    MdxEditorGlobalProvider,
+    CodeEditorImplementation,
+} from "@fluster/webview_utils";
 import React from "react";
+
+const storeData = createFlusterStore();
+
+declare global {
+    interface Window {
+        handleEditorStateParsedContentUpdate: (data: number[]) => void;
+    }
+}
+
+window.handleEditorStateParsedContentUpdate =
+    handleEditorStateParsedContentUpdate;
 
 function App() {
     return (
         <WebViewContainer>
-            <MdxEditorPreviewOnly
-                implementation="mdx-viewer"
-                className={"px-6 pb-12 pt-8"}
-            />
+            <MdxEditorGlobalProvider
+                store={storeData.store}
+                persistor={storeData.persistor}
+            >
+                <MdxEditorPreviewOnly
+                    implementation={CodeEditorImplementation.MdxViewer}
+                    className={"px-6 pb-12 pt-8"}
+                />
+            </MdxEditorGlobalProvider>
         </WebViewContainer>
     );
 }

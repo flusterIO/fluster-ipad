@@ -21,8 +21,8 @@ struct NoteSearchResultItemView: View {
     VStack(alignment: .leading) {
       Text(item.frontMatter.title ?? item.markdown.title ?? "No Title Found")
         .font(.title2)
-      if item.markdown.summary != nil && !item.markdown.summary!.isEmpty {
-        Text(item.markdown.summary!)
+      if let summary = item.frontMatter.summary?.body, !summary.isEmpty {
+        Text(summary)
           .font(.subheadline)
           .foregroundStyle(.secondary)
       }
