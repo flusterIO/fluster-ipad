@@ -26,7 +26,7 @@ public struct MdxPreviewWebview: UIViewRepresentable {
   @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
     var webviewFontSize: WebviewFontSize = .base
   let url: URL
-  @Binding var theme: WebViewTheme
+  @Binding var theme: FlusterTheme
   @Binding var editorThemeDark: CodeEditorTheme
   @Binding var editorThemeLight: CodeEditorTheme
   @Binding var editingNote: NoteModel?

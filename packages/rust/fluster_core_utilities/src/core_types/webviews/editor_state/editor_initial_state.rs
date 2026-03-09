@@ -6,6 +6,7 @@ use crate::core_types::webviews::{
     editor_state::{
         editor_keymap::CodeEditorKeymap, editor_theme::CodeEditorTheme, snippet_state::SnippetState,
     },
+    webview_container_state::actions::webview_container_initial_state::WebviewContainerSharedInitialState,
 };
 
 #[typeshare]
@@ -27,4 +28,11 @@ pub struct EditorInitialStatePayload {
     pub lock_editor_scroll_to_preview: bool,
     #[serde(rename = "saveMethod")]
     pub save_method: EditorSaveMethod,
+}
+
+#[typeshare]
+#[derive(uniffi::Record, Serialize, Deserialize)]
+pub struct EditorBasedWebviewInitialState {
+    pub container: WebviewContainerSharedInitialState,
+    pub editor: EditorInitialStatePayload,
 }

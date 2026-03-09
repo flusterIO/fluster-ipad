@@ -4,6 +4,7 @@ export * from "./core/utils/cn"
 // -- Setup --
 export * from "./features/webview_global_state/mdx_editor/serialization/handle_editor_state_parsed_content_update"
 export * from "./features/split_view_editor/state/cross_language_state/cross_language_state_types"
+export * from "./features/webview_global_state/shared/webview_container_global_state/webview_container_slice"
 
 // -- Types --
 export * from "./core/utils/types/any_window_event";
@@ -16,7 +17,6 @@ export * from "./core/shared_components/loading/splash_screen";
 
 /// --- State ---
 export * from "./features/webview_global_state/mdx_editor/provider"
-export * from "./features/webview_global_state/mdx_editor/state/editor_state_slice"
 export * from "./features/webview_global_state/mdx_editor/provider.tsx"
 export * from "./features/webview_global_state/mdx_editor/store.ts"
 

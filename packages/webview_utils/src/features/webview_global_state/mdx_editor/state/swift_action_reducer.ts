@@ -3,14 +3,14 @@ import { type EditorState, EditorStateActions } from "@/code_gen/typeshare/flust
 import { consola } from "consola"
 import { type PayloadAction } from "@reduxjs/toolkit";
 
-export const swiftActionReducer = (state: EditorState, action: PayloadAction<AnyCrossLanguageEditorAction>): EditorState => {
+export const swiftEditorActionReducer = (state: EditorState, action: PayloadAction<AnyCrossLanguageEditorAction>): EditorState => {
     consola.info("action: ", action)
     switch (action.payload.type) {
         case EditorStateActions.SetInitialEditorState: {
             return {
                 ...state,
-                ...action.payload.payload
-            }
+                ...action.payload.payload.editor
+            } satisfies EditorState
         }
         case EditorStateActions.SetEditorSaveMethod: {
             return {

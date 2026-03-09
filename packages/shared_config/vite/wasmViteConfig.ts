@@ -9,6 +9,7 @@ import assert from 'node:assert';
 export type WasmViteConfig = Pick<WebviewViteConfig, "outputDir" | "build"> & { plugins?: [] } & {
     /**
      * The *absolute* path to the wasm package.
+     * @deprecated -- Don't use this.
      */
     wasmPackagePath: string
 }
@@ -22,9 +23,6 @@ export const getWasmViteConfig = (opts: WasmViteConfig): UserConfig => {
         react(),
         tsconfigPaths(),
         ...(opts.plugins ?? []),
-        // wasm(),
-        // topLevelAwait(),
-        // wasmPack(opts.wasmPackagePath)
     ];
 
     if (isProd) {

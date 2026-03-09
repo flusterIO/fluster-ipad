@@ -4,7 +4,7 @@ import {
     createFlusterStore,
     handleEditorStateParsedContentUpdate,
     MdxEditorGlobalProvider,
-    CodeEditorImplementation,
+    WebviewImplementation,
 } from "@fluster/webview_utils";
 import React from "react";
 
@@ -27,7 +27,7 @@ function App() {
                 persistor={storeData.persistor}
             >
                 <MdxEditorPreviewOnly
-                    implementation={CodeEditorImplementation.MdxViewer}
+                    implementation={WebviewImplementation.MdxViewer}
                     className={"px-6 pb-12 pt-8"}
                 />
             </MdxEditorGlobalProvider>

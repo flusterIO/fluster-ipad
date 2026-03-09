@@ -1,4 +1,7 @@
-use crate::core_types::webview_environment::WebviewEnvironment;
+use crate::core_types::{
+    webview_environment::WebviewEnvironment,
+    webviews::webview_container_state::fluster_theme::FlusterTheme,
+};
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;
 use typeshare::typeshare;
@@ -38,7 +41,7 @@ pub enum SizableOption {
 
 #[typeshare]
 #[derive(Enum, Display, Serialize, Deserialize)]
-pub enum CodeEditorImplementation {
+pub enum WebviewImplementation {
     #[serde(rename = "bib-editor")]
     #[strum(to_string = "bib-editor")]
     BibEditor,
@@ -63,6 +66,6 @@ pub struct WebviewContainerState {
     pub size: SizableOption,
     pub wasm_loaded: bool,
     pub dark_mode: bool,
-    #[serde(rename = "editorImplementation")]
-    pub editor_implementation: CodeEditorImplementation,
+    pub implementation: WebviewImplementation,
+    pub fluster_theme: FlusterTheme,
 }

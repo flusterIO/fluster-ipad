@@ -9,13 +9,42 @@ export interface CodeBlockParsingResult {
 	block_content: string;
 }
 
-/**
- * Basically a Partial<BibEntryModel> that's cross language, to be sent to the
- * editor.
- */
-export interface EditorCitation {
-	citation_key: string;
-	html: string;
+/** From typescript to swift. */
+export enum WebviewEnvironment {
+	MacOS = "fluster-mac",
+	IPad = "fluster-ipad",
+	MultiPlatformDesktop = "fluster-multi-platform-desktop",
+}
+
+export enum WebviewImplementation {
+	BibEditor = "bib-editor",
+	MdxEditor = "mdx-editor",
+	MdxViewer = "mdx-viewer",
+	Development = "development",
+	AwaitingData = "pending",
+}
+
+export enum FlusterTheme {
+	Zinc = "zinc",
+	Yellow = "yellow",
+	Violet = "violet",
+	Fluster = "fluster",
+	Stone = "stone",
+	Slate = "slate",
+	Rose = "rose",
+	Red = "red",
+	Orange = "orange",
+	Neutral = "neutral",
+	Green = "green",
+	Gray = "gray",
+	Blue = "blue",
+}
+
+export interface WebviewContainerSharedInitialState {
+	environment: WebviewEnvironment;
+	dark_mode: boolean;
+	implementation: WebviewImplementation;
+	fluster_theme: FlusterTheme;
 }
 
 export enum CodeEditorKeymap {
@@ -60,6 +89,26 @@ export interface EditorInitialStatePayload {
 	snippetProps: SnippetState;
 	lockEditorScrollToPreview: boolean;
 	saveMethod: EditorSaveMethod;
+}
+
+export interface EditorBasedWebviewInitialState {
+	container: WebviewContainerSharedInitialState;
+	editor: EditorInitialStatePayload;
+}
+
+export interface EditorChangeEvent {
+	note_id: string;
+	/** The _unparsed_ content. */
+	content: string;
+}
+
+/**
+ * Basically a Partial<BibEntryModel> that's cross language, to be sent to the
+ * editor.
+ */
+export interface EditorCitation {
+	citation_key: string;
+	html: string;
 }
 
 export enum CodeEditorBaseKeymap {
@@ -125,7 +174,7 @@ export enum EditorStateActions {
 
 export interface SetEditorInitialStateEditorAction {
 	type: EditorStateActions;
-	payload: EditorInitialStatePayload;
+	payload: EditorBasedWebviewInitialState;
 }
 
 export interface SetEditorKeymapPayload {
@@ -157,13 +206,6 @@ export interface SetParsedMdxContentEditorAction {
 	payload: number[];
 }
 
-/** From typescript to swift. */
-export enum WebviewEnvironment {
-	MacOS = "fluster-mac",
-	IPad = "fluster-ipad",
-	MultiPlatformDesktop = "fluster-multi-platform-desktop",
-}
-
 export enum SizableOption {
 	None = "none",
 	Small = "small",
@@ -176,20 +218,13 @@ export enum SizableOption {
 	Full = "full",
 }
 
-export enum CodeEditorImplementation {
-	BibEditor = "bib-editor",
-	MdxEditor = "mdx-editor",
-	MdxViewer = "mdx-viewer",
-	Development = "development",
-	AwaitingData = "pending",
-}
-
 export interface WebviewContainerState {
 	environment?: WebviewEnvironment;
 	size: SizableOption;
 	wasm_loaded: boolean;
 	dark_mode: boolean;
-	editorImplementation: CodeEditorImplementation;
+	implementation: WebviewImplementation;
+	fluster_theme: FlusterTheme;
 }
 
 export enum AiNoteInteractionType {

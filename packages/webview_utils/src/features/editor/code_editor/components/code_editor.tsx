@@ -1,4 +1,4 @@
-import React, { type ComponentProps, useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
+import React, { type ComponentProps, useEffect, useRef, type ReactNode } from "react";
 import { type Extension, EditorState as CodeMirrorEditorState } from "@codemirror/state";
 import { EditorView, keymap as codemirrorKeymap, type ViewUpdate } from "@codemirror/view";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
@@ -10,7 +10,7 @@ import { lineNumbersRelative } from "@uiw/codemirror-extensions-line-numbers-rel
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { type BibtexEditorWebviewEvents, type EditorState, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type BibtexEditorWebviewEvents, CodeEditorKeymap, type EditorState, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type AnyWebviewAction, type AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
@@ -28,8 +28,9 @@ import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
 import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
 import { connect } from "react-redux"
-import { handleEditorChange } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
+import { setEditorValue } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
 import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
+import { sendSplitviewNotificationBanner } from "#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner";
 
 const connector = connect((state: MdxEditorAppState) => ({
     baseKeymap: state.editor.baseKeymap,
@@ -58,7 +59,6 @@ interface CodeEditorProps extends Pick<EditorState, "baseKeymap" | "allCitationI
 
 export const CodeEditorInner = connector(({
     language = CodeEditorLanguage.markdown,
-    updateHandler = SplitviewEditorWebviewActions.OnEditorChange,
     showWebviewHandler = SplitviewEditorWebviewActions.SetWebviewLoaded,
     swiftContentEvent = SplitviewEditorWebviewEvents.SetSplitviewEditorContent,
     containerId = "code-editor-container",
@@ -89,7 +89,7 @@ export const CodeEditorInner = connector(({
             em.replaceChildren();
         }
         let extensions: Extension[] = [];
-        if (keymap === "vim") {
+        if (keymap === CodeEditorKeymap.Vim) {
             extensions.push(vim());
             extensions.push(lineNumbersRelative);
         }
@@ -189,6 +189,10 @@ export const CodeEditorInner = connector(({
                             note_id: note_id,
                             current_note_content: content
                         })
+                        sendSplitviewNotificationBanner({
+                            title: "Saved",
+                            body: language === CodeEditorLanguage.markdown ? "Your mdx code has been saved" : "Your bibtex code has beens saved."
+                        })
                         return true;
                     } else {
                         return false
@@ -204,10 +208,7 @@ export const CodeEditorInner = connector(({
                     if (timer.current) {
                         clearTimeout(timer.current);
                     }
-                    timer.current = setTimeout(() => {
-                        sendToSwift(updateHandler, payload);
-                    },);
-                    dispatch(handleEditorChange(payload));
+                    dispatch(setEditorValue(payload));
                 }
             }),
         ];

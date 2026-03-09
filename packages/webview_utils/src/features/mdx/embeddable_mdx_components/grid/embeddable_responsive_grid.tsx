@@ -1,13 +1,16 @@
 import React, { type ReactNode } from 'react'
-import { EmbeddableResponsiveGridPropsInput, embeddableResponsiveGridPropsSchema } from './embeddable_responsive_grid_props'
-import { useWebviewContainerContext } from '#/webview_container/state/webview_provider'
+import { type EmbeddableResponsiveGridPropsInput, embeddableResponsiveGridPropsSchema } from './embeddable_responsive_grid_props'
 import { cn } from '@/utils/cn'
-import { WithChildren } from '@/utils/types/utility_types'
+import { type WithChildren } from '@/utils/types/utility_types'
 
+import { type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities';
+import { connect } from 'react-redux';
+import { type MdxEditorAppState } from '#/webview_global_state/mdx_editor/store';
+const connector = connect((state: MdxEditorAppState) => ({
+    size: state.container.size,
+}))
 
-
-export const EmbeddableResponsiveGrid = ({ children, ...props }: EmbeddableResponsiveGridPropsInput & WithChildren): ReactNode => {
-    const { size } = useWebviewContainerContext()
+export const EmbeddableResponsiveGrid = connector(({ children, size, ...props }: EmbeddableResponsiveGridPropsInput & WithChildren & Pick<WebviewContainerState, "size">): ReactNode => {
     const { columns, containerClasses, responsiveTemplateColumns, responsive, emphasisClasses } = embeddableResponsiveGridPropsSchema.parse(props)
 
 
@@ -23,7 +26,7 @@ export const EmbeddableResponsiveGrid = ({ children, ...props }: EmbeddableRespo
             {children}
         </div>
     )
-}
+})
 
 
 EmbeddableResponsiveGrid.displayName = "EmbeddableResponsiveGrid"

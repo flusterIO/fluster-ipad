@@ -63,19 +63,6 @@ public struct MdxEditorClient {
       window.setCodeSyntaxTheme("\(editorTheme.rawValue)")
       """)
   }
-  public static func setParsedEditorContentString(
-    note: NoteModel, evaluateJavaScript: @escaping EvalJavascriptFunc
-  ) async throws {
-    if let preParsedBody = note.markdown.preParsedBody {
-      try await evaluateJavaScript(
-        """
-        window.setParsedEditorContentString(\(preParsedBody.toFlatBufferSerializedString()))
-        """)
-    } else {
-      // TODO: Parse again here. That requires passing in modelContext and I'm in a hurry,
-      // but that needs to be done here.
-    }
-  }
 
   /// Sets the actual editor's content, not the pre-parsed preview content.
   public static func setEditorContent(
@@ -101,10 +88,13 @@ public struct MdxEditorClient {
   public static func sendEditorStateUpdate(
     data: String, evalulateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
-    print("Data: \(data)")
     let res = try await evalulateJavaScript(
       """
-      typeof window.handleSwiftAction
+      try {
+      window.handleSwiftAction('\(data)')
+      } catch (err) {
+      console.error("Swift Action Error: ", err)
+      }
       """)
     print("Res: \(res)")
   }

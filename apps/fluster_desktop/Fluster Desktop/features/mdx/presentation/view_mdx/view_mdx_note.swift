@@ -73,18 +73,18 @@ struct MdxContentWebview: View {
                     Text("Bookmark")
                   },
                   icon: {
-                      if let en = editingNote, en.bookmarked {
-                          Image(systemName: "bookmark.fill")
-                              .foregroundStyle(.primary)
-                      } else {
-                          Image(systemName: "bookmark")
-                      }
+                    if let en = editingNote, en.bookmarked {
+                      Image(systemName: "bookmark.fill")
+                        .foregroundStyle(.primary)
+                    } else {
+                      Image(systemName: "bookmark")
+                    }
                   })
               }
             )
           })
       }
-      .task{
+      .task {
         if let en = editingNote {
           do {
             try await en.preParse(modelContext: modelContext)
@@ -112,16 +112,11 @@ struct MdxContentWebview: View {
   }
 
   func onWebviewLoad() async {
-    Task {
-      do {
-        if let en = editingNote {
-          try await setParsedEditorContentString(note: en)
-        }
-        print("Loaded initial editor data")
-      } catch {
-        print("Error initalizing Mdx Editor Webview: \(error.localizedDescription)")
-      }
-    }
+    // TODO: Needs to be reimplemented.
+    //        if let en = editingNote {
+    //          try await setParsedEditorContentString(note: en)
+    //        }
+    print("Loaded initial editor data")
   }
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {
     switch handlerKey {
@@ -132,12 +127,5 @@ struct MdxContentWebview: View {
       default:
         return
     }
-  }
-
-  func setParsedEditorContentString(note: NoteModel) async throws {
-    try await MdxEditorClient.setParsedEditorContentString(
-      note: note,
-      evaluateJavaScript: mdxWebview.evaluateJavaScript
-    )
   }
 }

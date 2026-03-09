@@ -88,7 +88,7 @@ import WebKit
         """
       )
     }
-    public func setWebviewTheme(theme: WebViewTheme) {
+    public func setWebviewTheme(theme: FlusterTheme) {
       self.runJavascript(
         """
         window.setWebviewTheme("\(theme.rawValue)"); null;

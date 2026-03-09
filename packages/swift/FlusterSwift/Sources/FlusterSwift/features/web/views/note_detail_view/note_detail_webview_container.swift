@@ -32,7 +32,7 @@ import WebKit
 
     public func setInitialData(
       colorScheme: ColorScheme,
-      webviewTheme: WebViewTheme,
+      webviewTheme: FlusterTheme,
       fontSize: WebviewFontSize,
       note: NoteModel
     ) {

@@ -53,7 +53,7 @@ public final class MdxPreviewWebviewContainer: WebviewContainer<MdxPreviewWebvie
     editingNote: NoteModel?,
     codeEditorTheme: CodeEditorTheme,
     editorKeymap: CodeEditorKeymap,
-    theme: WebViewTheme,
+    theme: FlusterTheme,
     fontSize: WebviewFontSize,
     editorThemeDark: CodeEditorTheme,
     editorThemeLight: CodeEditorTheme,

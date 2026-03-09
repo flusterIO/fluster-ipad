@@ -11,7 +11,7 @@ import SwiftUI
 import WebKit
 
 func getWebViewConfig() -> WKWebViewConfiguration {
-  let config = WKWebViewConfiguration()
+  let config = WebContextManager.createSharedConfiguration()
   config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
   config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
   config.setURLSchemeHandler(WasmSchemeHandler(), forURLScheme: "app")
@@ -157,7 +157,7 @@ struct WebViewContainerView: View {
   public let onLoad: (@Sendable () async -> Void)?
 
   @State private var show: Bool = false
-  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme = .fluster
+  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme = .fluster
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   var body: some View {
     ZStack {

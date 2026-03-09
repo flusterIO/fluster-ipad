@@ -1,14 +1,11 @@
-import React, { useEffect, type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { CodeEditorInner } from "./code_editor";
-import { useEventListener } from "@/state/hooks/use_event_listener";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { setBibtexEditorWindowBridgeFunctions } from "../types/swift_events/bibtex_editor_swift_events";
 import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CodeEditorLanguage } from "../types/code_editor_types";
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
-import { handleEditorChange } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
 
 setBibtexEditorWindowBridgeFunctions();
 
@@ -18,16 +15,16 @@ const connector = connect((state: MdxEditorAppState) => ({
 
 
 export const BibtexEditor = connector(({ haveSetInitialValue }: Pick<EditorState, "haveSetInitialValue">): ReactNode => {
-    const dispatch = useDispatch()
-    useEventListener(BibtexEditorWebviewEvents.SetBibtexEditorContent, (e) => {
-        dispatch(handleEditorChange(e.detail))
-    });
+    /* const dispatch = useDispatch() */
+    /* useEventListener(BibtexEditorWebviewEvents.SetBibtexEditorContent, (e) => { */
+    /*     dispatch(handleEditorChange(e.detail)) */
+    /* }); */
 
-    useEffect(() => {
-        if (!haveSetInitialValue) {
-            sendToSwift(BibtexEditorWebviewActions.RequestBibtexEditorData, "");
-        }
-    }, [haveSetInitialValue]);
+    /* useEffect(() => { */
+    /*     if (!haveSetInitialValue) { */
+    /*         sendToSwift(BibtexEditorWebviewActions.RequestBibtexEditorData, ""); */
+    /*     } */
+    /* }, [haveSetInitialValue]); */
 
     return haveSetInitialValue ? (
         <CodeEditorInner

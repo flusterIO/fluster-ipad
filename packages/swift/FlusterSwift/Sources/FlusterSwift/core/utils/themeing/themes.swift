@@ -4,8 +4,8 @@ import FlusterData
 // -- Dark Themes --
 
 public struct ZincDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .zinc
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .zinc
   public init() {}
   public var background: Color {
     return Color(red: 0.051, green: 0.051, blue: 0.059)
@@ -70,8 +70,8 @@ public struct ZincDark: ThemeProtocol {
 }
 
 public struct YellowDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .yellow
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .yellow
   public init() {}
   public var background: Color {
     return Color(red: 0.102, green: 0.086, blue: 0.059)
@@ -136,8 +136,8 @@ public struct YellowDark: ThemeProtocol {
 }
 
 public struct VioletDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .violet
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .violet
   public init() {}
   public var background: Color {
     return Color(red: 0.082, green: 0.016, blue: 0.18)
@@ -202,8 +202,8 @@ public struct VioletDark: ThemeProtocol {
 }
 
 public struct FlusterDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .fluster
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .fluster
   public init() {}
   public var background: Color {
     return Color(red: 0.043, green: 0.082, blue: 0.153)
@@ -266,8 +266,8 @@ public struct FlusterDark: ThemeProtocol {
 }
 
 public struct StoneDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .stone
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .stone
   public init() {}
   public var background: Color {
     return Color(red: 0.102, green: 0.086, blue: 0.059)
@@ -332,8 +332,8 @@ public struct StoneDark: ThemeProtocol {
 }
 
 public struct SlateDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .slate
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .slate
   public init() {}
   public var background: Color {
     return Color(red: 0.043, green: 0.082, blue: 0.153)
@@ -398,8 +398,8 @@ public struct SlateDark: ThemeProtocol {
 }
 
 public struct RoseDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .rose
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .rose
   public init() {}
   public var background: Color {
     return Color(red: 0.102, green: 0.086, blue: 0.059)
@@ -464,8 +464,8 @@ public struct RoseDark: ThemeProtocol {
 }
 
 public struct RedDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .red
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .red
   public init() {}
   public var background: Color {
     return Color(red: 0.039, green: 0.039, blue: 0.039)
@@ -530,8 +530,8 @@ public struct RedDark: ThemeProtocol {
 }
 
 public struct OrangeDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .orange
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .orange
   public init() {}
   public var background: Color {
     return Color(red: 0.102, green: 0.086, blue: 0.059)
@@ -596,8 +596,8 @@ public struct OrangeDark: ThemeProtocol {
 }
 
 public struct NeutralDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .neutral
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .neutral
   public init() {}
   public var background: Color {
     return Color(red: 0.039, green: 0.039, blue: 0.039)
@@ -662,8 +662,8 @@ public struct NeutralDark: ThemeProtocol {
 }
 
 public struct GreenDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .green
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .green
   public init() {}
   public var background: Color {
     return Color(red: 0.102, green: 0.086, blue: 0.059)
@@ -728,8 +728,8 @@ public struct GreenDark: ThemeProtocol {
 }
 
 public struct GrayDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .gray
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .gray
   public init() {}
   public var background: Color {
     return Color(red: 0.082, green: 0.016, blue: 0.18)
@@ -794,8 +794,8 @@ public struct GrayDark: ThemeProtocol {
 }
 
 public struct BlueDark: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .blue
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .blue
   public init() {}
   public var background: Color {
     return Color(red: 0.043, green: 0.082, blue: 0.153)
@@ -862,8 +862,8 @@ public struct BlueDark: ThemeProtocol {
 // -- Light Themes --
 
 public struct ZincLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .zinc
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .zinc
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -925,8 +925,8 @@ public struct ZincLight: ThemeProtocol {
 }
 
 public struct YellowLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .yellow
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .yellow
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -988,8 +988,8 @@ public struct YellowLight: ThemeProtocol {
 }
 
 public struct VioletLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .violet
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .violet
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1051,8 +1051,8 @@ public struct VioletLight: ThemeProtocol {
 }
 
 public struct FlusterLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .fluster
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .fluster
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1114,8 +1114,8 @@ public struct FlusterLight: ThemeProtocol {
 }
 
 public struct StoneLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .stone
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .stone
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1177,8 +1177,8 @@ public struct StoneLight: ThemeProtocol {
 }
 
 public struct SlateLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .slate
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .slate
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1240,8 +1240,8 @@ public struct SlateLight: ThemeProtocol {
 }
 
 struct RoseLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .rose
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .rose
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1303,8 +1303,8 @@ struct RoseLight: ThemeProtocol {
 }
 
 struct RedLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .red
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .red
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1366,8 +1366,8 @@ struct RedLight: ThemeProtocol {
 }
 
 struct OrangeLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .orange
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .orange
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1429,8 +1429,8 @@ struct OrangeLight: ThemeProtocol {
 }
 
 struct NeutralLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .neutral
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .neutral
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1492,8 +1492,8 @@ struct NeutralLight: ThemeProtocol {
 }
 
 struct GreenLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .green
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .green
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1555,8 +1555,8 @@ struct GreenLight: ThemeProtocol {
 }
 
 struct GrayLight: ThemeProtocol {
-  public typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .gray
+  public typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .gray
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1618,8 +1618,8 @@ struct GrayLight: ThemeProtocol {
 }
 
 struct BlueLight: ThemeProtocol {
-  typealias ItemType = WebViewTheme
-  public var id: WebViewTheme = .blue
+  typealias ItemType = FlusterTheme
+  public var id: FlusterTheme = .blue
   public init() {}
   public var background: Color { return Color(red: 1, green: 1, blue: 1) }
   public var foreground: Color {
@@ -1680,7 +1680,7 @@ struct BlueLight: ThemeProtocol {
   }
 }
 
-public func getTheme(themeName: WebViewTheme, darkMode: Bool) -> any ThemeProtocol {
+public func getTheme(themeName: FlusterTheme, darkMode: Bool) -> any ThemeProtocol {
   switch themeName {
     case .zinc:
       if darkMode {

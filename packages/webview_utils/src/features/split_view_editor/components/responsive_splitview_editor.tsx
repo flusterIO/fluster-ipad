@@ -6,9 +6,9 @@ import { EditorScrollPersistor } from "#/mdx/hooks/use_persist_mdx_editor_scroll
 import { SplitviewEditorNotificationHandler } from "#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner_provider";
 import { useSelector } from "react-redux";
 import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
-import { CodeEditorImplementation, EditorView, SplitviewEditorWebviewActions, EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { WebviewImplementation, EditorView, SplitviewEditorWebviewActions, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 
 const DEBOUNCE_TIMEOUT = 100
@@ -24,7 +24,7 @@ const EditorBody = (): ReactNode => {
         return null
     }
     return (
-        editorView === EditorView.Splitview ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly implementation={CodeEditorImplementation.MdxEditor} />
+        editorView === EditorView.Splitview ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly implementation={WebviewImplementation.MdxEditor} />
     )
 }
 
@@ -35,7 +35,7 @@ const connectorLoadingIndicator = connect((state: MdxEditorAppState) => ({
 }))
 
 
-const LoadingIndicatorAndListener = connectorLoadingIndicator(({note_id}: Pick<EditorState, "note_id">): ReactNode => {
+const LoadingIndicatorAndListener = connectorLoadingIndicator(({ note_id }: Pick<EditorState, "note_id">): ReactNode => {
     const timer = useRef<null | NodeJS.Timeout>(null)
     const requestDataRecursively = (idx: number): void => {
         if (timer.current) {

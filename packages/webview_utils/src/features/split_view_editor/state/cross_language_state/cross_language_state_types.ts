@@ -12,10 +12,18 @@ interface EditorInitialStateActionRefined extends SetEditorInitialStateEditorAct
 
 export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined;
 
+export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction
+
 export interface AnyCrossLanguageBufferEditorAction {
     type: EditorStateActions.SetParsedEditorContent,
     payload: ByteBuffer
 }
+
+
+/**
+ * Any anction being send over the `handleSwiftBufferAction` bridge.
+ */
+export type AnyCrossLanguageContainerBufferAction = AnyCrossLanguageBufferEditorAction
 
 
 export type AnyCrossLanguageEditorActionOfAnyType = AnyCrossLanguageEditorAction | AnyCrossLanguageBufferEditorAction

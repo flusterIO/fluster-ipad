@@ -267,6 +267,7 @@ extension AppSchemaV1 {
       modelContext: ModelContext
     ) {
       self.markdown.isEdited = false
+      print("Content: \(results.content)")
       self.markdown.preParsedBody = results.content
       if let frontMatter = results.frontMatter {
         self.frontMatter.applyParsingResult(res: frontMatter)

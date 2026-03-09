@@ -121,7 +121,7 @@ struct BibliographyPageView: View {
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
     var editorThemeLight: CodeEditorTheme = .githubLight
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
-  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
+  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
     .fluster
   @Environment(\.colorScheme) var colorScheme
   @StateObject private var bibtexEditorContainer =

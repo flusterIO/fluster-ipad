@@ -1,16 +1,21 @@
-import React, { CSSProperties, useEffect, useRef, type ReactNode } from "react";
+import React, { type CSSProperties, useEffect, useRef, type ReactNode } from "react";
 import { cn } from "@/utils/cn";
-import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { setWebviewWindowBridgeFunctions } from "../state/swift_events/webview_swift_events";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { useEventListener } from "@/state/hooks/use_event_listener";
+import { connect } from 'react-redux';
+import { type MdxEditorAppState } from '#/webview_global_state/mdx_editor/store';
 import {
-    ScreenDimensions,
+    type ScreenDimensions,
     useScreenDimensions,
 } from "@/state/hooks/use_screen_dimensions";
-import { AnyWebviewAction } from "@/utils/types/any_window_event";
-import { WebviewContainerProvider } from "../state/webview_provider";
-import { WebviewContainerSizableObserver } from "./webview_container_sizable_observer";
+import { type AnyWebviewAction } from "@/utils/types/any_window_event";
+import { getSmallestSizableBreakpointByWidth } from "#/mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props";
+import { setEditorView } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
+import { setSize } from "#/webview_global_state/shared/webview_container_global_state/webview_container_slice";
+import { SplitviewEditorDomIds, SizableOption, type WebviewContainerState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
+import { useEventListener } from "@/state/hooks/use_event_listener";
+import { useDispatch } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 
 interface WebViewContainerProps {
     children: ReactNode;
@@ -32,56 +37,59 @@ setWebviewWindowBridgeFunctions();
 export const getParentContentWrapper = () =>
     document.getElementById("webview-content-wrapper");
 
-export const WebViewContainer = ({
+
+const connector = connect((state: MdxEditorAppState) => ({
+    size: state.container.size
+}))
+
+export const WebViewContainer = connector(({
     className,
+    size,
     children,
     shrinkHeight,
     style,
     contentContainerClasses,
     screenDimensionCalculator,
-}: WebViewContainerProps): ReactNode => {
+}: WebViewContainerProps & Pick<WebviewContainerState, "size">): ReactNode => {
     /* const updateDocSizeTimer = useRef<NodeJS.Timeout | null>(null); */
     const container = useRef<HTMLDivElement>(null);
     const dimensions = useScreenDimensions(screenDimensionCalculator);
-    const [darkMode, setDarkMode] = useLocalStorage("dark-mode", undefined, {
-        deserializer(value) {
-            return value;
-        },
-        serializer(value) {
-            return value;
-        },
-        initializeWithValue: false,
-    });
-    useEventListener("set-dark-mode", (e) => {
-        if (typeof e.detail === "boolean" && e.detail !== (darkMode === "true")) {
-            setDarkMode(e.detail ? "true" : "false");
+    const dispatch = useDispatch()
+
+    // -- Size --
+    const onResize = (): void => {
+        const em = document.getElementById(SplitviewEditorDomIds.MdxPreview)
+        if (!em) {
+            console.warn("Could not find mdx-preview container")
+            return
+        } else {
+            const width = em.getBoundingClientRect().width
+            const smallestSize = getSmallestSizableBreakpointByWidth(width) ?? SizableOption.Full
+            if (smallestSize !== size) {
+                dispatch(setSize(smallestSize))
+            }
         }
-    });
-    useEffect(() => {
-        document.body.classList[darkMode === "true" ? "add" : "remove"]("dark")
-    }, [darkMode])
-    const [theme, setTheme] = useLocalStorage("webview-theme", "fluster", {
-        deserializer(value) {
-            return value;
-        },
-        serializer(value) {
-            return value;
-        },
-        initializeWithValue: true,
-    });
-    useEffect(() => {
-        document.body.setAttribute("data-fluster-theme", theme);
-    }, [theme]);
-    useEventListener("set-webview-theme", (e) => {
-        setTheme(e.detail);
-    });
-    if (darkMode === null) {
-        return (
-            <div className="w-full h-full flex flex-col justify-center items-center">
-                <LoadingComponent />
-            </div>
-        );
     }
+    useEventListener("main-panel-resize", () => {
+        onResize()
+    })
+    useEffect(() => {
+        onResize()
+        window.addEventListener('resize', onResize)
+        return () => {
+            window.removeEventListener("resize", onResize)
+        }
+    }, [])
+
+    // -- View --
+    const isLandscape = useMediaQuery({
+        orientation: "landscape",
+    });
+
+    useEffect(() => {
+        dispatch(setEditorView(isLandscape ? EditorView.Splitview : EditorView.PreviewOnly))
+    }, [isLandscape])
+
     return (
         <div
             id="webview-container"
@@ -89,7 +97,6 @@ export const WebViewContainer = ({
                 "max-w-screen w-screen",
                 shrinkHeight ? "h-fit" : "h-fit min-h-screen",
                 className,
-                darkMode === "true" && "dark",
             )}
             style={{
                 ...style,
@@ -108,10 +115,7 @@ export const WebViewContainer = ({
                 )}
                 ref={container}
             >
-                <WebviewContainerProvider>
-                    <WebviewContainerSizableObserver />
-                    {children}
-                </WebviewContainerProvider>
+                {children}
             </div>
             <div
                 id="loading-indicator"
@@ -121,6 +125,6 @@ export const WebViewContainer = ({
             </div>
         </div>
     );
-};
+});
 
 WebViewContainer.displayName = "WebViewContainer";

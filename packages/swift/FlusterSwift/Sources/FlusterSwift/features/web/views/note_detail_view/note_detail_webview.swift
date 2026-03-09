@@ -17,7 +17,7 @@ public struct NoteDetailWebviewInternal: UIViewRepresentable {
   @State private var didSetInitialContent: Bool = false
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @Environment(\.modelContext) private var modelContext: ModelContext
-  @AppStorage(AppStorageKeys.theme.rawValue) private var webviewTheme: WebViewTheme =
+  @AppStorage(AppStorageKeys.theme.rawValue) private var webviewTheme: FlusterTheme =
     .fluster
   @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
     var webviewFontSize: WebviewFontSize = .base
@@ -221,7 +221,7 @@ extension NoteDetailWebviewInternal {
 public struct NoteDetailWebview: View {
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
-  @AppStorage(AppStorageKeys.theme.rawValue) private var webviewTheme: WebViewTheme =
+  @AppStorage(AppStorageKeys.theme.rawValue) private var webviewTheme: FlusterTheme =
     .fluster
   @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
     var webviewFontSize: WebviewFontSize = .base

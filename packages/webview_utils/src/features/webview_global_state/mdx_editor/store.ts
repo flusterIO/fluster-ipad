@@ -7,7 +7,9 @@ import { type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_ut
 import { darkModeListenerMiddleware } from '../shared/webview_container_global_state/side_effects/dark_mode_side_effect';
 import { type EditorState } from '@codemirror/state';
 import { emptyValueListenerMiddleware } from "./side_effects/empty_editor_value_side_effect"
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { emptyParsedValueListenerMiddleware } from "./side_effects/empty_parsed_value_side_effect"
+import { editorValueChangeListenerMiddleware } from './side_effects/editor_value_update_side_effect';
 
 const rootReducer = combineReducers({
     editor: editorReducer,
@@ -19,6 +21,8 @@ export type MdxEditorAppState = ReturnType<typeof rootReducer>
 const persistConfig: PersistConfig<MdxEditorAppState> = {
     key: "fluster_mdx_editor",
     storage,
+    stateReconciler: autoMergeLevel2,
+    debug: import.meta.env.DEV,
     blacklist: ["editor.note_id", "container.wasm_loaded", "container.size"] as (`editor.${keyof EditorState}` | `container.${keyof WebviewContainerState}`)[],
 };
 
@@ -42,6 +46,7 @@ export const createFlusterStore = () => {
             })
                 .prepend(darkModeListenerMiddleware.middleware)
                 .prepend(emptyValueListenerMiddleware.middleware)
+                .prepend(editorValueChangeListenerMiddleware.middleware)
                 .prepend(emptyParsedValueListenerMiddleware.middleware)
         ,
     });

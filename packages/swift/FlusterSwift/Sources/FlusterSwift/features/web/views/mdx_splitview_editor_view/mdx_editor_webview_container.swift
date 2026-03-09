@@ -73,7 +73,7 @@ import WebKit
       editingNote: NoteModel?,
       codeEditorTheme: CodeEditorTheme,
       editorKeymap: CodeEditorKeymap,
-      theme: WebViewTheme,
+      theme: FlusterTheme,
       fontSize: WebviewFontSize,
       editorThemeDark: CodeEditorTheme,
       editorThemeLight: CodeEditorTheme,

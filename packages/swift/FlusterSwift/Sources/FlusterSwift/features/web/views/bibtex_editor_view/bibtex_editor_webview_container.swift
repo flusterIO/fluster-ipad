@@ -47,7 +47,7 @@ public final class BibtexEditorWebviewContainer: WebviewContainer<BibtexEditorWe
     initialValue: String?,
     codeEditorTheme: CodeEditorTheme,
     editorKeymap: CodeEditorKeymap,
-    theme: WebViewTheme,
+    theme: FlusterTheme,
     fontSize: WebviewFontSize,
     darkMode: Bool
   ) {

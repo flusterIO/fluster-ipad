@@ -26,7 +26,7 @@ import WebKit
     @Environment(\.colorScheme) var colorScheme
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
       var webviewFontSize: WebviewFontSize = .base
-    @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
+    @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
       .fluster
     @State private var didSetInitialContent = false
     @State var haveSetInitialContent: Bool = false

@@ -33,10 +33,6 @@ extension MdxEditorWebview {
     try await MdxEditorClient.setEditorKeymap(
       keymap: editorKeymap, evaluateJavaScript: webView.evaluateJavaScript)
   }
-  func setParsedEditorContentString(note: NoteModel) async throws {
-    try await MdxEditorClient.setParsedEditorContentString(
-      note: note, evaluateJavaScript: webView.evaluateJavaScript)
-  }
   func setEditorContent(note: NoteModel) async throws {
     try await MdxEditorClient.setEditorContent(
       note: note, evaluateJavaScript: webView.evaluateJavaScript)
@@ -45,8 +41,8 @@ extension MdxEditorWebview {
     try await MdxEditorClient.setLockEditorScrollToPreview(
       lock, evaluateJavaScript: webView.evaluateJavaScript)
   }
+  /// deprecated: Moving to new Redux setup.
   func loadNote(note: NoteModel) async throws {
     try await setEditorContent(note: note)
-    try await setParsedEditorContentString(note: note)
   }
 }

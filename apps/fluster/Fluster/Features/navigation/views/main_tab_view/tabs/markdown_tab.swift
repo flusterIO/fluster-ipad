@@ -10,7 +10,7 @@ struct MarkdownTabView: View {
     var editorThemeDark: CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
     var editorThemeLight: CodeEditorTheme = .githubLight
-  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
+  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
     .fluster
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private

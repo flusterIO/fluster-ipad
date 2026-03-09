@@ -31,7 +31,7 @@ import WebKit
       var webviewFontSize: WebviewFontSize = .base
     let url: URL
     @Binding var show: Bool
-    @Binding var theme: WebViewTheme
+    @Binding var theme: FlusterTheme
     @Binding var editorThemeDark: CodeEditorTheme
     @Binding var editorThemeLight: CodeEditorTheme
     @Binding var editingNote: NoteModel
@@ -281,7 +281,7 @@ import WebKit
     @State private var showEditNoteTaggables: Bool = false
     @Environment(ThemeManager.self) private var themeManager: ThemeManager
     let url: URL
-    @Binding var theme: WebViewTheme
+    @Binding var theme: FlusterTheme
     @Binding var editorThemeDark: CodeEditorTheme
     @Binding var editorThemeLight: CodeEditorTheme
     @Binding var editingNote: NoteModel

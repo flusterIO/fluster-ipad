@@ -13,29 +13,31 @@ import Foundation
 @MainActor
 extension EditorState {
   /// A simple utility function for encoding data.
-  public static func encodeAction(data: Encodable) -> String? {
+  public static func encodeAction<T: Encodable>(data: T) -> String? {
     let encoder = JSONEncoder()
-    #if DEBUG
-      encoder.outputFormatting = .prettyPrinted
-    #endif
+
+    // Ensure dates are ISO8601 for TypeScript compatibility
+    encoder.dateEncodingStrategy = .iso8601
 
     do {
       let jsonData = try encoder.encode(data)
-      let jsonString = String(data: jsonData, encoding: .utf8)
-      return jsonString
+      return String(data: jsonData, encoding: .utf8)
     } catch {
-      print("Error encoding user: \(error.localizedDescription)")
+      // In a library, you might want to 'throw' here
+      // instead of returning nil to catch logic errors early.
+      assertionFailure("Encoding failed for \(T.self): \(error)")
+      return nil
     }
-    return nil
   }
 
   public static func setInitialEditorState(
-    payload: EditorInitialStatePayload, eval: @escaping EvalJavascriptFunc
+    editorPayload: EditorInitialStatePayload, containerPayload: WebviewContainerSharedInitialState,
+    eval: @escaping EvalJavascriptFunc
   ) async throws {
-    //    try await MdxEditorClient.saveToLocalStorage(
-    //      storageKey: SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue, data: payload.value,
-    //      evaluateJavaScript: eval)
-    let action = SetEditorInitialStateEditorAction(type: .setInitialEditorState, payload: payload)
+    let action = SetEditorInitialStateEditorAction(
+      type: .setInitialEditorState,
+      payload: EditorBasedWebviewInitialState(container: containerPayload, editor: editorPayload)
+    )
     if let parsedAction = EditorState.encodeAction(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedAction, evalulateJavaScript: eval)
     }
@@ -58,7 +60,7 @@ extension EditorState {
     builder.finish(offset: data)
     try await eval(
       """
-      window.handleEditorStateParsedContentUpdate(\(builder.sizedByteArray))
+      window.handleSwiftBufferAction("\(EditorStateActions.setParsedEditorContent.rawValue)", \(builder.sizedByteArray))
       """)
   }
 

@@ -29,11 +29,11 @@ func getDrawing(data: Data?) -> PKDrawing {
   }
 }
 
-func getInitialTheme() -> WebViewTheme {
+func getInitialTheme() -> FlusterTheme {
   if let storedString = UserDefaults.standard.string(
     forKey: AppStorageKeys.theme.rawValue
   ) {
-    if let theme = WebViewTheme(rawValue: storedString) {
+    if let theme = FlusterTheme(rawValue: storedString) {
       return theme
     }
   }
@@ -48,7 +48,7 @@ struct MainView: View {
   @State private var tagQuery: String = ""
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
     var hasPreviouslyLaunched: Bool = false
-  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
+  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
     .fluster
   @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
     var webviewFontSize: WebviewFontSize = .base
@@ -513,7 +513,7 @@ struct MainView: View {
       self.editingNote = res.first
     }
   }
-  func handleThemeChange(newTheme: WebViewTheme) {
+  func handleThemeChange(newTheme: FlusterTheme) {
     self.editorContainer.setWebviewTheme(theme: newTheme)
     self.themeManager = ThemeManager(
       initialTheme: getTheme(

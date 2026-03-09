@@ -1,9 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { initialEditorState } from '../initial_editor_state'
-import { type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageEditorAction } from '#/split_view_editor/state/cross_language_state/cross_language_state_types'
-import { type EditorState, type EditorView } from '@/code_gen/typeshare/fluster_core_utilities'
-import { swiftActionReducer } from './swift_action_reducer'
-import { swiftBufferActionReducer } from './swift_buffer_action_reducer'
+import { type AnyCrossLanguageEditorAction } from '#/split_view_editor/state/cross_language_state/cross_language_state_types'
+import { type EditorView } from '@/code_gen/typeshare/fluster_core_utilities'
+import { swiftEditorActionReducer } from './swift_action_reducer'
+import { handleSwiftAction, handleSwiftBufferAction } from '#/webview_global_state/shared/webview_container_global_state/webview_container_slice'
+import { swiftEditorBufferActionReducer } from './swift_buffer_action_reducer'
 
 export interface CounterState {
     value: number
@@ -19,31 +20,26 @@ export const editorStateSlice = createSlice({
                 editorView: action.payload
             }
         },
-
-        /**
-         * This function is attached to the window and called directly to handle all editor state interactions from Swift.
-         */
-        handleSwiftAction: (state, action: PayloadAction<AnyCrossLanguageEditorAction>): EditorState => {
+        setEditorValue(state, action: PayloadAction<string>) {
             return {
-                ...swiftActionReducer(state, action)
-            }
-        },
-
-        handleSwiftBufferAction: (state, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): EditorState => {
-            return {
-                ...swiftBufferActionReducer(state, action)
-            }
-        },
-        handleEditorChange: (state, action: PayloadAction<string>) => {
-            state = {
                 ...state,
                 value: action.payload
             }
-        }
+        },
     },
+    extraReducers: (builder) => {
+        builder.addCase(handleSwiftAction, (state, action: PayloadAction<AnyCrossLanguageEditorAction>) => {
+            console.log("Handling swift action in extra reducer.")
+            return swiftEditorActionReducer(state, action)
+        })
+        builder.addCase(handleSwiftBufferAction, (state, action) => {
+            return swiftEditorBufferActionReducer(state, action)
+        })
+        return builder
+    }
 })
 
 // Action creators are generated for each case reducer function
-export const { handleSwiftAction, handleSwiftBufferAction, handleEditorChange, setEditorView } = editorStateSlice.actions
+export const { setEditorValue, setEditorView } = editorStateSlice.actions
 
 export default editorStateSlice.reducer

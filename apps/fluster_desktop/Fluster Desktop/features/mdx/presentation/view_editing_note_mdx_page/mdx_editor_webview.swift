@@ -38,6 +38,7 @@ struct MdxEditorWebview: View {
     EditorSaveMethod = .onChange
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
+  @AppStorage(AppStorageKeys.theme.rawValue) private var flusterTheme: FlusterTheme = .fluster
 
   init(editingNoteId: String?, webView: Binding<WKWebView>) {
     self.editingNoteId = editingNoteId
@@ -205,8 +206,8 @@ struct MdxEditorWebview: View {
       Task {
         do {
           try await en.preParse(modelContext: modelContext)
-         try await EditorState.setInitialEditorState(
-            payload: EditorInitialStatePayload(
+          try await EditorState.setInitialEditorState(
+            editorPayload: EditorInitialStatePayload(
               note_id: en.id,
               keymap: editorKeymap,
               theme: colorScheme == .dark ? editorThemeDark : editorThemeLight,
@@ -217,6 +218,9 @@ struct MdxEditorWebview: View {
               snippetProps: SnippetState(includeEmojiSnippets: true),
               lockEditorScrollToPreview: lockEditorScrollToPreview,
               saveMethod: editorSaveMethod),
+            containerPayload: WebviewContainerSharedInitialState(
+              environment: WebviewEnvironment.macOS, dark_mode: colorScheme == .dark,
+              implementation: WebviewImplementation.mdxEditor, fluster_theme: flusterTheme),
             eval: webView.evaluateJavaScript
           )
         } catch {
@@ -232,43 +236,37 @@ struct MdxEditorWebview: View {
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {
     switch handlerKey {
       case SplitviewEditorWebviewActions.onEditorChange.rawValue:
-        handleEditorChange(newValue: messageBody as! String)
+        if let jsonData = (messageBody as! String).data(using: .utf8) {
+          do {
+            let decoder = JSONDecoder()
+            let event = try decoder.decode(EditorChangeEvent.self, from: jsonData)
+            handleEditorChange(event: event)
+          } catch {
+            print("Failed to decode editor update: \(error)")
+          }
+        }
       case SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue:
         Task(priority: .userInitiated) {
           await onWebviewLoad()
         }
       case MdxPreviewWebviewActions.requestNoteData.rawValue:
-        if let en = editingNote {
-          Task(priority: .high) {
-            do {
-              try await self.setParsedEditorContentString(note: en)
-            } catch {
-              print("Error: \(error.localizedDescription)")
-            }
-          }
+        Task(priority: .high) {
+          await self.onWebviewLoad()
         }
       case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
         Task(priority: .high) {
-          if let en = editingNote {
-            do {
-              try await setParsedEditorContentString(
-                note: en
-              )
-            } catch {
-              print("Error: \(error.localizedDescription)")
-            }
-          }
+          await self.onWebviewLoad()
         }
       default:
         return
     }
   }
-  public func handleEditorChange(newValue: String) {
+  public func handleEditorChange(event: EditorChangeEvent) {
     // Don't worry about actually parsing the data. That's all
     // being handled by async tasks managed by SwiftUI for better
     // cancellation management, since it's running onChange.
-    if let en = editingNote {
-      en.markdown.body = newValue
+    if let en = editingNote, en.id == event.note_id {
+      en.markdown.body = event.content
       en.setLastRead(setModified: true)
     }
   }

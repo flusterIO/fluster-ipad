@@ -2,8 +2,10 @@ import { type AnyCrossLanguageBufferEditorAction } from "#/split_view_editor/sta
 import { OnParsedContentChangeEventBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 import { type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type PayloadAction } from "@reduxjs/toolkit";
+import consola from "consola";
 
-export const swiftBufferActionReducer = (state: EditorState, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): EditorState => {
+export const swiftEditorBufferActionReducer = (state: EditorState, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): EditorState => {
+    consola.info("Action: ", action)
     const x = OnParsedContentChangeEventBuffer.getRootAsOnParsedContentChangeEventBuffer(action.payload.payload)
     const parsedContent = x.parsedContent() ?? ""
     const citations: EditorState["citations"] = []
@@ -19,7 +21,9 @@ export const swiftBufferActionReducer = (state: EditorState, action: PayloadActi
             })
         }
     }
-    state.parsedValue = parsedContent;
-    state.citations = citations;
-    return state
+    return {
+        ...state,
+        parsedValue: parsedContent,
+        citations: citations
+    }
 }

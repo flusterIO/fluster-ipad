@@ -1,6 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { initialWebviewContainerState } from './initial_webview_container_state'
 import { type SizableOption, type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities'
+import { swiftContainerActionReducer } from './swift_action_reducer'
+import { type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageEditorAction } from '#/split_view_editor/state/cross_language_state/cross_language_state_types'
+import { swiftContainerBufferActionReducer } from './swifit_buffer_action_reducer'
 
 export interface CounterState {
     value: number
@@ -10,6 +13,16 @@ export const webviewContainerSlice = createSlice({
     name: 'editor',
     initialState: initialWebviewContainerState as WebviewContainerState,
     reducers: {
+
+        /**
+         * This function is attached to the window and called directly to handle all editor state interactions from Swift.
+         */
+        handleSwiftAction: (state, action: PayloadAction<AnyCrossLanguageEditorAction>): WebviewContainerState => {
+            return swiftContainerActionReducer(state, action)
+        },
+        handleSwiftBufferAction: (state, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): WebviewContainerState => {
+            return swiftContainerBufferActionReducer(state, action)
+        },
         setWasmLoaded(state) {
             return {
                 ...state,
@@ -32,6 +45,6 @@ export const webviewContainerSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setWasmLoaded, setDarkMode, setSize } = webviewContainerSlice.actions
+export const { setWasmLoaded, setDarkMode, setSize, handleSwiftAction, handleSwiftBufferAction } = webviewContainerSlice.actions
 
 export default webviewContainerSlice.reducer

@@ -10,7 +10,7 @@ import SwiftUI
 import FlusterData
 
 struct SettingsPageView: View {
-  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: WebViewTheme =
+  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
     .fluster
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
     var editorThemeDark: CodeEditorTheme = .dracula

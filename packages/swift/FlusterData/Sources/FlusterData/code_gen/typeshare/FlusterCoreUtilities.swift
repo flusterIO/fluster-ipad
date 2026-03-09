@@ -16,15 +16,48 @@ public struct CodeBlockParsingResult: Codable {
 	}
 }
 
-/// Basically a Partial<BibEntryModel> that's cross language, to be sent to the
-/// editor.
-public struct EditorCitation: Codable {
-	public let citation_key: String
-	public let html: String
+/// From typescript to swift.
+public enum WebviewEnvironment: String, Codable {
+	case macOS = "fluster-mac"
+	case iPad = "fluster-ipad"
+	case multiPlatformDesktop = "fluster-multi-platform-desktop"
+}
 
-	public init(citation_key: String, html: String) {
-		self.citation_key = citation_key
-		self.html = html
+public enum WebviewImplementation: String, Codable {
+	case bibEditor = "bib-editor"
+	case mdxEditor = "mdx-editor"
+	case mdxViewer = "mdx-viewer"
+	case development
+	case awaitingData = "pending"
+}
+
+public enum FlusterTheme: String, Codable, CaseIterable {
+	case zinc
+	case yellow
+	case violet
+	case fluster
+	case stone
+	case slate
+	case rose
+	case red
+	case orange
+	case neutral
+	case green
+	case gray
+	case blue
+}
+
+public struct WebviewContainerSharedInitialState: Codable {
+	public let environment: WebviewEnvironment
+	public let dark_mode: Bool
+	public let implementation: WebviewImplementation
+	public let fluster_theme: FlusterTheme
+
+	public init(environment: WebviewEnvironment, dark_mode: Bool, implementation: WebviewImplementation, fluster_theme: FlusterTheme) {
+		self.environment = environment
+		self.dark_mode = dark_mode
+		self.implementation = implementation
+		self.fluster_theme = fluster_theme
 	}
 }
 
@@ -86,6 +119,39 @@ public struct EditorInitialStatePayload: Codable {
 		self.snippetProps = snippetProps
 		self.lockEditorScrollToPreview = lockEditorScrollToPreview
 		self.saveMethod = saveMethod
+	}
+}
+
+public struct EditorBasedWebviewInitialState: Codable {
+	public let container: WebviewContainerSharedInitialState
+	public let editor: EditorInitialStatePayload
+
+	public init(container: WebviewContainerSharedInitialState, editor: EditorInitialStatePayload) {
+		self.container = container
+		self.editor = editor
+	}
+}
+
+public struct EditorChangeEvent: Codable {
+	public let note_id: String
+	/// The _unparsed_ content.
+	public let content: String
+
+	public init(note_id: String, content: String) {
+		self.note_id = note_id
+		self.content = content
+	}
+}
+
+/// Basically a Partial<BibEntryModel> that's cross language, to be sent to the
+/// editor.
+public struct EditorCitation: Codable {
+	public let citation_key: String
+	public let html: String
+
+	public init(citation_key: String, html: String) {
+		self.citation_key = citation_key
+		self.html = html
 	}
 }
 
@@ -173,9 +239,9 @@ public enum EditorStateActions: String, Codable {
 
 public struct SetEditorInitialStateEditorAction: Codable {
 	public let type: EditorStateActions
-	public let payload: EditorInitialStatePayload
+	public let payload: EditorBasedWebviewInitialState
 
-	public init(type: EditorStateActions, payload: EditorInitialStatePayload) {
+	public init(type: EditorStateActions, payload: EditorBasedWebviewInitialState) {
 		self.type = type
 		self.payload = payload
 	}
@@ -238,13 +304,6 @@ public struct SetParsedMdxContentEditorAction: Codable {
 	}
 }
 
-/// From typescript to swift.
-public enum WebviewEnvironment: String, Codable {
-	case macOS = "fluster-mac"
-	case iPad = "fluster-ipad"
-	case multiPlatformDesktop = "fluster-multi-platform-desktop"
-}
-
 public enum SizableOption: String, Codable {
 	case none
 	case small
@@ -257,27 +316,21 @@ public enum SizableOption: String, Codable {
 	case full
 }
 
-public enum CodeEditorImplementation: String, Codable {
-	case bibEditor = "bib-editor"
-	case mdxEditor = "mdx-editor"
-	case mdxViewer = "mdx-viewer"
-	case development
-	case awaitingData = "pending"
-}
-
 public struct WebviewContainerState: Codable {
 	public let environment: WebviewEnvironment?
 	public let size: SizableOption
 	public let wasm_loaded: Bool
 	public let dark_mode: Bool
-	public let editorImplementation: CodeEditorImplementation
+	public let implementation: WebviewImplementation
+	public let fluster_theme: FlusterTheme
 
-	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool, editorImplementation: CodeEditorImplementation) {
+	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool, implementation: WebviewImplementation, fluster_theme: FlusterTheme) {
 		self.environment = environment
 		self.size = size
 		self.wasm_loaded = wasm_loaded
 		self.dark_mode = dark_mode
-		self.editorImplementation = editorImplementation
+		self.implementation = implementation
+		self.fluster_theme = fluster_theme
 	}
 }
 

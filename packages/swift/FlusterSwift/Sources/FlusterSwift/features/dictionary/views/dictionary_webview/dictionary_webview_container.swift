@@ -48,7 +48,7 @@ public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebvie
   public func setInitialProperties(
     entries: [DictionaryEntryModel],
     codeEditorTheme: CodeEditorTheme,
-    theme: WebViewTheme,
+    theme: FlusterTheme,
     fontSize: WebviewFontSize,
     darkMode: Bool
   ) {

@@ -10,7 +10,7 @@ import SwiftUI
 import FlusterData
 
 struct ThemePickerView: View {
-  @Binding var theme: WebViewTheme
+  @Binding var theme: FlusterTheme
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
   @Environment(\.colorScheme) var colorScheme
 

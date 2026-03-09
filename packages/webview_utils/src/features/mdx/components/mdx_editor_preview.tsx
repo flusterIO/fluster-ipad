@@ -1,13 +1,11 @@
-import React, { type HTMLProps, useEffect, useId, useRef, type ReactNode } from "react";
+import React, { type HTMLProps, useId, useRef, type ReactNode } from "react";
 import { MdxContent } from "./mdx_content";
 import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { type EditorState, MdxPreviewWebviewActions, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
-import { setBodyLoading } from "./editor_dom_utils";
+import { type EditorState, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/swift_events";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
 import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
@@ -17,11 +15,10 @@ import { connect } from "react-redux";
 setWindowBridgeFunctions();
 
 
-export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id">
+export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
 
 const connector = connect((state: MdxEditorAppState) => ({
     parsedValue: state.editor.parsedValue,
-    value: state.editor.value,
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview
 }))
 
@@ -33,10 +30,9 @@ const connector = connect((state: MdxEditorAppState) => ({
 export const MdxEditorPreview = connector(({
     className,
     parsedValue,
-    value,
     lockEditorScrollToPreview,
     ...props
-}: MdxEditorPreviewProps & Pick<EditorState, "lockEditorScrollToPreview" | "parsedValue" | "value">): ReactNode => {
+}: MdxEditorPreviewProps & Pick<EditorState, "lockEditorScrollToPreview" | "parsedValue">): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
     const id = useId()
 
@@ -56,13 +52,13 @@ export const MdxEditorPreview = connector(({
         ref.current.scrollTop = newProp
     })
 
-    useEffect(() => {
-        if (typeof parsedValue === "string") {
-            setBodyLoading(false)
-        } else {
-            sendToSwift(MdxPreviewWebviewActions.RequestNoteData)
-        }
-    }, [parsedValue, value])
+    /* useEffect(() => { */
+    /*     if (typeof parsedValue === "string") { */
+    /*         setBodyLoading(false) */
+    /*     } else { */
+    /*         sendToSwift(MdxPreviewWebviewActions.RequestNoteData) */
+    /*     } */
+    /* }, [parsedValue, value]) */
 
 
     if (typeof parsedValue !== "string") {
