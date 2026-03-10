@@ -6,6 +6,7 @@
 //
 
 import FlusterData
+import FlusterSwift
 import SwiftUI
 
 struct NoteDashboardItem: View {
@@ -25,7 +26,7 @@ struct NoteDashboardItem: View {
         .foregroundStyle(.white)
         .padding(.trailing, 16)
       VStack(alignment: .leading) {
-        Text(item.markdown.title ?? item.frontMatter.title ?? "No title")
+        MarkdownTextView(item.getPreferedTitle(), .inlineOnly)
           .font(.headline)
         NoteDashboardBottomRow(
           item: item,

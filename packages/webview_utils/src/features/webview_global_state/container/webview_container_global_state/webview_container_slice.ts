@@ -3,7 +3,7 @@ import { initialWebviewContainerState } from './initial_webview_container_state'
 import { type SizableOption, type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities'
 import { swiftContainerActionReducer } from './swift_action_reducer'
 import { type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageEditorAction } from '#/split_view_editor/state/cross_language_state/cross_language_state_types'
-import { swiftContainerBufferActionReducer } from './swifit_buffer_action_reducer'
+import { swiftContainerBufferActionReducer } from './swift_buffer_action_reducer'
 
 export interface CounterState {
     value: number

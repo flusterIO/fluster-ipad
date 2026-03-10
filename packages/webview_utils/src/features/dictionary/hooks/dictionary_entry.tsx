@@ -1,8 +1,8 @@
 import { EditorClient } from '#/editor/code_editor/data/editor_client';
 import { shrinkMdxClasses } from '#/mdx/components/inline_mdx_classes';
-import { MdxContentProps } from '#/mdx/components/mdx_content_types';
+import { type MdxContentProps } from '#/mdx/components/mdx_content_types';
 import { cn } from '@/utils/cn';
-import React, { FC, type ReactNode } from 'react'
+import React, { type FC, type ReactNode } from 'react'
 
 
 interface DictionaryEntryComponentProps {

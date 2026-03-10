@@ -8,4 +8,4 @@ export const swiftContainerBufferActionReducer = (state: WebviewContainerState, 
     return {
         ...state
     }
-    }
+}

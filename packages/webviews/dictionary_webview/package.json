@@ -49,6 +49,7 @@
     "@citedrive/codemirror-lang-bibtex": "6.4.1",
     "@fluster/webview_utils": "workspace:*",
     "autoprefixer": "10.4.21",
+    "flatbuffers": "25.9.23",
     "postcss": "8.5.3",
     "react": "19.2.0",
     "react-dom": "19.2.0"

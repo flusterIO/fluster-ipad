@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
+    type AnyCrossLanguageBufferEditorAction,
+    type AnyCrossLanguageEditorAction,
+    createFlusterStore,
+    handleSwiftAction,
+    handleSwiftBufferAction,
     LoadingComponent,
+    MdxEditorGlobalProvider,
     MdxSerialization,
     NoteDetailSheet,
     NoteDetailWebviewActions,
@@ -12,6 +18,40 @@ import {
 import "../../../webview_utils/dist/styles.css";
 import "./index.css";
 import { ByteBuffer } from "flatbuffers";
+
+const storeData = createFlusterStore();
+
+declare global {
+    interface Window {
+        handleEditorStateParsedContentUpdate: (data: number[]) => void;
+        handleSwiftAction: typeof handleSwiftActionWrapper;
+        handleSwiftBufferAction: typeof handleSwiftBufferActionWrapper;
+    }
+}
+
+const handleSwiftActionWrapper = (actionString: string): void => {
+    const action = JSON.parse(actionString) as AnyCrossLanguageEditorAction;
+    storeData.store.dispatch(handleSwiftAction(action));
+};
+
+window.handleSwiftAction = handleSwiftActionWrapper;
+
+const handleSwiftBufferActionWrapper = (
+    actionKey: AnyCrossLanguageBufferEditorAction["type"],
+    payloadBuffer: number[],
+): void => {
+    const data = Uint8Array.from(payloadBuffer);
+    const buf = new ByteBuffer(data);
+
+    storeData.store.dispatch(
+        handleSwiftBufferAction({
+            type: actionKey,
+            payload: buf,
+        }),
+    );
+};
+
+window.handleSwiftBufferAction = handleSwiftBufferActionWrapper;
 
 function App() {
     const [data, setData] =
@@ -37,15 +77,20 @@ function App() {
     }, [data]);
 
     return (
-        <WebViewContainer contentContainerClasses="h-full">
-            {data ? (
-                <NoteDetailSheet data={data} />
-            ) : (
-                <div className="w-full h-full flex flex-col justify-center items-center loading-show">
-                    <LoadingComponent />
-                </div>
-            )}
-        </WebViewContainer>
+        <MdxEditorGlobalProvider
+            store={storeData.store}
+            persistor={storeData.persistor}
+        >
+            <WebViewContainer contentContainerClasses="h-full">
+                {data ? (
+                    <NoteDetailSheet data={data} />
+                ) : (
+                    <div className="w-full h-full flex flex-col justify-center items-center loading-show">
+                        <LoadingComponent />
+                    </div>
+                )}
+            </WebViewContainer>
+        </MdxEditorGlobalProvider>
     );
 }
 

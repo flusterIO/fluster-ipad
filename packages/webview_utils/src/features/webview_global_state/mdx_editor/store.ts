@@ -2,9 +2,9 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import editorReducer from './state/editor_state_slice'
 import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer, type PersistConfig } from "redux-persist"
-import webviewContainerReducer from '../shared/webview_container_global_state/webview_container_slice';
+import webviewContainerReducer from '../container/webview_container_global_state/webview_container_slice';
 import { type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities';
-import { darkModeListenerMiddleware } from '../shared/webview_container_global_state/side_effects/dark_mode_side_effect';
+import { darkModeListenerMiddleware } from '../container/webview_container_global_state/side_effects/dark_mode_side_effect';
 import { type EditorState } from '@codemirror/state';
 import { emptyValueListenerMiddleware } from "./side_effects/empty_editor_value_side_effect"
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'

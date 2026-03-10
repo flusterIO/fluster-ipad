@@ -5,14 +5,16 @@ import path from "path";
 interface Replacer {
     query: string;
     replaceWith: string;
+    dontPanicIfExists?: string[];
 }
 
 const replacers: Record<string, Replacer[]> = {
     "packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare/FlusterCoreUtilities.swift":
         [
             {
-                query: "public struct EditorChangeEvent",
-                replaceWith: "public struct EditorChangeEvent: Codable"
+                query: "public struct EditorChangeEvent {",
+                dontPanicIfExists: ["public struct EditorChangeEvent: Codable {"],
+                replaceWith: "public struct EditorChangeEvent: Codable {",
             },
             {
                 query: `public enum CodeEditorTheme: String, Codable {`,
@@ -37,10 +39,16 @@ export const replaceStuff = (replacers: Replacer[], filePath: string) => {
 
     console.log("content: ", content);
     for (const replacer of replacers) {
-        assert(
-            content.includes(replacer.query),
-            `Attempted to modify generated content that doesn't exist: ${replacer.query}`,
-        );
+        const queryExists = content.includes(replacer.query);
+        if (
+            !queryExists &&
+            !replacer.dontPanicIfExists?.some((item) => content.includes(item))
+        ) {
+            assert(
+                queryExists,
+                `Attempted to modify generated content that doesn't exist: ${replacer.query}`,
+            );
+        }
         content = content.replaceAll(replacer.query, replacer.replaceWith);
     }
 

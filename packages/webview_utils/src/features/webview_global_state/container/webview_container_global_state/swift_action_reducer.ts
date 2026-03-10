@@ -1,5 +1,5 @@
 import { type AnyCrossLanguageEditorAction } from "#/split_view_editor/state/cross_language_state/cross_language_state_types";
-import { EditorStateActions, type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { EditorStateActions, WebviewContainerActions, type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { consola } from "consola"
 import { type PayloadAction } from "@reduxjs/toolkit";
 
@@ -10,10 +10,22 @@ export const swiftContainerActionReducer = (state: WebviewContainerState, action
         case EditorStateActions.SetInitialEditorState: {
             return {
                 ...state,
-                ...action.payload.payload.container
+                ...action.payload.payload
+            }
+        }
+        case WebviewContainerActions.SetDarkMode: {
+            return {
+                ...state,
+                dark_mode: action.payload.payload.dark_mode
+            }
+        }
+        case WebviewContainerActions.SetFlusterTheme: {
+            return {
+                ...state,
+                fluster_theme: action.payload.payload.fluster_theme
             }
         }
         default:
             return { ...state }
     }
-    }
+}

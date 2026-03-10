@@ -1,7 +1,9 @@
+// DEPRECATED: This whole file is abondoned for Redux.
+
 import { isWebviewOfEnv } from "#/mdx/components/editor_dom_utils";
 import { SerializedString } from "@/code_gen/flat_buffer/shared-webview-data";
 import { GetSnippetPropsBuffer } from "@/code_gen/flat_buffer/snippets";
-import { CodeEditorKeymap, CodeEditorTheme, SharedWebviewEvents, SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type CodeEditorKeymap, type CodeEditorTheme, type SharedWebviewEvents, SplitviewEditorWebviewEvents, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
 import { ByteBuffer } from "flatbuffers";
 
 export interface SwiftEventMap {

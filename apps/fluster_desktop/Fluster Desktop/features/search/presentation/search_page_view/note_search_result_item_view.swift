@@ -6,6 +6,7 @@
 //
 
 import FlusterData
+import FlusterSwift
 import SwiftUI
 
 struct NoteSearchResultItemView: View {
@@ -19,7 +20,7 @@ struct NoteSearchResultItemView: View {
     DefaultNoteView = .markdown
   var body: some View {
     VStack(alignment: .leading) {
-      Text(item.frontMatter.title ?? item.markdown.title ?? "No Title Found")
+      MarkdownTextView(item.getPreferedTitle(), .inlineOnly)
         .font(.title2)
       if let summary = item.frontMatter.summary?.body, !summary.isEmpty {
         Text(summary)

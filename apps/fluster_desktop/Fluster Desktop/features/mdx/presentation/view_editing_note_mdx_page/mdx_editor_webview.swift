@@ -39,6 +39,8 @@ struct MdxEditorWebview: View {
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
   @AppStorage(AppStorageKeys.theme.rawValue) private var flusterTheme: FlusterTheme = .fluster
+  @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets: Bool =
+    true
 
   init(editingNoteId: String?, webView: Binding<WKWebView>) {
     self.editingNoteId = editingNoteId
@@ -215,7 +217,7 @@ struct MdxEditorWebview: View {
               value: en.markdown.body,
               parsedValue: en.markdown.preParsedBody ?? "",
               haveSetInitialValue: true,
-              snippetProps: SnippetState(includeEmojiSnippets: true),
+              snippetProps: SnippetState(includeEmojiSnippets: includeEmojiSnippets),
               lockEditorScrollToPreview: lockEditorScrollToPreview,
               saveMethod: editorSaveMethod),
             containerPayload: WebviewContainerSharedInitialState(
@@ -261,6 +263,7 @@ struct MdxEditorWebview: View {
         return
     }
   }
+
   public func handleEditorChange(event: EditorChangeEvent) {
     // Don't worry about actually parsing the data. That's all
     // being handled by async tasks managed by SwiftUI for better
@@ -272,16 +275,10 @@ struct MdxEditorWebview: View {
   }
 
   func setSnippetProps() async throws {
-    var builder = FlatBufferBuilder(initialSize: 1024)
-    let ctiationIdsVectorOffset = builder.createVector(
-      ofStrings: bibEntries.compactMap(\.citationKey))
-    let data = Snippets_GetSnippetPropsBuffer.createGetSnippetPropsBuffer(
-      &builder, citationIdsVectorOffset: ctiationIdsVectorOffset)
-    builder.finish(offset: data)
-    try await webView.evaluateJavaScript(
-      """
-      window.setSnippetProps(\(builder.sizedByteArray))
-      """)
+    try await EditorState.setSnippetProps(
+      payload: SetSnippetPropsPayload(
+        snippetProps: SnippetState(includeEmojiSnippets: includeEmojiSnippets)),
+      eval: webView.evaluateJavaScript)
   }
 }
 

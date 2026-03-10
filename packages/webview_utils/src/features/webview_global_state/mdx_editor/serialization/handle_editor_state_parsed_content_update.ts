@@ -2,6 +2,7 @@ import { OnParsedContentChangeEventBuffer } from "@/code_gen/flat_buffer/mdx-ser
 import { type EditorState } from "@/code_gen/typeshare/fluster_core_utilities"
 import { ByteBuffer } from "flatbuffers"
 
+
 export const handleEditorStateParsedContentUpdate = (payload: number[]): void => {
     const data = Uint8Array.from(payload)
     const buf = new ByteBuffer(data)

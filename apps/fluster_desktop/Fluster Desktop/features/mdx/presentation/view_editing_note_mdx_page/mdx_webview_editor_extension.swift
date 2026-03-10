@@ -30,8 +30,7 @@ extension MdxEditorWebview {
       editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func setCodeEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
-    try await MdxEditorClient.setEditorKeymap(
-      keymap: editorKeymap, evaluateJavaScript: webView.evaluateJavaScript)
+    try await EditorState.setEditorKeymap(keymap: editorKeymap, eval: webView.evaluateJavaScript)
   }
   func setEditorContent(note: NoteModel) async throws {
     try await MdxEditorClient.setEditorContent(

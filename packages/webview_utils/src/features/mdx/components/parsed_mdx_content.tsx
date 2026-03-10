@@ -1,9 +1,9 @@
-import React, { HTMLProps, useEffect, useRef, useState } from "react";
+import React, { type HTMLProps, useEffect, useRef, useState } from "react";
 import { useComponentMap } from "../hooks/use_component_map";
-import { MDXComponents, type MDXContent } from "mdx/types";
+import { type MDXComponents, type MDXContent } from "mdx/types";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { type AnyWebviewAction } from "@/utils/types/any_window_event";
-import { ComponentMapItem, getComponentMap } from "../methods/get_component_map";
+import { type ComponentMapItem, getComponentMap } from "../methods/get_component_map";
 import { LoadingComponent } from "@/shared_components/loading_component";
 
 interface Props {
@@ -25,7 +25,6 @@ export const ParsedMdxContent = ({
 }: Props) => {
     /* const componentMap = useComponentMap(raw, additionalComponents); */
     const [components, setComponents] = useState<MDXComponents | null>(null)
-    const timer = useRef<NodeJS.Timeout | null>(null)
     useEffect(() => {
         const handleComponentMap = async (): Promise<void> => {
             setComponents(null)
@@ -45,7 +44,7 @@ export const ParsedMdxContent = ({
         if (showWebviewHandler) {
             sendToSwift(showWebviewHandler);
         }
-        /* eslint-disable-next-line  -- Don't actually want this to run on change of orientation... just the original */
+
     }, [MdxContentComponent, scrollPositionKey])
     if (!components) {
         return (

@@ -1,8 +1,8 @@
 import React from "react";
-import { FC } from "react";
+import { type FC } from "react";
 import { H1, H2, H3, H4, P } from "@/shared_components/typography/typography";
 import { BlockQuote } from "@/shared_components/typography/block_quote";
-import { MDXComponents } from "mdx/types";
+import { type MDXComponents } from "mdx/types";
 import { MdxInput } from "../embeddable_mdx_components/html/input";
 import { AnchorTag } from "../embeddable_mdx_components/html/anchor";
 import { Hl } from "../embeddable_mdx_components/hl/hl";
@@ -10,7 +10,7 @@ import { InlineMdxContent } from "../components/inline_mdx_content";
 import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
-import { DocumentationComponentName, EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
+import { DocumentationComponentName, type EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
 import { admonitionComponentNames } from "../embeddable_mdx_components/admonition/admonition_component_config";
 import { cardComponentNames } from "../embeddable_mdx_components/card/embeddable_card_component_config";
 import { gridComponentNames } from "../embeddable_mdx_components/grid/embeddable_responsive_grid_component_config";
@@ -255,7 +255,8 @@ const items: ComponentMapItem[] = [
         query: [AutoInsertedComponentName.DictionaryEntry],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
-            return import("../../dictionary/hooks/dictionary_entry").then((a) => a.DictionaryEntryComponent)
+            const Comp = await import("../../dictionary/hooks/dictionary_entry").then((a) => a.DictionaryEntryComponent)
+            return (p) => <Comp {...p} InlineMdxContent={InlineMdxContent} />
         }
     },
     {

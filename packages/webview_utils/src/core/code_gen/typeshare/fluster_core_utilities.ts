@@ -167,9 +167,56 @@ export interface ManualSaveRequestEvent {
 export enum EditorStateActions {
 	SetEditorSaveMethod = "set-editor-save-method",
 	SetInitialEditorState = "set-initial-editor-state",
-	/** This is the 'onChange' method that's executed _after_ the content is parsed. */
 	SetParsedEditorContent = "set-parsed-editor-content",
 	SetEditorKeymap = "set-initial-editor-keymap",
+	SetEditorTheme = "set-editor-theme",
+	SetAutoSaveTimeout = "set-autosave-timeout",
+	SetBaseKeymap = "set-base-keymap",
+	SetEditorTags = "set-editor-tags",
+	SetAllCitationIds = "set-all-citation-ids",
+	SetLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev",
+	SetSnippetProps = "set-snippet-props",
+}
+
+export interface SetAllCitationIdsPayload {
+	all_citation_ids: string[];
+}
+
+export interface SetAllCitationIdsAction {
+	type: EditorStateActions;
+	payload: SetAllCitationIdsPayload;
+}
+
+export interface SetAutoSaveTimeoutPayload {
+	auto_save_timeout: number;
+}
+
+export interface SetAutoSaveTimeoutAction {
+	type: EditorStateActions;
+	payload: SetAutoSaveTimeoutPayload;
+}
+
+export interface SetBaseKeymapPayload {
+	base_keymap: CodeEditorBaseKeymap;
+}
+
+export interface SetBaseKeymapAction {
+	type: EditorStateActions;
+	payload: SetBaseKeymapPayload;
+}
+
+export enum WebviewContainerActions {
+	SetFlusterTheme = "set-fluster-theme",
+	SetDarkMode = "set-dark-mode",
+}
+
+export interface SetDarkModePayload {
+	dark_mode: boolean;
+}
+
+export interface SetDarkModeAction {
+	type: WebviewContainerActions;
+	payload: SetDarkModePayload;
 }
 
 export interface SetEditorInitialStateEditorAction {
@@ -191,6 +238,15 @@ export interface SetEditorSaveMethodEditorAction {
 	payload: EditorSaveMethod;
 }
 
+export interface SetEditorTagsPayload {
+	tags: EditorTag[];
+}
+
+export interface SetEditorTagsAction {
+	type: EditorStateActions;
+	payload: SetEditorTagsPayload;
+}
+
 export interface SetEditorThemePayload {
 	theme: CodeEditorTheme;
 }
@@ -200,10 +256,37 @@ export interface SetEditorThemeAction {
 	payload: SetEditorThemePayload;
 }
 
+export interface SetFlusterThemePayload {
+	fluster_theme: FlusterTheme;
+}
+
+export interface SetFlusterThemeAction {
+	type: WebviewContainerActions;
+	payload: SetFlusterThemePayload;
+}
+
+export interface SetLockEditorScrollToPreviewPayload {
+	lock_editor_scroll_to_preview: boolean;
+}
+
+export interface SetLockEditorScrollToPreviewAction {
+	type: EditorStateActions;
+	payload: SetLockEditorScrollToPreviewPayload;
+}
+
 export interface SetParsedMdxContentEditorAction {
 	type: EditorStateActions;
 	/** The serialized flatbuffer for the OnParsedContentChangeEventBuffer table. */
 	payload: number[];
+}
+
+export interface SetSnippetPropsPayload {
+	snippetProps: SnippetState;
+}
+
+export interface SetSnippetPropsAction {
+	type: EditorStateActions;
+	payload: SetSnippetPropsPayload;
 }
 
 export enum SizableOption {

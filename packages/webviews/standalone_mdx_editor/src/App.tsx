@@ -1,12 +1,61 @@
-import { CodeEditor, WebViewContainer } from "@fluster/webview_utils";
+import {
+    type AnyCrossLanguageBufferEditorAction,
+    type AnyCrossLanguageEditorAction,
+    CodeEditor,
+    createFlusterStore,
+    handleSwiftAction,
+    handleSwiftBufferAction,
+    MdxEditorGlobalProvider,
+    WebViewContainer,
+} from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
 import React from "react";
+import { ByteBuffer } from "flatbuffers";
+
+const storeData = createFlusterStore();
+
+declare global {
+    interface Window {
+        handleEditorStateParsedContentUpdate: (data: number[]) => void;
+        handleSwiftAction: typeof handleSwiftActionWrapper;
+        handleSwiftBufferAction: typeof handleSwiftBufferActionWrapper;
+    }
+}
+
+const handleSwiftActionWrapper = (actionString: string): void => {
+    const action = JSON.parse(actionString) as AnyCrossLanguageEditorAction;
+    storeData.store.dispatch(handleSwiftAction(action));
+};
+
+window.handleSwiftAction = handleSwiftActionWrapper;
+
+const handleSwiftBufferActionWrapper = (
+    actionKey: AnyCrossLanguageBufferEditorAction["type"],
+    payloadBuffer: number[],
+): void => {
+    const data = Uint8Array.from(payloadBuffer);
+    const buf = new ByteBuffer(data);
+
+    storeData.store.dispatch(
+        handleSwiftBufferAction({
+            type: actionKey,
+            payload: buf,
+        }),
+    );
+};
+
+window.handleSwiftBufferAction = handleSwiftBufferActionWrapper;
 
 function App() {
     return (
-        <WebViewContainer>
-            <CodeEditor />
-        </WebViewContainer>
+        <MdxEditorGlobalProvider
+            store={storeData.store}
+            persistor={storeData.persistor}
+        >
+            <WebViewContainer>
+                <CodeEditor />
+            </WebViewContainer>
+        </MdxEditorGlobalProvider>
     );
 }
 

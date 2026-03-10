@@ -1,6 +1,8 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, SetAutoSaveTimeoutPayload, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeAction } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type ByteBuffer } from "flatbuffers";
 
+
+// -- Editor --
 
 interface EditorSaveActionRefined extends SetEditorSaveMethodEditorAction {
     type: EditorStateActions.SetEditorSaveMethod
@@ -10,7 +12,51 @@ interface EditorInitialStateActionRefined extends SetEditorInitialStateEditorAct
     type: EditorStateActions.SetInitialEditorState,
 }
 
-export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined;
+
+interface SetEditorKeymapActionRefined extends SetEditorKeymapAction {
+    type: EditorStateActions.SetEditorKeymap
+}
+
+
+interface SetAllCitationIdsRefined extends SetAllCitationIdsAction {
+    type: EditorStateActions.SetAllCitationIds
+}
+
+interface SetAutoSaveTimeoutActionRefined extends SetAutoSaveTimeoutAction {
+    type: EditorStateActions.SetAutoSaveTimeout
+}
+interface SetBaseKeymapActionRefined extends SetBaseKeymapAction {
+    type: EditorStateActions.SetBaseKeymap
+}
+interface SetLockEditorScrollToPrevActionRefined extends SetLockEditorScrollToPreviewAction {
+    type: EditorStateActions.SetLockEditorScrollToPreview
+}
+interface SetSnippetPropsActionRefined extends SetSnippetPropsAction {
+    type: EditorStateActions.SetSnippetProps
+}
+interface SetEditorTagsActionRefined extends SetEditorTagsAction {
+    type: EditorStateActions.SetEditorTags
+}
+interface SetEditorThemeActionRefined extends SetEditorThemeAction {
+    type: EditorStateActions.SetEditorTheme
+}
+
+
+// -- Container --
+
+interface SetDarkModeActionRefined extends SetDarkModeAction {
+    type: WebviewContainerActions.SetDarkMode
+}
+
+interface SetFlusterThemeActionRefined extends SetFlusterThemeAction {
+    type: WebviewContainerActions.SetFlusterTheme
+}
+
+
+
+
+
+export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetDarkModeActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetFlusterThemeActionRefined | SetEditorThemeActionRefined;
 
 export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction
 

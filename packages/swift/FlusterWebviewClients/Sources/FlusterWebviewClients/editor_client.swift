@@ -27,17 +27,6 @@ public struct MdxEditorClient {
       )
       """)
   }
-  public static func setEditorKeymap(
-    keymap: CodeEditorKeymap, evaluateJavaScript: @escaping EvalJavascriptFunc
-  )
-    async throws
-  {
-    try await EditorState.setEditorKeymap(keymap: keymap, eval: evaluateJavaScript)
-    //    try await evaluateJavaScript(
-    //      """
-    //      window.setEditorKeymap("\(keymap.rawValue)")
-    //      """)
-  }
   public static func setEditorThemeLight(
     editorTheme: CodeEditorTheme, evaluateJavaScript: EvalJavascriptFunc
   ) async throws {

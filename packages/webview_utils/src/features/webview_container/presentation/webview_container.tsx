@@ -11,7 +11,7 @@ import {
 import { type AnyWebviewAction } from "@/utils/types/any_window_event";
 import { getSmallestSizableBreakpointByWidth } from "#/mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props";
 import { setEditorView } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
-import { setSize } from "#/webview_global_state/shared/webview_container_global_state/webview_container_slice";
+import { setSize } from "#/webview_global_state/container/webview_container_global_state/webview_container_slice";
 import { SplitviewEditorDomIds, SizableOption, type WebviewContainerState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useDispatch } from "react-redux";

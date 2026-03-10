@@ -82,4 +82,16 @@ extension EditorState {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }
   }
+
+  public static func setSnippetProps(
+    payload: SetSnippetPropsPayload, eval: @escaping EvalJavascriptFunc
+  )
+    async throws
+  {
+    let action = SetSnippetPropsAction(
+      type: EditorStateActions.setSnippetProps, payload: payload)
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
 }

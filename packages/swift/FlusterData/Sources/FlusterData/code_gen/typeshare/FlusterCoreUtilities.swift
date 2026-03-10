@@ -232,9 +232,92 @@ public struct ManualSaveRequestEvent: Codable {
 public enum EditorStateActions: String, Codable {
 	case setEditorSaveMethod = "set-editor-save-method"
 	case setInitialEditorState = "set-initial-editor-state"
-	/// This is the 'onChange' method that's executed _after_ the content is parsed.
 	case setParsedEditorContent = "set-parsed-editor-content"
 	case setEditorKeymap = "set-initial-editor-keymap"
+	case setEditorTheme = "set-editor-theme"
+	case setAutoSaveTimeout = "set-autosave-timeout"
+	case setBaseKeymap = "set-base-keymap"
+	case setEditorTags = "set-editor-tags"
+	case setAllCitationIds = "set-all-citation-ids"
+	case setLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev"
+	case setSnippetProps = "set-snippet-props"
+}
+
+public struct SetAllCitationIdsPayload: Codable {
+	public let all_citation_ids: [String]
+
+	public init(all_citation_ids: [String]) {
+		self.all_citation_ids = all_citation_ids
+	}
+}
+
+public struct SetAllCitationIdsAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetAllCitationIdsPayload
+
+	public init(type: EditorStateActions, payload: SetAllCitationIdsPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetAutoSaveTimeoutPayload: Codable {
+	public let auto_save_timeout: UInt32
+
+	public init(auto_save_timeout: UInt32) {
+		self.auto_save_timeout = auto_save_timeout
+	}
+}
+
+public struct SetAutoSaveTimeoutAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetAutoSaveTimeoutPayload
+
+	public init(type: EditorStateActions, payload: SetAutoSaveTimeoutPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetBaseKeymapPayload: Codable {
+	public let base_keymap: CodeEditorBaseKeymap
+
+	public init(base_keymap: CodeEditorBaseKeymap) {
+		self.base_keymap = base_keymap
+	}
+}
+
+public struct SetBaseKeymapAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetBaseKeymapPayload
+
+	public init(type: EditorStateActions, payload: SetBaseKeymapPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public enum WebviewContainerActions: String, Codable {
+	case setFlusterTheme = "set-fluster-theme"
+	case setDarkMode = "set-dark-mode"
+}
+
+public struct SetDarkModePayload: Codable {
+	public let dark_mode: Bool
+
+	public init(dark_mode: Bool) {
+		self.dark_mode = dark_mode
+	}
+}
+
+public struct SetDarkModeAction: Codable {
+	public let type: WebviewContainerActions
+	public let payload: SetDarkModePayload
+
+	public init(type: WebviewContainerActions, payload: SetDarkModePayload) {
+		self.type = type
+		self.payload = payload
+	}
 }
 
 public struct SetEditorInitialStateEditorAction: Codable {
@@ -275,6 +358,24 @@ public struct SetEditorSaveMethodEditorAction: Codable {
 	}
 }
 
+public struct SetEditorTagsPayload: Codable {
+	public let tags: [EditorTag]
+
+	public init(tags: [EditorTag]) {
+		self.tags = tags
+	}
+}
+
+public struct SetEditorTagsAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetEditorTagsPayload
+
+	public init(type: EditorStateActions, payload: SetEditorTagsPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
 public struct SetEditorThemePayload: Codable {
 	public let theme: CodeEditorTheme
 
@@ -293,12 +394,66 @@ public struct SetEditorThemeAction: Codable {
 	}
 }
 
+public struct SetFlusterThemePayload: Codable {
+	public let fluster_theme: FlusterTheme
+
+	public init(fluster_theme: FlusterTheme) {
+		self.fluster_theme = fluster_theme
+	}
+}
+
+public struct SetFlusterThemeAction: Codable {
+	public let type: WebviewContainerActions
+	public let payload: SetFlusterThemePayload
+
+	public init(type: WebviewContainerActions, payload: SetFlusterThemePayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetLockEditorScrollToPreviewPayload: Codable {
+	public let lock_editor_scroll_to_preview: Bool
+
+	public init(lock_editor_scroll_to_preview: Bool) {
+		self.lock_editor_scroll_to_preview = lock_editor_scroll_to_preview
+	}
+}
+
+public struct SetLockEditorScrollToPreviewAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetLockEditorScrollToPreviewPayload
+
+	public init(type: EditorStateActions, payload: SetLockEditorScrollToPreviewPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
 public struct SetParsedMdxContentEditorAction: Codable {
 	public let type: EditorStateActions
 	/// The serialized flatbuffer for the OnParsedContentChangeEventBuffer table.
 	public let payload: [UInt8]
 
 	public init(type: EditorStateActions, payload: [UInt8]) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetSnippetPropsPayload: Codable {
+	public let snippetProps: SnippetState
+
+	public init(snippetProps: SnippetState) {
+		self.snippetProps = snippetProps
+	}
+}
+
+public struct SetSnippetPropsAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetSnippetPropsPayload
+
+	public init(type: EditorStateActions, payload: SetSnippetPropsPayload) {
 		self.type = type
 		self.payload = payload
 	}

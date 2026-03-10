@@ -1,5 +1,11 @@
+pub mod set_all_citation_ids;
+pub mod set_auto_save_timeout;
+pub mod set_base_keymap;
 pub mod set_editor_initial_state;
 pub mod set_editor_keymap;
 pub mod set_editor_save_method;
 pub mod set_editor_theme;
+pub mod set_lock_editor_scroll;
 pub mod set_parsed_mdx_content;
+pub mod set_snippet_props;
+pub mod set_tags;

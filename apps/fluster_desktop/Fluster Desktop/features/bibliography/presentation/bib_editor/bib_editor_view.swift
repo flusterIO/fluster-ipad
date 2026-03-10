@@ -23,7 +23,8 @@ struct BibtexEditorWebview: View {
   @Environment(\.modelContext) private var modelContext: ModelContext
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @Environment(\.dismiss) private var dismiss
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
+    .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
     CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
@@ -171,8 +172,7 @@ struct BibtexEditorWebview: View {
       editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
   }
   func setEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
-    try await MdxEditorClient.setEditorKeymap(
-      keymap: editorKeymap, evaluateJavaScript: webView.evaluateJavaScript)
+    try await EditorState.setEditorKeymap(keymap: editorKeymap, eval: webView.evaluateJavaScript)
   }
   func handleEditorChange(newValue: String) {
     if let ei = editingItem {

@@ -18,5 +18,7 @@ public enum AppStorageKeys: String {
     silenceParsingErrors,
     lockEditorScrollToPreview,
     embeddedCslFile,
-    editorSaveMethod
+    editorSaveMethod,
+    // Snippets
+    includeEmojiSnippets
 }

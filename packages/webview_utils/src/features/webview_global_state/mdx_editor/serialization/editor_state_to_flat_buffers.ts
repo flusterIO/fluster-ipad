@@ -1,5 +1,5 @@
 import { EditorCitationReflection, EditorSaveMethodReflection, EditorStateReflection, EditorTagReflection, EditorViewReflection, SnippetStateReflection } from "@/code_gen/flat_buffer/state-reflection";
-import { EditorSaveMethod, EditorState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
+import { EditorSaveMethod, type EditorState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
 import { Builder } from "flatbuffers";
 
 
