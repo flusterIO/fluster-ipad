@@ -30,7 +30,7 @@ import { useDispatch } from 'react-redux';
 import { connect } from "react-redux"
 import { setEditorValue } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
 import { type MdxEditorAppState } from "#/webview_global_state/store";
-import { sendSplitviewNotificationBanner } from "#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner";
+import { useSendNotificationBanner } from "#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner";
 
 const connector = connect((state: MdxEditorAppState) => ({
     baseKeymap: state.editor.baseKeymap,
@@ -76,8 +76,7 @@ export const CodeEditorInner = connector(({
     const timer = useRef<NodeJS.Timeout | null>(null);
     const viewRef = useRef<EditorView | null>(null)
     const dispatch = useDispatch()
-
-
+    const sendSplitviewNotificationBanner = useSendNotificationBanner()
 
     useEffect(() => {
         const em = document.getElementById(containerId);
@@ -181,7 +180,7 @@ export const CodeEditorInner = connector(({
             history(),
             codeEditorThemeMap[theme](),
             codemirrorKeymap.of([{
-                key: "Mod-S",
+                key: "Mod-s",
                 run: (view) => {
                     const content = view.state.doc.toString()
                     if (note_id) {
@@ -191,7 +190,8 @@ export const CodeEditorInner = connector(({
                         })
                         sendSplitviewNotificationBanner({
                             title: "Saved",
-                            body: language === CodeEditorLanguage.markdown ? "Your mdx code has been saved" : "Your bibtex code has beens saved."
+                            body: language === CodeEditorLanguage.markdown ? "Your mdx code has been saved" : "Your bibtex code has beens saved.",
+                            timeout: 2000
                         })
                         return true;
                     } else {

@@ -68,7 +68,8 @@ struct MdxEditorWebview: View {
           MdxPreviewWebviewActions.requestNoteData.rawValue,
           SplitviewEditorWebviewActions.onEditorChange.rawValue,
           SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
-          SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue
+          SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
+          SplitviewEditorWebviewActions.manualSaveRequest.rawValue
         ],
         messageHandler: messageHandler,
         onLoad: onWebviewLoad
@@ -265,8 +266,35 @@ struct MdxEditorWebview: View {
         Task(priority: .high) {
           await self.onWebviewLoad()
         }
+      case SplitviewEditorWebviewActions.manualSaveRequest.rawValue:
+        Task(priority: .userInitiated) {
+          await self.handleManualSaveRequest(messageBody: messageBody as! String)
+        }
       default:
         return
+    }
+  }
+
+  func handleManualSaveRequest(messageBody: String) async {
+    if let jsonData = messageBody.data(using: .utf8) {
+      do {
+        if let en = editingNote {
+          let decoder = JSONDecoder()
+          let event = try decoder.decode(ManualSaveRequestEvent.self, from: jsonData)
+          if event.note_id == en.id {
+            en.markdown.body = event.current_note_content
+            try await en.preParse(modelContext: modelContext)
+            let citations = en.citations.compactMap { cit in
+              cit.toEditorCitation(activeCslFile: cslFile)
+            }
+            try await EditorState.setParsedMdxContent(
+              parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
+              eval: webView.evaluateJavaScript)
+          }
+        }
+      } catch {
+        print("Failed to decode editor update: \(error)")
+      }
     }
   }
 

@@ -10,7 +10,7 @@ export const swiftContainerActionReducer = (state: WebviewContainerState, action
         case EditorStateActions.SetInitialEditorState: {
             return {
                 ...state,
-                ...action.payload.payload
+                ...action.payload.payload.container
             }
         }
         case WebviewContainerActions.SetDarkMode: {

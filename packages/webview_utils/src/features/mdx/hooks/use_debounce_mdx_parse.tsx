@@ -75,7 +75,8 @@ export const useDebounceMdxParse = (
                 darkCodeTheme,
                 lightCodeTheme,
             });
-            const res = await run(compiled, {
+            // TODO: DO something with the toc field now that you're grabbing it.
+            const res = await run(compiled.value, {
                 Fragment: Fragment,
                 jsx: runtime.jsx,
                 jsxs: runtime.jsxs,

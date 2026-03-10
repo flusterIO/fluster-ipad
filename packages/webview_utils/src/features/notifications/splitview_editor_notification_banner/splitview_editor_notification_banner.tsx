@@ -1,22 +1,21 @@
 import React, { useEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { useSplitviewEditorNotificationContext, useSplitviewEditorNotificationDispatch } from './splitview_editor_notification_banner_provider'
 import { AnimatePresence, motion } from "framer-motion";
 import { XIcon } from 'lucide-react';
 import { cn } from '@/utils/cn';
-import { EditorNotificationBanner } from './types';
+import { connect, useDispatch } from 'react-redux';
+import { type MdxEditorAppState } from '#/webview_global_state/store';
+import { type EditorBannerNotification, type NotificationState } from '@/code_gen/typeshare/fluster_core_utilities';
+import { removeBannerById } from '#/webview_global_state/notification_state/notification_state_slice';
 
 
 
-const BannerNotificationItem = ({ item }: { item: EditorNotificationBanner }): ReactNode => {
+const BannerNotificationItem = ({ item }: { item: EditorBannerNotification }): ReactNode => {
     const timer = useRef<NodeJS.Timeout | null>(null);
-    const dispatch = useSplitviewEditorNotificationDispatch()
+    const dispatch = useDispatch()
 
     const removeSelf = (): void => {
-        dispatch({
-            type: "removeEditorNotifcationBannerById",
-            payload: item.id
-        })
+        dispatch(removeBannerById(item.id))
     }
 
     useEffect(() => {
@@ -68,9 +67,11 @@ const BannerNotificationItem = ({ item }: { item: EditorNotificationBanner }): R
     )
 }
 
+const connector = connect((state: MdxEditorAppState) => ({
+    banners: state.notifications.banners
+}))
 
-export const SplitviewEditorNotificationBanner = (): ReactNode => {
-    const { banners } = useSplitviewEditorNotificationContext()
+export const SplitviewEditorNotificationBanner = connector(({ banners }: Pick<NotificationState, "banners">): ReactNode => {
     return createPortal(
         <div
             className={cn("w-fit h-fit z-999 fixed bottom-0 left-0 right-0 flex flex-col justify-center items-center gap-y-2 max-h-screen", banners.length && "p-4 overflow-x-visible overflow-y-auto")}
@@ -86,8 +87,9 @@ export const SplitviewEditorNotificationBanner = (): ReactNode => {
                 })}
             </AnimatePresence>
         </div>
+        /*eslint-disable-next-line  -- I put it there... I'm sure it's still there. */
         , document.getElementById("root")!)
-}
+})
 
 
 SplitviewEditorNotificationBanner.displayName = "SplitviewEditorNotificationBanner"

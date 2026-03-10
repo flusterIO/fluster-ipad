@@ -462,7 +462,7 @@ extension AppSchemaV1 {
     }
     @MainActor
     public func preParseIfEdited(modelContext: ModelContext) async throws {
-      if self.markdown.isEdited {
+      if self.markdown.isEdited || self.markdown.preParsedBody == nil {
         try await self.preParse(modelContext: modelContext)
       }
     }
@@ -859,12 +859,40 @@ extension AppSchemaV1 {
   }
 
   @Model
+  public class TocHeading {
+    public var content: String
+    public var depth: Int
+    public var domId: String
+    public var toc: NoteToc?
+    public init(content: String, depth: Int, domId: String, toc: NoteToc?) {
+      self.content = content
+      self.depth = depth
+      self.domId = domId
+      self.toc = toc
+    }
+  }
+
+  @Model
+  public class NoteToc {
+    @Relationship(deleteRule: .cascade, inverse: \TocHeading.toc)
+    public var headings: [TocHeading]
+    public var note: MarkdownNote?
+    public init(headings: [TocHeading], note: MarkdownNote?) {
+      self.headings = headings
+      self.note = note
+    }
+  }
+
+  @Model
   public class MarkdownNote {
     @Attribute(.externalStorage) public var _body: String
     /// This will be required later when building for architecture's that don't support rust since the parser is being written in rust. It can also be used for some performance improvements.
     @Attribute(.externalStorage) public var preParsedBody: String?
     public var title: String?
     public var isEdited: Bool = false
+
+    @Relationship(deleteRule: .cascade, inverse: \NoteToc.note)
+    public var toc: NoteToc?
 
     public init(body: String) {
       self._body = body

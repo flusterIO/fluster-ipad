@@ -9,13 +9,16 @@ import FlusterData
 import SwiftUI
 
 struct EditorSettingSectionView: View {
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
+    .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
     CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
     CodeEditorTheme = .materialLight
   @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private var lockEditorScroll:
     Bool = false
+  @AppStorage(AppStorageKeys.editorSaveMethod.rawValue) private var saveMethod: EditorSaveMethod =
+    .onChange
 
   var body: some View {
     SettingsSection(
@@ -34,7 +37,25 @@ struct EditorSettingSectionView: View {
               Text("Keymap Scheme")
             }
           )
+          .labelsHidden()
           .pickerStyle(.segmented)
+          Text("Save Method").font(.headline)
+          Picker(
+            selection: $saveMethod,
+            content: {
+              Text("Change").tag(EditorSaveMethod.onChange)
+              Text("Save").tag(EditorSaveMethod.onSave)
+            },
+            label: {
+            }
+          )
+          .labelsHidden()
+          .pickerStyle(.segmented)
+          Text(
+            "Use ⌘+S to save manually. Automatic save may become to jittery when notes contain nested math or other content that requires a second pass."
+          )
+          .foregroundStyle(.secondary)
+          .font(.caption)
           Text("Theme").font(.headline)
             .padding(.top)
           Picker(

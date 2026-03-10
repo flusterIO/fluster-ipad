@@ -51,22 +51,6 @@ public struct WebviewContainerClient {
       )
     }
   }
-  public static func setColorScheme(
-    colorScheme: ColorScheme,
-    evaluateJavaScript: @escaping EvalJavascriptFunc
-  ) async throws {
-    try await evaluateJavaScript(
-      """
-      if (typeof window !== "undefined" && ("setDarkMode" in window)) {
-          window.setDarkMode(\(colorScheme == .dark ? "true" : "false"))
-      } else {
-          console.log("Could not find webview container functions")
-          window?.dispatchEvent(new CustomEvent("set-dark-mode", { detail: \(colorScheme == .dark ? "true" : "false") }));
-          window.localStorage.setItem("dark-mode", \(colorScheme == .dark ? "\"true\"" : "\"false\""))
-          document?.body?.classList?.\(colorScheme == .dark ? "add" : "remove")("dark")
-      }
-      """)
-  }
   public static func generalOnLoad(evaluateJavaScript: @escaping EvalJavascriptFunc) async throws {
     try await self.setLoading(isLoading: false, evaluateJavaScript: evaluateJavaScript)
   }

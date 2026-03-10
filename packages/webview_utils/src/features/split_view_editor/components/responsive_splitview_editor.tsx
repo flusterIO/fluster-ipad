@@ -3,12 +3,12 @@ import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { EditorScrollPersistor } from "#/mdx/hooks/use_persist_mdx_editor_scroll";
-import { SplitviewEditorNotificationHandler } from "#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner_provider";
 import { useSelector } from "react-redux";
 import { type MdxEditorAppState } from "#/webview_global_state/store";
 import { WebviewImplementation, EditorView, SplitviewEditorWebviewActions, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { connect } from 'react-redux';
+import { SplitviewEditorNotificationBanner } from "#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner";
 
 
 const DEBOUNCE_TIMEOUT = 100
@@ -74,7 +74,7 @@ export const ResponsiveSplitViewEditor = ({ children = null }: { children?: Reac
     const noteId = useSelector((state: MdxEditorAppState) => state.editor.note_id)
     return (
         <>
-            <SplitviewEditorNotificationHandler />
+            <SplitviewEditorNotificationBanner />
             {noteId ? <EditorBody /> : (
                 <LoadingIndicatorAndListener />
             )}

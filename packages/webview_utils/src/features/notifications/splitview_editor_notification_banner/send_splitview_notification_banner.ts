@@ -1,17 +1,15 @@
-import { EditorNotificationBanner } from "./types";
 import { v4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { appendBannerNotifcation } from "#/webview_global_state/notification_state/notification_state_slice";
+import { type EditorBannerNotification } from "@/code_gen/typeshare/fluster_core_utilities";
 
-declare global {
-    interface WindowEventMap {
-        "show-editor-banner": CustomEvent<EditorNotificationBanner>;
-    }
-}
+export const useSendNotificationBanner = () => {
+    const dispatch = useDispatch()
 
-export const sendSplitviewNotificationBanner = (item: Omit<EditorNotificationBanner, "id">) => {
-    window.dispatchEvent(new CustomEvent("show-editor-banner", {
-        detail: {
+    return (item: Omit<EditorBannerNotification, "id">) => {
+        dispatch(appendBannerNotifcation({
             ...item,
             id: v4()
-        }
-    }))
+        }))
+    }
 }

@@ -19,6 +19,8 @@ struct MdxContentWebview: View {
 
   @Environment(\.modelContext) private var modelContext
   @Query private var notes: [NoteModel]
+  @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFormat: EmbeddedCslFileSwift =
+    .apa
 
   var editingNote: NoteModel? {
     notes.isEmpty ? nil : notes.first!
@@ -108,10 +110,25 @@ struct MdxContentWebview: View {
   }
 
   func onWebviewLoad() async {
-    // TODO: Needs to be reimplemented.
-    //        if let en = editingNote {
-    //          try await setParsedEditorContentString(note: en)
-    //        }
+    do {
+      if let en = editingNote {
+        try await en.preParseIfEdited(modelContext: modelContext)
+        var citations: [EditorCitation] = []
+        for cit in en.citations {
+          if let citKey = cit.citationKey,
+            let formatted = cit.safelyGetFormatted(activeCslFormat: cslFormat)
+          {
+            citations.append(EditorCitation(citation_key: citKey, html: formatted.formattedHtml))
+          }
+        }
+        try await EditorState.setParsedMdxContent(
+          parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
+          eval:
+            self.mdxWebview.evaluateJavaScript)
+      }
+    } catch {
+      print("Error: \(error.localizedDescription)")
+    }
     print("Loaded initial editor data")
   }
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {

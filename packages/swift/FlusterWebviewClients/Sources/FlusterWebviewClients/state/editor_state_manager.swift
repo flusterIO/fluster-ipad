@@ -7,7 +7,7 @@
 
 import FlatBuffers
 import FlusterData
-import Foundation
+import SwiftUI
 
 /// Takes common Swift language objects, creates an `AnyCrossLanguageEditorAction` and sends it to Typescript.
 @MainActor
@@ -68,6 +68,17 @@ extension EditorState {
     saveMethod: EditorSaveMethod, eval: @escaping EvalJavascriptFunc
   ) async throws {
     let action = SetEditorSaveMethodEditorAction(type: .setEditorSaveMethod, payload: saveMethod)
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
+
+  public static func setDarkMode(colorScheme: ColorScheme, eval: @escaping EvalJavascriptFunc)
+    async throws
+  {
+    let action = SetDarkModeAction(
+      type: WebviewContainerActions.setDarkMode,
+      payload: SetDarkModePayload(dark_mode: colorScheme == .dark))
     if let parsedData = EditorState.encodeAction(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }

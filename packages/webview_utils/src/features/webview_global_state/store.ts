@@ -2,7 +2,10 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import editorReducer from './mdx_editor/state/editor_state_slice'
 import { persistStore, persistReducer, type PersistConfig } from "redux-persist"
 import webviewContainerReducer from './container/webview_container_global_state/webview_container_slice';
-import { type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities';
+import aiReducer from './ai_state/ai_state_slice';
+import notificationReducer from './notification_state/notification_state_slice';
+import mediaReducer from './media_state/media_state_slice';
+import { type GlobalWebviewState, type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities';
 import { darkModeListenerMiddleware } from './container/webview_container_global_state/side_effects/dark_mode_side_effect';
 import { type EditorState } from '@codemirror/state';
 import { emptyValueListenerMiddleware } from "./mdx_editor/side_effects/empty_editor_value_side_effect"
@@ -13,8 +16,11 @@ import storage from 'redux-persist-indexeddb-storage';
 
 const rootReducer = combineReducers({
     editor: editorReducer,
-    container: webviewContainerReducer
-});
+    container: webviewContainerReducer,
+    ai: aiReducer,
+    media: mediaReducer,
+    notifications: notificationReducer
+} satisfies Record<keyof GlobalWebviewState, unknown>);
 
 export type MdxEditorAppState = ReturnType<typeof rootReducer>
 

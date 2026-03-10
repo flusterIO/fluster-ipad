@@ -3,21 +3,17 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import htmlMinifier from 'vite-plugin-html-minifier'
 import type { WebviewViteConfig } from "./vite_config_types"
-import path from 'path';
-import assert from 'node:assert';
 
 export type WasmViteConfig = Pick<WebviewViteConfig, "outputDir" | "build"> & { plugins?: [] } & {
     /**
      * The *absolute* path to the wasm package.
      * @deprecated -- Don't use this.
      */
-    wasmPackagePath: string
+    wasmPackagePath?: string
 }
 
 export const getWasmViteConfig = (opts: WasmViteConfig): UserConfig => {
     const isProd = process.env.FLUSTER_PROD_BUILD === "true";
-
-    assert(path.isAbsolute(opts.wasmPackagePath), "The wasmPackagePath must be absolute.")
 
     let plugins: PluginOption[] = [
         react(),

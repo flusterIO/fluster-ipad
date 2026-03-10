@@ -1,13 +1,9 @@
 import { defineConfig } from "vite";
-import {
-  WebviewViteConfig,
-  getWebviewViteConfig,
-} from "@fluster/shared_config/webviewVite";
+import { getWasmViteConfig, WasmViteConfig } from "@fluster/shared_config/wasm";
 
-const config: WebviewViteConfig = {
+const config: WasmViteConfig = {
   outputDir: "standalone_mdx_preview_mac",
-  singleFile: false,
-  base: "./",
+  wasmPackagePath: undefined,
   build: {
     rollupOptions: {
       input: {
@@ -17,4 +13,4 @@ const config: WebviewViteConfig = {
   },
 };
 
-export default defineConfig(getWebviewViteConfig(config));
+export default defineConfig(getWasmViteConfig(config));

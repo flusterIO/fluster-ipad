@@ -200,7 +200,6 @@ struct WebViewContainerView: View {
     }
   }
   func setColorScheme(colorScheme: ColorScheme) async {
-    try? await WebviewContainerClient.setColorScheme(
-      colorScheme: colorScheme, evaluateJavaScript: webview.evaluateJavaScript)
+    try? await EditorState.setDarkMode(colorScheme: colorScheme, eval: webview.evaluateJavaScript)
   }
 }

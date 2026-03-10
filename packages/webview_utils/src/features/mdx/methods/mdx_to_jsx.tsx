@@ -12,7 +12,7 @@ import rehypeVideo from "rehype-video";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 import withSlugs from "rehype-slug";
 import withCustomIds from "remark-custom-header-id"
-import withToc from "@stefanprobst/rehype-extract-toc";
+import withToc, { type Toc } from "@stefanprobst/rehype-extract-toc";
 
 export const mathOptions = {
     tex: {
@@ -158,7 +158,7 @@ export const parseMdxString = async ({
     content: string;
     lightCodeTheme: string;
     darkCodeTheme: string;
-}) => {
+}): Promise<{ value: string, toc?: Toc }> => {
     const res = await compile(content, {
         outputFormat: "function-body",
         remarkPlugins: remarkPlugins(),
@@ -171,5 +171,5 @@ export const parseMdxString = async ({
     });
     console.log("Parsed Mdx with new props: ", res)
     /* res. */
-    return String(res).replaceAll(/classname/g, "className");
+    return { value: String(res.value).replaceAll(/classname/g, "className"), toc: res.data.toc }
 };

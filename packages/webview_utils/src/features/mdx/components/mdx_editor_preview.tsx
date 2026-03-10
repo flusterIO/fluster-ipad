@@ -4,15 +4,11 @@ import { useMediaQuery } from "react-responsive";
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { type EditorState, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
-import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/swift_events";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
 import { type MdxEditorAppState } from "#/webview_global_state/store";
 import { connect } from "react-redux";
-
-
-setWindowBridgeFunctions();
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">

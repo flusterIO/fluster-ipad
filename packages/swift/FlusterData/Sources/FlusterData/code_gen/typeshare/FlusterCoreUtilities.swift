@@ -4,6 +4,61 @@
 
 import Foundation
 
+public struct AiState: Codable {
+	public let has_foundation_models_access: Bool
+
+	public init(has_foundation_models_access: Bool) {
+		self.has_foundation_models_access = has_foundation_models_access
+	}
+}
+
+public enum EditorStateActions: String, Codable {
+	case setEditorSaveMethod = "set-editor-save-method"
+	case setInitialEditorState = "set-initial-editor-state"
+	case setEditorValue = "set-editor-value"
+	case setParsedEditorContent = "set-parsed-editor-content"
+	case setEditorKeymap = "set-initial-editor-keymap"
+	case setEditorTheme = "set-editor-theme"
+	case setAutoSaveTimeout = "set-autosave-timeout"
+	case setBaseKeymap = "set-base-keymap"
+	case setEditorTags = "set-editor-tags"
+	case setAllCitationIds = "set-all-citation-ids"
+	case setLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev"
+	case setSnippetProps = "set-snippet-props"
+}
+
+public struct EditorBannerNotification: Codable {
+	public let title: String
+	public let id: String
+	public let body: String?
+	public let timeout: UInt32?
+
+	public init(title: String, id: String, body: String?, timeout: UInt32?) {
+		self.title = title
+		self.id = id
+		self.body = body
+		self.timeout = timeout
+	}
+}
+
+public struct AppendNotificationBannerPayload: Codable {
+	public let notification: EditorBannerNotification
+
+	public init(notification: EditorBannerNotification) {
+		self.notification = notification
+	}
+}
+
+public struct AppendNotificationBannerAction: Codable {
+	public let type: EditorStateActions
+	public let payload: AppendNotificationBannerPayload
+
+	public init(type: EditorStateActions, payload: AppendNotificationBannerPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
 public struct CodeBlockParsingResult: Codable {
 	public let full_match: String
 	public let language_tag: String
@@ -13,6 +68,36 @@ public struct CodeBlockParsingResult: Codable {
 		self.full_match = full_match
 		self.language_tag = language_tag
 		self.block_content = block_content
+	}
+}
+
+public struct NoteTocHeadingRustMirror: Codable {
+	public let content: String
+	public let id: String
+	public let depth: UInt8
+
+	public init(content: String, id: String, depth: UInt8) {
+		self.content = content
+		self.id = id
+		self.depth = depth
+	}
+}
+
+public struct EchoNoteTocPayload: Codable {
+	public let headings: [NoteTocHeadingRustMirror]
+
+	public init(headings: [NoteTocHeadingRustMirror]) {
+		self.headings = headings
+	}
+}
+
+public struct EchoNoteTocEvent: Codable {
+	public let type: EditorStateActions
+	public let payload: EchoNoteTocPayload
+
+	public init(type: EditorStateActions, payload: EchoNoteTocPayload) {
+		self.type = type
+		self.payload = payload
 	}
 }
 
@@ -155,6 +240,23 @@ public struct EditorCitation: Codable {
 	}
 }
 
+public enum EditorLogSeverity: String, Codable {
+	case info = "Info"
+	case warn = "Warn"
+	case error = "Error"
+	case fatal = "Fatal"
+}
+
+public struct EditorLog: Codable {
+	public let msg: String
+	public let severity: EditorLogSeverity
+
+	public init(msg: String, severity: EditorLogSeverity) {
+		self.msg = msg
+		self.severity = severity
+	}
+}
+
 public enum CodeEditorBaseKeymap: String, Codable {
 	case `default`
 	case vsCode
@@ -217,6 +319,81 @@ public struct EditorState: Codable {
 	}
 }
 
+public enum SizableOption: String, Codable {
+	case none
+	case small
+	case smedium
+	case medium
+	case large
+	case xl
+	case xxl
+	case fit
+	case full
+}
+
+public struct WebviewContainerState: Codable {
+	public let environment: WebviewEnvironment?
+	public let size: SizableOption
+	public let wasm_loaded: Bool
+	public let dark_mode: Bool
+	public let implementation: WebviewImplementation
+	public let fluster_theme: FlusterTheme
+
+	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool, implementation: WebviewImplementation, fluster_theme: FlusterTheme) {
+		self.environment = environment
+		self.size = size
+		self.wasm_loaded = wasm_loaded
+		self.dark_mode = dark_mode
+		self.implementation = implementation
+		self.fluster_theme = fluster_theme
+	}
+}
+
+public struct NotificationState: Codable {
+	public let logs: [EditorLog]
+	public let banners: [EditorBannerNotification]
+
+	public init(logs: [EditorLog], banners: [EditorBannerNotification]) {
+		self.logs = logs
+		self.banners = banners
+	}
+}
+
+public struct ImageData: Codable {
+	public let data: [UInt8]
+	public let id: String
+
+	public init(data: [UInt8], id: String) {
+		self.data = data
+		self.id = id
+	}
+}
+
+public struct MediaState: Codable {
+	/// A HashMap between an Id and an Object with the necessary image data.
+	public let image_data: [String: ImageData]
+
+	public init(image_data: [String: ImageData]) {
+		self.image_data = image_data
+	}
+}
+
+public struct GlobalWebviewState: Codable {
+	public let container: WebviewContainerState
+	public let editor: EditorState
+	public let notifications: NotificationState
+	public let ai: AiState
+	public let media: MediaState
+
+	public init(container: WebviewContainerState, editor: EditorState, notifications: NotificationState, ai: AiState, media: MediaState) {
+		self.container = container
+		self.editor = editor
+		self.notifications = notifications
+		self.ai = ai
+		self.media = media
+	}
+}
+
 public struct ManualSaveRequestEvent: Codable {
 	public let current_note_content: String
 	/// note_id is required to verify the note before updating the note's data since there's so
@@ -229,19 +406,22 @@ public struct ManualSaveRequestEvent: Codable {
 	}
 }
 
-public enum EditorStateActions: String, Codable {
-	case setEditorSaveMethod = "set-editor-save-method"
-	case setInitialEditorState = "set-initial-editor-state"
-	case setEditorValue = "set-editor-value"
-	case setParsedEditorContent = "set-parsed-editor-content"
-	case setEditorKeymap = "set-initial-editor-keymap"
-	case setEditorTheme = "set-editor-theme"
-	case setAutoSaveTimeout = "set-autosave-timeout"
-	case setBaseKeymap = "set-base-keymap"
-	case setEditorTags = "set-editor-tags"
-	case setAllCitationIds = "set-all-citation-ids"
-	case setLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev"
-	case setSnippetProps = "set-snippet-props"
+public struct RemoveBannerNotificationByIdPayload: Codable {
+	public let id: String
+
+	public init(id: String) {
+		self.id = id
+	}
+}
+
+public struct RemoveBannerNotificationByIdAction: Codable {
+	public let type: EditorStateActions
+	public let payload: RemoveBannerNotificationByIdPayload
+
+	public init(type: EditorStateActions, payload: RemoveBannerNotificationByIdPayload) {
+		self.type = type
+		self.payload = payload
+	}
 }
 
 public struct SetAllCitationIdsPayload: Codable {
@@ -493,36 +673,6 @@ public struct SetSnippetPropsAction: Codable {
 	public init(type: EditorStateActions, payload: SetSnippetPropsPayload) {
 		self.type = type
 		self.payload = payload
-	}
-}
-
-public enum SizableOption: String, Codable {
-	case none
-	case small
-	case smedium
-	case medium
-	case large
-	case xl
-	case xxl
-	case fit
-	case full
-}
-
-public struct WebviewContainerState: Codable {
-	public let environment: WebviewEnvironment?
-	public let size: SizableOption
-	public let wasm_loaded: Bool
-	public let dark_mode: Bool
-	public let implementation: WebviewImplementation
-	public let fluster_theme: FlusterTheme
-
-	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool, implementation: WebviewImplementation, fluster_theme: FlusterTheme) {
-		self.environment = environment
-		self.size = size
-		self.wasm_loaded = wasm_loaded
-		self.dark_mode = dark_mode
-		self.implementation = implementation
-		self.fluster_theme = fluster_theme
 	}
 }
 

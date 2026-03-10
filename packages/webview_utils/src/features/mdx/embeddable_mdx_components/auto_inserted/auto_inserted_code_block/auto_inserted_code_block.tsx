@@ -1,15 +1,16 @@
-import { sendSplitviewNotificationBanner } from '#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner'
+import { useSendNotificationBanner } from '#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner'
 import { cn } from '@/utils/cn'
 import { copyStringToClipboard } from '@/utils/string_utils'
 import { CopyIcon } from 'lucide-react'
-import React, { HTMLProps, useRef, useState, type ReactNode } from 'react'
-import { BundledTheme } from 'shiki'
+import React, { type HTMLProps, useRef, useState, type ReactNode } from 'react'
+import { type BundledTheme } from 'shiki'
 
 
 
 export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLProps<HTMLPreElement>): ReactNode => {
     const [hovered, setHovered] = useState(false)
     const ref = useRef<HTMLPreElement | null>(null)
+    const sendSplitviewNotificationBanner = useSendNotificationBanner()
     const getLanguage = (): BundledTheme | undefined => {
         return ref.current?.getAttribute("data-language") as BundledTheme | undefined
     }
@@ -18,7 +19,7 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
             <pre
                 className={cn("rounded", className)}
                 {...props}
-                onClick={() => setHovered(!hovered)}
+                onClick={() => { setHovered(!hovered); }}
                 ref={ref}
             >
                 {children}
@@ -26,6 +27,7 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
             <div
                 role="button"
                 className={cn("auto-codeblock-icon absolute top-2 right-2 transition-opacity duration-300", hovered && "opacity-1000 hovered iflex-col justify-center items-center")}
+                /* eslint-disable-next-line  -- Not creatng another function just to make eslint happy. */
                 onClick={async (e) => {
                     e.stopPropagation()
                     e.preventDefault()

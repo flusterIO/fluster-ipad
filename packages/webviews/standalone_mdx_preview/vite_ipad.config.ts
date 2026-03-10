@@ -1,20 +1,15 @@
 import { defineConfig } from "vite";
-import {
-  WebviewViteConfig,
-  getWebviewViteConfig,
-} from "@fluster/shared_config/webviewVite";
+import { WasmViteConfig, getWasmViteConfig } from "@fluster/shared_config/wasm";
 
-const config: WebviewViteConfig = {
-  outputDir: "standalone_mdx_preview_ipad",
-  singleFile: false,
-  base: "./",
-  build: {
-    rollupOptions: {
-      input: {
-        main: "./index_ipad.html",
-      },
+const config: WasmViteConfig = {
+    outputDir: "standalone_mdx_preview_ipad",
+    build: {
+        rollupOptions: {
+            input: {
+                main: "./index_ipad.html",
+            },
+        },
     },
-  },
 };
 
-export default defineConfig(getWebviewViteConfig(config));
+export default defineConfig(getWasmViteConfig(config));

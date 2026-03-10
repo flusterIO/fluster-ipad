@@ -3,6 +3,7 @@ import React, { type ReactNode } from 'react'
 import { type MdxEditorPersistor, type MdxEditorStore } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { LoadingComponent } from '@/shared_components/loading/loading_component'
+import { WebviewClient } from '../webview_container/data/webview_client'
 
 
 interface MdxEditorGlobalProviderProps {
@@ -11,8 +12,13 @@ interface MdxEditorGlobalProviderProps {
     persistor: MdxEditorPersistor
 }
 
+
+
 export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEditorGlobalProviderProps): ReactNode => {
-    console.log("store: ", store)
+    const onBeforeStateLoad = (): void => {
+        const state = store.getState()
+        WebviewClient.applyGlobalState(state)
+    }
     return (
         <Provider
             store={store}
@@ -22,6 +28,7 @@ export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEdito
                 loading={<div className="w-full h-full flex flex-col justify-center items-center p-3">
                     <LoadingComponent />
                 </div>}
+                onBeforeLift={onBeforeStateLoad}
             >
                 {children}
             </PersistGate>

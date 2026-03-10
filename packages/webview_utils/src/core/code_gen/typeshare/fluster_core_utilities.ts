@@ -3,10 +3,60 @@
 */
 
 
+export interface AiState {
+	has_foundation_models_access: boolean;
+}
+
+export enum EditorStateActions {
+	SetEditorSaveMethod = "set-editor-save-method",
+	SetInitialEditorState = "set-initial-editor-state",
+	SetEditorValue = "set-editor-value",
+	SetParsedEditorContent = "set-parsed-editor-content",
+	SetEditorKeymap = "set-initial-editor-keymap",
+	SetEditorTheme = "set-editor-theme",
+	SetAutoSaveTimeout = "set-autosave-timeout",
+	SetBaseKeymap = "set-base-keymap",
+	SetEditorTags = "set-editor-tags",
+	SetAllCitationIds = "set-all-citation-ids",
+	SetLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev",
+	SetSnippetProps = "set-snippet-props",
+}
+
+export interface EditorBannerNotification {
+	title: string;
+	id: string;
+	body?: string;
+	timeout?: number;
+}
+
+export interface AppendNotificationBannerPayload {
+	notification: EditorBannerNotification;
+}
+
+export interface AppendNotificationBannerAction {
+	type: EditorStateActions;
+	payload: AppendNotificationBannerPayload;
+}
+
 export interface CodeBlockParsingResult {
 	full_match: string;
 	language_tag: string;
 	block_content: string;
+}
+
+export interface NoteTocHeadingRustMirror {
+	content: string;
+	id: string;
+	depth: number;
+}
+
+export interface EchoNoteTocPayload {
+	headings: NoteTocHeadingRustMirror[];
+}
+
+export interface EchoNoteTocEvent {
+	type: EditorStateActions;
+	payload: EchoNoteTocPayload;
 }
 
 /** From typescript to swift. */
@@ -111,6 +161,18 @@ export interface EditorCitation {
 	html: string;
 }
 
+export enum EditorLogSeverity {
+	Info = "Info",
+	Warn = "Warn",
+	Error = "Error",
+	Fatal = "Fatal",
+}
+
+export interface EditorLog {
+	msg: string;
+	severity: EditorLogSeverity;
+}
+
 export enum CodeEditorBaseKeymap {
 	Default = "default",
 	VsCode = "vsCode",
@@ -155,6 +217,50 @@ export interface EditorState {
 	autoSaveTimeout: number;
 }
 
+export enum SizableOption {
+	None = "none",
+	Small = "small",
+	Smedium = "smedium",
+	Medium = "medium",
+	Large = "large",
+	Xl = "xl",
+	Xxl = "xxl",
+	Fit = "fit",
+	Full = "full",
+}
+
+export interface WebviewContainerState {
+	environment?: WebviewEnvironment;
+	size: SizableOption;
+	wasm_loaded: boolean;
+	dark_mode: boolean;
+	implementation: WebviewImplementation;
+	fluster_theme: FlusterTheme;
+}
+
+export interface NotificationState {
+	logs: EditorLog[];
+	banners: EditorBannerNotification[];
+}
+
+export interface ImageData {
+	data: number[];
+	id: string;
+}
+
+export interface MediaState {
+	/** A HashMap between an Id and an Object with the necessary image data. */
+	image_data: Record<string, ImageData>;
+}
+
+export interface GlobalWebviewState {
+	container: WebviewContainerState;
+	editor: EditorState;
+	notifications: NotificationState;
+	ai: AiState;
+	media: MediaState;
+}
+
 export interface ManualSaveRequestEvent {
 	current_note_content: string;
 	/**
@@ -164,19 +270,13 @@ export interface ManualSaveRequestEvent {
 	note_id: string;
 }
 
-export enum EditorStateActions {
-	SetEditorSaveMethod = "set-editor-save-method",
-	SetInitialEditorState = "set-initial-editor-state",
-	SetEditorValue = "set-editor-value",
-	SetParsedEditorContent = "set-parsed-editor-content",
-	SetEditorKeymap = "set-initial-editor-keymap",
-	SetEditorTheme = "set-editor-theme",
-	SetAutoSaveTimeout = "set-autosave-timeout",
-	SetBaseKeymap = "set-base-keymap",
-	SetEditorTags = "set-editor-tags",
-	SetAllCitationIds = "set-all-citation-ids",
-	SetLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev",
-	SetSnippetProps = "set-snippet-props",
+export interface RemoveBannerNotificationByIdPayload {
+	id: string;
+}
+
+export interface RemoveBannerNotificationByIdAction {
+	type: EditorStateActions;
+	payload: RemoveBannerNotificationByIdPayload;
 }
 
 export interface SetAllCitationIdsPayload {
@@ -306,27 +406,6 @@ export interface SetSnippetPropsPayload {
 export interface SetSnippetPropsAction {
 	type: EditorStateActions;
 	payload: SetSnippetPropsPayload;
-}
-
-export enum SizableOption {
-	None = "none",
-	Small = "small",
-	Smedium = "smedium",
-	Medium = "medium",
-	Large = "large",
-	Xl = "xl",
-	Xxl = "xxl",
-	Fit = "fit",
-	Full = "full",
-}
-
-export interface WebviewContainerState {
-	environment?: WebviewEnvironment;
-	size: SizableOption;
-	wasm_loaded: boolean;
-	dark_mode: boolean;
-	implementation: WebviewImplementation;
-	fluster_theme: FlusterTheme;
 }
 
 export enum AiNoteInteractionType {
