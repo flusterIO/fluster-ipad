@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment, HTMLProps } from "react";
+import React, { useEffect, useState, Fragment, type HTMLProps } from "react";
 import { run } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
 import * as devRuntime from "react/jsx-dev-runtime";
@@ -8,8 +8,8 @@ import { ParsedMdxContent } from "../components/parsed_mdx_content";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
-import { AnyWebviewAction, AnyWebviewStorageKey } from "@/utils/types/any_window_event";
-import { ComponentMapItem } from "../methods/get_component_map";
+import { type AnyWebviewAction, type AnyWebviewStorageKey } from "@/utils/types/any_window_event";
+import { type ComponentMapItem } from "../methods/get_component_map";
 import { WebviewClient } from "../../webview_container/data/webview_client";
 
 
@@ -21,12 +21,13 @@ declare global {
 }
 
 export const useDebounceMdxParse = (
-    initialValue: string = "",
-    debounceTimeout: number = 300,
+    initialValue = "",
+    debounceTimeout = 300,
     /// A unique key that is passed to the mdx-content-loaded event as the detail field if present.
     contentLoadedId: string,
     showWebviewHandler?: AnyWebviewAction,
-    additionalComponents?: ComponentMapItem[]
+    additionalComponents?: ComponentMapItem[],
+    asMain = false
 ) => {
     const [value, setValue] = useState<string>(initialValue);
     const [hasParsed, setHasParsed] = useState(false);
@@ -58,8 +59,8 @@ export const useDebounceMdxParse = (
         },
     );
 
-    useEventListener(SplitviewEditorWebviewEvents.SetCodeThemeDark, (e) => setDarkCodeTheme(e.detail));
-    useEventListener(SplitviewEditorWebviewEvents.SetCodeThemeLight, (e) => setLightCodeTheme(e.detail));
+    useEventListener(SplitviewEditorWebviewEvents.SetCodeThemeDark, (e) => { setDarkCodeTheme(e.detail); });
+    useEventListener(SplitviewEditorWebviewEvents.SetCodeThemeLight, (e) => { setLightCodeTheme(e.detail); });
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
@@ -109,7 +110,7 @@ export const useDebounceMdxParse = (
         if (timer) {
             clearTimeout(timer);
         }
-        if (hasParsed === false) {
+        if (!hasParsed) {
             /* eslint-disable-next-line  -- I'll come back to this later. */
             parse(value, darkCodeTheme, lightCodeTheme);
         } else {
@@ -120,7 +121,7 @@ export const useDebounceMdxParse = (
                 ),
             );
         }
-        /* eslint-disable-next-line  --  */
+
     }, [value, darkCodeTheme, lightCodeTheme]);
 
     const Component = (props: HTMLProps<HTMLDivElement>) =>
@@ -129,6 +130,7 @@ export const useDebounceMdxParse = (
                 container={props}
                 MdxContentComponent={mdxModule.default}
                 raw={value}
+                asMain={asMain}
                 scrollPositionKey={contentLoadedId}
                 showWebviewHandler={showWebviewHandler}
                 additionalComponents={additionalComponents}
@@ -139,7 +141,7 @@ export const useDebounceMdxParse = (
 
     useEffect(() => {
         WebviewClient.setMdxContentLoaded(contentLoadedId)
-        /* eslint-disable-next-line -- I hate this rule but I'm too lazy to turn it off. */
+
     }, [mdxModule])
 
     return {

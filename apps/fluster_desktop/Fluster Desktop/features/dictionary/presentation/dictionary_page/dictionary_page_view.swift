@@ -20,11 +20,7 @@ struct DictionaryPageView: View {
   var body: some View {
     WebViewContainerView(
       webview: $webview,
-      url: Bundle.main.url(
-        forResource: "index_mac",
-        withExtension: "html",
-        subdirectory: "dictionary_webview_mac"
-      )!,
+      url: URL(string: "app://dictionary_webview_mac/index_mac.html")!,
       messageHandlerKeys: [
         MdxPreviewWebviewActions.onTagClick.rawValue,
         SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,

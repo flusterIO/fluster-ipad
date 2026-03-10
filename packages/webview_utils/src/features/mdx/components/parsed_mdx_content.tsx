@@ -1,5 +1,4 @@
 import React, { type HTMLProps, useEffect, useRef, useState } from "react";
-import { useComponentMap } from "../hooks/use_component_map";
 import { type MDXComponents, type MDXContent } from "mdx/types";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { type AnyWebviewAction } from "@/utils/types/any_window_event";
@@ -13,6 +12,7 @@ interface Props {
     scrollPositionKey?: string;
     showWebviewHandler?: AnyWebviewAction;
     additionalComponents?: ComponentMapItem[]
+    asMain?: boolean
 }
 
 export const ParsedMdxContent = ({
@@ -21,9 +21,9 @@ export const ParsedMdxContent = ({
     container,
     scrollPositionKey,
     showWebviewHandler,
-    additionalComponents
+    additionalComponents,
+    asMain
 }: Props) => {
-    /* const componentMap = useComponentMap(raw, additionalComponents); */
     const [components, setComponents] = useState<MDXComponents | null>(null)
     useEffect(() => {
         const handleComponentMap = async (): Promise<void> => {
@@ -51,6 +51,13 @@ export const ParsedMdxContent = ({
             <div className="w-full h-full flex flex-col justify-center items-center">
                 <LoadingComponent />
             </div>
+        )
+    }
+    if (asMain) {
+        return (
+            <main {...container}>
+                <MdxContentComponent components={components} />
+            </main >
         )
     }
     return (

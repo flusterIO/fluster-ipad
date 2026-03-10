@@ -1,6 +1,6 @@
-import { AnyWebviewAction } from "@/utils/types/any_window_event";
-import { HTMLProps } from "react";
-import { ComponentMapItem } from "../methods/get_component_map";
+import { type AnyWebviewAction } from "@/utils/types/any_window_event";
+import { type HTMLProps } from "react";
+import { type ComponentMapItem } from "../methods/get_component_map";
 
 export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     mdx: string;
@@ -10,4 +10,5 @@ export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     showWebviewAction?: AnyWebviewAction
     additionalComponents?: ComponentMapItem[]
     lockToEditorScroll?: boolean
+    asMain?: boolean
 }

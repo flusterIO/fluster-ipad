@@ -5,7 +5,7 @@ import { LoadingComponent } from "@/shared_components/loading_component";
 import { CodeEditor } from "#/editor/code_editor/components/code_editor";
 import { WebviewClient } from "#/webview_container/data/webview_client";
 import { useSelector } from "react-redux";
-import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
+import { type MdxEditorAppState } from "#/webview_global_state/store";
 
 export const SplitViewEditorInner = (): ReactNode => {
     const autoSaveId = "split-view-editor-panel-split";
@@ -14,7 +14,7 @@ export const SplitViewEditorInner = (): ReactNode => {
         <PanelGroup
             autoSaveId={autoSaveId}
             direction="horizontal"
-            className="w-screen! h-screen! loading-main-hide"
+            className="w-screen! h-screen!"
             onLayout={(layout) => {
                 WebviewClient.sendPanelGroupResize(layout)
             }}
@@ -31,7 +31,7 @@ export const SplitViewEditorInner = (): ReactNode => {
                 defaultSize={50}
                 minSize={10}
             >
-                {parsedValue ? (
+                {typeof parsedValue === "string" ? (
                     <MdxEditorPreview
                         className="overflow-y-auto overflow-x-hidden h-full min-h-screen"
                     />) : (

@@ -73,6 +73,16 @@ extension EditorState {
     }
   }
 
+  public static func setEditorContent(content: String, eval: @escaping EvalJavascriptFunc)
+    async throws
+  {
+    let action = SetEditorContentAction(
+      type: EditorStateActions.setEditorValue, payload: SetEditorContentPayload(value: content))
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
+
   public static func setEditorKeymap(keymap: CodeEditorKeymap, eval: @escaping EvalJavascriptFunc)
     async throws
   {
@@ -90,6 +100,30 @@ extension EditorState {
   {
     let action = SetSnippetPropsAction(
       type: EditorStateActions.setSnippetProps, payload: payload)
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
+
+  public static func setEditorTheme(
+    payload: SetEditorThemePayload, eval: @escaping EvalJavascriptFunc
+  )
+    async throws
+  {
+    let action = SetEditorThemeAction(
+      type: EditorStateActions.setEditorTheme, payload: payload)
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
+
+  public static func setLockEditorScrollToPreview(
+    payload: SetLockEditorScrollToPreviewPayload, eval: @escaping EvalJavascriptFunc
+  )
+    async throws
+  {
+    let action = SetLockEditorScrollToPreviewAction(
+      type: EditorStateActions.setLockEditorScrollToPreview, payload: payload)
     if let parsedData = EditorState.encodeAction(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }

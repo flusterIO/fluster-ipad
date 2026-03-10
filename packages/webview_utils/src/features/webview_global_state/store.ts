@@ -1,15 +1,15 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import editorReducer from './state/editor_state_slice'
-import storage from "redux-persist/lib/storage";
+import editorReducer from './mdx_editor/state/editor_state_slice'
 import { persistStore, persistReducer, type PersistConfig } from "redux-persist"
-import webviewContainerReducer from '../container/webview_container_global_state/webview_container_slice';
+import webviewContainerReducer from './container/webview_container_global_state/webview_container_slice';
 import { type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities';
-import { darkModeListenerMiddleware } from '../container/webview_container_global_state/side_effects/dark_mode_side_effect';
+import { darkModeListenerMiddleware } from './container/webview_container_global_state/side_effects/dark_mode_side_effect';
 import { type EditorState } from '@codemirror/state';
-import { emptyValueListenerMiddleware } from "./side_effects/empty_editor_value_side_effect"
+import { emptyValueListenerMiddleware } from "./mdx_editor/side_effects/empty_editor_value_side_effect"
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
-import { emptyParsedValueListenerMiddleware } from "./side_effects/empty_parsed_value_side_effect"
-import { editorValueChangeListenerMiddleware } from './side_effects/editor_value_update_side_effect';
+import { emptyParsedValueListenerMiddleware } from "./mdx_editor/side_effects/empty_parsed_value_side_effect"
+import { editorValueChangeListenerMiddleware } from './mdx_editor/side_effects/editor_value_update_side_effect';
+import storage from 'redux-persist-indexeddb-storage';
 
 const rootReducer = combineReducers({
     editor: editorReducer,
@@ -20,7 +20,8 @@ export type MdxEditorAppState = ReturnType<typeof rootReducer>
 
 const persistConfig: PersistConfig<MdxEditorAppState> = {
     key: "fluster_mdx_editor",
-    storage,
+    /* eslint-disable-next-line  -- I've been doing this 10 years and I don't know how to declare this module properly. */
+    storage: storage("fluster"),
     stateReconciler: autoMergeLevel2,
     debug: import.meta.env.DEV,
     blacklist: ["editor.note_id", "container.wasm_loaded", "container.size"] as (`editor.${keyof EditorState}` | `container.${keyof WebviewContainerState}`)[],

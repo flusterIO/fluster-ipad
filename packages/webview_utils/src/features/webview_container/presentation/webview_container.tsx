@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 import { setWebviewWindowBridgeFunctions } from "../state/swift_events/webview_swift_events";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { connect } from 'react-redux';
-import { type MdxEditorAppState } from '#/webview_global_state/mdx_editor/store';
+import { type MdxEditorAppState } from '#/webview_global_state/store';
 import {
     type ScreenDimensions,
     useScreenDimensions,

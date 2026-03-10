@@ -118,6 +118,9 @@ struct MdxEditorWebview: View {
       .task(
         id: editingNote?.markdown.preParsedBody,
         {
+          if editorSaveMethod != EditorSaveMethod.onChange {
+            return
+          }
           // When a preParse method succeeds, send the updated parsed content to the editor.
           if let en = editingNote {
             do {
@@ -196,6 +199,9 @@ struct MdxEditorWebview: View {
         of: editingNote?.id,
         {
           if let en = editingNote {
+            Task {
+              await onWebviewLoad()
+            }
             en.setLastRead()
           }
         }

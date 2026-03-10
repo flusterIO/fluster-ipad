@@ -47,11 +47,7 @@ struct NoteDetailWebview: View {
     if editingNote != nil {
       WebViewContainerView(
         webview: $webView,
-        url: Bundle.main.url(
-          forResource: "index_mac",
-          withExtension: "html",
-          subdirectory: "note_detail_webview_mac"
-        )!,
+        url: URL(string: "app://note_detail_webview_mac/index_mac.html")!,
         messageHandlerKeys: [
           NoteDetailWebviewActions.requestNoteDetailData.rawValue,
           NoteDetailWebviewActions.onTagClick.rawValue,

@@ -9,7 +9,10 @@ import rehypePrettyCode from "rehype-pretty-code";
 import emoji from "remark-emoji";
 import rehypeSlug from "rehype-slug";
 import rehypeVideo from "rehype-video";
-import rehypeMermaid, { RehypeMermaidOptions } from "rehype-mermaid";
+import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
+import withSlugs from "rehype-slug";
+import withCustomIds from "remark-custom-header-id"
+import withToc from "@stefanprobst/rehype-extract-toc";
 
 export const mathOptions = {
     tex: {
@@ -84,11 +87,10 @@ const rehypePlugins = ({
     return [
         /* TODO: Add an embeded video component for this rehypeVideo that then utilizes the existing video element. */
         [
-            rehypeVideo as any,
-            {
-                test: /\/(.*)(.mp4|.mov|.webm)$/,
-                details: false,
-            },
+            withSlugs
+        ],
+        [
+            withToc,
         ],
         [rehypeMathjax as any, mathOptions],
         [
@@ -136,16 +138,6 @@ const rehypePlugins = ({
                 },
             },
         ],
-        [
-            rehypeAutolinkHeadings,
-            {
-                properties: {
-                    className: ["subheading-anchor"],
-                    ariaLabel: "Link to section",
-                },
-            },
-        ],
-        rehypeSlug,
         /* [ */
         /*     rehypeImgSize, */
         /*     { dir: "" } */
@@ -155,7 +147,7 @@ const rehypePlugins = ({
 
 const remarkPlugins = (): /* config?: AppConfigSchemaOutput, */
     CompileOptions["remarkPlugins"] => {
-    return [remarkMath, remarkGfm, emoji];
+    return [remarkMath, remarkGfm, emoji, withCustomIds];
 };
 
 export const parseMdxString = async ({
@@ -177,5 +169,7 @@ export const parseMdxString = async ({
         // development: process.env.NODE_ENV === "development",
         /* baseUrl: import.meta.url */
     });
+    console.log("Parsed Mdx with new props: ", res)
+    /* res. */
     return String(res).replaceAll(/classname/g, "className");
 };

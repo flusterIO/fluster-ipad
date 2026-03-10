@@ -1,4 +1,4 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, SetAutoSaveTimeoutPayload, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, SetAutoSaveTimeoutPayload, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeAction, type SetParsedValueAction, type SetEditorContentAction } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type ByteBuffer } from "flatbuffers";
 
 
@@ -41,6 +41,14 @@ interface SetEditorThemeActionRefined extends SetEditorThemeAction {
     type: EditorStateActions.SetEditorTheme
 }
 
+interface SetParsedValueActionRefined extends SetParsedValueAction {
+    type: EditorStateActions.SetParsedEditorContent
+}
+
+interface SetEditorContentActionRefined extends SetEditorContentAction {
+    type: EditorStateActions.SetEditorValue
+}
+
 
 // -- Container --
 
@@ -56,7 +64,7 @@ interface SetFlusterThemeActionRefined extends SetFlusterThemeAction {
 
 
 
-export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetDarkModeActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetFlusterThemeActionRefined | SetEditorThemeActionRefined;
+export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetDarkModeActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetFlusterThemeActionRefined | SetEditorThemeActionRefined | SetEditorContentActionRefined | SetParsedValueActionRefined;
 
 export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction
 

@@ -1,4 +1,4 @@
-import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store"
+import { type MdxEditorAppState } from "#/webview_global_state/store"
 import { useSelector } from "react-redux"
 
 export const useWebviewEnvironment = () => {

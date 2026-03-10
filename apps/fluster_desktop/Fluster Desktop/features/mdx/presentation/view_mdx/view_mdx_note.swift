@@ -43,11 +43,7 @@ struct MdxContentWebview: View {
     } else {
       WebViewContainerView(
         webview: $mdxWebview,
-        url: Bundle.main.url(
-          forResource: "index_mac",
-          withExtension: "html",
-          subdirectory: "standalone_mdx_preview_mac"
-        )!,
+        url: URL(string: "app://standalone_mdx_preview_mac/index_mac.html")!,
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,
           SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,

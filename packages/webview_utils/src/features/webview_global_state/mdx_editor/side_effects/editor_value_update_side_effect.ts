@@ -1,5 +1,5 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { type MdxEditorAppState } from '#/webview_global_state/mdx_editor/store';
+import { type MdxEditorAppState } from '#/webview_global_state/store';
 import { sendToSwift } from '@/utils/bridge/send_to_swift';
 import { type EditorChangeEvent, SplitviewEditorWebviewActions } from '@/code_gen/typeshare/fluster_core_utilities';
 

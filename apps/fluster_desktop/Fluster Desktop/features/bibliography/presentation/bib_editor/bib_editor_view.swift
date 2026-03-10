@@ -56,11 +56,7 @@ struct BibtexEditorWebview: View {
   var body: some View {
     WebViewContainerView(
       webview: $webView,
-      url: Bundle.main.url(
-        forResource: "index_mac",
-        withExtension: "html",
-        subdirectory: "bibtex_editor_webview_mac"
-      )!,
+      url: URL(string: "app://bibtex_editor_webview_mac/index_mac.html")!,
       messageHandlerKeys: [
         BibtexEditorWebviewActions.onEditorChange.rawValue,
         BibtexEditorWebviewActions.requestBibtexEditorData.rawValue,
@@ -168,8 +164,10 @@ struct BibtexEditorWebview: View {
     }
   }
   func setEditorSelectedTheme(editorTheme: CodeEditorTheme) async throws {
-    try await MdxEditorClient.setEditorTheme(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
+    try await EditorState.setEditorTheme(
+      payload: SetEditorThemePayload(theme: editorTheme),
+      eval: webView.evaluateJavaScript
+    )
   }
   func setEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
     try await EditorState.setEditorKeymap(keymap: editorKeymap, eval: webView.evaluateJavaScript)

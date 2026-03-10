@@ -5,7 +5,19 @@ import { setBibtexEditorWindowBridgeFunctions } from "../types/swift_events/bibt
 import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { connect } from 'react-redux';
-import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
+
+
+
+
+
+
+
+
+
+
+
+
+import { type MdxEditorAppState } from "#/webview_global_state/store";
 
 setBibtexEditorWindowBridgeFunctions();
 

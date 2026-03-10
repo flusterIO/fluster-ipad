@@ -167,6 +167,7 @@ export interface ManualSaveRequestEvent {
 export enum EditorStateActions {
 	SetEditorSaveMethod = "set-editor-save-method",
 	SetInitialEditorState = "set-initial-editor-state",
+	SetEditorValue = "set-editor-value",
 	SetParsedEditorContent = "set-parsed-editor-content",
 	SetEditorKeymap = "set-initial-editor-keymap",
 	SetEditorTheme = "set-editor-theme",
@@ -217,6 +218,15 @@ export interface SetDarkModePayload {
 export interface SetDarkModeAction {
 	type: WebviewContainerActions;
 	payload: SetDarkModePayload;
+}
+
+export interface SetEditorContentPayload {
+	value: string;
+}
+
+export interface SetEditorContentAction {
+	type: EditorStateActions;
+	payload: SetEditorContentPayload;
 }
 
 export interface SetEditorInitialStateEditorAction {
@@ -278,6 +288,15 @@ export interface SetParsedMdxContentEditorAction {
 	type: EditorStateActions;
 	/** The serialized flatbuffer for the OnParsedContentChangeEventBuffer table. */
 	payload: number[];
+}
+
+export interface SetParsedValuePayload {
+	value: string;
+}
+
+export interface SetParsedValueAction {
+	type: EditorStateActions;
+	payload: SetParsedValuePayload;
 }
 
 export interface SetSnippetPropsPayload {

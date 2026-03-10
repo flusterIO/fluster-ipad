@@ -1,6 +1,6 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import { setDarkMode } from '../webview_container_slice';
-import { type MdxEditorAppState } from '#/webview_global_state/mdx_editor/store';
+import { type MdxEditorAppState } from '#/webview_global_state/store';
 
 export const darkModeListenerMiddleware = createListenerMiddleware();
 

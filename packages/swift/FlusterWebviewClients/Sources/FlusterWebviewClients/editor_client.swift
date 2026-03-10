@@ -43,48 +43,18 @@ public struct MdxEditorClient {
       window.setCodeSyntaxThemeDark("\(editorTheme.rawValue)")
       """)
   }
-  public static func setEditorTheme(
-    editorTheme: CodeEditorTheme, evaluateJavaScript: @escaping EvalJavascriptFunc
-  ) async throws {
-    try await evaluateJavaScript(
-      """
-      window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeTheme.rawValue)", "\(editorTheme.rawValue)")
-      window.setCodeSyntaxTheme("\(editorTheme.rawValue)")
-      """)
-  }
-
-  /// Sets the actual editor's content, not the pre-parsed preview content.
-  public static func setEditorContent(
-    note: NoteModel,
-    evaluateJavaScript: @escaping EvalJavascriptFunc
-  ) async throws {
-    try await self.saveToLocalStorage(
-      storageKey: SplitviewEditorWebviewLocalStorageKeys.initialValue.rawValue,
-      data: note.markdown.body,
-      evaluateJavaScript: evaluateJavaScript)
-  }
-
-  public static func setLockEditorScrollToPreview(
-    _ lock: Bool, evaluateJavaScript: @escaping EvalJavascriptFunc
-  ) async throws {
-    try await evaluateJavaScript(
-      """
-      window.setLockEditorScrollToPreview(\(lock ? "true" : "false"))
-      """)
-  }
   // -- New Editor State Model --
   /// Takes a stringified `AnyCrossLanguageEditorAction` to be sent to the cross-language state update handler.
   public static func sendEditorStateUpdate(
     data: String, evalulateJavaScript: @escaping EvalJavascriptFunc
   ) async throws {
-    let res = try await evalulateJavaScript(
+    try await evalulateJavaScript(
       """
       try {
-      window.handleSwiftAction('\(data)')
+      window.handleSwiftAction(\(data))
       } catch (err) {
       console.error("Swift Action Error: ", err)
       }
       """)
-    print("Res: \(res)")
   }
 }

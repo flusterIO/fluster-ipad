@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-    type AnyCrossLanguageBufferEditorAction,
-    type AnyCrossLanguageEditorAction,
     createFlusterStore,
-    handleSwiftAction,
-    handleSwiftBufferAction,
     LoadingComponent,
     MdxEditorGlobalProvider,
     MdxSerialization,
@@ -14,6 +10,8 @@ import {
     sendToSwift,
     useEventListener,
     WebViewContainer,
+    handleSwiftActionWrapper,
+    handleSwiftBufferActionWrapper,
 } from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
 import "./index.css";
@@ -21,37 +19,9 @@ import { ByteBuffer } from "flatbuffers";
 
 const storeData = createFlusterStore();
 
-declare global {
-    interface Window {
-        handleEditorStateParsedContentUpdate: (data: number[]) => void;
-        handleSwiftAction: typeof handleSwiftActionWrapper;
-        handleSwiftBufferAction: typeof handleSwiftBufferActionWrapper;
-    }
-}
+window.handleSwiftAction = handleSwiftActionWrapper(storeData.store);
 
-const handleSwiftActionWrapper = (actionString: string): void => {
-    const action = JSON.parse(actionString) as AnyCrossLanguageEditorAction;
-    storeData.store.dispatch(handleSwiftAction(action));
-};
-
-window.handleSwiftAction = handleSwiftActionWrapper;
-
-const handleSwiftBufferActionWrapper = (
-    actionKey: AnyCrossLanguageBufferEditorAction["type"],
-    payloadBuffer: number[],
-): void => {
-    const data = Uint8Array.from(payloadBuffer);
-    const buf = new ByteBuffer(data);
-
-    storeData.store.dispatch(
-        handleSwiftBufferAction({
-            type: actionKey,
-            payload: buf,
-        }),
-    );
-};
-
-window.handleSwiftBufferAction = handleSwiftBufferActionWrapper;
+window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(storeData.store);
 
 function App() {
     const [data, setData] =

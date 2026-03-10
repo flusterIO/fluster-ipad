@@ -1,10 +1,10 @@
 import { cn } from "@/utils/cn";
-import React, { HTMLProps, useEffect, useId, type ReactNode } from "react";
+import React, { useEffect, useId, type ReactNode } from "react";
 import { useDebounceMdxParse } from "../hooks/use_debounce_mdx_parse";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { useLocalStorage } from "@/state/hooks/use_local_storage";
 import { mdxClasses } from "./inline_mdx_classes";
-import { MdxContentProps } from "./mdx_content_types";
+import { type MdxContentProps } from "./mdx_content_types";
 
 
 export const MdxContent = ({
@@ -15,6 +15,7 @@ export const MdxContent = ({
     showWebviewAction,
     lockToEditorScroll,
     additionalComponents,
+    asMain,
     ...props
 }: MdxContentProps): ReactNode => {
     const id = useId()
@@ -23,7 +24,8 @@ export const MdxContent = ({
         debounceTimeout,
         id,
         showWebviewAction,
-        additionalComponents
+        additionalComponents,
+        asMain
     );
     const [fontSizeClass, setFontSizeClass] = useLocalStorage(
         "webview-font-class",
@@ -45,7 +47,7 @@ export const MdxContent = ({
 
     useEffect(() => {
         setValue(mdx);
-        /* eslint-disable-next-line */
+
     }, [mdx]);
 
 

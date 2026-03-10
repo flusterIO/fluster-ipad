@@ -232,6 +232,7 @@ public struct ManualSaveRequestEvent: Codable {
 public enum EditorStateActions: String, Codable {
 	case setEditorSaveMethod = "set-editor-save-method"
 	case setInitialEditorState = "set-initial-editor-state"
+	case setEditorValue = "set-editor-value"
 	case setParsedEditorContent = "set-parsed-editor-content"
 	case setEditorKeymap = "set-initial-editor-keymap"
 	case setEditorTheme = "set-editor-theme"
@@ -315,6 +316,24 @@ public struct SetDarkModeAction: Codable {
 	public let payload: SetDarkModePayload
 
 	public init(type: WebviewContainerActions, payload: SetDarkModePayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetEditorContentPayload: Codable {
+	public let value: String
+
+	public init(value: String) {
+		self.value = value
+	}
+}
+
+public struct SetEditorContentAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetEditorContentPayload
+
+	public init(type: EditorStateActions, payload: SetEditorContentPayload) {
 		self.type = type
 		self.payload = payload
 	}
@@ -436,6 +455,24 @@ public struct SetParsedMdxContentEditorAction: Codable {
 	public let payload: [UInt8]
 
 	public init(type: EditorStateActions, payload: [UInt8]) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetParsedValuePayload: Codable {
+	public let value: String
+
+	public init(value: String) {
+		self.value = value
+	}
+}
+
+public struct SetParsedValueAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetParsedValuePayload
+
+	public init(type: EditorStateActions, payload: SetParsedValuePayload) {
 		self.type = type
 		self.payload = payload
 	}

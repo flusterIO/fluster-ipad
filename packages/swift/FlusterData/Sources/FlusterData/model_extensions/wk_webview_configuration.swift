@@ -10,16 +10,16 @@ import WebKit
 
 @MainActor
 public class WebContextManager {
-    // This is the "brain" that syncs the storage
-    public static let sharedProcessPool = WKProcessPool()
-    
-    private init() {}
-    
-    public static func createSharedConfiguration() -> WKWebViewConfiguration {
-        let config = WKWebViewConfiguration()
-        config.processPool = WebContextManager.sharedProcessPool
-        // Use the default persistent data store (LocalStorage/Cookies)
-        config.websiteDataStore = .default()
-        return config
-    }
+  static let shared = WebContextManager()
+  // This is the "brain" that syncs the storage
+  let sharedProcessPool = WKProcessPool()
+  let dataStore = WKWebsiteDataStore.default()
+  private init() {}
+
+  public static func createSharedConfiguration() -> WKWebViewConfiguration {
+    let config = WKWebViewConfiguration()
+    config.processPool = WebContextManager.shared.sharedProcessPool
+    config.websiteDataStore = WebContextManager.shared.dataStore
+    return config
+  }
 }

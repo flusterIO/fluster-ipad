@@ -8,7 +8,7 @@ import { setWindowBridgeFunctions } from "#/editor/code_editor/types/swift_event
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
-import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
+import { type MdxEditorAppState } from "#/webview_global_state/store";
 import { connect } from "react-redux";
 
 
@@ -52,14 +52,6 @@ export const MdxEditorPreview = connector(({
         ref.current.scrollTop = newProp
     })
 
-    /* useEffect(() => { */
-    /*     if (typeof parsedValue === "string") { */
-    /*         setBodyLoading(false) */
-    /*     } else { */
-    /*         sendToSwift(MdxPreviewWebviewActions.RequestNoteData) */
-    /*     } */
-    /* }, [parsedValue, value]) */
-
 
     if (typeof parsedValue !== "string") {
         return (
@@ -93,6 +85,7 @@ export const MdxEditorPreview = connector(({
                 id={SplitviewEditorDomIds.MdxPreview}
                 {...props}
                 ref={ref}
+                asMain
                 className={cn(
                     "max-w-[1080px]",
                     isEditorView ? "px-6 pt-4 pb-16" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",

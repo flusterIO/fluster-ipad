@@ -1,4 +1,4 @@
-import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
+import { type MdxEditorAppState } from "#/webview_global_state/store";
 import { type EditorState, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { type AnyWebviewAction } from "@/utils/types/any_window_event";

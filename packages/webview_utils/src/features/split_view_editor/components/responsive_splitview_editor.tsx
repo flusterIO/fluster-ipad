@@ -5,7 +5,7 @@ import { LoadingComponent } from "@/shared_components/loading_component";
 import { EditorScrollPersistor } from "#/mdx/hooks/use_persist_mdx_editor_scroll";
 import { SplitviewEditorNotificationHandler } from "#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner_provider";
 import { useSelector } from "react-redux";
-import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
+import { type MdxEditorAppState } from "#/webview_global_state/store";
 import { WebviewImplementation, EditorView, SplitviewEditorWebviewActions, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { connect } from 'react-redux';

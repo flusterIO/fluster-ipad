@@ -67,6 +67,18 @@ export const swiftEditorActionReducer = (state: EditorState, action: PayloadActi
                 snippetProps: action.payload.payload.snippetProps
             }
         }
+        case EditorStateActions.SetEditorValue: {
+            return {
+                ...state,
+                value: action.payload.payload.value
+            }
+        }
+        case EditorStateActions.SetParsedEditorContent: {
+            return {
+                ...state,
+                parsedValue: action.payload.payload.value
+            }
+        }
         default:
             return { ...state }
     }

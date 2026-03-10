@@ -26,19 +26,22 @@ extension MdxEditorWebview {
     }
   }
   func setEditorSelectedTheme(editorTheme: CodeEditorTheme) async throws {
-    try await MdxEditorClient.setEditorTheme(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
+    try await EditorState.setEditorTheme(
+      payload: SetEditorThemePayload(theme: editorTheme), eval: webView.evaluateJavaScript)
   }
   func setCodeEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
     try await EditorState.setEditorKeymap(keymap: editorKeymap, eval: webView.evaluateJavaScript)
   }
   func setEditorContent(note: NoteModel) async throws {
-    try await MdxEditorClient.setEditorContent(
-      note: note, evaluateJavaScript: webView.evaluateJavaScript)
+    try await EditorState.setEditorContent(
+      content: note.markdown.body,
+      eval: webView.evaluateJavaScript
+    )
   }
   func setLockEditorScrollToPreview(lock: Bool) async throws {
-    try await MdxEditorClient.setLockEditorScrollToPreview(
-      lock, evaluateJavaScript: webView.evaluateJavaScript)
+    try await EditorState.setLockEditorScrollToPreview(
+      payload: SetLockEditorScrollToPreviewPayload(lock_editor_scroll_to_preview: lock),
+      eval: webView.evaluateJavaScript)
   }
   /// deprecated: Moving to new Redux setup.
   func loadNote(note: NoteModel) async throws {

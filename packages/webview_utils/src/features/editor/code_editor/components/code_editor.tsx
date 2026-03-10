@@ -29,7 +29,7 @@ import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
 import { connect } from "react-redux"
 import { setEditorValue } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
-import { type MdxEditorAppState } from "#/webview_global_state/mdx_editor/store";
+import { type MdxEditorAppState } from "#/webview_global_state/store";
 import { sendSplitviewNotificationBanner } from "#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner";
 
 const connector = connect((state: MdxEditorAppState) => ({
