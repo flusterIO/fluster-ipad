@@ -11,24 +11,6 @@ import SwiftUI
 import WebKit
 
 extension MdxEditorWebview {
-  func setEditorThemeDark(editorTheme: CodeEditorTheme) async throws {
-    try await MdxEditorClient.setEditorThemeDark(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
-    if colorScheme == .dark {
-      try await setEditorSelectedTheme(editorTheme: editorTheme)
-    }
-  }
-  func setEditorThemeLight(editorTheme: CodeEditorTheme) async throws {
-    try await MdxEditorClient.setEditorThemeLight(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
-    if colorScheme == .light {
-      try await setEditorSelectedTheme(editorTheme: editorTheme)
-    }
-  }
-  func setEditorSelectedTheme(editorTheme: CodeEditorTheme) async throws {
-    try await EditorState.setEditorTheme(
-      payload: SetEditorThemePayload(theme: editorTheme), eval: webView.evaluateJavaScript)
-  }
   func setCodeEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
     try await EditorState.setEditorKeymap(keymap: editorKeymap, eval: webView.evaluateJavaScript)
   }

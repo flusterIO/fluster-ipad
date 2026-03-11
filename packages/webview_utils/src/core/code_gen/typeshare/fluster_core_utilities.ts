@@ -13,13 +13,15 @@ export enum EditorStateActions {
 	SetEditorValue = "set-editor-value",
 	SetParsedEditorContent = "set-parsed-editor-content",
 	SetEditorKeymap = "set-initial-editor-keymap",
-	SetEditorTheme = "set-editor-theme",
+	SetEditorThemeLight = "set-editor-theme-light",
+	SetEditorThemeDark = "set-editor-theme-dark",
 	SetAutoSaveTimeout = "set-autosave-timeout",
 	SetBaseKeymap = "set-base-keymap",
 	SetEditorTags = "set-editor-tags",
 	SetAllCitationIds = "set-all-citation-ids",
 	SetLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev",
 	SetSnippetProps = "set-snippet-props",
+	SetEditingBibEntry = "set-editing-bib-entry",
 }
 
 export interface EditorBannerNotification {
@@ -74,6 +76,8 @@ export enum WebviewImplementation {
 	BibEditor = "bib-editor",
 	MdxEditor = "mdx-editor",
 	MdxViewer = "mdx-viewer",
+	Dictionary = "dictionary",
+	NoteDetails = "note-details",
 	Development = "development",
 	AwaitingData = "pending",
 }
@@ -135,7 +139,8 @@ export enum EditorSaveMethod {
 export interface EditorInitialStatePayload {
 	note_id: string;
 	keymap: CodeEditorKeymap;
-	theme: CodeEditorTheme;
+	theme_light: CodeEditorTheme;
+	theme_dark: CodeEditorTheme;
 	allCitationIds: string[];
 	value: string;
 	parsedValue: string;
@@ -208,7 +213,8 @@ export interface EditorState {
 	baseKeymap: CodeEditorBaseKeymap;
 	citations: EditorCitation[];
 	keymap: CodeEditorKeymap;
-	theme: CodeEditorTheme;
+	theme_light: CodeEditorTheme;
+	theme_dark: CodeEditorTheme;
 	tags: EditorTag[];
 	allCitationIds: string[];
 	value: string;
@@ -275,6 +281,11 @@ export interface ManualSaveRequestEvent {
 	note_id: string;
 }
 
+export interface ReduxStateLoadedEvent {
+	/** The currently focused note_id. */
+	note_id?: string;
+}
+
 export interface RemoveBannerNotificationByIdPayload {
 	id: string;
 }
@@ -326,6 +337,16 @@ export interface SetDarkModeAction {
 	payload: SetDarkModePayload;
 }
 
+export interface SetEditingBibEntryPayload {
+	content: string;
+	entry_id: string;
+}
+
+export interface SetEditingBibEntryAction {
+	type: EditorStateActions;
+	payload: SetEditingBibEntryPayload;
+}
+
 export interface SetEditorContentPayload {
 	value: string;
 }
@@ -363,13 +384,22 @@ export interface SetEditorTagsAction {
 	payload: SetEditorTagsPayload;
 }
 
-export interface SetEditorThemePayload {
-	theme: CodeEditorTheme;
+export interface SetEditorThemeDarkPayload {
+	theme_dark: CodeEditorTheme;
 }
 
-export interface SetEditorThemeAction {
+export interface SetEditorThemeDarkAction {
 	type: EditorStateActions;
-	payload: SetEditorThemePayload;
+	payload: SetEditorThemeDarkPayload;
+}
+
+export interface SetEditorThemeLightPayload {
+	theme_light: CodeEditorTheme;
+}
+
+export interface SetEditorThemeLightAction {
+	type: EditorStateActions;
+	payload: SetEditorThemeLightPayload;
 }
 
 export interface SetFlusterThemePayload {
@@ -621,6 +651,7 @@ export enum SplitviewEditorWebviewActions {
 	SetWebviewLoaded = "set-editor-webview-loaded",
 	SetIsLandscape = "set-is-landscape-view",
 	ManualSaveRequest = "manual-save-req",
+	OnBibEditorChange = "on-bib-editor-change",
 }
 
 /** From swift to typescript */
@@ -652,5 +683,9 @@ export enum SplitviewEditorWebviewLocalStorageKeys {
 	ScrollPositionPreviewOnly = "editor-scroll-pos-preview-only",
 	ScrollPositionSplitview = "editor-scroll-pos-splitview",
 	EditorState = "editor-state",
+}
+
+export enum WebviewContainerEvents {
+	ReduxStateLoaded = "redux-state-loaded",
 }
 

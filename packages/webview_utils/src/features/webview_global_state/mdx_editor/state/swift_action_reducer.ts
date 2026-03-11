@@ -49,10 +49,16 @@ export const swiftEditorActionReducer = (state: EditorState, action: PayloadActi
                 tags: action.payload.payload.tags
             }
         }
-        case EditorStateActions.SetEditorTheme: {
+        case EditorStateActions.SetEditorThemeLight: {
             return {
                 ...state,
-                theme: action.payload.payload.theme
+                theme_light: action.payload.payload.theme_light
+            }
+        }
+        case EditorStateActions.SetEditorThemeDark: {
+            return {
+                ...state,
+                theme_dark: action.payload.payload.theme_dark
             }
         }
         case EditorStateActions.SetLockEditorScrollToPreview: {

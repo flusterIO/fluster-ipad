@@ -5,7 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { LoadingComponent } from '@/shared_components/loading/loading_component'
 import { WebviewClient } from '../webview_container/data/webview_client'
 import { sendToSwift } from '@/utils/bridge/send_to_swift'
-import { SplitviewEditorWebviewActions } from '@/code_gen/typeshare/fluster_core_utilities'
+import { type ReduxStateLoadedEvent, WebviewContainerEvents } from '@/code_gen/typeshare/fluster_core_utilities'
 
 
 interface MdxEditorGlobalProviderProps {
@@ -21,7 +21,10 @@ export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEdito
         const state = store.getState()
         WebviewClient.applyGlobalState(state)
         if (typeof state.editor.value !== "string" || typeof state.editor.parsedValue !== "string") {
-            sendToSwift(SplitviewEditorWebviewActions.RequestSplitviewEditorData)
+            const data: ReduxStateLoadedEvent = {
+                note_id: state.editor.note_id
+            }
+            sendToSwift(WebviewContainerEvents.ReduxStateLoaded, JSON.stringify(data))
         }
     }
     return (

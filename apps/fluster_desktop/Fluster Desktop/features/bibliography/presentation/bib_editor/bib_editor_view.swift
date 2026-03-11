@@ -7,6 +7,7 @@
 
 import FlusterBibliography
 import FlusterData
+import FlusterSwift
 import FlusterWebviewClients
 import SwiftData
 import SwiftUI
@@ -57,11 +58,12 @@ struct BibtexEditorWebview: View {
 
   var body: some View {
     WebViewContainerView(
+      implementation: WebviewImplementation.bibEditor,
       editingNoteId: editingNoteId,
       webview: $webView,
-      url: URL(string: "app://bibtex_editor_webview_mac/index_mac.html")!,
+      url: URL.embeddedFlusterUrl(folder: "bibtex_editor_webview_mac", fileName: "index_mac.html"),
       messageHandlerKeys: [
-        BibtexEditorWebviewActions.onEditorChange.rawValue,
+        SplitviewEditorWebviewActions.onBibEditorChange.rawValue,
         BibtexEditorWebviewActions.requestBibtexEditorData.rawValue,
         BibtexEditorWebviewActions.setWebviewLoaded.rawValue
       ],
@@ -107,31 +109,6 @@ struct BibtexEditorWebview: View {
         }
       }
     )
-    .onChange(
-      of: editorThemeDark,
-      {
-        Task {
-          try? await setEditorThemeDark(editorTheme: editorThemeDark)
-        }
-      }
-    )
-    .onChange(
-      of: editorThemeLight,
-      {
-        Task {
-          try? await setEditorThemeLight(editorTheme: editorThemeLight)
-        }
-      }
-    )
-    .onChange(
-      of: colorScheme,
-      {
-        Task {
-          try? await setEditorSelectedTheme(
-            editorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
-        }
-      }
-    )
   }
   func handleSave() {
     // Nothing to do if editingItem != nil, item should have been updated as the content was updated. Thanks to Apple's magic, that's all that needs to be done, which still blows my mind.
@@ -151,26 +128,6 @@ struct BibtexEditorWebview: View {
         dismiss()
       }
     }
-  }
-  func setEditorThemeDark(editorTheme: CodeEditorTheme) async throws {
-    try await MdxEditorClient.setEditorThemeDark(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
-    if colorScheme == .dark {
-      try await setEditorSelectedTheme(editorTheme: editorTheme)
-    }
-  }
-  func setEditorThemeLight(editorTheme: CodeEditorTheme) async throws {
-    try await MdxEditorClient.setEditorThemeLight(
-      editorTheme: editorTheme, evaluateJavaScript: webView.evaluateJavaScript)
-    if colorScheme == .light {
-      try await setEditorSelectedTheme(editorTheme: editorTheme)
-    }
-  }
-  func setEditorSelectedTheme(editorTheme: CodeEditorTheme) async throws {
-    try await EditorState.setEditorTheme(
-      payload: SetEditorThemePayload(theme: editorTheme),
-      eval: webView.evaluateJavaScript
-    )
   }
   func setEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
     try await EditorState.setEditorKeymap(keymap: editorKeymap, eval: webView.evaluateJavaScript)
@@ -204,7 +161,7 @@ struct BibtexEditorWebview: View {
   }
   func messageHandler(_ msgKey: String, msgBody: Any) {
     switch msgKey {
-      case BibtexEditorWebviewActions.onEditorChange.rawValue:
+      case SplitviewEditorWebviewActions.onBibEditorChange.rawValue:
         handleEditorChange(newValue: msgBody as! String)
       case BibtexEditorWebviewActions.requestBibtexEditorData.rawValue:
         Task(priority: .high) {
@@ -224,8 +181,6 @@ struct BibtexEditorWebview: View {
     }
     Task {
       try? await setEditorKeymap(editorKeymap: editorKeymap)
-      try? await setEditorSelectedTheme(
-        editorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
     }
   }
 }

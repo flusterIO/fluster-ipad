@@ -46,9 +46,10 @@ struct NoteDetailWebview: View {
   var body: some View {
     if editingNote != nil {
       WebViewContainerView(
+        implementation: WebviewImplementation.noteDetails,
         editingNoteId: editingNoteId,
         webview: $webView,
-        url: URL(string: "app://note_detail_webview_mac/index_mac.html")!,
+        url: URL.embeddedFlusterUrl(folder: "note_detail_webview_mac", fileName: "index_mac.html"),
         messageHandlerKeys: [
           NoteDetailWebviewActions.requestNoteDetailData.rawValue,
           NoteDetailWebviewActions.onTagClick.rawValue,

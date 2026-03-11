@@ -1,4 +1,4 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, SetAutoSaveTimeoutPayload, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type ByteBuffer } from "flatbuffers";
 
 
@@ -37,8 +37,11 @@ interface SetSnippetPropsActionRefined extends SetSnippetPropsAction {
 interface SetEditorTagsActionRefined extends SetEditorTagsAction {
     type: EditorStateActions.SetEditorTags
 }
-interface SetEditorThemeActionRefined extends SetEditorThemeAction {
-    type: EditorStateActions.SetEditorTheme
+interface SetEditorThemeLightActionRefined extends SetEditorThemeLightAction {
+    type: EditorStateActions.SetEditorThemeLight
+}
+interface SetEditorThemeDarkActionRefined extends SetEditorThemeDarkAction {
+    type: EditorStateActions.SetEditorThemeDark
 }
 
 interface SetParsedValueActionRefined extends SetParsedValueAction {
@@ -47,6 +50,11 @@ interface SetParsedValueActionRefined extends SetParsedValueAction {
 
 interface SetEditorContentActionRefined extends SetEditorContentAction {
     type: EditorStateActions.SetEditorValue
+}
+
+interface SetEditingBibEntryActionRefined extends SetEditingBibEntryAction {
+
+    type: EditorStateActions.SetEditingBibEntry
 }
 
 
@@ -66,7 +74,7 @@ interface SetNoteDeletedActionRefined extends SetNoteDeletedAction {
 
 
 
-export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetEditorThemeActionRefined | SetEditorContentActionRefined | SetParsedValueActionRefined;
+export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetEditorThemeDarkActionRefined | SetEditorThemeLightActionRefined | SetEditorContentActionRefined | SetParsedValueActionRefined | SetEditingBibEntryActionRefined;
 
 export type AnyCrossLanguageWebviewContainerAction = SetNoteDeletedActionRefined | SetDarkModeActionRefined | SetFlusterThemeActionRefined
 

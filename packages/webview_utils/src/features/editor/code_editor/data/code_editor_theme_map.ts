@@ -1,5 +1,4 @@
-import { Extension } from "@codemirror/state";
-import { CodeEditorTheme } from "../types/code_editor_types";
+import { type Extension } from "@codemirror/state";
 import { materialLight } from "@ddietr/codemirror-themes/material-light";
 import { materialDark } from "@ddietr/codemirror-themes/material-dark";
 import { solarizedLight } from "@ddietr/codemirror-themes/solarized-light";
@@ -12,6 +11,7 @@ import { tokyoNight } from "@ddietr/codemirror-themes/tokyo-night";
 import { tokyoNightStorm } from "@ddietr/codemirror-themes/tokyo-night-storm";
 import { tokyoNightDay } from "@ddietr/codemirror-themes/tokyo-night-day";
 import { xcodeLight, xcodeDark } from '@uiw/codemirror-theme-xcode';
+import { CodeEditorTheme } from "@/code_gen/typeshare/fluster_core_utilities"
 
 export const codeEditorThemeMap: Record<CodeEditorTheme, () => Extension> = {
     [CodeEditorTheme.Dracula]: () => dracula,

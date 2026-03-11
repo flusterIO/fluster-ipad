@@ -23,6 +23,9 @@ pub enum SplitviewEditorWebviewActions {
     #[serde(rename = "manual-save-req")]
     #[strum(to_string = "manual-save-req")]
     ManualSaveRequest,
+    #[serde(rename = "on-bib-editor-change")]
+    #[strum(to_string = "on-bib-editor-change")]
+    OnBibEditorChange,
 }
 
 /// From swift to typescript

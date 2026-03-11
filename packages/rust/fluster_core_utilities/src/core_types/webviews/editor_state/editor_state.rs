@@ -59,7 +59,8 @@ pub struct EditorState {
     pub base_keymap: CodeEditorBaseKeymap,
     pub citations: Vec<EditorCitation>,
     pub keymap: CodeEditorKeymap,
-    pub theme: CodeEditorTheme,
+    pub theme_light: CodeEditorTheme,
+    pub theme_dark: CodeEditorTheme,
     pub tags: Vec<EditorTag>,
     #[serde(rename = "allCitationIds")]
     pub all_citation_ids: Vec<String>,

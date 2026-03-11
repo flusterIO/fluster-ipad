@@ -14,7 +14,8 @@ use crate::core_types::webviews::{
 pub struct EditorInitialStatePayload {
     pub note_id: String,
     pub keymap: CodeEditorKeymap,
-    pub theme: CodeEditorTheme,
+    pub theme_light: CodeEditorTheme,
+    pub theme_dark: CodeEditorTheme,
     #[serde(rename = "allCitationIds")]
     pub all_citation_ids: Vec<String>,
     pub value: String,

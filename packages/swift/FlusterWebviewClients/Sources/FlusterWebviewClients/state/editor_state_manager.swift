@@ -115,14 +115,25 @@ extension EditorState {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }
   }
+    public static func setEditorThemeDark(
+      payload: SetEditorThemeDarkPayload, eval: @escaping EvalJavascriptFunc
+    )
+      async throws
+    {
+      let action = SetEditorThemeDarkAction(
+        type: EditorStateActions.setEditorThemeDark, payload: payload)
+      if let parsedData = EditorState.encodeAction(data: action) {
+        try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+      }
+    }
 
-  public static func setEditorTheme(
-    payload: SetEditorThemePayload, eval: @escaping EvalJavascriptFunc
+  public static func setEditorThemeLight(
+    payload: SetEditorThemeLightPayload, eval: @escaping EvalJavascriptFunc
   )
     async throws
   {
-    let action = SetEditorThemeAction(
-      type: EditorStateActions.setEditorTheme, payload: payload)
+    let action = SetEditorThemeLightAction(
+      type: EditorStateActions.setEditorThemeLight, payload: payload)
     if let parsedData = EditorState.encodeAction(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }

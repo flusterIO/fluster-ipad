@@ -18,13 +18,15 @@ public enum EditorStateActions: String, Codable {
 	case setEditorValue = "set-editor-value"
 	case setParsedEditorContent = "set-parsed-editor-content"
 	case setEditorKeymap = "set-initial-editor-keymap"
-	case setEditorTheme = "set-editor-theme"
+	case setEditorThemeLight = "set-editor-theme-light"
+	case setEditorThemeDark = "set-editor-theme-dark"
 	case setAutoSaveTimeout = "set-autosave-timeout"
 	case setBaseKeymap = "set-base-keymap"
 	case setEditorTags = "set-editor-tags"
 	case setAllCitationIds = "set-all-citation-ids"
 	case setLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev"
 	case setSnippetProps = "set-snippet-props"
+	case setEditingBibEntry = "set-editing-bib-entry"
 }
 
 public struct EditorBannerNotification: Codable {
@@ -120,6 +122,8 @@ public enum WebviewImplementation: String, Codable {
 	case bibEditor = "bib-editor"
 	case mdxEditor = "mdx-editor"
 	case mdxViewer = "mdx-viewer"
+	case dictionary
+	case noteDetails = "note-details"
 	case development
 	case awaitingData = "pending"
 }
@@ -192,7 +196,8 @@ public enum EditorSaveMethod: String, Codable {
 public struct EditorInitialStatePayload: Codable {
 	public let note_id: String
 	public let keymap: CodeEditorKeymap
-	public let theme: CodeEditorTheme
+	public let theme_light: CodeEditorTheme
+	public let theme_dark: CodeEditorTheme
 	public let allCitationIds: [String]
 	public let value: String
 	public let parsedValue: String
@@ -201,10 +206,11 @@ public struct EditorInitialStatePayload: Codable {
 	public let lockEditorScrollToPreview: Bool
 	public let saveMethod: EditorSaveMethod
 
-	public init(note_id: String, keymap: CodeEditorKeymap, theme: CodeEditorTheme, allCitationIds: [String], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
+	public init(note_id: String, keymap: CodeEditorKeymap, theme_light: CodeEditorTheme, theme_dark: CodeEditorTheme, allCitationIds: [String], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
 		self.note_id = note_id
 		self.keymap = keymap
-		self.theme = theme
+		self.theme_light = theme_light
+		self.theme_dark = theme_dark
 		self.allCitationIds = allCitationIds
 		self.value = value
 		self.parsedValue = parsedValue
@@ -296,7 +302,8 @@ public struct EditorState: Codable {
 	public let baseKeymap: CodeEditorBaseKeymap
 	public let citations: [EditorCitation]
 	public let keymap: CodeEditorKeymap
-	public let theme: CodeEditorTheme
+	public let theme_light: CodeEditorTheme
+	public let theme_dark: CodeEditorTheme
 	public let tags: [EditorTag]
 	public let allCitationIds: [String]
 	public let value: String
@@ -309,12 +316,13 @@ public struct EditorState: Codable {
 	public let autoSaveTimeout: UInt32
 	public let bib_editor: BibtexEditorState
 
-	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], keymap: CodeEditorKeymap, theme: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool, editorView: EditorView, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod, autoSaveTimeout: UInt32, bib_editor: BibtexEditorState) {
+	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], keymap: CodeEditorKeymap, theme_light: CodeEditorTheme, theme_dark: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool, editorView: EditorView, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod, autoSaveTimeout: UInt32, bib_editor: BibtexEditorState) {
 		self.note_id = note_id
 		self.baseKeymap = baseKeymap
 		self.citations = citations
 		self.keymap = keymap
-		self.theme = theme
+		self.theme_light = theme_light
+		self.theme_dark = theme_dark
 		self.tags = tags
 		self.allCitationIds = allCitationIds
 		self.value = value
@@ -416,6 +424,15 @@ public struct ManualSaveRequestEvent: Codable {
 	}
 }
 
+public struct ReduxStateLoadedEvent: Codable {
+	/// The currently focused note_id.
+	public let note_id: String?
+
+	public init(note_id: String?) {
+		self.note_id = note_id
+	}
+}
+
 public struct RemoveBannerNotificationByIdPayload: Codable {
 	public let id: String
 
@@ -512,6 +529,26 @@ public struct SetDarkModeAction: Codable {
 	}
 }
 
+public struct SetEditingBibEntryPayload: Codable {
+	public let content: String
+	public let entry_id: String
+
+	public init(content: String, entry_id: String) {
+		self.content = content
+		self.entry_id = entry_id
+	}
+}
+
+public struct SetEditingBibEntryAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetEditingBibEntryPayload
+
+	public init(type: EditorStateActions, payload: SetEditingBibEntryPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
 public struct SetEditorContentPayload: Codable {
 	public let value: String
 
@@ -586,19 +623,37 @@ public struct SetEditorTagsAction: Codable {
 	}
 }
 
-public struct SetEditorThemePayload: Codable {
-	public let theme: CodeEditorTheme
+public struct SetEditorThemeDarkPayload: Codable {
+	public let theme_dark: CodeEditorTheme
 
-	public init(theme: CodeEditorTheme) {
-		self.theme = theme
+	public init(theme_dark: CodeEditorTheme) {
+		self.theme_dark = theme_dark
 	}
 }
 
-public struct SetEditorThemeAction: Codable {
+public struct SetEditorThemeDarkAction: Codable {
 	public let type: EditorStateActions
-	public let payload: SetEditorThemePayload
+	public let payload: SetEditorThemeDarkPayload
 
-	public init(type: EditorStateActions, payload: SetEditorThemePayload) {
+	public init(type: EditorStateActions, payload: SetEditorThemeDarkPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetEditorThemeLightPayload: Codable {
+	public let theme_light: CodeEditorTheme
+
+	public init(theme_light: CodeEditorTheme) {
+		self.theme_light = theme_light
+	}
+}
+
+public struct SetEditorThemeLightAction: Codable {
+	public let type: EditorStateActions
+	public let payload: SetEditorThemeLightPayload
+
+	public init(type: EditorStateActions, payload: SetEditorThemeLightPayload) {
 		self.type = type
 		self.payload = payload
 	}
@@ -899,6 +954,7 @@ public enum SplitviewEditorWebviewActions: String, Codable {
 	case setWebviewLoaded = "set-editor-webview-loaded"
 	case setIsLandscape = "set-is-landscape-view"
 	case manualSaveRequest = "manual-save-req"
+	case onBibEditorChange = "on-bib-editor-change"
 }
 
 /// From swift to typescript
@@ -930,4 +986,8 @@ public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {
 	case scrollPositionPreviewOnly = "editor-scroll-pos-preview-only"
 	case scrollPositionSplitview = "editor-scroll-pos-splitview"
 	case editorState = "editor-state"
+}
+
+public enum WebviewContainerEvents: String, Codable {
+	case reduxStateLoaded = "redux-state-loaded"
 }

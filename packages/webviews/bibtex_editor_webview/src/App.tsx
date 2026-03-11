@@ -24,7 +24,7 @@ function App() {
             persistor={storeData.persistor}
         >
             <WebViewContainer contentContainerClasses="h-full">
-                <BibtexEditor haveSetInitialValue={false} />
+                <BibtexEditor />
             </WebViewContainer>
         </MdxEditorGlobalProvider>
     );

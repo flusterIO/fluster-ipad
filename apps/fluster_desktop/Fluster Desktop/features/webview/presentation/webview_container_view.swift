@@ -20,6 +20,7 @@ func getWebViewConfig() -> WKWebViewConfiguration {
 }
 
 struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for iOS/iPadOS
+  let parent: WebViewContainerView
   @Binding var webView: WKWebView
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   let url: URL
@@ -101,6 +102,11 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     func userContentController(
       _ userContentController: WKUserContentController, didReceive message: WKScriptMessage
     ) {
+      if message.name == WebviewContainerEvents.reduxStateLoaded.rawValue {
+        Task(priority: .high) {
+          await self.parent.parent.handleInitialState()
+        }
+      }
       if let messageHandler = parent.messageHandler {
         for handler in parent.messageHandlerKeys {
           if message.name == handler {
@@ -151,6 +157,7 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
 }
 
 struct WebViewContainerView: View {
+  let implementation: WebviewImplementation
   @EnvironmentObject private var appState: AppState
   @Environment(\.modelContext) private var modelContext: ModelContext
 
@@ -187,6 +194,7 @@ struct WebViewContainerView: View {
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
 
   init(
+    implementation: WebviewImplementation,
     editingNoteId: String?,
     webview: Binding<WKWebView>,
     url: URL,
@@ -194,6 +202,7 @@ struct WebViewContainerView: View {
     messageHandler: ((String, Any) -> Void)?,
     onLoad: (@Sendable () async -> Void)?,
   ) {
+    self.implementation = implementation
     self._webview = webview
     self.url = url
     self.messageHandlerKeys = messageHandlerKeys
@@ -222,6 +231,7 @@ struct WebViewContainerView: View {
   var body: some View {
     ZStack {
       WebViewContainer(
+        parent: self,
         webView: $webview,
         url: url,
         messageHandlerKeys: messageHandlerKeys,
@@ -257,6 +267,30 @@ struct WebViewContainerView: View {
       }
     )
     .onChange(
+      of: editorThemeDark,
+      {
+        do {
+          Task(
+            priority: .high,
+            operation: {
+              try await self.setEditorThemeDark(editorTheme: editorThemeDark)
+            })
+        }
+      }
+    )
+    .onChange(
+      of: editorThemeLight,
+      {
+        do {
+          Task(
+            priority: .high,
+            operation: {
+              try await self.setEditorThemeLight(editorTheme: editorThemeLight)
+            })
+        }
+      }
+    )
+    .onChange(
       of: colorScheme,
       {
         Task {
@@ -275,7 +309,8 @@ struct WebViewContainerView: View {
             editorPayload: EditorInitialStatePayload(
               note_id: en.id,
               keymap: editorKeymap,
-              theme: colorScheme == .dark ? editorThemeDark : editorThemeLight,
+              theme_light: editorThemeLight,
+              theme_dark: editorThemeDark,
               allCitationIds: bibEntries.compactMap(\.citationKey),
               value: en.markdown.body,
               parsedValue: en.markdown.preParsedBody ?? "",
@@ -289,7 +324,7 @@ struct WebViewContainerView: View {
             containerPayload: WebviewContainerSharedInitialState(
               environment: WebviewEnvironment.macOS,
               dark_mode: colorScheme == .dark,
-              implementation: WebviewImplementation.mdxEditor,
+              implementation: self.implementation,
               fluster_theme: flusterTheme
             ),
             eval: self.webview.evaluateJavaScript
@@ -330,5 +365,18 @@ struct WebViewContainerView: View {
           eval: webview.evaluateJavaScript)
       }
     }
+  }
+
+  func setEditorThemeDark(editorTheme: CodeEditorTheme) async throws {
+    try await EditorState.setEditorThemeDark(
+      payload: SetEditorThemeDarkPayload(theme_dark: editorTheme),
+      eval: self.webview.evaluateJavaScript
+    )
+  }
+  func setEditorThemeLight(editorTheme: CodeEditorTheme) async throws {
+    try await EditorState.setEditorThemeLight(
+      payload: SetEditorThemeLightPayload(theme_light: editorTheme),
+      eval: self.webview.evaluateJavaScript
+    )
   }
 }

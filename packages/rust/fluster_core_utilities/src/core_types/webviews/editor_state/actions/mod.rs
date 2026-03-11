@@ -1,6 +1,7 @@
 pub mod set_all_citation_ids;
 pub mod set_auto_save_timeout;
 pub mod set_base_keymap;
+pub mod set_editing_bib_entry;
 pub mod set_editor_content;
 pub mod set_editor_initial_state;
 pub mod set_editor_keymap;

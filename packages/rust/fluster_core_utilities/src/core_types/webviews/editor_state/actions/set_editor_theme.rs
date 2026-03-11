@@ -7,13 +7,26 @@ use crate::core_types::webviews::editor_state::{
 
 #[typeshare]
 #[derive(uniffi::Record, Serialize, Deserialize)]
-pub struct SetEditorThemePayload {
-    theme: CodeEditorTheme,
+pub struct SetEditorThemeLightPayload {
+    pub theme_light: CodeEditorTheme,
 }
 
 #[typeshare]
 #[derive(uniffi::Record, Serialize, Deserialize)]
-pub struct SetEditorThemeAction {
+pub struct SetEditorThemeLightAction {
     pub r#type: EditorStateActions,
-    pub payload: SetEditorThemePayload,
+    pub payload: SetEditorThemeLightPayload,
+}
+
+#[typeshare]
+#[derive(uniffi::Record, Serialize, Deserialize)]
+pub struct SetEditorThemeDarkPayload {
+    pub theme_dark: CodeEditorTheme,
+}
+
+#[typeshare]
+#[derive(uniffi::Record, Serialize, Deserialize)]
+pub struct SetEditorThemeDarkAction {
+    pub r#type: EditorStateActions,
+    pub payload: SetEditorThemeDarkPayload,
 }

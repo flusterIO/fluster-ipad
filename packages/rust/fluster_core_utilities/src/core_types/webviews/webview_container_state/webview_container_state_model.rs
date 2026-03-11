@@ -51,6 +51,12 @@ pub enum WebviewImplementation {
     #[serde(rename = "mdx-viewer")]
     #[strum(to_string = "mdx-viewer")]
     MdxViewer,
+    #[serde(rename = "dictionary")]
+    #[strum(to_string = "dictionary")]
+    Dictionary,
+    #[serde(rename = "note-details")]
+    #[strum(to_string = "note-details")]
+    NoteDetails,
     #[serde(rename = "development")]
     #[strum(to_string = "development")]
     Development,

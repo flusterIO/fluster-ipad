@@ -21,6 +21,7 @@ struct DictionaryPageView: View {
   @EnvironmentObject private var appState: AppState
   var body: some View {
     WebViewContainerView(
+        implementation: WebviewImplementation.dictionary,
       editingNoteId: appState.editingNoteId,
       webview: $webview,
       url: URL.embeddedFlusterUrl(folder: "dictionary_webview_mac", fileName: "index_mac.html"),

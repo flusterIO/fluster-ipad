@@ -19,9 +19,12 @@ pub enum EditorStateActions {
     #[serde(rename = "set-initial-editor-keymap")]
     #[strum(to_string = "set-initial-editor-keymap")]
     SetEditorKeymap,
-    #[serde(rename = "set-editor-theme")]
-    #[strum(to_string = "set-editor-theme")]
-    SetEditorTheme,
+    #[serde(rename = "set-editor-theme-light")]
+    #[strum(to_string = "set-editor-theme-light")]
+    SetEditorThemeLight,
+    #[serde(rename = "set-editor-theme-dark")]
+    #[strum(to_string = "set-editor-theme-dark")]
+    SetEditorThemeDark,
     #[serde(rename = "set-autosave-timeout")]
     #[strum(to_string = "set-autosave-timeout")]
     SetAutoSaveTimeout,
@@ -40,4 +43,7 @@ pub enum EditorStateActions {
     #[serde(rename = "set-snippet-props")]
     #[strum(to_string = "set-snippet-props")]
     SetSnippetProps,
+    #[serde(rename = "set-editing-bib-entry")]
+    #[strum(to_string = "set-editing-bib-entry")]
+    SetEditingBibEntry,
 }

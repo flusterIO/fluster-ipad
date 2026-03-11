@@ -10,7 +10,7 @@ import { lineNumbersRelative } from "@uiw/codemirror-extensions-line-numbers-rel
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { useEventListener } from "@/state/hooks/use_event_listener";
-import { type BibtexEditorWebviewEvents, CodeEditorKeymap, type EditorState, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type BibtexEditorWebviewEvents, CodeEditorKeymap, type EditorState, SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents, type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type AnyWebviewAction, type AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
@@ -34,7 +34,9 @@ import { type MdxEditorAppState } from "#/webview_global_state/store";
 const connector = connect((state: MdxEditorAppState) => ({
     baseKeymap: state.editor.baseKeymap,
     allCitationIds: state.editor.allCitationIds,
-    theme: state.editor.theme,
+    theme_dark: state.editor.theme_dark,
+    theme_light: state.editor.theme_light,
+    dark_mode: state.container.dark_mode,
     keymap: state.editor.keymap,
     value: state.editor.value,
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview,
@@ -46,7 +48,7 @@ const connector = connect((state: MdxEditorAppState) => ({
 }))
 
 
-interface CodeEditorProps extends Pick<EditorState, "baseKeymap" | "allCitationIds" | "theme" | "keymap" | "value" | "lockEditorScrollToPreview" | "snippetProps" | "note_id" | "haveSetInitialValue" | "autoSaveTimeout"> {
+interface CodeEditorProps extends Pick<EditorState, "baseKeymap" | "allCitationIds" | "theme_light" | "theme_dark" | "keymap" | "value" | "lockEditorScrollToPreview" | "snippetProps" | "note_id" | "haveSetInitialValue" | "autoSaveTimeout">, Pick<WebviewContainerState, "dark_mode"> {
     language?: CodeEditorLanguage;
     requestNewDataAction?: AnyWebviewAction
     updateHandler?: AnyWebviewAction
@@ -65,8 +67,10 @@ export const CodeEditorInner = connector(({
     containerId = "code-editor-container",
     keymap,
     baseKeymap,
-    theme,
+    theme_light,
+    theme_dark,
     value,
+    dark_mode,
     haveSetInitialValue,
     lockEditorScrollToPreview,
     snippetProps,
@@ -179,7 +183,7 @@ export const CodeEditorInner = connector(({
             EditorView.lineWrapping,
             /* language, */
             history(),
-            codeEditorThemeMap[theme](),
+            codeEditorThemeMap[dark_mode ? theme_dark : theme_light](),
             codemirrorKeymap.of([{
                 key: "Mod-s",
                 run: (view) => {
@@ -209,7 +213,7 @@ export const CodeEditorInner = connector(({
                     );
                 }
             }),
-        ];
+        ] satisfies Extension[];
         const startState = CodeMirrorEditorState.create({
             doc: language === CodeEditorLanguage.markdown ? value : bibtexValue,
             extensions,
@@ -224,7 +228,7 @@ export const CodeEditorInner = connector(({
         haveRendered.current = true;
         sendToSwift(showWebviewHandler);
 
-    }, [baseKeymap, theme, haveSetInitialValue, keymap, allCitationIds, lockEditorScrollToPreview, note_id]);
+    }, [baseKeymap, theme_light, theme_dark, haveSetInitialValue, keymap, allCitationIds, lockEditorScrollToPreview, note_id, dark_mode]);
 
     useEventListener(swiftContentEvent as keyof WindowEventMap, (e) => {
         if (viewRef.current) {

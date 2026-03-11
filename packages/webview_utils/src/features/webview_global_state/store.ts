@@ -13,6 +13,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { emptyParsedValueListenerMiddleware } from "./mdx_editor/side_effects/empty_parsed_value_side_effect"
 import { editorValueChangeListenerMiddleware } from './mdx_editor/side_effects/editor_value_update_side_effect';
 import storage from 'redux-persist-indexeddb-storage';
+import { editorBibValueChangeListenerMiddleware } from './mdx_editor/side_effects/editor_bib_value_side_effect';
 
 const rootReducer = combineReducers({
     editor: editorReducer,
@@ -54,6 +55,7 @@ export const createFlusterStore = () => {
                 .prepend(darkModeListenerMiddleware.middleware)
                 .prepend(emptyValueListenerMiddleware.middleware)
                 .prepend(editorValueChangeListenerMiddleware.middleware)
+                .prepend(editorBibValueChangeListenerMiddleware.middleware)
                 .prepend(emptyParsedValueListenerMiddleware.middleware)
         ,
     });

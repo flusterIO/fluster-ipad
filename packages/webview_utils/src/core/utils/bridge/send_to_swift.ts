@@ -1,4 +1,4 @@
-import { AnyWebviewAction } from "../types/any_window_event";
+import { type AnyNewReduxAction, type AnyWebviewAction } from "../types/any_window_event";
 
 declare global {
     interface Window {
@@ -8,13 +8,11 @@ declare global {
     }
 }
 
-export interface SwiftBridgeMessageObject {
-    [key: string]: object | string | number;
-}
+export type SwiftBridgeMessageObject = Record<string, object | string | number>;
 
 
 export const sendToSwift = (
-    handler: AnyWebviewAction,
+    handler: AnyWebviewAction | AnyNewReduxAction,
     msg: SwiftBridgeMessageObject | string = "",
 ) => {
     if (

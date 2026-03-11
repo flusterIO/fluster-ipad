@@ -6,11 +6,11 @@
 //
 
 import FlusterData
+import FlusterSwift
 import FlusterWebviewClients
 import SwiftData
 import SwiftUI
 import WebKit
-import FlusterSwift
 
 struct MdxContentWebview: View {
   var editingNoteId: String?
@@ -45,9 +45,11 @@ struct MdxContentWebview: View {
       NoNoteSelectedView()
     } else {
       WebViewContainerView(
+        implementation: WebviewImplementation.mdxViewer,
         editingNoteId: editingNoteId,
         webview: $mdxWebview,
-        url: URL.embeddedFlusterUrl(folder: "standalone_mdx_preview_mac", fileName: "index_mac.html"),
+        url: URL.embeddedFlusterUrl(
+          folder: "standalone_mdx_preview_mac", fileName: "index_mac.html"),
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,
           SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,

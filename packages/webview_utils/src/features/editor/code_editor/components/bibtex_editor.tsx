@@ -1,28 +1,14 @@
 import React, { type ReactNode } from "react";
 import { CodeEditorInner } from "./code_editor";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { setBibtexEditorWindowBridgeFunctions } from "../types/swift_events/bibtex_editor_swift_events";
 import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { connect } from 'react-redux';
-
-
-
-
-
-
-
-
-
-
-
-
 import { type MdxEditorAppState } from "#/webview_global_state/store";
 
-setBibtexEditorWindowBridgeFunctions();
 
 const connector = connect((state: MdxEditorAppState) => ({
-    havSetInitialValue: state.editor.haveSetInitialValue,
+    haveSetInitialValue: state.editor.haveSetInitialValue,
 }))
 
 

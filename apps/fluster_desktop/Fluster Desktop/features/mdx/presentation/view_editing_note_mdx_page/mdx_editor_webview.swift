@@ -62,6 +62,7 @@ struct MdxEditorWebview: View {
       NoNoteSelectedView()
     } else {
       WebViewContainerView(
+        implementation: WebviewImplementation.mdxEditor,
         editingNoteId: editingNoteId,
         webview: $webView,
         url: URL.embeddedFlusterUrl(folder: "splitview_mdx_editor_mac", fileName: "index_mac.html"),
@@ -172,31 +173,6 @@ struct MdxEditorWebview: View {
         }
       )
       .onChange(
-        of: editorThemeDark,
-        {
-          Task {
-            try? await setEditorThemeDark(editorTheme: editorThemeDark)
-          }
-        }
-      )
-      .onChange(
-        of: editorThemeLight,
-        {
-          Task {
-            try? await setEditorThemeLight(editorTheme: editorThemeLight)
-          }
-        }
-      )
-      .onChange(
-        of: colorScheme,
-        {
-          Task {
-            try? await setEditorSelectedTheme(
-              editorTheme: colorScheme == .dark ? editorThemeDark : editorThemeLight)
-          }
-        }
-      )
-      .onChange(
         of: lockEditorScrollToPreview,
         {
           Task {
@@ -279,7 +255,7 @@ struct MdxEditorWebview: View {
               parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
               eval: webView.evaluateJavaScript)
           } else {
-              print("Broken state: Found mismatched note id's")
+            print("Broken state: Found mismatched note id's")
           }
         }
       } catch {
