@@ -10,4 +10,7 @@ pub enum WebviewContainerActions {
     #[serde(rename = "set-dark-mode")]
     #[strum(to_string = "set-dark-mode")]
     SetDarkMode,
+    #[serde(rename = "handle-note-deleted")]
+    #[strum(to_string = "handle-note-deleted")]
+    HandleNoteDeleted,
 }

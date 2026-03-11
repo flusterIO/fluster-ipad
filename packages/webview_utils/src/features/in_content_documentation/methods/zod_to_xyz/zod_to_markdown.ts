@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { ZodSchemaSource } from "./zod_schema_sources";
+import { type ZodSchemaSource } from "./zod_schema_sources";
 import { ZodToMarkdownHandler } from './zod_to_markdown_handler';
 
 

@@ -1,10 +1,17 @@
-import { CodeEditorBaseKeymap, CodeEditorKeymap, CodeEditorTheme, EditorSaveMethod, type EditorState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type BibtexEditorState, CodeEditorBaseKeymap, CodeEditorKeymap, CodeEditorTheme, EditorSaveMethod, type EditorState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
+
+
+
+const initialBibEditorState: BibtexEditorState = {
+    value: ""
+}
 
 export const initialEditorState: EditorState = {
     value: "",
     snippetProps: {
         includeEmojiSnippets: true
     },
+    bib_editor: initialBibEditorState,
     saveMethod: EditorSaveMethod.OnChange,
     lockEditorScrollToPreview: true,
     keymap: CodeEditorKeymap.Base,

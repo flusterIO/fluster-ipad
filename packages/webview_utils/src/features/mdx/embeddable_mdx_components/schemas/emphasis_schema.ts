@@ -1,5 +1,5 @@
-import { CSSProperties } from "react";
-import { z, ZodBoolean, ZodOptional } from "zod";
+import { type CSSProperties } from "react";
+import { z, type ZodBoolean, type ZodOptional } from "zod";
 
 
 export interface ZodStylesGroup {
@@ -19,7 +19,7 @@ export const emphasisOptions = [
     "card",
 ] as const;
 
-const _emphasisSchema = {
+export const _emphasisSchema = {
     info: z.boolean({ message: `The info field is a boolean.` }).optional(),
     error: z.boolean({ message: `The error field is a boolean.` }).optional(),
     warn: z.boolean({ message: `The warn field is a boolean.` }).optional(),
@@ -29,7 +29,7 @@ const _emphasisSchema = {
     research: z.boolean({ message: `The research field is a boolean.` }).optional(),
     highlight: z.boolean({ message: `The highlight field is a boolean.` }).optional(),
     card: z.boolean({ message: `The 'card' field is a boolean.` }).optional(),
-} satisfies { [K in typeof emphasisOptions[number]]: ZodOptional<ZodBoolean> }
+} satisfies Record<typeof emphasisOptions[number], ZodOptional<ZodBoolean>>
 
 export const emphasisSchema = z.object(_emphasisSchema, {
     message: `All components that accept an 'emphasis' take a list of optional boolean properties, where this list is: ${emphasisOptions.map((k) => `"${k}"`).join(", ")}`
@@ -43,10 +43,10 @@ export const getEmphasisOptions = () => emphasisOptions
 export type EmphasisSchema = z.infer<typeof emphasisSchema>
 export type Emphasis = typeof emphasisOptions[number]
 
-export type EmphasisTransform = (k: { [K in Emphasis]?: boolean }) => string
-export type EmphasisTransformToGroup = (k: { [K in Emphasis]?: boolean }) => ZodStylesGroup
+export type EmphasisTransform = (k: Partial<Record<Emphasis, boolean>>) => string
+export type EmphasisTransformToGroup = (k: Partial<Record<Emphasis, boolean>>) => ZodStylesGroup
 
-export const getFirstEmphasisKey = (data: { [K in Emphasis]?: boolean | undefined }): Emphasis | undefined => {
+export const getFirstEmphasisKey = (data: Partial<Record<Emphasis, boolean | undefined>>): Emphasis | undefined => {
     for (const k of emphasisOptions) {
         if (data[k] === true) {
             return k

@@ -59,6 +59,14 @@ public struct AppendNotificationBannerAction: Codable {
 	}
 }
 
+public struct BibtexEditorState: Codable {
+	public let value: String
+
+	public init(value: String) {
+		self.value = value
+	}
+}
+
 public struct CodeBlockParsingResult: Codable {
 	public let full_match: String
 	public let language_tag: String
@@ -299,8 +307,9 @@ public struct EditorState: Codable {
 	public let lockEditorScrollToPreview: Bool
 	public let saveMethod: EditorSaveMethod
 	public let autoSaveTimeout: UInt32
+	public let bib_editor: BibtexEditorState
 
-	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], keymap: CodeEditorKeymap, theme: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool, editorView: EditorView, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod, autoSaveTimeout: UInt32) {
+	public init(note_id: String?, baseKeymap: CodeEditorBaseKeymap, citations: [EditorCitation], keymap: CodeEditorKeymap, theme: CodeEditorTheme, tags: [EditorTag], allCitationIds: [String], value: String, parsedValue: String?, haveSetInitialValue: Bool, editorView: EditorView, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod, autoSaveTimeout: UInt32, bib_editor: BibtexEditorState) {
 		self.note_id = note_id
 		self.baseKeymap = baseKeymap
 		self.citations = citations
@@ -316,6 +325,7 @@ public struct EditorState: Codable {
 		self.lockEditorScrollToPreview = lockEditorScrollToPreview
 		self.saveMethod = saveMethod
 		self.autoSaveTimeout = autoSaveTimeout
+		self.bib_editor = bib_editor
 	}
 }
 
@@ -481,6 +491,7 @@ public struct SetBaseKeymapAction: Codable {
 public enum WebviewContainerActions: String, Codable {
 	case setFlusterTheme = "set-fluster-theme"
 	case setDarkMode = "set-dark-mode"
+	case handleNoteDeleted = "handle-note-deleted"
 }
 
 public struct SetDarkModePayload: Codable {
@@ -624,6 +635,26 @@ public struct SetLockEditorScrollToPreviewAction: Codable {
 	public let payload: SetLockEditorScrollToPreviewPayload
 
 	public init(type: EditorStateActions, payload: SetLockEditorScrollToPreviewPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetNoteDeletedPayload: Codable {
+	/// The id of the note the was deleted to be used for resetting state on the Typescript
+	/// side if the note id matches the current state.
+	public let note_id: String
+
+	public init(note_id: String) {
+		self.note_id = note_id
+	}
+}
+
+public struct SetNoteDeletedAction: Codable {
+	public let type: WebviewContainerActions
+	public let payload: SetNoteDeletedPayload
+
+	public init(type: WebviewContainerActions, payload: SetNoteDeletedPayload) {
 		self.type = type
 		self.payload = payload
 	}

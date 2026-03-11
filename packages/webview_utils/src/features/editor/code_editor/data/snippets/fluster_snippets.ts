@@ -2,7 +2,7 @@ import { embeddableComponentConfigs } from "#/mdx/embeddable_mdx_components/comp
 import { getDocumentationSnippets } from "./documentation_snippets";
 import { getEmojiSnippets } from "./emoji_snippets";
 import { getMarkdownSnippets } from "./markdown_snippets";
-import { GetSnippetProps, SnippetItem, SnippetStrategy } from "./snippet_types";
+import { type GetSnippetProps, type SnippetItem, SnippetStrategy } from "./snippet_types";
 
 
 export const getFlusterSnippets = (props: GetSnippetProps): SnippetItem[] => {

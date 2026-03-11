@@ -1,7 +1,7 @@
 import { admonitionComponentConfig } from "./admonition/admonition_component_config";
 import { embeddableCardComponentConfig } from "./card/embeddable_card_component_config";
 import { embeddableUtilityContainerComponentConfig } from "./container/embeddable_utility_container_component_config";
-import { EmbeddableComponentConfig } from "./embeddable_component_config";
+import { type EmbeddableComponentConfig } from "./embeddable_component_config";
 import { embeddableGridComponentConfig } from "./grid/embeddable_responsive_grid_component_config";
 import { embeddableHintComponentConfig } from "./hint/hint_component_config";
 import { hlComponentConfig } from "./hl/hl_component_config";

@@ -9,6 +9,7 @@ import FlatBuffers
 import FlusterData
 import SwiftData
 import SwiftUI
+import FlusterSwift
 import WebKit
 
 struct DictionaryPageView: View {
@@ -17,10 +18,12 @@ struct DictionaryPageView: View {
   )
   @Query(sort: \DictionaryEntryModel.label, order: .forward) private var entries:
     [DictionaryEntryModel]
+  @EnvironmentObject private var appState: AppState
   var body: some View {
     WebViewContainerView(
+      editingNoteId: appState.editingNoteId,
       webview: $webview,
-      url: URL(string: "app://dictionary_webview_mac/index_mac.html")!,
+      url: URL.embeddedFlusterUrl(folder: "dictionary_webview_mac", fileName: "index_mac.html"),
       messageHandlerKeys: [
         MdxPreviewWebviewActions.onTagClick.rawValue,
         SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,

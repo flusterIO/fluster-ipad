@@ -1,4 +1,4 @@
-import { type AnyCrossLanguageBufferEditorAction } from "#/split_view_editor/state/cross_language_state/cross_language_state_types";
+import { type AnyCrossLanguageBufferEditorAction } from "#/webview_global_state/cross_language_state_types";
 import { OnParsedContentChangeEventBuffer } from "@/code_gen/flat_buffer/mdx-serialization";
 import { type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type PayloadAction } from "@reduxjs/toolkit";

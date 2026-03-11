@@ -1,9 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { type AnyCrossLanguageWebviewAction } from '#/split_view_editor/state/cross_language_state/cross_language_state_types'
 import { handleSwiftAction } from '../container/webview_container_global_state/webview_container_slice'
 import { type EditorBannerNotification, type NotificationState } from '@/code_gen/typeshare/fluster_core_utilities'
 import { initialNotificationState } from './initial_notification_state'
 import { swiftNotificationActionReducer } from './swift_notification_action_reducer'
+import { type AnyCrossLanguageWebviewAction } from '../cross_language_state_types'
 
 export interface CounterState {
     value: number

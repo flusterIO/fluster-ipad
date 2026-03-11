@@ -1,11 +1,11 @@
-import { type AnyCrossLanguageEditorAction } from "#/split_view_editor/state/cross_language_state/cross_language_state_types";
 import { type EditorState, EditorStateActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { consola } from "consola"
 import { type PayloadAction } from "@reduxjs/toolkit";
+import { type AnyCrossLanguageEditorAction } from "#/webview_global_state/cross_language_state_types";
 
 export const swiftEditorActionReducer = (state: EditorState, action: PayloadAction<AnyCrossLanguageEditorAction>): EditorState => {
     consola.info("action: ", action)
-    /* eslint-disable-next-line  -- I know it's non-exhaustive, but I appreciate it... */
+
     switch (action.payload.type) {
         case EditorStateActions.SetInitialEditorState: {
             return {

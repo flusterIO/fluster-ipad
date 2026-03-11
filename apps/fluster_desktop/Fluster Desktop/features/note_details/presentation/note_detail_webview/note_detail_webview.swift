@@ -46,6 +46,7 @@ struct NoteDetailWebview: View {
   var body: some View {
     if editingNote != nil {
       WebViewContainerView(
+        editingNoteId: editingNoteId,
         webview: $webView,
         url: URL(string: "app://note_detail_webview_mac/index_mac.html")!,
         messageHandlerKeys: [

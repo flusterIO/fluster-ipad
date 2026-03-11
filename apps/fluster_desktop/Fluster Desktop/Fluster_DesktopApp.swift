@@ -9,6 +9,7 @@ import FlusterData
 import SwiftData
 import SwiftUI
 import UniformTypeIdentifiers
+import WebKit
 
 struct WindowAccessor: NSViewRepresentable {
   var color: NSColor
@@ -32,6 +33,9 @@ struct Fluster_DesktopApp: App {
   var x: Int {
     print("Stored: \(appData.sharedModelContainer.mainContext.sqliteCommand)")
     return 1
+  }
+  init() {
+    SchemeRegistration.registerCustomScheme()
   }
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
@@ -61,6 +65,23 @@ struct Fluster_DesktopApp: App {
         }
         .keyboardShortcut("p", modifiers: [.command, .shift])
       }
+    }
+  }
+}
+
+struct SchemeRegistration {
+  static func registerCustomScheme() {
+    let register = NSSelectorFromString("registerSchemeForCustomProtocol:")
+
+    // We cast to NSObjectProtocol to check for the selector safely
+    if let webViewClass = WKWebView.self as Any as? NSObjectProtocol,
+      webViewClass.responds(to: register)
+    {
+      // Registering "app" as a custom protocol makes WebKit treat it
+      // like "file://" or "https://", enabling persistent IndexedDB.
+      webViewClass.perform(register, with: "app")
+
+      print("🚀 Registered 'app://' as a secure custom scheme.")
     }
   }
 }

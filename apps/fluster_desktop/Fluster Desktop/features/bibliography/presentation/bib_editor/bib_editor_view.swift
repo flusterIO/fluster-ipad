@@ -13,6 +13,7 @@ import SwiftUI
 import WebKit
 
 struct BibtexEditorWebview: View {
+  let editingNoteId: String?
   /// If editingItem != nil, the editingItem will be updated. Else, a new bibEntry will be created
   @Binding public var editingItem: BibEntryModel?
   @State private var newItemData: String = ""
@@ -37,6 +38,7 @@ struct BibtexEditorWebview: View {
   }
 
   init(editingNoteId: String?, editingBibEntry: Binding<BibEntryModel?>) {
+    self.editingNoteId = editingNoteId
     self._editingItem = editingBibEntry
     if let id = editingNoteId {
       self._notes = Query(
@@ -55,6 +57,7 @@ struct BibtexEditorWebview: View {
 
   var body: some View {
     WebViewContainerView(
+      editingNoteId: editingNoteId,
       webview: $webView,
       url: URL(string: "app://bibtex_editor_webview_mac/index_mac.html")!,
       messageHandlerKeys: [

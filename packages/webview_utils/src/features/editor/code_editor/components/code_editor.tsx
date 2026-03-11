@@ -28,9 +28,8 @@ import { bibtexLanguage, bibtex } from "@citedrive/codemirror-lang-bibtex"
 import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
 import { connect } from "react-redux"
-import { setEditorValue } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
+import { setBibtexEditorValue, setEditorValue } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
 import { type MdxEditorAppState } from "#/webview_global_state/store";
-import { useSendNotificationBanner } from "#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner";
 
 const connector = connect((state: MdxEditorAppState) => ({
     baseKeymap: state.editor.baseKeymap,
@@ -42,7 +41,8 @@ const connector = connect((state: MdxEditorAppState) => ({
     snippetProps: state.editor.snippetProps,
     note_id: state.editor.note_id,
     haveSetInitialValue: state.editor.haveSetInitialValue,
-    autoSaveTimeout: state.editor.autoSaveTimeout
+    autoSaveTimeout: state.editor.autoSaveTimeout,
+    bibtexValue: state.editor.bib_editor.value
 }))
 
 
@@ -54,6 +54,7 @@ interface CodeEditorProps extends Pick<EditorState, "baseKeymap" | "allCitationI
     swiftContentEvent?: SplitviewEditorWebviewEvents.SetSplitviewEditorContent | BibtexEditorWebviewEvents.SetBibtexEditorContent
     containerId?: string;
     initialValueStorageKey?: AnyWebviewStorageKey
+    bibtexValue: string
 }
 
 
@@ -71,12 +72,12 @@ export const CodeEditorInner = connector(({
     snippetProps,
     note_id,
     allCitationIds,
+    bibtexValue
 }: CodeEditorProps): ReactNode => {
     const haveRendered = useRef(false);
     const timer = useRef<NodeJS.Timeout | null>(null);
     const viewRef = useRef<EditorView | null>(null)
     const dispatch = useDispatch()
-    const sendSplitviewNotificationBanner = useSendNotificationBanner()
 
     useEffect(() => {
         const em = document.getElementById(containerId);
@@ -188,11 +189,6 @@ export const CodeEditorInner = connector(({
                             note_id: note_id,
                             current_note_content: content
                         })
-                        sendSplitviewNotificationBanner({
-                            title: "Saved",
-                            body: language === CodeEditorLanguage.markdown ? "Your mdx code has been saved" : "Your bibtex code has beens saved.",
-                            timeout: 2000
-                        })
                         return true;
                     } else {
                         return false
@@ -208,12 +204,14 @@ export const CodeEditorInner = connector(({
                     if (timer.current) {
                         clearTimeout(timer.current);
                     }
-                    dispatch(setEditorValue(payload));
+                    dispatch(
+                        language === CodeEditorLanguage.markdown ? setEditorValue(payload) : setBibtexEditorValue(payload)
+                    );
                 }
             }),
         ];
         const startState = CodeMirrorEditorState.create({
-            doc: value,
+            doc: language === CodeEditorLanguage.markdown ? value : bibtexValue,
             extensions,
         });
 

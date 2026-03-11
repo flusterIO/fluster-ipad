@@ -1,8 +1,8 @@
-import { type AnyCrossLanguageEditorAction, type AnyCrossLanguageBufferEditorAction } from "#/split_view_editor/state/cross_language_state/cross_language_state_types";
 import { ByteBuffer } from "flatbuffers";
 import { handleSwiftAction, handleSwiftBufferAction } from "./container/webview_container_global_state/webview_container_slice";
 import { type Store } from "@reduxjs/toolkit";
 import { type MdxEditorAppState } from "./store";
+import {type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageEditorAction} from "./cross_language_state_types"
 
 
 declare global {

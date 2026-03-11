@@ -1,4 +1,4 @@
-import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
+import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { hrPropsSchema } from "./hr_props_schema";
@@ -10,7 +10,7 @@ export const hrComponentConfig: EmbeddableComponentConfig = {
     name: hrComponentNames,
     categories: [ComponentCategory.attention],
     desc: "Almost identical to the normal markdown based horizontal rule (the `---` syntax), but this can accept a 'content' property can be used to insert a label into the divider..",
-    id: EmbeddableComponentId.Hl,
+    id: EmbeddableComponentId.HrWithChildren,
     schema: hrPropsSchema,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hr/hr_component_docs.mdx",
     snippets: () => {

@@ -4,6 +4,8 @@ import { type MdxEditorPersistor, type MdxEditorStore } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { LoadingComponent } from '@/shared_components/loading/loading_component'
 import { WebviewClient } from '../webview_container/data/webview_client'
+import { sendToSwift } from '@/utils/bridge/send_to_swift'
+import { SplitviewEditorWebviewActions } from '@/code_gen/typeshare/fluster_core_utilities'
 
 
 interface MdxEditorGlobalProviderProps {
@@ -18,6 +20,9 @@ export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEdito
     const onBeforeStateLoad = (): void => {
         const state = store.getState()
         WebviewClient.applyGlobalState(state)
+        if (typeof state.editor.value !== "string" || typeof state.editor.parsedValue !== "string") {
+            sendToSwift(SplitviewEditorWebviewActions.RequestSplitviewEditorData)
+        }
     }
     return (
         <Provider

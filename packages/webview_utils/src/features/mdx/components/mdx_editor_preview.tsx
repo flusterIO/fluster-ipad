@@ -9,6 +9,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
 import { type MdxEditorAppState } from "#/webview_global_state/store";
 import { connect } from "react-redux";
+import consola from "consola";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -74,7 +75,7 @@ export const MdxEditorPreview = connector(({
 
     return (
         <ErrorBoundary
-            onError={(e) => { console.error("Error: ", e); }}
+            onError={(e) => { consola.error("Error: ", e); }}
             FallbackComponent={(p) => <PreviewLevelErrorReport {...p} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />}
         >
             <MdxContent

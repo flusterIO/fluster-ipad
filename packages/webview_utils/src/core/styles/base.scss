@@ -172,3 +172,19 @@ body.fluster-ipad {
     margin-top: 0px;
   }
 }
+
+span[data-rehype-pretty-code-figure] {
+  code {
+    border-radius: 8px;
+    padding: 0.25rem
+  }
+}
+
+.text-sm {
+  span[data-rehype-pretty-code-figure] {
+    code {
+      padding: 0.2rem;
+      border-radius: 4px;
+    }
+  }
+}

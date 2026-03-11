@@ -2,6 +2,8 @@ import assert from "node:assert"
 import { marked } from 'marked';
 import { markedTerminal } from 'marked-terminal';
 import { z } from "zod"
+import { _sizableObjectSchema } from "../../../mdx/embeddable_mdx_components/schemas/sizable_object_schema";
+import { _emphasisSchema } from "../../../mdx/embeddable_mdx_components/schemas/emphasis_schema";
 
 
 /* @ts-expect-error -- Just a useless development tool */
@@ -11,7 +13,7 @@ marked.use(markedTerminal({
 export class ZodToMarkdownHandler {
     body: string
     ignoreKeys: string[]
-    constructor(ignoreKeys: string[], fileHeader: string = "") {
+    constructor(ignoreKeys: string[], fileHeader = "") {
         this.body = fileHeader
         this.ignoreKeys = ignoreKeys
     }
@@ -30,7 +32,7 @@ export class ZodToMarkdownHandler {
             s += "\n"
         }
         assert(Array.isArray(values), "Found an enum without values")
-        for (const option of values!) {
+        for (const option of values) {
             assert(["string", "number"].includes(typeof option), "Found a zod venum value that isn't a valid type.")
             s += `- ${option}\n`
         }
@@ -82,7 +84,12 @@ export class ZodToMarkdownHandler {
     logZodObject(item: z.ZodObject<z.ZodRawShape>) {
 
         const shape = item._def.shape()
-        const itemKeys = Object.keys(shape).filter((k) => !this.ignoreKeys.includes(k))
+        const itemKeys = Object.keys(shape).filter((k) => !this.ignoreKeys.includes(k)).sort((k) => {
+            if (k in _sizableObjectSchema || k in _emphasisSchema) {
+                return 1
+            }
+            return -1
+        })
         for (const itemKey of itemKeys) {
             const itemData = shape[itemKey]
             console.log("itemData: ", itemData)
@@ -117,7 +124,7 @@ export class ZodToMarkdownHandler {
         }
     }
 
-    logSeperator(seperatorContent: string = "Or") {
+    logSeperator(seperatorContent = "Or") {
         this.body += `\n<Hr>${seperatorContent}</Hr>\n`
     }
     /* eslint-disable-next-line  -- Need to use any here. */
@@ -126,10 +133,10 @@ export class ZodToMarkdownHandler {
             console.error("Called anyZodToMarkdown witha nullish type.")
         }
         if (itemType instanceof z.ZodEnum) {
-            return this.logZodEnum(itemType._def.values, optional, defaultValue)
+            this.logZodEnum(itemType._def.values, optional, defaultValue); return;
         }
         if (itemType instanceof z.ZodString) {
-            return this.logString(itemType._def, optional, defaultValue)
+            this.logString(itemType._def, optional, defaultValue); return;
         }
         if (defaultValue) {
             console.log("itemType: ", itemType)
@@ -137,25 +144,25 @@ export class ZodToMarkdownHandler {
             throw new Error(`Found a default value that is being sent to a type that hasn't implemented value to markdown method that handles the default value yet.`)
         }
         if (itemType instanceof z.ZodObject) {
-            return this.logZodObject(itemType)
+            this.logZodObject(itemType); return;
         }
         if (itemType instanceof z.ZodEffects) {
-            return this.anyZodToMarkdown(itemType.innerType())
+            this.anyZodToMarkdown(itemType.innerType()); return;
         }
         if (itemType instanceof z.ZodBoolean || itemType?.typeName === "ZodBoolean") {
-            return this.logBoolean(optional)
+            this.logBoolean(optional); return;
         }
         if (itemType?.typeName === "ZodEnum") {
-            return this.logZodEnum(itemType.values!, optional)
+            this.logZodEnum(itemType.values, optional); return;
         }
         if (itemType instanceof z.ZodUnion) {
-            return this.logZodUnion(itemType, optional)
+            this.logZodUnion(itemType, optional); return;
         }
         if (itemType instanceof z.ZodOptional) {
-            return this.anyZodToMarkdown(itemType._def.innerType, true)
+            this.anyZodToMarkdown(itemType._def.innerType, true); return;
         }
         if (itemType instanceof z.ZodNumber) {
-            return this.logNumber(itemType._def)
+            this.logNumber(itemType._def); return;
         }
         if (itemType instanceof z.ZodAny) {
             // Don't log anythng for 'any' yet, always try to guide the user.
@@ -172,7 +179,7 @@ export class ZodToMarkdownHandler {
             if (typeof d === "object" && Object.keys(d).length === 0) {
                 return
             } else {
-                return this.anyZodToMarkdown(itemType._def.innerType, undefined, d)
+                this.anyZodToMarkdown(itemType._def.innerType, undefined, d); return;
             }
         }
         if (!itemType?.typeName) {

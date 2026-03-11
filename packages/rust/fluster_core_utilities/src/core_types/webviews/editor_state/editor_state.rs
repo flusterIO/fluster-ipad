@@ -5,7 +5,8 @@ use uniffi::{Enum, Record};
 use crate::core_types::webviews::{
     editor_save_method::EditorSaveMethod,
     editor_state::{
-        editor_keymap::CodeEditorKeymap, editor_theme::CodeEditorTheme, snippet_state::SnippetState,
+        bibtex_editor_state::BibtexEditorState, editor_keymap::CodeEditorKeymap,
+        editor_theme::CodeEditorTheme, snippet_state::SnippetState,
     },
 };
 
@@ -77,4 +78,5 @@ pub struct EditorState {
     pub save_method: EditorSaveMethod,
     #[serde(rename = "autoSaveTimeout")]
     pub auto_save_timeout: u32,
+    pub bib_editor: BibtexEditorState,
 }

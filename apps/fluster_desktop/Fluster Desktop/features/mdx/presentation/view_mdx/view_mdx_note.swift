@@ -10,6 +10,7 @@ import FlusterWebviewClients
 import SwiftData
 import SwiftUI
 import WebKit
+import FlusterSwift
 
 struct MdxContentWebview: View {
   var editingNoteId: String?
@@ -44,8 +45,9 @@ struct MdxContentWebview: View {
       NoNoteSelectedView()
     } else {
       WebViewContainerView(
+        editingNoteId: editingNoteId,
         webview: $mdxWebview,
-        url: URL(string: "app://standalone_mdx_preview_mac/index_mac.html")!,
+        url: URL.embeddedFlusterUrl(folder: "standalone_mdx_preview_mac", fileName: "index_mac.html"),
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,
           SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
@@ -110,26 +112,6 @@ struct MdxContentWebview: View {
   }
 
   func onWebviewLoad() async {
-    do {
-      if let en = editingNote {
-        try await en.preParseIfEdited(modelContext: modelContext)
-        var citations: [EditorCitation] = []
-        for cit in en.citations {
-          if let citKey = cit.citationKey,
-            let formatted = cit.safelyGetFormatted(activeCslFormat: cslFormat)
-          {
-            citations.append(EditorCitation(citation_key: citKey, html: formatted.formattedHtml))
-          }
-        }
-        try await EditorState.setParsedMdxContent(
-          parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
-          eval:
-            self.mdxWebview.evaluateJavaScript)
-      }
-    } catch {
-      print("Error: \(error.localizedDescription)")
-    }
-    print("Loaded initial editor data")
   }
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {
     switch handlerKey {

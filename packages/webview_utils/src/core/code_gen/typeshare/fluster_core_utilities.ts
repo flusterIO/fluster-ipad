@@ -38,6 +38,10 @@ export interface AppendNotificationBannerAction {
 	payload: AppendNotificationBannerPayload;
 }
 
+export interface BibtexEditorState {
+	value: string;
+}
+
 export interface CodeBlockParsingResult {
 	full_match: string;
 	language_tag: string;
@@ -215,6 +219,7 @@ export interface EditorState {
 	lockEditorScrollToPreview: boolean;
 	saveMethod: EditorSaveMethod;
 	autoSaveTimeout: number;
+	bib_editor: BibtexEditorState;
 }
 
 export enum SizableOption {
@@ -309,6 +314,7 @@ export interface SetBaseKeymapAction {
 export enum WebviewContainerActions {
 	SetFlusterTheme = "set-fluster-theme",
 	SetDarkMode = "set-dark-mode",
+	HandleNoteDeleted = "handle-note-deleted",
 }
 
 export interface SetDarkModePayload {
@@ -382,6 +388,19 @@ export interface SetLockEditorScrollToPreviewPayload {
 export interface SetLockEditorScrollToPreviewAction {
 	type: EditorStateActions;
 	payload: SetLockEditorScrollToPreviewPayload;
+}
+
+export interface SetNoteDeletedPayload {
+	/**
+	 * The id of the note the was deleted to be used for resetting state on the Typescript
+	 * side if the note id matches the current state.
+	 */
+	note_id: string;
+}
+
+export interface SetNoteDeletedAction {
+	type: WebviewContainerActions;
+	payload: SetNoteDeletedPayload;
 }
 
 export interface SetParsedMdxContentEditorAction {

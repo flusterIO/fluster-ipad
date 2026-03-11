@@ -1,4 +1,4 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, SetAutoSaveTimeoutPayload, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeAction, type SetParsedValueAction, type SetEditorContentAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, SetAutoSaveTimeoutPayload, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type ByteBuffer } from "flatbuffers";
 
 
@@ -60,13 +60,17 @@ interface SetFlusterThemeActionRefined extends SetFlusterThemeAction {
     type: WebviewContainerActions.SetFlusterTheme
 }
 
+interface SetNoteDeletedActionRefined extends SetNoteDeletedAction {
+    type: WebviewContainerActions.HandleNoteDeleted
+}
 
 
 
+export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetEditorThemeActionRefined | SetEditorContentActionRefined | SetParsedValueActionRefined;
 
-export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetDarkModeActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetFlusterThemeActionRefined | SetEditorThemeActionRefined | SetEditorContentActionRefined | SetParsedValueActionRefined;
+export type AnyCrossLanguageWebviewContainerAction = SetNoteDeletedActionRefined | SetDarkModeActionRefined | SetFlusterThemeActionRefined
 
-export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction
+export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction | AnyCrossLanguageWebviewContainerAction
 
 export interface AnyCrossLanguageBufferEditorAction {
     type: EditorStateActions.SetParsedEditorContent,

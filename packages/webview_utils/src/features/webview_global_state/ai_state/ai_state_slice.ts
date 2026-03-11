@@ -1,8 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { initialAiState } from './initial_ai_state'
 import { swiftAiActionReducer } from './swift_ai_action_reducer'
-import { type AnyCrossLanguageWebviewAction } from '#/split_view_editor/state/cross_language_state/cross_language_state_types'
 import { handleSwiftAction } from '../container/webview_container_global_state/webview_container_slice'
+import { type AnyCrossLanguageWebviewAction } from '../cross_language_state_types'
 
 export interface CounterState {
     value: number

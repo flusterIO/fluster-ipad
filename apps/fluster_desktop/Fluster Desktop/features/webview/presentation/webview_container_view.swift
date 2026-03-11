@@ -7,14 +7,15 @@
 
 import FlusterData
 import FlusterWebviewClients
+import SwiftData
 import SwiftUI
 import WebKit
 
 func getWebViewConfig() -> WKWebViewConfiguration {
   let config = WebContextManager.createSharedConfiguration()
-  config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
-  config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
   config.setURLSchemeHandler(WasmSchemeHandler(), forURLScheme: "app")
+  config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+  config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
   return config
 }
 
@@ -150,15 +151,74 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
 }
 
 struct WebViewContainerView: View {
+  @EnvironmentObject private var appState: AppState
+  @Environment(\.modelContext) private var modelContext: ModelContext
+
+  @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
+    .base
+  @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
+    CodeEditorTheme = .dracula
+  @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
+    CodeEditorTheme = .materialLight
+  @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private
+    var lockEditorScrollToPreview: Bool = false
+  @AppStorage(AppStorageKeys.editorSaveMethod.rawValue) private var editorSaveMethod:
+    EditorSaveMethod = .onChange
+  @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
+    .apa
+  @AppStorage(AppStorageKeys.theme.rawValue) private var flusterTheme: FlusterTheme = .fluster
+  @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets: Bool =
+    true
   @Binding var webview: WKWebView
   public let url: URL
   public let messageHandlerKeys: [String]
   public let messageHandler: ((String, Any) -> Void)?
   public let onLoad: (@Sendable () async -> Void)?
 
+  @Query private var notes: [NoteModel]
+
+  var editingNote: NoteModel? {
+    notes.isEmpty ? nil : notes.first!
+  }
+
   @State private var show: Bool = false
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme = .fluster
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
+
+  init(
+    editingNoteId: String?,
+    webview: Binding<WKWebView>,
+    url: URL,
+    messageHandlerKeys: [String],
+    messageHandler: ((String, Any) -> Void)?,
+    onLoad: (@Sendable () async -> Void)?,
+  ) {
+    self._webview = webview
+    self.url = url
+    self.messageHandlerKeys = messageHandlerKeys
+    self.messageHandler = messageHandler
+    self.onLoad = onLoad
+    if let _editingNoteId = editingNoteId {
+      var descriptor = FetchDescriptor(
+        predicate: #Predicate<NoteModel> { note in
+          note.id == _editingNoteId
+        }
+      )
+      descriptor.fetchLimit = 1
+      self._notes = Query(
+        descriptor
+      )
+    } else {
+      self._notes = Query(
+        FetchDescriptor(
+          predicate: #Predicate<NoteModel> { _ in
+            false
+          }
+        ))
+    }
+  }
+
   var body: some View {
     ZStack {
       WebViewContainer(
@@ -175,6 +235,27 @@ struct WebViewContainerView: View {
           .progressViewStyle(.circular)
       }
     }
+    .onAppear {
+      Task(priority: .high) {
+        await handleInitialState()
+      }
+    }
+    .onChange(
+      of: editingNote?.id,
+      {
+        Task(priority: .high) {
+          await handleInitialState()
+        }
+      }
+    )
+    .onChange(
+      of: editingNote?.markdown.preParsedBody,
+      {
+        if editorSaveMethod == .onChange {
+          updateParsedEditorValue()
+        }
+      }
+    )
     .onChange(
       of: colorScheme,
       {
@@ -185,8 +266,43 @@ struct WebViewContainerView: View {
     )
     .scrollBounceBehavior(.basedOnSize, axes: [])
   }
+  public func handleInitialState() async {
+    if let en = editingNote {
+      Task {
+        do {
+          try await en.preParse(modelContext: modelContext)
+          try await EditorState.setInitialEditorState(
+            editorPayload: EditorInitialStatePayload(
+              note_id: en.id,
+              keymap: editorKeymap,
+              theme: colorScheme == .dark ? editorThemeDark : editorThemeLight,
+              allCitationIds: bibEntries.compactMap(\.citationKey),
+              value: en.markdown.body,
+              parsedValue: en.markdown.preParsedBody ?? "",
+              haveSetInitialValue: true,
+              snippetProps: SnippetState(
+                includeEmojiSnippets: includeEmojiSnippets
+              ),
+              lockEditorScrollToPreview: lockEditorScrollToPreview,
+              saveMethod: editorSaveMethod
+            ),
+            containerPayload: WebviewContainerSharedInitialState(
+              environment: WebviewEnvironment.macOS,
+              dark_mode: colorScheme == .dark,
+              implementation: WebviewImplementation.mdxEditor,
+              fluster_theme: flusterTheme
+            ),
+            eval: self.webview.evaluateJavaScript
+          )
+        } catch {
+          print("Error initializing Mdx Editor Webview: \(error.localizedDescription)")
+        }
+      }
+    }
+  }
   func onLoadHandler() async {
     await setColorScheme(colorScheme: colorScheme)
+    await handleInitialState()
     if let additionalOnLoad = onLoad {
       await additionalOnLoad()
     }
@@ -201,5 +317,18 @@ struct WebViewContainerView: View {
   }
   func setColorScheme(colorScheme: ColorScheme) async {
     try? await EditorState.setDarkMode(colorScheme: colorScheme, eval: webview.evaluateJavaScript)
+  }
+  func updateParsedEditorValue() {
+    if let en = editingNote {
+      Task(priority: .high) {
+        try? await en.preParseIfEdited(modelContext: modelContext)
+        let citations: [EditorCitation] = en.citations.compactMap { cit in
+          cit.toEditorCitation(activeCslFile: cslFile)
+        }
+        try? await EditorState.setParsedMdxContent(
+          parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
+          eval: webview.evaluateJavaScript)
+      }
+    }
   }
 }

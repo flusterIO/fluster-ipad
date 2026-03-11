@@ -16,15 +16,16 @@ import WebKit
 
 struct MdxEditorWebview: View {
   var editingNoteId: String?
-  @Environment(\.modelContext) private var modelContext
   @Environment(\.colorScheme) public var colorScheme
   @EnvironmentObject private var appState: AppState
   @Query private var notes: [NoteModel]
+  @State private var showDeleteConfirmation: Bool = false
 
   var editingNote: NoteModel? {
     notes.isEmpty ? nil : notes.first!
   }
   @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
+  @Environment(\.modelContext) private var modelContext: ModelContext
   @Binding var webView: WKWebView
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
     .base
@@ -61,8 +62,9 @@ struct MdxEditorWebview: View {
       NoNoteSelectedView()
     } else {
       WebViewContainerView(
+        editingNoteId: editingNoteId,
         webview: $webView,
-        url: URL(string: "app://splitview_mdx_editor_mac/index_mac.html")!,
+        url: URL.embeddedFlusterUrl(folder: "splitview_mdx_editor_mac", fileName: "index_mac.html"),
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,
           MdxPreviewWebviewActions.requestNoteData.rawValue,
@@ -74,7 +76,47 @@ struct MdxEditorWebview: View {
         messageHandler: messageHandler,
         onLoad: onWebviewLoad
       )
+      .confirmationDialog(
+        "Delete Note", isPresented: $showDeleteConfirmation, titleVisibility: .visible,
+        actions: {
+          Button(
+            action: {
+              if let en = editingNote {
+                modelContext.delete(en)
+              }
+            },
+            label: {
+              Label(
+                title: {
+                  Text("Delete")
+                },
+                icon: {
+                  Image(systemName: "trash")
+                })
+            })
+        }
+      )
       .toolbar {
+        ToolbarItem(
+          placement: .destructiveAction,
+          content: {
+            Button(
+              role: .destructive,
+              action: {
+                showDeleteConfirmation.toggle()
+              },
+              label: {
+                Label(
+                  title: {
+                    Text("Delete")
+                  },
+                  icon: {
+                    Image(systemName: "trash")
+                  }
+                )
+              }
+            )
+          })
         ToolbarItem(
           placement: .primaryAction,
           content: {
@@ -110,34 +152,6 @@ struct MdxEditorWebview: View {
           if let en = editingNote {
             do {
               try await en.preParse(modelContext: modelContext)
-            } catch {
-              print("Error: \(error.localizedDescription)")
-            }
-          }
-        }
-      )
-      .task(
-        id: editingNote?.markdown.preParsedBody,
-        {
-          if editorSaveMethod != EditorSaveMethod.onChange {
-            return
-          }
-          // When a preParse method succeeds, send the updated parsed content to the editor.
-          if let en = editingNote {
-            do {
-              try await en.preParseIfEdited(modelContext: modelContext)
-              let citations: [EditorCitation] = en.citations.compactMap { cit in
-                return cit.toEditorCitation(activeCslFile: cslFile)
-              }
-              try await EditorState.setParsedMdxContent(
-                parsedMdxContent: en.markdown.preParsedBody ?? "",
-                citations: citations,
-                eval: webView.evaluateJavaScript
-              )
-              // Deprecating this approach entirely in favor of just a handful of buffer based onChange events and the rest
-              // as serialized json in less performance critical situations for cross-language compatibility and the ability
-              //  to more easily interact with webview state from the lower-level languages.
-              //              try await setParsedEditorContentString(note: en)
             } catch {
               print("Error: \(error.localizedDescription)")
             }
@@ -211,32 +225,6 @@ struct MdxEditorWebview: View {
     }
   }
   func onWebviewLoad() async {
-    if let en = editingNote {
-      Task {
-        do {
-          try await en.preParse(modelContext: modelContext)
-          try await EditorState.setInitialEditorState(
-            editorPayload: EditorInitialStatePayload(
-              note_id: en.id,
-              keymap: editorKeymap,
-              theme: colorScheme == .dark ? editorThemeDark : editorThemeLight,
-              allCitationIds: bibEntries.compactMap(\.citationKey),
-              value: en.markdown.body,
-              parsedValue: en.markdown.preParsedBody ?? "",
-              haveSetInitialValue: true,
-              snippetProps: SnippetState(includeEmojiSnippets: includeEmojiSnippets),
-              lockEditorScrollToPreview: lockEditorScrollToPreview,
-              saveMethod: editorSaveMethod),
-            containerPayload: WebviewContainerSharedInitialState(
-              environment: WebviewEnvironment.macOS, dark_mode: colorScheme == .dark,
-              implementation: WebviewImplementation.mdxEditor, fluster_theme: flusterTheme),
-            eval: webView.evaluateJavaScript
-          )
-        } catch {
-          print("Error initializing Mdx Editor Webview: \(error.localizedDescription)")
-        }
-      }
-    }
   }
   public func setEditorSaveMethod(saveMethod: EditorSaveMethod) async throws {
     try await EditorState.setEditorSaveMethod(
@@ -290,6 +278,8 @@ struct MdxEditorWebview: View {
             try await EditorState.setParsedMdxContent(
               parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
               eval: webView.evaluateJavaScript)
+          } else {
+              print("Broken state: Found mismatched note id's")
           }
         }
       } catch {

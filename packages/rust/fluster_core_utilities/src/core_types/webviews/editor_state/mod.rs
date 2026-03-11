@@ -1,4 +1,5 @@
 pub mod actions;
+pub mod bibtex_editor_state;
 pub mod editor_actions;
 pub mod editor_initial_state;
 pub mod editor_keymap;

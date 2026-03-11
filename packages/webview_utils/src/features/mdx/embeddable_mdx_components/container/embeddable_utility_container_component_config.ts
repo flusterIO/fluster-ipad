@@ -1,8 +1,8 @@
 import { snippetCompletion } from "@codemirror/autocomplete";
-import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
+import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
-import { EmbeddableUtilityContainerPropsInput, embeddableUtiltyContainerProps } from "./embeddable_utility_container_props";
-import { KeysOfType } from "@/utils/types/utility_types";
+import { type EmbeddableUtilityContainerPropsInput, embeddableUtiltyContainerProps } from "./embeddable_utility_container_props";
+import { type KeysOfType } from "@/utils/types/utility_types";
 
 export const utilityContainerComponentNames = [EmbeddableComponentName.UtlityContainer] as const;
 
@@ -15,7 +15,7 @@ export const embeddableUtilityContainerComponentConfig: EmbeddableComponentConfi
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/container/utility_container_docs.mdx",
     snippets: () => {
         return [
-            snippetCompletion(`<Container centerContent width="full" height="full" padding="medium">\n\n#{Body}\n\n</Container>`, {
+            snippetCompletion(`<Container centerContent width="full" height="fit" padding="medium">\n\n#{Body}\n\n</Container>`, {
                 label: "container-center",
                 section: CompletionSections.components,
                 type: SnippetDefaultType.function

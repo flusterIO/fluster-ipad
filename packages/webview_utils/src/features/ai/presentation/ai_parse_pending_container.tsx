@@ -1,6 +1,6 @@
 import React, { type ReactNode } from 'react'
 import { FlusterAiParseButton } from "./ai_parse_button"
-import { CodeBlockParsingResult } from '../../../core/code_gen/typeshare/fluster_core_utilities'
+import { type CodeBlockParsingResult } from '../../../core/code_gen/typeshare/fluster_core_utilities'
 import { InlineMdxContent } from '#/mdx/components/inline_mdx_content'
 
 
@@ -22,7 +22,7 @@ export const FlusterAiParsePendingContainer = ({ stringifiedResult }: FlusterAiP
     }
     return (
         <div
-            className="w-full max-w-[min(1080px,90%)] p-4 border border-fd-ring bg-fd-card rounded text-card-foreground [&_*]:text-card-foreground @container/aiParsePendingContainer relative shadow-primary/50 hover:shadow-sm transition-shadow duration-500"
+            className="w-full max-w-[min(1080px,90%)] mx-auto p-4 border border-fd-ring bg-fd-card rounded text-card-foreground [&_*]:text-card-foreground @container/aiParsePendingContainer relative shadow-primary/50 hover:shadow-sm transition-shadow duration-500"
         >
             <div
                 className="absolute inset-x-0 top-0 h-px rounded-t-xl bg-gradient-to-r from-transparent via-primary/50 to-transparent"
