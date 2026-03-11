@@ -48,6 +48,9 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
       controller: webView.configuration.userContentController,
       coordinator: context.coordinator
     )
+    addUserContentController(
+      controller: webView.configuration.userContentController, coordinator: context.coordinator,
+      name: WebviewContainerEvents.reduxStateLoaded.rawValue)
 
     DispatchQueue.main.async {
       if let scrollView = webView.enclosingScrollView {
@@ -336,7 +339,6 @@ struct WebViewContainerView: View {
     }
   }
   func onLoadHandler() async {
-    await setColorScheme(colorScheme: colorScheme)
     await handleInitialState()
     if let additionalOnLoad = onLoad {
       await additionalOnLoad()

@@ -531,11 +531,9 @@ public struct SetDarkModeAction: Codable {
 
 public struct SetEditingBibEntryPayload: Codable {
 	public let content: String
-	public let entry_id: String
 
-	public init(content: String, entry_id: String) {
+	public init(content: String) {
 		self.content = content
-		self.entry_id = entry_id
 	}
 }
 

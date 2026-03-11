@@ -22,7 +22,7 @@ struct BibliographySettingSectionView: View {
                 })
                 .padding()
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
         })
     }
 }

@@ -11,7 +11,7 @@ export const swiftEditorActionReducer = (state: EditorState, action: PayloadActi
             return {
                 ...state,
                 ...action.payload.payload.editor
-            } satisfies EditorState
+            }
         }
         case EditorStateActions.SetEditorSaveMethod: {
             return {
@@ -85,6 +85,16 @@ export const swiftEditorActionReducer = (state: EditorState, action: PayloadActi
                 parsedValue: action.payload.payload.value
             }
         }
+        case EditorStateActions.SetEditingBibEntry: {
+            return {
+                ...state,
+                bib_editor: {
+                    ...state.bib_editor,
+                    value: action.payload.payload.content
+                }
+            }
+        }
+
         default:
             return { ...state }
     }

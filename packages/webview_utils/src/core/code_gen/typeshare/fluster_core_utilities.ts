@@ -339,7 +339,6 @@ export interface SetDarkModeAction {
 
 export interface SetEditingBibEntryPayload {
 	content: string;
-	entry_id: string;
 }
 
 export interface SetEditingBibEntryAction {

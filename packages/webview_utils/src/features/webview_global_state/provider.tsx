@@ -18,14 +18,13 @@ interface MdxEditorGlobalProviderProps {
 
 export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEditorGlobalProviderProps): ReactNode => {
     const onBeforeStateLoad = (): void => {
+        console.log("Before state load")
         const state = store.getState()
         WebviewClient.applyGlobalState(state)
-        if (typeof state.editor.value !== "string" || typeof state.editor.parsedValue !== "string") {
-            const data: ReduxStateLoadedEvent = {
-                note_id: state.editor.note_id
-            }
-            sendToSwift(WebviewContainerEvents.ReduxStateLoaded, JSON.stringify(data))
+        const data: ReduxStateLoadedEvent = {
+            note_id: state.editor.note_id
         }
+        sendToSwift(WebviewContainerEvents.ReduxStateLoaded, JSON.stringify(data))
     }
     return (
         <Provider

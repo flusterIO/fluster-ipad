@@ -7,7 +7,6 @@ use crate::core_types::webviews::editor_state::editor_actions::EditorStateAction
 #[derive(uniffi::Record, Serialize, Deserialize)]
 pub struct SetEditingBibEntryPayload {
     pub content: String,
-    pub entry_id: String,
 }
 
 #[typeshare]
