@@ -9,7 +9,7 @@ export const hrComponentNames = [EmbeddableComponentName.HrWithChildren] as cons
 export const hrComponentConfig: EmbeddableComponentConfig = {
     name: hrComponentNames,
     categories: [ComponentCategory.attention],
-    desc: "Almost identical to the normal markdown based horizontal rule (the `---` syntax), but this can accept a 'content' property can be used to insert a label into the divider..",
+    desc: "Almost identical to the normal markdown based horizontal rule (the `---` syntax), but this can accept a 'content' property can be used to insert a label into the divider.",
     id: EmbeddableComponentId.HrWithChildren,
     schema: hrPropsSchema,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hr/hr_component_docs.mdx",

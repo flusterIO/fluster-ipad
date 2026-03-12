@@ -8,17 +8,37 @@
 import FlusterData
 import PaperKit
 import PencilKit
+import SwiftData
 import SwiftUI
 
 struct PaperView: View {
   @Binding public var editingNote: NoteModel
   @Binding public var focusedPageIndex: Int
+  @Environment(\.modelContext) private var modelContext: ModelContext
   @State private var showDeletePageConfirmation: Bool = false
+  var sortedPages: [PaperModel] {
+    return editingNote.paper.sorted(by: { a, b in
+      a.pageIndex < b.pageIndex
+    })
+  }
+  var maxPageIndex: Int {
+    if let paper = sortedPages.last {
+      paper.pageIndex
+    } else {
+      -1
+    }
+  }
+  var _item: PaperModel? {
+    if focusedPageIndex < sortedPages.count {
+      sortedPages[focusedPageIndex]
+    } else {
+      nil
+    }
+  }
   var body: some View {
     GeometryReader { geometry in
       Group {
-        if focusedPageIndex < editingNote.paper.count {
-          let item = editingNote.paper[focusedPageIndex]
+        if let item = _item {
           if let _markup = try? PaperMarkup(dataRepresentation: item.markup) {
             let markup = Binding<PaperMarkup>(
               get: {
@@ -73,9 +93,6 @@ struct PaperView: View {
                       }
                     )
                     .disabled(focusedPageIndex >= editingNote.paper.count - 1)
-                    .onAppear {
-                      print(focusedPageIndex, editingNote.paper.count - 1)
-                    }
                   })
                 ToolbarItem(
                   placement: .destructiveAction,
@@ -99,7 +116,9 @@ struct PaperView: View {
                       actions: {
                         Button(
                           action: {
-                            editingNote.paper.remove(at: focusedPageIndex)
+                            let focusedPageIndexPageIndex = sortedPages[focusedPageIndex].pageIndex
+                            editingNote.removePaperByPageIndex(
+                              pageIndex: focusedPageIndexPageIndex, modelContext: modelContext)
                             if focusedPageIndex > 0 {
                               focusedPageIndex = focusedPageIndex - 1
                             } else {
@@ -143,15 +162,10 @@ struct PaperView: View {
           Color.clear
         }
       }
-      .navigationTitle("Paper \(focusedPageIndex + 1) of \(editingNote.paper.count)")
-      .onChange(
-        of: focusedPageIndex,
-        {
-          Task {
-            await handleFocusIndexPageCreation(geometry)
-          }
-        }
+      .navigationTitle(
+        "Paper \(_item?.pageIndex == nil ? 1 : _item!.pageIndex + 1) of \(maxPageIndex + 1)"
       )
+      .navigationSubtitle("\(editingNote.paper.count) pages total")
       .task {
         await handleFocusIndexPageCreation(geometry)
       }
@@ -164,7 +178,7 @@ struct PaperView: View {
         editingNote.setLastRead(setModified: true)
         let data = try await markup.dataRepresentation()
         print("Saving editing note markup as data representation...")
-        editingNote.paper[focusedPageIndex].markup = data
+        sortedPages[focusedPageIndex].markup = data
       } catch {
         print("Error: \(error.localizedDescription)")
       }
@@ -174,11 +188,12 @@ struct PaperView: View {
   }
 
   func handleFocusIndexPageCreation(_ geometry: GeometryProxy) async {
+    print("Ran here...")
     if focusedPageIndex >= editingNote.paper.count {
-        let markup = PaperMarkup(bounds: CGRect(origin: .zero, size: getPaperMarkupBounds()))
+      let markup = PaperMarkup(bounds: CGRect(origin: .zero, size: getPaperMarkupBounds()))
       do {
         let data = try await markup.dataRepresentation()
-        self.editingNote.paper.append(PaperModel(markup: data))
+        self.editingNote.paper.append(PaperModel(markup: data, pageIndex: maxPageIndex + 1))
       } catch {
         print("Error handling paper creation: \(error.localizedDescription)")
       }

@@ -17,6 +17,7 @@ use crate::core_types::webviews::{
 pub struct EditorCitation {
     pub citation_key: String,
     pub html: String,
+    pub url: Option<String>,
 }
 
 #[typeshare]

@@ -16,9 +16,9 @@ struct ThemePickerView: View {
 
   var body: some View {
     Picker(selection: $theme, label: Text("App Theme")) {
-      ForEach(0..<WebViewTheme.allCases.count) {
-        Text(WebViewTheme.allCases[$0].rawValue).tag(
-          WebViewTheme.allCases[$0]
+      ForEach(0..<FlusterTheme.allCases.count) {
+        Text(FlusterTheme.allCases[$0].rawValue).tag(
+          FlusterTheme.allCases[$0]
         )
       }
     }

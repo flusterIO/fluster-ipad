@@ -38,11 +38,11 @@ public struct MdxPreviewWebview: UIViewRepresentable {
 
   public init(
     url: URL,
-    theme: Binding<WebViewTheme>,
+    theme: Binding<FlusterTheme>,
     editorThemeDark: Binding<CodeEditorTheme>,
     editorThemeLight: Binding<CodeEditorTheme>,
     editingNote: Binding<NoteModel?>,
-    editorKeymap: Binding<EditorKeymap>,
+    editorKeymap: Binding<CodeEditorKeymap>,
     shouldShowEditor: Binding<Bool>,
     viewportHeight: Binding<CGFloat>,
     container: MdxPreviewWebviewContainer,

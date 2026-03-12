@@ -44,7 +44,8 @@ struct BibEntrySearchResultItemView: View {
           edition = {2}
         }
         """,
-      ctime: .now
+      ctime: .now,
+      notes: []
     ),
   )
 }

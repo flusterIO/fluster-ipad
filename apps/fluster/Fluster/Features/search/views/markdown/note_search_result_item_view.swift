@@ -86,7 +86,7 @@ struct NoteSearchResultItemView: View {
 #Preview {
   NoteSearchResultItemView(
     item: NoteModel(
-      markdown: MarkdownNote(body: "# My Note title", summary: nil)
+      markdown: MarkdownNote(body: "# My Note title")
     ),
     editingNote: .constant(nil)
   )

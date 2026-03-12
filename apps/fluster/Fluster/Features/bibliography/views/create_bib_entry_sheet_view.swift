@@ -62,7 +62,9 @@ struct CreateBibEntrySheetView: View {
             let splitContent = splitBiblatexToRawStrings(fileContent: inputValue)
             for bibEntryText in splitContent {
               // -- If the model should be created new. --
-              let newEntry = BibEntryModel(data: bibEntryText)
+              let newEntry = BibEntryModel(
+                data: bibEntryText,
+                notes: ignoreEditingNote || editingNote == nil ? [] : [editingNote!])
               if let _editingNote = editingNote, !ignoreEditingNote {
                 _editingNote.addCitation(citation: newEntry, strategy: .userAdded)
               } else {

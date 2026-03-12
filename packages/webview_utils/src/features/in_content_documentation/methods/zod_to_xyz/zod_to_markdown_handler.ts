@@ -34,7 +34,7 @@ export class ZodToMarkdownHandler {
         assert(Array.isArray(values), "Found an enum without values")
         for (const option of values) {
             assert(["string", "number"].includes(typeof option), "Found a zod venum value that isn't a valid type.")
-            s += `- ${option}\n`
+            s += `- ${(option as string | number | undefined) ?? "`undefined`"}\n`
         }
         this.body += s
     }

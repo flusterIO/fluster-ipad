@@ -178,6 +178,7 @@ export interface EditorChangeEvent {
 export interface EditorCitation {
 	citation_key: string;
 	html: string;
+	url?: string;
 }
 
 export enum EditorLogSeverity {

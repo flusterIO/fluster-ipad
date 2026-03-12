@@ -5,11 +5,11 @@
 //  Created by Andrew on 11/5/25.
 //
 
+import FlusterData
 import FlusterSwift
 import PencilKit
 import SwiftData
 import SwiftUI
-import FlusterData
 
 struct CreateNoteSheetView: View {
   @State private var titleValue: String = ""
@@ -25,7 +25,7 @@ struct CreateNoteSheetView: View {
 
   var body: some View {
     NavigationStack(path: $paths) {
-      Form {
+      Form(content: {
         TextField("Title", text: $titleValue)
           .focused($textFieldFocused)
           .onAppear {
@@ -56,7 +56,6 @@ struct CreateNoteSheetView: View {
                 id: nil,
                 markdown: MarkdownNote(
                   body: "# \(titleValue)",
-                  summary: nil
                 ),
                 subject: selectedSubject,
               )
@@ -76,6 +75,7 @@ struct CreateNoteSheetView: View {
           .buttonStyle(.glassProminent)
         }
       }
+      )
       .onDisappear {
         if let note = editingNote, let _subject = selectedSubject {
           note.subject = _subject

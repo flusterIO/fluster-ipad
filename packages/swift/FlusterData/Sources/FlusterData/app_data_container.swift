@@ -18,7 +18,7 @@ public final class AppDataContainer {
   // Public accessor
   public static var shared: AppDataContainer {
     guard let instance = _shared else {
-      fatalError("SimulationEngine must be initialized with 'setup(constant:)' before use.")
+      fatalError("AppDataContainer must be initialized with 'setup(constant:)' before use.")
     }
     return instance
   }
@@ -27,10 +27,7 @@ public final class AppDataContainer {
     let hasLaunchedPreviously = UserDefaults.standard.bool(
       forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
     )
-    let schema = Schema([
-      NoteModel.self,
-      BibEntryModel.self
-    ])
+    let schema = Schema(AppSchemaV1.models)
     let modelConfiguration = ModelConfiguration(
       schema: schema,
       isStoredInMemoryOnly: false
@@ -101,7 +98,6 @@ public final class AppDataContainer {
         let noteData = InitialNotesDataJsonDecoder.decode(
           from: self.initialNotesUrl
         )
-
 
         if let nd = noteData {
           nd.forEach { noteItemData in

@@ -78,12 +78,13 @@ struct MdxEditorWebview: View {
         onLoad: onWebviewLoad
       )
       .confirmationDialog(
-        "Delete Note", isPresented: $showDeleteConfirmation, titleVisibility: .visible,
+        "Delete this note", isPresented: $showDeleteConfirmation, titleVisibility: .visible,
         actions: {
           Button(
             action: {
               if let en = editingNote {
                 modelContext.delete(en)
+                AppState.shared.setEditingNoteId(editingNoteId: nil)
               }
             },
             label: {

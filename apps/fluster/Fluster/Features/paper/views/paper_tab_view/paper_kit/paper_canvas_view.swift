@@ -1,10 +1,10 @@
+import FlusterData
 import PaperKit
 import PencilKit
 import SwiftUI
-import FlusterData
 
 struct PaperCanvasView: UIViewControllerRepresentable {
-  @Binding var canvasData: Data
+  @Binding var markup: PaperMarkup
   let canvasBounds: CGRect
   var onContentChanged: ((Data) -> Void)?
 
@@ -13,13 +13,6 @@ struct PaperCanvasView: UIViewControllerRepresentable {
   }
 
   func makeUIViewController(context: Context) -> PaperContainerViewController {
-    let markup: PaperMarkup
-    if !canvasData.isEmpty, let restored = try? PaperMarkup(dataRepresentation: canvasData) {
-      markup = restored
-    } else {
-      markup = PaperMarkup(bounds: CGRect(origin: .zero, size: getPaperMarkupBounds()))
-    }
-
     let features: FeatureSet = .latest
 
     let paperVC = PaperMarkupViewController(markup: markup, supportedFeatureSet: features)
@@ -97,11 +90,7 @@ class PaperContainerViewController: UIViewController, PaperMarkupViewController.
     _ paperMarkupViewController: PaperMarkupViewController
   ) {
     if let _markup = paperMarkupViewController.markup {
-      Task {
-        if let dataRep = try? await _markup.dataRepresentation() {
-          parentContainer.canvasData = dataRep
-        }
-      }
+      parentContainer.markup = _markup
     }
   }
 

@@ -12,7 +12,8 @@ struct MarkdownTabView: View {
     var editorThemeLight: CodeEditorTheme = .githubLight
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
     .fluster
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
+    .base
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
     var hasPreviouslyLaunched: Bool = false
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
@@ -33,12 +34,8 @@ struct MarkdownTabView: View {
     if let editingNoteBinding = Binding($editingNote) {
       NavigationStack {
         MdxEditorWebview(
-          url:
-            Bundle.main.url(
-              forResource: "index_ipad",
-              withExtension: "html",
-              subdirectory: "splitview_mdx_editor_ipad"
-            )!,
+          url: URL.embeddedFlusterUrl(
+            folder: "splitview_mdx_editor_ipad", fileName: "index_ipad.html"),
           theme: $theme,
           editorThemeDark: $editorThemeDark,
           editorThemeLight: $editorThemeLight,
@@ -48,9 +45,8 @@ struct MarkdownTabView: View {
           onNavigateToNote: onNavigateToNote,
           fullScreenCover: $fullScreenCover
         )
-        .toolbarVisibility(.hidden, for: .navigationBar)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        //                .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
+//        .toolbarVisibility(.hidden, for: .navigationBar)
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
         // TODO: Remove this. This is just for easy development.
         .onAppear {
           if let parsedMdx = editingNote?.markdown

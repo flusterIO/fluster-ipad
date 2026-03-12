@@ -267,10 +267,12 @@ public struct EditorChangeEvent: Codable {
 public struct EditorCitation: Codable {
 	public let citation_key: String
 	public let html: String
+	public let url: String?
 
-	public init(citation_key: String, html: String) {
+	public init(citation_key: String, html: String, url: String?) {
 		self.citation_key = citation_key
 		self.html = html
+		self.url = url
 	}
 }
 

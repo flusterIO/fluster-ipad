@@ -29,7 +29,8 @@ extension BibEntryModel {
   public func toEditorCitation(activeCslFile: EmbeddedCslFileSwift) -> EditorCitation? {
     if let citationKey = self.citationKey {
       if let formatted = self.safelyGetFormatted(activeCslFormat: activeCslFile) {
-        return EditorCitation(citation_key: citationKey, html: formatted.formattedHtml)
+        return EditorCitation(
+          citation_key: citationKey, html: formatted.formattedHtml, url: formatted.url)
       }
     }
     return nil

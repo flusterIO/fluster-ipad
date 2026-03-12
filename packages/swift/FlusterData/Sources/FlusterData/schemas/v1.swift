@@ -109,13 +109,17 @@ extension AppSchemaV1 {
   public class PaperModel {
     @Attribute(.externalStorage) public var drawing: Data
     @Attribute(.externalStorage) public var markup: Data
+    /// Tage page number, but 0 based.
+    public var pageIndex: Int
     //    @Attribute(.externalStorage) public var thumbnail: CGImage?
     public init(
       markup: Data,
       drawing: Data = PKDrawing().dataRepresentation(),
+      pageIndex: Int
     ) {
       self.markup = markup
       self.drawing = drawing
+      self.pageIndex = pageIndex
     }
     //    public func generateThumbnail() async {
     //      let thumbnailSize = CGSize(width: 200, height: 200)
@@ -287,7 +291,6 @@ extension AppSchemaV1 {
       var citations: [BibEntryModel] = []
       let citationFetchDescriptor = FetchDescriptor<BibEntryModel>()
       let allCitations = try! modelContext.fetch(citationFetchDescriptor)
-      print("Map: \(self.bibEntryStrategyMap)")
       // Make sure the bibEntries that were user defined are not deleted since they cannot be automatically inferred from the note.
       for (citationKey, saveStrategy) in self.bibEntryStrategyMap {
         if saveStrategy == .userAdded {
@@ -552,6 +555,21 @@ extension AppSchemaV1 {
     /// This prefers front matter to markdown content if it exists.
     public func getPreferedTitle() -> String {
       return self.frontMatter.title ?? self.markdown.title ?? "No title found"
+    }
+
+    /// pageIndex is the `pageIndex` field, not the actual index necessarily.
+    public func removePaperByPageIndex(pageIndex: Int, modelContext: ModelContext) {
+      var toKeep: [PaperModel] = []
+
+      self.paper.forEach { p in
+        if p.pageIndex == pageIndex {
+          modelContext.delete(p)
+        } else {
+          toKeep.append(p)
+        }
+      }
+
+      self.paper = toKeep
     }
   }
   @Model

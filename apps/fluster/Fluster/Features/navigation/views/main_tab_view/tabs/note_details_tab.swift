@@ -13,6 +13,7 @@ struct NoteDetailsTabView: View {
     self._editingNote = editingNote
     self._fullScreenCover = fullScreenCover
   }
+
   var body: some View {
     if let noteBinding = Binding($editingNote) {
       NavigationStack {

@@ -84,8 +84,6 @@ public struct NoteDetailView: View {
   NoteDetailView(
     note: NoteModel.getEmptyModel(
       noteBody: "## Test Note",
-      noteSummary:
-        "This is my note summary here. This is my note summary here. This is my note summary here. This is my note summary here. This is my note summary here. This is my note summary here. This is my note summary here. This is my note summary here. This is my note summary here. This is my note summary here. This is my note summary here. "
     )
   )
 }

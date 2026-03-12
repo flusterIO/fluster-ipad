@@ -29,7 +29,7 @@ func getDrawing(data: Data?) -> PKDrawing {
   }
 }
 
-func getInitialTheme() -> FlusterTheme {
+func getInitialTheme() -> FlusterData.FlusterTheme {
   if let storedString = UserDefaults.standard.string(
     forKey: AppStorageKeys.theme.rawValue
   ) {
@@ -48,7 +48,7 @@ struct MainView: View {
   @State private var tagQuery: String = ""
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
     var hasPreviouslyLaunched: Bool = false
-  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
+  @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterData.FlusterTheme =
     .fluster
   @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
     var webviewFontSize: WebviewFontSize = .base
@@ -59,10 +59,11 @@ struct MainView: View {
   @AppStorage(AppStorageKeys.colorScheme.rawValue) private
     var colorSchemeSelection: ColorSchemeSelection = .dark
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private
-    var editorThemeDark: CodeEditorTheme = .dracula
+    var editorThemeDark: FlusterData.CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
-    var editorThemeLight: CodeEditorTheme = .githubLight
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
+    var editorThemeLight: FlusterData.CodeEditorTheme = .githubLight
+    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: FlusterData.CodeEditorKeymap =
+    .base
   @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
     var tabviewCustomization: TabViewCustomization
   /// editingNoteId is a EditingNoteId.value protocol string. Use that class to parse this result
@@ -318,23 +319,23 @@ struct MainView: View {
         }
       }
     )
-//    .task(
-//      id: editingNote?.markdown.body,
-//      {
-//        if let note = editingNote {
-//          do {
-//            try await note.preParse(modelContext: modelContext)
-//            try await MdxEditorClient.setParsedEditorContentString(
-//              note: note, evaluateJavaScript: editorContainer.webview.evaluateJavaScript)
-//            try modelContext.save()
-//          } catch {
-//            print(
-//              "Failed to save model context when navigating away from editor view."
-//            )
-//          }
-//        }
-//      }
-//    )
+    //    .task(
+    //      id: editingNote?.markdown.body,
+    //      {
+    //        if let note = editingNote {
+    //          do {
+    //            try await note.preParse(modelContext: modelContext)
+    //            try await MdxEditorClient.setParsedEditorContentString(
+    //              note: note, evaluateJavaScript: editorContainer.webview.evaluateJavaScript)
+    //            try modelContext.save()
+    //          } catch {
+    //            print(
+    //              "Failed to save model context when navigating away from editor view."
+    //            )
+    //          }
+    //        }
+    //      }
+    //    )
     .onChange(
       of: editorThemeDark,
       {
@@ -411,7 +412,6 @@ struct MainView: View {
       }
     )
     .onAppear {
-      editorContainer.onLoad = self.onEditorLoad
       handleColorSchemeChange(newScheme: colorScheme)
       handleThemeChange(newTheme: theme)
       handleColorSchemeSelectionChange()
@@ -513,7 +513,7 @@ struct MainView: View {
       self.editingNote = res.first
     }
   }
-  func handleThemeChange(newTheme: FlusterTheme) {
+    func handleThemeChange(newTheme: FlusterData.FlusterTheme) {
     self.editorContainer.setWebviewTheme(theme: newTheme)
     self.themeManager = ThemeManager(
       initialTheme: getTheme(
@@ -538,17 +538,6 @@ struct MainView: View {
       return "\(editingNoteExists.id)-\(editingNoteExists.markdown.body)"
     }
     return "parse-mdx"
-  }
-  @MainActor
-  func onEditorLoad(_ webview: WKWebView) async {
-    if let en = editingNote {
-      do {
-        try await MdxEditorClient.setEditorContent(
-          note: en, evaluateJavaScript: webview.evaluateJavaScript)
-      } catch {
-        print("Error: \(error.localizedDescription)")
-      }
-    }
   }
 }
 

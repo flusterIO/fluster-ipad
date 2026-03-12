@@ -43,11 +43,11 @@ import WebKit
 
     public init(
       url: URL,
-      theme: Binding<WebViewTheme>,
+      theme: Binding<FlusterTheme>,
       editorThemeDark: Binding<CodeEditorTheme>,
       editorThemeLight: Binding<CodeEditorTheme>,
       editingNote: Binding<NoteModel>,
-      editorKeymap: Binding<EditorKeymap>,
+      editorKeymap: Binding<CodeEditorKeymap>,
       container: MdxEditorWebviewContainer,
       show: Binding<Bool>,
       onNavigateToNote: @escaping (NoteModel) -> Void,
@@ -291,11 +291,11 @@ import WebKit
     let container: MdxEditorWebviewContainer
     public init(
       url: URL,
-      theme: Binding<WebViewTheme>,
+      theme: Binding<FlusterTheme>,
       editorThemeDark: Binding<CodeEditorTheme>,
       editorThemeLight: Binding<CodeEditorTheme>,
       editingNote: Binding<NoteModel>,
-      editorKeymap: Binding<EditorKeymap>,
+      editorKeymap: Binding<CodeEditorKeymap>,
       container: MdxEditorWebviewContainer,
       onNavigateToNote: @escaping (NoteModel) -> Void,
       fullScreenCover: Binding<MainFullScreenCover?>?
