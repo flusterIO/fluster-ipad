@@ -98,16 +98,8 @@ struct AssociateNoteWithBibEntryItemView: View {
     let itemId = item.id
     print("Removing entry...")
     if let en = self.editingNote {
-      do {
-        let newCitations = try en.citations.filter(
-          #Predicate<BibEntryModel> { entry in
-            entry.id != itemId
-          })
-        en.citations = newCitations
-        en.setLastRead(setModified: true)
-      } catch {
-        print("Error: \(error.localizedDescription)")
-      }
+      en.removeCitation(citation: self.item)
+      en.setLastRead(setModified: true)
     }
   }
 
@@ -121,7 +113,7 @@ struct AssociateNoteWithBibEntryItemView: View {
   func addEntry() {
     if let en = self.editingNote {
       if !self.isIncluded() {
-        en.citations.append(self.item)
+        en.addCitation(citation: self.item, strategy: .userAdded)
         en.setLastRead(setModified: true)
         do {
           print("Saving after appending...")

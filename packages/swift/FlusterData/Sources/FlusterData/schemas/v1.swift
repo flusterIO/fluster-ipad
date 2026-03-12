@@ -267,7 +267,6 @@ extension AppSchemaV1 {
       modelContext: ModelContext
     ) {
       self.markdown.isEdited = false
-      print("Content: \(results.content)")
       self.markdown.preParsedBody = results.content
       if let frontMatter = results.frontMatter {
         self.frontMatter.applyParsingResult(res: frontMatter)
@@ -288,17 +287,18 @@ extension AppSchemaV1 {
       var citations: [BibEntryModel] = []
       let citationFetchDescriptor = FetchDescriptor<BibEntryModel>()
       let allCitations = try! modelContext.fetch(citationFetchDescriptor)
+      print("Map: \(self.bibEntryStrategyMap)")
       // Make sure the bibEntries that were user defined are not deleted since they cannot be automatically inferred from the note.
-      for (citationId, saveStrategy) in self.bibEntryStrategyMap {
+      for (citationKey, saveStrategy) in self.bibEntryStrategyMap {
         if saveStrategy == .userAdded {
-          if let existingCitation = self.citations.first(where: { cit in
-            return cit.id == citationId
+          if let existingCitation = allCitations.first(where: { cit in
+            return cit.citationKey != nil && cit.citationKey == citationKey
           }) {
             citations.append(existingCitation)
           }
         } else {
           // Remove all of the bibEntries that can be re-generated from the user's note content.
-          self.bibEntryStrategyMap.removeValue(forKey: citationId)
+          self.bibEntryStrategyMap.removeValue(forKey: citationKey)
         }
       }
       // Handle saving of additional bibEntries that can be generated from the note.
@@ -640,7 +640,7 @@ extension AppSchemaV1 {
       ctime: Date = .now,
       utime: Date = .now,
       lastAccess: Date = .now,
-      notes: [NoteModel] = []
+      notes: [NoteModel]
     ) {
       self.id = id ?? UUID().uuidString
       self._data = data

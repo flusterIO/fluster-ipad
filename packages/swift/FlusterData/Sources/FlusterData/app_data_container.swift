@@ -65,7 +65,7 @@ public final class AppDataContainer {
               doi = {10.1364/JOSA.28.000215},
               abstract = {},
               }                
-              """),
+              """, notes: []),
           BibEntryModel(
             data: """
               @article{PoundRebka,
@@ -82,7 +82,7 @@ public final class AppDataContainer {
                 doi = {10.1103/PhysRevLett.4.337},
                 url = {https://link.aps.org/doi/10.1103/PhysRevLett.4.337}
               }
-              """),
+              """, notes: []),
           BibEntryModel(
             data: """
               @letter{Einstein_Besso_Letter,
@@ -91,7 +91,7 @@ public final class AppDataContainer {
               month = {March},
               title = {{Letter to the family Michele Besso following his death}},
               }
-              """)
+              """, notes: [])
         ]
         for bibEntry in initialBibliographyEntries {
           container.mainContext.insert(bibEntry)

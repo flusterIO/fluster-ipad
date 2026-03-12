@@ -118,12 +118,13 @@ struct BibtexEditorWebview: View {
       } else {
         let splitByEntry = FlusterBibliography.splitBiblatexToRawStrings(fileContent: newItemData)
         for entryText in splitByEntry {
-          let item = BibEntryModel(data: entryText)
+          let item = BibEntryModel(data: entryText, notes: editingNote == nil ? [] : [editingNote!])
           if let en = editingNote, associateWithEditingNote {
             en.citations.append(item)
           } else {
             modelContext.insert(item)
           }
+          modelContext.insert(item)
         }
 
         Task(priority: .high) {
@@ -135,6 +136,8 @@ struct BibtexEditorWebview: View {
         }
         dismiss()
       }
+    } else {
+      // TODO: Need to handle updating of bibentry here.
     }
   }
   func setEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
