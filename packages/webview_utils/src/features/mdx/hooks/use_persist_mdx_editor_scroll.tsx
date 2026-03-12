@@ -1,4 +1,4 @@
-import { type MdxEditorAppState } from "#/webview_global_state/store";
+import { type GlobalAppState } from "#/webview_global_state/store";
 import { EditorView, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { type ReactNode, useLayoutEffect } from "react"
@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const usePersistMdxEditorScroll = () => {
 
-    const editorView = useSelector((state: MdxEditorAppState) => state.editor.editorView)
+    const editorView = useSelector((state: GlobalAppState) => state.editor.editorView)
 
     const readAndSetScroll = (ev: boolean): void => {
         const storageKey: AnyWebviewStorageKey = ev ? SplitviewEditorWebviewLocalStorageKeys.ScrollPositionSplitview : SplitviewEditorWebviewLocalStorageKeys.ScrollPositionPreviewOnly

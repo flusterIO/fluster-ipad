@@ -5,11 +5,11 @@ import { LoadingComponent } from "@/shared_components/loading_component";
 import { CodeEditor } from "#/editor/code_editor/components/code_editor";
 import { WebviewClient } from "#/webview_container/data/webview_client";
 import { useSelector } from "react-redux";
-import { type MdxEditorAppState } from "#/webview_global_state/store";
+import { type GlobalAppState } from "#/webview_global_state/store";
 
 export const SplitViewEditorInner = (): ReactNode => {
     const autoSaveId = "split-view-editor-panel-split";
-    const parsedValue = useSelector((state: MdxEditorAppState) => state.editor.parsedValue)
+    const parsedValue = useSelector((state: GlobalAppState) => state.editor.parsedValue)
     return (
         <PanelGroup
             autoSaveId={autoSaveId}

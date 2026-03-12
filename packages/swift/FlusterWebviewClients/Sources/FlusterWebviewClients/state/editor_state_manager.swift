@@ -94,6 +94,17 @@ extension EditorState {
     }
   }
 
+  public static func setEditorBibContent(content: String, eval: @escaping EvalJavascriptFunc)
+    async throws
+  {
+    let action = SetEditingBibEntryAction(
+      type: EditorStateActions.setEditingBibEntry,
+      payload: SetEditingBibEntryPayload(content: content))
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
+
   public static func setEditorKeymap(keymap: CodeEditorKeymap, eval: @escaping EvalJavascriptFunc)
     async throws
   {
@@ -115,17 +126,17 @@ extension EditorState {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }
   }
-    public static func setEditorThemeDark(
-      payload: SetEditorThemeDarkPayload, eval: @escaping EvalJavascriptFunc
-    )
-      async throws
-    {
-      let action = SetEditorThemeDarkAction(
-        type: EditorStateActions.setEditorThemeDark, payload: payload)
-      if let parsedData = EditorState.encodeAction(data: action) {
-        try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
-      }
+  public static func setEditorThemeDark(
+    payload: SetEditorThemeDarkPayload, eval: @escaping EvalJavascriptFunc
+  )
+    async throws
+  {
+    let action = SetEditorThemeDarkAction(
+      type: EditorStateActions.setEditorThemeDark, payload: payload)
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }
+  }
 
   public static func setEditorThemeLight(
     payload: SetEditorThemeLightPayload, eval: @escaping EvalJavascriptFunc
@@ -146,6 +157,16 @@ extension EditorState {
   {
     let action = SetLockEditorScrollToPreviewAction(
       type: EditorStateActions.setLockEditorScrollToPreview, payload: payload)
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
+
+  public static func setNoteDetails(payload: NoteDetailState, eval: @escaping EvalJavascriptFunc)
+    async throws
+  {
+    let action = SetNoteDetailsAction(
+      type: NoteDetailActions.setNoteDetails, payload: payload)
     if let parsedData = EditorState.encodeAction(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }

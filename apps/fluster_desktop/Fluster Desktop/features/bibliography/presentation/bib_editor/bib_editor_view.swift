@@ -125,6 +125,14 @@ struct BibtexEditorWebview: View {
             modelContext.insert(item)
           }
         }
+
+        Task(priority: .high) {
+          do {
+            try await EditorState.setEditorBibContent(content: "", eval: webView.evaluateJavaScript)
+          } catch {
+            print("Error: \(error.localizedDescription)")
+          }
+        }
         dismiss()
       }
     }

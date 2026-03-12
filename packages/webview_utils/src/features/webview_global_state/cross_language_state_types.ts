@@ -1,5 +1,8 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type WithNullableOptionals } from "@/utils/types/utility_types";
 import { type ByteBuffer } from "flatbuffers";
+
+export type GlobalWebviewStateNullable = WithNullableOptionals<GlobalWebviewState>
 
 
 // -- Editor --
@@ -58,6 +61,22 @@ interface SetEditingBibEntryActionRefined extends SetEditingBibEntryAction {
 }
 
 
+// -- Note Details --
+
+interface SetNoteDetailsInvalidatedActionRefined {
+    type: NoteDetailActions.InvalidateNoteDetails
+}
+
+export interface SetNoteDetailsActionRefined extends SetNoteDetailsAction {
+    type: NoteDetailActions.SetNoteDetails,
+}
+
+// -- Dictionary --
+
+interface SetDictionaryEntriesActionRefined extends SetDictionaryEntriesAction {
+    type: DictionaryStateActions.SetDictionaryEntries
+}
+
 // -- Container --
 
 interface SetDarkModeActionRefined extends SetDarkModeAction {
@@ -76,9 +95,21 @@ interface SetNoteDeletedActionRefined extends SetNoteDeletedAction {
 
 export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetEditorThemeDarkActionRefined | SetEditorThemeLightActionRefined | SetEditorContentActionRefined | SetParsedValueActionRefined | SetEditingBibEntryActionRefined;
 
-export type AnyCrossLanguageWebviewContainerAction = SetNoteDeletedActionRefined | SetDarkModeActionRefined | SetFlusterThemeActionRefined
+export type AnyCrossLanguageNoteDetailsAction = SetNoteDetailsInvalidatedActionRefined | SetNoteDetailsActionRefined
 
-export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction | AnyCrossLanguageWebviewContainerAction
+export type AnyCrossLanguageDictionaryAction = SetDictionaryEntriesActionRefined
+
+export interface AnyCrossLanguageNoteDetailsBufferAction {
+    type: NoteDetailActions.SetNoteDetails
+    payload: ByteBuffer
+}
+
+export type AnyCrossLanguageWebviewContainerAction = SetNoteDeletedActionRefined | SetDarkModeActionRefined | SetFlusterThemeActionRefined | AnyCrossLanguageDictionaryAction
+
+/**
+ * Any cross-language action that does not have a buffer attached.
+ */
+export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction | AnyCrossLanguageWebviewContainerAction | AnyCrossLanguageNoteDetailsAction
 
 export interface AnyCrossLanguageBufferEditorAction {
     type: EditorStateActions.SetParsedEditorContent,
@@ -89,7 +120,8 @@ export interface AnyCrossLanguageBufferEditorAction {
 /**
  * Any anction being send over the `handleSwiftBufferAction` bridge.
  */
-export type AnyCrossLanguageContainerBufferAction = AnyCrossLanguageBufferEditorAction
+export type AnyCrossLanguageContainerBufferAction = AnyCrossLanguageBufferEditorAction | AnyCrossLanguageNoteDetailsBufferAction
+
 
 
 export type AnyCrossLanguageEditorActionOfAnyType = AnyCrossLanguageEditorAction | AnyCrossLanguageBufferEditorAction

@@ -4,10 +4,10 @@ import { LoadingComponent } from "@/shared_components/loading_component";
 import { BibtexEditorWebviewActions, BibtexEditorWebviewEvents, BibtexEditorWebviewLocalStorageKeys, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { connect } from 'react-redux';
-import { type MdxEditorAppState } from "#/webview_global_state/store";
+import { type GlobalAppState } from "#/webview_global_state/store";
 
 
-const connector = connect((state: MdxEditorAppState) => ({
+const connector = connect((state: GlobalAppState) => ({
     haveSetInitialValue: state.editor.haveSetInitialValue,
 }))
 

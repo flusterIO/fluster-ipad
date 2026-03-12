@@ -1,11 +1,11 @@
-import { ReactNode } from "react"
+import { type ReactNode } from "react"
 
-export type WithChildren = {
+export interface WithChildren {
     children: ReactNode
 }
 
 
-export type MutableArray<T> = T extends ReadonlyArray<infer U> ? U[] : Array<T[keyof T]>;
+export type MutableArray<T> = T extends readonly (infer U)[] ? U[] : T[keyof T][];
 
 
 export type Mutable<T> = { -readonly [K in keyof T]: T[K] };
@@ -17,3 +17,9 @@ export type KeysOfType<T, J> = Exclude<{
 export type DeepPartial<T> = T extends object ? {
     [P in keyof T]?: DeepPartial<T[P]>;
 } : T;
+
+export type WithNullableOptionals<T> = {
+    [K in keyof T]-?: undefined extends T[K]
+    ? Exclude<T[K], undefined> | null
+    : T[K];
+};

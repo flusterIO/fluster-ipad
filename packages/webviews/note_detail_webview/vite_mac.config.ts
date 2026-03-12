@@ -1,23 +1,15 @@
 import { defineConfig } from "vite";
-import {
-  WebviewViteConfig,
-  getWebviewViteConfig,
-} from "@fluster/shared_config/webviewVite";
+import { getWasmViteConfig, WasmViteConfig } from "@fluster/shared_config/wasm";
 
-const config: WebviewViteConfig = {
-  outputDir: "note_detail_webview_mac",
-  plugins: {
-    tailwind: false,
-  },
-  singleFile: false,
-  base: "./",
-  build: {
-    rollupOptions: {
-      input: {
-        main: "./index_mac.html",
-      },
+const config: WasmViteConfig = {
+    outputDir: "note_detail_webview_mac",
+    build: {
+        rollupOptions: {
+            input: {
+                main: "./index_mac.html",
+            },
+        },
     },
-  },
 };
 
-export default defineConfig(getWebviewViteConfig(config));
+export default defineConfig(getWasmViteConfig(config));

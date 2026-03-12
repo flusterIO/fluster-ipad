@@ -4,11 +4,10 @@ import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only"
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { EditorScrollPersistor } from "#/mdx/hooks/use_persist_mdx_editor_scroll";
 import { useSelector } from "react-redux";
-import { type MdxEditorAppState } from "#/webview_global_state/store";
+import { type GlobalAppState } from "#/webview_global_state/store";
 import { WebviewImplementation, EditorView, SplitviewEditorWebviewActions, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { connect } from 'react-redux';
-import { SplitviewEditorNotificationBanner } from "#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner";
 
 
 const DEBOUNCE_TIMEOUT = 100
@@ -19,7 +18,7 @@ const MAX_TIME = 5000
  * This is no longer _always_ rendered, so all state checks need to be lifted up.
  */
 const EditorBody = (): ReactNode => {
-    const editorView = useSelector((state: MdxEditorAppState) => state.editor.editorView)
+    const editorView = useSelector((state: GlobalAppState) => state.editor.editorView)
     if (editorView === EditorView.Pending) {
         return null
     }
@@ -30,7 +29,7 @@ const EditorBody = (): ReactNode => {
 
 
 
-const connectorLoadingIndicator = connect((state: MdxEditorAppState) => ({
+const connectorLoadingIndicator = connect((state: GlobalAppState) => ({
     noteId: state.editor.note_id,
 }))
 
@@ -71,10 +70,9 @@ const LoadingIndicatorAndListener = connectorLoadingIndicator(({ note_id }: Pick
  * ResponsiveSplitViewEditor accepts children only for development so that the editor state can be modified.
  */
 export const ResponsiveSplitViewEditor = ({ children = null }: { children?: ReactNode }): ReactNode => {
-    const noteId = useSelector((state: MdxEditorAppState) => state.editor.note_id)
+    const noteId = useSelector((state: GlobalAppState) => state.editor.note_id)
     return (
         <>
-            <SplitviewEditorNotificationBanner />
             {noteId ? <EditorBody /> : (
                 <LoadingIndicatorAndListener />
             )}

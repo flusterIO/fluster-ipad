@@ -3,7 +3,7 @@ import { initialWebviewContainerState } from './initial_webview_container_state'
 import { type SizableOption, type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities'
 import { swiftContainerActionReducer } from './swift_action_reducer'
 import { swiftContainerBufferActionReducer } from './swift_buffer_action_reducer'
-import { type AnyCrossLanguageEditorAction, type AnyCrossLanguageBufferEditorAction } from '#/webview_global_state/cross_language_state_types'
+import { type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageWebviewAction } from '#/webview_global_state/cross_language_state_types'
 
 export interface CounterState {
     value: number
@@ -17,7 +17,7 @@ export const webviewContainerSlice = createSlice({
         /**
          * This function is attached to the window and called directly to handle all editor state interactions from Swift.
          */
-        handleSwiftAction: (state, action: PayloadAction<AnyCrossLanguageEditorAction>): WebviewContainerState => {
+        handleSwiftAction: (state, action: PayloadAction<AnyCrossLanguageWebviewAction>): WebviewContainerState => {
             return swiftContainerActionReducer(state, action)
         },
         handleSwiftBufferAction: (state, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): WebviewContainerState => {

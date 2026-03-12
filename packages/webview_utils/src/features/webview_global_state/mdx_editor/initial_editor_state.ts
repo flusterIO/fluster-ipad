@@ -3,7 +3,7 @@ import { type BibtexEditorState, CodeEditorBaseKeymap, CodeEditorKeymap, CodeEdi
 
 
 const initialBibEditorState: BibtexEditorState = {
-    value: ""
+    value: "",
 }
 
 export const initialEditorState: EditorState = {

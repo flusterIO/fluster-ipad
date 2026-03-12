@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { XIcon } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { connect, useDispatch } from 'react-redux';
-import { type MdxEditorAppState } from '#/webview_global_state/store';
+import { type GlobalAppState } from '#/webview_global_state/store';
 import { type EditorBannerNotification, type NotificationState } from '@/code_gen/typeshare/fluster_core_utilities';
 import { removeBannerById } from '#/webview_global_state/notification_state/notification_state_slice';
 
@@ -67,7 +67,7 @@ const BannerNotificationItem = ({ item }: { item: EditorBannerNotification }): R
     )
 }
 
-const connector = connect((state: MdxEditorAppState) => ({
+const connector = connect((state: GlobalAppState) => ({
     banners: state.notifications.banners
 }))
 

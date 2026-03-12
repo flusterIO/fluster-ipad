@@ -4,15 +4,14 @@ import type { CompileOptions } from "@mdx-js/mdx";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
 import rehypeMathjax from "rehype-mathjax/chtml";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import emoji from "remark-emoji";
-import rehypeSlug from "rehype-slug";
-import rehypeVideo from "rehype-video";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 import withSlugs from "rehype-slug";
 import withCustomIds from "remark-custom-header-id"
 import withToc, { type Toc } from "@stefanprobst/rehype-extract-toc";
+import { CodeEditorTheme } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type BundledTheme } from "shiki";
 
 export const mathOptions = {
     tex: {
@@ -36,44 +35,52 @@ export const mathOptions = {
 };
 
 interface RehypePluginProps {
-    lightCodeTheme?: string;
-    darkCodeTheme?: string;
+    lightCodeTheme?: CodeEditorTheme;
+    darkCodeTheme?: CodeEditorTheme;
 }
 
-const codeThemeStringToThemeName = (input: string): string => {
-    const defaultLightTheme = "material-theme-lighter";
-    const defaultDarkTheme = "dracula";
+const codeThemeStringToThemeName = (input: CodeEditorTheme): BundledTheme => {
     switch (input) {
-        case "materialLight":
-            return "material-theme-lighter";
-        case "solarizedLight":
-            return "solarized-light";
-        case "solarizedDark":
-            return "solarized-dark";
-        case "githubLight":
-            return "github-light";
-        case "aura":
-            return "aurora-x";
-        case "tokyoNightDay":
-            return defaultLightTheme; // Real theme does not exist so sub other light themee.
-        case "xcodeLight":
-            return defaultLightTheme; // Real theme does not exist so sub other light themee.
-        case "dracula":
-            return "dracula";
-        case "tokyoNight":
-            return "tokyo-night";
-        case "materialDark":
-            return "material-theme-darker";
-        case "tokyoNightStorm":
-            return defaultDarkTheme;
-        case "githubDark":
-            return "github-dark";
-        case "xcodeDark":
-            return defaultDarkTheme;
-        default:
-            console.log("Could not find theme value for: ", input);
+        case CodeEditorTheme.MaterialLight: {
+            return "material-theme-lighter"
+        }
+        case CodeEditorTheme.SolarizedLight: {
+            return "solarized-light"
+        }
+        case CodeEditorTheme.SolarizedDark: {
+            return "solarized-dark"
+        }
+        case CodeEditorTheme.GithubLight: {
+            return "github-light"
+        }
+        case CodeEditorTheme.Aura: {
+            return "aurora-x"
+        }
+        case CodeEditorTheme.TokyoNightDay: {
+            return "tokyo-night"
+        }
+        case CodeEditorTheme.XcodeLight: {
+            return "github-light-high-contrast"
+        }
+        case CodeEditorTheme.Dracula: {
+            return "dracula"
+        }
+        case CodeEditorTheme.TokyoNight: {
+            return "tokyo-night"
+        }
+        case CodeEditorTheme.MaterialDark: {
+            return "material-theme-darker"
+        }
+        case CodeEditorTheme.TokyoNightStorm: {
+            return "tokyo-night"
+        }
+        case CodeEditorTheme.GithubDark: {
+            return "github-dark"
+        }
+        case CodeEditorTheme.XcodeDark: {
+            return "dark-plus"
+        }
     }
-    return input;
 };
 
 const rehypePlugins = ({
@@ -156,8 +163,8 @@ export const parseMdxString = async ({
     darkCodeTheme,
 }: {
     content: string;
-    lightCodeTheme: string;
-    darkCodeTheme: string;
+    lightCodeTheme: CodeEditorTheme;
+    darkCodeTheme: CodeEditorTheme;
 }): Promise<{ value: string, toc?: Toc }> => {
     const res = await compile(content, {
         outputFormat: "function-body",

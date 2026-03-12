@@ -7,14 +7,14 @@ import { type EditorState, SplitviewEditorDomIds, SplitviewEditorWebviewActions 
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
-import { type MdxEditorAppState } from "#/webview_global_state/store";
+import { type GlobalAppState } from "#/webview_global_state/store";
 import { connect } from "react-redux";
 import consola from "consola";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
 
-const connector = connect((state: MdxEditorAppState) => ({
+const connector = connect((state: GlobalAppState) => ({
     parsedValue: state.editor.parsedValue,
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview
 }))

@@ -29,9 +29,9 @@ import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
 import { connect } from "react-redux"
 import { setBibtexEditorValue, setEditorValue } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
-import { type MdxEditorAppState } from "#/webview_global_state/store";
+import { type GlobalAppState } from "#/webview_global_state/store";
 
-const connector = connect((state: MdxEditorAppState) => ({
+const connector = connect((state: GlobalAppState) => ({
     baseKeymap: state.editor.baseKeymap,
     allCitationIds: state.editor.allCitationIds,
     theme_dark: state.editor.theme_dark,
@@ -253,7 +253,7 @@ export const CodeEditorInner = connector(({
 });
 
 
-const connectorOuter = connect((state: MdxEditorAppState) => ({
+const connectorOuter = connect((state: GlobalAppState) => ({
     note_id: state.editor.note_id,
     value: state.editor.value
 }))

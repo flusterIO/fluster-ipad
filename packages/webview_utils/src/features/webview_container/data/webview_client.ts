@@ -1,4 +1,4 @@
-import { type MdxEditorAppState } from "../../webview_global_state/store"
+import { type GlobalAppState } from "../../webview_global_state/store"
 
 export const WebviewClient = {
     sendPanelGroupResize: (layout: number[]) => {
@@ -20,7 +20,7 @@ export const WebviewClient = {
             document.body.classList.remove('dark');
         }
     },
-    applyGlobalState: (state: MdxEditorAppState) => {
+    applyGlobalState: (state: GlobalAppState) => {
         WebviewClient.setDarkMode(state.container.dark_mode)
     }
 }

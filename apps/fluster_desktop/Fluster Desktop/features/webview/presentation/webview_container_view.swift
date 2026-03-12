@@ -108,6 +108,9 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
       if message.name == WebviewContainerEvents.reduxStateLoaded.rawValue {
         Task(priority: .high) {
           await self.parent.parent.handleInitialState()
+          if let onLoad = parent.onLoad {
+            await onLoad()
+          }
         }
       }
       if let messageHandler = parent.messageHandler {
@@ -149,11 +152,14 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     }
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
       print("Web content loaded...")
-      if let onLoad = parent.onLoad {
-        Task(priority: .high) {
-          await onLoad()
-        }
-      }
+        // Removing this in favor of redux based approach.
+        // This will break if all webviews don't use the same
+        // Redux container.
+//      if let onLoad = parent.onLoad {
+//        Task(priority: .high) {
+//          await onLoad()
+//        }
+//      }
       parent.webView.isHidden = false
     }
   }

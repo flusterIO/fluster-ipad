@@ -4,7 +4,7 @@ import { type EditorView } from '@/code_gen/typeshare/fluster_core_utilities'
 import { swiftEditorActionReducer } from './swift_action_reducer'
 import { handleSwiftAction, handleSwiftBufferAction } from '#/webview_global_state/container/webview_container_global_state/webview_container_slice'
 import { swiftEditorBufferActionReducer } from './swift_buffer_action_reducer'
-import { type AnyCrossLanguageEditorAction } from '#/webview_global_state/cross_language_state_types'
+import { type AnyCrossLanguageWebviewAction } from '#/webview_global_state/cross_language_state_types'
 
 export interface CounterState {
     value: number
@@ -37,8 +37,7 @@ export const editorStateSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(handleSwiftAction, (state, action: PayloadAction<AnyCrossLanguageEditorAction>) => {
-            console.log("Handling swift action in extra reducer.")
+        builder.addCase(handleSwiftAction, (state, action: PayloadAction<AnyCrossLanguageWebviewAction>) => {
             return swiftEditorActionReducer(state, action)
         })
         builder.addCase(handleSwiftBufferAction, (state, action) => {

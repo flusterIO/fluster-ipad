@@ -50,6 +50,16 @@ export interface CodeBlockParsingResult {
 	block_content: string;
 }
 
+export interface WebviewDictionaryEntry {
+	label: string;
+	body: string;
+	origin_note_id: string;
+}
+
+export interface DictionaryState {
+	entries: WebviewDictionaryEntry[];
+}
+
 export interface NoteTocHeadingRustMirror {
 	content: string;
 	id: string;
@@ -264,12 +274,26 @@ export interface MediaState {
 	image_data: Record<string, ImageData>;
 }
 
+export interface NoteDetailState {
+	note_id: string;
+	title: string;
+	summary?: string;
+	topic?: string;
+	subject?: string;
+	tags: EditorTag[];
+	citations: EditorCitation[];
+	last_modified_string: string;
+	last_read_string: string;
+}
+
 export interface GlobalWebviewState {
 	container: WebviewContainerState;
 	editor: EditorState;
 	notifications: NotificationState;
 	ai: AiState;
 	media: MediaState;
+	note_details?: NoteDetailState;
+	dictionary: DictionaryState;
 }
 
 export interface ManualSaveRequestEvent {
@@ -335,6 +359,15 @@ export interface SetDarkModePayload {
 export interface SetDarkModeAction {
 	type: WebviewContainerActions;
 	payload: SetDarkModePayload;
+}
+
+export enum DictionaryStateActions {
+	SetDictionaryEntries = "set-note-details",
+}
+
+export interface SetDictionaryEntriesAction {
+	type: DictionaryStateActions;
+	payload: DictionaryState;
 }
 
 export interface SetEditingBibEntryPayload {
@@ -430,6 +463,16 @@ export interface SetNoteDeletedPayload {
 export interface SetNoteDeletedAction {
 	type: WebviewContainerActions;
 	payload: SetNoteDeletedPayload;
+}
+
+export enum NoteDetailActions {
+	SetNoteDetails = "set-note-details",
+	InvalidateNoteDetails = "invalidate-note-details",
+}
+
+export interface SetNoteDetailsAction {
+	type: NoteDetailActions;
+	payload?: NoteDetailState;
 }
 
 export interface SetParsedMdxContentEditorAction {

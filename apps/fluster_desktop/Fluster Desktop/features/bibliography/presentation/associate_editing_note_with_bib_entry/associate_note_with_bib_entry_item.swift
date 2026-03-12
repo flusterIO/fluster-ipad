@@ -7,6 +7,7 @@
 
 import FlusterBibliography
 import FlusterData
+import SwiftData
 import SwiftUI
 
 struct BibSummaryData {
@@ -19,10 +20,33 @@ struct AssociateNoteWithBibEntryItemView: View {
   var itemId: String {
     item.id
   }
-  let editingNote: NoteModel
+  let editingNoteId: String
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
   @State private var data: BibSummaryData? = nil
+  @Environment(\.modelContext) private var modelContext: ModelContext
+  @Query private var notes: [NoteModel]
+  var editingNote: NoteModel? {
+    notes.isEmpty ? nil : notes.first
+  }
+  var formatted: FormattedCitation? {
+    item.safelyGetFormatted(activeCslFormat: cslFile)
+  }
+
+  init(item: BibEntryModel, editingNoteId: String) {
+    self.item = item
+    self.editingNoteId = editingNoteId
+    var descriptor = FetchDescriptor<NoteModel>(
+      predicate: #Predicate<NoteModel> { note in
+        note.id == editingNoteId
+      }
+    )
+    descriptor.fetchLimit = 1
+    self._notes = Query(
+      descriptor
+    )
+  }
+
   var body: some View {
     let isIncluded = Binding<Bool>(
       get: {
@@ -46,11 +70,17 @@ struct AssociateNoteWithBibEntryItemView: View {
       .labelsHidden()
       .toggleStyle(.switch)
       VStack(alignment: .leading) {
-        Text(data?.title ?? "No title found")
+        Text(formatted?.title ?? "No title found")
           .font(.headline)
           .frame(maxWidth: .infinity, alignment: .leading)
-        if let note = data?.summary {
+        if let note = formatted?.note {
           Text(note)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .lineLimit(5)
+            .font(.footnote)
+            .opacity(0.8)
+        } else if let abstract = formatted?.abstract {
+          Text(abstract)
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineLimit(5)
             .font(.footnote)
@@ -62,52 +92,46 @@ struct AssociateNoteWithBibEntryItemView: View {
     }
     .padding()
     .glassEffect(in: .rect(cornerRadius: 16))
-    .task {
-      if self.data == nil {
-        let entryData = parseBiblatexString(biblatexContent: item.data).first
-        let cslContent = cslFile.toFlusterBibliographyCslFile()
-        Task.detached {
-          if let res = entryData {
-            let s = res.formatBibliographyCitation(
-              cslContent: cslContent,
-              cslLocale: getCslLocaleFileContent(), renderMethod: .plaintext)
-            let _data = BibSummaryData(
-              title: s ?? res.getTitle() ?? "No title found",
-              summary: res.getNote() ?? res.getAbstract())
-            await MainActor.run {
-              self.data = _data
-            }
-          }
-        }
-      }
-    }
   }
 
   func removeEntry() {
     let itemId = item.id
-    do {
-      let newCitations = try self.editingNote.citations.filter(
-        #Predicate<BibEntryModel> { entry in
-          entry.id != itemId
-        })
-      self.editingNote.citations = newCitations
-      self.editingNote.setLastRead(setModified: true)
-    } catch {
-      print("Error: \(error.localizedDescription)")
+    print("Removing entry...")
+    if let en = self.editingNote {
+      do {
+        let newCitations = try en.citations.filter(
+          #Predicate<BibEntryModel> { entry in
+            entry.id != itemId
+          })
+        en.citations = newCitations
+        en.setLastRead(setModified: true)
+      } catch {
+        print("Error: \(error.localizedDescription)")
+      }
     }
   }
 
   func isIncluded() -> Bool {
     let itemId = item.id
-    return self.editingNote.citations.contains(where: { cit in
+    return self.editingNote?.citations.contains(where: { cit in
       return cit.id == itemId
-    })
+    }) ?? false
   }
 
   func addEntry() {
-    if !self.isIncluded() {
-      self.editingNote.citations.append(self.item)
-      self.editingNote.setLastRead(setModified: true)
+    if let en = self.editingNote {
+      if !self.isIncluded() {
+        en.citations.append(self.item)
+        en.setLastRead(setModified: true)
+        do {
+          print("Saving after appending...")
+          try modelContext.save()
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+      } else {
+        print("Attempted to add a citation that is already included.")
+      }
     }
   }
 }

@@ -1,8 +1,8 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { type MdxEditorAppState } from '#/webview_global_state/store';
+import { type GlobalAppState } from '#/webview_global_state/store';
 import { WebviewClient } from '../../../../webview_container/data/webview_client';
 
-export const darkModeListenerMiddleware = createListenerMiddleware<MdxEditorAppState>();
+export const darkModeListenerMiddleware = createListenerMiddleware<GlobalAppState>();
 
 darkModeListenerMiddleware.startListening({
     predicate: (_, oldState, newState) => {

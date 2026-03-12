@@ -1,9 +1,10 @@
 import { useSendNotificationBanner } from '#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner'
 import { cn } from '@/utils/cn'
 import { copyStringToClipboard } from '@/utils/string_utils'
+import consola from 'consola'
 import { CopyIcon } from 'lucide-react'
 import React, { type HTMLProps, useRef, useState, type ReactNode } from 'react'
-import { type BundledTheme } from 'shiki'
+import { type BundledLanguage } from 'shiki'
 
 
 
@@ -11,8 +12,8 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
     const [hovered, setHovered] = useState(false)
     const ref = useRef<HTMLPreElement | null>(null)
     const sendSplitviewNotificationBanner = useSendNotificationBanner()
-    const getLanguage = (): BundledTheme | undefined => {
-        return ref.current?.getAttribute("data-language") as BundledTheme | undefined
+    const getLanguage = (): BundledLanguage | undefined => {
+        return ref.current?.getAttribute("data-language") as BundledLanguage | undefined
     }
     return (
         <>
@@ -26,7 +27,7 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
             </pre>
             <div
                 role="button"
-                className={cn("auto-codeblock-icon absolute top-2 right-2 transition-opacity duration-300", hovered && "opacity-1000 hovered iflex-col justify-center items-center")}
+                className={cn("auto-codeblock-icon absolute top-2 right-2 transition-opacity duration-300", hovered && "opacity-100 hovered flex-col justify-center items-center")}
                 /* eslint-disable-next-line  -- Not creatng another function just to make eslint happy. */
                 onClick={async (e) => {
                     e.stopPropagation()
@@ -41,7 +42,11 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
                                 body: lang ? `Your ${lang} code has been copied to your clipboard` : `This code has been copied to your clipboard.`,
                                 timeout: 3000
                             })
+                        } else {
+                            consola.error("Something went wrong copying this code.")
                         }
+                    } else {
+                        consola.error("No text-content could be found to be copied.")
                     }
                 }}
             >

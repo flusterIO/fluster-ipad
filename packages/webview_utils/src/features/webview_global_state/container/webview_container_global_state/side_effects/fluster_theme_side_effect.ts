@@ -1,8 +1,8 @@
 
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { type MdxEditorAppState } from '#/webview_global_state/store';
+import { type GlobalAppState } from '#/webview_global_state/store';
 
-export const flusterThemeListenerMiddleware = createListenerMiddleware<MdxEditorAppState>();
+export const flusterThemeListenerMiddleware = createListenerMiddleware<GlobalAppState>();
 
 flusterThemeListenerMiddleware.startListening({
     predicate(_, currentState, originalState) {

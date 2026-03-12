@@ -5,8 +5,8 @@ import { type WithChildren } from '@/utils/types/utility_types'
 
 import { type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities';
 import { connect } from 'react-redux';
-import { type MdxEditorAppState } from '#/webview_global_state/store';
-const connector = connect((state: MdxEditorAppState) => ({
+import { type GlobalAppState } from '#/webview_global_state/store';
+const connector = connect((state: GlobalAppState) => ({
     size: state.container.size,
 }))
 

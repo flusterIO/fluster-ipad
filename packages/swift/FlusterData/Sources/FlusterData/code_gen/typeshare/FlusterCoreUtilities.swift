@@ -81,6 +81,26 @@ public struct CodeBlockParsingResult: Codable {
 	}
 }
 
+public struct WebviewDictionaryEntry: Codable {
+	public let label: String
+	public let body: String
+	public let origin_note_id: String
+
+	public init(label: String, body: String, origin_note_id: String) {
+		self.label = label
+		self.body = body
+		self.origin_note_id = origin_note_id
+	}
+}
+
+public struct DictionaryState: Codable {
+	public let entries: [WebviewDictionaryEntry]
+
+	public init(entries: [WebviewDictionaryEntry]) {
+		self.entries = entries
+	}
+}
+
 public struct NoteTocHeadingRustMirror: Codable {
 	public let content: String
 	public let id: String
@@ -396,19 +416,47 @@ public struct MediaState: Codable {
 	}
 }
 
+public struct NoteDetailState: Codable {
+	public let note_id: String
+	public let title: String
+	public let summary: String?
+	public let topic: String?
+	public let subject: String?
+	public let tags: [EditorTag]
+	public let citations: [EditorCitation]
+	public let last_modified_string: String
+	public let last_read_string: String
+
+	public init(note_id: String, title: String, summary: String?, topic: String?, subject: String?, tags: [EditorTag], citations: [EditorCitation], last_modified_string: String, last_read_string: String) {
+		self.note_id = note_id
+		self.title = title
+		self.summary = summary
+		self.topic = topic
+		self.subject = subject
+		self.tags = tags
+		self.citations = citations
+		self.last_modified_string = last_modified_string
+		self.last_read_string = last_read_string
+	}
+}
+
 public struct GlobalWebviewState: Codable {
 	public let container: WebviewContainerState
 	public let editor: EditorState
 	public let notifications: NotificationState
 	public let ai: AiState
 	public let media: MediaState
+	public let note_details: NoteDetailState?
+	public let dictionary: DictionaryState
 
-	public init(container: WebviewContainerState, editor: EditorState, notifications: NotificationState, ai: AiState, media: MediaState) {
+	public init(container: WebviewContainerState, editor: EditorState, notifications: NotificationState, ai: AiState, media: MediaState, note_details: NoteDetailState?, dictionary: DictionaryState) {
 		self.container = container
 		self.editor = editor
 		self.notifications = notifications
 		self.ai = ai
 		self.media = media
+		self.note_details = note_details
+		self.dictionary = dictionary
 	}
 }
 
@@ -524,6 +572,20 @@ public struct SetDarkModeAction: Codable {
 	public let payload: SetDarkModePayload
 
 	public init(type: WebviewContainerActions, payload: SetDarkModePayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public enum DictionaryStateActions: String, Codable {
+	case setDictionaryEntries = "set-note-details"
+}
+
+public struct SetDictionaryEntriesAction: Codable {
+	public let type: DictionaryStateActions
+	public let payload: DictionaryState
+
+	public init(type: DictionaryStateActions, payload: DictionaryState) {
 		self.type = type
 		self.payload = payload
 	}
@@ -708,6 +770,21 @@ public struct SetNoteDeletedAction: Codable {
 	public let payload: SetNoteDeletedPayload
 
 	public init(type: WebviewContainerActions, payload: SetNoteDeletedPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public enum NoteDetailActions: String, Codable {
+	case setNoteDetails = "set-note-details"
+	case invalidateNoteDetails = "invalidate-note-details"
+}
+
+public struct SetNoteDetailsAction: Codable {
+	public let type: NoteDetailActions
+	public let payload: NoteDetailState?
+
+	public init(type: NoteDetailActions, payload: NoteDetailState?) {
 		self.type = type
 		self.payload = payload
 	}

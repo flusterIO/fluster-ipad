@@ -15,6 +15,7 @@ export * from "./core/code_gen/typeshare/fluster_core_utilities";
 export * from "./features/webview_container/presentation/webview_container";
 export * from "./core/shared_components/loading/loading_component";
 export * from "./core/shared_components/loading/splash_screen";
+export * from "./features/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner"
 
 /// --- State ---
 export * from "./features/webview_global_state/provider"

@@ -5,12 +5,12 @@ import * as devRuntime from "react/jsx-dev-runtime";
 import type { MDXModule } from "mdx/types";
 import { parseMdxString } from "../methods/mdx_to_jsx";
 import { ParsedMdxContent } from "../components/parsed_mdx_content";
-import { useLocalStorage } from "@/state/hooks/use_local_storage";
-import { useEventListener } from "@/state/hooks/use_event_listener";
-import { SplitviewEditorWebviewEvents, SplitviewEditorWebviewLocalStorageKeys } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type AnyWebviewAction, type AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { type ComponentMapItem } from "../methods/get_component_map";
 import { WebviewClient } from "../../webview_container/data/webview_client";
+import { useSelector } from "react-redux";
+import { type GlobalWebviewStateNullable } from "#/webview_global_state/cross_language_state_types";
+import { type CodeEditorTheme } from "@/code_gen/typeshare/fluster_core_utilities";
 
 
 declare global {
@@ -32,42 +32,16 @@ export const useDebounceMdxParse = (
     const [value, setValue] = useState<string>(initialValue);
     const [hasParsed, setHasParsed] = useState(false);
     const [mdxModule, setMdxModule] = useState<MDXModule | null>(null);
-    const [darkCodeTheme, setDarkCodeTheme] = useLocalStorage(
-        SplitviewEditorWebviewLocalStorageKeys.CodeThemeDark,
-        undefined,
-        {
-            deserializer(value) {
-                return value;
-            },
-            serializer(value) {
-                return value;
-            },
-            initializeWithValue: false,
-        },
-    );
-    const [lightCodeTheme, setLightCodeTheme] = useLocalStorage(
-        SplitviewEditorWebviewLocalStorageKeys.CodeThemeLight,
-        undefined,
-        {
-            deserializer(value) {
-                return value;
-            },
-            serializer(value) {
-                return value;
-            },
-            initializeWithValue: false,
-        },
-    );
+    const lightCodeTheme = useSelector((state: GlobalWebviewStateNullable) => state.editor.theme_light)
+    const darkCodeTheme = useSelector((state: GlobalWebviewStateNullable) => state.editor.theme_dark)
 
-    useEventListener(SplitviewEditorWebviewEvents.SetCodeThemeDark, (e) => { setDarkCodeTheme(e.detail); });
-    useEventListener(SplitviewEditorWebviewEvents.SetCodeThemeLight, (e) => { setLightCodeTheme(e.detail); });
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
     const handleParse = async (
         _value: string,
-        darkCodeTheme: string,
-        lightCodeTheme: string,
+        darkCodeTheme: CodeEditorTheme,
+        lightCodeTheme: CodeEditorTheme,
     ) => {
         try {
             const compiled = await parseMdxString({
@@ -95,8 +69,8 @@ export const useDebounceMdxParse = (
 
     const parse = async (
         _value: string,
-        darkCodeTheme: string,
-        lightCodeTheme: string,
+        darkCodeTheme: CodeEditorTheme,
+        lightCodeTheme: CodeEditorTheme,
     ): Promise<void> => {
         try {
             await handleParse(_value, darkCodeTheme, lightCodeTheme);

@@ -7,6 +7,7 @@
 
 import FlusterData
 import FlusterSwift
+import FlusterWebviewClients
 import SwiftData
 import SwiftUI
 import WebKit
@@ -17,6 +18,8 @@ struct NoteDetailWebview: View {
     frame: .infinite, configuration: getWebViewConfig()
   )
   @Query var notes: [NoteModel]
+  @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
+    .apa
   @Environment(\.modelContext) private var modelContext: ModelContext
   var editingNote: NoteModel? {
     notes.isEmpty ? nil : notes.first
@@ -149,17 +152,34 @@ struct NoteDetailWebview: View {
   }
 
   func onLoad() async {
+    let dateFormatter = RelativeDateTimeFormatter()
+    dateFormatter.unitsStyle = .full
+    dateFormatter.dateTimeStyle = .named
+
     if let en = editingNote {
-      let bytes = en.toNoteDetailsByteArray()
+      let lastModified = dateFormatter.localizedString(
+        for: en.utime,
+        relativeTo: .now
+      )
+      let lastRead = dateFormatter.localizedString(
+        for: en.lastRead,
+        relativeTo: .now
+      )
+      let citations = en.citations.compactMap { cit in
+        return cit.toEditorCitation(activeCslFile: cslFile)
+      }
+      let tags = en.tags.map { t in
+        return EditorTag(body: t.value)
+      }
+        
       do {
-        try await webView.evaluateJavaScript(
-          """
-            window.dispatchEvent(
-                new CustomEvent("\(NoteDetailWebviewEvents.setNoteDetails.rawValue)", {
-                    detail: \(bytes),
-                }),
-            );
-          """)
+        try await EditorState.setNoteDetails(
+          payload: NoteDetailState(
+            note_id: en.id, title: en.getPreferedTitle(), summary: en.frontMatter.summary?.body,
+            topic: en.topic?.value, subject: en.subject?.value, tags: tags, citations: citations,
+            last_modified_string: lastModified, last_read_string: lastRead),
+          eval: self.webView.evaluateJavaScript
+        )
       } catch {
         print("Error: \(error.localizedDescription)")
       }

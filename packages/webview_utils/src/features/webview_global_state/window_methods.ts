@@ -1,8 +1,8 @@
 import { ByteBuffer } from "flatbuffers";
 import { handleSwiftAction, handleSwiftBufferAction } from "./container/webview_container_global_state/webview_container_slice";
 import { type Store } from "@reduxjs/toolkit";
-import { type MdxEditorAppState } from "./store";
-import {type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageEditorAction} from "./cross_language_state_types"
+import { type GlobalAppState } from "./store";
+import { type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageEditorAction } from "./cross_language_state_types"
 
 
 declare global {
@@ -13,7 +13,7 @@ declare global {
     }
 }
 
-export const handleSwiftBufferActionWrapper = (store: Store<MdxEditorAppState>) => (
+export const handleSwiftBufferActionWrapper = (store: Store<GlobalAppState>) => (
     actionKey: AnyCrossLanguageBufferEditorAction["type"],
     payloadBuffer: number[],
 ): void => {
@@ -29,6 +29,6 @@ export const handleSwiftBufferActionWrapper = (store: Store<MdxEditorAppState>) 
 }
 
 
-export const handleSwiftActionWrapper = (store: Store<MdxEditorAppState>) => (action: AnyCrossLanguageEditorAction): void => {
+export const handleSwiftActionWrapper = (store: Store<GlobalAppState>) => (action: AnyCrossLanguageEditorAction): void => {
     store.dispatch(handleSwiftAction(action))
 }

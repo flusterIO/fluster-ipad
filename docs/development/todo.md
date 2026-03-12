@@ -108,17 +108,6 @@
 
 # Today
 
-- [ ] Add this in tomorrow now that web assembly is setup! Create a special code block that can handle latex and output svg's!
-  - [Docs](https://docs.rs/rust_tikz/0.1.0/rust_tikz/)
-  - [ ] Add an optional `transparent` flag that will use Rust to make the background of the generated svg transparent.
-- [ ] Take care of condition integration with tokio while there's still not much to do.
-- [ ] Move each editor to a unique instance of a persistent global redux provider.
-- [ ] Handle editor `ParsingEvent` enum and make sure that that can be set by the user. Don't even make auto-render the default on mac...
-- Go back to `MdxEditorWebview` task that handles pre parsing and implement proper buffer.
-- [ ] While moving all editor state to Rust for complete cross-language serialization, get rid of the `setParsedEditorContent` function first. This should all be handled by the state manager now.
-
-- [ ] Handle AI parser
-  - [ ] Handle serialization of new structs.
-  - [ ] Implement parser in rust.
-  - [ ] Test parser against multiple depths and input keys.
-  - [ ] Generate enum from user input & indicate choice to user before sending action back to Swift.
+- [ ] Move rest of webviews over to using redux (note-details, dictionary).
+- [ ] Move iPad over to using schema, shared webview storage and redux state.
+- [ ] Move on to Founation Models and AI-Parser.

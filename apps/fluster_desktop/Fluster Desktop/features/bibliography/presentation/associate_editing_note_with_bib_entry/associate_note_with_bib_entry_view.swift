@@ -11,10 +11,6 @@ import SwiftUI
 
 struct AssociateNoteWithBibEntryView: View {
   let editingNoteId: String?
-  @Query private var notes: [NoteModel]
-  var editingNote: NoteModel? {
-    notes.isEmpty ? nil : notes.first!
-  }
   @State private var searchQuery: String = ""
   @Query private var bibEntries: [BibEntryModel]
   var filteredEntries: [BibEntryModel] {
@@ -35,28 +31,13 @@ struct AssociateNoteWithBibEntryView: View {
 
   init(editingNoteId: String?) {
     self.editingNoteId = editingNoteId
-    if let eid = editingNoteId {
-      var descriptor = FetchDescriptor(
-        predicate: #Predicate<NoteModel> { note in
-          note.id == eid
-        }
-      )
-      descriptor.fetchLimit = 1
-      self._notes = Query(descriptor)
-    } else {
-      self._notes = Query(
-        filter: #Predicate<NoteModel> { _ in
-          false
-        }
-      )
-    }
   }
 
   var body: some View {
     Group {
-      if let en = editingNote {
+      if var en = editingNoteId {
         List(filteredEntries, id: \.id) { item in
-          AssociateNoteWithBibEntryItemView(item: item, editingNote: en)
+          AssociateNoteWithBibEntryItemView(item: item, editingNoteId: en)
             .listStyle(.plain)
             .listRowSeparator(.hidden)
         }
