@@ -6,7 +6,12 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     parse::{
-        by_regex::{parse_mdx_by_regex::ParseMdxOptions, regex_parsers::mdx_parser::MdxParser},
+        by_regex::{
+            parse_mdx_by_regex::ParseMdxOptions,
+            regex_parsers::{
+                mdx_parser::MdxParser, utility_parsers::code_block_parser::CodeBlockParser,
+            },
+        },
         utils::format_javascript_string::format_javascript_string,
     },
     parsing_result::mdx_parsing_result::MdxParsingResult,
@@ -42,24 +47,23 @@ impl MdxParser for DictionaryEntryRegexParser {
             .unwrap_or_else(|| "{undefined}".to_string());
         let mut results: Vec<DictionaryEntryResult> = Vec::new();
         let mut new_content = String::from(&result.content);
-        for capture_result in r.captures_iter(&result.content) {
-            let complete_match = capture_result.get(0);
-            let body_match = capture_result.get(2);
-            let title_match = capture_result.get(1);
-            if let (Some(body), Some(title)) = (body_match, title_match) {
+        let matches = CodeBlockParser::parse_async(&new_content, "dictionary").await;
+        for result_item in matches.iter() {
+            if let Some(title_match) = result_item.meta_data_rust() {
+                let body = result_item.get_block_content_rust();
                 results.push(DictionaryEntryResult {
-                    label: title.as_str().to_string(),
-                    body: body.as_str().to_string(),
+                    label: title_match.clone(),
+                    body: body.clone(),
                 });
                 new_content = new_content.replace(
-                    complete_match.unwrap().as_str(),
+                    &result_item.get_full_match_rust(),
                     &format!(
                         r#"<DictionaryEntry label="{}" noteId={} >
 {}
 </DictionaryEntry>"#,
-                        format_javascript_string(title_match.unwrap().as_str()),
+                        format_javascript_string(&title_match),
                         note_id,
-                        body_match.unwrap().as_str()
+                        body
                     ),
                 );
             }

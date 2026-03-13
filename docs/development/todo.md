@@ -110,4 +110,5 @@
 
 - [ ] Move rest of webviews over to using redux (note-details, dictionary).
 - [ ] Move iPad over to using schema, shared webview storage and redux state.
+  - [ ] Reimplement all iPad webviews from scratch, **again** to reflect the way a single container is used in the MacOS application. Now that state is shared globally that's the best way to reliably handle state without repeating the same shit over and over.
 - [ ] Move on to Founation Models and AI-Parser.

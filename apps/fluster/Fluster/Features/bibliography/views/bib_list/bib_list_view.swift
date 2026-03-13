@@ -69,7 +69,9 @@ struct BibListView: View {
     editorContainer: BibtexEditorWebviewContainer(
       bounce: true,
       scrollEnabled: true,
-      onLoad: nil
+      onLoad: nil,
+      editingNote: .constant(nil),
+      implementation: WebviewImplementation.bibEditor
     )
   )
 }

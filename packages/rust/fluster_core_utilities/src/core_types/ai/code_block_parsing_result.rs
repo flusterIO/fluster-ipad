@@ -10,16 +10,23 @@ pub struct CodeBlockParsingResult {
     pub(crate) full_match: String,
     pub(crate) language_tag: String,
     pub(crate) block_content: String,
+    pub(crate) meta_data: Option<String>,
 }
 
 #[wasm_bindgen]
 impl CodeBlockParsingResult {
     #[wasm_bindgen(constructor)]
-    pub fn new(full_match: String, language_tag: String, block_content: String) -> Self {
+    pub fn new(
+        full_match: String,
+        language_tag: String,
+        block_content: String,
+        meta_data: Option<String>,
+    ) -> Self {
         CodeBlockParsingResult {
             full_match,
             language_tag,
             block_content,
+            meta_data,
         }
     }
     pub fn get_block_content_rust(&self) -> String {
@@ -57,5 +64,9 @@ impl CodeBlockParsingResult {
     #[wasm_bindgen(setter)]
     pub fn set_block_content(&mut self, block_content: String) {
         self.block_content = block_content;
+    }
+    #[wasm_bindgen(getter)]
+    pub fn meta_data_rust(&self) -> Option<String> {
+        self.meta_data.clone()
     }
 }

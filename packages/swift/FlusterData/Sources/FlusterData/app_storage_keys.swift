@@ -20,5 +20,16 @@ public enum AppStorageKeys: String {
     embeddedCslFile,
     editorSaveMethod,
     // Snippets
-    includeEmojiSnippets
+    includeEmojiSnippets,
+    defaultNoteView,
+    navigationColVisibility,
+    /// The notesDirectory is a string that is initially empty. This value must always be checked for it's empty status instead of a null value.
+    notesDirectory,
+    /// Defaults to true.
+    respectGitIgnore,
+    // -- UI State --
+    noteSidebarSectionOpen,
+    flusterSidebarSectionOpen,
+    desktopWebviewTheme
+
 }

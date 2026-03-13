@@ -3,10 +3,10 @@ import { initialWebviewContainerState } from "./container/webview_container_glob
 import { initialEditorState } from "./mdx_editor/initial_editor_state";
 import { initialMediaState } from "./media_state/initial_media_state";
 import { initialNotificationState } from "./notification_state/initial_notification_state";
-import { type GlobalWebviewStateNullable } from "./cross_language_state_types";
+import { type GlobalWebviewStateDeepNullable, type GlobalWebviewStateNullable } from "./cross_language_state_types";
 import { initialDictionaryState } from "./dictionary_state/initial_dictionary_state";
 
-export const initialGlobalAppState: GlobalWebviewStateNullable = {
+export const initialGlobalAppState: GlobalWebviewStateDeepNullable = {
     ai: initialAiState,
     container: initialWebviewContainerState,
     editor: initialEditorState,

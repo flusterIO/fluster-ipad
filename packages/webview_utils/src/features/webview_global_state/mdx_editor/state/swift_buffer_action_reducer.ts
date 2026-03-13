@@ -3,8 +3,9 @@ import { OnParsedContentChangeEventBuffer } from "@/code_gen/flat_buffer/mdx-ser
 import { type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type PayloadAction } from "@reduxjs/toolkit";
 import consola from "consola";
+import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
 
-export const swiftEditorBufferActionReducer = (state: EditorState, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): EditorState => {
+export const swiftEditorBufferActionReducer = (state: WithNullableOptionals<EditorState>, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): WithNullableOptionals<EditorState> => {
     consola.info("Action: ", action)
     const x = OnParsedContentChangeEventBuffer.getRootAsOnParsedContentChangeEventBuffer(action.payload.payload)
     const parsedContent = x.parsedContent() ?? ""

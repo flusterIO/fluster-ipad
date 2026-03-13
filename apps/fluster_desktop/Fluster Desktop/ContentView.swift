@@ -10,7 +10,7 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
-  @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
+  @AppStorage(AppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
   @ObservedObject private var appState: AppState = AppState.shared
   @State private var columnVisibility: NavigationSplitViewVisibility = NavigationSplitViewVisibility

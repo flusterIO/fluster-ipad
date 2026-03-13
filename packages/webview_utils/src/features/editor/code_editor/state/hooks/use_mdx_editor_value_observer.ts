@@ -4,12 +4,13 @@ import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { type AnyWebviewAction } from "@/utils/types/any_window_event";
 import { useState, useEffectEvent, useEffect, type ReactNode } from "react";
 import { connect } from 'react-redux';
+import { type WithNullableOptionals } from "../../../../../core/utils/types/utility_types";
 
 const connector = connect((state: GlobalAppState) => ({
     noteId: state.editor.note_id,
 }))
 
-export const useMdxEditorValueObserver = connector(({ noteId, requestNewDataAction }: { noteId: EditorState["note_id"], requestNewDataAction?: AnyWebviewAction }): ReactNode => {
+export const useMdxEditorValueObserver = connector(({ noteId, requestNewDataAction }: { noteId: WithNullableOptionals<EditorState>["note_id"], requestNewDataAction?: AnyWebviewAction }): ReactNode => {
     const [initialRender, setInitialRender] = useState(true)
 
     const handleInitialRender = useEffectEvent(() => { setInitialRender(false); })

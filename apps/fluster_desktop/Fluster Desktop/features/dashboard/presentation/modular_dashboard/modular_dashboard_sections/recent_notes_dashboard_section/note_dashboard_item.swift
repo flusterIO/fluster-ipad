@@ -14,7 +14,7 @@ struct NoteDashboardItem: View {
   @Binding var searchByTopic: TopicModel?
   @Binding var searchBySubject: SubjectModel?
   @EnvironmentObject private var appState: AppState
-  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+  @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
     DefaultNoteView = .markdown
   var body: some View {
     HStack(alignment: .center) {

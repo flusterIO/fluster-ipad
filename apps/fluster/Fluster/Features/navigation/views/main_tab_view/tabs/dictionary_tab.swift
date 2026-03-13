@@ -5,16 +5,24 @@
 //  Created by Andrew on 12/25/25.
 //
 
-import SwiftUI
+import FlusterData
 import FlusterSwift
+import SwiftUI
 
 struct DictionaryTab: View {
-    let container: DictionaryWebviewContainer = DictionaryWebviewContainer(bounce: false, scrollEnabled: false, onLoad: nil)
-    var body: some View {
-        DictionaryWebview(container: container)
-    }
+  @Binding public var editingNote: NoteModel?
+  let container: DictionaryWebviewContainer
+  init(editingNote: Binding<NoteModel?>) {
+    self._editingNote = editingNote
+    self.container = DictionaryWebviewContainer(
+      bounce: false, scrollEnabled: false, onLoad: nil, editingNote: editingNote,
+      implementation: WebviewImplementation.dictionary)
+  }
+  var body: some View {
+    DictionaryWebview(container: container)
+  }
 }
 
 #Preview {
-    DictionaryTab()
+  DictionaryTab(editingNote: .constant(nil))
 }

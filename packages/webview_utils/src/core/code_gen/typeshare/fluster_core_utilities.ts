@@ -48,12 +48,13 @@ export interface CodeBlockParsingResult {
 	full_match: string;
 	language_tag: string;
 	block_content: string;
+	meta_data?: string;
 }
 
 export interface WebviewDictionaryEntry {
 	label: string;
 	body: string;
-	origin_note_id: string;
+	origin_note_id?: string;
 }
 
 export interface DictionaryState {
@@ -80,6 +81,7 @@ export enum WebviewEnvironment {
 	MacOS = "fluster-mac",
 	IPad = "fluster-ipad",
 	MultiPlatformDesktop = "fluster-multi-platform-desktop",
+	AwaitingData = "awating-data",
 }
 
 export enum WebviewImplementation {
@@ -251,6 +253,14 @@ export enum SizableOption {
 	Full = "full",
 }
 
+export enum WebviewFontSize {
+	Small = "small",
+	Base = "base",
+	Large = "large",
+	Xl = "xl",
+	Xxl = "xxl",
+}
+
 export interface WebviewContainerState {
 	environment?: WebviewEnvironment;
 	size: SizableOption;
@@ -258,6 +268,7 @@ export interface WebviewContainerState {
 	dark_mode: boolean;
 	implementation: WebviewImplementation;
 	fluster_theme: FlusterTheme;
+	font_size: WebviewFontSize;
 }
 
 export interface NotificationState {
@@ -351,6 +362,7 @@ export enum WebviewContainerActions {
 	SetFlusterTheme = "set-fluster-theme",
 	SetDarkMode = "set-dark-mode",
 	HandleNoteDeleted = "handle-note-deleted",
+	SetWebviewFontSize = "set-webview-fontsize",
 }
 
 export interface SetDarkModePayload {
@@ -498,6 +510,19 @@ export interface SetSnippetPropsPayload {
 export interface SetSnippetPropsAction {
 	type: EditorStateActions;
 	payload: SetSnippetPropsPayload;
+}
+
+export interface SetWebviewFontSizePayload {
+	/**
+	 * The id of the note the was deleted to be used for resetting state on the Typescript
+	 * side if the note id matches the current state.
+	 */
+	font_size: WebviewFontSize;
+}
+
+export interface SetWebviewFontSizeAction {
+	type: WebviewContainerActions;
+	payload: SetWebviewFontSizePayload;
 }
 
 export enum AiNoteInteractionType {

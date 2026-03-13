@@ -3,7 +3,7 @@ import { Subtitle } from './subtitle'
 import { Button } from '@/shared_components/shad/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { sendToSwift } from '@/utils/bridge/send_to_swift'
-import { type NoteDetailState, NoteDetailWebviewActions } from '@/code_gen/typeshare/fluster_core_utilities'
+import { MdxPreviewWebviewActions, type NoteDetailState } from '@/code_gen/typeshare/fluster_core_utilities'
 import { connect } from "react-redux";
 import { type GlobalAppState } from '#/webview_global_state/store'
 import { BibliographyEntryComponent } from '#/bibliography/presentation/bibliography_entry'
@@ -23,16 +23,14 @@ export const NoteDetailsBibliography = connector(({ citations = [] }: { citation
             <Subtitle>{`Citations (${citations.length})`}</Subtitle>
             {citations.length ? (
                 <div className="w-full flex flex-col justify-start items-center gap-4 py-4">
-                    {citations.slice(citationsPage * PER_PAGE, PER_PAGE).map((c) => {
+                    {citations.slice(citationsPage * PER_PAGE, (citationsPage + 1) * PER_PAGE).map((c) => {
                         return (
                             <BibliographyEntryComponent
                                 key={c.citation_key}
                                 entry={c}
-                                className='w-full px-3 py-2 rounded-lg bg-fd-card text-fd-card-foreground text-sm border cursor-pointer'
-                                onClickIfNoUrl={() => {
-                                    // c.id is either the citationKey of the unique database uuid. The citationKey is used if one exists (it always should), and then 
-                                    // the database uuid is used as a fallback.
-                                    sendToSwift(NoteDetailWebviewActions.OnCitationClick, c.citation_key)
+                                /* className='' */
+                                onClick={() => {
+                                    sendToSwift(MdxPreviewWebviewActions.OnCitationClick, c.citation_key)
                                 }}
                             /* idx={{ */
                             /*     index: i, */

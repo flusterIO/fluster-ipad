@@ -8,6 +8,7 @@ import { sendToSwift } from '@/utils/bridge/send_to_swift'
 import { type ReduxStateLoadedEvent, WebviewContainerEvents } from '@/code_gen/typeshare/fluster_core_utilities'
 import { GlobalStateListeners } from './container/use_global_state_resize_listener'
 import { SplitviewEditorNotificationBanner } from '#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner'
+import { copyStringToClipboard } from '@/utils/string_utils'
 
 
 interface MdxEditorGlobalProviderProps {
@@ -15,8 +16,8 @@ interface MdxEditorGlobalProviderProps {
     store: GlobalStateStore
     persistor: GlobalStatePersistor
 }
-declare global {
 
+declare global {
     interface WindowEventMap {
         "redux-state-loaded": CustomEvent<undefined>;
     }
@@ -29,10 +30,16 @@ export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEdito
         const state = store.getState()
         WebviewClient.applyGlobalState(state)
         const data: ReduxStateLoadedEvent = {
-            note_id: state.editor.note_id
+            note_id: state.editor.note_id ?? undefined
         }
         sendToSwift(WebviewContainerEvents.ReduxStateLoaded, JSON.stringify(data))
         window.dispatchEvent(new CustomEvent("redux-state-loaded", {}))
+    }
+
+    if (import.meta.env.DEV) {
+        window.copyState = async () => {
+            await copyStringToClipboard(JSON.stringify(store.getState()))
+        }
     }
     return (
         <Provider

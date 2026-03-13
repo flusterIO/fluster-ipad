@@ -16,7 +16,7 @@ struct NoteSearchResultItemView: View {
   let dismissOnNavigate: Bool
   @EnvironmentObject private var appState: AppState
   @Environment(\.dismiss) private var dismiss
-  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+  @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
     DefaultNoteView = .markdown
   var body: some View {
     VStack(alignment: .leading) {

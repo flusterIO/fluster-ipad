@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import FlusterData
 
 struct UISettingSection: View {
-  @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
+  @AppStorage(AppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
 
   var body: some View {

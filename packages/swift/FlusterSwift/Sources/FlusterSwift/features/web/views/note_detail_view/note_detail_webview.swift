@@ -222,12 +222,7 @@ import WebKit
     @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
       var webviewFontSize: WebviewFontSize = .base
     @State private var show: Bool = false
-    @State var container: NoteDetailWebviewContainer =
-      NoteDetailWebviewContainer(
-        bounce: true,
-        scrollEnabled: true,
-        onLoad: nil
-      )
+    @State var container: NoteDetailWebviewContainer
 
     @Binding var fullScreenCover: MainFullScreenCover?
     @Binding var note: NoteModel
@@ -238,6 +233,13 @@ import WebKit
     ) {
       self._fullScreenCover = fullScreenCover
       self._note = note
+        self.container = NoteDetailWebviewContainer(
+          bounce: true,
+          scrollEnabled: true,
+          onLoad: nil,
+          editingNote: Binding<NoteModel>.toOptional(note),
+          implementation: WebviewImplementation.noteDetails
+        )
     }
     public var body: some View {
       ZStack {

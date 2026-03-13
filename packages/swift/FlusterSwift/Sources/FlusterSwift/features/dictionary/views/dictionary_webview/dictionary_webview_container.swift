@@ -12,15 +12,6 @@ import FlusterData
 
 #if os(iOS)
 public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebviewEvents> {
-  public func emitEditorThemeEvent(theme: CodeEditorTheme) {
-    self.runJavascript(
-      """
-      window.localStorage.setItem("\(SplitviewEditorWebviewLocalStorageKeys.codeTheme.rawValue)", "\(theme.rawValue)")
-      window.setCodeSyntaxTheme("\(theme.rawValue)")
-      """
-    )
-  }
-
   public func setDictionaryContent(entries: [DictionaryEntryModel]) {
     var builder = FlatBufferBuilder()
     let entries_offset: [Offset] = entries.map({ dict in
@@ -44,18 +35,6 @@ public final class DictionaryWebviewContainer: WebviewContainer<DictionaryWebvie
       }))
       """
     )
-  }
-  public func setInitialProperties(
-    entries: [DictionaryEntryModel],
-    codeEditorTheme: CodeEditorTheme,
-    theme: FlusterTheme,
-    fontSize: WebviewFontSize,
-    darkMode: Bool
-  ) {
-    self.applyWebViewColorScheme(darkMode: darkMode)
-    self.setWebviewTheme(theme: theme)
-    self.setWebviewFontSize(fontSize: fontSize)
-    self.setDictionaryContent(entries: entries)
   }
 }
 #endif

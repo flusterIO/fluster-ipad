@@ -5,6 +5,7 @@
 //  Created by Andrew on 11/5/25.
 //
 
+import FlusterData
 import FlusterSwift
 import SwiftUI
 
@@ -41,6 +42,8 @@ struct EmptyBibSearchResultsView: View {
 
 #Preview {
   EmptyBibSearchResultsView(
-    bibtexEditorContainer: BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true, onLoad: nil)
+    bibtexEditorContainer: BibtexEditorWebviewContainer(
+      bounce: true, scrollEnabled: true, onLoad: nil, editingNote: .constant(nil),
+      implementation: WebviewImplementation.bibEditor)
   )
 }

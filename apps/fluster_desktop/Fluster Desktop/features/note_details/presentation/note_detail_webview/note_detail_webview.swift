@@ -58,7 +58,7 @@ struct NoteDetailWebview: View {
           NoteDetailWebviewActions.onTagClick.rawValue,
           NoteDetailWebviewActions.onTopicClick.rawValue,
           NoteDetailWebviewActions.onSubjectClick.rawValue,
-          NoteDetailWebviewActions.onCitationClick.rawValue
+          MdxPreviewWebviewActions.onCitationClick.rawValue
         ],
         messageHandler: messageHandler,
         onLoad: onLoad
@@ -116,10 +116,11 @@ struct NoteDetailWebview: View {
     }
   }
 
-  func handleCitationClick(citationId: String) {
+  func handleCitationClick(citationKey: String) {
+      print("Citation Id: \(citationKey)")
     var descriptor = FetchDescriptor<BibEntryModel>(
       predicate: #Predicate<BibEntryModel> { entry in
-        entry.id == citationId
+        entry.citationKey == citationKey
       }
     )
     descriptor.fetchLimit = 1
@@ -144,19 +145,19 @@ struct NoteDetailWebview: View {
         self.handleTopicClick(topicValue: msgBody as! String)
       case NoteDetailWebviewActions.onSubjectClick.rawValue:
         self.handleSubjectClick(subjectValue: msgBody as! String)
-      case NoteDetailWebviewActions.onCitationClick.rawValue:
-        self.handleCitationClick(citationId: msgBody as! String)
+    case MdxPreviewWebviewActions.onCitationClick.rawValue:
+        self.handleCitationClick(citationKey: msgBody as! String)
       default:
         return
     }
   }
 
   func onLoad() async {
-    let dateFormatter = RelativeDateTimeFormatter()
-    dateFormatter.unitsStyle = .full
-    dateFormatter.dateTimeStyle = .named
-
+    print("Setting note details")
     if let en = editingNote {
+      let dateFormatter = RelativeDateTimeFormatter()
+      dateFormatter.unitsStyle = .full
+      dateFormatter.dateTimeStyle = .named
       let lastModified = dateFormatter.localizedString(
         for: en.utime,
         relativeTo: .now
@@ -171,7 +172,7 @@ struct NoteDetailWebview: View {
       let tags = en.tags.map { t in
         return EditorTag(body: t.value)
       }
-        
+
       do {
         try await EditorState.setNoteDetails(
           payload: NoteDetailState(

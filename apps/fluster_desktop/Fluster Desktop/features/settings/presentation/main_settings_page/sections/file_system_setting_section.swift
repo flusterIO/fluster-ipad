@@ -7,12 +7,13 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import FlusterData
 
 struct NotesDirSettingSection: View {
-  @AppStorage(DesktopAppStorageKeys.notesDirectory.rawValue) private var notesDirectory: String = ""
-  @AppStorage(DesktopAppStorageKeys.respectGitIgnore.rawValue) private var respectGitIgnore: Bool =
+  @AppStorage(AppStorageKeys.notesDirectory.rawValue) private var notesDirectory: String = ""
+  @AppStorage(AppStorageKeys.respectGitIgnore.rawValue) private var respectGitIgnore: Bool =
     true
-  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+  @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
     DefaultNoteView = .markdown
   @State private var showNotesDirPicker: Bool = false
 

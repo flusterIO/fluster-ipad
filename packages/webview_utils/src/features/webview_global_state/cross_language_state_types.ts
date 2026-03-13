@@ -1,8 +1,18 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions, type SetWebviewFontSizeAction } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type WithNullableOptionals } from "@/utils/types/utility_types";
+import { type Reducer } from "@reduxjs/toolkit";
 import { type ByteBuffer } from "flatbuffers";
 
 export type GlobalWebviewStateNullable = WithNullableOptionals<GlobalWebviewState>
+
+
+export type GlobalWebviewStateDeepNullable = {
+    [K in keyof GlobalWebviewStateNullable]: WithNullableOptionals<GlobalWebviewStateNullable[K]>
+}
+
+export type GlobalWebviewStateDeepNullableReducer = {
+    [K in keyof GlobalWebviewStateNullable]: Reducer<WithNullableOptionals<GlobalWebviewStateNullable[K]>>
+}
 
 
 // -- Editor --
@@ -91,6 +101,10 @@ interface SetNoteDeletedActionRefined extends SetNoteDeletedAction {
     type: WebviewContainerActions.HandleNoteDeleted
 }
 
+interface SetWebviewFontSizeActionRefined extends SetWebviewFontSizeAction {
+    type: WebviewContainerActions.SetWebviewFontSize
+}
+
 
 
 export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetEditorThemeDarkActionRefined | SetEditorThemeLightActionRefined | SetEditorContentActionRefined | SetParsedValueActionRefined | SetEditingBibEntryActionRefined;
@@ -104,12 +118,12 @@ export interface AnyCrossLanguageNoteDetailsBufferAction {
     payload: ByteBuffer
 }
 
-export type AnyCrossLanguageWebviewContainerAction = SetNoteDeletedActionRefined | SetDarkModeActionRefined | SetFlusterThemeActionRefined | AnyCrossLanguageDictionaryAction
+export type AnyCrossLanguageWebviewContainerAction = SetNoteDeletedActionRefined | SetDarkModeActionRefined | SetFlusterThemeActionRefined | SetWebviewFontSizeActionRefined
 
 /**
  * Any cross-language action that does not have a buffer attached.
  */
-export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction | AnyCrossLanguageWebviewContainerAction | AnyCrossLanguageNoteDetailsAction
+export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction | AnyCrossLanguageWebviewContainerAction | AnyCrossLanguageNoteDetailsAction | AnyCrossLanguageDictionaryAction
 
 export interface AnyCrossLanguageBufferEditorAction {
     type: EditorStateActions.SetParsedEditorContent,

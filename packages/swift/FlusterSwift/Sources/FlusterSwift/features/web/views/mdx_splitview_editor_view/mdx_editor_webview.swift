@@ -103,15 +103,9 @@ import WebKit
       }
 
       // Loading the page only once
-      webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+      let request = URLRequest(url: url)
+      webView.load(request)
 
-      if colorScheme == .dark {
-        webView.evaluateJavaScript(
-          """
-          document.body.classList.add("dark"); null;
-          """
-        )
-      }
       return webView
     }
 

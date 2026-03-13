@@ -120,13 +120,22 @@ struct BibliographyPageView: View {
     var editorThemeDark: CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
     var editorThemeLight: CodeEditorTheme = .githubLight
-  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap = .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
+    .base
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
     .fluster
   @Environment(\.colorScheme) var colorScheme
-  @StateObject private var bibtexEditorContainer =
-    BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true, onLoad: nil)
+  @StateObject private var bibtexEditorContainer: BibtexEditorWebviewContainer
   @Binding var editingNote: NoteModel?
+
+  init(editingNote: Binding<NoteModel?>) {
+    self._editingNote = editingNote
+    self._bibtexEditorContainer = StateObject(
+      wrappedValue: BibtexEditorWebviewContainer(
+        bounce: true, scrollEnabled: true, onLoad: nil, editingNote: editingNote,
+        implementation: WebviewImplementation.bibEditor))
+  }
+
   var body: some View {
     BibliographyPageInternalView(
       editingBibEntry: $editingBibEntry,

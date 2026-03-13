@@ -16,11 +16,12 @@ declare global {
 
 import { connect } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
+import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types';
 const connector = connect((state: GlobalAppState) => ({
     data: state.note_details
 }))
 
-export const NoteDetailSheet = connector(({ data }: { data: NoteDetailState | null }): ReactNode => {
+export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptionals<NoteDetailState> | null }): ReactNode => {
     useEffect(() => {
         if (!data) {
             sendToSwift(NoteDetailWebviewActions.RequestNoteDetailData)
@@ -66,6 +67,7 @@ export const NoteDetailSheet = connector(({ data }: { data: NoteDetailState | nu
                             <Subtitle className="w-fit">Topic</Subtitle>
                             <TaggableBadge
                                 taggableValue={data.topic}
+                                className="cursor-pointer"
                                 clickAction={NoteDetailWebviewActions.OnTopicClick}
                             />
                         </div>
@@ -75,6 +77,7 @@ export const NoteDetailSheet = connector(({ data }: { data: NoteDetailState | nu
                             <Subtitle className="w-fit">Subject</Subtitle>
                             <TaggableBadge
                                 taggableValue={data.subject}
+                                className="cursor-pointer"
                                 clickAction={NoteDetailWebviewActions.OnSubjectClick}
                             />
                         </div>

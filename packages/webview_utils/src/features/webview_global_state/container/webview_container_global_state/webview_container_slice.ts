@@ -4,6 +4,7 @@ import { type SizableOption, type WebviewContainerState } from '@/code_gen/types
 import { swiftContainerActionReducer } from './swift_action_reducer'
 import { swiftContainerBufferActionReducer } from './swift_buffer_action_reducer'
 import { type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageWebviewAction } from '#/webview_global_state/cross_language_state_types'
+import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types'
 
 export interface CounterState {
     value: number
@@ -11,16 +12,16 @@ export interface CounterState {
 
 export const webviewContainerSlice = createSlice({
     name: 'editor',
-    initialState: initialWebviewContainerState as WebviewContainerState,
+    initialState: initialWebviewContainerState as WithNullableOptionals<WebviewContainerState>,
     reducers: {
 
         /**
          * This function is attached to the window and called directly to handle all editor state interactions from Swift.
          */
-        handleSwiftAction: (state, action: PayloadAction<AnyCrossLanguageWebviewAction>): WebviewContainerState => {
+        handleSwiftAction: (state, action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<WebviewContainerState> => {
             return swiftContainerActionReducer(state, action)
         },
-        handleSwiftBufferAction: (state, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): WebviewContainerState => {
+        handleSwiftBufferAction: (state, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): WithNullableOptionals<WebviewContainerState> => {
             return swiftContainerBufferActionReducer(state, action)
         },
         setWasmLoaded(state) {

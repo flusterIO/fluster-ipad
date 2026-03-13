@@ -15,7 +15,10 @@ import { emptyParsedValueListenerMiddleware } from "./mdx_editor/side_effects/em
 import { editorValueChangeListenerMiddleware } from './mdx_editor/side_effects/editor_value_update_side_effect';
 import storage from 'redux-persist-indexeddb-storage';
 import { editorBibValueChangeListenerMiddleware } from './mdx_editor/side_effects/editor_bib_value_side_effect';
-import { type GlobalWebviewStateNullable } from './cross_language_state_types';
+import { type GlobalWebviewStateDeepNullable, type GlobalWebviewStateDeepNullableReducer, type GlobalWebviewStateNullable } from './cross_language_state_types';
+import { copyStringToClipboard } from '@/utils/string_utils';
+
+
 
 const rootReducer = combineReducers({
     editor: editorReducer,
@@ -25,12 +28,10 @@ const rootReducer = combineReducers({
     notifications: notificationReducer,
     note_details: noteDetailsReducer,
     dictionary: dictionaryReducer
-} satisfies {
-    [K in keyof GlobalWebviewStateNullable]: Reducer<GlobalWebviewStateNullable[K]>
-});
+} satisfies GlobalWebviewStateDeepNullableReducer);
 
 
-const persistConfig: PersistConfig<GlobalWebviewStateNullable> = {
+const persistConfig: PersistConfig<GlobalWebviewStateDeepNullable> = {
     key: "fluster_mdx_editor",
     /* eslint-disable-next-line  -- I've been doing this 10 years and I don't know how to declare this module properly. */
     storage: storage("fluster"),
@@ -41,7 +42,7 @@ const persistConfig: PersistConfig<GlobalWebviewStateNullable> = {
 
 
 
-const persistedReducer = persistReducer<GlobalWebviewStateNullable>(persistConfig, rootReducer);
+const persistedReducer = persistReducer<GlobalWebviewStateDeepNullable>(persistConfig, rootReducer);
 // Add custom middleware here if needed
 // Export a factory instead of a singleton
 export const createFlusterStore = () => {
@@ -82,5 +83,9 @@ declare global {
 
     interface Window {
         "store": GlobalStateStore | undefined
+        "copyState"?: () => Promise<void>
     }
 }
+
+
+

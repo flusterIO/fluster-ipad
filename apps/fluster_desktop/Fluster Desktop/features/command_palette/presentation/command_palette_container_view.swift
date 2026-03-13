@@ -9,14 +9,15 @@ import AppKit
 import Combine
 import SwiftData
 import SwiftUI
+import FlusterData
 
 struct CommandPaletteContainerView: View {
   public var close: () -> Void
   @Environment(\.modelContext) private var modelContext: ModelContext
-  @AppStorage(DesktopAppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+  @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
     DefaultNoteView = .editor
   @State private var searchText: String = ""
-  @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
+  @AppStorage(AppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
   @EnvironmentObject private var appState: AppState
 
@@ -117,7 +118,7 @@ private struct CommandPaletteView: View {
   let onCommandSelected: (CommandPaletteItem) -> Void
   @FocusState private var searchFieldFocused: Bool
   @State private var focusedIndex: Int = 0
-  @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
+  @AppStorage(AppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
   @Environment(\.dismiss) private var dismiss
 

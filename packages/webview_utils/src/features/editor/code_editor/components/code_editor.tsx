@@ -30,6 +30,7 @@ import { useDispatch } from 'react-redux';
 import { connect } from "react-redux"
 import { setBibtexEditorValue, setEditorValue } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
 import { type GlobalAppState } from "#/webview_global_state/store";
+import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
 
 const connector = connect((state: GlobalAppState) => ({
     baseKeymap: state.editor.baseKeymap,
@@ -48,7 +49,7 @@ const connector = connect((state: GlobalAppState) => ({
 }))
 
 
-interface CodeEditorProps extends Pick<EditorState, "baseKeymap" | "allCitationIds" | "theme_light" | "theme_dark" | "keymap" | "value" | "lockEditorScrollToPreview" | "snippetProps" | "note_id" | "haveSetInitialValue" | "autoSaveTimeout">, Pick<WebviewContainerState, "dark_mode"> {
+interface CodeEditorProps extends Pick<WithNullableOptionals<EditorState>, "baseKeymap" | "allCitationIds" | "theme_light" | "theme_dark" | "keymap" | "value" | "lockEditorScrollToPreview" | "snippetProps" | "note_id" | "haveSetInitialValue" | "autoSaveTimeout">, Pick<WithNullableOptionals<WebviewContainerState>, "dark_mode"> {
     language?: CodeEditorLanguage;
     requestNewDataAction?: AnyWebviewAction
     updateHandler?: AnyWebviewAction
@@ -260,7 +261,7 @@ const connectorOuter = connect((state: GlobalAppState) => ({
 
 
 export const CodeEditor = connectorOuter((
-    props: ComponentProps<typeof CodeEditorInner> & Pick<EditorState, "value" | "note_id">,
+    props: ComponentProps<typeof CodeEditorInner> & Pick<WithNullableOptionals<EditorState>, "value" | "note_id">,
 ): ReactNode => {
 
     return typeof props.value === "string" ? (

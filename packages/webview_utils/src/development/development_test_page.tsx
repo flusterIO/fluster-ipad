@@ -1,6 +1,8 @@
 import React, { type ReactNode } from 'react'
-import { FlusterAiParsePendingContainer } from '../features/ai/presentation/ai_parse_pending_container'
-import { CodeBlockParsingResult } from '@/code_gen/typeshare/fluster_core_utilities'
+import { createFlusterStore } from '#/webview_global_state/store';
+import { handleSwiftActionWrapper, handleSwiftBufferActionWrapper } from '#/webview_global_state/window_methods';
+import { MdxEditorGlobalProvider } from '#/webview_global_state/provider';
+import { NoteDetailsDevelopmentWrapper } from './development_wrapped_components/note_details_development_wrapper';
 
 
 const testContent = `
@@ -11,40 +13,23 @@ Summarize this note please.
 </FlusterAIParsePending>
 `
 
+const storeData = createFlusterStore();
 
+window.handleSwiftAction = handleSwiftActionWrapper(storeData.store);
 
-/**
- * Pass as a child to the ResponsiveSplitViewEditor to fake state accordigly.
- */
-/* const FakeEditorStateHandler = (): ReactNode => { */
-/*     const dispatch = useCodeEditorDispatch() */
-/*     useEffect(() => { */
-/*         const loadTestContent = async (): Promise<void> => { */
-/*             const testContent = await getFakeNoteContent() */
-/*             dispatch({ */
-/*                 type: "setParsedEditorContentString", */
-/*                 payload: testContent */
-/*             }) */
-/*             window.localStorage.setItem("dark-mode", "true") */
-/*             window.localStorage.setItem(SplitviewEditorWebviewLocalStorageKeys.InitialValue, testContent) */
-/*         } */
-/*         loadTestContent() */
-/*     }, [dispatch]) */
-/*     return null */
-/* } */
+window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
+    storeData.store,
+);
 
 
 
 export const DevelopmentTestPage = (): ReactNode => {
     return (
-        <div className="w-full h-full flex flex-col min-h-screen justify-center items-center">
-            <FlusterAiParsePendingContainer stringifiedResult={JSON.stringify({
-                block_content: "# Physics & Math \nCan you help me study?",
-                full_match: "```fluster-ai\n# Physics & Math \nCan you help me study?",
-                language_tag: "fluster-ai"
-            } satisfies CodeBlockParsingResult)}>
-            </FlusterAiParsePendingContainer>
-        </div>
+        <MdxEditorGlobalProvider
+            {...storeData}
+        >
+            <NoteDetailsDevelopmentWrapper />
+        </MdxEditorGlobalProvider>
     )
 }
 

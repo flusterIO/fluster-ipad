@@ -7,9 +7,10 @@
 
 import AppKit
 import SwiftUI
+import FlusterData
 
 struct CommandPaletteInputViewMac: NSViewRepresentable {
-  @AppStorage(DesktopAppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme = .dark
+  @AppStorage(AppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme = .dark
 
   @Binding var text: String
   var onBackspace: () -> Void

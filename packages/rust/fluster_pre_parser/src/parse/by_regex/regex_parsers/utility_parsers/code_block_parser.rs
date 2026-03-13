@@ -7,7 +7,7 @@ impl CodeBlockParser {
     /// match the varable depth of the input codeblock.
     /// For performance reasons, prefer other parsers where possible.
     fn get_regex() -> Regex {
-        Regex::new(r"(?:^|\n)(`{3,})(.*?)\n([\s\S]*?)\n\1").unwrap()
+        Regex::new(r"(?:^|\n)(`{3,})([^\-\n]*)(?:--\s*(.*?))?\n([\s\S]*?)\n\1").unwrap()
     }
 
     pub async fn parse_and_replace(
@@ -27,13 +27,15 @@ impl CodeBlockParser {
         let mut results: Vec<CodeBlockParsingResult> = Vec::new();
         for captures in re.captures_iter(content).flatten() {
             let full_match = captures.get(0).map_or("", |m| m.as_str());
-            let language = captures.get(2).map_or("", |m| m.as_str());
-            let code_content = captures.get(3).map_or("", |m| m.as_str());
+            let language = captures.get(2).map_or("", |m| m.as_str().trim());
+            let meta_data = captures.get(3).map(|x| x.as_str().to_string());
+            let code_content = captures.get(4).map_or("", |m| m.as_str());
             if language == language_key {
                 results.push(CodeBlockParsingResult::new(
                     full_match.to_string(),
                     language.to_string(),
                     code_content.to_string(),
+                    meta_data,
                 ));
             }
         }
@@ -48,6 +50,28 @@ mod tests {
     use insta::assert_snapshot;
 
     use super::*;
+
+    #[tokio::test]
+    async fn parses_codeblock_with_meta_data() {
+        let test_input_with_block = r#"
+````dictionary -- My dictionary tag
+# Help me
+
+Can you please generate a summary of this note.
+````
+"#;
+        let res = CodeBlockParser::parse_async(test_input_with_block, "dictionary").await;
+        assert!(res.len() == 1, "Finds one value when one value is present");
+        let item = res.index(0);
+        assert!(
+            item.language_tag() == "dictionary",
+            "Finds the proper language tag when meta data is present."
+        );
+        assert!(
+            item.meta_data_rust() == Some("My dictionary tag".to_string()),
+            "Finds the proper dictionary meta data"
+        );
+    }
 
     #[tokio::test]
     async fn code_block_parser() {

@@ -6,7 +6,7 @@ use typeshare::typeshare;
 pub struct WebviewDictionaryEntry {
     pub label: String,
     pub body: String,
-    pub origin_note_id: String,
+    pub origin_note_id: Option<String>,
 }
 
 #[typeshare]

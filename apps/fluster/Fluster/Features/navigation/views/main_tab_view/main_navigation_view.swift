@@ -62,19 +62,15 @@ struct MainView: View {
     var editorThemeDark: FlusterData.CodeEditorTheme = .dracula
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private
     var editorThemeLight: FlusterData.CodeEditorTheme = .githubLight
-    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: FlusterData.CodeEditorKeymap =
-    .base
+  @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap:
+    FlusterData.CodeEditorKeymap =
+      .base
   @AppStorage(AppStorageKeys.tabviewCustomization.rawValue) private
     var tabviewCustomization: TabViewCustomization
   /// editingNoteId is a EditingNoteId.value protocol string. Use that class to parse this result
   /// and retrieve results since this encodes both user defined ids and uuids.
   let defaultNoteId: String = "welcomeToFluster"
 
-  @StateObject private var editorContainer: MdxEditorWebviewContainer = MdxEditorWebviewContainer(
-    bounce: false,
-    scrollEnabled: true,
-    onLoad: nil
-  )
   @State private var themeManager: ThemeManager = ThemeManager(
     initialTheme: getTheme(themeName: getInitialTheme(), darkMode: true)
   )
@@ -84,6 +80,9 @@ struct MainView: View {
   @State private var editingNote: NoteModel?
   @State private var selectedTab: IpadMainViewTab = IpadMainViewTab.notes
   @State private var findInNotePresented: Bool = false
+
+  init() {
+  }
 
   var body: some View {
     let showFullScreenCover = Binding<Bool>(
@@ -117,13 +116,8 @@ struct MainView: View {
         systemImage: FlusterIcon.markdown.rawValue,
         value: IpadMainViewTab.markdown
       ) {
-        MarkdownTabView(
-          editingNote: $editingNote,
-          editorContainer: editorContainer,
-          onNavigateToNote: nil,
-          fullScreenCover: $fullScreenCover
-        )
-        .scrollDisabled(true)
+        StateWrappedIpadEditorView(editingNote: $editingNote, fullScreenCover: $fullScreenCover)
+          .scrollDisabled(true)
       }
       .customizationID(IpadMainViewTab.markdown.rawValue)
       .defaultVisibility(.visible, for: .tabBar)
@@ -306,96 +300,6 @@ struct MainView: View {
       )
     }
     .onChange(
-      of: editingNote,
-      {
-        editorContainer.resetScrollPosition(
-          containerId: "mdx-preview",
-          scrollStorageKeys: [
-            SplitviewEditorWebviewLocalStorageKeys.scrollPositionSplitview.rawValue,
-            SplitviewEditorWebviewLocalStorageKeys.scrollPositionPreviewOnly.rawValue
-          ])
-        if let note = editingNote {
-          editorContainer.setInitialContent(note: note)
-        }
-      }
-    )
-    //    .task(
-    //      id: editingNote?.markdown.body,
-    //      {
-    //        if let note = editingNote {
-    //          do {
-    //            try await note.preParse(modelContext: modelContext)
-    //            try await MdxEditorClient.setParsedEditorContentString(
-    //              note: note, evaluateJavaScript: editorContainer.webview.evaluateJavaScript)
-    //            try modelContext.save()
-    //          } catch {
-    //            print(
-    //              "Failed to save model context when navigating away from editor view."
-    //            )
-    //          }
-    //        }
-    //      }
-    //    )
-    .onChange(
-      of: editorThemeDark,
-      {
-        editorContainer.emitEditorThemeEvent(
-          theme: colorScheme == .dark
-            ? editorThemeDark : editorThemeLight
-        )
-        editorContainer.setEditorDarkTheme(
-          theme: editorThemeDark
-        )
-      }
-    )
-    .onChange(
-      of: editorThemeLight,
-      {
-        editorContainer.emitEditorThemeEvent(
-          theme: colorScheme == .dark
-            ? editorThemeDark : editorThemeLight
-        )
-        editorContainer.setEditorLightTheme(
-          theme: editorThemeLight
-        )
-      }
-    )
-    .onChange(
-      of: editorKeymap,
-      {
-        editorContainer.setEditorKeymap(
-          editorKeymap: editorKeymap
-        )
-      }
-    )
-    .onChange(
-      of: colorScheme,
-      {
-        handleColorSchemeChange(newScheme: colorScheme)
-      }
-    )
-    .onChange(
-      of: webviewFontSize,
-      {
-        editorContainer.setWebviewFontSize(fontSize: webviewFontSize)
-      }
-    )
-    .onChange(
-      of: theme,
-      {
-        handleThemeChange(newTheme: theme)
-      }
-    )
-    .onChange(
-      of: colorSchemeSelection,
-      {
-        handleColorSchemeSelectionChange()
-        editorContainer.applyWebViewColorScheme(
-          darkMode: colorSchemeSelection == .dark
-        )
-      }
-    )
-    .onChange(
       of: selectedTab,
       {
         if let editingNoteBinding = editingNote {
@@ -412,16 +316,15 @@ struct MainView: View {
       }
     )
     .onAppear {
-      handleColorSchemeChange(newScheme: colorScheme)
-      handleThemeChange(newTheme: theme)
-      handleColorSchemeSelectionChange()
       if !hasPreviouslyLaunched {
         Task {
           try? await self.setEditingNoteFromEditingNoteId()
         }
       }
       hasPreviouslyLaunched = true
-      print("View Database: ", modelContext.sqliteCommand)
+      #if DEBUG
+        print("View Database: ", modelContext.sqliteCommand)
+      #endif
     }
     .tabViewCustomization($tabviewCustomization)
     .tabViewStyle(.sidebarAdaptable)
@@ -513,7 +416,7 @@ struct MainView: View {
       self.editingNote = res.first
     }
   }
-    func handleThemeChange(newTheme: FlusterData.FlusterTheme) {
+  func handleThemeChange(newTheme: FlusterData.FlusterTheme) {
     self.editorContainer.setWebviewTheme(theme: newTheme)
     self.themeManager = ThemeManager(
       initialTheme: getTheme(

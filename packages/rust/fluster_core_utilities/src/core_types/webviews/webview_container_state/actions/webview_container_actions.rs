@@ -13,4 +13,7 @@ pub enum WebviewContainerActions {
     #[serde(rename = "handle-note-deleted")]
     #[strum(to_string = "handle-note-deleted")]
     HandleNoteDeleted,
+    #[serde(rename = "set-webview-fontsize")]
+    #[strum(to_string = "set-webview-fontsize")]
+    SetWebviewFontSize,
 }

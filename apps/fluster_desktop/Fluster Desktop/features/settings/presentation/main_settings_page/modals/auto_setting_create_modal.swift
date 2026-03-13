@@ -12,7 +12,7 @@ import SwiftUI
 struct AutoSettingCreateModal: View {
   @Binding var open: Bool
   @Binding var editingTag: AutoTaggable?
-  @AppStorage(DesktopAppStorageKeys.notesDirectory.rawValue) private var notesDirectory: String = ""
+  @AppStorage(AppStorageKeys.notesDirectory.rawValue) private var notesDirectory: String = ""
   @State private var valueText: String = ""
   @State private var globText: String = ""
   @State private var taggableType: AutoTaggableType = .tag

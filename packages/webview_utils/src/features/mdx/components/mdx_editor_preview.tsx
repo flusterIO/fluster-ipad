@@ -10,6 +10,7 @@ import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_
 import { type GlobalAppState } from "#/webview_global_state/store";
 import { connect } from "react-redux";
 import consola from "consola";
+import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -29,7 +30,7 @@ export const MdxEditorPreview = connector(({
     parsedValue,
     lockEditorScrollToPreview,
     ...props
-}: MdxEditorPreviewProps & Pick<EditorState, "lockEditorScrollToPreview" | "parsedValue">): ReactNode => {
+}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview" | "parsedValue">): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
     const id = useId()
 

@@ -66,6 +66,26 @@ pub enum WebviewImplementation {
 }
 
 #[typeshare]
+#[derive(Enum, Display, Serialize, Deserialize)]
+pub enum WebviewFontSize {
+    #[serde(rename = "small")]
+    #[strum(to_string = "small")]
+    Small,
+    #[serde(rename = "base")]
+    #[strum(to_string = "base")]
+    Base,
+    #[serde(rename = "large")]
+    #[strum(to_string = "large")]
+    Large,
+    #[serde(rename = "xl")]
+    #[strum(to_string = "xl")]
+    Xl,
+    #[serde(rename = "xxl")]
+    #[strum(to_string = "xxl")]
+    Xxl,
+}
+
+#[typeshare]
 #[derive(Record, Serialize, Deserialize)]
 pub struct WebviewContainerState {
     pub environment: Option<WebviewEnvironment>,
@@ -74,4 +94,5 @@ pub struct WebviewContainerState {
     pub dark_mode: bool,
     pub implementation: WebviewImplementation,
     pub fluster_theme: FlusterTheme,
+    pub font_size: WebviewFontSize,
 }

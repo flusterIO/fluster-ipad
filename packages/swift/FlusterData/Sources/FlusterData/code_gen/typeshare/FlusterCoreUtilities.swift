@@ -73,20 +73,22 @@ public struct CodeBlockParsingResult: Codable {
 	public let full_match: String
 	public let language_tag: String
 	public let block_content: String
+	public let meta_data: String?
 
-	public init(full_match: String, language_tag: String, block_content: String) {
+	public init(full_match: String, language_tag: String, block_content: String, meta_data: String?) {
 		self.full_match = full_match
 		self.language_tag = language_tag
 		self.block_content = block_content
+		self.meta_data = meta_data
 	}
 }
 
 public struct WebviewDictionaryEntry: Codable {
 	public let label: String
 	public let body: String
-	public let origin_note_id: String
+	public let origin_note_id: String?
 
-	public init(label: String, body: String, origin_note_id: String) {
+	public init(label: String, body: String, origin_note_id: String?) {
 		self.label = label
 		self.body = body
 		self.origin_note_id = origin_note_id
@@ -136,6 +138,7 @@ public enum WebviewEnvironment: String, Codable {
 	case macOS = "fluster-mac"
 	case iPad = "fluster-ipad"
 	case multiPlatformDesktop = "fluster-multi-platform-desktop"
+	case awaitingData = "awating-data"
 }
 
 public enum WebviewImplementation: String, Codable {
@@ -371,6 +374,14 @@ public enum SizableOption: String, Codable {
 	case full
 }
 
+public enum WebviewFontSize: String, Codable {
+	case small
+	case base
+	case large
+	case xl
+	case xxl
+}
+
 public struct WebviewContainerState: Codable {
 	public let environment: WebviewEnvironment?
 	public let size: SizableOption
@@ -378,14 +389,16 @@ public struct WebviewContainerState: Codable {
 	public let dark_mode: Bool
 	public let implementation: WebviewImplementation
 	public let fluster_theme: FlusterTheme
+	public let font_size: WebviewFontSize
 
-	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool, implementation: WebviewImplementation, fluster_theme: FlusterTheme) {
+	public init(environment: WebviewEnvironment?, size: SizableOption, wasm_loaded: Bool, dark_mode: Bool, implementation: WebviewImplementation, fluster_theme: FlusterTheme, font_size: WebviewFontSize) {
 		self.environment = environment
 		self.size = size
 		self.wasm_loaded = wasm_loaded
 		self.dark_mode = dark_mode
 		self.implementation = implementation
 		self.fluster_theme = fluster_theme
+		self.font_size = font_size
 	}
 }
 
@@ -559,6 +572,7 @@ public enum WebviewContainerActions: String, Codable {
 	case setFlusterTheme = "set-fluster-theme"
 	case setDarkMode = "set-dark-mode"
 	case handleNoteDeleted = "handle-note-deleted"
+	case setWebviewFontSize = "set-webview-fontsize"
 }
 
 public struct SetDarkModePayload: Codable {
@@ -834,6 +848,26 @@ public struct SetSnippetPropsAction: Codable {
 	public let payload: SetSnippetPropsPayload
 
 	public init(type: EditorStateActions, payload: SetSnippetPropsPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetWebviewFontSizePayload: Codable {
+	/// The id of the note the was deleted to be used for resetting state on the Typescript
+	/// side if the note id matches the current state.
+	public let font_size: WebviewFontSize
+
+	public init(font_size: WebviewFontSize) {
+		self.font_size = font_size
+	}
+}
+
+public struct SetWebviewFontSizeAction: Codable {
+	public let type: WebviewContainerActions
+	public let payload: SetWebviewFontSizePayload
+
+	public init(type: WebviewContainerActions, payload: SetWebviewFontSizePayload) {
 		self.type = type
 		self.payload = payload
 	}

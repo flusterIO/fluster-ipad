@@ -1,4 +1,5 @@
 import { type BibtexEditorState, CodeEditorBaseKeymap, CodeEditorKeymap, CodeEditorTheme, EditorSaveMethod, type EditorState, EditorView } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
 
 
 
@@ -6,7 +7,7 @@ const initialBibEditorState: BibtexEditorState = {
     value: "",
 }
 
-export const initialEditorState: EditorState = {
+export const initialEditorState: WithNullableOptionals<EditorState> = {
     value: "",
     snippetProps: {
         includeEmojiSnippets: true
@@ -23,7 +24,7 @@ export const initialEditorState: EditorState = {
     allCitationIds: [],
     baseKeymap: CodeEditorBaseKeymap.VsCode,
     citations: [],
-    parsedValue: undefined,
-    note_id: undefined,
+    parsedValue: null,
+    note_id: null,
     autoSaveTimeout: 500
 }

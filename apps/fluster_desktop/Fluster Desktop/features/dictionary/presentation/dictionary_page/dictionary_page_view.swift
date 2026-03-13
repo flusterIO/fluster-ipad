@@ -10,6 +10,7 @@ import FlusterData
 import SwiftData
 import SwiftUI
 import FlusterSwift
+import FlusterWebviewClients
 import WebKit
 
 struct DictionaryPageView: View {
@@ -18,6 +19,7 @@ struct DictionaryPageView: View {
   )
   @Query(sort: \DictionaryEntryModel.label, order: .forward) private var entries:
     [DictionaryEntryModel]
+    @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView: DefaultNoteView = .markdown
   @EnvironmentObject private var appState: AppState
   var body: some View {
     WebViewContainerView(
@@ -27,6 +29,7 @@ struct DictionaryPageView: View {
       url: URL.embeddedFlusterUrl(folder: "dictionary_webview_mac", fileName: "index_mac.html"),
       messageHandlerKeys: [
         MdxPreviewWebviewActions.onTagClick.rawValue,
+        MdxPreviewWebviewActions.viewNoteById.rawValue,
         SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
         SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
         DictionaryWebviewActions.requestDictionaryData.rawValue,
@@ -38,33 +41,9 @@ struct DictionaryPageView: View {
   }
 
   func setDictionaryContent(entries: [DictionaryEntryModel]) async throws {
-    var builder = FlatBufferBuilder()
-    let entries_offset: [Offset] = entries.map({ dict in
-      let idOffset = builder.create(string: dict.id)
-      let labelOffset = builder.create(string: dict.label)
-      let bodyOffset = builder.create(string: dict.body)
-      let entry_offset = Dictionary_DictionaryEntryResultBuffer.createDictionaryEntryResultBuffer(
-        &builder, labelOffset: labelOffset, bodyOffset: bodyOffset, noteIdOffset: idOffset)
-      return entry_offset
-    })
-    let vector_offset = builder.createVector(ofOffsets: entries_offset)
-    let data = Dictionary_DictionaryData.createDictionaryData(
-      &builder, entriesVectorOffset: vector_offset)
-    builder.finish(offset: data)
-    let bytes: [UInt8] = Array(builder.data)
-    Task {
-      do {
-        try await webview.evaluateJavaScript(
-          """
-          window.dispatchEvent(new CustomEvent("\(DictionaryWebviewEvents.setDictionaryData.rawValue)", {
-              detail: \(bytes)
-          }))
-          """
-        )
-      } catch {
-        print("Error: \(error.localizedDescription)")
-      }
-    }
+      try await DictionaryState.setDictionaryState(payload: DictionaryState(entries: entries.map{ entry in
+          entry.toWebviewDictionaryEntry()
+      }), eval: self.webview.evaluateJavaScript)
   }
 
   func onWebviewLoad() async {
@@ -88,6 +67,10 @@ struct DictionaryPageView: View {
         Task(priority: .high) {
           await self.onWebviewLoad()
         }
+    case MdxPreviewWebviewActions.viewNoteById.rawValue:
+        let noteId = messageBody as? String
+        AppState.shared.setEditingNoteId(editingNoteId: noteId)
+        AppState.shared.mainView = defaultNoteView.toMainKey()
       default:
         print("No action implemented for \(handlerKey)")
         return

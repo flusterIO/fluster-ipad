@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import FlusterData
 
 struct MainViewSidebar: View {
-  @AppStorage(DesktopAppStorageKeys.flusterSidebarSectionOpen.rawValue) private
+  @AppStorage(AppStorageKeys.flusterSidebarSectionOpen.rawValue) private
     var flusterSidebarSectionOpen = false
-  @AppStorage(DesktopAppStorageKeys.noteSidebarSectionOpen.rawValue) private
+  @AppStorage(AppStorageKeys.noteSidebarSectionOpen.rawValue) private
     var noteSidebarSectionOpen = false
   var body: some View {
     ScrollView {

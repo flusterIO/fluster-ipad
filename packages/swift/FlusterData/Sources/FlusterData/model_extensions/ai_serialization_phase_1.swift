@@ -42,15 +42,17 @@ extension FlusterSwiftMdxParser.CodeBlockParsingResult: @retroactive Codable {
   public enum CodingKeys: String, CodingKey {
     case fullMatch,
       languageTag,
-      blockContent
+      blockContent,
+      metaData
   }
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let fullMatch = try container.decode(String.self, forKey: .fullMatch)
     let langTag = try container.decode(String.self, forKey: .languageTag)
     let blockContent = try container.decode(String.self, forKey: .blockContent)
+    let metaData = try container.decode(String.self, forKey: .metaData)
     self.init(
-      fullMatch: fullMatch, languageTag: langTag, blockContent: blockContent
+      fullMatch: fullMatch, languageTag: langTag, blockContent: blockContent, metaData: metaData
     )
   }
 
@@ -59,6 +61,7 @@ extension FlusterSwiftMdxParser.CodeBlockParsingResult: @retroactive Codable {
     try container.encode(self.blockContent, forKey: .blockContent)
     try container.encode(self.fullMatch, forKey: .fullMatch)
     try container.encode(self.languageTag, forKey: .languageTag)
+    try container.encode(self.metaData, forKey: .metaData)
   }
 }
 

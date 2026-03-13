@@ -1,26 +1,49 @@
 import Combine
 import FlusterData
 import FlusterWebviewClients
+import SwiftData
 import SwiftUI
 import WebKit
 
 #if os(iOS)
   @MainActor func getConfig() -> WKWebViewConfiguration {
-    let config = WKWebViewConfiguration()
-    config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+    let config = WebContextManager.createSharedConfiguration()
+    config.setURLSchemeHandler(WasmSchemeHandler(), forURLScheme: "app")
     config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
+    config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
     //    config.preferences.setValue(true, forKey: "")
     return config
   }
 
   //typealias AnyWebviewAction = NoteDetailWebviewActions | SplitviewEditorWebviewActions
   @MainActor
-  public class WebviewContainer<WebviewEventsType: RawRepresentable>:
-    NSObject, ObservableObject, WKNavigationDelegate  // 1. Inherit NSObject & Delegate
-  where WebviewEventsType.RawValue == String {
+  public class WebviewContainer:
+    NSObject, ObservableObject, WKNavigationDelegate {
     public let scrollViewBounce: Bool = true
     public let scrollEnabled: Bool = false
     public var onLoad: (@Sendable (WKWebView) async -> Void)?
+    @Binding private var editingNote: NoteModel?
+    public var implementation: WebviewImplementation
+    @Environment(\.modelContext) private var modelContext: ModelContext
+    @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
+
+    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
+      .base
+    @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
+      CodeEditorTheme = .dracula
+    @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
+      CodeEditorTheme = .materialLight
+    @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private
+      var lockEditorScrollToPreview: Bool = false
+    @AppStorage(AppStorageKeys.editorSaveMethod.rawValue) private var editorSaveMethod:
+      EditorSaveMethod = .onChange
+    @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
+      .apa
+    @AppStorage(AppStorageKeys.theme.rawValue) private var flusterTheme: FlusterTheme = .fluster
+    @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets:
+      Bool =
+        true
     lazy var webView: WKWebView = {
       let config = getConfig()
       let view = WKWebView(frame: .zero, configuration: config)
@@ -50,9 +73,13 @@ import WebKit
     public init(
       bounce: Bool = false,
       scrollEnabled: Bool = false,
-      onLoad: (@Sendable (WKWebView) async -> Void)?
+      onLoad: (@Sendable (WKWebView) async -> Void)?,
+      editingNote: Binding<NoteModel?>,
+      implementation: WebviewImplementation
     ) {
       self.onLoad = onLoad
+      self._editingNote = editingNote
+      self.implementation = implementation
       super.init()
       self.webView.scrollView.bounces = bounce
       self.webView.scrollView.isScrollEnabled = scrollEnabled
@@ -63,7 +90,7 @@ import WebKit
         if let error = error {
           print("--- Error ---")
           print("Error executing JS: \(error.localizedDescription)")
-            print("Command: \(script.trunc(length: 200))")
+          print("Command: \(script.trunc(length: 200))")
           print("-------------")
         } else if let result = result {
           print("JS Result: \(result)")
@@ -71,15 +98,6 @@ import WebKit
       }
     }
 
-    public func sendEvent(_ event: WebviewEventsType, eventDetail: String = "") {
-      self.runJavascript(
-        """
-        window?.dispatchEvent(new CustomEvent("\(event.rawValue)", {
-                detail: \(eventDetail.toQuotedJavascriptString())
-            }))
-        """
-      )
-    }
     /// A utility function used to append some initial styles to the window before loading the webview. Not sure if this will even work...
     public func preShow(colorScheme: ColorScheme) {
       self.runJavascript(
@@ -88,12 +106,17 @@ import WebKit
         """
       )
     }
+
     public func setWebviewTheme(theme: FlusterTheme) {
-      self.runJavascript(
-        """
-        window.setWebviewTheme("\(theme.rawValue)"); null;
-        """
-      )
+      Task(priority: .high) {
+        do {
+          try await WebviewContainerState.setFlusterTheme(
+            payload: SetFlusterThemePayload(fluster_theme: theme),
+            eval: self.webView.evaluateJavaScript)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+      }
     }
     public func setWebviewFontSize(fontSize: WebviewFontSize) {
       self.runJavascript(
@@ -102,12 +125,48 @@ import WebKit
         """
       )
     }
-    public func applyWebViewColorScheme(darkMode: Bool) {
-      self.runJavascript(
-        """
-        window.setDarkMode(\(darkMode ? "true" : "false")); null;
-        """
-      )
+    public func applyWebViewColorScheme(colorScheme: ColorScheme) {
+      Task(priority: .high) {
+        do {
+          try await EditorState.setDarkMode(
+            colorScheme: colorScheme, eval: self.webView.evaluateJavaScript)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+      }
+    }
+    public func setEditorKeymap(keymap: CodeEditorKeymap) {
+      Task(priority: .high) {
+        do {
+          try await EditorState.setEditorKeymap(
+            keymap: keymap, eval: self.webView.evaluateJavaScript)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+      }
+    }
+
+    public func setEditorThemeDark(theme: CodeEditorTheme) {
+      Task(priority: .high) {
+        do {
+          try await EditorState.setEditorThemeDark(
+            payload: SetEditorThemeDarkPayload(theme_dark: theme),
+            eval: self.webView.evaluateJavaScript)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+      }
+    }
+    public func setEditorThemeLight(theme: CodeEditorTheme) {
+      Task(priority: .high) {
+        do {
+          try await EditorState.setEditorThemeLight(
+            payload: SetEditorThemeLightPayload(theme_light: theme),
+            eval: self.webView.evaluateJavaScript)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+      }
     }
     public func resetScrollPosition(
       containerId: String = "mdx-preview",
@@ -131,14 +190,14 @@ import WebKit
       )
     }
     public func addClassToWebviewContainer(className: String) {
-        Task(priority: .high) {
-          do {
-            try await WebviewContainerClient.setClassToWebviewContainer(
-              className: className, method: .append, evaluateJavaScript: webView.evaluateJavaScript)
-          } catch {
-            print("Error: \(error.localizedDescription)")
-          }
+      Task(priority: .high) {
+        do {
+          try await WebviewContainerClient.setClassToWebviewContainer(
+            className: className, method: .append, evaluateJavaScript: webView.evaluateJavaScript)
+        } catch {
+          print("Error: \(error.localizedDescription)")
         }
+      }
     }
     public func removeClassFromWebviewContainer(className: String) {
       Task(priority: .high) {
@@ -170,6 +229,36 @@ import WebKit
         )
       }
     }
+    // Redux State Management
+    public func setInitialState() async throws {
+      if let en = editingNote {
+        try await en.preParseIfEdited(modelContext: modelContext)
+        try await EditorState.setInitialEditorState(
+          editorPayload: EditorInitialStatePayload(
+            note_id: en.id,
+            keymap: editorKeymap,
+            theme_light: editorThemeLight,
+            theme_dark: editorThemeDark,
+            allCitationIds: bibEntries.compactMap(\.citationKey),
+            value: en.markdown.body,
+            parsedValue: en.markdown.preParsedBody ?? "",
+            haveSetInitialValue: true,
+            snippetProps: SnippetState(
+              includeEmojiSnippets: includeEmojiSnippets
+            ),
+            lockEditorScrollToPreview: lockEditorScrollToPreview,
+            saveMethod: editorSaveMethod
+          ),
+          containerPayload: WebviewContainerSharedInitialState(
+            environment: WebviewEnvironment.macOS,
+            dark_mode: colorScheme == .dark,
+            implementation: self.implementation,
+            fluster_theme: flusterTheme
+          ),
+          eval: self.webView.evaluateJavaScript
+        )
+      }
+    }
 
     // Delegate Methods
 
@@ -178,6 +267,11 @@ import WebKit
       setLoading(isLoading: false)
       if let ol = self.onLoad {
         Task(priority: .high) {
+          do {
+            try await self.setInitialState()
+          } catch {
+            print("Error: \(error.localizedDescription)")
+          }
           await ol(webView)
         }
       }

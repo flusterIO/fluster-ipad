@@ -589,6 +589,9 @@ extension AppSchemaV1 {
       self.ctime = ctime
       self.note = note
     }
+    public func toWebviewDictionaryEntry() -> WebviewDictionaryEntry {
+      WebviewDictionaryEntry(label: self.label, body: self.body, origin_note_id: self.note?.id)
+    }
   }
 
   public enum CitationUsage {

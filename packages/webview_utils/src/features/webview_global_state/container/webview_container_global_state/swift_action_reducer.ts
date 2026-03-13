@@ -2,8 +2,9 @@ import { EditorStateActions, WebviewContainerActions, type WebviewContainerState
 import { consola } from "consola"
 import { type PayloadAction } from "@reduxjs/toolkit";
 import { type AnyCrossLanguageWebviewAction, type AnyCrossLanguageEditorAction } from "#/webview_global_state/cross_language_state_types";
+import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
 
-export const swiftContainerActionReducer = (state: WebviewContainerState, action: PayloadAction<AnyCrossLanguageWebviewAction>): WebviewContainerState => {
+export const swiftContainerActionReducer = (state: WithNullableOptionals<WebviewContainerState>, action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<WebviewContainerState> => {
     consola.info("action: ", action)
     /* eslint-disable-next-line  -- This is intentionally not exhaustive, but it has a default return... */
     switch (action.payload.type) {
@@ -23,6 +24,17 @@ export const swiftContainerActionReducer = (state: WebviewContainerState, action
             return {
                 ...state,
                 fluster_theme: action.payload.payload.fluster_theme
+            }
+        }
+        case WebviewContainerActions.SetWebviewFontSize: {
+            return {
+                ...state,
+                font_size: action.payload.payload.font_size
+            }
+        }
+        case WebviewContainerActions.HandleNoteDeleted: {
+            return {
+                ...state,
             }
         }
         default:
