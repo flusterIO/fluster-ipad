@@ -167,7 +167,7 @@ import WebKit
                 saveMethod: editorSaveMethod
               ),
               containerPayload: WebviewContainerSharedInitialState(
-                environment: WebviewEnvironment.macOS,
+                environment: WebviewEnvironment.iPad,
                 dark_mode: colorScheme == .dark,
                 implementation: self.implementation,
                 fluster_theme: flusterTheme

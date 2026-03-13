@@ -22,6 +22,10 @@ root {
   --desktop-background-match: 213 39% 9%;
 }
 
+body.fluster-ipad {
+  background-color: black;
+}
+
 
 @theme inline {
   --radius: var(--radius);
