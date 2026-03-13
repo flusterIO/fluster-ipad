@@ -1,16 +1,8 @@
 import { defineConfig } from "vite";
-import {
-  WebviewViteConfig,
-  getWebviewViteConfig,
-} from "@fluster/shared_config/webviewVite";
+import { WasmViteConfig, getWasmViteConfig } from "@fluster/shared_config/wasm";
 
-const config: WebviewViteConfig = {
+const config: WasmViteConfig = {
   outputDir: "bibtex_editor_webview_ipad",
-  singleFile: false,
-  plugins: {
-    tailwind: false,
-  },
-  base: "./",
   build: {
     rollupOptions: {
       input: {
@@ -20,4 +12,4 @@ const config: WebviewViteConfig = {
   },
 };
 
-export default defineConfig(getWebviewViteConfig(config));
+export default defineConfig(getWasmViteConfig(config));

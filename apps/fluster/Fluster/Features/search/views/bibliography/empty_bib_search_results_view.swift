@@ -11,7 +11,6 @@ import SwiftUI
 
 struct EmptyBibSearchResultsView: View {
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
-  let bibtexEditorContainer: BibtexEditorWebviewContainer
 
   var body: some View {
     VStack(spacing: 16) {
@@ -27,9 +26,7 @@ struct EmptyBibSearchResultsView: View {
         .font(.title2)
       NavigationLink(
         destination: CreateBibEntrySheetView(
-          editingBibEntry: .constant(nil),
-          ignoreEditingNote: true,
-          container: bibtexEditorContainer
+          ignoreEditingNote: true, editingNote: .constant(nil), editingBibEntry: .constant(nil)
         ),
         label: {
           Label("Create", systemImage: "plus")
@@ -38,12 +35,4 @@ struct EmptyBibSearchResultsView: View {
       .buttonStyle(.borderedProminent)
     }
   }
-}
-
-#Preview {
-  EmptyBibSearchResultsView(
-    bibtexEditorContainer: BibtexEditorWebviewContainer(
-      bounce: true, scrollEnabled: true, onLoad: nil, editingNote: .constant(nil),
-      implementation: WebviewImplementation.bibEditor)
-  )
 }

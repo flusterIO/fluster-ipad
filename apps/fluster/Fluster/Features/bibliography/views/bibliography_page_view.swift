@@ -16,7 +16,6 @@ struct BibliographyPageInternalView: View {
   @Binding var editingBibEntry: BibEntryModel?
   @Binding var editingNote: NoteModel?
   @State private var searchQuery: String = ""
-  let bibtexEditorContainer: BibtexEditorWebviewContainer
   var filteredEntries: [BibEntryModel] {
     if searchQuery.isEmpty {
       return editingNote?.citations ?? []
@@ -40,7 +39,6 @@ struct BibliographyPageInternalView: View {
         if _editingNote.citations.isEmpty {
           EmptyBibListView(
             editingBibEntry: $editingBibEntry,
-            container: bibtexEditorContainer,
             ignoreBibEntryOnCreate: false,
             associateNoteModalPresented:
               $associateNoteModalPresented,
@@ -51,7 +49,6 @@ struct BibliographyPageInternalView: View {
             items: filteredEntries,
             editingBibEntry: $editingBibEntry,
             editingNote: $editingNote,
-            editorContainer: bibtexEditorContainer
           )
           .searchable(text: $searchQuery, placement: .automatic, prompt: "Search")
           .toolbar {
@@ -60,9 +57,9 @@ struct BibliographyPageInternalView: View {
                 NavigationLink(
                   destination: {
                     CreateBibEntrySheetView(
-                      editingBibEntry: .constant(nil),
                       ignoreEditingNote: false,
-                      container: bibtexEditorContainer
+                      editingNote: .constant(nil),
+                      editingBibEntry: $editingBibEntry
                     )
                   },
                   label: {
@@ -125,64 +122,16 @@ struct BibliographyPageView: View {
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme =
     .fluster
   @Environment(\.colorScheme) var colorScheme
-  @StateObject private var bibtexEditorContainer: BibtexEditorWebviewContainer
   @Binding var editingNote: NoteModel?
 
   init(editingNote: Binding<NoteModel?>) {
     self._editingNote = editingNote
-    self._bibtexEditorContainer = StateObject(
-      wrappedValue: BibtexEditorWebviewContainer(
-        bounce: true, scrollEnabled: true, onLoad: nil, editingNote: editingNote,
-        implementation: WebviewImplementation.bibEditor))
   }
 
   var body: some View {
     BibliographyPageInternalView(
       editingBibEntry: $editingBibEntry,
       editingNote: $editingNote,
-      bibtexEditorContainer: bibtexEditorContainer
-    )
-    .onChange(
-      of: editingBibEntry,
-      {
-        if editingBibEntry != nil {
-          bibtexEditorContainer.setInitialContent(
-            entryBody: editingBibEntry!.data
-          )
-        }
-      }
-    )
-    .onChange(
-      of: editorThemeDark,
-      {
-        bibtexEditorContainer.emitEditorThemeEvent(
-          theme: colorScheme == .dark
-            ? editorThemeDark : editorThemeLight
-        )
-      }
-    )
-    .onChange(
-      of: editorThemeLight,
-      {
-        bibtexEditorContainer.emitEditorThemeEvent(
-          theme: colorScheme == .dark
-            ? editorThemeDark : editorThemeLight
-        )
-      }
-    )
-    .onChange(
-      of: editorKeymap,
-      {
-        bibtexEditorContainer.setEditorKeymap(
-          editorKeymap: editorKeymap
-        )
-      }
-    )
-    .onChange(
-      of: theme,
-      {
-        bibtexEditorContainer.setWebviewTheme(theme: theme)
-      }
     )
   }
 }

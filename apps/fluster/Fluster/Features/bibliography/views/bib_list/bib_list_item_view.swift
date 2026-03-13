@@ -14,7 +14,6 @@ import FlusterData
 struct BibEntryListItemView: View {
   var item: BibEntryModel
   @Binding var editing: BibEntryModel?
-  let container: BibtexEditorWebviewContainer
   @State private var confirmationModalModel: Bool = false
   @Environment(\.modelContext) var modelContext
   @Environment(\.dismiss) var dismiss

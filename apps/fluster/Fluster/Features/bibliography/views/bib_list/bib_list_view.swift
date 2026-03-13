@@ -16,7 +16,6 @@ struct BibListView: View {
   var items: [BibEntryModel]
   @Binding var editingBibEntry: BibEntryModel?
   @Binding var editingNote: NoteModel?
-  let editorContainer: BibtexEditorWebviewContainer
 
   var body: some View {
     ZStack(alignment: .bottomTrailing) {
@@ -66,12 +65,5 @@ struct BibListView: View {
     items: [],
     editingBibEntry: .constant(nil),
     editingNote: .constant(nil),
-    editorContainer: BibtexEditorWebviewContainer(
-      bounce: true,
-      scrollEnabled: true,
-      onLoad: nil,
-      editingNote: .constant(nil),
-      implementation: WebviewImplementation.bibEditor
-    )
   )
 }

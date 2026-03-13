@@ -8,18 +8,34 @@
 import FlusterBibliography
 import FlusterData
 import FlusterSwift
+import FlusterWebviewClients
 import SwiftData
 import SwiftUI
+import WebKit
 
 struct CreateBibEntrySheetView: View {
   @State private var newEntryValue: String = ""
+
+  @State private var webView: WKWebView = WKWebView(
+    frame: .infinite, configuration: getConfig()
+  )
   @Environment(\.modelContext) var modelContext
   @Environment(\.dismiss) var dismiss
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
-  @Environment(NoteModel.self) private var editingNote: NoteModel?
+  @Binding private var editingNote: NoteModel?
   @Binding var editingBibEntry: BibEntryModel?
+
   let ignoreEditingNote: Bool
-  let container: BibtexEditorWebviewContainer
+
+  init(
+    ignoreEditingNote: Bool,
+    editingNote: Binding<NoteModel?>,
+    editingBibEntry: Binding<BibEntryModel?>,
+  ) {
+    self.ignoreEditingNote = ignoreEditingNote
+    self._editingNote = editingNote
+    self._editingBibEntry = editingBibEntry
+  }
 
   var body: some View {
     VStack {
@@ -28,19 +44,9 @@ struct CreateBibEntrySheetView: View {
         Text("Enter valid bibtex entry.")
           .font(.caption)
       }
-      if let editingEntryBinding = Binding($editingBibEntry),
-        !ignoreEditingNote
-      {
-        BibtexEditorWebview(
-          value: editingEntryBinding.data,
-          container: container
-        )
-      } else {
-        BibtexEditorWebview(
-          value: $newEntryValue,
-          container: container
-        )
-      }
+      BibtexEditorWebview(
+        editingItem: $editingBibEntry, editingNote: $editingNote,
+        associateWithEditingNote: !ignoreEditingNote, webView: $webView)
       Spacer(minLength: 8)
       HStack(alignment: .center) {
         Spacer()
@@ -72,12 +78,12 @@ struct CreateBibEntrySheetView: View {
               }
             }
             newEntryValue = ""
-            container.clearEditorData()
+            setEditorContent(content: "")
             dismiss()
           } else {
             // -- If the model needs to be updated. --
             editingBibEntry!.data = inputValue
-            container.clearEditorData()
+            setEditorContent(content: "")
             dismiss()
           }
         }
@@ -88,13 +94,14 @@ struct CreateBibEntrySheetView: View {
       Spacer(minLength: 8)
     }
   }
-}
-
-#Preview {
-  CreateBibEntrySheetView(
-    editingBibEntry: .constant(nil),
-    ignoreEditingNote: true,
-    container: BibtexEditorWebviewContainer(bounce: true, scrollEnabled: true, onLoad: nil, editingNote: .constant(nil), implementation: WebviewImplementation.bibEditor)
-  )
-  .environment(ThemeManager(initialTheme: FlusterDark()))
+  func setEditorContent(content: String) {
+    Task {
+      do {
+        try await EditorState.setEditorBibContent(
+          content: content, eval: webView.evaluateJavaScript)
+      } catch {
+        print("Error: \(error.localizedDescription)")
+      }
+    }
+  }
 }

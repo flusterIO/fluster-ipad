@@ -11,7 +11,6 @@ import SwiftData
 import SwiftUI
 
 struct BibliographySearchResultsViewQueryWrapped: View {
-  @StateObject private var bibtexEditorContainer: BibtexEditorWebviewContainer
   @Query() var bibEntries: [BibEntryModel]
   @Environment(\.modelContext) var modelContext
   @State private var confirmationModalOpen: Bool = false
@@ -22,10 +21,6 @@ struct BibliographySearchResultsViewQueryWrapped: View {
   init(searchQuery: Binding<String>, editingNote: Binding<NoteModel?>) {
     _searchQuery = searchQuery
     _editingNote = editingNote
-    self._bibtexEditorContainer = StateObject(
-      wrappedValue: BibtexEditorWebviewContainer(
-        bounce: true, scrollEnabled: true, onLoad: nil, editingNote: editingNote,
-        implementation: WebviewImplementation.bibEditor))
 
     if !searchQuery.wrappedValue.isEmpty {
       let query_cantUseGetterInPredicate = searchQuery.wrappedValue
@@ -54,7 +49,6 @@ struct BibliographySearchResultsViewQueryWrapped: View {
   var body: some View {
     if bibEntries.isEmpty {
       EmptyBibSearchResultsView(
-        bibtexEditorContainer: bibtexEditorContainer
       )
     } else {
       List {
@@ -118,13 +112,9 @@ struct BibliographySearchResultsViewQueryWrapped: View {
 
 struct BibliographySearchResultsView: View {
   @State private var searchQuery: String = ""
-  @StateObject var bibtexEditorContainer: BibtexEditorWebviewContainer
   @Binding var editingNote: NoteModel?
   init(editingNote: Binding<NoteModel?>) {
     self._editingNote = editingNote
-    self._bibtexEditorContainer = StateObject(
-      wrappedValue: BibtexEditorWebviewContainer(
-        onLoad: nil, editingNote: editingNote, implementation: WebviewImplementation.bibEditor))
   }
 
   var body: some View {
@@ -135,9 +125,7 @@ struct BibliographySearchResultsView: View {
     .toolbar(content: {
       NavigationLink(
         destination: CreateBibEntrySheetView(
-          editingBibEntry: .constant(nil),
-          ignoreEditingNote: true,
-          container: bibtexEditorContainer
+          ignoreEditingNote: true, editingNote: $editingNote, editingBibEntry: .constant(nil)
         ),
         label: {
           Label("Create", systemImage: "plus")

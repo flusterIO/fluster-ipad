@@ -17,15 +17,13 @@ struct MarkdownTabView: View {
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private
     var hasPreviouslyLaunched: Bool = false
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
-  var editorContainer: MdxEditorWebviewContainer
   init(
-    editingNote: Binding<NoteModel?>, editorContainer: MdxEditorWebviewContainer,
+    editingNote: Binding<NoteModel?>,
     onNavigateToNote: ((NoteModel) -> Void)?,
     fullScreenCover: Binding<MainFullScreenCover?>
   ) {
     self._editingNote = editingNote
     self._fullScreenCover = fullScreenCover
-    self.editorContainer = editorContainer
     if onNavigateToNote != nil {
       self.onNavigateToNote = onNavigateToNote!
     }
@@ -34,28 +32,15 @@ struct MarkdownTabView: View {
     if let editingNoteBinding = Binding($editingNote) {
       NavigationStack {
         MdxEditorWebview(
-          url: URL.embeddedFlusterUrl(
-            folder: "splitview_mdx_editor_ipad", fileName: "index_ipad.html"),
-          theme: $theme,
-          editorThemeDark: $editorThemeDark,
-          editorThemeLight: $editorThemeLight,
           editingNote: editingNoteBinding,
-          editorKeymap: $editorKeymap,
-          container: editorContainer,
-          onNavigateToNote: onNavigateToNote,
-          fullScreenCover: $fullScreenCover
+          fullScreenCover: $fullScreenCover,
+          onNavigateToNote: { _ in
+          }
         )
-//        .toolbarVisibility(.hidden, for: .navigationBar)
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        //        .toolbarVisibility(.hidden, for: .navigationBar)
+        //        .frame(maxWidth: .infinity, maxHeight: .infinity)
         // TODO: Remove this. This is just for easy development.
         .onAppear {
-          if let parsedMdx = editingNote?.markdown
-            .preParsedBody
-          {
-            editorContainer.setParsedEditorContentString(
-              content: parsedMdx
-            )
-          }
           UIScrollView.appearance().bounces = false
           UIScrollView.appearance().isScrollEnabled =
             false

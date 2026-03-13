@@ -17,6 +17,11 @@ const replacers: Record<string, Replacer[]> = {
                 replaceWith: "public struct EditorChangeEvent: Codable {",
             },
             {
+                query: "public enum WebviewFontSize: String, Codable {",
+                dontPanicIfExists: ["public enum WebviewFontSize: String, Codable, CaseIterable {"],
+                replaceWith: "public enum WebviewFontSize: String, Codable, CaseIterable {",
+            },
+            {
                 query: `public enum CodeEditorTheme: String, Codable {`,
                 replaceWith: `public enum CodeEditorTheme: String, Codable, CaseIterable {`,
             },

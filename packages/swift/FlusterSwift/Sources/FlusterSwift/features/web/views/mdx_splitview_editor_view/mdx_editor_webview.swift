@@ -15,328 +15,78 @@ import WebKit
   //     solarizedDark, xcodeDark, xcodeLight
   // }
 
-  @MainActor
-  public struct MdxEditorWebviewInternal: UIViewRepresentable {
-    @State private var webView: WKWebView = WKWebView(
-      frame: .infinite,
-      configuration: getConfig()
-    )
-    @State private var didSetInitialContent = false
-    @State var haveSetInitialContent: Bool = false
-    @Environment(\.openURL) var openURL
-    @Environment(\.modelContext) var modelContext
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.createDataHandler) var dataHandler
-    @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
-      var webviewFontSize: WebviewFontSize = .base
-    let url: URL
-    @Binding var show: Bool
-    @Binding var theme: FlusterTheme
-    @Binding var editorThemeDark: CodeEditorTheme
-    @Binding var editorThemeLight: CodeEditorTheme
-    @Binding var editingNote: NoteModel
-    @Binding var editorKeymap: CodeEditorKeymap
-    @Binding var fullScreenCover: MainFullScreenCover?
-    var onNavigateToNote: (NoteModel) -> Void
-
-    let container: MdxEditorWebviewContainer
-
-    public init(
-      url: URL,
-      theme: Binding<FlusterTheme>,
-      editorThemeDark: Binding<CodeEditorTheme>,
-      editorThemeLight: Binding<CodeEditorTheme>,
-      editingNote: Binding<NoteModel>,
-      editorKeymap: Binding<CodeEditorKeymap>,
-      container: MdxEditorWebviewContainer,
-      show: Binding<Bool>,
-      onNavigateToNote: @escaping (NoteModel) -> Void,
-      fullScreenCover: Binding<MainFullScreenCover?>
-    ) {
-      self.url = url
-      self._theme = theme
-      self._editorThemeDark = editorThemeDark
-      self._editorThemeLight = editorThemeLight
-      self._editingNote = editingNote
-      self._editorKeymap = editorKeymap
-      self._fullScreenCover = fullScreenCover
-      self.container = container
-      self._show = show
-      self.onNavigateToNote = onNavigateToNote
-    }
-
-    public func makeUIView(context: Context) -> WKWebView {
-      let webView = container.webView
-      webView.isHidden = true
-
-      webView.layer.needsDisplayOnBoundsChange = true
-      webView.underPageBackgroundColor = .clear
-
-      webView.scrollView.bounces = false
-      webView.scrollView.showsVerticalScrollIndicator = false
-      webView.scrollView.showsHorizontalScrollIndicator = false
-      webView.scrollView.zoomScale = 1
-
-      webView.navigationDelegate = context.coordinator
-      let editorContentControllers = [
-        SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
-        SplitviewEditorWebviewActions.onEditorChange.rawValue,
-        SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
-        SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue,
-        MdxPreviewWebviewActions.onTagClick.rawValue,
-        MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue,
-        MdxPreviewWebviewActions.requestNoteData.rawValue
-      ]
-      if colorScheme == .dark {
-        webView.evaluateJavaScript(
-          """
-          document.body.classList.add("dark"); null;
-          """
-        )
-      }
-      for controllerName in editorContentControllers {
-        addUserContentController(
-          controller: webView.configuration.userContentController,
-          coordinator: context.coordinator,
-          name: controllerName
-        )
-      }
-
-      // Loading the page only once
-      let request = URLRequest(url: url)
-      webView.load(request)
-
-      return webView
-    }
-
-    public func updateUIView(_ uiView: WKWebView, context: Context) {
-      uiView.isHidden = !show
-      //        uiView.scrollView.contentInset = .zero
-      //        uiView.scrollView.scrollIndicatorInsets = .zero
-    }
-    public func makeCoordinator() -> Coordinator {
-      Coordinator(self)
-    }
-    public func setInitialProperties() {
-      container.setInitialProperties(
-        editingNote: editingNote,
-        codeEditorTheme: colorScheme == .dark
-          ? editorThemeDark : editorThemeLight,
-        editorKeymap: editorKeymap,
-        theme: theme,
-        fontSize: webviewFontSize,
-        editorThemeDark: editorThemeDark,
-        editorThemeLight: editorThemeLight,
-        darkMode: colorScheme == .dark,
-        modelContext: modelContext
-      )
-    }
-    public func setInitialContent() {
-      let s = editingNote.markdown.body.toFlatBufferSerializedString()
-      container.runJavascript(
-        """
-        window.setEditorContent(\(s))
-        """
-      )
-    }
-    public func handleViewNoteByUserDefinedId(id: String) {
-      let fetchDescriptor = FetchDescriptor<NoteModel>(
-        predicate: #Predicate { note in
-          note.frontMatter.userDefinedId == id
-        })
-      if let notes = try? self.modelContext.fetch(fetchDescriptor) {
-        if !notes.isEmpty {
-          let note = notes.first
-          self.editingNote = note!
-          self.onNavigateToNote(note!)
-        }
-      }
-    }
-    public func handleTagClick(tagBody: String) {
-      let fetchDescriptor = FetchDescriptor<TagModel>(
-        predicate: #Predicate<TagModel> { t in
-          t.value == tagBody
-        })
-      if let tags = try? modelContext.fetch(fetchDescriptor) {
-        if !tags.isEmpty {
-          fullScreenCover = .tagSearch(tag: tags.first!)
-        }
-      }
-    }
-  }
-
-  @MainActor
-  extension MdxEditorWebviewInternal {
-    public final class Coordinator: NSObject, WKNavigationDelegate,
-      WKScriptMessageHandler
-    {
-      var parent: MdxEditorWebviewInternal
-
-      init(_ parent: MdxEditorWebviewInternal) {
-        self.parent = parent
-      }
-
-      public func webView(
-        _ webView: WKWebView,
-        didFinish navigation: WKNavigation!
-      ) {
-        // On Load
-        guard !parent.didSetInitialContent else { return }
-
-        parent.setInitialProperties()
-        parent.container.webView.isHidden = !self.parent.show
-        parent.didSetInitialContent = true
-      }
-
-      public func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationResponse: WKNavigationResponse
-      ) async -> WKNavigationResponsePolicy {
-        let isOriginalUrl =
-          navigationResponse.response.url == self.parent.url
-        if let _url = navigationResponse.response.url, !isOriginalUrl {
-          self.parent.openURL(_url)
-        }
-        return isOriginalUrl ? .allow : .cancel
-      }
-
-      func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-      ) {
-        if navigationAction.navigationType == .linkActivated,
-          let url = navigationAction.request.url
-        {
-          UIApplication.shared.open(url)
-          decisionHandler(.cancel)
-        } else {
-          decisionHandler(.allow)
-        }
-      }
-
-      public func webView(
-        _ webView: WKWebView,
-        didFail navigation: WKNavigation!,
-        withError error: Error
-      ) {
-        print(
-          "WebView navigation failed with error: \(error.localizedDescription)"
-        )
-      }
-      @MainActor
-      public func userContentController(
-        _ userContentController: WKUserContentController,
-        didReceive message: WKScriptMessage
-      ) {
-        switch message.name {
-          case SplitviewEditorWebviewActions.setWebviewLoaded.rawValue:
-            self.parent.webView.isHidden = false
-            self.parent.show = true
-          case MdxPreviewWebviewActions.onTagClick.rawValue:
-            parent.handleTagClick(tagBody: message.body as! String)
-          case SplitviewEditorWebviewActions.requestParsedMdxContent.rawValue:
-            do {
-              Task {
-                try await parent.editingNote.preParse(modelContext: parent.modelContext)
-                parent.container.setParsedEditorContentString(
-                  content: parent.editingNote.markdown.preParsedBody
-                    ?? parent.editingNote.markdown.body)
-              }
-            } catch {
-              print("Error: \(error.localizedDescription)")
-            }
-          case MdxPreviewWebviewActions.viewNoteByUserDefinedId.rawValue:
-            parent.handleViewNoteByUserDefinedId(id: message.body as! String)
-          case SharedWebviewActions.javascriptError.rawValue:
-            handleJavascriptError(base64String: message.body as! String)
-          case SplitviewEditorWebviewActions.onEditorChange.rawValue:
-            if let str = message.body as? String {
-              parent.editingNote.markdown.body = str
-              parent.editingNote.setLastRead(setModified: true)
-            }
-          case SplitviewEditorWebviewActions.requestSplitviewEditorData
-            .rawValue:
-            parent.setInitialProperties()
-            parent.setInitialContent()
-          case MdxPreviewWebviewActions.requestNoteData
-            .rawValue:  // Required when initially in portrait mode.
-            parent.setInitialProperties()
-            parent.setInitialContent()
-          default:
-            return
-        }
-      }
-    }
-  }
-
   public struct MdxEditorWebview: View {
     @State private var show: Bool = false
-    @State private var showEditNoteTaggables: Bool = false
-    @Environment(ThemeManager.self) private var themeManager: ThemeManager
     let url: URL
-    @Binding var theme: FlusterTheme
-    @Binding var editorThemeDark: CodeEditorTheme
-    @Binding var editorThemeLight: CodeEditorTheme
     @Binding var editingNote: NoteModel
-    @Binding var editorKeymap: CodeEditorKeymap
+    @Environment(\.modelContext) private var modelContext: ModelContext
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     @Binding var fullScreenCover: MainFullScreenCover?
+    @State private var showEditNoteTaggables: Bool = false
+    @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
+      .apa
+
+    @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
+    @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
+      .base
+    @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
+      CodeEditorTheme = .dracula
+    @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
+      CodeEditorTheme = .materialLight
+    @AppStorage(AppStorageKeys.lockEditorScrollToPreview.rawValue) private
+      var lockEditorScrollToPreview: Bool = false
+    @AppStorage(AppStorageKeys.editorSaveMethod.rawValue) private var editorSaveMethod:
+      EditorSaveMethod = .onChange
+    @AppStorage(AppStorageKeys.theme.rawValue) private var flusterTheme: FlusterTheme = .fluster
+    @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets:
+      Bool =
+        true
+
     var onNavigateToNote: (NoteModel) -> Void
-    let container: MdxEditorWebviewContainer
+    @State private var webView: WKWebView = WKWebView(
+      frame: CGRect(x: 0, y: 0, width: 1, height: 1), configuration: getConfig()
+    )
+
     public init(
-      url: URL,
-      theme: Binding<FlusterTheme>,
-      editorThemeDark: Binding<CodeEditorTheme>,
-      editorThemeLight: Binding<CodeEditorTheme>,
       editingNote: Binding<NoteModel>,
-      editorKeymap: Binding<CodeEditorKeymap>,
-      container: MdxEditorWebviewContainer,
+      fullScreenCover: Binding<MainFullScreenCover?>,
       onNavigateToNote: @escaping (NoteModel) -> Void,
-      fullScreenCover: Binding<MainFullScreenCover?>?
     ) {
-      self.url = url
-      self._theme = theme
-      self._editorThemeDark = editorThemeDark
-      self._editorThemeLight = editorThemeLight
+      self.url = URL.embeddedFlusterUrl(
+        folder: "splitview_mdx_editor_ipad", fileName: "index_ipad.html")
       self._editingNote = editingNote
-      self._editorKeymap = editorKeymap
-      self.container = container
-      self.onNavigateToNote = onNavigateToNote
-      if let fs = fullScreenCover {
-        self._fullScreenCover = fs
-      } else {
-        self._fullScreenCover = .constant(nil)
-      }
+      self._fullScreenCover = fullScreenCover
       self.onNavigateToNote = onNavigateToNote
     }
 
     public var body: some View {
       ZStack(alignment: show ? .bottomTrailing : .center) {
-        MdxEditorWebviewInternal(
+        IosWebviewContainer(
+          implementation: WebviewImplementation.mdxEditor,
+          editingNote: Binding<NoteModel>.toOptional($editingNote),
+          webView: $webView,
           url: url,
-          theme: $theme,
-          editorThemeDark: $editorThemeDark,
-          editorThemeLight: $editorThemeLight,
-          editingNote: $editingNote,
-          editorKeymap: $editorKeymap,
-          container: container,
-          show: $show,
-          onNavigateToNote: onNavigateToNote,
-          fullScreenCover: $fullScreenCover,
+          messageHandlerKeys: [
+            MdxPreviewWebviewActions.onTagClick.rawValue,
+            MdxPreviewWebviewActions.requestNoteData.rawValue,
+            SplitviewEditorWebviewActions.onEditorChange.rawValue,
+            SplitviewEditorWebviewActions.setWebviewLoaded.rawValue,
+            SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue,
+            SplitviewEditorWebviewActions.manualSaveRequest.rawValue
+          ],
+          messageHandler: self.messageHandler,
+          onLoad: {
+            show = true
+          }
         )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .disableAnimations()
-        .frame(
-          maxWidth: .infinity,
-          //          maxHeight: .infinity,
-          alignment: .bottom
-        )
         .ignoresSafeArea(edges: .bottom)
         .scrollDisabled(true)
         if !show {
           ProgressView()
             .progressViewStyle(.circular)
             .scaleEffect(1.5)
-            .tint(themeManager.theme.primary)
         } else {
           FloatingButtonView(
             buttons: [
@@ -361,6 +111,20 @@ import WebKit
           .padding()
         }
       }
+      .task(
+        id: editingNote.markdown._body, priority: .userInitiated,
+        {
+          // Parse editing note body every time body is changed.
+          // Doing things this way will make the task automatically cancellable
+          // when the next change event is fired.
+          do {
+            try await editingNote.preParse(modelContext: modelContext)
+          } catch {
+            print("Error: \(error.localizedDescription)")
+          }
+        }
+      )
+
       .fullScreenCover(
         isPresented: $showEditNoteTaggables,
         content: {
@@ -370,6 +134,98 @@ import WebKit
           )
         },
       )
+    }
+
+    func messageHandler(_ messageKey: String, _ messageBody: Any) {
+      print("Message up here: \(messageKey)")
+      switch messageKey {
+        case SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue:
+          Task(priority: .high) {
+            await self.handleInitialState()
+          }
+        case SplitviewEditorWebviewActions.onEditorChange.rawValue:
+          if let jsonData = (messageBody as! String).data(using: .utf8) {
+            do {
+              let decoder = JSONDecoder()
+              let event = try decoder.decode(EditorChangeEvent.self, from: jsonData)
+              handleEditorChange(event: event)
+            } catch {
+              print("Failed to decode editor update: \(error)")
+            }
+          }
+        case SplitviewEditorWebviewActions.manualSaveRequest.rawValue:
+          Task(priority: .userInitiated) {
+            await self.handleManualSaveRequest(messageBody: messageBody as! String)
+          }
+        default:
+          return
+      }
+    }
+
+    func handleManualSaveRequest(messageBody: String) async {
+      if let jsonData = messageBody.data(using: .utf8) {
+        do {
+          let decoder = JSONDecoder()
+          let event = try decoder.decode(ManualSaveRequestEvent.self, from: jsonData)
+          if event.note_id == editingNote.id {
+            editingNote.markdown.body = event.current_note_content
+            try await editingNote.preParse(modelContext: modelContext)
+            let citations = editingNote.citations.compactMap { cit in
+              cit.toEditorCitation(activeCslFile: cslFile)
+            }
+            try await EditorState.setParsedMdxContent(
+              parsedMdxContent: editingNote.markdown.preParsedBody ?? "", citations: citations,
+              eval: webView.evaluateJavaScript)
+          } else {
+            print("Broken state: Found mismatched note id's")
+          }
+        } catch {
+          print("Failed to decode editor update: \(error)")
+        }
+      }
+    }
+    public func handleInitialState() async {
+      Task {
+        do {
+          try await editingNote.preParse(modelContext: modelContext)
+          try await EditorState.setInitialEditorState(
+            editorPayload: EditorInitialStatePayload(
+              note_id: editingNote.id,
+              keymap: editorKeymap,
+              theme_light: editorThemeLight,
+              theme_dark: editorThemeDark,
+              allCitationIds: bibEntries.compactMap(\.citationKey),
+              value: editingNote.markdown.body,
+              parsedValue: editingNote.markdown.preParsedBody ?? "",
+              haveSetInitialValue: true,
+              snippetProps: SnippetState(
+                includeEmojiSnippets: includeEmojiSnippets
+              ),
+              lockEditorScrollToPreview: lockEditorScrollToPreview,
+              saveMethod: editorSaveMethod
+            ),
+            containerPayload: WebviewContainerSharedInitialState(
+              environment: WebviewEnvironment.iPad,
+              dark_mode: colorScheme == .dark,
+              implementation: WebviewImplementation.mdxEditor,
+              fluster_theme: flusterTheme
+            ),
+            eval: self.webView.evaluateJavaScript
+          )
+        } catch {
+          print("Error initializing Mdx Editor Webview: \(error.localizedDescription)")
+        }
+      }
+    }
+
+    public func handleEditorChange(event: EditorChangeEvent) {
+      // Don't worry about actually parsing the data. That's all
+      // being handled by async tasks managed by SwiftUI for better
+      // cancellation management, since it's running onChange.
+      if editingNote.id == event.note_id {
+        editingNote.markdown.body = event.content
+        editingNote.setLastRead(setModified: true)
+      }
     }
 
     func onLoad() async {

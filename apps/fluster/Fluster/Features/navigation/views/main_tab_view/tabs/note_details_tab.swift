@@ -1,6 +1,6 @@
+import FlusterData
 import FlusterSwift
 import SwiftUI
-import FlusterData
 
 struct NoteDetailsTabView: View {
   @AppStorage(AppStorageKeys.hasLaunchedPreviously.rawValue) private var hasPreviouslyLaunched:
@@ -18,8 +18,7 @@ struct NoteDetailsTabView: View {
     if let noteBinding = Binding($editingNote) {
       NavigationStack {
         NoteDetailWebview(
-          fullScreenCover: $fullScreenCover,
-          note: noteBinding,
+          fullScreenCover: $fullScreenCover, note: noteBinding
         )
         .onAppear {  // hack to avoid scroll bouncing with awkward colored background.
           UIScrollView.appearance().bounces = false

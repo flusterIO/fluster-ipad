@@ -51,7 +51,7 @@ struct MainView: View {
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterData.FlusterTheme =
     .fluster
   @AppStorage(AppStorageKeys.webviewFontSize.rawValue) private
-    var webviewFontSize: WebviewFontSize = .base
+    var webviewFontSize: FlusterData.WebviewFontSize = .base
   @AppStorage(AppStorageKeys.silenceParsingErrors.rawValue) private
     var silenceParsingErrors: Bool = false
   @Environment(\.colorScheme) var colorScheme: ColorScheme
@@ -116,8 +116,19 @@ struct MainView: View {
         systemImage: FlusterIcon.markdown.rawValue,
         value: IpadMainViewTab.markdown
       ) {
-        StateWrappedIpadEditorView(editingNote: $editingNote, fullScreenCover: $fullScreenCover)
-          .scrollDisabled(true)
+        Group {
+          if let en = Binding($editingNote) {
+            MdxEditorWebview(
+              editingNote: en,
+              fullScreenCover: $fullScreenCover,
+              onNavigateToNote: { _ in
+              }
+            )
+            .scrollDisabled(true)
+          } else {
+            SelectNoteToContinueView()
+          }
+        }
       }
       .customizationID(IpadMainViewTab.markdown.rawValue)
       .defaultVisibility(.visible, for: .tabBar)
@@ -282,7 +293,9 @@ struct MainView: View {
             systemImage: FlusterIcon.dictionary.rawValue,
             value: IpadMainViewTab.dictionary
           ) {
-            DictionaryTab()
+            DictionaryTab(
+                editingNote: $editingNote
+            )
           }
           .tabPlacement(.sidebarOnly)
           .customizationID(IpadMainViewTab.dictionary.rawValue)
@@ -417,7 +430,6 @@ struct MainView: View {
     }
   }
   func handleThemeChange(newTheme: FlusterData.FlusterTheme) {
-    self.editorContainer.setWebviewTheme(theme: newTheme)
     self.themeManager = ThemeManager(
       initialTheme: getTheme(
         themeName: newTheme,
@@ -426,9 +438,6 @@ struct MainView: View {
     )
   }
   func handleColorSchemeChange(newScheme: ColorScheme) {
-    editorContainer.emitEditorThemeEvent(
-      theme: colorScheme == .dark ? editorThemeDark : editorThemeLight
-    )
     self.themeManager = ThemeManager(
       initialTheme: getTheme(
         themeName: theme,

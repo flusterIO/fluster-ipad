@@ -9,6 +9,8 @@ import FlusterData
 import FlusterSwift
 import SwiftData
 import SwiftUI
+import UniformTypeIdentifiers
+import WebKit
 
 // typealias NoteModel = AppSchemaV1.NoteModel
 // typealias BibEntryModel = AppSchemaV1.BibEntryModel
@@ -24,6 +26,7 @@ struct FlusterApp: App {
     Bool = false
 
   init() {
+    SchemeRegistration.registerCustomScheme()
     AppDataContainer.setup(
       initialNotesUrl: Bundle.main.url(
         forResource: "initial_note_docs/initial_notes_parsed_data",
@@ -40,5 +43,22 @@ struct FlusterApp: App {
         .environment(\.createDataHandler, appData.dataHandlerCreator())
     }
     .modelContainer(appData.sharedModelContainer)
+  }
+}
+
+struct SchemeRegistration {
+  static func registerCustomScheme() {
+    let register = NSSelectorFromString("registerSchemeForCustomProtocol:")
+
+    // We cast to NSObjectProtocol to check for the selector safely
+    if let webViewClass = WKWebView.self as Any as? NSObjectProtocol,
+      webViewClass.responds(to: register)
+    {
+      // Registering "app" as a custom protocol makes WebKit treat it
+      // like "file://" or "https://", enabling persistent IndexedDB.
+      webViewClass.perform(register, with: "app")
+
+      print("🚀 Registered 'app://' as a secure custom scheme.")
+    }
   }
 }

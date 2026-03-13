@@ -6,6 +6,9 @@ import {
     type ScreenDimensions,
 } from "@/state/hooks/use_screen_dimensions";
 import { type AnyWebviewAction } from "@/utils/types/any_window_event";
+import { type GlobalAppState } from "#/webview_global_state/store";
+import { type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { connect } from "react-redux";
 
 interface WebViewContainerProps {
     children: ReactNode;
@@ -27,15 +30,29 @@ setWebviewWindowBridgeFunctions();
 export const getParentContentWrapper = () =>
     document.getElementById("webview-content-wrapper");
 
+const connector = connect((state: GlobalAppState) => ({
+    fontSize: state.container.font_size
+}))
 
 
-export const WebViewContainer = ({
+export const WebViewContainer = connector(({
     className,
     children,
     shrinkHeight,
     style,
+    fontSize,
     contentContainerClasses,
-}: WebViewContainerProps): ReactNode => {
+}: WebViewContainerProps & {
+    fontSize: WebviewContainerState["font_size"]
+}): ReactNode => {
+
+    const fontSizeClasses: Record<typeof fontSize, string> = {
+        base: "prose-base",
+        large: "prose-lg",
+        xxl: "prose-2xl",
+        xl: "prose-xl",
+        small: "prose-sm"
+    }
 
 
     return (
@@ -53,6 +70,7 @@ export const WebViewContainer = ({
                 className={cn(
                     "w-full load-hide",
                     shrinkHeight ? "h-fit" : "h-fit min-h-screen",
+                    fontSizeClasses[fontSize],
                     contentContainerClasses,
                 )}
             >
@@ -66,6 +84,6 @@ export const WebViewContainer = ({
             </div>
         </div >
     );
-};
+});
 
 WebViewContainer.displayName = "WebViewContainer";

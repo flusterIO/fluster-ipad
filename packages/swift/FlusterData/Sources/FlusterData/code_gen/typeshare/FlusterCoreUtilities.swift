@@ -374,7 +374,7 @@ public enum SizableOption: String, Codable {
 	case full
 }
 
-public enum WebviewFontSize: String, Codable {
+public enum WebviewFontSize: String, Codable, CaseIterable {
 	case small
 	case base
 	case large
