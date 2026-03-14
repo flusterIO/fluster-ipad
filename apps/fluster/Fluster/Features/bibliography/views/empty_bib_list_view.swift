@@ -5,16 +5,18 @@
 //  Created by Andrew on 11/3/25.
 //
 
+import FlusterData
 import FlusterSwift
+import FlusterWebviewClients
 import SwiftData
 import SwiftUI
-import FlusterData
 
 struct EmptyBibListView: View {
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
   @State private var createSheetOpen = false
   @Environment(NoteModel.self) private var editingNote: NoteModel?
   @Environment(\.modelContext) var modelContext
+  @Binding private var errorMessage: EditorErrorMessage?
 
   @Binding var editingBibEntry: BibEntryModel?
 
@@ -25,8 +27,10 @@ struct EmptyBibListView: View {
   init(
     editingBibEntry: Binding<BibEntryModel?>,
     ignoreBibEntryOnCreate: Bool = false,
-    associateNoteModalPresented: Binding<Bool>
+    associateNoteModalPresented: Binding<Bool>,
+    errorMessage: Binding<EditorErrorMessage?>
   ) {
+    self._errorMessage = errorMessage
     self._editingBibEntry = editingBibEntry
     self.ignoreBibEntryOnCreate = ignoreBibEntryOnCreate
     self._associateNoteModalPresented = associateNoteModalPresented
@@ -50,6 +54,7 @@ struct EmptyBibListView: View {
             ignoreEditingNote: ignoreBibEntryOnCreate,
             editingNote: .constant(nil),
             editingBibEntry: $editingBibEntry,
+            errorMessage: $errorMessage
           ),
           label: {
             Label("Create", systemImage: "plus")

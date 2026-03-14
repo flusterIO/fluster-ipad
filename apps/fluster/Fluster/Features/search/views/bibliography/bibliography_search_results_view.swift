@@ -7,6 +7,7 @@
 
 import FlusterData
 import FlusterSwift
+import FlusterWebviewClients
 import SwiftData
 import SwiftUI
 
@@ -15,6 +16,7 @@ struct BibliographySearchResultsViewQueryWrapped: View {
   @Environment(\.modelContext) var modelContext
   @State private var confirmationModalOpen: Bool = false
   @State private var deletingBibEntry: BibEntryModel? = nil
+    @State private var errorMessage: EditorErrorMessage?
   @Binding var searchQuery: String
   @Binding var editingNote: NoteModel?
 
@@ -49,6 +51,7 @@ struct BibliographySearchResultsViewQueryWrapped: View {
   var body: some View {
     if bibEntries.isEmpty {
       EmptyBibSearchResultsView(
+        errorMessage: $errorMessage
       )
     } else {
       List {
@@ -113,6 +116,8 @@ struct BibliographySearchResultsViewQueryWrapped: View {
 struct BibliographySearchResultsView: View {
   @State private var searchQuery: String = ""
   @Binding var editingNote: NoteModel?
+  // TODO: Implement a modal for this error message like there is for the other.
+  @State private var errorMessage: EditorErrorMessage?
   init(editingNote: Binding<NoteModel?>) {
     self._editingNote = editingNote
   }
@@ -125,7 +130,8 @@ struct BibliographySearchResultsView: View {
     .toolbar(content: {
       NavigationLink(
         destination: CreateBibEntrySheetView(
-          ignoreEditingNote: true, editingNote: $editingNote, editingBibEntry: .constant(nil)
+          ignoreEditingNote: true, editingNote: $editingNote, editingBibEntry: .constant(nil),
+          errorMessage: $errorMessage
         ),
         label: {
           Label("Create", systemImage: "plus")

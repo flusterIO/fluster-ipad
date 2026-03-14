@@ -17,13 +17,14 @@ struct CreateBibEntrySheetView: View {
   @State private var newEntryValue: String = ""
 
   @State private var webView: WKWebView = WKWebView(
-    frame: .infinite, configuration: getConfig()
+    frame: CGRect(x: 0, y: 0, width: 1, height: 1), configuration: getConfig()
   )
   @Environment(\.modelContext) var modelContext
   @Environment(\.dismiss) var dismiss
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
   @Binding private var editingNote: NoteModel?
   @Binding var editingBibEntry: BibEntryModel?
+  @Binding var errorMessage: EditorErrorMessage?
 
   let ignoreEditingNote: Bool
 
@@ -31,7 +32,9 @@ struct CreateBibEntrySheetView: View {
     ignoreEditingNote: Bool,
     editingNote: Binding<NoteModel?>,
     editingBibEntry: Binding<BibEntryModel?>,
+    errorMessage: Binding<EditorErrorMessage?>
   ) {
+    self._errorMessage = errorMessage
     self.ignoreEditingNote = ignoreEditingNote
     self._editingNote = editingNote
     self._editingBibEntry = editingBibEntry
@@ -45,8 +48,13 @@ struct CreateBibEntrySheetView: View {
           .font(.caption)
       }
       BibtexEditorWebview(
-        editingItem: $editingBibEntry, editingNote: $editingNote,
-        associateWithEditingNote: !ignoreEditingNote, webView: $webView)
+        editingItem: $editingBibEntry,
+        editingNote: $editingNote,
+        associateWithEditingNote: !ignoreEditingNote,
+        webView: $webView,
+        errorMessage: $errorMessage,
+        newItemContent: $newEntryValue
+      )
       Spacer(minLength: 8)
       HStack(alignment: .center) {
         Spacer()
@@ -56,16 +64,22 @@ struct CreateBibEntrySheetView: View {
         }
         Spacer()
         Button(editingBibEntry == nil ? "Create" : "Update") {
-          let inputValue =
-            editingBibEntry == nil
-            ? self.newEntryValue : editingBibEntry!.data
-          if inputValue.trimmingCharacters(
+          if newEntryValue.trimmingCharacters(
             in: .whitespacesAndNewlines
           ).isEmpty {
+            errorMessage = EditorErrorMessage(
+              id: .attemptToSaveEmptyBibEntry,
+              title: "Attempted to save an empty Biblatex string. Cannot continue.", desc: nil)
             return
           }
-          if editingBibEntry == nil {
-            let splitContent = splitBiblatexToRawStrings(fileContent: inputValue)
+          if let editingBibEntry = self.editingBibEntry {
+            // -- If the model needs to be updated. --
+            editingBibEntry.data = newEntryValue
+            setEditorContent(content: "")
+            newEntryValue = ""
+            dismiss()
+          } else {
+            let splitContent = splitBiblatexToRawStrings(fileContent: newEntryValue)
             for bibEntryText in splitContent {
               // -- If the model should be created new. --
               let newEntry = BibEntryModel(
@@ -78,11 +92,6 @@ struct CreateBibEntrySheetView: View {
               }
             }
             newEntryValue = ""
-            setEditorContent(content: "")
-            dismiss()
-          } else {
-            // -- If the model needs to be updated. --
-            editingBibEntry!.data = inputValue
             setEditorContent(content: "")
             dismiss()
           }

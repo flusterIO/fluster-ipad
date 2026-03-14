@@ -7,10 +7,16 @@
 
 import FlusterData
 import FlusterSwift
+import FlusterWebviewClients
 import SwiftUI
 
 struct EmptyBibSearchResultsView: View {
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
+  @Binding private var errorMessage: EditorErrorMessage?
+
+  init(errorMessage: Binding<EditorErrorMessage?>) {
+    self._errorMessage = errorMessage
+  }
 
   var body: some View {
     VStack(spacing: 16) {
@@ -26,7 +32,8 @@ struct EmptyBibSearchResultsView: View {
         .font(.title2)
       NavigationLink(
         destination: CreateBibEntrySheetView(
-          ignoreEditingNote: true, editingNote: .constant(nil), editingBibEntry: .constant(nil)
+          ignoreEditingNote: true, editingNote: .constant(nil), editingBibEntry: .constant(nil),
+          errorMessage: $errorMessage
         ),
         label: {
           Label("Create", systemImage: "plus")

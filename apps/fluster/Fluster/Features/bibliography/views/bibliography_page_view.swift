@@ -7,6 +7,7 @@
 
 import FlusterData
 import FlusterSwift
+import FlusterWebviewClients
 import SwiftData
 import SwiftUI
 
@@ -16,6 +17,8 @@ struct BibliographyPageInternalView: View {
   @Binding var editingBibEntry: BibEntryModel?
   @Binding var editingNote: NoteModel?
   @State private var searchQuery: String = ""
+  @State private var errorMessage: EditorErrorMessage? = nil
+
   var filteredEntries: [BibEntryModel] {
     if searchQuery.isEmpty {
       return editingNote?.citations ?? []
@@ -42,6 +45,7 @@ struct BibliographyPageInternalView: View {
             ignoreBibEntryOnCreate: false,
             associateNoteModalPresented:
               $associateNoteModalPresented,
+            errorMessage: $errorMessage
           )
           .navigationTitle("Note Bibliography")
         } else {
@@ -58,8 +62,9 @@ struct BibliographyPageInternalView: View {
                   destination: {
                     CreateBibEntrySheetView(
                       ignoreEditingNote: false,
-                      editingNote: .constant(nil),
-                      editingBibEntry: $editingBibEntry
+                      editingNote: $editingNote,
+                      editingBibEntry: $editingBibEntry,
+                      errorMessage: $errorMessage
                     )
                   },
                   label: {

@@ -72,6 +72,7 @@ import WebKit
       webView.scrollView.showsVerticalScrollIndicator = false
       webView.scrollView.showsHorizontalScrollIndicator = false
       webView.navigationDelegate = context.coordinator
+      webView.uiDelegate = context.coordinator
       webView.isInspectable = true
       let source = """
         document.body?.classList.add("\(WebviewEnvironment.macOS.rawValue)")
@@ -89,6 +90,12 @@ import WebKit
 
     public func updateUIView(_ uiView: WKWebView, context: Context) {
       context.coordinator.parent = self
+      if uiView.navigationDelegate == nil {
+        uiView.navigationDelegate = context.coordinator
+      }
+      if uiView.uiDelegate == nil {
+        uiView.uiDelegate = context.coordinator
+      }
     }
     @MainActor
     func addUserContentController(
@@ -120,14 +127,15 @@ import WebKit
       )
       controller.addUserScript(userScript)
     }
+
     public func makeCoordinator() -> Coordinator {
       Coordinator(parent: self)
     }
 
-    public class Coordinator: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
+    public class Coordinator: NSObject, WKScriptMessageHandler, WKNavigationDelegate, WKUIDelegate {
       var parent: WebviewContainer
 
-      init(parent: WebviewContainer) {
+      public init(parent: WebviewContainer) {
         self.parent = parent
       }
 
@@ -149,26 +157,41 @@ import WebKit
         // Route the message to your container's messageHandler
         parent.messageHandler?(message.name, message.body)
       }
-    }
-    func webView(
-      _ webView: WKWebView,
-      decidePolicyFor navigationAction: WKNavigationAction,
-      decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-    ) {
-      // Check if the navigation was triggered by a user clicking a link
-      if navigationAction.navigationType == .linkActivated {
-        if let url = navigationAction.request.url {
-          // Open the URL in the system default browser
-          self.openUrl(url)
 
-          // Cancel the navigation within the webview
-          decisionHandler(.cancel)
-          return
+      public func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void
+      ) {
+        print("Navigation Action: \(navigationAction)")
+        // Check if the navigation was triggered by a user clicking a link
+        if navigationAction.navigationType == .linkActivated {
+          if let url = navigationAction.request.url {
+            // Open the URL in the system default browser
+            self.parent.openUrl(url, prefersInApp: false)
+
+            // Cancel the navigation within the webview
+            decisionHandler(.cancel)
+            return
+          }
         }
+
+        // Allow other types of navigation (like the initial load)
+        decisionHandler(.allow)
       }
 
-      // Allow other types of navigation (like the initial load)
-      decisionHandler(.allow)
+      public func webView(
+        _ webView: WKWebView,
+        createWebViewWith configuration: WKWebViewConfiguration,
+        for navigationAction: WKNavigationAction,
+        windowFeatures: WKWindowFeatures
+      ) -> WKWebView? {
+        // Intercept target="_blank"
+        if let url = navigationAction.request.url {
+          self.parent.openUrl(url)
+        }
+        return nil
+      }
     }
   }
   class LeakFreeScriptHandler: NSObject, WKScriptMessageHandler {
