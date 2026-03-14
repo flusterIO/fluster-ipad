@@ -8,7 +8,7 @@ export const corePluginsFeature: FeaturedContainerPropsRequired = {
     label: "Built to quantize gravity",
     title: "Applicable Everywhere",
     expandDisplay: true,
-    displayContainerClasses: "pt-0 pb-0 md:pt-4 min-h-fit md:min-h-[30vh]",
+    displayContainerClasses: "pt-0 pb-0 md:pt-4 h-fit md:min-h-[30vh]",
     desc: () => {
         return (
             <FeatureDescContainer>

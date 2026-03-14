@@ -163,7 +163,6 @@ import WebKit
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void
       ) {
-        print("Navigation Action: \(navigationAction)")
         // Check if the navigation was triggered by a user clicking a link
         if navigationAction.navigationType == .linkActivated {
           if let url = navigationAction.request.url {

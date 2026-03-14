@@ -1,3 +1,6 @@
 {
-  "pages": ["user", "developer", "my_work"]
+    "pages": [
+        "user",
+        "my_work"
+    ]
 }
