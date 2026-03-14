@@ -1,6 +1,6 @@
 "use client";
 import { FeatureDescContainer } from "#/features/landing_page/sections/feature_section/feature_desc_container";
-import { FeaturedContainerPropsRequired } from "#/features/landing_page/sections/feature_section/types";
+import { type FeaturedContainerPropsRequired } from "#/features/landing_page/sections/feature_section/types";
 import { slideShowScreenshots } from "./featureAssets/slideShowScreenshots";
 import { ImageCarousel } from "#/features/image_carousel";
 
@@ -8,7 +8,7 @@ export const corePluginsFeature: FeaturedContainerPropsRequired = {
     label: "Built to quantize gravity",
     title: "Applicable Everywhere",
     expandDisplay: true,
-    displayContainerClasses: "pt-0 md:pt-4 min-h-[30vh]",
+    displayContainerClasses: "pt-0 pb-0 md:pt-4 min-h-fit md:min-h-[30vh]",
     desc: () => {
         return (
             <FeatureDescContainer>
