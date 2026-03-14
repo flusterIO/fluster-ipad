@@ -15,10 +15,11 @@ interface DictionaryEntryComponentProps {
 }
 
 export const DictionaryEntryComponent = ({ children, label, noteId, InlineMdxContent }: DictionaryEntryComponentProps): ReactNode => {
+    console.log("label: ", label)
     return (
-        <div className="w-full my-6 max-w-[1080px]">
+        <div className="w-full my-6 max-w-[1080px] font-serif">
             <InlineMdxContent
-                className={cn("[&_p]:text-xl font-serif font-medium tracking-tight text-foreground decoration-none underline-none", noteId ? "cursor-pointer" : "cursor-default")}
+                className={cn("[&_p]:text-xl font-medium tracking-tight text-foreground decoration-none underline-none", noteId ? "cursor-pointer" : "cursor-default")}
                 role="button"
                 onClick={() => {
                     if (noteId) {

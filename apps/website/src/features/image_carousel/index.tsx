@@ -1,6 +1,6 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { StaticImageData } from "next/image";
+import { type StaticImageData } from "next/image";
 import React, { useRef, useState } from "react";
 import NextImage from "next/image";
 import { wrap } from "popmotion";
@@ -11,11 +11,11 @@ import { cn } from "#/core/utils/cn";
 
 const Image = motion.create(NextImage);
 
-export type SlideShowImage = {
+export interface SlideShowImage {
     src: StaticImageData;
     className?: string;
     alt?: string;
-};
+}
 
 interface ImageCarouselProps {
     images: SlideShowImage[];
@@ -76,11 +76,11 @@ export const ImageCarousel = ({
     };
 
     return (
-        <div className={"w-full h-full"}>
+        <div className={"w-full"}>
             <div
                 className={cn(
                     "w-full lg:h-full flex flex-col justify-center items-center max-w-full max-h-full overflow-hidden relative",
-                    className
+                    className,
                 )}
             >
                 <AnimatePresence initial={false} custom={direction}>
@@ -90,7 +90,7 @@ export const ImageCarousel = ({
                         src={images[imageIndex].src}
                         className={cn(
                             "absolute max-w-full max-h-full h-full w-auto object-contain",
-                            images[imageIndex].className
+                            images[imageIndex].className,
                         )}
                         custom={direction}
                         alt={images[imageIndex].alt || alt || "ULLD Image"}
@@ -116,10 +116,20 @@ export const ImageCarousel = ({
                 </AnimatePresence>
                 {withButtons && !buttonsBottom && (
                     <>
-                        <div className={styles["prev-btn"]} onClick={() => cycleImages(-1)}>
+                        <div
+                            className={styles["prev-btn"]}
+                            onClick={() => {
+                                cycleImages(-1);
+                            }}
+                        >
                             <ChevronLeft />
                         </div>
-                        <div className={styles["next-btn"]} onClick={() => cycleImages(1)}>
+                        <div
+                            className={styles["next-btn"]}
+                            onClick={() => {
+                                cycleImages(1);
+                            }}
+                        >
                             <ChevronRight />
                         </div>
                     </>
@@ -129,17 +139,21 @@ export const ImageCarousel = ({
                 <div
                     className={cn(
                         "h-12 flex flex-row justify-end items-center gap-4",
-                        classes.buttonContainer
+                        classes.buttonContainer,
                     )}
                 >
                     <button
-                        onClick={() => cycleImages(-1)}
+                        onClick={() => {
+                            cycleImages(-1);
+                        }}
                         className={"bg-secondary rounded-full p-1 h-8 w-8 cursor-pointer"}
                     >
                         <ChevronLeft />
                     </button>
                     <button
-                        onClick={() => cycleImages(1)}
+                        onClick={() => {
+                            cycleImages(1);
+                        }}
                         className={"bg-secondary rounded-full p-1 h-8 w-8 cursor-pointer"}
                     >
                         <ChevronRight />

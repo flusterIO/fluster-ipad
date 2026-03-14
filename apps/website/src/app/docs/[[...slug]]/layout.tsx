@@ -1,7 +1,7 @@
 import { baseOptions } from "#/core/mdx/base_options";
 import { RootToggle } from "fumadocs-ui/components/layout/root-toggle";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { TerminalIcon, UserIcon } from "lucide-react";
+import { UserIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import "../../../../../../packages/webview_utils/src/core/styles/base.scss";
 import "../../../core/styles/docs.scss";
@@ -13,7 +13,8 @@ export default function Layout({ children }: { children: ReactNode }) {
             tree={source.pageTree}
             {...baseOptions}
             containerProps={{
-                className: "[&_#nd-sidebar>div[data-fdid]]:w-full",
+                className:
+                    "[&_#nd-sidebar>div[data-fdid]]:w-full [&_a[data-active]]:before:content-none",
             }}
             githubUrl="https://github.com/flusterIO"
             sidebar={{
@@ -33,16 +34,6 @@ export default function Layout({ children }: { children: ReactNode }) {
                                     /*     "bg-popover hover:bg-muted/80 transition-colors duration-150", */
                                 },
                                 icon: <UserIcon className="w-5 h-5" />,
-                            },
-                            {
-                                title: "Developer",
-                                description: "For developers, coming soon...",
-                                url: "/docs/developer",
-                                props: {
-                                    /* className: */
-                                    /*     "bg-popover hover:bg-muted/80 transition-colors duration-150", */
-                                },
-                                icon: <TerminalIcon className="w-5 h-5" />,
                             },
                         ]}
                     />

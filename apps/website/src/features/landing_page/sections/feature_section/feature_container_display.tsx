@@ -1,10 +1,12 @@
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
-import { FeatureContainerProps } from "./types";
+import { type FeatureContainerProps } from "./types";
 import clsx from "clsx";
 
-interface FeatureContainerDisplayProps
-    extends Pick<FeatureContainerProps, "orientation" | "component"> {
+interface FeatureContainerDisplayProps extends Pick<
+    FeatureContainerProps,
+    "orientation" | "component"
+> {
     displayExpand?: boolean;
     containerClasses?: string;
     shouldShow: boolean;
@@ -19,7 +21,7 @@ const FeatureContainerDisplay = ({
     shouldShow,
     delay = 0,
 }: FeatureContainerDisplayProps) => {
-    const scope = useRef<HTMLDivElement>(null!);
+    const scope = useRef<HTMLDivElement | null>(null);
     const Component = component;
 
     return (

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import FlusterData
 
 class MainNavigationEventEmitter {
     static let shared = MainNavigationEventEmitter()

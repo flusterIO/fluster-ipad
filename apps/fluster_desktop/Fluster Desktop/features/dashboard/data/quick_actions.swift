@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FlusterData
 
 public struct QuickAction {
     let label: String

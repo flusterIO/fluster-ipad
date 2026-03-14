@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import FlusterData
 
 class CommandPaletteNavigationRoot: CommandPaletteItem {
   init() {

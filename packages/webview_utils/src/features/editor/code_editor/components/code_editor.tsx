@@ -31,6 +31,7 @@ import { connect } from "react-redux"
 import { setBibtexEditorValue, setEditorValue } from "#/webview_global_state/mdx_editor/state/editor_state_slice";
 import { type GlobalAppState } from "#/webview_global_state/store";
 import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
+import { cn } from "../../../../core/utils/cn";
 
 const connector = connect((state: GlobalAppState) => ({
     baseKeymap: state.editor.baseKeymap,
@@ -45,7 +46,8 @@ const connector = connect((state: GlobalAppState) => ({
     note_id: state.editor.note_id,
     haveSetInitialValue: state.editor.haveSetInitialValue,
     autoSaveTimeout: state.editor.autoSaveTimeout,
-    bibtexValue: state.editor.bib_editor.value
+    bibtexValue: state.editor.bib_editor.value,
+    fontSize: state.container.font_size
 }))
 
 
@@ -58,6 +60,7 @@ interface CodeEditorProps extends Pick<WithNullableOptionals<EditorState>, "base
     containerId?: string;
     initialValueStorageKey?: AnyWebviewStorageKey
     bibtexValue: string
+    fontSize: WebviewContainerState["font_size"]
 }
 
 
@@ -77,7 +80,8 @@ export const CodeEditorInner = connector(({
     snippetProps,
     note_id,
     allCitationIds,
-    bibtexValue
+    bibtexValue,
+    fontSize
 }: CodeEditorProps): ReactNode => {
     const haveRendered = useRef(false);
     const timer = useRef<NodeJS.Timeout | null>(null);
@@ -250,7 +254,17 @@ export const CodeEditorInner = connector(({
         }
     })
 
-    return <div className="h-screen w-full mdx-editor-container" id={containerId} />;
+
+    // Keep the editor text one size smaller than the content text while the size range allows.
+    const oneSizeDown: Record<typeof fontSize, string> = {
+        small: "prose-sm",
+        base: "prose-sm",
+        large: "prose-base",
+        xl: "prose-lg",
+        xxl: "prose-xl"
+    }
+
+    return <div className={cn("h-screen w-full mdx-editor-container", oneSizeDown[fontSize])} id={containerId} />;
 });
 
 

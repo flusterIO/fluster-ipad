@@ -8,7 +8,7 @@ export const corePluginsFeature: FeaturedContainerPropsRequired = {
     label: "Built to quantize gravity",
     title: "Applicable Everywhere",
     expandDisplay: true,
-    displayContainerClasses: "pt-0 pb-0 md:pt-4 h-fit md:min-h-[30vh]",
+    displayContainerClasses: "pt-0 pb-0 md:pt-4 h-fit lg:min-h-[30vh]",
     desc: () => {
         return (
             <FeatureDescContainer>
@@ -30,10 +30,15 @@ export const corePluginsFeature: FeaturedContainerPropsRequired = {
     component: () => {
         return (
             <ImageCarousel
-                images={slideShowScreenshots}
+                images={slideShowScreenshots.map((c) => {
+                    return {
+                        ...c,
+                        className: "",
+                    };
+                })}
                 withButtons
                 buttonsBottom
-                className={"w-full h-auto min-h-[40vh]"}
+                className={"w-full h-auto lg:min-h-[40vh]"}
                 classes={{
                     buttonContainer: "justify-center lg:justify-end",
                 }}
