@@ -1,6 +1,6 @@
 "use client";
 import splitViewImg from "../../../public/assets/blog/screenshots/splitview.png";
-import { FeaturedContainerPropsRequired } from "#/features/landing_page/sections/feature_section/types";
+import { type FeaturedContainerPropsRequired } from "#/features/landing_page/sections/feature_section/types";
 import Image from "next/image";
 import { buttonVariants } from "../shad/ui/button";
 import { staticContent } from "../static_content";
@@ -8,6 +8,7 @@ import { staticContent } from "../static_content";
 export const mdxFeature: FeaturedContainerPropsRequired = {
     label: "Write in MDX",
     title: "Markdown... Xtended",
+    displayContainerClasses: "max-h-fit",
     /* expandDisplay: true, */
     desc: () => {
         return (
@@ -32,7 +33,7 @@ export const mdxFeature: FeaturedContainerPropsRequired = {
                 src={splitViewImg}
                 alt="Fluster mdx & code editor split view"
                 className={
-                    "min-[600px]:w-auto min-[600px]:max-w-full min-[600px]:h-auto min-[600px]:min-h-[40vh] w-full h-auto"
+                    "max-[600px]:pt-[8rem] min-[600px]:w-auto min-[600px]:max-w-full min-[600px]:h-auto w-full h-auto object-contain"
                 }
             />
         );

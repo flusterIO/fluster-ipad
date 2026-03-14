@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from "react";
-import { FeatureContainerProps } from "./types";
+import { type FeatureContainerProps } from "./types";
 import FeatureContainerText from "./feature_container_text";
 import FeatureContainerDisplay from "./feature_container_display";
 import clsx from "clsx";
@@ -16,7 +16,7 @@ const FeatureContainer = ({
     ...props
 }: FeatureContainerProps & { idx: number }) => {
     const vp = useViewport();
-    const ref = useRef<HTMLDivElement>(null!);
+    const ref = useRef<HTMLDivElement | null>(null);
     const shouldShow = useInView(ref, { margin: "-100px", once: true });
     if (override) {
         const O = override;
@@ -29,7 +29,7 @@ const FeatureContainer = ({
                 "group/feature w-screen min-h-[calc(100vh-76px)] max-w-[1440px] gap-8 px-8 lg:px-12 mb-16 flex-col justify-around items-center lg:grid lg:grid-cols-2  place-items-center",
                 spaceEven ? "grid grid-cols-1 md:flex" : "flex",
                 vp?.window.width && vp.window.width < 768 ? "stack" : "flow",
-                orientation === "rtl" && "flex-col-reverse lg:flex-row"
+                orientation === "rtl" && "flex-col-reverse lg:flex-row",
             )}
         >
             {orientation === "ltr" ? (

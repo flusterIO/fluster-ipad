@@ -2,7 +2,7 @@
 import React from "react";
 import FeatureContainer from "./feature_container";
 import { allFeatures } from "#/core/feature_data/allFeatures";
-import { FeaturedContainerPropsRequired } from "./types";
+import { type FeaturedContainerPropsRequired } from "./types";
 
 export const HighlightedFeaturesSection = () => {
     return (
