@@ -4,7 +4,7 @@ import FumaDocsProvider from "#/features/docs/fuma_docs_provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 
 const appFont = localFont({
     variable: "--ulld-app-font",
@@ -78,7 +78,7 @@ export default function RootLayout({
                 />
             </Head>
             <Analytics />
-            <body className={`antialiased background`}>
+            <body className={`antialiased background dark`}>
                 <FumaDocsProvider>
                     <div>{children}</div>
                 </FumaDocsProvider>
