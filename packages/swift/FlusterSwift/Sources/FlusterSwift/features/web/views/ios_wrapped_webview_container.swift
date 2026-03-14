@@ -38,20 +38,24 @@ import WebKit
     public let messageHandlerKeys: [String]
     public let messageHandler: ((String, Any) -> Void)?
     public let onLoad: (@Sendable () async -> Void)?
-    @State public var show: Bool = false
     @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme = .fluster
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
-
-    @Query private var notes: [NoteModel]
+    @Binding public var show: Bool
 
     public init(
-      implementation: WebviewImplementation, editingNote: Binding<NoteModel?>,
-      webView: Binding<WKWebView>, url: URL, messageHandlerKeys: [String],
-      messageHandler: ((String, Any) -> Void)?, onLoad: (@Sendable () async -> Void)?
+      implementation: WebviewImplementation,
+      editingNote: Binding<NoteModel?>,
+      webView: Binding<WKWebView>,
+      show: Binding<Bool>,
+      url: URL,
+      messageHandlerKeys: [String],
+      messageHandler: ((String, Any) -> Void)?,
+      onLoad: (@Sendable () async -> Void)?
     ) {
       self.implementation = implementation
       self._editingNote = editingNote
       self._webView = webView
+      self._show = show
       self.url = url
       self.messageHandlerKeys = messageHandlerKeys
       self.messageHandler = messageHandler
@@ -62,6 +66,7 @@ import WebKit
       WebviewContainer(
         parent: self,
         webView: $webView,
+        show: $show,
         url: url,
         messageHandlerKeys: messageHandlerKeys,
         messageHandler: messageHandler,
@@ -72,6 +77,15 @@ import WebKit
         {
           Task(priority: .high) {
             await handleInitialState()
+          }
+        }
+      )
+      .onChange(
+        of: editorKeymap,
+        {
+          Task(priority: .high) {
+            try? await EditorState.setEditorKeymap(
+              keymap: editorKeymap, eval: webView.evaluateJavaScript)
           }
         }
       )

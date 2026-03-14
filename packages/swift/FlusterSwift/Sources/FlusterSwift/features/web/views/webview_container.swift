@@ -24,6 +24,7 @@ import WebKit
     let parent: IosWebviewContainer
     @Environment(\.openURL) public var openUrl: OpenURLAction
     @Binding var webView: WKWebView
+    @Binding var show: Bool
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     let url: URL
     var messageHandlerKeys: [String]
@@ -33,6 +34,7 @@ import WebKit
     init(
       parent: IosWebviewContainer,
       webView: Binding<WKWebView>,
+      show: Binding<Bool>,
       url: URL,
       messageHandlerKeys: [String],
       messageHandler: ((String, Any) -> Void)? = nil,
@@ -41,6 +43,7 @@ import WebKit
       self.parent = parent
       self._webView = webView
       self.url = url
+      self._show = show
       self.messageHandlerKeys = messageHandlerKeys
       self.messageHandler = messageHandler
       self.onLoad = onLoad
@@ -134,7 +137,7 @@ import WebKit
       ) {
         print("Received Message: ", message.name)
         if message.name == WebviewContainerEvents.reduxStateLoaded.rawValue {
-          self.parent.parent.show = true
+          self.parent.show = true
           self.parent.webView.isHidden = false
           if let onLoad = self.parent.onLoad {
             Task(priority: .high) {

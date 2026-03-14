@@ -53,7 +53,7 @@ export const MdxEditorPreview = connector(({
 
     if (typeof parsedValue !== "string") {
         return (
-            <div className="w-full h-full flex flex-col justify-center items-center mdx-preview-loading-container">
+            <div className="w-screen h-screen top-0 left-0 right-0 bottom-0 fixed flex flex-col justify-center items-center mdx-preview-loading-container">
                 <LoadingComponent />
             </div>
         );

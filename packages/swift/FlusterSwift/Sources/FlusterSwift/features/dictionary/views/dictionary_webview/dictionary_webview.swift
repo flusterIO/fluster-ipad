@@ -23,6 +23,7 @@ import WebKit
       [DictionaryEntryModel]
     @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
       DefaultNoteView = .markdown
+      @State private var showWebView: Bool = false
       
       
       public init(editingNote: Binding<NoteModel?>) {
@@ -34,6 +35,7 @@ import WebKit
         implementation: .dictionary,
         editingNote: $editingNote,
         webView: $webView,
+        show: $showWebView,
         url: url,
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,

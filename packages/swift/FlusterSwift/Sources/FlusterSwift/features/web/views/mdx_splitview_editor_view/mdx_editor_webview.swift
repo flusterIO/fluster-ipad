@@ -16,7 +16,7 @@ import WebKit
   // }
 
   public struct MdxEditorWebview: View {
-    @State private var show: Bool = false
+    @State public var show: Bool = false
     let url: URL
     @Binding var editingNote: NoteModel
     @Environment(\.modelContext) private var modelContext: ModelContext
@@ -65,6 +65,7 @@ import WebKit
           implementation: WebviewImplementation.mdxEditor,
           editingNote: Binding<NoteModel>.toOptional($editingNote),
           webView: $webView,
+          show: $show,
           url: url,
           messageHandlerKeys: [
             MdxPreviewWebviewActions.onTagClick.rawValue,
@@ -75,9 +76,7 @@ import WebKit
             SplitviewEditorWebviewActions.manualSaveRequest.rawValue
           ],
           messageHandler: self.messageHandler,
-          onLoad: {
-            show = true
-          }
+          onLoad: nil
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .disableAnimations()

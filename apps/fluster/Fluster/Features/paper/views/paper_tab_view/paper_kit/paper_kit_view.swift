@@ -26,17 +26,19 @@ struct PaperKitView: View {
     }
   }
   var _item: PaperModel? {
+    print("Focused page index, \(focusedPageIndex)")
+    print("Sorted pages: \(sortedPages.count)")
     if focusedPageIndex < sortedPages.count {
-      sortedPages[focusedPageIndex]
+      return sortedPages[focusedPageIndex]
     } else {
-      nil
+      return nil
     }
   }
 
   var body: some View {
-    GeometryReader { geometry in
-      Group {
-        if let item = _item {
+    Group {
+      if let item = _item {
+        GeometryReader { geometry in
           if let _markup = try? PaperMarkup(dataRepresentation: item.markup) {
             let markup = Binding<PaperMarkup>(
               get: {
@@ -58,21 +60,22 @@ struct PaperKitView: View {
           } else {
             Color.clear
           }
-        } else {
-          Color.clear.task {
-            await handleFocusIndexPageCreation(geometry)
-          }
+        }
+      } else {
+        Color.clear.task {
+          await handleFocusIndexPageCreation()
         }
       }
-      .navigationTitle(
-        "Paper \(_item?.pageIndex == nil ? 1 : _item!.pageIndex + 1) of \(maxPageIndex + 1)"
-      )
-      .navigationSubtitle("\(editingNote.paper.count) pages total")
     }
+    .navigationTitle(
+      "Paper \(_item?.pageIndex == nil ? 1 : _item!.pageIndex + 1) of \(maxPageIndex + 1)"
+    )
+    .navigationSubtitle("\(editingNote.paper.count) pages total")
   }
-  func handleFocusIndexPageCreation(_ geometry: GeometryProxy) async {
-    if focusedPageIndex >= editingNote.paper.count {
-      let markup = PaperMarkup(bounds: CGRect(origin: .zero, size: getPaperMarkupBounds()))
+  func handleFocusIndexPageCreation() async {
+    if focusedPageIndex >= sortedPages.count {
+      let markup = PaperMarkup(
+        bounds: CGRect(origin: CGPoint(x: 0, y: 0), size: getPaperMarkupBounds()))
       do {
         let data = try await markup.dataRepresentation()
         self.editingNote.paper.append(PaperModel(markup: data, pageIndex: maxPageIndex + 1))
@@ -82,7 +85,7 @@ struct PaperKitView: View {
     }
   }
   func handlePaperMarkupChange(_ markup: PaperMarkup) async {
-    if focusedPageIndex < editingNote.paper.count && focusedPageIndex >= 0 {
+    if focusedPageIndex < sortedPages.count && focusedPageIndex >= 0 {
       do {
         editingNote.setLastRead(setModified: true)
         let data = try await markup.dataRepresentation()

@@ -16,6 +16,7 @@ import WebKit
 public struct BibtexEditorWebview: View {
   @Binding public var editingItem: BibEntryModel?
   @Binding public var editingNote: NoteModel?
+  @State private var showWebView: Bool = false
   public var associateWithEditingNote: Bool = true
   @Binding private var webView: WKWebView
   @State private var newItemData: String = ""
@@ -37,6 +38,7 @@ public struct BibtexEditorWebview: View {
   public var body: some View {
     IosWebviewContainer(
       implementation: .bibEditor, editingNote: $editingNote, webView: $webView,
+      show: $showWebView,
       url: URL.embeddedFlusterUrl(
         folder: "bibtex_editor_webview_ipad", fileName: "index_ipad.html"), messageHandlerKeys: [],
       messageHandler: self.messageHandler, onLoad: nil

@@ -21,6 +21,7 @@ import WebKit
     @Binding var note: NoteModel
     @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
       .apa
+      @State private var showWebView: Bool = false
 
     public init(
       fullScreenCover: Binding<MainFullScreenCover?>,
@@ -34,6 +35,7 @@ import WebKit
         implementation: .noteDetails,
         editingNote: Binding<NoteModel>.toOptional($note),
         webView: $webView,
+        show: $showWebView,
         url: URL.embeddedFlusterUrl(
           folder: "note_detail_webview_ipad", fileName: "index_ipad.html"),
         messageHandlerKeys: [],
