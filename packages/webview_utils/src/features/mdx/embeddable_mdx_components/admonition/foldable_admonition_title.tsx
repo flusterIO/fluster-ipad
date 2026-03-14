@@ -1,6 +1,6 @@
 import React, { type ReactNode } from "react";
 import AdmonitionVariantIcon from "./variant_icon";
-import { AdmonitionTitleProps } from "./types";
+import { type AdmonitionTitleProps } from "./types";
 import { getTitleVariantClasses } from "./utils";
 import { ChevronUp as ChevronIcon } from "lucide-react";
 import { motion } from "framer-motion";
@@ -25,7 +25,7 @@ const FoldableAdmonitionTitle = (props: Props): ReactNode => {
             style={{
                 gridTemplateColumns: `48px 1fr 32px`
             }}
-            onClick={() => props.setOpen(!props.open)}
+            onClick={() => { props.setOpen(!props.open); }}
         >
             <AdmonitionVariantIcon
                 className={admonitionTitleIconClasses}

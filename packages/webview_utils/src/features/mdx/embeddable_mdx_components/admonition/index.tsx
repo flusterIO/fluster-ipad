@@ -4,15 +4,19 @@ import AdmonitionTitle from "./admonition_title";
 import FoldableAdmonitionTitle from "./foldable_admonition_title";
 import { cn } from "@/utils/cn";
 import { inlineMdxClasses } from "../../components/inline_mdx_classes";
-import { AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
-import { WithChildren } from "@/utils/types/utility_types";
-import { WithInlineMdx } from "#/mdx/components/inline_mdx_content";
+import { type AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
+import { type WithChildren } from "@/utils/types/utility_types";
+import { type WithInlineMdx } from "#/mdx/components/inline_mdx_content";
 
+
+/**
+ * The InlineMdx component will not be available on the website.
+ */
 export const Admonition = ({
     children,
     InlineMdxContent,
     ...props
-}: AdmonitionPropsInput & WithChildren & WithInlineMdx): ReactNode => {
+}: AdmonitionPropsInput & WithChildren & Partial<WithInlineMdx>): ReactNode => {
     const {
         title: _title, classes, foldable, folded, type, parsedContainerClasses, centerContent
     } = admonitionPropsSchema.parse(props)
@@ -20,7 +24,7 @@ export const Admonition = ({
     // sure to enforce the type safety for all string components before use as there's no typesafety while the mdx is rendered in live preview.
     const title = typeof _title === "string" ? _title : "";
 
-    const handleOpen = useEffectEvent((newOpen: boolean) => setOpen(newOpen))
+    const handleOpen = useEffectEvent((newOpen: boolean) => { setOpen(newOpen); })
 
     useEffect(() => {
         if (!foldable) {
@@ -30,7 +34,6 @@ export const Admonition = ({
 
     const titleComponent = useMemo(() => {
         return InlineMdxContent ? <InlineMdxContent mdx={title} /> : <div className={inlineMdxClasses}>{title}</div>;
-        /* eslint-disable  -- Don't even know what this this is complaining about? */
     }, [title, InlineMdxContent]);
 
     return (
@@ -54,7 +57,7 @@ export const Admonition = ({
                 </AdmonitionTitle>
             )}
             <motion.div
-                className={"rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground relative"}
+                className={"rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground [&_*]:text-fd-card-foreground relative"}
                 variants={{
                     folded: {
                         height: 0,

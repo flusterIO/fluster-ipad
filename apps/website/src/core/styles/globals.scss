@@ -1,10 +1,8 @@
 @import "tailwindcss";
-@source "../../../node_modules/fumadocs-ui/dist/**/*.{js,ts,tsx,jsx,mdx}";
 @source "../../../../../node_modules/fumadocs-ui/dist/**/*.{js,ts,tsx,jsx,mdx}";
-@source "../../../../../docs/website/**/*.{mdx,tsx,jsx,ts,js}";
+@source "../../../../../docs/legal/**/*.{mdx,tsx,jsx,ts,js}";
 @source "../../../content/**/*.mdx";
 @source "../../../src/**/*.{js,ts,jsx,tsx,mdx}";
-@source "../../../../../packages/webview_utils/src/**/*.{mdx,ts,tsx}";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
 @plugin "tailwindcss-animate";

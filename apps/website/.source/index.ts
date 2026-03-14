@@ -1,11 +1,11 @@
 // @ts-nocheck -- skip type checking
-import * as documentation_1 from "../content/docs/user/index.mdx?collection=documentation&hash=1767759992913"
-import * as documentation_0 from "../content/docs/my_work/on_the_gravitational_nature_of_time.mdx?collection=documentation&hash=1767759992913"
-import * as metaFiles_2 from "../content/docs/user/meta.json?collection=metaFiles&hash=1767759992913"
-import * as metaFiles_1 from "../content/docs/my_work/meta.json?collection=metaFiles&hash=1767759992913"
-import * as metaFiles_0 from "../content/docs/meta.json?collection=metaFiles&hash=1767759992913"
-import * as docs_1 from "../content/docs/user/index.mdx?collection=docs&hash=1767759992913"
-import * as docs_0 from "../content/docs/my_work/on_the_gravitational_nature_of_time.mdx?collection=docs&hash=1767759992913"
+import * as documentation_1 from "../content/docs/user/index.mdx?collection=documentation&hash=1773524373568"
+import * as documentation_0 from "../content/docs/my_work/on_the_gravitational_nature_of_time.mdx?collection=documentation&hash=1773524373568"
+import * as metaFiles_2 from "../content/docs/user/meta.json?collection=metaFiles&hash=1773524373568"
+import * as metaFiles_1 from "../content/docs/my_work/meta.json?collection=metaFiles&hash=1773524373568"
+import * as metaFiles_0 from "../content/docs/meta.json?collection=metaFiles&hash=1773524373568"
+import * as docs_1 from "../content/docs/user/index.mdx?collection=docs&hash=1773524373568"
+import * as docs_0 from "../content/docs/my_work/on_the_gravitational_nature_of_time.mdx?collection=docs&hash=1773524373568"
 import { _runtime } from "fumadocs-mdx"
 import * as _source from "../source.config"
 export const docs = _runtime.doc<typeof _source.docs>([{ info: {"path":"my_work/on_the_gravitational_nature_of_time.mdx","absolutePath":"/Users/bigsexy/Desktop/swift/Fluster/apps/website/content/docs/my_work/on_the_gravitational_nature_of_time.mdx"}, data: docs_0 }, { info: {"path":"user/index.mdx","absolutePath":"/Users/bigsexy/Desktop/swift/Fluster/apps/website/content/docs/user/index.mdx"}, data: docs_1 }]);

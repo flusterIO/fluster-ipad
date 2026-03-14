@@ -8,7 +8,7 @@ export const StoryOfFlusterSection = () => {
     return (
         <div
             className={clsx(
-                "group/feature relative w-screen left-0 min-h-[calc(100vh-76px)] h-fit flex flex-col justify-start items-center gap-6 z-10"
+                "group/feature relative w-screen left-0 min-h-[calc(100vh-76px)] h-fit flex flex-col justify-start items-center gap-6 z-10",
             )}
         >
             <StoryOfUlldHeading
@@ -58,7 +58,7 @@ export const StoryOfFlusterSection = () => {
             </div>
             <PayPalLinkQr size={120} />
 
-            <p className="prose dark:prose-invert px-6 text-center">
+            <p className="prose prose-invert px-6 text-center">
                 If you are hiring, consider taking a look at my resume available{" "}
                 <Link className="text-primary" href="/resume">
                     here

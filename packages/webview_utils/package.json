@@ -87,6 +87,10 @@
     "./shared_component_styles.scss": {
       "import": "./src/core/styles/shared_component_styles.scss",
       "require": "./src/core/styles/shared_component_styles.scss"
+    },
+    "./styles.css": {
+      "import": "./dist/styles.css",
+      "require": "./dist/styles.css"
     }
   },
   "dependencies": {

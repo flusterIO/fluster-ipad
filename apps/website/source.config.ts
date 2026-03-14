@@ -2,7 +2,7 @@ import {
     defineCollections,
     defineConfig,
     defineDocs,
-    GlobalConfig,
+    type GlobalConfig,
 } from "fumadocs-mdx/config";
 import { z } from "zod";
 import remarkMath from "remark-math";
