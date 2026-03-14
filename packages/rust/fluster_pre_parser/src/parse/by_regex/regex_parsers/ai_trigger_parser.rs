@@ -24,18 +24,19 @@ impl MdxParser for AiTriggerParser {
         ParserId::AiTrigger
     }
     async fn parse_async(&self, _: &ParseMdxOptions, result: &mut MdxParsingResult) {
-        let res = CodeBlockParser::parse_and_replace(&mut result.content, "fluster-ai", |c| {
-            format!(
-                "<{} stringifiedResult={}>\n{}\n</{}>",
-                AutoInsertedComponentName::FlusterAiParsePendingContainer,
-                serde_json::to_string(c)
-                    .map(|x| format!("'{}'", x))
-                    .unwrap_or("{null}".to_string()),
-                c.get_block_content_rust(),
-                AutoInsertedComponentName::FlusterAiParsePendingContainer
-            )
-        })
-        .await;
+        let res =
+            CodeBlockParser::parse_and_replace(&mut result.content, "fluster-ai", false, |c| {
+                format!(
+                    "<{} stringifiedResult={}>\n{}\n</{}>",
+                    AutoInsertedComponentName::FlusterAiParsePendingContainer,
+                    serde_json::to_string(c)
+                        .map(|x| format!("'{}'", x))
+                        .unwrap_or("{null}".to_string()),
+                    c.get_block_content_rust(),
+                    AutoInsertedComponentName::FlusterAiParsePendingContainer
+                )
+            })
+            .await;
 
         for code_block_result in res {
             result

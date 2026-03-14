@@ -6,24 +6,35 @@ impl CodeBlockParser {
     /// This regular expression is no longer linear due to the lookbehind, but is required to
     /// match the varable depth of the input codeblock.
     /// For performance reasons, prefer other parsers where possible.
-    fn get_regex() -> Regex {
-        Regex::new(r"(?:^|\n)(`{3,})([^\-\n]*)(?:--\s*(.*?))?\n([\s\S]*?)\n\1").unwrap()
+    fn get_regex(with_meta_data: bool) -> Regex {
+        // This works for BOTH dictionary with meta AND fluster-ai without meta
+        Regex::new(r"(?m)^(`{3,})([^\n\-\s]+)\n([\s\S]*?)\n\1").unwrap()
+        // if with_meta_data {
+        //     Regex::new(r"(?:^|\n)(`{3,})([^\-\n]*)(?:--\s*(.*?))?\n([\s\S]*?)\n\1").unwrap()
+        // } else {
+        //     Regex::new(r"(?m)^(`{3,})([^\-\n\s]+)\n([\s\S]*?)\n\1").unwrap()
+        // }
     }
 
     pub async fn parse_and_replace(
         content: &mut String,
         language_key: &str,
+        with_meta_data: bool,
         replacer: impl Fn(&CodeBlockParsingResult) -> String,
     ) -> Vec<CodeBlockParsingResult> {
-        let results = CodeBlockParser::parse_async(content, language_key).await;
+        let results = CodeBlockParser::parse_async(content, language_key, with_meta_data).await;
         for code_block_result in &results {
             let replace_with = replacer(code_block_result);
             *content = content.replace(&code_block_result.get_full_match_rust(), &replace_with);
         }
         results
     }
-    pub async fn parse_async(content: &str, language_key: &str) -> Vec<CodeBlockParsingResult> {
-        let re = CodeBlockParser::get_regex();
+    pub async fn parse_async(
+        content: &str,
+        language_key: &str,
+        with_meta_data: bool,
+    ) -> Vec<CodeBlockParsingResult> {
+        let re = CodeBlockParser::get_regex(with_meta_data);
         let mut results: Vec<CodeBlockParsingResult> = Vec::new();
         for captures in re.captures_iter(content).flatten() {
             let full_match = captures.get(0).map_or("", |m| m.as_str());
@@ -60,8 +71,11 @@ mod tests {
 Can you please generate a summary of this note.
 ````
 "#;
-        let res = CodeBlockParser::parse_async(test_input_with_block, "dictionary").await;
-        assert!(res.len() == 1, "Finds one value when one value is present");
+        let res = CodeBlockParser::parse_async(test_input_with_block, "dictionary", true).await;
+        assert!(
+            res.len() == 1,
+            "Finds one dictionary entry when one value is present"
+        );
         let item = res.index(0);
         assert!(
             item.language_tag() == "dictionary",
@@ -82,8 +96,11 @@ Can you please generate a summary of this note.
 Can you please generate a summary of this note.
 ````
 "#;
-        let res = CodeBlockParser::parse_async(test_input_with_block, "fluster-ai").await;
-        assert!(res.len() == 1, "Finds one result when one is present.");
+        let res = CodeBlockParser::parse_async(test_input_with_block, "fluster-ai", false).await;
+        assert!(
+            res.len() == 1,
+            "Finds one ai parsing request when one is present."
+        );
         let item = res.index(0);
         assert!(
             item.clone().get_lang_rust() == "fluster-ai",

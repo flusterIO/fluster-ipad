@@ -1,3 +1,4 @@
+import "@fluster/webview_utils/styles.css";
 import "../core/styles/globals.scss";
 import localFont from "next/font/local";
 import FumaDocsProvider from "#/features/docs/fuma_docs_provider";

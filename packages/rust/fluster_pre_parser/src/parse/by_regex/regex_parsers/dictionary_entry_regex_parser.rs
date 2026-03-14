@@ -47,7 +47,7 @@ impl MdxParser for DictionaryEntryRegexParser {
             .unwrap_or_else(|| "{undefined}".to_string());
         let mut results: Vec<DictionaryEntryResult> = Vec::new();
         let mut new_content = String::from(&result.content);
-        let matches = CodeBlockParser::parse_async(&new_content, "dictionary").await;
+        let matches = CodeBlockParser::parse_async(&new_content, "dictionary", true).await;
         for result_item in matches.iter() {
             if let Some(title_match) = result_item.meta_data_rust() {
                 let body = result_item.get_block_content_rust();
