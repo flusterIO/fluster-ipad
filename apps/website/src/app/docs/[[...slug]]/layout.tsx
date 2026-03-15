@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             sidebar={{
                 banner: (
                     <RootToggle
-                        className="py-0 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:justify-center"
+                        className="py-2 relative [&>div]:flex [&>div]:flex-col [&>div]:items-center [&>div]:justify-center"
                         /* popover="auto" */
                         options={[
                             {

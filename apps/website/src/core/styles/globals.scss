@@ -13,7 +13,7 @@
   :root {
     --radius: 0.5rem;
     --brand: 198.6 88.7% 48.4%;
-    --background: 222.2 84% 4.9%;
+    --web-background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -44,7 +44,7 @@
 @theme {
   --radius: hsl(var(--radius));
   --color-brand: hsl(var(--brand));
-  --color-background: hsl(var(--background));
+  --color-background: hsl(var(--web-background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
@@ -72,7 +72,7 @@
 }
 
 body {
-  background: hsl(var(--background));
+  background-color: hsl(var(--web-background));
   color: hsl(var(--foreground));
   overflow-x: hidden;
   width: 100vw;

@@ -38,7 +38,7 @@ export const corePluginsFeature: FeaturedContainerPropsRequired = {
                 })}
                 withButtons
                 buttonsBottom
-                className={"w-full h-auto lg:min-h-[40vh]"}
+                className={"w-full h-auto min-h-[40vh]"}
                 classes={{
                     buttonContainer: "justify-center lg:justify-end",
                 }}
