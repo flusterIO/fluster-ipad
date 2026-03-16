@@ -1,3 +1,4 @@
+use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use nom::{
     IResult, Parser,
     bytes::complete::tag,
@@ -20,19 +21,27 @@ pub struct ParsedCitation {
 }
 
 impl MdxComponentResult for ParsedCitation {
-    fn to_mdx_component(&self, _: &mut MdxParsingResult) -> String {
-        format!("<FlusterCitation citationKey='{}' />", self.key,)
+    fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
+        if res.ignore_all_parsers {
+            return self.full_match.clone();
+        }
+
+        if let Some(fm) = &res.front_matter {
+            if fm
+                .ignored_parsers
+                .iter()
+                .any(|x| x == &ParserId::Citations.to_string())
+            {
+                return self.full_match.clone();
+            }
+        }
+
+        format!("<FlusterCitation citationKey=\"{}\" />", self.key,)
     }
 }
 
 pub fn parse_citation(input: &str) -> IResult<&str, ParsedCitation> {
     let start_point = input;
-
-    // We must match the EXACT outer boundaries: []
-    // let (remaining, key) = delimited(
-    //     tag("[]"), // Use tag("]]") instead of char(']')
-    // )
-    // .parse(input)?;
 
     let (remaining, key) = delimited(tag("[[cite:"), alphanumeric1, tag("]]")).parse(input)?;
 

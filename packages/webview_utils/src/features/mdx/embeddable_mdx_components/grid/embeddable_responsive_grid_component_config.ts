@@ -44,5 +44,6 @@ ${Array(Math.floor(Math.random() * 12)).fill(0).map((_, i) => {
     },
     testProps: {
         quantityScalar: 0.6
-    }
+    },
+    isInline: false
 }

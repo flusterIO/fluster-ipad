@@ -36,5 +36,6 @@ export const hlComponentConfig: EmbeddableComponentConfig = {
 
     testProps: {
         quantityScalar: 2
-    }
+    },
+    isInline: true
 }

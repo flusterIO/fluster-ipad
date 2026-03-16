@@ -27,5 +27,6 @@ export const hrComponentConfig: EmbeddableComponentConfig = {
 
     testProps: {
         quantityScalar: 0.2
-    }
+    },
+    isInline: false
 }

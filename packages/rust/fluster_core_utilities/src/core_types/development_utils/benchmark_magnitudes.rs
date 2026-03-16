@@ -19,11 +19,14 @@ pub enum BenchmarkGeneratedDateString {
     #[serde(rename = "2_2_2026")]
     #[strum(to_string = "2_2_2026")]
     Initial,
+    #[serde(rename = "2_16_2026")]
+    #[strum(to_string = "2_16_2026")]
+    FirstWithAllSyntaxes,
 }
 
 impl BenchmarkGeneratedDateString {
     pub fn get_latest() -> Self {
-        BenchmarkGeneratedDateString::Initial
+        BenchmarkGeneratedDateString::FirstWithAllSyntaxes
     }
 
     pub fn string_is_valid_date(s: &str) -> bool {

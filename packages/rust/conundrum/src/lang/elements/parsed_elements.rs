@@ -4,22 +4,29 @@ use crate::{
         runtime::traits::mdx_component_result::MdxComponentResult,
     },
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
-    parsers::fluster::{docs::ParsedInspectionRequest, inline_citation::ParsedCitation},
+    parsers::fluster::{
+        docs::ParsedInspectionRequest, inline_citation::ParsedCitation,
+        note_link::ParsedOutgoingNoteLink, tag::ParsedTag,
+    },
 };
 
 // This enum acts as a router for our different syntaxes
 pub enum ParsedElement {
     CodeBlock(ParsedCodeBlock),
     Citation(ParsedCitation),
+    OutgoingNoteLink(ParsedOutgoingNoteLink),
+    Tag(ParsedTag),
     InspectionRequest(ParsedInspectionRequest),
 }
 
 impl MdxComponentResult for ParsedElement {
     fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
         match self {
+            ParsedElement::InspectionRequest(req) => req.to_mdx_component(res),
             ParsedElement::CodeBlock(block) => block.to_mdx_component(res),
             ParsedElement::Citation(cite) => cite.to_mdx_component(res),
-            ParsedElement::InspectionRequest(req) => req.to_mdx_component(res),
+            ParsedElement::OutgoingNoteLink(l) => l.to_mdx_component(res),
+            ParsedElement::Tag(tag) => tag.to_mdx_component(res),
         }
     }
 }

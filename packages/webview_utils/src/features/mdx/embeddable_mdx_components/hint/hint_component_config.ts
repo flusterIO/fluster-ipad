@@ -30,5 +30,6 @@ export const embeddableHintComponentConfig: EmbeddableComponentConfig = {
 
     testProps: {
         quantityScalar: 2
-    }
+    },
+    isInline: false
 }

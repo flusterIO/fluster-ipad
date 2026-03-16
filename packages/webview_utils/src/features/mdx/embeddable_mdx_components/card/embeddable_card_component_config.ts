@@ -37,5 +37,6 @@ ${faker.lorem.paragraphs({ min: 1, max: 5 })}
     },
     testProps: {
         quantityScalar: 0.8
-    }
+    },
+    isInline: false
 }

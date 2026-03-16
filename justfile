@@ -25,8 +25,8 @@ resolve_swift_packages:
 
 format: format_package_jsons format_swift
 
-benchmark_pre_parser:
-	cd {{justfile_directory()}}/packages/rust/fluster_pre_parser && cargo criterion --message-format="json" | tsx {{justfile_directory()}}/scripts/documentation/pipe_criterion_message_data_to_persistent_data.ts
+benchmark_conundrum:
+	cd {{justfile_directory()}}/packages/rust/conundrum && cargo criterion --message-format="json" | tsx {{justfile_directory()}}/scripts/documentation/pipe_criterion_message_data_to_persistent_data.ts
 
 build_website:
 	cd apps/website; pnpm build

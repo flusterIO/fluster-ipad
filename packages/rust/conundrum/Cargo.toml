@@ -54,3 +54,8 @@ criterion = { version = "0.8.2", features = ["html_reports", "async_tokio"] }
 
 [lints]
 workspace = true
+
+
+[[bench]]
+name = "conundrum_full_parse"
+harness = false

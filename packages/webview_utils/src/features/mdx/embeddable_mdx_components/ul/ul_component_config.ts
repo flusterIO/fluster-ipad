@@ -46,5 +46,6 @@ export const ulComponentConfig: EmbeddableComponentConfig = {
 
     testProps: {
         quantityScalar: 2
-    }
+    },
+    isInline: true
 }

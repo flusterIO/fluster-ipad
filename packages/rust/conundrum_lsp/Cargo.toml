@@ -1,29 +1,16 @@
 [package]
-name = "lsp-server"
-version = "0.7.9"
-description = "Generic LSP server scaffold."
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/rust-analyzer/tree/master/lib/lsp-server"
-edition = "2024"
+name = "conundrum_lsp"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+edition.workspace = true
+license.workspace = true
 
 [dependencies]
-log = "0.4.27"
-serde_json = "1.0.140"
-serde = { version = "1.0.219" }
-serde_derive = { version = "1.0.219" }
-crossbeam-channel = "0.5.15"
-ctrlc = "3.4.7"
-lsp-types = "=0.95"
-tree-sitter = { version = "0.23", features = ["wasm"] }
-tree-sitter-typescript = "0.23.2"
-tree-sitter-yaml = "0.7.2"
-tree-sitter-md = "0.5.3"
-codebook-tree-sitter-typst = "0.12.1"
-# crossbeam-channel
-
-[dev-dependencies]
-lsp-types = "=0.95"
-ctrlc = "3.4.7"
+ariadne = "0.6.0"
+tokio = { version = "1.50.0", features = ["full"] }
+tower-lsp = "0.20.0"
 
 [lints]
 workspace = true
