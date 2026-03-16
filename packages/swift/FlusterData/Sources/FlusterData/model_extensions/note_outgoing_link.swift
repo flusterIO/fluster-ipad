@@ -5,7 +5,7 @@
 //  Created by Andrew on 1/9/26.
 //
 
-import FlusterSwiftMdxParser
+import ConundrumSwift
 import Foundation
 
 extension NoteOutgoingLinkResult: @retroactive Codable {

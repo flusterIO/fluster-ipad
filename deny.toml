@@ -108,7 +108,7 @@ exceptions = [
     # Each entry is the crate and version constraint, and its specific allow
     # list
     { allow = ["Unlicense"], crate = "fluster_rust" },
-    { allow = ["Unlicense"], crate = "fluster_pre_parser" },
+    { allow = ["Unlicense"], crate = "conundrum" },
     { allow = ["Unlicense"], crate = "fluster_core_utilities" },
 ]
 

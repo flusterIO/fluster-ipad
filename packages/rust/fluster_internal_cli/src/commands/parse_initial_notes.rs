@@ -1,8 +1,9 @@
-use crate::utils::path_utils::get_workspace_root;
-use fluster_pre_parser::{
-    parse::by_regex::parse_mdx_by_regex::{ParseMdxOptions, parse_mdx_string_to_mdx_result},
-    parsing_result::mdx_parsing_result::MdxParsingResult,
+use conundrum::{
+    lang::runtime::run_conundrum::{ParseMdxOptions, run_conundrum},
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
+
+use crate::utils::path_utils::get_workspace_root;
 use std::{fs, path::Path};
 
 pub async fn parse_initial_notes() {
@@ -30,19 +31,15 @@ pub async fn parse_initial_notes() {
                 .expect("Converts path to string without throwing an error.")
         );
         let file_content = fs::read_to_string(_p).expect("Failed to read mdx file.");
-        let mut res = parse_mdx_string_to_mdx_result(&ParseMdxOptions::new(
-            None,
-            Vec::new(),
-            file_content.clone(),
-        ))
-        .await;
+        let mut res =
+            run_conundrum(ParseMdxOptions::new(None, Vec::new(), file_content.clone())).await;
 
         // Need to re-assign file_content to _content so that the front-matter is still present
         // during the seeding of the initial note data.
-        res.set_content(file_content);
+        res.content = file_content;
 
-        if let Some(fm) = res.get_front_matter_rust().clone() {
-            if fm.get_user_defined_id_rust().is_none() {
+        if let Some(fm) = res.front_matter.clone() {
+            if fm.user_defined_id.is_none() {
                 println!("No user defined id found in {}", p);
             }
         } else {

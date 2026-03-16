@@ -18,6 +18,20 @@ pub struct ParseMdxOptions {
     pub citations: Vec<CitationSummaryData>,
 }
 
+impl ParseMdxOptions {
+    pub fn new(
+        note_id: Option<String>,
+        citations: Vec<CitationSummaryData>,
+        content: String,
+    ) -> Self {
+        ParseMdxOptions {
+            note_id,
+            content,
+            citations,
+        }
+    }
+}
+
 pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     result.note_id = opts.note_id.clone();

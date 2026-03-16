@@ -881,6 +881,7 @@ public enum AutoTaggableType: String, Codable {
 /// as the content will need to grow as components are added.
 public enum BenchmarkGeneratedDateString: String, Codable {
 	case initial = "2_2_2026"
+	case firstWithAllSyntaxes = "2_16_2026"
 }
 
 public enum BenchmarkMagnitude: String, Codable {

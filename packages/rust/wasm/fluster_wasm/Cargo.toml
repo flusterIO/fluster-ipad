@@ -13,7 +13,7 @@ workspace = true
 [dependencies]
 wasm-bindgen = "0.2.114"
 fluster_core_utilities = { path = "../../../rust/fluster_core_utilities" }
-fluster_pre_parser = { path = "../../../rust/fluster_pre_parser/" }
+conundrum_lsp = { path = "../../../rust/conundrum_lsp/" }
 serde-wasm-bindgen = "0.6.5"
 web-sys = "0.3.91"
 js-sys = "0.3.91"

@@ -60,7 +60,7 @@ mod tests {
         let p = std::path::Path::new(&root)
             .join("packages")
             .join("rust")
-            .join("fluster_pre_parser")
+            .join("conundrum")
             .join("src")
             .join("embedded")
             .join("component_docs");

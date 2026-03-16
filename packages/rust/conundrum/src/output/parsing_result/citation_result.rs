@@ -8,6 +8,7 @@ pub struct CitationSummaryData {
     body: String,
 }
 
+#[typeshare]
 #[derive(uniffi::Record, Debug, Serialize, Deserialize, Clone)]
 pub struct CitationResult {
     /// The parsed citation key.

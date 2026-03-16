@@ -3,8 +3,113 @@
 */
 
 
+export interface ParsedCodeBlock {
+	language: string;
+	meta_data?: string;
+	content: string;
+	full_match: string;
+}
+
+export interface AiSerializationRequestPhase1 {
+	parsing_result: ParsedCodeBlock;
+}
+
+export interface CitationResult {
+	/** The parsed citation key. */
+	citation_key: string;
+	/** The complete bibtex entry */
+	idx: number;
+}
+
+export interface CitationSummaryData {
+	citation_key: string;
+	body: string;
+}
+
+export interface DictionaryEntryResult {
+	label: string;
+	body: string;
+}
+
 export interface DictionaryEntryResultData {
 	label: string;
 	note_id?: string;
+}
+
+export interface FrontMatterResult {
+	ignored_parsers: string[];
+	title?: string;
+	user_defined_id?: string;
+	file_path?: string;
+	topic?: string;
+	subject?: string;
+}
+
+export interface TagResult {
+	body: string;
+}
+
+export interface NoteOutgoingLinkResult {
+	/** The user defined id on the target note. */
+	link_to_note_id: string;
+}
+
+export interface MdxParsingResult {
+	note_id?: string;
+	content: string;
+	tags: TagResult[];
+	front_matter?: FrontMatterResult;
+	/**
+	 * bibliography_string is a string representing the concatenated bibtex entries of all
+	 * valid bibentries within the note, without duplicates and in the proper order.
+	 */
+	citations: CitationResult[];
+	dictionary_entries: DictionaryEntryResult[];
+	outgoing_links: NoteOutgoingLinkResult[];
+	/**
+	 * Always set to false initially, but can be set to true by certain parsers to avoid further
+	 * parsing.
+	 */
+	ignore_all_parsers: boolean;
+	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
+}
+
+export interface ParseMdxOptions {
+	note_id?: string;
+	content: string;
+	citations: CitationSummaryData[];
+}
+
+export interface ParsedCitation {
+	key: string;
+	full_match: string;
+}
+
+export interface ParsedInspectionRequest {
+	keyword: string;
+	level: number;
+	full_match: string;
+}
+
+export interface ParsedOutgoingNoteLink {
+	/** The user-defined id of the note which is being linked to. */
+	note_id: string;
+	/** The text content of the link. `[The stuff here](note:MyNote)` */
+	content: string;
+	/** The full content of the input string that represents this outgoing note link. */
+	full_match: string;
+}
+
+export interface ParsedTag {
+	/** The tag's body */
+	body: string;
+	/** The full match of the content that was originally in the note. */
+	full_match: string;
+}
+
+export enum AiSerializationRequestType {
+	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
+	SummarizeNote = "SummarizeNote",
+	RecommendResearch = "RecommendResearch",
 }
 

@@ -542,6 +542,7 @@ export enum AutoTaggableType {
  */
 export enum BenchmarkGeneratedDateString {
 	Initial = "2_2_2026",
+	FirstWithAllSyntaxes = "2_16_2026",
 }
 
 export enum BenchmarkMagnitude {

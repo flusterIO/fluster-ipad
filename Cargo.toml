@@ -7,12 +7,11 @@ members = [
     "packages/rust/fluster_internal_cli",
     "packages/rust/conundrum",
     "packages/rust/conundrum_swift/",
-    "packages/rust/conundrum_lsp/",
-    "packages/rust/fluster_pre_parser",
     "packages/rust/fluster_swift_mdx_parser",
     "packages/rust/uniffi_bindgen",
     "packages/rust/fluster_desktop_fs/",
-    "packages/rust/fluster_bibliography", "packages/rust/conundrum_lsp",
+    "packages/rust/fluster_bibliography",
+    "packages/rust/conundrum_lsp",
 ]
 
 
@@ -57,10 +56,6 @@ strum = { version = "0.27.2", features = ["derive"] }
 [workspace.lints.rust]
 unused_crate_dependencies = "warn"
 
-
-
-[profile.dev.package.lancedb]
-opt-level = 1
 
 [profile.release]
 lto = true

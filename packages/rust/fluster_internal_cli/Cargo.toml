@@ -12,7 +12,7 @@ clap = { version = "4.5.53", features = ["derive"] }
 ignore = "0.4.25"
 serde.workspace = true
 serde_json.workspace = true
-fluster_pre_parser = { path = "../fluster_pre_parser/" }
+conundrum = { path = "../conundrum/" }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }

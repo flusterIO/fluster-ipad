@@ -13,7 +13,6 @@ name = "conundrum_swift"
 uniffi = { workspace = true }
 conundrum = { path = "../conundrum/" }
 fluster_core_utilities = { path = "../fluster_core_utilities" }
-fluster_pre_parser = { path = "../fluster_pre_parser" }
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

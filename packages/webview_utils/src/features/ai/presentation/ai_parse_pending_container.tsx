@@ -29,7 +29,7 @@ export const FlusterAiParsePendingContainer = ({ res }: FlusterAiParsePendingCon
             />
             <div>
                 <InlineMdxContent
-                    mdx={res.block_content}
+                    mdx={res.content}
                 />
                 { }
             </div>

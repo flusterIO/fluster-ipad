@@ -1,5 +1,6 @@
 use gray_matter::Pod;
 use serde::{Deserialize, Serialize};
+use typeshare::typeshare;
 
 #[derive(uniffi::Enum, strum_macros::Display, Clone, Serialize, Deserialize)]
 pub enum FrontMatterKey {
@@ -23,6 +24,7 @@ pub enum FrontMatterKey {
     FilePath,
 }
 
+#[typeshare]
 #[derive(uniffi::Record, Debug, Clone, Serialize, Deserialize)]
 pub struct FrontMatterResult {
     pub ignored_parsers: Vec<String>,

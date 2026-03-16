@@ -1,6 +1,6 @@
 # Documentation Documentation
 
-Any documents placed in the `docs/in_content_docs/` directory will be copied to the embedded folder in the `packages/rust/fluster_pre_parser/src/embedded/in_content_docs/` directory.
+Any documents placed in the `docs/in_content_docs/` directory will be copied to the embedded folder in the `packages/rust/conundrum/src/embedded/in_content_docs/` directory.
 
 Each input file is parsed for the following syntax:
 
