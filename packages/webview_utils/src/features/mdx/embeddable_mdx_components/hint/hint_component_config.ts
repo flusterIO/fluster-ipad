@@ -23,6 +23,7 @@ export const embeddableHintComponentConfig: EmbeddableComponentConfig = {
             })
         })
     },
+    /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
     generateTestContent: async (faker, utils) => {
         return `<Hl ${utils.randomEmphasis()}>${faker.lorem.words({ min: 1, max: 5 })}</Hl>`
     },

@@ -1,41 +1,34 @@
 use serde::{Deserialize, Serialize};
+use typeshare::typeshare;
 use wasm_bindgen::prelude::*;
 
-use crate::{
-    parse::by_regex::regex_parsers::{
-        ai_trigger_parser::AiTriggerParser, citation_regex_parser::CitationRegexParser,
-        dictionary_entry_regex_parser::DictionaryEntryRegexParser,
-        embedded_docs_parser::EmbeddedInContentDocsParser, mdx_parser::MdxParser,
-        note_link_regex_parser::NoteLinkRegexParser, tag_regex_parser::TagRegexParser,
-    },
-    parsing_result::mdx_parsing_result::MdxParsingResult,
+use crate::parse::by_regex::regex_parsers::{
+    citation_regex_parser::CitationRegexParser, embedded_docs_parser::EmbeddedInContentDocsParser,
+    mdx_parser::MdxParser, note_link_regex_parser::NoteLinkRegexParser,
+    tag_regex_parser::TagRegexParser,
 };
 
-static REGEX_PARSERS: [&'static dyn MdxParser; 6] = [
+static REGEX_PARSERS: [&'static dyn MdxParser; 4] = [
     // Keep the EmbeddedInContentDocsParser first to allow the inserted content to then be parsed
     // if needed and to set the ignore_all field if neccessary.
     &EmbeddedInContentDocsParser,
     &TagRegexParser,
     &CitationRegexParser,
-    &DictionaryEntryRegexParser,
     &NoteLinkRegexParser,
-    &AiTriggerParser,
 ];
 
-#[wasm_bindgen]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record)]
+#[typeshare]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone)]
 pub struct SwiftDataCitationSummary {
     citation_key: String,
     body: String,
 }
 
-#[wasm_bindgen]
 impl SwiftDataCitationSummary {
-    #[wasm_bindgen(getter)]
     pub fn citation_key(&self) -> *const u8 {
         self.citation_key.as_ptr()
     }
-    #[wasm_bindgen(setter)]
+
     pub fn set_citation_key(&mut self, citation_key: String) {
         self.citation_key = citation_key
     }
@@ -48,17 +41,17 @@ impl SwiftDataCitationSummary {
 //     }
 // }
 
-#[wasm_bindgen]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record)]
+// TODO: Move this to the conundrum crate once all parsers have been moved over and remove this
+// crate completely.
+#[typeshare]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone)]
 pub struct ParseMdxOptions {
-    pub(crate) note_id: Option<String>,
-    pub(crate) content: String,
-    pub(crate) citations: Vec<SwiftDataCitationSummary>,
+    pub note_id: Option<String>,
+    pub content: String,
+    pub citations: Vec<SwiftDataCitationSummary>,
 }
 
-#[wasm_bindgen]
 impl ParseMdxOptions {
-    #[wasm_bindgen(constructor)]
     pub fn new(
         note_id: Option<String>,
         citations: Vec<SwiftDataCitationSummary>,
@@ -71,22 +64,26 @@ impl ParseMdxOptions {
         }
     }
 
+    pub fn get_note_id_rust(&self) -> Option<String> {
+        self.note_id.clone()
+    }
+
     pub fn get_content_rust(&self) -> String {
         self.content.clone()
     }
-    #[wasm_bindgen(getter)]
+
     pub fn content(&self) -> *const u8 {
         self.content.as_ptr()
     }
-    #[wasm_bindgen(setter)]
+
     pub fn set_content(&mut self, content: String) {
         self.content = content
     }
-    #[wasm_bindgen(getter)]
+
     pub fn citations(&self) -> JsValue {
         serde_wasm_bindgen::to_value(&self.citations).unwrap_or(JsValue::null())
     }
-    #[wasm_bindgen(setter)]
+
     pub fn set_citations(&mut self, citations: Vec<SwiftDataCitationSummary>) {
         self.citations = citations
     }

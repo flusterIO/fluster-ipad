@@ -1,5 +1,5 @@
 import { snippetCompletion } from "@codemirror/autocomplete";
-import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
+import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { embeddableCardPropsSchema } from "./embeddable_card_props";
 
@@ -27,6 +27,7 @@ export const embeddableCardComponentConfig: EmbeddableComponentConfig = {
             }),
         ]
     },
+    /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
     generateTestContent: async (faker, utils) => {
         return `
 <Card title="${faker.lorem.words({ min: 1, max: 20 })}" ${utils.randomEmphasis()} ${utils.valueIfRandomProablity(`desc="${faker.lorem.sentences({ min: 1, max: 3 })}"`)}>

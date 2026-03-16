@@ -1,4 +1,4 @@
-import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
+import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
@@ -15,14 +15,21 @@ export const hlComponentConfig: EmbeddableComponentConfig = {
     schema: hlPropsSchema,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hl/hl_component_docs.mdx",
     snippets: () => {
-        return getEmphasisOptions().map((c) => {
-            return snippetCompletion(`<Hl ${c}>#{content}</Hl>#{}`, {
-                label: `highlight-${c}`,
+        return [
+            snippetCompletion(`<Hl>#{content}</Hl>#{}`, {
+                label: `highlight`,
                 section: CompletionSections.components,
                 type: SnippetDefaultType.function
-            })
-        })
+            }),
+            ...getEmphasisOptions().map((c) => {
+                return snippetCompletion(`<Hl ${c}>#{content}</Hl>#{}`, {
+                    label: `highlight-${c}`,
+                    section: CompletionSections.components,
+                    type: SnippetDefaultType.function
+                })
+            })]
     },
+    /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
     generateTestContent: async (faker, utils) => {
         return `<Hl ${utils.randomEmphasis()}>${faker.lorem.words({ min: 1, max: 5 })}</Hl>`
     },

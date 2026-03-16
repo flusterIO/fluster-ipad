@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
-use strum::EnumIter;
+use strum_macros::EnumIter;
 use typeshare::typeshare;
 
 #[typeshare]

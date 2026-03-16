@@ -1,0 +1,516 @@
+## Hint
+
+The `Hint` component is a subtle 'hint', but can also display other text using the `label` property. 
+
+
+### Properties 
+
+
+> The following section was generated directly from code. That means the properties will always reflect the current state of the application, but on the other hand, they might not be formatted as neatly as the rest of the content.
+
+
+#### children
+
+
+The 'children' property is a unique property. You _can_ insert itusing the same syntax as other properties, but _unlike_ other properties, children can be inserted directly inside of the component. Most developers choose to represent certain properties as a 'child' when the content logically goes 'inside' of the component.
+
+#### label
+
+
+**String** The default is value "Hint".
+
+
+#### color
+
+
+**Enum (optional):** One of the following:
+
+- info
+- error
+- warn
+- success
+- primary
+- important
+- research
+- highlight
+- card
+
+#### info
+
+
+**Boolean (optional)**
+
+#### error
+
+
+**Boolean (optional)**
+
+#### warn
+
+
+**Boolean (optional)**
+
+#### success
+
+
+**Boolean (optional)**
+
+#### primary
+
+
+**Boolean (optional)**
+
+#### important
+
+
+**Boolean (optional)**
+
+#### research
+
+
+**Boolean (optional)**
+
+#### highlight
+
+
+**Boolean (optional)**
+
+#### card
+
+
+**Boolean (optional)**
+
+#### hideMathLabels
+
+
+Hides the MathJax labels in all child components.
+
+**Boolean (optional)**
+
+#### right
+
+
+'Floats' the component to the right. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
+**Boolean (optional)**
+
+#### left
+
+
+'Floats' the component to the left. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
+**Boolean (optional)**
+
+#### sidebar
+
+
+A utility property that sets a responsive max-width to create sidebar like layouts on large screens while allowing for full-width when the window is smaller.
+
+**Boolean (optional)**
+
+#### center
+
+
+This will _never_ work. This is put here only as an error trigger to notify users of `centerSelf` and `centerContent`
+
+#### centerSelf
+
+
+**Boolean (optional)**
+
+#### centerContent
+
+
+Centers the content of this component's children, not the component itself.
+
+**Boolean (optional)**
+
+#### border
+
+
+Add a small, muted border to the object.
+
+**Boolean (optional)**
+
+#### inline
+
+
+Tells the container to not forcefully create a new line and instead to flow with the rest of the content. Unless you're trying to apply properties to text inside of a paragraph using the Container component this is most likely not what you are looking for. If you want text to wrap around an element, use the `right` or `left` properties paired with a desired `width`.
+
+**Boolean (optional)**
+
+#### inShadow
+
+
+Casts an inset shadow from the object.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### shadow
+
+
+Casts a shadow from the object.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### rounded
+
+
+Rounds the corners of the container. Use `rounded="full"` or `rounded="fit"` to create a completely circular component, useful for some image layouts.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### text
+
+
+Change the text content of the container's children. Beware though, some edge cases might not respond as expected.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### width
+
+
+Set some custom width properties to create responsive layouts.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### height
+
+
+Set some custom height properties to create responsive layouts.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### margin
+
+
+Add some padding around the **outside** of an object. If you are looking to create space on the _inside_ of an object you are looking for `padding`.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginLeft
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginRight
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginTop
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginBottom
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### padding
+
+
+Create padding on the _inside_ of an object. If you are trying to create space _around_ an object. you are probably looking for `margin`.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingLeft
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingRight
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingTop
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingBottom
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gap
+
+
+When in Grid mode or in some other select layouts, this property create a gap between _all_ children.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gapX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gapY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+

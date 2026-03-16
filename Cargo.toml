@@ -6,6 +6,7 @@ members = [
     "packages/rust/fluster_database",
     "packages/rust/fluster_internal_cli",
     "packages/rust/conundrum",
+    "packages/rust/conundrum_swift/",
     "packages/rust/fluster_pre_parser",
     "packages/rust/fluster_swift_mdx_parser",
     "packages/rust/uniffi_bindgen",
@@ -48,6 +49,8 @@ specta = { version = "=2.0.0-rc.22", features = [
 ] }
 tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
 chrono = { version = "0.4", features = ["serde"] }
+strum_macros = "0.27.2"
+strum = { version = "0.27.2", features = ["derive"] }
 
 
 [workspace.lints.rust]

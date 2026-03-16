@@ -11,15 +11,31 @@ license.workspace = true
 chumsky = { version = "0.12.0", features = ["docsrs"] }
 crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }
 miette = { version = "7.6.0", features = ["fancy"] }
+nom = "8.0.0"
+nom_locate = "5.0.0"
 serde.workspace = true
 serde_json.workspace = true
 tower-lsp = "0.20.0"
+typeshare.workspace = true
+uniffi.workspace = true
+fluster_core_utilities = { path = "../fluster_core_utilities/" }
+insta = "1.46.3"
+nom-supreme = "0.8.0"
+strum = { workspace = true, features = ["derive"] }
+strum_macros.workspace = true
+gray_matter = "0.3.2"
+flatbuffers.workspace = true
+rust-embed = { version = "8.11.0", features = ["debug-embed"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }
+
+
+[dev-dependencies]
+criterion = { version = "0.8.2", features = ["html_reports", "async_tokio"] }
 
 
 [lints]

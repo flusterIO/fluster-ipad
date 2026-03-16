@@ -1,11 +1,11 @@
 import FlatBuffers
 import FlusterBibliography
 import FlusterMdx
-import FlusterSwiftMdxParser
 import Foundation
 import PaperKit
 import PencilKit
 import SwiftData
+import ConundrumSwift
 
 public enum AppSchemaV1: VersionedSchema {
   public static var models: [any PersistentModel.Type] {
@@ -15,7 +15,8 @@ public enum AppSchemaV1: VersionedSchema {
       BibEntryModel.self,
       AutoTaggable.self,
       NoteSummary.self,
-      FrontMatter.self
+      FrontMatter.self,
+      Equation.self
     ]
   }
   public static let versionIdentifier: Schema.Version = .init(1, 0, 0)
@@ -195,6 +196,9 @@ extension AppSchemaV1 {
     /// Future proofing for now.
     public var protected: Bool = false
     public var r3_vec: NoteVec3
+    /// Not yet being populated, but being setup to avoid versioning issues when the app moves back towards
+    /// the version that helped me.
+    public var equations: [Equation]
 
     /// drawing.toDataRepresentation() to conform to Data type.
     public init(
@@ -214,7 +218,8 @@ extension AppSchemaV1 {
           label: "Y", desc: "Personal Notes, Journaling and Unstructured Notes", value: 0,
           R3AxisId: .y),
         z: R3AxisData(
-          label: "Z", desc: "Business, Health & Personal Planning", value: 0, R3AxisId: .z))
+          label: "Z", desc: "Business, Health & Personal Planning", value: 0, R3AxisId: .z)),
+      equations: [Equation] = []
     ) {
       self.id = id ?? UUID.init().uuidString
       self.paper = drawing
@@ -228,6 +233,7 @@ extension AppSchemaV1 {
       self.citations = citations
       self.r3_vec = r3_vec
       self.frontMatter = FrontMatter.emptyFrontMatter()
+      self.equations = equations
     }
 
     public func containsCitation(citation: BibEntryModel) -> Bool {
@@ -444,9 +450,8 @@ extension AppSchemaV1 {
       let _body = self.markdown.body
       let res: Task<MdxParsingResult?, Never> = try await Task.detached {
         do {
-          let res = try await FlusterSwiftMdxParser.preParseMdx(
-            options: ParseMdxOptions(noteId: _id, content: _body, citations: []))
-          return res
+            let res = try await ConundrumSwift.runConundrumSwift(options: ParseMdxOptions(noteId: _id, content: _body, citations: []))
+            return res
         } catch {
           print("Mdx parsing error: \(error.localizedDescription)")
         }
@@ -744,8 +749,8 @@ extension AppSchemaV1 {
       return self.toBiblatexData()?.getTitle() ?? "No title found"
     }
 
-    public func toCitationSummary() -> SwiftDataCitationSummary {
-      return SwiftDataCitationSummary(
+    public func toCitationSummary() -> CitationSummaryData {
+      return CitationSummaryData(
         citationKey: self.id,
         body: self.data
       )
@@ -943,6 +948,37 @@ extension AppSchemaV1 {
       self.glob = glob
       self.value = value
       self.settingType = settingType
+    }
+  }
+
+  @Model
+  public class CodeSnippet {
+    /// One of shiki's bundled languages
+    public var language: String
+    public var label: String?
+    public var content: String
+    public var equation: Equation?
+    public init(language: String, content: String, label: String?, equation: Equation?) {
+      self.language = language
+      self.content = content
+      self.label = label
+      self.equation = equation
+    }
+  }
+
+  @Model
+  public class Equation {
+    public var label: String
+    public var desc: String?
+    public var mathJaxContent: String
+    public var codeContent: [CodeSnippet]
+    public init(
+      label: String, desc: String? = nil, mathJaxContent: String, codeContent: [CodeSnippet]
+    ) {
+      self.label = label
+      self.desc = desc
+      self.mathJaxContent = mathJaxContent
+      self.codeContent = codeContent
     }
   }
 }

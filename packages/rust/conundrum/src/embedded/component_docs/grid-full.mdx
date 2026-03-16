@@ -1,0 +1,1186 @@
+## Grid
+
+
+The `Grid` component is a _container_ component similar to the `Container` component, but the `Grid` component also allows a set of properties designed to create flexible and responsive grid layouts that can respond to any screen size.
+
+To achieve this grid layout, the component accepts each of the `SizableOption` properties ("none", "small", "smedium", etc...) as an optional number or string. If a field is a string, it must be a css compliant string, but in most cases you will likely want to use a number to represent the number of columns at that screen size. Not _all_ of the `SizableOption` fields are required either. **Fluster** goes through a progression, first looking for the value you provided, then for the next smallest size with a value, and then if it still doesn't find any, it resorts to a Fluster default for that screen size. It's very difficult to design something that looks good by default under all use cases, so set each property as needed.
+
+> To get the 'grid' effect you can't just write multiple columns, you need to break up the 'children' into 2 or more 'child' container components like a `Card`, a `Container`, an `Admonition`, or even another `Grid`. Basically any component that has stuff that goes inside of it.
+
+### Examples
+
+If you're in the split-view editor, try dragging the window pane to be more/less wide to see the responsive grid collapse and expand according to the number of columns at each screen size.
+
+```tsx
+<Grid none={1} medium={1} large={2}>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large" border>
+
+$$
+\delta = 2 G \frac{M_\oplus}{R_\oplus} \hat{R}
+$$
+
+</Container>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large" border>
+
+$$
+\gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
+$$
+
+
+</Container>
+
+</Grid>
+```
+
+#### Output
+
+
+<Grid none={1} medium={1} large={2}>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large" border>
+
+$$
+\delta = 2 G \frac{M_\oplus}{R_\oplus} \hat{R}
+$$
+
+</Container>
+
+<Container centerContent width="full" height="full" padding="medium" hideMathLabels text="large" border>
+
+$$
+\gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
+$$
+
+
+</Container>
+
+</Grid>
+
+
+
+If you know the minimum width that you want your content to be at, you can use the `responsive` property. This can be set to either a number (the number of pixels, text is 16 pixels high usually) or to a `SizableOption` string ("small", "medium", etc...).
+
+This option is great when you have a large number of columns and you want them to display reasonably well on all screen sizes.
+
+### Properties
+
+
+> The following section was generated directly from code. That means the properties will always reflect the current state of the application, but on the other hand, they might not be formatted as neatly as the rest of the content.
+
+
+**Union: One of the following types**
+
+#### columns
+
+
+**Number**
+
+#### responsive
+
+
+**Union (optional): One of the following types**
+
+**Boolean**
+undefined
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### fit
+
+
+**Boolean (optional)**
+
+#### color
+
+
+**Enum (optional):** One of the following:
+
+- info
+- error
+- warn
+- success
+- primary
+- important
+- research
+- highlight
+- card
+
+#### hideMathLabels
+
+
+Hides the MathJax labels in all child components.
+
+**Boolean (optional)**
+
+#### right
+
+
+'Floats' the component to the right. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
+**Boolean (optional)**
+
+#### left
+
+
+'Floats' the component to the left. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
+**Boolean (optional)**
+
+#### sidebar
+
+
+A utility property that sets a responsive max-width to create sidebar like layouts on large screens while allowing for full-width when the window is smaller.
+
+**Boolean (optional)**
+
+#### center
+
+
+This will _never_ work. This is put here only as an error trigger to notify users of `centerSelf` and `centerContent`
+
+#### centerSelf
+
+
+**Boolean (optional)**
+
+#### centerContent
+
+
+Centers the content of this component's children, not the component itself.
+
+**Boolean (optional)**
+
+#### border
+
+
+Add a small, muted border to the object.
+
+**Boolean (optional)**
+
+#### inline
+
+
+Tells the container to not forcefully create a new line and instead to flow with the rest of the content. Unless you're trying to apply properties to text inside of a paragraph using the Container component this is most likely not what you are looking for. If you want text to wrap around an element, use the `right` or `left` properties paired with a desired `width`.
+
+**Boolean (optional)**
+
+#### inShadow
+
+
+Casts an inset shadow from the object.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### shadow
+
+
+Casts a shadow from the object.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### rounded
+
+
+Rounds the corners of the container. Use `rounded="full"` or `rounded="fit"` to create a completely circular component, useful for some image layouts.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### text
+
+
+Change the text content of the container's children. Beware though, some edge cases might not respond as expected.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### width
+
+
+Set some custom width properties to create responsive layouts.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### height
+
+
+Set some custom height properties to create responsive layouts.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### margin
+
+
+Add some padding around the **outside** of an object. If you are looking to create space on the _inside_ of an object you are looking for `padding`.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginLeft
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginRight
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginTop
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginBottom
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### padding
+
+
+Create padding on the _inside_ of an object. If you are trying to create space _around_ an object. you are probably looking for `margin`.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingLeft
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingRight
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingTop
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingBottom
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gap
+
+
+When in Grid mode or in some other select layouts, this property create a gap between _all_ children.
+
+**Enum:** One of the following:
+**Default:** medium- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gapX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gapY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### info
+
+
+**Boolean (optional)**
+
+#### error
+
+
+**Boolean (optional)**
+
+#### warn
+
+
+**Boolean (optional)**
+
+#### success
+
+
+**Boolean (optional)**
+
+#### primary
+
+
+**Boolean (optional)**
+
+#### important
+
+
+**Boolean (optional)**
+
+#### research
+
+
+**Boolean (optional)**
+
+#### highlight
+
+
+**Boolean (optional)**
+
+#### card
+
+
+**Boolean (optional)**
+undefined
+#### full
+
+
+**Union (optional): One of the following types**
+
+**Number**
+undefined
+**String**
+
+#### xxl
+
+
+**Union (optional): One of the following types**
+
+**Number**
+undefined
+**String**
+
+#### xl
+
+
+**Union (optional): One of the following types**
+
+**Number**
+undefined
+**String**
+
+#### large
+
+
+**Union (optional): One of the following types**
+
+**Number**
+undefined
+**String**
+
+#### medium
+
+
+**Union (optional): One of the following types**
+
+**Number**
+undefined
+**String**
+
+#### smedium
+
+
+**Union (optional): One of the following types**
+
+**Number**
+undefined
+**String**
+
+#### small
+
+
+**Union (optional): One of the following types**
+
+**Number**
+undefined
+**String**
+
+#### none
+
+
+**Union (optional): One of the following types**
+
+**Number**
+undefined
+**String**
+
+#### responsive
+
+
+**Union (optional): One of the following types**
+
+**Boolean**
+undefined
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### fit
+
+
+**Boolean (optional)**
+
+#### color
+
+
+**Enum (optional):** One of the following:
+
+- info
+- error
+- warn
+- success
+- primary
+- important
+- research
+- highlight
+- card
+
+#### hideMathLabels
+
+
+Hides the MathJax labels in all child components.
+
+**Boolean (optional)**
+
+#### right
+
+
+'Floats' the component to the right. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
+**Boolean (optional)**
+
+#### left
+
+
+'Floats' the component to the left. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
+**Boolean (optional)**
+
+#### sidebar
+
+
+A utility property that sets a responsive max-width to create sidebar like layouts on large screens while allowing for full-width when the window is smaller.
+
+**Boolean (optional)**
+
+#### center
+
+
+This will _never_ work. This is put here only as an error trigger to notify users of `centerSelf` and `centerContent`
+
+#### centerSelf
+
+
+**Boolean (optional)**
+
+#### centerContent
+
+
+Centers the content of this component's children, not the component itself.
+
+**Boolean (optional)**
+
+#### border
+
+
+Add a small, muted border to the object.
+
+**Boolean (optional)**
+
+#### inline
+
+
+Tells the container to not forcefully create a new line and instead to flow with the rest of the content. Unless you're trying to apply properties to text inside of a paragraph using the Container component this is most likely not what you are looking for. If you want text to wrap around an element, use the `right` or `left` properties paired with a desired `width`.
+
+**Boolean (optional)**
+
+#### inShadow
+
+
+Casts an inset shadow from the object.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### shadow
+
+
+Casts a shadow from the object.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### rounded
+
+
+Rounds the corners of the container. Use `rounded="full"` or `rounded="fit"` to create a completely circular component, useful for some image layouts.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+#### text
+
+
+Change the text content of the container's children. Beware though, some edge cases might not respond as expected.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### width
+
+
+Set some custom width properties to create responsive layouts.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### height
+
+
+Set some custom height properties to create responsive layouts.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### margin
+
+
+Add some padding around the **outside** of an object. If you are looking to create space on the _inside_ of an object you are looking for `padding`.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginLeft
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginRight
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginTop
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginBottom
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### padding
+
+
+Create padding on the _inside_ of an object. If you are trying to create space _around_ an object. you are probably looking for `margin`.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingLeft
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingRight
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingTop
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingBottom
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gap
+
+
+When in Grid mode or in some other select layouts, this property create a gap between _all_ children.
+
+**Enum:** One of the following:
+**Default:** medium- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gapX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gapY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### info
+
+
+**Boolean (optional)**
+
+#### error
+
+
+**Boolean (optional)**
+
+#### warn
+
+
+**Boolean (optional)**
+
+#### success
+
+
+**Boolean (optional)**
+
+#### primary
+
+
+**Boolean (optional)**
+
+#### important
+
+
+**Boolean (optional)**
+
+#### research
+
+
+**Boolean (optional)**
+
+#### highlight
+
+
+**Boolean (optional)**
+
+#### card
+
+
+**Boolean (optional)**
+
+

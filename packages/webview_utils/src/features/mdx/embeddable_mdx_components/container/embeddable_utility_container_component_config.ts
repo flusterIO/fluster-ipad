@@ -22,6 +22,7 @@ export const embeddableUtilityContainerComponentConfig: EmbeddableComponentConfi
             }),
         ]
     },
+    /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
     generateTestContent: async (faker, utils) => {
         return `
 <Container ${utils.randomBooleanProperties([

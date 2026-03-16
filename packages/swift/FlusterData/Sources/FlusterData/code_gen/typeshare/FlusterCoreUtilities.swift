@@ -69,20 +69,6 @@ public struct BibtexEditorState: Codable {
 	}
 }
 
-public struct CodeBlockParsingResult: Codable {
-	public let full_match: String
-	public let language_tag: String
-	public let block_content: String
-	public let meta_data: String?
-
-	public init(full_match: String, language_tag: String, block_content: String, meta_data: String?) {
-		self.full_match = full_match
-		self.language_tag = language_tag
-		self.block_content = block_content
-		self.meta_data = meta_data
-	}
-}
-
 public struct WebviewDictionaryEntry: Codable {
 	public let label: String
 	public let body: String

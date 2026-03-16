@@ -22,9 +22,11 @@ export const DictionaryPage = connector(({ entries }: Pick<DictionaryState, "ent
                 {entries.map((entry) => {
                     return (
                         <DictionaryEntryComponent
-                            label={entry.label}
                             InlineMdxContent={InlineMdxContent}
-                            noteId={entry.origin_note_id}
+                            entryData={{
+                                note_id: entry.origin_note_id,
+                                label: entry.label
+                            }}
                         >
                             <MdxContent
                                 mdx={entry.body}

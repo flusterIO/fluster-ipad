@@ -19,6 +19,7 @@ let package = Package(
   dependencies: [
     .package(path: "../../rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser/"),
     .package(path: "../../rust/fluster_bibliography/FlusterBibliography/"),
+    .package(path: "../../rust/conundrum_swift/ConundrumSwift/"),
     .package(path: "../FlusterMdx/"),
     .package(
       url: "https://github.com/google/flatbuffers.git",
@@ -37,6 +38,7 @@ let package = Package(
       dependencies: [
         .product(name: "FlusterSwiftMdxParser", package: "FlusterSwiftMdxParser"),
         .product(name: "FlusterBibliography", package: "FlusterBibliography"),
+        .product(name: "ConundrumSwift", package: "ConundrumSwift"),
         .product(name: "FlusterMdx", package: "FlusterMdx"),
         .product(name: "FlatBuffers", package: "flatbuffers")
       ]

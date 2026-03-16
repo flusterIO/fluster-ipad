@@ -1,6 +1,6 @@
 import {
-    InContentDocumentationId,
-    InContentDocumentationFormat,
+    type InContentDocumentationId,
+    type InContentDocumentationFormat,
 } from "../../packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities";
 import { markdownContentToDocumentationPair } from "./markdown_content_to_documentation_pair";
 import path from "path";
@@ -10,7 +10,7 @@ const root = path.resolve(__dirname, "../../");
 const inputDir = path.resolve(root, "docs/in_content_docs");
 const outputDir = path.resolve(
     root,
-    "packages/rust/fluster_pre_parser/src/embedded/in_content_docs/",
+    "packages/rust/conundrum/src/embedded/in_content_docs/",
 );
 
 export const inContentDocumentationIdToFileName = (

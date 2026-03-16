@@ -87,7 +87,11 @@ build_cross_language_schemas: generate_initial_note_data
 	$FLAT_BUFFER_PATH -o ./packages/generated/desktop_bindings/src/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --ts
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare {{justfile_directory()}}/packages/rust/fluster_core_utilities --lang=swift --output-folder={{justfile_directory()}}/packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare
+	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
 
+
+build_conundrum_swift:
+	cd {{justfile_directory()}}/packages/rust/conundrum_swift; cargo swift package -y --xcframework-name Conundrum
 
 build_desktop_fs:
 	cd {{justfile_directory()}}/packages/rust/fluster_desktop_fs; cargo swift package -y --xcframework-name FlusterDT
@@ -175,12 +179,12 @@ build_fluster_language_lezer:
 
 build_all_webviews: build_cross_language_all build_webview_utils build_splitview_mdx_editor build_bibtex_editor_webview build_note_detail_webview build_dictionary_webview
 
-pre_ipad_build: generate_initial_launch_data write_zod_schema_docs build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_swift_mdx_parser build_splitview_mdx_editor_ipad build_bibtex_editor_webview_ipad build_note_detail_webview_ipad build_dictionary_webview_ipad
+pre_ipad_build: generate_initial_launch_data write_zod_schema_docs build_cross_language_all build_conundrum_swift build_fluster_bibliography generate_initial_note_paths build_fluster_swift_mdx_parser build_splitview_mdx_editor_ipad build_bibtex_editor_webview_ipad build_note_detail_webview_ipad build_dictionary_webview_ipad
 
 generate_shiki_themes:
 	tsx scripts/write_bundled_themes.ts
 
-pre_desktop_build: generate_shiki_themes write_zod_schema_docs generate_initial_launch_data build_fluster_swift_mdx_parser build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_webview_utils build_splitview_mdx_editor_mac build_standalone_mdx_preview_webview_mac build_bibtex_editor_webview_mac build_dictionary_webview_mac build_note_detail_webview_mac
+pre_desktop_build: generate_shiki_themes write_zod_schema_docs generate_initial_launch_data build_fluster_swift_mdx_parser build_cross_language_all build_fluster_bibliography generate_initial_note_paths build_fluster_core_rust_utilities build_desktop_fs build_conundrum_swift build_webview_utils build_splitview_mdx_editor_mac build_standalone_mdx_preview_webview_mac build_bibtex_editor_webview_mac build_dictionary_webview_mac build_note_detail_webview_mac
 
 test_rust: build_cross_language_schemas
 	cargo nextest run --no-capture

@@ -108,6 +108,9 @@
 
 # Today
 
+- [ ] Handle moving of code block parsers to nom completely.
+  - [ ] Handle modification of the input options.
+  - [ ] Link with existing parsers for now, but move everything to nom in the near future.
 - [ ] Handle rest of iPad webviews
   - [ ] Make sure all state is working and responding to change.
   - [ ] Add in desperately needed save method to iPad settings.

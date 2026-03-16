@@ -44,13 +44,6 @@ export interface BibtexEditorState {
 	value: string;
 }
 
-export interface CodeBlockParsingResult {
-	full_match: string;
-	language_tag: string;
-	block_content: string;
-	meta_data?: string;
-}
-
 export interface WebviewDictionaryEntry {
 	label: string;
 	body: string;

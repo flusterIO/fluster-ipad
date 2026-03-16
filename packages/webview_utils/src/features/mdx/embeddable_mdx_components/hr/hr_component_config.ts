@@ -20,6 +20,7 @@ export const hrComponentConfig: EmbeddableComponentConfig = {
             type: SnippetDefaultType.function
         })]
     },
+    /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
     generateTestContent: async (faker, utils) => {
         return `<Hr ${utils.valueIfRandomProablity(`content={'${faker.lorem.words({ min: 1, max: 8 })}'}`)} />`
     },

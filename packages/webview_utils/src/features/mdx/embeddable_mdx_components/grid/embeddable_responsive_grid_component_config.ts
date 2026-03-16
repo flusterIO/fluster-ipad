@@ -1,9 +1,9 @@
 import { snippetCompletion } from "@codemirror/autocomplete";
-import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
+import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { embeddableResponsiveGridPropsSchema } from "./embeddable_responsive_grid_props";
-import { EmbeddableUtilityContainerPropsInput } from "../container/embeddable_utility_container_props";
-import { KeysOfType } from "@/utils/types/utility_types";
+import { type EmbeddableUtilityContainerPropsInput } from "../container/embeddable_utility_container_props";
+import { type KeysOfType } from "@/utils/types/utility_types";
 import { SizableOption, sizableOptions } from "../schemas/sizable_props_schema";
 
 export const gridComponentNames = [EmbeddableComponentName.Grid] as const;
@@ -24,6 +24,7 @@ export const embeddableGridComponentConfig: EmbeddableComponentConfig = {
             }),
         ]
     },
+    /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
     generateTestContent: async (faker, utils) => {
         return `
 <Grid ${faker.helpers.arrayElement([SizableOption.Full, SizableOption.Medium, SizableOption.Small, SizableOption.Fit])}={2} gap="${faker.helpers.arrayElement(sizableOptions)}" ${utils.randomBooleanProperties([

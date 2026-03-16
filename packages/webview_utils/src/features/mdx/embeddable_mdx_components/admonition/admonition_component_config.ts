@@ -1,9 +1,9 @@
-import { CompletionSections, ComponentCategory, EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
+import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
 import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
-import { AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
-import { KeysOfType } from "@/utils/types/utility_types";
+import { type AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
+import { type KeysOfType } from "@/utils/types/utility_types";
 
 
 export const admonitionComponentNames = [EmbeddableComponentName.Admonition] as const
@@ -54,6 +54,7 @@ export const admonitionComponentConfig: EmbeddableComponentConfig = {
         }
         return items
     },
+    /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
     generateTestContent: async (faker, utils) => {
         return `
 <Admonition ${utils.randomBooleanProperties([

@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react'
 import { FlusterAiParseButton } from "./ai_parse_button"
-import { type CodeBlockParsingResult } from '../../../core/code_gen/typeshare/fluster_core_utilities'
 import { InlineMdxContent } from '#/mdx/components/inline_mdx_content'
+import { type ParsedCodeBlock } from "../../../core/code_gen/typeshare/conundrum"
 
 
 interface FlusterAiParsePendingContainerProps {
@@ -11,11 +11,10 @@ interface FlusterAiParsePendingContainerProps {
      * with the current state of the component, not necessarily the current state of the note
      * to reflect the state that the user is actually seeing as the DB lags behind a bit.
      */
-    stringifiedResult: string | null
+    res: ParsedCodeBlock | null
 }
 
-export const FlusterAiParsePendingContainer = ({ stringifiedResult }: FlusterAiParsePendingContainerProps): ReactNode => {
-    const res = stringifiedResult ? JSON.parse(stringifiedResult) as CodeBlockParsingResult : null
+export const FlusterAiParsePendingContainer = ({ res }: FlusterAiParsePendingContainerProps): ReactNode => {
     if (!res) {
         console.error("Something went wrong while attempting to parse the json data passed into the FlusterAiParsePendingContainer.")
         return null

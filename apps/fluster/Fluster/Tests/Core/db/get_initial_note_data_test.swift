@@ -7,7 +7,6 @@
 
 import Testing
 
-@testable import FlusterSwiftMdxParser
 @testable import FlusterSwift
 @testable import FlusterData
 

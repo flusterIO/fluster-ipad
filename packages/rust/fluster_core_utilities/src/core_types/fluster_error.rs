@@ -51,6 +51,10 @@ pub enum FlusterError {
     FailToReadSettings,
     #[error("Failed to save settings.")]
     FailToSaveSettings,
+
+    // -- Conundrum stuff --
+    #[error("Failed to parse conundrum successfully.")]
+    ConundrumParsingError,
 }
 
 pub type FlusterResult<T> = Result<T, FlusterError>;

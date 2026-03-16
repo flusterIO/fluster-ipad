@@ -6,7 +6,7 @@ import { markdownContentToDocumentationPair } from "./documentation/markdown_con
 const monoRepoRoot = path.resolve(__dirname, "../");
 const outputDir = path.resolve(
     monoRepoRoot,
-    "./packages/rust/fluster_pre_parser/src/embedded/component_docs/",
+    "./packages/rust/conundrum/src/embedded/component_docs/",
 );
 
 if (!fs.existsSync(outputDir)) {
