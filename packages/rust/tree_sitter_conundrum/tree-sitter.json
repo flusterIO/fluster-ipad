@@ -1,0 +1,45 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "conundrum",
+      "camelcase": "Conundrum",
+      "title": "Conundrum",
+      "scope": "source.conundrum",
+      "file-types": [
+        "mdx",
+        "conundrum",
+        "md",
+        "flstr"
+      ],
+      "injection-regex": "^conundrum$",
+      "class-name": "TreeSitterConundrum"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "A Rust powered superset of mdx.",
+    "authors": [
+      {
+        "name": "Andrew Mueller (fluster.eyeoh@gmail.com)",
+        "email": "fluster.eyeoh@gmail.com",
+        "url": "https://flusterapp.com"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/flusterIO",
+      "funding": "https://github.com/flusterIO"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "java": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": true
+  }
+}

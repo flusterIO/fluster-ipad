@@ -28,7 +28,13 @@ impl MdxComponentResult for ParsedCitation {
 pub fn parse_citation(input: &str) -> IResult<&str, ParsedCitation> {
     let start_point = input;
 
-    let (remaining, key) = delimited(tag("[cite:"), alphanumeric1, char(']')).parse(input)?;
+    // We must match the EXACT outer boundaries: []
+    // let (remaining, key) = delimited(
+    //     tag("[]"), // Use tag("]]") instead of char(']')
+    // )
+    // .parse(input)?;
+
+    let (remaining, key) = delimited(tag("[[cite:"), alphanumeric1, tag("]]")).parse(input)?;
 
     let consumed_len = start_point.len() - remaining.len();
     let full_match = &start_point[..consumed_len];

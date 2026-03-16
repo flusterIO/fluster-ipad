@@ -26,6 +26,20 @@ strum_macros.workspace = true
 gray_matter = "0.3.2"
 flatbuffers.workspace = true
 rust-embed = { version = "8.11.0", features = ["debug-embed"] }
+dashmap = { version = "6.1.0", features = ["rayon"] }
+tower-test = "0.4.0"
+lsp-types = "0.97.0"
+molc = "0.3.0"
+typst = "0.14.2"
+typst-library = "0.14.2"
+typst-svg = "0.14.2"
+typst-syntax = "0.14.2"
+typst-pdf = "0.14.2"
+typst-html = "0.14.2"
+typst-render = "0.14.2"
+typst-kit = { version = "0.14.2", features = ["embed-fonts"] }
+rssn = { version = "0.2.7", features = ["full"] }
+typst-eval = "0.14.2"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }

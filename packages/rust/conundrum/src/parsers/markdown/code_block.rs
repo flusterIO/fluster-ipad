@@ -1,22 +1,21 @@
 use nom::{
     IResult, Parser,
     bytes::complete::{tag, take_till, take_until, take_while1},
-    character::complete::{anychar, line_ending, multispace0, space0},
+    character::complete::{line_ending, space0},
     combinator::opt,
 };
 
 use crate::lang::elements::parsed_code_block::ParsedCodeBlock;
 
-pub fn parse_markdown_block(input: &str) -> IResult<&str, ParsedCodeBlock> {
-    // 1. Skip leading whitespace but keep track of the start point
-    let (i, _) = multispace0(input)?;
-    let start_point = i;
+pub fn parse_code_block(input: &str) -> IResult<&str, ParsedCodeBlock> {
+    // 1. Mark the absolute start. No multispace0 here!
+    let start_point = input;
 
-    // 2. Parse the opening: backticks and language
-    let (i, ticks) = take_while1(|c: char| c == '`')(i)?;
+    // 2. Parse backticks and language
+    let (i, ticks) = take_while1(|c: char| c == '`')(input)?;
     let (i, language) = take_while1(|c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r')(i)?;
 
-    // 3. Optional metadata
+    // 3. Properly define meta_opt (the missing piece)
     let (i, meta_opt) = opt(|input| {
         let (input, _) = space0(input)?;
         let (input, _) = tag("--")(input)?;
@@ -28,12 +27,11 @@ pub fn parse_markdown_block(input: &str) -> IResult<&str, ParsedCodeBlock> {
     let (i, _) = space0(i)?;
     let (i, _) = line_ending(i)?;
 
-    // 4. Capture content until exact backtick match
+    // 4. Capture content until closing backticks
     let (i, raw_content) = take_until(ticks)(i)?;
     let (i, end_ticks) = tag(ticks)(i)?;
 
-    // 5. Calculate the full_match span
-    // We calculate the length consumed and slice from the start_point
+    // 5. Lossless pointer math for full_match
     let consumed_len =
         end_ticks.as_ptr() as usize + end_ticks.len() - start_point.as_ptr() as usize;
     let full_match = &start_point[..consumed_len];
@@ -42,6 +40,7 @@ pub fn parse_markdown_block(input: &str) -> IResult<&str, ParsedCodeBlock> {
         .map(|s| s.trim().to_string())
         .filter(|s| !s.is_empty());
 
+    // Clean up trailing newline in content if present
     let content = raw_content
         .strip_suffix("\r\n")
         .or_else(|| raw_content.strip_suffix('\n'))
@@ -63,7 +62,7 @@ pub fn parse_all_blocks(input: &str) -> Vec<ParsedCodeBlock> {
     let mut curr_input = input;
 
     while !curr_input.is_empty() {
-        match parse_markdown_block(curr_input) {
+        match parse_code_block(curr_input) {
             Ok((next_input, block)) => {
                 results.push(block);
                 curr_input = next_input;

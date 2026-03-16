@@ -6,10 +6,13 @@ expression: "&res.content"
 # Full Test
 
 
-This is my citation here[<FlusterCitation citationKey='myCitation' />].
+This is my citation here<FlusterCitation citationKey='myCitation' />.
 
 
 ## Code Blocks
+
+
+
 <DictionaryEntry entryData={{"label":"The derivative of $\\delta$ is...","note_id":null}}>
 
 This is my content in here.
@@ -23,6 +26,79 @@ This is my content in here.
 const x = y / z;
 
 ```
+
+
+
 <FlusterAiParsePendingContainer stringifiedResult={{"language":"fluster-ai","meta_data":null,"content":"Can you help me summarize this note please?","full_match":"```fluster-ai \nCan you help me summarize this note please?\n```"}}>
 Can you help me summarize this note please?
 </FlusterAiParsePendingContainer>
+
+
+
+## Documentation
+
+
+
+<InContentDocumentationContainer inContentId="Docs" format="short">
+## Documentation
+
+
+
+| Trigger | Desc |
+| ------- | ---- |
+| `Docs??` | The one you probably want to remember. This will take you back here. |
+| `Markdown??` | A quick markdown reference for those just getting started. |
+| `Jsx??` | A quick jsx reference for those that are ready to take advantage of the 'x' in mdx. |
+| `Syntax??` | A reference to Fluster specific syntax. |
+| `Emoji??` | A sample table of many of the emojis available in Fluster. |
+| `Components??` | A list of all available components. |
+
+Every component also has documentation, available at that component's name with the same `?` syntax.
+
+
+### Component Property Models
+
+
+
+| Trigger | Desc | Used in |
+| ------- | ---- | ------- |
+| `Sizable??` | The core styling model, especially for container components. | `Card`, <br/> `Container`, <br /> `Admonition`, <br/> etc.. |
+| `Emphasis??` | A list of boolean properties that can apply unique styles like `info` or `important`. | `Highlight`, <br /> `Underline`, <br /> `Admonition`, <br /> ... |
+
+</InContentDocumentationContainer>
+
+
+
+
+<InContentDocumentationContainer inContentId="Docs" format="full">
+## Documentation
+
+
+Trigger documentation by placing specific keywords followed by either 1 or 2 `?`. All triggers must appear alone on a line, meaning no trailing or leading white space for specificity's sake.
+
+
+| Trigger | Desc |
+| ------- | ---- |
+| `Docs??` | The one you probably want to remember. This will take you back here. |
+| `Markdown??` | A quick markdown reference for those just getting started. |
+| `Jsx??` | A quick jsx reference for those that are ready to take advantage of the 'x' in mdx. |
+| `Syntax??` | A reference to Fluster specific syntax. |
+| `Emoji??` | A sample table of many of the emojis available in Fluster. |
+| `Components??` | A list of all available components. |
+
+Every component also has documentation, available at that component's name with the same `?` syntax.
+
+
+### Component Property Models
+
+
+Many of the components share certain property models between them, making the application of properties more predictable. Because of this, it doesn't make sense to document each property in the shared classes independently.
+
+In other words, if components A and B accept properties $P_a$ and $P_b$, where $P_{a}$ and $P_{b}$ both extend `SizableObject`, it would just be confusing to the user to list all of the `SizableObject` properties mixed in with the properties that are unique to $P_{a}$ or $P_{b}$. For that reason, we document the largest of those shared models separately.
+
+| Trigger | Desc | Used in |
+| ------- | ---- | ------- |
+| `Sizable??` | The core styling model, especially for container components. | `Card`, <br/> `Container`, <br /> `Admonition`, <br/> etc.. |
+| `Emphasis??` | A list of boolean properties that can apply unique styles like `info` or `important`. | `Highlight`, <br /> `Underline`, <br /> `Admonition`, <br /> ... |
+
+</InContentDocumentationContainer>

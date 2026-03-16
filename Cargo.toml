@@ -7,6 +7,7 @@ members = [
     "packages/rust/fluster_internal_cli",
     "packages/rust/conundrum",
     "packages/rust/conundrum_swift/",
+    "packages/rust/conundrum_lsp/",
     "packages/rust/fluster_pre_parser",
     "packages/rust/fluster_swift_mdx_parser",
     "packages/rust/uniffi_bindgen",
