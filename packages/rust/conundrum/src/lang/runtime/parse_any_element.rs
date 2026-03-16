@@ -1,25 +1,32 @@
-use nom::{IResult, Parser, branch::alt};
+use winnow::combinator::{dispatch, peek};
+use winnow::{
+    ModalResult, Parser,
+    combinator::{alt, repeat},
+    token::any,
+};
 
 use crate::{
-    lang::elements::parsed_elements::ParsedElement,
+    lang::elements::{parsed_code_block::ParsedCodeBlock, parsed_elements::ParsedElement},
     parsers::{
         fluster::{
-            docs::parse_inspection, inline_citation::parse_citation,
-            note_link::parse_outgoing_note_link, tag::parse_tags,
+            inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink, tag::ParsedTag,
         },
-        markdown::code_block::parse_code_block,
+        markdown::parser_trait::ConundrumParser,
     },
 };
 
-pub fn parse_any_element(input: &str) -> IResult<&str, ParsedElement> {
-    // alt tries each parser in order. The .map() method (which requires the Parser trait)
-    // wraps the result in our ParsedElement enum so both return the same type.
-    alt((
-        parse_code_block.map(ParsedElement::CodeBlock),
-        parse_citation.map(ParsedElement::Citation),
-        parse_inspection.map(ParsedElement::InspectionRequest),
-        parse_outgoing_note_link.map(ParsedElement::OutgoingNoteLink),
-        parse_tags.map(ParsedElement::Tag),
-    ))
-    .parse(input)
+pub fn parse_conundrum_string(input: &mut &str) -> ModalResult<Vec<ParsedElement>> {
+    repeat(
+        0..,
+        dispatch! {peek(any);
+            '`' => ParsedCodeBlock::parse_input_string.map(ParsedElement::CodeBlock),
+            '[' => alt((
+                ParsedCitation::parse_input_string.map(ParsedElement::Citation),
+                ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::OutgoingNoteLink),
+            )),
+            '#' => ParsedTag::parse_input_string.map(ParsedElement::Tag),
+            _ => any.map(|c: char| ParsedElement::Text(c.to_string())),
+        },
+    )
+    .parse_next(input)
 }

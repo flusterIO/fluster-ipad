@@ -7,14 +7,16 @@ use fluster_core_utilities::core_types::{
         InContentDocumentationFormat, InContentDocumentationId,
     },
 };
-use nom::{IResult, Parser, branch::alt, character::complete::line_ending};
-use nom::{
-    bytes::complete::{tag, take_while1},
-    character::complete::space0,
-};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 use typeshare::typeshare;
+use winnow::{
+    ModalResult, Parser,
+    ascii::{line_ending, space0},
+    combinator::alt,
+    stream::{Offset, Stream},
+    token::{literal, take_while},
+};
 
 use crate::{
     embedded::{
@@ -54,50 +56,54 @@ impl MdxComponentResult for ParsedInspectionRequest {
                     body_as_string,
                     DocumentationComponentName::InContentDocumentationContainer,
                 );
-            } else if let Some(component_name) =
-                EmbeddableComponentName::iter().find(|x| x.to_string() == self.keyword)
+            } else if let Some(comp_id) = EmbeddableComponentName::iter()
+                .find(|x| x.to_string() == self.keyword)
+                .map(|component_name| {
+                    COMPONENT_NAME_ID_MAP
+                        .get(&component_name)
+                        .expect("All components must have documentation.")
+                })
             {
-                if let Some(doc_id) = COMPONENT_NAME_ID_MAP.get(&component_name) {
-                    let body_as_string =
-                        EmbeddedComponentDocs::get_incontent_docs_by_id(&doc_id, &depth);
-                    return format!(
-                        "\n<{} inContentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
-                        DocumentationComponentName::InContentDocumentationContainer,
-                        doc_id,
-                        depth,
-                        body_as_string,
-                        DocumentationComponentName::InContentDocumentationContainer,
-                    );
-                }
+                let body_as_string =
+                    EmbeddedComponentDocs::get_incontent_docs_by_id(comp_id, &depth);
+                return format!(
+                    "\n<{} componentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
+                    DocumentationComponentName::InContentDocumentationContainer,
+                    comp_id,
+                    depth,
+                    body_as_string,
+                    DocumentationComponentName::InContentDocumentationContainer,
+                );
             }
         }
         self.full_match.clone()
     }
 }
 
-pub fn parse_inspection(input: &str) -> IResult<&str, ParsedInspectionRequest> {
-    let start_point = input;
+pub fn parse_inspection(input: &mut &str) -> ModalResult<ParsedInspectionRequest> {
+    let start_point = input.checkpoint();
 
     // 1. Match the keyword (alphanumeric)
-    let (i, keyword) = take_while1(|c: char| c.is_alphanumeric())(input)?;
+    let keyword = take_while(1.., |c: char| c.is_alphanumeric()).parse_next(input)?;
 
     // 2. Match exactly one or two question marks
-    let mut alt_tags = alt((tag("??"), tag("?")));
-    let (i, marks) = alt_tags.parse(i)?;
+    let mut alt_tags = alt((literal("??"), literal("?")));
+    let marks = alt_tags.parse_next(input)?;
 
     // 3. CRITICAL: Ensure it is the end of the line (no trailing non-whitespace)
-    let (i, _) = space0(i)?;
-    let (i, _) = alt((line_ending, tag(""))).parse(i)?;
+    let _ = space0.parse_next(input)?;
+    let _ = alt((line_ending, literal(""))).parse_next(input)?;
 
     let level = if marks == "??" { 2 } else { 1 };
-    let consumed_len = start_point.len() - i.len();
 
-    Ok((
-        i,
-        ParsedInspectionRequest {
-            keyword: keyword.to_string(),
-            level,
-            full_match: start_point[..consumed_len].to_string(),
-        },
-    ))
+    // Full Match
+    let end_point = input.checkpoint();
+    let offset = end_point.offset_from(&start_point);
+    let full_match = input.peek_slice(offset);
+
+    Ok(ParsedInspectionRequest {
+        keyword: keyword.to_string(),
+        level,
+        full_match: full_match.to_string(),
+    })
 }

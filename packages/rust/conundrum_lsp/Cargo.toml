@@ -11,8 +11,11 @@ license.workspace = true
 ariadne = "0.6.0"
 lsp-types = "0.97.0"
 miette = "7.6.0"
+nom_locate.workspace = true
 tower-lsp = "0.20.0"
 tree-sitter-md = "0.5.3"
+conundrum = { path = "../conundrum/" }
+nom.workspace = true
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tree-sitter = { version = "0.26.7", features = ["std"] }

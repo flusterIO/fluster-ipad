@@ -10,6 +10,12 @@ use crate::{
     },
 };
 
+impl MdxComponentResult for String {
+    fn to_mdx_component(&self, _: &mut MdxParsingResult) -> String {
+        self.clone()
+    }
+}
+
 // This enum acts as a router for our different syntaxes
 pub enum ParsedElement {
     CodeBlock(ParsedCodeBlock),
@@ -17,6 +23,7 @@ pub enum ParsedElement {
     OutgoingNoteLink(ParsedOutgoingNoteLink),
     Tag(ParsedTag),
     InspectionRequest(ParsedInspectionRequest),
+    Text(String),
 }
 
 impl MdxComponentResult for ParsedElement {
@@ -27,6 +34,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::Citation(cite) => cite.to_mdx_component(res),
             ParsedElement::OutgoingNoteLink(l) => l.to_mdx_component(res),
             ParsedElement::Tag(tag) => tag.to_mdx_component(res),
+            ParsedElement::Text(s) => s.clone(),
         }
     }
 }

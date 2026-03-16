@@ -18,6 +18,10 @@
       "require": "./dist/index.umd.js"
     }
   },
+  "dependencies": {
+    "lezer-generator": "0.13.4",
+    "vscode-languageserver-types": "3.17.5"
+  },
   "devDependencies": {
     "@lezer/common": "^1.0.0",
     "@lezer/generator": "1.8.0",
@@ -37,9 +41,5 @@
   "packageManager": "pnpm@9.7.1",
   "license": "MIT",
   "description": "Originally a fork of lezer-markdown-obsidian, now a bunch of codemirror utilities for Fluster.",
-  "module": "dist/index.umd.js",
-  "dependencies": {
-    "lezer-generator": "^0.13.4",
-    "vscode-languageserver-types": "^3.17.5"
-  }
+  "module": "dist/index.umd.js"
 }

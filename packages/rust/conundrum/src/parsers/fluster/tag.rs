@@ -1,15 +1,17 @@
 use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
-use nom::{
-    IResult, Parser,
-    bytes::{complete::tag, take_until},
-    sequence::delimited,
-};
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
+use winnow::{
+    ModalResult, Parser,
+    combinator::delimited,
+    stream::{Offset, Stream},
+    token::{literal, take_until},
+};
 
 use crate::{
     lang::runtime::traits::mdx_component_result::MdxComponentResult,
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    parsers::markdown::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
@@ -27,33 +29,45 @@ impl MdxComponentResult for ParsedTag {
             return self.full_match.clone();
         }
 
-        if let Some(fm) = &res.front_matter {
-            if fm
-                .ignored_parsers
+        if res.front_matter.as_ref().is_some_and(|fm| {
+            fm.ignored_parsers
+                .iter()
+                .any(|x| x == &ParserId::NoteLink.to_string())
+        }) {
+            return self.full_match.clone();
+        }
+
+        if res.front_matter.as_ref().is_some_and(|fm| {
+            fm.ignored_parsers
                 .iter()
                 .any(|x| x == &ParserId::Tags.to_string())
-            {
-                return self.full_match.clone();
-            }
+        }) {
+            return self.full_match.clone();
         }
 
         format!("<AutoInsertedTag>{}</AutoInsertedTag>", self.body)
     }
 }
 
-pub fn parse_tags(input: &str) -> IResult<&str, ParsedTag> {
-    let start_point = input;
-    let (i, body) = delimited(tag("[[#"), take_until("]]"), tag("]]")).parse(input)?;
+impl ConundrumParser<ParsedTag> for ParsedTag {
+    fn parse_input_string(input: &mut &str) -> ModalResult<ParsedTag> {
+        let start_point = input.checkpoint();
+        let body =
+            delimited(literal("[[#"), take_until(1.., "]]"), literal("]]")).parse_next(input)?;
 
-    let consumed_len = start_point.len() - i.len();
-    let full_match = &start_point[..consumed_len];
-    Ok((
-        i,
-        ParsedTag {
+        let end_point = input.checkpoint();
+        let offset = end_point.offset_from(&start_point);
+
+        let full_match = input.peek_slice(offset);
+        Ok(ParsedTag {
             body: body.to_string(),
             full_match: full_match.to_string(),
-        },
-    ))
+        })
+    }
+
+    fn matches_first_char(char: char) -> bool {
+        char == '['
+    }
 }
 
 #[cfg(test)]
@@ -62,13 +76,13 @@ mod tests {
 
     #[test]
     fn parsed_link() {
-        let test_content = "[[#myTag]]";
+        let mut test_content = "[[#myTag]]";
 
-        let (left_over, res) =
-            parse_tags(test_content).expect("Parses outgoing link successfully.");
+        let res = ParsedTag::parse_input_string(&mut test_content)
+            .expect("Parses outgoing link successfully.");
 
         assert!(
-            left_over.is_empty(),
+            test_content.is_empty(),
             "Citation returns the proper left over text."
         );
 
