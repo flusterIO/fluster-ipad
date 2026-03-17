@@ -1,6 +1,6 @@
 ---
 source: packages/rust/conundrum/tests/run_conundrum.rs
-assertion_line: 19
+assertion_line: 21
 expression: "&res.content"
 ---
 # Full Test

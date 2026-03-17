@@ -108,6 +108,8 @@
 
 # Today
 
+- [ ] Handle documentation parser... it's completely absent or broken.
+- [ ] Write tests for all `-ignoreParser` flags.
 - [ ] Handle moving of code block parsers to nom completely.
   - [ ] Handle modification of the input options.
   - [ ] Link with existing parsers for now, but move everything to nom in the near future.

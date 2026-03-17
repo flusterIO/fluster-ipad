@@ -8,7 +8,6 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-chumsky = { version = "0.12.0", features = ["docsrs"] }
 crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }
 miette = { version = "7.6.0", features = ["fancy"] }
 nom_locate.workspace = true
@@ -39,13 +38,19 @@ typst-render = "0.14.2"
 typst-kit = { version = "0.14.2", features = ["embed-fonts"] }
 rssn = { version = "0.2.7", features = ["full"] }
 typst-eval = "0.14.2"
-winnow = "0.7.15"
+winnow = { version = "0.7.15", features = ["debug"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }
+
+[target.'cfg(debug_assertions)']
+winnow = { version = "0.7.15" }
+
+[target.'cfg(not(debug_assertions))']
+winnow = { version = "0.7.15", features = ["debug"] }
 
 
 [dev-dependencies]

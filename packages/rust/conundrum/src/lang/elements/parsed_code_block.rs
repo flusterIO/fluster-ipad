@@ -49,17 +49,7 @@ impl MdxComponentResult for ParsedCodeBlock {
                 get_dictionary_content(self, res)
             }
             "fluster-ai" => get_ai_parsing_request_phase_1_content(self, res),
-            _ => {
-                if res.front_matter
-                      .as_ref()
-                      .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::AiTrigger.to_string()))
-                {
-                    return self.full_match.clone();
-                }
-                // For standard code blocks (like tsx, rust, etc.), leave them exactly as they
-                // are and let mdx handle it for now.
-                self.full_match.clone()
-            }
+            _ => self.full_match.clone(),
         }
     }
 }

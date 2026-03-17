@@ -19,6 +19,7 @@ use crate::{
     embedded::{embedded_component_docs::EmbeddedComponentDocs, embedded_in_content_docs::EmbeddedInContentDocs},
     lang::runtime::traits::mdx_component_result::MdxComponentResult,
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    parsers::markdown::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
@@ -65,23 +66,29 @@ impl MdxComponentResult for ParsedInspectionRequest {
     }
 }
 
-pub fn parse_inspection<'a>(input: &mut &'a str) -> ModalResult<ParsedInspectionRequest> {
-    let ((keyword, marks), full_match) = (|input: &mut &'a str| {
-                                             let keyword =
-                                                 take_while(1.., |c: char| c.is_alphanumeric()).parse_next(input)?;
-                                             let marks = alt((literal("??"), literal("?"))).parse_next(input)?;
-                                             let _ = space0.parse_next(input)?;
-                                             let _ = alt((line_ending, literal(""))).parse_next(input)?;
-                                             Ok((keyword, marks))
-                                         }).with_taken()
-                                           .parse_next(input)?;
+impl ConundrumParser<ParsedInspectionRequest> for ParsedInspectionRequest {
+    fn parse_input_string<'a>(input: &mut &'a str) -> ModalResult<ParsedInspectionRequest> {
+        let ((keyword, marks), full_match) = (|input: &mut &'a str| {
+                                                 let keyword =
+                                                     take_while(1.., |c: char| c.is_alphanumeric()).parse_next(input)?;
+                                                 let marks = alt((literal("??"), literal("?"))).parse_next(input)?;
+                                                 let _ = space0.parse_next(input)?;
+                                                 let _ = alt((line_ending, literal(""))).parse_next(input)?;
+                                                 Ok((keyword, marks))
+                                             }).with_taken()
+                                               .parse_next(input)?;
 
-    let level = if marks == "??" {
-        2
-    } else {
-        1
-    };
-    Ok(ParsedInspectionRequest { keyword: keyword.to_string(),
-                                 level,
-                                 full_match: full_match.to_string() })
+        let level = if marks == "??" {
+            2
+        } else {
+            1
+        };
+        Ok(ParsedInspectionRequest { keyword: keyword.to_string(),
+                                     level,
+                                     full_match: full_match.to_string() })
+    }
+
+    fn matches_first_char(char: char) -> bool {
+        char == '`'
+    }
 }
