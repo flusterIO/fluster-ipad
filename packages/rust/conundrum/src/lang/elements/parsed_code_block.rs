@@ -38,10 +38,11 @@ impl MdxComponentResult for ParsedCodeBlock {
         match self.language.as_str() {
             "dictionary" => {
                 if res.front_matter.as_ref().is_some_and(|fm| {
-                    fm.ignored_parsers
-                        .iter()
-                        .any(|x| x == &ParserId::Dictionary.to_string())
-                }) {
+                                                fm.ignored_parsers
+                                                  .iter()
+                                                  .any(|x| x == &ParserId::Dictionary.to_string())
+                                            })
+                {
                     return self.full_match.clone();
                 }
 
@@ -50,15 +51,14 @@ impl MdxComponentResult for ParsedCodeBlock {
             }
             "fluster-ai" => get_ai_parsing_request_phase_1_content(self, res),
             _ => {
-                if res.front_matter.as_ref().is_some_and(|fm| {
-                    fm.ignored_parsers
-                        .iter()
-                        .any(|x| x == &ParserId::AiTrigger.to_string())
-                }) {
+                if res.front_matter
+                      .as_ref()
+                      .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::AiTrigger.to_string()))
+                {
                     return self.full_match.clone();
                 }
-                // For standard code blocks (like tsx, rust, etc.), leave them exactly as they are and
-                // let mdx handle it for now.
+                // For standard code blocks (like tsx, rust, etc.), leave them exactly as they
+                // are and let mdx handle it for now.
                 self.full_match.clone()
             }
         }
@@ -67,48 +67,34 @@ impl MdxComponentResult for ParsedCodeBlock {
 
 impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
     fn parse_input_string<'a>(input: &mut &'a str) -> winnow::ModalResult<ParsedCodeBlock> {
-        // 1. Mark the absolute start. No multispace0 here!
-        let start_point = input.checkpoint();
+        let ((language, meta_opt, raw_content), full_match) =
+            (|input: &mut &'a str| {
+                let ticks = take_while(3.., |c: char| c == '`').parse_next(input)?;
+                let language =
+                    take_while(1.., |c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r').parse_next(input)?;
 
-        // 2. Parse backticks and language
-        let ticks = take_while(3.., |c: char| c == '`').parse_next(input)?;
-        let language = take_while(1.., |c: char| {
-            c != ' ' && c != '\t' && c != '\n' && c != '\r'
-        })
-        .parse_next(input)?;
+                let meta_opt = combinator::opt(|input: &mut &'a str| {
+                                   let _ = space1.parse_next(input)?;
+                                   let _ = literal("--").parse_next(input)?;
+                                   let _ = space0.parse_next(input)?;
+                                   take_till(0.., ('\n', '\r')).parse_next(input)
+                               }).parse_next(input)?;
 
-        // 3. Properly define meta_opt (the missing piece)
-        let meta_opt = combinator::opt(|input: &mut &'a str| {
-            let _ = space1.parse_next(input)?;
-            let _ = literal("--").parse_next(input)?;
-            let _ = space0.parse_next(input)?;
-            // Consumes everything until the newline
-            take_till(0.., ('\n', '\r')).parse_next(input)
-        })
-        .parse_next(input)?;
+                let _ = ascii::space0.parse_next(input)?;
+                let _ = line_ending(input)?;
 
-        let _ = ascii::space0.parse_next(input)?;
-        let _ = line_ending(input)?;
+                let raw_content = take_until(0.., ticks).parse_next(input)?;
+                let _ = literal(ticks).parse_next(input)?;
 
-        // 4. Capture content until closing backticks
-        let raw_content = take_until(0.., ticks).parse_next(input)?;
-        let _ = literal(ticks).parse_next(input)?;
+                Ok((language, meta_opt, raw_content))
+            }).with_taken()
+              .parse_next(input)?;
 
-        // 5. Lossless pointer math for full_match
-        let end_point = input.checkpoint();
-        let offset = end_point.offset_from(&start_point);
-        let full_match = input.peek_slice(offset);
-
-        let meta_data = meta_opt
-            .map(|s| s.trim().to_string())
-            .filter(|s| !s.is_empty());
-
-        Ok(ParsedCodeBlock {
-            language: language.to_string(),
-            meta_data,
-            content: raw_content.to_string(),
-            full_match: full_match.to_string(),
-        })
+        let meta_data = meta_opt.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
+        Ok(ParsedCodeBlock { language: language.to_string(),
+                             meta_data,
+                             content: raw_content.to_string(),
+                             full_match: full_match.to_string() })
     }
 
     fn matches_first_char(char: char) -> bool {

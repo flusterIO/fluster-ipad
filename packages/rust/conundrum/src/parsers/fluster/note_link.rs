@@ -10,8 +10,7 @@ use winnow::{
 
 use crate::{
     lang::runtime::traits::mdx_component_result::MdxComponentResult,
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
-    parsers::markdown::parser_trait::ConundrumParser,
+    output::parsing_result::mdx_parsing_result::MdxParsingResult, parsers::markdown::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
@@ -21,7 +20,8 @@ pub struct ParsedOutgoingNoteLink {
     pub note_id: String,
     /// The text content of the link. `[The stuff here](note:MyNote)`
     pub content: String,
-    /// The full content of the input string that represents this outgoing note link.
+    /// The full content of the input string that represents this outgoing note
+    /// link.
     pub full_match: String,
 }
 
@@ -31,36 +31,28 @@ impl MdxComponentResult for ParsedOutgoingNoteLink {
             return self.full_match.clone();
         }
 
-        if res.front_matter.as_ref().is_some_and(|fm| {
-            fm.ignored_parsers
-                .iter()
-                .any(|x| x == &ParserId::NoteLink.to_string())
-        }) {
+        if res.front_matter
+              .as_ref()
+              .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::NoteLink.to_string()))
+        {
             return self.full_match.clone();
         }
-        format!(
-            "<NoteLink id=\"{}\">{}</NoteLink>",
-            self.note_id, self.content
-        )
+        format!("<NoteLink id=\"{}\">{}</NoteLink>", self.note_id, self.content)
     }
 }
 
 impl ConundrumParser<ParsedOutgoingNoteLink> for ParsedOutgoingNoteLink {
     fn parse_input_string(input: &mut &str) -> ModalResult<ParsedOutgoingNoteLink> {
-        let start_point = input.checkpoint();
-        let display_text = delimited('[', take_until(1.., ']'), ']').parse_next(input)?;
+        let ((display_text, note_id), full_match) = (
+            delimited('[', take_until(1.., ']'), ']'),
+            delimited(literal("(note:"), take_until(1.., ")"), ')')
+        )
+        .with_taken()
+        .parse_next(input)?;
 
-        let note_id = delimited(literal("(note:"), take_until(1.., ")"), ')').parse_next(input)?;
-
-        let end_point = input.checkpoint();
-        let offset = end_point.offset_from(&start_point);
-        let full_match = input.peek_slice(offset);
-
-        Ok(ParsedOutgoingNoteLink {
-            note_id: note_id.to_string(),
-            content: display_text.to_string(),
-            full_match: full_match.to_string(),
-        })
+        Ok(ParsedOutgoingNoteLink { note_id: note_id.to_string(),
+                                    content: display_text.to_string(),
+                                    full_match: full_match.to_string() })
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -76,21 +68,12 @@ mod tests {
     fn parsed_link() {
         let mut test_content = "[This is my link](note:myNote)";
 
-        let res = ParsedOutgoingNoteLink::parse_input_string(&mut test_content)
-            .expect("Parses outgoing link successfully.");
+        let res =
+            ParsedOutgoingNoteLink::parse_input_string(&mut test_content).expect("Parses outgoing link successfully.");
 
-        assert!(
-            test_content.is_empty(),
-            "Citation returns the proper left over text."
-        );
+        assert!(test_content.is_empty(), "Citation returns the proper left over text.");
 
-        assert!(
-            res.content == "This is my link",
-            "Citation finds the proper content."
-        );
-        assert!(
-            res.note_id == "myNote",
-            "Citation finds the proper note id."
-        );
+        assert!(res.content == "This is my link", "Citation finds the proper content.");
+        assert!(res.note_id == "myNote", "Citation finds the proper note id.");
     }
 }

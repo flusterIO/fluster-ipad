@@ -1,0 +1,19 @@
+max_width = 120
+indent_style = "Visual"
+brace_style = "PreferSameLine"
+
+
+# Tells rustfmt to ignore its "is this small enough to leave alone?" logic
+use_small_heuristics = "Off"
+
+# Enforce vertical alignment for multiline expressions
+hard_tabs = false
+tab_spaces = 4
+
+# --- UNSTABLE OPTIONS (Requires Nightly) ---
+# This forces the formatter to re-indent comments and strings that are off
+normalize_comments = true
+wrap_comments = true
+
+# This is the "God Mode" setting for indentation
+reorder_impl_items = true

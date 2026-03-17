@@ -3,7 +3,8 @@ use typeshare::typeshare;
 
 use crate::{
     lang::runtime::{
-        parse_any_element::parse_conundrum_string, traits::mdx_component_result::MdxComponentResult,
+        parse_conundrum_string::parse_conundrum_string,
+        traits::mdx_component_result::MdxComponentResult,
     },
     output::parsing_result::{
         citation_result::CitationSummaryData, mdx_parsing_result::MdxParsingResult,

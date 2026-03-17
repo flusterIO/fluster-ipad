@@ -15,7 +15,7 @@ async fn runs_conundrum() {
 
     let res = run_conundrum(opts).await;
 
-    println!("Response: {:#?}", res);
+    assert!(!&res.content.is_empty(), "Conundrum response is not empty.");
     insta::assert_snapshot!(&res.content);
     // assert_eq!(result, 4);
 }

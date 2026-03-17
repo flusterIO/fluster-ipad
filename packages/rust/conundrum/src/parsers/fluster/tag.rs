@@ -10,8 +10,7 @@ use winnow::{
 
 use crate::{
     lang::runtime::traits::mdx_component_result::MdxComponentResult,
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
-    parsers::markdown::parser_trait::ConundrumParser,
+    output::parsing_result::mdx_parsing_result::MdxParsingResult, parsers::markdown::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
@@ -29,19 +28,17 @@ impl MdxComponentResult for ParsedTag {
             return self.full_match.clone();
         }
 
-        if res.front_matter.as_ref().is_some_and(|fm| {
-            fm.ignored_parsers
-                .iter()
-                .any(|x| x == &ParserId::NoteLink.to_string())
-        }) {
+        if res.front_matter
+              .as_ref()
+              .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::NoteLink.to_string()))
+        {
             return self.full_match.clone();
         }
 
-        if res.front_matter.as_ref().is_some_and(|fm| {
-            fm.ignored_parsers
-                .iter()
-                .any(|x| x == &ParserId::Tags.to_string())
-        }) {
+        if res.front_matter
+              .as_ref()
+              .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::Tags.to_string()))
+        {
             return self.full_match.clone();
         }
 
@@ -51,18 +48,11 @@ impl MdxComponentResult for ParsedTag {
 
 impl ConundrumParser<ParsedTag> for ParsedTag {
     fn parse_input_string(input: &mut &str) -> ModalResult<ParsedTag> {
-        let start_point = input.checkpoint();
-        let body =
-            delimited(literal("[[#"), take_until(1.., "]]"), literal("]]")).parse_next(input)?;
+        let (body, full_match) =
+            delimited(literal("[[#"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
 
-        let end_point = input.checkpoint();
-        let offset = end_point.offset_from(&start_point);
-
-        let full_match = input.peek_slice(offset);
-        Ok(ParsedTag {
-            body: body.to_string(),
-            full_match: full_match.to_string(),
-        })
+        Ok(ParsedTag { body: body.to_string(),
+                       full_match: full_match.to_string() })
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -78,13 +68,9 @@ mod tests {
     fn parsed_link() {
         let mut test_content = "[[#myTag]]";
 
-        let res = ParsedTag::parse_input_string(&mut test_content)
-            .expect("Parses outgoing link successfully.");
+        let res = ParsedTag::parse_input_string(&mut test_content).expect("Parses outgoing link successfully.");
 
-        assert!(
-            test_content.is_empty(),
-            "Citation returns the proper left over text."
-        );
+        assert!(test_content.is_empty(), "Citation returns the proper left over text.");
 
         assert!(res.body == "myTag", "Tag finds the proper body.");
     }

@@ -1,4 +1,4 @@
-use conundrum::lang::runtime::parse_any_element::parse_conundrum_string;
+use conundrum::lang::runtime::parse_conundrum_string::parse_conundrum_string;
 use conundrum::lang::runtime::run_conundrum::{ParseMdxOptions, run_conundrum};
 use nom_locate::LocatedSpan;
 use tower_lsp::jsonrpc::Result;
@@ -11,73 +11,73 @@ struct Backend {
     client: Client,
 }
 
-#[tower_lsp::async_trait]
-impl LanguageServer for Backend {
-    async fn initialize(&self, _: InitializeParams) -> Result<InitializeResult> {
-        Ok(InitializeResult {
-            capabilities: ServerCapabilities {
-                text_document_sync: Some(TextDocumentSyncCapability::Kind(
-                    TextDocumentSyncKind::FULL,
-                )),
-                ..Default::default()
-            },
-            ..Default::default()
-        })
-    }
+// #[tower_lsp::async_trait]
+// impl LanguageServer for Backend {
+//     async fn initialize(&self, _: InitializeParams) -> Result<InitializeResult> {
+//         Ok(InitializeResult {
+//             capabilities: ServerCapabilities {
+//                 text_document_sync: Some(TextDocumentSyncCapability::Kind(
+//                     TextDocumentSyncKind::FULL,
+//                 )),
+//                 ..Default::default()
+//             },
+//             ..Default::default()
+//         })
+//     }
 
-    async fn did_open(&self, params: DidOpenTextDocumentParams) {
-        self.validate_document(params.text_document.uri, params.text_document.text)
-            .await;
-    }
+//     async fn did_open(&self, params: DidOpenTextDocumentParams) {
+//         self.validate_document(params.text_document.uri, params.text_document.text)
+//             .await;
+//     }
 
-    async fn did_change(&self, params: DidChangeTextDocumentParams) {
-        // In a real Fluster app, you'd handle incremental sync,
-        // but for now, we take the full text.
-        if let Some(event) = params.content_changes.first() {
-            self.validate_document(params.text_document.uri, event.text.clone())
-                .await;
-        }
-    }
+//     async fn did_change(&self, params: DidChangeTextDocumentParams) {
+//         // In a real Fluster app, you'd handle incremental sync,
+//         // but for now, we take the full text.
+//         if let Some(event) = params.content_changes.first() {
+//             self.validate_document(params.text_document.uri, event.text.clone())
+//                 .await;
+//         }
+//     }
 
-    async fn shutdown(&self) -> Result<()> {
-        Ok(())
-    }
-}
+//     async fn shutdown(&self) -> Result<()> {
+//         Ok(())
+//     }
+// }
 
-impl Backend {
-    async fn validate_document(&self, uri: Url, text: String) {
-        let mut diagnostics = Vec::new();
+// impl Backend {
+//     async fn validate_document(&self, uri: Url, text: String) {
+//         let mut diagnostics = Vec::new();
 
-        // Run your NOM parser
-        let span = Span::new(&text);
-        if let Err(e) = parse_conundrum_string(&text) {
-            // Convert NOM error to LSP Diagnostic
-            if let nom::Err::Error(err) = e {
-                let (line, col) = (err.input.location_line(), err.input.get_column());
+//         let mut text_clone = text.as_str();
 
-                diagnostics.push(Diagnostic {
-                    range: Range {
-                        start: Position::new(line - 1, (col - 1) as u32),
-                        end: Position::new(line - 1, (col) as u32), // Highlight the specific char
-                    },
-                    severity: Some(DiagnosticSeverity::ERROR),
-                    message: "Invalid Fluster syntax".to_string(),
-                    ..Default::default()
-                });
-            }
-        }
+//         if let Err(e) = parse_conundrum_string(&mut text_clone) {
+//             // Convert NOM error to LSP Diagnostic
+//             if let nom::Err::Error(err) = e {
+//                 let (line, col) = (err.input.location_line(), err.input.get_column());
 
-        self.client
-            .publish_diagnostics(uri, diagnostics, None)
-            .await;
-    }
-}
+//                 diagnostics.push(Diagnostic {
+//                     range: Range {
+//                         start: Position::new(line - 1, (col - 1) as u32),
+//                         end: Position::new(line - 1, (col) as u32), // Highlight the specific char
+//                     },
+//                     severity: Some(DiagnosticSeverity::ERROR),
+//                     message: "Invalid Fluster syntax".to_string(),
+//                     ..Default::default()
+//                 });
+//             }
+//         }
 
-#[tokio::main]
-async fn main() {
-    let stdin = tokio::io::stdin();
-    let stdout = tokio::io::stdout();
+//         self.client
+//             .publish_diagnostics(uri, diagnostics, None)
+//             .await;
+//     }
+// }
 
-    let (service, socket) = LspService::new(|client| Backend { client });
-    Server::new(stdin, stdout, socket).serve(service).await;
-}
+// #[tokio::main]
+// async fn main() {
+//     let stdin = tokio::io::stdin();
+//     let stdout = tokio::io::stdout();
+
+//     let (service, socket) = LspService::new(|client| Backend { client });
+//     Server::new(stdin, stdout, socket).serve(service).await;
+// }
