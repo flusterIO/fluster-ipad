@@ -4,7 +4,6 @@ use typeshare::typeshare;
 use winnow::{
     ModalResult, Parser,
     combinator::delimited,
-    stream::{Offset, Stream},
     token::{literal, take_until},
 };
 

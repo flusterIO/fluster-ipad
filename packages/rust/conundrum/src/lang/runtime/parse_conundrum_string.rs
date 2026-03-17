@@ -1,9 +1,5 @@
-use std::io::Error;
-
 use fluster_core_utilities::core_types::fluster_error::{FlusterError, FlusterResult};
-use winnow::combinator::trace;
 use winnow::combinator::{dispatch, opt, peek};
-use winnow::stream::Stream;
 use winnow::token::take;
 use winnow::{
     ModalResult, Parser,
@@ -24,7 +20,7 @@ pub fn parse_conundrum_string(input: &mut &str) -> FlusterResult<Vec<ParsedEleme
     repeat(0..,
            dispatch! {peek(take(1usize));
                "`" => |x: &mut &str| {
-                   opt(ParsedCodeBlock::parse_input_string.map(ParsedElement::CodeBlock)).parse_next(x).map_or_else(|z| {
+                   opt(ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock)).parse_next(x).map_or_else(|z| {
                         Err(z)
                    }, |y| {
                         y.map(|w| {
@@ -35,35 +31,16 @@ pub fn parse_conundrum_string(input: &mut &str) -> FlusterResult<Vec<ParsedEleme
                    })
                },
                "[" => |x: &mut &str| {
-                   trace(
-                       "Some Parser",
-                       alt((
-                        ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::OutgoingNoteLink),
-                       ParsedCitation::parse_input_string.map(ParsedElement::Citation),
-                       ParsedTag::parse_input_string.map(ParsedElement::Tag),
-                       any.map(|c: char| ParsedElement::Text(c.to_string()))
-                       ))
-                   ).parse_next(x)
-                   // if let Ok(res) = opt(alt((
-                   //     ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::OutgoingNoteLink),
-                   //     ParsedCitation::parse_input_string.map(ParsedElement::Citation),
-                   //     ParsedTag::parse_input_string.map(ParsedElement::Tag)
-                   // )))
-                   //     .parse_next("")
-                   //   {
-                   //  match res {
-                   //     Some(element) => Ok(element),
-                   //     None => {
-                   //         any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
-                   //     }
-                   // }
-                   // } else {
-                   //         any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
-                   // }
-               },
+                   alt((
+                        ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::ParsedOutgoingNoteLink),
+                        ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
+                        ParsedTag::parse_input_string.map(ParsedElement::Tag),
+                        any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
 
+                                    },
                _ => |x: &mut &str| {
-                   opt(ParsedInspectionRequest::parse_input_string.map(ParsedElement::InspectionRequest)).parse_next(x).map_or_else(|z| {
+                   opt(ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest)).parse_next(x).map_or_else(|z| {
                         Err(z)
                    }, |y| {
                         y.map(|w| {

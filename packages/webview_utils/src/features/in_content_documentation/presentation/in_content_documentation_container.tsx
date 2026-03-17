@@ -1,9 +1,9 @@
 import React, { type ReactNode } from 'react'
-import { EmbeddableComponentId, InContentDocumentationFormat, InContentDocumentationId } from '../../../core/code_gen/typeshare/fluster_core_utilities'
+import { type EmbeddableComponentId, type InContentDocumentationFormat, type InContentDocumentationId } from '../../../core/code_gen/typeshare/fluster_core_utilities'
 
 
 interface InContentDocumentationContainerProps {
-    componentId?: EmbeddableComponentId
+    componentName?: EmbeddableComponentId
     inContentId?: InContentDocumentationId
     format: InContentDocumentationFormat
     children: ReactNode

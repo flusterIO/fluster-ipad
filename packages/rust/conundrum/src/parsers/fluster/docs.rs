@@ -46,17 +46,17 @@ impl MdxComponentResult for ParsedInspectionRequest {
                                depth,
                                body_as_string,
                                DocumentationComponentName::InContentDocumentationContainer,);
-            } else if let Some(comp_id) = EmbeddableComponentName::iter().find(|x| x.to_string() == self.keyword)
-                                                                         .map(|component_name| {
-                                                                             COMPONENT_NAME_ID_MAP
+            } else if let Some(comp_name) = EmbeddableComponentName::iter().find(|x| x.to_string() == self.keyword)
+                                                                           .map(|component_name| {
+                                                                               COMPONENT_NAME_ID_MAP
                         .get(&component_name)
                         .expect("All components must have documentation.")
-                                                                         })
+                                                                           })
             {
-                let body_as_string = EmbeddedComponentDocs::get_incontent_docs_by_id(comp_id, &depth);
-                return format!("\n<{} componentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
+                let body_as_string = EmbeddedComponentDocs::get_incontent_docs_by_id(comp_name, &depth);
+                return format!("\n<{} componentName=\"{}\" format=\"{}\">\n{}\n</{}>\n",
                                DocumentationComponentName::InContentDocumentationContainer,
-                               comp_id,
+                               comp_name,
                                depth,
                                body_as_string,
                                DocumentationComponentName::InContentDocumentationContainer,);

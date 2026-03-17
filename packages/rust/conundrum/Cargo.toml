@@ -38,7 +38,7 @@ typst-render = "0.14.2"
 typst-kit = { version = "0.14.2", features = ["embed-fonts"] }
 rssn = { version = "0.2.7", features = ["full"] }
 typst-eval = "0.14.2"
-winnow = { version = "0.7.15", features = ["debug"] }
+winnow = { version = "0.7.15" }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }
@@ -46,11 +46,11 @@ tokio = { version = "1.0", features = ["full"] }
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }
 
-[target.'cfg(debug_assertions)']
-winnow = { version = "0.7.15" }
+# [target.'cfg(debug_assertions)']
+# winnow = { version = "0.7.15" }
 
-[target.'cfg(not(debug_assertions))']
-winnow = { version = "0.7.15", features = ["debug"] }
+# [target.'cfg(not(debug_assertions))']
+# winnow = { version = "0.7.15", features = ["debug"] }
 
 
 [dev-dependencies]
