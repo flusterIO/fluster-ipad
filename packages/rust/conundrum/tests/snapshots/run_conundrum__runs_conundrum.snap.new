@@ -77,9 +77,9 @@ Odio eget etiam ac faucibus gravida congue aliquam, ac convallis. Eu, velit cons
 ## Note outgoing Links
 
 
-Odio eget etiam ac faucibus gravida congue aliquam, ac convallis. Eu, velit consequat praesent et ipsum nunc sed faucibus diam. Molestie amet diam, purus aliquam, venenatis [My note outgoing link](note:myNoteId) est convallis pulvinar eleifend. Convallis feugiat velit, bibendum efficitur morbi tellus molestie placerat nullam. Mus suspendisse pharetra nulla et tempor, dis, nibh volutpat nascetur.
+Odio eget etiam ac faucibus gravida congue aliquam, ac convallis. Eu, velit consequat praesent et ipsum nunc sed faucibus diam. Molestie amet diam, purus aliquam, venenatis <NoteLink id="myNoteId">My note outgoing link</NoteLink> est convallis pulvinar eleifend. Convallis feugiat velit, bibendum efficitur morbi tellus molestie placerat nullam. Mus suspendisse pharetra nulla et tempor, dis, nibh volutpat nascetur.
 
 
-Nec consequat habitasse eget platea, suspendisse tempor suspendisse enim ullamcorper. Vitae eget faucibus, at duis dui metus vitae condimentum sit. Bibendum, magnis pharetra [My other note link](note:myOtherNote) pellentesque, convallis convallis massa ultricies nascetur luctus. Proin, pulvinar rhoncus donec, eget tempus velit eu ligula dapibus. Aenean amet tortor quam, vel dignissim faucibus urna ridiculus, tempor.
+Nec consequat habitasse eget platea, suspendisse tempor suspendisse enim ullamcorper. Vitae eget faucibus, at duis dui metus vitae condimentum sit. Bibendum, magnis pharetra <NoteLink id="myOtherNote">My other note link</NoteLink> pellentesque, convallis convallis massa ultricies nascetur luctus. Proin, pulvinar rhoncus donec, eget tempus velit eu ligula dapibus. Aenean amet tortor quam, vel dignissim faucibus urna ridiculus, tempor.
 
 Sed congue ullamcorper integer, nulla, pretium nullam dignissim nulla convallis. Nullam tristique pharetra nulla, pharetra dis suspendisse ornare cursus lacus. In convallis [A regular link](google.com), et nascetur at velit sed erat nisl pharetra. Tortor, finibus eu bibendum lectus feugiat, sapien elementum laoreet faucibus. Proin tristique fringilla, ac amet varius duis viverra, praesent velit.

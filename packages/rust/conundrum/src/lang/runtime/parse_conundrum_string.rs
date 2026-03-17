@@ -16,8 +16,8 @@ use crate::{
 
 pub fn parse_conundrum_string(input: &mut &str) -> ModalResult<Vec<ParsedElement>> {
     repeat(0..,
-           dispatch! {peek(take(2usize));
-               "``" => |x: &mut &str| {
+           dispatch! {peek(take(1usize));
+               "`" => |x: &mut &str| {
                    opt(ParsedCodeBlock::parse_input_string.map(ParsedElement::CodeBlock)).parse_next(x).map_or_else(|z| {
                         Err(z)
                    }, |y| {
@@ -28,7 +28,7 @@ pub fn parse_conundrum_string(input: &mut &str) -> ModalResult<Vec<ParsedElement
                         })
                    })
                },
-               "[[" => |x: &mut &str| {
+               "[" => |x: &mut &str| {
                    let res = opt(alt((
                        ParsedCitation::parse_input_string.map(ParsedElement::Citation),
                        ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::OutgoingNoteLink),

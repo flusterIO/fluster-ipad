@@ -2,10 +2,9 @@ use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
-    ModalResult, Parser,
-    ascii::{self, line_ending, space0, space1},
+    Parser,
+    ascii::{line_ending, space0, space1},
     combinator,
-    stream::{Offset, Stream},
     token::{literal, take_till, take_until, take_while},
 };
 
@@ -69,7 +68,7 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
     fn parse_input_string<'a>(input: &mut &'a str) -> winnow::ModalResult<ParsedCodeBlock> {
         let ((language, meta_opt, raw_content), full_match) =
             (|input: &mut &'a str| {
-                let ticks = take_while(3.., |c: char| c == '`').parse_next(input)?;
+                let ticks = take_while(1.., |c: char| c == '`').parse_next(input)?;
                 let language =
                     take_while(1.., |c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r').parse_next(input)?;
 
@@ -80,7 +79,7 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                                    take_till(0.., ('\n', '\r')).parse_next(input)
                                }).parse_next(input)?;
 
-                let _ = ascii::space0.parse_next(input)?;
+                let _ = space0.parse_next(input)?;
                 let _ = line_ending(input)?;
 
                 let raw_content = take_until(0.., ticks).parse_next(input)?;
