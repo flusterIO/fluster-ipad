@@ -5,7 +5,6 @@ use conundrum::{
 use fluster_core_utilities::core_types::{
     component_constants::{
         auto_inserted_component_name::AutoInsertedComponentName, component_names::EmbeddableComponentName,
-        documentation_component_name::DocumentationComponentName,
     },
     documentation_constants::in_content_documentation_id::InContentDocumentationId,
 };

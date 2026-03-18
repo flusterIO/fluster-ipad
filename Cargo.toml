@@ -7,7 +7,6 @@ members = [
     "packages/rust/fluster_internal_cli",
     "packages/rust/conundrum",
     "packages/rust/conundrum_swift/",
-    "packages/rust/fluster_swift_mdx_parser",
     "packages/rust/uniffi_bindgen",
     "packages/rust/fluster_desktop_fs/",
     "packages/rust/fluster_bibliography",
@@ -36,8 +35,7 @@ typeshare = "1.0.0"
 chrono = { version = "0.4", features = ["serde"] }
 strum_macros = "0.27.2"
 strum = { version = "0.27.2", features = ["derive"] }
-nom = "8" 
-nom_locate = "5.0.0"
+winnow = { version = "0.7.15" }
 
 
 [workspace.lints.rust]

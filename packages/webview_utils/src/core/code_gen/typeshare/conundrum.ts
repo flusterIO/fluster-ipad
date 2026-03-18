@@ -96,7 +96,10 @@ export interface ParsedOutgoingNoteLink {
 	note_id: string;
 	/** The text content of the link. `[The stuff here](note:MyNote)` */
 	content: string;
-	/** The full content of the input string that represents this outgoing note link. */
+	/**
+	 * The full content of the input string that represents this outgoing note
+	 * link.
+	 */
 	full_match: string;
 }
 

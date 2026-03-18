@@ -450,7 +450,7 @@ extension AppSchemaV1 {
       let _body = self.markdown.body
       let res: Task<MdxParsingResult?, Never> = try await Task.detached {
         do {
-            let res = try await ConundrumSwift.runConundrumSwift(options: ParseMdxOptions(noteId: _id, content: _body, citations: []))
+            let res = try await ConundrumSwift.runConundrum(options: ParseMdxOptions(noteId: _id, content: _body, citations: []))
             return res
         } catch {
           print("Mdx parsing error: \(error.localizedDescription)")

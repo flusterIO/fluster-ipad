@@ -3,16 +3,7 @@
 //     parsing_result::mdx_parsing_result::MdxParsingResult,
 // };
 use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
-extern "C" {
-    fn alert(s: &str);
-}
-
-#[wasm_bindgen]
-pub fn greet(name: &str) {
-    alert(&format!("Hello from Fluster wasm {name}!!!"));
-}
+// pub use wasm_bindgen_rayon::init_thread_pool;
 
 // #[wasm_bindgen]
 // pub async fn pre_parse_mdx(opts: ParseMdxOptions) -> MdxParsingResult {

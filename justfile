@@ -119,8 +119,6 @@ launch_ipad_simulator: build_ipad_simulator
 build_all_rust: build_cross_language_all
 	cargo build
 
-build_fluster_swift_mdx_parser: build_cross_language_all 
-	cd {{justfile_directory()}}/packages/rust/fluster_swift_mdx_parser; cargo-swift swift package -y --xcframework-name FlusterSwiftMdxParse
 
 build_fluster_core_rust_utilities: build_cross_language_all
 	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build

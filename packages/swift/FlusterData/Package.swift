@@ -17,7 +17,6 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(path: "../../rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser/"),
     .package(path: "../../rust/fluster_bibliography/FlusterBibliography/"),
     .package(path: "../../rust/conundrum_swift/ConundrumSwift/"),
     .package(path: "../FlusterMdx/"),
@@ -36,7 +35,6 @@ let package = Package(
     .target(
       name: "FlusterData",
       dependencies: [
-        .product(name: "FlusterSwiftMdxParser", package: "FlusterSwiftMdxParser"),
         .product(name: "FlusterBibliography", package: "FlusterBibliography"),
         .product(name: "ConundrumSwift", package: "ConundrumSwift"),
         .product(name: "FlusterMdx", package: "FlusterMdx"),
@@ -45,7 +43,7 @@ let package = Package(
     ),
     .testTarget(
       name: "FlusterDataTests",
-      dependencies: ["FlusterData", "FlusterSwiftMdxParser", "FlusterMdx", "FlusterBibliography"]
+      dependencies: ["FlusterData", "FlusterMdx", "FlusterBibliography"]
     )
   ],
 )

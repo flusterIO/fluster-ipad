@@ -12,7 +12,7 @@ workspace = true
 
 [dependencies]
 wasm-bindgen = "0.2.114"
-fluster_core_utilities = { path = "../../../rust/fluster_core_utilities" }
+# fluster_core_utilities = { path = "../../../rust/fluster_core_utilities" }
 conundrum_lsp = { path = "../../../rust/conundrum_lsp/" }
 serde-wasm-bindgen = "0.6.5"
 web-sys = "0.3.91"
@@ -21,6 +21,8 @@ gloo = "0.11.0"
 wasm-bindgen-futures = "0.4.64"
 wasm-react = "0.6.0"
 rust_tikz = "0.1.0"
+# wasm-bindgen-rayon = "1.3.0"
+# rayon.workspace = true
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = ["-O4", "--enable-bulk-memory"]

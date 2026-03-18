@@ -2,7 +2,7 @@ import Testing
 
 //@testable import SwiftData
 //@testable import SwiftUI
-@testable import FlusterSwiftMdxParser
+// @testable import FlusterSwiftMdxParser
 @testable import FlusterSwift
 
 @Test("Decodes initial json data")

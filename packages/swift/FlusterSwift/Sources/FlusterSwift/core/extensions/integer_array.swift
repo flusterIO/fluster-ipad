@@ -5,7 +5,7 @@
 //  Created by Andrew on 12/2/25.
 //
 
-import FlusterSwiftMdxParser
+import ConundrumSwift
 import Foundation
 
 extension [Int] {

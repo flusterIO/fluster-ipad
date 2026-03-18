@@ -17,7 +17,6 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(path: "../../rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser/"),
     .package(
       url: "https://github.com/swiftlang/swift-testing",
       .upToNextMajor(from: "6.2.3")
@@ -29,12 +28,11 @@ let package = Package(
     .target(
       name: "FlusterMdx",
       dependencies: [
-        .product(name: "FlusterSwiftMdxParser", package: "FlusterSwiftMdxParser")
       ]
     ),
     .testTarget(
       name: "FlusterMdxTests",
-      dependencies: ["FlusterMdx", "FlusterSwiftMdxParser"]
+      dependencies: ["FlusterMdx"]
     )
   ],
 )

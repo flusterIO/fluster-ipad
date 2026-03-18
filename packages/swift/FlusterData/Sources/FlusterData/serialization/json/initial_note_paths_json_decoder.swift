@@ -5,8 +5,8 @@
 //  Created by Andrew on 11/27/25.
 //
 
-import FlusterSwiftMdxParser
 import Foundation
+import ConundrumSwift
 
 public struct InitialNotesDataJsonDecoder {
   public static func decode(from url: URL) -> [MdxParsingResult]? {

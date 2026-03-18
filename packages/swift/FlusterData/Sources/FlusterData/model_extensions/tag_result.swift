@@ -1,5 +1,5 @@
-import FlusterSwiftMdxParser
 import Foundation
+import ConundrumSwift
 
 extension TagResult: @retroactive Codable {
   public enum CodingKeys: String, CodingKey {

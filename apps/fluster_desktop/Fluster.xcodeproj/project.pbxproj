@@ -7,20 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7931270B2F1ABA5500140215 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEDD2F1992BC00A82F5A /* FlusterMdx */; };
 		7947AB222F5358C0009CEA5E /* standalone_mdx_preview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB212F5358C0009CEA5E /* standalone_mdx_preview_mac */; };
 		7947AB242F5363A2009CEA5E /* splitview_mdx_editor_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB232F5363A2009CEA5E /* splitview_mdx_editor_mac */; };
 		7947AB262F5363CB009CEA5E /* bibtex_editor_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB252F5363CB009CEA5E /* bibtex_editor_webview_mac */; };
 		7947AB282F536420009CEA5E /* dictionary_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB272F536420009CEA5E /* dictionary_webview_mac */; };
 		7947AB2A2F5364B2009CEA5E /* note_detail_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB292F5364B2009CEA5E /* note_detail_webview_mac */; };
-		794FD4652F4A489100F8194A /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4642F4A489100F8194A /* FlusterMdx */; };
-		794FD4682F4A48AF00F8194A /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4672F4A48AF00F8194A /* FlusterWebviewClients */; };
-		794FD46B2F4A492100F8194A /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD46A2F4A492100F8194A /* FlusterSwift */; };
 		7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7970D3872F201A2F00A734F4 /* WebKit.framework */; };
 		79A1B99A2F4A60B200B451B2 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79A1B9992F4A60B200B451B2 /* bibliography_embedded */; };
-		79CB00722F4000F700C7BDFB /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79CB00712F4000F700C7BDFB /* FlusterWebviewClients */; };
-		79DFBB642F58980100DA7C4E /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79DFBB632F58980100DA7C4E /* FlusterAI */; };
-		79E6BEE12F19930200A82F5A /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEE02F19930200A82F5A /* FlusterData */; };
+		79C6BD362F6A0ACC00916BE7 /* ConundrumSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD352F6A0ACC00916BE7 /* ConundrumSwift */; };
+		79C6BD392F6A0ADA00916BE7 /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD382F6A0ADA00916BE7 /* FlusterAI */; };
+		79C6BD3C2F6A0AE500916BE7 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD3B2F6A0AE500916BE7 /* FlusterWebviewClients */; };
+		79C6BD3F2F6A0B0400916BE7 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD3E2F6A0B0400916BE7 /* FlusterData */; };
+		79C6BD422F6A0B2600916BE7 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD412F6A0B2600916BE7 /* FlusterSwift */; };
+		79C6BD452F6A0B3C00916BE7 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD442F6A0B3C00916BE7 /* FlusterMdx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,14 +94,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79DFBB642F58980100DA7C4E /* FlusterAI in Frameworks */,
-				7931270B2F1ABA5500140215 /* FlusterMdx in Frameworks */,
-				794FD4682F4A48AF00F8194A /* FlusterWebviewClients in Frameworks */,
-				794FD46B2F4A492100F8194A /* FlusterSwift in Frameworks */,
-				794FD4652F4A489100F8194A /* FlusterMdx in Frameworks */,
-				79CB00722F4000F700C7BDFB /* FlusterWebviewClients in Frameworks */,
-				79E6BEE12F19930200A82F5A /* FlusterData in Frameworks */,
+				79C6BD362F6A0ACC00916BE7 /* ConundrumSwift in Frameworks */,
+				79C6BD3C2F6A0AE500916BE7 /* FlusterWebviewClients in Frameworks */,
+				79C6BD422F6A0B2600916BE7 /* FlusterSwift in Frameworks */,
+				79C6BD452F6A0B3C00916BE7 /* FlusterMdx in Frameworks */,
+				79C6BD392F6A0ADA00916BE7 /* FlusterAI in Frameworks */,
 				7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */,
+				79C6BD3F2F6A0B0400916BE7 /* FlusterData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +189,12 @@
 				794FD4672F4A48AF00F8194A /* FlusterWebviewClients */,
 				794FD46A2F4A492100F8194A /* FlusterSwift */,
 				79DFBB632F58980100DA7C4E /* FlusterAI */,
+				79C6BD352F6A0ACC00916BE7 /* ConundrumSwift */,
+				79C6BD382F6A0ADA00916BE7 /* FlusterAI */,
+				79C6BD3B2F6A0AE500916BE7 /* FlusterWebviewClients */,
+				79C6BD3E2F6A0B0400916BE7 /* FlusterData */,
+				79C6BD412F6A0B2600916BE7 /* FlusterSwift */,
+				79C6BD442F6A0B3C00916BE7 /* FlusterMdx */,
 			);
 			productName = "Fluster Desktop";
 			productReference = 798752EA2F1810B90055ABF1 /* Fluster.app */;
@@ -275,12 +279,12 @@
 			mainGroup = 798752E12F1810B90055ABF1;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				7993631E2F19889800FB95E7 /* XCLocalSwiftPackageReference "../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser" */,
-				79E6BEDF2F19930200A82F5A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */,
-				794FD4632F4A489100F8194A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterMdx" */,
-				794FD4662F4A48AF00F8194A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */,
-				794FD4692F4A492100F8194A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
-				79DFBB622F58980100DA7C4E /* XCLocalSwiftPackageReference "../../packages/swift/FlusterAI" */,
+				79C6BD342F6A0ACC00916BE7 /* XCLocalSwiftPackageReference "../../packages/rust/conundrum_swift/ConundrumSwift" */,
+				79C6BD372F6A0ADA00916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterAI" */,
+				79C6BD3A2F6A0AE500916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */,
+				79C6BD3D2F6A0B0400916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */,
+				79C6BD402F6A0B2600916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
+				79C6BD432F6A0B3C00916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterMdx" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 798752EB2F1810B90055ABF1 /* Products */;
@@ -703,29 +707,29 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		794FD4632F4A489100F8194A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterMdx" */ = {
+		79C6BD342F6A0ACC00916BE7 /* XCLocalSwiftPackageReference "../../packages/rust/conundrum_swift/ConundrumSwift" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../packages/swift/FlusterMdx;
+			relativePath = ../../packages/rust/conundrum_swift/ConundrumSwift;
 		};
-		794FD4662F4A48AF00F8194A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../packages/swift/FlusterWebviewClients;
-		};
-		794FD4692F4A492100F8194A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../packages/swift/FlusterSwift;
-		};
-		7993631E2F19889800FB95E7 /* XCLocalSwiftPackageReference "../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser;
-		};
-		79DFBB622F58980100DA7C4E /* XCLocalSwiftPackageReference "../../packages/swift/FlusterAI" */ = {
+		79C6BD372F6A0ADA00916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterAI" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/swift/FlusterAI;
 		};
-		79E6BEDF2F19930200A82F5A /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */ = {
+		79C6BD3A2F6A0AE500916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/FlusterWebviewClients;
+		};
+		79C6BD3D2F6A0B0400916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/swift/FlusterData;
+		};
+		79C6BD402F6A0B2600916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/FlusterSwift;
+		};
+		79C6BD432F6A0B3C00916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterMdx" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/FlusterMdx;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -741,6 +745,30 @@
 		794FD46A2F4A492100F8194A /* FlusterSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlusterSwift;
+		};
+		79C6BD352F6A0ACC00916BE7 /* ConundrumSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConundrumSwift;
+		};
+		79C6BD382F6A0ADA00916BE7 /* FlusterAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterAI;
+		};
+		79C6BD3B2F6A0AE500916BE7 /* FlusterWebviewClients */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterWebviewClients;
+		};
+		79C6BD3E2F6A0B0400916BE7 /* FlusterData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterData;
+		};
+		79C6BD412F6A0B2600916BE7 /* FlusterSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterSwift;
+		};
+		79C6BD442F6A0B3C00916BE7 /* FlusterMdx */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterMdx;
 		};
 		79CB00712F4000F700C7BDFB /* FlusterWebviewClients */ = {
 			isa = XCSwiftPackageProductDependency;

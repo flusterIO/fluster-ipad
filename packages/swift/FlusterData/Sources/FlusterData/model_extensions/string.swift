@@ -1,6 +1,6 @@
 import FlatBuffers
 import FlusterData
-import FlusterSwiftMdxParser
+import ConundrumSwift
 import Foundation
 import SwiftData
 
@@ -47,8 +47,9 @@ extension String {
   /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
   public func preParseAsMdx(noteId: String?) async -> MdxParsingResult? {
     do {
-      let res = try await preParseMdx(
-        options: ParseMdxOptions(noteId: noteId, content: self, citations: []))
+      let res = try await runConundrum(
+        options: ParseMdxOptions(noteId: noteId, content: self, citations: [])
+      )
       return res
     } catch {
       print("Error: \(error.localizedDescription)")
