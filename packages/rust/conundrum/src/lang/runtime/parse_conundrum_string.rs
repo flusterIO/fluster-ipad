@@ -1,5 +1,5 @@
 use fluster_core_utilities::core_types::fluster_error::{FlusterError, FlusterResult};
-use winnow::combinator::{dispatch, opt, peek};
+use winnow::combinator::{dispatch, peek};
 use winnow::token::take;
 use winnow::{
     ModalResult, Parser,
@@ -20,15 +20,10 @@ pub fn parse_conundrum_string(input: &mut &str) -> FlusterResult<Vec<ParsedEleme
     repeat(0..,
            dispatch! {peek(take(1usize));
                "`" => |x: &mut &str| {
-                   opt(ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock)).parse_next(x).map_or_else(|z| {
-                        Err(z)
-                   }, |y| {
-                        y.map(|w| {
-                        Ok(w)
-                        }).unwrap_or_else(|| {
-                           any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
-                        })
-                   })
+                   alt((
+                       ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
+                       any.map(|c: char| ParsedElement::Text(c.to_string()))
+                   )).parse_next(x)
                },
                "[" => |x: &mut &str| {
                    alt((
@@ -37,21 +32,16 @@ pub fn parse_conundrum_string(input: &mut &str) -> FlusterResult<Vec<ParsedEleme
                         ParsedTag::parse_input_string.map(ParsedElement::Tag),
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
-
                                     },
                _ => |x: &mut &str| {
-                   opt(ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest)).parse_next(x).map_or_else(|z| {
-                        Err(z)
-                   }, |y| {
-                        y.map(|w| {
-                        Ok(w)
-                        }).unwrap_or_else(|| {
-                           any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
-                        })
-                   })
+                   alt((
+                        ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                       any.map(|c: char| ParsedElement::Text(c.to_string()))
+                   )).parse_next(x)
                },
-           }).parse(input).map_err(|e| {
-               println!("Parsing Error: {:#?}", e);
-               FlusterError::ConundrumParsingError
-           })
+           }).parse(input)
+             .map_err(|e| {
+                 println!("Parsing Error: {:#?}", e);
+                 FlusterError::ConundrumParsingError
+             })
 }

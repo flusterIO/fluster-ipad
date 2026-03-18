@@ -108,7 +108,11 @@
 
 # Today
 
-- [ ] Handle documentation parser... it's completely absent or broken.
+- [ ] Use zed to generate the following while you have a 'pro' account:
+  - [ ] Complicated markdown syntaxes like:
+    - [ ] Markdown Table
+  - [ ] The start of a robust memory layer for Conundrum.
+- [x] Handle parser error where something like `Here?` on a line by itself breaks the parser.
 - [ ] Write tests for all `-ignoreParser` flags.
 - [ ] Handle moving of code block parsers to nom completely.
   - [ ] Handle modification of the input options.

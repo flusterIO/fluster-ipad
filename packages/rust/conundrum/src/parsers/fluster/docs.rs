@@ -1,7 +1,7 @@
 use fluster_core_utilities::core_types::{
     component_constants::{
-        component_name_id_map::COMPONENT_NAME_ID_MAP, component_names::EmbeddableComponentName,
-        documentation_component_name::DocumentationComponentName,
+        component_ids::EmbeddableComponentId, component_name_id_map::COMPONENT_NAME_ID_MAP,
+        component_names::EmbeddableComponentName, documentation_component_name::DocumentationComponentName,
     },
     documentation_constants::in_content_documentation_id::{InContentDocumentationFormat, InContentDocumentationId},
 };
@@ -70,7 +70,12 @@ impl ConundrumParser<ParsedInspectionRequest> for ParsedInspectionRequest {
     fn parse_input_string<'a>(input: &mut &'a str) -> ModalResult<ParsedInspectionRequest> {
         let ((keyword, marks), full_match) = (|input: &mut &'a str| {
                                                  let keyword =
-                                                     take_while(1.., |c: char| c.is_alphanumeric()).parse_next(input)?;
+                    take_while(1.., |c: char| c.is_alphanumeric()).verify(|kw: &str| {
+                        EmbeddableComponentId::iter().map(|id| id.to_string())
+                                                     .chain(InContentDocumentationId::iter().map(|id| id.to_string()))
+                                                     .any(|s| s == kw)
+                    })
+                    .parse_next(input)?;
                                                  let marks = alt((literal("??"), literal("?"))).parse_next(input)?;
                                                  let _ = space0.parse_next(input)?;
                                                  let _ = alt((line_ending, literal(""))).parse_next(input)?;
