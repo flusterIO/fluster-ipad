@@ -20,4 +20,11 @@ pub enum AutoInsertedComponentName {
     #[serde(rename = "FlusterAiParsePendingContainer")]
     #[strum(to_string = "FlusterAiParsePendingContainer")]
     FlusterAiParsePendingContainer,
+    // Markdown
+    #[serde(rename = "AutoInsertedHeading")]
+    #[strum(to_string = "AutoInsertedHeading")]
+    AutoInsertedHeading,
+    #[serde(rename = "AutoInsertedBlockMath")]
+    #[strum(to_string = "AutoInsertedBlockMath")]
+    AutoInsertedBlockMath,
 }

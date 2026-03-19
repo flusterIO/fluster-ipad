@@ -15,7 +15,7 @@ export const EmbeddedHrWithChildren = (props: EmbeddedHrWithChildrenProps): Reac
     }
     return (
         <div
-            className="w-full grid grid-cols-[1fr_auto_1fr] gap-x-4 place-items-center mt-6"
+            className="w-full grid grid-cols-[1fr_auto_1fr] gap-x-4 place-items-center my-6"
         >
             <div className="bg-border h-[2px] w-full" />
             <div className="text-muted-foreground text-sm my-0! h-fit text-center [&>*]:text-center [&>*]:text-muted-foreground! [&>p]:text-sm [&>*]:my-0! [&>*]:h-fit! max-w-[min(250px,50vw)]">{content}</div>

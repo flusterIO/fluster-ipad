@@ -28,7 +28,6 @@ export const ulComponentConfig: EmbeddableComponentConfig = {
                     type: SnippetDefaultType.function
                 })
             })]
-
         items.push(
             snippetCompletion(`<Ul thick highlight>#{content}</Ul>`, {
                 label: `underline-thick`,

@@ -425,7 +425,6 @@ extension AppSchemaV1 {
       if let fm = data.frontMatter {
         note.frontMatter = FrontMatter.fromParsingResult(data: fm)
       }
-
       return note
     }
     @MainActor

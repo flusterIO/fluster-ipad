@@ -1,5 +1,4 @@
 use crate::{
-    lang::elements::parsed_code_block::ParsedCodeBlock,
     output::{
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
@@ -7,6 +6,7 @@ use crate::{
         },
         parsing_result::mdx_parsing_result::MdxParsingResult,
     },
+    parsers::markdown::code_block::ParsedCodeBlock,
 };
 
 // Add this helper to compile specific languages into MDX components

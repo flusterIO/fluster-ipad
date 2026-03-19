@@ -5,8 +5,7 @@ use winnow::{ModalResult, Parser, ascii::alphanumeric1, combinator::delimited, t
 
 use crate::{
     lang::runtime::traits::mdx_component_result::MdxComponentResult,
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
-    parsers::markdown::parser_trait::ConundrumParser,
+    output::parsing_result::mdx_parsing_result::MdxParsingResult, parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
@@ -22,11 +21,10 @@ impl MdxComponentResult for ParsedCitation {
             return self.full_match.clone();
         }
 
-        if res.front_matter.as_ref().is_some_and(|fm| {
-            fm.ignored_parsers
-                .iter()
-                .any(|x| x == &ParserId::Citations.to_string())
-        }) {
+        if res.front_matter
+              .as_ref()
+              .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::Citations.to_string()))
+        {
             return self.full_match.clone();
         }
 
@@ -38,16 +36,13 @@ impl ConundrumParser<ParsedCitation> for ParsedCitation {
     fn parse_input_string(input: &mut &str) -> ModalResult<ParsedCitation> {
         let start = *input;
 
-        let key: &str =
-            delimited(literal("[[cite:"), alphanumeric1, literal("]]")).parse_next(input)?;
+        let key: &str = delimited(literal("[[cite:"), alphanumeric1, literal("]]")).parse_next(input)?;
 
         let consumed_len = start.len() - input.len();
         let full_match = &start[..consumed_len];
 
-        Ok(ParsedCitation {
-            key: key.to_string(),
-            full_match: full_match.to_string(),
-        })
+        Ok(ParsedCitation { key: key.to_string(),
+                            full_match: full_match.to_string() })
     }
 
     fn matches_first_char(char: char) -> bool {

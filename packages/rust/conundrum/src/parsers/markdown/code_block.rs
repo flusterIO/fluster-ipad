@@ -17,7 +17,7 @@ use crate::{
         },
         parsing_result::mdx_parsing_result::MdxParsingResult,
     },
-    parsers::markdown::parser_trait::ConundrumParser,
+    parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare]

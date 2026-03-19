@@ -1,9 +1,15 @@
 use crate::{
-    lang::{elements::parsed_code_block::ParsedCodeBlock, runtime::traits::mdx_component_result::MdxComponentResult},
+    lang::runtime::traits::mdx_component_result::MdxComponentResult,
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
-    parsers::fluster::{
-        docs::ParsedInspectionRequest, inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink,
-        tag::ParsedTag,
+    parsers::{
+        fluster::{
+            docs::ParsedInspectionRequest, inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink,
+            tag::ParsedTag,
+        },
+        markdown::{
+            block_math::BlockMathResult, code_block::ParsedCodeBlock, heading::MarkdownHeadingResult,
+            inline_math::InlineMathResult,
+        },
     },
 };
 
@@ -15,12 +21,17 @@ impl MdxComponentResult for String {
 
 // This enum acts as a router for our different syntaxes
 pub enum ParsedElement {
+    // Markdown
+    Heading(MarkdownHeadingResult),
+    BlockMath(BlockMathResult),
+    InlineMath(InlineMathResult),
+    Text(String),
     ParsedCodeBlock(ParsedCodeBlock),
+    // Fluster Specific
     ParsedCitation(ParsedCitation),
     ParsedOutgoingNoteLink(ParsedOutgoingNoteLink),
     Tag(ParsedTag),
     ParsedInspectionRequest(ParsedInspectionRequest),
-    Text(String),
 }
 
 impl MdxComponentResult for ParsedElement {
@@ -32,6 +43,9 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_mdx_component(res),
             ParsedElement::Tag(tag) => tag.to_mdx_component(res),
             ParsedElement::Text(s) => s.clone(),
+            ParsedElement::Heading(heading) => heading.to_mdx_component(res),
+            ParsedElement::BlockMath(math) => math.to_mdx_component(res),
+            ParsedElement::InlineMath(math) => math.to_mdx_component(res),
         }
     }
 }

@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
-use crate::lang::elements::parsed_code_block::ParsedCodeBlock;
+use crate::parsers::markdown::code_block::ParsedCodeBlock;
 
 #[typeshare]
 #[derive(uniffi::Enum, Serialize, Deserialize, Debug, Clone)]

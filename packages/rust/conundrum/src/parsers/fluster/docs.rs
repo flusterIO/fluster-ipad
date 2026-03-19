@@ -19,7 +19,7 @@ use crate::{
     embedded::{embedded_component_docs::EmbeddedComponentDocs, embedded_in_content_docs::EmbeddedInContentDocs},
     lang::runtime::traits::mdx_component_result::MdxComponentResult,
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
-    parsers::markdown::parser_trait::ConundrumParser,
+    parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare]

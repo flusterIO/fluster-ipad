@@ -9,7 +9,7 @@ use winnow::{
 
 use crate::{
     lang::runtime::traits::mdx_component_result::MdxComponentResult,
-    output::parsing_result::mdx_parsing_result::MdxParsingResult, parsers::markdown::parser_trait::ConundrumParser,
+    output::parsing_result::mdx_parsing_result::MdxParsingResult, parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
