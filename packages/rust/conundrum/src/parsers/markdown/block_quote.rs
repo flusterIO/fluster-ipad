@@ -72,6 +72,7 @@ pub struct BlockQuoteResult {
 
 impl MdxComponentResult for BlockQuoteResult {
     fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
+        println!("Children: {:#?}", self.children);
         // Recursively render inner elements through the same MdxParsingResult
         // so side-effects (citations, tags, etc.) are collected correctly.
         let children_string = compile_elements(&self.children, res);
@@ -105,23 +106,24 @@ fn parse_bq_line(input: &mut ConundrumInput) -> ModalResult<String> {
 
 impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
     fn parse_input_string<'a>(input_outer: &mut ConundrumInput<'a>) -> ModalResult<BlockQuoteResult> {
-        let ((parsed_content), full_match) = (|input: &mut ConundrumInput<'a>| {
-                                                 let _ = literal("\n").parse_next(input)?;
-                                                 let lines: Vec<String> = repeat(1.., parse_bq_line).parse_next(input)?;
+        let (parsed_content, full_match) = (|input: &mut ConundrumInput<'a>| {
+                                               let _ = literal("\n").parse_next(input)?;
+                                               let lines: Vec<String> = repeat(1.., parse_bq_line).parse_next(input)?;
 
-                                                 // Join stripped lines then recursively parse the inner content
-                                                 // so math, citations, nested block quotes, etc. are recognised.
-                                                 let inner_src = lines.join("\n");
-                                                 let mut new_state =
-                                                     ConundrumInput { input: "",
-                                                                      state: RefCell::new(ParseState::default()) };
-                                                 let parsed_content =
+                                               // Join stripped lines then recursively parse the inner content
+                                               // so math, citations, nested block quotes, etc. are recognised.
+                                               let inner_src = lines.join("\n");
+                                               let mut new_state =
+                                                   ConundrumInput { input: &inner_src,
+                                                                    state: RefCell::new(ParseState::default()) };
+                                               let new_parsed_content =
                     parse_elements(&mut new_state).unwrap_or_else(|_| vec![ParsedElement::Text(inner_src.clone())]);
 
-                                                 Ok(parsed_content)
-                                             }).with_taken()
-                                               .parse_next(input_outer)?;
+                                               Ok(new_parsed_content)
+                                           }).with_taken()
+                                             .parse_next(input_outer)?;
 
+        println!("Parsed Content: {:#?}", parsed_content);
         Ok(BlockQuoteResult { children: parsed_content,
                               full_match: full_match.to_string() })
     }

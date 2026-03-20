@@ -33,24 +33,16 @@ pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Ve
             dispatch! {peek(take(1usize));
                 // Block-level: only valid at the start of a line
                 "#" => |x: &mut ConundrumInput<'a>| {
-                    if at_line_start {
                         alt((
                             MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
-                    } else {
-                        any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
-                    }
                 },
-                ">" | " " => |x: &mut ConundrumInput<'a>| {
-                    if at_line_start {
+                "\n" => |x: &mut ConundrumInput<'a>| {
                         alt((
                             BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
-                    } else {
-                        any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
-                    }
                 },
                 // Inline / position-independent
                 "`" => |x: &mut ConundrumInput<'a>| {

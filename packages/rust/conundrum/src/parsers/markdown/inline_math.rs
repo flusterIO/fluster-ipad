@@ -20,7 +20,7 @@ impl MdxComponentResult for InlineMathResult {
     fn to_mdx_component(&self,
                         res: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult)
                         -> String {
-        format!("\n<{}>\n{}\n</{}>\n",
+        format!("<{}>{}</{}>",
                 AutoInsertedComponentName::AutoInsertedInlineMath,
                 self.body,
                 AutoInsertedComponentName::AutoInsertedInlineMath,)
