@@ -4,8 +4,9 @@ use typeshare::typeshare;
 use winnow::{ModalResult, Parser, ascii::alphanumeric1, combinator::delimited, token::literal};
 
 use crate::{
-    lang::runtime::traits::mdx_component_result::MdxComponentResult,
-    output::parsing_result::mdx_parsing_result::MdxParsingResult, parsers::parser_trait::ConundrumParser,
+    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
@@ -33,13 +34,9 @@ impl MdxComponentResult for ParsedCitation {
 }
 
 impl ConundrumParser<ParsedCitation> for ParsedCitation {
-    fn parse_input_string(input: &mut &str) -> ModalResult<ParsedCitation> {
-        let start = *input;
-
-        let key: &str = delimited(literal("[[cite:"), alphanumeric1, literal("]]")).parse_next(input)?;
-
-        let consumed_len = start.len() - input.len();
-        let full_match = &start[..consumed_len];
+    fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<ParsedCitation> {
+        let (key, full_match) =
+            delimited(literal("[[cite:"), alphanumeric1, literal("]]")).with_taken().parse_next(input)?;
 
         Ok(ParsedCitation { key: key.to_string(),
                             full_match: full_match.to_string() })

@@ -7,8 +7,8 @@ use crate::{
             tag::ParsedTag,
         },
         markdown::{
-            block_math::BlockMathResult, code_block::ParsedCodeBlock, heading::MarkdownHeadingResult,
-            inline_math::InlineMathResult,
+            block_math::BlockMathResult, block_quote::BlockQuoteResult, code_block::ParsedCodeBlock,
+            heading::MarkdownHeadingResult, inline_math::InlineMathResult,
         },
     },
 };
@@ -20,12 +20,15 @@ impl MdxComponentResult for String {
 }
 
 // This enum acts as a router for our different syntaxes
+#[derive(Debug)]
 pub enum ParsedElement {
     // Markdown
     Heading(MarkdownHeadingResult),
+    BlockQuote(BlockQuoteResult),
     BlockMath(BlockMathResult),
     InlineMath(InlineMathResult),
     Text(String),
+    NestedContent(String),
     ParsedCodeBlock(ParsedCodeBlock),
     // Fluster Specific
     ParsedCitation(ParsedCitation),
@@ -46,6 +49,8 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::Heading(heading) => heading.to_mdx_component(res),
             ParsedElement::BlockMath(math) => math.to_mdx_component(res),
             ParsedElement::InlineMath(math) => math.to_mdx_component(res),
+            ParsedElement::BlockQuote(quote) => quote.to_mdx_component(res),
+            ParsedElement::NestedContent(s) => s.clone(),
         }
     }
 }

@@ -24,7 +24,13 @@ pub enum AutoInsertedComponentName {
     #[serde(rename = "AutoInsertedHeading")]
     #[strum(to_string = "AutoInsertedHeading")]
     AutoInsertedHeading,
+    #[serde(rename = "AutoInsertedBlockQuote")]
+    #[strum(to_string = "AutoInsertedBlockQuote")]
+    AutoInsertedBlockQuote,
     #[serde(rename = "AutoInsertedBlockMath")]
     #[strum(to_string = "AutoInsertedBlockMath")]
     AutoInsertedBlockMath,
+    #[serde(rename = "AutoInsertedInlineMath")]
+    #[strum(to_string = "AutoInsertedInlineMath")]
+    AutoInsertedInlineMath,
 }

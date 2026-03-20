@@ -26,6 +26,7 @@ lsp-types = "0.97.0"
 typst = "0.14.2"
 winnow = { workspace = true, features = [ "debug" ] }
 num-format = "0.4.4"
+github-slugger = "0.1.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

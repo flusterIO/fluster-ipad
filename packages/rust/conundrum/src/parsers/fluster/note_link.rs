@@ -8,8 +8,9 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::traits::mdx_component_result::MdxComponentResult,
-    output::parsing_result::mdx_parsing_result::MdxParsingResult, parsers::parser_trait::ConundrumParser,
+    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
@@ -41,7 +42,7 @@ impl MdxComponentResult for ParsedOutgoingNoteLink {
 }
 
 impl ConundrumParser<ParsedOutgoingNoteLink> for ParsedOutgoingNoteLink {
-    fn parse_input_string(input: &mut &str) -> ModalResult<ParsedOutgoingNoteLink> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<ParsedOutgoingNoteLink> {
         let ((display_text, note_id), full_match) = (
             delimited('[', take_until(1.., ']'), ']'),
             delimited(literal("(note:"), take_until(1.., ")"), ')')
@@ -61,14 +62,17 @@ impl ConundrumParser<ParsedOutgoingNoteLink> for ParsedOutgoingNoteLink {
 
 #[cfg(test)]
 mod tests {
+    use crate::testing::wrap_test_content::wrap_test_conundrum_content;
+
     use super::*;
 
     #[test]
     fn parsed_link() {
-        let mut test_content = "[This is my link](note:myNote)";
+        let test_content = "[This is my link](note:myNote)";
+        let mut test_data = wrap_test_conundrum_content(test_content);
 
         let res =
-            ParsedOutgoingNoteLink::parse_input_string(&mut test_content).expect("Parses outgoing link successfully.");
+            ParsedOutgoingNoteLink::parse_input_string(&mut test_data).expect("Parses outgoing link successfully.");
 
         assert!(test_content.is_empty(), "Citation returns the proper left over text.");
 

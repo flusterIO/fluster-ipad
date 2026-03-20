@@ -17,7 +17,7 @@ use winnow::{
 
 use crate::{
     embedded::{embedded_component_docs::EmbeddedComponentDocs, embedded_in_content_docs::EmbeddedInContentDocs},
-    lang::runtime::traits::mdx_component_result::MdxComponentResult,
+    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
     parsers::parser_trait::ConundrumParser,
 };
@@ -67,8 +67,8 @@ impl MdxComponentResult for ParsedInspectionRequest {
 }
 
 impl ConundrumParser<ParsedInspectionRequest> for ParsedInspectionRequest {
-    fn parse_input_string<'a>(input: &mut &'a str) -> ModalResult<ParsedInspectionRequest> {
-        let ((keyword, marks), full_match) = (|input: &mut &'a str| {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<ParsedInspectionRequest> {
+        let ((keyword, marks), full_match) = (|input: &mut ConundrumInput<'a>| {
                                                  let keyword =
                     take_while(1.., |c: char| c.is_alphanumeric()).verify(|kw: &str| {
                         EmbeddableComponentId::iter().map(|id| id.to_string())

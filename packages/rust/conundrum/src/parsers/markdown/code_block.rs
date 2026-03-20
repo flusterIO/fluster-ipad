@@ -9,7 +9,7 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::traits::mdx_component_result::MdxComponentResult,
+    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
     output::{
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
@@ -55,14 +55,14 @@ impl MdxComponentResult for ParsedCodeBlock {
 }
 
 impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
-    fn parse_input_string<'a>(input: &mut &'a str) -> winnow::ModalResult<ParsedCodeBlock> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> winnow::ModalResult<ParsedCodeBlock> {
         let ((language, meta_opt, raw_content), full_match) =
-            (|input: &mut &'a str| {
+            (|input: &mut ConundrumInput<'a>| {
                 let ticks = take_while(1.., |c: char| c == '`').parse_next(input)?;
                 let language =
                     take_while(1.., |c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r').parse_next(input)?;
 
-                let meta_opt = combinator::opt(|input: &mut &'a str| {
+                let meta_opt = combinator::opt(|input: &mut ConundrumInput<'a>| {
                                    let _ = space1.parse_next(input)?;
                                    let _ = literal("--").parse_next(input)?;
                                    let _ = space0.parse_next(input)?;

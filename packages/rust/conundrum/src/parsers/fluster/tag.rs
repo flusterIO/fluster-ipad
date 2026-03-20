@@ -8,8 +8,9 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::traits::mdx_component_result::MdxComponentResult,
-    output::parsing_result::mdx_parsing_result::MdxParsingResult, parsers::parser_trait::ConundrumParser,
+    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare]
@@ -46,7 +47,7 @@ impl MdxComponentResult for ParsedTag {
 }
 
 impl ConundrumParser<ParsedTag> for ParsedTag {
-    fn parse_input_string(input: &mut &str) -> ModalResult<ParsedTag> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<ParsedTag> {
         let (body, full_match) =
             delimited(literal("[[#"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
 
@@ -61,13 +62,17 @@ impl ConundrumParser<ParsedTag> for ParsedTag {
 
 #[cfg(test)]
 mod tests {
+    use crate::testing::wrap_test_content::wrap_test_conundrum_content;
+
     use super::*;
 
     #[test]
     fn parsed_link() {
-        let mut test_content = "[[#myTag]]";
+        let test_content = "[[#myTag]]";
 
-        let res = ParsedTag::parse_input_string(&mut test_content).expect("Parses outgoing link successfully.");
+        let mut test_data = wrap_test_conundrum_content(test_content);
+
+        let res = ParsedTag::parse_input_string(&mut test_data).expect("Parses outgoing link successfully.");
 
         assert!(test_content.is_empty(), "Citation returns the proper left over text.");
 

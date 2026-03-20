@@ -29,48 +29,61 @@ pub struct MdxParsingResult {
     pub content: String,
     pub tags: Vec<TagResult>,
     pub front_matter: Option<FrontMatterResult>,
-    /// bibliography_string is a string representing the concatenated bibtex entries of all
-    /// valid bibentries within the note, without duplicates and in the proper order.
+    /// bibliography_string is a string representing the concatenated bibtex
+    /// entries of all valid bibentries within the note, without duplicates
+    /// and in the proper order.
     pub citations: Vec<CitationResult>,
     pub dictionary_entries: Vec<DictionaryEntryResult>,
     pub outgoing_links: Vec<NoteOutgoingLinkResult>,
-    /// Always set to false initially, but can be set to true by certain parsers to avoid further
-    /// parsing.
+    /// Always set to false initially, but can be set to true by certain parsers
+    /// to avoid further parsing.
     pub ignore_all_parsers: bool,
     pub ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
 }
 
+impl Default for MdxParsingResult {
+    fn default() -> Self {
+        Self { note_id: None,
+               content: "".to_string(),
+               tags: Vec::new(),
+               front_matter: Default::default(),
+               citations: Vec::new(),
+               dictionary_entries: Vec::new(),
+               outgoing_links: Vec::new(),
+               ignore_all_parsers: false,
+               ai_secondary_parse_requests: Vec::new() }
+    }
+}
+
 impl MdxParsingResult {
-    /// This will not return a parsed item, but rather an empty template that can be passed to a
-    /// series of MdxParsers to apply the necessary properties and changes.
+    /// This will not return a parsed item, but rather an empty template that
+    /// can be passed to a series of MdxParsers to apply the necessary
+    /// properties and changes.
     pub fn from_initial_mdx_content(content: &str) -> MdxParsingResult {
         let matter = Matter::<YAML>::new();
-        let data = matter
-            .parse(content)
-            .map_err(|e| {
-                println!("Front Matter Error: {}", e);
-                FlusterError::FrontMatterError
-            })
-            .ok();
-        MdxParsingResult {
-            note_id: None,
-            content: match &data {
-                Some(d) => d.content.clone(),
-                None => "".to_string(),
-            },
-            citations: Vec::new(),
-            tags: Vec::new(),
-            outgoing_links: Vec::new(),
-            dictionary_entries: Vec::new(),
-            front_matter: match data {
-                Some(front_matter_data) => front_matter_data
-                    .data
-                    .map(FrontMatterResult::from_gray_matter),
-                None => None,
-            },
-            ignore_all_parsers: false,
-            ai_secondary_parse_requests: Vec::new(),
-        }
+        let data = matter.parse(content)
+                         .map_err(|e| {
+                             println!("Front Matter Error: {}", e);
+                             FlusterError::FrontMatterError
+                         })
+                         .ok();
+        MdxParsingResult { note_id: None,
+                           content: match &data {
+                               Some(d) => d.content.clone(),
+                               None => "".to_string(),
+                           },
+                           citations: Vec::new(),
+                           tags: Vec::new(),
+                           outgoing_links: Vec::new(),
+                           dictionary_entries: Vec::new(),
+                           front_matter: match data {
+                               Some(front_matter_data) => {
+                                   front_matter_data.data.map(FrontMatterResult::from_gray_matter)
+                               }
+                               None => None,
+                           },
+                           ignore_all_parsers: false,
+                           ai_secondary_parse_requests: Vec::new() }
     }
 
     // Deprecated? Fucking hell I hope so...
@@ -82,10 +95,7 @@ impl MdxParsingResult {
         let mut tags_offsets = Vec::new();
         for tag in &self.tags {
             let body = builder.create_string(&tag.body);
-            tags_offsets.push(TagResultBuffer::create(
-                &mut builder,
-                &TagResultBufferArgs { body: Some(body) },
-            ));
+            tags_offsets.push(TagResultBuffer::create(&mut builder, &TagResultBufferArgs { body: Some(body) }));
         }
         let tags_vector = builder.create_vector(&tags_offsets);
 
@@ -93,13 +103,10 @@ impl MdxParsingResult {
         let mut citations_offsets = Vec::new();
         for citation in &self.citations {
             let key = builder.create_string(&citation.citation_key);
-            citations_offsets.push(CitationResultBuffer::create(
-                &mut builder,
-                &CitationResultBufferArgs {
-                    citation_key: Some(key),
-                    idx: citation.idx,
-                },
-            ));
+            citations_offsets.push(CitationResultBuffer::create(&mut builder,
+                                                                &CitationResultBufferArgs { citation_key:
+                                                                                                Some(key),
+                                                                                            idx: citation.idx }));
         }
 
         let citations_vector = builder.create_vector(&citations_offsets);
@@ -124,35 +131,36 @@ impl MdxParsingResult {
 
         let dictionary_entries = builder.create_vector(&dictionary_entry_offets);
 
-        let front_matter_offset = self.front_matter.as_ref().map(|fm| {
-            let ignored_parsers_offsets = fm
-                .ignored_parsers
-                .iter()
-                .map(|s| builder.create_string(s))
-                .collect::<Vec<_>>();
-            let ignored_parsers_vector = builder.create_vector(&ignored_parsers_offsets);
+        let front_matter_offset =
+            self.front_matter.as_ref().map(|fm| {
+                                          let ignored_parsers_offsets = fm.ignored_parsers
+                                                                          .iter()
+                                                                          .map(|s| builder.create_string(s))
+                                                                          .collect::<Vec<_>>();
+                                          let ignored_parsers_vector = builder.create_vector(&ignored_parsers_offsets);
 
-            let title = fm.title.as_ref().map(|s| builder.create_string(s));
-            let user_defined_id = fm
-                .user_defined_id
-                .as_ref()
-                .map(|s| builder.create_string(s));
-            let mut fmb = FrontMatterResultBufferBuilder::new(&mut builder);
-            fmb.add_ignore_parsers(ignored_parsers_vector);
-            if let Some(title) = title {
-                fmb.add_title(title);
-            }
-            if let Some(user_def_id) = user_defined_id {
-                fmb.add_user_defined_id(user_def_id);
-            }
-            fmb.finish()
-        });
+                                          let title = fm.title.as_ref().map(|s| builder.create_string(s));
+                                          let user_defined_id =
+                                              fm.user_defined_id.as_ref().map(|s| builder.create_string(s));
+                                          let mut fmb = FrontMatterResultBufferBuilder::new(&mut builder);
+                                          fmb.add_ignore_parsers(ignored_parsers_vector);
+                                          if let Some(title) = title {
+                                              fmb.add_title(title);
+                                          }
+                                          if let Some(user_def_id) = user_defined_id {
+                                              fmb.add_user_defined_id(user_def_id);
+                                          }
+                                          fmb.finish()
+                                      });
 
-        // let ai_parsing_requests_builder = SecondaryAiParseRequestBuilder::new(&mut builder);
+        // let ai_parsing_requests_builder = SecondaryAiParseRequestBuilder::new(&mut
+        // builder);
 
-        // ai_parsing_requests_builder.add_type_(SecondaryAiParsingRequestType::CreateStudyGuide);
+        // ai_parsing_requests_builder.
+        // add_type_(SecondaryAiParsingRequestType::CreateStudyGuide);
 
-        // let ai_secondary_parse_requests = builder.create_vector(&unimplemented_ai_parsing_requests);
+        // let ai_secondary_parse_requests =
+        // builder.create_vector(&unimplemented_ai_parsing_requests);
 
         // let requires_ai_parse = builder.create
 

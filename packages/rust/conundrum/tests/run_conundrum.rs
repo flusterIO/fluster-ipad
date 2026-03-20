@@ -9,6 +9,7 @@ use fluster_core_utilities::core_types::{
     documentation_constants::in_content_documentation_id::InContentDocumentationId,
 };
 use strum::IntoEnumIterator;
+mod parser_tests;
 
 #[tokio::test]
 async fn runs_conundrum() {
