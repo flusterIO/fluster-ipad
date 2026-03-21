@@ -27,12 +27,12 @@ use crate::{
 /// Core recursive parser.  Returns a `ModalResult` so it can be called from
 /// inside other winnow parsers (e.g. `BlockQuoteResult::parse_input_string`)
 /// without a type-mismatch.
-pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Vec<ParsedElement>> {
+pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<ParsedElement>> {
     // Documents and recursively-parsed inner blocks always begin at a line
     // boundary.
     let mut at_line_start = true;
 
-    repeat(0.., |input: &mut ConundrumInput<'a>| -> ModalResult<ParsedElement> {
+    repeat(0.., |input_inner: &mut ConundrumInput<'a>| -> ModalResult<ParsedElement> {
         let result =
             dispatch! {peek(take(1usize));
                 "\n" => |x: &mut ConundrumInput<'a>| {
@@ -40,6 +40,7 @@ pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Ve
                             MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
                             BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
                             ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                            // MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                 },
@@ -85,28 +86,33 @@ pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Ve
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
+                "\\" => |x: &mut ConundrumInput<'a>| {
+                    take(2usize).map(|c: &'a str| {
+                    ParsedElement::Text(c.to_string())
+                    }).parse_next(x)
+                },
                 _ => |x: &mut ConundrumInput<'a>| {
                     alt((
                         ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
-            }.parse_next(input)?;
+            }.parse_next(input_inner)?;
 
         // A Text element from `any` is a line start only when it was a newline.
         // Block-level elements consume their own trailing newline, so the
         // position after them is always a line start.
-        at_line_start = match &result {
-            ParsedElement::Text(s) => s == "\n" || s == "\r\n",
-            ParsedElement::Heading(_)
-            | ParsedElement::BlockQuote(_)
-            | ParsedElement::BlockMath(_)
-            | ParsedElement::ParsedCodeBlock(_) => true,
-            _ => false,
-        };
+        // at_line_start = match &result {
+        //     ParsedElement::Text(s) => s == "\n" || s == "\r\n",
+        //     ParsedElement::Heading(_)
+        //     | ParsedElement::BlockQuote(_)
+        //     | ParsedElement::BlockMath(_)
+        //     | ParsedElement::ParsedCodeBlock(_) => true,
+        //     _ => false,
+        // };
 
         Ok(result)
-    }).parse_next(input_root)
+    }).parse_next(input)
 }
 
 /// Application-level entry point.  Parses the entire input and converts any

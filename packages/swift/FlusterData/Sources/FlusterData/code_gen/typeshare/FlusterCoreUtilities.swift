@@ -874,6 +874,7 @@ public enum AutoInsertedComponentName: String, Codable {
 	case autoInsertedBlockMath = "AutoInsertedBlockMath"
 	case autoInsertedInlineMath = "AutoInsertedInlineMath"
 	case autoInsertedMarkdownLink = "AutoInsertedMarkdownLink"
+	case autoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph"
 }
 
 public enum AutoTaggableType: String, Codable {
@@ -1077,6 +1078,7 @@ public enum SplitviewEditorWebviewEvents: String, Codable {
 	case setWebviewPreviewScrollLock = "set-webview-preview-scroll-lock"
 	case editorStateUpdate = "cross-lang-editor-update"
 	case editorStateParsedContentUpdate = "editor-parsed-content-update"
+	case errorStateReset = "error-state-reset"
 }
 
 public enum SplitviewEditorWebviewLocalStorageKeys: String, Codable {

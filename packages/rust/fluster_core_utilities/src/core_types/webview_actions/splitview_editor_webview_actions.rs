@@ -77,6 +77,9 @@ pub enum SplitviewEditorWebviewEvents {
     #[serde(rename = "editor-parsed-content-update")]
     #[strum(to_string = "editor-parsed-content-update")]
     EditorStateParsedContentUpdate,
+    #[serde(rename = "error-state-reset")]
+    #[strum(to_string = "error-state-reset")]
+    ErrorStateReset,
 }
 
 #[typeshare]

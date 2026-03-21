@@ -47,7 +47,6 @@ export const MdxContent = ({
 
     useEffect(() => {
         setValue(mdx);
-
     }, [mdx]);
 
 

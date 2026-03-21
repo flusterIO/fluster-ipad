@@ -1,3 +1,6 @@
+use serde::Serialize;
+use typeshare::typeshare;
+
 use crate::{
     lang::runtime::traits::mdx_component_result::MdxComponentResult,
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
@@ -11,6 +14,7 @@ use crate::{
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
             code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_math::InlineMathResult,
             italic_text::MarkdownItalicTextResult, markdown_link::MarkdownLinkResult,
+            paragraph::MarkdownParagraphResult,
         },
     },
 };
@@ -22,7 +26,10 @@ impl MdxComponentResult for String {
 }
 
 // This enum acts as a router for our different syntaxes
-#[derive(Debug)]
+// As a current limitation, a parser cannot have children as
+// `Vec<ParsedElement>` or reference `ParsedElement` in any other way _and_
+// export it's type via typeshare.
+#[derive(Debug, Serialize)]
 pub enum ParsedElement {
     // Markdown
     Heading(MarkdownHeadingResult),
@@ -33,9 +40,9 @@ pub enum ParsedElement {
     BoldText(MarkdownBoldTextResult),
     ItalicText(MarkdownItalicTextResult),
     BoldAndItalicText(MarkdownBoldAndItalicTextResult),
-    NestedContent(String),
     ParsedCodeBlock(ParsedCodeBlock),
     MarkdownLink(MarkdownLinkResult),
+    MarkdownParagraph(MarkdownParagraphResult),
     // Fluster Specific
     ParsedCitation(ParsedCitation),
     ParsedOutgoingNoteLink(ParsedOutgoingNoteLink),
@@ -56,11 +63,11 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::BlockMath(math) => math.to_mdx_component(res),
             ParsedElement::InlineMath(math) => math.to_mdx_component(res),
             ParsedElement::BlockQuote(quote) => quote.to_mdx_component(res),
-            ParsedElement::NestedContent(s) => s.clone(),
             ParsedElement::BoldText(t) => t.to_mdx_component(res),
             ParsedElement::ItalicText(t) => t.to_mdx_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_mdx_component(res),
             ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
+            ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
         }
     }
 }

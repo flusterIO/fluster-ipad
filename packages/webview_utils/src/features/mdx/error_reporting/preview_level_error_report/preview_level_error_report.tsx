@@ -1,9 +1,22 @@
-import { MdxContentProps } from '#/mdx/components/mdx_content_types'
+import { type MdxContentProps } from '#/mdx/components/mdx_content_types'
 import { useDebounceMdxParse } from '#/mdx/hooks/use_debounce_mdx_parse'
 import { TriangleAlert } from 'lucide-react'
 import React, { useEffect, type ReactNode } from 'react'
-import { FallbackProps } from 'react-error-boundary'
+import { type FallbackProps } from 'react-error-boundary'
 import { motion } from "framer-motion"
+import { useEventListener } from '@/state/hooks/use_event_listener'
+import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities'
+
+
+interface EventProps {
+
+}
+declare global {
+
+    interface WindowEventMap {
+        [SplitviewEditorWebviewEvents.ErrorStateReset]: CustomEvent<null>
+    }
+}
 
 
 export const PreviewLevelErrorReport = ({ debounceTimeout, showWebviewAction, additionalComponents, id, mdx, resetErrorBoundary }: FallbackProps & Pick<MdxContentProps, "debounceTimeout" | "showWebviewAction" | "additionalComponents"> & { id: string, mdx: string }): ReactNode => {
@@ -26,6 +39,10 @@ export const PreviewLevelErrorReport = ({ debounceTimeout, showWebviewAction, ad
         /*     resetErrorBoundary() */
         /* } */
     }, [isReady, resetErrorBoundary])
+
+    useEventListener(SplitviewEditorWebviewEvents.ErrorStateReset, () => { resetErrorBoundary(); })
+
+
     return (
         <div className="w-full h-screen z-999 flex flex-col justify-center items-center absolute top-0 left-0 right-0 bottom-0 border rounded">
             <motion.div

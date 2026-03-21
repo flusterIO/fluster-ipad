@@ -8,4 +8,5 @@ pub mod inline_math;
 pub mod italic_text;
 pub mod line_item;
 pub mod markdown_link;
+pub mod paragraph;
 pub mod table;

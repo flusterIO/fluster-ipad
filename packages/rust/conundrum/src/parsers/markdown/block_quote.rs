@@ -1,6 +1,7 @@
 use std::cell::RefCell;
 
 use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
+use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
     ascii::{line_ending, space0, till_line_ending},
@@ -23,35 +24,10 @@ use crate::{
 };
 
 // ---------------------------------------------------------------------------
-// GFM alert type
-// ---------------------------------------------------------------------------
-
-#[derive(Debug, Clone, PartialEq)]
-pub enum GfmAlertType {
-    Note,
-    Tip,
-    Important,
-    Warning,
-    Caution,
-}
-
-impl std::fmt::Display for GfmAlertType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            GfmAlertType::Note => write!(f, "note"),
-            GfmAlertType::Tip => write!(f, "tip"),
-            GfmAlertType::Important => write!(f, "important"),
-            GfmAlertType::Warning => write!(f, "warning"),
-            GfmAlertType::Caution => write!(f, "caution"),
-        }
-    }
-}
-
-// ---------------------------------------------------------------------------
 // Result type
 // ---------------------------------------------------------------------------
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct BlockQuoteResult {
     /// The inner content already fully parsed into `ParsedElement`s.
     /// Nesting is handled recursively: a `> > ...` line becomes a

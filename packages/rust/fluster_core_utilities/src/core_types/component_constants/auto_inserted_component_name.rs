@@ -36,4 +36,7 @@ pub enum AutoInsertedComponentName {
     #[serde(rename = "AutoInsertedMarkdownLink")]
     #[strum(to_string = "AutoInsertedMarkdownLink")]
     AutoInsertedMarkdownLink,
+    #[serde(rename = "AutoInsertedMarkdownParagraph")]
+    #[strum(to_string = "AutoInsertedMarkdownParagraph")]
+    AutoInsertedMarkdownParagraph,
 }

@@ -1,13 +1,11 @@
-import React, { HTMLProps, type ReactNode } from "react";
+import React, { type HTMLProps, type ReactNode } from "react";
 import {
-    WithColorKey,
+    type WithColorKey,
 } from "../embeddable_component_types/color_key";
 import { hlPropsSchema } from "./hl_props_schema";
 import { cn } from "@/utils/cn";
 
 export interface HlProps extends HTMLProps<HTMLSpanElement>, WithColorKey {
-    /// A valid fluster color variable.
-    color: string;
     children: ReactNode;
 }
 

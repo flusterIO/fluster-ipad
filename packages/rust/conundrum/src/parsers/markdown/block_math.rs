@@ -1,9 +1,8 @@
-use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
+use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
-    ascii::take_escaped,
-    combinator::{delimited, opt},
-    token::{literal, one_of, take_till},
+    combinator::delimited,
+    token::{literal, take_until},
 };
 
 use crate::{
@@ -11,30 +10,21 @@ use crate::{
     parsers::parser_trait::ConundrumParser,
 };
 
-#[derive(Debug)]
+#[typeshare::typeshare]
+#[derive(Debug, Serialize)]
 pub struct BlockMathResult {
     pub body: String,
 }
 
 impl MdxComponentResult for BlockMathResult {
     fn to_mdx_component(&self, _: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult) -> String {
-        format!("\n<{}>\n{}\n</{}>\n",
-                AutoInsertedComponentName::AutoInsertedBlockMath,
-                self.body,
-                AutoInsertedComponentName::AutoInsertedBlockMath,)
+        format!("$$\n{}\n$$", self.body)
     }
 }
 
 impl ConundrumParser<BlockMathResult> for BlockMathResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<BlockMathResult> {
-        let body = delimited(literal("$$"),
-                             opt(take_escaped(// 1. "Normal" text: Must consume AT LEAST 1 char, and stop at \ or $
-                                              take_till(1.., ('\\', '$')),
-                                              // 2. Control character: The escape trigger
-                                              '\\',
-                                              // 3. Escapable: What is legally allowed to follow the \
-                                              one_of(['$', '\\']))).map(|s| s.unwrap_or("")),
-                             literal("$$")).parse_next(input)?;
+        let body = delimited(literal("$$"), take_until(1.., "$$"), literal("$$")).parse_next(input)?;
         Ok(BlockMathResult { body: body.to_string() })
     }
 
@@ -45,7 +35,7 @@ impl ConundrumParser<BlockMathResult> for BlockMathResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::testing::wrap_test_content::{self, wrap_test_conundrum_content};
+    use crate::testing::wrap_test_content::wrap_test_conundrum_content;
 
     use super::*;
 

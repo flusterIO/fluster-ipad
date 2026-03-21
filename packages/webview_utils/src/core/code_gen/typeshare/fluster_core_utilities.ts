@@ -533,6 +533,7 @@ export enum AutoInsertedComponentName {
 	AutoInsertedBlockMath = "AutoInsertedBlockMath",
 	AutoInsertedInlineMath = "AutoInsertedInlineMath",
 	AutoInsertedMarkdownLink = "AutoInsertedMarkdownLink",
+	AutoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph",
 }
 
 export enum AutoTaggableType {
@@ -738,6 +739,7 @@ export enum SplitviewEditorWebviewEvents {
 	SetWebviewPreviewScrollLock = "set-webview-preview-scroll-lock",
 	EditorStateUpdate = "cross-lang-editor-update",
 	EditorStateParsedContentUpdate = "editor-parsed-content-update",
+	ErrorStateReset = "error-state-reset",
 }
 
 export enum SplitviewEditorWebviewLocalStorageKeys {

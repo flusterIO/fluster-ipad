@@ -1,4 +1,5 @@
 use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
+use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
     ascii::{multispace0, space1, till_line_ending},
@@ -12,7 +13,7 @@ use crate::{
     parsers::parser_trait::ConundrumParser,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct MarkdownHeadingResult {
     pub depth: usize,
     pub content: String,

@@ -127,4 +127,5 @@
 
 ## Offline
 
+- [ ] Send new `ErrorStateReset` event after manual save request content change so that error state can be cleared by user without requiring navigation away and back to note.
 - [ ] Work on output components for all new markdown parsed elements.

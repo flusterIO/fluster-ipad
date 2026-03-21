@@ -20,6 +20,7 @@ import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_c
 import { AutoInsertedComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities"
 import { hrComponentNames } from "../embeddable_mdx_components/hr/hr_component_config";
 import { embeddableHintComponentNames } from "../embeddable_mdx_components/hint/hint_component_config";
+import { AutoInsertedBlockMath } from "../../mdx/embeddable_mdx_components/auto_inserted/block_math";
 
 enum ComponentItemType {
     userInserted,
@@ -292,6 +293,27 @@ const items: ComponentMapItem[] = [
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
             return import("../../mdx/embeddable_mdx_components/auto_inserted/heading").then((a) => a.AutoInsertedHeading)
+        }
+    },
+    {
+        query: [AutoInsertedComponentName.AutoInsertedBlockMath],
+        componentType: ComponentItemType.autoInserted,
+        importComponent: async () => {
+            return import("../../mdx/embeddable_mdx_components/auto_inserted/block_math").then((a) => a.AutoInsertedBlockMath)
+        }
+    },
+    {
+        query: [AutoInsertedComponentName.AutoInsertedInlineMath],
+        componentType: ComponentItemType.autoInserted,
+        importComponent: async () => {
+            return import("../../mdx/embeddable_mdx_components/auto_inserted/inline_math").then((a) => a.AutoInsertedInlineMath)
+        }
+    },
+    {
+        query: [AutoInsertedComponentName.AutoInsertedBlockQuote],
+        componentType: ComponentItemType.autoInserted,
+        importComponent: async () => {
+            return import("../../mdx/embeddable_mdx_components/auto_inserted/block_quote").then((a) => a.AutoInsertedBlockQuote)
         }
     }
 ];
