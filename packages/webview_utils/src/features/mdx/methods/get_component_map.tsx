@@ -280,6 +280,20 @@ const items: ComponentMapItem[] = [
             return import("../../in_content_documentation/presentation/in_content_documentation_components/emphasis_typescript_documentation").then((a) => a.InContentDocsEmphasisTypeList)
         }
     },
+    {
+        query: [AutoInsertedComponentName.AutoInsertedMarkdownLink],
+        componentType: ComponentItemType.autoInserted,
+        importComponent: async () => {
+            return import("../../mdx/embeddable_mdx_components/auto_inserted/markdown_link").then((a) => a.AutoInsertedMarkdownLink)
+        }
+    },
+    {
+        query: [AutoInsertedComponentName.AutoInsertedHeading],
+        componentType: ComponentItemType.autoInserted,
+        importComponent: async () => {
+            return import("../../mdx/embeddable_mdx_components/auto_inserted/heading").then((a) => a.AutoInsertedHeading)
+        }
+    }
 ];
 
 export const getComponentMap = async (mdxContent: string, additionalComponenets: ComponentMapItem[] = []): Promise<MDXComponents> => {

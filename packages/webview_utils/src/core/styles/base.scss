@@ -17,8 +17,7 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
 
-// Whitelist: font-bold, italic
-
+@source inline("font-bold italic");
 
 
 root {

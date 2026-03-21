@@ -5,6 +5,7 @@ use winnow::{
     Parser,
     ascii::{line_ending, space0, space1},
     combinator,
+    stream::Stream,
     token::{literal, take_till, take_until, take_while},
 };
 
@@ -58,7 +59,12 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> winnow::ModalResult<ParsedCodeBlock> {
         let ((language, meta_opt, raw_content), full_match) =
             (|input: &mut ConundrumInput<'a>| {
-                let ticks = take_while(1.., |c: char| c == '`').parse_next(input)?;
+                let cp = input.input.checkpoint();
+                let ticks = take_while(1.., |c: char| c == '`').parse_next(input).map_err(|e| {
+                                                                                      println!("Error: {:#?}", e);
+                                                                                      input.input.reset(&cp);
+                                                                                      e
+                                                                                  })?;
                 let language =
                     take_while(1.., |c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r').parse_next(input)?;
 
@@ -67,13 +73,34 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                                    let _ = literal("--").parse_next(input)?;
                                    let _ = space0.parse_next(input)?;
                                    take_till(0.., ('\n', '\r')).parse_next(input)
-                               }).parse_next(input)?;
+                               }).parse_next(input)
+                                 .map_err(|e| {
+                                     println!("Error: {:#?}", e);
+                                     input.input.reset(&cp);
+                                     e
+                                 })?;
 
-                let _ = space0.parse_next(input)?;
-                let _ = line_ending(input)?;
+                let _ = space0.parse_next(input).map_err(|e| {
+                                                     println!("Error: {:#?}", e);
+                                                     input.input.reset(&cp);
+                                                     e
+                                                 })?;
+                let _ = line_ending(input).map_err(|e| {
+                                              println!("Error: {:#?}", e);
+                                              input.input.reset(&cp);
+                                              e
+                                          })?;
 
-                let raw_content = take_until(0.., ticks).parse_next(input)?;
-                let _ = literal(ticks).parse_next(input)?;
+                let raw_content = take_until(0.., ticks).parse_next(input).map_err(|e| {
+                                                                               println!("Error: {:#?}", e);
+                                                                               input.input.reset(&cp);
+                                                                               e
+                                                                           })?;
+                let _ = literal(ticks).parse_next(input).map_err(|e| {
+                                                             println!("Error: {:#?}", e);
+                                                             input.input.reset(&cp);
+                                                             e
+                                                         })?;
 
                 Ok((language, meta_opt, raw_content))
             }).with_taken()

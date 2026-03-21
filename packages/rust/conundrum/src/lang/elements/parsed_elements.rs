@@ -10,7 +10,7 @@ use crate::{
             block_math::BlockMathResult, block_quote::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
             code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_math::InlineMathResult,
-            italic_text::MarkdownItalicTextResult,
+            italic_text::MarkdownItalicTextResult, markdown_link::MarkdownLinkResult,
         },
     },
 };
@@ -35,6 +35,7 @@ pub enum ParsedElement {
     BoldAndItalicText(MarkdownBoldAndItalicTextResult),
     NestedContent(String),
     ParsedCodeBlock(ParsedCodeBlock),
+    MarkdownLink(MarkdownLinkResult),
     // Fluster Specific
     ParsedCitation(ParsedCitation),
     ParsedOutgoingNoteLink(ParsedOutgoingNoteLink),
@@ -59,6 +60,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::BoldText(t) => t.to_mdx_component(res),
             ParsedElement::ItalicText(t) => t.to_mdx_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_mdx_component(res),
+            ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
         }
     }
 }

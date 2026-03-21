@@ -17,6 +17,7 @@ use crate::parsers::markdown::code_block::ParsedCodeBlock;
 use crate::parsers::markdown::heading::MarkdownHeadingResult;
 use crate::parsers::markdown::inline_math::InlineMathResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
+use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
 use crate::parsers::parser_trait::ConundrumParser;
 use crate::{
     lang::elements::parsed_elements::ParsedElement,
@@ -38,11 +39,22 @@ pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Ve
                         alt((
                             MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
                             BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
-                        ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                            ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                 },
-                // Inline / position-independent
+                "#" => |x: &mut ConundrumInput<'a>| {
+                        alt((
+                            MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                        )).parse_next(x)
+                },
+                ">" => |x: &mut ConundrumInput<'a>| {
+                        alt((
+                            BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                        )).parse_next(x)
+                },
                 "`" => |x: &mut ConundrumInput<'a>| {
                     alt((
                         ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
@@ -61,6 +73,7 @@ pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Ve
                         ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::ParsedOutgoingNoteLink),
                         ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
                         ParsedTag::parse_input_string.map(ParsedElement::Tag),
+                        MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
@@ -73,7 +86,10 @@ pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Ve
                     )).parse_next(x)
                 },
                 _ => |x: &mut ConundrumInput<'a>| {
-                        any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
+                    alt((
+                        ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                        any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
                 },
             }.parse_next(input)?;
 

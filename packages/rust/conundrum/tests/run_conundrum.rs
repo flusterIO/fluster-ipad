@@ -33,6 +33,8 @@ async fn runs_conundrum() {
                .contains(&format!("<{}", &AutoInsertedComponentName::FlusterAiParsePendingContainer.to_string())),
             "Conundrum parses Ai Parsing Request components");
 
+    println!("{}", res.content);
+
     // assert!(res.content.contains("<FlusterCitation"))
 
     // insta::assert_snapshot!(&res.content);

@@ -106,23 +106,23 @@ export const emphasisToBackgroundClasses = (emphasis: Emphasis) => {
 export const emphasisToForegroundClasses = (emphasis: Emphasis) => {
     switch (emphasis) {
         case "info":
-            return "text-emphasis-info [&>p]:text-emphasis-info"
+            return "text-emphasis-info! [&>p]:text-emphasis-info!"
         case "error":
-            return "text-emphasis-error [&>p]:text-emphasis-error"
+            return "text-emphasis-error! [&>p]:text-emphasis-error!"
         case "warn":
-            return "text-emphasis-warn [&>p]:text-emphasis-warn"
+            return "text-emphasis-warn! [&>p]:text-emphasis-warn!"
         case "success":
-            return "text-emphasis-success [&>p]:text-emphasis-success"
+            return "text-emphasis-success! [&>p]:text-emphasis-success!"
         case "important":
-            return "text-emphasis-important [&>p]:text-emphasis-important"
+            return "text-emphasis-important! [&>p]:text-emphasis-important!"
         case "research":
-            return "text-emphasis-research [&>p]:text-emphasis-research"
+            return "text-emphasis-research! [&>p]:text-emphasis-research!"
         case "primary":
-            return "text-primary [&>p]:text-primary"
+            return "text-primary! [&>p]:text-primary!"
         case "highlight":
-            return "text-emphasis-highlight [&>p]:text-emphasis-highlight"
+            return "text-emphasis-highlight! [&>p]:text-emphasis-highlight!"
         case "card":
-            return "text-fd-card [&>p]:text-fd-card"
+            return "text-fd-card! [&>p]:text-fd-card!"
     }
 }
 

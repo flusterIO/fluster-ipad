@@ -869,6 +869,11 @@ public enum AutoInsertedComponentName: String, Codable {
 	case flusterCitation = "FlusterCitation"
 	case dictionaryEntry = "DictionaryEntry"
 	case flusterAiParsePendingContainer = "FlusterAiParsePendingContainer"
+	case autoInsertedHeading = "AutoInsertedHeading"
+	case autoInsertedBlockQuote = "AutoInsertedBlockQuote"
+	case autoInsertedBlockMath = "AutoInsertedBlockMath"
+	case autoInsertedInlineMath = "AutoInsertedInlineMath"
+	case autoInsertedMarkdownLink = "AutoInsertedMarkdownLink"
 }
 
 public enum AutoTaggableType: String, Codable {

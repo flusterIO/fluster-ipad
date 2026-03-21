@@ -2,6 +2,7 @@ use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
     combinator::alt,
+    stream::Stream,
     token::{literal, take_while},
 };
 
@@ -23,15 +24,44 @@ impl MdxComponentResult for MarkdownBoldAndItalicTextResult {
 
 impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicTextResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownBoldAndItalicTextResult> {
-        // FIXME: Handle the resetting of state to this checkpoint if the entire parser
-        // fails. let cp = input.checkpoint();
-        let first_token = alt((literal("*"), literal("_"))).parse_next(input)?;
-        let second_token = alt((literal("*"), literal("_"))).parse_next(input)?;
-        let third_token = alt((literal("*"), literal("_"))).parse_next(input)?;
-        let content = take_while(1.., |c: char| c.to_string() != third_token && c != '\n').parse_next(input)?;
-        let _ = literal(third_token).parse_next(input)?;
-        let _ = literal(second_token).parse_next(input)?;
-        let _ = literal(first_token).parse_next(input)?;
+        let cp = input.input.checkpoint();
+        let first_token = alt((literal("*"), literal("_"))).parse_next(input).map_err(|e| {
+                                                                                  println!("Error: {:#?}", e);
+                                                                                  input.input.reset(&cp);
+                                                                                  e
+                                                                              })?;
+        let second_token = alt((literal("*"), literal("_"))).parse_next(input).map_err(|e| {
+                                                                                   println!("Error: {:#?}", e);
+                                                                                   input.input.reset(&cp);
+                                                                                   e
+                                                                               })?;
+        let third_token = alt((literal("*"), literal("_"))).parse_next(input).map_err(|e| {
+                                                                                  println!("Error: {:#?}", e);
+                                                                                  input.input.reset(&cp);
+                                                                                  e
+                                                                              })?;
+        let content = take_while(1.., |c: char| c.to_string() != third_token && c != '\n').parse_next(input)
+                                                                                          .map_err(|e| {
+                                                                                              println!("Error: {:#?}",
+                                                                                                       e);
+                                                                                              input.input.reset(&cp);
+                                                                                              e
+                                                                                          })?;
+        let _ = literal(third_token).parse_next(input).map_err(|e| {
+                                                           println!("Error: {:#?}", e);
+                                                           input.input.reset(&cp);
+                                                           e
+                                                       })?;
+        let _ = literal(second_token).parse_next(input).map_err(|e| {
+                                                            println!("Error: {:#?}", e);
+                                                            input.input.reset(&cp);
+                                                            e
+                                                        })?;
+        let _ = literal(first_token).parse_next(input).map_err(|e| {
+                                                           println!("Error: {:#?}", e);
+                                                           input.input.reset(&cp);
+                                                           e
+                                                       })?;
 
         Ok(MarkdownBoldAndItalicTextResult { content: content.to_string() })
     }

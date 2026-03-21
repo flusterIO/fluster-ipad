@@ -1,4 +1,4 @@
-import React, { HTMLProps, ReactNode } from "react";
+import React, { type HTMLProps, type ReactNode } from "react";
 import { cn } from "../../utils/cn";
 
 interface TypographyProps {
@@ -70,6 +70,44 @@ export function H4({
             {...props}
             className={cn(
                 "block scroll-m-20 text-xl font-semibold tracking-tight text-foreground",
+                className,
+            )}
+        >
+            {children}
+        </h4>
+    );
+}
+
+
+export function H5({
+    children,
+    className,
+    ...props
+}: TypographyProps & HTMLProps<HTMLHeadingElement>) {
+    return (
+        <h4
+            {...props}
+            className={cn(
+                "text-xl font-semibold text-foreground",
+                className,
+            )}
+        >
+            {children}
+        </h4>
+    );
+}
+
+
+export function H6({
+    children,
+    className,
+    ...props
+}: TypographyProps & HTMLProps<HTMLHeadingElement>) {
+    return (
+        <h4
+            {...props}
+            className={cn(
+                "text-lg font-semibold text-foreground",
                 className,
             )}
         >

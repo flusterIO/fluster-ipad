@@ -12,7 +12,7 @@ async fn parses_block_quote_of_depth_1() {
                                               content: test_content.to_string(),
                                               citations: Vec::new() }).await;
 
-    insta::assert_snapshot!(test_content);
+    insta::assert_snapshot!(res.content);
 }
 
 #[tokio::test]

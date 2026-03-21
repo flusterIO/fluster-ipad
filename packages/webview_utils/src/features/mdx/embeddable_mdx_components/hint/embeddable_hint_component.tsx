@@ -1,5 +1,5 @@
 import React, { type ReactNode } from 'react'
-import { EmbeddableHintComponentPropsInput, embeddableHintComponentPropsSchema } from './hint_props_schema'
+import { type EmbeddableHintComponentPropsInput, embeddableHintComponentPropsSchema } from './hint_props_schema'
 import { cn } from '../../../../core/utils/cn'
 
 

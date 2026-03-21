@@ -528,6 +528,11 @@ export enum AutoInsertedComponentName {
 	FlusterCitation = "FlusterCitation",
 	DictionaryEntry = "DictionaryEntry",
 	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
+	AutoInsertedHeading = "AutoInsertedHeading",
+	AutoInsertedBlockQuote = "AutoInsertedBlockQuote",
+	AutoInsertedBlockMath = "AutoInsertedBlockMath",
+	AutoInsertedInlineMath = "AutoInsertedInlineMath",
+	AutoInsertedMarkdownLink = "AutoInsertedMarkdownLink",
 }
 
 export enum AutoTaggableType {

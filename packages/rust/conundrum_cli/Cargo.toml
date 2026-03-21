@@ -1,0 +1,20 @@
+[package]
+name = "conundrum_cli"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+ratatui = { version = "0.30.0", features = ["all-widgets", "serde"] }
+ratatui-textarea = "0.8.0"
+tui-big-text = "0.8.2"
+tui-checkbox = "0.4.3"
+tui-nodes = "0.10.0"
+tui-piechart = "0.3.1"
+tui-scrollview = "0.6.2"
+
+[lints]
+workspace = true

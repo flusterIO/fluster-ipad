@@ -74,12 +74,11 @@
 
 - [x] Update article to same article as what's included in the app if all components are imported.
 - [ ] Update docs to reflect upcoming Apple release even more.
-- [ ] Fix admonition padding issue on website and now probably in the main app.
+- [x] Fix admonition padding issue on website and now probably in the main app.
 
 ## Language
 
-- [ ] Create package after researching architecture:
-  - [x] [Chumsky](https://docs.rs/chumsky/latest/chumsky/guide/) for creating a parser.
+- [x] Create package after researching architecture:
   - [x] [Miette](https://crates.io/crates/miette) for error reporting, and possibly... at least acording to Gemini, intellisense in codemirror? It said to use the error state that includes suggestions, but that sounds sketchy before I see it.
 
 ---
@@ -87,7 +86,6 @@
 ## Performance
 
 - [ ] Move all of regex queries in the `get_component_map` file to a `HashMap<String, bool>` that is generate in Rust now that the component names are being set as an enum.
-  - [ ] Just create another enum that handles the internal & documentation components and use those instead of strings, and then write the Rust code to query for each and return a hashmap of `<ComponentName, bool>` along with the parsing results so that whole pre-render query can be moved to a lookup table.
 
 ---
 
@@ -111,6 +109,8 @@
 - [ ] Use zed to generate the following while you have a 'pro' account:
   - [ ] Complicated markdown syntaxes like:
     - [ ] Markdown Table
+    - [ ] Line item with multiple options for the state of checked using the `(?|*|x|-)` symbols.
+    - [ ] Paragraph, since this one is likely to be quirky.
   - [ ] The start of a robust memory layer for Conundrum.
 - [x] Handle parser error where something like `Here?` on a line by itself breaks the parser.
 - [ ] Write tests for all `-ignoreParser` flags.
@@ -124,3 +124,7 @@
 - [ ] Move iPad over to using schema, shared webview storage and redux state.
   - [ ] Reimplement all iPad webviews from scratch, **again** to reflect the way a single container is used in the MacOS application. Now that state is shared globally that's the best way to reliably handle state without repeating the same shit over and over.
 - [ ] Move on to Founation Models and AI-Parser.
+
+## Offline
+
+- [ ] Work on output components for all new markdown parsed elements.

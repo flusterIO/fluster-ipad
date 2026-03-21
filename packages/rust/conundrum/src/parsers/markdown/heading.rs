@@ -1,8 +1,8 @@
 use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use winnow::{
     ModalResult, Parser,
-    ascii::{line_ending, multispace0, space1, till_line_ending},
-    combinator::{alt, delimited, eof, preceded, repeat},
+    ascii::{multispace0, space1, till_line_ending},
+    combinator::{alt, delimited, opt, preceded, repeat},
     token::{literal, take_till, take_while},
 };
 
@@ -24,7 +24,7 @@ impl MdxComponentResult for MarkdownHeadingResult {
         format!("<{} depth={} id={}>{}</{}>",
                 AutoInsertedComponentName::AutoInsertedHeading,
                 format_embedded_object_property(self.depth.to_string()),
-                self.id.clone().unwrap_or(javascript_null_prop()),
+                self.id.clone().map(|s| format!("\"{}\"", s)).unwrap_or(javascript_null_prop()),
                 self.content,
                 AutoInsertedComponentName::AutoInsertedHeading)
     }
@@ -32,7 +32,7 @@ impl MdxComponentResult for MarkdownHeadingResult {
 
 impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownHeadingResult> {
-        let _ = literal("\n").parse_next(input)?;
+        let _ = opt(literal("\n")).parse_next(input)?;
         let level: Vec<char> = repeat(1..=6, '#').parse_next(input)?;
 
         // 2. Expect at least one space (mandatory in standard Markdown)
@@ -42,14 +42,14 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
         // We use terminated to ensure we consume the newline character if it exists
         let (content, id) =
             alt((// Case A: Heading has an ID
-                 (take_till(1.., '{'), // Take text until the brace
+                 (take_till(1.., |c: char| c == '{' || c == '\n'), // Take text until the brace
                   preceded(multispace0,
                            delimited(literal("{#"),
                                      take_while(1.., |c: char| c.is_alphanumeric() || c == '-' || c == '_'),
                                      '}')))
+                                           // Case B: Normal heading (turn this back on once this parser can be typed
+                                           // again)
                                            .map(|(c, id): (&'a str, &'a str)| (c.trim(), Some(id))),
-                 // Case B: Normal heading (turn this back on once this parser can be typed again)
-                 alt((line_ending, eof.value(""))).map(|c: &'a str| (c.trim(), None)),
                  till_line_ending.map(|c: &'a str| (c.trim(), None)))).parse_next(input)?;
 
         let content = content.trim().to_string();

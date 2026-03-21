@@ -1,5 +1,6 @@
 use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use serde::Serialize;
+use typeshare::typeshare;
 use winnow::{ModalResult, Parser, combinator::delimited, token::take_while};
 
 use crate::{
@@ -8,6 +9,7 @@ use crate::{
     parsers::parser_trait::ConundrumParser,
 };
 
+#[typeshare]
 #[derive(Debug, Serialize)]
 pub struct MarkdownLinkResult {
     pub text: String,
