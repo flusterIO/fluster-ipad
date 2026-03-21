@@ -17,6 +17,9 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
 
+// Whitelist: font-bold, italic
+
+
 
 root {
   --desktop-background-match: 213 39% 9%;

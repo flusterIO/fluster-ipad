@@ -6,7 +6,7 @@ use typeshare::typeshare;
 use crate::{
     lang::runtime::{
         compile_conundrum::compile_elements, parse_conundrum_string::parse_conundrum_string,
-        traits::conundrum_input::ParseState,
+        state::parse_state::ParseState,
     },
     output::parsing_result::{citation_result::CitationSummaryData, mdx_parsing_result::MdxParsingResult},
 };

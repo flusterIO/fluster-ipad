@@ -1,6 +1,6 @@
 use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use winnow::{
-    ModalResult, Parser, Result,
+    ModalResult, Parser,
     ascii::{line_ending, multispace0, space1, till_line_ending},
     combinator::{alt, delimited, eof, preceded, repeat},
     token::{literal, take_till, take_while},
@@ -9,6 +9,7 @@ use winnow::{
 use crate::{
     lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
     output::output_components::output_utils::{format_embedded_object_property, javascript_null_prop},
+    parsers::parser_trait::ConundrumParser,
 };
 
 #[derive(Debug)]
@@ -29,13 +30,9 @@ impl MdxComponentResult for MarkdownHeadingResult {
     }
 }
 
-fn parse_id_block<'a>(input: &mut &'a str) -> Result<&'a str> {
-    // Parses: {#some-id}
-    delimited("{#", take_while(1.., |c: char| c.is_alphanumeric() || c == '-' || c == '_'), "}").parse_next(input)
-}
-
-impl MarkdownHeadingResult {
-    pub fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownHeadingResult> {
+impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownHeadingResult> {
+        let _ = literal("\n").parse_next(input)?;
         let level: Vec<char> = repeat(1..=6, '#').parse_next(input)?;
 
         // 2. Expect at least one space (mandatory in standard Markdown)

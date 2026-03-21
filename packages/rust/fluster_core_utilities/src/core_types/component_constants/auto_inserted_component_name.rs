@@ -33,4 +33,7 @@ pub enum AutoInsertedComponentName {
     #[serde(rename = "AutoInsertedInlineMath")]
     #[strum(to_string = "AutoInsertedInlineMath")]
     AutoInsertedInlineMath,
+    #[serde(rename = "AutoInsertedMarkdownLink")]
+    #[strum(to_string = "AutoInsertedMarkdownLink")]
+    AutoInsertedMarkdownLink,
 }

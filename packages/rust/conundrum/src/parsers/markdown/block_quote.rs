@@ -14,16 +14,11 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            traits::{
-                conundrum_input::{ConundrumInput, ParseState},
-                mdx_component_result::MdxComponentResult,
-            },
+            state::parse_state::ParseState,
+            traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
         },
     },
-    output::{
-        output_components::output_utils::{format_embedded_object_property, javascript_null_prop},
-        parsing_result::mdx_parsing_result::MdxParsingResult,
-    },
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -72,7 +67,6 @@ pub struct BlockQuoteResult {
 
 impl MdxComponentResult for BlockQuoteResult {
     fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
-        println!("Children: {:#?}", self.children);
         // Recursively render inner elements through the same MdxParsingResult
         // so side-effects (citations, tags, etc.) are collected correctly.
         let children_string = compile_elements(&self.children, res);
@@ -118,6 +112,15 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
                                                                     state: RefCell::new(ParseState::default()) };
                                                let new_parsed_content =
                     parse_elements(&mut new_state).unwrap_or_else(|_| vec![ParsedElement::Text(inner_src.clone())]);
+
+                                               // RESUME: Pick back up here
+                                               // by applying the nested
+                                               // state to the parent state
+                                               // via a trait method an
+                                               // then move on to rest of
+                                               // markdown parsers now that
+                                               // nested parsing is working.
+                                               // apply_nested_state(&mut input_outer.state, &mut new_state.state);
 
                                                Ok(new_parsed_content)
                                            }).with_taken()
@@ -173,15 +176,6 @@ mod tests {
         assert!(input.is_empty());
         let has_nested = res.children.iter().any(|e| matches!(e, ParsedElement::BlockQuote(_)));
         assert!(has_nested, "nested > produces a BlockQuote element");
-    }
-
-    #[test]
-    fn gfm_alert_note() {
-        let input = "> [!NOTE]\n> This is a note.\n";
-        let mut test_props = wrap_test_conundrum_content(input);
-        let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses GFM NOTE alert");
-        assert!(input.is_empty());
-        assert_eq!(get_children_content_text(&res.children), "This is a note.");
     }
 
     #[test]

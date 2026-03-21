@@ -1,6 +1,10 @@
 pub mod block_math;
 pub mod block_quote;
+pub mod bold_and_italic_text;
+pub mod bold_text;
 pub mod code_block;
 pub mod heading;
 pub mod inline_math;
+pub mod italic_text;
 pub mod line_item;
+pub mod markdown_link;

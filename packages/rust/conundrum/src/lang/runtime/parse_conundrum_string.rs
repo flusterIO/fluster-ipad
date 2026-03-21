@@ -11,9 +11,12 @@ use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::parsers::fluster::docs::ParsedInspectionRequest;
 use crate::parsers::markdown::block_math::BlockMathResult;
 use crate::parsers::markdown::block_quote::BlockQuoteResult;
+use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextResult;
+use crate::parsers::markdown::bold_text::MarkdownBoldTextResult;
 use crate::parsers::markdown::code_block::ParsedCodeBlock;
 use crate::parsers::markdown::heading::MarkdownHeadingResult;
 use crate::parsers::markdown::inline_math::InlineMathResult;
+use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::parser_trait::ConundrumParser;
 use crate::{
     lang::elements::parsed_elements::ParsedElement,
@@ -31,16 +34,11 @@ pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Ve
     repeat(0.., |input: &mut ConundrumInput<'a>| -> ModalResult<ParsedElement> {
         let result =
             dispatch! {peek(take(1usize));
-                // Block-level: only valid at the start of a line
-                "#" => |x: &mut ConundrumInput<'a>| {
-                        alt((
-                            MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
-                        )).parse_next(x)
-                },
                 "\n" => |x: &mut ConundrumInput<'a>| {
                         alt((
+                            MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
                             BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
+                        ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                 },
@@ -66,11 +64,16 @@ pub fn parse_elements<'a>(input_root: &mut ConundrumInput<'a>) -> ModalResult<Ve
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
-                _ => |x: &mut ConundrumInput<'a>| {
+                "*" | "_" => |x: &mut ConundrumInput<'a>| {
                     alt((
-                        ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                       MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
+                       MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
+                       MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
+                },
+                _ => |x: &mut ConundrumInput<'a>| {
+                        any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
                 },
             }.parse_next(input)?;
 

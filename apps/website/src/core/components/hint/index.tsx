@@ -1,4 +1,4 @@
-import React, { HTMLProps, useMemo } from "react";
+import React, { type HTMLProps, useMemo } from "react";
 import clsx from "clsx";
 import { cn } from "#/core/utils/cn";
 
@@ -16,7 +16,6 @@ interface HintProps extends HTMLProps<HTMLDivElement>, K {
 }
 
 export const Hint = ({ children, label: _label, ...props }: HintProps) => {
-    console.log("props: ", props);
     const k = useMemo((): keyof typeof booleanValueLabels | null => {
         if (props.developer) {
             return "developer";

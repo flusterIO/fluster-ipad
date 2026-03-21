@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 
 use crate::{
-    lang::runtime::traits::conundrum_input::{ConundrumInput, ParseState},
+    lang::runtime::{state::parse_state::ParseState, traits::conundrum_input::ConundrumInput},
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 

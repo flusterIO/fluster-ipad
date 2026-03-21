@@ -7,8 +7,10 @@ use crate::{
             tag::ParsedTag,
         },
         markdown::{
-            block_math::BlockMathResult, block_quote::BlockQuoteResult, code_block::ParsedCodeBlock,
-            heading::MarkdownHeadingResult, inline_math::InlineMathResult,
+            block_math::BlockMathResult, block_quote::BlockQuoteResult,
+            bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
+            code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_math::InlineMathResult,
+            italic_text::MarkdownItalicTextResult,
         },
     },
 };
@@ -28,6 +30,9 @@ pub enum ParsedElement {
     BlockMath(BlockMathResult),
     InlineMath(InlineMathResult),
     Text(String),
+    BoldText(MarkdownBoldTextResult),
+    ItalicText(MarkdownItalicTextResult),
+    BoldAndItalicText(MarkdownBoldAndItalicTextResult),
     NestedContent(String),
     ParsedCodeBlock(ParsedCodeBlock),
     // Fluster Specific
@@ -51,6 +56,9 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::InlineMath(math) => math.to_mdx_component(res),
             ParsedElement::BlockQuote(quote) => quote.to_mdx_component(res),
             ParsedElement::NestedContent(s) => s.clone(),
+            ParsedElement::BoldText(t) => t.to_mdx_component(res),
+            ParsedElement::ItalicText(t) => t.to_mdx_component(res),
+            ParsedElement::BoldAndItalicText(t) => t.to_mdx_component(res),
         }
     }
 }

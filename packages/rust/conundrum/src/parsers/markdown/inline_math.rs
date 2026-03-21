@@ -3,7 +3,7 @@ use winnow::{
     ModalResult, Parser,
     ascii::take_escaped,
     combinator::{delimited, opt},
-    token::{one_of, take_till, take_until},
+    token::{one_of, take_till},
 };
 
 use crate::{
@@ -17,10 +17,8 @@ pub struct InlineMathResult {
 }
 
 impl MdxComponentResult for InlineMathResult {
-    fn to_mdx_component(&self,
-                        res: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult)
-                        -> String {
-        format!("<{}>{}</{}>",
+    fn to_mdx_component(&self, _: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult) -> String {
+        format!("<{}>${}$</{}>",
                 AutoInsertedComponentName::AutoInsertedInlineMath,
                 self.body,
                 AutoInsertedComponentName::AutoInsertedInlineMath,)

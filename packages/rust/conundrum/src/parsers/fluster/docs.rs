@@ -1,7 +1,7 @@
 use fluster_core_utilities::core_types::{
     component_constants::{
-        component_ids::EmbeddableComponentId, component_name_id_map::COMPONENT_NAME_ID_MAP,
-        component_names::EmbeddableComponentName, documentation_component_name::DocumentationComponentName,
+        component_name_id_map::COMPONENT_NAME_ID_MAP, component_names::EmbeddableComponentName,
+        documentation_component_name::DocumentationComponentName,
     },
     documentation_constants::in_content_documentation_id::{InContentDocumentationFormat, InContentDocumentationId},
 };
@@ -10,9 +10,9 @@ use strum::IntoEnumIterator;
 use typeshare::typeshare;
 use winnow::{
     ModalResult, Parser,
-    ascii::{line_ending, space0},
-    combinator::alt,
-    token::{literal, take_while},
+    ascii::{alpha1, line_ending},
+    combinator::{alt, eof},
+    token::literal,
 };
 
 use crate::{
@@ -25,6 +25,7 @@ use crate::{
 #[typeshare]
 #[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug)]
 pub struct ParsedInspectionRequest {
+    /// An EmbeddableComponentName or InContentDocumentationId
     pub keyword: String,
     pub level: u8, // 1 for '?', 2 for '??'
     pub full_match: String,
@@ -68,16 +69,25 @@ impl MdxComponentResult for ParsedInspectionRequest {
 
 impl ConundrumParser<ParsedInspectionRequest> for ParsedInspectionRequest {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<ParsedInspectionRequest> {
+        let _ = literal("\n").parse_next(input)?;
         let ((keyword, marks), full_match) = (|input: &mut ConundrumInput<'a>| {
-                                                 let keyword =
-                    take_while(1.., |c: char| c.is_alphanumeric()).verify(|kw: &str| {
-                        EmbeddableComponentId::iter().map(|id| id.to_string())
-                                                     .chain(InContentDocumentationId::iter().map(|id| id.to_string()))
-                                                     .any(|s| s == kw)
-                    })
-                    .parse_next(input)?;
-                                                 let marks = alt((literal("??"), literal("?"))).parse_next(input)?;
-                                                 let _ = space0.parse_next(input)?;
+                                                 let (keyword, marks, _) =
+                                                     (alpha1.verify(|s: &str| {
+                                                                for name in EmbeddableComponentName::iter() {
+                                                                    if name.to_string() == s {
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                                for id in InContentDocumentationId::iter() {
+                                                                    if id.to_string() == s {
+                                                                        return true;
+                                                                    }
+                                                                }
+                                                                false
+                                                            }),
+                                                      alt((literal("??"), literal("?"))),
+                                                      alt((line_ending, eof)))
+                                                                              .parse_next(input)?;
                                                  let _ = alt((line_ending, literal(""))).parse_next(input)?;
                                                  Ok((keyword, marks))
                                              }).with_taken()
