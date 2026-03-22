@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 import WebKit
 
 public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
-  func parseNormalAssetUrl(url: URL, urlSchemeTask: WKURLSchemeTask) -> (
+  func parseAssetUrl(_ url: URL, _ urlSchemeTask: WKURLSchemeTask) -> (
     URL, String, String, String
   )? {
     // 1. Extract path components, ignoring the leading "/"
@@ -39,8 +39,6 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
     let finalSubdirectory =
       internalDirectory.isEmpty ? folderName : "\(folderName)/\(internalDirectory)"
 
-    print("Good: \(finalSubdirectory)")
-
     return (
       url,
       fileName,
@@ -49,39 +47,10 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
     )
   }
 
-  func parsePublicDirAssetUrl(_ url: URL, _ urlSchemeTask: WKURLSchemeTask) -> (
-    URL, String, String, String
-  )? {
-    print(url.absoluteString)
-    do {
-      let components = url.pathComponents.filter { $0 != "/" }
-      let s = "app://fluster.internal/\(components.dropFirst().joined(separator: "/"))"
-      print("New URL: \(s)")
-      let relativePath = components.dropFirst().joined(separator: "/")
-      let nsPath = relativePath as NSString
-      let newUrl = Bundle.main.url(
-        forResource: "MathJax_Zero", withExtension: "woff",
-        subdirectory: relativePath
-      )
-      print(newUrl?.absoluteString)
-    } catch {
-      print("ERROR: Could not parse url for \(url.absoluteString)")
-    }
-    return nil
-  }
-
-  func parsePublicUrlString(_ url: URL, _ urlSchemeTask: WKURLSchemeTask) -> (
-    URL, String, String, String
-  )? {
-    let components = url.pathComponents.filter { $0 != "/" }
-    if components[0] == "public-protocol-hack" {
-      return parsePublicDirAssetUrl(url, urlSchemeTask)
-    }
-    return parseNormalAssetUrl(url: url, urlSchemeTask: urlSchemeTask)
-  }
+  
   public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
     guard let _url = urlSchemeTask.request.url else { return }
-    if let (url, fileName, fileExtension, subDirectory) = parsePublicUrlString(_url, urlSchemeTask)
+    if let (url, fileName, fileExtension, subDirectory) = parseAssetUrl(_url, urlSchemeTask)
     {
       // 3. Perform the Bundle lookup
       if let fileUrl = Bundle.main.url(

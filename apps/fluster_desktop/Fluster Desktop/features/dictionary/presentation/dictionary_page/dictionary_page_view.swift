@@ -38,7 +38,7 @@ struct DictionaryPageView: View {
       ],
       messageHandler: messageHandler,
       onLoad: onWebviewLoad,
-      mathjaxFontUrl: "/dictionary_webview_mac/mathjax/output/chtml/fonts/woff-v2"
+      mathjaxFontUrl: "/dictionary_webview_mac"
     )
   }
 

@@ -58,7 +58,7 @@ struct MdxContentWebview: View {
         ],
         messageHandler: messageHandler,
         onLoad: onWebviewLoad,
-        mathjaxFontUrl: "/standalone_mdx_preview_mac/mathjax/output/chtml/fonts/woff-v2"
+        mathjaxFontUrl: "/standalone_mdx_preview_mac"
       )
       .toolbar {
         ToolbarItem(

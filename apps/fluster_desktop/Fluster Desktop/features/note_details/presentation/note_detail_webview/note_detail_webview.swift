@@ -62,7 +62,7 @@ struct NoteDetailWebview: View {
         ],
         messageHandler: messageHandler,
         onLoad: onLoad,
-        mathjaxFontUrl: "/note_detail_webview_mac/mathjax/output/chtml/fonts/woff-v2"
+        mathjaxFontUrl: "/note_detail_webview_mac"
       )
     } else {
       NoNoteSelectedView()

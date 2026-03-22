@@ -69,7 +69,7 @@ struct BibtexEditorWebview: View {
       ],
       messageHandler: messageHandler,
       onLoad: onWebviewLoad,
-      mathjaxFontUrl: "/bibtex_editor_webview_mac/mathjax/output/chtml/fonts/woff-v2"
+      mathjaxFontUrl: "/bibtex_editor_webview_mac"
     )
     .sheet(
       isPresented: $showCantSaveEmpty,
