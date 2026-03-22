@@ -97,6 +97,7 @@ export interface ParseMdxOptions {
 export interface ParsedCitation {
 	key: string;
 	full_match: string;
+	idx: number;
 }
 
 export interface ParsedInspectionRequest {

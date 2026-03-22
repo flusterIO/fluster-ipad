@@ -85,15 +85,15 @@ export function H5({
     ...props
 }: TypographyProps & HTMLProps<HTMLHeadingElement>) {
     return (
-        <h4
+        <h5
             {...props}
             className={cn(
-                "text-xl font-semibold text-foreground",
+                "block scroll-m-20 text-lg font-semibold tracking-tight text-foreground",
                 className,
             )}
         >
             {children}
-        </h4>
+        </h5>
     );
 }
 
@@ -104,15 +104,15 @@ export function H6({
     ...props
 }: TypographyProps & HTMLProps<HTMLHeadingElement>) {
     return (
-        <h4
+        <h6
             {...props}
             className={cn(
-                "text-lg font-semibold text-foreground",
+                "block scroll-m-20 text-lg tracking-tight text-foreground",
                 className,
             )}
         >
             {children}
-        </h4>
+        </h6>
     );
 }
 

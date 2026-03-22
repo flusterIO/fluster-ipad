@@ -128,6 +128,7 @@
 ## Offline
 
 - [x] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
+- [ ] Handle citation parser. It's completely absent right now.
 - [ ] Move mathjax font to public folder. Vite _should_ be able to move everything properly, and the paths that would be output are already being embedded in the app.
   1. Create new webview container state for mathjax font url.
   2. Grab that during parsing and pass it into mdx since this will have to be different for each webview.
