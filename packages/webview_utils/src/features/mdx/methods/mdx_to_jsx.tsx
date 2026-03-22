@@ -8,7 +8,6 @@ import rehypePrettyCode from "rehype-pretty-code";
 import emoji from "remark-emoji";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 import withSlugs from "rehype-slug";
-import withCustomIds from "remark-custom-header-id"
 import withToc, { type Toc } from "@stefanprobst/rehype-extract-toc";
 import { CodeEditorTheme } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type BundledTheme } from "shiki";
@@ -28,7 +27,6 @@ export const mathOptions = {
         // process.env.NODE_ENV === "development"
         //     ? ResourceRoutes.mathjaxFonts
         //     : "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
-        fontURL: "/public-protocol-hack/mathjax/output/chtml/fonts/woff-v2",
         adaptiveCSS: true,
     },
 };
@@ -36,6 +34,7 @@ export const mathOptions = {
 interface RehypePluginProps {
     lightCodeTheme?: CodeEditorTheme;
     darkCodeTheme?: CodeEditorTheme;
+    mathjaxFontUrl: string
 }
 
 const codeThemeStringToThemeName = (input: CodeEditorTheme): BundledTheme => {
@@ -85,6 +84,7 @@ const codeThemeStringToThemeName = (input: CodeEditorTheme): BundledTheme => {
 const rehypePlugins = ({
     lightCodeTheme,
     darkCodeTheme,
+    mathjaxFontUrl
 }: RehypePluginProps): CompileOptions["rehypePlugins"] => {
     const darkMode = document
         .getElementById("webview-container")
@@ -98,7 +98,13 @@ const rehypePlugins = ({
         [
             withToc,
         ],
-        [rehypeMathjax as any, mathOptions],
+        [rehypeMathjax as any, {
+            ...mathOptions,
+            chtml: {
+                ...mathOptions.chtml,
+                fontURL: mathjaxFontUrl
+            }
+        }],
         [
             rehypeMermaid,
             {
@@ -153,17 +159,19 @@ const rehypePlugins = ({
 
 const remarkPlugins = (): /* config?: AppConfigSchemaOutput, */
     CompileOptions["remarkPlugins"] => {
-    return [remarkMath, remarkGfm, emoji, withCustomIds];
+    return [remarkMath, remarkGfm, emoji];
 };
 
 export const parseMdxString = async ({
     content,
     lightCodeTheme,
     darkCodeTheme,
+    mathjaxFontUrl
 }: {
     content: string;
     lightCodeTheme: CodeEditorTheme;
     darkCodeTheme: CodeEditorTheme;
+    mathjaxFontUrl: string
 }): Promise<{ value: string, toc?: Toc }> => {
     const res = await compile(content, {
         outputFormat: "function-body",
@@ -171,6 +179,7 @@ export const parseMdxString = async ({
         rehypePlugins: rehypePlugins({
             lightCodeTheme,
             darkCodeTheme,
+            mathjaxFontUrl
         }),
         // development: process.env.NODE_ENV === "development",
         /* baseUrl: import.meta.url */

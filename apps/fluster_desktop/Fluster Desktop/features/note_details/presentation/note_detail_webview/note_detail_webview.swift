@@ -61,7 +61,8 @@ struct NoteDetailWebview: View {
           MdxPreviewWebviewActions.onCitationClick.rawValue
         ],
         messageHandler: messageHandler,
-        onLoad: onLoad
+        onLoad: onLoad,
+        mathjaxFontUrl: "/note_detail_webview_mac/mathjax/output/chtml/fonts/woff-v2"
       )
     } else {
       NoNoteSelectedView()

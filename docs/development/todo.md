@@ -129,8 +129,19 @@
 
 - [x] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
 - [ ] Move mathjax font to public folder. Vite _should_ be able to move everything properly, and the paths that would be output are already being embedded in the app.
+  1. Create new webview container state for mathjax font url.
+  2. Grab that during parsing and pass it into mdx since this will have to be different for each webview.
+  - This will even allow for easy testing.
+  3. Once a value or pattern that works is found, pass the value in during state initialization for each webview.
+  - Add a property to the iPad and Mac webview container components respectively that accepts a unique string for each webview and sets that with the initial state.
+- [ ] Handle move of public dir based assets to new function so that mathjax can be loaded offline.
 - [ ] Start setting AI availability states.
   - [ ] Adjust `AiContainerPhase1...` component to reflect the user's AI availability.
   - [ ] Move on to generating note summary!
   - [ ] Add comment syntax parser that just strips the content before rendering so you can write commented out notes to the user on the generated code like "t's ok to delete this, your summary was attached to your note".
 - [x] Work on output components for all new markdown parsed elements.
+
+## AI
+
+- [ ] Generate R3 vector in background tasks for each note along with a note summary if that note's summary is empty.
+  - [ ] Also store a 'valid' property alongside the summary and R3 vec that can be set to false when the note's content is updated.

@@ -5,6 +5,7 @@
 //  Created by Andrew on 3/5/26.
 //
 
+import FlusterData
 import Foundation
 import UniformTypeIdentifiers
 import WebKit
@@ -37,6 +38,9 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
     let internalDirectory = nsPath.deletingLastPathComponent
     let finalSubdirectory =
       internalDirectory.isEmpty ? folderName : "\(folderName)/\(internalDirectory)"
+
+    print("Good: \(finalSubdirectory)")
+
     return (
       url,
       fileName,
@@ -45,12 +49,34 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
     )
   }
 
+  func parsePublicDirAssetUrl(_ url: URL, _ urlSchemeTask: WKURLSchemeTask) -> (
+    URL, String, String, String
+  )? {
+    print(url.absoluteString)
+    do {
+      let components = url.pathComponents.filter { $0 != "/" }
+      let s = "app://fluster.internal/\(components.dropFirst().joined(separator: "/"))"
+      print("New URL: \(s)")
+      let relativePath = components.dropFirst().joined(separator: "/")
+      let nsPath = relativePath as NSString
+      let newUrl = Bundle.main.url(
+        forResource: "MathJax_Zero", withExtension: "woff",
+        subdirectory: relativePath
+      )
+      print(newUrl?.absoluteString)
+    } catch {
+      print("ERROR: Could not parse url for \(url.absoluteString)")
+    }
+    return nil
+  }
+
   func parsePublicUrlString(_ url: URL, _ urlSchemeTask: WKURLSchemeTask) -> (
     URL, String, String, String
   )? {
-    let protocolString = url.pathComponents[0]
-    print("Absolute: \(url.absoluteString)")
-    print("Protocol String: \(protocolString)")
+    let components = url.pathComponents.filter { $0 != "/" }
+    if components[0] == "public-protocol-hack" {
+      return parsePublicDirAssetUrl(url, urlSchemeTask)
+    }
     return parseNormalAssetUrl(url: url, urlSchemeTask: urlSchemeTask)
   }
   public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {

@@ -75,7 +75,8 @@ struct MdxEditorWebview: View {
           SplitviewEditorWebviewActions.manualSaveRequest.rawValue
         ],
         messageHandler: messageHandler,
-        onLoad: onWebviewLoad
+        onLoad: onWebviewLoad,
+        mathjaxFontUrl: "/splitview_mdx_editor_mac/mathjax/output/chtml/fonts/woff-v2"
       )
       .confirmationDialog(
         "Delete this note", isPresented: $showDeleteConfirmation, titleVisibility: .visible,

@@ -1,6 +1,6 @@
 use crate::core_types::{
     webview_environment::WebviewEnvironment,
-    webviews::webview_container_state::fluster_theme::FlusterTheme,
+    webviews::{math_state::math_state_model::MathState, webview_container_state::fluster_theme::FlusterTheme},
 };
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;

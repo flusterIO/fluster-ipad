@@ -12,7 +12,7 @@ export interface CounterState {
 
 export const webviewContainerSlice = createSlice({
     name: 'editor',
-    initialState: initialWebviewContainerState as WithNullableOptionals<WebviewContainerState>,
+    initialState: initialWebviewContainerState,
     reducers: {
 
         /**

@@ -5,13 +5,13 @@
 //  Created by Andrew on 1/20/26.
 //
 
+import FlusterAI
 import FlusterData
 import FlusterWebviewClients
+import FoundationModels
 import SwiftData
-import FlusterAI
 import SwiftUI
 import WebKit
-import FoundationModels
 
 func getWebViewConfig() -> WKWebViewConfiguration {
   let config = WebContextManager.createSharedConfiguration()
@@ -153,14 +153,14 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     }
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
       print("Web content loaded...")
-        // Removing this in favor of redux based approach.
-        // This will break if all webviews don't use the same
-        // Redux container.
-//      if let onLoad = parent.onLoad {
-//        Task(priority: .high) {
-//          await onLoad()
-//        }
-//      }
+      // Removing this in favor of redux based approach.
+      // This will break if all webviews don't use the same
+      // Redux container.
+      //      if let onLoad = parent.onLoad {
+      //        Task(priority: .high) {
+      //          await onLoad()
+      //        }
+      //      }
       parent.webView.isHidden = false
     }
   }
@@ -192,6 +192,7 @@ struct WebViewContainerView: View {
   public let messageHandlerKeys: [String]
   public let messageHandler: ((String, Any) -> Void)?
   public let onLoad: (@Sendable () async -> Void)?
+  public let mathjaxFontUrl: String
 
   @Query private var notes: [NoteModel]
 
@@ -211,8 +212,10 @@ struct WebViewContainerView: View {
     messageHandlerKeys: [String],
     messageHandler: ((String, Any) -> Void)?,
     onLoad: (@Sendable () async -> Void)?,
+    mathjaxFontUrl: String,
   ) {
     self.implementation = implementation
+    self.mathjaxFontUrl = mathjaxFontUrl
     self._webview = webview
     self.url = url
     self.messageHandlerKeys = messageHandlerKeys
@@ -312,9 +315,8 @@ struct WebViewContainerView: View {
   }
   public func handleInitialState() async {
     if let en = editingNote {
-    
       Task {
-          let llm = SystemLanguageModel()
+        let llm = SystemLanguageModel()
         do {
           try await en.preParse(modelContext: modelContext)
           try await EditorState.setInitialEditorState(
@@ -332,13 +334,16 @@ struct WebViewContainerView: View {
               ),
               lockEditorScrollToPreview: lockEditorScrollToPreview,
               saveMethod: editorSaveMethod,
-              foundation_model_acess: llm.availability.toReduxRepresentation()
             ),
             containerPayload: WebviewContainerSharedInitialState(
               environment: WebviewEnvironment.macOS,
               dark_mode: colorScheme == .dark,
               implementation: self.implementation,
               fluster_theme: flusterTheme
+            ),
+            mathPayload: MathState(mathjax_font_url: mathjaxFontUrl),
+            aiPayload: AiInitialStatePayload(
+              foundation_model_access: llm.availability.toReduxRepresentation()
             ),
             eval: self.webview.evaluateJavaScript
           )

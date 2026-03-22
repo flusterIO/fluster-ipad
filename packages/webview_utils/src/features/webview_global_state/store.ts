@@ -6,6 +6,7 @@ import aiReducer from './ai_state/ai_state_slice';
 import notificationReducer from './notification_state/notification_state_slice';
 import noteDetailsReducer from "./note_details_state/note_details_slice"
 import mediaReducer from './media_state/media_state_slice';
+import mathReducer from './math/math_state_slice';
 import dictionaryReducer from './dictionary_state/dictionary_slice';
 import { type EditorState, type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities';
 import { darkModeListenerMiddleware } from './container/webview_container_global_state/side_effects/dark_mode_side_effect';
@@ -15,8 +16,7 @@ import { emptyParsedValueListenerMiddleware } from "./mdx_editor/side_effects/em
 import { editorValueChangeListenerMiddleware } from './mdx_editor/side_effects/editor_value_update_side_effect';
 import storage from 'redux-persist-indexeddb-storage';
 import { editorBibValueChangeListenerMiddleware } from './mdx_editor/side_effects/editor_bib_value_side_effect';
-import { type GlobalWebviewStateDeepNullable, type GlobalWebviewStateDeepNullableReducer, type GlobalWebviewStateNullable } from './cross_language_state_types';
-import { copyStringToClipboard } from '@/utils/string_utils';
+import { type GlobalWebviewStateDeepNullable, type GlobalWebviewStateDeepNullableReducer } from './cross_language_state_types';
 
 
 
@@ -27,7 +27,8 @@ const rootReducer = combineReducers({
     media: mediaReducer,
     notifications: notificationReducer,
     note_details: noteDetailsReducer,
-    dictionary: dictionaryReducer
+    dictionary: dictionaryReducer,
+    math: mathReducer
 } satisfies GlobalWebviewStateDeepNullableReducer);
 
 

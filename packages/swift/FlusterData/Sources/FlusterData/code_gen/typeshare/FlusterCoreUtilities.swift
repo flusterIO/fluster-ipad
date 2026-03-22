@@ -12,6 +12,14 @@ public enum FoundationModelAccessStatus: String, Codable {
 	case appleIntelligenceNotEnabled = "ai-not-enabled"
 }
 
+public struct AiInitialStatePayload: Codable {
+	public let foundation_model_access: FoundationModelAccessStatus
+
+	public init(foundation_model_access: FoundationModelAccessStatus) {
+		self.foundation_model_access = foundation_model_access
+	}
+}
+
 public struct AiState: Codable {
 	public let foundation_model_access: FoundationModelAccessStatus
 	public let ai_thinking: Bool
@@ -224,9 +232,8 @@ public struct EditorInitialStatePayload: Codable {
 	public let snippetProps: SnippetState
 	public let lockEditorScrollToPreview: Bool
 	public let saveMethod: EditorSaveMethod
-	public let foundation_model_acess: FoundationModelAccessStatus
 
-	public init(note_id: String, keymap: CodeEditorKeymap, theme_light: CodeEditorTheme, theme_dark: CodeEditorTheme, allCitationIds: [String], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod, foundation_model_acess: FoundationModelAccessStatus) {
+	public init(note_id: String, keymap: CodeEditorKeymap, theme_light: CodeEditorTheme, theme_dark: CodeEditorTheme, allCitationIds: [String], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
 		self.note_id = note_id
 		self.keymap = keymap
 		self.theme_light = theme_light
@@ -238,17 +245,28 @@ public struct EditorInitialStatePayload: Codable {
 		self.snippetProps = snippetProps
 		self.lockEditorScrollToPreview = lockEditorScrollToPreview
 		self.saveMethod = saveMethod
-		self.foundation_model_acess = foundation_model_acess
+	}
+}
+
+public struct MathState: Codable {
+	public let mathjax_font_url: String
+
+	public init(mathjax_font_url: String) {
+		self.mathjax_font_url = mathjax_font_url
 	}
 }
 
 public struct EditorBasedWebviewInitialState: Codable {
 	public let container: WebviewContainerSharedInitialState
 	public let editor: EditorInitialStatePayload
+	public let math: MathState
+	public let ai: AiInitialStatePayload
 
-	public init(container: WebviewContainerSharedInitialState, editor: EditorInitialStatePayload) {
+	public init(container: WebviewContainerSharedInitialState, editor: EditorInitialStatePayload, math: MathState, ai: AiInitialStatePayload) {
 		self.container = container
 		self.editor = editor
+		self.math = math
+		self.ai = ai
 	}
 }
 
@@ -461,8 +479,9 @@ public struct GlobalWebviewState: Codable {
 	public let media: MediaState
 	public let note_details: NoteDetailState?
 	public let dictionary: DictionaryState
+	public let math: MathState
 
-	public init(container: WebviewContainerState, editor: EditorState, notifications: NotificationState, ai: AiState, media: MediaState, note_details: NoteDetailState?, dictionary: DictionaryState) {
+	public init(container: WebviewContainerState, editor: EditorState, notifications: NotificationState, ai: AiState, media: MediaState, note_details: NoteDetailState?, dictionary: DictionaryState, math: MathState) {
 		self.container = container
 		self.editor = editor
 		self.notifications = notifications
@@ -470,6 +489,7 @@ public struct GlobalWebviewState: Codable {
 		self.media = media
 		self.note_details = note_details
 		self.dictionary = dictionary
+		self.math = math
 	}
 }
 
@@ -805,6 +825,24 @@ public struct SetLockEditorScrollToPreviewAction: Codable {
 	public let payload: SetLockEditorScrollToPreviewPayload
 
 	public init(type: EditorStateActions, payload: SetLockEditorScrollToPreviewPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetMathjaxFontUrlPayload: Codable {
+	public let mathjax_font_url: String
+
+	public init(mathjax_font_url: String) {
+		self.mathjax_font_url = mathjax_font_url
+	}
+}
+
+public struct SetMathjaxFontUrlAction: Codable {
+	public let type: AiAction
+	public let payload: SetMathjaxFontUrlPayload
+
+	public init(type: AiAction, payload: SetMathjaxFontUrlPayload) {
 		self.type = type
 		self.payload = payload
 	}

@@ -7,10 +7,10 @@
 
 import FlatBuffers
 import FlusterData
-import SwiftData
-import SwiftUI
 import FlusterSwift
 import FlusterWebviewClients
+import SwiftData
+import SwiftUI
 import WebKit
 
 struct DictionaryPageView: View {
@@ -19,11 +19,12 @@ struct DictionaryPageView: View {
   )
   @Query(sort: \DictionaryEntryModel.label, order: .forward) private var entries:
     [DictionaryEntryModel]
-    @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView: DefaultNoteView = .markdown
+  @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+    DefaultNoteView = .markdown
   @EnvironmentObject private var appState: AppState
   var body: some View {
     WebViewContainerView(
-        implementation: WebviewImplementation.dictionary,
+      implementation: WebviewImplementation.dictionary,
       editingNoteId: appState.editingNoteId,
       webview: $webview,
       url: URL.embeddedFlusterUrl(folder: "dictionary_webview_mac", fileName: "index_mac.html"),
@@ -36,14 +37,17 @@ struct DictionaryPageView: View {
         MdxPreviewWebviewActions.requestNoteData.rawValue
       ],
       messageHandler: messageHandler,
-      onLoad: onWebviewLoad
+      onLoad: onWebviewLoad,
+      mathjaxFontUrl: "/dictionary_webview_mac/mathjax/output/chtml/fonts/woff-v2"
     )
   }
 
   func setDictionaryContent(entries: [DictionaryEntryModel]) async throws {
-      try await DictionaryState.setDictionaryState(payload: DictionaryState(entries: entries.map{ entry in
+    try await DictionaryState.setDictionaryState(
+      payload: DictionaryState(
+        entries: entries.map { entry in
           entry.toWebviewDictionaryEntry()
-      }), eval: self.webview.evaluateJavaScript)
+        }), eval: self.webview.evaluateJavaScript)
   }
 
   func onWebviewLoad() async {
@@ -67,7 +71,7 @@ struct DictionaryPageView: View {
         Task(priority: .high) {
           await self.onWebviewLoad()
         }
-    case MdxPreviewWebviewActions.viewNoteById.rawValue:
+      case MdxPreviewWebviewActions.viewNoteById.rawValue:
         let noteId = messageBody as? String
         AppState.shared.setEditingNoteId(editingNoteId: noteId)
         AppState.shared.mainView = defaultNoteView.toMainKey()

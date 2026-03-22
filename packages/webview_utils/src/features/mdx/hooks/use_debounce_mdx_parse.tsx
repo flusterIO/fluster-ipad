@@ -34,6 +34,7 @@ export const useDebounceMdxParse = (
     const [mdxModule, setMdxModule] = useState<MDXModule | null>(null);
     const lightCodeTheme = useSelector((state: GlobalWebviewStateNullable) => state.editor.theme_light)
     const darkCodeTheme = useSelector((state: GlobalWebviewStateNullable) => state.editor.theme_dark)
+    const mathjaxFontUrl = useSelector((state: GlobalWebviewStateNullable) => state.math.mathjax_font_url)
 
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
@@ -42,12 +43,14 @@ export const useDebounceMdxParse = (
         _value: string,
         darkCodeTheme: CodeEditorTheme,
         lightCodeTheme: CodeEditorTheme,
+        mathjaxFontUrl: string
     ) => {
         try {
             const compiled = await parseMdxString({
                 content: _value,
                 darkCodeTheme,
                 lightCodeTheme,
+                mathjaxFontUrl,
             });
             // TODO: DO something with the toc field now that you're grabbing it.
             const res = await run(compiled.value, {
@@ -71,9 +74,10 @@ export const useDebounceMdxParse = (
         _value: string,
         darkCodeTheme: CodeEditorTheme,
         lightCodeTheme: CodeEditorTheme,
+        mathjaxFontUrl: string
     ): Promise<void> => {
         try {
-            await handleParse(_value, darkCodeTheme, lightCodeTheme);
+            await handleParse(_value, darkCodeTheme, lightCodeTheme, mathjaxFontUrl);
             setHasParsed(true);
         } catch (err) {
             console.error("Error: ", err);
@@ -87,17 +91,17 @@ export const useDebounceMdxParse = (
         }
         if (!hasParsed) {
             /* eslint-disable-next-line  -- I'll come back to this later. */
-            parse(value, darkCodeTheme, lightCodeTheme);
+            parse(value, darkCodeTheme, lightCodeTheme, mathjaxFontUrl);
         } else {
             setTimer(
                 setTimeout(
-                    () => handleParse(value || "", darkCodeTheme, lightCodeTheme),
+                    () => handleParse(value || "", darkCodeTheme, lightCodeTheme, mathjaxFontUrl),
                     debounceTimeout,
                 ),
             );
         }
 
-    }, [value, darkCodeTheme, lightCodeTheme]);
+    }, [value, darkCodeTheme, lightCodeTheme, mathjaxFontUrl]);
 
     const Component = (props: HTMLProps<HTMLDivElement>) =>
         mdxModule ? (

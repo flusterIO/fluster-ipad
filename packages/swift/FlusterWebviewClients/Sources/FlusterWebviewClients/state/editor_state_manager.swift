@@ -32,11 +32,14 @@ extension EditorState {
 
   public static func setInitialEditorState(
     editorPayload: EditorInitialStatePayload, containerPayload: WebviewContainerSharedInitialState,
+    mathPayload: MathState,
+    aiPayload: AiInitialStatePayload,
     eval: @escaping EvalJavascriptFunc
   ) async throws {
     let action = SetEditorInitialStateEditorAction(
       type: .setInitialEditorState,
-      payload: EditorBasedWebviewInitialState(container: containerPayload, editor: editorPayload)
+      payload: EditorBasedWebviewInitialState(
+        container: containerPayload, editor: editorPayload, math: mathPayload, ai: aiPayload)
     )
     if let parsedAction = EditorState.encodeAction(data: action) {
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedAction, evalulateJavaScript: eval)

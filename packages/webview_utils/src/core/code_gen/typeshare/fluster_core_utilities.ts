@@ -11,6 +11,10 @@ export enum FoundationModelAccessStatus {
 	AppleIntelligenceNotEnabled = "ai-not-enabled",
 }
 
+export interface AiInitialStatePayload {
+	foundation_model_access: FoundationModelAccessStatus;
+}
+
 export interface AiState {
 	foundation_model_access: FoundationModelAccessStatus;
 	ai_thinking: boolean;
@@ -162,12 +166,17 @@ export interface EditorInitialStatePayload {
 	snippetProps: SnippetState;
 	lockEditorScrollToPreview: boolean;
 	saveMethod: EditorSaveMethod;
-	foundation_model_acess: FoundationModelAccessStatus;
+}
+
+export interface MathState {
+	mathjax_font_url: string;
 }
 
 export interface EditorBasedWebviewInitialState {
 	container: WebviewContainerSharedInitialState;
 	editor: EditorInitialStatePayload;
+	math: MathState;
+	ai: AiInitialStatePayload;
 }
 
 export interface EditorChangeEvent {
@@ -309,6 +318,7 @@ export interface GlobalWebviewState {
 	media: MediaState;
 	note_details?: NoteDetailState;
 	dictionary: DictionaryState;
+	math: MathState;
 }
 
 export interface ManualSaveRequestEvent {
@@ -489,6 +499,15 @@ export interface SetLockEditorScrollToPreviewPayload {
 export interface SetLockEditorScrollToPreviewAction {
 	type: EditorStateActions;
 	payload: SetLockEditorScrollToPreviewPayload;
+}
+
+export interface SetMathjaxFontUrlPayload {
+	mathjax_font_url: string;
+}
+
+export interface SetMathjaxFontUrlAction {
+	type: AiAction;
+	payload: SetMathjaxFontUrlPayload;
 }
 
 export interface SetNoteDeletedPayload {
