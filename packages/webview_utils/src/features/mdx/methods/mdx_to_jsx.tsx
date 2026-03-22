@@ -23,13 +23,12 @@ export const mathOptions = {
     },
     chtml: {
         // FIXME: Figure out a way to point this to the proper location on the user's device if possible to make math render properly without wifi, alternatively, move away from the chtml method.
-        fontURL:
-            "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
         // TODO: Fix this. Turn this fontURL to the new path that will hopefully work...
         /* fontURL: ResourceRoutes.mathjaxFonts, */
         // process.env.NODE_ENV === "development"
         //     ? ResourceRoutes.mathjaxFonts
         //     : "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+        fontURL: "/public-protocol-hack/mathjax/output/chtml/fonts/woff-v2",
         adaptiveCSS: true,
     },
 };

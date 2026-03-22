@@ -8,8 +8,10 @@
 import FlusterData
 import FlusterWebviewClients
 import SwiftData
+import FlusterAI
 import SwiftUI
 import WebKit
+import FoundationModels
 
 func getWebViewConfig() -> WKWebViewConfiguration {
   let config = WebContextManager.createSharedConfiguration()
@@ -31,7 +33,6 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
   typealias ViewType = WKWebView
   func makeNSView(context: Context) -> WKWebView { makeWebView(context: context) }
   func updateNSView(_ nsView: WKWebView, context: Context) {
-    //      nsView.loadFileURL(url, allowingReadAccessTo: url)
   }
 
   private func makeWebView(context: Context) -> WKWebView {
@@ -311,7 +312,9 @@ struct WebViewContainerView: View {
   }
   public func handleInitialState() async {
     if let en = editingNote {
+    
       Task {
+          let llm = SystemLanguageModel()
         do {
           try await en.preParse(modelContext: modelContext)
           try await EditorState.setInitialEditorState(
@@ -328,7 +331,8 @@ struct WebViewContainerView: View {
                 includeEmojiSnippets: includeEmojiSnippets
               ),
               lockEditorScrollToPreview: lockEditorScrollToPreview,
-              saveMethod: editorSaveMethod
+              saveMethod: editorSaveMethod,
+              foundation_model_acess: llm.availability.toReduxRepresentation()
             ),
             containerPayload: WebviewContainerSharedInitialState(
               environment: WebviewEnvironment.macOS,

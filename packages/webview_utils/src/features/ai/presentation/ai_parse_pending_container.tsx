@@ -21,21 +21,22 @@ export const FlusterAiParsePendingContainer = ({ res }: FlusterAiParsePendingCon
     }
     return (
         <div
-            className="w-full max-w-[min(1080px,90%)] mx-auto p-4 border border-fd-ring bg-fd-card rounded text-card-foreground [&_*]:text-card-foreground @container/aiParsePendingContainer relative shadow-primary/50 hover:shadow-sm transition-shadow duration-500"
+            className="w-full max-w-[min(1080px,90%)] mx-auto p-4 border border-fd-ring bg-fd-card rounded text-card-foreground [&_*]:text-card-foreground @container/aiParsePendingContainer relative shadow-primary/50 border hover:border-primary transition-shadow duration-500"
         >
             <div
                 className="absolute inset-x-0 top-0 h-px rounded-t-xl bg-gradient-to-r from-transparent via-primary/50 to-transparent"
                 aria-hidden="true"
             />
-            <div>
+            <div className="flex flex-col justify-start items-start">
+                <div className="text-lg font-bold">AI Prompt:</div>
                 <InlineMdxContent
                     mdx={res.content}
+                    className="indent-4"
                 />
-                { }
             </div>
             <div className="w-full flex flex-row justify-end items-center">
                 <div className="invisible @[540px]/aiParsePendingContainer:visible absolute bottom-3 left-3 text-sm opacity-60">
-                    See docs for supported actions
+                    {`See 'AI?' docs for supported actions`}
                 </div>
                 <FlusterAiParseButton />
             </div>

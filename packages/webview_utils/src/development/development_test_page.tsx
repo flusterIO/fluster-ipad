@@ -2,7 +2,8 @@ import React, { type ReactNode } from 'react'
 import { createFlusterStore } from '#/webview_global_state/store';
 import { handleSwiftActionWrapper, handleSwiftBufferActionWrapper } from '#/webview_global_state/window_methods';
 import { MdxEditorGlobalProvider } from '#/webview_global_state/provider';
-import { NoteDetailsDevelopmentWrapper } from './development_wrapped_components/note_details_development_wrapper';
+import { AiParsePhase1DevContainer } from './development_wrapped_components/fluster_ai_parse_pending_container_dev_wrapper';
+import { WebViewContainer } from '#/webview_container/presentation/webview_container';
 
 
 const testContent = `
@@ -28,7 +29,11 @@ export const DevelopmentTestPage = (): ReactNode => {
         <MdxEditorGlobalProvider
             {...storeData}
         >
-            <NoteDetailsDevelopmentWrapper />
+            <WebViewContainer
+                className="py-12"
+            >
+                <AiParsePhase1DevContainer />
+            </WebViewContainer>
         </MdxEditorGlobalProvider>
     )
 }

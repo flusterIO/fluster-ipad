@@ -127,5 +127,10 @@
 
 ## Offline
 
-- [ ] Send new `ErrorStateReset` event after manual save request content change so that error state can be cleared by user without requiring navigation away and back to note.
-- [ ] Work on output components for all new markdown parsed elements.
+- [x] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
+- [ ] Move mathjax font to public folder. Vite _should_ be able to move everything properly, and the paths that would be output are already being embedded in the app.
+- [ ] Start setting AI availability states.
+  - [ ] Adjust `AiContainerPhase1...` component to reflect the user's AI availability.
+  - [ ] Move on to generating note summary!
+  - [ ] Add comment syntax parser that just strips the content before rendering so you can write commented out notes to the user on the generated code like "t's ok to delete this, your summary was attached to your note".
+- [x] Work on output components for all new markdown parsed elements.

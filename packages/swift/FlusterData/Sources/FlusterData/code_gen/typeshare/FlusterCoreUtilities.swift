@@ -4,11 +4,21 @@
 
 import Foundation
 
-public struct AiState: Codable {
-	public let has_foundation_models_access: Bool
+public enum FoundationModelAccessStatus: String, Codable {
+	case available
+	case modelNotReady = "not-ready"
+	case unknownStatus = "unknown-status"
+	case deviceNotEligible = "device-not-elig"
+	case appleIntelligenceNotEnabled = "ai-not-enabled"
+}
 
-	public init(has_foundation_models_access: Bool) {
-		self.has_foundation_models_access = has_foundation_models_access
+public struct AiState: Codable {
+	public let foundation_model_access: FoundationModelAccessStatus
+	public let ai_thinking: Bool
+
+	public init(foundation_model_access: FoundationModelAccessStatus, ai_thinking: Bool) {
+		self.foundation_model_access = foundation_model_access
+		self.ai_thinking = ai_thinking
 	}
 }
 
@@ -214,8 +224,9 @@ public struct EditorInitialStatePayload: Codable {
 	public let snippetProps: SnippetState
 	public let lockEditorScrollToPreview: Bool
 	public let saveMethod: EditorSaveMethod
+	public let foundation_model_acess: FoundationModelAccessStatus
 
-	public init(note_id: String, keymap: CodeEditorKeymap, theme_light: CodeEditorTheme, theme_dark: CodeEditorTheme, allCitationIds: [String], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
+	public init(note_id: String, keymap: CodeEditorKeymap, theme_light: CodeEditorTheme, theme_dark: CodeEditorTheme, allCitationIds: [String], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod, foundation_model_acess: FoundationModelAccessStatus) {
 		self.note_id = note_id
 		self.keymap = keymap
 		self.theme_light = theme_light
@@ -227,6 +238,7 @@ public struct EditorInitialStatePayload: Codable {
 		self.snippetProps = snippetProps
 		self.lockEditorScrollToPreview = lockEditorScrollToPreview
 		self.saveMethod = saveMethod
+		self.foundation_model_acess = foundation_model_acess
 	}
 }
 
@@ -500,6 +512,29 @@ public struct RemoveBannerNotificationByIdAction: Codable {
 	}
 }
 
+public enum AiAction: String, Codable {
+	case setAiThinking = "set-ai-thinking"
+	case setFoundationModelAvailability = "set-foundation-model-avail"
+}
+
+public struct SetAiThinkingPayload: Codable {
+	public let ai_thinking: Bool
+
+	public init(ai_thinking: Bool) {
+		self.ai_thinking = ai_thinking
+	}
+}
+
+public struct SetAiThinkingAction: Codable {
+	public let type: AiAction
+	public let payload: SetAiThinkingPayload
+
+	public init(type: AiAction, payload: SetAiThinkingPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
 public struct SetAllCitationIdsPayload: Codable {
 	public let all_citation_ids: [String]
 
@@ -734,6 +769,24 @@ public struct SetFlusterThemeAction: Codable {
 	public let payload: SetFlusterThemePayload
 
 	public init(type: WebviewContainerActions, payload: SetFlusterThemePayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetFoundationModelAvailabilityPayload: Codable {
+	public let foundation_model_availability: FoundationModelAccessStatus
+
+	public init(foundation_model_availability: FoundationModelAccessStatus) {
+		self.foundation_model_availability = foundation_model_availability
+	}
+}
+
+public struct SetFoundationModelAvailabilityAction: Codable {
+	public let type: AiAction
+	public let payload: SetFoundationModelAvailabilityPayload
+
+	public init(type: AiAction, payload: SetFoundationModelAvailabilityPayload) {
 		self.type = type
 		self.payload = payload
 	}
@@ -985,6 +1038,7 @@ public enum InContentDocumentationId: String, Codable {
 	case emphasis = "Emphasis"
 	case emoji = "Emoji"
 	case components = "Components"
+	case ai = "AI"
 }
 
 public enum InContentDocumentationSource: String, Codable {

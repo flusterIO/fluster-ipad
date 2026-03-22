@@ -53,6 +53,9 @@ pub enum InContentDocumentationId {
     #[serde(rename = "Components")]
     #[strum(to_string = "Components")]
     Components,
+    #[serde(rename = "AI")]
+    #[strum(to_string = "AI")]
+    AI,
 }
 
 impl InContentDocumentationId {
@@ -66,12 +69,14 @@ impl InContentDocumentationId {
             InContentDocumentationId::Jsx => "jsx-intro-docs",
             InContentDocumentationId::Emoji => "emoji-docs",
             InContentDocumentationId::Components => "generated-component-list",
+            InContentDocumentationId::AI => "ai-docs",
         };
         format!("{}-{}.mdx", base_file_name, format)
     }
 }
 
-/// Returns a list of file names, not the complete file path and completely ignores directories.
+/// Returns a list of file names, not the complete file path and completely
+/// ignores directories.
 pub fn get_file_names_in_dir(dir_path: &PathBuf) -> std::io::Result<Vec<String>> {
     let mut file_names = Vec::new();
 
@@ -107,23 +112,20 @@ mod tests {
     #[test]
     fn all_in_content_documentation_exists() {
         let root = get_workspace_root();
-        let p = std::path::Path::new(&root)
-            .join("packages")
-            .join("rust")
-            .join("conundrum")
-            .join("src")
-            .join("embedded")
-            .join("in_content_docs");
-        let file_names = get_file_names_in_dir(&p)
-            .expect("Reads 'in_content' notes directory without throwing an error.");
+        let p = std::path::Path::new(&root).join("packages")
+                                           .join("rust")
+                                           .join("conundrum")
+                                           .join("src")
+                                           .join("embedded")
+                                           .join("in_content_docs");
+        let file_names =
+            get_file_names_in_dir(&p).expect("Reads 'in_content' notes directory without throwing an error.");
         for doc_format in InContentDocumentationFormat::iter() {
             for id in InContentDocumentationId::iter() {
                 let file_name_should_exist = id.to_embedded_file_name(&doc_format.clone());
-                assert!(
-                    file_names.iter().any(|x| x == &file_name_should_exist),
-                    "The {} does not appear to exist.",
-                    file_name_should_exist
-                )
+                assert!(file_names.iter().any(|x| x == &file_name_should_exist),
+                        "The {} does not appear to exist.",
+                        file_name_should_exist)
             }
         }
 

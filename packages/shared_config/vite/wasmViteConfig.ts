@@ -10,6 +10,7 @@ export type WasmViteConfig = Pick<WebviewViteConfig, "outputDir" | "build"> & { 
      * @deprecated -- Don't use this.
      */
     wasmPackagePath?: string
+    publicDir?: string
 }
 
 export const getWasmViteConfig = (opts: WasmViteConfig): UserConfig => {
@@ -28,6 +29,7 @@ export const getWasmViteConfig = (opts: WasmViteConfig): UserConfig => {
     return {
         plugins,
         base: "./",
+        publicDir: opts.publicDir,
         build: {
             ...opts.build,
             target: 'esnext',
@@ -47,7 +49,7 @@ export const getWasmViteConfig = (opts: WasmViteConfig): UserConfig => {
         optimizeDeps: {
             exclude: [
                 '@fluster/wasm',
-                '@fluster/webview_utils'
+                // '@fluster/webview_utils'
             ]
         }
     }

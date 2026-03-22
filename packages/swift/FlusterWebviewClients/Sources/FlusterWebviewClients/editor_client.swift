@@ -51,16 +51,17 @@ public struct MdxEditorClient {
     try await evalulateJavaScript(
       """
       try {
-      window.handleSwiftAction(\(data))
+          window.handleSwiftAction(\(data))
       } catch (err) {
-      console.error("Swift Action Error: ", err)
+          console.error("Swift Action Error: ", err)
       }
       """)
   }
-    
-    public static func resetErrorState(eval: EvalJavascriptFunc) async throws {
-         try await eval("""
-             window.dispatchEvent("\(SplitviewEditorWebviewEvents.errorStateReset.rawValue)")
-             """)
-    }
+
+  public static func resetErrorState(eval: EvalJavascriptFunc) async throws {
+    try await eval(
+      """
+      window.dispatchEvent("\(SplitviewEditorWebviewEvents.errorStateReset.rawValue)")
+      """)
+  }
 }

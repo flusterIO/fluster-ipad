@@ -10,9 +10,9 @@ import UniformTypeIdentifiers
 import WebKit
 
 public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
-  public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-    guard let url = urlSchemeTask.request.url else { return }
-
+  func parseNormalAssetUrl(url: URL, urlSchemeTask: WKURLSchemeTask) -> (
+    URL, String, String, String
+  )? {
     // 1. Extract path components, ignoring the leading "/"
     // Example URL: app://fluster.internal/splitview_mdx_editor_mac/index_mac.html
     // Components will be: ["splitview_mdx_editor_mac", "index_mac.html"]
@@ -22,7 +22,7 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
     guard components.count >= 2 else {
       print("❌ Invalid URL structure: \(url.absoluteString)")
       urlSchemeTask.didFailWithError(NSError(domain: "WasmScheme", code: 400))
-      return
+      return nil
     }
 
     // 2. Map the components to your Bundle structure
@@ -37,43 +37,67 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
     let internalDirectory = nsPath.deletingLastPathComponent
     let finalSubdirectory =
       internalDirectory.isEmpty ? folderName : "\(folderName)/\(internalDirectory)"
+    return (
+      url,
+      fileName,
+      fileExtension,
+      finalSubdirectory
+    )
+  }
 
-    // 3. Perform the Bundle lookup
-    if let fileUrl = Bundle.main.url(
-      forResource: fileName,
-      withExtension: fileExtension,
-      subdirectory: finalSubdirectory),
-      let data = try? Data(contentsOf: fileUrl)
+  func parsePublicUrlString(_ url: URL, _ urlSchemeTask: WKURLSchemeTask) -> (
+    URL, String, String, String
+  )? {
+    let protocolString = url.pathComponents[0]
+    print("Absolute: \(url.absoluteString)")
+    print("Protocol String: \(protocolString)")
+    return parseNormalAssetUrl(url: url, urlSchemeTask: urlSchemeTask)
+  }
+  public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+    guard let _url = urlSchemeTask.request.url else { return }
+    if let (url, fileName, fileExtension, subDirectory) = parsePublicUrlString(_url, urlSchemeTask)
     {
-      let response = HTTPURLResponse(
-        url: url,
-        statusCode: 200,
-        httpVersion: "HTTP/1.1",
-        headerFields: [
-          "Content-Type": getMimeType(for: fileExtension),
-          "Access-Control-Allow-Origin": "*",  // Important for cross-view scripts
-          "Cache-Control": "no-cache"  // Good for dev/rapid changes
-        ]
-      )!
+      // 3. Perform the Bundle lookup
+      if let fileUrl = Bundle.main.url(
+        forResource: fileName,
+        withExtension: fileExtension,
+        subdirectory: subDirectory),
+        let data = try? Data(contentsOf: fileUrl)
+      {
+        let response = HTTPURLResponse(
+          url: url,
+          statusCode: 200,
+          httpVersion: "HTTP/1.1",
+          headerFields: [
+            "Content-Type": getMimeType(for: fileExtension),
+            "Access-Control-Allow-Origin": "*",  // Important for cross-view scripts
+            "Cache-Control": "no-cache"  // Good for dev/rapid changes
+          ]
+        )!
 
-      urlSchemeTask.didReceive(response)
-      urlSchemeTask.didReceive(data)
-      urlSchemeTask.didFinish()
-      print("✅ Served: \(fileName).\(fileExtension) from \(finalSubdirectory)")
+        urlSchemeTask.didReceive(response)
+        urlSchemeTask.didReceive(data)
+        urlSchemeTask.didFinish()
+        print("✅ Served: \(fileName).\(fileExtension) from \(subDirectory)")
+      } else {
+        print("❌ 404: \(fileName).\(fileExtension) not found in \(subDirectory)")
+        urlSchemeTask.didFailWithError(NSError(domain: "WasmScheme", code: 404))
+      }
     } else {
-      print("❌ 404: \(fileName).\(fileExtension) not found in \(finalSubdirectory)")
-      urlSchemeTask.didFailWithError(NSError(domain: "WasmScheme", code: 404))
+      print("❌ Error: Could not parse an asset url.")
     }
   }
 
   public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
 
   private func getMimeType(for ext: String) -> String {
+    // WHENONLINE: Check to make sure that this woff field is right. Need to handle passing of fonts to front-end here.
     switch ext.lowercased() {
       case "wasm": return "application/wasm"
       case "js", "mjs": return "application/javascript"
       case "html": return "text/html"
       case "css": return "text/css"
+      case "woff": return "text/woff"
       default: return "application/octet-stream"
     }
   }

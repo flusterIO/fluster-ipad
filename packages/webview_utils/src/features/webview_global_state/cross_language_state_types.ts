@@ -1,4 +1,4 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions, type SetWebviewFontSizeAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions, type SetWebviewFontSizeAction, type SetAiThinkingAction, type AiAction, type SetFoundationModelAvailabilityAction } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type WithNullableOptionals } from "@/utils/types/utility_types";
 import { type Reducer } from "@reduxjs/toolkit";
 import { type ByteBuffer } from "flatbuffers";
@@ -87,6 +87,17 @@ interface SetDictionaryEntriesActionRefined extends SetDictionaryEntriesAction {
     type: DictionaryStateActions.SetDictionaryEntries
 }
 
+// -- AI --
+
+interface SetAiThinkingActionRefined extends SetAiThinkingAction {
+    type: AiAction.SetAiThinking
+}
+
+
+interface SetFoundationModelAvailabilityActionRefined extends SetFoundationModelAvailabilityAction {
+    type: AiAction.SetFoundationModelAvailability
+}
+
 // -- Container --
 
 interface SetDarkModeActionRefined extends SetDarkModeAction {
@@ -113,6 +124,8 @@ export type AnyCrossLanguageNoteDetailsAction = SetNoteDetailsInvalidatedActionR
 
 export type AnyCrossLanguageDictionaryAction = SetDictionaryEntriesActionRefined
 
+export type AnyCrossLanguageAiAction = SetFoundationModelAvailabilityActionRefined | SetAiThinkingActionRefined
+
 export interface AnyCrossLanguageNoteDetailsBufferAction {
     type: NoteDetailActions.SetNoteDetails
     payload: ByteBuffer
@@ -123,7 +136,7 @@ export type AnyCrossLanguageWebviewContainerAction = SetNoteDeletedActionRefined
 /**
  * Any cross-language action that does not have a buffer attached.
  */
-export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction | AnyCrossLanguageWebviewContainerAction | AnyCrossLanguageNoteDetailsAction | AnyCrossLanguageDictionaryAction
+export type AnyCrossLanguageWebviewAction = AnyCrossLanguageEditorAction | AnyCrossLanguageWebviewContainerAction | AnyCrossLanguageNoteDetailsAction | AnyCrossLanguageDictionaryAction | AnyCrossLanguageAiAction
 
 export interface AnyCrossLanguageBufferEditorAction {
     type: EditorStateActions.SetParsedEditorContent,

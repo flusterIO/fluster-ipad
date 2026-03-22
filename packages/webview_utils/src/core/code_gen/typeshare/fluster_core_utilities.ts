@@ -3,8 +3,17 @@
 */
 
 
+export enum FoundationModelAccessStatus {
+	Available = "available",
+	ModelNotReady = "not-ready",
+	UnknownStatus = "unknown-status",
+	DeviceNotEligible = "device-not-elig",
+	AppleIntelligenceNotEnabled = "ai-not-enabled",
+}
+
 export interface AiState {
-	has_foundation_models_access: boolean;
+	foundation_model_access: FoundationModelAccessStatus;
+	ai_thinking: boolean;
 }
 
 export enum EditorStateActions {
@@ -153,6 +162,7 @@ export interface EditorInitialStatePayload {
 	snippetProps: SnippetState;
 	lockEditorScrollToPreview: boolean;
 	saveMethod: EditorSaveMethod;
+	foundation_model_acess: FoundationModelAccessStatus;
 }
 
 export interface EditorBasedWebviewInitialState {
@@ -324,6 +334,20 @@ export interface RemoveBannerNotificationByIdAction {
 	payload: RemoveBannerNotificationByIdPayload;
 }
 
+export enum AiAction {
+	SetAiThinking = "set-ai-thinking",
+	SetFoundationModelAvailability = "set-foundation-model-avail",
+}
+
+export interface SetAiThinkingPayload {
+	ai_thinking: boolean;
+}
+
+export interface SetAiThinkingAction {
+	type: AiAction;
+	payload: SetAiThinkingPayload;
+}
+
 export interface SetAllCitationIdsPayload {
 	all_citation_ids: string[];
 }
@@ -447,6 +471,15 @@ export interface SetFlusterThemePayload {
 export interface SetFlusterThemeAction {
 	type: WebviewContainerActions;
 	payload: SetFlusterThemePayload;
+}
+
+export interface SetFoundationModelAvailabilityPayload {
+	foundation_model_availability: FoundationModelAccessStatus;
+}
+
+export interface SetFoundationModelAvailabilityAction {
+	type: AiAction;
+	payload: SetFoundationModelAvailabilityPayload;
 }
 
 export interface SetLockEditorScrollToPreviewPayload {
@@ -646,6 +679,7 @@ export enum InContentDocumentationId {
 	Emphasis = "Emphasis",
 	Emoji = "Emoji",
 	Components = "Components",
+	AI = "AI",
 }
 
 export enum InContentDocumentationSource {

@@ -15,10 +15,6 @@ const store = createFlusterStore()
 /* eslint-disable-next-line  -- It'll be there... */
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
-        <WebViewContainer>
-            <MdxEditorGlobalProvider {...store}>
-                <DevelopmentTestPage />
-            </MdxEditorGlobalProvider>
-        </WebViewContainer>
+        <DevelopmentTestPage />
     </StrictMode>,
 );

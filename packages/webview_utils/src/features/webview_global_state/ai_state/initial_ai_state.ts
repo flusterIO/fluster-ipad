@@ -1,5 +1,6 @@
-import { type AiState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { FoundationModalAccessStatus, type AiState } from "@/code_gen/typeshare/fluster_core_utilities";
 
 export const initialAiState: AiState = {
-    has_foundation_models_access: false
+    foundation_model_access: FoundationModalAccessStatus.NotInstalled,
+    ai_thinking: false
 }
