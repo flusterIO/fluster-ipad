@@ -1,17 +1,17 @@
-use crate::output::parsing_result::mdx_parsing_result::MdxParsingResult;
+use crate::{
+    lang::runtime::state::citation_list::CitationList, output::parsing_result::mdx_parsing_result::MdxParsingResult,
+};
 
 #[derive(Debug, Default)]
 pub struct ParseState {
     pub data: MdxParsingResult,
+    pub bib: CitationList,
 }
 
 impl ParseState {
     /// Applies the nested state found within a child element to the parent
     /// state.
     pub fn apply_nested_state(&mut self, s: Self) {
-        s.data.citations.iter().for_each(|cit| {
-                                   self.data.citations.push(cit.clone());
-                               });
         s.data.tags.iter().for_each(|tag| self.data.tags.push(tag.clone()));
 
         s.data.outgoing_links.iter().for_each(|ol| self.data.outgoing_links.push(ol.clone()));

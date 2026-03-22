@@ -5,8 +5,9 @@ use typeshare::typeshare;
 
 use crate::{
     lang::runtime::{
-        compile_conundrum::compile_elements, parse_conundrum_string::parse_conundrum_string,
-        state::parse_state::ParseState,
+        compile_conundrum::compile_elements,
+        parse_conundrum_string::parse_conundrum_string,
+        state::{citation_list::CitationList, parse_state::ParseState},
     },
     output::parsing_result::{citation_result::CitationSummaryData, mdx_parsing_result::MdxParsingResult},
 };
@@ -31,12 +32,13 @@ impl ParseMdxOptions {
 pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     result.note_id = opts.note_id.clone();
-    let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content) });
+    let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
+                                          bib: CitationList::default() });
     let mut stateful_input = Stateful { input: opts.content.as_str(),
                                         state };
 
     let final_mdx = match parse_conundrum_string(&mut stateful_input) {
-        Ok(elements) => compile_elements(&elements, &mut result),
+        Ok((elements, mut res)) => compile_elements(&elements, &mut res),
         Err(err) => {
             println!("Parser Error: {:#?}", err);
             opts.content.clone()

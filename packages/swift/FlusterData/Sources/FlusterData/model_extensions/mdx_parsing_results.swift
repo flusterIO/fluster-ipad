@@ -7,7 +7,7 @@ extension MdxParsingResult: @retroactive Codable {
     case content
     case tags
     case front_matter
-    case citations
+    case orderedCitationKeys
     case dictionary_entries
     case outgoing_links
     case ignore_all_parsers
@@ -20,7 +20,7 @@ extension MdxParsingResult: @retroactive Codable {
     let id = try container.decodeIfPresent(String.self, forKey: .note_id)
     let tags = try container.decode([TagResult].self, forKey: .tags)
     let frontMatter = try container.decodeIfPresent(FrontMatterResult.self, forKey: .front_matter)
-    let citations = try container.decode([CitationResult].self, forKey: .citations)
+    let citations = try container.decode([String].self, forKey: .orderedCitationKeys)
     let ignoreAllParsers = try container.decode(Bool.self, forKey: .ignore_all_parsers)
     let outgoing_links = try container.decode(
       [NoteOutgoingLinkResult].self, forKey: .outgoing_links)
@@ -34,7 +34,7 @@ extension MdxParsingResult: @retroactive Codable {
       content: content,
       tags: tags,
       frontMatter: frontMatter,
-      citations: citations,
+      orderedCitationKeys: citations,
       dictionaryEntries: dictionaryEntries,
       outgoingLinks: outgoing_links,
       ignoreAllParsers: ignoreAllParsers,
@@ -47,7 +47,7 @@ extension MdxParsingResult: @retroactive Codable {
     try container.encode(content, forKey: .content)
     try container.encode(tags, forKey: .tags)
     try container.encodeIfPresent(frontMatter, forKey: .front_matter)
-    try container.encode(citations, forKey: .citations)
+    try container.encode(orderedCitationKeys, forKey: .orderedCitationKeys)
     try container.encode(aiSecondaryParseRequests, forKey: .ai_secondary_parse_requests)
   }
 }

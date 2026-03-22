@@ -6,7 +6,8 @@ use crate::{
 };
 
 pub fn wrap_test_conundrum_content<'a>(content: &'a str) -> ConundrumInput<'a> {
-    let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(content) });
+    let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(content),
+                                          ..Default::default() });
     ConundrumInput { input: content,
                      state }
 }

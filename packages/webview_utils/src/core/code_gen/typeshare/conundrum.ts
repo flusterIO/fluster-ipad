@@ -72,12 +72,7 @@ export interface MdxParsingResult {
 	content: string;
 	tags: TagResult[];
 	front_matter?: FrontMatterResult;
-	/**
-	 * bibliography_string is a string representing the concatenated bibtex
-	 * entries of all valid bibentries within the note, without duplicates
-	 * and in the proper order.
-	 */
-	citations: CitationResult[];
+	ordered_citation_keys: string[];
 	dictionary_entries: DictionaryEntryResult[];
 	outgoing_links: NoteOutgoingLinkResult[];
 	/**

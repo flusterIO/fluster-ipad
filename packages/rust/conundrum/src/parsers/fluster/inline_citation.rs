@@ -1,7 +1,12 @@
 use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
-use winnow::{ModalResult, Parser, ascii::alphanumeric1, combinator::delimited, token::literal};
+use winnow::{
+    ModalResult, Parser,
+    ascii::alphanumeric1,
+    combinator::delimited,
+    token::{literal, take_until},
+};
 
 use crate::{
     lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
@@ -14,6 +19,7 @@ use crate::{
 pub struct ParsedCitation {
     pub key: String,
     pub full_match: String,
+    pub idx: u32,
 }
 
 impl MdxComponentResult for ParsedCitation {
@@ -29,17 +35,22 @@ impl MdxComponentResult for ParsedCitation {
             return self.full_match.clone();
         }
 
-        format!("<FlusterCitation citationKey=\"{}\" />", self.key,)
+        format!("<FlusterCitation citationKey=\"{}\" idx={{{}}} />", self.key, self.idx)
     }
 }
 
 impl ConundrumParser<ParsedCitation> for ParsedCitation {
     fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<ParsedCitation> {
         let (key, full_match) =
-            delimited(literal("[[cite:"), alphanumeric1, literal("]]")).with_taken().parse_next(input)?;
+            delimited(literal("[[cite:"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
+
+        let mut state = input.state.borrow_mut();
+
+        let idx = state.bib.get_item_index_and_append(key);
 
         Ok(ParsedCitation { key: key.to_string(),
-                            full_match: full_match.to_string() })
+                            full_match: full_match.to_string(),
+                            idx: idx as u32 })
     }
 
     fn matches_first_char(char: char) -> bool {

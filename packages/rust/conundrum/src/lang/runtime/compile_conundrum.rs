@@ -12,6 +12,9 @@ use crate::{
 // Add this helper to compile specific languages into MDX components
 // Moved this to the ParsedCodeBlock trait.
 pub fn code_block_to_mdx(block: &ParsedCodeBlock, res: &mut MdxParsingResult) -> String {
+    if res.ignore_all_parsers {
+        return block.full_match.clone();
+    }
     match block.language.as_str() {
         "dictionary" => {
             // Extract the metadata or provide a fallback

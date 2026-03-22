@@ -311,12 +311,12 @@ extension AppSchemaV1 {
         }
       }
       // Handle saving of additional bibEntries that can be generated from the note.
-      let citationsLength = results.citations.count
+      let citationsLength = results.orderedCitationKeys.count
       //      var parsingResultCitations: [MdxSerialization_CitationResultBuffer] = []
       for idx in (0..<citationsLength) {
-        let citationItem = results.citations[idx]
+        let citationItem = results.orderedCitationKeys[idx]
         if let existingCitation = allCitations.first(where: { cit in
-          cit.citationKey == citationItem.citationKey
+          cit.citationKey == citationItem
         }) {
           // Citation exists in datbase, can continue saving it
           citations.append(existingCitation)
@@ -406,9 +406,9 @@ extension AppSchemaV1 {
           note.addCitation(citation: cit, strategy: .userAdded)
         }
       } else {
-        for cit in data.citations {
+        for cit in data.orderedCitationKeys {
           if let foundEntry = existingCitations.first(where: { citItem in
-            citItem.citationKey == cit.citationKey
+            citItem.citationKey == cit
           }) {
             let citationAlreadyAppended = note.citations.contains(where: { alreadyAppendedCit in
               alreadyAppendedCit.citationKey == foundEntry.citationKey
