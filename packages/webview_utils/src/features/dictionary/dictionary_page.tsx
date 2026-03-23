@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react'
 import { DictionaryEntryComponent } from './hooks/dictionary_entry'
 import { type DictionaryState, DictionaryWebviewIds } from '@/code_gen/typeshare/fluster_core_utilities'
-import { H1 } from '@/shared_components/typography/typography'
+import { H1, H3 } from '@/shared_components/typography/typography'
 import { InlineMdxContent } from '#/mdx/components/inline_mdx_content'
 import { MdxContent } from '#/mdx/components/mdx_content'
 import { connect } from 'react-redux';
@@ -19,7 +19,7 @@ export const DictionaryPage = connector(({ entries }: Pick<DictionaryState, "ent
         >
             <div className="w-full max-w-[1080px] px-8 ml-auto mr-auto">
                 <H1 className="mb-8 hide-desktop">Dictionary</H1>
-                {entries.map((entry) => {
+                {entries.length ? entries.map((entry) => {
                     return (
                         <DictionaryEntryComponent
                             InlineMdxContent={InlineMdxContent}
@@ -33,7 +33,11 @@ export const DictionaryPage = connector(({ entries }: Pick<DictionaryState, "ent
                             />
                         </DictionaryEntryComponent>
                     )
-                })}
+                }) : (
+                    <div className="w-full h-full flex flex-col justify-center items-center p-4">
+                        <H3 className="text-foreground/80 w-fit text-center">No Dictionary Entries Found</H3>
+                    </div>
+                )}
             </div>
         </div>
     )

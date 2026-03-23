@@ -31,3 +31,5 @@ export const ulPropsSchema = emphasisSchema.extend({
             return ["decoration-fd-card", thicknessClass]
     }
 })
+
+export type ULProps = z.input<typeof ulPropsSchema>

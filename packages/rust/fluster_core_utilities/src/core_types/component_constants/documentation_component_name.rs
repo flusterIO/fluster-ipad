@@ -11,4 +11,10 @@ pub enum DocumentationComponentName {
     #[serde(rename = "InContentDocsEmphasisTypeList")]
     #[strum(to_string = "InContentDocsEmphasisTypeList")]
     InContentDocsEmphasisTypeList,
+    #[serde(rename = "InContentDocsHighlightDemo")]
+    #[strum(to_string = "InContentDocsHighlightDemo")]
+    InContentDocsHighlightDemo,
+    #[serde(rename = "InContentDocsUnderlineDemo")]
+    #[strum(to_string = "InContentDocsUnderlineDemo")]
+    InContentDocsUnderlineDemo,
 }

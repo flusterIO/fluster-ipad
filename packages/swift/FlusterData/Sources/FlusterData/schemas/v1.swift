@@ -1,3 +1,4 @@
+import ConundrumSwift
 import FlatBuffers
 import FlusterBibliography
 import FlusterMdx
@@ -5,7 +6,6 @@ import Foundation
 import PaperKit
 import PencilKit
 import SwiftData
-import ConundrumSwift
 
 public enum AppSchemaV1: VersionedSchema {
   public static var models: [any PersistentModel.Type] {
@@ -31,6 +31,7 @@ extension AppSchemaV1 {
     public var generationMethod: NoteSummaryGenerationMethod
     public var body: String
     public var ctime: Date
+    public var valid: Bool = true
     public init(
       generationMethod: NoteSummaryGenerationMethod,
       body: String,
@@ -150,6 +151,7 @@ extension AppSchemaV1 {
     /// A value between 0..1. The vector is nto necessarily normalized, but the vector of any
     /// invidual component should not exceed 1.
     public var value: Float
+    public var valid: Bool = true
     public init(label: String, desc: String, value: Float, R3AxisId: R3AxisId) {
       self.label = label
       self.desc = desc
@@ -165,11 +167,13 @@ extension AppSchemaV1 {
     public var x: R3AxisData
     public var y: R3AxisData
     public var z: R3AxisData
+    public var ctime: Date
 
-    public init(x: R3AxisData, y: R3AxisData, z: R3AxisData) {
+    public init(x: R3AxisData, y: R3AxisData, z: R3AxisData, ctime: Date = .now) {
       self.x = x
       self.y = y
       self.z = z
+      self.ctime = ctime
     }
   }
 
@@ -449,8 +453,9 @@ extension AppSchemaV1 {
       let _body = self.markdown.body
       let res: Task<MdxParsingResult?, Never> = try await Task.detached {
         do {
-            let res = try await ConundrumSwift.runConundrum(options: ParseMdxOptions(noteId: _id, content: _body, citations: []))
-            return res
+          let res = try await ConundrumSwift.runConundrum(
+            options: ParseMdxOptions(noteId: _id, content: _body, citations: []))
+          return res
         } catch {
           print("Mdx parsing error: \(error.localizedDescription)")
         }

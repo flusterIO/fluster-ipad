@@ -6,8 +6,8 @@ use crate::{
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
     parsers::{
         fluster::{
-            docs::ParsedInspectionRequest, inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink,
-            tag::ParsedTag,
+            docs::ParsedInspectionRequest, hr_with_children::HrWithChildrenResult, inline_citation::ParsedCitation,
+            note_link::ParsedOutgoingNoteLink, tag::ParsedTag,
         },
         markdown::{
             block_math::BlockMathResult, block_quote::BlockQuoteResult,
@@ -48,6 +48,7 @@ pub enum ParsedElement {
     ParsedOutgoingNoteLink(ParsedOutgoingNoteLink),
     Tag(ParsedTag),
     ParsedInspectionRequest(ParsedInspectionRequest),
+    HrWithChildren(HrWithChildrenResult),
 }
 
 impl MdxComponentResult for ParsedElement {
@@ -68,6 +69,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::BoldAndItalicText(t) => t.to_mdx_component(res),
             ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
             ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
+            ParsedElement::HrWithChildren(c) => c.to_mdx_component(res),
         }
     }
 }

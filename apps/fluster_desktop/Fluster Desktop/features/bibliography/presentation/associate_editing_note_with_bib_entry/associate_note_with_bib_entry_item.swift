@@ -95,8 +95,6 @@ struct AssociateNoteWithBibEntryItemView: View {
   }
 
   func removeEntry() {
-    let itemId = item.id
-    print("Removing entry...")
     if let en = self.editingNote {
       en.removeCitation(citation: self.item)
       en.setLastRead(setModified: true)

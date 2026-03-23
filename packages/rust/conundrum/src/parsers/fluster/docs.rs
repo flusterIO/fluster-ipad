@@ -12,6 +12,7 @@ use winnow::{
     ModalResult, Parser,
     ascii::{alpha1, line_ending},
     combinator::{alt, eof},
+    stream::Stream,
     token::literal,
 };
 
@@ -69,35 +70,45 @@ impl MdxComponentResult for ParsedInspectionRequest {
 
 impl ConundrumParser<ParsedInspectionRequest> for ParsedInspectionRequest {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<ParsedInspectionRequest> {
-        let _ = literal("\n").parse_next(input)?;
-        let ((keyword, marks), full_match) = (|input: &mut ConundrumInput<'a>| {
-                                                 let (keyword, marks, _) =
-                                                     (alpha1.verify(|s: &str| {
-                                                                for name in EmbeddableComponentName::iter() {
-                                                                    if name.to_string() == s {
-                                                                        return true;
-                                                                    }
-                                                                }
-                                                                for id in InContentDocumentationId::iter() {
-                                                                    if id.to_string() == s {
-                                                                        return true;
-                                                                    }
-                                                                }
-                                                                false
-                                                            }),
-                                                      alt((literal("??"), literal("?"))),
-                                                      alt((line_ending, eof)))
-                                                                              .parse_next(input)?;
-                                                 let _ = alt((line_ending, literal(""))).parse_next(input)?;
-                                                 Ok((keyword, marks))
-                                             }).with_taken()
-                                               .parse_next(input)?;
+        let start = input.input.checkpoint();
+        let _ = literal("\n").parse_next(input).inspect_err(|_| {
+                                                    input.input.reset(&start);
+                                                })?;
+        let ((keyword, marks), full_match) =
+            (|input: &mut ConundrumInput<'a>| {
+                let (keyword, marks, _) = (alpha1.verify(|s: &str| {
+                                                     for name in EmbeddableComponentName::iter() {
+                                                         if name.to_string() == s {
+                                                             return true;
+                                                         }
+                                                     }
+                                                     for id in InContentDocumentationId::iter() {
+                                                         if id.to_string() == s {
+                                                             return true;
+                                                         }
+                                                     }
+                                                     false
+                                                 }),
+                                           alt((literal("??"), literal("?"))),
+                                           alt((line_ending, eof)))
+                                                                   .parse_next(input)
+                                                                   .inspect_err(|_| {
+                                                                       input.input.reset(&start);
+                                                                   })?;
+                let _ = alt((line_ending, literal(""))).parse_next(input).inspect_err(|_| {
+                                                                              input.input.reset(&start);
+                                                                          })?;
+                Ok((keyword, marks))
+            }).with_taken()
+              .parse_next(input)?;
 
         let level = if marks == "??" {
             2
         } else {
             1
         };
+        let mut state = input.state.borrow_mut();
+        state.data.ignore_all_parsers = true;
         Ok(ParsedInspectionRequest { keyword: keyword.to_string(),
                                      level,
                                      full_match: full_match.to_string() })

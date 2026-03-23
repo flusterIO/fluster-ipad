@@ -11,6 +11,7 @@ use crate::lang::runtime::apply_parsed_conundrum_result::apply_parsed_conundrum_
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::output::parsing_result::mdx_parsing_result::MdxParsingResult;
 use crate::parsers::fluster::docs::ParsedInspectionRequest;
+use crate::parsers::fluster::hr_with_children::HrWithChildrenResult;
 use crate::parsers::markdown::block_math::BlockMathResult;
 use crate::parsers::markdown::block_quote::BlockQuoteResult;
 use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextResult;
@@ -42,6 +43,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                             MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
                             BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
                             ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                            HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
                             // MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
@@ -88,11 +90,12 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
-                "\\" => |x: &mut ConundrumInput<'a>| {
-                    take(2usize).map(|c: &'a str| {
-                    ParsedElement::Text(c.to_string())
-                    }).parse_next(x)
-                },
+                // "\\" => |x: &mut ConundrumInput<'a>| { // This is a super questionable hack that
+                //                                        // will probably do more harm than good.
+                //     take(2usize).map(|c: &'a str| {
+                //     ParsedElement::Text(c.to_string())
+                //     }).parse_next(x)
+                // },
                 _ => |x: &mut ConundrumInput<'a>| {
                     alt((
                         ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),

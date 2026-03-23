@@ -3,9 +3,10 @@ use std::cell::RefCell;
 use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use serde::Serialize;
 use winnow::{
-    ModalResult, Parser,
+    ModalResult, Parser, Stateful,
     ascii::{line_ending, space0, till_line_ending},
     combinator::{alt, eof, repeat},
+    stream::Stream,
     token::{literal, take_while},
 };
 
@@ -19,7 +20,9 @@ use crate::{
             traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
         },
     },
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    output::{
+        apply_nested_parser_state::apply_nested_parser_state, parsing_result::mdx_parsing_result::MdxParsingResult,
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -76,31 +79,41 @@ fn parse_bq_line(input: &mut ConundrumInput) -> ModalResult<String> {
 
 impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
     fn parse_input_string<'a>(input_outer: &mut ConundrumInput<'a>) -> ModalResult<BlockQuoteResult> {
-        let (parsed_content, full_match) = (|input: &mut ConundrumInput<'a>| {
-                                               let _ = literal("\n").parse_next(input)?;
-                                               let lines: Vec<String> = repeat(1.., parse_bq_line).parse_next(input)?;
+        let (parsed_content, full_match) =
+            (|input: &mut ConundrumInput<'a>| {
+                let start = input.input.checkpoint();
+                let _ = literal("\n").parse_next(input).inspect_err(|_| {
+                                                            input.input.reset(&start);
+                                                        })?;
+                let lines: Vec<String> = repeat(1.., parse_bq_line).parse_next(input).inspect_err(|_| {
+                                                                                          input.input.reset(&start);
+                                                                                      })?;
 
-                                               // Join stripped lines then recursively parse the inner content
-                                               // so math, citations, nested block quotes, etc. are recognised.
-                                               let inner_src = lines.join("\n");
-                                               let mut new_state =
-                                                   ConundrumInput { input: &inner_src,
-                                                                    state: RefCell::new(ParseState::default()) };
-                                               let new_parsed_content =
+                // Join stripped lines then recursively parse the inner content
+                // so math, citations, nested block quotes, etc. are recognised.
+                let inner_src = lines.join("\n");
+                let mut new_state: Stateful<&str, RefCell<ParseState>> =
+                    ConundrumInput { input: &inner_src,
+                                     state: RefCell::new(ParseState::default()) };
+
+                let new_parsed_content =
                     parse_elements(&mut new_state).unwrap_or_else(|_| vec![ParsedElement::Text(inner_src.clone())]);
 
-                                               // RESUME: Pick back up here
-                                               // by applying the nested
-                                               // state to the parent state
-                                               // via a trait method an
-                                               // then move on to rest of
-                                               // markdown parsers now that
-                                               // nested parsing is working.
-                                               // apply_nested_state(&mut input_outer.state, &mut new_state.state);
+                // WITH_WIFI: This needs to be applied here but I'm running into a type error
+                // right now.
+                // apply_nested_parser_state(input, &new_state);
+                // RESUME: Pick back up here
+                // by applying the nested
+                // state to the parent state
+                // via a trait method an
+                // then move on to rest of
+                // markdown parsers now that
+                // nested parsing is working.
+                // apply_nested_state(&mut input_outer.state, &mut new_state.state);
 
-                                               Ok(new_parsed_content)
-                                           }).with_taken()
-                                             .parse_next(input_outer)?;
+                Ok(new_parsed_content)
+            }).with_taken()
+              .parse_next(input_outer)?;
 
         println!("Parsed Content: {:#?}", parsed_content);
         Ok(BlockQuoteResult { children: parsed_content,

@@ -1035,6 +1035,8 @@ public enum DictionaryWebviewStorageKeys: String, Codable {
 public enum DocumentationComponentName: String, Codable {
 	case inContentDocumentationContainer = "InContentDocumentationContainer"
 	case inContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList"
+	case inContentDocsHighlightDemo = "InContentDocsHighlightDemo"
+	case inContentDocsUnderlineDemo = "InContentDocsUnderlineDemo"
 }
 
 /// From typescript to swift.

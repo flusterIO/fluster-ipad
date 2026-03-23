@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
     ModalResult, Parser,
-    ascii::alphanumeric1,
     combinator::delimited,
     token::{literal, take_until},
 };

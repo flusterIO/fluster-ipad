@@ -108,7 +108,6 @@ class MacPaperNsViewController: NSViewController, PaperMarkupViewController.Dele
 
   public func clearCanvas() {
     // Re-initialize PaperMarkup with the existing bounds (retain size, clear content)
-    let bounds = markup.bounds
     let emptyMarkup = PaperMarkup(bounds: CGRect(origin: .zero, size: getPaperMarkupBounds()))
     self.markup = emptyMarkup
     paperViewController.markup = emptyMarkup

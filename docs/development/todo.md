@@ -2,9 +2,6 @@
 
 ## Bug Log
 
-**_ PRIORITY PRIORITY PRIORITY _**
-
-- [x] Make absolute sure the editor does not completely fail when the note fails to parse when an invalid component is attempted to render. There absolutely _needs_ to be a backup... the note just can't be lost forever.
 - [ ] Fix issue with bibliography entries not being associated with note properly.
 - [ ] Create 'paper' button on desktop is creating 2 pages.
 
@@ -67,7 +64,6 @@
 ## Documentation
 
 - [ ] Add section to `quick_reference.mdx` about front matter.
-- [ ] Create 'zod' to markdown table or 'componentconfig' to markdown table component and related function. Create a component that is passed in only on docs pages that makes takes that zod schema and generates a react table.
 - [ ] Use `Component?` and `Component??` similar to iPython with a new PreParser and automatically insert component documentation here.
 
 ## Website
@@ -76,10 +72,9 @@
 - [ ] Update docs to reflect upcoming Apple release even more.
 - [x] Fix admonition padding issue on website and now probably in the main app.
 
-## Language
+## Conundrum
 
-- [x] Create package after researching architecture:
-  - [x] [Miette](https://crates.io/crates/miette) for error reporting, and possibly... at least acording to Gemini, intellisense in codemirror? It said to use the error state that includes suggestions, but that sounds sketchy before I see it.
+- [ ] Download as much of **Crafting Interpreters** as you can for offline reading, especially as it gets closer to implementing a memory layer.
 
 ---
 
@@ -106,41 +101,18 @@
 
 # Today
 
-- [ ] Use zed to generate the following while you have a 'pro' account:
-  - [ ] Complicated markdown syntaxes like:
-    - [ ] Markdown Table
-    - [ ] Line item with multiple options for the state of checked using the `(?|*|x|-)` symbols.
-    - [ ] Paragraph, since this one is likely to be quirky.
-  - [ ] The start of a robust memory layer for Conundrum.
-- [x] Handle parser error where something like `Here?` on a line by itself breaks the parser.
-- [ ] Write tests for all `-ignoreParser` flags.
-- [ ] Handle moving of code block parsers to nom completely.
-  - [ ] Handle modification of the input options.
-  - [ ] Link with existing parsers for now, but move everything to nom in the near future.
-- [ ] Handle rest of iPad webviews
-  - [ ] Make sure all state is working and responding to change.
-  - [ ] Add in desperately needed save method to iPad settings.
-- [ ] Move rest of webviews over to using redux (note-details, dictionary).
-- [ ] Move iPad over to using schema, shared webview storage and redux state.
-  - [ ] Reimplement all iPad webviews from scratch, **again** to reflect the way a single container is used in the MacOS application. Now that state is shared globally that's the best way to reliably handle state without repeating the same shit over and over.
-- [ ] Move on to Founation Models and AI-Parser.
-
 ## Offline
 
-- [x] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
-- [ ] Handle citation parser. It's completely absent right now.
-- [ ] Move mathjax font to public folder. Vite _should_ be able to move everything properly, and the paths that would be output are already being embedded in the app.
-  1. Create new webview container state for mathjax font url.
-  2. Grab that during parsing and pass it into mdx since this will have to be different for each webview.
-  - This will even allow for easy testing.
-  3. Once a value or pattern that works is found, pass the value in during state initialization for each webview.
-  - Add a property to the iPad and Mac webview container components respectively that accepts a unique string for each webview and sets that with the initial state.
-- [ ] Handle move of public dir based assets to new function so that mathjax can be loaded offline.
+- [ ] Verify that the iPad app is working again. It will need at least changes to:
+  - [ ] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
+  - [ ] Initial State function
+  - [ ] `WebviewContainer.mathjaxUrl` field added and passed around properly.
 - [ ] Start setting AI availability states.
   - [ ] Adjust `AiContainerPhase1...` component to reflect the user's AI availability.
   - [ ] Move on to generating note summary!
   - [ ] Add comment syntax parser that just strips the content before rendering so you can write commented out notes to the user on the generated code like "t's ok to delete this, your summary was attached to your note".
 - [x] Work on output components for all new markdown parsed elements.
+- [ ] Write tests for all `-ignoreParser` flags.
 
 ## AI
 

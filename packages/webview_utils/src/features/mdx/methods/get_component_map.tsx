@@ -267,6 +267,7 @@ const items: ComponentMapItem[] = [
             return import("../../ai/presentation/ai_parse_pending_container").then((a) => a.FlusterAiParsePendingContainer)
         }
     },
+    // --- Documentation ---
     {
         query: [DocumentationComponentName.InContentDocumentationContainer],
         componentType: ComponentItemType.documentation,
@@ -281,6 +282,21 @@ const items: ComponentMapItem[] = [
             return import("../../in_content_documentation/presentation/in_content_documentation_components/emphasis_typescript_documentation").then((a) => a.InContentDocsEmphasisTypeList)
         }
     },
+    {
+        query: [DocumentationComponentName.InContentDocsHighlightDemo],
+        componentType: ComponentItemType.documentation,
+        importComponent: async () => {
+            return import("../../in_content_documentation/presentation/in_content_documentation_components/highlight_demo").then((a) => a.InContentHighlightDocsDemo)
+        }
+    },
+    {
+        query: [DocumentationComponentName.InContentDocsUnderlineDemo],
+        componentType: ComponentItemType.documentation,
+        importComponent: async () => {
+            return import("../../mdx/embeddable_mdx_components/ul/documentation_underline_demo").then((a) => a.InContentUnderlineDocumentationDemo)
+        }
+    },
+    // --- Auto Inserted ---
     {
         query: [AutoInsertedComponentName.AutoInsertedMarkdownLink],
         componentType: ComponentItemType.autoInserted,

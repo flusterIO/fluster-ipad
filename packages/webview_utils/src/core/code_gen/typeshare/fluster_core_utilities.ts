@@ -657,6 +657,8 @@ export enum DictionaryWebviewStorageKeys {
 export enum DocumentationComponentName {
 	InContentDocumentationContainer = "InContentDocumentationContainer",
 	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
+	InContentDocsHighlightDemo = "InContentDocsHighlightDemo",
+	InContentDocsUnderlineDemo = "InContentDocsUnderlineDemo",
 }
 
 /** From typescript to swift. */

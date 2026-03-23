@@ -1,0 +1,5 @@
+---
+source: packages/rust/conundrum/src/parsers/fluster/hr_with_children.rs
+expression: child
+---
+<Hr>My Hr with children</Hr>

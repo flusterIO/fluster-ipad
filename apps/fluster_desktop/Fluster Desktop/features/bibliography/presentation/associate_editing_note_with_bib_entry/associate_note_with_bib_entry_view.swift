@@ -35,7 +35,7 @@ struct AssociateNoteWithBibEntryView: View {
 
   var body: some View {
     Group {
-      if var en = editingNoteId {
+      if let en = editingNoteId {
         List(filteredEntries, id: \.id) { item in
           AssociateNoteWithBibEntryItemView(item: item, editingNoteId: en)
             .listStyle(.plain)

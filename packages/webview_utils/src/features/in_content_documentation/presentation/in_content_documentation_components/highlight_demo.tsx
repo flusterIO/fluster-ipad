@@ -1,16 +1,21 @@
-import { MdxContent } from '#/mdx/components/mdx_content'
 import { emphasisOptions } from '#/mdx/embeddable_mdx_components/schemas/emphasis_schema'
 import React, { type ReactNode } from 'react'
+import { Hl } from '../../../mdx/embeddable_mdx_components/hl/hl'
 
-export const HighlightDocsDemo = (): ReactNode => {
+export const InContentHighlightDocsDemo = (): ReactNode => {
     return (
-        <MdxContent
-            mdx={emphasisOptions.map((opt) => {
-                return `- <Hl ${opt}>This is ${opt} highlighted</Hl>`
-            }).join("\n")}
-        />
+        <div className="w-full flex flex-col justify-start items-start gap-y-1">
+            {emphasisOptions.map((opt) => {
+                const props = {
+                    [opt]: true
+                }
+                return (
+                    <div>This is <Hl {...props}>{opt}</Hl> highlighted</div>
+                )
+            })}
+        </div>
     )
 }
 
 
-HighlightDocsDemo.displayName = "HighlightDocsDemo"
+InContentHighlightDocsDemo.displayName = "HighlightDocsDemo"

@@ -1,7 +1,8 @@
+use std::cell::RefCell;
+
 use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use serde::Serialize;
-use typeshare::typeshare;
-use winnow::{ModalResult, Parser, combinator::alt, token::take_until};
+use winnow::{ModalResult, Parser, Stateful, combinator::alt, token::take_until};
 
 use crate::{
     lang::{
@@ -9,13 +10,14 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
+            state::parse_state::ParseState,
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
                 mdx_component_result::MdxComponentResult,
             },
         },
     },
-    parsers::parser_trait::ConundrumParser,
+    output::apply_nested_parser_state::apply_nested_parser_state,
 };
 
 #[derive(Debug, Serialize)]
@@ -35,11 +37,12 @@ impl MdxComponentResult for MarkdownParagraphResult {
     }
 }
 
-impl ConundrumParser<MarkdownParagraphResult> for MarkdownParagraphResult {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownParagraphResult> {
+impl MarkdownParagraphResult {
+    fn parse_input_string<'a>(input: &'a mut ConundrumInput<'a>) -> ModalResult<MarkdownParagraphResult> {
         let res = alt((take_until(1.., "```"), take_until(1.., "\n\n"))).parse_next(input)?;
-        let mut new_input = get_conundrum_input(res);
+        let mut new_input: Stateful<&str, RefCell<ParseState>> = get_conundrum_input(res);
         let children = parse_elements(&mut new_input)?;
+        apply_nested_parser_state(input, &mut new_input);
         Ok(MarkdownParagraphResult { children })
     }
 

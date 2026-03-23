@@ -30,4 +30,10 @@ impl CitationList {
             self.data.len() - 1
         }
     }
+
+    pub fn merge_child_state(&mut self, child_state: &Self) {
+        for item in child_state.data.iter() {
+            self.safely_append_item(item.as_str());
+        }
+    }
 }

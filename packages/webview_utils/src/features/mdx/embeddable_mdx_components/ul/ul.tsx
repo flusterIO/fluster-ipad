@@ -1,17 +1,12 @@
-import React, { HTMLProps, type ReactNode } from "react";
-import {
-    WithColorKey,
-} from "../embeddable_component_types/color_key";
-import { ulPropsSchema } from "./ul_props_schema";
+import React, { type HTMLProps, type ReactNode } from "react";
+import { type ULProps, ulPropsSchema } from "./ul_props_schema";
 import { cn } from "@/utils/cn";
 
-export interface UlProps extends HTMLProps<HTMLSpanElement>, WithColorKey {
-    /// A valid fluster color variable.
-    color: string;
+interface UlPropsInternal extends ULProps, Omit<HTMLProps<HTMLSpanElement>, "color"> {
     children: ReactNode;
 }
 
-export const Ul = ({ children, ...props }: UlProps): ReactNode => {
+export const Ul = ({ children, ...props }: UlPropsInternal): ReactNode => {
     const parsedClasses = ulPropsSchema.parse(props)
     return (
         <span

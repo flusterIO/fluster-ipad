@@ -4,6 +4,7 @@ use winnow::{
     ModalResult, Parser,
     ascii::{multispace0, space1, till_line_ending},
     combinator::{alt, delimited, opt, preceded, repeat},
+    stream::Stream,
     token::{literal, take_till, take_while},
 };
 
@@ -33,11 +34,18 @@ impl MdxComponentResult for MarkdownHeadingResult {
 
 impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownHeadingResult> {
-        let _ = opt(literal("\n")).parse_next(input)?;
-        let level: Vec<char> = repeat(1..=6, '#').parse_next(input)?;
+        let start = input.input.checkpoint();
+        let _ = opt(literal("\n")).parse_next(input).inspect_err(|_| {
+                                                         input.input.reset(&start);
+                                                     })?;
+        let level: Vec<char> = repeat(1..=6, '#').parse_next(input).inspect_err(|_| {
+                                                                        input.input.reset(&start);
+                                                                    })?;
 
         // 2. Expect at least one space (mandatory in standard Markdown)
-        let _ = space1.parse_next(input)?;
+        let _ = space1.parse_next(input).inspect_err(|_| {
+                                             input.input.reset(&start);
+                                         })?;
 
         // 3. Consume everything until the end of the line
         // We use terminated to ensure we consume the newline character if it exists
@@ -51,7 +59,10 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
                                            // Case B: Normal heading (turn this back on once this parser can be typed
                                            // again)
                                            .map(|(c, id): (&'a str, &'a str)| (c.trim(), Some(id))),
-                 till_line_ending.map(|c: &'a str| (c.trim(), None)))).parse_next(input)?;
+                 till_line_ending.map(|c: &'a str| (c.trim(), None)))).parse_next(input)
+                                                                      .inspect_err(|_| {
+                                                                          input.input.reset(&start);
+                                                                      })?;
 
         let content = content.trim().to_string();
 
