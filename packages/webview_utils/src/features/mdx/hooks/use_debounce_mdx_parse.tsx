@@ -14,7 +14,6 @@ import { type CodeEditorTheme } from "@/code_gen/typeshare/fluster_core_utilitie
 
 
 declare global {
-
     interface WindowEventMap {
         "mdx-content-loaded": CustomEvent<{ scollPositionKey: AnyWebviewStorageKey }>;
     }
@@ -53,7 +52,7 @@ export const useDebounceMdxParse = (
                 mathjaxFontUrl,
             });
             // TODO: DO something with the toc field now that you're grabbing it.
-            const res = await run(compiled.value, {
+            const res = await run(compiled, {
                 Fragment: Fragment,
                 jsx: runtime.jsx,
                 jsxs: runtime.jsxs,
@@ -66,7 +65,7 @@ export const useDebounceMdxParse = (
                 setMdxModule(null);
             }
         } catch (err) {
-            console.warn(`Error: ${err}`);
+            console.warn("Error: ", err);
         }
     };
 
@@ -95,7 +94,9 @@ export const useDebounceMdxParse = (
         } else {
             setTimer(
                 setTimeout(
-                    () => handleParse(value || "", darkCodeTheme, lightCodeTheme, mathjaxFontUrl),
+                    () => {
+                        handleParse(value || "", darkCodeTheme, lightCodeTheme, mathjaxFontUrl).catch((err: unknown) => { console.error("Error: ", err); })
+                    },
                     debounceTimeout,
                 ),
             );
@@ -120,7 +121,6 @@ export const useDebounceMdxParse = (
 
     useEffect(() => {
         WebviewClient.setMdxContentLoaded(contentLoadedId)
-
     }, [mdxModule])
 
     return {

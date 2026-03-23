@@ -1,6 +1,6 @@
 import React, { useRef, type ReactNode } from 'react'
 import { type AiErrorState } from './types'
-import { DynamicIcon } from 'lucide-react/dynamic'
+import { RadiationIcon } from 'lucide-react'
 
 
 interface AiParsePendingErrorStatusContainerProps {
@@ -14,9 +14,9 @@ export const AiParsePendingErrorStatusContainer = ({ error }: AiParsePendingErro
             <div className="w-fit h-fit rounded-[100%] bg-emphasis-warn p-1"
                 ref={iconRef}
             >
-                <DynamicIcon name='radiation' className="w-12 h-12 text-emphasis-warn-foreground" />
+                <RadiationIcon className="w-12 h-12 text-emphasis-warn-foreground" />
             </div>
-            <div className="font-bold">AI Status Error</div>
+            <div className="font-bold text-foreground">AI Status Error</div>
             <div className="w-full text-center">
                 {error.message()}
             </div>

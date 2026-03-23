@@ -1,4 +1,4 @@
-import { AiAction, type AiState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { AiAction, EditorStateActions, type AiState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type PayloadAction } from "@reduxjs/toolkit";
 import consola from "consola";
 import { type AnyCrossLanguageWebviewAction } from "../cross_language_state_types";
@@ -17,6 +17,12 @@ export const swiftAiActionReducer = (state: AiState, action: PayloadAction<AnyCr
             return {
                 ...state,
                 foundation_model_access: action.payload.payload.foundation_model_availability
+            }
+        }
+        case EditorStateActions.SetInitialEditorState: {
+            return {
+                ...state,
+                foundation_model_access: action.payload.payload.ai.foundation_model_access
             }
         }
         default: {

@@ -7,8 +7,6 @@ import rehypeMathjax from "rehype-mathjax/chtml";
 import rehypePrettyCode from "rehype-pretty-code";
 import emoji from "remark-emoji";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
-import withSlugs from "rehype-slug";
-import withToc, { type Toc } from "@stefanprobst/rehype-extract-toc";
 import { CodeEditorTheme } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type BundledTheme } from "shiki";
 
@@ -92,12 +90,6 @@ const rehypePlugins = ({
     // let shikiTransformers = await getShikiTransformers(config)
     return [
         /* TODO: Add an embeded video component for this rehypeVideo that then utilizes the existing video element. */
-        [
-            withSlugs
-        ],
-        [
-            withToc,
-        ],
         [rehypeMathjax as any, {
             ...mathOptions,
             chtml: {
@@ -172,7 +164,7 @@ export const parseMdxString = async ({
     lightCodeTheme: CodeEditorTheme;
     darkCodeTheme: CodeEditorTheme;
     mathjaxFontUrl: string
-}): Promise<{ value: string, toc?: Toc }> => {
+}): Promise<string> => {
     const res = await compile(content, {
         outputFormat: "function-body",
         remarkPlugins: remarkPlugins(),
@@ -186,5 +178,5 @@ export const parseMdxString = async ({
     });
     console.log("Parsed Mdx with new props: ", res)
     /* res. */
-    return { value: String(res.value).replaceAll(/classname/g, "className"), toc: res.data.toc }
+    return String(res.value).replaceAll(/classname/g, "className")
 };

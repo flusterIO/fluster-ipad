@@ -42,7 +42,7 @@ impl MarkdownParagraphResult {
         let res = alt((take_until(1.., "```"), take_until(1.., "\n\n"))).parse_next(input)?;
         let mut new_input: Stateful<&str, RefCell<ParseState>> = get_conundrum_input(res);
         let children = parse_elements(&mut new_input)?;
-        apply_nested_parser_state(input, &mut new_input);
+        apply_nested_parser_state(input, &new_input);
         Ok(MarkdownParagraphResult { children })
     }
 
