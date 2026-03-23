@@ -5,8 +5,8 @@ use uniffi::{Enum, Record};
 use crate::core_types::webviews::{
     editor_save_method::EditorSaveMethod,
     editor_state::{
-        bibtex_editor_state::BibtexEditorState, editor_keymap::CodeEditorKeymap,
-        editor_theme::CodeEditorTheme, snippet_state::SnippetState,
+        bibtex_editor_state::BibtexEditorState, editor_keymap::CodeEditorKeymap, editor_theme::CodeEditorTheme,
+        snippet_state::SnippetState,
     },
 };
 
@@ -54,7 +54,8 @@ pub struct EditorState {
     /// back-forth approach with the AI parser
     ///  might allow tme for things to change.
     /// This might resolve some DB issues that popped up
-    /// during dev too... not sure if they're just dev tool things or real issues.
+    /// during dev too... not sure if they're just dev tool things or real
+    /// issues.
     pub note_id: Option<String>,
     #[serde(rename = "baseKeymap")]
     pub base_keymap: CodeEditorBaseKeymap,

@@ -118,5 +118,6 @@
 
 ## AI
 
+- [ ] Generate comment syntax parser before moving on to sending the AI request since you'll likely need to leave some comments in the user's note.
 - [ ] Generate R3 vector in background tasks for each note along with a note summary if that note's summary is empty.
   - [ ] Also store a 'valid' property alongside the summary and R3 vec that can be set to false when the note's content is updated.

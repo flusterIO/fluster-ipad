@@ -11,6 +11,7 @@ use crate::lang::runtime::apply_parsed_conundrum_result::apply_parsed_conundrum_
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::output::parsing_result::mdx_parsing_result::MdxParsingResult;
 use crate::parsers::fluster::docs::ParsedInspectionRequest;
+use crate::parsers::fluster::fluster_comment::FlusterCommentResult;
 use crate::parsers::fluster::hr_with_children::HrWithChildrenResult;
 use crate::parsers::markdown::block_math::BlockMathResult;
 use crate::parsers::markdown::block_quote::BlockQuoteResult;
@@ -44,6 +45,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                             BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
                             ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
                             HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
+                            FlusterCommentResult::parse_input_string.map(ParsedElement::Comment),
                             // MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
@@ -103,18 +105,6 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                     )).parse_next(x)
                 },
             }.parse_next(input_inner)?;
-
-        // A Text element from `any` is a line start only when it was a newline.
-        // Block-level elements consume their own trailing newline, so the
-        // position after them is always a line start.
-        // at_line_start = match &result {
-        //     ParsedElement::Text(s) => s == "\n" || s == "\r\n",
-        //     ParsedElement::Heading(_)
-        //     | ParsedElement::BlockQuote(_)
-        //     | ParsedElement::BlockMath(_)
-        //     | ParsedElement::ParsedCodeBlock(_) => true,
-        //     _ => false,
-        // };
 
         Ok(result)
     }).parse_next(input)

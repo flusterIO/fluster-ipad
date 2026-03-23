@@ -44,14 +44,18 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     if colorScheme == .dark {
       addDarkModeScript(controller: webView.configuration.userContentController)
     }
+    var all_keys = [
+      WebviewContainerEvents.reduxStateLoaded.rawValue,
+      AiStateEvents.sendGeneralAiRequestPhase2.rawValue
+    ]
+    for mk in messageHandlerKeys {
+      all_keys.append(mk)
+    }
     addContentControllerList(
-      items: messageHandlerKeys,
+      items: all_keys,
       controller: webView.configuration.userContentController,
       coordinator: context.coordinator
     )
-    addUserContentController(
-      controller: webView.configuration.userContentController, coordinator: context.coordinator,
-      name: WebviewContainerEvents.reduxStateLoaded.rawValue)
 
     DispatchQueue.main.async {
       if let scrollView = webView.enclosingScrollView {
@@ -114,6 +118,22 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
           }
         }
       }
+        if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
+            if let jsonData = (message.body as! String).data(using: .utf8) {
+              do {
+                let decoder = JSONDecoder()
+                let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
+                  // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
+                  Task(priority: .high) {
+                      let res = handleGeneralMdxAiRequest(request: event, focusedNote: parent.parent.editingNote)
+                      print("Response: \(res)")
+                      // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
+                  }
+              } catch {
+                print("Failed to decode editor update: \(error)")
+              }
+            }
+        }
       if let messageHandler = parent.messageHandler {
         for handler in parent.messageHandlerKeys {
           if message.name == handler {

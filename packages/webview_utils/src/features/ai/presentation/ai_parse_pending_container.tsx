@@ -5,9 +5,10 @@ import { type ParsedCodeBlock } from "../../../core/code_gen/typeshare/conundrum
 import { connect } from 'react-redux';
 import { type GlobalWebviewStateDeepNullable } from '#/webview_global_state/cross_language_state_types';
 import consola from 'consola';
-import { type AiState, FoundationModelAccessStatus } from '@/code_gen/typeshare/fluster_core_utilities';
+import { type AiState, AiStateEvents, FoundationModelAccessStatus, type GeneralAiRequestPhase2Event } from '@/code_gen/typeshare/fluster_core_utilities';
 import { type AiErrorState } from './types';
 import { AiParsePendingErrorStatusContainer } from './ai_parse_pending_error_status_container';
+import { sendToSwift } from '@/utils/bridge/send_to_swift';
 
 
 interface FlusterAiParsePendingContainerProps {
@@ -52,7 +53,14 @@ export const FlusterAiParsePendingContainer = connector(({ res, status }: Fluste
                     <div className="invisible @[540px]/aiParsePendingContainer:visible absolute bottom-3 left-3 text-sm opacity-60">
                         {`See 'AI?' docs for supported actions`}
                     </div>
-                    <FlusterAiParseButton />
+                    <FlusterAiParseButton
+                        onClick={() => {
+                            sendToSwift(AiStateEvents.SendGeneralAiRequestPhase2, {
+                                full_match: res.full_match,
+                                user_request: res.content
+                            } satisfies GeneralAiRequestPhase2Event)
+                        }}
+                    />
                 </div>
             </div>
         )

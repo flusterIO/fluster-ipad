@@ -1,4 +1,3 @@
-pub mod ai;
 pub mod component_constants;
 pub mod db;
 pub mod development_utils;

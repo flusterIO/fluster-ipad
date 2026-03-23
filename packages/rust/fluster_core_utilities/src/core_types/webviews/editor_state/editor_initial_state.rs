@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
 use crate::core_types::webviews::{
-    ai_state::ai_state::FoundationModelAccessStatus,
+    ai_state::ai_state_model::FoundationModelAccessStatus,
     editor_save_method::EditorSaveMethod,
     editor_state::{editor_keymap::CodeEditorKeymap, editor_theme::CodeEditorTheme, snippet_state::SnippetState},
     math_state::math_state_model::MathState,

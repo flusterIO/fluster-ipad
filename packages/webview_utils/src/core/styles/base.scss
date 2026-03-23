@@ -24,8 +24,16 @@ root {
   --desktop-background-match: 213 39% 9%;
 }
 
-body.fluster-ipad {
-  background-color: black;
+.fluster-mac {
+  * {
+    --background: hsl(var(--desktop-background-match));
+  }
+}
+
+.fluster-ipad {
+  * {
+    --background: #000;
+  }
 }
 
 
@@ -148,12 +156,16 @@ body {
 
 body.fluster-mac {
 
+  background-color: hsl(var(--desktop-background-match));
+
   .hide-desktop {
     display: none;
   }
 }
 
 body.fluster-ipad {
+
+  background-color: black;
 
   .hide-ipad {
     display: none;

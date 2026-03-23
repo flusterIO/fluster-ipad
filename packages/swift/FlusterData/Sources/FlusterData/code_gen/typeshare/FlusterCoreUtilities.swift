@@ -20,6 +20,20 @@ public struct AiInitialStatePayload: Codable {
 	}
 }
 
+public struct AiPhase2Response: Codable {
+	public let success: Bool
+	public let replace_with: String?
+	/// An optional message that will be displayed to the user in a toast if
+	/// present.
+	public let user_message: String?
+
+	public init(success: Bool, replace_with: String?, user_message: String?) {
+		self.success = success
+		self.replace_with = replace_with
+		self.user_message = user_message
+	}
+}
+
 public struct AiState: Codable {
 	public let foundation_model_access: FoundationModelAccessStatus
 	public let ai_thinking: Bool
@@ -338,7 +352,8 @@ public struct EditorState: Codable {
 	/// back-forth approach with the AI parser
 	/// might allow tme for things to change.
 	/// This might resolve some DB issues that popped up
-	/// during dev too... not sure if they're just dev tool things or real issues.
+	/// during dev too... not sure if they're just dev tool things or real
+	/// issues.
 	public let note_id: String?
 	public let baseKeymap: CodeEditorBaseKeymap
 	public let citations: [EditorCitation]
@@ -375,6 +390,19 @@ public struct EditorState: Codable {
 		self.saveMethod = saveMethod
 		self.autoSaveTimeout = autoSaveTimeout
 		self.bib_editor = bib_editor
+	}
+}
+
+public struct GeneralAiRequestPhase2Event: Codable {
+	/// The content of the request as a natural language string.
+	public let user_request: String
+	/// The full_match of the component that was passed into phase1. This is
+	/// required to replace the content once the AI request succeeds.
+	public let full_match: String
+
+	public init(user_request: String, full_match: String) {
+		self.user_request = user_request
+		self.full_match = full_match
 	}
 }
 
@@ -950,8 +978,8 @@ public struct SetWebviewFontSizeAction: Codable {
 	}
 }
 
-public enum AiNoteInteractionType: String, Codable {
-	case generateSummary = "generate-summary"
+public enum AiStateEvents: String, Codable {
+	case sendGeneralAiRequestPhase2 = "send-general-ai-request-phase-2"
 }
 
 public enum AutoInsertedComponentName: String, Codable {

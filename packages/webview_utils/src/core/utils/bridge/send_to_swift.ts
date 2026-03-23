@@ -21,7 +21,7 @@ export const sendToSwift = (
         window.webkit.messageHandlers[handler]
     ) {
         if (handler in window.webkit.messageHandlers) {
-            window.webkit.messageHandlers?.[handler].postMessage(
+            window.webkit.messageHandlers[handler].postMessage(
                 typeof msg === "string" ? msg : JSON.stringify(msg),
             );
         }

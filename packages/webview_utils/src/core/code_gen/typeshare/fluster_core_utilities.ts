@@ -15,6 +15,16 @@ export interface AiInitialStatePayload {
 	foundation_model_access: FoundationModelAccessStatus;
 }
 
+export interface AiPhase2Response {
+	success: boolean;
+	replace_with?: string;
+	/**
+	 * An optional message that will be displayed to the user in a toast if
+	 * present.
+	 */
+	user_message?: string;
+}
+
 export interface AiState {
 	foundation_model_access: FoundationModelAccessStatus;
 	ai_thinking: boolean;
@@ -232,7 +242,8 @@ export interface EditorState {
 	 * back-forth approach with the AI parser
 	 * might allow tme for things to change.
 	 * This might resolve some DB issues that popped up
-	 * during dev too... not sure if they're just dev tool things or real issues.
+	 * during dev too... not sure if they're just dev tool things or real
+	 * issues.
 	 */
 	note_id?: string;
 	baseKeymap: CodeEditorBaseKeymap;
@@ -251,6 +262,16 @@ export interface EditorState {
 	saveMethod: EditorSaveMethod;
 	autoSaveTimeout: number;
 	bib_editor: BibtexEditorState;
+}
+
+export interface GeneralAiRequestPhase2Event {
+	/** The content of the request as a natural language string. */
+	user_request: string;
+	/**
+	 * The full_match of the component that was passed into phase1. This is
+	 * required to replace the content once the AI request succeeds.
+	 */
+	full_match: string;
 }
 
 export enum SizableOption {
@@ -570,8 +591,8 @@ export interface SetWebviewFontSizeAction {
 	payload: SetWebviewFontSizePayload;
 }
 
-export enum AiNoteInteractionType {
-	GenerateSummary = "generate-summary",
+export enum AiStateEvents {
+	SendGeneralAiRequestPhase2 = "send-general-ai-request-phase-2",
 }
 
 export enum AutoInsertedComponentName {
