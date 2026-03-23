@@ -11,4 +11,5 @@ export interface MdxContentProps extends HTMLProps<HTMLDivElement> {
     additionalComponents?: ComponentMapItem[]
     lockToEditorScroll?: boolean
     asMain?: boolean
+    onRender?: () => void
 }

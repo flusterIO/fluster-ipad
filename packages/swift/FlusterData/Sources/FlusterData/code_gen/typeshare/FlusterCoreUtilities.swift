@@ -1141,6 +1141,14 @@ public enum SharedWebviewEvents: String, Codable {
 	case localStorageWrite = "broadcast-local-storage"
 }
 
+public enum SnippetCategoryId: String, Codable {
+	case icons
+	case math
+	case components
+	case componentVariants
+	case emojis
+}
+
 public enum SplitviewEditorDomIds: String, Codable {
 	case mdxPreview = "mdx-preview"
 }

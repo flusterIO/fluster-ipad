@@ -107,8 +107,8 @@
   - [ ] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
   - [ ] Initial State function
   - [ ] `WebviewContainer.mathjaxUrl` field added and passed around properly.
-- [ ] Handle Global search page on Mac. This will be a crucial page moving forward, but for now a simple search field with a toggle that swaps the search type will do.
-- [ ] Fix issue with note being set as modified just by viewing it in Mac app.
+- [x] Handle Global search page on Mac. This will be a crucial page moving forward, but for now a simple search field with a toggle that swaps the search type will do.
+- [x] Fix issue with note being set as modified just by viewing it in Mac app.
 - [ ] Start setting AI availability states.
   - [ ] Adjust `AiContainerPhase1...` component to reflect the user's AI availability.
   - [ ] Move on to generating note summary!

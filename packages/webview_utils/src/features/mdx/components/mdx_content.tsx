@@ -16,10 +16,11 @@ export const MdxContent = ({
     lockToEditorScroll,
     additionalComponents,
     asMain,
+    onRender,
     ...props
 }: MdxContentProps): ReactNode => {
     const id = useId()
-    const { Component, setValue } = useDebounceMdxParse(
+    const { Component, setValue, isReady } = useDebounceMdxParse(
         undefined,
         debounceTimeout,
         id,
@@ -44,6 +45,12 @@ export const MdxContent = ({
     useEventListener("set-webview-font-size", (e) => {
         setFontSizeClass(e.detail);
     });
+
+    useEffect(() => {
+        if (isReady && onRender) {
+            onRender()
+        }
+    }, [])
 
     useEffect(() => {
         setValue(mdx);

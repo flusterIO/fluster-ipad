@@ -763,6 +763,14 @@ export enum SharedWebviewEvents {
 	LocalStorageWrite = "broadcast-local-storage",
 }
 
+export enum SnippetCategoryId {
+	Icons = "icons",
+	Math = "math",
+	Components = "components",
+	ComponentVariants = "componentVariants",
+	Emojis = "emojis",
+}
+
 export enum SplitviewEditorDomIds {
 	MdxPreview = "mdx-preview",
 }
