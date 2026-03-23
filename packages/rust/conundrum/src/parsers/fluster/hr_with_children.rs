@@ -28,6 +28,8 @@ pub struct HrWithChildrenResult {
 }
 
 impl MdxComponentResult for HrWithChildrenResult {
+    // No need to handle this implementation of the to_mdx_component method for the
+    // ignore_all_parsers component since children will ignore it.
     fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
         let children_string = compile_elements(&self.children, res);
 

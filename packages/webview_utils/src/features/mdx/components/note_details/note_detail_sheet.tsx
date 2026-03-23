@@ -2,7 +2,6 @@ import { type NoteDetailState, NoteDetailWebviewActions, type NoteDetailWebviewE
 import { sendToSwift } from '@/utils/bridge/send_to_swift';
 import React, { useEffect, type ReactNode } from 'react'
 import { LoadingComponent } from '@/shared_components/loading_component';
-import { InlineMdxContent } from '../inline_mdx_content';
 import { ErrorBoundary } from 'react-error-boundary';
 import { TaggableBadge } from '@/shared_components/shad/badge';
 import { NoteDetailsBibliography } from './note_details_bibliography';
@@ -17,6 +16,7 @@ declare global {
 import { connect } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
 import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types';
+import { H1 } from '../../../../core/shared_components/typography/typography';
 const connector = connect((state: GlobalAppState) => ({
     data: state.note_details
 }))
@@ -51,11 +51,9 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
             <div className="w-full h-full flex flex-col justify-start items-center px-8 py-12">
                 <div className="w-full h-screen loading-hide max-w-[768px]">
                     <Subtitle>Title</Subtitle>
-                    <div className="block scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                        <InlineMdxContent className="pb-4 pt-2" mdx={`# ${data.title}`} />
-                    </div>
+                    <H1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-3">{data.title}</H1>
                     <div className="text-muted-foreground text-light">{`Last modified ${data.last_modified_string}`}</div>
-                    <div className="w-full h-[2px] bg-muted-foreground/60 my-6" />
+                    <div className="w-full h-[2px] bg-muted-foreground/60 mb-6 mt-3" />
                     {data.summary ? (
                         <div className="flex flex-row justify-start items-center gap-x-6">
                             <Subtitle>Summary</Subtitle>
@@ -63,8 +61,8 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
                         </div>
                     ) : null}
                     {data.topic ? (
-                        <div className="flex flex-row justify-start items-center gap-x-6 my-6">
-                            <Subtitle className="w-fit">Topic</Subtitle>
+                        <div className="flex flex-row justify-start items-center gap-x-3 mt-6 mb-0">
+                            <Subtitle className="w-fit h-fit">Topic</Subtitle>
                             <TaggableBadge
                                 taggableValue={data.topic}
                                 className="cursor-pointer"
@@ -73,8 +71,8 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
                         </div>
                     ) : null}
                     {data.subject ? (
-                        <div className="flex flex-row justify-start items-center gap-x-6 my-6">
-                            <Subtitle className="w-fit">Subject</Subtitle>
+                        <div className="flex flex-row justify-start items-center gap-x-3 mb-6">
+                            <Subtitle className="w-fit h-fit">Subject</Subtitle>
                             <TaggableBadge
                                 taggableValue={data.subject}
                                 className="cursor-pointer"

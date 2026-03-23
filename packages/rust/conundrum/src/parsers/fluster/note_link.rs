@@ -37,6 +37,7 @@ impl MdxComponentResult for ParsedOutgoingNoteLink {
         {
             return self.full_match.clone();
         }
+
         format!("<NoteLink id=\"{}\">{}</NoteLink>", self.note_id, self.content)
     }
 }

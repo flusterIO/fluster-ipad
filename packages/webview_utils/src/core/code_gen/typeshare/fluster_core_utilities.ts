@@ -750,6 +750,7 @@ export enum ParserId {
 	NoteLink = "note_link",
 	Documentation = "docs",
 	AiTrigger = "ai",
+	HrWithChildren = "hr",
 }
 
 /** From typescript to swift. */

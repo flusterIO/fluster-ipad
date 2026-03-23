@@ -22,4 +22,7 @@ pub enum ParserId {
     #[serde(rename = "ai")]
     #[strum(to_string = "ai")]
     AiTrigger,
+    #[serde(rename = "hr")]
+    #[strum(to_string = "hr")]
+    HrWithChildren,
 }

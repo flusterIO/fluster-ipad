@@ -1128,6 +1128,7 @@ public enum ParserId: String, Codable {
 	case noteLink = "note_link"
 	case documentation = "docs"
 	case aiTrigger = "ai"
+	case hrWithChildren = "hr"
 }
 
 /// From typescript to swift.
