@@ -29,7 +29,8 @@ enum GlobalSearchFunction: String, CaseIterable {
 
 struct GlobalSearchPage: View {
   @Query public var notes: [NoteModel]
-  @State private var searchType: GlobalSearchFunction = .fullText
+  @AppStorage(AppStorageKeys.globalSearchFunctionMac.rawValue) private var searchType:
+    GlobalSearchFunction = .fullText
   @State private var searchByTopic: TopicModel? = nil
   @State private var searchBySubject: SubjectModel? = nil
   @State private var query: String = ""

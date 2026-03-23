@@ -15,7 +15,7 @@ import WebKit
 struct NoteDetailWebview: View {
   let editingNoteId: String?
   @State private var webView: WKWebView = WKWebView(
-    frame: .infinite, configuration: getWebViewConfig()
+    frame: .zero, configuration: getWebViewConfig()
   )
   @Query var notes: [NoteModel]
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =

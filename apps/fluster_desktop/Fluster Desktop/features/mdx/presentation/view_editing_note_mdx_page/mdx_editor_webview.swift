@@ -272,8 +272,11 @@ struct MdxEditorWebview: View {
     // being handled by async tasks managed by SwiftUI for better
     // cancellation management, since it's running onChange.
     if let en = editingNote, en.id == event.note_id {
+      let shouldSendModified = event.content != en.markdown.body
       en.markdown.body = event.content
-      en.setLastRead(setModified: true)
+      if shouldSendModified {
+        en.setLastRead(setModified: true)
+      }
     }
   }
 

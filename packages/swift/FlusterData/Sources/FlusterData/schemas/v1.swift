@@ -7,7 +7,6 @@ import PaperKit
 import PencilKit
 import SwiftData
 
-
 public let DEFAULT_NOTE_TITLE: String = "No title found"
 
 public enum AppSchemaV1: VersionedSchema {

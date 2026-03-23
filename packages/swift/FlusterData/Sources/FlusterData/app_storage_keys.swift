@@ -18,9 +18,8 @@ public enum AppStorageKeys: String {
     silenceParsingErrors,
     lockEditorScrollToPreview,
     embeddedCslFile,
+    
     editorSaveMethod,
-   // A user name used only for the AI to personalize the application.
-    userPreferredName,
     // Snippets
     includeEmojiSnippets,
     defaultNoteView,
@@ -33,5 +32,10 @@ public enum AppStorageKeys: String {
     noteSidebarSectionOpen,
     flusterSidebarSectionOpen,
     desktopWebviewTheme
-
+    /// A user name used only for the AI to personalize the application.
+    case userPreferredName
+    /// The global search function selected on the mac, allowing seperate settings if data ever overlaps
+    case globalSearchFunctionMac
+    /// The global search function selected on the iPad, allowing seperate settings if data ever overlaps
+    case globalSearchFunctionIpad
 }

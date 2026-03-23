@@ -16,6 +16,8 @@ struct PaperView: View {
   @Binding public var focusedPageIndex: Int
   @Environment(\.modelContext) private var modelContext: ModelContext
   @State private var showDeletePageConfirmation: Bool = false
+  /// A hack required to avoid updating the utime of the note on initial render.
+  @State private var trackChanges: Bool = false
   var sortedPages: [PaperModel] {
     return editingNote.paper.sorted(by: { a, b in
       a.pageIndex < b.pageIndex
@@ -175,7 +177,11 @@ struct PaperView: View {
   func handlePaperMarkupChange(_ markup: PaperMarkup) async {
     if focusedPageIndex < editingNote.paper.count && focusedPageIndex >= 0 {
       do {
-        editingNote.setLastRead(setModified: true)
+        if trackChanges {
+          editingNote.setLastRead(setModified: true)
+        } else {
+          trackChanges = true
+        }
         let data = try await markup.dataRepresentation()
         print("Saving editing note markup as data representation...")
         sortedPages[focusedPageIndex].markup = data
