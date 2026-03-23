@@ -65,7 +65,9 @@ struct NoteDashboardBottomRow: View {
       }
       Text("•")
         .font(.caption)
-      Text(item.lastRead.formatted(date: .abbreviated, time: .shortened))
+        Text(item.utime.toRelativeTimeString(
+            unitsStyle: .short
+        ))
         .font(.caption)
         .foregroundStyle(.secondary)
     }

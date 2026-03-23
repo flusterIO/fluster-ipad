@@ -19,6 +19,8 @@ public enum AppStorageKeys: String {
     lockEditorScrollToPreview,
     embeddedCslFile,
     editorSaveMethod,
+   // A user name used only for the AI to personalize the application.
+    userPreferredName,
     // Snippets
     includeEmojiSnippets,
     defaultNoteView,

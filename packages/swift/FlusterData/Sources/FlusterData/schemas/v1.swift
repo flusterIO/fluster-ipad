@@ -7,6 +7,9 @@ import PaperKit
 import PencilKit
 import SwiftData
 
+
+public let DEFAULT_NOTE_TITLE: String = "No title found"
+
 public enum AppSchemaV1: VersionedSchema {
   public static var models: [any PersistentModel.Type] {
     // Leaving off other models as they should be able to be inferred and this will simplify migration scripts I hope.
@@ -563,7 +566,7 @@ extension AppSchemaV1 {
     /// Returns a label for the note sufficient for use in 'title' use cases.
     /// This prefers front matter to markdown content if it exists.
     public func getPreferedTitle() -> String {
-      return self.frontMatter.title ?? self.markdown.title ?? "No title found"
+      return self.frontMatter.title ?? self.markdown.title ?? DEFAULT_NOTE_TITLE
     }
 
     /// pageIndex is the `pageIndex` field, not the actual index necessarily.

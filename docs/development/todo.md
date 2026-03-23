@@ -7,7 +7,7 @@
 
 ### Embedded Components
 
-- [ ] Responsive Grid
+- [x] Responsive Grid
 - [ ] `Tabs` component that just accepts children and a context provider to set the tab content, not a prop from the user.
 - [ ] Flip-card like component for studying. This will obviously become a lot more useful once sharing is enabled, although notes could be generated with a server scale AI an integrated with the app easily.
 
@@ -107,6 +107,8 @@
   - [ ] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
   - [ ] Initial State function
   - [ ] `WebviewContainer.mathjaxUrl` field added and passed around properly.
+- [ ] Handle Global search page on Mac. This will be a crucial page moving forward, but for now a simple search field with a toggle that swaps the search type will do.
+- [ ] Fix issue with note being set as modified just by viewing it in Mac app.
 - [ ] Start setting AI availability states.
   - [ ] Adjust `AiContainerPhase1...` component to reflect the user's AI availability.
   - [ ] Move on to generating note summary!

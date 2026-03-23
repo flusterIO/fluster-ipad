@@ -39,7 +39,7 @@ struct SearchPageView: View {
             .font(.headline)
             .padding()
         }
-        VStack(alignment: .center, spacing: 20) {
+        LazyVStack(alignment: .center, spacing: 20) {
           ForEach(filteredNotes, id: \.id) { note in
             NoteSearchResultItemView(
               item: note, searchByTopic: $searchByTopic, searchBySubject: $searchBySubject,

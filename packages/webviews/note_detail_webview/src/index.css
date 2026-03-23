@@ -1,46 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 html,
 body {
-  min-height: 100vh;
-  width: 100vw;
-  scrollbar-width: none;
-  color: hsl(var(--foreground));
-  overscroll-behavior-block: none;
-  overscroll-behavior-y: none;
-
-  & * {
-    border-color: hsl(var(--border));
-  }
+    width: 100vw;
+    overscroll-behavior: none;
+    overscroll-behavior-block: none;
+    overscroll-behavior-inline: none;
+    overscroll-behavior-y: none;
 }
 
-::-webkit-scrollbar {
-  display: none;
-  /* Hides the scrollbar */
+body {
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #root {
-  height: 100vh;
-  width: 100vw;
-  color: hsl(var(--foreground));
-}
-
-.loading-hide {
-  display: block;
-}
-
-.loading-show {
-  display: none;
-}
-
-body.loading {
-  .loading-hide {
-    display: none;
-  }
-
-  .loading-show {
-    display: flex;
-  }
+    min-height: 100vh;
+    width: 100vw;
+    color: hsl(var(--foreground));
 }
