@@ -51,8 +51,8 @@ export const FlusterAiParsePendingContainer = connector(({ res, status, adfcbzad
                         className="indent-4"
                     />
                 </div>
-                <div className="w-full flex flex-row justify-end items-center">
-                    <div className="invisible @[540px]/aiParsePendingContainer:visible absolute bottom-3 left-3 text-sm opacity-60">
+                <div className="w-full h-fit flex flex-col-reverse @md/aiParsePendingContainer:flex-row justify-center items-start @md/aiParsePendingContainer:justify-end @md/aiParsePendingContainer:items-end mt-4 gap-x-3 gap-y-2">
+                    <div className="text-sm w-full text-center @md/aiParsePendingContainer:text-left opacity-60 flex-grow">
                         {`See 'AI?' docs for supported actions`}
                     </div>
                     <FlusterAiParseButton
@@ -61,6 +61,9 @@ export const FlusterAiParsePendingContainer = connector(({ res, status, adfcbzad
                                 full_match: res.full_match,
                                 user_request: res.content
                             } satisfies GeneralAiRequestPhase2Event)
+                        }}
+                        classes={{
+                            button: "w-full @md/aiParsePendingContainer:w-fit"
                         }}
                     />
                 </div>
