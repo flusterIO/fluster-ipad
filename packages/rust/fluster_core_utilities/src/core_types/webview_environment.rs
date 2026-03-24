@@ -14,7 +14,7 @@ pub enum WebviewEnvironment {
     #[serde(rename = "fluster-multi-platform-desktop")]
     #[strum(to_string = "fluster-multi-platform-desktop")]
     MultiPlatformDesktop,
-    #[serde(rename = "awating-data")]
-    #[strum(to_string = "awating-data")]
+    #[serde(rename = "awaiting-data")]
+    #[strum(to_string = "awaiting-data")]
     AwaitingData,
 }

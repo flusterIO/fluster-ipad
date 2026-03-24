@@ -97,7 +97,7 @@ export enum WebviewEnvironment {
 	MacOS = "fluster-mac",
 	IPad = "fluster-ipad",
 	MultiPlatformDesktop = "fluster-multi-platform-desktop",
-	AwaitingData = "awating-data",
+	AwaitingData = "awaiting-data",
 }
 
 export enum WebviewImplementation {

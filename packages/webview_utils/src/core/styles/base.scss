@@ -25,14 +25,19 @@ root {
 }
 
 .fluster-mac {
-  * {
-    --background: hsl(var(--desktop-background-match));
+  --background: var(--desktop-background-match);
+
+  .force-background {
+    background-color: hsl(213, 39%, 9%) !important;
+
   }
 }
 
 .fluster-ipad {
-  * {
-    --background: #000;
+  --background: 0 0% 0%;
+
+  .force-background {
+    background-color: hsl(0, 0%, 0%) !important;
   }
 }
 
@@ -152,23 +157,25 @@ body {
       display: none;
     }
   }
-}
 
-body.fluster-mac {
+  &.fluster-mac {
+    &.dark {
+      background-color: hsl(var(--desktop-background-match));
+    }
 
-  background-color: hsl(var(--desktop-background-match));
-
-  .hide-desktop {
-    display: none;
+    .hide-desktop {
+      display: none;
+    }
   }
-}
 
-body.fluster-ipad {
+  &.fluster-ipad {
+    &.dark {
+      background-color: var(--color-background);
+    }
 
-  background-color: black;
-
-  .hide-ipad {
-    display: none;
+    .hide-ipad {
+      display: none;
+    }
   }
 }
 

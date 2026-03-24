@@ -156,7 +156,7 @@ public enum WebviewEnvironment: String, Codable {
 	case macOS = "fluster-mac"
 	case iPad = "fluster-ipad"
 	case multiPlatformDesktop = "fluster-multi-platform-desktop"
-	case awaitingData = "awating-data"
+	case awaitingData = "awaiting-data"
 }
 
 public enum WebviewImplementation: String, Codable {

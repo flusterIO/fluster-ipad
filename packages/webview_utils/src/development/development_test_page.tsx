@@ -3,7 +3,7 @@ import { createFlusterStore } from '#/webview_global_state/store';
 import { handleSwiftActionWrapper, handleSwiftBufferActionWrapper } from '#/webview_global_state/window_methods';
 import { MdxEditorGlobalProvider } from '#/webview_global_state/provider';
 import { WebViewContainer } from '#/webview_container/presentation/webview_container';
-import { AiParsePendingErrorStateWrapper } from './development_wrapped_components/ai_parse_pending_error_state_wrapper';
+import { AiParsePhase1DevContainer } from './development_wrapped_components/fluster_ai_parse_pending_container_dev_wrapper';
 
 const storeData = createFlusterStore();
 
@@ -17,7 +17,7 @@ window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
 const CurrentDevelopmentComponent = (): ReactNode => {
     return (
         <div className="w-full h-full flex flex-col justify-center items-center">
-            <AiParsePendingErrorStateWrapper />
+            <AiParsePhase1DevContainer />
         </div>
     )
 }

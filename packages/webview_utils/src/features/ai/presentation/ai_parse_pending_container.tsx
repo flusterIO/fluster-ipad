@@ -20,6 +20,8 @@ interface FlusterAiParsePendingContainerProps {
      */
     res: ParsedCodeBlock | null
     status: AiState["foundation_model_access"]
+    /// A simple development utilty to force the primary continer to be shown.
+    adfcbzadfjadfadfkhllakadf?: boolean
 }
 
 const connector = connect((state: GlobalWebviewStateDeepNullable) => ({
@@ -27,13 +29,13 @@ const connector = connect((state: GlobalWebviewStateDeepNullable) => ({
 }))
 
 
-export const FlusterAiParsePendingContainer = connector(({ res, status }: FlusterAiParsePendingContainerProps): ReactNode => {
+export const FlusterAiParsePendingContainer = connector(({ res, status, adfcbzadfjadfadfkhllakadf }: FlusterAiParsePendingContainerProps): ReactNode => {
     if (!res) {
         consola.error("Something went wrong while attempting to parse the json data passed into the FlusterAiParsePendingContainer.")
         return null
     }
 
-    if (status === FoundationModelAccessStatus.Available) {
+    if (status === FoundationModelAccessStatus.Available || adfcbzadfjadfadfkhllakadf) {
         return (
             <div
                 className="w-full max-w-[min(1080px,90%)] mx-auto p-4 border border-fd-ring bg-fd-card rounded text-card-foreground [&_*]:text-card-foreground @container/aiParsePendingContainer relative shadow-primary/50 border hover:border-primary transition-shadow duration-500"

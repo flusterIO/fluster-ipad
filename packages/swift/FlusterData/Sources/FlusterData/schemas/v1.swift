@@ -45,15 +45,6 @@ extension AppSchemaV1 {
     }
   }
   @Model
-  public class AiInteractionRequest {
-    public var requestType: AiNoteInteractionType
-    public var ctime: Date
-    public init(requestType: AiNoteInteractionType, ctime: Date) {
-      self.requestType = requestType
-      self.ctime = ctime
-    }
-  }
-  @Model
   final public class FrontMatter {
     public var id: String
     public var title: String?
@@ -61,7 +52,6 @@ extension AppSchemaV1 {
     public var fsPath: String?
     public var ignoreParsers: [String] = []
     public var summary: NoteSummary? = nil
-    public var aiSummaryRequest: AiInteractionRequest? = nil
 
     init(
       id: String,
