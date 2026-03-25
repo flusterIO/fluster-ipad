@@ -31,5 +31,5 @@ public func handleGeneralMdxAiRequest(request: GeneralAiRequestPhase2Event, focu
       print("Error: \(error.localizedDescription)")
     }
   }
-    return AiPhase2Response(success: false, replaceWith: nil, userMessage: nil, id: nil)
+    return AiPhase2Response(success: false, replaceWith: nil, userMessage: nil, id: nil, model: "")
 }

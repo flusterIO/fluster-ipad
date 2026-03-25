@@ -21,6 +21,7 @@ public class CommandPaletteRoot: CommandPaletteItem {
            SearchByTopicCommandPaletteItem(),
            SearchBySubjectCommandPaletteItem(),
            SearchBookmarksCommandPaletteItem(),
+           SetEditorThemeCommandPaletteItem(),
            CommandPaletteItem(id: .toggleDarkMode, uniqueId: "toggle-dark-mode", title: "Toggle Dark Mode", icon: "moon.fill", subtitle: nil, itemType: .commandPaletteAction)
         ]
     }

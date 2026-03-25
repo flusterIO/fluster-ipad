@@ -31,7 +31,8 @@ public enum AiNoteInteractionType: String {
           success: false, replaceWith: nil,
           userMessage:
             "I'm sorry. Fluster couldn't figure out which supported task you were trying to run. See the `AI??` docs for a list of currently supported actions.",
-          id: nil
+          id: nil,
+          model: ""
         )
     }
   }

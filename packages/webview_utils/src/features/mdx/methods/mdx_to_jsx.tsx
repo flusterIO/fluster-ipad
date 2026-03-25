@@ -50,7 +50,7 @@ const codeThemeStringToThemeName = (input: CodeEditorTheme): BundledTheme => {
             return "github-light"
         }
         case CodeEditorTheme.Aura: {
-            return "aurora-x"
+            return "one-dark-pro"
         }
         case CodeEditorTheme.TokyoNightDay: {
             return "tokyo-night"

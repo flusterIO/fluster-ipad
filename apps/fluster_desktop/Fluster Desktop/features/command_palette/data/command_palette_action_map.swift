@@ -13,4 +13,3 @@ public typealias CommandPaletteAction = (ModelContext, CommandPaletteId) -> Void
 public let commandPaletteActionMap: [CommandPaletteId: CommandPaletteAction] = [
   CommandPaletteId.createNewNote: { _, _ in print("create new note") }
 ]
-

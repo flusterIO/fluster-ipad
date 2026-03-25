@@ -17,22 +17,22 @@ public struct QuickAction {
 
 
 public let quickActions: [QuickAction] = [
-    QuickAction(label: "Bookmarks", icon: "bookmark.fill", color: Color.indigo, action: { appState in
+    QuickAction(label: "Bookmarks", icon: FlusterCategoryIcon.bookmarks.toSfIcon(), color: Color.indigo, action: { appState in
         appState.mainView = .bookmarks
     }),
-    QuickAction(label: "Equations", icon: "function", color: Color.orange, action: { appState in
+    QuickAction(label: "Equations (β)", icon: "function", color: Color.orange, action: { appState in
         appState.mainView = .dashboard
     }),
-    QuickAction(label: "Snippets", icon: "keyboard.fill", color: Color.green, action: { appState in
-        appState.mainView = .dashboard
+    QuickAction(label: "Dictionary", icon: FlusterCategoryIcon.dictionary.toSfIcon(), color: Color.green, action: { appState in
+        appState.mainView = .globalDictionary
     }),
-    QuickAction(label: "Bibliography", icon: "book.pages.fill", color: Color.purple, action: { appState in
+    QuickAction(label: "Bibliography", icon: FlusterCategoryIcon.bibliography.toSfIcon(), color: Color.purple, action: { appState in
         appState.mainView = .globalBibliography
     }),
     QuickAction(label: "Create Note", icon: "plus.rectangle.on.folder.fill", color: Color.cyan, action: { appState in
         appState.mainView = .createNote
     }),
-    QuickAction(label: "Search", icon: "magnifyingglass", color: Color.pink, action: { appState in
+    QuickAction(label: "Search", icon: "text.page.badge.magnifyingglass", color: Color.pink, action: { appState in
         appState.mainView = .search
     }),
 ]

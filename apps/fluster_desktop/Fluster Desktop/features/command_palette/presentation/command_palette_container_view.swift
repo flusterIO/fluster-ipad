@@ -7,15 +7,19 @@
 
 import AppKit
 import Combine
+import FlusterData
 import SwiftData
 import SwiftUI
-import FlusterData
 
 struct CommandPaletteContainerView: View {
   public var close: () -> Void
   @Environment(\.modelContext) private var modelContext: ModelContext
   @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
     DefaultNoteView = .editor
+  @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
+    CodeEditorTheme = .dracula
+  @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
+    CodeEditorTheme = .materialLight
   @State private var searchText: String = ""
   @AppStorage(AppStorageKeys.colorScheme.rawValue) private var selectedTheme: AppTheme =
     .dark
@@ -66,6 +70,12 @@ struct CommandPaletteContainerView: View {
               closeCommandPalette()
             case .navigate(let mainKey):
               AppState.shared.mainView = mainKey
+              closeCommandPalette()
+            case .setEditorThemeDark(let theme):
+              editorThemeDark = theme
+              closeCommandPalette()
+            case .setEditorThemeLight(let theme):
+              editorThemeLight = theme
               closeCommandPalette()
             case .toggleDarkMode:
               if selectedTheme == .dark {

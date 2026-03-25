@@ -30,4 +30,10 @@ extension CodeEditorTheme {
         return "Xcode Light"
     }
   }
+  public func isDark() -> Bool {
+    let darkThemes: [Self] = [
+      .aura, .dracula, .xcodeDark, .materialDark, .solarizedDark, .tokyoNight, .tokyoNightStorm
+    ]
+    return darkThemes.contains(self)
+  }
 }

@@ -1,0 +1,480 @@
+# AI Note Summary
+
+
+The `AINoteSummary` component can be used to automatically generate a note summary and optionally attach it to your note in the database, making the summary appear alongside the note in the note search results.
+
+The component's properties extend the `Sizable` properties so that the generated output can be styled as you like. These properties also include:
+
+| Property | Description |
+| -------- | ----------- |
+| generate | Force the component to regenerate the data. Beware however that notes with multiple AI components may take significant time to load when this property is set to true indefinitely. |
+| apply | Apply the output of this component to the note's persisted summary. This will show the generated summary in your search results. |
+| applyButton | A boolean or 'auto' property that indicates whether or not the 'Apply' button should be shown, allowing you to click to apply the generated content to your note as opposed to re-rendering the component and possibly generating new data to provide the 'apply' property. By default, this button will be shown whenever the generated summary does not match your persisted summary. |
+
+
+
+> The following section was generated directly from code. That means the properties will always reflect the current state of the application, but on the other hand, they might not be formatted as neatly as the rest of the content.
+
+
+#### applyButton
+
+
+A boolean or 'auto' property that indicates whether or not the 'Apply' button should be shown, allowing you to click to apply the generated content to your note as opposed to re-rendering the component and possibly generating new data to provide the 'apply' property. By default, this button will be shown whenever the generated summary does not match your persisted summary.
+
+**Union: One of the following types**
+
+**Boolean**
+undefined
+**Literal: **, auto
+**Default:**: auto
+#### apply
+
+
+Apply the output of this component to the note's persisted summary. This will show the generated summary in your search results.
+
+**Boolean (optional)**
+
+#### generate
+
+
+Force the component to regenerate the data. Beware however that notes with multiple AI components may take significant time to load when this property is set to true indefinitely.
+
+**Boolean (optional)**
+
+#### hideMathLabels
+
+
+Hides the MathJax labels in all child components.
+
+**Boolean (optional)**
+
+#### right
+
+
+'Floats' the component to the right. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
+**Boolean (optional)**
+
+#### left
+
+
+'Floats' the component to the left. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
+
+**Boolean (optional)**
+
+#### sidebar
+
+
+A utility property that sets a responsive max-width to create sidebar like layouts on large screens while allowing for full-width when the window is smaller.
+
+**Boolean (optional)**
+
+#### center
+
+
+This will _never_ work. This is put here only as an error trigger to notify users of `centerSelf` and `centerContent`
+
+#### centerSelf
+
+
+**Boolean (optional)**
+
+#### centerContent
+
+
+Centers the content of this component's children, not the component itself.
+
+**Boolean (optional)**
+
+#### border
+
+
+Add a small, muted border to the object.
+
+**Boolean (optional)**
+
+#### inline
+
+
+Tells the container to not forcefully create a new line and instead to flow with the rest of the content. Unless you're trying to apply properties to text inside of a paragraph using the Container component this is most likely not what you are looking for. If you want text to wrap around an element, use the `right` or `left` properties paired with a desired `width`.
+
+**Boolean (optional)**
+
+#### inShadow
+
+
+Casts an inset shadow from the object.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+**Default:**: null
+#### shadow
+
+
+Casts a shadow from the object.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+**Default:**: null
+#### rounded
+
+
+Rounds the corners of the container. Use `rounded="full"` or `rounded="fit"` to create a completely circular component, useful for some image layouts.
+
+**Union (optional): One of the following types**
+
+**Enum:** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+undefined
+**Boolean**
+
+**Default:**: null
+#### text
+
+
+Change the text content of the container's children. Beware though, some edge cases might not respond as expected.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### width
+
+
+Set some custom width properties to create responsive layouts.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### height
+
+
+Set some custom height properties to create responsive layouts.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### margin
+
+
+Add some padding around the **outside** of an object. If you are looking to create space on the _inside_ of an object you are looking for `padding`.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginLeft
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginRight
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginTop
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginBottom
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### marginY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### padding
+
+
+Create padding on the _inside_ of an object. If you are trying to create space _around_ an object. you are probably looking for `margin`.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingLeft
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingRight
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingTop
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingBottom
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### paddingY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gap
+
+
+When in Grid mode or in some other select layouts, this property create a gap between _all_ children.
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gapX
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+#### gapY
+
+
+**Enum (optional):** One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+

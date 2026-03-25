@@ -191,7 +191,7 @@ public enum CodeEditorKeymap: String, Codable, CaseIterable {
 	case emacs
 }
 
-public enum CodeEditorTheme: String, Codable, CaseIterable {
+public enum CodeEditorTheme: String, Codable, CaseIterable, Copyable {
 	case materialLight
 	case solarizedLight
 	case solarizedDark

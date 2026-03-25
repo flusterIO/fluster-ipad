@@ -6,8 +6,8 @@
 //
 
 import FlusterData
-import Foundation
 import SwiftData
+import SwiftUI
 
 public enum CommandPaletteSecondaryView: Codable, Hashable {
   case searchByTag(TagModel)
@@ -21,6 +21,8 @@ public enum CommandPaletteSecondaryView: Codable, Hashable {
 public enum CommandPaletteId: Codable, Hashable {
   case parentWithNoFunctionality
   case root, showPanelRight, createNewNote, toggleDarkMode
+  case setEditorThemeDark(CodeEditorTheme)
+  case setEditorThemeLight(CodeEditorTheme)
   case navigate(MainViewKey)
   case viewNoteById(String)
   case pushCommandPaletteView(CommandPaletteSecondaryView)
