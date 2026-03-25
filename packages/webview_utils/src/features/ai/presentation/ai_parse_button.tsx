@@ -21,7 +21,7 @@ export const FlusterAiParseButton = ({
                     Generate
                 </span>
                 <ChevronRightIcon
-                    className="w-4 h-4 min-w-4 min-h-4"
+                    className="w-6 h-6 min-w-6 min-h-6"
                 />
             </div>
         </button>

@@ -14,7 +14,8 @@ export enum CompletionSections {
 
 export enum ComponentCategory {
     layout = "Layout",
-    attention = "Attention"
+    attention = "Attention",
+    ai = "AI"
 }
 
 // export enum EmbeddableComponentId {

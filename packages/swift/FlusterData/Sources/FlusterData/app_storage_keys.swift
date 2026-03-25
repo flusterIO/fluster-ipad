@@ -38,4 +38,5 @@ public enum AppStorageKeys: String {
     case globalSearchFunctionMac
     /// The global search function selected on the iPad, allowing seperate settings if data ever overlaps
     case globalSearchFunctionIpad
+    case noteSummaryGenerationStrategy
 }

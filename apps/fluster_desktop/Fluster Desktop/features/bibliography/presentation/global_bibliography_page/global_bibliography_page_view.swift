@@ -5,17 +5,34 @@
 //  Created by Andrew on 1/18/26.
 //
 
-import SwiftUI
 import FlusterData
 import SwiftData
+import SwiftUI
 
 struct GlobalBibliographyPageView: View {
-    @Query(sort: \BibEntryModel.title, order: .forward) var entries: [BibEntryModel]
-    var body: some View {
-        BibliographyEntryListView(entries: entries)
-    }
+  @Query(sort: \BibEntryModel.title, order: .forward) var entries: [BibEntryModel]
+  var body: some View {
+    BibliographyEntryListView(entries: entries)
+      .toolbar {
+        ToolbarItem {
+          Button(
+            action: {
+                AppState.shared.commandPaletteNavigate(to: .createBibEntry)
+            },
+            label: {
+              Label(
+                title: {
+                  Text("Create")
+                },
+                icon: {
+                  Image(systemName: "plus")
+                })
+            })
+        }
+      }
+  }
 }
 
 #Preview {
-    GlobalBibliographyPageView()
+  GlobalBibliographyPageView()
 }

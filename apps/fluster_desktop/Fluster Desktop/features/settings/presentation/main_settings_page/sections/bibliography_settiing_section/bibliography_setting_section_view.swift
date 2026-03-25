@@ -20,7 +20,6 @@ struct BibliographySettingSectionView: View {
                 }, label: {
                     Text("Citation Format")
                 })
-                .padding()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         })

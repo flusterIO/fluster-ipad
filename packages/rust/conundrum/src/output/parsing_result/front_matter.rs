@@ -22,6 +22,9 @@ pub enum FrontMatterKey {
     #[serde(rename = "filePath")]
     #[strum(to_string = "filePath")]
     FilePath,
+    #[serde(rename = "summary")]
+    #[strum(to_string = "summary")]
+    Summary,
 }
 
 #[typeshare]
@@ -33,6 +36,7 @@ pub struct FrontMatterResult {
     pub file_path: Option<String>,
     pub topic: Option<String>,
     pub subject: Option<String>,
+    pub summary: Option<String>,
 }
 
 impl FrontMatterResult {
@@ -50,6 +54,7 @@ impl FrontMatterResult {
             }
         }
     }
+
     fn get_string_vector(data: &mut Pod, k: FrontMatterKey) -> Vec<String> {
         let ignore_parsers = data.remove(k.to_string());
 
@@ -74,22 +79,15 @@ pub trait FrontMatterParser {
 impl FrontMatterParser for FrontMatterResult {
     fn from_gray_matter(data: Pod) -> FrontMatterResult {
         let mut p = data.clone();
-        FrontMatterResult {
-            ignored_parsers: FrontMatterResult::get_string_vector(
-                &mut p,
-                FrontMatterKey::IgnoreParsers,
-            ),
-            subject: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Subject),
-            topic: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Topic),
-            file_path: FrontMatterResult::get_optional_string_by_key(
-                &mut p,
-                FrontMatterKey::FilePath,
-            ),
-            title: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Title),
-            user_defined_id: FrontMatterResult::get_optional_string_by_key(
-                &mut p,
-                FrontMatterKey::Id,
-            ),
-        }
+        FrontMatterResult { ignored_parsers: FrontMatterResult::get_string_vector(&mut p,
+                                                                                  FrontMatterKey::IgnoreParsers),
+                            subject: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Subject),
+                            topic: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Topic),
+                            file_path: FrontMatterResult::get_optional_string_by_key(&mut p,
+                                                                                     FrontMatterKey::FilePath),
+                            title: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Title),
+                            user_defined_id: FrontMatterResult::get_optional_string_by_key(&mut p,
+                                                                                           FrontMatterKey::Id),
+                            summary: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Summary) }
     }
 }

@@ -83,7 +83,7 @@ struct EditorSettingSectionView: View {
           SwitchGroup(
             isOn: $lockEditorScroll, title: "Lock Editor Scroll",
             desc:
-              "Lock the editor scroll to automatically scroll the preview portionally to the scroll position of the editor. This calculates position based on percentage so estimates may not be perfect. This feature is still finicky, but will be improved significantly once the app is released or I'm less homeless."
+             "Lock the editor scroll to automatically scroll the preview portionally to the scroll position of the editor. This calculates position based on percentage so estimates may not be perfect. This feature is still finicky, but will be improved significantly once the app is released and I have time to dedicate to it, or I'm less homeless... whichever comes first."
           )
           .padding(.top)
         }

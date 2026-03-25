@@ -15,16 +15,6 @@ export interface AiInitialStatePayload {
 	foundation_model_access: FoundationModelAccessStatus;
 }
 
-export interface AiPhase2Response {
-	success: boolean;
-	replace_with?: string;
-	/**
-	 * An optional message that will be displayed to the user in a toast if
-	 * present.
-	 */
-	user_message?: string;
-}
-
 export interface AiState {
 	foundation_model_access: FoundationModelAccessStatus;
 	ai_thinking: boolean;
@@ -692,6 +682,9 @@ export enum EmbeddableComponentId {
 	UtlityContainer = "util-container",
 	HrWithChildren = "hr-with-children",
 	Hint = "embeddable-hint-component",
+	AINoteSummary = "ai-note-summary",
+	AIResearchSuggestions = "ai-research-suggestions",
+	AIGeneratedImage = "ai-generated-image",
 }
 
 export enum EmbeddableComponentName {
@@ -705,6 +698,7 @@ export enum EmbeddableComponentName {
 	UtlityContainer = "Container",
 	HrWithChildren = "Hr",
 	Hint = "Hint",
+	AINoteSummary = "AINoteSummary",
 }
 
 export enum InContentDocumentationFormat {

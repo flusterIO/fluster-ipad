@@ -20,20 +20,6 @@ public struct AiInitialStatePayload: Codable {
 	}
 }
 
-public struct AiPhase2Response: Codable {
-	public let success: Bool
-	public let replace_with: String?
-	/// An optional message that will be displayed to the user in a toast if
-	/// present.
-	public let user_message: String?
-
-	public init(success: Bool, replace_with: String?, user_message: String?) {
-		self.success = success
-		self.replace_with = replace_with
-		self.user_message = user_message
-	}
-}
-
 public struct AiState: Codable {
 	public let foundation_model_access: FoundationModelAccessStatus
 	public let ai_thinking: Bool
@@ -1077,6 +1063,9 @@ public enum EmbeddableComponentId: String, Codable {
 	case utlityContainer = "util-container"
 	case hrWithChildren = "hr-with-children"
 	case hint = "embeddable-hint-component"
+	case aINoteSummary = "ai-note-summary"
+	case aIResearchSuggestions = "ai-research-suggestions"
+	case aIGeneratedImage = "ai-generated-image"
 }
 
 public enum EmbeddableComponentName: String, Codable {
@@ -1090,6 +1079,7 @@ public enum EmbeddableComponentName: String, Codable {
 	case utlityContainer = "Container"
 	case hrWithChildren = "Hr"
 	case hint = "Hint"
+	case aINoteSummary = "AINoteSummary"
 }
 
 public enum InContentDocumentationFormat: String, Codable {

@@ -18,5 +18,5 @@ public func generateResearchSuggestions(req: GeneralAiRequestPhase2Event, focuse
     })
     let res = try await session.respond(to: focusedNote.markdown.body)
     print("Res: \(res)")
-   return AiPhase2Response(success: false, replace_with: nil, user_message: nil)
+    return AiPhase2Response(success: false, replaceWith: nil, userMessage: nil, id: nil)
 }

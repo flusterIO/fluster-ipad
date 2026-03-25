@@ -47,6 +47,7 @@ export interface FrontMatterResult {
 	file_path?: string;
 	topic?: string;
 	subject?: string;
+	summary?: string;
 }
 
 export interface InlineMathResult {

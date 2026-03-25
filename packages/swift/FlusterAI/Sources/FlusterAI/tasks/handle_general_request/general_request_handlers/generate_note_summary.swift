@@ -18,6 +18,6 @@ public func generateNoteSummary(req: GeneralAiRequestPhase2Event, focusedNote: N
     """
   })
   let res = try await session.respond(to: focusedNote.markdown.body)
-  print("Summary: \(res)")
-  return AiPhase2Response(success: false, replace_with: nil, user_message: nil)
+  print("Summary: \(res.content)")
+  return AiPhase2Response(success: false, replaceWith: nil, userMessage: nil, id: nil)
 }

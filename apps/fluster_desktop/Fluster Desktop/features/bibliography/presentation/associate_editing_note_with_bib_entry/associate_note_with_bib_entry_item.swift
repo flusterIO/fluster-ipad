@@ -70,9 +70,9 @@ struct AssociateNoteWithBibEntryItemView: View {
       .labelsHidden()
       .toggleStyle(.switch)
       VStack(alignment: .leading) {
-        Text(formatted?.title ?? "No title found")
-          .font(.headline)
-          .frame(maxWidth: .infinity, alignment: .leading)
+          Text(formatted?.formattedPlainText ?? item.getTitle())
+            .font(.headline)
+            .frame(maxWidth: .infinity, alignment: .leading)
         if let note = formatted?.note {
           Text(note)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -82,7 +82,7 @@ struct AssociateNoteWithBibEntryItemView: View {
         } else if let abstract = formatted?.abstract {
           Text(abstract)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .lineLimit(5)
+            .lineLimit(10)
             .font(.footnote)
             .opacity(0.8)
         }

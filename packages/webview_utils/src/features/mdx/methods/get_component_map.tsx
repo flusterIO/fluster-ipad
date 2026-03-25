@@ -264,7 +264,7 @@ const items: ComponentMapItem[] = [
         query: [AutoInsertedComponentName.FlusterAiParsePendingContainer],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
-            return import("../../ai/presentation/ai_parse_pending_container").then((a) => a.FlusterAiParsePendingContainer)
+            return import("../../ai/presentation/foundation_model_availability_wrapper").then((a) => a.FoundationModelAvailabilityWrapper)
         }
     },
     // --- Documentation ---

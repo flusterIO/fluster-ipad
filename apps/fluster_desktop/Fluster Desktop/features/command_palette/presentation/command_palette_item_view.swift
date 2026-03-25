@@ -5,6 +5,7 @@
 //  Created by Andrew on 1/14/26.
 //
 
+import FlusterSwift
 import SwiftUI
 
 struct CommandPaletteItemView: View {
@@ -19,7 +20,7 @@ struct CommandPaletteItemView: View {
       HStack {
         Label(
           title: {
-            Text(command.title)
+            MarkdownTextView(command.title, .inlineOnly)
               .foregroundStyle(
                 idx == focusedIndex
                   ? (colorScheme == .dark ? Color.white : Color.black) : .secondary)

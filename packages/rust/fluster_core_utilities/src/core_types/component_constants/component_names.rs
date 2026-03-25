@@ -37,6 +37,9 @@ pub enum EmbeddableComponentName {
     #[serde(rename = "Hint")]
     #[strum(to_string = "Hint")]
     Hint,
+    #[serde(rename = "AINoteSummary")]
+    #[strum(to_string = "AINoteSummary")]
+    AINoteSummary,
 }
 
 impl EmbeddableComponentName {
@@ -52,6 +55,7 @@ impl EmbeddableComponentName {
             EmbeddableComponentName::Highlight => EmbeddableComponentId::Hl,
             EmbeddableComponentName::Admonition => EmbeddableComponentId::Admonition,
             EmbeddableComponentName::Card => EmbeddableComponentId::Card,
+            EmbeddableComponentName::AINoteSummary => EmbeddableComponentId::AINoteSummary,
         }
     }
 }

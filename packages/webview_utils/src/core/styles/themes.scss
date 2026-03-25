@@ -46,7 +46,6 @@
     --emphasis-important-foreground: 0 0% 100%;
     --emphasis-research: 185.0 100.0% 50.0%;
     --emphasis-research-foreground: 222.2 84% 4.9%;
-    background-color: black;
     --background: black;
 
     --color-fd-foreground: hsl(0, 0%, 92%);
@@ -67,11 +66,6 @@
 
     --color-fd-article: hsl(0, 0%, 7.04%);
     --color-fd-background: hsl(0, 0%, 5.04%);
-
-    &.fluster-mac {
-      background-color: hsl(var(--desktop-background-match));
-      --background: var(--desktop-background-match);
-    }
   }
 
   body[data-fluster-theme="zinc"] {
