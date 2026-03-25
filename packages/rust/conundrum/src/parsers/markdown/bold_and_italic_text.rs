@@ -7,7 +7,10 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -17,7 +20,7 @@ pub struct MarkdownBoldAndItalicTextResult {
 }
 
 impl MdxComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_mdx_component(&self, _: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         format!("<span className=\"italic font-bold\">{}</span>", self.content)
     }
 }

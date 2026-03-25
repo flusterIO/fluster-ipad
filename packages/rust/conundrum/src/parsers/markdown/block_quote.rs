@@ -17,12 +17,13 @@ use crate::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::parse_state::ParseState,
-            traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+            traits::{
+                conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
-    output::{
-        apply_nested_parser_state::apply_nested_parser_state, parsing_result::mdx_parsing_result::MdxParsingResult,
-    },
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -45,7 +46,7 @@ pub struct BlockQuoteResult {
 // ---------------------------------------------------------------------------
 
 impl MdxComponentResult for BlockQuoteResult {
-    fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> String {
         // Recursively render inner elements through the same MdxParsingResult
         // so side-effects (citations, tags, etc.) are collected correctly.
         let children_string = compile_elements(&self.children, res);

@@ -1,9 +1,10 @@
-import React, { type ReactNode } from 'react'
+import React, { useEffect, type ReactNode } from 'react'
 import { createFlusterStore } from '#/webview_global_state/store';
 import { handleSwiftActionWrapper, handleSwiftBufferActionWrapper } from '#/webview_global_state/window_methods';
 import { MdxEditorGlobalProvider } from '#/webview_global_state/provider';
 import { WebViewContainer } from '#/webview_container/presentation/webview_container';
-import { NoteDetailsDevelopmentWrapper } from './development_wrapped_components/note_details_development_wrapper';
+import { AIGeneratedContainerDevWrapper } from './development_wrapped_components/ai_generated_container_dev_wrapper';
+import { WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
 
 const storeData = createFlusterStore();
 
@@ -17,7 +18,7 @@ window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
 const CurrentDevelopmentComponent = (): ReactNode => {
     return (
         <div className="w-full h-full flex flex-col justify-center items-center">
-            <NoteDetailsDevelopmentWrapper />
+            <AIGeneratedContainerDevWrapper />
         </div>
     )
 }
@@ -26,6 +27,9 @@ const CurrentDevelopmentComponent = (): ReactNode => {
 
 // Don't touch this, just mess with the component above.
 export const DevelopmentTestPage = (): ReactNode => {
+    useEffect(() => {
+        document.body.classList.add(WebviewEnvironment.MacOS)
+    }, [])
     return (
         <MdxEditorGlobalProvider
             {...storeData}

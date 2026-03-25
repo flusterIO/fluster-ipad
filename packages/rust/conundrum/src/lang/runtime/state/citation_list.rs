@@ -1,4 +1,4 @@
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct CitationList {
     /// A vector of the citationKeys
     pub data: Vec<String>,

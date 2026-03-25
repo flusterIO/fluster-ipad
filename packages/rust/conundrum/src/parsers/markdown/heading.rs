@@ -9,7 +9,10 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    },
     output::output_components::output_utils::{format_embedded_object_property, javascript_null_prop},
     parsers::parser_trait::ConundrumParser,
 };
@@ -22,7 +25,7 @@ pub struct MarkdownHeadingResult {
 }
 
 impl MdxComponentResult for MarkdownHeadingResult {
-    fn to_mdx_component(&self, _: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         format!("<{} depth={} id={}>{}</{}>",
                 AutoInsertedComponentName::AutoInsertedHeading,
                 format_embedded_object_property(self.depth.to_string()),

@@ -1,4 +1,5 @@
 use crate::{
+    lang::runtime::state::parse_state::{ConundrumModifier, ParseState},
     output::{
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
@@ -36,6 +37,6 @@ use crate::lang::runtime::traits::mdx_component_result::MdxComponentResult;
 /// This is the shared rendering primitive used by both the top-level
 /// `run_conundrum` entry point and any container element (block quote, etc.)
 /// that needs to recursively render its inner content.
-pub fn compile_elements(elements: &[ParsedElement], res: &mut MdxParsingResult) -> String {
+pub fn compile_elements(elements: &[ParsedElement], res: &mut ParseState) -> String {
     elements.iter().map(|e| e.to_mdx_component(res)).collect()
 }

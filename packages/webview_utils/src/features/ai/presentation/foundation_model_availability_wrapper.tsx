@@ -1,21 +1,13 @@
 import React, { type ReactNode } from 'react'
-import { type ParsedCodeBlock } from "../../../core/code_gen/typeshare/conundrum"
 import { connect } from 'react-redux';
 import { type GlobalWebviewStateDeepNullable } from '#/webview_global_state/cross_language_state_types';
-import consola from 'consola';
 import { type AiState, FoundationModelAccessStatus } from '@/code_gen/typeshare/fluster_core_utilities';
 import { type AiErrorState } from './types';
 import { AiParsePendingErrorStatusContainer } from './ai_parse_pending_error_status_container';
 
 
 interface FlusterAiParsePendingContainerProps {
-    /**
-     * stringifiedResult is the stringified JSON of the CodeBlockParsingResult
-     * that created the component so the data can be sent to swift when 'generate' is clicked 
-     * with the current state of the component, not necessarily the current state of the note
-     * to reflect the state that the user is actually seeing as the DB lags behind a bit.
-     */
-    res: ParsedCodeBlock | null
+    /* res: ParsedCodeBlock | null */
     status: AiState["foundation_model_access"]
     /// A simple development utilty to force the primary continer to be shown.
     adfcbzadfjadfadfkhllakadf?: boolean
@@ -27,11 +19,7 @@ const connector = connect((state: GlobalWebviewStateDeepNullable) => ({
 }))
 
 
-export const FoundationModelAvailabilityWrapper = connector(({ res, status, children, adfcbzadfjadfadfkhllakadf }: FlusterAiParsePendingContainerProps): ReactNode => {
-    if (!res) {
-        consola.error("Something went wrong while attempting to parse the json data passed into the FlusterAiParsePendingContainer.")
-        return null
-    }
+export const FoundationModelAvailabilityWrapper = connector(({ status, children, adfcbzadfjadfadfkhllakadf }: FlusterAiParsePendingContainerProps): ReactNode => {
 
     if (status === FoundationModelAccessStatus.Available || adfcbzadfjadfadfkhllakadf) {
         return children
@@ -53,7 +41,7 @@ export const FoundationModelAvailabilityWrapper = connector(({ res, status, chil
             message: () => {
                 return (
                     <>
-                        You must enable Apple Intelligence to use this feature. Behind the scenes this downloads the necessary models to your device that Fluster uses for all of it's _local_ AI inference.
+                        You must enable Apple Intelligence to use this feature. Behind the scenes this downloads the necessary models to your device that Fluster uses for all of it's <span className="italic">local</span> AI inference.
                     </>
                 )
             }

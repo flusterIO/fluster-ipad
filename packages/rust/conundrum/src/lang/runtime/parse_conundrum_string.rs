@@ -8,6 +8,7 @@ use winnow::{
 };
 
 use crate::lang::runtime::apply_parsed_conundrum_result::apply_parsed_conundrum_input_state;
+use crate::lang::runtime::state::parse_state::ParseState;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::output::parsing_result::mdx_parsing_result::MdxParsingResult;
 use crate::parsers::fluster::docs::ParsedInspectionRequest;
@@ -40,6 +41,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
         let result =
             dispatch! {peek(take(1usize));
                 "\n" => |x: &mut ConundrumInput<'a>| {
+                    // WARN: This might break if it's the first character on the first line?
                         alt((
                             MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
                             BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
@@ -112,8 +114,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
 
 /// Application-level entry point.  Parses the entire input and converts any
 /// winnow error into a `FlusterError` for the rest of the app.
-pub fn parse_conundrum_string<'a>(input: &mut ConundrumInput<'a>)
-                                  -> FlusterResult<(Vec<ParsedElement>, MdxParsingResult)> {
+pub fn parse_conundrum_string<'a>(input: &mut ConundrumInput<'a>) -> FlusterResult<(Vec<ParsedElement>, ParseState)> {
     let elements = parse_elements(input).map_err(|e| {
                                             println!("Parsing Error: {:#?}", e);
                                             FlusterError::ConundrumParsingError

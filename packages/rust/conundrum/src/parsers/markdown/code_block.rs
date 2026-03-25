@@ -10,13 +10,13 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
-    output::{
-        output_components::{
-            ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
-            dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
-        },
-        parsing_result::mdx_parsing_result::MdxParsingResult,
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    },
+    output::output_components::{
+        ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
+        dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
     },
     parsers::parser_trait::ConundrumParser,
 };
@@ -31,25 +31,25 @@ pub struct ParsedCodeBlock {
 }
 
 impl MdxComponentResult for ParsedCodeBlock {
-    fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
-        if res.ignore_all_parsers {
+    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+        if res.data.ignore_all_parsers {
             return self.full_match.clone();
         }
         match self.language.as_str() {
             "dictionary" => {
-                if res.front_matter.as_ref().is_some_and(|fm| {
-                                                fm.ignored_parsers
-                                                  .iter()
-                                                  .any(|x| x == &ParserId::Dictionary.to_string())
-                                            })
+                if res.data.front_matter.as_ref().is_some_and(|fm| {
+                                                     fm.ignored_parsers
+                                                       .iter()
+                                                       .any(|x| x == &ParserId::Dictionary.to_string())
+                                                 })
                 {
                     return self.full_match.clone();
                 }
 
                 // Extract the metadata or provide a fallback
-                get_dictionary_content(self, res)
+                get_dictionary_content(self, &mut res.data)
             }
-            "fluster-ai" => get_ai_parsing_request_phase_1_content(self, res),
+            "fluster-ai" => get_ai_parsing_request_phase_1_content(self, &mut res.data),
             _ => self.full_match.clone(),
         }
     }

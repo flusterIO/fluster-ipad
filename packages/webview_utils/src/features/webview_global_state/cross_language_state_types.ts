@@ -1,4 +1,4 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions, type SetWebviewFontSizeAction, type SetAiThinkingAction, type AiAction, type SetFoundationModelAvailabilityAction } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions, type SetWebviewFontSizeAction, type SetAiThinkingAction, type AiAction, type SetFoundationModelAvailabilityAction, type SetNoteSummaryAction } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type WithNullableOptionals } from "@/utils/types/utility_types";
 import { type Reducer } from "@reduxjs/toolkit";
 import { type ByteBuffer } from "flatbuffers";
@@ -81,6 +81,10 @@ export interface SetNoteDetailsActionRefined extends SetNoteDetailsAction {
     type: NoteDetailActions.SetNoteDetails,
 }
 
+export interface SetNoteSummaryActionRefined extends SetNoteSummaryAction {
+    type: NoteDetailActions.SetNoteSummary
+}
+
 // -- Dictionary --
 
 interface SetDictionaryEntriesActionRefined extends SetDictionaryEntriesAction {
@@ -120,7 +124,7 @@ interface SetWebviewFontSizeActionRefined extends SetWebviewFontSizeAction {
 
 export type AnyCrossLanguageEditorAction = EditorSaveActionRefined | EditorInitialStateActionRefined | SetEditorKeymapActionRefined | SetAllCitationIdsRefined | SetAutoSaveTimeoutActionRefined | SetBaseKeymapActionRefined | SetLockEditorScrollToPrevActionRefined | SetSnippetPropsActionRefined | SetEditorTagsActionRefined | SetEditorThemeDarkActionRefined | SetEditorThemeLightActionRefined | SetEditorContentActionRefined | SetParsedValueActionRefined | SetEditingBibEntryActionRefined;
 
-export type AnyCrossLanguageNoteDetailsAction = SetNoteDetailsInvalidatedActionRefined | SetNoteDetailsActionRefined
+export type AnyCrossLanguageNoteDetailsAction = SetNoteDetailsInvalidatedActionRefined | SetNoteDetailsActionRefined | SetNoteSummaryActionRefined
 
 export type AnyCrossLanguageDictionaryAction = SetDictionaryEntriesActionRefined
 

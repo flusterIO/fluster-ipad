@@ -10,7 +10,7 @@ import { InlineMdxContent } from "../components/inline_mdx_content";
 import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
-import { DocumentationComponentName, type EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
+import { DocumentationComponentName, EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
 import { admonitionComponentNames } from "../embeddable_mdx_components/admonition/admonition_component_config";
 import { cardComponentNames } from "../embeddable_mdx_components/card/embeddable_card_component_config";
 import { gridComponentNames } from "../embeddable_mdx_components/grid/embeddable_responsive_grid_component_config";
@@ -20,12 +20,13 @@ import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_c
 import { AutoInsertedComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities"
 import { hrComponentNames } from "../embeddable_mdx_components/hr/hr_component_config";
 import { embeddableHintComponentNames } from "../embeddable_mdx_components/hint/hint_component_config";
-import { AutoInsertedBlockMath } from "../../mdx/embeddable_mdx_components/auto_inserted/block_math";
+import { FoundationModelAvailabilityWrapper } from "../../ai/presentation/foundation_model_availability_wrapper";
 
 enum ComponentItemType {
     userInserted,
     autoInserted,
-    documentation
+    documentation,
+    ai
 }
 
 export type ComponentMapItem = {
@@ -41,6 +42,11 @@ export type ComponentMapItem = {
 } | {
     componentType: ComponentItemType.documentation,
     query: DocumentationComponentName[],
+    /* eslint-disable-next-line  -- Not worth typing this. */
+    importComponent: () => Promise<FC<any>>;
+} | {
+    componentType: ComponentItemType.ai,
+    query: EmbeddableComponentName[],
     /* eslint-disable-next-line  -- Not worth typing this. */
     importComponent: () => Promise<FC<any>>;
 };
@@ -231,6 +237,15 @@ const items: ComponentMapItem[] = [
     /*     query: "InlineCitation", */
     /*     component: InlineCitation, */
     /* }, */
+    // -- AI __
+    {
+        query: [EmbeddableComponentName.AINoteSummary],
+        componentType: ComponentItemType.ai,
+        importComponent: async () => {
+            return import("../../ai/embeddable_components/ai_note_summary/ai_note_summary").then((a) => a.AiNoteSummary)
+        }
+    },
+    // --- AUTO-INSERTED ---
     {
         query: [AutoInsertedComponentName.NoteLink],
         componentType: ComponentItemType.autoInserted,
@@ -342,7 +357,22 @@ export const getComponentMap = async (mdxContent: string, additionalComponenets:
             const isIncluded = mdxContent.includes(`<${query}`);
             if (isIncluded) {
                 const C = await item.importComponent()
-                components[query] = (_props: object) => <ErrorBoundary FallbackComponent={(errorProps) => <InContentErrorReport {...errorProps} componentName={query} />}><C {..._props} /></ErrorBoundary>;
+                components[query] = (_props: object) => {
+                    if (item.componentType === ComponentItemType.ai) {
+                        return (
+                            <ErrorBoundary FallbackComponent={(errorProps) => <InContentErrorReport {...errorProps} componentName={query} />}>
+                                <FoundationModelAvailabilityWrapper>
+                                    <C {..._props} />
+                                </FoundationModelAvailabilityWrapper>
+
+                            </ErrorBoundary>
+                        )
+                    } else {
+                        return (
+                            <ErrorBoundary FallbackComponent={(errorProps) => <InContentErrorReport {...errorProps} componentName={query} />}><C {..._props} /></ErrorBoundary>
+                        )
+                    }
+                }
             }
         }
     }

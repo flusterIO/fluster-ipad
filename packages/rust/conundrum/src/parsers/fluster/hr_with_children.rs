@@ -12,13 +12,13 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
+            state::parse_state::ParseState,
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
                 mdx_component_result::MdxComponentResult,
             },
         },
     },
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -30,7 +30,7 @@ pub struct HrWithChildrenResult {
 impl MdxComponentResult for HrWithChildrenResult {
     // No need to handle this implementation of the to_mdx_component method for the
     // ignore_all_parsers component since children will ignore it.
-    fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> String {
         let children_string = compile_elements(&self.children, res);
 
         format!("<Hr>{}</Hr>", children_string)
@@ -54,8 +54,13 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
                                                 e
                                             })?;
 
-        let mut new_input = get_conundrum_input(res);
+        let state = input.state.borrow_mut();
+
+        let mut new_input = get_conundrum_input(res, state.modifiers.clone());
         let elements = parse_elements(&mut new_input)?;
+        // WITH_WIFI: Figure out how to call this without throwing reference errors.
+        // apply_nested_parser_state(input, &new_input);
+
         Ok(HrWithChildrenResult { children: elements })
     }
 

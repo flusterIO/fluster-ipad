@@ -13,7 +13,7 @@ class SearchByNoteTitleCommandPaletteItem: CommandPaletteItem {
   init() {
     super.init(
       id: .parentWithNoFunctionality, uniqueId: "searchByNote", title: "Search by title",
-      icon: "character.text.justify", subtitle: nil,
+      icon: "magnifyingglass.circle.fill", subtitle: nil,
       itemType: .children, noneFoundText: "No notes found.")
   }
 

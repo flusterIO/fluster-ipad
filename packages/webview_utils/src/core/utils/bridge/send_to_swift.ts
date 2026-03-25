@@ -1,3 +1,4 @@
+import { type NoteDetailEvents } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type AnyNewReduxAction, type AnyWebviewAction } from "../types/any_window_event";
 
 declare global {
@@ -12,7 +13,7 @@ export type SwiftBridgeMessageObject = Record<string, object | string | number>;
 
 
 export const sendToSwift = (
-    handler: AnyWebviewAction | AnyNewReduxAction,
+    handler: AnyWebviewAction | AnyNewReduxAction | NoteDetailEvents,
     msg: SwiftBridgeMessageObject | string = "",
 ) => {
     if (

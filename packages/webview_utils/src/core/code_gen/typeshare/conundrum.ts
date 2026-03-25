@@ -84,10 +84,15 @@ export interface MdxParsingResult {
 	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
 }
 
+export enum ConundrumModifier {
+	HideAiInput = "HideAiInput",
+	PreferMarkdownSyntax = "PreferMarkdownSyntax",
+}
+
 export interface ParseMdxOptions {
 	note_id?: string;
 	content: string;
-	citations: CitationSummaryData[];
+	modifiers: ConundrumModifier[];
 }
 
 export interface ParsedCitation {

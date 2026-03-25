@@ -1,5 +1,5 @@
-use crate::output::parsing_result::mdx_parsing_result::MdxParsingResult;
+use crate::lang::runtime::state::parse_state::ParseState;
 
 pub trait MdxComponentResult {
-    fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String;
+    fn to_mdx_component(&self, res: &mut ParseState) -> String;
 }

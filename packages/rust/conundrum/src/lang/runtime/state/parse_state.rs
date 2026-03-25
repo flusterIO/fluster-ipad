@@ -1,11 +1,25 @@
+use serde::{Deserialize, Serialize};
+use uniffi::Enum;
+
 use crate::{
     lang::runtime::state::citation_list::CitationList, output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
-#[derive(Debug, Default)]
+#[typeshare::typeshare]
+#[derive(Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy)]
+pub enum ConundrumModifier {
+    HideAiInput,
+    PreferMarkdownSyntax,
+    /// Useful for search related features, being able to match text without
+    /// markdown syntax interfering.
+    ForcePlainText,
+}
+
+#[derive(Debug, Default, Clone)]
 pub struct ParseState {
     pub data: MdxParsingResult,
     pub bib: CitationList,
+    pub modifiers: Vec<ConundrumModifier>,
 }
 
 impl ParseState {
@@ -27,5 +41,9 @@ impl ParseState {
         s.data.dictionary_entries.iter().for_each(|dict| {
                                             self.data.dictionary_entries.push(dict.clone());
                                         })
+    }
+
+    pub fn contains_modifier(&self, modifier: &ConundrumModifier) -> bool {
+        self.modifiers.iter().any(|x| x == modifier)
     }
 }

@@ -4,7 +4,10 @@ use typeshare::typeshare;
 use winnow::{ModalResult, Parser, combinator::delimited, token::take_while};
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    },
     output::output_components::output_utils::javascript_null_prop,
     parsers::parser_trait::ConundrumParser,
 };
@@ -17,7 +20,7 @@ pub struct MarkdownLinkResult {
 }
 
 impl MdxComponentResult for MarkdownLinkResult {
-    fn to_mdx_component(&self, _: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         format!("<{} data={{{}}} />",
                 AutoInsertedComponentName::AutoInsertedMarkdownLink,
                 serde_json::to_string(self).unwrap_or(javascript_null_prop()))

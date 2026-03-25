@@ -2,8 +2,10 @@ use serde::Serialize;
 use winnow::{ModalResult, Parser, ascii::till_line_ending, combinator::preceded, stream::Stream, token::literal};
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -15,7 +17,7 @@ pub struct FlusterCommentResult {
 impl MdxComponentResult for FlusterCommentResult {
     // No need to handle this implementation of the to_mdx_component method for the
     // ignore_all_parsers component since children will ignore it.
-    fn to_mdx_component(&self, _: &mut MdxParsingResult) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         String::from("")
     }
 }

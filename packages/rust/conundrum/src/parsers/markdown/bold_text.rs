@@ -1,16 +1,18 @@
-use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
-    ascii::{escaped, escaped_transform, take_escaped},
-    combinator::{alt, delimited, repeat},
-    stream::Stream,
+    combinator::alt,
     token::{literal, take_while},
 };
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
-    output::output_components::output_utils::javascript_null_prop,
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{
+            conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
+        },
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -19,8 +21,14 @@ pub struct MarkdownBoldTextResult {
     pub content: String,
 }
 
+impl PlainTextComponentResult for MarkdownBoldTextResult {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        self.content.clone()
+    }
+}
+
 impl MdxComponentResult for MarkdownBoldTextResult {
-    fn to_mdx_component(&self, _: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         format!("<span className=\"font-bold\">{}</span>", self.content)
     }
 }

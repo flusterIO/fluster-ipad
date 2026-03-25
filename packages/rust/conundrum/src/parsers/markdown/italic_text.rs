@@ -6,7 +6,13 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{
+            conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
+        },
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -15,8 +21,14 @@ pub struct MarkdownItalicTextResult {
     pub content: String,
 }
 
+impl PlainTextComponentResult for MarkdownItalicTextResult {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        self.content.clone()
+    }
+}
+
 impl MdxComponentResult for MarkdownItalicTextResult {
-    fn to_mdx_component(&self, _: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         format!("<span className=\"italic\">{}</span>", self.content)
     }
 }

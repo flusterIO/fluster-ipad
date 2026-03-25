@@ -18,8 +18,10 @@ use winnow::{
 
 use crate::{
     embedded::{embedded_component_docs::EmbeddedComponentDocs, embedded_in_content_docs::EmbeddedInContentDocs},
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -33,8 +35,8 @@ pub struct ParsedInspectionRequest {
 }
 
 impl MdxComponentResult for ParsedInspectionRequest {
-    fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
-        res.ignore_all_parsers = true;
+    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+        res.data.ignore_all_parsers = true;
         if let Some(depth) = match self.level {
             1 => Some(InContentDocumentationFormat::Short),
             2 => Some(InContentDocumentationFormat::Full),

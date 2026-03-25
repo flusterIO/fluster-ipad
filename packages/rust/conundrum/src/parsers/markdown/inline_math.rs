@@ -3,7 +3,10 @@ use typeshare::typeshare;
 use winnow::{ModalResult, Parser, combinator::delimited, token::take_till};
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -14,7 +17,7 @@ pub struct InlineMathResult {
 }
 
 impl MdxComponentResult for InlineMathResult {
-    fn to_mdx_component(&self, _: &mut crate::output::parsing_result::mdx_parsing_result::MdxParsingResult) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         format!("${}$", self.body)
     }
 }

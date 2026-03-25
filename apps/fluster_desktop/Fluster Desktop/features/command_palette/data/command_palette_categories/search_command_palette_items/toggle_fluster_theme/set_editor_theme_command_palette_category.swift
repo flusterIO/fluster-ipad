@@ -22,7 +22,7 @@ class SetEditorThemeLightCommandPaletteItem: CommandPaletteItem {
         }
         
         return themes.map{ theme in
-            CommandPaletteItem(id: .setEditorThemeLight(theme), uniqueId: "theme-light-\(theme.rawValue)", title: theme.toThemeLabel(), icon: "sun.max", subtitle: nil, itemType: .commandPaletteAction, noneFoundText: "No themes found.")
+            CommandPaletteItem(id: .setEditorThemeLight(theme), uniqueId: "theme-light-\(theme.rawValue)", title: theme.toThemeLabel(), icon: "sun.max.fill", subtitle: nil, itemType: .commandPaletteAction, noneFoundText: "No themes found.")
         }
     }
 }
@@ -32,7 +32,7 @@ class SetEditorThemeDarkCommandPaletteItem: CommandPaletteItem {
     init() {
       super.init(
         id: .parentWithNoFunctionality, uniqueId: "set-fluster-theme-dark", title: "Dark Mode",
-        icon: "moon", subtitle: nil,
+        icon: "moon.fill", subtitle: nil,
         itemType: .children, noneFoundText: "No themes found.")
     }
     public override func children(modelContext: ModelContext, appState: AppState) -> [CommandPaletteItem] {
@@ -41,7 +41,7 @@ class SetEditorThemeDarkCommandPaletteItem: CommandPaletteItem {
         }
         
         return themes.map{ theme in
-            CommandPaletteItem(id: .setEditorThemeDark(theme), uniqueId: "theme-light-\(theme.rawValue)", title: theme.toThemeLabel(), icon: "sun.max", subtitle: nil, itemType: .commandPaletteAction, noneFoundText: "No themes found.")
+            CommandPaletteItem(id: .setEditorThemeDark(theme), uniqueId: "theme-dark-\(theme.rawValue)", title: theme.toThemeLabel(), icon: "moon.fill", subtitle: nil, itemType: .commandPaletteAction, noneFoundText: "No themes found.")
         }
     }
 }
@@ -51,7 +51,7 @@ class SetEditorThemeCommandPaletteItem: CommandPaletteItem {
   init() {
     super.init(
       id: .parentWithNoFunctionality, uniqueId: "set-fluster-theme-dark", title: "Set Editor Theme",
-      icon: "paintpalette", subtitle: nil,
+      icon: "paintpalette.fill", subtitle: nil,
       itemType: .children, noneFoundText: "No themes found.")
   }
 

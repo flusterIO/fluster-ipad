@@ -7,9 +7,12 @@ use crate::{
     lang::runtime::{
         compile_conundrum::compile_elements,
         parse_conundrum_string::parse_conundrum_string,
-        state::{citation_list::CitationList, parse_state::ParseState},
+        state::{
+            citation_list::CitationList,
+            parse_state::{ConundrumModifier, ParseState},
+        },
     },
-    output::parsing_result::{citation_result::CitationSummaryData, mdx_parsing_result::MdxParsingResult},
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 use winnow::Stateful;
 
@@ -18,14 +21,14 @@ use winnow::Stateful;
 pub struct ParseMdxOptions {
     pub note_id: Option<String>,
     pub content: String,
-    pub citations: Vec<CitationSummaryData>,
+    pub modifiers: Vec<ConundrumModifier>,
 }
 
 impl ParseMdxOptions {
-    pub fn new(note_id: Option<String>, citations: Vec<CitationSummaryData>, content: String) -> Self {
+    pub fn new(note_id: Option<String>, content: String, modifiers: Vec<ConundrumModifier>) -> Self {
         ParseMdxOptions { note_id,
                           content,
-                          citations }
+                          modifiers }
     }
 }
 
@@ -33,7 +36,8 @@ pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
     let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     result.note_id = opts.note_id.clone();
     let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
-                                          bib: CitationList::default() });
+                                          bib: CitationList::default(),
+                                          modifiers: opts.modifiers.clone() });
     let mut stateful_input = Stateful { input: opts.content.as_str(),
                                         state };
 

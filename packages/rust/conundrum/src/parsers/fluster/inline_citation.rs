@@ -8,8 +8,10 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -22,12 +24,13 @@ pub struct ParsedCitation {
 }
 
 impl MdxComponentResult for ParsedCitation {
-    fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
-        if res.ignore_all_parsers {
+    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+        if res.data.ignore_all_parsers {
             return self.full_match.clone();
         }
 
-        if res.front_matter
+        if res.data
+              .front_matter
               .as_ref()
               .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::Citations.to_string()))
         {

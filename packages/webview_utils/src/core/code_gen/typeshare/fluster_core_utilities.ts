@@ -254,6 +254,11 @@ export interface EditorState {
 	bib_editor: BibtexEditorState;
 }
 
+export enum UserSetLLM {
+	/** The default model varies by use case. */
+	Default = "Default",
+}
+
 export interface GeneralAiRequestPhase2Event {
 	/** The content of the request as a natural language string. */
 	user_request: string;
@@ -262,6 +267,15 @@ export interface GeneralAiRequestPhase2Event {
 	 * required to replace the content once the AI request succeeds.
 	 */
 	full_match: string;
+	/**
+	 * Optionally let the user provide a model that is an enum of supported
+	 * models.
+	 */
+	model: UserSetLLM;
+}
+
+export interface GenerateNoteSummaryRequest {
+	note_id: string;
 }
 
 export enum SizableOption {
@@ -309,10 +323,23 @@ export interface MediaState {
 	image_data: Record<string, ImageData>;
 }
 
+export enum SummaryGenerationMethod {
+	AI = "ai",
+	AIManualTrigger = "ai-manual",
+	FrontMatter = "frontmatter",
+}
+
+export interface SummaryState {
+	content: string;
+	/** The javascript/unix timestamp in milliseconds. */
+	ctime: number;
+	generation_method: SummaryGenerationMethod;
+}
+
 export interface NoteDetailState {
 	note_id: string;
 	title: string;
-	summary?: string;
+	summary?: SummaryState;
 	topic?: string;
 	subject?: string;
 	tags: EditorTag[];
@@ -537,11 +564,17 @@ export interface SetNoteDeletedAction {
 export enum NoteDetailActions {
 	SetNoteDetails = "set-note-details",
 	InvalidateNoteDetails = "invalidate-note-details",
+	SetNoteSummary = "set-note-summary",
 }
 
 export interface SetNoteDetailsAction {
 	type: NoteDetailActions;
 	payload?: NoteDetailState;
+}
+
+export interface SetNoteSummaryAction {
+	type: NoteDetailActions;
+	payload: SummaryState;
 }
 
 export interface SetParsedMdxContentEditorAction {
@@ -740,6 +773,11 @@ export enum MdxPreviewWebviewActions {
 export enum MdxPreviewWebviewEvents {
 	SetInitialColorScheme = "set-initial-color-scheme",
 	SetPreviewContent = "set-mdx-preview-content",
+}
+
+export enum NoteDetailEvents {
+	/** Ask the AI to generate a summary of the currently focused note. */
+	SendGenerateSummaryRequest = "send-gen-summary-req",
 }
 
 /** From typescript to swift. */

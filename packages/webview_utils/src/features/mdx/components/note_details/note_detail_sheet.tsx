@@ -16,7 +16,6 @@ declare global {
 import { connect } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
 import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types';
-import { H1 } from '../../../../core/shared_components/typography/typography';
 import { InlineMdxContent } from '../inline_mdx_content';
 const connector = connect((state: GlobalAppState) => ({
     data: state.note_details
@@ -61,7 +60,11 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
                     {data.summary ? (
                         <div className="flex flex-row justify-start items-center gap-x-6">
                             <Subtitle>Summary</Subtitle>
-                            <div className="text-lg text-foreground/80">{data.summary}</div>
+                            <div className="text-lg text-foreground/80">
+                                <InlineMdxContent
+                                    mdx={data.summary.content}
+                                />
+                            </div>
                         </div>
                     ) : null}
                     {data.topic ? (

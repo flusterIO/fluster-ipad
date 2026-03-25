@@ -191,7 +191,7 @@ public enum CodeEditorKeymap: String, Codable, CaseIterable {
 	case emacs
 }
 
-public enum CodeEditorTheme: String, Codable, CaseIterable, Copyable {
+public enum CodeEditorTheme: String, Codable, CaseIterable {
 	case materialLight
 	case solarizedLight
 	case solarizedDark
@@ -379,16 +379,33 @@ public struct EditorState: Codable {
 	}
 }
 
+public enum UserSetLLM: String, Codable {
+	/// The default model varies by use case.
+	case `default` = "Default"
+}
+
 public struct GeneralAiRequestPhase2Event: Codable {
 	/// The content of the request as a natural language string.
 	public let user_request: String
 	/// The full_match of the component that was passed into phase1. This is
 	/// required to replace the content once the AI request succeeds.
 	public let full_match: String
+	/// Optionally let the user provide a model that is an enum of supported
+	/// models.
+	public let model: UserSetLLM
 
-	public init(user_request: String, full_match: String) {
+	public init(user_request: String, full_match: String, model: UserSetLLM) {
 		self.user_request = user_request
 		self.full_match = full_match
+		self.model = model
+	}
+}
+
+public struct GenerateNoteSummaryRequest: Codable {
+	public let note_id: String
+
+	public init(note_id: String) {
+		self.note_id = note_id
 	}
 }
 
@@ -461,10 +478,29 @@ public struct MediaState: Codable {
 	}
 }
 
+public enum SummaryGenerationMethod: String, Codable {
+	case ai
+	case aIManualTrigger = "ai-manual"
+	case frontMatter = "frontmatter"
+}
+
+public struct SummaryState: Codable {
+	public let content: String
+	/// The javascript/unix timestamp in milliseconds.
+	public let ctime: UInt32
+	public let generation_method: SummaryGenerationMethod
+
+	public init(content: String, ctime: UInt32, generation_method: SummaryGenerationMethod) {
+		self.content = content
+		self.ctime = ctime
+		self.generation_method = generation_method
+	}
+}
+
 public struct NoteDetailState: Codable {
 	public let note_id: String
 	public let title: String
-	public let summary: String?
+	public let summary: SummaryState?
 	public let topic: String?
 	public let subject: String?
 	public let tags: [EditorTag]
@@ -472,7 +508,7 @@ public struct NoteDetailState: Codable {
 	public let last_modified_string: String
 	public let last_read_string: String
 
-	public init(note_id: String, title: String, summary: String?, topic: String?, subject: String?, tags: [EditorTag], citations: [EditorCitation], last_modified_string: String, last_read_string: String) {
+	public init(note_id: String, title: String, summary: SummaryState?, topic: String?, subject: String?, tags: [EditorTag], citations: [EditorCitation], last_modified_string: String, last_read_string: String) {
 		self.note_id = note_id
 		self.title = title
 		self.summary = summary
@@ -885,6 +921,7 @@ public struct SetNoteDeletedAction: Codable {
 public enum NoteDetailActions: String, Codable {
 	case setNoteDetails = "set-note-details"
 	case invalidateNoteDetails = "invalidate-note-details"
+	case setNoteSummary = "set-note-summary"
 }
 
 public struct SetNoteDetailsAction: Codable {
@@ -892,6 +929,16 @@ public struct SetNoteDetailsAction: Codable {
 	public let payload: NoteDetailState?
 
 	public init(type: NoteDetailActions, payload: NoteDetailState?) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public struct SetNoteSummaryAction: Codable {
+	public let type: NoteDetailActions
+	public let payload: SummaryState
+
+	public init(type: NoteDetailActions, payload: SummaryState) {
 		self.type = type
 		self.payload = payload
 	}
@@ -1121,6 +1168,11 @@ public enum MdxPreviewWebviewActions: String, Codable {
 public enum MdxPreviewWebviewEvents: String, Codable {
 	case setInitialColorScheme = "set-initial-color-scheme"
 	case setPreviewContent = "set-mdx-preview-content"
+}
+
+public enum NoteDetailEvents: String, Codable {
+	/// Ask the AI to generate a summary of the currently focused note.
+	case sendGenerateSummaryRequest = "send-gen-summary-req"
 }
 
 /// From typescript to swift.

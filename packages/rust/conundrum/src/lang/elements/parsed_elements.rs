@@ -1,9 +1,7 @@
 use serde::Serialize;
-use typeshare::typeshare;
 
 use crate::{
-    lang::runtime::traits::mdx_component_result::MdxComponentResult,
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    lang::runtime::{state::parse_state::ParseState, traits::mdx_component_result::MdxComponentResult},
     parsers::{
         fluster::{
             docs::ParsedInspectionRequest, fluster_comment::FlusterCommentResult,
@@ -21,7 +19,7 @@ use crate::{
 };
 
 impl MdxComponentResult for String {
-    fn to_mdx_component(&self, _: &mut MdxParsingResult) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         self.clone()
     }
 }
@@ -54,7 +52,7 @@ pub enum ParsedElement {
 }
 
 impl MdxComponentResult for ParsedElement {
-    fn to_mdx_component(&self, res: &mut MdxParsingResult) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> String {
         match self {
             ParsedElement::ParsedInspectionRequest(req) => req.to_mdx_component(res),
             ParsedElement::ParsedCodeBlock(block) => block.to_mdx_component(res),

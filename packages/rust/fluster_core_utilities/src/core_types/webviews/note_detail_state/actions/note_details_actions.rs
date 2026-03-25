@@ -10,4 +10,7 @@ pub enum NoteDetailActions {
     #[serde(rename = "invalidate-note-details")]
     #[strum(to_string = "invalidate-note-details")]
     InvalidateNoteDetails,
+    #[serde(rename = "set-note-summary")]
+    #[strum(to_string = "set-note-summary")]
+    SetNoteSummary,
 }

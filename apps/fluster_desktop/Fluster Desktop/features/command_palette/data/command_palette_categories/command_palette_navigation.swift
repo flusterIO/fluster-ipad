@@ -12,7 +12,7 @@ import FlusterData
 class CommandPaletteNavigationRoot: CommandPaletteItem {
   init() {
     super.init(
-      id: .parentWithNoFunctionality, uniqueId: "navigation", title: "Navigation", icon: "house.circle", subtitle: nil,
+      id: .parentWithNoFunctionality, uniqueId: "navigation", title: "Navigation", icon: "house.circle.fill", subtitle: nil,
       itemType: .children)
   }
 
