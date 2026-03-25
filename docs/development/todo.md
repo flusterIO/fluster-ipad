@@ -107,6 +107,7 @@
   - [ ] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
   - [ ] Initial State function
   - [ ] `WebviewContainer.mathjaxUrl` field added and passed around properly.
+- [ ] Add `output_format` property to `ConundrumInput.state` to conditionally render each item as either plain text, inline markdown, markdown or mdx. Use this to store a stringified, more searchable title alongside the note's content if the stringified title does not match the normal title exactly. This will get around the searchability issue with markdown based titles.
 - [ ] Apply the note's front matter summary to the new summary class if one exists in the user's front matter.
 - [x] Handle Global search page on Mac. This will be a crucial page moving forward, but for now a simple search field with a toggle that swaps the search type will do.
 - [x] Fix issue with note being set as modified just by viewing it in Mac app.

@@ -36,7 +36,7 @@ struct EditingNoteBibliographyPageView: View {
       if editingNoteId == nil {
           NoNoteSelectedView()
       } else {
-        BibliographyEntryListView(entries: entries)
+        BibliographyEntryListView(entries: entries, abstractLineLimit: 999)
       }
     }.toolbar(content: {
         ToolbarItem(

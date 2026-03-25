@@ -10,6 +10,7 @@ import SwiftUI
 
 struct BibliographyEntryListView: View {
   let entries: [BibEntryModel]
+    let abstractLineLimit: Int
   @State private var searchQuery: String = ""
   var filteredEntries: [BibEntryModel] {
     do {
@@ -33,7 +34,7 @@ struct BibliographyEntryListView: View {
       ScrollView {
         LazyVStack(alignment: .center, spacing: 16, pinnedViews: .sectionHeaders) {
           ForEach(filteredEntries, id: \.id) { entry in
-            BibliographyEntrySearchResultListItemView(item: entry)
+              BibliographyEntrySearchResultListItemView(item: entry, abstractLineLimit: abstractLineLimit)
               .listStyle(.plain)
               .listRowSeparator(.hidden)
           }
@@ -48,5 +49,5 @@ struct BibliographyEntryListView: View {
 }
 
 #Preview {
-  BibliographyEntryListView(entries: [])
+  BibliographyEntryListView(entries: [], abstractLineLimit: 10)
 }

@@ -12,7 +12,7 @@ import SwiftUI
 struct GlobalBibliographyPageView: View {
   @Query(sort: \BibEntryModel.title, order: .forward) var entries: [BibEntryModel]
   var body: some View {
-    BibliographyEntryListView(entries: entries)
+    BibliographyEntryListView(entries: entries, abstractLineLimit: 20)
       .toolbar {
         ToolbarItem {
           Button(

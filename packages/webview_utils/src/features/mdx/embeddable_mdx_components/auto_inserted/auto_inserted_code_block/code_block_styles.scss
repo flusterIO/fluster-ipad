@@ -9,6 +9,8 @@ figure[data-rehype-pretty-code-figure] {
 
   background-color: var(--color-fd-card);
   position: relative;
+  display: inline-block;
+  width: 100%;
   color: var(--color-fd-card-foreground);
   @apply rounded border;
 

@@ -82,7 +82,7 @@ struct AssociateNoteWithBibEntryItemView: View {
         } else if let abstract = formatted?.abstract {
           Text(abstract)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .lineLimit(10)
+            .lineLimit(5)
             .font(.footnote)
             .opacity(0.8)
         }

@@ -23,7 +23,7 @@ extension FrontMatterResult: @retroactive Codable {
     let topic = try container.decodeIfPresent(String.self, forKey: .topic)
     let subject = try container.decodeIfPresent(String.self, forKey: .subject)
     let filePath = try container.decodeIfPresent(String.self, forKey: .file_path)
-    let summary = try container.decodeIfPresent(NoteSummary.self, forKey: .summary)
+    let summary = try container.decodeIfPresent(String.self, forKey: .summary)
     let userDefinedId = try container.decodeIfPresent(
       String.self,
       forKey: .user_defined_id
@@ -36,6 +36,7 @@ extension FrontMatterResult: @retroactive Codable {
       filePath: filePath,
       topic: topic,
       subject: subject,
+      summary: summary
     )
   }
 
@@ -44,5 +45,6 @@ extension FrontMatterResult: @retroactive Codable {
     try container.encode(ignoredParsers, forKey: .ignored_parsers)
     try container.encode(title, forKey: .title)
     try container.encode(userDefinedId, forKey: .user_defined_id)
+      try container.encode(summary, forKey: .summary)
   }
 }

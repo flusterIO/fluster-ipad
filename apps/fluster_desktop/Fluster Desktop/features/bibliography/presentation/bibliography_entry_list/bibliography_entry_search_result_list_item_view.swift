@@ -11,11 +11,12 @@ import SwiftUI
 
 struct BibliographyEntrySearchResultListItemView: View {
   let item: BibEntryModel
+  let abstractLineLimit: Int
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
 
   var citationData: FormattedCitation? {
-      item.safelyGetFormatted(activeCslFormat: cslFile)
+    item.safelyGetFormatted(activeCslFormat: cslFile)
   }
 
   var body: some View {
@@ -28,14 +29,14 @@ struct BibliographyEntrySearchResultListItemView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         if let note = data.note {
           Text(note).font(.footnote)
-            .lineLimit(3)
+            .lineLimit(abstractLineLimit)
             .opacity(0.8)
             .padding(.horizontal)
             .padding(.bottom)
             .frame(maxWidth: .infinity, alignment: .leading)
         } else if let abstract = data.abstract {
           Text(abstract)
-            .lineLimit(3)
+            .lineLimit(abstractLineLimit)
             .font(.footnote)
             .opacity(0.8)
             .padding(.horizontal)

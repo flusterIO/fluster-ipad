@@ -52,7 +52,7 @@ struct EditorSettingSectionView: View {
           .labelsHidden()
           .pickerStyle(.segmented)
           Text(
-            "Use ⌘+S to save manually. Automatic save may become too jittery when notes contain nested math or other content that requires a second pass. Note that the content is still saved on change when method is set to 'save', but the content is not rendered until ⌘+S is pressed."
+           "Use ⌘+S to save manually. Automatic save may become too jittery when notes contain nested math or other content that requires a second pass. Note that the content is still saved on change when method is set to 'save', but the content is not rendered until ⌘+S is pressed."
           )
           .foregroundStyle(.secondary)
           .font(.caption)

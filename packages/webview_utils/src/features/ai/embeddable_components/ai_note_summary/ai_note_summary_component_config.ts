@@ -36,12 +36,12 @@ export const ulComponentConfig: EmbeddableComponentConfig = {
         return []
     },
     /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
-    generateTestContent: async (faker, utils) => {
+    generateTestContent: async () => {
         return `<AINoteSummary />`
     },
 
     testProps: {
-        quantityScalar: 2
+        quantityScalar: 0.1
     },
     isInline: true
 }
