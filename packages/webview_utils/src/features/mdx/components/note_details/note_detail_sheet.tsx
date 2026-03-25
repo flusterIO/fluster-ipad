@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
 import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types';
 import { H1 } from '../../../../core/shared_components/typography/typography';
+import { InlineMdxContent } from '../inline_mdx_content';
 const connector = connect((state: GlobalAppState) => ({
     data: state.note_details
 }))
@@ -51,7 +52,10 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
             <div className="w-full h-full flex flex-col justify-start items-center px-8 py-12">
                 <div className="w-full h-screen loading-hide max-w-[768px]">
                     <Subtitle>Title</Subtitle>
-                    <H1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-3">{data.title}</H1>
+                    <InlineMdxContent
+                        mdx={`# ${data.title}`}
+                        className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-3 not-prose"
+                    />
                     <div className="text-muted-foreground text-light">{`Last modified ${data.last_modified_string}`}</div>
                     <div className="w-full h-[2px] bg-muted-foreground/60 mb-6 mt-3" />
                     {data.summary ? (

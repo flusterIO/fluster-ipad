@@ -1,6 +1,6 @@
+import ConundrumSwift
 // import FlusterSwiftMdxParser
 import Foundation
-import ConundrumSwift
 
 extension FrontMatterResult: @retroactive Codable {
   public enum CodingKeys: String, CodingKey {
@@ -45,6 +45,6 @@ extension FrontMatterResult: @retroactive Codable {
     try container.encode(ignoredParsers, forKey: .ignored_parsers)
     try container.encode(title, forKey: .title)
     try container.encode(userDefinedId, forKey: .user_defined_id)
-      try container.encode(summary, forKey: .summary)
+    try container.encode(summary, forKey: .summary)
   }
 }

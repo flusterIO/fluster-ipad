@@ -5,9 +5,9 @@
 //  Created by Andrew on 1/16/26.
 //
 
+import FlusterData
 import SwiftUI
 import UniformTypeIdentifiers
-import FlusterData
 
 struct NotesDirSettingSection: View {
   @AppStorage(AppStorageKeys.notesDirectory.rawValue) private var notesDirectory: String = ""
@@ -18,11 +18,10 @@ struct NotesDirSettingSection: View {
   @State private var showNotesDirPicker: Bool = false
 
   var body: some View {
-    SettingsSection(title: "Notes") {
+    SettingsSection(title: "Notes", subtitle: "The file system re-integration is still a work in progress after Fluster was migrated from a primarily file-system based storage layer to a database driven system. While the database will remain the single source of truth, a thorough and complete integration with the user's file system will be available soon.") {
       VStack(alignment: .leading) {
         Text("Notes Directory")
-          .font(.subheadline)
-          .foregroundStyle(.secondary)
+          .font(.headline)
         VStack(alignment: .leading, spacing: 16) {
           VStack(alignment: .leading) {
             HStack {
@@ -67,6 +66,8 @@ struct NotesDirSettingSection: View {
             }
           }
           VStack(alignment: .leading) {
+            Text("Default View")
+              .font(.headline)
             Picker(
               selection: $defaultNoteView,
               content: {
@@ -76,7 +77,9 @@ struct NotesDirSettingSection: View {
               },
               label: {
                 Text("Default View")
-              })
+              }
+            )
+            .labelsHidden()
             Text("The view that will be shown when a not is initially selected.").font(.caption)
               .foregroundStyle(.secondary)
           }

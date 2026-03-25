@@ -9,7 +9,7 @@ export const InContentUnderlineDocumentationDemo = (): ReactNode => {
                 const props = {
                     [opt]: true
                 }
-                return <div>This is <Ul {...props}>{opt}</Ul> and <Ul {...props} thick>thick</Ul> underlined.</div>
+                return <div>This is <Ul {...props}>{opt}</Ul>, <Ul {...props} thick>thick</Ul> and <Ul {...props} thin>thin</Ul> underlined.</div>
             })}
         </div>
     )

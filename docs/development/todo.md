@@ -108,6 +108,7 @@
   - [ ] Initial State function
   - [ ] `WebviewContainer.mathjaxUrl` field added and passed around properly.
 - [ ] Add `output_format` property to `ConundrumInput.state` to conditionally render each item as either plain text, inline markdown, markdown or mdx. Use this to store a stringified, more searchable title alongside the note's content if the stringified title does not match the normal title exactly. This will get around the searchability issue with markdown based titles.
+- [ ] Fix issue with Mac `NoteDetailSheet` requiring a refresh for some reason to load the note's data. 
 - [ ] Apply the note's front matter summary to the new summary class if one exists in the user's front matter.
 - [x] Handle Global search page on Mac. This will be a crucial page moving forward, but for now a simple search field with a toggle that swaps the search type will do.
 - [x] Fix issue with note being set as modified just by viewing it in Mac app.

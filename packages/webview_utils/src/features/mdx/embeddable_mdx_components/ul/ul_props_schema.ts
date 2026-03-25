@@ -2,14 +2,14 @@ import { z } from "zod";
 import { emphasisSchema, getFirstEmphasisKey } from "../schemas/emphasis_schema";
 
 export const ulPropsSchema = emphasisSchema.extend({
-    thick: z.boolean({ message: "The 'thick' and 'thicker' fields are optional booleans." }).optional(),
-    thicker: z.boolean({ message: "The 'thick' and 'thicker' fields are optional booleans." }).optional()
+    thick: z.boolean({ message: "The 'thick' and 'thin' fields are optional booleans." }).optional(),
+    thin: z.boolean({ message: "The 'thick' and 'thin' fields are optional booleans." }).optional()
 }).transform((c) => {
     const firstKey = getFirstEmphasisKey(c)
     if (!firstKey) {
         return [""]
     }
-    const thicknessClass = c.thick ? "decoration-2" : c.thicker ? "decoration-4" : "decoration-1"
+    const thicknessClass = c.thick ? "decoration-4" : c.thin ? "decoration-1" : "decoration-2"
     switch (firstKey) {
         case "info":
             return ["decoration-emphasis-info", thicknessClass]

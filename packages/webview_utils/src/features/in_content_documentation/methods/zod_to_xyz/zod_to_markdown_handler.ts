@@ -54,7 +54,7 @@ export class ZodToMarkdownHandler {
 
 
     /* eslint-disable-next-line  -- Need to use any here. */
-    logZodUnion(itemType: z.ZodUnion<any>, optional: boolean | null = null) {
+    logZodUnion(itemType: z.ZodUnion<any>, optional: boolean | null = null, defaultValue: any | null = null) {
         this.body += `\n**Union${optional === true ? " (optional)" : ""}: One of the following types**\n`
         /* eslint-disable-next-line  -- Need to use any here. */
         itemType.options.forEach((opt: any, i: number, a: any[]) => {
@@ -63,6 +63,10 @@ export class ZodToMarkdownHandler {
                 this.body += this.logSeperator()
             }
         })
+
+        if (typeof defaultValue !== "undefined") {
+            this.body += `\n**Default:**: ${defaultValue}`
+        }
     }
 
     logDescription(desc: string) {
@@ -124,6 +128,10 @@ export class ZodToMarkdownHandler {
         }
     }
 
+    logLiteral(item: string | number, optional: boolean | null = null) {
+        this.body += `\n**Literal${optional === true ? " (optional)" : ""}: **, ${item}`
+    }
+
     logSeperator(seperatorContent = "Or") {
         this.body += `\n<Hr>${seperatorContent}</Hr>\n`
     }
@@ -137,6 +145,10 @@ export class ZodToMarkdownHandler {
         }
         if (itemType instanceof z.ZodString) {
             this.logString(itemType._def, optional, defaultValue); return;
+        }
+
+        if (itemType instanceof z.ZodUnion) {
+            this.logZodUnion(itemType, optional, defaultValue); return;
         }
         if (defaultValue) {
             console.log("itemType: ", itemType)
@@ -155,14 +167,14 @@ export class ZodToMarkdownHandler {
         if (itemType?.typeName === "ZodEnum") {
             this.logZodEnum(itemType.values, optional); return;
         }
-        if (itemType instanceof z.ZodUnion) {
-            this.logZodUnion(itemType, optional); return;
-        }
         if (itemType instanceof z.ZodOptional) {
             this.anyZodToMarkdown(itemType._def.innerType, true); return;
         }
         if (itemType instanceof z.ZodNumber) {
             this.logNumber(itemType._def); return;
+        }
+        if (itemType instanceof z.ZodLiteral) {
+            this.logLiteral(itemType._def.value, optional); return;
         }
         if (itemType instanceof z.ZodAny) {
             // Don't log anythng for 'any' yet, always try to guide the user.
