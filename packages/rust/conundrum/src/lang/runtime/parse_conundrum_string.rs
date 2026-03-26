@@ -33,14 +33,10 @@ use crate::{
 /// inside other winnow parsers (e.g. `BlockQuoteResult::parse_input_string`)
 /// without a type-mismatch.
 pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<ParsedElement>> {
-    // Documents and recursively-parsed inner blocks always begin at a line
-    // boundary.
-    let mut at_line_start = true;
-
     repeat(0.., |input_inner: &mut ConundrumInput<'a>| -> ModalResult<ParsedElement> {
         let result =
             dispatch! {peek(take(1usize));
-                "\n" => |x: &mut ConundrumInput<'a>| {
+                "\n" | "" => |x: &mut ConundrumInput<'a>| {
                     // WARN: This might break if it's the first character on the first line?
                         alt((
                             MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
@@ -52,12 +48,12 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                 },
-                "#" => |x: &mut ConundrumInput<'a>| {
-                        alt((
-                            MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
-                        )).parse_next(x)
-                },
+                // "#" => |x: &mut ConundrumInput<'a>| {
+                //         alt((
+                //             MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
+                //             any.map(|c: char| ParsedElement::Text(c.to_string()))
+                //         )).parse_next(x)
+                // },
                 ">" => |x: &mut ConundrumInput<'a>| {
                         alt((
                             BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
@@ -116,13 +112,10 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
 /// winnow error into a `FlusterError` for the rest of the app.
 pub fn parse_conundrum_string<'a>(input: &mut ConundrumInput<'a>) -> FlusterResult<(Vec<ParsedElement>, ParseState)> {
     let elements = parse_elements(input).map_err(|e| {
-                                            println!("Parsing Error: {:#?}", e);
-                                            FlusterError::ConundrumParsingError
-                                        })
-                                        .map_err(|e| {
                                             println!("Conundrum Error: {:#?}", e);
                                             FlusterError::ConundrumParsingError
                                         })?;
-    let applied_result = apply_parsed_conundrum_input_state(&input);
+    println!("Input?: {:#?}", input);
+    let applied_result = apply_parsed_conundrum_input_state(input);
     Ok((elements, applied_result))
 }

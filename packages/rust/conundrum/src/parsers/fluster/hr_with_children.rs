@@ -41,7 +41,6 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<HrWithChildrenResult> {
         let start = input.input.checkpoint();
         let _ = literal("\n").parse_next(input).map_err(|e| {
-                                                    println!("Error: {:#?}", e);
                                                     input.input.reset(&start);
                                                     e
                                                 })?; // Consume the leading new line character
@@ -49,7 +48,6 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
                             take_until(1.., " ---").verify(|s: &str| !s.contains("\n")),
                             literal(" ---")).parse_next(input)
                                             .map_err(|e| {
-                                                println!("Error: {:#?}", e);
                                                 input.input.reset(&start);
                                                 e
                                             })?;

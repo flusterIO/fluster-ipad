@@ -47,7 +47,9 @@ impl MdxComponentResult for ParsedCodeBlock {
                 }
 
                 // Extract the metadata or provide a fallback
-                get_dictionary_content(self, &mut res.data)
+                let ress = get_dictionary_content(self, &mut res.data);
+                println!("Is changing here: {:#?}", res.data);
+                ress
             }
             "fluster-ai" => get_ai_parsing_request_phase_1_content(self, &mut res.data),
             _ => self.full_match.clone(),
@@ -60,10 +62,8 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
         let ((language, meta_opt, raw_content), full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let cp = input.input.checkpoint();
-                let ticks = take_while(1.., |c: char| c == '`').parse_next(input).map_err(|e| {
-                                                                                      println!("Error: {:#?}", e);
+                let ticks = take_while(1.., |c: char| c == '`').parse_next(input).inspect_err(|e| {
                                                                                       input.input.reset(&cp);
-                                                                                      e
                                                                                   })?;
                 let language =
                     take_while(1.., |c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r').parse_next(input)?;
@@ -74,21 +74,15 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                                    let _ = space0.parse_next(input)?;
                                    take_till(0.., ('\n', '\r')).parse_next(input)
                                }).parse_next(input)
-                                 .map_err(|e| {
-                                     println!("Error: {:#?}", e);
+                                 .inspect_err(|e| {
                                      input.input.reset(&cp);
-                                     e
                                  })?;
 
-                let _ = space0.parse_next(input).map_err(|e| {
-                                                     println!("Error: {:#?}", e);
+                let _ = space0.parse_next(input).inspect_err(|e| {
                                                      input.input.reset(&cp);
-                                                     e
                                                  })?;
-                let _ = line_ending(input).map_err(|e| {
-                                              println!("Error: {:#?}", e);
+                let _ = line_ending(input).inspect_err(|e| {
                                               input.input.reset(&cp);
-                                              e
                                           })?;
 
                 let raw_content = take_until(0.., ticks).parse_next(input).map_err(|e| {

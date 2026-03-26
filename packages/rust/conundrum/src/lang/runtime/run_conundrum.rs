@@ -33,8 +33,8 @@ impl ParseMdxOptions {
 }
 
 pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
-    let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
-    result.note_id = opts.note_id.clone();
+    // let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
+    // result.note_id = opts.note_id.clone();
     let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
                                           bib: CitationList::default(),
                                           modifiers: opts.modifiers.clone() });
@@ -44,11 +44,14 @@ pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
     let final_mdx = match parse_conundrum_string(&mut stateful_input) {
         Ok((elements, mut res)) => compile_elements(&elements, &mut res),
         Err(err) => {
-            println!("Parser Error: {:#?}", err);
+            println!("Conundrum Error: {:#?}", err);
             opts.content.clone()
         }
     };
 
-    result.content = final_mdx;
-    result
+    // result.content = final_mdx;
+    // result
+    let mut result = stateful_input.state.borrow_mut();
+    result.data.content = final_mdx;
+    result.data.clone()
 }

@@ -1,6 +1,6 @@
 import { type NoteDetailState, NoteDetailWebviewActions, type NoteDetailWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities';
 import { sendToSwift } from '@/utils/bridge/send_to_swift';
-import React, { useEffect, type ReactNode } from 'react'
+import React, { useEffect, useState, type ReactNode } from 'react'
 import { LoadingComponent } from '@/shared_components/loading_component';
 import { ErrorBoundary } from 'react-error-boundary';
 import { TaggableBadge } from '@/shared_components/shad/badge';
@@ -22,10 +22,12 @@ const connector = connect((state: GlobalAppState) => ({
 }))
 
 export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptionals<NoteDetailState> | null }): ReactNode => {
+    const [haveRequestedData, setHaveRequestedData] = useState(false)
     useEffect(() => {
-        if (!data) {
+        if (!data && !haveRequestedData) {
             sendToSwift(NoteDetailWebviewActions.RequestNoteDetailData)
-        } else {
+            setHaveRequestedData(true)
+        } else if (data) {
             sendToSwift(NoteDetailWebviewActions.SetWebviewLoaded);
             document.body.classList.remove("loading");
         }

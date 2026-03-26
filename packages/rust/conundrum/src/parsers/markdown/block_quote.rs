@@ -116,7 +116,6 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
             }).with_taken()
               .parse_next(input_outer)?;
 
-        println!("Parsed Content: {:#?}", parsed_content);
         Ok(BlockQuoteResult { children: parsed_content,
                               full_match: full_match.to_string() })
     }

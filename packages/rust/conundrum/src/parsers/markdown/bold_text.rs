@@ -90,8 +90,6 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped);
 
-        println!("Wrapped: {}", wrapped.input);
-
         assert!(res.is_err(), "Returns an error when parser fails.");
 
         assert!(wrapped.input == "*Some other text that will fail.",

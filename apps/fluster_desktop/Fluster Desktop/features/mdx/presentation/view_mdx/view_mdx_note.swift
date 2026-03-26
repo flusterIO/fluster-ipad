@@ -15,7 +15,7 @@ import WebKit
 struct MdxContentWebview: View {
   var editingNoteId: String?
   @State private var mdxWebview: WKWebView = WKWebView(
-    frame: .infinite, configuration: getWebViewConfig()
+    frame: .zero, configuration: getWebViewConfig()
   )
 
   @Environment(\.modelContext) private var modelContext
@@ -90,27 +90,13 @@ struct MdxContentWebview: View {
       .task {
         if let en = editingNote {
           do {
-            try await en.preParse(modelContext: modelContext)
+            try await en.preParseIfEdited(modelContext: modelContext)
           } catch {
             print("Error: \(error.localizedDescription)")
           }
         }
       }
-      .onChange(
-        of: editingNote?.id,
-        {
-          Task(priority: .high) {
-            await onWebviewLoad()
-          }
-        }
-      )
-      .onChange(
-        of: editingNote?.markdown.preParsedBody,
-        {
-          Task(priority: .high) {
-            await onWebviewLoad()
-          }
-        })
+      
     }
   }
 

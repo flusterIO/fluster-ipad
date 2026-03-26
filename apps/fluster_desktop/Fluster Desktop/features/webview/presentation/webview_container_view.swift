@@ -338,7 +338,7 @@ struct WebViewContainerView: View {
       Task {
         let llm = SystemLanguageModel()
         do {
-          try await en.preParse(modelContext: modelContext)
+          try await en.preParseIfEdited(modelContext: modelContext)
           try await EditorState.setInitialEditorState(
             editorPayload: EditorInitialStatePayload(
               note_id: en.id,

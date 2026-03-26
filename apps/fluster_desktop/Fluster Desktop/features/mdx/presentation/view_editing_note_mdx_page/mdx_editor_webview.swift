@@ -42,6 +42,7 @@ struct MdxEditorWebview: View {
   @AppStorage(AppStorageKeys.theme.rawValue) private var flusterTheme: FlusterTheme = .fluster
   @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets: Bool =
     true
+  @AppStorage(AppStorageKeys.storePlainText.rawValue) private var storePlainText: Bool = true
 
   init(editingNoteId: String?, webView: Binding<WKWebView>) {
     self.editingNoteId = editingNoteId
@@ -146,6 +147,15 @@ struct MdxEditorWebview: View {
             )
           })
       }
+      .task(id: editingNote?.markdown._body, priority: .background) {
+        if let en = editingNote, storePlainText {
+          do {
+            try await en.markdown.parsePlainText(noteId: en.id)
+          } catch {
+            print("Error: \(error.localizedDescription)")
+          }
+        }
+      }
       .task(
         id: editingNote?.markdown._body, priority: .userInitiated,
         {
@@ -154,7 +164,7 @@ struct MdxEditorWebview: View {
           // when the next change event is fired.
           if let en = editingNote {
             do {
-              try await en.preParse(modelContext: modelContext)
+              try await en.preParseIfEdited(modelContext: modelContext)
             } catch {
               print("Error: \(error.localizedDescription)")
             }
@@ -182,19 +192,18 @@ struct MdxEditorWebview: View {
           }
         }
       )
-      .task(
-        id: editorSaveMethod,
+      .onChange(
+        of: editorSaveMethod,
         {
-          try? await setEditorSaveMethod(saveMethod: editorSaveMethod)
+          Task {
+            try? await setEditorSaveMethod(saveMethod: editorSaveMethod)
+          }
         }
       )
       .onChange(
         of: editingNote?.id,
         {
           if let en = editingNote {
-            Task {
-              await onWebviewLoad()
-            }
             en.setLastRead()
           }
         }

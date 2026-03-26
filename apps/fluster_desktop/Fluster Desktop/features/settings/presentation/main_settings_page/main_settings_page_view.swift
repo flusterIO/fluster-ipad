@@ -39,12 +39,14 @@ struct MainSettingsPageView: View {
           }
           .frame(maxWidth: .infinity, alignment: .leading)
         }
-          
+
         AISettingSectionView()
 
         NotesDirSettingSection()
-          
+
         BibliographySettingSectionView()
+
+        SearchSettingSectionView()
 
         // AutoSettingSettingSection()
 

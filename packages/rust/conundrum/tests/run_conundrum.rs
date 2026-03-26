@@ -17,12 +17,15 @@ async fn runs_conundrum() {
 
     let opts = ParseMdxOptions { note_id: None,
                                  content: test_content,
-                                 citations: Vec::new() };
+                                 modifiers: Vec::new() };
 
     let res = run_conundrum(opts).await;
 
     print!("{}", res.content);
     assert!(!&res.content.is_empty(), "Conundrum response is not empty.");
+
+    assert!(!res.dictionary_entries.is_empty(),
+            "Finds a dictionary entry when one is present and appends it to the return data.");
 
     assert!(res.content.contains("<DictionaryEntry"), "Conundrum parses DictionaryEntry components");
     assert!(res.content.contains("<NoteLink"), "Conundrum parses NoteLink components");
@@ -48,7 +51,7 @@ async fn conundrum_parses_documentation_requests() {
 
         let short_opts = ParseMdxOptions { note_id: None,
                                            content: short_test_content,
-                                           citations: Vec::new() };
+                                           modifiers: Vec::new() };
 
         let short_res = run_conundrum(short_opts).await;
 
@@ -56,7 +59,7 @@ async fn conundrum_parses_documentation_requests() {
 
         let full_opts = ParseMdxOptions { note_id: None,
                                           content: full_test_content,
-                                          citations: Vec::new() };
+                                          modifiers: Vec::new() };
 
         let full_res = run_conundrum(full_opts).await;
 
@@ -79,13 +82,13 @@ async fn conundrum_parses_documentation_requests() {
 
         let short_opts = ParseMdxOptions { note_id: None,
                                            content: short_test_content,
-                                           citations: Vec::new() };
+                                           modifiers: Vec::new() };
 
         let short_res = run_conundrum(short_opts).await;
 
         let full_opts = ParseMdxOptions { note_id: None,
                                           content: full_test_content,
-                                          citations: Vec::new() };
+                                          modifiers: Vec::new() };
 
         let full_res = run_conundrum(full_opts).await;
 

@@ -154,7 +154,6 @@ struct NoteDetailWebview: View {
   }
 
   func onLoad() async {
-    print("Setting note details")
     if let en = editingNote {
       let dateFormatter = RelativeDateTimeFormatter()
       dateFormatter.unitsStyle = .full

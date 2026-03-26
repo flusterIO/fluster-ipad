@@ -27,16 +27,16 @@ public enum AppSchemaV1: VersionedSchema {
 extension AppSchemaV1 {
   public enum NoteSummaryGenerationMethod: String, Codable {
     case frontMatter, localAi, localAiManualTrigger
-      public func toSummaryGenerationMethod() -> SummaryGenerationMethod {
-          switch self {
-          case .frontMatter:
-                return  .frontMatter
-          case .localAi:
-              return .ai
-          case .localAiManualTrigger:
-              return .ai
-          }
+    public func toSummaryGenerationMethod() -> SummaryGenerationMethod {
+      switch self {
+        case .frontMatter:
+          return .frontMatter
+        case .localAi:
+          return .ai
+        case .localAiManualTrigger:
+          return .ai
       }
+    }
   }
   @Model
   final public class NoteSummary {
@@ -53,10 +53,12 @@ extension AppSchemaV1 {
       self.body = body
       self.ctime = ctime
     }
-      
-      public func toSummaryState() -> FlusterData.SummaryState {
-          FlusterData.SummaryState(content: self.body, ctime: Float(self.ctime.timeIntervalSince1970.magnitude), generation_method: self.generationMethod.toSummaryGenerationMethod())
-      }
+
+    public func toSummaryState() -> FlusterData.SummaryState {
+      FlusterData.SummaryState(
+        content: self.body, ctime: Float(self.ctime.timeIntervalSince1970.magnitude),
+        generation_method: self.generationMethod.toSummaryGenerationMethod())
+    }
   }
   @Model
   final public class FrontMatter {
@@ -924,7 +926,7 @@ extension AppSchemaV1 {
     @Attribute(.externalStorage) public var _body: String
     @Attribute(.externalStorage) public var preParsedBody: String?
     public var title: String?
-      /// Set to false originally, and then to true every time the parsed state is changed to then update the `plainText` field.
+    /// Set to false originally, and then to true every time the parsed state is changed to then update the `plainText` field.
     public var isEdited: Bool = false
     /// Set to nil by default, this is not parsed every time the mdx content is parsed for performance reasons, but is regenerated during downtime when the body changes.
     public var plainText: String?
@@ -945,8 +947,17 @@ extension AppSchemaV1 {
       set(newBody) {
         self._body = newBody
         self.isEdited = true
+        self.requiresPlainTextUpdate = true
         self.title = MdxTextUtils.getTitle(body: newBody)
       }
+    }
+
+    /// The noteId is the database id of the note, _not_ the user-defined id.
+    public func parsePlainText(noteId: String) async throws {
+      let res = try await ConundrumSwift.runConundrum(
+        options: ParseMdxOptions(noteId: noteId, content: self._body, modifiers: [.forcePlainText]))
+      self.plainText = res.content
+      self.requiresPlainTextUpdate = false
     }
   }
 

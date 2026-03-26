@@ -32,6 +32,8 @@ public enum AppStorageKeys: String {
     noteSidebarSectionOpen,
     flusterSidebarSectionOpen,
     desktopWebviewTheme
+    /// Store the plain text alongside the markdown text for full text search compatibility
+    case storePlainText
     /// A user name used only for the AI to personalize the application.
     case userPreferredName
     /// The global search function selected on the mac, allowing seperate settings if data ever overlaps
