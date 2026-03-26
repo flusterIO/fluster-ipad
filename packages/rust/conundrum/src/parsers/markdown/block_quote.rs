@@ -83,9 +83,6 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
         let (parsed_content, full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let start = input.input.checkpoint();
-                let _ = literal("\n").parse_next(input).inspect_err(|_| {
-                                                            input.input.reset(&start);
-                                                        })?;
                 let lines: Vec<String> = repeat(1.., parse_bq_line).parse_next(input).inspect_err(|_| {
                                                                                           input.input.reset(&start);
                                                                                       })?;

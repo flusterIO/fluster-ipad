@@ -46,7 +46,7 @@ struct MdxEditorWebview: View {
 
   init(editingNoteId: String?, webView: WKWebView) {
     self.editingNoteId = editingNoteId
-      self.webView = webView
+    self.webView = webView
     if let _id = editingNoteId {
       let predicate = #Predicate<NoteModel> { $0.id == _id }
       _notes = Query(filter: predicate)
@@ -65,11 +65,13 @@ struct MdxEditorWebview: View {
       WebViewContainerView(
         implementation: WebviewImplementation.mdxEditor,
         editingNoteId: editingNoteId,
-        webview: Binding(get: {
+        webview: Binding(
+          get: {
             webView
-        }, set: { newWebView in
+          },
+          set: { newWebView in
             print("Who the fuck created a new webview?")
-        }),
+          }),
         url: URL.embeddedFlusterUrl(folder: "splitview_mdx_editor_mac", fileName: "index_mac.html"),
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,
@@ -305,6 +307,6 @@ struct MdxEditorWebview: View {
   MdxEditorWebview(
     editingNoteId: nil,
     webView: WKWebView(
-        frame: .infinite, configuration: getWebViewConfig())
-    )
+      frame: .infinite, configuration: getWebViewConfig())
+  )
 }

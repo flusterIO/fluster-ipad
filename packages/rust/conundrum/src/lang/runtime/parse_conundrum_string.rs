@@ -35,7 +35,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
     repeat(0.., |input_inner: &mut ConundrumInput<'a>| -> ModalResult<ParsedElement> {
         let result =
             dispatch! {peek(take(1usize));
-                "\n" | "" => |x: &mut ConundrumInput<'a>| {
+                "\n" => |x: &mut ConundrumInput<'a>| {
                     // WARN: This might break if it's the first character on the first line?
                     // One alternative is to just insert a leading line break for the user. Since
                     // it's markdown, it won't change the output at all unless there's some super
@@ -139,10 +139,14 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                 //     }).parse_next(x)
                 // },
                 _ => |x: &mut ConundrumInput<'a>| {
-                    alt((
-                        ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
-                        any.map(|c: char| ParsedElement::Text(c.to_string()))
-                    )).parse_next(x)
+                    if at_line_start {
+                        alt((
+                            ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                        )).parse_next(x)
+                    } else {
+                        any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
+                    }
                 },
             }.parse_next(input_inner)?;
 
@@ -151,8 +155,6 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
             ParsedElement::Heading(_)
             | ParsedElement::BlockQuote(_)
             | ParsedElement::BlockMath(_)
-            | ParsedElement::ParsedCodeBlock(_)
-            | ParsedElement::ParsedCodeBlock(_)
             | ParsedElement::MarkdownParagraph(_)
             | ParsedElement::ParsedInspectionRequest(_)
             | ParsedElement::HrWithChildren(_)
