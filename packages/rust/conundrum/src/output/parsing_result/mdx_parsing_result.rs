@@ -25,6 +25,7 @@ pub struct MdxParsingResult {
     /// to avoid further parsing.
     pub ignore_all_parsers: bool,
     pub ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
+    pub success: bool,
 }
 
 impl Default for MdxParsingResult {
@@ -37,7 +38,16 @@ impl Default for MdxParsingResult {
                dictionary_entries: Vec::new(),
                outgoing_links: Vec::new(),
                ignore_all_parsers: false,
-               ai_secondary_parse_requests: Vec::new() }
+               ai_secondary_parse_requests: Vec::new(),
+               success: true }
+    }
+}
+
+impl MdxParsingResult {
+    pub fn get_fail_result() -> Self {
+        let mut x = MdxParsingResult::default();
+        x.success = false;
+        x
     }
 }
 
@@ -69,6 +79,7 @@ impl MdxParsingResult {
                                None => None,
                            },
                            ignore_all_parsers: false,
-                           ai_secondary_parse_requests: Vec::new() }
+                           ai_secondary_parse_requests: Vec::new(),
+                           success: true }
     }
 }
