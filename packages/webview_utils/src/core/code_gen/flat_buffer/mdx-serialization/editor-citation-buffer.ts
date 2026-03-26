@@ -36,8 +36,15 @@ html(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
+url():string|null
+url(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+url(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 static startEditorCitationBuffer(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addCitationKey(builder:flatbuffers.Builder, citationKeyOffset:flatbuffers.Offset) {
@@ -48,6 +55,10 @@ static addHtml(builder:flatbuffers.Builder, htmlOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, htmlOffset, 0);
 }
 
+static addUrl(builder:flatbuffers.Builder, urlOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, urlOffset, 0);
+}
+
 static endEditorCitationBuffer(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   builder.requiredField(offset, 4) // citation_key
@@ -55,10 +66,11 @@ static endEditorCitationBuffer(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createEditorCitationBuffer(builder:flatbuffers.Builder, citationKeyOffset:flatbuffers.Offset, htmlOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createEditorCitationBuffer(builder:flatbuffers.Builder, citationKeyOffset:flatbuffers.Offset, htmlOffset:flatbuffers.Offset, urlOffset:flatbuffers.Offset):flatbuffers.Offset {
   EditorCitationBuffer.startEditorCitationBuffer(builder);
   EditorCitationBuffer.addCitationKey(builder, citationKeyOffset);
   EditorCitationBuffer.addHtml(builder, htmlOffset);
+  EditorCitationBuffer.addUrl(builder, urlOffset);
   return EditorCitationBuffer.endEditorCitationBuffer(builder);
 }
 }

@@ -35,6 +35,8 @@ export enum EditorStateActions {
 	SetLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev",
 	SetSnippetProps = "set-snippet-props",
 	SetEditingBibEntry = "set-editing-bib-entry",
+	/** --- Conundrum --- */
+	SetConundrumError = "set-conundrum-error",
 }
 
 export interface EditorBannerNotification {
@@ -55,6 +57,15 @@ export interface AppendNotificationBannerAction {
 
 export interface BibtexEditorState {
 	value: string;
+}
+
+export interface ConundrumParseErrorState {
+	msg: string;
+	code: number;
+}
+
+export interface ConundrumState {
+	error?: ConundrumParseErrorState;
 }
 
 export interface WebviewDictionaryEntry {
@@ -357,6 +368,7 @@ export interface GlobalWebviewState {
 	note_details?: NoteDetailState;
 	dictionary: DictionaryState;
 	math: MathState;
+	conundrum: ConundrumState;
 }
 
 export interface ManualSaveRequestEvent {
@@ -421,6 +433,15 @@ export interface SetBaseKeymapPayload {
 export interface SetBaseKeymapAction {
 	type: EditorStateActions;
 	payload: SetBaseKeymapPayload;
+}
+
+export enum ConundrumStateActions {
+	SetConundrumError = "set-conundrum-error",
+}
+
+export interface SetConundrumErrorStateAction {
+	type: ConundrumStateActions;
+	payload?: ConundrumState;
 }
 
 export enum WebviewContainerActions {

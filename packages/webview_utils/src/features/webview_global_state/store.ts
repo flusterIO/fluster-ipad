@@ -8,6 +8,7 @@ import noteDetailsReducer from "./note_details_state/note_details_slice"
 import mediaReducer from './media_state/media_state_slice';
 import mathReducer from './math/math_state_slice';
 import dictionaryReducer from './dictionary_state/dictionary_slice';
+import conundrumReducer from './conundrum_state/conundrum_slice';
 import { type EditorState, type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities';
 import { darkModeListenerMiddleware } from './container/webview_container_global_state/side_effects/dark_mode_side_effect';
 import { emptyValueListenerMiddleware } from "./mdx_editor/side_effects/empty_editor_value_side_effect"
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
     notifications: notificationReducer,
     note_details: noteDetailsReducer,
     dictionary: dictionaryReducer,
-    math: mathReducer
+    math: mathReducer,
+    conundrum: conundrumReducer
 } satisfies GlobalWebviewStateDeepNullableReducer);
 
 

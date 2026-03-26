@@ -45,6 +45,7 @@ table CitationResultBuffer {
 table EditorCitationBuffer {
     citation_key:string (required);
     html:string (required);
+    url:string;
 }
 
 table TagResultBuffer {

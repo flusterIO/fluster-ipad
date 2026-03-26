@@ -45,6 +45,8 @@ public enum EditorStateActions: String, Codable {
 	case setLockEditorScrollToPreview = "set-lock-editor-scroll-to-prev"
 	case setSnippetProps = "set-snippet-props"
 	case setEditingBibEntry = "set-editing-bib-entry"
+	/// --- Conundrum ---
+	case setConundrumError = "set-conundrum-error"
 }
 
 public struct EditorBannerNotification: Codable {
@@ -84,6 +86,24 @@ public struct BibtexEditorState: Codable {
 
 	public init(value: String) {
 		self.value = value
+	}
+}
+
+public struct ConundrumParseErrorState: Codable {
+	public let msg: String
+	public let code: UInt32
+
+	public init(msg: String, code: UInt32) {
+		self.msg = msg
+		self.code = code
+	}
+}
+
+public struct ConundrumState: Codable {
+	public let error: ConundrumParseErrorState?
+
+	public init(error: ConundrumParseErrorState?) {
+		self.error = error
 	}
 }
 
@@ -530,8 +550,9 @@ public struct GlobalWebviewState: Codable {
 	public let note_details: NoteDetailState?
 	public let dictionary: DictionaryState
 	public let math: MathState
+	public let conundrum: ConundrumState
 
-	public init(container: WebviewContainerState, editor: EditorState, notifications: NotificationState, ai: AiState, media: MediaState, note_details: NoteDetailState?, dictionary: DictionaryState, math: MathState) {
+	public init(container: WebviewContainerState, editor: EditorState, notifications: NotificationState, ai: AiState, media: MediaState, note_details: NoteDetailState?, dictionary: DictionaryState, math: MathState, conundrum: ConundrumState) {
 		self.container = container
 		self.editor = editor
 		self.notifications = notifications
@@ -540,6 +561,7 @@ public struct GlobalWebviewState: Codable {
 		self.note_details = note_details
 		self.dictionary = dictionary
 		self.math = math
+		self.conundrum = conundrum
 	}
 }
 
@@ -654,6 +676,20 @@ public struct SetBaseKeymapAction: Codable {
 	public let payload: SetBaseKeymapPayload
 
 	public init(type: EditorStateActions, payload: SetBaseKeymapPayload) {
+		self.type = type
+		self.payload = payload
+	}
+}
+
+public enum ConundrumStateActions: String, Codable {
+	case setConundrumError = "set-conundrum-error"
+}
+
+public struct SetConundrumErrorStateAction: Codable {
+	public let type: ConundrumStateActions
+	public let payload: ConundrumState?
+
+	public init(type: ConundrumStateActions, payload: ConundrumState?) {
 		self.type = type
 		self.payload = payload
 	}

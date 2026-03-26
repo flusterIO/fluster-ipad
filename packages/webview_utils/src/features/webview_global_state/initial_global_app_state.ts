@@ -6,6 +6,7 @@ import { initialNotificationState } from "./notification_state/initial_notificat
 import { type GlobalWebviewStateDeepNullable } from "./cross_language_state_types";
 import { initialDictionaryState } from "./dictionary_state/initial_dictionary_state";
 import { initialMathState } from "./math/initial_math_state";
+import { initialConundrumState } from "./conundrum_state/initial_conundrum_state";
 
 export const initialGlobalAppState: GlobalWebviewStateDeepNullable = {
     ai: initialAiState,
@@ -15,5 +16,6 @@ export const initialGlobalAppState: GlobalWebviewStateDeepNullable = {
     notifications: initialNotificationState,
     note_details: null,
     dictionary: initialDictionaryState,
-    math: initialMathState
+    math: initialMathState,
+    conundrum: initialConundrumState
 }

@@ -14,10 +14,12 @@ export const swiftEditorBufferActionReducer = (state: WithNullableOptionals<Edit
     for (let i = 0; i < citLength; i++) {
         const cit = x.citations(i)
         const html = cit?.html()
+        const url = cit?.url() ?? undefined;
         const citationKey = cit?.citationKey()
         if (html && citationKey) {
             citations.push({
                 html,
+                url,
                 citation_key: citationKey
             })
         }

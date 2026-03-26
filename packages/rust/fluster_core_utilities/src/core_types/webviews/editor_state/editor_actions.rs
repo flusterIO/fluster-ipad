@@ -46,4 +46,8 @@ pub enum EditorStateActions {
     #[serde(rename = "set-editing-bib-entry")]
     #[strum(to_string = "set-editing-bib-entry")]
     SetEditingBibEntry,
+    /// --- Conundrum ---
+    #[serde(rename = "set-conundrum-error")]
+    #[strum(to_string = "set-conundrum-error")]
+    SetConundrumError,
 }

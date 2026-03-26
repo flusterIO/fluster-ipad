@@ -1,4 +1,5 @@
 pub mod ai_state;
+pub mod conundrum_state;
 pub mod dictionary_state;
 pub mod editor_save_method;
 pub mod editor_state;
