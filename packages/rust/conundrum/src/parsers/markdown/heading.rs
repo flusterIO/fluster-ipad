@@ -38,9 +38,6 @@ impl MdxComponentResult for MarkdownHeadingResult {
 impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownHeadingResult> {
         let start = input.input.checkpoint();
-        let _ = literal("\n").parse_next(input).inspect_err(|_| {
-                                                    input.input.reset(&start);
-                                                })?;
         let level: Vec<char> = repeat(1..=6, '#').parse_next(input).inspect_err(|_| {
                                                                         input.input.reset(&start);
                                                                     })?;

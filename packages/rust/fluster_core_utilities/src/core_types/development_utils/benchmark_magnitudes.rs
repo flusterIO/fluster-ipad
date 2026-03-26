@@ -3,7 +3,7 @@ use strum::{EnumIter, IntoEnumIterator};
 use typeshare::typeshare;
 
 #[typeshare]
-#[derive(uniffi::Enum, Clone, EnumIter, Serialize, Deserialize)]
+#[derive(uniffi::Enum, Clone, EnumIter, Serialize, Deserialize, Copy)]
 pub enum BenchmarkMagnitude {
     Five = 5,
     Ten = 10,

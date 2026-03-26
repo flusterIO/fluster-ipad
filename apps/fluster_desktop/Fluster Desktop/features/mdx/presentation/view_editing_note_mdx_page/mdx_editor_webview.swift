@@ -26,7 +26,7 @@ struct MdxEditorWebview: View {
   }
   @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
   @Environment(\.modelContext) private var modelContext: ModelContext
-  @Binding var webView: WKWebView
+  public var webView: WKWebView
   @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
     .base
   @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
@@ -44,9 +44,9 @@ struct MdxEditorWebview: View {
     true
   @AppStorage(AppStorageKeys.storePlainText.rawValue) private var storePlainText: Bool = true
 
-  init(editingNoteId: String?, webView: Binding<WKWebView>) {
+  init(editingNoteId: String?, webView: WKWebView) {
     self.editingNoteId = editingNoteId
-    self._webView = webView
+      self.webView = webView
     if let _id = editingNoteId {
       let predicate = #Predicate<NoteModel> { $0.id == _id }
       _notes = Query(filter: predicate)
@@ -65,7 +65,11 @@ struct MdxEditorWebview: View {
       WebViewContainerView(
         implementation: WebviewImplementation.mdxEditor,
         editingNoteId: editingNoteId,
-        webview: $webView,
+        webview: Binding(get: {
+            webView
+        }, set: { newWebView in
+            print("Who the fuck created a new webview?")
+        }),
         url: URL.embeddedFlusterUrl(folder: "splitview_mdx_editor_mac", fileName: "index_mac.html"),
         messageHandlerKeys: [
           MdxPreviewWebviewActions.onTagClick.rawValue,
@@ -300,8 +304,7 @@ struct MdxEditorWebview: View {
 #Preview {
   MdxEditorWebview(
     editingNoteId: nil,
-    webView: .constant(
-      WKWebView(
+    webView: WKWebView(
         frame: .infinite, configuration: getWebViewConfig())
-    ))
+    )
 }

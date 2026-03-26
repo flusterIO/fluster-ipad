@@ -25,15 +25,9 @@ impl MdxComponentResult for FlusterCommentResult {
 impl ConundrumParser<FlusterCommentResult> for FlusterCommentResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<FlusterCommentResult> {
         let start = input.input.checkpoint();
-        let _ = literal("\n").parse_next(input).map_err(|e| {
-                                                    input.input.reset(&start);
-                                                    e
-                                                })?; // Consume the leading new line character
-        //
         let line_content = preceded(literal("// FlusterComment: "), till_line_ending).parse_next(input)
-                                                                                     .map_err(|e| {
+                                                                                     .inspect_err(|_| {
                                                                                          input.input.reset(&start);
-                                                                                         e
                                                                                      })?;
 
         Ok(FlusterCommentResult { content: line_content.to_string() })

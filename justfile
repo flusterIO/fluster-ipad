@@ -29,6 +29,7 @@ copy_mathjax_to_public_dir:
 format: format_package_jsons format_swift
 
 benchmark_conundrum:
+	tsx {{justfile_directory()}}/scripts/documentation/verify_benchmark_note.ts
 	cd {{justfile_directory()}}/packages/rust/conundrum && cargo criterion --message-format="json" | tsx {{justfile_directory()}}/scripts/documentation/pipe_criterion_message_data_to_persistent_data.ts
 
 build_website:

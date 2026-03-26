@@ -43,7 +43,6 @@ pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
 
     let (final_mdx, parsing_result) = match parse_conundrum_string(&mut stateful_input) {
         Ok((elements, input_data)) => {
-            println!("don't reformat please");
             let mut x = input_data.state.borrow_mut();
             (compile_elements(&elements, &mut x), Some(x.data.clone()))
         }

@@ -118,22 +118,23 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
           }
         }
       }
-        if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
-            if let jsonData = (message.body as! String).data(using: .utf8) {
-              do {
-                let decoder = JSONDecoder()
-                let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
-                  // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
-                  Task(priority: .high) {
-                      let res = handleGeneralMdxAiRequest(request: event, focusedNote: parent.parent.editingNote)
-                      print("Response: \(res)")
-                      // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
-                  }
-              } catch {
-                print("Failed to decode editor update: \(error)")
-              }
+      if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
+        if let jsonData = (message.body as! String).data(using: .utf8) {
+          do {
+            let decoder = JSONDecoder()
+            let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
+            // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
+            Task(priority: .high) {
+              let res = handleGeneralMdxAiRequest(
+                request: event, focusedNote: parent.parent.editingNote)
+              print("Response: \(res)")
+              // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
             }
+          } catch {
+            print("Failed to decode editor update: \(error)")
+          }
         }
+      }
       if let messageHandler = parent.messageHandler {
         for handler in parent.messageHandlerKeys {
           if message.name == handler {
@@ -278,10 +279,8 @@ struct WebViewContainerView: View {
           .progressViewStyle(.circular)
       }
     }
-    .onAppear {
-      Task(priority: .high) {
-        await handleInitialState()
-      }
+    .task(priority: .high) {
+      await handleInitialState()
     }
     .onChange(
       of: editingNote?.id,

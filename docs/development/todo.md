@@ -109,6 +109,10 @@
   - [ ] `WebviewContainer.mathjaxUrl` field added and passed around properly.
 - [ ] Fix issue with Safari keeping around 20 instances of the editor view.
 - [x] Add `output_format` property to `ConundrumInput.state` to conditionally render each item as either plain text, inline markdown, markdown or mdx. Use this to store a stringified, more searchable title alongside the note's content if the stringified title does not match the normal title exactly. This will get around the searchability issue with markdown based titles.
+- [ ] Create quick plot generator for mean conundrum parsing time.
+- [ ] Create `SiaString` class in Typescript for easy compression and comparison of various strings.
+  - Use that in the benchmark output instead of storing the whole fucking file... what a brilliant idea that was...
+- [ ] Fix issue with new note being set _superrrrrr_ late.
 - [ ] Handle bug that requires initial note to be refreshed. The first always renders an error.
 - [ ] Fix issue with Mac `NoteDetailSheet` requiring a refresh for some reason to load the note's data.
 - [x] Handle issue with dictionary entries not being found now for some reason...
