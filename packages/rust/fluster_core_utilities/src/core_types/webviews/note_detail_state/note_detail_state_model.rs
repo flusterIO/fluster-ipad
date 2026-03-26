@@ -22,7 +22,7 @@ pub enum SummaryGenerationMethod {
 pub struct SummaryState {
     pub content: String,
     /// The javascript/unix timestamp in milliseconds.
-    pub ctime: u32,
+    pub ctime: f32,
     pub generation_method: SummaryGenerationMethod,
 }
 

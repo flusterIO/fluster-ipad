@@ -487,10 +487,10 @@ public enum SummaryGenerationMethod: String, Codable {
 public struct SummaryState: Codable {
 	public let content: String
 	/// The javascript/unix timestamp in milliseconds.
-	public let ctime: UInt32
+	public let ctime: Float
 	public let generation_method: SummaryGenerationMethod
 
-	public init(content: String, ctime: UInt32, generation_method: SummaryGenerationMethod) {
+	public init(content: String, ctime: Float, generation_method: SummaryGenerationMethod) {
 		self.content = content
 		self.ctime = ctime
 		self.generation_method = generation_method

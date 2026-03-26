@@ -26,7 +26,17 @@ public enum AppSchemaV1: VersionedSchema {
 
 extension AppSchemaV1 {
   public enum NoteSummaryGenerationMethod: String, Codable {
-    case user, flusterAi
+    case frontMatter, localAi, localAiManualTrigger
+      public func toSummaryGenerationMethod() -> SummaryGenerationMethod {
+          switch self {
+          case .frontMatter:
+                return  .frontMatter
+          case .localAi:
+              return .ai
+          case .localAiManualTrigger:
+              return .ai
+          }
+      }
   }
   @Model
   final public class NoteSummary {
@@ -43,6 +53,10 @@ extension AppSchemaV1 {
       self.body = body
       self.ctime = ctime
     }
+      
+      public func toSummaryState() -> FlusterData.SummaryState {
+          FlusterData.SummaryState(content: self.body, ctime: Float(self.ctime.timeIntervalSince1970.magnitude), generation_method: self.generationMethod.toSummaryGenerationMethod())
+      }
   }
   @Model
   final public class FrontMatter {
@@ -446,7 +460,7 @@ extension AppSchemaV1 {
       let res: Task<MdxParsingResult?, Never> = try await Task.detached {
         do {
           let res = try await ConundrumSwift.runConundrum(
-            options: ParseMdxOptions(noteId: _id, content: _body, citations: []))
+            options: ParseMdxOptions(noteId: _id, content: _body, modifiers: []))
           return res
         } catch {
           print("Mdx parsing error: \(error.localizedDescription)")
@@ -908,10 +922,13 @@ extension AppSchemaV1 {
   @Model
   public class MarkdownNote {
     @Attribute(.externalStorage) public var _body: String
-    /// This will be required later when building for architecture's that don't support rust since the parser is being written in rust. It can also be used for some performance improvements.
     @Attribute(.externalStorage) public var preParsedBody: String?
     public var title: String?
+      /// Set to false originally, and then to true every time the parsed state is changed to then update the `plainText` field.
     public var isEdited: Bool = false
+    /// Set to nil by default, this is not parsed every time the mdx content is parsed for performance reasons, but is regenerated during downtime when the body changes.
+    public var plainText: String?
+    public var requiresPlainTextUpdate: Bool = false
 
     @Relationship(deleteRule: .cascade, inverse: \NoteToc.note)
     public var toc: NoteToc?

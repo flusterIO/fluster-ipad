@@ -177,7 +177,7 @@ struct NoteDetailWebview: View {
       do {
         try await EditorState.setNoteDetails(
           payload: NoteDetailState(
-            note_id: en.id, title: en.getPreferedTitle(), summary: en.frontMatter.summary?.body,
+            note_id: en.id, title: en.getPreferedTitle(), summary: en.frontMatter.summary?.toSummaryState(),
             topic: en.topic?.value, subject: en.subject?.value, tags: tags, citations: citations,
             last_modified_string: lastModified, last_read_string: lastRead),
           eval: self.webView.evaluateJavaScript

@@ -87,6 +87,11 @@ export interface MdxParsingResult {
 export enum ConundrumModifier {
 	HideAiInput = "HideAiInput",
 	PreferMarkdownSyntax = "PreferMarkdownSyntax",
+	/**
+	 * Useful for search related features, being able to match text without
+	 * markdown syntax interfering.
+	 */
+	ForcePlainText = "ForcePlainText",
 }
 
 export interface ParseMdxOptions {

@@ -83,7 +83,7 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res = HrWithChildrenResult::parse_input_string(&mut test_data).expect("Parses hr with children without throwing an error.");
         let state = test_data.state.borrow();
-        let mut res_data = state.data.clone();
+        let mut res_data = state.clone();
         let child = res.to_mdx_component(&mut res_data);
         assert_snapshot!(child)
         // assert_eq!(result, 4);
