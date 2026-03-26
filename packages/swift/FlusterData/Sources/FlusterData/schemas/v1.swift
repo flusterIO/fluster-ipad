@@ -67,6 +67,7 @@ extension AppSchemaV1 {
     public var userDefinedId: String?
     public var fsPath: String?
     public var ignoreParsers: [String] = []
+    @Relationship(deleteRule: .cascade)
     public var summary: NoteSummary? = nil
 
     init(
@@ -102,6 +103,9 @@ extension AppSchemaV1 {
         self.userDefinedId = res.userDefinedId
       }
       self.ignoreParsers = res.ignoredParsers
+      if let summary = res.summary {
+        self.summary = NoteSummary(generationMethod: .frontMatter, body: summary, ctime: .now)
+      }
     }
 
     public static func fromParsingResult(data: FrontMatterResult)

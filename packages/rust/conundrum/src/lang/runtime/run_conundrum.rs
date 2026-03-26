@@ -12,7 +12,7 @@ use crate::{
             parse_state::{ConundrumModifier, ParseState},
         },
     },
-    output::parsing_result::{self, mdx_parsing_result::MdxParsingResult},
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 use winnow::Stateful;
 
@@ -53,12 +53,11 @@ pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
         }
     };
 
-    let final_result = match parsing_result {
+    match parsing_result {
         Some(mut p) => {
             p.content = final_mdx;
             p
         }
         None => MdxParsingResult::get_fail_result(),
-    };
-    final_result
+    }
 }

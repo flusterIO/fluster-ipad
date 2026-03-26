@@ -82,6 +82,7 @@ export interface MdxParsingResult {
 	 */
 	ignore_all_parsers: boolean;
 	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
+	success: boolean;
 }
 
 export enum ConundrumModifier {
