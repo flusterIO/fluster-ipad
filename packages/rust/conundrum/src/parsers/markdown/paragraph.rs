@@ -9,10 +9,12 @@ use crate::lang::{
     runtime::{
         compile_conundrum::compile_elements,
         parse_conundrum_string::parse_elements,
-        state::parse_state::ParseState,
+        state::parse_state::{ConundrumModifier, ParseState},
         traits::{
             conundrum_input::{ConundrumInput, get_conundrum_input},
+            fluster_component_result::FlusterComponentResult,
             mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
         },
     },
 };
@@ -20,6 +22,22 @@ use crate::lang::{
 #[derive(Debug, Serialize)]
 pub struct MarkdownParagraphResult {
     pub children: Vec<ParsedElement>,
+}
+
+impl PlainTextComponentResult for MarkdownParagraphResult {
+    fn to_plain_text(&self, res: &mut ParseState) -> String {
+        compile_elements(&self.children, res)
+    }
+}
+
+impl FlusterComponentResult for MarkdownParagraphResult {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 impl MdxComponentResult for MarkdownParagraphResult {

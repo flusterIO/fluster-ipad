@@ -11,8 +11,11 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ParseState,
-        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+        state::parse_state::{ConundrumModifier, ParseState},
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+        },
     },
     output::output_components::{
         ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
@@ -28,6 +31,22 @@ pub struct ParsedCodeBlock {
     pub meta_data: Option<String>,
     pub content: String,
     pub full_match: String,
+}
+
+impl PlainTextComponentResult for ParsedCodeBlock {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        self.full_match.clone()
+    }
+}
+
+impl FlusterComponentResult for ParsedCodeBlock {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 impl MdxComponentResult for ParsedCodeBlock {

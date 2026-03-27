@@ -35,18 +35,6 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
     repeat(0.., |input_inner: &mut ConundrumInput<'a>| -> ModalResult<ParsedElement> {
         let result =
             dispatch! {peek(take(1usize));
-                "\n" => |x: &mut ConundrumInput<'a>| {
-                        alt((
-                            // MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
-                            // BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
-                            ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
-                            // HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
-                            // FlusterCommentResult::parse_input_string.map(ParsedElement::Comment),
-                            // ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
-                            // MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
-                        )).parse_next(x)
-                },
                 "-" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
@@ -165,7 +153,6 @@ pub fn parse_conundrum_string<'a>(input: &'a mut ConundrumInput<'a>)
                                             println!("Conundrum Error: {:#?}", e);
                                             FlusterError::ConundrumParsingError
                                         })?;
-    println!("Input?: {:#?}", input);
     apply_parsed_conundrum_input_state(input);
     Ok((elements, input))
 }

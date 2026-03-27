@@ -16,16 +16,12 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            state::parse_state::ParseState,
+            state::parse_state::{ConundrumModifier, ParseState},
             traits::{
-                conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
-    },
-    output::{
-        apply_nested_parser_state::{self, apply_nested_parser_state},
-        parsing_result::mdx_parsing_result::MdxParsingResult,
     },
     parsers::parser_trait::ConundrumParser,
 };
@@ -42,6 +38,22 @@ pub struct BlockQuoteResult {
     pub children: Vec<ParsedElement>,
     /// The full original source text that was consumed.
     pub full_match: String,
+}
+
+impl PlainTextComponentResult for BlockQuoteResult {
+    fn to_plain_text(&self, res: &mut ParseState) -> String {
+        compile_elements(&self.children, res)
+    }
+}
+
+impl FlusterComponentResult for BlockQuoteResult {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------

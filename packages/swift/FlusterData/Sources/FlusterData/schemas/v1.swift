@@ -930,7 +930,9 @@ extension AppSchemaV1 {
     @Attribute(.externalStorage) public var _body: String
     @Attribute(.externalStorage) public var preParsedBody: String?
     public var title: String?
-    /// Set to false originally, and then to true every time the parsed state is changed to then update the `plainText` field.
+    /// The `titlePlainText` field is only populated when the plain text title does not match the  normal title for text comparison
+    public var titlePlainText: String?
+    /// Set to true every time the parsed state is changed to then update the `plainText` field.
     public var isEdited: Bool = false
     /// Set to nil by default, this is not parsed every time the mdx content is parsed for performance reasons, but is regenerated during downtime when the body changes.
     public var plainText: String?
@@ -961,6 +963,14 @@ extension AppSchemaV1 {
       let res = try await ConundrumSwift.runConundrum(
         options: ParseMdxOptions(noteId: noteId, content: self._body, modifiers: [.forcePlainText]))
       self.plainText = res.content
+        if let title = self.title {
+            let titleResponse = try await ConundrumSwift.runConundrum(options: ParseMdxOptions(noteId: noteId, content: title, modifiers: [.forcePlainText]))
+            if titleResponse.content != title {
+                self.titlePlainText = titleResponse.content
+            } else {
+                self.titlePlainText = nil
+            }
+        }
       self.requiresPlainTextUpdate = false
     }
   }

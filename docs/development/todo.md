@@ -107,13 +107,17 @@
   - [ ] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
   - [ ] Initial State function
   - [ ] `WebviewContainer.mathjaxUrl` field added and passed around properly.
+- [ ] Handle move of `to_mdx_component` to `to_fluster_component` in `packages/rust/conundrum/src/lang/runtime/compile_conundrum.rs`.
+  - This means that everything will need to implement the `FlusterComponentResult` trait, but this should allow the different output methods then based on the flags passed.
 - [ ] Fix issue with Safari keeping around 20 instances of the editor view.
+- [ ] Make sure to parse title for markdown model with plainText output to avoid markdown content for text comparison.
+  - [ ] Store an alternative title in markdown format next to the model if needed.
 - [x] Add `output_format` property to `ConundrumInput.state` to conditionally render each item as either plain text, inline markdown, markdown or mdx. Use this to store a stringified, more searchable title alongside the note's content if the stringified title does not match the normal title exactly. This will get around the searchability issue with markdown based titles.
 - [x] Create quick plot generator for mean conundrum parsing time.
-- [ ] Handle issue with `NoteDetailSheet` requiring refresh on Mac to load contents.
-- [ ] Create `SiaString` class in Typescript for easy compression and comparison of various strings.
+- [x] Handle issue with `NoteDetailSheet` requiring refresh on Mac to load contents.
+- [x] Create `SiaString` class in Typescript for easy compression and comparison of various strings.
   - Use that in the benchmark output instead of storing the whole fucking file... what a brilliant idea that was...
-- [ ] Fix issue with new note being set _superrrrrr_ late.
+- [x] Fix issue with new note being set _superrrrrr_ late.
 - [ ] Handle bug that requires initial note to be refreshed. The first always renders an error.
 - [ ] Fix issue with Mac `NoteDetailSheet` requiring a refresh for some reason to load the note's data.
 - [x] Handle issue with dictionary entries not being found now for some reason...

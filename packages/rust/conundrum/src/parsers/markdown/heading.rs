@@ -3,7 +3,7 @@ use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
     ascii::{multispace0, space1, till_line_ending},
-    combinator::{alt, delimited, opt, preceded, repeat},
+    combinator::{alt, delimited, preceded, repeat},
     stream::Stream,
     token::{literal, take_till, take_while},
 };

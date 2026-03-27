@@ -73,9 +73,9 @@ impl MdxComponentResult for ParsedInspectionRequest {
 impl ConundrumParser<ParsedInspectionRequest> for ParsedInspectionRequest {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<ParsedInspectionRequest> {
         let start = input.input.checkpoint();
-        let _ = literal("\n").parse_next(input).inspect_err(|_| {
-                                                    input.input.reset(&start);
-                                                })?;
+        // let _ = literal("\n").parse_next(input).inspect_err(|_| {
+        //                                             input.input.reset(&start);
+        //                                         })?;
         let ((keyword, marks), full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let (keyword, marks, _) = (alpha1.verify(|s: &str| {

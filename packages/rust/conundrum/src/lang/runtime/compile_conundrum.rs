@@ -1,25 +1,5 @@
 use crate::lang::runtime::state::parse_state::ParseState;
 
-// // Add this helper to compile specific languages into MDX components
-// // Moved this to the ParsedCodeBlock trait.
-// pub fn code_block_to_mdx(block: &ParsedCodeBlock, res: &mut MdxParsingResult)
-// -> String {     if res.ignore_all_parsers {
-//         return block.full_match.clone();
-//     }
-//     match block.language.as_str() {
-//         "dictionary" => {
-//             // Extract the metadata or provide a fallback
-//             get_dictionary_content(block, res)
-//         }
-//         "fluster-ai" => get_ai_parsing_request_phase_1_content(block, res),
-//         _ => {
-//             // For standard code blocks (like tsx, rust, etc.), leave them
-// exactly as they             // are and let mdx handle it for now.
-//             block.full_match.clone()
-//         }
-//     }
-// }
-
 use crate::lang::elements::parsed_elements::ParsedElement;
 use crate::lang::runtime::traits::mdx_component_result::MdxComponentResult;
 

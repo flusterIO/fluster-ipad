@@ -22,6 +22,7 @@ enum GlobalSearchFunction: String, CaseIterable {
         }
       case .fullText:
         notes.filter { note in
+            print("Plain Text: \(note.markdown.plainText ?? "None")")
             if let plainText = note.markdown.plainText {
                 return plainText.localizedCaseInsensitiveContains(query)
             } else {

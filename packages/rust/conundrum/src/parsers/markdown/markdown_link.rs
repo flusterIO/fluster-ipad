@@ -39,7 +39,7 @@ impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
     }
 
     fn matches_first_char(char: char) -> bool {
-        char == '$'
+        char == '['
     }
 }
 

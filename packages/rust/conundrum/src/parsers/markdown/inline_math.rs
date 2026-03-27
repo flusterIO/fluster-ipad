@@ -4,8 +4,11 @@ use winnow::{ModalResult, Parser, combinator::delimited, token::take_till};
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ParseState,
-        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+        state::parse_state::{ConundrumModifier, ParseState},
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+        },
     },
     parsers::parser_trait::ConundrumParser,
 };
@@ -14,6 +17,22 @@ use crate::{
 #[derive(Debug, Serialize)]
 pub struct InlineMathResult {
     pub body: String,
+}
+
+impl PlainTextComponentResult for InlineMathResult {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        self.body.clone()
+    }
+}
+
+impl FlusterComponentResult for InlineMathResult {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 impl MdxComponentResult for InlineMathResult {

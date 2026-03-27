@@ -9,8 +9,11 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ParseState,
-        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+        state::parse_state::{ConundrumModifier, ParseState},
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+        },
     },
     output::parsing_result::note_outgoing_link_result::NoteOutgoingLinkResult,
     parsers::parser_trait::ConundrumParser,
@@ -26,6 +29,22 @@ pub struct ParsedOutgoingNoteLink {
     /// The full content of the input string that represents this outgoing note
     /// link.
     pub full_match: String,
+}
+
+impl PlainTextComponentResult for ParsedOutgoingNoteLink {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        self.full_match.clone()
+    }
+}
+
+impl FlusterComponentResult for ParsedOutgoingNoteLink {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 impl MdxComponentResult for ParsedOutgoingNoteLink {
