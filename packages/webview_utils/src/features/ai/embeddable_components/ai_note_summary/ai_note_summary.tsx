@@ -5,7 +5,9 @@ import { AIGeneratedContainer } from '#/ai/presentation/ai_generated_card'
 export const AiNoteSummary = (): ReactNode => {
     const summary = useNoteSummary()
     return (
-        <AIGeneratedContainer>
+        <AIGeneratedContainer
+            className="block w-full max-w-[1080px]"
+        >
             {summary?.content ?? "No summary found, generating..."}
         </AIGeneratedContainer>
     )

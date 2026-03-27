@@ -115,6 +115,18 @@ extension AppSchemaV1 {
       fm.applyParsingResult(res: data)
       return fm
     }
+
+    public func applyAIGeneratedSummary(
+      content: String, generationMethod: NoteSummaryGenerationMethod
+    ) {
+      if let existingSummaryMethod = self.summary?.generationMethod {
+        if existingSummaryMethod == .frontMatter {
+          return
+        }
+      }
+
+      self.summary = NoteSummary(generationMethod: .localAi, body: content, ctime: .now)
+    }
   }
   public enum BibEntrySaveStrategy: String, Codable {
     case userAdded, fromNoteContent
@@ -963,14 +975,15 @@ extension AppSchemaV1 {
       let res = try await ConundrumSwift.runConundrum(
         options: ParseMdxOptions(noteId: noteId, content: self._body, modifiers: [.forcePlainText]))
       self.plainText = res.content
-        if let title = self.title {
-            let titleResponse = try await ConundrumSwift.runConundrum(options: ParseMdxOptions(noteId: noteId, content: title, modifiers: [.forcePlainText]))
-            if titleResponse.content != title {
-                self.titlePlainText = titleResponse.content
-            } else {
-                self.titlePlainText = nil
-            }
+      if let title = self.title {
+        let titleResponse = try await ConundrumSwift.runConundrum(
+          options: ParseMdxOptions(noteId: noteId, content: title, modifiers: [.forcePlainText]))
+        if titleResponse.content != title {
+          self.titlePlainText = titleResponse.content
+        } else {
+          self.titlePlainText = nil
         }
+      }
       self.requiresPlainTextUpdate = false
     }
   }

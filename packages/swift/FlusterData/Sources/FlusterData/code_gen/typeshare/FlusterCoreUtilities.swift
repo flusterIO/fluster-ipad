@@ -4,6 +4,14 @@
 
 import Foundation
 
+public struct AIUserDetails: Codable {
+	public let preferred_name: String
+
+	public init(preferred_name: String) {
+		self.preferred_name = preferred_name
+	}
+}
+
 public enum FoundationModelAccessStatus: String, Codable {
 	case available
 	case modelNotReady = "not-ready"

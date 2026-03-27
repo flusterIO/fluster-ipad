@@ -1,6 +1,7 @@
-import React, { type ReactNode, useState } from "react"
+import React, { type ReactNode } from "react"
 import { AIGeneratedCardHeader } from "./ai_generated_card/ai_generated_card_header"
 import { type IconName } from "lucide-react/dynamic"
+import { cn } from "../../../core/utils/cn"
 
 
 interface AiGeneratedContainerProps {
@@ -8,19 +9,17 @@ interface AiGeneratedContainerProps {
     title?: string
     subtitle?: string
     icon?: IconName
+    className?: string
 }
 
 /**
  * AI Generated and completely untested, but it looks decent so mess around with things as needed to stick with the gradient and shadow that that AI used.
  */
-export const AIGeneratedContainer = ({ children, title, subtitle, icon }: AiGeneratedContainerProps) => {
-    const [following, setFollowing] = useState(false)
-
-    const handleFollow = () => { setFollowing((prev) => !prev); }
+export const AIGeneratedContainer = ({ children, title, subtitle, icon, className }: AiGeneratedContainerProps) => {
 
     return (
         <div
-            className="relative w-[360px] rounded-3xl p-px overflow-hidden"
+            className={cn("relative w-[360px] rounded-3xl p-px overflow-hidden", className)}
             style={{
                 background: "linear-gradient(135deg, rgba(11,165,233,0.18) 0%, rgba(14,22,32,0) 60%)",
                 boxShadow:

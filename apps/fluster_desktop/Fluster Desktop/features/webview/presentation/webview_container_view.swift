@@ -25,6 +25,7 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
   let parent: WebViewContainerView
   @Binding var webView: WKWebView
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
+  @AppStorage(AppStorageKeys.userPreferredName.rawValue) private var userPreferedName: String = ""
   let url: URL
   var messageHandlerKeys: [String]
   var messageHandler: ((String, Any) -> Void)?
@@ -46,7 +47,8 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     }
     var all_keys = [
       WebviewContainerEvents.reduxStateLoaded.rawValue,
-      AiStateEvents.sendGeneralAiRequestPhase2.rawValue
+      AiStateEvents.sendGeneralAiRequestPhase2.rawValue,
+      NoteDetailEvents.sendGenerateSummaryRequest.rawValue
     ]
     for mk in messageHandlerKeys {
       all_keys.append(mk)
@@ -85,7 +87,7 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
 
   func addDarkModeScript(controller: WKUserContentController) {
     let source = """
-          document.body?.classList.add("dark")
+      document.body?.classList.add("dark")
       """
 
     // 2. Create the script to run at the very start (atDocumentStart)
@@ -96,6 +98,27 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
     )
     controller.addUserScript(userScript)
   }
+
+  func handleNoteSummaryCreation(msg: String) {
+    print("Creating summary...")
+    do {
+      if let en = self.parent.editingNote {
+        if let jsonData = msg.data(using: .utf8) {
+          let decoder = JSONDecoder()
+          let event = try decoder.decode(GenerateNoteSummaryRequest.self, from: jsonData)
+          if event.note_id == en.id {
+            Task {
+              try await FlusterAI.generateNoteSummary(
+                focusedNote: en, details: AIUserDetails(preferred_name: userPreferedName))
+            }
+          }
+        }
+      }
+    } catch {
+      print("Error: \(error.localizedDescription)")
+    }
+  }
+
   func makeCoordinator() -> Coordinator {
     Coordinator(self)
   }
@@ -117,19 +140,19 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
             await onLoad()
           }
         }
-      }
-      if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
+      } else if message.name == NoteDetailEvents.sendGenerateSummaryRequest.rawValue {
+        self.parent.handleNoteSummaryCreation(msg: message.body as! String)
+      } else if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
         if let jsonData = (message.body as! String).data(using: .utf8) {
           do {
             let decoder = JSONDecoder()
             let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
             // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
-            Task(priority: .high) {
-              let res = handleGeneralMdxAiRequest(
-                request: event, focusedNote: parent.parent.editingNote)
-              print("Response: \(res)")
-              // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
-            }
+            // Task(priority: .high) {
+            //              let res = handleGeneralMdxAiRequest(
+            //                request: event, focusedNote: parent.parent.editingNote)
+            // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
+            // }
           } catch {
             print("Failed to decode editor update: \(error)")
           }

@@ -17,5 +17,5 @@ public func generateNoteStudyGuide(req: GeneralAiRequestPhase2Event, focusedNote
     })
     
     let res = try await session.respond(to: focusedNote.markdown.body)
-    return AiPhase2Response(success: false, replaceWith: nil, userMessage: nil, id: nil, model: "")
+    return AiPhase2Response(success: false, replaceWith: nil, res: res.content, userMessage: nil, id: nil, model: "")
 }

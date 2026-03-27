@@ -3,6 +3,10 @@
 */
 
 
+export interface AIUserDetails {
+	preferred_name: string;
+}
+
 export enum FoundationModelAccessStatus {
 	Available = "available",
 	ModelNotReady = "not-ready",
