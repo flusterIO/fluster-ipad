@@ -108,8 +108,25 @@ struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for i
           let event = try decoder.decode(GenerateNoteSummaryRequest.self, from: jsonData)
           if event.note_id == en.id {
             Task {
-              try await FlusterAI.generateNoteSummary(
+              let res = try await FlusterAI.generateNoteSummary(
                 focusedNote: en, details: AIUserDetails(preferred_name: userPreferedName))
+              print("Res: \(res)")
+              if res.success {
+                en.frontMatter.applyAIGeneratedSummary(
+                  content: res.res,
+                  generationMethod: NoteSummaryGenerationMethod.fromSummaryGenerationMethod(
+                    event.generation_method))
+                if let summaryState = en.frontMatter.summary?.toSummaryState() {
+                  Task {
+                    do {
+                      try await NoteDetailState.setNoteSummary(
+                        payload: summaryState, eval: webView.evaluateJavaScript)
+                    } catch {
+                      print("Error: \(error.localizedDescription)")
+                    }
+                  }
+                }
+              }
             }
           }
         }

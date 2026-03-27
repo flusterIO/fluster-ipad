@@ -429,11 +429,19 @@ public struct GeneralAiRequestPhase2Event: Codable {
 	}
 }
 
+public enum SummaryGenerationMethod: String, Codable {
+	case ai
+	case aIManualTrigger = "ai-manual"
+	case frontMatter = "frontmatter"
+}
+
 public struct GenerateNoteSummaryRequest: Codable {
 	public let note_id: String
+	public let generation_method: SummaryGenerationMethod
 
-	public init(note_id: String) {
+	public init(note_id: String, generation_method: SummaryGenerationMethod) {
 		self.note_id = note_id
+		self.generation_method = generation_method
 	}
 }
 
@@ -504,12 +512,6 @@ public struct MediaState: Codable {
 	public init(image_data: [String: ImageData]) {
 		self.image_data = image_data
 	}
-}
-
-public enum SummaryGenerationMethod: String, Codable {
-	case ai
-	case aIManualTrigger = "ai-manual"
-	case frontMatter = "frontmatter"
 }
 
 public struct SummaryState: Codable {

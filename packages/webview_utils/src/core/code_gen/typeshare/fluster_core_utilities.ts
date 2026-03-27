@@ -289,8 +289,15 @@ export interface GeneralAiRequestPhase2Event {
 	model: UserSetLLM;
 }
 
+export enum SummaryGenerationMethod {
+	AI = "ai",
+	AIManualTrigger = "ai-manual",
+	FrontMatter = "frontmatter",
+}
+
 export interface GenerateNoteSummaryRequest {
 	note_id: string;
+	generation_method: SummaryGenerationMethod;
 }
 
 export enum SizableOption {
@@ -336,12 +343,6 @@ export interface ImageData {
 export interface MediaState {
 	/** A HashMap between an Id and an Object with the necessary image data. */
 	image_data: Record<string, ImageData>;
-}
-
-export enum SummaryGenerationMethod {
-	AI = "ai",
-	AIManualTrigger = "ai-manual",
-	FrontMatter = "frontmatter",
 }
 
 export interface SummaryState {

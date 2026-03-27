@@ -23,9 +23,7 @@ public func generateNoteSummary(focusedNote: NoteModel, details: AIUserDetails)
     They're note content is:
     """
   })
-  print("Session: \(session.transcript)")
   let res = try await session.respond(to: focusedNote.markdown.body)
-  print("Summary: \(res.content)")
   return AiPhase2Response(
-    success: false, replaceWith: nil, res: res.content, userMessage: nil, id: nil, model: "")
+    success: true, replaceWith: nil, res: res.content, userMessage: nil, id: nil, model: .localFoundationModels)
 }

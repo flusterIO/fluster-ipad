@@ -37,6 +37,16 @@ extension AppSchemaV1 {
           return .ai
       }
     }
+    public static func fromSummaryGenerationMethod(_ method: SummaryGenerationMethod) -> Self {
+      switch method {
+        case .aIManualTrigger:
+          .localAiManualTrigger
+        case .ai:
+          .localAi
+        case .frontMatter:
+          .frontMatter
+      }
+    }
   }
   @Model
   final public class NoteSummary {
