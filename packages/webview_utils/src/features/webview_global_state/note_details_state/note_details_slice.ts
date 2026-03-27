@@ -14,7 +14,6 @@ export const noteDetailsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(handleSwiftAction, (state, action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<GlobalWebviewStateNullable["note_details"]> => {
-
             return swiftNoteDetailsActionReducer(state, action);
         })
         return builder

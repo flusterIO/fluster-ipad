@@ -22,12 +22,12 @@ const connector = connect((state: GlobalAppState) => ({
 }))
 
 export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptionals<NoteDetailState> | null }): ReactNode => {
-    const [haveRequestedData, setHaveRequestedData] = useState(false)
+    /* const [haveRequestedData, setHaveRequestedData] = useState(false) */
     useEffect(() => {
-        if (!data && !haveRequestedData) {
+        if (!data) {
             sendToSwift(NoteDetailWebviewActions.RequestNoteDetailData)
-            setHaveRequestedData(true)
-        } else if (data) {
+            /* setHaveRequestedData(true) */
+        } else {
             sendToSwift(NoteDetailWebviewActions.SetWebviewLoaded);
             document.body.classList.remove("loading");
         }
