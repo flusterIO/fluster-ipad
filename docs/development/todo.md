@@ -30,21 +30,6 @@
 ## Desktop
 
 - [ ] Work on AI summarization.
-- [ ] Review [this](https://www.ditto.com/blog/running-a-react-web-app-in-an-ios-app) and see how difficult it would be to get rid of this single page build issue. That would expand the capabilities almost infinitely...
-- [ ] Handle rest of zod based props
-  - [x] Make sure `Emphasis` based colors are working being set from talwind color variable.
-  - [x] Make sure sizable props are working, particularly with admonition.
-- [ ] Pick back up by handling this horrible user experience when a bib entry is associated with a note.
-  - [ ] Move list to lazy list. This is almost surely rendering every item in the list causing the big freeze.
-- [ ] Add snippet support for front matter, especially for `topic` and `subject` autocomplete.
-- [ ] Resume work on new bibliography rust package. Create the necessary functions to transform a bibtex entry to it's formatted representation.
-  - [ ] Use that formatted citation to create a new field.
-  - [ ] Create necessary functions to read value from data, use this to populate a 'notes' or description section in the search result card.
-  - [ ] Then work on iPad paperkit implementation. There seems to be more documentation for that, so try to get that working first before handling state update on mac.
-- [x] Fix issue with model container now that it's being passed to the secondary window.
-- [x] Add 'escape-to-close' functionality back to command palette.
-- [x] Fix issue with dictionary entry parsing. This might be applicable to all 'pre-parsing' functionality.
-- [ ] Implement error handling method similar to red-thread for all embeddable components that aren't auto inserted.
 - [ ] Handle scroll restoration on desktop app while in landscape mode.
 - [ ] Work on syncing method to create notes from file system.
 
@@ -52,7 +37,7 @@
 
 **_RESUME_**
 
-- [ ] Fix issue with bibliography entries not being associated with note properly.
+- [x] Fix issue with bibliography entries not being associated with note properly.
 - [ ] Make sure note can be loaded when ipad is initially in portrait view. It's currently stuck in loading mode.
 
 ## Webviews
@@ -60,11 +45,6 @@
 ### Note Details
 
 - [ ] Make sure all taggables have a 'cursor-pointer' class to indicate they are clickable.
-
-## Documentation
-
-- [ ] Add section to `quick_reference.mdx` about front matter.
-- [ ] Use `Component?` and `Component??` similar to iPython with a new PreParser and automatically insert component documentation here.
 
 ## Website
 
@@ -74,7 +54,7 @@
 
 ## Conundrum
 
-- [ ] Download as much of **Crafting Interpreters** as you can for offline reading, especially as it gets closer to implementing a memory layer.
+- [x] Download as much of **Crafting Interpreters** as you can for offline reading, especially as it gets closer to implementing a memory layer.
 
 ---
 

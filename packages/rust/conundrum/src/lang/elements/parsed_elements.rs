@@ -57,23 +57,23 @@ pub enum ParsedElement {
 impl MdxComponentResult for ParsedElement {
     fn to_mdx_component(&self, res: &mut ParseState) -> String {
         match self {
-            ParsedElement::ParsedInspectionRequest(req) => req.to_mdx_component(res),
-            ParsedElement::ParsedCodeBlock(block) => block.to_mdx_component(res),
-            ParsedElement::ParsedCitation(cite) => cite.to_mdx_component(res),
-            ParsedElement::ParsedOutgoingNoteLink(l) => l.to_mdx_component(res),
-            ParsedElement::Tag(tag) => tag.to_mdx_component(res),
+            ParsedElement::ParsedInspectionRequest(req) => req.to_fluster_component(res),
+            ParsedElement::ParsedCodeBlock(block) => block.to_fluster_component(res),
+            ParsedElement::ParsedCitation(cite) => cite.to_fluster_component(res),
+            ParsedElement::ParsedOutgoingNoteLink(l) => l.to_fluster_component(res),
+            ParsedElement::Tag(tag) => tag.to_fluster_component(res),
             ParsedElement::Text(s) => s.clone(),
-            ParsedElement::Heading(heading) => heading.to_mdx_component(res),
+            ParsedElement::Heading(heading) => heading.to_fluster_component(res),
             ParsedElement::BlockMath(math) => math.to_mdx_component(res),
             ParsedElement::InlineMath(math) => math.to_mdx_component(res),
             ParsedElement::BlockQuote(quote) => quote.to_mdx_component(res),
             ParsedElement::BoldText(t) => t.to_fluster_component(res),
             ParsedElement::ItalicText(t) => t.to_fluster_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_fluster_component(res),
-            ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
-            ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
-            ParsedElement::HrWithChildren(c) => c.to_mdx_component(res),
-            ParsedElement::Comment(c) => c.to_mdx_component(res),
+            ParsedElement::MarkdownLink(l) => l.to_fluster_component(res),
+            ParsedElement::MarkdownParagraph(p) => p.to_fluster_component(res),
+            ParsedElement::HrWithChildren(c) => c.to_fluster_component(res),
+            ParsedElement::Comment(c) => c.to_fluster_component(res),
         }
     }
 }

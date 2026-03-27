@@ -10,8 +10,11 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ParseState,
-        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+        state::parse_state::{ConundrumModifier, ParseState},
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+        },
     },
     output::output_components::output_utils::{format_embedded_object_property, javascript_null_prop},
     parsers::parser_trait::ConundrumParser,
@@ -22,6 +25,22 @@ pub struct MarkdownHeadingResult {
     pub depth: usize,
     pub content: String,
     pub id: Option<String>,
+}
+
+impl PlainTextComponentResult for MarkdownHeadingResult {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        self.content.clone()
+    }
+}
+
+impl FlusterComponentResult for MarkdownHeadingResult {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 impl MdxComponentResult for MarkdownHeadingResult {

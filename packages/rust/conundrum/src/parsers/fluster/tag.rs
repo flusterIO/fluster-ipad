@@ -11,8 +11,11 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ParseState,
-        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+        state::parse_state::{ConundrumModifier, ParseState},
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+        },
     },
     parsers::parser_trait::ConundrumParser,
 };
@@ -24,6 +27,22 @@ pub struct ParsedTag {
     pub body: String,
     /// The full match of the content that was originally in the note.
     pub full_match: String,
+}
+
+impl PlainTextComponentResult for ParsedTag {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        self.body.clone()
+    }
+}
+
+impl FlusterComponentResult for ParsedTag {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 impl MdxComponentResult for ParsedTag {

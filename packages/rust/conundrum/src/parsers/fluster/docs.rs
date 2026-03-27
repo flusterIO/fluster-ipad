@@ -19,8 +19,11 @@ use winnow::{
 use crate::{
     embedded::{embedded_component_docs::EmbeddedComponentDocs, embedded_in_content_docs::EmbeddedInContentDocs},
     lang::runtime::{
-        state::parse_state::ParseState,
-        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+        state::parse_state::{ConundrumModifier, ParseState},
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+        },
     },
     parsers::parser_trait::ConundrumParser,
 };
@@ -32,6 +35,22 @@ pub struct ParsedInspectionRequest {
     pub keyword: String,
     pub level: u8, // 1 for '?', 2 for '??'
     pub full_match: String,
+}
+
+impl PlainTextComponentResult for ParsedInspectionRequest {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        String::from("")
+    }
+}
+
+impl FlusterComponentResult for ParsedInspectionRequest {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 impl MdxComponentResult for ParsedInspectionRequest {

@@ -5,8 +5,11 @@ use winnow::{ModalResult, Parser, combinator::delimited, token::take_while};
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ParseState,
-        traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
+        state::parse_state::{ConundrumModifier, ParseState},
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+        },
     },
     output::output_components::output_utils::javascript_null_prop,
     parsers::parser_trait::ConundrumParser,
@@ -17,6 +20,22 @@ use crate::{
 pub struct MarkdownLinkResult {
     pub text: String,
     pub url: String,
+}
+
+impl PlainTextComponentResult for MarkdownLinkResult {
+    fn to_plain_text(&self, _: &mut ParseState) -> String {
+        self.text.clone()
+    }
+}
+
+impl FlusterComponentResult for MarkdownLinkResult {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 impl MdxComponentResult for MarkdownLinkResult {
