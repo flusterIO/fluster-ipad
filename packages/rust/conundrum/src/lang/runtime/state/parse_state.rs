@@ -13,6 +13,8 @@ pub enum ConundrumModifier {
     /// Useful for search related features, being able to match text without
     /// markdown syntax interfering.
     ForcePlainText,
+    /// Set this flag when the output is intended to be consumed by AI
+    ForAIInput,
 }
 
 #[derive(Debug, Default, Clone)]
