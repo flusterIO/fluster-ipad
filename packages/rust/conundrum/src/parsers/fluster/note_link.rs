@@ -12,6 +12,7 @@ use crate::{
         state::parse_state::ParseState,
         traits::{conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult},
     },
+    output::parsing_result::note_outgoing_link_result::NoteOutgoingLinkResult,
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -39,6 +40,10 @@ impl MdxComponentResult for ParsedOutgoingNoteLink {
               .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::NoteLink.to_string()))
         {
             return self.full_match.clone();
+        }
+
+        if !res.data.contains_outgoing_link(&self.note_id) {
+            res.data.outgoing_links.push(NoteOutgoingLinkResult { link_to_note_id: self.note_id.clone() });
         }
 
         format!("<NoteLink id=\"{}\">{}</NoteLink>", self.note_id, self.content)

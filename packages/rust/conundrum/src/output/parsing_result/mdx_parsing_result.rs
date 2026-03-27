@@ -49,6 +49,10 @@ impl MdxParsingResult {
         x.success = false;
         x
     }
+
+    pub fn contains_outgoing_link(&self, link_note_id: &str) -> bool {
+        self.outgoing_links.iter().any(|x| x.link_to_note_id == link_note_id)
+    }
 }
 
 impl MdxParsingResult {

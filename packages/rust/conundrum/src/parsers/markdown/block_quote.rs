@@ -23,7 +23,10 @@ use crate::{
             },
         },
     },
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    output::{
+        apply_nested_parser_state::{self, apply_nested_parser_state},
+        parsing_result::mdx_parsing_result::MdxParsingResult,
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -96,18 +99,6 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
 
                 let new_parsed_content =
                     parse_elements(&mut new_state).unwrap_or_else(|_| vec![ParsedElement::Text(inner_src.clone())]);
-
-                // WITH_WIFI: This needs to be applied here but I'm running into a type error
-                // right now.
-                // apply_nested_parser_state(input, &new_state);
-                // RESUME: Pick back up here
-                // by applying the nested
-                // state to the parent state
-                // via a trait method an
-                // then move on to rest of
-                // markdown parsers now that
-                // nested parsing is working.
-                // apply_nested_state(&mut input_outer.state, &mut new_state.state);
 
                 Ok(new_parsed_content)
             }).with_taken()

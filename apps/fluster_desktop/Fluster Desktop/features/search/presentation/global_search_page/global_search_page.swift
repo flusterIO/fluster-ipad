@@ -9,6 +9,7 @@ import FlusterData
 import SwiftData
 import SwiftUI
 
+// PERFORMANCE: This *desperately* needs to be moved to the database instead of holding everything in memory.
 enum GlobalSearchFunction: String, CaseIterable {
   case fullText = "Full Text"
   case byTitle = "By Title"
@@ -21,7 +22,11 @@ enum GlobalSearchFunction: String, CaseIterable {
         }
       case .fullText:
         notes.filter { note in
-          note.markdown.body.contains(query)
+            if let plainText = note.markdown.plainText {
+                return plainText.localizedCaseInsensitiveContains(query)
+            } else {
+                return note.markdown.body.localizedCaseInsensitiveContains(query)
+            }
         }
     }
   }

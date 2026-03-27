@@ -206,6 +206,7 @@ struct WebViewContainerView: View {
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
   @AppStorage(AppStorageKeys.theme.rawValue) private var flusterTheme: FlusterTheme = .fluster
+  @AppStorage(AppStorageKeys.storePlainText.rawValue) private var storePlainText: Bool = true
   @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets: Bool =
     true
   @Binding var webview: WKWebView
@@ -281,6 +282,15 @@ struct WebViewContainerView: View {
     }
     .task(priority: .high) {
       await handleInitialState()
+    }
+    .task(id: editingNote?.markdown._body, priority: .background) {
+      if let en = editingNote, storePlainText {
+        do {
+          try await en.markdown.parsePlainText(noteId: en.id)
+        } catch {
+          print("Error: \(error.localizedDescription)")
+        }
+      }
     }
     .onChange(
       of: editingNote?.id,

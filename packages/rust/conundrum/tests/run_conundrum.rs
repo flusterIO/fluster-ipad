@@ -36,6 +36,8 @@ async fn runs_conundrum() {
                .contains(&format!("<{}", &AutoInsertedComponentName::FlusterAiParsePendingContainer.to_string())),
             "Conundrum parses Ai Parsing Request components");
 
+    assert!(res.outgoing_links.iter().any(|x| x.link_to_note_id == "testNoteId"), "Finds nested outgoing links.");
+
     println!("{}", res.content);
 
     // assert!(res.content.contains("<FlusterCitation"))

@@ -36,10 +36,6 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
         let result =
             dispatch! {peek(take(1usize));
                 "\n" => |x: &mut ConundrumInput<'a>| {
-                    // WARN: This might break if it's the first character on the first line?
-                    // One alternative is to just insert a leading line break for the user. Since
-                    // it's markdown, it won't change the output at all unless there's some super
-                    // weird edgecase I'm not thinking of.
                         alt((
                             // MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
                             // BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
@@ -132,12 +128,6 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
-                // "\\" => |x: &mut ConundrumInput<'a>| { // This is a super questionable hack that
-                //                                        // will probably do more harm than good.
-                //     take(2usize).map(|c: &'a str| {
-                //     ParsedElement::Text(c.to_string())
-                //     }).parse_next(x)
-                // },
                 _ => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((

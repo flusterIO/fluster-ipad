@@ -1,7 +1,10 @@
 use serde::Serialize;
 
 use crate::{
-    lang::runtime::{state::parse_state::ParseState, traits::mdx_component_result::MdxComponentResult},
+    lang::runtime::{
+        state::parse_state::ParseState,
+        traits::{fluster_component_result::FlusterComponentResult, mdx_component_result::MdxComponentResult},
+    },
     parsers::{
         fluster::{
             docs::ParsedInspectionRequest, fluster_comment::FlusterCommentResult,
@@ -64,9 +67,9 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::BlockMath(math) => math.to_mdx_component(res),
             ParsedElement::InlineMath(math) => math.to_mdx_component(res),
             ParsedElement::BlockQuote(quote) => quote.to_mdx_component(res),
-            ParsedElement::BoldText(t) => t.to_mdx_component(res),
-            ParsedElement::ItalicText(t) => t.to_mdx_component(res),
-            ParsedElement::BoldAndItalicText(t) => t.to_mdx_component(res),
+            ParsedElement::BoldText(t) => t.to_fluster_component(res),
+            ParsedElement::ItalicText(t) => t.to_fluster_component(res),
+            ParsedElement::BoldAndItalicText(t) => t.to_fluster_component(res),
             ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
             ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
             ParsedElement::HrWithChildren(c) => c.to_mdx_component(res),

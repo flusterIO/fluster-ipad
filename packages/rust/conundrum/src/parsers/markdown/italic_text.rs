@@ -7,10 +7,10 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ParseState,
+        state::parse_state::{ConundrumModifier, ParseState},
         traits::{
-            conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
     parsers::parser_trait::ConundrumParser,
@@ -30,6 +30,16 @@ impl PlainTextComponentResult for MarkdownItalicTextResult {
 impl MdxComponentResult for MarkdownItalicTextResult {
     fn to_mdx_component(&self, _: &mut ParseState) -> String {
         format!("<span className=\"italic\">{}</span>", self.content)
+    }
+}
+
+impl FlusterComponentResult for MarkdownItalicTextResult {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
     }
 }
 

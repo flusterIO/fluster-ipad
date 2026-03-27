@@ -153,15 +153,6 @@ struct MdxEditorWebview: View {
             )
           })
       }
-      .task(id: editingNote?.markdown._body, priority: .background) {
-        if let en = editingNote, storePlainText {
-          do {
-            try await en.markdown.parsePlainText(noteId: en.id)
-          } catch {
-            print("Error: \(error.localizedDescription)")
-          }
-        }
-      }
       .task(
         id: editingNote?.markdown._body, priority: .userInitiated,
         {

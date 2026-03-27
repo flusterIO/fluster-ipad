@@ -7,10 +7,10 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ParseState,
+        state::parse_state::{ConundrumModifier, ParseState},
         traits::{
-            conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+            conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
     parsers::parser_trait::ConundrumParser,
@@ -21,15 +21,25 @@ pub struct MarkdownBoldTextResult {
     pub content: String,
 }
 
+impl MdxComponentResult for MarkdownBoldTextResult {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
+        format!("<span className=\"font-bold\">{}</span>", self.content)
+    }
+}
+
 impl PlainTextComponentResult for MarkdownBoldTextResult {
     fn to_plain_text(&self, _: &mut ParseState) -> String {
         self.content.clone()
     }
 }
 
-impl MdxComponentResult for MarkdownBoldTextResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("<span className=\"font-bold\">{}</span>", self.content)
+impl FlusterComponentResult for MarkdownBoldTextResult {
+    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+            self.to_plain_text(res)
+        } else {
+            self.to_mdx_component(res)
+        }
     }
 }
 
