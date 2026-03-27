@@ -18,6 +18,10 @@ use crate::{
             italic_text::MarkdownItalicTextResult, markdown_link::MarkdownLinkResult,
             paragraph::MarkdownParagraphResult,
         },
+        react::{
+            react_component_self_closing::ReactComponentSelfClosingResult,
+            react_component_with_children::ReactComponentWithChildrenResult,
+        },
     },
 };
 
@@ -45,6 +49,9 @@ pub enum ParsedElement {
     ParsedCodeBlock(ParsedCodeBlock),
     MarkdownLink(MarkdownLinkResult),
     MarkdownParagraph(MarkdownParagraphResult),
+    // React
+    ReactComponentSelfClosing(ReactComponentSelfClosingResult),
+    ReactComponentWithChildren(ReactComponentWithChildrenResult),
     // Fluster Specific
     ParsedCitation(ParsedCitation),
     ParsedOutgoingNoteLink(ParsedOutgoingNoteLink),
@@ -74,6 +81,8 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::MarkdownParagraph(p) => p.to_fluster_component(res),
             ParsedElement::HrWithChildren(c) => c.to_fluster_component(res),
             ParsedElement::Comment(c) => c.to_fluster_component(res),
+            ParsedElement::ReactComponentSelfClosing(c) => c.to_fluster_component(res),
+            ParsedElement::ReactComponentWithChildren(c) => c.to_fluster_component(res),
         }
     }
 }
