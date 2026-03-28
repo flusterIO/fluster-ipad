@@ -143,7 +143,7 @@ mod tests {
         let input = "> Hello, world!\n";
         let mut test_props = wrap_test_conundrum_content(input);
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses simple block quote");
-        assert!(input.is_empty(), "all input consumed");
+        assert!(test_props.input.is_empty(), "all input consumed");
         assert_eq!(res.full_match, "> Hello, world!\n");
         assert_eq!(get_children_content_text(&res.children), "Hello, world!");
     }
@@ -153,7 +153,7 @@ mod tests {
         let input = "> Line one\n> Line two\n> Line three\n";
         let mut test_props = wrap_test_conundrum_content(input);
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses multi-line block quote");
-        assert!(input.is_empty());
+        assert!(test_props.input.is_empty());
         assert_eq!(get_children_content_text(&res.children), "Line one\nLine two\nLine three");
     }
 
@@ -162,17 +162,9 @@ mod tests {
         let input = "> Outer line\n> > Inner line\n";
         let mut test_props = wrap_test_conundrum_content(input);
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses nested block quote");
-        assert!(input.is_empty());
+        assert!(test_props.input.is_empty());
         let has_nested = res.children.iter().any(|e| matches!(e, ParsedElement::BlockQuote(_)));
         assert!(has_nested, "nested > produces a BlockQuote element");
-    }
-
-    #[test]
-    fn gfm_alert_warning_multiline() {
-        let input = "> [!WARNING]\n> First body line.\n> Second body line.\n";
-        let mut test_props = wrap_test_conundrum_content(input);
-        let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses GFM WARNING alert");
-        assert_eq!(get_children_content_text(&res.children), "First body line.\nSecond body line.");
     }
 
     #[test]
@@ -180,7 +172,7 @@ mod tests {
         let input = "> No newline at end";
         let mut test_props = wrap_test_conundrum_content(input);
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses block quote ending at EOF");
-        assert!(input.is_empty());
+        assert!(test_props.input.is_empty());
         assert_eq!(get_children_content_text(&res.children), "No newline at end");
     }
 

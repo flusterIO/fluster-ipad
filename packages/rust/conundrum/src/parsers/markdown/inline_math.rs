@@ -43,7 +43,7 @@ impl MdxComponentResult for InlineMathResult {
 
 impl ConundrumParser<InlineMathResult> for InlineMathResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<InlineMathResult> {
-        let body = delimited('$', take_till(1.., |c: char| c != '$'), '$').parse_next(input)?;
+        let body = delimited('$', take_till(1.., |c: char| c == '$'), '$').parse_next(input)?;
         Ok(InlineMathResult { body: body.to_string() })
     }
 

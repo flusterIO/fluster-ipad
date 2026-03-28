@@ -13,4 +13,7 @@ pub enum NoteDetailActions {
     #[serde(rename = "set-note-summary")]
     #[strum(to_string = "set-note-summary")]
     SetNoteSummary,
+    #[serde(rename = "reset-note-summary")]
+    #[strum(to_string = "reset-note-summary")]
+    ResetNoteSummary,
 }

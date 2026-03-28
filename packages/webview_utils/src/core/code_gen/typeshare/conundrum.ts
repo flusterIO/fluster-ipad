@@ -90,9 +90,14 @@ export enum ConundrumModifier {
 	PreferMarkdownSyntax = "PreferMarkdownSyntax",
 	/**
 	 * Useful for search related features, being able to match text without
-	 * markdown syntax interfering.
+	 * markdown syntax interfering. Not super useful for much else.
 	 */
 	ForcePlainText = "ForcePlainText",
+	/**
+	 * Set this flag when the output is intended to be consumed by AI, probably
+	 * with the 'PreferMarkdownSyntax' flag.
+	 */
+	ForAIInput = "ForAIInput",
 }
 
 export interface ParseMdxOptions {
@@ -131,6 +136,19 @@ export interface ParsedTag {
 	body: string;
 	/** The full match of the content that was originally in the note. */
 	full_match: string;
+}
+
+export interface ReactComponentSelfClosingResult {
+	full_text: string;
+	component_name: string;
+	props_string: string;
+}
+
+export interface ReactComponentWithChildrenResult {
+	full_text: string;
+	component_name: string;
+	children: ParsedElement[];
+	props_string: string;
 }
 
 export enum AiSerializationRequestType {

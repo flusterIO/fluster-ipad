@@ -2,6 +2,7 @@ use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
     combinator::alt,
+    stream::Stream,
     token::{literal, take_while},
 };
 
@@ -46,12 +47,25 @@ impl FlusterComponentResult for MarkdownBoldTextResult {
 impl ConundrumParser<MarkdownBoldTextResult> for MarkdownBoldTextResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownBoldTextResult> {
         // FIXME: Handle the resetting of state to this checkpoint if the entire parser
-        // fails. let cp = input.checkpoint();
-        let first_token = alt((literal("*"), literal("_"))).parse_next(input)?;
-        let second_token = alt((literal("*"), literal("_"))).parse_next(input)?;
-        let content = take_while(1.., |c: char| c.to_string() != second_token && c != '\n').parse_next(input)?;
-        let _ = literal(second_token).parse_next(input)?;
-        let _ = literal(first_token).parse_next(input)?;
+        // fails.
+        let start = input.input.checkpoint();
+        let first_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
+                                                                                  input.input.reset(&start);
+                                                                              })?;
+        let second_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
+                                                                                   input.input.reset(&start);
+                                                                               })?;
+        let content = take_while(1.., |c: char| c.to_string() != second_token && c != '\n').parse_next(input)
+                                                                                           .inspect_err(|_| {
+                                                                                               input.input
+                                                                                                    .reset(&start);
+                                                                                           })?;
+        let _ = literal(second_token).parse_next(input).inspect_err(|_| {
+                                                            input.input.reset(&start);
+                                                        })?;
+        let _ = literal(first_token).parse_next(input).inspect_err(|_| {
+                                                           input.input.reset(&start);
+                                                       })?;
 
         Ok(MarkdownBoldTextResult { content: content.to_string() })
     }
@@ -82,7 +96,7 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.content == "My bold text", "Finds the proper text in the markdown bold text with underscors.");
+        assert!(res.content == "My bold text", "Finds the proper text in the markdown bold text with underscores.");
     }
 
     #[test]
@@ -91,11 +105,11 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.content == "My bold text", "Finds the proper text in the markdown bold text with underscors.");
+        assert!(res.content == "My bold text", "Finds the proper text in the markdown bold text with underscores.");
     }
 
     #[test]
-    fn markdown_bold_text_returns_complete_text_on_fail() {
+    fn returns_complete_text_on_fail() {
         let test_input = "*Some other text that will fail.";
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped);

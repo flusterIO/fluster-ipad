@@ -205,6 +205,9 @@ struct MdxEditorWebview: View {
           }
         }
       )
+      .onChange(of: colorScheme, {
+          
+      })
       .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
   }

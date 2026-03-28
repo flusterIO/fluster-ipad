@@ -1,8 +1,11 @@
 ---
 source: packages/rust/conundrum/tests/parser_tests/block_quote.rs
-expression: test_content
+expression: res.content
 ---
 
-> My block quote here
-> and here, and here,
-> and also here.
+
+<AutoInsertedBlockQuote>
+My block quote here
+and here, and here,
+and also here.
+</AutoInsertedBlockQuote>

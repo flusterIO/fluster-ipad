@@ -15,8 +15,8 @@ use crate::{
             block_math::BlockMathResult, block_quote::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
             code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_math::InlineMathResult,
-            italic_text::MarkdownItalicTextResult, markdown_link::MarkdownLinkResult,
-            paragraph::MarkdownParagraphResult,
+            italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::EmojiResult,
+            markdown_link::MarkdownLinkResult, paragraph::MarkdownParagraphResult,
         },
         react::{
             react_component_self_closing::ReactComponentSelfClosingResult,
@@ -49,6 +49,8 @@ pub enum ParsedElement {
     ParsedCodeBlock(ParsedCodeBlock),
     MarkdownLink(MarkdownLinkResult),
     MarkdownParagraph(MarkdownParagraphResult),
+    // Markdown Extensions
+    Emoji(EmojiResult),
     // React
     ReactComponentSelfClosing(ReactComponentSelfClosingResult),
     ReactComponentWithChildren(ReactComponentWithChildrenResult),
@@ -83,6 +85,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::Comment(c) => c.to_fluster_component(res),
             ParsedElement::ReactComponentSelfClosing(c) => c.to_fluster_component(res),
             ParsedElement::ReactComponentWithChildren(c) => c.to_fluster_component(res),
+            ParsedElement::Emoji(e) => e.to_fluster_component(res),
         }
     }
 }

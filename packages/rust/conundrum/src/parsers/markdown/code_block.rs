@@ -56,19 +56,12 @@ impl MdxComponentResult for ParsedCodeBlock {
         }
         match self.language.as_str() {
             "dictionary" => {
-                if res.data.front_matter.as_ref().is_some_and(|fm| {
-                                                     fm.ignored_parsers
-                                                       .iter()
-                                                       .any(|x| x == &ParserId::Dictionary.to_string())
-                                                 })
-                {
+                if res.should_ignore_parser(&ParserId::Dictionary) {
                     return self.full_match.clone();
                 }
 
                 // Extract the metadata or provide a fallback
-                let ress = get_dictionary_content(self, &mut res.data);
-                println!("Is changing here: {:#?}", res.data);
-                ress
+                get_dictionary_content(self, &mut res.data)
             }
             "fluster-ai" => get_ai_parsing_request_phase_1_content(self, &mut res.data),
             _ => self.full_match.clone(),

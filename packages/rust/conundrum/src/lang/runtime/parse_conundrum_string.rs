@@ -20,8 +20,11 @@ use crate::parsers::markdown::code_block::ParsedCodeBlock;
 use crate::parsers::markdown::heading::MarkdownHeadingResult;
 use crate::parsers::markdown::inline_math::InlineMathResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
+use crate::parsers::markdown::markdown_extensions::emoji::EmojiResult;
 use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
 use crate::parsers::parser_trait::ConundrumParser;
+use crate::parsers::react::react_component_self_closing::ReactComponentSelfClosingResult;
+use crate::parsers::react::react_component_with_children::ReactComponentWithChildrenResult;
 use crate::{
     lang::elements::parsed_elements::ParsedElement,
     parsers::fluster::{inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink, tag::ParsedTag},
@@ -99,6 +102,12 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                             )).parse_next(x)
                         }
                 },
+                ":" => |x: &mut ConundrumInput<'a>| {
+                            alt((
+                                EmojiResult::parse_input_string.map(ParsedElement::Emoji),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
+                            )).parse_next(x)
+                },
                 "[" => |x: &mut ConundrumInput<'a>| {
                     alt((
                         ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::ParsedOutgoingNoteLink),
@@ -113,6 +122,13 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                        MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
                        MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
                        MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
+                        any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
+                },
+                "<" => |x: &mut ConundrumInput<'a>| {
+                    alt((
+                       ReactComponentWithChildrenResult::parse_input_string.map(ParsedElement::ReactComponentWithChildren),
+                       ReactComponentSelfClosingResult::parse_input_string.map(ParsedElement::ReactComponentSelfClosing),
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },

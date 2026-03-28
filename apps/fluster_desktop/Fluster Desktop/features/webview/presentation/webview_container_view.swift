@@ -323,7 +323,8 @@ struct WebViewContainerView: View {
     .task(priority: .high) {
       await handleInitialState()
     }
-    .task(id: editingNote?.markdown._body, priority: .background) {
+      // WITH_WIFI: Figure out how to move this back to a background thread _immediately._ It's causing a memory issue right now but that's crucial for performance, as the plain text results are only useful for search related features.
+    .task(id: editingNote?.markdown._body, priority: .low) {
       if let en = editingNote, storePlainText {
         do {
           try await en.markdown.parsePlainText(noteId: en.id)

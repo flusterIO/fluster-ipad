@@ -102,9 +102,9 @@ mod tests {
         let res =
             ParsedOutgoingNoteLink::parse_input_string(&mut test_data).expect("Parses outgoing link successfully.");
 
-        assert!(test_content.is_empty(), "Citation returns the proper left over text.");
+        assert!(test_data.input.is_empty(), "NoteLink returns the proper left over text.");
 
-        assert!(res.content == "This is my link", "Citation finds the proper content.");
-        assert!(res.note_id == "myNote", "Citation finds the proper note id.");
+        assert!(res.content == "This is my link", "NoteLink finds the proper content.");
+        assert!(res.note_id == "myNote", "NoteLink finds the proper note id.");
     }
 }

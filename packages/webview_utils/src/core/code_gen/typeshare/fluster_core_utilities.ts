@@ -591,6 +591,7 @@ export enum NoteDetailActions {
 	SetNoteDetails = "set-note-details",
 	InvalidateNoteDetails = "invalidate-note-details",
 	SetNoteSummary = "set-note-summary",
+	ResetNoteSummary = "reset-note-summary",
 }
 
 export interface SetNoteDetailsAction {

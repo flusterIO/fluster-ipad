@@ -11,7 +11,18 @@ export interface CounterState {
 export const noteDetailsSlice = createSlice({
     name: 'note_details',
     initialState: null as WithNullableOptionals<GlobalWebviewStateNullable["note_details"]>,
-    reducers: {},
+    reducers: {
+        resetSummary(state: WithNullableOptionals<GlobalWebviewStateNullable["note_details"]>) {
+            if (state) {
+                return {
+                    ...state,
+                    // summary: null
+                } satisfies WithNullableOptionals<GlobalWebviewStateNullable["note_details"]>
+            } else {
+                return null
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(handleSwiftAction, (state, action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<GlobalWebviewStateNullable["note_details"]> => {
             return swiftNoteDetailsActionReducer(state, action);
@@ -21,6 +32,6 @@ export const noteDetailsSlice = createSlice({
 })
 
 // // Action creators are generated for each case reducer function
-// export const { } = webviewContainerSlice.actions
+export const { resetSummary } = noteDetailsSlice.actions
 
 export default noteDetailsSlice.reducer

@@ -968,6 +968,7 @@ public enum NoteDetailActions: String, Codable {
 	case setNoteDetails = "set-note-details"
 	case invalidateNoteDetails = "invalidate-note-details"
 	case setNoteSummary = "set-note-summary"
+	case resetNoteSummary = "reset-note-summary"
 }
 
 public struct SetNoteDetailsAction: Codable {

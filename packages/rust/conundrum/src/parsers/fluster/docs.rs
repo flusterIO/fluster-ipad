@@ -73,7 +73,7 @@ impl MdxComponentResult for ParsedInspectionRequest {
                                                                            .map(|component_name| {
                                                                                COMPONENT_NAME_ID_MAP
                         .get(&component_name)
-                        .expect("All components must have documentation.")
+                        .expect(format!("All components must have documentation: {}", &component_name).as_str())
                                                                            })
             {
                 let body_as_string = EmbeddedComponentDocs::get_incontent_docs_by_id(comp_name, &depth);

@@ -892,6 +892,7 @@ extension AppSchemaV1 {
       self.lastAccess = lastAccess
     }
   }
+    
 
   @Model
   public final class TopicModel {
@@ -980,7 +981,9 @@ extension AppSchemaV1 {
       }
     }
 
+    // PERFORMANCE: Figure out how to move this to a background thread immediately.
     /// The noteId is the database id of the note, _not_ the user-defined id.
+    @MainActor
     public func parsePlainText(noteId: String) async throws {
       let res = try await ConundrumSwift.runConundrum(
         options: ParseMdxOptions(noteId: noteId, content: self._body, modifiers: [.forcePlainText]))

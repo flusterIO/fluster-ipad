@@ -102,7 +102,7 @@ mod tests {
 
         let res = ParsedTag::parse_input_string(&mut test_data).expect("Parses outgoing link successfully.");
 
-        assert!(test_content.is_empty(), "Citation returns the proper left over text.");
+        assert!(test_data.input.is_empty(), "Citation returns the proper left over text.");
 
         assert!(res.body == "myTag", "Tag finds the proper body.");
     }

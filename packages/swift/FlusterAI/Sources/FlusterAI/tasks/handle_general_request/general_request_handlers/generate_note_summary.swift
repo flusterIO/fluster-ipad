@@ -14,7 +14,7 @@ public func generateNoteSummary(focusedNote: NoteModel, details: AIUserDetails)
 {
   let session = LanguageModelSession(instructions: {
     """
-    You are an assistant for a note taking application for STEM students and professionals. Summarize the user's note in no more than 250 words, much like an abstract for a peer reviewed paper.
+    You are an assistant for a note taking application for STEM students and professionals. Write an abstract for this note as if it were a peer reviewed paper, in no more than 250 words.
     """
     if !details.preferred_name.isEmpty {
       details.toUserDescription()
@@ -24,6 +24,9 @@ public func generateNoteSummary(focusedNote: NoteModel, details: AIUserDetails)
     """
   })
   let res = try await session.respond(to: focusedNote.markdown.body)
+  let content = try await res.content.mdxToAIInput(noteId: focusedNote.id)
+  print("AI Input: \(content)")
   return AiPhase2Response(
-    success: true, replaceWith: nil, res: res.content, userMessage: nil, id: nil, model: .localFoundationModels)
+    success: true, replaceWith: nil, res: content, userMessage: nil, id: nil,
+    model: .localFoundationModels)
 }

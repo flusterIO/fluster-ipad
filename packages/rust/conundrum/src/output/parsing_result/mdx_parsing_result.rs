@@ -3,12 +3,15 @@ use gray_matter::{Matter, engine::YAML};
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
-use crate::output::parsing_result::{
-    ai_serialization_request::AiSerializationRequestPhase1,
-    dictionary_result::DictionaryEntryResult,
-    front_matter::{FrontMatterParser, FrontMatterResult},
-    note_outgoing_link_result::NoteOutgoingLinkResult,
-    tag_result::TagResult,
+use crate::{
+    output::parsing_result::{
+        ai_serialization_request::AiSerializationRequestPhase1,
+        dictionary_result::DictionaryEntryResult,
+        front_matter::{FrontMatterParser, FrontMatterResult},
+        note_outgoing_link_result::NoteOutgoingLinkResult,
+        tag_result::TagResult,
+    },
+    parsers::markdown::heading::{MarkdownHeadingResult, MarkdownHeadingStringifiedResult},
 };
 
 #[typeshare]
@@ -21,6 +24,7 @@ pub struct MdxParsingResult {
     pub ordered_citation_keys: Vec<String>,
     pub dictionary_entries: Vec<DictionaryEntryResult>,
     pub outgoing_links: Vec<NoteOutgoingLinkResult>,
+    pub toc: Vec<MarkdownHeadingStringifiedResult>,
     /// Always set to false initially, but can be set to true by certain parsers
     /// to avoid further parsing.
     pub ignore_all_parsers: bool,
@@ -36,6 +40,7 @@ impl Default for MdxParsingResult {
                front_matter: Default::default(),
                ordered_citation_keys: Vec::new(),
                dictionary_entries: Vec::new(),
+               toc: Vec::new(),
                outgoing_links: Vec::new(),
                ignore_all_parsers: false,
                ai_secondary_parse_requests: Vec::new(),
@@ -74,6 +79,7 @@ impl MdxParsingResult {
                            },
                            tags: Vec::new(),
                            outgoing_links: Vec::new(),
+                           toc: Vec::new(),
                            ordered_citation_keys: Vec::new(),
                            dictionary_entries: Vec::new(),
                            front_matter: match data {

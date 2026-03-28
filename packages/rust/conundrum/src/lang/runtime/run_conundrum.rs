@@ -38,6 +38,7 @@ pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
     let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
                                           bib: CitationList::default(),
                                           modifiers: opts.modifiers.clone() });
+
     let mut stateful_input = Stateful { input: opts.content.as_str(),
                                         state };
 

@@ -47,26 +47,26 @@ impl FlusterComponentResult for MarkdownBoldAndItalicTextResult {
 impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicTextResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownBoldAndItalicTextResult> {
         let cp = input.input.checkpoint();
-        let first_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|e| {
+        let first_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
                                                                                   input.input.reset(&cp);
                                                                               })?;
-        let second_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|e| {
+        let second_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
                                                                                    input.input.reset(&cp);
                                                                                })?;
-        let third_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|e| {
+        let third_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
                                                                                   input.input.reset(&cp);
                                                                               })?;
         let content = take_while(1.., |c: char| c.to_string() != third_token && c != '\n').parse_next(input)
                                                                                           .inspect_err(|e| {
                                                                                               input.input.reset(&cp);
                                                                                           })?;
-        let _ = literal(third_token).parse_next(input).inspect_err(|e| {
+        let _ = literal(third_token).parse_next(input).inspect_err(|_| {
                                                            input.input.reset(&cp);
                                                        })?;
-        let _ = literal(second_token).parse_next(input).inspect_err(|e| {
+        let _ = literal(second_token).parse_next(input).inspect_err(|_| {
                                                             input.input.reset(&cp);
                                                         })?;
-        let _ = literal(first_token).parse_next(input).inspect_err(|e| {
+        let _ = literal(first_token).parse_next(input).inspect_err(|_| {
                                                            input.input.reset(&cp);
                                                        })?;
 

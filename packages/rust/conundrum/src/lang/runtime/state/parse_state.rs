@@ -1,3 +1,4 @@
+use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use serde::{Deserialize, Serialize};
 use uniffi::Enum;
 
@@ -11,10 +12,16 @@ pub enum ConundrumModifier {
     HideAiInput,
     PreferMarkdownSyntax,
     /// Useful for search related features, being able to match text without
-    /// markdown syntax interfering.
+    /// markdown syntax interfering. Not super useful for much else.
     ForcePlainText,
-    /// Set this flag when the output is intended to be consumed by AI
+    /// Set this flag when the output is intended to be consumed by AI, probably
+    /// with the 'PreferMarkdownSyntax' flag.
     ForAIInput,
+
+    /// When this component is to be used for search text input, all of the
+    /// component jsx and mdx syntax will be removed, leaving only
+    /// searchable text.
+    ForSearchInput,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -47,5 +54,9 @@ impl ParseState {
 
     pub fn contains_modifier(&self, modifier: &ConundrumModifier) -> bool {
         self.modifiers.iter().any(|x| x == modifier)
+    }
+
+    pub fn should_ignore_parser(&self, id: &ParserId) -> bool {
+        self.data.front_matter.as_ref().is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &id.to_string()))
     }
 }

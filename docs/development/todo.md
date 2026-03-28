@@ -81,17 +81,27 @@
 
 # Today
 
+### Ai Summary
+
+- [ ] Handle light mode of `AISummaryContainer` card or whatever it's called. It looks _sick_ in dark mode, but light mode needs some work...
+- [ ] Handle force regeneration, because that's not working...
+- [ ] Handle React property parsers so that the components can be more reliably parsed and the input more reliably inserted into AI. This will open the door to a **TON** new possibilities.
+
 ## Offline
 
+**_PRIORITY:_** Handle this issue with the editor instances first.
+
+- [ ] Fix issue with Safari keeping around 20 instances of the editor view.
+- [ ] Handle issue with command palette not changing a variety of different state fields when the editor is focused, requiring a user navigation away from an then back to the editor page to see the changes.
 - [ ] Verify that the iPad app is working again. It will need at least changes to:
   - [ ] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
   - [ ] Initial State function
   - [ ] `WebviewContainer.mathjaxUrl` field added and passed around properly.
-- [ ] Handle move of `to_mdx_component` to `to_fluster_component` in `packages/rust/conundrum/src/lang/runtime/compile_conundrum.rs`.
+- [x] Handle move of `to_mdx_component` to `to_fluster_component` in `packages/rust/conundrum/src/lang/runtime/compile_conundrum.rs`.
   - This means that everything will need to implement the `FlusterComponentResult` trait, but this should allow the different output methods then based on the flags passed.
-- [ ] Fix issue with Safari keeping around 20 instances of the editor view.
 - [ ] Make sure to parse title for markdown model with plainText output to avoid markdown content for text comparison.
   - [ ] Store an alternative title in markdown format next to the model if needed.
+- [ ] Handle bug with color scheme note changing editor theme when toggled via the command palette on the editor page anymore for some inexplicable reason...
 - [x] Add `output_format` property to `ConundrumInput.state` to conditionally render each item as either plain text, inline markdown, markdown or mdx. Use this to store a stringified, more searchable title alongside the note's content if the stringified title does not match the normal title exactly. This will get around the searchability issue with markdown based titles.
 - [x] Create quick plot generator for mean conundrum parsing time.
 - [x] Handle issue with `NoteDetailSheet` requiring refresh on Mac to load contents.
