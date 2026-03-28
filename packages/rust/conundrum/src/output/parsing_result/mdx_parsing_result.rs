@@ -55,6 +55,10 @@ impl MdxParsingResult {
         x
     }
 
+    pub fn contains_tag(&self, tag_body: &str) -> bool {
+        self.tags.iter().any(|x| x.body == tag_body)
+    }
+
     pub fn contains_outgoing_link(&self, link_note_id: &str) -> bool {
         self.outgoing_links.iter().any(|x| x.link_to_note_id == link_note_id)
     }

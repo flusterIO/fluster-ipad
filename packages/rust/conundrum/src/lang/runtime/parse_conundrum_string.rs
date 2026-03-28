@@ -9,9 +9,9 @@ use winnow::{
 
 use crate::lang::runtime::apply_parsed_conundrum_result::apply_parsed_conundrum_input_state;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
-use crate::parsers::fluster::docs::ParsedInspectionRequest;
-use crate::parsers::fluster::fluster_comment::FlusterCommentResult;
-use crate::parsers::fluster::hr_with_children::HrWithChildrenResult;
+use crate::parsers::conundrum::docs::ParsedInspectionRequest;
+use crate::parsers::conundrum::fluster_comment::ConundrumCommentResult;
+use crate::parsers::conundrum::hr_with_children::HrWithChildrenResult;
 use crate::parsers::markdown::block_math::BlockMathResult;
 use crate::parsers::markdown::block_quote::BlockQuoteResult;
 use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextResult;
@@ -27,7 +27,7 @@ use crate::parsers::react::react_component_self_closing::ReactComponentSelfClosi
 use crate::parsers::react::react_component_with_children::ReactComponentWithChildrenResult;
 use crate::{
     lang::elements::parsed_elements::ParsedElement,
-    parsers::fluster::{inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink, tag::ParsedTag},
+    parsers::conundrum::{inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink, tag::ParsedTag},
 };
 
 /// Core recursive parser.  Returns a `ModalResult` so it can be called from
@@ -51,7 +51,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                 "/" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            FlusterCommentResult::parse_input_string.map(ParsedElement::Comment),
+                            ConundrumCommentResult::parse_input_string.map(ParsedElement::Comment),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {

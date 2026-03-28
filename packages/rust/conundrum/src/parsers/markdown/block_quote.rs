@@ -18,7 +18,7 @@ use crate::{
             parse_conundrum_string::parse_elements,
             state::parse_state::{ConundrumModifier, ParseState},
             traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::FlusterComponentResult,
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
                 mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -46,8 +46,8 @@ impl PlainTextComponentResult for BlockQuoteResult {
     }
 }
 
-impl FlusterComponentResult for BlockQuoteResult {
-    fn to_fluster_component(&self, res: &mut ParseState) -> String {
+impl ConundrumComponentResult for BlockQuoteResult {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else {

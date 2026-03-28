@@ -3,11 +3,11 @@ use serde::Serialize;
 use crate::{
     lang::runtime::{
         state::parse_state::ParseState,
-        traits::{fluster_component_result::FlusterComponentResult, mdx_component_result::MdxComponentResult},
+        traits::{fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult},
     },
     parsers::{
-        fluster::{
-            docs::ParsedInspectionRequest, fluster_comment::FlusterCommentResult,
+        conundrum::{
+            docs::ParsedInspectionRequest, fluster_comment::ConundrumCommentResult,
             hr_with_children::HrWithChildrenResult, inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink,
             tag::ParsedTag,
         },
@@ -60,32 +60,32 @@ pub enum ParsedElement {
     Tag(ParsedTag),
     ParsedInspectionRequest(ParsedInspectionRequest),
     HrWithChildren(HrWithChildrenResult),
-    Comment(FlusterCommentResult),
+    Comment(ConundrumCommentResult),
 }
 
 impl MdxComponentResult for ParsedElement {
     fn to_mdx_component(&self, res: &mut ParseState) -> String {
         match self {
-            ParsedElement::ParsedInspectionRequest(req) => req.to_fluster_component(res),
-            ParsedElement::ParsedCodeBlock(block) => block.to_fluster_component(res),
-            ParsedElement::ParsedCitation(cite) => cite.to_fluster_component(res),
-            ParsedElement::ParsedOutgoingNoteLink(l) => l.to_fluster_component(res),
-            ParsedElement::Tag(tag) => tag.to_fluster_component(res),
+            ParsedElement::ParsedInspectionRequest(req) => req.to_conundrum_component(res),
+            ParsedElement::ParsedCodeBlock(block) => block.to_conundrum_component(res),
+            ParsedElement::ParsedCitation(cite) => cite.to_conundrum_component(res),
+            ParsedElement::ParsedOutgoingNoteLink(l) => l.to_conundrum_component(res),
+            ParsedElement::Tag(tag) => tag.to_conundrum_component(res),
             ParsedElement::Text(s) => s.clone(),
-            ParsedElement::Heading(heading) => heading.to_fluster_component(res),
-            ParsedElement::BlockMath(math) => math.to_fluster_component(res),
-            ParsedElement::InlineMath(math) => math.to_fluster_component(res),
-            ParsedElement::BlockQuote(quote) => quote.to_fluster_component(res),
-            ParsedElement::BoldText(t) => t.to_fluster_component(res),
-            ParsedElement::ItalicText(t) => t.to_fluster_component(res),
-            ParsedElement::BoldAndItalicText(t) => t.to_fluster_component(res),
-            ParsedElement::MarkdownLink(l) => l.to_fluster_component(res),
-            ParsedElement::MarkdownParagraph(p) => p.to_fluster_component(res),
-            ParsedElement::HrWithChildren(c) => c.to_fluster_component(res),
-            ParsedElement::Comment(c) => c.to_fluster_component(res),
-            ParsedElement::ReactComponentSelfClosing(c) => c.to_fluster_component(res),
-            ParsedElement::ReactComponentWithChildren(c) => c.to_fluster_component(res),
-            ParsedElement::Emoji(e) => e.to_fluster_component(res),
+            ParsedElement::Heading(heading) => heading.to_conundrum_component(res),
+            ParsedElement::BlockMath(math) => math.to_conundrum_component(res),
+            ParsedElement::InlineMath(math) => math.to_conundrum_component(res),
+            ParsedElement::BlockQuote(quote) => quote.to_conundrum_component(res),
+            ParsedElement::BoldText(t) => t.to_conundrum_component(res),
+            ParsedElement::ItalicText(t) => t.to_conundrum_component(res),
+            ParsedElement::BoldAndItalicText(t) => t.to_conundrum_component(res),
+            ParsedElement::MarkdownLink(l) => l.to_conundrum_component(res),
+            ParsedElement::MarkdownParagraph(p) => p.to_conundrum_component(res),
+            ParsedElement::HrWithChildren(c) => c.to_conundrum_component(res),
+            ParsedElement::Comment(c) => c.to_conundrum_component(res),
+            ParsedElement::ReactComponentSelfClosing(c) => c.to_conundrum_component(res),
+            ParsedElement::ReactComponentWithChildren(c) => c.to_conundrum_component(res),
+            ParsedElement::Emoji(e) => e.to_conundrum_component(res),
         }
     }
 }
