@@ -46,11 +46,12 @@ literal("=>").parse_next(i)
                                             })?;
 
         // let js_string = compile_javascript...
-        let buggy_function_body = take_till(0.., |c| c != '}').parse_next(input_inner)
+        let buggy_function_body = take_till(0.., |c| c == '}').parse_next(input_inner)
                                                               .inspect_err(|_| {
                                                                   input_inner.input.reset(&start);
                                                               })?;
 
+        println!("Here");
         let _ = '}'.parse_next(input_inner).inspect_err(|_| {
                                                 input_inner.input.reset(&start);
                                             })?;
@@ -83,13 +84,13 @@ const x = 3 / 4;
         assert!(res.parameters.len() == 3, "Returns the proper number of parameters");
 
         assert!(match res.parameters.index(0) {
-                    ParsedJavascriptElement::Boolean(b) => b.value == true,
+                    ParsedJavascriptElement::Boolean(b) => b.value,
                     _ => false,
                 },
                 "Parses the proper argument for the first input");
 
         assert!(match res.parameters.index(1) {
-                    ParsedJavascriptElement::String(s) => s.value == "My String".to_string(),
+                    ParsedJavascriptElement::String(s) => s.value == "My String",
                     _ => false,
                 },
                 "Parses the proper argument for the second input");
