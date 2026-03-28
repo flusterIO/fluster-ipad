@@ -1,0 +1,17 @@
+use winnow::combinator::alt;
+use winnow::{ModalResult, Parser};
+
+use crate::parsers::javascript::javascript_boolean::JavascriptBooleanResult;
+use crate::{
+    lang::runtime::traits::conundrum_input::ConundrumInput,
+    parsers::javascript::{
+        javascript_number::JavascriptNumberResult, javascript_parser_trait::JavascriptParser,
+        parsed_javascript_elements::ParsedJavascriptElement, string::javascript_string::JavascriptStringResult,
+    },
+};
+
+pub fn javascript_object_value(input: &mut ConundrumInput) -> ModalResult<ParsedJavascriptElement> {
+    alt((JavascriptStringResult::parse_javascript.map(ParsedJavascriptElement::String),
+         JavascriptNumberResult::parse_javascript.map(ParsedJavascriptElement::Number),
+         JavascriptBooleanResult::parse_javascript.map(ParsedJavascriptElement::Boolean))).parse_next(input)
+}

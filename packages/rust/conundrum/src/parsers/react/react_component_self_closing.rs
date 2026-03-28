@@ -1,0 +1,158 @@
+use rssn::prelude::itertools_Itertools;
+use serde::Serialize;
+use typeshare::typeshare;
+use winnow::{
+    ModalResult, Parser,
+    ascii::alphanumeric1,
+    combinator::repeat,
+    stream::{AsChar, Stream},
+    token::{literal, take_until, take_while},
+};
+
+use crate::{
+    lang::runtime::{
+        state::parse_state::{ConundrumModifier, ParseState},
+        traits::{
+            ai_input_component_result::AIInputComponentResult, conundrum_input::ConundrumInput,
+            fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+        },
+    },
+    parsers::parser_trait::ConundrumParser,
+};
+
+#[typeshare]
+#[derive(Debug, Serialize)]
+pub struct ReactComponentSelfClosingResult {
+    pub full_text: String,
+    pub component_name: String,
+    pub props_string: String,
+}
+
+impl AIInputComponentResult for ReactComponentSelfClosingResult {
+    fn to_ai_input(&self, _: &mut ParseState) -> String {
+        String::from("")
+    }
+}
+
+impl MarkdownComponentResult for ReactComponentSelfClosingResult {
+    fn to_markdown(&self, _: &mut ParseState) -> String {
+        String::from("")
+    }
+}
+
+impl PlainTextComponentResult for ReactComponentSelfClosingResult {
+    // TODO: Parse specific Fragment based properties as markdown and figure out a
+    // way to format everything nicely here.
+    fn to_plain_text(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+        String::from("")
+    }
+}
+
+impl MdxComponentResult for ReactComponentSelfClosingResult {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
+        self.full_text.clone()
+    }
+}
+
+impl ConundrumComponentResult for ReactComponentSelfClosingResult {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+        if res.contains_modifier(&ConundrumModifier::ForAIInput) {
+            self.to_ai_input(res)
+        } else if res.contains_modifier(&ConundrumModifier::PreferMarkdownSyntax) {
+            self.to_markdown(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
+}
+
+fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult<ReactComponentSelfClosingResult> {
+    let start = input.input.checkpoint();
+
+    let _ = '<'.parse_next(input).inspect_err(|_| {
+                                      input.input.reset(&start);
+                                  })?;
+
+    let component_leading_char = take_while(1, AsChar::is_alpha).verify(|c: &str| {
+                                                                    let s = c.to_string();
+                                                                    s == s.to_uppercase()
+                                                                })
+                                                                .parse_next(input)
+                                                                .inspect_err(|_| {
+                                                                    input.input.reset(&start);
+                                                                })?;
+
+    let rest_component_name: Vec<&str> = repeat(1.., alphanumeric1).parse_next(input).inspect_err(|_| {
+                                                                                          input.input.reset(&start);
+                                                                                      })?;
+
+    let component_name = format!("{}{}", component_leading_char, rest_component_name.iter().join(""));
+
+    // WITH_WIFI:
+    // BUG: This will not work with a '>' in the user's content. This will be ok for
+    // outputing to AI as it will still catch the majority of cases, but this
+    // nees to be improved significantly.
+    let props_string = take_until(0.., "/>").parse_next(input).inspect_err(|_| {
+                                                                   input.input.reset(&start);
+                                                               })?;
+
+    let _ = literal("/>").parse_next(input).inspect_err(|_| {
+                                                input.input.reset(&start);
+                                            })?;
+    Ok(ReactComponentSelfClosingResult { full_text: "".to_string(),
+                                         component_name,
+                                         props_string: props_string.to_string() })
+}
+
+impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClosingResult {
+    fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
+                          -> ModalResult<ReactComponentSelfClosingResult> {
+        let (mut res, taken) = parse_self_closing_react_component.with_taken().parse_next(input)?;
+        res.full_text = taken.to_string();
+        Ok(res)
+    }
+
+    fn matches_first_char(char: char) -> bool {
+        char == '<'
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::testing::wrap_test_content::wrap_test_conundrum_content;
+
+    use super::*;
+
+    #[test]
+    fn parses_self_closing_react_component() {
+        let test_content = r#"<MyComponent myBool myObject={{}} myString="Here is a string" />"#;
+        let mut test_data = wrap_test_conundrum_content(test_content);
+        let res =
+            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid react component.");
+        assert!(test_data.input.is_empty(), "Consumes the entire component string.");
+        assert!(res.full_text == test_content, "Returns the complete test content");
+        let mut state = test_data.state.borrow_mut();
+        let mdx_component = res.to_mdx_component(&mut state);
+        assert!(mdx_component == test_content, "Returns the input component as an mdx input");
+        assert!(res.component_name == "MyComponent", "Returns the proper component  name");
+        println!("{:#?}", res);
+        // assert_eq!(result, 4);
+    }
+
+    #[test]
+    fn parses_self_closing_react_component_that_contains_closing_tag_in_str() {
+        let test_content = r#"<MyComponent myBool myObject={{}} myString="Here is /> a string" />"#;
+        let mut test_data = wrap_test_conundrum_content(test_content);
+        let res =
+            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid react component.");
+        assert!(test_data.input.is_empty(), "Consumes the entire component string.");
+        assert!(res.full_text == test_content, "Returns the complete test content");
+        let mut state = test_data.state.borrow_mut();
+        let mdx_component = res.to_mdx_component(&mut state);
+        assert!(mdx_component == test_content, "Returns the input component as an mdx input");
+        assert!(res.component_name == "MyComponent", "Returns the proper component  name");
+        println!("{:#?}", res);
+        // assert_eq!(result, 4);
+    }
+}

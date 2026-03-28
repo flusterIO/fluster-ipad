@@ -1,0 +1,19 @@
+---
+source: packages/rust/conundrum/tests/parser_tests/heading.rs
+expression: res.content
+---
+<AutoInsertedHeading depth={1} id="myIdHere">Title with id</AutoInsertedHeading>
+
+Rutrum in, eu faucibus porta arcu aliquam vestibulum tempus faucibus. Ante finibus condimentum imperdiet velit, eget, tristique dapibus in volutpat. Rutrum pharetra, nullam gravida vitae aliquam lectus metus enim sit. Varius neque neque nulla faucibus, suscipit ut laoreet at et. Vestibulum pellentesque sed in massa laoreet nunc nec consectetur tincidunt.
+
+Convallis aliquam tempor, sit dui pellentesque nec eget sed, penatibus. Fermentum ut, lectus nunc nibh vel, amet etiam facilisis ridiculus. Feugiat nisl ac habitasse diam id dolor tempor nunc, et. Nibh nibh sed sed ipsum convallis praesent, platea, ac tempor. Ante eget, est, tempor fermentum convallis ut felis sed dapibus.
+
+Enim risus nulla nisl sem cursus, cursus varius eget in. Nisi eu molestie at tellus eu tempor quis, penatibus ut. Non platea, sit, dui rhoncus tincidunt vulputate est quis justo. Dapibus risus at, aenean efficitur, ac ultricies eleifend lectus vel. Sit platea, laoreet nam nulla ex magna, habitasse faucibus in.
+
+<AutoInsertedHeading depth={2} id={null}>Lorem</AutoInsertedHeading>
+
+Ut, efficitur id, eget quisque nisi diam non pharetra felis. Dignissim nibh, ut in, erat tristique laoreet dictumst neque vivamus. Ex ornare eu etiam est dis tristique porttitor quisque, tellus. Laoreet venenatis molestie mi, lectus, nunc platea morbi amet auctor. Nibh sapien volutpat elementum molestie arcu eros porta et vitae.
+
+<AutoInsertedHeading depth={3} id={null}>Ipsum</AutoInsertedHeading>
+
+Vulputate molestie, suscipit nec in viverra tempus in gravida eu. Lectus nulla risus, sit, non euismod aliquam ac ante dis. Vulputate enim dis dictumst vulputate congue eget eu nullam diam. Turpis et, ante sit amet pharetra, ac non quisque pharetra. Ipsum, etiam malesuada consequat, pellentesque dapibus dictumst leo non ultrices.
