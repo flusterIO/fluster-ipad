@@ -96,6 +96,7 @@ const x = 3 / 4;
                 "Parses the proper argument for the second input");
 
         assert!(match res.parameters.index(2) {
+                    #[allow(clippy::approx_constant)]
                     ParsedJavascriptElement::Number(n) => n.value.as_float() == 3.14,
                     _ => false,
                 },

@@ -9,16 +9,16 @@ pub fn white_space_delimited<'a, T>(mut parser: impl Fn(&mut ConundrumInput<'a>)
                                     -> impl FnMut(&mut ConundrumInput<'a>) -> ModalResult<T> {
     move |input| {
         let start = input.input.checkpoint();
-        let _ = consume_white_space(0..).parse_next(input).inspect_err(|_| {
-                                                               input.input.reset(&start);
-                                                           })?;
+        consume_white_space(0..).parse_next(input).inspect_err(|_| {
+                                                       input.input.reset(&start);
+                                                   })?;
         let t = parser.parse_next(input).inspect_err(|_| {
                                              input.input.reset(&start);
                                          })?;
 
-        let _ = consume_white_space(0..).parse_next(input).inspect_err(|_| {
-                                                               input.input.reset(&start);
-                                                           })?;
+        consume_white_space(0..).parse_next(input).inspect_err(|_| {
+                                                       input.input.reset(&start);
+                                                   })?;
 
         Ok(t)
     }
