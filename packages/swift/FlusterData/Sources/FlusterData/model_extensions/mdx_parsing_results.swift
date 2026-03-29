@@ -13,6 +13,7 @@ extension MdxParsingResult: @retroactive Codable {
     case ignore_all_parsers
     case ai_secondary_parse_requests
     case success
+    case toc
   }
 
   public init(from decoder: Decoder) throws {
@@ -23,6 +24,7 @@ extension MdxParsingResult: @retroactive Codable {
     let frontMatter = try container.decodeIfPresent(FrontMatterResult.self, forKey: .front_matter)
     let citations = try container.decode([String].self, forKey: .orderedCitationKeys)
     let ignoreAllParsers = try container.decode(Bool.self, forKey: .ignore_all_parsers)
+    let toc = try container.decode([MarkdownHeadingStringifiedResult].self, forKey: .toc)
     let outgoing_links = try container.decode(
       [NoteOutgoingLinkResult].self, forKey: .outgoing_links)
     let dictionaryEntries = try container.decode(
@@ -39,6 +41,7 @@ extension MdxParsingResult: @retroactive Codable {
       orderedCitationKeys: citations,
       dictionaryEntries: dictionaryEntries,
       outgoingLinks: outgoing_links,
+      toc: toc,
       ignoreAllParsers: ignoreAllParsers,
       aiSecondaryParseRequests: aiParsingRequests,
       success: success
