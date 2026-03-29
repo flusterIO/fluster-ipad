@@ -14,9 +14,6 @@ pub struct JavascriptBooleanResult {
 impl JavascriptParser<JavascriptBooleanResult> for JavascriptBooleanResult {
     fn parse_javascript(input: &mut ConundrumInput) -> ModalResult<JavascriptBooleanResult> {
         let res = alt((literal("true"), literal("false"))).parse_next(input)?;
-        Ok(JavascriptBooleanResult { value: match res {
-                                         "true" => true,
-                                         _ => false,
-                                     } })
+        Ok(JavascriptBooleanResult { value: res == "true" })
     }
 }

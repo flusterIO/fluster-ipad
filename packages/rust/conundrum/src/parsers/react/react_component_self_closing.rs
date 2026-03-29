@@ -93,6 +93,7 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult
     // BUG: This will not work with a '>' in the user's content. This will be ok for
     // outputing to AI as it will still catch the majority of cases, but this
     // nees to be improved significantly.
+    //
     let props_string = take_until(0.., "/>").parse_next(input).inspect_err(|_| {
                                                                    input.input.reset(&start);
                                                                })?;

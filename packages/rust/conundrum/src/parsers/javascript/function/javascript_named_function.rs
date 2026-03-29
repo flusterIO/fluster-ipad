@@ -5,8 +5,7 @@ use crate::{
     parsers::{
         javascript::{
             function::{
-                javascript_function::JavascriptFunction,
-                javascript_function_parameter::{self, javascript_function_parameter},
+                javascript_function::JavascriptFunction, javascript_function_parameter::javascript_function_parameter,
             },
             parsed_javascript_elements::ParsedJavascriptElement,
         },
