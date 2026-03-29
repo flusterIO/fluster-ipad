@@ -24,20 +24,19 @@ pub struct JavascriptObjectKeyValuePair {
 impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValuePair {
     fn parse_javascript(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
         let start = input.input.checkpoint();
-
-        let _ = consume_white_space(0..).parse_next(input).inspect_err(|_| {
-                                                               input.input.reset(&start);
-                                                           })?;
         let key = javascript_object_key.parse_next(input).inspect_err(|_| {
                                                               input.input.reset(&start);
                                                           })?;
-        let _ = consume_white_space(0..).parse_next(input).inspect_err(|_| {
-                                                               input.input.reset(&start);
-                                                           })?;
+        consume_white_space(0..).parse_next(input).inspect_err(|_| {
+                                                       input.input.reset(&start);
+                                                   })?;
         let _ = ':'.parse_next(input).inspect_err(|_| {
                                           input.input.reset(&start);
                                       })?;
 
+        consume_white_space(0..).parse_next(input).inspect_err(|_| {
+                                                       input.input.reset(&start);
+                                                   })?;
         let value = javascript_object_value.parse_next(input).inspect_err(|_| {
                                                                   input.input.reset(&start);
                                                               })?;

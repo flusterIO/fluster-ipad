@@ -54,6 +54,21 @@ export interface InlineMathResult {
 	body: string;
 }
 
+export interface JsxNumberPropertyResult {
+	key: string;
+	value: number;
+}
+
+/**
+ * The same as the `MarkdownHeadingResult` struct but wth the children
+ * rendered.
+ */
+export interface MarkdownHeadingStringifiedResult {
+	depth: number;
+	content: string;
+	id?: string;
+}
+
 export interface MarkdownLinkResult {
 	text: string;
 	url: string;
@@ -76,6 +91,7 @@ export interface MdxParsingResult {
 	ordered_citation_keys: string[];
 	dictionary_entries: DictionaryEntryResult[];
 	outgoing_links: NoteOutgoingLinkResult[];
+	toc: MarkdownHeadingStringifiedResult[];
 	/**
 	 * Always set to false initially, but can be set to true by certain parsers
 	 * to avoid further parsing.
@@ -98,6 +114,12 @@ export enum ConundrumModifier {
 	 * with the 'PreferMarkdownSyntax' flag.
 	 */
 	ForAIInput = "ForAIInput",
+	/**
+	 * When this component is to be used for search text input, all of the
+	 * component jsx and mdx syntax will be removed, leaving only
+	 * searchable text.
+	 */
+	ForSearchInput = "ForSearchInput",
 }
 
 export interface ParseMdxOptions {

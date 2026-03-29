@@ -11,3 +11,7 @@ pub fn jsx_curly_bracket_wrapped_property(input: &mut ConundrumInput) -> ModalRe
         (jsx_property_key, '=', delimited('{', take_till(0.., |c| c == '}'), '}')).parse_next(input)?;
     Ok((key, bracketed_content.trim().to_string()))
 }
+
+// RESUME: THis is the error. Come back here and fis this so the object parser
+// works after fixing website's fucing math error.
+// pub jsx_curly_bracket_property(key: &str)

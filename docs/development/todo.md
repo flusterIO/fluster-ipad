@@ -81,6 +81,11 @@
 
 # Today
 
+- [ ] Get everything building again.
+- [ ] Fix website math error.
+- [ ] Handle jsx object property parser.
+  - [ ] Rewrite jsx_curly_bracket_property parser from scratch.
+
 ### Ai Summary
 
 - [ ] Handle light mode of `AISummaryContainer` card or whatever it's called. It looks _sick_ in dark mode, but light mode needs some work...

@@ -81,7 +81,6 @@ generate_initial_note_paths: build_internal_cli gather_component_docs
 	tsx {{justfile_directory()}}/scripts/generate_initial_note_paths.ts
 
 generate_initial_note_data: generate_initial_note_paths write_in_content_docs_by_id write_zod_schema_docs
-	cp /Users/bigsexy/Desktop/notes/content/physics/ipad_app_notes/on_the_gravitational_nature_of_time.mdx /Users/bigsexy/Desktop/swift/Fluster/docs/initial_note_docs/on_the_gravitational_nature_of_time.mdx
 	./target/debug/fluster_internal_cli parse-initial-notes
 
 build_cross_language_schemas: generate_initial_note_data

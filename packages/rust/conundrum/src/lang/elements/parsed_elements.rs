@@ -35,6 +35,7 @@ impl MdxComponentResult for String {
 // As a current limitation, a parser cannot have children as
 // `Vec<ParsedElement>` or reference `ParsedElement` in any other way _and_
 // export it's type via typeshare.
+#[typeshare::typeshare]
 #[derive(Debug, Serialize)]
 pub enum ParsedElement {
     // Markdown

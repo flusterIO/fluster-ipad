@@ -1,4 +1,3 @@
-use rssn::prelude::itertools_Itertools;
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
@@ -18,7 +17,14 @@ use crate::{
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
-    parsers::parser_trait::ConundrumParser,
+    parsers::{
+        javascript::object::{
+            javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object::JavascriptObjectResult,
+        },
+        parser_components::{consume_white_space::consume_white_space, white_space_delimited::white_space_delimited},
+        parser_trait::ConundrumParser,
+        react::parser_components::jsx_properties::any_jsx_property::{self, any_jsx_property},
+    },
 };
 
 #[typeshare]
@@ -26,7 +32,7 @@ use crate::{
 pub struct ReactComponentSelfClosingResult {
     pub full_text: String,
     pub component_name: String,
-    pub props_string: String,
+    pub props: JavascriptObjectResult,
 }
 
 impl AIInputComponentResult for ReactComponentSelfClosingResult {
@@ -87,23 +93,31 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult
                                                                                           input.input.reset(&start);
                                                                                       })?;
 
-    let component_name = format!("{}{}", component_leading_char, rest_component_name.iter().join(""));
+    let component_name = format!("{}{}", component_leading_char, rest_component_name.join(""));
 
+    println!("Here?");
     // WITH_WIFI:
     // BUG: This will not work with a '>' in the user's content. This will be ok for
     // outputing to AI as it will still catch the majority of cases, but this
     // nees to be improved significantly.
     //
-    let props_string = take_until(0.., "/>").parse_next(input).inspect_err(|_| {
-                                                                   input.input.reset(&start);
-                                                               })?;
+    let props: Vec<JavascriptObjectKeyValuePair> =
+        repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
+                                                                                   input.input.reset(&start);
+                                                                               })?;
+
+    println!("Props: {:#?}", props);
+
+    consume_white_space(0..).parse_next(input).inspect_err(|_| {
+                                                   input.input.reset(&start);
+                                               })?;
 
     let _ = literal("/>").parse_next(input).inspect_err(|_| {
                                                 input.input.reset(&start);
                                             })?;
     Ok(ReactComponentSelfClosingResult { full_text: "".to_string(),
                                          component_name,
-                                         props_string: props_string.to_string() })
+                                         props: JavascriptObjectResult::from_kv_pair_vec(props) })
 }
 
 impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClosingResult {
@@ -130,7 +144,7 @@ mod tests {
         let test_content = r#"<MyComponent myBool myObject={{}} myString="Here is a string" />"#;
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
-            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid react component.");
+            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid react component without throwing an error");
         assert!(test_data.input.is_empty(), "Consumes the entire component string.");
         assert!(res.full_text == test_content, "Returns the complete test content");
         let mut state = test_data.state.borrow_mut();
@@ -146,7 +160,7 @@ mod tests {
         let test_content = r#"<MyComponent myBool myObject={{}} myString="Here is /> a string" />"#;
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
-            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid react component.");
+            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid react component without throwing an error.");
         assert!(test_data.input.is_empty(), "Consumes the entire component string.");
         assert!(res.full_text == test_content, "Returns the complete test content");
         let mut state = test_data.state.borrow_mut();
