@@ -1,3 +1,4 @@
+pub mod as_char_extensions;
 pub mod children_utils;
 pub mod conundrum;
 pub mod javascript;

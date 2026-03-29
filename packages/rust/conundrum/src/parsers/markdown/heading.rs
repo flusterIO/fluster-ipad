@@ -169,7 +169,6 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
-        println!("Res: {:#?}", res);
         assert!(res.id.is_some_and(|id| id == "myId"), "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 

@@ -94,8 +94,6 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult
                                                                                       })?;
 
     let component_name = format!("{}{}", component_leading_char, rest_component_name.join(""));
-
-    println!("Here?");
     // WITH_WIFI:
     // BUG: This will not work with a '>' in the user's content. This will be ok for
     // outputing to AI as it will still catch the majority of cases, but this
@@ -144,7 +142,7 @@ mod tests {
         let test_content = r#"<MyComponent myBool myObject={{}} myString="Here is a string" />"#;
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
-            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid react component without throwing an error");
+            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid self closing react component without throwing an error");
         assert!(test_data.input.is_empty(), "Consumes the entire component string.");
         assert!(res.full_text == test_content, "Returns the complete test content");
         let mut state = test_data.state.borrow_mut();
@@ -160,7 +158,7 @@ mod tests {
         let test_content = r#"<MyComponent myBool myObject={{}} myString="Here is /> a string" />"#;
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
-            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid react component without throwing an error.");
+            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid self closing react component without throwing an error.");
         assert!(test_data.input.is_empty(), "Consumes the entire component string.");
         assert!(res.full_text == test_content, "Returns the complete test content");
         let mut state = test_data.state.borrow_mut();

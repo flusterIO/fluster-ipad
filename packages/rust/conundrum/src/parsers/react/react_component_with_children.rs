@@ -1,6 +1,5 @@
 use std::cell::RefCell;
 
-use rssn::prelude::itertools_Itertools;
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
@@ -28,7 +27,15 @@ use crate::{
             },
         },
     },
-    parsers::parser_trait::ConundrumParser,
+    parsers::{
+        as_char_extensions::is_space_or_newline,
+        javascript::object::{
+            javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object::JavascriptObjectResult,
+        },
+        parser_components::white_space_delimited::{self, white_space_delimited},
+        parser_trait::ConundrumParser,
+        react::parser_components::jsx_properties::any_jsx_property::any_jsx_property,
+    },
 };
 
 #[typeshare]
@@ -37,7 +44,7 @@ pub struct ReactComponentWithChildrenResult {
     pub full_text: String,
     pub component_name: String,
     pub children: Vec<ParsedElement>,
-    pub props_string: String,
+    pub props: JavascriptObjectResult,
 }
 
 impl AIInputComponentResult for ReactComponentWithChildrenResult {
@@ -86,19 +93,13 @@ impl MdxComponentResult for ReactComponentWithChildrenResult {
 
 fn react_closing_tag_parser_by_name(component_name: &str) -> impl Fn(&mut ConundrumInput) -> ModalResult<()> {
     move |input| {
-        let _ =
-            delimited(literal("</"),
-                      (take_while(0.., AsChar::is_space), literal(component_name), take_while(0.., AsChar::is_space)),
-                      '>').parse_next(input)?;
+        let _ = delimited(literal("</"),
+                          (take_while(0.., is_space_or_newline),
+                           literal(component_name),
+                           take_while(0.., is_space_or_newline)),
+                          '>').parse_next(input)?;
         Ok(())
     }
-}
-
-fn react_closing_tag_parser(input: &mut ConundrumInput) -> ModalResult<()> {
-    let _ = delimited(literal("</"),
-                      (take_while(0.., AsChar::is_space), literal("here"), take_while(0.., AsChar::is_space)),
-                      '>').parse_next(input)?;
-    Ok(())
 }
 
 fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResult<ReactComponentWithChildrenResult> {
@@ -121,18 +122,12 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
                                                                                           input.input.reset(&start);
                                                                                       })?;
 
-    let component_name = format!("{}{}", component_leading_char, rest_component_name.iter().join(""));
+    let component_name = format!("{}{}", component_leading_char, rest_component_name.join(""));
 
-    // WITH_WIFI:
-    // BUG: This will not work with a '>' in the user's content. This will be ok for
-    // outputing to AI as it will still catch the majority of cases, but this
-    // nees to be improved significantly.
-    // NOTE: The only way I can think of to get around this is to parse strngs as a
-    // global object in markdown, _before_ parsing for the components, but that
-    // would break the linear approach and destroy performance.
-    let props_string = take_until(0.., ">").parse_next(input).inspect_err(|_| {
-                                                                  input.input.reset(&start);
-                                                              })?;
+    let props: Vec<JavascriptObjectKeyValuePair> =
+        repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
+                                                                                   input.input.reset(&start);
+                                                                               })?;
 
     let children_string = take_until(0.., "</").parse_next(input).inspect_err(|_| {
                                                                       input.input.reset(&start);
@@ -153,7 +148,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
                                           // replaced below anyways.
                                           component_name: component_name.to_string(),
                                           children,
-                                          props_string: props_string.to_string() })
+                                          props: JavascriptObjectResult::from_kv_pair_vec(props) })
 }
 
 impl ConundrumParser<ReactComponentWithChildrenResult> for ReactComponentWithChildrenResult {
@@ -184,10 +179,6 @@ This is my children markdown test content
         let mut test_data = wrap_test_conundrum_content(test_content);
 
         let res = ReactComponentWithChildrenResult::parse_input_string(&mut test_data).expect("Parses vald component successfully.");
-
-        println!("Test: {}", test_data.input);
-
-        println!("Response: {:#?}", res);
 
         assert!(res.component_name == "MyComponent", "Finds the proper component name");
         let mut state = test_data.state.borrow_mut();
