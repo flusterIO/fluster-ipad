@@ -89,6 +89,7 @@ export const CodeEditorInner = connector(({
     const dispatch = useDispatch()
 
     useEffect(() => {
+        console.log("dark_mode: ", dark_mode)
         const em = document.getElementById(containerId);
         if (!em) {
             return
