@@ -32,7 +32,7 @@ use crate::{
         javascript::object::{
             javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object::JavascriptObjectResult,
         },
-        parser_components::white_space_delimited::{self, white_space_delimited},
+        parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
         react::parser_components::jsx_properties::any_jsx_property::any_jsx_property,
     },

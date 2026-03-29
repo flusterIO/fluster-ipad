@@ -4,108 +4,108 @@
 
 
 export interface ParsedCodeBlock {
-    language: string;
-    meta_data?: string;
-    content: string;
-    full_match: string;
+	language: string;
+	meta_data?: string;
+	content: string;
+	full_match: string;
 }
 
 export interface AiSerializationRequestPhase1 {
-    parsing_result: ParsedCodeBlock;
+	parsing_result: ParsedCodeBlock;
 }
 
 export interface BlockMathResult {
-    body: string;
+	body: string;
 }
 
-export type ParsedElement =
-    | { tag: "Heading", content: MarkdownHeadingResult }
-    | { tag: "BlockQuote", content: BlockQuoteResult }
-    | { tag: "BlockMath", content: BlockMathResult }
-    | { tag: "InlineMath", content: InlineMathResult }
-    | { tag: "Text", content: string }
-    | { tag: "BoldText", content: MarkdownBoldTextResult }
-    | { tag: "ItalicText", content: MarkdownItalicTextResult }
-    | { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
-    | { tag: "ParsedCodeBlock", content: ParsedCodeBlock }
-    | { tag: "MarkdownLink", content: MarkdownLinkResult }
-    | { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
-    | { tag: "Emoji", content: EmojiResult }
-    | { tag: "ReactComponentSelfClosing", content: ReactComponentSelfClosingResult }
-    | { tag: "ReactComponentWithChildren", content: ReactComponentWithChildrenResult }
-    | { tag: "ParsedCitation", content: ParsedCitation }
-    | { tag: "ParsedOutgoingNoteLink", content: ParsedOutgoingNoteLink }
-    | { tag: "Tag", content: ParsedTag }
-    | { tag: "ParsedInspectionRequest", content: ParsedInspectionRequest }
-    | { tag: "HrWithChildren", content: HrWithChildrenResult }
-    | { tag: "Comment", content: ConundrumCommentResult };
+export type ParsedElement = 
+	| { tag: "Heading", content: MarkdownHeadingResult }
+	| { tag: "BlockQuote", content: BlockQuoteResult }
+	| { tag: "BlockMath", content: BlockMathResult }
+	| { tag: "InlineMath", content: InlineMathResult }
+	| { tag: "Text", content: string }
+	| { tag: "BoldText", content: MarkdownBoldTextResult }
+	| { tag: "ItalicText", content: MarkdownItalicTextResult }
+	| { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
+	| { tag: "ParsedCodeBlock", content: ParsedCodeBlock }
+	| { tag: "MarkdownLink", content: MarkdownLinkResult }
+	| { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
+	| { tag: "Emoji", content: EmojiResult }
+	| { tag: "ReactComponentSelfClosing", content: ReactComponentSelfClosingResult }
+	| { tag: "ReactComponentWithChildren", content: ReactComponentWithChildrenResult }
+	| { tag: "ParsedCitation", content: ParsedCitation }
+	| { tag: "ParsedOutgoingNoteLink", content: ParsedOutgoingNoteLink }
+	| { tag: "Tag", content: ParsedTag }
+	| { tag: "ParsedInspectionRequest", content: ParsedInspectionRequest }
+	| { tag: "HrWithChildren", content: HrWithChildrenResult }
+	| { tag: "Comment", content: ConundrumCommentResult };
 
 export interface BlockQuoteResult {
-    /**
-     * The inner content already fully parsed into `ParsedElement`s.
-     * Nesting is handled recursively: a `> > ...` line becomes a
-     * `BlockQuote` variant inside this `Vec`.
-     */
-    children: ParsedElement[];
-    /** The full original source text that was consumed. */
-    full_match: string;
+	/**
+	 * The inner content already fully parsed into `ParsedElement`s.
+	 * Nesting is handled recursively: a `> > ...` line becomes a
+	 * `BlockQuote` variant inside this `Vec`.
+	 */
+	children: ParsedElement[];
+	/** The full original source text that was consumed. */
+	full_match: string;
 }
 
 export interface CitationResult {
-    /** The parsed citation key. */
-    citation_key: string;
-    /** The complete bibtex entry */
-    idx: number;
+	/** The parsed citation key. */
+	citation_key: string;
+	/** The complete bibtex entry */
+	idx: number;
 }
 
 export interface CitationSummaryData {
-    citation_key: string;
-    body: string;
+	citation_key: string;
+	body: string;
 }
 
 export interface ConundrumCommentResult {
-    content: string;
+	content: string;
 }
 
 export interface DictionaryEntryResult {
-    label: string;
-    body: string;
+	label: string;
+	body: string;
 }
 
 export interface DictionaryEntryResultData {
-    label: string;
-    note_id?: string;
+	label: string;
+	note_id?: string;
 }
 
 export interface EmojiResult {
-    value: string;
+	value: string;
 }
 
 export interface FrontMatterResult {
-    ignored_parsers: string[];
-    title?: string;
-    user_defined_id?: string;
-    file_path?: string;
-    topic?: string;
-    subject?: string;
-    summary?: string;
+	ignored_parsers: string[];
+	title?: string;
+	user_defined_id?: string;
+	file_path?: string;
+	topic?: string;
+	subject?: string;
+	summary?: string;
 }
 
 export interface HrWithChildrenResult {
-    children: ParsedElement[];
+	children: ParsedElement[];
 }
 
 export interface InlineMathResult {
-    body: string;
+	body: string;
 }
 
 export interface JavascriptBooleanResult {
-    value: boolean;
+	value: boolean;
 }
 
-export type ConundrumNumber =
-    | { tag: "Int", content: number }
-    | { tag: "Float", content: number };
+export type ConundrumNumber = 
+	| { tag: "Int", content: number }
+	| { tag: "Float", content: number };
 
 /**
  * Creating the distinction between ints and floats will be important as the
@@ -113,41 +113,41 @@ export type ConundrumNumber =
  * mdx, javascript inputs will be super useful.
  */
 export interface JavascriptNumberResult {
-    value: ConundrumNumber;
+	value: ConundrumNumber;
 }
 
-export type ParsedJavascriptElement =
-    | { tag: "Boolean", content: JavascriptBooleanResult }
-    | { tag: "Number", content: JavascriptNumberResult }
-    | { tag: "String", content: JavascriptStringResult }
-    | { tag: "Object", content: JavascriptObjectResult }
-    | { tag: "KeyValuePair", content: JavascriptObjectKeyValuePair };
+export type ParsedJavascriptElement = 
+	| { tag: "Boolean", content: JavascriptBooleanResult }
+	| { tag: "Number", content: JavascriptNumberResult }
+	| { tag: "String", content: JavascriptStringResult }
+	| { tag: "Object", content: JavascriptObjectResult }
+	| { tag: "KeyValuePair", content: JavascriptObjectKeyValuePair };
 
 export interface JavascriptObjectKeyValuePair {
-    key: string;
-    value: ParsedJavascriptElement;
+	key: string;
+	value: ParsedJavascriptElement;
 }
 
 export interface JavascriptObjectResult {
-    data: Record<string, ParsedJavascriptElement>;
+	data: Record<string, ParsedJavascriptElement>;
 }
 
 export interface JavascriptStringResult {
-    value: string;
+	value: string;
 }
 
 export interface MarkdownBoldAndItalicTextResult {
-    content: string;
+	content: string;
 }
 
 export interface MarkdownBoldTextResult {
-    content: string;
+	content: string;
 }
 
 export interface MarkdownHeadingResult {
-    depth: number;
-    children: ParsedElement[];
-    id?: string;
+	depth: number;
+	children: ParsedElement[];
+	id?: string;
 }
 
 /**
@@ -155,126 +155,126 @@ export interface MarkdownHeadingResult {
  * rendered.
  */
 export interface MarkdownHeadingStringifiedResult {
-    depth: number;
-    content: string;
-    id?: string;
+	depth: number;
+	content: string;
+	id?: string;
 }
 
 export interface MarkdownItalicTextResult {
-    content: string;
+	content: string;
 }
 
 export interface MarkdownLinkResult {
-    text: string;
-    url: string;
+	text: string;
+	url: string;
 }
 
 export interface MarkdownParagraphResult {
-    children: ParsedElement[];
+	children: ParsedElement[];
 }
 
 export interface TagResult {
-    body: string;
+	body: string;
 }
 
 export interface NoteOutgoingLinkResult {
-    /** The user defined id on the target note. */
-    link_to_note_id: string;
+	/** The user defined id on the target note. */
+	link_to_note_id: string;
 }
 
 export interface MdxParsingResult {
-    note_id?: string;
-    content: string;
-    tags: TagResult[];
-    front_matter?: FrontMatterResult;
-    ordered_citation_keys: string[];
-    dictionary_entries: DictionaryEntryResult[];
-    outgoing_links: NoteOutgoingLinkResult[];
-    toc: MarkdownHeadingStringifiedResult[];
-    /**
-     * Always set to false initially, but can be set to true by certain parsers
-     * to avoid further parsing.
-     */
-    ignore_all_parsers: boolean;
-    ai_secondary_parse_requests: AiSerializationRequestPhase1[];
-    success: boolean;
+	note_id?: string;
+	content: string;
+	tags: TagResult[];
+	front_matter?: FrontMatterResult;
+	ordered_citation_keys: string[];
+	dictionary_entries: DictionaryEntryResult[];
+	outgoing_links: NoteOutgoingLinkResult[];
+	toc: MarkdownHeadingStringifiedResult[];
+	/**
+	 * Always set to false initially, but can be set to true by certain parsers
+	 * to avoid further parsing.
+	 */
+	ignore_all_parsers: boolean;
+	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
+	success: boolean;
 }
 
 export enum ConundrumModifier {
-    HideAiInput = "HideAiInput",
-    PreferMarkdownSyntax = "PreferMarkdownSyntax",
-    /**
-     * Useful for search related features, being able to match text without
-     * markdown syntax interfering. Not super useful for much else.
-     */
-    ForcePlainText = "ForcePlainText",
-    /**
-     * Set this flag when the output is intended to be consumed by AI, probably
-     * with the 'PreferMarkdownSyntax' flag.
-     */
-    ForAIInput = "ForAIInput",
-    /**
-     * When this component is to be used for search text input, all of the
-     * component jsx and mdx syntax will be removed, leaving only
-     * searchable text.
-     */
-    ForSearchInput = "ForSearchInput",
+	HideAiInput = "HideAiInput",
+	PreferMarkdownSyntax = "PreferMarkdownSyntax",
+	/**
+	 * Useful for search related features, being able to match text without
+	 * markdown syntax interfering. Not super useful for much else.
+	 */
+	ForcePlainText = "ForcePlainText",
+	/**
+	 * Set this flag when the output is intended to be consumed by AI, probably
+	 * with the 'PreferMarkdownSyntax' flag.
+	 */
+	ForAIInput = "ForAIInput",
+	/**
+	 * When this component is to be used for search text input, all of the
+	 * component jsx and mdx syntax will be removed, leaving only
+	 * searchable text.
+	 */
+	ForSearchInput = "ForSearchInput",
 }
 
 export interface ParseMdxOptions {
-    note_id?: string;
-    content: string;
-    modifiers: ConundrumModifier[];
+	note_id?: string;
+	content: string;
+	modifiers: ConundrumModifier[];
 }
 
 export interface ParsedCitation {
-    key: string;
-    full_match: string;
-    idx: number;
+	key: string;
+	full_match: string;
+	idx: number;
 }
 
 export interface ParsedInspectionRequest {
-    /** An EmbeddableComponentName or InContentDocumentationId */
-    keyword: string;
-    level: number;
-    full_match: string;
+	/** An EmbeddableComponentName or InContentDocumentationId */
+	keyword: string;
+	level: number;
+	full_match: string;
 }
 
 export interface ParsedOutgoingNoteLink {
-    /** The user-defined id of the note which is being linked to. */
-    note_id: string;
-    /** The text content of the link. `[The stuff here](note:MyNote)` */
-    content: string;
-    /**
-     * The full content of the input string that represents this outgoing note
-     * link.
-     */
-    full_match: string;
+	/** The user-defined id of the note which is being linked to. */
+	note_id: string;
+	/** The text content of the link. `[The stuff here](note:MyNote)` */
+	content: string;
+	/**
+	 * The full content of the input string that represents this outgoing note
+	 * link.
+	 */
+	full_match: string;
 }
 
 export interface ParsedTag {
-    /** The tag's body */
-    body: string;
-    /** The full match of the content that was originally in the note. */
-    full_match: string;
+	/** The tag's body */
+	body: string;
+	/** The full match of the content that was originally in the note. */
+	full_match: string;
 }
 
 export interface ReactComponentSelfClosingResult {
-    full_text: string;
-    component_name: string;
-    props: JavascriptObjectResult;
+	full_text: string;
+	component_name: string;
+	props: JavascriptObjectResult;
 }
 
 export interface ReactComponentWithChildrenResult {
-    full_text: string;
-    component_name: string;
-    children: ParsedElement[];
-    props_string: string;
+	full_text: string;
+	component_name: string;
+	children: ParsedElement[];
+	props: JavascriptObjectResult;
 }
 
 export enum AiSerializationRequestType {
-    CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
-    SummarizeNote = "SummarizeNote",
-    RecommendResearch = "RecommendResearch",
+	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
+	SummarizeNote = "SummarizeNote",
+	RecommendResearch = "RecommendResearch",
 }
 

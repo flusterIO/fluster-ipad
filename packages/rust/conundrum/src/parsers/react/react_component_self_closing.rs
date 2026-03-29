@@ -5,7 +5,7 @@ use winnow::{
     ascii::alphanumeric1,
     combinator::repeat,
     stream::{AsChar, Stream},
-    token::{literal, take_until, take_while},
+    token::{literal, take_while},
 };
 
 use crate::{
@@ -21,7 +21,7 @@ use crate::{
         javascript::object::{
             javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object::JavascriptObjectResult,
         },
-        parser_components::{consume_white_space::consume_white_space, white_space_delimited::white_space_delimited},
+        parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
         react::parser_components::jsx_properties::any_jsx_property::{self, any_jsx_property},
     },
@@ -94,21 +94,10 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult
                                                                                       })?;
 
     let component_name = format!("{}{}", component_leading_char, rest_component_name.join(""));
-    // WITH_WIFI:
-    // BUG: This will not work with a '>' in the user's content. This will be ok for
-    // outputing to AI as it will still catch the majority of cases, but this
-    // nees to be improved significantly.
-    //
     let props: Vec<JavascriptObjectKeyValuePair> =
         repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
                                                                                    input.input.reset(&start);
                                                                                })?;
-
-    println!("Props: {:#?}", props);
-
-    consume_white_space(0..).parse_next(input).inspect_err(|_| {
-                                                   input.input.reset(&start);
-                                               })?;
 
     let _ = literal("/>").parse_next(input).inspect_err(|_| {
                                                 input.input.reset(&start);
