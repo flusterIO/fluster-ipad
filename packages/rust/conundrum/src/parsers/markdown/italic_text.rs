@@ -16,6 +16,7 @@ use crate::{
     parsers::parser_trait::ConundrumParser,
 };
 
+#[typeshare::typeshare]
 #[derive(Debug, Serialize)]
 pub struct MarkdownItalicTextResult {
     pub content: String,

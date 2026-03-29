@@ -9,13 +9,14 @@ use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
 /// Creating the distinction between ints and floats will be important as the
 /// runtime will execute mostly in Rust, and being able to parse some of the
 /// mdx, javascript inputs will be super useful.
+#[typeshare::typeshare]
 #[derive(Debug, Serialize)]
 pub struct JavascriptNumberResult {
     pub value: ConundrumNumber,
 }
 
-impl PartialEq<i64> for JavascriptNumberResult {
-    fn eq(&self, other: &i64) -> bool {
+impl PartialEq<i128> for JavascriptNumberResult {
+    fn eq(&self, other: &i128) -> bool {
         match self.value {
             ConundrumNumber::Float(_) => false,
             ConundrumNumber::Int(n) => n == *other,
@@ -31,7 +32,7 @@ impl PartialEq<f64> for JavascriptNumberResult {
 }
 
 pub fn javascript_int(input: &mut ConundrumInput) -> ModalResult<JavascriptNumberResult> {
-    let n: i64 = dec_int.parse_next(input)?;
+    let n: i128 = dec_int.parse_next(input)?;
     Ok(JavascriptNumberResult { value: ConundrumNumber::Int(n) })
 }
 
@@ -57,8 +58,11 @@ mod tests {
         let test_input = "134134";
         let mut test_data = wrap_test_conundrum_content(test_input);
         let res = javascript_int.parse_next(&mut test_data);
-        assert!(res.as_ref().is_ok_and(|x| *x == 134134),
-                "Parses a javascript-like float and returns the proper value.");
+        assert!(
+                res.as_ref().is_ok_and(|x| *x == 134134),
+                "Parses a javascript-like float and returns the proper
+        value."
+        );
 
         // assert_eq!(result, 4);
     }

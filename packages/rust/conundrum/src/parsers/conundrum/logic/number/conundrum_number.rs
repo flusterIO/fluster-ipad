@@ -1,8 +1,10 @@
 use serde::Serialize;
 
+#[typeshare::typeshare]
 #[derive(Debug, Serialize)]
+#[serde(tag = "tag", content = "content")]
 pub enum ConundrumNumber {
-    Int(i64),
+    Int(i128),
     Float(f64),
 }
 

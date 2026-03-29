@@ -1,4 +1,3 @@
-use serde::{Deserialize, Serialize};
 use winnow::{ModalResult, Parser, stream::Stream};
 
 use crate::{
@@ -16,8 +15,6 @@ use crate::{
     },
 };
 
-#[typeshare::typeshare]
-#[derive(Debug, Serialize, Deserialize)]
 pub struct JsxNumberPropertyResult {}
 
 impl JsxPropertyParser for JsxNumberPropertyResult {

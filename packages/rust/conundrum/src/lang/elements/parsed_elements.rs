@@ -37,6 +37,7 @@ impl MdxComponentResult for String {
 // export it's type via typeshare.
 #[typeshare::typeshare]
 #[derive(Debug, Serialize)]
+#[serde(tag = "tag", content = "content")]
 pub enum ParsedElement {
     // Markdown
     Heading(MarkdownHeadingResult),

@@ -13,6 +13,7 @@ use crate::{
     },
 };
 
+#[typeshare::typeshare]
 #[derive(Debug, Serialize)]
 pub struct JavascriptObjectKeyValuePair {
     pub key: String,

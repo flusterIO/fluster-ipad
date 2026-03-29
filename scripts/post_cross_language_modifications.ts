@@ -9,6 +9,13 @@ interface Replacer {
 }
 
 const replacers: Record<string, Replacer[]> = {
+    "packages/webview_utils/src/core/code_gen/typeshare/conundrum.ts": [
+        {
+            query: '| { tag: "Int", content: i128 }',
+            dontPanicIfExists: ['| { tag: "Int", content: number }'],
+            replaceWith: '| { tag: "Int", content: number }',
+        },
+    ],
     "packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare/FlusterCoreUtilities.swift":
         [
             {
@@ -18,8 +25,11 @@ const replacers: Record<string, Replacer[]> = {
             },
             {
                 query: "public enum WebviewFontSize: String, Codable {",
-                dontPanicIfExists: ["public enum WebviewFontSize: String, Codable, CaseIterable {"],
-                replaceWith: "public enum WebviewFontSize: String, Codable, CaseIterable {",
+                dontPanicIfExists: [
+                    "public enum WebviewFontSize: String, Codable, CaseIterable {",
+                ],
+                replaceWith:
+                    "public enum WebviewFontSize: String, Codable, CaseIterable {",
             },
             // {
             //     query: "public enum CodeEditorTheme: String, Codable, CaseIterable {",

@@ -30,6 +30,7 @@ use crate::{
 // Result type
 // ---------------------------------------------------------------------------
 
+#[typeshare::typeshare]
 #[derive(Debug, Serialize)]
 pub struct BlockQuoteResult {
     /// The inner content already fully parsed into `ParsedElement`s.

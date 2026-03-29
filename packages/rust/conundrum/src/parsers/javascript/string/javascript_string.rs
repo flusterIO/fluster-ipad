@@ -5,6 +5,7 @@ use winnow::combinator::{alt, delimited};
 use winnow::token::take_till;
 use winnow::{ModalResult, Parser};
 
+#[typeshare::typeshare]
 #[derive(Debug, Serialize)]
 pub struct JavascriptStringResult {
     pub value: String,

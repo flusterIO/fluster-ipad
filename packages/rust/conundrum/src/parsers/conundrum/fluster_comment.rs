@@ -12,6 +12,7 @@ use crate::{
     parsers::parser_trait::ConundrumParser,
 };
 
+#[typeshare::typeshare]
 #[derive(Serialize, Debug)]
 pub struct ConundrumCommentResult {
     pub content: String,

@@ -17,6 +17,7 @@ use crate::{
     parsers::parser_trait::ConundrumParser,
 };
 
+#[typeshare::typeshare]
 #[derive(Debug, Serialize)]
 pub struct MarkdownBoldTextResult {
     pub content: String,

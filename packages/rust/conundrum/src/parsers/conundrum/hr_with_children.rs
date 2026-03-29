@@ -24,6 +24,7 @@ use crate::{
     parsers::parser_trait::ConundrumParser,
 };
 
+#[typeshare::typeshare]
 #[derive(Serialize, Debug)]
 pub struct HrWithChildrenResult {
     pub children: Vec<ParsedElement>,
