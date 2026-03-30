@@ -205,19 +205,6 @@ struct MdxEditorWebview: View {
           }
         }
       )
-      .onChange(
-        of: colorScheme,
-        {
-          Task {
-            do {
-              try await EditorState.setDarkMode(
-                colorScheme: colorScheme, eval: webView.evaluateJavaScript)
-            } catch {
-              print("Error: \(error.localizedDescription)")
-            }
-          }
-        }
-      )
       .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
   }

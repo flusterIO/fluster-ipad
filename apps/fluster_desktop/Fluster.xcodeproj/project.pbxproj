@@ -7,12 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7931B9EE2F6F4C8E003B5C56 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEDD2F1992BC00A82F5A /* FlusterMdx */; };
-		7931B9EF2F6F4C8E003B5C56 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEE02F19930200A82F5A /* FlusterData */; };
-		7931B9F02F6F4C8E003B5C56 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79CB00712F4000F700C7BDFB /* FlusterWebviewClients */; };
-		7931B9F12F6F4C8E003B5C56 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4642F4A489100F8194A /* FlusterMdx */; };
-		7931B9F22F6F4C8E003B5C56 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4672F4A48AF00F8194A /* FlusterWebviewClients */; };
-		7931B9F32F6F4C8E003B5C56 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD46A2F4A492100F8194A /* FlusterSwift */; };
 		7931B9F42F6F4C8E003B5C56 /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79DFBB632F58980100DA7C4E /* FlusterAI */; };
 		7947AB222F5358C0009CEA5E /* standalone_mdx_preview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB212F5358C0009CEA5E /* standalone_mdx_preview_mac */; };
 		7947AB242F5363A2009CEA5E /* splitview_mdx_editor_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB232F5363A2009CEA5E /* splitview_mdx_editor_mac */; };
@@ -102,12 +96,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7931B9F42F6F4C8E003B5C56 /* FlusterAI in Frameworks */,
-				7931B9F32F6F4C8E003B5C56 /* FlusterSwift in Frameworks */,
-				7931B9F22F6F4C8E003B5C56 /* FlusterWebviewClients in Frameworks */,
-				7931B9F12F6F4C8E003B5C56 /* FlusterMdx in Frameworks */,
-				7931B9F02F6F4C8E003B5C56 /* FlusterWebviewClients in Frameworks */,
-				7931B9EF2F6F4C8E003B5C56 /* FlusterData in Frameworks */,
-				7931B9EE2F6F4C8E003B5C56 /* FlusterMdx in Frameworks */,
 				79C6BD362F6A0ACC00916BE7 /* ConundrumSwift in Frameworks */,
 				79C6BD3C2F6A0AE500916BE7 /* FlusterWebviewClients in Frameworks */,
 				79C6BD422F6A0B2600916BE7 /* FlusterSwift in Frameworks */,

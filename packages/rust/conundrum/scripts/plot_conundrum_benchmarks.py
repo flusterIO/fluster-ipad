@@ -36,7 +36,7 @@ class BenchmarkRun:
     change_median: float | None
 
 
-PARSE_DATA = {"id": "benchmark_2_2_2026_50.mdx", "y_axis": "mean", "include_regex": None}
+PARSE_DATA = {"id": "parse_mdx_by_regex_50", "y_axis": "mean", "include_regex": "all"}
 
 items = []
 
@@ -48,7 +48,6 @@ def get_item_change(item, val: str):
 
 
 def matches(item) -> bool:
-    print(item["id"])
     if PARSE_DATA["include_regex"]:
         return item["id"].__contains__(PARSE_DATA["include_regex"])
     else:
@@ -56,7 +55,7 @@ def matches(item) -> bool:
 
 
 for item in data:
-    if matches(item):
+    if matches(item) or PARSE_DATA["include_regex"] == "all":
         items.append(
             BenchmarkRun(
                 item["id"],

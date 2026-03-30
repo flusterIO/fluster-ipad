@@ -95,6 +95,15 @@ export interface HrWithChildrenResult {
 	children: ParsedElement[];
 }
 
+export type CodeBlockLanguage = 
+	| { tag: "DefaultLanguage", content?: undefined }
+	| { tag: "UserProvided", content: string };
+
+export interface InlineCodeResult {
+	content: string;
+	lang: CodeBlockLanguage;
+}
+
 export interface InlineMathResult {
 	body: string;
 }
@@ -201,7 +210,6 @@ export interface MdxParsingResult {
 }
 
 export enum ConundrumModifier {
-	HideAiInput = "HideAiInput",
 	PreferMarkdownSyntax = "PreferMarkdownSyntax",
 	/**
 	 * Useful for search related features, being able to match text without

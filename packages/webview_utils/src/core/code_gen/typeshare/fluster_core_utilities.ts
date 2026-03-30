@@ -776,6 +776,7 @@ export enum InContentDocumentationId {
 	Emoji = "Emoji",
 	Components = "Components",
 	AI = "AI",
+	Conundrum = "Conundrum",
 }
 
 export enum InContentDocumentationSource {

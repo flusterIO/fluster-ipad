@@ -6,7 +6,6 @@ import consola from "consola";
 
 export const swiftNoteDetailsActionReducer = (state: WithNullableOptionals<GlobalWebviewStateDeepNullable["note_details"]>, action: PayloadAction<AnyCrossLanguageWebviewAction>
 ): WithNullableOptionals<GlobalWebviewStateDeepNullable["note_details"]> => {
-    consola.info("Action: ", action)
     /* eslint-disable-next-line  -- I know it's not exhaustive, but I appreciate the warning in general... */
     switch (action.payload.type) {
         case NoteDetailActions.InvalidateNoteDetails: {

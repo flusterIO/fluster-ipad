@@ -1,11 +1,9 @@
 import { type EditorState, EditorStateActions, WebviewContainerActions } from "@/code_gen/typeshare/fluster_core_utilities";
-import { consola } from "consola"
 import { type PayloadAction } from "@reduxjs/toolkit";
 import { type AnyCrossLanguageWebviewAction } from "#/webview_global_state/cross_language_state_types";
 import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
 
 export const swiftEditorActionReducer = (state: WithNullableOptionals<EditorState>, action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<EditorState> => {
-    consola.info("action: ", action)
 
     /* eslint-disable-next-line  -- I know bruh... */
     switch (action.payload.type) {

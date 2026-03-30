@@ -14,6 +14,7 @@ export const WebviewClient = {
         }))
     },
     setDarkMode: (isDark: boolean) => {
+        console.log("isDark: ", isDark)
         if (isDark) {
             document.body.classList.add('dark');
         } else {

@@ -6,6 +6,8 @@ export const darkModeListenerMiddleware = createListenerMiddleware<GlobalAppStat
 
 darkModeListenerMiddleware.startListening({
     predicate: (_, oldState, newState) => {
+        console.log("oldState.container.dark_mode: ", oldState.container.dark_mode)
+        console.log("newState.container.dark_mode: ", newState.container.dark_mode)
         return oldState.container.dark_mode !== newState.container.dark_mode
     },
     effect: (_, listenerApi) => {

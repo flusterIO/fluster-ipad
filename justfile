@@ -31,6 +31,7 @@ format: format_package_jsons format_swift
 benchmark_conundrum:
 	tsx {{justfile_directory()}}/scripts/documentation/verify_benchmark_note.ts
 	cd {{justfile_directory()}}/packages/rust/conundrum && cargo criterion --message-format="json" | tsx {{justfile_directory()}}/scripts/documentation/pipe_criterion_message_data_to_persistent_data.ts
+	python packages/rust/conundrum/scripts/plot_conundrum_benchmarks.py
 
 build_website:
 	cd apps/website; pnpm build

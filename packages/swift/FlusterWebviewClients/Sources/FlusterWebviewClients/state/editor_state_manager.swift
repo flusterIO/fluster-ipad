@@ -83,6 +83,7 @@ extension EditorState {
       type: WebviewContainerActions.setDarkMode,
       payload: SetDarkModePayload(dark_mode: colorScheme == .dark))
     if let parsedData = EditorState.encodeAction(data: action) {
+      print("Parsed Data: \(parsedData)")
       try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
     }
   }

@@ -9,7 +9,6 @@ use crate::{
 #[typeshare::typeshare]
 #[derive(Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy)]
 pub enum ConundrumModifier {
-    HideAiInput,
     PreferMarkdownSyntax,
     /// Useful for search related features, being able to match text without
     /// markdown syntax interfering. Not super useful for much else.

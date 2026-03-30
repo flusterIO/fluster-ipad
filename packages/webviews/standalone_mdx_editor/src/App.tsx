@@ -1,6 +1,4 @@
 import {
-    type AnyCrossLanguageBufferEditorAction,
-    type AnyCrossLanguageEditorAction,
     CodeEditor,
     createFlusterStore,
     handleSwiftActionWrapper,
@@ -15,7 +13,9 @@ const storeData = createFlusterStore();
 
 window.handleSwiftAction = handleSwiftActionWrapper(storeData.store);
 
-window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(storeData.store);
+window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
+    storeData.store,
+);
 
 function App() {
     return (

@@ -1,5 +1,18 @@
 ## Horizontal Rule (Hr)
 
+The Horizinal rule that accepts children actually has a special convenience syntax thanks to the new **Conundrum** parser:
+
+### Input
+
+````
+--- My function $\delta$ ---
+````
+
+### Output
+
+--- My function $\delta$ ---
+
+
 ````long-docs
 
 The `Hr` component is almost identical to the standard horizontal rule in markdown, apart from that it accepts a `content` or `children` property that's a string or mdx content. The behavior of the `content` and `children` property are completely interchangable, so use whichever format feels more natural.

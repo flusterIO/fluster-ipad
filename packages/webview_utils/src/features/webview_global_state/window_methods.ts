@@ -3,6 +3,7 @@ import { handleSwiftAction, handleSwiftBufferAction } from "./container/webview_
 import { type Store } from "@reduxjs/toolkit";
 import { type GlobalAppState } from "./store";
 import { type AnyCrossLanguageWebviewAction, type AnyCrossLanguageBufferEditorAction } from "./cross_language_state_types"
+import consola from "consola";
 
 
 declare global {
@@ -30,5 +31,6 @@ export const handleSwiftBufferActionWrapper = (store: Store<GlobalAppState>) => 
 
 
 export const handleSwiftActionWrapper = (store: Store<GlobalAppState>) => (action: AnyCrossLanguageWebviewAction): void => {
+    consola.info("Swift Action: ", action)
     store.dispatch(handleSwiftAction(action))
 }

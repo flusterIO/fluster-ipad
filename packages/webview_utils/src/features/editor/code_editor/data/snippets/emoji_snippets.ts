@@ -161,7 +161,6 @@ export const emojiSnippetItems: EmojiSnippetDataItem[] = [
     { value: "speak_no_evil", category: EmojiCategory.people },
     { value: "guardsman", category: EmojiCategory.people },
     { value: "skull", category: EmojiCategory.people },
-    { value: "feet", category: EmojiCategory.people },
     { value: "lips", category: EmojiCategory.people },
     { value: "kiss", category: EmojiCategory.people },
     { value: "droplet", category: EmojiCategory.people },

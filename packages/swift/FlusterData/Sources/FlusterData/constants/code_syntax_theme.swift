@@ -32,7 +32,7 @@ extension CodeEditorTheme {
   }
   public func isDark() -> Bool {
     let darkThemes: [Self] = [
-      .aura, .dracula, .xcodeDark, .materialDark, .solarizedDark, .tokyoNight, .tokyoNightStorm
+      .aura, .dracula, .xcodeDark, .materialDark, .solarizedDark, .tokyoNight, .tokyoNightStorm, .githubDark
     ]
     return darkThemes.contains(self)
   }

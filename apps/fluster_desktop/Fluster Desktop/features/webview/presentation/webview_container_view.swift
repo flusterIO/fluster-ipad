@@ -323,7 +323,7 @@ struct WebViewContainerView: View {
     .task(priority: .high) {
       await handleInitialState()
     }
-      // WITH_WIFI: Figure out how to move this back to a background thread _immediately._ It's causing a memory issue right now but that's crucial for performance, as the plain text results are only useful for search related features.
+    // WITH_WIFI: Figure out how to move this back to a background thread _immediately._ It's causing a memory issue right now but that's crucial for performance, as the plain text results are only useful for search related features.
     .task(id: editingNote?.markdown._body, priority: .low) {
       if let en = editingNote, storePlainText {
         do {
@@ -438,7 +438,11 @@ struct WebViewContainerView: View {
     }
   }
   func setColorScheme(colorScheme: ColorScheme) async {
-    try? await EditorState.setDarkMode(colorScheme: colorScheme, eval: webview.evaluateJavaScript)
+    do {
+      try await EditorState.setDarkMode(colorScheme: colorScheme, eval: webview.evaluateJavaScript)
+    } catch {
+      print("Error: \(error.localizedDescription)")
+    }
   }
   func updateParsedEditorValue() {
     if let en = editingNote {

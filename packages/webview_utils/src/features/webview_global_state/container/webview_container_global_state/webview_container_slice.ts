@@ -14,13 +14,13 @@ export const webviewContainerSlice = createSlice({
     name: 'editor',
     initialState: initialWebviewContainerState,
     reducers: {
-
         /**
          * This function is attached to the window and called directly to handle all editor state interactions from Swift.
          */
         handleSwiftAction: (state, action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<WebviewContainerState> => {
             return swiftContainerActionReducer(state, action)
         },
+        // TODO: Move both of these main methods to the container so we can more easily create web based containers for hosting Conundrum notes on the web.
         handleSwiftBufferAction: (state, action: PayloadAction<AnyCrossLanguageBufferEditorAction>): WithNullableOptionals<WebviewContainerState> => {
             return swiftContainerBufferActionReducer(state, action)
         },
@@ -37,6 +37,7 @@ export const webviewContainerSlice = createSlice({
             }
         },
         setDarkMode(state, action: PayloadAction<boolean | "toggle">) {
+            console.log("Setting dark mode: ", action.payload)
             return {
                 ...state,
                 dark_mode: action.payload === "toggle" ? !state.dark_mode : action.payload
