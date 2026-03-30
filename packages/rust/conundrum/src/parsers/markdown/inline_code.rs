@@ -2,14 +2,17 @@ use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
     ascii::alphanumeric1,
-    combinator::{alt, delimited, repeat_till},
+    combinator::{alt, delimited, opt, repeat_till},
     stream::{AsChar, Stream},
     token::{any, literal, take_till},
 };
 
 use crate::{
     lang::runtime::traits::conundrum_input::ConundrumInput,
-    parsers::{markdown::{code_block, subtypes::code_block_language::CodeBlockLanguage}, parser_trait::ConundrumParser},
+    parsers::{
+        markdown::{code_block, subtypes::code_block_language::CodeBlockLanguage},
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
@@ -20,38 +23,35 @@ pub struct InlineCodeResult {
 }
 
 pub fn parse_inline_code_block_lang(input: &mut &str) -> ModalResult<CodeBlockLanguage> {
-    let start = input.checkpoint();
-    // let code_content = 
-    literal("{:").void().parse_next(input).inspect_err(|_| {
-                                               input.reset(&start);
-                                           })?;
-    let lang = alphanumeric1.parse_next(input).inspect_err(|_| {
-                                                   input.reset(&start);
-                                               })?;
-    '}'.void().verify(|_| input.is_empty()).parse_next(input).inspect_err(|_| {
-                                                                  input.reset(&start);
-                                                              })?;
+    let lang = delimited(literal("{:"), alphanumeric1, '}').parse_next(input)?;
     Ok(CodeBlockLanguage::UserProvided(lang.to_string()))
 }
 
-fn inline_code_block_content(input: &mut ConundrumInput) -> ModalResult<String> {
-    let res = take_till(1.., |c| c == '`' || c == '{' || AsChar::is_newline(c)).parse_next(input)?;
-    Ok(res.to_string())
+pub fn parse_inner_inline_code_block_for_lang(input: &mut &str) -> ModalResult<(String, CodeBlockLanguage)> {
+    let (x, lang): (Vec<char>, CodeBlockLanguage) =
+        repeat_till(1.., any, parse_inline_code_block_lang).parse_next(input)?;
+    let content = String::from_iter(x);
+    Ok((content, lang))
 }
 
-fn inline_code_block_no_lang_tag(input: &mut ConundrumInput) -> ModalResult<InlineCodeResult> {
-    let res = delimited('`', inline_code_block_content, '`').parse_next(input)?;
-    Ok(InlineCodeResult { content: res.to_string(),
-                          lang: CodeBlockLanguage::DefaultLanguage })
+fn inline_code_block_content(input: &mut ConundrumInput) -> ModalResult<String> {
+    let res = take_till(1.., |c| c == '`' || AsChar::is_newline(c)).parse_next(input)?;
+    Ok(res.to_string())
 }
 
 impl ConundrumParser<InlineCodeResult> for InlineCodeResult {
     fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
                           -> winnow::ModalResult<InlineCodeResult> {
-        let mut code_block = delimited('`', inline_code_block_content, '`').parse_next(input)?;
-        // let lang = repeat_till(0.., any, terminator)
-        let lang = parse_inline_code_block_lang(&mut code_block.as_str()).unwrap_or_else(|_| CodeBlockLanguage::DefaultLanguage);
-        Ok(InlineCodeResult { content: code_block, lang })
+        let code_block = delimited('`', inline_code_block_content, '`').parse_next(input)?;
+        if let Some((code_block_content, lang)) =
+            opt(parse_inner_inline_code_block_for_lang).parse_next(&mut code_block.as_ref())?
+        {
+            Ok(InlineCodeResult { content: code_block_content,
+                                  lang })
+        } else {
+            Ok(InlineCodeResult { content: code_block,
+                                  lang: CodeBlockLanguage::DefaultLanguage })
+        }
     }
 
     fn matches_first_char(char: char) -> bool {
