@@ -256,7 +256,7 @@ struct MdxEditorWebview: View {
             try await EditorState.setParsedMdxContent(
               parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
               eval: webView.evaluateJavaScript)
-            try await MdxEditorClient.resetErrorState(eval: webView.evaluateJavaScript)
+             try await MdxEditorClient.resetErrorState(eval: webView.evaluateJavaScript)
           } else {
             print("Broken state: Found mismatched note id's")
           }

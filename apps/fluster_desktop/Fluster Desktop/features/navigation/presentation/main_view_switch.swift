@@ -13,7 +13,7 @@ import WebKit
 struct MainViewSwitch: View {
   @EnvironmentObject private var appState: AppState
 
-  @State private var editorWebview: WKWebView = WKWebView(
+  @State public var editorWebview: WKWebView = WKWebView(
     frame: .zero, configuration: getWebViewConfig()
   )
 

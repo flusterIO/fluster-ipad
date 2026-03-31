@@ -61,7 +61,7 @@ public struct MdxEditorClient {
   public static func resetErrorState(eval: EvalJavascriptFunc) async throws {
     try await eval(
       """
-      window.dispatchEvent("\(SplitviewEditorWebviewEvents.errorStateReset.rawValue)")
+      window.dispatchEvent(new CustomEvent("\(SplitviewEditorWebviewEvents.errorStateReset.rawValue)", {}))
       """)
   }
 }
