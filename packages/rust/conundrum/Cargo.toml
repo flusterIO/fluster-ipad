@@ -60,3 +60,8 @@ workspace = true
 [[bench]]
 name = "conundrum_full_parse"
 harness = false
+
+
+[[bench]]
+name = "conundrum_get_title"
+harness = false

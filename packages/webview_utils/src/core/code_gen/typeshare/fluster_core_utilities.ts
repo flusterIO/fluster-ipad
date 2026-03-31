@@ -293,6 +293,7 @@ export enum SummaryGenerationMethod {
 	AI = "ai",
 	AIManualTrigger = "ai-manual",
 	FrontMatter = "frontmatter",
+	SubtitleSyntax = "subtitle-syntax",
 }
 
 export interface GenerateNoteSummaryRequest {

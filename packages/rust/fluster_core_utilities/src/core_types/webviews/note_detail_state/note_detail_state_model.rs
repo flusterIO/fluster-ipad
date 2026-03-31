@@ -15,6 +15,9 @@ pub enum SummaryGenerationMethod {
     #[serde(rename = "frontmatter")]
     #[strum(to_string = "frontmatter")]
     FrontMatter,
+    #[serde(rename = "subtitle-syntax")]
+    #[strum(to_string = "subtitle-syntax")]
+    SubtitleSyntax,
 }
 
 #[typeshare]

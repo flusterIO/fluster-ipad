@@ -9,6 +9,7 @@ use fluster_core_utilities::core_types::{
     documentation_constants::in_content_documentation_id::InContentDocumentationId,
 };
 use strum::IntoEnumIterator;
+mod modifier_tests;
 mod parser_tests;
 
 #[tokio::test]
@@ -56,8 +57,6 @@ async fn conundrum_parses_documentation_requests() {
                                            modifiers: Vec::new() };
 
         let short_res = run_conundrum(short_opts).await;
-
-        println!("Short: {}", short_res.content);
 
         let full_opts = ParseMdxOptions { note_id: None,
                                           content: full_test_content,

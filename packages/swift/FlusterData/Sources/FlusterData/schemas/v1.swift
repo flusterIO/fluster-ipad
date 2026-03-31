@@ -26,7 +26,7 @@ public enum AppSchemaV1: VersionedSchema {
 
 extension AppSchemaV1 {
   public enum NoteSummaryGenerationMethod: String, Codable {
-    case frontMatter, localAi, localAiManualTrigger
+    case frontMatter, localAi, localAiManualTrigger, subtitleSyntax
     public func toSummaryGenerationMethod() -> SummaryGenerationMethod {
       switch self {
         case .frontMatter:
@@ -35,6 +35,8 @@ extension AppSchemaV1 {
           return .ai
         case .localAiManualTrigger:
           return .ai
+        case .subtitleSyntax:
+          return .subtitleSyntax
       }
     }
     public static func fromSummaryGenerationMethod(_ method: SummaryGenerationMethod) -> Self {
@@ -45,6 +47,8 @@ extension AppSchemaV1 {
           .localAi
         case .frontMatter:
           .frontMatter
+        case .subtitleSyntax:
+          .subtitleSyntax
       }
     }
   }
@@ -614,6 +618,16 @@ extension AppSchemaV1 {
 
       self.paper = toKeep
     }
+
+    public func updateTitleGroup() async {
+      if let res = try? await ConundrumTextUtils.getTitleGroup(content: self.markdown.body) {
+        self.markdown.title = res.title
+        if let subtitle = res.subtitle, self.frontMatter.summary == nil {
+          self.frontMatter.summary = NoteSummary(
+            generationMethod: .subtitleSyntax, body: subtitle, ctime: .now)
+        }
+      }
+    }
   }
   @Model
   public class DictionaryEntryModel: Identifiable {
@@ -892,7 +906,6 @@ extension AppSchemaV1 {
       self.lastAccess = lastAccess
     }
   }
-    
 
   @Model
   public final class TopicModel {
@@ -966,7 +979,6 @@ extension AppSchemaV1 {
 
     public init(body: String) {
       self._body = body
-      self.title = MdxTextUtils.getTitle(body: body)
     }
 
     public var body: String {

@@ -288,6 +288,11 @@ export interface ReactComponentWithChildrenResult {
 	props: JavascriptObjectResult;
 }
 
+export interface TitleGroup {
+	title: string;
+	subtitle?: string;
+}
+
 export enum AiSerializationRequestType {
 	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
 	SummarizeNote = "SummarizeNote",

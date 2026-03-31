@@ -21,6 +21,7 @@ use crate::{
                 ai_input_component_result::AIInputComponentResult,
                 conundrum_input::{ConundrumInput, get_conundrum_input},
                 fluster_component_result::ConundrumComponentResult,
+                inline_markdown_component_result::InlineMarkdownComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
@@ -45,6 +46,12 @@ pub struct ReactComponentWithChildrenResult {
     pub component_name: String,
     pub children: Vec<ParsedElement>,
     pub props: JavascriptObjectResult,
+}
+
+impl InlineMarkdownComponentResult for ReactComponentWithChildrenResult {
+    fn to_inline_markdown(&self, res: &mut ParseState) -> String {
+        compile_elements(&self.children, res)
+    }
 }
 
 impl AIInputComponentResult for ReactComponentWithChildrenResult {
@@ -73,6 +80,8 @@ impl ConundrumComponentResult for ReactComponentWithChildrenResult {
             self.to_ai_input(res)
         } else if res.contains_modifier(&ConundrumModifier::PreferMarkdownSyntax) {
             self.to_markdown(res)
+        } else if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+            self.to_inline_markdown(res)
         } else {
             self.to_mdx_component(res)
         }
@@ -105,9 +114,9 @@ fn react_closing_tag_parser_by_name(component_name: &str) -> impl Fn(&mut Conund
 fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResult<ReactComponentWithChildrenResult> {
     let start = input.input.checkpoint();
 
-    let _ = '<'.parse_next(input).inspect_err(|_| {
-                                      input.input.reset(&start);
-                                  })?;
+    '<'.void().parse_next(input).inspect_err(|_| {
+                                     input.input.reset(&start);
+                                 })?;
 
     let component_leading_char = take_while(1, AsChar::is_alpha).verify(|c: &str| {
                                                                     let s = c.to_string();
@@ -129,13 +138,17 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
                                                                                    input.input.reset(&start);
                                                                                })?;
 
+    '>'.parse_next(input).inspect_err(|_| {
+                              input.input.reset(&start);
+                          })?;
+
     let children_string = take_until(0.., "</").parse_next(input).inspect_err(|_| {
                                                                       input.input.reset(&start);
                                                                   })?;
 
-    let _ = take_while(0.., AsChar::is_space).parse_next(input).inspect_err(|_| {
-                                                                    input.input.reset(&start);
-                                                                })?;
+    take_while(0.., AsChar::is_space).void().parse_next(input).inspect_err(|_| {
+                                                                   input.input.reset(&start);
+                                                               })?;
 
     react_closing_tag_parser_by_name(component_name.as_str()).parse_next(input)?;
 
@@ -166,6 +179,8 @@ impl ConundrumParser<ReactComponentWithChildrenResult> for ReactComponentWithChi
 
 #[cfg(test)]
 mod tests {
+    use insta::assert_snapshot;
+
     use crate::testing::wrap_test_content::wrap_test_conundrum_content;
 
     use super::*;
@@ -185,5 +200,8 @@ This is my children markdown test content
         let mdx_component = res.to_mdx_component(&mut state);
         assert!(mdx_component == test_content, "Returns the input component as the mdx component for an mdx input.");
         assert!(test_data.is_empty(), "Consumes the entire input string.");
+        assert_snapshot!(mdx_component);
+        let children = compile_elements(&res.children, &mut state);
+        assert_snapshot!(children);
     }
 }

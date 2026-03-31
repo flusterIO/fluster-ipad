@@ -20,6 +20,8 @@ use crate::{
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
                 fluster_component_result::ConundrumComponentResult,
+                inline_markdown_component_result::InlineMarkdownComponentResult,
+                markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
                 state_modifier::ConundrumStateModifier,
@@ -60,6 +62,23 @@ impl MarkdownHeadingResult {
     }
 }
 
+impl InlineMarkdownComponentResult for MarkdownHeadingResult {
+    fn to_inline_markdown(&self, res: &mut ParseState) -> String {
+        compile_elements(&self.children, res)
+    }
+}
+
+impl MarkdownComponentResult for MarkdownHeadingResult {
+    fn to_markdown(&self, res: &mut ParseState) -> String {
+        let mut s = String::from("");
+        for n in 1..self.depth {
+            s += "#"
+        }
+        let children = compile_elements(&self.children, res);
+        format!("{} {}", s, children)
+    }
+}
+
 impl ConundrumStateModifier for MarkdownHeadingResult {
     fn set_state(&self, res: &mut ParseState) {
         let x = self.to_stringified_result(res);
@@ -78,6 +97,10 @@ impl ConundrumComponentResult for MarkdownHeadingResult {
         self.set_state(res);
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
+        } else if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+            self.to_inline_markdown(res)
+        } else if res.contains_modifier(&ConundrumModifier::PreferMarkdownSyntax) {
+            self.to_markdown(res)
         } else {
             self.to_mdx_component(res)
         }
@@ -87,14 +110,17 @@ impl ConundrumComponentResult for MarkdownHeadingResult {
 impl MdxComponentResult for MarkdownHeadingResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> String {
         let children_string = compile_elements(&self.children, res);
-        let subtitle_string =
-            self.subtitle.as_ref().map(|s| compile_elements(s, res)).unwrap_or_else(|| String::from("{null}"));
+        let subtitle_string = self.subtitle
+                                  .as_ref()
+                                  .map(|s| compile_elements(s, res))
+                                  .map(|x| format_markdown_fragment_property(x.as_str()))
+                                  .unwrap_or_else(|| String::from("{null}"));
 
         format!("<{} depth={} id={} subtitle={} >{}</{}>",
                 AutoInsertedComponentName::AutoInsertedHeading,
                 format_embedded_object_property(self.depth.to_string()),
                 self.id.clone().map(|s| format!("\"{}\"", s)).unwrap_or(javascript_null_prop()),
-                format_markdown_fragment_property(subtitle_string.as_str()),
+                subtitle_string,
                 children_string,
                 AutoInsertedComponentName::AutoInsertedHeading)
     }

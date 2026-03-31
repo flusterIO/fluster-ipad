@@ -433,6 +433,7 @@ public enum SummaryGenerationMethod: String, Codable {
 	case ai
 	case aIManualTrigger = "ai-manual"
 	case frontMatter = "frontmatter"
+	case subtitleSyntax = "subtitle-syntax"
 }
 
 public struct GenerateNoteSummaryRequest: Codable {
