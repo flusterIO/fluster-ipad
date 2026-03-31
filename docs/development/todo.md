@@ -99,6 +99,7 @@
 
 - [x] Review Conundrum docs... you were spaced out as shit.
 - [x] Handle inline-code parser. Make sure it's last in the list, but it's required to document the note id syntax.
+- [ ] Setup a unique error enum for Conundrum
 - [ ] Handle slugger implementation for _all_ headings. Generate an id during the parsing stage if none exists.
 - [ ] Fix issue with Safari keeping around 20 instances of the editor view.
 - [ ] Handle issue with command palette not changing a variety of different state fields when the editor is focused, requiring a user navigation away from an then back to the editor page to see the changes.

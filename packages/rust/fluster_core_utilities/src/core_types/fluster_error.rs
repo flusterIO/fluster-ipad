@@ -40,9 +40,7 @@ pub enum FlusterError {
     FailToCreateEntity,
     #[error("Fluster failed to find what it was looking for.")]
     FailToFind,
-    #[error(
-        "Fluster failed to find something by a specific d. If you feel this is an issue with Fluster, please submit an issue on our github page."
-    )]
+    #[error("Fluster failed to find something by a specific d. If you feel this is an issue with Fluster, please submit an issue on our github page.")]
     FailToFindById,
     #[error("Failed to delete an entity.")]
     FailToDelete,
