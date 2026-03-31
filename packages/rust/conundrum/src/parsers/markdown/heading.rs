@@ -26,7 +26,9 @@ use crate::{
             },
         },
     },
-    output::output_components::output_utils::{format_embedded_object_property, javascript_null_prop},
+    output::output_components::output_utils::{
+        format_embedded_object_property, format_markdown_fragment_property, javascript_null_prop,
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -92,7 +94,7 @@ impl MdxComponentResult for MarkdownHeadingResult {
                 AutoInsertedComponentName::AutoInsertedHeading,
                 format_embedded_object_property(self.depth.to_string()),
                 self.id.clone().map(|s| format!("\"{}\"", s)).unwrap_or(javascript_null_prop()),
-                subtitle_string,
+                format_markdown_fragment_property(subtitle_string.as_str()),
                 children_string,
                 AutoInsertedComponentName::AutoInsertedHeading)
     }

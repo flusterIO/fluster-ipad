@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, type Reducer } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import editorReducer from './mdx_editor/state/editor_state_slice'
 import { persistStore, persistReducer, type PersistConfig } from "redux-persist"
 import webviewContainerReducer from './container/webview_container_global_state/webview_container_slice';

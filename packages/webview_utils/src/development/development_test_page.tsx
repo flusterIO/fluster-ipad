@@ -3,8 +3,8 @@ import { createFlusterStore } from '#/webview_global_state/store';
 import { handleSwiftActionWrapper, handleSwiftBufferActionWrapper } from '#/webview_global_state/window_methods';
 import { MdxEditorGlobalProvider } from '#/webview_global_state/provider';
 import { WebViewContainer } from '#/webview_container/presentation/webview_container';
-import { AIGeneratedContainerDevWrapper } from './development_wrapped_components/ai_generated_container_dev_wrapper';
 import { WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
+import { HeadingDevelopmentWrapper } from './development_wrapped_components/embeddable_components/heading';
 
 const storeData = createFlusterStore();
 
@@ -17,8 +17,8 @@ window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
 
 const CurrentDevelopmentComponent = (): ReactNode => {
     return (
-        <div className="w-full h-full flex flex-col justify-center items-center">
-            <AIGeneratedContainerDevWrapper />
+        <div className="w-full h-full min-h-screen flex flex-col justify-center items-center bg-black">
+            <HeadingDevelopmentWrapper />
         </div>
     )
 }
@@ -35,7 +35,7 @@ export const DevelopmentTestPage = (): ReactNode => {
             {...storeData}
         >
             <WebViewContainer
-                className="py-12"
+            /* className="py-12" */
             >
                 <CurrentDevelopmentComponent />
             </WebViewContainer>
