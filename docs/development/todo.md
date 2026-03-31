@@ -2,8 +2,8 @@
 
 ## Bug Log
 
-- [ ] Fix issue with bibliography entries not being associated with note properly.
-- [ ] Create 'paper' button on desktop is creating 2 pages.
+- [x] Fix issue with bibliography entries not being associated with note properly.
+- [x] Create 'paper' button on desktop is creating 2 pages.
 
 ### Embedded Components
 
@@ -97,7 +97,8 @@
 **_PRIORITY:_** Handle this issue with the editor instances first.
 
 - [x] Review Conundrum docs... you were spaced out as shit.
-- [ ] Handle inline-code parser. Make sure it's last in the list, but it's required to document the note id syntax.
+- [x] Handle inline-code parser. Make sure it's last in the list, but it's required to document the note id syntax.
+- [ ]
 - [ ] Fix issue with Safari keeping around 20 instances of the editor view.
 - [ ] Handle issue with command palette not changing a variety of different state fields when the editor is focused, requiring a user navigation away from an then back to the editor page to see the changes.
 - [ ] Verify that the iPad app is working again. It will need at least changes to:

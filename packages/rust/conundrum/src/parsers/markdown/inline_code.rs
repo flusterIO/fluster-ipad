@@ -2,17 +2,20 @@ use serde::Serialize;
 use winnow::{
     ModalResult, Parser,
     ascii::alphanumeric1,
-    combinator::{alt, delimited, opt, repeat_till},
-    stream::{AsChar, Stream},
+    combinator::{delimited, opt, repeat_till},
+    stream::AsChar,
     token::{any, literal, take_till},
 };
 
 use crate::{
-    lang::runtime::traits::conundrum_input::ConundrumInput,
-    parsers::{
-        markdown::{code_block, subtypes::code_block_language::CodeBlockLanguage},
-        parser_trait::ConundrumParser,
+    lang::runtime::{
+        state::parse_state::ConundrumModifier,
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+        },
     },
+    parsers::{markdown::subtypes::code_block_language::CodeBlockLanguage, parser_trait::ConundrumParser},
 };
 
 #[typeshare::typeshare]
@@ -20,6 +23,33 @@ use crate::{
 pub struct InlineCodeResult {
     pub content: String,
     pub lang: CodeBlockLanguage,
+}
+
+impl MarkdownComponentResult for InlineCodeResult {
+    fn to_markdown(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+        format!("`{}`", self.content)
+    }
+}
+
+impl MdxComponentResult for InlineCodeResult {
+    fn to_mdx_component(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+        match &self.lang {
+            CodeBlockLanguage::DefaultLanguage => format!("`{}`", self.content),
+            CodeBlockLanguage::UserProvided(s) => format!("`{}{{:{}}}`", self.content, s),
+        }
+    }
+}
+
+impl ConundrumComponentResult for InlineCodeResult {
+    fn to_conundrum_component(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+        if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
+                                              ConundrumModifier::PreferInlineMarkdownSyntax])
+        {
+            self.to_markdown(res)
+        } else {
+            self.to_mdx_component(res)
+        }
+    }
 }
 
 pub fn parse_inline_code_block_lang(input: &mut &str) -> ModalResult<CodeBlockLanguage> {
@@ -66,12 +96,19 @@ mod tests {
     use super::*;
 
     #[test]
+    fn parses_inline_code_block_with_no_lang() {
+        let test_content = "`<MyTest myBool myString='Contains a {' />`";
+        let mut test_data = wrap_test_conundrum_content(test_content);
+        let res = InlineCodeResult::parse_input_string(&mut test_data).expect("Parses inline code block with language tag without throwing an error.");
+
+        assert!(matches!(res.lang, CodeBlockLanguage::DefaultLanguage), "Finds the proper language");
+        assert!(res.content == "<MyTest myBool myString='Contains a {' />", "Finds the proper content");
+    }
+    #[test]
     fn parses_inline_code_block_with_lang() {
         let test_content = "`<MyTest myBool myString='Contains a {' />{:tsx}`";
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res = InlineCodeResult::parse_input_string(&mut test_data).expect("Parses inline code block with language tag without throwing an error.");
-
-        println!("Res: {:#?}", res);
 
         assert!(match res.lang {
                     CodeBlockLanguage::UserProvided(s) => s == "tsx",
@@ -79,6 +116,5 @@ mod tests {
                 },
                 "Finds the proper language");
         assert!(res.content == "<MyTest myBool myString='Contains a {' />", "Finds the proper content");
-        // assert_eq!(result, 4);
     }
 }

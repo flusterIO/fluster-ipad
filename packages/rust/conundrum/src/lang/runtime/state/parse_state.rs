@@ -10,13 +10,16 @@ use crate::{
 #[derive(Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy)]
 pub enum ConundrumModifier {
     PreferMarkdownSyntax,
+    /// Curretly does pretty much the same thing as .PreferMarkdownSyntax, but
+    /// once the markdown parser has been completely migrated this will stop
+    /// things like wrapping the outermost block in a paragraph.
+    PreferInlineMarkdownSyntax,
     /// Useful for search related features, being able to match text without
     /// markdown syntax interfering. Not super useful for much else.
     ForcePlainText,
     /// Set this flag when the output is intended to be consumed by AI, probably
     /// with the 'PreferMarkdownSyntax' flag.
     ForAIInput,
-
     /// When this component is to be used for search text input, all of the
     /// component jsx and mdx syntax will be removed, leaving only
     /// searchable text.
@@ -49,6 +52,16 @@ impl ParseState {
         s.data.dictionary_entries.iter().for_each(|dict| {
                                             self.data.dictionary_entries.push(dict.clone());
                                         })
+    }
+
+    pub fn contains_one_of_modifiers(&self, modifiers: Vec<ConundrumModifier>) -> bool {
+        for modifier in modifiers {
+            let contained = self.contains_modifier(&modifier);
+            if contained {
+                return true;
+            }
+        }
+        false
     }
 
     pub fn contains_modifier(&self, modifier: &ConundrumModifier) -> bool {

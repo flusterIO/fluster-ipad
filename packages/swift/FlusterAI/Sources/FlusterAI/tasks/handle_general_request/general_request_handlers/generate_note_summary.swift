@@ -24,7 +24,7 @@ public func generateNoteSummary(focusedNote: NoteModel, details: AIUserDetails)
     """
   })
   let res = try await session.respond(to: focusedNote.markdown.body)
-  let content = try await res.content.mdxToAIInput(noteId: focusedNote.id)
+  let content = try await res.content.conundrumToAIInput(noteId: focusedNote.id)
   print("AI Input: \(content)")
   return AiPhase2Response(
     success: true, replaceWith: nil, res: content, userMessage: nil, id: nil,

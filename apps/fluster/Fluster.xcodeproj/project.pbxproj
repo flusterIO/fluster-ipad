@@ -178,10 +178,10 @@
 				79513C732EF3AF3700FF4885 /* XCRemoteSwiftPackageReference "swift-testing" */,
 				79FB1F532ED928FB0041E1E0 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
 				79FA32B32F1822EA0066B8B4 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */,
-				79FE94F72F19C8B400B15144 /* XCLocalSwiftPackageReference "../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser" */,
 				79D841CE2F4150EA004E992B /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */,
 				7927556F2F4540E2004476E6 /* XCRemoteSwiftPackageReference "Redline" */,
 				79D7DD7F2F6764B8002C5066 /* XCLocalSwiftPackageReference "../../packages/rust/conundrum_swift/ConundrumSwift" */,
+				799989042F7C1DEA0000B861 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterAI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F70FB2EB174610012B500;
@@ -467,6 +467,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		799989042F7C1DEA0000B861 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterAI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/FlusterAI;
+		};
 		79D7DD7F2F6764B8002C5066 /* XCLocalSwiftPackageReference "../../packages/rust/conundrum_swift/ConundrumSwift" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/rust/conundrum_swift/ConundrumSwift;
@@ -482,10 +486,6 @@
 		79FB1F532ED928FB0041E1E0 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/swift/FlusterSwift;
-		};
-		79FE94F72F19C8B400B15144 /* XCLocalSwiftPackageReference "../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../packages/rust/fluster_swift_mdx_parser/FlusterSwiftMdxParser;
 		};
 /* End XCLocalSwiftPackageReference section */
 

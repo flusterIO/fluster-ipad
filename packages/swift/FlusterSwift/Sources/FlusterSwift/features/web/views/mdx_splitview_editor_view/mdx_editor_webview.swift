@@ -1,5 +1,6 @@
 import FlusterData
 import SwiftData
+import FoundationModels
 import SwiftUI
 import WebKit
 
@@ -187,6 +188,8 @@ import WebKit
       Task {
         do {
           try await editingNote.preParse(modelContext: modelContext)
+
+          let llm = SystemLanguageModel()
           try await EditorState.setInitialEditorState(
             editorPayload: EditorInitialStatePayload(
               note_id: editingNote.id,
@@ -208,6 +211,10 @@ import WebKit
               dark_mode: colorScheme == .dark,
               implementation: WebviewImplementation.mdxEditor,
               fluster_theme: flusterTheme
+            ),
+            mathPayload: MathState(mathjax_font_url: mathjaxFontUrl),
+            aiPayload: AiInitialStatePayload(
+              foundation_model_access: llm.availability.toReduxRepresentation()
             ),
             eval: self.webView.evaluateJavaScript
           )

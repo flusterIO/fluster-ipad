@@ -10,7 +10,8 @@ use crate::{
         state::parse_state::{ConundrumModifier, ParseState},
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
         },
     },
     parsers::parser_trait::ConundrumParser,
@@ -20,6 +21,12 @@ use crate::{
 #[derive(Debug, Serialize)]
 pub struct MarkdownItalicTextResult {
     pub content: String,
+}
+
+impl MarkdownComponentResult for MarkdownItalicTextResult {
+    fn to_markdown(&self, _: &mut ParseState) -> String {
+        format!("_{}_", self.content)
+    }
 }
 
 impl PlainTextComponentResult for MarkdownItalicTextResult {
@@ -36,8 +43,12 @@ impl MdxComponentResult for MarkdownItalicTextResult {
 
 impl ConundrumComponentResult for MarkdownItalicTextResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> String {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText, ConundrumModifier::ForSearchInput]) {
             self.to_plain_text(res)
+        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
+                                                     ConundrumModifier::PreferInlineMarkdownSyntax,])
+        {
+            self.to_markdown(res)
         } else {
             self.to_mdx_component(res)
         }

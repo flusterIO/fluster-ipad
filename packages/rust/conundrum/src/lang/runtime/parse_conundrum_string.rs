@@ -18,6 +18,7 @@ use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextRes
 use crate::parsers::markdown::bold_text::MarkdownBoldTextResult;
 use crate::parsers::markdown::code_block::ParsedCodeBlock;
 use crate::parsers::markdown::heading::MarkdownHeadingResult;
+use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::inline_math::InlineMathResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::markdown::markdown_extensions::emoji::EmojiResult;
@@ -81,11 +82,15 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                 "`" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                        ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
-                        any.map(|c: char| ParsedElement::Text(c.to_string()))
+                            ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
+                            InlineCodeResult::parse_input_string.map(ParsedElement::InlineCode),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {
-                        any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
+                        alt((
+                            InlineCodeResult::parse_input_string.map(ParsedElement::InlineCode),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                        )).parse_next(x)
                     }
                 },
                 "$" => |x: &mut ConundrumInput<'a>| {

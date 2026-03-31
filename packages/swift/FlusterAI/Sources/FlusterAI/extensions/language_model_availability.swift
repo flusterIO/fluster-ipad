@@ -9,7 +9,7 @@ import FlusterData
 import Foundation
 import FoundationModels
 
-extension SystemLanguageModel.Availability {
+public extension SystemLanguageModel.Availability {
   public func toReduxRepresentation() -> FoundationModelAccessStatus {
     switch self {
       case .available:

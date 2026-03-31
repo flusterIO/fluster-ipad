@@ -28,6 +28,7 @@ export type ParsedElement =
 	| { tag: "ItalicText", content: MarkdownItalicTextResult }
 	| { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
 	| { tag: "ParsedCodeBlock", content: ParsedCodeBlock }
+	| { tag: "InlineCode", content: InlineCodeResult }
 	| { tag: "MarkdownLink", content: MarkdownLinkResult }
 	| { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
 	| { tag: "Emoji", content: EmojiResult }

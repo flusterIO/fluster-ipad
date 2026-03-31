@@ -18,7 +18,6 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../FlusterData"),
-    .package(path: "../FlusterMdx"),
     .package(path: "../../rust/conundrum_swift/ConundrumSwift/"),
   ],
   targets: [

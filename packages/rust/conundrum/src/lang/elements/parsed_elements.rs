@@ -14,9 +14,10 @@ use crate::{
         markdown::{
             block_math::BlockMathResult, block_quote::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
-            code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_math::InlineMathResult,
-            italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::EmojiResult,
-            markdown_link::MarkdownLinkResult, paragraph::MarkdownParagraphResult,
+            code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_code::InlineCodeResult,
+            inline_math::InlineMathResult, italic_text::MarkdownItalicTextResult,
+            markdown_extensions::emoji::EmojiResult, markdown_link::MarkdownLinkResult,
+            paragraph::MarkdownParagraphResult,
         },
         react::{
             react_component_self_closing::ReactComponentSelfClosingResult,
@@ -49,6 +50,7 @@ pub enum ParsedElement {
     ItalicText(MarkdownItalicTextResult),
     BoldAndItalicText(MarkdownBoldAndItalicTextResult),
     ParsedCodeBlock(ParsedCodeBlock),
+    InlineCode(InlineCodeResult),
     MarkdownLink(MarkdownLinkResult),
     MarkdownParagraph(MarkdownParagraphResult),
     // Markdown Extensions
@@ -88,6 +90,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::ReactComponentSelfClosing(c) => c.to_conundrum_component(res),
             ParsedElement::ReactComponentWithChildren(c) => c.to_conundrum_component(res),
             ParsedElement::Emoji(e) => e.to_conundrum_component(res),
+            ParsedElement::InlineCode(m) => m.to_conundrum_component(res),
         }
     }
 }
