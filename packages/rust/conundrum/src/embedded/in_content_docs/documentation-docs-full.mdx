@@ -19,11 +19,20 @@ Every component also has documentation, available at that component's name with 
 ### Component Property Models
 
 
-Many of the components share certain property models between them, making the application of properties more predictable. Because of this, it doesn't make sense to document each property in the shared classes independently.
-
-In other words, if components A and B accept properties $P_a$ and $P_b$, where $P_{a}$ and $P_{b}$ both extend `SizableObject`, it would just be confusing to the user to list all of the `SizableObject` properties mixed in with the properties that are unique to $P_{a}$ or $P_{b}$. For that reason, we document the largest of those shared models separately.
+Many of the components share certain property models between them, making the application of properties more predictable. Because of this, it doesn't make sense to document each property in the shared classes independently. All of these shared classes will be documented here, meaning that the properties described below will apply to _many_ components.
 
 | Trigger | Desc | Used in |
 | ------- | ---- | ------- |
 | `Sizable??` | The core styling model, especially for container components. | `Card`, <br/> `Container`, <br /> `Admonition`, <br/> etc.. |
 | `Emphasis??` | A list of boolean properties that can apply unique styles like `info` or `important`. | `Highlight`, <br /> `Underline`, <br /> `Admonition`, <br /> ... |
+
+
+### App Usage Suggestions
+
+- The first should go without saying, but remember the documentation commands! Just `Docs??` to get you back to the root, on a new line all by itself without any leading or trailing whitespace and you should be able to find everything you need to know to operate Fluster.
+- The render method is set to 'on-change' by default to give users a feel for the application, but you'll almost surely want to change this. This will become _incredibly_ jumpy when notes contain content that requires a second render pass like math, 3d models, or plots. To get around this there's an option to set this to 'on-save'. This is a little misleading as your notes still save every time you change them, but when this setting is turned on your notes will only render cmd+s is pressed, creating far less distraction and much less needless work for your device.
+- Consider using 'topics' and 'subjects' in a sort of heiracheral way to create a layered search. By creating a more broad layer, say 'topics' of things like 'physics', 'math', 'work' and the other of a more narrow category like 'gravity', 'calc2' or 'newProject' you can use one sort of _inside_ of the other. I think this gives a lot more utility to the various search features in Fluster than just using them directly on top of each other.
+- If you don't think you'll need a bibliography, consider adding simple entries for things like websites, with whatever level of specificity you think you'll need. Adding an entry for 'wikipedia' or 'youtube' will obviously be vague enough to apply to a meaningful number of notes in your content and can apply to users with less academic notes. You can even use the website bibliography snippet to cite specific social media channels or blogs, allowing user's to group notes by almost anything.
+  - For even more refinement, consider adding a 'title' field to your bibliography entries, even if one isn't already present. This field is what is used for alphabetizing bibliography entries, and all fields without it will be grouped together at "No title found". Of course, you can just filter them...
+
+

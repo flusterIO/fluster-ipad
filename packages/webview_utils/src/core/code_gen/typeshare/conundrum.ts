@@ -157,6 +157,7 @@ export interface MarkdownBoldTextResult {
 export interface MarkdownHeadingResult {
 	depth: number;
 	children: ParsedElement[];
+	subtitle?: ParsedElement[];
 	id?: string;
 }
 
@@ -212,6 +213,12 @@ export interface MdxParsingResult {
 
 export enum ConundrumModifier {
 	PreferMarkdownSyntax = "PreferMarkdownSyntax",
+	/**
+	 * Curretly does pretty much the same thing as .PreferMarkdownSyntax, but
+	 * once the markdown parser has been completely migrated this will stop
+	 * things like wrapping the outermost block in a paragraph.
+	 */
+	PreferInlineMarkdownSyntax = "PreferInlineMarkdownSyntax",
 	/**
 	 * Useful for search related features, being able to match text without
 	 * markdown syntax interfering. Not super useful for much else.

@@ -20,7 +20,7 @@ struct BibtexEditorWebview: View {
   @State private var newItemData: String = ""
   @State private var showCantSaveEmpty: Bool = false
   @State private var webView: WKWebView = WKWebView(
-    frame: .infinite, configuration: getWebViewConfig()
+    frame: .zero, configuration: getWebViewConfig()
   )
   @Environment(\.modelContext) private var modelContext: ModelContext
   @Environment(\.colorScheme) private var colorScheme: ColorScheme

@@ -13,8 +13,8 @@ import WebKit
 struct MainViewSwitch: View {
   @EnvironmentObject private var appState: AppState
 
-  private var editorWebview: WKWebView = WKWebView(
-    frame: .infinite, configuration: getWebViewConfig()
+  @State private var editorWebview: WKWebView = WKWebView(
+    frame: .zero, configuration: getWebViewConfig()
   )
 
   var body: some View {
@@ -28,7 +28,7 @@ struct MainViewSwitch: View {
       case .paper:
         ViewPaperPageView(editingNoteId: appState.editingNoteId)
       case .noteEditingPage:
-        MdxEditorWebview(editingNoteId: appState.editingNoteId, webView: editorWebview)
+        MdxEditorWebview(editingNoteId: appState.editingNoteId, webView: $editorWebview)
           .navigationTitle("Editor")
       case .noteViewMdx:
         MdxContentWebview(editingNoteId: appState.editingNoteId)

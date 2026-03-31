@@ -4,6 +4,7 @@
 
 - [x] Fix issue with bibliography entries not being associated with note properly.
 - [x] Create 'paper' button on desktop is creating 2 pages.
+- [ ] Fix issue with new notes parsing as an error every time on first creation.
 
 ### Embedded Components
 

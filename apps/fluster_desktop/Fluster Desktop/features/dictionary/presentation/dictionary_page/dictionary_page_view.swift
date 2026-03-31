@@ -15,7 +15,7 @@ import WebKit
 
 struct DictionaryPageView: View {
   @State private var webview: WKWebView = WKWebView(
-    frame: .infinite, configuration: getWebViewConfig()
+    frame: .zero, configuration: getWebViewConfig()
   )
   @Query(sort: \DictionaryEntryModel.label, order: .forward) private var entries:
     [DictionaryEntryModel]
