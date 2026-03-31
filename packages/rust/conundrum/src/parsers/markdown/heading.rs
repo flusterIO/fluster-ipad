@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 use winnow::{
     ModalResult, Parser, Stateful,
     ascii::{multispace0, space1, till_line_ending},
-    combinator::{alt, delimited, preceded, repeat},
-    stream::Stream,
+    combinator::{alt, delimited, opt, preceded, repeat},
+    stream::{AsChar, Stream},
     token::{literal, take_till, take_while},
 };
 
@@ -35,6 +35,7 @@ use crate::{
 pub struct MarkdownHeadingResult {
     pub depth: u16,
     pub children: Vec<ParsedElement>,
+    pub subtitle: Option<Vec<ParsedElement>>,
     pub id: Option<String>,
 }
 
@@ -51,7 +52,7 @@ pub struct MarkdownHeadingStringifiedResult {
 impl MarkdownHeadingResult {
     pub fn to_stringified_result(&self, res: &mut ParseState) -> MarkdownHeadingStringifiedResult {
         let children_string = compile_elements(&self.children, res);
-        MarkdownHeadingStringifiedResult { depth: self.depth.clone(),
+        MarkdownHeadingStringifiedResult { depth: self.depth,
                                            content: children_string,
                                            id: self.id.clone() }
     }
@@ -84,14 +85,40 @@ impl ConundrumComponentResult for MarkdownHeadingResult {
 impl MdxComponentResult for MarkdownHeadingResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> String {
         let children_string = compile_elements(&self.children, res);
+        let subtitle_string =
+            self.subtitle.as_ref().map(|s| compile_elements(s, res)).unwrap_or_else(|| String::from("{null}"));
 
-        format!("<{} depth={} id={}>{}</{}>",
+        format!("<{} depth={} id={} subtitle={} >{}</{}>",
                 AutoInsertedComponentName::AutoInsertedHeading,
                 format_embedded_object_property(self.depth.to_string()),
                 self.id.clone().map(|s| format!("\"{}\"", s)).unwrap_or(javascript_null_prop()),
+                subtitle_string,
                 children_string,
                 AutoInsertedComponentName::AutoInsertedHeading)
     }
+}
+
+pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ModalResult<Vec<ParsedElement>> {
+    let start = input.input.checkpoint();
+    '\n'.parse_next(input).inspect_err(|_| {
+                               input.input.reset(&start);
+                           })?;
+
+    '>'.parse_next(input).inspect_err(|_| {
+                              input.input.reset(&start);
+                          })?;
+    take_while(1.., AsChar::is_space).void().parse_next(input).inspect_err(|_| {
+                                                                   input.input.reset(&start);
+                                                               })?;
+    let content = till_line_ending.parse_next(input).inspect_err(|_| {
+                                                         input.input.reset(&start);
+                                                     })?;
+
+    let state = input.state.borrow();
+
+    let mut new_input: Stateful<&str, RefCell<ParseState>> = get_conundrum_input(content, state.modifiers.clone());
+    let children = parse_elements(&mut new_input)?;
+    Ok(children)
 }
 
 impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
@@ -125,6 +152,10 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
 
         let content = content.trim().to_string();
 
+        let subtitle = opt(heading_subtitle_line).parse_next(input).inspect_err(|_| {
+                                                                        input.input.reset(&start);
+                                                                    })?;
+
         let state = input.state.borrow();
 
         let mut new_input: Stateful<&str, RefCell<ParseState>> =
@@ -133,6 +164,7 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
 
         Ok(MarkdownHeadingResult { depth: level.len() as u16,
                                    children,
+                                   subtitle,
                                    id: id.map(|x| x.to_string()) })
     }
 
@@ -175,5 +207,42 @@ mod tests {
         let mut state = test_data.state.borrow_mut();
         let children_string = compile_elements(&res.children, &mut state);
         assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
+    }
+
+    #[test]
+    fn fails_with_line_break_between_sub_title() {
+        let test_content = r#"## My heading depth 2 {#myId}
+
+> My note has a subtitle!"#;
+        let mut test_data = wrap_test_conundrum_content(test_content);
+        let res =
+            MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
+        assert!(res.id.is_some_and(|id| id == "myId"), "Finds heading id when one is present.");
+        assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
+
+        let mut state = test_data.state.borrow_mut();
+        let children_string = compile_elements(&res.children, &mut state);
+        assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
+        assert!(res.subtitle.is_none(), "Finds no subtitle when there is a line break.")
+    }
+
+    #[test]
+    fn parses_markdown_heading_with_subtitle() {
+        let test_content = r#"## My heading depth 2 {#myId}
+> My note has a subtitle!"#;
+        let mut test_data = wrap_test_conundrum_content(test_content);
+        let res =
+            MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
+        assert!(res.id.is_some_and(|id| id == "myId"), "Finds heading id when one is present.");
+        assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
+
+        let mut state = test_data.state.borrow_mut();
+        let children_string = compile_elements(&res.children, &mut state);
+        assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
+
+        let subtitle = res.subtitle.expect("Should have a subtitle.");
+
+        let subtitle_string = compile_elements(&subtitle, &mut state);
+        assert!(subtitle_string == "My note has a subtitle!", "Finds the note's subtitle.")
     }
 }
