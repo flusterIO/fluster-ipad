@@ -14,7 +14,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct InlineMathResult {
     pub body: String,
 }

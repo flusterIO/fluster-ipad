@@ -28,7 +28,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct ReactComponentSelfClosingResult {
     pub full_text: String,
     pub component_name: String,

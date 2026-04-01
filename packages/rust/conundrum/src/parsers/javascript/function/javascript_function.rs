@@ -14,7 +14,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct JavascriptFunction {
     pub parameters: Vec<ParsedJavascriptElement>,
     pub javascript_body: String,

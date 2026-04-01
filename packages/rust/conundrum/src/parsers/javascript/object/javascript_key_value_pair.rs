@@ -14,7 +14,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct JavascriptObjectKeyValuePair {
     pub key: String,
     // Box required to break recursive loop thing, but not sure if this is the best approach.

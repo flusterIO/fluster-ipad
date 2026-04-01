@@ -1,4 +1,4 @@
-use std::cell::RefCell;
+use std::{cell::RefCell, ops::Deref};
 
 use serde::Serialize;
 use typeshare::typeshare;
@@ -40,12 +40,19 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct ReactComponentWithChildrenResult {
     pub full_text: String,
     pub component_name: String,
     pub children: Vec<ParsedElement>,
     pub props: JavascriptObjectResult,
+}
+
+impl ReactComponentWithChildrenResult {
+    pub fn to_component(&self) -> ParsedElement {
+        let x = self.deref();
+        ParsedElement::ReactComponentWithChildren(*x)
+    }
 }
 
 impl InlineMarkdownComponentResult for ReactComponentWithChildrenResult {

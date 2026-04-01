@@ -132,7 +132,9 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
                 },
                 "<" => |x: &mut ConundrumInput<'a>| {
                     alt((
-                       ReactComponentWithChildrenResult::parse_input_string.map(ParsedElement::ReactComponentWithChildren),
+                       ReactComponentWithChildrenResult::parse_input_string.map(|item| {
+                           item.to_component()
+                       }),
                        ReactComponentSelfClosingResult::parse_input_string.map(ParsedElement::ReactComponentSelfClosing),
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)

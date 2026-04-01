@@ -1,7 +1,6 @@
-use std::cell::RefCell;
-
 use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use serde::{Deserialize, Serialize};
+use std::cell::RefCell;
 use winnow::{
     ModalResult, Parser, Stateful,
     ascii::{multispace0, space1, till_line_ending},
@@ -28,19 +27,17 @@ use crate::{
             },
         },
     },
-    output::output_components::output_utils::{
-        format_embedded_object_property, format_markdown_fragment_property, javascript_null_prop,
-    },
+    output::output_components::output_utils::{format_embedded_object_property, format_markdown_fragment_property},
     parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct MarkdownHeadingResult {
     pub depth: u16,
     pub children: Vec<ParsedElement>,
     pub subtitle: Option<Vec<ParsedElement>>,
-    pub id: Option<String>,
+    pub id: String,
 }
 
 /// The same as the `MarkdownHeadingResult` struct but wth the children
@@ -50,7 +47,7 @@ pub struct MarkdownHeadingResult {
 pub struct MarkdownHeadingStringifiedResult {
     pub depth: u16,
     pub content: String,
-    pub id: Option<String>,
+    pub id: String,
 }
 
 impl MarkdownHeadingResult {
@@ -119,7 +116,7 @@ impl MdxComponentResult for MarkdownHeadingResult {
         format!("<{} depth={} id={} subtitle={} >{}</{}>",
                 AutoInsertedComponentName::AutoInsertedHeading,
                 format_embedded_object_property(self.depth.to_string()),
-                self.id.clone().map(|s| format!("\"{}\"", s)).unwrap_or(javascript_null_prop()),
+                format!("\"{}\"", self.id),
                 subtitle_string,
                 children_string,
                 AutoInsertedComponentName::AutoInsertedHeading)
@@ -178,22 +175,22 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
                                                                           input.input.reset(&start);
                                                                       })?;
 
-        let content = content.trim().to_string();
+        let content_string = content.trim().to_string();
 
         let subtitle = opt(heading_subtitle_line).parse_next(input).inspect_err(|_| {
                                                                         input.input.reset(&start);
                                                                     })?;
 
-        let state = input.state.borrow();
+        let mut state = input.state.borrow_mut();
 
         let mut new_input: Stateful<&str, RefCell<ParseState>> =
-            get_conundrum_input(content.as_str(), state.modifiers.clone());
+            get_conundrum_input(content_string.as_str(), state.modifiers.clone());
         let children = parse_elements(&mut new_input)?;
 
         Ok(MarkdownHeadingResult { depth: level.len() as u16,
                                    children,
                                    subtitle,
-                                   id: id.map(|x| x.to_string()) })
+                                   id: id.map(|x| x.to_string()).unwrap_or_else(|| state.slugger.slug(content)) })
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -209,18 +206,24 @@ mod tests {
 
     #[test]
     fn parses_markdown_heading() {
-        let test_content = "### My heading";
+        let test_content = "### My heading with $\\delta$";
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
-        assert!(res.id.is_none(), "Finds no heading id when none is present.");
+        // assert!(res.id.is_none(), "Finds no heading id when none is present.");
         assert!(res.depth == 3, "Finds the proper heading depth when no id is present..");
         let mut state = test_data.state.borrow_mut();
+
         let children_string = compile_elements(&res.children, &mut state);
 
         // TODO: Add this test back in both of these tests for the renderd
         // children instead of the stringified content.
-        assert!(children_string == "My heading", "Finds the proper heading content when no id is present.");
+        assert!(children_string == "My heading with $\\delta$",
+                "Finds the proper heading content when no id is present.");
+        let title_slug = state.slugger.slug("My heading with $\\delta$");
+
+        assert!(title_slug != res.id,
+                "Increments id, or at least they don't match... this is a super unreliable test but it might catch some stray errors.");
     }
 
     #[test]
@@ -229,7 +232,7 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
-        assert!(res.id.is_some_and(|id| id == "myId"), "Finds heading id when one is present.");
+        assert!(res.id == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let mut state = test_data.state.borrow_mut();
@@ -245,7 +248,7 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
-        assert!(res.id.is_some_and(|id| id == "myId"), "Finds heading id when one is present.");
+        assert!(res.id == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let mut state = test_data.state.borrow_mut();
@@ -261,7 +264,7 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
-        assert!(res.id.is_some_and(|id| id == "myId"), "Finds heading id when one is present.");
+        assert!(res.id == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let mut state = test_data.state.borrow_mut();

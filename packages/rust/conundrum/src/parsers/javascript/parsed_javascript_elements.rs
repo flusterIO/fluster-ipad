@@ -9,7 +9,7 @@ use crate::parsers::javascript::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum ParsedJavascriptElement {
     Boolean(JavascriptBooleanResult),

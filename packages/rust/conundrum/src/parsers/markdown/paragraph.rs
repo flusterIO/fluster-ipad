@@ -20,7 +20,7 @@ use crate::lang::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct MarkdownParagraphResult {
     pub children: Vec<ParsedElement>,
 }

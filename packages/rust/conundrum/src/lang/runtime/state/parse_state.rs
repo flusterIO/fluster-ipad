@@ -4,6 +4,7 @@ use uniffi::Enum;
 
 use crate::{
     lang::runtime::state::citation_list::CitationList, output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    parsers::markdown::heading_sluggger::Slugger,
 };
 
 #[typeshare::typeshare]
@@ -31,6 +32,7 @@ pub struct ParseState {
     pub data: MdxParsingResult,
     pub bib: CitationList,
     pub modifiers: Vec<ConundrumModifier>,
+    pub slugger: Slugger,
 }
 
 impl ParseState {

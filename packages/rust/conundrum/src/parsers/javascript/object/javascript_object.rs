@@ -18,7 +18,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct JavascriptObjectResult {
     pub data: HashMap<String, ParsedJavascriptElement>,
 }

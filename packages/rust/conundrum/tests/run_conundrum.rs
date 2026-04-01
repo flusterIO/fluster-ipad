@@ -83,7 +83,8 @@ async fn conundrum_parses_documentation_requests() {
 
         let short_opts = ParseMdxOptions { note_id: None,
                                            content: short_test_content,
-                                           modifiers: Vec::new() };
+                                           modifiers: Vec::new(),
+        };
 
         let short_res = run_conundrum(short_opts).await;
 

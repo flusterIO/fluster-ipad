@@ -16,7 +16,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct MarkdownLinkResult {
     pub text: String,
     pub url: String,

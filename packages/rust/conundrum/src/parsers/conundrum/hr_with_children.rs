@@ -25,7 +25,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub struct HrWithChildrenResult {
     pub children: Vec<ParsedElement>,
 }

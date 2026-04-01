@@ -31,7 +31,7 @@ use crate::{
 // ---------------------------------------------------------------------------
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct BlockQuoteResult {
     /// The inner content already fully parsed into `ParsedElement`s.
     /// Nesting is handled recursively: a `> > ...` line becomes a

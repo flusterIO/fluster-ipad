@@ -37,7 +37,7 @@ impl MdxComponentResult for String {
 // `Vec<ParsedElement>` or reference `ParsedElement` in any other way _and_
 // export it's type via typeshare.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum ParsedElement {
     // Markdown

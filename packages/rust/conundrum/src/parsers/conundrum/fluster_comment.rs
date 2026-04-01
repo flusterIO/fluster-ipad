@@ -13,7 +13,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub struct ConundrumCommentResult {
     pub content: String,
 }

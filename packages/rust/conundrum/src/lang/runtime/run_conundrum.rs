@@ -13,6 +13,7 @@ use crate::{
         },
     },
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    parsers::markdown::heading_sluggger::Slugger,
 };
 use winnow::Stateful;
 
@@ -37,7 +38,8 @@ pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
     // result.note_id = opts.note_id.clone();
     let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
                                           bib: CitationList::default(),
-                                          modifiers: opts.modifiers.clone() });
+                                          modifiers: opts.modifiers.clone(),
+                                          slugger: Slugger::default() });
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),
                                         state };
