@@ -12,7 +12,7 @@ use crate::{
             parse_state::{ConundrumModifier, ParseState},
         },
     },
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    output::parsing_result::{self, mdx_parsing_result::MdxParsingResult},
     parsers::markdown::heading_sluggger::Slugger,
 };
 use winnow::Stateful;
@@ -44,22 +44,18 @@ pub async fn run_conundrum(opts: ParseMdxOptions) -> MdxParsingResult {
     let mut stateful_input = Stateful { input: opts.content.as_str(),
                                         state };
 
-    let (final_mdx, parsing_result) = match parse_conundrum_string(&mut stateful_input) {
+    match parse_conundrum_string(&mut stateful_input) {
         Ok((elements, input_data)) => {
             let mut x = input_data.state.borrow_mut();
-            (compile_elements(&elements, &mut x), Some(x.data.clone()))
+            let compiled = compile_elements(&elements, &mut x);
+            x.data.content = compiled;
+            x.data.clone()
         }
         Err(err) => {
             println!("Conundrum Error: {:#?}", err);
-            (opts.content.clone(), None)
+            let mut error_state = MdxParsingResult::get_fail_result(err);
+            error_state.content = opts.content.clone();
+            error_state
         }
-    };
-
-    match parsing_result {
-        Some(mut p) => {
-            p.content = final_mdx;
-            p
-        }
-        None => MdxParsingResult::get_fail_result(),
     }
 }

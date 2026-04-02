@@ -7,7 +7,7 @@ use crate::lang::runtime::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Clone, Copy)]
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumNumber {
     Int(i128),

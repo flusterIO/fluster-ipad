@@ -1,12 +1,10 @@
 use conundrum::{
+    embedded::in_content_documentation_id::InContentDocumentationId,
     lang::runtime::run_conundrum::{ParseMdxOptions, run_conundrum},
-    testing::get_test_content::get_test_content,
-};
-use fluster_core_utilities::core_types::{
-    component_constants::{
+    output::general::component_constants::{
         auto_inserted_component_name::AutoInsertedComponentName, component_names::EmbeddableComponentName,
     },
-    documentation_constants::in_content_documentation_id::InContentDocumentationId,
+    testing::get_test_content::get_test_content,
 };
 use strum::IntoEnumIterator;
 mod modifier_tests;
@@ -83,8 +81,7 @@ async fn conundrum_parses_documentation_requests() {
 
         let short_opts = ParseMdxOptions { note_id: None,
                                            content: short_test_content,
-                                           modifiers: Vec::new(),
-        };
+                                           modifiers: Vec::new() };
 
         let short_res = run_conundrum(short_opts).await;
 

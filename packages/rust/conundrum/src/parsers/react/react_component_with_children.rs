@@ -13,7 +13,6 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        lib::ui::components::component_id::ConundrumComponentId,
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
@@ -32,6 +31,7 @@ use crate::{
             },
         },
     },
+    output::general::component_constants::component_names::EmbeddableComponentName,
     parsers::{
         as_char_extensions::is_space_or_newline,
         conundrum::logic::object::object::ConundrumObject,
@@ -64,7 +64,8 @@ impl ReactComponentWithChildrenResult {
 
 impl ReactComponent for ReactComponentWithChildrenResult {
     fn get_conundrum_from_react(&self) -> ConundrumResult<ConundrumComponentType> {
-        let id = ConundrumComponentId::from_str(self.component_name.as_str())?;
+        let name = EmbeddableComponentName::from_str(&self.component_name)?;
+        let id = name.to_component_id();
         if let Some(component) = COMPONENT_MAP.get(&id) {
             let getter = component.value();
             let res = getter(self.props.clone(), Some(self.children.clone()));

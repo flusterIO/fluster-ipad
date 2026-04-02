@@ -183,7 +183,7 @@ public enum WebviewImplementation: String, Codable {
 	case awaitingData = "pending"
 }
 
-public enum FlusterTheme: String, Codable, CaseIterable {
+public enum FlusterTheme: String, Codable {
 	case zinc
 	case yellow
 	case violet
@@ -213,13 +213,13 @@ public struct WebviewContainerSharedInitialState: Codable {
 	}
 }
 
-public enum CodeEditorKeymap: String, Codable, CaseIterable {
+public enum CodeEditorKeymap: String, Codable {
 	case vim
 	case base
 	case emacs
 }
 
-public enum CodeEditorTheme: String, Codable, CaseIterable {
+public enum CodeEditorTheme: String, Codable {
 	case materialLight
 	case solarizedLight
 	case solarizedDark
@@ -446,19 +446,7 @@ public struct GenerateNoteSummaryRequest: Codable {
 	}
 }
 
-public enum SizableOption: String, Codable {
-	case none
-	case small
-	case smedium
-	case medium
-	case large
-	case xl
-	case xxl
-	case fit
-	case full
-}
-
-public enum WebviewFontSize: String, Codable, CaseIterable {
+public enum WebviewFontSize: String, Codable {
 	case small
 	case base
 	case large
@@ -1063,20 +1051,6 @@ public enum AiStateEvents: String, Codable {
 	case sendGeneralAiRequestPhase2 = "send-general-ai-request-phase-2"
 }
 
-public enum AutoInsertedComponentName: String, Codable {
-	case noteLink = "NoteLink"
-	case autoInsertedTag = "AutoInsertedTag"
-	case flusterCitation = "FlusterCitation"
-	case dictionaryEntry = "DictionaryEntry"
-	case flusterAiParsePendingContainer = "FlusterAiParsePendingContainer"
-	case autoInsertedHeading = "AutoInsertedHeading"
-	case autoInsertedBlockQuote = "AutoInsertedBlockQuote"
-	case autoInsertedBlockMath = "AutoInsertedBlockMath"
-	case autoInsertedInlineMath = "AutoInsertedInlineMath"
-	case autoInsertedMarkdownLink = "AutoInsertedMarkdownLink"
-	case autoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph"
-}
-
 public enum AutoTaggableType: String, Codable {
 	case tag
 	case topic
@@ -1141,65 +1115,6 @@ public enum DictionaryWebviewStorageKeys: String, Codable {
 	case dictionaryData = "dict-data"
 }
 
-public enum DocumentationComponentName: String, Codable {
-	case inContentDocumentationContainer = "InContentDocumentationContainer"
-	case inContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList"
-	case inContentDocsHighlightDemo = "InContentDocsHighlightDemo"
-	case inContentDocsUnderlineDemo = "InContentDocsUnderlineDemo"
-}
-
-/// From typescript to swift.
-public enum EmbeddableComponentId: String, Codable {
-	case admonition
-	case hl = "highlight"
-	case ul = "underline"
-	case card
-	case grid
-	case utlityContainer = "util-container"
-	case hrWithChildren = "hr-with-children"
-	case hint = "embeddable-hint-component"
-	case aINoteSummary = "ai-note-summary"
-	case aIResearchSuggestions = "ai-research-suggestions"
-	case aIGeneratedImage = "ai-generated-image"
-}
-
-public enum EmbeddableComponentName: String, Codable {
-	case admonition = "Admonition"
-	case hl = "Hl"
-	case highlight = "Highlight"
-	case ul = "Ul"
-	case underline = "Underline"
-	case card = "Card"
-	case grid = "Grid"
-	case utlityContainer = "Container"
-	case hrWithChildren = "Hr"
-	case hint = "Hint"
-	case aINoteSummary = "AINoteSummary"
-}
-
-public enum InContentDocumentationFormat: String, Codable {
-	case full
-	case short
-}
-
-public enum InContentDocumentationId: String, Codable {
-	case markdown = "Markdown"
-	case docs = "Docs"
-	case syntax = "Syntax"
-	case jsx = "Jsx"
-	case sizableObject = "Sizable"
-	case emphasis = "Emphasis"
-	case emoji = "Emoji"
-	case components = "Components"
-	case ai = "AI"
-	case conundrum = "Conundrum"
-}
-
-public enum InContentDocumentationSource: String, Codable {
-	case componentDocs = "component"
-	case internalDocs = "internal-docs"
-}
-
 /// From typescript to swift.
 public enum MdxPreviewWebviewActions: String, Codable {
 	case requestNoteData = "request-note-data"
@@ -1238,16 +1153,6 @@ public enum NoteDetailWebviewActions: String, Codable {
 public enum NoteDetailWebviewEvents: String, Codable {
 	case setInitialColorScheme = "set-initial-color-scheme"
 	case setNoteDetails = "set-note-details"
-}
-
-public enum ParserId: String, Codable {
-	case tags
-	case citations
-	case dictionary
-	case noteLink = "note_link"
-	case documentation = "docs"
-	case aiTrigger = "ai"
-	case hrWithChildren = "hr"
 }
 
 /// From typescript to swift.

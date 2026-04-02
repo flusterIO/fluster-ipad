@@ -1,4 +1,3 @@
-use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
@@ -15,6 +14,7 @@ use crate::{
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
+    output::general::component_constants::parser_ids::ParserId,
     parsers::parser_trait::ConundrumParser,
 };
 

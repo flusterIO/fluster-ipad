@@ -1,4 +1,3 @@
-use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
@@ -17,9 +16,12 @@ use crate::{
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
-    output::output_components::{
-        ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
-        dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
+    output::{
+        general::component_constants::parser_ids::ParserId,
+        output_components::{
+            ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
+            dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
+        },
     },
     parsers::parser_trait::ConundrumParser,
 };
@@ -74,7 +76,7 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
         let ((language, meta_opt, raw_content), full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let cp = input.input.checkpoint();
-                let ticks = take_while(1.., |c: char| c == '`').parse_next(input).inspect_err(|e| {
+                let ticks = take_while(1.., |c: char| c == '`').parse_next(input).inspect_err(|_| {
                                                                                       input.input.reset(&cp);
                                                                                   })?;
                 let language =
@@ -86,14 +88,14 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                                    let _ = space0.parse_next(input)?;
                                    take_till(0.., ('\n', '\r')).parse_next(input)
                                }).parse_next(input)
-                                 .inspect_err(|e| {
+                                 .inspect_err(|_| {
                                      input.input.reset(&cp);
                                  })?;
 
-                let _ = space0.parse_next(input).inspect_err(|e| {
+                let _ = space0.parse_next(input).inspect_err(|_| {
                                                      input.input.reset(&cp);
                                                  })?;
-                let _ = line_ending(input).inspect_err(|e| {
+                let _ = line_ending(input).inspect_err(|_| {
                                               input.input.reset(&cp);
                                           })?;
 

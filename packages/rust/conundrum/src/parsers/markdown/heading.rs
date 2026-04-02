@@ -1,4 +1,3 @@
-use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use serde::{Deserialize, Serialize};
 use std::cell::RefCell;
 use winnow::{
@@ -27,7 +26,10 @@ use crate::{
             },
         },
     },
-    output::output_components::output_utils::{format_embedded_object_property, format_markdown_fragment_property},
+    output::{
+        general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
+        output_components::output_utils::{format_embedded_object_property, format_markdown_fragment_property},
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -68,7 +70,7 @@ impl InlineMarkdownComponentResult for MarkdownHeadingResult {
 impl MarkdownComponentResult for MarkdownHeadingResult {
     fn to_markdown(&self, res: &mut ParseState) -> String {
         let mut s = String::from("");
-        for n in 1..self.depth {
+        for _ in 1..self.depth {
             s += "#"
         }
         let children = compile_elements(&self.children, res);

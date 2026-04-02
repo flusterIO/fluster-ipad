@@ -1,22 +1,24 @@
 use std::cell::RefCell;
 
-use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use serde::Serialize;
 use winnow::{ModalResult, Parser, Stateful, combinator::alt, token::take_until};
 
-use crate::lang::{
-    elements::parsed_elements::ParsedElement,
-    runtime::{
-        compile_conundrum::compile_elements,
-        parse_conundrum_string::parse_elements,
-        state::parse_state::{ConundrumModifier, ParseState},
-        traits::{
-            conundrum_input::{ConundrumInput, get_conundrum_input},
-            fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+use crate::{
+    lang::{
+        elements::parsed_elements::ParsedElement,
+        runtime::{
+            compile_conundrum::compile_elements,
+            parse_conundrum_string::parse_elements,
+            state::parse_state::{ConundrumModifier, ParseState},
+            traits::{
+                conundrum_input::{ConundrumInput, get_conundrum_input},
+                fluster_component_result::ConundrumComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
+    output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
 };
 
 #[typeshare::typeshare]

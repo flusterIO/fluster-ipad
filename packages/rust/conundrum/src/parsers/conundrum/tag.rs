@@ -1,6 +1,3 @@
-use fluster_core_utilities::core_types::{
-    component_constants::auto_inserted_component_name::AutoInsertedComponentName, syntax::parser_ids::ParserId,
-};
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
@@ -18,7 +15,10 @@ use crate::{
             state_modifier::ConundrumStateModifier,
         },
     },
-    output::parsing_result::tag_result::TagResult,
+    output::{
+        general::component_constants::{auto_inserted_component_name::AutoInsertedComponentName, parser_ids::ParserId},
+        parsing_result::tag_result::TagResult,
+    },
     parsers::parser_trait::ConundrumParser,
 };
 

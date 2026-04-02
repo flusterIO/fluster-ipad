@@ -1,9 +1,11 @@
-use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use serde::{Deserialize, Serialize};
 use uniffi::Enum;
 
 use crate::{
-    lang::runtime::state::citation_list::CitationList, output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    lang::runtime::state::citation_list::CitationList,
+    output::{
+        general::component_constants::parser_ids::ParserId, parsing_result::mdx_parsing_result::MdxParsingResult,
+    },
     parsers::markdown::heading_sluggger::Slugger,
 };
 

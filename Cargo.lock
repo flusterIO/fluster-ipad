@@ -2196,6 +2196,7 @@ name = "fluster_core_utilities"
 version = "0.0.1"
 dependencies = [
  "chrono",
+ "conundrum",
  "crossbeam",
  "crossbeam-channel",
  "dirs",

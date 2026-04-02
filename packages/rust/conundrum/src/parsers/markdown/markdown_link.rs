@@ -1,4 +1,3 @@
-use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{ModalResult, Parser, combinator::delimited, token::take_while};
@@ -11,7 +10,10 @@ use crate::{
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
-    output::output_components::output_utils::javascript_null_prop,
+    output::{
+        general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
+        output_components::output_utils::javascript_null_prop,
+    },
     parsers::parser_trait::ConundrumParser,
 };
 

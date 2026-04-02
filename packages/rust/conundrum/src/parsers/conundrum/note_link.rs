@@ -1,4 +1,3 @@
-use fluster_core_utilities::core_types::syntax::parser_ids::ParserId;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
@@ -16,7 +15,10 @@ use crate::{
             state_modifier::ConundrumStateModifier,
         },
     },
-    output::parsing_result::note_outgoing_link_result::NoteOutgoingLinkResult,
+    output::{
+        general::component_constants::parser_ids::ParserId,
+        parsing_result::note_outgoing_link_result::NoteOutgoingLinkResult,
+    },
     parsers::parser_trait::ConundrumParser,
 };
 

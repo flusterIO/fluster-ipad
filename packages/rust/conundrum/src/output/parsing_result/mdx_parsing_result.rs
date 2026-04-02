@@ -1,9 +1,9 @@
-use fluster_core_utilities::core_types::fluster_error::FlusterError;
 use gray_matter::{Matter, engine::YAML};
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
 use crate::{
+    lang::runtime::state::conundrum_error::{ConundrumError, ConundrumErrorVariant},
     output::parsing_result::{
         ai_serialization_request::AiSerializationRequestPhase1,
         dictionary_result::DictionaryEntryResult,
@@ -11,7 +11,7 @@ use crate::{
         note_outgoing_link_result::NoteOutgoingLinkResult,
         tag_result::TagResult,
     },
-    parsers::markdown::heading::{MarkdownHeadingResult, MarkdownHeadingStringifiedResult},
+    parsers::markdown::heading::MarkdownHeadingStringifiedResult,
 };
 
 #[typeshare]
@@ -30,6 +30,11 @@ pub struct MdxParsingResult {
     pub ignore_all_parsers: bool,
     pub ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
     pub success: bool,
+    /// Errors are kept seperate when at all possible to encourage displaying
+    /// _something_ useful to the user since this will likey be used in a
+    /// lot of real-time applications like note taking, blogging and the
+    /// like.
+    pub error: Option<ConundrumErrorVariant>,
 }
 
 impl Default for MdxParsingResult {
@@ -44,14 +49,16 @@ impl Default for MdxParsingResult {
                outgoing_links: Vec::new(),
                ignore_all_parsers: false,
                ai_secondary_parse_requests: Vec::new(),
-               success: true }
+               success: true,
+               error: None }
     }
 }
 
 impl MdxParsingResult {
-    pub fn get_fail_result() -> Self {
+    pub fn get_fail_result(error: ConundrumErrorVariant) -> Self {
         let mut x = MdxParsingResult::default();
         x.success = false;
+        x.error = Some(error);
         x
     }
 
@@ -73,7 +80,7 @@ impl MdxParsingResult {
         let data = matter.parse(content)
                          .map_err(|e| {
                              println!("Front Matter Error: {}", e);
-                             FlusterError::FrontMatterError
+                             ConundrumErrorVariant::FrontMatterError
                          })
                          .ok();
         MdxParsingResult { note_id: None,
@@ -94,6 +101,7 @@ impl MdxParsingResult {
                            },
                            ignore_all_parsers: false,
                            ai_secondary_parse_requests: Vec::new(),
-                           success: true }
+                           success: true,
+                           error: None }
     }
 }

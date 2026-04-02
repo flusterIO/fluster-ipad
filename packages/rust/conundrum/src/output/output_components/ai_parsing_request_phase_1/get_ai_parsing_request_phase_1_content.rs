@@ -1,8 +1,9 @@
-use fluster_core_utilities::core_types::component_constants::auto_inserted_component_name::AutoInsertedComponentName;
-
 use crate::{
-    output::parsing_result::{
-        ai_serialization_request::AiSerializationRequestPhase1, mdx_parsing_result::MdxParsingResult,
+    output::{
+        general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
+        parsing_result::{
+            ai_serialization_request::AiSerializationRequestPhase1, mdx_parsing_result::MdxParsingResult,
+        },
     },
     parsers::markdown::code_block::ParsedCodeBlock,
 };

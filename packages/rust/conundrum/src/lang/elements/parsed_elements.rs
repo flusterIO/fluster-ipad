@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 use serde::Serialize;
 
 use crate::{
@@ -10,9 +12,15 @@ use crate::{
     },
     parsers::{
         conundrum::{
-            docs::ParsedInspectionRequest, fluster_comment::ConundrumCommentResult,
-            hr_with_children::HrWithChildrenResult, inline_citation::ParsedCitation, logic::token::ConundrumLogicToken,
-            note_link::ParsedOutgoingNoteLink, tag::ParsedTag,
+            docs::ParsedInspectionRequest,
+            fluster_comment::ConundrumCommentResult,
+            hr_with_children::HrWithChildrenResult,
+            inline_citation::ParsedCitation,
+            logic::{
+                bool::boolean::ConundrumBoolean, number::conundrum_number::ConundrumNumber, token::ConundrumLogicToken,
+            },
+            note_link::ParsedOutgoingNoteLink,
+            tag::ParsedTag,
         },
         javascript::parsed_javascript_elements::ParsedJavascriptElement,
         markdown::{
@@ -102,5 +110,54 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
         }
+    }
+}
+
+impl ParsedElement {
+    fn logic_bool(&self, matcher: impl Fn(ConundrumBoolean) -> bool) -> Option<ConundrumBoolean> {
+        match self {
+            ParsedElement::Logic(l) => match l {
+                ConundrumLogicToken::Bool(b) => {
+                    let res = matcher(b.clone());
+                    if res {
+                        Some(b.clone())
+                    } else {
+                        None
+                    }
+                }
+                _ => None,
+            },
+            _ => None,
+        }
+    }
+
+    /// The input function must return a boolean indicating whether or not to
+    /// the value is a match.
+    fn logic_number(&self, matcher: impl Fn(ConundrumNumber) -> bool) -> Option<ConundrumNumber> {
+        match self {
+            ParsedElement::Logic(l) => match l {
+                ConundrumLogicToken::Number(n) => {
+                    let res = matcher(n.clone());
+                    if res {
+                        Some(n.clone())
+                    } else {
+                        None
+                    }
+                }
+                _ => None,
+            },
+            _ => None,
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn delete_md() {
+        // let res =
+        // assert_eq!(result, 4);
     }
 }

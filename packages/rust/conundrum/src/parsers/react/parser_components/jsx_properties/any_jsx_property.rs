@@ -5,7 +5,7 @@ use crate::parsers::javascript::javascript_boolean::JavascriptBooleanResult;
 use crate::parsers::javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair;
 use crate::parsers::javascript::parsed_javascript_elements::ParsedJavascriptElement;
 use crate::parsers::react::parser_components::jsx_properties::jsx_curly_bracket_wrapped_property::any_curly_bracket_jsx_property;
-use crate::parsers::react::parser_components::jsx_properties::jsx_property_key::{self, jsx_property_key};
+use crate::parsers::react::parser_components::jsx_properties::jsx_property_key::jsx_property_key;
 use crate::parsers::react::parser_components::jsx_properties::string_property::JsxStringPropertyResult;
 use crate::{
     lang::runtime::traits::conundrum_input::ConundrumInput,

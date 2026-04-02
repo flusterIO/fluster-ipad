@@ -35,6 +35,7 @@ lazy_static = "1.5.0"
 serde_json.workspace = true
 wasm-bindgen = "0.2.114"
 serde-wasm-bindgen = "0.6.5"
+conundrum = { path = "../conundrum/" }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

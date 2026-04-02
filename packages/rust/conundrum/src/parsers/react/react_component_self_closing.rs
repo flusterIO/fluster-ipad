@@ -11,25 +11,21 @@ use winnow::{
 };
 
 use crate::{
-    lang::{
-        lib::ui::components::component_id::ConundrumComponentId,
-        runtime::{
-            state::{
-                conundrum_error::{ConundrumErrorVariant, ConundrumResult},
-                parse_state::{ConundrumModifier, ParseState},
-            },
-            traits::{
-                ai_input_component_result::AIInputComponentResult, conundrum_input::ConundrumInput,
-                fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
-            },
+    lang::runtime::{
+        state::{
+            conundrum_error::{ConundrumErrorVariant, ConundrumResult},
+            parse_state::{ConundrumModifier, ParseState},
+        },
+        traits::{
+            ai_input_component_result::AIInputComponentResult, conundrum_input::ConundrumInput,
+            fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
+            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
+    output::general::component_constants::component_names::EmbeddableComponentName,
     parsers::{
         conundrum::logic::object::object::ConundrumObject,
-        javascript::object::{
-            javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object::JavascriptObjectResult,
-        },
+        javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
         parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
         react::{
@@ -50,7 +46,8 @@ pub struct ReactComponentSelfClosingResult {
 
 impl ReactComponent for ReactComponentSelfClosingResult {
     fn get_conundrum_from_react(&self) -> ConundrumResult<ConundrumComponentType> {
-        let id = ConundrumComponentId::from_str(self.component_name.as_str())?;
+        let component_name = EmbeddableComponentName::from_str(self.component_name.as_str())?;
+        let id = component_name.to_component_id();
         if let Some(component) = COMPONENT_MAP.get(&id) {
             let getter = component.value();
             let res = getter(self.props.clone(), None);
@@ -164,7 +161,6 @@ mod tests {
         let mdx_component = res.to_mdx_component(&mut state);
         assert!(mdx_component == test_content, "Returns the input component as an mdx input");
         assert!(res.component_name == "MyComponent", "Returns the proper component  name");
-        println!("{:#?}", res);
         // assert_eq!(result, 4);
     }
 
@@ -180,7 +176,6 @@ mod tests {
         let mdx_component = res.to_mdx_component(&mut state);
         assert!(mdx_component == test_content, "Returns the input component as an mdx input");
         assert!(res.component_name == "MyComponent", "Returns the proper component  name");
-        println!("{:#?}", res);
         // assert_eq!(result, 4);
     }
 }

@@ -301,18 +301,6 @@ export interface GenerateNoteSummaryRequest {
 	generation_method: SummaryGenerationMethod;
 }
 
-export enum SizableOption {
-	None = "none",
-	Small = "small",
-	Smedium = "smedium",
-	Medium = "medium",
-	Large = "large",
-	Xl = "xl",
-	Xxl = "xxl",
-	Fit = "fit",
-	Full = "full",
-}
-
 export enum WebviewFontSize {
 	Small = "small",
 	Base = "base",
@@ -646,20 +634,6 @@ export enum AiStateEvents {
 	SendGeneralAiRequestPhase2 = "send-general-ai-request-phase-2",
 }
 
-export enum AutoInsertedComponentName {
-	NoteLink = "NoteLink",
-	AutoInsertedTag = "AutoInsertedTag",
-	FlusterCitation = "FlusterCitation",
-	DictionaryEntry = "DictionaryEntry",
-	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
-	AutoInsertedHeading = "AutoInsertedHeading",
-	AutoInsertedBlockQuote = "AutoInsertedBlockQuote",
-	AutoInsertedBlockMath = "AutoInsertedBlockMath",
-	AutoInsertedInlineMath = "AutoInsertedInlineMath",
-	AutoInsertedMarkdownLink = "AutoInsertedMarkdownLink",
-	AutoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph",
-}
-
 export enum AutoTaggableType {
 	Tag = "tag",
 	Topic = "topic",
@@ -726,65 +700,6 @@ export enum DictionaryWebviewStorageKeys {
 	DictionaryData = "dict-data",
 }
 
-export enum DocumentationComponentName {
-	InContentDocumentationContainer = "InContentDocumentationContainer",
-	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
-	InContentDocsHighlightDemo = "InContentDocsHighlightDemo",
-	InContentDocsUnderlineDemo = "InContentDocsUnderlineDemo",
-}
-
-/** From typescript to swift. */
-export enum EmbeddableComponentId {
-	Admonition = "admonition",
-	Hl = "highlight",
-	Ul = "underline",
-	Card = "card",
-	Grid = "grid",
-	UtlityContainer = "util-container",
-	HrWithChildren = "hr-with-children",
-	Hint = "embeddable-hint-component",
-	AINoteSummary = "ai-note-summary",
-	AIResearchSuggestions = "ai-research-suggestions",
-	AIGeneratedImage = "ai-generated-image",
-}
-
-export enum EmbeddableComponentName {
-	Admonition = "Admonition",
-	Hl = "Hl",
-	Highlight = "Highlight",
-	Ul = "Ul",
-	Underline = "Underline",
-	Card = "Card",
-	Grid = "Grid",
-	UtlityContainer = "Container",
-	HrWithChildren = "Hr",
-	Hint = "Hint",
-	AINoteSummary = "AINoteSummary",
-}
-
-export enum InContentDocumentationFormat {
-	Full = "full",
-	Short = "short",
-}
-
-export enum InContentDocumentationId {
-	Markdown = "Markdown",
-	Docs = "Docs",
-	Syntax = "Syntax",
-	Jsx = "Jsx",
-	SizableObject = "Sizable",
-	Emphasis = "Emphasis",
-	Emoji = "Emoji",
-	Components = "Components",
-	AI = "AI",
-	Conundrum = "Conundrum",
-}
-
-export enum InContentDocumentationSource {
-	ComponentDocs = "component",
-	InternalDocs = "internal-docs",
-}
-
 /** From typescript to swift. */
 export enum MdxPreviewWebviewActions {
 	RequestNoteData = "request-note-data",
@@ -823,16 +738,6 @@ export enum NoteDetailWebviewActions {
 export enum NoteDetailWebviewEvents {
 	SetInitialColorScheme = "set-initial-color-scheme",
 	SetNoteDetails = "set-note-details",
-}
-
-export enum ParserId {
-	Tags = "tags",
-	Citations = "citations",
-	Dictionary = "dictionary",
-	NoteLink = "note_link",
-	Documentation = "docs",
-	AiTrigger = "ai",
-	HrWithChildren = "hr",
 }
 
 /** From typescript to swift. */

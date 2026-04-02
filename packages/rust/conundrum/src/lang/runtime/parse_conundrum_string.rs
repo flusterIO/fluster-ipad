@@ -1,4 +1,3 @@
-use fluster_core_utilities::core_types::fluster_error::{FlusterError, FlusterResult};
 use winnow::combinator::{dispatch, peek};
 use winnow::token::take;
 use winnow::{
@@ -8,6 +7,7 @@ use winnow::{
 };
 
 use crate::lang::runtime::apply_parsed_conundrum_result::apply_parsed_conundrum_input_state;
+use crate::lang::runtime::state::conundrum_error::{ConundrumError, ConundrumErrorVariant, ConundrumResult};
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::parsers::conundrum::docs::ParsedInspectionRequest;
 use crate::parsers::conundrum::fluster_comment::ConundrumCommentResult;
@@ -171,10 +171,11 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<Par
 /// Application-level entry point.  Parses the entire input and converts any
 /// winnow error into a `FlusterError` for the rest of the app.
 pub fn parse_conundrum_string<'a>(input: &'a mut ConundrumInput<'a>)
-                                  -> FlusterResult<(Vec<ParsedElement>, &'a mut ConundrumInput<'a>)> {
+                                  -> ConundrumResult<(Vec<ParsedElement>, &'a mut ConundrumInput<'a>)> {
     let elements = parse_elements(input).map_err(|e| {
                                             println!("Conundrum Error: {:#?}", e);
-                                            FlusterError::ConundrumParsingError
+                                            ConundrumErrorVariant::UserFacingGeneralParserError(ConundrumError::from_message("Something went wrong while parsing this document. I'm working on a much, _much_ improved error experience.")
+                                                )
                                         })?;
     apply_parsed_conundrum_input_state(input);
     Ok((elements, input))

@@ -1,10 +1,3 @@
-use fluster_core_utilities::core_types::{
-    component_constants::{
-        component_name_id_map::COMPONENT_NAME_ID_MAP, component_names::EmbeddableComponentName,
-        documentation_component_name::DocumentationComponentName,
-    },
-    documentation_constants::in_content_documentation_id::{InContentDocumentationFormat, InContentDocumentationId},
-};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 use typeshare::typeshare;
@@ -17,13 +10,21 @@ use winnow::{
 };
 
 use crate::{
-    embedded::{embedded_component_docs::EmbeddedComponentDocs, embedded_in_content_docs::EmbeddedInContentDocs},
+    embedded::{
+        embedded_component_docs::EmbeddedComponentDocs,
+        embedded_in_content_docs::EmbeddedInContentDocs,
+        in_content_documentation_id::{InContentDocumentationFormat, InContentDocumentationId},
+    },
     lang::runtime::{
         state::parse_state::{ConundrumModifier, ParseState},
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
+    },
+    output::general::component_constants::{
+        component_name_id_map::COMPONENT_NAME_ID_MAP, component_names::EmbeddableComponentName,
+        documentation_component_name::DocumentationComponentName,
     },
     parsers::parser_trait::ConundrumParser,
 };
