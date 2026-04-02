@@ -961,6 +961,7 @@ dependencies = [
  "googletest",
  "gray_matter",
  "insta",
+ "lazy_static",
  "lsp-types 0.97.0",
  "miette",
  "molc",

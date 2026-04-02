@@ -1,16 +1,20 @@
 use serde::Serialize;
 
 use crate::{
-    lang::runtime::{
-        state::parse_state::ParseState,
-        traits::{fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult},
+    lang::{
+        lib::ui::ui_types::children::Children,
+        runtime::{
+            state::parse_state::ParseState,
+            traits::{fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult},
+        },
     },
     parsers::{
         conundrum::{
             docs::ParsedInspectionRequest, fluster_comment::ConundrumCommentResult,
-            hr_with_children::HrWithChildrenResult, inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink,
-            tag::ParsedTag,
+            hr_with_children::HrWithChildrenResult, inline_citation::ParsedCitation, logic::token::ConundrumLogicToken,
+            note_link::ParsedOutgoingNoteLink, tag::ParsedTag,
         },
+        javascript::parsed_javascript_elements::ParsedJavascriptElement,
         markdown::{
             block_math::BlockMathResult, block_quote::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
@@ -65,6 +69,9 @@ pub enum ParsedElement {
     ParsedInspectionRequest(ParsedInspectionRequest),
     HrWithChildren(HrWithChildrenResult),
     Comment(ConundrumCommentResult),
+    Children(Children),
+    Javascript(ParsedJavascriptElement),
+    Logic(ConundrumLogicToken),
 }
 
 impl MdxComponentResult for ParsedElement {
@@ -91,6 +98,9 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::ReactComponentWithChildren(c) => c.to_conundrum_component(res),
             ParsedElement::Emoji(e) => e.to_conundrum_component(res),
             ParsedElement::InlineCode(m) => m.to_conundrum_component(res),
+            ParsedElement::Children(c) => c.render(res),
+            ParsedElement::Javascript(js) => js.to_conundrum_component(res),
+            ParsedElement::Logic(l) => l.to_conundrum_component(res),
         }
     }
 }

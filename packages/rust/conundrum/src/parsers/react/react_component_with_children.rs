@@ -1,4 +1,4 @@
-use std::{cell::RefCell, ops::Deref};
+use std::{cell::RefCell, ops::Deref, str::FromStr};
 
 use serde::Serialize;
 use typeshare::typeshare;
@@ -13,10 +13,14 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
+        lib::ui::components::component_id::ConundrumComponentId,
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            state::parse_state::{ConundrumModifier, ParseState},
+            state::{
+                conundrum_error::{ConundrumErrorVariant, ConundrumResult},
+                parse_state::{ConundrumModifier, ParseState},
+            },
             traits::{
                 ai_input_component_result::AIInputComponentResult,
                 conundrum_input::{ConundrumInput, get_conundrum_input},
@@ -30,12 +34,15 @@ use crate::{
     },
     parsers::{
         as_char_extensions::is_space_or_newline,
-        javascript::object::{
-            javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object::JavascriptObjectResult,
-        },
+        conundrum::logic::object::object::ConundrumObject,
+        javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
         parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
-        react::parser_components::jsx_properties::any_jsx_property::any_jsx_property,
+        react::{
+            components::{COMPONENT_MAP, ConundrumComponentType},
+            parser_components::jsx_properties::any_jsx_property::any_jsx_property,
+            react_component::ReactComponent,
+        },
     },
 };
 
@@ -45,13 +52,26 @@ pub struct ReactComponentWithChildrenResult {
     pub full_text: String,
     pub component_name: String,
     pub children: Vec<ParsedElement>,
-    pub props: JavascriptObjectResult,
+    pub props: ConundrumObject,
 }
 
 impl ReactComponentWithChildrenResult {
     pub fn to_component(&self) -> ParsedElement {
         let x = self.deref();
-        ParsedElement::ReactComponentWithChildren(*x)
+        ParsedElement::ReactComponentWithChildren(x.clone())
+    }
+}
+
+impl ReactComponent for ReactComponentWithChildrenResult {
+    fn get_conundrum_from_react(&self) -> ConundrumResult<ConundrumComponentType> {
+        let id = ConundrumComponentId::from_str(self.component_name.as_str())?;
+        if let Some(component) = COMPONENT_MAP.get(&id) {
+            let getter = component.value();
+            let res = getter(self.props.clone(), Some(self.children.clone()));
+            res
+        } else {
+            Err(ConundrumErrorVariant::FailToFindComponent(id.to_string()))
+        }
     }
 }
 
@@ -168,7 +188,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
                                           // replaced below anyways.
                                           component_name: component_name.to_string(),
                                           children,
-                                          props: JavascriptObjectResult::from_kv_pair_vec(props) })
+                                          props: ConundrumObject::from_kv_pair_vec(props) })
 }
 
 impl ConundrumParser<ReactComponentWithChildrenResult> for ReactComponentWithChildrenResult {

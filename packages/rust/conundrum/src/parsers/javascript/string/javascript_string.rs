@@ -1,4 +1,7 @@
+use crate::lang::runtime::state::parse_state::ParseState;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
+use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
+use crate::lang::runtime::traits::jsx_component_result::JsxComponentResult;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
 use serde::Serialize;
 use winnow::combinator::{alt, delimited};
@@ -9,21 +12,25 @@ use winnow::{ModalResult, Parser};
 #[derive(Debug, Serialize, Clone)]
 pub struct JavascriptStringResult {
     pub value: String,
+    pub delimiter: char,
 }
 
 pub fn double_quoted_javascript_string(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
     let res = delimited('"', take_till(0.., |c| c == '\n' || c == '"'), '"').parse_next(input)?;
-    Ok(JavascriptStringResult { value: res.to_string() })
+    Ok(JavascriptStringResult { value: res.to_string(),
+                                delimiter: '"' })
 }
 
 pub fn single_quoted_javascript_string(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
     let res = delimited('\'', take_till(0.., |c| c == '\n' || c == '\''), '\'').parse_next(input)?;
-    Ok(JavascriptStringResult { value: res.to_string() })
+    Ok(JavascriptStringResult { value: res.to_string(),
+                                delimiter: '\'' })
 }
 
 pub fn back_tick_quoted_javascript_string(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
     let res = delimited('`', take_till(0.., |c| c == '`'), '`').parse_next(input)?;
-    Ok(JavascriptStringResult { value: res.to_string() })
+    Ok(JavascriptStringResult { value: res.to_string(),
+                                delimiter: '`' })
 }
 
 pub fn single_or_double_quoted_string(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
@@ -36,6 +43,22 @@ impl JavascriptParser<JavascriptStringResult> for JavascriptStringResult {
                      single_quoted_javascript_string,
                      double_quoted_javascript_string)).parse_next(input)?;
         Ok(s)
+    }
+}
+
+impl JsxComponentResult for JavascriptStringResult {
+    fn to_jsx_component(&self, _: &mut ParseState) -> String {
+        format!("{}{}{}", self.delimiter, self.value, self.delimiter)
+    }
+}
+
+impl ConundrumComponentResult for JavascriptStringResult {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+        if res.is_markdown_or_plain_text() {
+            String::from("")
+        } else {
+            self.to_jsx_component(res)
+        }
     }
 }
 

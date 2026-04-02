@@ -2,7 +2,9 @@ use serde::Serialize;
 use winnow::ascii::{dec_int, float};
 use winnow::{ModalResult, Parser, combinator::alt};
 
+use crate::lang::runtime::state::parse_state::{ConundrumModifier, ParseState};
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
+use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::parsers::conundrum::logic::number::conundrum_number::ConundrumNumber;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
 
@@ -44,6 +46,16 @@ pub fn javascript_float(input: &mut ConundrumInput) -> ModalResult<JavascriptNum
 impl JavascriptParser<JavascriptNumberResult> for JavascriptNumberResult {
     fn parse_javascript(input: &mut ConundrumInput) -> ModalResult<JavascriptNumberResult> {
         alt((javascript_float, javascript_int)).parse_next(input)
+    }
+}
+
+impl ConundrumComponentResult for JavascriptNumberResult {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+        if res.is_markdown_or_plain_text() {
+            String::from("")
+        } else {
+            self.value.to_string()
+        }
     }
 }
 

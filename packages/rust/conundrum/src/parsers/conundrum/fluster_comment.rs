@@ -45,10 +45,10 @@ impl MdxComponentResult for ConundrumCommentResult {
 impl ConundrumParser<ConundrumCommentResult> for ConundrumCommentResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<ConundrumCommentResult> {
         let start = input.input.checkpoint();
-        let line_content = preceded(literal("// FlusterComment: "), till_line_ending).parse_next(input)
-                                                                                     .inspect_err(|_| {
-                                                                                         input.input.reset(&start);
-                                                                                     })?;
+        let line_content = preceded(literal("//**: "), till_line_ending).parse_next(input)
+                                                                        .inspect_err(|_| {
+                                                                            input.input.reset(&start);
+                                                                        })?;
 
         Ok(ConundrumCommentResult { content: line_content.to_string() })
     }

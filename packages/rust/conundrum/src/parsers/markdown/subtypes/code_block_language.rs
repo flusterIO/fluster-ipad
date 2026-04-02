@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 #[typeshare::typeshare]
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum CodeBlockLanguage {
     DefaultLanguage,

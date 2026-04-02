@@ -1,13 +1,17 @@
+use serde::Serialize;
 use winnow::{ModalResult, Parser, combinator::alt, stream::Stream, token::literal};
 
 use crate::{
     lang::runtime::traits::conundrum_input::{ConundrumInput, get_conundrum_input},
     parsers::{
+        conundrum::logic::string::conundrum_string::ConundrumString,
         javascript::{
             javascript_parser_trait::JavascriptParser,
             object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
             parsed_javascript_elements::ParsedJavascriptElement,
-            string::javascript_string::{self, double_quoted_javascript_string, single_quoted_javascript_string},
+            string::javascript_string::{
+                self, JavascriptStringResult, double_quoted_javascript_string, single_quoted_javascript_string,
+            },
         },
         react::parser_components::jsx_properties::{
             jsx_curly_bracket_wrapped_property::jsx_curly_bracket_wrapped_property, jsx_property::JsxPropertyParser,
@@ -16,9 +20,11 @@ use crate::{
     },
 };
 
+#[typeshare::typeshare]
+#[derive(Debug, Serialize, Default, Clone)]
 pub struct JsxStringPropertyResult {
     pub key: String,
-    pub value: String,
+    pub value: ConundrumString,
 }
 
 fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {

@@ -35,12 +35,12 @@ pub enum EmbeddableComponentId {
     #[serde(rename = "ai-note-summary")]
     #[strum(to_string = "ai-note-summary")]
     AINoteSummary,
-    #[serde(rename = "ai-research-suggestions")]
-    #[strum(to_string = "ai-research-suggestions")]
-    AIResearchSuggestions,
-    #[serde(rename = "ai-generated-image")]
-    #[strum(to_string = "ai-generated-image")]
-    AIGeneratedImage,
+    // #[serde(rename = "ai-research-suggestions")]
+    // #[strum(to_string = "ai-research-suggestions")]
+    // AIResearchSuggestions,
+    // #[serde(rename = "ai-generated-image")]
+    // #[strum(to_string = "ai-generated-image")]
+    // AIGeneratedImage,
 }
 
 impl EmbeddableComponentId {

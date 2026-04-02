@@ -66,6 +66,17 @@ impl ParseState {
         false
     }
 
+    pub fn is_markdown(&self) -> bool {
+        self.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
+                                            ConundrumModifier::PreferInlineMarkdownSyntax])
+    }
+
+    pub fn is_markdown_or_plain_text(&self) -> bool {
+        self.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
+                                            ConundrumModifier::PreferInlineMarkdownSyntax,
+                                            ConundrumModifier::ForcePlainText])
+    }
+
     pub fn contains_modifier(&self, modifier: &ConundrumModifier) -> bool {
         self.modifiers.iter().any(|x| x == modifier)
     }

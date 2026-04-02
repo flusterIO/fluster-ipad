@@ -1,4 +1,10 @@
+use std::fmt::Display;
+
 use serde::Serialize;
+
+use crate::lang::runtime::{
+    state::parse_state::ParseState, traits::fluster_component_result::ConundrumComponentResult,
+};
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
@@ -16,5 +22,17 @@ impl ConundrumNumber {
             ConundrumNumber::Int(n) => *n as f64,
             ConundrumNumber::Float(n) => *n,
         }
+    }
+}
+
+impl Display for ConundrumNumber {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
+}
+
+impl ConundrumComponentResult for ConundrumNumber {
+    fn to_conundrum_component(&self, _: &mut ParseState) -> String {
+        self.to_string()
     }
 }

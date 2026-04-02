@@ -2,7 +2,7 @@ use serde::Serialize;
 use winnow::{ModalResult, Parser, stream::Stream};
 
 use crate::{
-    lang::runtime::traits::conundrum_input::ConundrumInput,
+    lang::runtime::traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
     parsers::{
         javascript::{
             javascript_parser_trait::JavascriptParser,
@@ -44,5 +44,13 @@ impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValue
 
         Ok(JavascriptObjectKeyValuePair { key,
                                           value: Box::new(value) })
+    }
+}
+
+impl ConundrumComponentResult for JavascriptObjectKeyValuePair {
+    fn to_conundrum_component(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+        // This element represents nothing visual, only a temporary data representation
+        // of jsx kv pairs.
+        String::from("")
     }
 }

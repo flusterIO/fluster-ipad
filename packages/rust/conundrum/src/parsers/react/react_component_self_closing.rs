@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
@@ -9,21 +11,32 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::{
-        state::parse_state::{ConundrumModifier, ParseState},
-        traits::{
-            ai_input_component_result::AIInputComponentResult, conundrum_input::ConundrumInput,
-            fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::ui::components::component_id::ConundrumComponentId,
+        runtime::{
+            state::{
+                conundrum_error::{ConundrumErrorVariant, ConundrumResult},
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                ai_input_component_result::AIInputComponentResult, conundrum_input::ConundrumInput,
+                fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     parsers::{
+        conundrum::logic::object::object::ConundrumObject,
         javascript::object::{
             javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object::JavascriptObjectResult,
         },
         parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
-        react::parser_components::jsx_properties::any_jsx_property::{self, any_jsx_property},
+        react::{
+            components::{COMPONENT_MAP, ConundrumComponentType},
+            parser_components::jsx_properties::any_jsx_property::any_jsx_property,
+            react_component::ReactComponent,
+        },
     },
 };
 
@@ -32,7 +45,20 @@ use crate::{
 pub struct ReactComponentSelfClosingResult {
     pub full_text: String,
     pub component_name: String,
-    pub props: JavascriptObjectResult,
+    pub props: ConundrumObject,
+}
+
+impl ReactComponent for ReactComponentSelfClosingResult {
+    fn get_conundrum_from_react(&self) -> ConundrumResult<ConundrumComponentType> {
+        let id = ConundrumComponentId::from_str(self.component_name.as_str())?;
+        if let Some(component) = COMPONENT_MAP.get(&id) {
+            let getter = component.value();
+            let res = getter(self.props.clone(), None);
+            res
+        } else {
+            Err(ConundrumErrorVariant::FailToFindComponent(id.to_string()))
+        }
+    }
 }
 
 impl AIInputComponentResult for ReactComponentSelfClosingResult {
@@ -104,7 +130,7 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult
                                             })?;
     Ok(ReactComponentSelfClosingResult { full_text: "".to_string(),
                                          component_name,
-                                         props: JavascriptObjectResult::from_kv_pair_vec(props) })
+                                         props: ConundrumObject::from_kv_pair_vec(props) })
 }
 
 impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClosingResult {
