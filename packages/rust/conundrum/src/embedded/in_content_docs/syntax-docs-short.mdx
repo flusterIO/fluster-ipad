@@ -1,6 +1,6 @@
-## Fluster Syntax
+<AutoInsertedHeading depth={2} id="fluster-syntax" subtitle={null} >Fluster Syntax</AutoInsertedHeading>
 
-### FrontMatter
+<AutoInsertedHeading depth={3} id="frontmatter" subtitle={null} >FrontMatter</AutoInsertedHeading>
 
 Insert front matter into your note using yaml syntax seperated by 3 `---`:
 
@@ -13,15 +13,15 @@ title: My optional note title
 
 
 
-### Tags 
+<AutoInsertedHeading depth={3} id="tags" subtitle={null} >Tags</AutoInsertedHeading>
 
-Insert **tags** into your note using the following syntax:
+Insert <span className="font-bold">tags</span> into your note using the following syntax:
 
-```mdx title="my_tag_demo.mdx"
-This is my tag [[#myTag]] called 'myTag'.
+```mdx title="my<span className="italic">tag</span>demo.mdx"
+This is my tag <AutoInsertedTag>myTag</AutoInsertedTag> called 'myTag'.
 ```
 
-### Citations
+<AutoInsertedHeading depth={3} id="citations" subtitle={null} >Citations</AutoInsertedHeading>
 
 
 
@@ -33,7 +33,7 @@ As you can see, according to Ives & Stillwell [[cite:IvesStillwell]]...
 
 
 
-### Dictionary Entries
+<AutoInsertedHeading depth={3} id="dictionary-entries" subtitle={null} >Dictionary Entries</AutoInsertedHeading>
 
 You can insert dictionary entries in any note using the following syntax:
 
@@ -46,7 +46,7 @@ I can insert any mdx content I like here.
 
 
 
-### Horizontal Rule with Children
+<AutoInsertedHeading depth={3} id="horizontal-rule-with-children" subtitle={null} >Horizontal Rule with Children</AutoInsertedHeading>
 
 ```mdx
 --- My title with math $\delta$ ---
@@ -55,7 +55,7 @@ I can insert any mdx content I like here.
 
 
 
-### Title with Subtitle
+<AutoInsertedHeading depth={3} id="title-with-subtitle" subtitle={null} >Title with Subtitle</AutoInsertedHeading>
 
 
 
@@ -67,9 +67,8 @@ I can insert any mdx content I like here.
 
 
 
---- Output ---
+<Hr>Output</Hr>
 
-# My title {#myTitleWithAnId}
-> My subtitle that follows immediately on the next line
+<AutoInsertedHeading depth={1} id="myTitleWithAnId" subtitle={<>My subtitle that follows immediately on the next line</>} >My title</AutoInsertedHeading>
 
 

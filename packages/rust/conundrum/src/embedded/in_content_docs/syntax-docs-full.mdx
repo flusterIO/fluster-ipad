@@ -1,6 +1,6 @@
-## Fluster Syntax
+<AutoInsertedHeading depth={2} id="fluster-syntax" subtitle={null} >Fluster Syntax</AutoInsertedHeading>
 
-### FrontMatter
+<AutoInsertedHeading depth={3} id="frontmatter" subtitle={null} >FrontMatter</AutoInsertedHeading>
 
 Insert front matter into your note using yaml syntax seperated by 3 `---`:
 
@@ -18,17 +18,20 @@ title: My optional note title
 | id | An optional id for the note that can be used for dynamic linking via the `[myLink](note:myNoteId)` syntax. |
 | ignoreParsers | Used mostly for internal development, can be a list of parsers that will not be applied to the note. Valid options are a list of 'tags', 'citations', 'note_link' and/or 'dictionary'. |
 
-### Tags 
+<AutoInsertedHeading depth={3} id="tags" subtitle={null} >Tags</AutoInsertedHeading>
 
-Insert **tags** into your note using the following syntax:
+Insert <span className="font-bold">tags</span> into your note using the following syntax:
 
-```mdx title="my_tag_demo.mdx"
-This is my tag [[#myTag]] called 'myTag'.
+```mdx title="my<span className="italic">tag</span>demo.mdx"
+This is my tag <AutoInsertedTag>myTag</AutoInsertedTag> called 'myTag'.
 ```
 
-### Citations
+<AutoInsertedHeading depth={3} id="citations" subtitle={null} >Citations</AutoInsertedHeading>
 
-> Citations are alphabetized by the optional 'title' field. All entries without this field will appear grouped at "No title found".
+
+<AutoInsertedBlockQuote>
+Citations are alphabetized by the optional 'title' field. All entries without this field will appear grouped at "No title found".
+</AutoInsertedBlockQuote>
 
 The citation key must match the bibliography entry key in your bibliography. For example:
 
@@ -57,7 +60,7 @@ Will work with the bibliography entry:
 ```
 
 
-### Dictionary Entries
+<AutoInsertedHeading depth={3} id="dictionary-entries" subtitle={null} >Dictionary Entries</AutoInsertedHeading>
 
 You can insert dictionary entries in any note using the following syntax:
 
@@ -70,16 +73,16 @@ I can insert any mdx content I like here.
 
 These entries will automatically collected and inserted into your user defined dictionary.
 
-### Horizontal Rule with Children
+<AutoInsertedHeading depth={3} id="horizontal-rule-with-children" subtitle={null} >Horizontal Rule with Children</AutoInsertedHeading>
 
 ```mdx
 --- My title with math $\delta$ ---
 ```
 
---- My title with math $\delta$ ---
+<Hr>My title with math $\delta$</Hr>
 
 
-### Title with Subtitle
+<AutoInsertedHeading depth={3} id="title-with-subtitle" subtitle={null} >Title with Subtitle</AutoInsertedHeading>
 
 
 Since the margin between text can be too much to create some common layouts like a title/subtitle combo, there is a reasonably styled combo component that can be accessed with the following syntax:
@@ -94,9 +97,8 @@ Since the margin between text can be too much to create some common layouts like
 It is important to note though that there must be _no_ whitespace between the title and the block quote. That is what distingishes the behavior between a block quote and a subtitle.
 </Hint>
 
---- Output ---
+<Hr>Output</Hr>
 
-# My title {#myTitleWithAnId}
-> My subtitle that follows immediately on the next line
+<AutoInsertedHeading depth={1} id="myTitleWithAnId" subtitle={<>My subtitle that follows immediately on the next line</>} >My title</AutoInsertedHeading>
 
 

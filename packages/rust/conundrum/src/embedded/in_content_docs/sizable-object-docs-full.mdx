@@ -1,85 +1,88 @@
-## Sizable Objects
+<AutoInsertedHeading depth={2} id="sizable-objects" subtitle={null} >Sizable Objects</AutoInsertedHeading>
 
 
 The `SizableObject` model describes a long list of properties that are applied to many components throughout Fluster. This class takes some common language terms like `small` or `smedium` and turns them into valid code.
 
-Beware, however, that this is far from perfect. Every developer knows the challenge of centering a div, and it's difficult to write code that will look good in all circumstances without requiring _you_ to write more. Fluster does it's best to find a good balance between customizability and ease of use, but this is just the start. These components will continue to be refined to allow for a wide range of use cases.
+Beware, however, that this is far from perfect. Every developer knows the challenge of centering a div, and it's difficult to write code that will look good in all circumstances without requiring <span className="italic">you</span> to write more. Fluster does it's best to find a good balance between customizability and ease of use, but this is just the start. These components will continue to be refined to allow for a wide range of use cases.
 
 
 
-### Properties
+<AutoInsertedHeading depth={3} id="properties" subtitle={null} >Properties</AutoInsertedHeading>
 
 
-> The following section was generated directly from code. That means the properties will always reflect the current state of the application, but on the other hand, they might not be formatted as neatly as the rest of the content.
+
+<AutoInsertedBlockQuote>
+The following section was generated directly from code. That means the properties will always reflect the current state of the application, but on the other hand, they might not be formatted as neatly as the rest of the content.
+</AutoInsertedBlockQuote>
 
 
-#### hideMathLabels
+<AutoInsertedHeading depth={4} id="hidemathlabels" subtitle={null} >hideMathLabels</AutoInsertedHeading>
 
 
 Hides the MathJax labels in all child components.
 
-**Boolean (optional)**
+<span className="font-bold">Boolean (optional)</span>
 
-#### right
+<AutoInsertedHeading depth={4} id="right" subtitle={null} >right</AutoInsertedHeading>
 
 
 'Floats' the component to the right. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
 
-**Boolean (optional)**
+<span className="font-bold">Boolean (optional)</span>
 
-#### left
+<AutoInsertedHeading depth={4} id="left" subtitle={null} >left</AutoInsertedHeading>
 
 
 'Floats' the component to the left. This is often combined with `width` or the `sidebar` property to create sidebar layouts.
 
-**Boolean (optional)**
+<span className="font-bold">Boolean (optional)</span>
 
-#### sidebar
+<AutoInsertedHeading depth={4} id="sidebar" subtitle={null} >sidebar</AutoInsertedHeading>
 
 
 A utility property that sets a responsive max-width to create sidebar like layouts on large screens while allowing for full-width when the window is smaller.
 
-**Boolean (optional)**
+<span className="font-bold">Boolean (optional)</span>
 
-#### center
-
-
-This will _never_ work. This is put here only as an error trigger to notify users of `centerSelf` and `centerContent`
-
-#### centerSelf
+<AutoInsertedHeading depth={4} id="center" subtitle={null} >center</AutoInsertedHeading>
 
 
-**Boolean (optional)**
+This will <span className="italic">never</span> work. This is put here only as an error trigger to notify users of `centerSelf` and `centerContent`
 
-#### centerContent
+<AutoInsertedHeading depth={4} id="centerself" subtitle={null} >centerSelf</AutoInsertedHeading>
+
+
+<span className="font-bold">Boolean (optional)</span>
+
+<AutoInsertedHeading depth={4} id="centercontent" subtitle={null} >centerContent</AutoInsertedHeading>
 
 
 Centers the content of this component's children, not the component itself.
 
-**Boolean (optional)**
+<span className="font-bold">Boolean (optional)</span>
 
-#### border
+<AutoInsertedHeading depth={4} id="border" subtitle={null} >border</AutoInsertedHeading>
 
 
 Add a small, muted border to the object.
 
-**Boolean (optional)**
+<span className="font-bold">Boolean (optional)</span>
 
-#### inline
+<AutoInsertedHeading depth={4} id="inline" subtitle={null} >inline</AutoInsertedHeading>
 
 
 Tells the container to not forcefully create a new line and instead to flow with the rest of the content. Unless you're trying to apply properties to text inside of a paragraph using the Container component this is most likely not what you are looking for. If you want text to wrap around an element, use the `right` or `left` properties paired with a desired `width`.
 
-**Boolean (optional)**
+<span className="font-bold">Boolean (optional)</span>
 
-#### inShadow
+<AutoInsertedHeading depth={4} id="inshadow" subtitle={null} >inShadow</AutoInsertedHeading>
 
 
 Casts an inset shadow from the object.
 
-**Union (optional): One of the following types**
+<span className="font-bold">Union (optional): One of the following types</span>
 
-**Enum:** One of the following:
+<span className="font-bold">Enum:</span> One of the following:
 
 - none
 - small
@@ -91,17 +94,17 @@ Casts an inset shadow from the object.
 - fit
 - full
 undefined
-**Boolean**
+<span className="font-bold">Boolean</span>
 
-**Default:**: null
-#### shadow
+<span className="font-bold">Default:</span>: null
+<AutoInsertedHeading depth={4} id="shadow" subtitle={null} >shadow</AutoInsertedHeading>
 
 
 Casts a shadow from the object.
 
-**Union (optional): One of the following types**
+<span className="font-bold">Union (optional): One of the following types</span>
 
-**Enum:** One of the following:
+<span className="font-bold">Enum:</span> One of the following:
 
 - none
 - small
@@ -113,17 +116,17 @@ Casts a shadow from the object.
 - fit
 - full
 undefined
-**Boolean**
+<span className="font-bold">Boolean</span>
 
-**Default:**: null
-#### rounded
+<span className="font-bold">Default:</span>: null
+<AutoInsertedHeading depth={4} id="rounded" subtitle={null} >rounded</AutoInsertedHeading>
 
 
 Rounds the corners of the container. Use `rounded="full"` or `rounded="fit"` to create a completely circular component, useful for some image layouts.
 
-**Union (optional): One of the following types**
+<span className="font-bold">Union (optional): One of the following types</span>
 
-**Enum:** One of the following:
+<span className="font-bold">Enum:</span> One of the following:
 
 - none
 - small
@@ -135,15 +138,15 @@ Rounds the corners of the container. Use `rounded="full"` or `rounded="fit"` to 
 - fit
 - full
 undefined
-**Boolean**
+<span className="font-bold">Boolean</span>
 
-**Default:**: null
-#### text
+<span className="font-bold">Default:</span>: null
+<AutoInsertedHeading depth={4} id="text" subtitle={null} >text</AutoInsertedHeading>
 
 
 Change the text content of the container's children. Beware though, some edge cases might not respond as expected.
 
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -155,12 +158,12 @@ Change the text content of the container's children. Beware though, some edge ca
 - fit
 - full
 
-#### width
+<AutoInsertedHeading depth={4} id="width" subtitle={null} >width</AutoInsertedHeading>
 
 
 Set some custom width properties to create responsive layouts.
 
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -172,12 +175,12 @@ Set some custom width properties to create responsive layouts.
 - fit
 - full
 
-#### height
+<AutoInsertedHeading depth={4} id="height" subtitle={null} >height</AutoInsertedHeading>
 
 
 Set some custom height properties to create responsive layouts.
 
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -189,27 +192,12 @@ Set some custom height properties to create responsive layouts.
 - fit
 - full
 
-#### margin
+<AutoInsertedHeading depth={4} id="margin" subtitle={null} >margin</AutoInsertedHeading>
 
 
-Add some padding around the **outside** of an object. If you are looking to create space on the _inside_ of an object you are looking for `padding`.
+Add some padding around the <span className="font-bold">outside</span> of an object. If you are looking to create space on the <span className="italic">inside</span> of an object you are looking for `padding`.
 
-**Enum (optional):** One of the following:
-
-- none
-- small
-- smedium
-- medium
-- large
-- xl
-- xxl
-- fit
-- full
-
-#### marginLeft
-
-
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -221,25 +209,10 @@ Add some padding around the **outside** of an object. If you are looking to crea
 - fit
 - full
 
-#### marginRight
+<AutoInsertedHeading depth={4} id="marginleft" subtitle={null} >marginLeft</AutoInsertedHeading>
 
 
-**Enum (optional):** One of the following:
-
-- none
-- small
-- smedium
-- medium
-- large
-- xl
-- xxl
-- fit
-- full
-
-#### marginTop
-
-
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -251,25 +224,10 @@ Add some padding around the **outside** of an object. If you are looking to crea
 - fit
 - full
 
-#### marginBottom
+<AutoInsertedHeading depth={4} id="marginright" subtitle={null} >marginRight</AutoInsertedHeading>
 
 
-**Enum (optional):** One of the following:
-
-- none
-- small
-- smedium
-- medium
-- large
-- xl
-- xxl
-- fit
-- full
-
-#### marginX
-
-
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -281,27 +239,10 @@ Add some padding around the **outside** of an object. If you are looking to crea
 - fit
 - full
 
-#### marginY
+<AutoInsertedHeading depth={4} id="margintop" subtitle={null} >marginTop</AutoInsertedHeading>
 
 
-**Enum (optional):** One of the following:
-
-- none
-- small
-- smedium
-- medium
-- large
-- xl
-- xxl
-- fit
-- full
-
-#### padding
-
-
-Create padding on the _inside_ of an object. If you are trying to create space _around_ an object. you are probably looking for `margin`.
-
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -313,25 +254,10 @@ Create padding on the _inside_ of an object. If you are trying to create space _
 - fit
 - full
 
-#### paddingLeft
+<AutoInsertedHeading depth={4} id="marginbottom" subtitle={null} >marginBottom</AutoInsertedHeading>
 
 
-**Enum (optional):** One of the following:
-
-- none
-- small
-- smedium
-- medium
-- large
-- xl
-- xxl
-- fit
-- full
-
-#### paddingRight
-
-
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -343,25 +269,10 @@ Create padding on the _inside_ of an object. If you are trying to create space _
 - fit
 - full
 
-#### paddingTop
+<AutoInsertedHeading depth={4} id="marginx" subtitle={null} >marginX</AutoInsertedHeading>
 
 
-**Enum (optional):** One of the following:
-
-- none
-- small
-- smedium
-- medium
-- large
-- xl
-- xxl
-- fit
-- full
-
-#### paddingBottom
-
-
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -373,25 +284,10 @@ Create padding on the _inside_ of an object. If you are trying to create space _
 - fit
 - full
 
-#### paddingX
+<AutoInsertedHeading depth={4} id="marginy" subtitle={null} >marginY</AutoInsertedHeading>
 
 
-**Enum (optional):** One of the following:
-
-- none
-- small
-- smedium
-- medium
-- large
-- xl
-- xxl
-- fit
-- full
-
-#### paddingY
-
-
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -403,27 +299,12 @@ Create padding on the _inside_ of an object. If you are trying to create space _
 - fit
 - full
 
-#### gap
+<AutoInsertedHeading depth={4} id="padding" subtitle={null} >padding</AutoInsertedHeading>
 
 
-When in Grid mode or in some other select layouts, this property create a gap between _all_ children.
+Create padding on the <span className="italic">inside</span> of an object. If you are trying to create space <span className="italic">around</span> an object. you are probably looking for `margin`.
 
-**Enum (optional):** One of the following:
-
-- none
-- small
-- smedium
-- medium
-- large
-- xl
-- xxl
-- fit
-- full
-
-#### gapX
-
-
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small
@@ -435,10 +316,132 @@ When in Grid mode or in some other select layouts, this property create a gap be
 - fit
 - full
 
-#### gapY
+<AutoInsertedHeading depth={4} id="paddingleft" subtitle={null} >paddingLeft</AutoInsertedHeading>
 
 
-**Enum (optional):** One of the following:
+<span className="font-bold">Enum (optional):</span> One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+<AutoInsertedHeading depth={4} id="paddingright" subtitle={null} >paddingRight</AutoInsertedHeading>
+
+
+<span className="font-bold">Enum (optional):</span> One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+<AutoInsertedHeading depth={4} id="paddingtop" subtitle={null} >paddingTop</AutoInsertedHeading>
+
+
+<span className="font-bold">Enum (optional):</span> One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+<AutoInsertedHeading depth={4} id="paddingbottom" subtitle={null} >paddingBottom</AutoInsertedHeading>
+
+
+<span className="font-bold">Enum (optional):</span> One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+<AutoInsertedHeading depth={4} id="paddingx" subtitle={null} >paddingX</AutoInsertedHeading>
+
+
+<span className="font-bold">Enum (optional):</span> One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+<AutoInsertedHeading depth={4} id="paddingy" subtitle={null} >paddingY</AutoInsertedHeading>
+
+
+<span className="font-bold">Enum (optional):</span> One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+<AutoInsertedHeading depth={4} id="gap" subtitle={null} >gap</AutoInsertedHeading>
+
+
+When in Grid mode or in some other select layouts, this property create a gap between <span className="italic">all</span> children.
+
+<span className="font-bold">Enum (optional):</span> One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+<AutoInsertedHeading depth={4} id="gapx" subtitle={null} >gapX</AutoInsertedHeading>
+
+
+<span className="font-bold">Enum (optional):</span> One of the following:
+
+- none
+- small
+- smedium
+- medium
+- large
+- xl
+- xxl
+- fit
+- full
+
+<AutoInsertedHeading depth={4} id="gapy" subtitle={null} >gapY</AutoInsertedHeading>
+
+
+<span className="font-bold">Enum (optional):</span> One of the following:
 
 - none
 - small

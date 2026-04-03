@@ -5,6 +5,7 @@ import {
     type InContentDocumentationId,
     type InContentDocumentationFormat,
 } from "../../packages/webview_utils/src/core/code_gen/typeshare/conundrum";
+import { execFile } from "child_process";
 
 const root = path.resolve(__dirname, "../../");
 const inputDir = path.resolve(root, "docs/in_content_docs");
@@ -12,6 +13,37 @@ const outputDir = path.resolve(
     root,
     "packages/rust/conundrum/src/embedded/in_content_docs/",
 );
+
+const formatText = async (
+    inputPath: string,
+    outputPath: string,
+): Promise<string> => {
+    const root = process.env.FLUSTER_IOS_ROOT;
+    if (!root) {
+        console.error(
+            "Cannot continue without the FLUSTER_IOS_ROOT environment variable set to  the root of your monorepo's workspace.",
+        );
+        return;
+    }
+    const cliPath = path.join(root, "target", "debug", "fluster_internal_cli");
+
+    return new Promise((resolve, reject) => {
+        execFile(
+            cliPath,
+            ["parse-conundrum", inputPath, outputPath],
+            (err, stdout, stderr) => {
+                if (err?.message) {
+                    reject(err as Error);
+                    return;
+                }
+                if (stderr) {
+                    console.error(stderr);
+                }
+                resolve(stdout);
+            },
+        );
+    });
+};
 
 export const inContentDocumentationIdToFileName = (
     id: InContentDocumentationId,
@@ -43,8 +75,14 @@ export const writeContentToDocumentationId = (
     );
 
     fs.writeFileSync(shortOutputPath, group.short, { encoding: "utf-8" });
+    formatText(shortOutputPath, shortOutputPath).catch((err: unknown) => {
+        console.error("Error: ", err);
+    });
     console.log(`Wrote documentation from ${inputPath} to ${shortOutputPath}.`);
     fs.writeFileSync(longOutputPath, group.full, { encoding: "utf-8" });
+    formatText(longOutputPath, longOutputPath).catch((err: unknown) => {
+        console.error("Error: ", err);
+    });
     console.log(`Wrote documentation from ${inputPath} to ${longOutputPath}.`);
 };
 

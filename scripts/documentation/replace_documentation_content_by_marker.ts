@@ -13,7 +13,7 @@ export const replaceDocumentationContentMarkerByFilePath = (
     const regex = /<<DOCUMENTATION_CONSTANT:(.*?)>>/g;
     let match;
     while ((match = regex.exec(content)) !== null) {
-        let filePath = match[1];
+        const filePath = match[1];
         console.log("match: ", match.groups);
         console.log("filePath: ", filePath);
         const outputPath = path.resolve(root, filePath);

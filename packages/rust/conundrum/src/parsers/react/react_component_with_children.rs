@@ -159,9 +159,11 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
                                                                                       })?;
 
     let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
-    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).inspect_err(|_| {
-                                                                                              input.input.reset(&start);
-                                                                                          })?;
+    // let component_name =
+    // EmbeddableComponentName::from_str(component_name_string.as_str()).
+    // inspect_err(|_| {
+    // input.input.reset(&start);
+    // })?;
 
     let props: Vec<JavascriptObjectKeyValuePair> =
         repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
@@ -189,7 +191,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
 
     Ok(ReactComponentWithChildrenResult { full_text: "".to_string(), // This field will be
                                           // replaced below anyways.
-                                          component_name,
+                                          component_name: EmbeddableComponentName::Hl,
                                           children,
                                           props: ConundrumObject::from_kv_pair_vec(props) })
 }
@@ -217,15 +219,15 @@ mod tests {
 
     #[test]
     fn react_component_parses_component_outline() {
-        let test_content = r#"<MyComponent myBool myObject={{}} myString="This will cause > chaos" >
+        let test_content = r#"<Card myBool myObject={{}} myString="This will cause > chaos" >
 This is my children markdown test content 
-</MyComponent>"#;
+</Card>"#;
 
         let mut test_data = wrap_test_conundrum_content(test_content);
 
         let res = ReactComponentWithChildrenResult::parse_input_string(&mut test_data).expect("Parses vald component successfully.");
 
-        assert!(res.component_name == "MyComponent", "Finds the proper component name");
+        assert!(res.component_name == EmbeddableComponentName::Card, "Finds the proper component name");
         let mut state = test_data.state.borrow_mut();
         let mdx_component = res.to_mdx_component(&mut state);
         assert!(mdx_component == test_content, "Returns the input component as the mdx component for an mdx input.");

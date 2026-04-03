@@ -6,7 +6,7 @@ use winnow::{
     ModalResult, Parser,
     ascii::alphanumeric1,
     combinator::repeat,
-    error::{ContextError, ErrMode, ModalError},
+    error::ErrMode,
     stream::{AsChar, Stream},
     token::{literal, take_while},
 };
@@ -14,7 +14,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error::{ConundrumErrorVariant, ConundrumModalResult, ConundrumResult},
+            conundrum_error::{ConundrumErrorVariant, ConundrumResult},
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -122,12 +122,14 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult
     // RESUME: Pick back up here by handling the passing of th unique errors back to
     // the user. Currently only the top leve, 'woops we fucked up' error is
     // being returned.
-    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).map_err(|e| {
-                                                                                              input.input.reset(&start);
-                                                                                              let x =
-                                                                                                  ErrMode::Backtrack(e);
-                                                                                              x
-                                                                                          })?;
+    // let component_name =
+    // EmbeddableComponentName::from_str(component_name_string.as_str()).map_err(|e|
+    // {
+    // input.input.reset(&start);
+    // let x =
+    // ErrMode::Backtrack(e);
+    // x.convert()
+    // })?;
     let props: Vec<JavascriptObjectKeyValuePair> =
         repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
                                                                                    input.input.reset(&start);
@@ -137,7 +139,7 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult
                                                 input.input.reset(&start);
                                             })?;
     Ok(ReactComponentSelfClosingResult { full_text: "".to_string(),
-                                         component_name,
+                                         component_name: EmbeddableComponentName::Hl,
                                          props: ConundrumObject::from_kv_pair_vec(props) })
 }
 

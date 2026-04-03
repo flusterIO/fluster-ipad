@@ -415,15 +415,29 @@ export interface ParsedTag {
 	full_match: string;
 }
 
+export enum EmbeddableComponentName {
+	Admonition = "Admonition",
+	Hl = "Hl",
+	Highlight = "Highlight",
+	Ul = "Ul",
+	Underline = "Underline",
+	Card = "Card",
+	Grid = "Grid",
+	UtlityContainer = "Container",
+	HrWithChildren = "Hr",
+	Hint = "Hint",
+	AINoteSummary = "AINoteSummary",
+}
+
 export interface ReactComponentSelfClosingResult {
 	full_text: string;
-	component_name: string;
+	component_name: EmbeddableComponentName;
 	props: ConundrumObject;
 }
 
 export interface ReactComponentWithChildrenResult {
 	full_text: string;
-	component_name: string;
+	component_name: EmbeddableComponentName;
 	children: ParsedElement[];
 	props: ConundrumObject;
 }
@@ -518,20 +532,6 @@ export enum EmbeddableComponentId {
 	HrWithChildren = "hr-with-children",
 	Hint = "embeddable-hint-component",
 	AINoteSummary = "ai-note-summary",
-}
-
-export enum EmbeddableComponentName {
-	Admonition = "Admonition",
-	Hl = "Hl",
-	Highlight = "Highlight",
-	Ul = "Ul",
-	Underline = "Underline",
-	Card = "Card",
-	Grid = "Grid",
-	UtlityContainer = "Container",
-	HrWithChildren = "Hr",
-	Hint = "Hint",
-	AINoteSummary = "AINoteSummary",
 }
 
 export enum InContentDocumentationFormat {

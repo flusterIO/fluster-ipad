@@ -29,6 +29,16 @@ const replacers: Record<
             },
         ],
     },
+    "packages/rust/conundrum_swift/ConundrumSwift/Sources/ConundrumSwift/conundrum.swift":
+    {
+        replacers: [
+            {
+                query: "public enum SizableOption {",
+                dontPanicIfExists: ["public enum SizableOption: Codable {"],
+                replaceWith: "public enum SizableOption: Codable {",
+            },
+        ],
+    },
     "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":
     {
         header: 'import { type SizableOption } from "./conundrum";',

@@ -1,4 +1,6 @@
 use clap::{Parser, Subcommand};
+
+use crate::commands::parse_conundrum::parse_conundrum;
 mod commands;
 mod utils;
 
@@ -12,10 +14,15 @@ struct Args {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    /// Gathers all .fluster_component.json files in the monorepo and saves them in json form to
-    /// $FLUSTER_IOS_ROOT/docs/component_docs/.component_doc_paths.json
+    /// Gathers all .fluster_component.json files in the monorepo and saves them
+    /// in json form to $FLUSTER_IOS_ROOT/docs/component_docs/.
+    /// component_doc_paths.json
     GatherComponentDocPaths {},
     ParseInitialNotes {},
+    ParseConundrum {
+        file_path: String,
+        output: String,
+    },
 }
 
 #[tokio::main]
@@ -26,6 +33,10 @@ async fn main() {
         Some(Commands::GatherComponentDocPaths {}) => commands::gather_component_doc_paths::run(),
         Some(Commands::ParseInitialNotes {}) => {
             commands::parse_initial_notes::parse_initial_notes().await;
+        }
+        Some(Commands::ParseConundrum { file_path,
+                                        output, }) => {
+            let _ = parse_conundrum(file_path.as_str(), output.as_str()).await;
         }
         // Some(Commands::Calculate { num1, num2 }) => {
         //     println!("{} + {} = {}", num1, num2, num1 + num2);

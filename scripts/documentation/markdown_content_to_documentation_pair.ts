@@ -1,5 +1,5 @@
 import { replaceDocumentationContentMarkerByFilePath } from "./replace_documentation_content_by_marker";
-import { DocumentationPair } from "./types";
+import { type DocumentationPair } from "./types";
 
 const codeBlockRegex = /(?:^|\n)(`{3,})(.*?)\n([\s\S]*?)\n\1/g;
 
