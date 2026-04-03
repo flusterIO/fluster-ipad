@@ -1,12 +1,9 @@
-use std::str::FromStr;
-
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     ascii::alphanumeric1,
     combinator::repeat,
-    error::ErrMode,
     stream::{AsChar, Stream},
     token::{literal, take_while},
 };
@@ -14,7 +11,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error::{ConundrumErrorVariant, ConundrumResult},
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -98,7 +95,7 @@ impl ConundrumComponentResult for ReactComponentSelfClosingResult {
     }
 }
 
-fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult<ReactComponentSelfClosingResult> {
+fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ConundrumResult<ReactComponentSelfClosingResult> {
     let start = input.input.checkpoint();
 
     let _ = '<'.parse_next(input).inspect_err(|_| {
@@ -145,7 +142,7 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ModalResult
 
 impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClosingResult {
     fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
-                          -> ModalResult<ReactComponentSelfClosingResult> {
+                          -> ConundrumResult<ReactComponentSelfClosingResult> {
         let (mut res, taken) = parse_self_closing_react_component.with_taken().parse_next(input)?;
         res.full_text = taken.to_string();
         Ok(res)

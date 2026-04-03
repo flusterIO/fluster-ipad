@@ -3,7 +3,7 @@ use winnow::{Parser, combinator::delimited, stream::AsChar, token::take_while};
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ConundrumModifier,
+        state::{conundrum_error_variant::ConundrumResult, parse_state::ConundrumModifier},
         traits::{
             fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult,
             plain_text_component_result::PlainTextComponentResult,
@@ -42,7 +42,7 @@ impl ConundrumComponentResult for EmojiResult {
 
 impl ConundrumParser<EmojiResult> for EmojiResult {
     fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
-                          -> winnow::ModalResult<EmojiResult> {
+                          -> ConundrumResult<EmojiResult> {
         let value = delimited(':', take_while(1.., |c| !AsChar::is_space(c) && c != ':'), ':').parse_next(input)?;
 
         Ok(EmojiResult { value: value.to_string() })

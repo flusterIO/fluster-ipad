@@ -1,7 +1,7 @@
 use winnow::ModalResult;
 
 use crate::{
-    lang::runtime::traits::conundrum_input::ConundrumInput,
+    lang::runtime::{state::conundrum_error_variant::ConundrumResult, traits::conundrum_input::ConundrumInput},
     parsers::{
         javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
         react::parser_components::jsx_properties::{
@@ -17,5 +17,5 @@ pub enum JsxProperty {
 }
 
 pub trait JsxPropertyParser {
-    fn parse_jsx_property(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair>;
+    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair>;
 }

@@ -27,7 +27,10 @@ impl ConundrumNumber {
 
 impl Display for ConundrumNumber {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self)
+        match self {
+            ConundrumNumber::Int(n) => write!(f, "{}", n),
+            ConundrumNumber::Float(n) => write!(f, "{}", n),
+        }
     }
 }
 

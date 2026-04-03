@@ -1,5 +1,8 @@
 use crate::{
-    lang::runtime::traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    lang::runtime::{
+        state::conundrum_error_variant::ConundrumResult,
+        traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    },
     parsers::{
         javascript::{
             javascript_boolean::JavascriptBooleanResult, javascript_parser_trait::JavascriptParser,
@@ -14,12 +17,12 @@ use crate::{
 };
 use serde::Serialize;
 use winnow::combinator::alt;
-use winnow::{ModalResult, Parser, stream::Stream};
+use winnow::{Parser, stream::Stream};
 
 #[derive(Debug, Serialize)]
 pub struct JsxBooleanPropertyResult {}
 
-pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
     let start = input.input.checkpoint();
     let (key, wrapped_content) = jsx_curly_bracket_wrapped_property.parse_next(input).inspect_err(|_| {
                                                                                           input.input.reset(&start);
@@ -34,7 +37,7 @@ pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ModalResult<Ja
 }
 
 impl JsxPropertyParser for JsxBooleanPropertyResult {
-    fn parse_jsx_property(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
         alt((parse_full_boolean_property,
                        jsx_property_key.map(|key| JavascriptObjectKeyValuePair { key,
                                                                                  value: Box::new(ParsedJavascriptElement::Boolean(JavascriptBooleanResult { value: true })) }))).parse_next(input)

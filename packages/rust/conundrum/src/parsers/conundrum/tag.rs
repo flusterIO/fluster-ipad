@@ -1,14 +1,17 @@
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     combinator::delimited,
     token::{literal, take_until},
 };
 
 use crate::{
     lang::runtime::{
-        state::parse_state::{ConundrumModifier, ParseState},
+        state::{
+            conundrum_error_variant::ConundrumResult,
+            parse_state::{ConundrumModifier, ParseState},
+        },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
@@ -86,7 +89,7 @@ impl MdxComponentResult for ParsedTag {
 }
 
 impl ConundrumParser<ParsedTag> for ParsedTag {
-    fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<ParsedTag> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumResult<ParsedTag> {
         let (body, full_match) =
             delimited(literal("[[#"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
 

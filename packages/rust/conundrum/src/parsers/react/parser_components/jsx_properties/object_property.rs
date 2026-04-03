@@ -20,7 +20,7 @@ pub struct JsxObjectPropertyResult {}
 
 // impl JsxPropertyParser for JsxObjectPropertyResult {
 //     fn parse_jsx_property(input: &mut ConundrumInput) ->
-// ModalResult<JavascriptObjectKeyValuePair> {         let start =
+// ConundrumResult<JavascriptObjectKeyValuePair> {         let start =
 // input.input.checkpoint();         let (key, wrapped_content) =
 // jsx_curly_bracket_wrapped_property.parse_next(input).inspect_err(|_| {
 //

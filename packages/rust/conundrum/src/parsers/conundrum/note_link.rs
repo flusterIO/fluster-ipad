@@ -8,7 +8,10 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::{ConundrumModifier, ParseState},
+        state::{
+            conundrum_error_variant::ConundrumResult,
+            parse_state::{ConundrumModifier, ParseState},
+        },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
@@ -82,7 +85,7 @@ impl MdxComponentResult for ParsedOutgoingNoteLink {
 }
 
 impl ConundrumParser<ParsedOutgoingNoteLink> for ParsedOutgoingNoteLink {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<ParsedOutgoingNoteLink> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<ParsedOutgoingNoteLink> {
         let ((display_text, note_id), full_match) = (
             delimited('[', take_until(1.., ']'), ']'),
             delimited(literal("(note:"), take_until(1.., ")"), ')')

@@ -1,13 +1,16 @@
 use serde::Serialize;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     combinator::{alt, delimited},
     token::take_while,
 };
 
 use crate::{
     lang::runtime::{
-        state::parse_state::{ConundrumModifier, ParseState},
+        state::{
+            conundrum_error_variant::ConundrumResult,
+            parse_state::{ConundrumModifier, ParseState},
+        },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
@@ -56,7 +59,7 @@ impl ConundrumComponentResult for MarkdownItalicTextResult {
 }
 
 impl ConundrumParser<MarkdownItalicTextResult> for MarkdownItalicTextResult {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownItalicTextResult> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<MarkdownItalicTextResult> {
         let content = alt((delimited('*', take_while(1.., |c| c != '\n' && c != '*'), '*'),
                            delimited('_', take_while(1.., |c| c != '\n' && c != '_'), '_'))).parse_next(input)?;
 

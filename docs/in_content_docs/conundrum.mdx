@@ -1,7 +1,6 @@
 # Introducing Conundrum
 > A free & open source transpiler that can convert your notes to regular markdown, plain text, and more.
 
-
 > If you're interested in the future of this project, this may be for you. Otherwise, this documentation article may be more detail than you're interested in.
 
 When I first built Fluster I was using a third-party package to parse markdown and jsx, but I've since implemented about 80% of the parser that Fluster needs independent of any third party package. While this is largely a technical implementation detail, this means that Fluster can build a purpose driven, mobile friendly DSL (domain specific language) specifically for note taking.
@@ -37,3 +36,15 @@ The goal for this language is this:
 
 
 While Fluster remains my own personal project for the time being, the compiler for this language that I once called Conundrum and now I'm too lazy to rename all of the files is completely open source. Markdown is great, but it's too simple for modern workflows. HTML and Typescript are even better, but they take years to learn well. There is a huge middle ground where users need the simplicity and quickness of a markdown based syntax with support for features that only something like mdx can offer, and while I'm happy to be the app that fills that middle ground, I don't want users to be forced to use my application just because their notes used that syntax at one point, which is why I'm encouraging other developers to consider building an application around the Conundrum compiler. It's free, open-source, and licensed under the sort of 'do-almost-anything-with-it' MIT license. If you can, please hold off on building something in Swift with it until I can make some :moneybag:? I'm _sooo_ broke...
+
+### Want to see it in action?
+
+Try adding a React component to your title, something like:
+
+```mdx
+# My title <Hl>here</Hl>
+```
+
+And then take a look at your dashboard! The title should look like the `Hl` component isn't even there, despite the fact that Swift can't render the component directly. The transpiler is actually stripping away the component, with each component having it's own syntax unique to each environment.
+
+Perhaps the best part is that features like this documentation is built directly into the language. Maybe if this application takes off we can have someone more capable write this documentation, but the documentation feature is a fundamental part of the language.

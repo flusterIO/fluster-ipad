@@ -12,7 +12,10 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            state::parse_state::{ConundrumModifier, ParseState},
+            state::{
+                conundrum_error_variant::ConundrumResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
                 fluster_component_result::ConundrumComponentResult,
@@ -57,7 +60,7 @@ impl MdxComponentResult for HrWithChildrenResult {
 }
 
 impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
-    fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<HrWithChildrenResult> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumResult<HrWithChildrenResult> {
         let start = input.input.checkpoint();
         let res = delimited(literal("--- "),
                             take_until(1.., " ---").verify(|s: &str| !s.contains("\n")),

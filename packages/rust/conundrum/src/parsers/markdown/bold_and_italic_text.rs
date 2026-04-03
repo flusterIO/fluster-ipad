@@ -1,6 +1,6 @@
 use serde::Serialize;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     combinator::alt,
     stream::Stream,
     token::{literal, take_while},
@@ -8,7 +8,10 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::{ConundrumModifier, ParseState},
+        state::{
+            conundrum_error_variant::ConundrumResult,
+            parse_state::{ConundrumModifier, ParseState},
+        },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
@@ -57,7 +60,7 @@ impl ConundrumComponentResult for MarkdownBoldAndItalicTextResult {
 }
 
 impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicTextResult {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownBoldAndItalicTextResult> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<MarkdownBoldAndItalicTextResult> {
         let cp = input.input.checkpoint();
         let first_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
                                                                                   input.input.reset(&cp);

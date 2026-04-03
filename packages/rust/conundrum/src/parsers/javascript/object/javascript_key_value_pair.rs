@@ -1,8 +1,11 @@
 use serde::Serialize;
-use winnow::{ModalResult, Parser, stream::Stream};
+use winnow::{Parser, stream::Stream};
 
 use crate::{
-    lang::runtime::traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
+    lang::runtime::{
+        state::conundrum_error_variant::ConundrumResult,
+        traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
+    },
     parsers::{
         javascript::{
             javascript_parser_trait::JavascriptParser,
@@ -23,7 +26,7 @@ pub struct JavascriptObjectKeyValuePair {
 }
 
 impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValuePair {
-    fn parse_javascript(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
         let start = input.input.checkpoint();
         let key = javascript_object_key.parse_next(input).inspect_err(|_| {
                                                               input.input.reset(&start);

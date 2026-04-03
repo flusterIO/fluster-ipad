@@ -1,13 +1,14 @@
 use winnow::combinator::{dispatch, peek};
 use winnow::token::take;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     combinator::{alt, repeat},
     token::any,
 };
 
 use crate::lang::runtime::apply_parsed_conundrum_result::apply_parsed_conundrum_input_state;
-use crate::lang::runtime::state::conundrum_error::{ConundrumError, ConundrumErrorVariant, ConundrumResult};
+use crate::lang::runtime::state::conundrum_error::ConundrumError;
+use crate::lang::runtime::state::conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult};
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::parsers::conundrum::docs::ParsedInspectionRequest;
 use crate::parsers::conundrum::fluster_comment::ConundrumCommentResult;
@@ -34,9 +35,9 @@ use crate::{
 /// Core recursive parser.  Returns a `ModalResult` so it can be called from
 /// inside other winnow parsers (e.g. `BlockQuoteResult::parse_input_string`)
 /// without a type-mismatch.
-pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<Vec<ParsedElement>> {
+pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<Vec<ParsedElement>> {
     let mut at_line_start: bool = true;
-    repeat(0.., |input_inner: &mut ConundrumInput<'a>| -> ModalResult<ParsedElement> {
+    repeat(0.., |input_inner: &mut ConundrumInput<'a>| -> ConundrumResult<ParsedElement> {
         let result =
             dispatch! {peek(take(1usize));
                 "-" => |x: &mut ConundrumInput<'a>| {

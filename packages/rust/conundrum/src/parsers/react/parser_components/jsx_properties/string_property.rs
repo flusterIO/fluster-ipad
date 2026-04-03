@@ -2,7 +2,10 @@ use serde::Serialize;
 use winnow::{ModalResult, Parser, combinator::alt, stream::Stream, token::literal};
 
 use crate::{
-    lang::runtime::traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    lang::runtime::{
+        state::conundrum_error_variant::ConundrumResult,
+        traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    },
     parsers::{
         conundrum::logic::string::conundrum_string::ConundrumString,
         javascript::{
@@ -27,7 +30,7 @@ pub struct JsxStringPropertyResult {
     pub value: ConundrumString,
 }
 
-fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
     let start = input.input.checkpoint();
     let (key, wrapped_content) = jsx_curly_bracket_wrapped_property.parse_next(input).inspect_err(|_| {
                                                                                           input.input.reset(&start);
@@ -46,7 +49,8 @@ fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> ModalRe
                                       value: Box::new(ParsedJavascriptElement::String(js_string)) })
 }
 
-fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
+                                              -> ConundrumResult<JavascriptObjectKeyValuePair> {
     let start = input.input.checkpoint();
     let key = jsx_property_key.parse_next(input).inspect_err(|_| {
                                                      input.input.reset(&start);
@@ -69,7 +73,7 @@ fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> Mod
 }
 
 impl JsxPropertyParser for JsxStringPropertyResult {
-    fn parse_jsx_property(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
         alt((curly_bracket_wrapped_jsx_string_value, not_curly_bracket_wrapped_jsx_string_value)).parse_next(input)
     }
 }

@@ -8,7 +8,10 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::{ConundrumModifier, ParseState},
+        state::{
+            conundrum_error_variant::ConundrumResult,
+            parse_state::{ConundrumModifier, ParseState},
+        },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
@@ -61,7 +64,7 @@ impl MdxComponentResult for ParsedCitation {
 }
 
 impl ConundrumParser<ParsedCitation> for ParsedCitation {
-    fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<ParsedCitation> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumResult<ParsedCitation> {
         let (key, full_match) =
             delimited(literal("[[cite:"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
 

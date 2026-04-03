@@ -1,7 +1,7 @@
-use winnow::{ModalResult, Parser, combinator::delimited, stream::Stream, token::take_till};
+use winnow::{Parser, combinator::delimited, stream::Stream, token::take_till};
 
 use crate::{
-    lang::runtime::traits::conundrum_input::ConundrumInput,
+    lang::runtime::{state::conundrum_error_variant::ConundrumResult, traits::conundrum_input::ConundrumInput},
     parsers::{
         javascript::object::{
             javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object_value::javascript_object_value,
@@ -12,7 +12,7 @@ use crate::{
 };
 
 /// Returns the object key and the bracketed content in a tuple, in that order.
-pub fn jsx_curly_bracket_wrapped_property(input: &mut ConundrumInput) -> ModalResult<(String, String)> {
+pub fn jsx_curly_bracket_wrapped_property(input: &mut ConundrumInput) -> ConundrumResult<(String, String)> {
     let (key, _, bracketed_content) =
         (jsx_property_key, '=', delimited('{', take_till(0.., |c| c == '}'), '}')).parse_next(input)?;
     Ok((key, bracketed_content.trim().to_string()))
@@ -20,8 +20,8 @@ pub fn jsx_curly_bracket_wrapped_property(input: &mut ConundrumInput) -> ModalRe
 
 // RESUME: THis is the error. Come back here and fis this so the object parser
 // works after fixing website's fucing math error.
-pub fn jsx_curly_bracket_property<T>(mut parser: impl Fn(&mut ConundrumInput) -> ModalResult<T>)
-                                     -> impl FnMut(&mut ConundrumInput) -> ModalResult<(String, T)> {
+pub fn jsx_curly_bracket_property<T>(mut parser: impl Fn(&mut ConundrumInput) -> ConundrumResult<T>)
+                                     -> impl FnMut(&mut ConundrumInput) -> ConundrumResult<(String, T)> {
     move |input| {
         let start = input.input.checkpoint();
         let key = jsx_property_key.parse_next(input).inspect_err(|_| {
@@ -50,7 +50,7 @@ pub fn jsx_curly_bracket_property<T>(mut parser: impl Fn(&mut ConundrumInput) ->
     }
 }
 
-pub fn any_curly_bracket_jsx_property(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+pub fn any_curly_bracket_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
     let (key, em) = jsx_curly_bracket_property(javascript_object_value).parse_next(input)?;
 
     Ok(JavascriptObjectKeyValuePair { key,

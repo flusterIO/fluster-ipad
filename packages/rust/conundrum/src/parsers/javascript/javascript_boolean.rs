@@ -1,8 +1,9 @@
 use serde::Serialize;
+use winnow::Parser;
 use winnow::combinator::alt;
 use winnow::token::literal;
-use winnow::{ModalResult, Parser};
 
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumResult;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
@@ -14,7 +15,7 @@ pub struct JavascriptBooleanResult {
 }
 
 impl JavascriptParser<JavascriptBooleanResult> for JavascriptBooleanResult {
-    fn parse_javascript(input: &mut ConundrumInput) -> ModalResult<JavascriptBooleanResult> {
+    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumResult<JavascriptBooleanResult> {
         let res = alt((literal("true"), literal("false"))).parse_next(input)?;
         Ok(JavascriptBooleanResult { value: res == "true" })
     }

@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::cell::RefCell;
 use winnow::{
-    ModalResult, Parser, Stateful,
+    Parser, Stateful,
     ascii::{multispace0, space1, till_line_ending},
     combinator::{alt, delimited, opt, preceded, repeat},
     stream::{AsChar, Stream},
@@ -14,7 +14,10 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            state::parse_state::{ConundrumModifier, ParseState},
+            state::{
+                conundrum_error_variant::ConundrumResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
                 fluster_component_result::ConundrumComponentResult,
@@ -125,7 +128,7 @@ impl MdxComponentResult for MarkdownHeadingResult {
     }
 }
 
-pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ModalResult<Vec<ParsedElement>> {
+pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumResult<Vec<ParsedElement>> {
     let start = input.input.checkpoint();
     '\n'.parse_next(input).inspect_err(|_| {
                                input.input.reset(&start);
@@ -149,7 +152,7 @@ pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ModalResult<Vec<Pars
 }
 
 impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownHeadingResult> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<MarkdownHeadingResult> {
         let start = input.input.checkpoint();
         let level: Vec<char> = repeat(1..=6, '#').parse_next(input).inspect_err(|_| {
                                                                         input.input.reset(&start);

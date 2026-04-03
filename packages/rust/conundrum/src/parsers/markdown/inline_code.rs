@@ -1,6 +1,6 @@
 use serde::Serialize;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     ascii::alphanumeric1,
     combinator::{delimited, opt, repeat_till},
     stream::AsChar,
@@ -9,7 +9,7 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::parse_state::ConundrumModifier,
+        state::{conundrum_error_variant::ConundrumResult, parse_state::ConundrumModifier},
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
@@ -52,26 +52,26 @@ impl ConundrumComponentResult for InlineCodeResult {
     }
 }
 
-pub fn parse_inline_code_block_lang(input: &mut &str) -> ModalResult<CodeBlockLanguage> {
+pub fn parse_inline_code_block_lang(input: &mut &str) -> ConundrumResult<CodeBlockLanguage> {
     let lang = delimited(literal("{:"), alphanumeric1, '}').parse_next(input)?;
     Ok(CodeBlockLanguage::UserProvided(lang.to_string()))
 }
 
-pub fn parse_inner_inline_code_block_for_lang(input: &mut &str) -> ModalResult<(String, CodeBlockLanguage)> {
+pub fn parse_inner_inline_code_block_for_lang(input: &mut &str) -> ConundrumResult<(String, CodeBlockLanguage)> {
     let (x, lang): (Vec<char>, CodeBlockLanguage) =
         repeat_till(1.., any, parse_inline_code_block_lang).parse_next(input)?;
     let content = String::from_iter(x);
     Ok((content, lang))
 }
 
-fn inline_code_block_content(input: &mut ConundrumInput) -> ModalResult<String> {
+fn inline_code_block_content(input: &mut ConundrumInput) -> ConundrumResult<String> {
     let res = take_till(1.., |c| c == '`' || AsChar::is_newline(c)).parse_next(input)?;
     Ok(res.to_string())
 }
 
 impl ConundrumParser<InlineCodeResult> for InlineCodeResult {
     fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
-                          -> winnow::ModalResult<InlineCodeResult> {
+                          -> ConundrumResult<InlineCodeResult> {
         let code_block = delimited('`', inline_code_block_content, '`').parse_next(input)?;
         if let Some((code_block_content, lang)) =
             opt(parse_inner_inline_code_block_for_lang).parse_next(&mut code_block.as_ref())?

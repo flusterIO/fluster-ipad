@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
 use crate::{
-    lang::runtime::state::conundrum_error::{ConundrumError, ConundrumErrorVariant},
+    lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
     output::parsing_result::{
         ai_serialization_request::AiSerializationRequestPhase1,
         dictionary_result::DictionaryEntryResult,

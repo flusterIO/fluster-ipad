@@ -1,13 +1,13 @@
 use winnow::{
-    ModalResult, Parser,
-    ascii::{alpha1, alphanumeric1},
+    Parser,
+    ascii::alphanumeric1,
     stream::{AsChar, Stream},
-    token::{literal, take_while},
+    token::take_while,
 };
 
-use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
+use crate::lang::runtime::{state::conundrum_error_variant::ConundrumResult, traits::conundrum_input::ConundrumInput};
 
-pub fn parse_close_of_opening_tag(input: &mut ConundrumInput) -> ModalResult<()> {
+pub fn parse_close_of_opening_tag(input: &mut ConundrumInput) -> ConundrumResult<()> {
     let mut in_quotes = false;
     let mut in_object = false;
     // Iterate over the characters one by one here, handling the opening and closing
@@ -15,7 +15,7 @@ pub fn parse_close_of_opening_tag(input: &mut ConundrumInput) -> ModalResult<()>
     Ok(())
 }
 
-pub fn react_component_opening_tag(input: &mut ConundrumInput) -> ModalResult<()> {
+pub fn react_component_opening_tag(input: &mut ConundrumInput) -> ConundrumResult<()> {
     let start = input.input.checkpoint();
 
     let _ = '<'.parse_next(input).inspect_err(|_| {

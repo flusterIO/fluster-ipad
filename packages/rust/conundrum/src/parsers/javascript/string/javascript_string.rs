@@ -1,12 +1,13 @@
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumResult;
 use crate::lang::runtime::state::parse_state::ParseState;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::lang::runtime::traits::jsx_component_result::JsxComponentResult;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
 use serde::Serialize;
+use winnow::Parser;
 use winnow::combinator::{alt, delimited};
 use winnow::token::take_till;
-use winnow::{ModalResult, Parser};
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
@@ -15,30 +16,30 @@ pub struct JavascriptStringResult {
     pub delimiter: char,
 }
 
-pub fn double_quoted_javascript_string(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
+pub fn double_quoted_javascript_string(input: &mut ConundrumInput) -> ConundrumResult<JavascriptStringResult> {
     let res = delimited('"', take_till(0.., |c| c == '\n' || c == '"'), '"').parse_next(input)?;
     Ok(JavascriptStringResult { value: res.to_string(),
                                 delimiter: '"' })
 }
 
-pub fn single_quoted_javascript_string(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
+pub fn single_quoted_javascript_string(input: &mut ConundrumInput) -> ConundrumResult<JavascriptStringResult> {
     let res = delimited('\'', take_till(0.., |c| c == '\n' || c == '\''), '\'').parse_next(input)?;
     Ok(JavascriptStringResult { value: res.to_string(),
                                 delimiter: '\'' })
 }
 
-pub fn back_tick_quoted_javascript_string(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
+pub fn back_tick_quoted_javascript_string(input: &mut ConundrumInput) -> ConundrumResult<JavascriptStringResult> {
     let res = delimited('`', take_till(0.., |c| c == '`'), '`').parse_next(input)?;
     Ok(JavascriptStringResult { value: res.to_string(),
                                 delimiter: '`' })
 }
 
-pub fn single_or_double_quoted_string(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
+pub fn single_or_double_quoted_string(input: &mut ConundrumInput) -> ConundrumResult<JavascriptStringResult> {
     alt((single_quoted_javascript_string, double_quoted_javascript_string)).parse_next(input)
 }
 
 impl JavascriptParser<JavascriptStringResult> for JavascriptStringResult {
-    fn parse_javascript(input: &mut ConundrumInput) -> ModalResult<JavascriptStringResult> {
+    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumResult<JavascriptStringResult> {
         let s = alt((back_tick_quoted_javascript_string,
                      single_quoted_javascript_string,
                      double_quoted_javascript_string)).parse_next(input)?;

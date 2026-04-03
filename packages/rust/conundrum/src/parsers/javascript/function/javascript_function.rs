@@ -1,7 +1,8 @@
 use serde::Serialize;
+use winnow::Parser;
 use winnow::combinator::alt;
-use winnow::{ModalResult, Parser};
 
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumResult;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::lang::runtime::traits::jsx_component_result::JsxComponentResult;
 use crate::{
@@ -23,18 +24,16 @@ pub struct JavascriptFunction {
 }
 
 impl JavascriptParser<JavascriptFunction> for JavascriptFunction {
-    fn parse_javascript(input: &mut ConundrumInput) -> ModalResult<JavascriptFunction> {
+    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumResult<JavascriptFunction> {
         alt((javascript_function, javascript_arrow_function)).parse_next(input)
     }
 }
-
 
 impl JsxComponentResult for JavascriptFunction {
     fn to_jsx_component(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
         format!("")
     }
 }
-
 
 impl ConundrumComponentResult for JavascriptFunction {
     fn to_conundrum_component(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {

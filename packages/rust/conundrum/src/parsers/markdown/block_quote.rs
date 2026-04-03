@@ -2,7 +2,7 @@ use std::cell::RefCell;
 
 use serde::Serialize;
 use winnow::{
-    ModalResult, Parser, Stateful,
+    Parser, Stateful,
     ascii::{line_ending, space0, till_line_ending},
     combinator::{alt, eof, repeat},
     stream::Stream,
@@ -15,7 +15,10 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            state::parse_state::{ConundrumModifier, ParseState},
+            state::{
+                conundrum_error_variant::ConundrumResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
             traits::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
                 mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
@@ -81,7 +84,7 @@ impl MdxComponentResult for BlockQuoteResult {
 ///
 /// Grammar (GFM spec §5.1):
 ///   0-3-spaces  `>`  optional-space  rest-of-line  line-ending-or-eof
-fn parse_bq_line(input: &mut ConundrumInput) -> ModalResult<String> {
+fn parse_bq_line(input: &mut ConundrumInput) -> ConundrumResult<String> {
     let _ = take_while(0..=3, |c: char| c == ' ').parse_next(input)?;
     let _ = literal(">").parse_next(input)?;
     let _ = space0.parse_next(input)?;
@@ -95,7 +98,7 @@ fn parse_bq_line(input: &mut ConundrumInput) -> ModalResult<String> {
 // ---------------------------------------------------------------------------
 
 impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
-    fn parse_input_string<'a>(input_outer: &mut ConundrumInput<'a>) -> ModalResult<BlockQuoteResult> {
+    fn parse_input_string<'a>(input_outer: &mut ConundrumInput<'a>) -> ConundrumResult<BlockQuoteResult> {
         let (parsed_content, full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let start = input.input.checkpoint();

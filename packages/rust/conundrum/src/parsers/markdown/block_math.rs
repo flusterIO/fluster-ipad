@@ -1,13 +1,16 @@
 use serde::Serialize;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     combinator::delimited,
     token::{literal, take_until},
 };
 
 use crate::{
     lang::runtime::{
-        state::parse_state::{ConundrumModifier, ParseState},
+        state::{
+            conundrum_error_variant::ConundrumResult,
+            parse_state::{ConundrumModifier, ParseState},
+        },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
@@ -45,7 +48,7 @@ impl MdxComponentResult for BlockMathResult {
 }
 
 impl ConundrumParser<BlockMathResult> for BlockMathResult {
-    fn parse_input_string(input: &mut ConundrumInput) -> ModalResult<BlockMathResult> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumResult<BlockMathResult> {
         let body = delimited(literal("$$"), take_until(1.., "$$"), literal("$$")).parse_next(input)?;
         Ok(BlockMathResult { body: body.to_string() })
     }

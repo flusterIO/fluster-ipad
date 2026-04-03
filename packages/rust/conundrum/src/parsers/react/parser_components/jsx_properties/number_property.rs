@@ -1,7 +1,10 @@
-use winnow::{ModalResult, Parser, stream::Stream};
+use winnow::{Parser, stream::Stream};
 
 use crate::{
-    lang::runtime::traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    lang::runtime::{
+        state::conundrum_error_variant::ConundrumResult,
+        traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    },
     parsers::{
         javascript::{
             javascript_number::JavascriptNumberResult, javascript_parser_trait::JavascriptParser,
@@ -18,7 +21,7 @@ use crate::{
 pub struct JsxNumberPropertyResult {}
 
 impl JsxPropertyParser for JsxNumberPropertyResult {
-    fn parse_jsx_property(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
         let start = input.input.checkpoint();
         let (key, bracketed_content) = jsx_curly_bracket_wrapped_property.parse_next(input)
                                                                          .inspect_err(|_| {

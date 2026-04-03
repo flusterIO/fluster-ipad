@@ -1,10 +1,13 @@
 use serde::Serialize;
 use typeshare::typeshare;
-use winnow::{ModalResult, Parser, combinator::delimited, token::take_while};
+use winnow::{Parser, combinator::delimited, token::take_while};
 
 use crate::{
     lang::runtime::{
-        state::parse_state::{ConundrumModifier, ParseState},
+        state::{
+            conundrum_error_variant::ConundrumResult,
+            parse_state::{ConundrumModifier, ParseState},
+        },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
             mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
@@ -49,7 +52,7 @@ impl MdxComponentResult for MarkdownLinkResult {
 }
 
 impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ModalResult<MarkdownLinkResult> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<MarkdownLinkResult> {
         let (text, url) =
             (delimited('[', take_while(1.., |c| c != ']' && c != '\n'), ']'),
              delimited('(', take_while(5.., |c| c != ')' && c != '\n' && c != ' ' && c != '\t'), ')'))

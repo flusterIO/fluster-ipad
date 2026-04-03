@@ -1,6 +1,7 @@
 use winnow::combinator::alt;
 use winnow::{ModalResult, Parser};
 
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumResult;
 use crate::parsers::javascript::javascript_boolean::JavascriptBooleanResult;
 use crate::parsers::javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair;
 use crate::parsers::javascript::parsed_javascript_elements::ParsedJavascriptElement;
@@ -12,7 +13,7 @@ use crate::{
     parsers::react::parser_components::jsx_properties::jsx_property::JsxPropertyParser,
 };
 
-pub fn any_jsx_property(input: &mut ConundrumInput) -> ModalResult<JavascriptObjectKeyValuePair> {
+pub fn any_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
     alt((JsxStringPropertyResult::parse_jsx_property,
          any_curly_bracket_jsx_property,
          jsx_property_key.map(|key| {
