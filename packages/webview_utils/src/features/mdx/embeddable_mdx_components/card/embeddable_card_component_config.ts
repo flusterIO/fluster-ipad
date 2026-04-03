@@ -1,7 +1,7 @@
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
-import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { embeddableCardPropsSchema } from "./embeddable_card_props";
+import { EmbeddableComponentName, EmbeddableComponentId } from "../../../../core/code_gen/typeshare/conundrum";
 
 
 export const cardComponentNames = [EmbeddableComponentName.Card] as const;

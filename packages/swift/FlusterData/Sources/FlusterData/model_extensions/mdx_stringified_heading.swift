@@ -23,7 +23,7 @@ extension MarkdownHeadingStringifiedResult: @retroactive Codable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let depth = try container.decode(UInt16.self, forKey: .depth)
     let content = try container.decode(String.self, forKey: .content)
-    let id = try container.decodeIfPresent(String.self, forKey: .id)
+    let id = try container.decode(String.self, forKey: .id)
     self.init(
       depth: depth,
       content: content,

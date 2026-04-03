@@ -1,9 +1,9 @@
 import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
-import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { type AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
 import { type KeysOfType } from "@/utils/types/utility_types";
+import { EmbeddableComponentName, EmbeddableComponentId } from "../../../../core/code_gen/typeshare/conundrum";
 
 
 export const admonitionComponentNames = [EmbeddableComponentName.Admonition] as const

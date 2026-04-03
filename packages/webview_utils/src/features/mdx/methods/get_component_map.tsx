@@ -10,14 +10,14 @@ import { InlineMdxContent } from "../components/inline_mdx_content";
 import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
-import { DocumentationComponentName, EmbeddableComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities";
+import { DocumentationComponentName, EmbeddableComponentName } from "../../../core/code_gen/typeshare/conundrum";
 import { admonitionComponentNames } from "../embeddable_mdx_components/admonition/admonition_component_config";
 import { cardComponentNames } from "../embeddable_mdx_components/card/embeddable_card_component_config";
 import { gridComponentNames } from "../embeddable_mdx_components/grid/embeddable_responsive_grid_component_config";
 import { utilityContainerComponentNames } from "../embeddable_mdx_components/container/embeddable_utility_container_component_config";
 import { ulComponentNames } from "../embeddable_mdx_components/ul/ul_component_config";
 import { hlComponentNames } from "../embeddable_mdx_components/hl/hl_component_config";
-import { AutoInsertedComponentName } from "../../../core/code_gen/typeshare/fluster_core_utilities"
+import { AutoInsertedComponentName } from "../../../core/code_gen/typeshare/conundrum"
 import { hrComponentNames } from "../embeddable_mdx_components/hr/hr_component_config";
 import { embeddableHintComponentNames } from "../embeddable_mdx_components/hint/hint_component_config";
 import { FoundationModelAvailabilityWrapper } from "../../ai/presentation/foundation_model_availability_wrapper";

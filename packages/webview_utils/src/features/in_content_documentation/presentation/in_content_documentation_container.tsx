@@ -1,5 +1,5 @@
+import { type EmbeddableComponentId, type InContentDocumentationId, type InContentDocumentationFormat } from '@/code_gen/typeshare/conundrum'
 import React, { type ReactNode } from 'react'
-import { type EmbeddableComponentId, type InContentDocumentationFormat, type InContentDocumentationId } from '../../../core/code_gen/typeshare/fluster_core_utilities'
 
 
 interface InContentDocumentationContainerProps {

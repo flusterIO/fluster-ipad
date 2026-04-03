@@ -1,5 +1,5 @@
+import { EmbeddableComponentName, EmbeddableComponentId } from "../../../../core/code_gen/typeshare/conundrum";
 import { ComponentCategory, type EmbeddableComponentConfig } from "../../../mdx/embeddable_mdx_components/embeddable_component_config";
-import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { aiNoteSummaryProps } from "./ai_note_summary_props";
 
 export const noteSummaryComponentNames = [EmbeddableComponentName.AINoteSummary] as const

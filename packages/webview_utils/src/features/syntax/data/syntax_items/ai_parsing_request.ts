@@ -1,4 +1,4 @@
-import { ParserId } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
+import { ParserId } from "../../../../core/code_gen/typeshare/conundrum";
 import { type FlusterSyntax } from "../syntax_types";
 
 export const aiParsingRequestSyntax: FlusterSyntax = {

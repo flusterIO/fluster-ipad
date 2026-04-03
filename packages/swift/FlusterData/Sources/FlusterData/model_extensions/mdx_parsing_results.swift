@@ -44,7 +44,8 @@ extension MdxParsingResult: @retroactive Codable {
       toc: toc,
       ignoreAllParsers: ignoreAllParsers,
       aiSecondaryParseRequests: aiParsingRequests,
-      success: success
+      success: success,
+      error: nil
     )
   }
 

@@ -1,7 +1,7 @@
 import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
-import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { hrPropsSchema } from "./hr_props_schema";
+import { EmbeddableComponentName, EmbeddableComponentId } from "../../../../core/code_gen/typeshare/conundrum";
 
 
 export const hrComponentNames = [EmbeddableComponentName.HrWithChildren] as const

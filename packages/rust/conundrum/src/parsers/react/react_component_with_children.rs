@@ -50,7 +50,7 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct ReactComponentWithChildrenResult {
     pub full_text: String,
-    pub component_name: String,
+    pub component_name: EmbeddableComponentName,
     pub children: Vec<ParsedElement>,
     pub props: ConundrumObject,
 }
@@ -64,12 +64,10 @@ impl ReactComponentWithChildrenResult {
 
 impl ReactComponent for ReactComponentWithChildrenResult {
     fn get_conundrum_from_react(&self) -> ConundrumResult<ConundrumComponentType> {
-        let name = EmbeddableComponentName::from_str(&self.component_name)?;
-        let id = name.to_component_id();
-        if let Some(component) = COMPONENT_MAP.get(&id) {
+        let id = &self.component_name.to_component_id();
+        if let Some(component) = COMPONENT_MAP.get(id) {
             let getter = component.value();
-            let res = getter(self.props.clone(), Some(self.children.clone()));
-            res
+            getter(self.props.clone(), Some(self.children.clone()))
         } else {
             Err(ConundrumErrorVariant::FailToFindComponent(id.to_string()))
         }
@@ -104,6 +102,7 @@ impl PlainTextComponentResult for ReactComponentWithChildrenResult {
 
 impl ConundrumComponentResult for ReactComponentWithChildrenResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+        // if let Some(conundrum_component) = COMPONENT_MAP.get() {}
         if res.contains_modifier(&ConundrumModifier::ForAIInput) {
             self.to_ai_input(res)
         } else if res.contains_modifier(&ConundrumModifier::PreferMarkdownSyntax) {
@@ -123,7 +122,7 @@ impl MdxComponentResult for ReactComponentWithChildrenResult {
     // reliability, which it currently won't be with this `>` limitation, but
     // after that is handled add a field to the conundrum state to
     // allow creating the list of included components here.
-    fn to_mdx_component(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> String {
         self.full_text.clone()
     }
 }
@@ -159,7 +158,10 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
                                                                                           input.input.reset(&start);
                                                                                       })?;
 
-    let component_name = format!("{}{}", component_leading_char, rest_component_name.join(""));
+    let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
+    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).inspect_err(|_| {
+                                                                                              input.input.reset(&start);
+                                                                                          })?;
 
     let props: Vec<JavascriptObjectKeyValuePair> =
         repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
@@ -178,7 +180,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
                                                                    input.input.reset(&start);
                                                                })?;
 
-    react_closing_tag_parser_by_name(component_name.as_str()).parse_next(input)?;
+    react_closing_tag_parser_by_name(component_name_string.as_str()).parse_next(input)?;
 
     let state = input.state.borrow_mut();
     let mut new_input: Stateful<&str, RefCell<ParseState>> =
@@ -187,7 +189,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput) -> ModalResul
 
     Ok(ReactComponentWithChildrenResult { full_text: "".to_string(), // This field will be
                                           // replaced below anyways.
-                                          component_name: component_name.to_string(),
+                                          component_name,
                                           children,
                                           props: ConundrumObject::from_kv_pair_vec(props) })
 }

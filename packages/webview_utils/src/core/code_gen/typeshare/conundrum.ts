@@ -3,21 +3,6 @@
 */
 
 
-export interface ParsedCodeBlock {
-	language: string;
-	meta_data?: string;
-	content: string;
-	full_match: string;
-}
-
-export interface AiSerializationRequestPhase1 {
-	parsing_result: ParsedCodeBlock;
-}
-
-export interface BlockMathResult {
-	body: string;
-}
-
 export type ParsedElement = 
 	| { tag: "Heading", content: MarkdownHeadingResult }
 	| { tag: "BlockQuote", content: BlockQuoteResult }
@@ -39,7 +24,62 @@ export type ParsedElement =
 	| { tag: "Tag", content: ParsedTag }
 	| { tag: "ParsedInspectionRequest", content: ParsedInspectionRequest }
 	| { tag: "HrWithChildren", content: HrWithChildrenResult }
-	| { tag: "Comment", content: ConundrumCommentResult };
+	| { tag: "Comment", content: ConundrumCommentResult }
+	| { tag: "Children", content: Children }
+	| { tag: "Javascript", content: ParsedJavascriptElement }
+	| { tag: "Logic", content: ConundrumLogicToken };
+
+export type Children = ParsedElement[];
+
+export type ConundrumString = string;
+
+export type HeadingDepth = number;
+
+export enum Emphasis {
+	Info = "info",
+	Error = "error",
+	Warn = "warn",
+	Success = "success",
+	Primary = "primary",
+	Important = "important",
+	Research = "research",
+	Highlight = "highlight",
+	Card = "card",
+}
+
+export interface Admonition {
+	title: Children;
+	children: Children;
+	/**
+	 * The title depth between 1-6 for the markdown output. This will have no
+	 * effect on mdx, jsx, or plain text output. Defaults to 5
+	 * ```rust
+	 * let admonition = Admonition {
+	 * title: vec![],
+	 * children: vec![],
+	 * markdown_title_depth: None
+	 * }
+	 * assert_eq!(admonition.markdown_title_depth, Some(5));
+	 * ```
+	 */
+	markdown_title_depth?: HeadingDepth;
+	emphasis: Emphasis;
+}
+
+export interface ParsedCodeBlock {
+	language: string;
+	meta_data?: string;
+	content: string;
+	full_match: string;
+}
+
+export interface AiSerializationRequestPhase1 {
+	parsing_result: ParsedCodeBlock;
+}
+
+export interface BlockMathResult {
+	body: string;
+}
 
 export interface BlockQuoteResult {
 	/**
@@ -50,6 +90,26 @@ export interface BlockQuoteResult {
 	children: ParsedElement[];
 	/** The full original source text that was consumed. */
 	full_match: string;
+}
+
+export interface Card {
+	title: Children;
+	subtitle?: Children;
+	children: Children;
+	/**
+	 * The title depth between 1-6 for the markdown output. This will have no
+	 * effect on mdx, jsx, or plain text output. Defaults to 5
+	 * ```rust
+	 * let card = Card {
+	 * title: vec![],
+	 * subtitle: None,
+	 * children: vec![],
+	 * markdown_title_depth: None
+	 * }
+	 * assert_eq!(card.markdown_title_depth, Some(5));
+	 * ```
+	 */
+	markdown_title_depth?: HeadingDepth;
 }
 
 export interface CitationResult {
@@ -64,8 +124,35 @@ export interface CitationSummaryData {
 	body: string;
 }
 
+export interface ConundrumBoolean {
+	value: boolean;
+}
+
 export interface ConundrumCommentResult {
 	content: string;
+}
+
+export interface DocumentSpan {
+	start: number;
+	end: number;
+}
+
+export interface ConundrumError {
+	/**
+	 * A required message displayed in a toast or card header. Can contain
+	 * regular, swift-inline compatible markdown only.
+	 */
+	msg: string;
+	pos?: DocumentSpan;
+	/**
+	 * Details is an optional conundrum string offering a more thorough
+	 * explanation to the user if one can be generated.
+	 */
+	details?: string;
+}
+
+export interface ConundrumObject {
+	data: Map<string, ParsedElement>;
 }
 
 export interface DictionaryEntryResult {
@@ -92,6 +179,32 @@ export interface FrontMatterResult {
 	summary?: string;
 }
 
+export enum InlineMarkdownOverride {
+	Plain = "plain",
+	BoldItalic = "bold_italic",
+	Italic = "italic",
+	Bold = "bold",
+}
+
+export interface Highlight {
+	children: Children;
+	/** Default: .highlight */
+	emphasis: Emphasis;
+	/** Default: .Plain */
+	markdown?: InlineMarkdownOverride;
+}
+
+export interface Hint {
+	/**
+	 * Note that `label` is a String and note a vector of children. This means
+	 * that the fragment syntax won't work and markdown may or may not work in
+	 * the label. Default: "hint".
+	 */
+	label?: ConundrumString;
+	children: Children;
+	emphasis: Emphasis;
+}
+
 export interface HrWithChildrenResult {
 	children: ParsedElement[];
 }
@@ -113,6 +226,19 @@ export interface JavascriptBooleanResult {
 	value: boolean;
 }
 
+export type ParsedJavascriptElement = 
+	| { tag: "Boolean", content: JavascriptBooleanResult }
+	| { tag: "Number", content: JavascriptNumberResult }
+	| { tag: "String", content: JavascriptStringResult }
+	| { tag: "Object", content: JavascriptObjectResult }
+	| { tag: "KeyValuePair", content: JavascriptObjectKeyValuePair }
+	| { tag: "Function", content: JavascriptFunction };
+
+export interface JavascriptFunction {
+	parameters: ParsedJavascriptElement[];
+	javascript_body: string;
+}
+
 export type ConundrumNumber = 
 	| { tag: "Int", content: number }
 	| { tag: "Float", content: number };
@@ -126,24 +252,23 @@ export interface JavascriptNumberResult {
 	value: ConundrumNumber;
 }
 
-export type ParsedJavascriptElement = 
-	| { tag: "Boolean", content: JavascriptBooleanResult }
-	| { tag: "Number", content: JavascriptNumberResult }
-	| { tag: "String", content: JavascriptStringResult }
-	| { tag: "Object", content: JavascriptObjectResult }
-	| { tag: "KeyValuePair", content: JavascriptObjectKeyValuePair };
-
 export interface JavascriptObjectKeyValuePair {
 	key: string;
 	value: ParsedJavascriptElement;
 }
 
 export interface JavascriptObjectResult {
-	data: Record<string, ParsedJavascriptElement>;
+	data: Map<string, ParsedElement>;
 }
 
 export interface JavascriptStringResult {
 	value: string;
+	delimiter: string;
+}
+
+export interface JsxStringPropertyResult {
+	key: string;
+	value: ConundrumString;
 }
 
 export interface MarkdownBoldAndItalicTextResult {
@@ -158,7 +283,7 @@ export interface MarkdownHeadingResult {
 	depth: number;
 	children: ParsedElement[];
 	subtitle?: ParsedElement[];
-	id?: string;
+	id: string;
 }
 
 /**
@@ -168,7 +293,7 @@ export interface MarkdownHeadingResult {
 export interface MarkdownHeadingStringifiedResult {
 	depth: number;
 	content: string;
-	id?: string;
+	id: string;
 }
 
 export interface MarkdownItalicTextResult {
@@ -193,6 +318,14 @@ export interface NoteOutgoingLinkResult {
 	link_to_note_id: string;
 }
 
+export type ConundrumErrorVariant = 
+	| { tag: "FailToFindComponent", content: string }
+	| { tag: "FailToGenerateString", content?: undefined }
+	| { tag: "FrontMatterError", content?: undefined }
+	| { tag: "UserFacingGeneralParserError", content: ConundrumError }
+	| { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
+	| { tag: "InternalParserError", content: ConundrumError };
+
 export interface MdxParsingResult {
 	note_id?: string;
 	content: string;
@@ -209,6 +342,13 @@ export interface MdxParsingResult {
 	ignore_all_parsers: boolean;
 	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
 	success: boolean;
+	/**
+	 * Errors are kept seperate when at all possible to encourage displaying
+	 * _something_ useful to the user since this will likey be used in a
+	 * lot of real-time applications like note taking, blogging and the
+	 * like.
+	 */
+	error?: ConundrumErrorVariant;
 }
 
 export enum ConundrumModifier {
@@ -278,14 +418,38 @@ export interface ParsedTag {
 export interface ReactComponentSelfClosingResult {
 	full_text: string;
 	component_name: string;
-	props: JavascriptObjectResult;
+	props: ConundrumObject;
 }
 
 export interface ReactComponentWithChildrenResult {
 	full_text: string;
 	component_name: string;
 	children: ParsedElement[];
-	props: JavascriptObjectResult;
+	props: ConundrumObject;
+}
+
+export enum SizableOption {
+	None = "none",
+	Small = "small",
+	Smedium = "smedium",
+	Medium = "medium",
+	Large = "large",
+	Xl = "xl",
+	Xxl = "xxl",
+	Fit = "fit",
+	Full = "full",
+}
+
+export interface SizablePropsGroup {
+	hide_math_labels?: ConundrumBoolean;
+	right?: ConundrumBoolean;
+	left?: ConundrumBoolean;
+	sidebar?: ConundrumBoolean;
+	center_self?: ConundrumBoolean;
+	center_content?: ConundrumBoolean;
+	border?: ConundrumBoolean;
+	inline?: ConundrumBoolean;
+	in_shadow?: SizableOption;
 }
 
 export interface TitleGroup {
@@ -293,9 +457,113 @@ export interface TitleGroup {
 	subtitle?: string;
 }
 
+export interface Underline {
+	children: Children;
+	/** Default: .highlight */
+	emphasis: Emphasis;
+	/** Default: .Plain */
+	markdown?: InlineMarkdownOverride;
+}
+
 export enum AiSerializationRequestType {
 	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
 	SummarizeNote = "SummarizeNote",
 	RecommendResearch = "RecommendResearch",
+}
+
+export enum AutoInsertedComponentName {
+	NoteLink = "NoteLink",
+	AutoInsertedTag = "AutoInsertedTag",
+	FlusterCitation = "FlusterCitation",
+	DictionaryEntry = "DictionaryEntry",
+	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
+	AutoInsertedHeading = "AutoInsertedHeading",
+	AutoInsertedBlockQuote = "AutoInsertedBlockQuote",
+	AutoInsertedBlockMath = "AutoInsertedBlockMath",
+	AutoInsertedInlineMath = "AutoInsertedInlineMath",
+	AutoInsertedMarkdownLink = "AutoInsertedMarkdownLink",
+	AutoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph",
+}
+
+/**
+ * Don't be an idiot... stick to one casing style. I forget what the name of
+ * this casing is, but it seems the most readable for new users that might not
+ * know the joys of camel case.
+ */
+export enum CommonComponentPropertyKey {
+	MarkdownHeading = "markdown_heading",
+	InlineMarkdownOverride = "markdown",
+}
+
+export type ConundrumLogicToken = 
+	| { tag: "Number", content: ConundrumNumber }
+	| { tag: "String", content: ConundrumString }
+	| { tag: "Bool", content: ConundrumBoolean };
+
+export enum DocumentationComponentName {
+	InContentDocumentationContainer = "InContentDocumentationContainer",
+	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
+	InContentDocsHighlightDemo = "InContentDocsHighlightDemo",
+	InContentDocsUnderlineDemo = "InContentDocsUnderlineDemo",
+}
+
+/** From typescript to swift. */
+export enum EmbeddableComponentId {
+	Admonition = "admonition",
+	Hl = "highlight",
+	Ul = "underline",
+	Card = "card",
+	Grid = "grid",
+	UtlityContainer = "util-container",
+	HrWithChildren = "hr-with-children",
+	Hint = "embeddable-hint-component",
+	AINoteSummary = "ai-note-summary",
+}
+
+export enum EmbeddableComponentName {
+	Admonition = "Admonition",
+	Hl = "Hl",
+	Highlight = "Highlight",
+	Ul = "Ul",
+	Underline = "Underline",
+	Card = "Card",
+	Grid = "Grid",
+	UtlityContainer = "Container",
+	HrWithChildren = "Hr",
+	Hint = "Hint",
+	AINoteSummary = "AINoteSummary",
+}
+
+export enum InContentDocumentationFormat {
+	Full = "full",
+	Short = "short",
+}
+
+export enum InContentDocumentationId {
+	Markdown = "Markdown",
+	Docs = "Docs",
+	Syntax = "Syntax",
+	Jsx = "Jsx",
+	SizableObject = "Sizable",
+	Emphasis = "Emphasis",
+	Emoji = "Emoji",
+	Components = "Components",
+	AI = "AI",
+	Conundrum = "Conundrum",
+}
+
+export enum InContentDocumentationSource {
+	ComponentDocs = "component",
+	InternalDocs = "internal-docs",
+}
+
+export enum ParserId {
+	Tags = "tags",
+	Citations = "citations",
+	Dictionary = "dictionary",
+	NoteLink = "note_link",
+	Documentation = "docs",
+	AiTrigger = "ai",
+	HrWithChildren = "hr",
 }
 

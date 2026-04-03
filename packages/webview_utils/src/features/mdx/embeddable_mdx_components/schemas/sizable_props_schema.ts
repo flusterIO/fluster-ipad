@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SizableOption } from "../../../../core/code_gen/typeshare/fluster_core_utilities"
+import { SizableOption } from "../../../../core/code_gen/typeshare/conundrum"
 
 
 
@@ -38,7 +38,7 @@ export const sizablePropsSchemaOrBool = (labelKey: string) => z.enum(
 export {
     SizableOption
 }
-export type SizableOptionRecord<T> = { [K in SizableOption]: T }
+export type SizableOptionRecord<T> = Record<SizableOption, T>
 export type SizableInput = z.input<ReturnType<typeof sizablePropSchema>>
 export type SizablePropsSchema = z.infer<ReturnType<typeof sizablePropSchema>>
 export type SizableOrBooleanInput = z.input<ReturnType<typeof sizablePropsSchemaOrBool>>

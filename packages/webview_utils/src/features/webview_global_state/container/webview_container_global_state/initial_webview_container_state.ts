@@ -1,5 +1,6 @@
-import { WebviewImplementation, SizableOption, type WebviewContainerState, FlusterTheme, WebviewFontSize, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
+import { WebviewImplementation, type WebviewContainerState, FlusterTheme, WebviewFontSize, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
+import { SizableOption } from "@/code_gen/typeshare/conundrum";
 
 export const initialWebviewContainerState: WithNullableOptionals<WebviewContainerState> = {
     size: SizableOption.None,

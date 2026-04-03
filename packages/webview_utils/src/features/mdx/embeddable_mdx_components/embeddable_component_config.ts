@@ -1,8 +1,8 @@
-import { type EmbeddableComponentId, type EmbeddableComponentName } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type Completion } from "@codemirror/autocomplete"
 import { type AnyComponentSchema } from "./any_component_schema";
 import { type Faker } from "@faker-js/faker";
 import { type TestStringUtilities } from "src/development/test_string_utilities";
+import { type EmbeddableComponentId, type EmbeddableComponentName } from "@/code_gen/typeshare/conundrum";
 
 
 export enum CompletionSections {

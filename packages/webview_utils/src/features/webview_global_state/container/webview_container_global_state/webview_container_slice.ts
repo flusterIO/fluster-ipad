@@ -1,10 +1,11 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { initialWebviewContainerState } from './initial_webview_container_state'
-import { type SizableOption, type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities'
+import { type WebviewContainerState } from '@/code_gen/typeshare/fluster_core_utilities'
 import { swiftContainerActionReducer } from './swift_action_reducer'
 import { swiftContainerBufferActionReducer } from './swift_buffer_action_reducer'
 import { type AnyCrossLanguageBufferEditorAction, type AnyCrossLanguageWebviewAction } from '#/webview_global_state/cross_language_state_types'
 import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types'
+import { type SizableOption } from '@/code_gen/typeshare/conundrum'
 
 export interface CounterState {
     value: number

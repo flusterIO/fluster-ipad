@@ -1,10 +1,10 @@
-import {
-    type InContentDocumentationId,
-    type InContentDocumentationFormat,
-} from "../../packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities";
 import { markdownContentToDocumentationPair } from "./markdown_content_to_documentation_pair";
 import path from "path";
 import fs from "fs";
+import {
+    type InContentDocumentationId,
+    type InContentDocumentationFormat,
+} from "../../packages/webview_utils/src/core/code_gen/typeshare/conundrum";
 
 const root = path.resolve(__dirname, "../../");
 const inputDir = path.resolve(root, "docs/in_content_docs");

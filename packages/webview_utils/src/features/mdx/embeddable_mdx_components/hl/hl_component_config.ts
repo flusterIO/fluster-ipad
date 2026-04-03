@@ -1,8 +1,8 @@
 import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { getEmphasisOptions } from "../schemas/emphasis_schema";
-import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { hlPropsSchema } from "./hl_props_schema";
+import { EmbeddableComponentName, EmbeddableComponentId } from "../../../../core/code_gen/typeshare/conundrum";
 
 
 export const hlComponentNames = [EmbeddableComponentName.Hl, EmbeddableComponentName.Highlight] as const

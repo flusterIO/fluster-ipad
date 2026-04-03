@@ -1,8 +1,8 @@
 import { snippetCompletion } from "@codemirror/autocomplete";
 import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../embeddable_component_config";
-import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../core/code_gen/typeshare/fluster_core_utilities";
 import { type EmbeddableUtilityContainerPropsInput, embeddableUtiltyContainerProps } from "./embeddable_utility_container_props";
 import { type KeysOfType } from "@/utils/types/utility_types";
+import { EmbeddableComponentName, EmbeddableComponentId } from "../../../../core/code_gen/typeshare/conundrum";
 
 export const utilityContainerComponentNames = [EmbeddableComponentName.UtlityContainer] as const;
 

@@ -1,7 +1,7 @@
 import { type ReactNode, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { setEditorView } from "../mdx_editor/state/editor_state_slice";
-import { EditorView, SizableOption, SplitviewEditorDomIds, type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { EditorView, SplitviewEditorDomIds, type WebviewContainerState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { getSmallestSizableBreakpointByWidth } from "#/mdx/embeddable_mdx_components/grid/embeddable_responsive_grid_props";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { setSize } from "./webview_container_global_state/webview_container_slice";
@@ -9,6 +9,8 @@ import { setSize } from "./webview_container_global_state/webview_container_slic
 
 import { connect, useDispatch } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
+import { SizableOption } from "@/code_gen/typeshare/conundrum";
+
 const connector = connect((state: GlobalAppState) => ({
     size: state.container.size
 }))
@@ -27,7 +29,7 @@ export const GlobalStateListeners = connector(({ size }: {
             return
         } else {
             const width = em.getBoundingClientRect().width
-            const smallestSize = getSmallestSizableBreakpointByWidth(width) ?? SizableOption.Full
+            const smallestSize: SizableOption = getSmallestSizableBreakpointByWidth(width) ?? SizableOption.Full as SizableOption
             if (smallestSize !== size) {
                 dispatch(setSize(smallestSize))
             }

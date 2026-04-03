@@ -8,16 +8,36 @@ interface Replacer {
     dontPanicIfExists?: string[];
 }
 
-const replacers: Record<string, Replacer[]> = {
-    "packages/webview_utils/src/core/code_gen/typeshare/conundrum.ts": [
-        {
-            query: '| { tag: "Int", content: i128 }',
-            dontPanicIfExists: ['| { tag: "Int", content: number }'],
-            replaceWith: '| { tag: "Int", content: number }',
-        },
-    ],
+const replacers: Record<
+    string,
+    {
+        replacers?: Replacer[];
+        header?: string;
+    }
+> = {
+    "packages/webview_utils/src/core/code_gen/typeshare/conundrum.ts": {
+        replacers: [
+            {
+                query: '| { tag: "Int", content: i128 }',
+                dontPanicIfExists: ['| { tag: "Int", content: number }'],
+                replaceWith: '| { tag: "Int", content: number }',
+            },
+            {
+                query: "DashMap<",
+                dontPanicIfExists: ["Map<"],
+                replaceWith: "Map<",
+            },
+        ],
+    },
+    "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":
+    {
+        header: 'import { type SizableOption } from "./conundrum";',
+        replacers: [],
+    },
     "packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare/FlusterCoreUtilities.swift":
-        [
+    {
+        header: "import ConundrumSwift",
+        replacers: [
             {
                 query: "public struct EditorChangeEvent {",
                 dontPanicIfExists: ["public struct EditorChangeEvent: Codable {"],
@@ -49,6 +69,7 @@ const replacers: Record<string, Replacer[]> = {
                 replaceWith: `public enum FlusterTheme: String, Codable, CaseIterable {`,
             },
         ],
+    },
 };
 
 export const replaceStuff = (replacers: Replacer[], filePath: string) => {
@@ -62,7 +83,7 @@ export const replaceStuff = (replacers: Replacer[], filePath: string) => {
         const queryExists = content.includes(replacer.query);
         if (
             !queryExists &&
-            !replacer.dontPanicIfExists?.some((item) => content.includes(item))
+            !replacer.dontPanicIfExists.some((item) => content.includes(item))
         ) {
             assert(
                 queryExists,
@@ -75,6 +96,19 @@ export const replaceStuff = (replacers: Replacer[], filePath: string) => {
     fs.writeFileSync(fp, content, { encoding: "utf-8" });
 };
 
+const writeHeader = (header: string, filePath: string): void => {
+    const fp = path.resolve(path.resolve(__dirname, "../"), filePath);
+    const content = fs.readFileSync(fp, { encoding: "utf-8" });
+    const new_content = `${header}
+${content}`;
+    fs.writeFileSync(fp, new_content, { encoding: "utf-8" });
+};
+
 for (const fp in replacers) {
-    replaceStuff(replacers[fp], fp);
+    const item = replacers[fp];
+    replaceStuff(item.replacers, fp);
+    const header = item.header;
+    if (header) {
+        writeHeader(header, fp);
+    }
 }

@@ -1,7 +1,7 @@
 import { CompletionSections, SnippetDefaultType } from "#/mdx/embeddable_mdx_components/embeddable_component_config";
 import { snippetCompletion } from "@codemirror/autocomplete";
-import { SnippetItem, SnippetStrategy } from "./snippet_types";
-import { EmbeddableComponentName, InContentDocumentationId } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type SnippetItem, SnippetStrategy } from "./snippet_types";
+import { EmbeddableComponentName, InContentDocumentationId } from "@/code_gen/typeshare/conundrum";
 
 
 export const getDocumentationSnippets = (): SnippetItem[] => {

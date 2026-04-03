@@ -1,12 +1,12 @@
 import { getSizableObjectClasses, sizableObjectSchema } from "../schemas/sizable_object_schema"
 import { z } from "zod"
 import { SizableOption, sizableOptions, sizablePropSchema, sizablePropsMapTransform } from "../schemas/sizable_props_schema"
-import { Mutable } from "../../../../core/utils/types/utility_types"
+import { type Mutable } from "../../../../core/utils/types/utility_types"
 import { emphasisBackgroundTransform, emphasisSchema } from "../schemas/emphasis_schema"
 
 
 
-export const breakpointBySize: { [K in SizableOption]: number } = {
+export const breakpointBySize: Record<SizableOption, number> = {
     none: 0,
     small: 320,
     smedium: 480,
@@ -26,7 +26,7 @@ export const breakpointBySize: { [K in SizableOption]: number } = {
 /**
  * Used for sorting
  */
-export const sizableMagnitudeMap: { [K in SizableOption]: number } = {
+export const sizableMagnitudeMap: Record<SizableOption, number> = {
     none: 0,
     small: 1,
     smedium: 2,
@@ -40,7 +40,7 @@ export const sizableMagnitudeMap: { [K in SizableOption]: number } = {
 
 
 
-export const defaultColumnsByBreakSize: { [K in SizableOption]: number | string } = {
+export const defaultColumnsByBreakSize: Record<SizableOption, number | string> = {
     none: 1,
     small: 1,
     smedium: 1,
@@ -63,7 +63,7 @@ const schema = {
     full: z.number({ message: "'full' is a number that represents the number of columns when the viewport is " }).int("The 'full' field must be an integer that represents the number of columns.").or(z.string({ message: "This field can be any valid css string as well." })).optional(),
     fit: z.boolean({ message: "If true while 'responsive' is set this will cause items to expand to fill the empty space." }).optional(),
     responsive: z.boolean({ message: "If set to a number, this is the minimum width of each grid column." }).or(sizablePropSchema("responsive")).optional(),
-} satisfies { [K in Exclude<SizableOption, "fit" | "responsive">]: z.ZodOptional<z.ZodUnion<[z.ZodNumber, z.ZodString]>> } & { fit: z.ZodOptional<z.ZodBoolean>, responsive: z.ZodOptional<z.ZodUnion<[z.ZodBoolean, z.ZodEnum<Mutable<typeof sizableOptions>>]>> }
+} satisfies Record<Exclude<SizableOption, "fit" | "responsive">, z.ZodOptional<z.ZodUnion<[z.ZodNumber, z.ZodString]>>> & { fit: z.ZodOptional<z.ZodBoolean>, responsive: z.ZodOptional<z.ZodUnion<[z.ZodBoolean, z.ZodEnum<Mutable<typeof sizableOptions>>]>> }
 
 const columnSchema = {
     columns: z.number().int().transform((cols) => {
@@ -77,7 +77,7 @@ const columnSchema = {
             xxl: cols,
             full: cols,
             fit: cols
-        } satisfies { [K in SizableOption]: typeof cols }
+        } satisfies Record<SizableOption, typeof cols>
     })
 }
 
@@ -110,9 +110,10 @@ const y = modifiedSizableSchema.extend(columnSchema)
 /**
  * Returns the item at the `SizableOption` key if it exists, and if not walks down the `SizableOption` heirarchy until the next smallest value that was set. If none smaller are found, it defaults to the default value.
  */
-const getSmallerItemOrDefault = (idx: number, data: { [K in SizableOption]?: number | undefined | string }, defaultValue: number | string = 1): number | string => {
+const getSmallerItemOrDefault = (idx: number, data: Partial<Record<SizableOption, number | undefined | string>>, defaultValue: number | string = 1): number | string => {
     const size = sizableOptions[idx]
-    const value = data[size]
+    const value = data[size];
+    /* eslint-disable-next-line  -- I'm trying to be extra safe. */
     if (typeof value !== "undefined" && value !== null) {
         return value
     }
@@ -127,13 +128,13 @@ const getSmallerItemOrDefault = (idx: number, data: { [K in SizableOption]?: num
 
 
 export const getSmallestSizableBreakpointByWidth = (w: number): SizableOption | undefined => {
-    return sizableOptions.toReversed().filter((n) => n !== "fit").find((f) => {
+    return sizableOptions.toReversed().filter((n) => n !== SizableOption.Fit).find((f) => {
         return breakpointBySize[f] <= w
     })
 }
 
 
-export const getColumns = (data: { [K in Exclude<SizableOption, "fit">]?: number | undefined | string }): { [K in SizableOption]: number | string } => {
+export const getColumns = (data: Partial<Record<Exclude<SizableOption, "fit">, number | undefined | string>>): Record<SizableOption, number | string> => {
     return {
         none: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.None), data, defaultColumnsByBreakSize.none),
         small: getSmallerItemOrDefault(sizableOptions.indexOf(SizableOption.Small), data, defaultColumnsByBreakSize.small),
@@ -152,7 +153,7 @@ export const getColumns = (data: { [K in Exclude<SizableOption, "fit">]?: number
 export const embeddableResponsivieGridPropsSchemaUnion = y.or(x)
 
 
-const responsiveSizableGridMap: { [K in SizableOption]: number } = {
+const responsiveSizableGridMap: Record<SizableOption, number> = {
     none: 0,           // No minimum (will collapse)
     small: 120,        // Very narrow items (e.g., small cards/icons)
     smedium: 180,      // Compact items
@@ -167,7 +168,7 @@ const responsiveSizableGridMap: { [K in SizableOption]: number } = {
 const getResponsiveStyles = (data: z.infer<typeof embeddableResponsivieGridPropsSchemaUnion>,): string | undefined => {
     const sizing = data.fit ? "auto-fit" : "auto-fill"
     if (typeof data.responsive === "number") {
-        return `repeat(${sizing}, minmax(${data.responsive}px, 1fr))`
+        return `repeat(${sizing}, minmax(${data.responsive as number}px, 1fr))`
     }
     if (typeof data.responsive === "string" && data.responsive in responsiveSizableGridMap) {
         return `repeat(${sizing}, minmax(${responsiveSizableGridMap[data.responsive]}px, 1fr))`

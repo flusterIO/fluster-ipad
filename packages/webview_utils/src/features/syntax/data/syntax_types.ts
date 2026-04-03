@@ -1,4 +1,4 @@
-import { type ParserId } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type ParserId } from "@/code_gen/typeshare/conundrum";
 import { type Faker } from "@faker-js/faker";
 
 
