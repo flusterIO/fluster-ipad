@@ -14,20 +14,16 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
+                conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::ParseState,
             },
             traits::{
-                ai_input_component_result::AIInputComponentResult,
                 conundrum_input::{ConundrumInput, get_conundrum_input},
                 fluster_component_result::ConundrumComponentResult,
-                inline_markdown_component_result::InlineMarkdownComponentResult,
-                markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -39,9 +35,8 @@ use crate::{
         parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
         react::{
-            components::{COMPONENT_MAP, ConundrumComponentType},
+            components::COMPONENT_MAP, conundrum_component::ConundrumComponentType,
             parser_components::jsx_properties::any_jsx_property::any_jsx_property,
-            react_component::ReactComponent,
         },
     },
 };
@@ -50,68 +45,12 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct ReactComponentWithChildrenResult {
     pub full_text: String,
-    pub component_name: EmbeddableComponentName,
-    pub children: Vec<ParsedElement>,
-    pub props: ConundrumObject,
-}
-
-impl ReactComponentWithChildrenResult {
-    pub fn to_component(&self) -> ParsedElement {
-        let x = self.deref();
-        ParsedElement::ReactComponentWithChildren(x.clone())
-    }
-}
-
-impl ReactComponent for ReactComponentWithChildrenResult {
-    fn get_conundrum_from_react(&self) -> ConundrumResult<ConundrumComponentType> {
-        let id = &self.component_name.to_component_id();
-        if let Some(component) = COMPONENT_MAP.get(id) {
-            let getter = component.value();
-            getter(self.props.clone(), Some(self.children.clone()))
-        } else {
-            Err(ConundrumErrorVariant::FailToFindComponent(id.to_string()))
-        }
-    }
-}
-
-impl InlineMarkdownComponentResult for ReactComponentWithChildrenResult {
-    fn to_inline_markdown(&self, res: &mut ParseState) -> String {
-        compile_elements(&self.children, res)
-    }
-}
-
-impl AIInputComponentResult for ReactComponentWithChildrenResult {
-    fn to_ai_input(&self, res: &mut ParseState) -> String {
-        compile_elements(&self.children, res)
-    }
-}
-
-impl MarkdownComponentResult for ReactComponentWithChildrenResult {
-    fn to_markdown(&self, res: &mut ParseState) -> String {
-        compile_elements(&self.children, res)
-    }
-}
-
-impl PlainTextComponentResult for ReactComponentWithChildrenResult {
-    // TODO: Parse specific Fragment based properties as markdown and figure out a
-    // way to format everything nicely here.
-    fn to_plain_text(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
-        compile_elements(&self.children, res)
-    }
+    pub component: ConundrumComponentType,
 }
 
 impl ConundrumComponentResult for ReactComponentWithChildrenResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> String {
-        // if let Some(conundrum_component) = COMPONENT_MAP.get() {}
-        if res.contains_modifier(&ConundrumModifier::ForAIInput) {
-            self.to_ai_input(res)
-        } else if res.contains_modifier(&ConundrumModifier::PreferMarkdownSyntax) {
-            self.to_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
-            self.to_inline_markdown(res)
-        } else {
-            self.to_mdx_component(res)
-        }
+        self.component.to_conundrum_component(res)
     }
 }
 
@@ -164,10 +103,12 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                                               input.input.reset(&start);
                                                                                           })?;
 
-    let props: Vec<JavascriptObjectKeyValuePair> =
+    let props_kv_pairs: Vec<JavascriptObjectKeyValuePair> =
         repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
                                                                                    input.input.reset(&start);
                                                                                })?;
+
+    let props = ConundrumObject::from_kv_pair_vec(props_kv_pairs);
 
     '>'.parse_next(input).inspect_err(|_| {
                               input.input.reset(&start);
@@ -188,11 +129,15 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
         get_conundrum_input(children_string, state.modifiers.clone());
     let children = parse_elements(&mut new_input)?;
 
+    let component_getter_kv = COMPONENT_MAP.get(&component_name.to_component_id()).ok_or_else( || ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Failed to find component", format!("You provided a component name of {} but that component is not supported by Conundrum.", component_name.clone()).as_str())))?;
+
+    let getter = component_getter_kv.value();
+
+    let component = getter(props, Some(children))?;
+
     Ok(ReactComponentWithChildrenResult { full_text: "".to_string(), // This field will be
                                           // replaced below anyways.
-                                          component_name: EmbeddableComponentName::Hl,
-                                          children,
-                                          props: ConundrumObject::from_kv_pair_vec(props) })
+                                          component })
 }
 
 impl ConundrumParser<ReactComponentWithChildrenResult> for ReactComponentWithChildrenResult {

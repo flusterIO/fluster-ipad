@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
@@ -11,6 +13,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
+            conundrum_error::ConundrumError,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
             parse_state::{ConundrumModifier, ParseState},
         },
@@ -27,9 +30,8 @@ use crate::{
         parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
         react::{
-            components::{COMPONENT_MAP, ConundrumComponentType},
+            components::COMPONENT_MAP, conundrum_component::ConundrumComponentType,
             parser_components::jsx_properties::any_jsx_property::any_jsx_property,
-            react_component::ReactComponent,
         },
     },
 };
@@ -38,21 +40,7 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct ReactComponentSelfClosingResult {
     pub full_text: String,
-    pub component_name: EmbeddableComponentName,
-    pub props: ConundrumObject,
-}
-
-impl ReactComponent for ReactComponentSelfClosingResult {
-    fn get_conundrum_from_react(&self) -> ConundrumResult<ConundrumComponentType> {
-        let id = self.component_name.to_component_id();
-        if let Some(component) = COMPONENT_MAP.get(&id) {
-            let getter = component.value();
-            let res = getter(self.props.clone(), None);
-            res
-        } else {
-            Err(ConundrumErrorVariant::FailToFindComponent(id.to_string()))
-        }
-    }
+    pub component: ConundrumComponentType,
 }
 
 impl AIInputComponentResult for ReactComponentSelfClosingResult {
@@ -119,25 +107,27 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ConundrumRe
     // RESUME: Pick back up here by handling the passing of th unique errors back to
     // the user. Currently only the top leve, 'woops we fucked up' error is
     // being returned.
-    // let component_name =
-    // EmbeddableComponentName::from_str(component_name_string.as_str()).map_err(|e|
-    // {
-    // input.input.reset(&start);
-    // let x =
-    // ErrMode::Backtrack(e);
-    // x.convert()
-    // })?;
-    let props: Vec<JavascriptObjectKeyValuePair> =
+    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).inspect_err(|e| {
+                                                                                              input.input.reset(&start);
+                                                                                          })?;
+    let props_kv: Vec<JavascriptObjectKeyValuePair> =
         repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
                                                                                    input.input.reset(&start);
                                                                                })?;
 
+    let props = ConundrumObject::from_kv_pair_vec(props_kv);
+
+    let component_getter_kv = COMPONENT_MAP.get(&component_name.to_component_id()).ok_or_else( || ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Failed to find component", format!("You provided a component name of {} but that component is not supported by Conundrum.", component_name.clone()).as_str())))?;
+
+    let component_getter = component_getter_kv.value();
+
+    let component = component_getter(props, None)?;
+
     let _ = literal("/>").parse_next(input).inspect_err(|_| {
                                                 input.input.reset(&start);
                                             })?;
-    Ok(ReactComponentSelfClosingResult { full_text: "".to_string(),
-                                         component_name: EmbeddableComponentName::Hl,
-                                         props: ConundrumObject::from_kv_pair_vec(props) })
+    Ok(ReactComponentSelfClosingResult { full_text: "".to_string(), // Get's replaced anyways,
+                                         component })
 }
 
 impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClosingResult {

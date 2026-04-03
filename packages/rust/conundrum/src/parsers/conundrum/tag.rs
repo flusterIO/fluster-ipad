@@ -7,15 +7,18 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumResult,
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
-            state_modifier::ConundrumStateModifier,
+    lang::{
+        lib::ui::ui_types::inline_markdown_override::InlineMarkdownOverride,
+        runtime::{
+            state::{
+                conundrum_error_variant::ConundrumResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult, state_modifier::ConundrumStateModifier,
+            },
         },
     },
     output::{
@@ -32,6 +35,7 @@ pub struct ParsedTag {
     pub body: String,
     /// The full match of the content that was originally in the note.
     pub full_match: String,
+    pub markdown: Option<InlineMarkdownOverride>,
 }
 
 impl ConundrumStateModifier for ParsedTag {
@@ -56,6 +60,12 @@ impl ConundrumComponentResult for ParsedTag {
         } else {
             self.to_mdx_component(res)
         }
+    }
+}
+
+impl MarkdownComponentResult for ParsedTag {
+    fn to_markdown(&self, res: &mut ParseState) -> String {
+        self.markdown.unwrap_or(InlineMarkdownOverride::Bold).wrap_content(&self.body)
     }
 }
 
@@ -94,7 +104,8 @@ impl ConundrumParser<ParsedTag> for ParsedTag {
             delimited(literal("[[#"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
 
         Ok(ParsedTag { body: body.to_string(),
-                       full_match: full_match.to_string() })
+                       full_match: full_match.to_string(),
+                       markdown: None })
     }
 
     fn matches_first_char(char: char) -> bool {
