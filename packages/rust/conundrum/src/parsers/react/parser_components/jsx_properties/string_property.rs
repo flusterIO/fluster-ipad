@@ -1,20 +1,21 @@
 use serde::Serialize;
-use winnow::{ModalResult, Parser, combinator::alt, stream::Stream, token::literal};
+use winnow::{Parser, combinator::alt, stream::Stream, token::literal};
 
 use crate::{
-    lang::runtime::{
-        state::conundrum_error_variant::ConundrumResult,
-        traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    lang::{
+        elements::parsed_elements::ParsedElement,
+        lib::ui::ui_types::children::Children,
+        runtime::{
+            parse_conundrum_string::parse_elements,
+            state::conundrum_error_variant::ConundrumResult,
+            traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+        },
     },
     parsers::{
-        conundrum::logic::string::conundrum_string::ConundrumString,
         javascript::{
             javascript_parser_trait::JavascriptParser,
             object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
-            parsed_javascript_elements::ParsedJavascriptElement,
-            string::javascript_string::{
-                self, JavascriptStringResult, double_quoted_javascript_string, single_quoted_javascript_string,
-            },
+            string::javascript_string::{self, double_quoted_javascript_string, single_quoted_javascript_string},
         },
         react::parser_components::jsx_properties::{
             jsx_curly_bracket_wrapped_property::jsx_curly_bracket_wrapped_property, jsx_property::JsxPropertyParser,
@@ -25,10 +26,7 @@ use crate::{
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Default, Clone)]
-pub struct JsxStringPropertyResult {
-    pub key: String,
-    pub value: ConundrumString,
-}
+pub struct JsxStringPropertyResult {}
 
 fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
     let start = input.input.checkpoint();
@@ -45,8 +43,11 @@ fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> Conundr
                                                                                    input.input.reset(&start);
                                                                                })?;
 
+    let mut new_input = get_conundrum_input(&js_string.value, state.modifiers.clone());
+
+    let children = parse_elements(&mut new_input).map(Children)?;
     Ok(JavascriptObjectKeyValuePair { key,
-                                      value: Box::new(ParsedJavascriptElement::String(js_string)) })
+                                      value: Box::new(ParsedElement::Children(children)) })
 }
 
 fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
@@ -58,7 +59,7 @@ fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
     let _ = literal("=").parse_next(input).inspect_err(|_| {
                                                input.input.reset(&start);
                                            })?;
-    let s = alt((
+    let js_string = alt((
             single_quoted_javascript_string,
             double_quoted_javascript_string,
             // TODO: Implement a special backtick syntax without the curly brackets since that's
@@ -67,9 +68,13 @@ fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
     )).parse_next(input).inspect_err(|_| {
         input.input.reset(&start);
     })?;
+    let state = input.state.borrow();
+    let mut new_input = get_conundrum_input(&js_string.value, state.modifiers.clone());
+
+    let children = parse_elements(&mut new_input).map(Children)?;
 
     Ok(JavascriptObjectKeyValuePair { key,
-                                      value: Box::new(ParsedJavascriptElement::String(s)) })
+                                      value: Box::new(ParsedElement::Children(children)) })
 }
 
 impl JsxPropertyParser for JsxStringPropertyResult {

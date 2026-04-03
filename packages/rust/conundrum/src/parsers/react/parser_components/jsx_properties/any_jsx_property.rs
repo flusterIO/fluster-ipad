@@ -1,6 +1,7 @@
+use winnow::Parser;
 use winnow::combinator::alt;
-use winnow::{ModalResult, Parser};
 
+use crate::lang::elements::parsed_elements::ParsedElement;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumResult;
 use crate::parsers::javascript::javascript_boolean::JavascriptBooleanResult;
 use crate::parsers::javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair;
@@ -18,10 +19,12 @@ pub fn any_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<Javascrip
          any_curly_bracket_jsx_property,
          jsx_property_key.map(|key| {
                              JavascriptObjectKeyValuePair { key,
-                                                                   value: Box::new(ParsedJavascriptElement::Boolean(
+                                                                   value: Box::new(ParsedElement::Javascript(
+ParsedJavascriptElement::Boolean(
                                                                            JavascriptBooleanResult {
                                                                                value: true
                                                                            }
+                                                                   )
                                                                    )) }
                          }))).parse_next(input)
 }
@@ -57,7 +60,10 @@ mod tests {
 
         assert!(res.key == "myObject", "Returns the proper object key");
         let value = match *res.value {
-            ParsedJavascriptElement::Object(n) => Ok(n),
+            ParsedElement::Javascript(js) => match js {
+                ParsedJavascriptElement::Object(n) => Ok(n),
+                _ => Err(FlusterError::ConundrumParsingError),
+            },
             _ => Err(FlusterError::ConundrumParsingError),
         };
         assert!(value.is_ok(), "Returns an object type.");

@@ -35,7 +35,7 @@ impl JavascriptObjectResult {
     pub fn from_kv_pair_vec(entries: Vec<JavascriptObjectKeyValuePair>) -> Self {
         let data = DashMap::new();
         for entry in entries {
-            data.insert(entry.key, ParsedElement::Javascript(*entry.value));
+            data.insert(entry.key, *entry.value);
         }
         JavascriptObjectResult { data }
     }
@@ -51,7 +51,7 @@ impl JavascriptParser<JavascriptObjectResult> for JavascriptObjectResult {
         let data: DashMap<String, ParsedElement> = DashMap::new();
 
         for entry in entries {
-            data.insert(entry.key, ParsedElement::Javascript(*entry.value));
+            data.insert(entry.key, *entry.value);
         }
 
         Ok(JavascriptObjectResult { data })

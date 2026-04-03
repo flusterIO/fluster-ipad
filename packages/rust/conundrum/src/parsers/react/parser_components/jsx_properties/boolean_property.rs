@@ -1,7 +1,10 @@
 use crate::{
-    lang::runtime::{
-        state::conundrum_error_variant::ConundrumResult,
-        traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    lang::{
+        elements::parsed_elements::ParsedElement,
+        runtime::{
+            state::conundrum_error_variant::ConundrumResult,
+            traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+        },
     },
     parsers::{
         javascript::{
@@ -33,14 +36,14 @@ pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ConundrumResul
                                                          .parse_next(&mut wrapped_content_input)?;
 
     Ok(JavascriptObjectKeyValuePair { key,
-                                      value: Box::new(value) })
+                                      value: Box::new(ParsedElement::Javascript(value)) })
 }
 
 impl JsxPropertyParser for JsxBooleanPropertyResult {
     fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
         alt((parse_full_boolean_property,
                        jsx_property_key.map(|key| JavascriptObjectKeyValuePair { key,
-                                                                                 value: Box::new(ParsedJavascriptElement::Boolean(JavascriptBooleanResult { value: true })) }))).parse_next(input)
+                                                                                 value: Box::new(ParsedElement::Javascript(ParsedJavascriptElement::Boolean(JavascriptBooleanResult { value: true }))) }))).parse_next(input)
     }
 }
 
@@ -59,7 +62,10 @@ mod tests {
         let res = JsxBooleanPropertyResult::parse_jsx_property(&mut test_data).expect("Parses valid boolean property without throwing an error.");
 
         assert!(match res.value.as_ref() {
-                    ParsedJavascriptElement::Boolean(b) => b.value,
+                    ParsedElement::Javascript(js) => match js {
+                        ParsedJavascriptElement::Boolean(b) => b.value,
+                        _ => false,
+                    },
                     _ => false,
                 },
                 "Finds the proper value");
@@ -79,7 +85,10 @@ mod tests {
         let res = JsxBooleanPropertyResult::parse_jsx_property(&mut test_data).expect("Parses valid boolean property without throwing an error.");
 
         assert!(match res.value.as_ref() {
-                    ParsedJavascriptElement::Boolean(b) => b.value,
+                    ParsedElement::Javascript(js) => match js {
+                        ParsedJavascriptElement::Boolean(b) => b.value,
+                        _ => false,
+                    },
                     _ => false,
                 },
                 "Finds the proper value");
@@ -97,7 +106,10 @@ mod tests {
         let res = JsxBooleanPropertyResult::parse_jsx_property(&mut test_data).expect("Parses valid boolean property without throwing an error.");
 
         assert!(match res.value.as_ref() {
-                    ParsedJavascriptElement::Boolean(b) => !b.value,
+                    ParsedElement::Javascript(js) => match js {
+                        ParsedJavascriptElement::Boolean(b) => !b.value,
+                        _ => false,
+                    },
                     _ => false,
                 },
                 "Finds the proper value");
@@ -115,7 +127,10 @@ mod tests {
         let res = JsxBooleanPropertyResult::parse_jsx_property(&mut test_data).expect("Parses valid boolean property without throwing an error.");
 
         assert!(match res.value.as_ref() {
-                    ParsedJavascriptElement::Boolean(b) => !b.value,
+                    ParsedElement::Javascript(js) => match js {
+                        ParsedJavascriptElement::Boolean(b) => !b.value,
+                        _ => false,
+                    },
                     _ => false,
                 },
                 "Finds the proper value");

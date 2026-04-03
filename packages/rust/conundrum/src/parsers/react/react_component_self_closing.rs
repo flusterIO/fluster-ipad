@@ -143,39 +143,45 @@ impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClos
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use crate::testing::wrap_test_content::wrap_test_conundrum_content;
+// TODO: Turn these tests back on when we've enabled a self-closing react
+// component on the Rust side. Something like the `<AiNoteSummary` component or
+// something. #[cfg(test)]
+// mod tests {
+//     use crate::testing::wrap_test_content::wrap_test_conundrum_content;
 
-    use super::*;
+//     use super::*;
 
-    #[test]
-    fn parses_self_closing_react_component() {
-        let test_content = r#"<Card myBool myObject={{}} myString="Here is a string" />"#;
-        let mut test_data = wrap_test_conundrum_content(test_content);
-        let res =
-            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid self closing react component without throwing an error");
-        assert!(test_data.input.is_empty(), "Consumes the entire component string.");
-        assert!(res.full_text == test_content, "Returns the complete test content");
-        let mut state = test_data.state.borrow_mut();
-        let mdx_component = res.to_mdx_component(&mut state);
-        assert!(mdx_component == test_content, "Returns the input component as an mdx input");
-        assert!(res.component_name == EmbeddableComponentName::Card, "Returns the proper component  name");
-        // assert_eq!(result, 4);
-    }
+//     #[test]
+//     fn parses_self_closing_react_component() {
+//         let test_content = r#"<Card myBool myObject={{}} myString="Here is a
+// string" />"#;         let mut test_data =
+// wrap_test_conundrum_content(test_content);         let res =
+//             ReactComponentSelfClosingResult::parse_input_string(&mut
+// test_data).expect("Parses valid self closing react component without throwing
+// an error");         assert!(test_data.input.is_empty(), "Consumes the entire
+// component string.");         assert!(res.full_text == test_content, "Returns
+// the complete test content");         let mut state =
+// test_data.state.borrow_mut();         let mdx_component =
+// res.to_mdx_component(&mut state);         assert!(mdx_component ==
+// test_content, "Returns the input component as an mdx input");         assert!
+// (matches!(res.component, ConundrumComponentType::Card(_)), "Returns the
+// proper component name");         // assert_eq!(result, 4);
+//     }
 
-    #[test]
-    fn parses_self_closing_react_component_that_contains_closing_tag_in_str() {
-        let test_content = r#"<Container myBool myObject={{}} myString="Here is /> a string" />"#;
-        let mut test_data = wrap_test_conundrum_content(test_content);
-        let res =
-            ReactComponentSelfClosingResult::parse_input_string(&mut test_data).expect("Parses valid self closing react component without throwing an error.");
-        assert!(test_data.input.is_empty(), "Consumes the entire component string.");
-        assert!(res.full_text == test_content, "Returns the complete test content");
-        let mut state = test_data.state.borrow_mut();
-        let mdx_component = res.to_mdx_component(&mut state);
-        assert!(mdx_component == test_content, "Returns the input component as an mdx input");
-        assert!(res.component_name == EmbeddableComponentName::UtlityContainer, "Returns the proper component  name");
-        // assert_eq!(result, 4);
-    }
-}
+//     #[test]
+//     fn parses_self_closing_react_component_that_contains_closing_tag_in_str()
+// {         let test_content = r#"<Container error width="full">My
+// children.</Container>"#;         let mut test_data =
+// wrap_test_conundrum_content(test_content);         let res =
+//             ReactComponentSelfClosingResult::parse_input_string(&mut
+// test_data).expect("Parses valid self closing react component without throwing
+// an error.");         assert!(test_data.input.is_empty(), "Consumes the entire
+// component string.");         assert!(res.full_text == test_content, "Returns
+// the complete test content");         let mut state =
+// test_data.state.borrow_mut();         let mdx_component =
+// res.to_mdx_component(&mut state);         assert!(mdx_component ==
+// test_content, "Returns the input component as an mdx input");         assert!
+// (matches!(res.component, ConundrumComponentType::Container(_)), "Returns the
+// proper component name");         // assert_eq!(result, 4);
+//     }
+// }

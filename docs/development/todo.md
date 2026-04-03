@@ -96,6 +96,7 @@
 - [x] Handle slugger implementation for _all_ headings. Generate an id during the parsing stage if none exists.
 - [x] Move rest of components over to Rust.
   - [x] Move away from `ComponentProps` struct as the types will be known and the type conversions would be unnecessary. It's better to keep things typed if they're coming in typed.
+- [ ] Finish move of `ParsedJavascriptElement` to `ParsedElement` so that jsx properties can be expanded to contain all kinds of variables. There's no reason to be limited by the rules of jsx anymore.
 - [ ] Handle pre-parsing of documentation and initial docs with new internal cli method. It's already in place, you just need to write the script to call it.
 - [ ] Fix issue with Safari keeping around 20 instances of the editor view.
 - [ ] Handle issue with command palette not changing a variety of different state fields when the editor is focused, requiring a user navigation away from an then back to the editor page to see the changes.

@@ -1,9 +1,12 @@
 use winnow::{Parser, stream::Stream};
 
 use crate::{
-    lang::runtime::{
-        state::conundrum_error_variant::ConundrumResult,
-        traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+    lang::{
+        elements::parsed_elements::ParsedElement,
+        runtime::{
+            state::conundrum_error_variant::ConundrumResult,
+            traits::conundrum_input::{ConundrumInput, get_conundrum_input},
+        },
     },
     parsers::{
         javascript::{
@@ -38,6 +41,7 @@ impl JsxPropertyParser for JsxNumberPropertyResult {
                                                                                })?;
 
         Ok(JavascriptObjectKeyValuePair { key,
-                                          value: Box::new(ParsedJavascriptElement::Number(n)) })
+                                          value:
+                                              Box::new(ParsedElement::Javascript(ParsedJavascriptElement::Number(n))) })
     }
 }

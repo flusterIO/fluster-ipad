@@ -2,15 +2,17 @@ use serde::Serialize;
 use winnow::{Parser, stream::Stream};
 
 use crate::{
-    lang::runtime::{
-        state::conundrum_error_variant::ConundrumResult,
-        traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
+    lang::{
+        elements::parsed_elements::ParsedElement,
+        runtime::{
+            state::conundrum_error_variant::ConundrumResult,
+            traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
+        },
     },
     parsers::{
         javascript::{
             javascript_parser_trait::JavascriptParser,
             object::{javascript_object_key::javascript_object_key, javascript_object_value::javascript_object_value},
-            parsed_javascript_elements::ParsedJavascriptElement,
         },
         parser_components::consume_white_space::consume_white_space,
     },
@@ -22,7 +24,7 @@ pub struct JavascriptObjectKeyValuePair {
     pub key: String,
     // Box required to break recursive loop thing, but not sure if this is the best approach.
     // There are other possibilities too...
-    pub value: Box<ParsedJavascriptElement>,
+    pub value: Box<ParsedElement>,
 }
 
 impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValuePair {
@@ -46,7 +48,7 @@ impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValue
                                                               })?;
 
         Ok(JavascriptObjectKeyValuePair { key,
-                                          value: Box::new(value) })
+                                          value: Box::new(ParsedElement::Javascript(value)) })
     }
 }
 

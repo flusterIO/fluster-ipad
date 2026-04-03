@@ -1,7 +1,10 @@
 use winnow::{Parser, combinator::delimited, stream::Stream, token::take_till};
 
 use crate::{
-    lang::runtime::{state::conundrum_error_variant::ConundrumResult, traits::conundrum_input::ConundrumInput},
+    lang::{
+        elements::parsed_elements::ParsedElement,
+        runtime::{state::conundrum_error_variant::ConundrumResult, traits::conundrum_input::ConundrumInput},
+    },
     parsers::{
         javascript::object::{
             javascript_key_value_pair::JavascriptObjectKeyValuePair, javascript_object_value::javascript_object_value,
@@ -54,5 +57,5 @@ pub fn any_curly_bracket_jsx_property(input: &mut ConundrumInput) -> ConundrumRe
     let (key, em) = jsx_curly_bracket_property(javascript_object_value).parse_next(input)?;
 
     Ok(JavascriptObjectKeyValuePair { key,
-                                      value: Box::new(em) })
+                                      value: Box::new(ParsedElement::Javascript(em)) })
 }

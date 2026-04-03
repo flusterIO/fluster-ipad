@@ -1,4 +1,4 @@
-use std::{cell::RefCell, ops::Deref, str::FromStr};
+use std::{cell::RefCell, str::FromStr};
 
 use serde::Serialize;
 use typeshare::typeshare;
@@ -11,20 +11,17 @@ use winnow::{
 };
 
 use crate::{
-    lang::{
-        elements::parsed_elements::ParsedElement,
-        runtime::{
-            parse_conundrum_string::parse_elements,
-            state::{
-                conundrum_error::ConundrumError,
-                conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
-                parse_state::ParseState,
-            },
-            traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input},
-                fluster_component_result::ConundrumComponentResult,
-                mdx_component_result::MdxComponentResult,
-            },
+    lang::runtime::{
+        parse_conundrum_string::parse_elements,
+        state::{
+            conundrum_error::ConundrumError,
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
+            parse_state::ParseState,
+        },
+        traits::{
+            conundrum_input::{ConundrumInput, get_conundrum_input},
+            fluster_component_result::ConundrumComponentResult,
+            mdx_component_result::MdxComponentResult,
         },
     },
     output::general::component_constants::component_names::EmbeddableComponentName,
@@ -163,7 +160,7 @@ mod tests {
 
     #[test]
     fn react_component_parses_component_outline() {
-        let test_content = r#"<Card myBool myObject={{}} myString="This will cause > chaos" >
+        let test_content = r#"<Card title="My card's title" desc="My card's description!" >
 This is my children markdown test content 
 </Card>"#;
 
@@ -171,13 +168,15 @@ This is my children markdown test content
 
         let res = ReactComponentWithChildrenResult::parse_input_string(&mut test_data).expect("Parses vald component successfully.");
 
-        assert!(res.component_name == EmbeddableComponentName::Card, "Finds the proper component name");
         let mut state = test_data.state.borrow_mut();
         let mdx_component = res.to_mdx_component(&mut state);
         assert!(mdx_component == test_content, "Returns the input component as the mdx component for an mdx input.");
         assert!(test_data.is_empty(), "Consumes the entire input string.");
         assert_snapshot!(mdx_component);
-        let children = compile_elements(&res.children, &mut state);
+        let children = match res.component {
+            ConundrumComponentType::Card(c) => c.children.render(&mut state),
+            _ => panic!("Found a component that's not the `Card` that was inserted."),
+        };
         assert_snapshot!(children);
     }
 }
