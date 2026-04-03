@@ -26,7 +26,7 @@
 
 **_CURRENT_**
 
-- [ ] Card component documentation
+- [x] Card component documentation
 
 ## Desktop
 
@@ -79,13 +79,6 @@
 - [ ] Review [this](https://www.youtube.com/watch?v=fkeUvZ4NRhg) link and the section at ~5:00 about creating 'Nominations' for being featured by Apple's editor team. There's a special section for talking about the back story of the app, and this app certainly has a back story...
 
 ---
-
-# Today
-
-- [ ] Get everything building again.
-- [ ] Fix website math error.
-- [ ] Handle jsx object property parser.
-  - [ ] Rewrite jsx_curly_bracket_property parser from scratch.
 
 ### Ai Summary
 

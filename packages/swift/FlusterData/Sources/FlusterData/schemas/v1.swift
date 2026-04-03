@@ -303,7 +303,8 @@ extension AppSchemaV1 {
     }
 
     public static func isTitleMatch(noteBody: String, query: String) -> Bool {
-      let title = MdxTextUtils.getTitle(body: noteBody)
+      let title = ConundrumTextUtils.getTitleGroupSync(
+        content: noteBody, modifiers: [.forcePlainText])?.title
       return title == nil
         ? false : title!.localizedCaseInsensitiveContains(query)
     }
@@ -394,6 +395,7 @@ extension AppSchemaV1 {
       }
 
       self.dictionaryEntries = dictionaryEntries
+      self.updateTitleGroup()
     }
     public func diassociateBibEntry(bibEntry: BibEntryModel) {
       self.citations.removeAll {
@@ -619,12 +621,16 @@ extension AppSchemaV1 {
       self.paper = toKeep
     }
 
-    public func updateTitleGroup() async {
-      if let res = try? await ConundrumTextUtils.getTitleGroup(content: self.markdown.body) {
+    public func updateTitleGroup() {
+      if let res = try? ConundrumTextUtils.getTitleGroupSync(
+        content: self.markdown.body,
+        modifiers: [.preferInlineMarkdownSyntax, .preferMarkdownSyntax])
+      {
         self.markdown.title = res.title
         if let subtitle = res.subtitle, self.frontMatter.summary == nil {
           self.frontMatter.summary = NoteSummary(
             generationMethod: .subtitleSyntax, body: subtitle, ctime: .now)
+          return
         }
       }
     }
@@ -738,7 +744,6 @@ extension AppSchemaV1 {
       }
       set(newData) {
         self._data = newData
-        self.title = self.getTitle()
       }
     }
 
