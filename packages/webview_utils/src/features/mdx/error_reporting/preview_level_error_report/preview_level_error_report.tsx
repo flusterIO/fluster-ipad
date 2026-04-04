@@ -5,23 +5,32 @@ import React, { useEffect, type ReactNode } from 'react'
 import { type FallbackProps } from 'react-error-boundary'
 import { motion } from "framer-motion"
 import { useEventListener } from '@/state/hooks/use_event_listener'
-import { SplitviewEditorWebviewActions, SplitviewEditorWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities'
+import { SplitviewEditorWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities'
+import { useDispatch } from 'react-redux'
+import { clearConundrumError } from '#/webview_global_state/conundrum_state/conundrum_slice'
+import { type ConundrumError, type ConundrumErrorVariant } from '@/code_gen/typeshare/conundrum'
+import { InlineMdxContent } from '#/mdx/components/inline_mdx_content'
 
 
-interface EventProps {
-
-}
 declare global {
-
     interface WindowEventMap {
         [SplitviewEditorWebviewEvents.ErrorStateReset]: CustomEvent<null>
     }
 }
 
 
-export const PreviewLevelErrorReport = ({ debounceTimeout, showWebviewAction, additionalComponents, id, mdx, resetErrorBoundary }: FallbackProps & Pick<MdxContentProps, "debounceTimeout" | "showWebviewAction" | "additionalComponents"> & { id: string, mdx: string }): ReactNode => {
+const getConundrumError = (content: ConundrumErrorVariant): ConundrumError | undefined => {
+    if (typeof content.content === "object" && "msg" in content.content) {
+        return content.content
+    } else {
+        return undefined
+    }
+}
+
+
+export const PreviewLevelErrorReport = ({ debounceTimeout, showWebviewAction, additionalComponents, id, mdx, resetErrorBoundary, conundrumError }: Partial<FallbackProps> & Pick<MdxContentProps, "debounceTimeout" | "showWebviewAction" | "additionalComponents"> & { id: string, mdx: string, conundrumError?: ConundrumErrorVariant }): ReactNode => {
     // This is required to eventually 'unlock' the error report once parsing succeeds.
-    const { setValue, value, isReady } = useDebounceMdxParse(
+    const { setValue, value } = useDebounceMdxParse(
         undefined,
         debounceTimeout,
         id,
@@ -34,13 +43,16 @@ export const PreviewLevelErrorReport = ({ debounceTimeout, showWebviewAction, ad
         }
     }, [mdx, setValue, value])
 
-    useEffect(() => {
-        /* if (isReady) { */
-        /*     resetErrorBoundary() */
-        /* } */
-    }, [isReady, resetErrorBoundary])
+    const dispatch = useDispatch();
 
-    useEventListener(SplitviewEditorWebviewEvents.ErrorStateReset, () => { resetErrorBoundary(); })
+    useEventListener(SplitviewEditorWebviewEvents.ErrorStateReset, () => {
+        if (resetErrorBoundary) {
+            resetErrorBoundary();
+        }
+        dispatch(clearConundrumError())
+    })
+
+    const error = conundrumError ? getConundrumError(conundrumError) : null
 
 
     return (
@@ -60,9 +72,11 @@ export const PreviewLevelErrorReport = ({ debounceTimeout, showWebviewAction, ad
                     <TriangleAlert className="stroke-destructive" />
                 </div>
                 <div className="w-full flex flex-col justify-center items-center @[540px]:inline-block">
-                    <div className="font-bold">Error</div>
+                    <div className="font-bold">{error?.msg ?? "Error"}</div>
                     <div className="text-muted-foreground text-sm text-center">
-                        Fluster encountered an error while attempting to parse this document. Please double-check your syntax.
+                        <InlineMdxContent
+                            mdx={error?.details ?? "Fluster encountered an error while attempting to parse this document. Please double-check your syntax."}
+                        />
                     </div>
                 </div>
             </motion.div>

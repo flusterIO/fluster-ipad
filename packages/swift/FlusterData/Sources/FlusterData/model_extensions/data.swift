@@ -18,7 +18,7 @@ extension Data {
         try getCheckedRoot(byteBuffer: &buf)
       return mdxRes
     } catch {
-      print("Error: \(error.localizedDescription)")
+      print("Error converting to parsing result: \(error.localizedDescription)")
       return nil
     }
   }

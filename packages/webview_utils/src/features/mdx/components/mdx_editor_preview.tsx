@@ -2,7 +2,7 @@ import React, { type HTMLProps, useId, useRef, type ReactNode } from "react";
 import { MdxContent } from "./mdx_content";
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { type EditorState, EditorView, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type ConundrumState, type EditorState, EditorView, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
@@ -17,7 +17,8 @@ export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id"
 const connector = connect((state: GlobalAppState) => ({
     parsedValue: state.editor.parsedValue,
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview,
-    isEditorView: state.editor.editorView === EditorView.Splitview
+    isEditorView: state.editor.editorView === EditorView.Splitview,
+    conundrumError: state.conundrum.error
 }))
 
 /**
@@ -30,8 +31,9 @@ export const MdxEditorPreview = connector(({
     parsedValue,
     lockEditorScrollToPreview,
     isEditorView,
+    conundrumError,
     ...props
-}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview" | "parsedValue"> & { isEditorView: boolean }): ReactNode => {
+}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview" | "parsedValue"> & { isEditorView: boolean, conundrumError: WithNullableOptionals<ConundrumState>["error"] }): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
     const id = useId()
 
@@ -69,6 +71,14 @@ export const MdxEditorPreview = connector(({
                 </div>
             </div>
         );
+    }
+
+    if (conundrumError) {
+        return (
+            <div className="w-screen h-screen min-h-screen top-0 left-0 right-0 bottom-0 fixed flex flex-col justify-center items-center mdx-preview-loading-container">
+                <PreviewLevelErrorReport conundrumError={conundrumError} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />
+            </div>
+        )
     }
 
     return (

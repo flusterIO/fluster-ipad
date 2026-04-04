@@ -3,6 +3,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import flusterWasm from "@fluster/wasm";
+import { iniitializeWebView } from "@fluster/webview_utils";
+iniitializeWebView();
 
 void flusterWasm().then(() => {
     console.log("Wasm loaded...");

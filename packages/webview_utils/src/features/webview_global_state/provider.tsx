@@ -9,6 +9,8 @@ import { type ReduxStateLoadedEvent, WebviewContainerEvents } from '@/code_gen/t
 import { GlobalStateListeners } from './container/use_global_state_resize_listener'
 import { SplitviewEditorNotificationBanner } from '#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner'
 import { copyStringToClipboard } from '@/utils/string_utils'
+import { useIsomorphicLayoutEffect } from '@/state/hooks/use_isomorphic_layout_effect'
+import { iniitializeWebView } from './initialize_webview'
 
 
 interface MdxEditorGlobalProviderProps {
@@ -35,6 +37,10 @@ export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEdito
         sendToSwift(WebviewContainerEvents.ReduxStateLoaded, JSON.stringify(data))
         window.dispatchEvent(new CustomEvent("redux-state-loaded", {}))
     }
+
+    useIsomorphicLayoutEffect(() => {
+        iniitializeWebView()
+    }, [])
 
     if (import.meta.env.DEV) {
         window.copyState = async () => {

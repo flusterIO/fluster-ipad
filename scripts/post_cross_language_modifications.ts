@@ -37,11 +37,27 @@ const replacers: Record<
                 dontPanicIfExists: ["public enum SizableOption: Codable {"],
                 replaceWith: "public enum SizableOption: Codable {",
             },
+            {
+                query: "public struct DocumentSpan {",
+                dontPanicIfExists: ["public struct DocumentSpan: Codable {"],
+                replaceWith: "public struct DocumentSpan: Codable {"
+            },
+            {
+                query: "public struct ConundrumError {",
+                dontPanicIfExists: ["public struct ConundrumError: Codable {"],
+                replaceWith: "public struct ConundrumError: Codable {"
+            },
+            {
+                query: "public enum ConundrumErrorVariant: Swift.Error {",
+                dontPanicIfExists: ["public enum ConundrumErrorVariant: Swift.Error, Codable {"],
+                replaceWith: "public enum ConundrumErrorVariant: Swift.Error, Codable {"
+            }
         ],
     },
     "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":
     {
-        header: 'import { type SizableOption } from "./conundrum";',
+        header:
+            'import { type SizableOption, type ConundrumErrorVariant } from "./conundrum";',
         replacers: [],
     },
     "packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare/FlusterCoreUtilities.swift":

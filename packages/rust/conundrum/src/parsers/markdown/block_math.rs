@@ -13,7 +13,8 @@ use crate::{
         },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
         },
     },
     parsers::parser_trait::ConundrumParser,
@@ -35,15 +36,23 @@ impl ConundrumComponentResult for BlockMathResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> String {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
+        } else if res.is_markdown() {
+            self.to_markdown(res)
         } else {
             self.to_mdx_component(res)
         }
     }
 }
 
+impl MarkdownComponentResult for BlockMathResult {
+    fn to_markdown(&self, res: &mut ParseState) -> String {
+        format!("$$\n{}\n$$", self.body)
+    }
+}
+
 impl MdxComponentResult for BlockMathResult {
     fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("$$\n{}\n$$", self.body)
+        format!("<div className=\"conundrum-math conundrum-math-block\">\n$${}$$\n</div>", self.body)
     }
 }
 

@@ -31,7 +31,6 @@ extension MdxParsingResult: @retroactive Codable {
       [DictionaryEntryResult].self, forKey: .dictionary_entries)
     let aiParsingRequests = try container.decode(
       [AiSerializationRequestPhase1].self, forKey: .ai_secondary_parse_requests)
-    let success = try container.decode(Bool.self, forKey: .success)
 
     self.init(
       noteId: id,
@@ -44,8 +43,6 @@ extension MdxParsingResult: @retroactive Codable {
       toc: toc,
       ignoreAllParsers: ignoreAllParsers,
       aiSecondaryParseRequests: aiParsingRequests,
-      success: success,
-      error: nil
     )
   }
 
@@ -56,6 +53,5 @@ extension MdxParsingResult: @retroactive Codable {
     try container.encodeIfPresent(frontMatter, forKey: .front_matter)
     try container.encode(orderedCitationKeys, forKey: .orderedCitationKeys)
     try container.encode(aiSecondaryParseRequests, forKey: .ai_secondary_parse_requests)
-    try container.encode(success, forKey: .success)
   }
 }

@@ -70,6 +70,110 @@ export interface ConundrumBoolean {
 	value: boolean;
 }
 
+export enum SizableOption {
+	None = "none",
+	Small = "small",
+	Smedium = "smedium",
+	Medium = "medium",
+	Large = "large",
+	Xl = "xl",
+	Xxl = "xxl",
+	Fit = "fit",
+	Full = "full",
+}
+
+/**
+ * This is applicable to pretty much any component where changing it's size
+ * makes sense. Not so much text, where you're changing the content of the text
+ * itself, but rather containers, where the size is changing irrespective of
+ * the content inside of it.
+ * This shouldn't be confused though, since this struct contains a **lot** more
+ * properties than just those that can modify _size._ You can also modify
+ * color, padding, margin, borders, and more.
+ */
+export interface SizablePropsGroup {
+	/** Hides the MathJax labels in all child components. */
+	hide_math_labels?: ConundrumBoolean;
+	/**
+	 * 'Floats' the component to the right. This is often combined with `width`
+	 * or the `sidebar` property to create sidebar layouts.
+	 */
+	right?: ConundrumBoolean;
+	/**
+	 * 'Floats' the component to the left. This is often combined with `width`
+	 * or the `sidebar` property to create sidebar layouts.
+	 */
+	left?: ConundrumBoolean;
+	/**
+	 * A utility property that sets a responsive max-width to create sidebar
+	 * like layouts on large screens while allowing for full-width when the
+	 * window is smaller.
+	 */
+	sidebar?: ConundrumBoolean;
+	center_self?: ConundrumBoolean;
+	/**
+	 * Centers the content of this component's children, not the component
+	 * itself.    center_self: Option<ConundrumBoolean>,
+	 */
+	center_content?: ConundrumBoolean;
+	/** Add a small, muted border to the object. */
+	border?: ConundrumBoolean;
+	/**
+	 * Tells the container to not forcefully create a new line and instead to
+	 * flow with the rest of the content. Unless you're trying to apply
+	 * properties to text inside of a paragraph using the Container component
+	 * this is most likely not what you are looking for. If you want text to
+	 * wrap around an element, use the `right` or `left` properties paired with
+	 * a desired `width`.
+	 */
+	inline?: ConundrumBoolean;
+	/** Casts an inset shadow from the object. */
+	in_shadow?: SizableOption;
+	/** Casts a shadow from the object. */
+	shadow?: SizableOption;
+	/** Rounds the corners of the container. Use `rounded=\ */
+	rounded?: SizableOption;
+	/**
+	 * Change the text content of the container's children. Beware though, some
+	 * edge cases might not respond as expected.
+	 */
+	text?: SizableOption;
+	/** Set some custom width properties to create responsive layouts. */
+	width?: SizableOption;
+	/** Set some custom height properties to create responsive layouts. */
+	height?: SizableOption;
+	/**
+	 * Add some padding around the **outside** of an object. If you are looking
+	 * to create space on the _inside_ of an object you are looking for
+	 * `padding`.
+	 */
+	margin?: SizableOption;
+	margin_left?: SizableOption;
+	margin_right?: SizableOption;
+	margin_top?: SizableOption;
+	margin_bottom?: SizableOption;
+	margin_y?: SizableOption;
+	margin_x?: SizableOption;
+	/**
+	 * Create padding on the _inside_ of an object. If you are trying to create
+	 * space _around_ an object. you are probably looking for `margin`.
+	 */
+	padding?: SizableOption;
+	padding_left?: SizableOption;
+	padding_right?: SizableOption;
+	padding_top?: SizableOption;
+	padding_bottom?: SizableOption;
+	padding_y?: SizableOption;
+	padding_x?: SizableOption;
+	/**
+	 * When in Grid mode or in some other select layouts, this property create
+	 * a gap between _all_ children.
+	 */
+	gap?: SizableOption;
+	gap_y?: SizableOption;
+	gap_x?: SizableOption;
+}
+
 export interface Admonition {
 	title: Children;
 	children: Children;
@@ -86,7 +190,8 @@ export interface Admonition {
 	 * ```
 	 */
 	markdown_title_depth?: HeadingDepth;
-	emphasis: Emphasis;
+	emphasis?: Emphasis;
+	sizable?: SizablePropsGroup;
 	/** Set to true to make the admonition foldable. Default: `false` */
 	foldable?: ConundrumBoolean;
 	/**
@@ -353,14 +458,6 @@ export interface NoteOutgoingLinkResult {
 	link_to_note_id: string;
 }
 
-export type ConundrumErrorVariant = 
-	| { tag: "FailToFindComponent", content: string }
-	| { tag: "FailToGenerateString", content?: undefined }
-	| { tag: "FrontMatterError", content?: undefined }
-	| { tag: "UserFacingGeneralParserError", content: ConundrumError }
-	| { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
-	| { tag: "InternalParserError", content: ConundrumError };
-
 export interface MdxParsingResult {
 	note_id?: string;
 	content: string;
@@ -376,14 +473,6 @@ export interface MdxParsingResult {
 	 */
 	ignore_all_parsers: boolean;
 	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
-	success: boolean;
-	/**
-	 * Errors are kept seperate when at all possible to encourage displaying
-	 * _something_ useful to the user since this will likey be used in a
-	 * lot of real-time applications like note taking, blogging and the
-	 * like.
-	 */
-	error?: ConundrumErrorVariant;
 }
 
 export enum ConundrumModifier {
@@ -469,110 +558,6 @@ export interface ReactComponentWithChildrenResult {
 	component: ConundrumComponentType;
 }
 
-export enum SizableOption {
-	None = "none",
-	Small = "small",
-	Smedium = "smedium",
-	Medium = "medium",
-	Large = "large",
-	Xl = "xl",
-	Xxl = "xxl",
-	Fit = "fit",
-	Full = "full",
-}
-
-/**
- * This is applicable to pretty much any component where changing it's size
- * makes sense. Not so much text, where you're changing the content of the text
- * itself, but rather containers, where the size is changing irrespective of
- * the content inside of it.
- * This shouldn't be confused though, since this struct contains a **lot** more
- * properties than just those that can modify _size._ You can also modify
- * color, padding, margin, borders, and more.
- */
-export interface SizablePropsGroup {
-	/** Hides the MathJax labels in all child components. */
-	hide_math_labels?: ConundrumBoolean;
-	/**
-	 * 'Floats' the component to the right. This is often combined with `width`
-	 * or the `sidebar` property to create sidebar layouts.
-	 */
-	right?: ConundrumBoolean;
-	/**
-	 * 'Floats' the component to the left. This is often combined with `width`
-	 * or the `sidebar` property to create sidebar layouts.
-	 */
-	left?: ConundrumBoolean;
-	/**
-	 * A utility property that sets a responsive max-width to create sidebar
-	 * like layouts on large screens while allowing for full-width when the
-	 * window is smaller.
-	 */
-	sidebar?: ConundrumBoolean;
-	center_self?: ConundrumBoolean;
-	/**
-	 * Centers the content of this component's children, not the component
-	 * itself.    center_self: Option<ConundrumBoolean>,
-	 */
-	center_content?: ConundrumBoolean;
-	/** Add a small, muted border to the object. */
-	border?: ConundrumBoolean;
-	/**
-	 * Tells the container to not forcefully create a new line and instead to
-	 * flow with the rest of the content. Unless you're trying to apply
-	 * properties to text inside of a paragraph using the Container component
-	 * this is most likely not what you are looking for. If you want text to
-	 * wrap around an element, use the `right` or `left` properties paired with
-	 * a desired `width`.
-	 */
-	inline?: ConundrumBoolean;
-	/** Casts an inset shadow from the object. */
-	in_shadow?: SizableOption;
-	/** Casts a shadow from the object. */
-	shadow?: SizableOption;
-	/** Rounds the corners of the container. Use `rounded=\ */
-	rounded?: SizableOption;
-	/**
-	 * Change the text content of the container's children. Beware though, some
-	 * edge cases might not respond as expected.
-	 */
-	text?: SizableOption;
-	/** Set some custom width properties to create responsive layouts. */
-	width?: SizableOption;
-	/** Set some custom height properties to create responsive layouts. */
-	height?: SizableOption;
-	/**
-	 * Add some padding around the **outside** of an object. If you are looking
-	 * to create space on the _inside_ of an object you are looking for
-	 * `padding`.
-	 */
-	margin?: SizableOption;
-	margin_left?: SizableOption;
-	margin_right?: SizableOption;
-	margin_top?: SizableOption;
-	margin_bottom?: SizableOption;
-	margin_y?: SizableOption;
-	margin_x?: SizableOption;
-	/**
-	 * Create padding on the _inside_ of an object. If you are trying to create
-	 * space _around_ an object. you are probably looking for `margin`.
-	 */
-	padding?: SizableOption;
-	padding_left?: SizableOption;
-	padding_right?: SizableOption;
-	padding_top?: SizableOption;
-	padding_bottom?: SizableOption;
-	padding_y?: SizableOption;
-	padding_x?: SizableOption;
-	/**
-	 * When in Grid mode or in some other select layouts, this property create
-	 * a gap between _all_ children.
-	 */
-	gap?: SizableOption;
-	gap_y?: SizableOption;
-	gap_x?: SizableOption;
-}
-
 export interface TitleGroup {
 	title: string;
 	subtitle?: string;
@@ -633,6 +618,15 @@ export enum CommonComponentPropertyKey {
 	MarkdownHeading = "markdownHeading",
 	InlineMarkdownOverride = "markdown",
 }
+
+export type ConundrumErrorVariant = 
+	| { tag: "MultiThreadingError", content?: undefined }
+	| { tag: "FailToFindComponent", content: string }
+	| { tag: "FailToGenerateString", content?: undefined }
+	| { tag: "FrontMatterError", content?: undefined }
+	| { tag: "UserFacingGeneralParserError", content: ConundrumError }
+	| { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
+	| { tag: "InternalParserError", content: ConundrumError };
 
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }

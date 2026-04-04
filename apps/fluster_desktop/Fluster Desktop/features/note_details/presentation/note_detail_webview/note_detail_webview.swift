@@ -182,7 +182,7 @@ struct NoteDetailWebview: View {
           eval: self.webView.evaluateJavaScript
         )
       } catch {
-        print("Error: \(error.localizedDescription)")
+        print("Error setting editor state: \(error.localizedDescription)")
       }
     }
   }

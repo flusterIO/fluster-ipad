@@ -1,9 +1,8 @@
-import React, { useEffect, useEffectEvent, useMemo, useState, type ReactNode } from "react";
+import React, { useEffect, useEffectEvent, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import AdmonitionTitle from "./admonition_title";
 import FoldableAdmonitionTitle from "./foldable_admonition_title";
 import { cn } from "@/utils/cn";
-import { inlineMdxClasses } from "../../components/inline_mdx_classes";
 import { type AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
 import { type WithChildren } from "@/utils/types/utility_types";
 import { type WithInlineMdx } from "#/mdx/components/inline_mdx_content";
@@ -14,15 +13,13 @@ import { type WithInlineMdx } from "#/mdx/components/inline_mdx_content";
  */
 export const Admonition = ({
     children,
-    InlineMdxContent,
     ...props
 }: AdmonitionPropsInput & WithChildren & Partial<WithInlineMdx>): ReactNode => {
     const {
-        title: _title, classes, foldable, folded, type, parsedContainerClasses, centerContent
+        classes, title, foldable, folded, type, parsedContainerClasses, centerContent
     } = admonitionPropsSchema.parse(props)
     const [open, setOpen] = useState(foldable ? !folded : true);
     // sure to enforce the type safety for all string components before use as there's no typesafety while the mdx is rendered in live preview.
-    const title = typeof _title === "string" ? _title : "";
 
     const handleOpen = useEffectEvent((newOpen: boolean) => { setOpen(newOpen); })
 
@@ -32,9 +29,7 @@ export const Admonition = ({
         }
     }, [foldable]);
 
-    const titleComponent = useMemo(() => {
-        return InlineMdxContent ? <InlineMdxContent mdx={title} /> : <div className={inlineMdxClasses}>{title}</div>;
-    }, [title, InlineMdxContent]);
+
 
     return (
         <motion.div
@@ -46,14 +41,13 @@ export const Admonition = ({
                 <FoldableAdmonitionTitle
                     open={open}
                     setOpen={setOpen}
-                    title={title}
                     type={type}
                 >
-                    {titleComponent}
+                    {title}
                 </FoldableAdmonitionTitle>
             ) : (
-                <AdmonitionTitle title={title} type={type}>
-                    {titleComponent}
+                <AdmonitionTitle type={type}>
+                    {title}
                 </AdmonitionTitle>
             )}
             <motion.div

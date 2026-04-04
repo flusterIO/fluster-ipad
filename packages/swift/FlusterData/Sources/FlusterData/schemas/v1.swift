@@ -482,7 +482,7 @@ extension AppSchemaV1 {
         let data = try modelContainer.mainContext.fetch(fetchDescriptor)
         return data.isEmpty ? nil : data.first
       } catch {
-        print("Error: \(error.localizedDescription)")
+        print("Error fetching note: \(error.localizedDescription)")
         return nil
       }
     }
@@ -491,26 +491,20 @@ extension AppSchemaV1 {
     public func preParse(modelContext: ModelContext) async throws {
       let _id = self.id
       let _body = self.markdown.body
-      let res: Task<MdxParsingResult?, Never> = try await Task.detached {
-        do {
-          let res = try await ConundrumSwift.runConundrum(
-            options: ParseMdxOptions(noteId: _id, content: _body, modifiers: []))
-          return res
-        } catch {
-          print("Mdx parsing error: \(error.localizedDescription)")
-        }
-        return nil
+      let task: Task<MdxParsingResult?, any Error> = try await Task.detached {
+        let res = try await ConundrumSwift.runConundrum(
+          options: ParseMdxOptions(noteId: _id, content: _body, modifiers: []))
+        return res
       }
-      do {
-        if let parsedMdx = try await res.value {
-          self.applyMdxParsingResults(
-            results: parsedMdx,
-            modelContext: modelContext
-          )
-        }
-      } catch {
-        print("Error: \(error.localizedDescription)")
-      }
+
+      let res = await task.result
+
+      if let parsedMdx = try await res.get() {
+        self.applyMdxParsingResults(
+          results: parsedMdx,
+          modelContext: modelContext
+        )
+      }  // No need for else block, get() already throws.
     }
     @MainActor
     public func preParseIfEdited(modelContext: ModelContext) async throws {
@@ -519,15 +513,11 @@ extension AppSchemaV1 {
       }
     }
     @MainActor
-    public func preParsedOrParse(modelContext: ModelContext) async -> String {
+    public func preParsedOrParse(modelContext: ModelContext) async throws -> String {
       if let preParsed = self.markdown.preParsedBody {
         return preParsed
       } else {
-        do {
-          try await self.preParse(modelContext: modelContext)
-        } catch {
-          print("Error: \(error.localizedDescription)")
-        }
+        try await self.preParse(modelContext: modelContext)
         return self.markdown.preParsedBody ?? ""
       }
     }

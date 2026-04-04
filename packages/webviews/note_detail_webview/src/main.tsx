@@ -7,6 +7,8 @@ import {
     NoteDetailWebviewEvents,
     webviewOnError,
 } from "@fluster/webview_utils";
+import { iniitializeWebView } from "@fluster/webview_utils";
+iniitializeWebView();
 
 declare global {
     interface Window {

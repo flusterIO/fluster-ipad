@@ -329,7 +329,7 @@ struct WebViewContainerView: View {
         do {
           try await en.markdown.parsePlainText(noteId: en.id)
         } catch {
-          print("Error: \(error.localizedDescription)")
+          print("Error parsing plain text: \(error.localizedDescription)")
         }
       }
     }
@@ -434,7 +434,7 @@ struct WebViewContainerView: View {
     do {
       try await webview.evaluateJavaScript(js)
     } catch {
-      print("Error: \(error.localizedDescription)")
+      print("Error evaluating javascript: \(error.localizedDescription)")
     }
   }
   func setColorScheme(colorScheme: ColorScheme) async {

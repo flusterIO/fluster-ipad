@@ -1,10 +1,10 @@
 import React, { type ReactNode } from "react";
 import AdmonitionVariantIcon from "./variant_icon";
 import { getTitleVariantClasses } from "./utils";
-import { AdmonitionTitleProps } from "./types";
+import { type AdmonitionTitleProps } from "./types";
 import { cn } from "@/utils/cn";
 
-interface Props extends AdmonitionTitleProps {
+interface Props extends Pick<AdmonitionTitleProps, "type"> {
     children: ReactNode;
 }
 

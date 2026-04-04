@@ -1,3 +1,4 @@
+use conundrum::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
 use serde::Serialize;
 use typeshare::typeshare;
 use uniffi::Record;
@@ -10,5 +11,5 @@ use crate::core_types::webviews::conundrum_state::{
 #[derive(Serialize, Record)]
 pub struct SetConundrumErrorStateAction {
     pub r#type: ConundrumStateActions,
-    pub payload: Option<ConundrumState>,
+    pub payload: Option<ConundrumErrorVariant>,
 }

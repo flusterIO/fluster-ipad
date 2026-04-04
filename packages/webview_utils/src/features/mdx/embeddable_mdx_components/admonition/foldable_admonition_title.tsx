@@ -9,7 +9,7 @@ import { cn } from "@/utils/cn";
 
 const ChevronUp = motion.create(ChevronIcon);
 
-interface Props extends AdmonitionTitleProps {
+interface Props extends Pick<AdmonitionTitleProps, "type"> {
     open: boolean;
     setOpen: (newOpen: boolean) => void;
     children: ReactNode;

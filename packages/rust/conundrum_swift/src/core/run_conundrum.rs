@@ -1,15 +1,16 @@
 use conundrum::{
-    lang::runtime::run_conundrum::{run_conundrum as run_conundrum_swift, ParseMdxOptions},
+    lang::runtime::{
+        run_conundrum::{run_conundrum as run_conundrum_swift, ParseMdxOptions},
+        state::conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
+    },
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
-use fluster_core_utilities::core_types::fluster_error::{FlusterError, FlusterResult};
 use tokio::task::spawn;
 
 #[uniffi::export(async_runtime = "tokio")]
-pub async fn run_conundrum(options: ParseMdxOptions) -> FlusterResult<MdxParsingResult> {
-    let x = spawn(async move { run_conundrum_swift(options).await }).await;
-    x.map_err(|x| {
-         println!("Threading Error: {:#?}", x);
-         FlusterError::ConundrumParsingError
-     })
+pub async fn run_conundrum(options: ParseMdxOptions) -> ConundrumResult<MdxParsingResult> {
+    spawn(async move { run_conundrum_swift(options).await }).await.map_err(|x| {
+                                                                       println!("Threading Error: {:#?}", x);
+                                                                       ConundrumErrorVariant::MultiThreadingError
+                                                                   })?
 }

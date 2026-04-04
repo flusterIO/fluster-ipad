@@ -19,12 +19,6 @@ export const mathOptions = {
         processEnvironments: true,
     },
     chtml: {
-        // FIXME: Figure out a way to point this to the proper location on the user's device if possible to make math render properly without wifi, alternatively, move away from the chtml method.
-        // TODO: Fix this. Turn this fontURL to the new path that will hopefully work...
-        /* fontURL: ResourceRoutes.mathjaxFonts, */
-        // process.env.NODE_ENV === "development"
-        //     ? ResourceRoutes.mathjaxFonts
-        //     : "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
         adaptiveCSS: true,
     },
 };
@@ -32,9 +26,18 @@ export const mathOptions = {
 interface RehypePluginProps {
     lightCodeTheme?: CodeEditorTheme;
     darkCodeTheme?: CodeEditorTheme;
+
     mathjaxFontUrl: string
 }
 
+
+/**
+ * These are the default theme mappings. For the editor theme as the ket, the code block theme is what is returned.
+ * I did my best to match everything, but I'm a s**t designer.
+ *
+ * The only reason they're not more customizable is because CodeMirror relies on Lexers while the code-blocks are using 
+ * Shiki that supports many, _many_ more themes. When I have time I'll do what I can to move the editor over to Shiki, if at all possible.
+ */
 const codeThemeStringToThemeName = (input: CodeEditorTheme): BundledTheme => {
     switch (input) {
         case CodeEditorTheme.MaterialLight: {

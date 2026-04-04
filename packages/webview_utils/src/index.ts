@@ -3,6 +3,7 @@ export * from "./core/utils/cn"
 //
 // -- Setup --
 export * from "./features/webview_global_state/mdx_editor/serialization/handle_editor_state_parsed_content_update"
+export * from "./features/webview_global_state/initialize_webview"
 export * from "./features/webview_global_state/cross_language_state_types"
 export * from "./features/webview_global_state/container/webview_container_global_state/webview_container_slice"
 export * from "./features/webview_global_state/window_methods"

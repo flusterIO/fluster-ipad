@@ -14,6 +14,12 @@ export const notificationSlice = createSlice({
     name: 'notifications',
     initialState: initialConundrumState,
     reducers: {
+        clearConundrumError(state) {
+            return {
+                ...state,
+                error: null
+            }
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(handleSwiftAction, (state, action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<ConundrumState> => {
@@ -24,6 +30,6 @@ export const notificationSlice = createSlice({
 })
 
 // // Action creators are generated for each case reducer function
-// export const { } = notificationSlice.actions
+export const { clearConundrumError } = notificationSlice.actions
 
 export default notificationSlice.reducer

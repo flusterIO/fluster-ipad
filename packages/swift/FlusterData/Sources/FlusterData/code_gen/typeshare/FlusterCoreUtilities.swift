@@ -109,9 +109,9 @@ public struct ConundrumParseErrorState: Codable {
 }
 
 public struct ConundrumState: Codable {
-	public let error: ConundrumParseErrorState?
+	public let error: ConundrumErrorVariant?
 
-	public init(error: ConundrumParseErrorState?) {
+	public init(error: ConundrumErrorVariant?) {
 		self.error = error
 	}
 }
@@ -687,9 +687,9 @@ public enum ConundrumStateActions: String, Codable {
 
 public struct SetConundrumErrorStateAction: Codable {
 	public let type: ConundrumStateActions
-	public let payload: ConundrumState?
+	public let payload: ConundrumErrorVariant?
 
-	public init(type: ConundrumStateActions, payload: ConundrumState?) {
+	public init(type: ConundrumStateActions, payload: ConundrumErrorVariant?) {
 		self.type = type
 		self.payload = payload
 	}

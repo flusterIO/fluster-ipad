@@ -5,6 +5,7 @@
 //  Created by Andrew on 1/20/26.
 //
 
+import ConundrumSwift
 import FlatBuffers
 import FlusterData
 import FlusterMdx
@@ -157,7 +158,8 @@ struct MdxEditorWebview: View {
             do {
               try await en.preParseIfEdited(modelContext: modelContext)
             } catch {
-              print("Error: \(error.localizedDescription)")
+              print("Error here: \(error.localizedDescription)")
+              self.setEditorError(error: error)
             }
           }
         }
@@ -203,6 +205,19 @@ struct MdxEditorWebview: View {
     }
   }
   func onWebviewLoad() async {
+  }
+  public func setEditorError(error: any Error) {
+    if let conundrumErrorVariant = error as? ConundrumErrorVariant {
+      print("Found one of them shits...")
+      Task {
+        do {
+          try await ConundrumState.setConundrumError(
+            error: conundrumErrorVariant, eval: webView.evaluateJavaScript)
+        } catch {
+          print("Error setting error: \(error.localizedDescription)")
+        }
+      }
+    }
   }
   public func setEditorSaveMethod(saveMethod: EditorSaveMethod) async throws {
     try await EditorState.setEditorSaveMethod(
@@ -256,13 +271,14 @@ struct MdxEditorWebview: View {
             try await EditorState.setParsedMdxContent(
               parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
               eval: webView.evaluateJavaScript)
-             try await MdxEditorClient.resetErrorState(eval: webView.evaluateJavaScript)
+            try await MdxEditorClient.resetErrorState(eval: webView.evaluateJavaScript)
           } else {
             print("Broken state: Found mismatched note id's")
           }
         }
       } catch {
         print("Failed to decode editor update: \(error)")
+        self.setEditorError(error: error)
       }
     }
   }
@@ -291,7 +307,8 @@ struct MdxEditorWebview: View {
 #Preview {
   MdxEditorWebview(
     editingNoteId: nil,
-    webView: .constant(WKWebView(
-      frame: .zero, configuration: getWebViewConfig())
-  ))
+    webView: .constant(
+      WKWebView(
+        frame: .zero, configuration: getWebViewConfig())
+    ))
 }
