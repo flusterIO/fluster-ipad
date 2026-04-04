@@ -7,7 +7,8 @@ If you're interested in the future of this project, this may be for you. Otherwi
 
 When I first built Fluster I was using a third-party package to parse markdown and jsx, but I've since implemented about 80% of the parser that Fluster needs independent of any third party package. While this is largely a technical implementation detail, this means that Fluster can build a purpose driven, mobile friendly DSL (domain specific language) specifically for note taking.
 
-<Admonition title="For Developers" folded foldable>
+<Admonition title={<>For Developers</>} primary>
+
 
 You can find the repository at <AutoInsertedMarkdownLink data={{"text":"FlusterIO","url":"https://github.com/flusterIO"}} /> -> <span className="font-bold">FlusterIPad</span> (poorly named monorepo) -> `packages` -> `rust` -> `conundrum`.
 
@@ -33,6 +34,7 @@ The goal for this language is this:
 2. Provide a high level wrapper for many of the most common mathematical and scientific routines used in applications typically written in languages like Python, while exposing the full capabilities of those languages at compile time with a shared memory layer. This would look like a `Number` or `Array` type that includes many of the common `numpy`/`scipy` methods built-in for the Conundrum language itself, but a sandboxed environment for each language that is supported available at compile time. Any plot output or other UI can be left to the application's implementation, as the data is returned as part of the compiled object.
 3. Provide a real general-user first API as most of the users of this language will be people that never become professional developers. Things like a first-party AI module that can integrate directly with the rendered markdown, kind of breaking this language into two pieces: The markdown based syntax, and the logic that goes inside of a code block. I think the perfect language for note taking, blogging and other information-driven writing is the language that runs in both environments. Perhaps this might best be demonstrated with a possible future syntax, `!![My princess](ai:Show my pictures of layla)` which would return a vector of image data representing my sweet puppy (formatted as base64 or as a uint8 array depending on a provided flag). This could then be displayed by us, the developers as a carousel, a grid, or whatever UI you are trying to implement... the syntax would be the same and work <span className="italic">across</span> applications, allowing users to work in this happy middle ground between the simplicity of Markdown and the complexity of something like Typescript and HTML.
 4. With modern FFI and cross-language serialization libraries, there's no reason we can't have every nested language contribute to the parent language's memory layer. Exposing API's in the various languages should allow that, as long as those languages are available at compile time, that each API can serialize a subset of that language into a shared format that can be appended to the shared, Rust based memory layer. This would allow for things like calculating a complex array of numbers in Rust or C in 1 code block, and then building the plot directly from that data in Python in the code block below it. We can even implement an <span className="italic">index</span> property to get around the linear requirement inherent in most languages.
+
 
 </Admonition>
 

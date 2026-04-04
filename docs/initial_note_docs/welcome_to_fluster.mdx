@@ -8,61 +8,23 @@ ignoreParsers:
   - note_link
 ---
 
-# Start Here!
+# Welcome to Fluster!
+> The _extended_ markdown application for modern students & academics.
 
-> If you really want to get started and you're on a Mac, open the command palette with cmd+shift+p, or open a new note and type `Docs??` for a list of documentation commands.
+If you're familiar with markdown, you know that ^ shouldn't be a subtitle, but a block quote. You're right, but in Fluster, there are a few additional features, including a title/block-quote pair on 2 lines directly next to each other results in a subtitle... it even appears in your note's search results as it's description!
 
-My name is Andrew, and I'm the creator of Fluster. Please take the time to look through these initial notes as they contain all of the information you need to get the most from this app, as it's pretty unique among note taking applications. On first launch, there will be the following notes:
-
-1. **Welcome To Fluster:** This is what you're reading right now.
-2. **On The Gravitational Nature of Time:** Consider this a demo if you like, but this is a short summary of the model that inspired the creation of Fluster. The note assumes no further knowledge than basic calculus, and does my best to take the reader from Einstein's work to a modified model of relativity that gives a set of 3 equations providing both our kinematic and cosmological velocities to well within measurement error. The problem? Gravity becomes a respulsive force. [Avi Loeb](https://scholar.google.com/citations?user=CvQxOmwAAAAJ) couldn't get that past peer review, so here we are... re-building a note taking application for the 4th time while homeless to promote the model. Feel free to just delete this if you like, but this is the reason Fluster exists.
+See this `Docs??` below? That's a documentation tag. Enter one of those on a line all by itself at any point to show the Conundrum transpiler's built-in documentation. 1 `?` for the short-ish documentation, 2 `??` for the full documentation.
 
 
-<Admonition title="Physical Keyboard Indicator" type="info" foldable>
-
-There's currently some unexpected behavior when using vim mode within the editor while a mechanical keyboard is connected to the iPad application. This arises from the extra space created by the keyboard indicator on the bottom of the screen. If the indicator is slid into a collapsed position in the corner, this space collapses and the editor should work full-screen, as expected. I'm working on a fix for this issue.
-
-</Admonition>
+Docs??
 
 
-
-## Fluster's Strategy
-
-While in most cases user's don't care much about the architecture of the application they're using, it's relevant for Fluster. Fluster uses [mdx](https://mdxjs.com/), a superset of markdown with added support for [React](https://react.dev/) components. Fluster provides a growing list of components for you, with snippets available to help speed up typing and searchability.
-
-Here's the thing, MDX is _really_ powerful. So powerful so, that it's difficult to replicate the functionality of MDX in Apple's native language, Swift. The logical question then is well, why not just do everything in the language that makes MDX happy, Typescript? The first public release of Fluster did, but the application became limited by it's environment. The answer, is that while Apple's support for rendering math and other complex components from a 'markdown' file is extremely limited, it's support for things like the Apple pencil, onboard AI, and other first-party features is unbeatable.
-
-The strategy Fluster takes is simple, to give users the most functionality possible by providing both rendering methods in a single application, but this comes with some downsides. 
-
-- It will likely be noticeable when a view is rendered in a WebView or in a native Swift view. This will be improved significantly with time, but will likely never be completely cohesive.
-- Math or other mdx features may not render or render incompletely in Swift views. This means that while adding latex to titles is technically allowed, the title in Swift views will display as a raw latex string instead of the rendered latex. I'll make an attempt to support math in Swift titles in the near future, but I'm unsure of how successful it will be. The alternative is to eventually move more content, like the search results into a Webview where title's can be rendered as MDX, which may be an option in the future.
-  - Basic markdown _is_ supported in Swift, allowing for italic/bold font and links in both environments.
-
-It is important to note, that while your Fluster application uses a `WebView`, it does not contact any outside service and functions completely offline; we are simply rendering the MDX in a language meant for the web using code that is bundled with the application.
-
-Fluster may never offer the buttery smooth UI of applications that focus on either hand drawn or text based notes independently, but for those that require the most from their note taking application and want an app that puts functionality over form... if you're the type to generate plots, diagrams and other rich content in your notes only to dig through them for hours, Fluster may be what you're looking for.
+And that's pretty much what you need to know to get started. As mentioned in the docs, the app is going through a major migration with _significant_ improvements to the writing experience right around the corner.
 
 
-## Organization Inside of Fluster
+## Remember
 
-As Fluster came to be first as a personal note taking application to support my pursuit of a modified model of relativity, it naturally came to support a wide range of searching, linking and navigation techniques. First, you can insert a tag directly into your note's content as described in the 'Quick Reference' note. Clicking a tag will take you to a search page with all other notes featuring that tag.
-
-
-Each note can contain an optional `topic` or `subject` field in the application's UI. Each of these fields will be searchable via the command palette on Mac, or via the relevant tabs on iPad.
-
-Of course there is also text and named based search as well. Fluster uses a special mdx based sorting algorithm to sort search results based on the importance of where your matches occur for text based search, returning the most significant matches first. This title and full-text based search can be accessed via the command palette on Mac, or in the navigation bar on iPad.
-
-### Bibliography
-
-Fluster also integrates with an internal bibliography manager (plans to read data from 3rd party platforms like Zotero in the near future), with citations that can be inserted with `[[cite:myCitationId]]`. Here, `myCitationId` must match the id of an entry in your bibliography (all entries are inserted as biblatex).
-
-When a citation is added in this format, the citation's id is parsed with the rest of the markdown, and linked to that note so that notes can be searched by bibliography entry as well.
-
----
-
-
-<Admonition title="Organization Tips" type="info" foldable folded>
-- Consider using 'topics' and 'subjects' in a sort of heiracheral way to create a layered search. By creating a more broad layer, say 'topics' of things like 'physics', 'math', 'work' and the other of a more narrow category like 'gravity', 'calc2' or 'newProject' you can use one sort of _inside_ of the other. I think this gives a lot more utility to the various search features in Fluster than just using them directly on top of each other.
-- If you don't think you'll need a bibliography, consider adding simple entries for things like websites, with whatever level of specificity you think you'll need. Adding an entry for 'wikipedia' or 'youtube' will obviously be vague enough to apply to a meaningful number of notes in your content and can apply to users with less academic notes. You can even use the website bibliography snippet to cite specific social media channels or blogs, allowing user's to group notes by almost anything.
-  - For even more refinement, consider adding a 'title' field to your bibliography entries, even if one isn't already present. This field is what is used for alphabetizing bibliography entries, and all fields without it will be grouped together at "No title found". Of course, you can just filter them...
-</Admonition>
+| Key | Description |
+| --- | ----------- |
+| cmd+s | It stands for 'save', but it really just re-renders your content when the editor is set to 'on-save' mode. Poorly named, I know, just remember that youru content still saves 'on-change'. |
+| cmd+shift+p | On mac this opens the command palette. I'm doing my best to make these commands user-adjustable soon. |

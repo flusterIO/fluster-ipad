@@ -994,7 +994,6 @@ extension AppSchemaV1 {
         self._body = newBody
         self.isEdited = true
         self.requiresPlainTextUpdate = true
-        self.title = MdxTextUtils.getTitle(body: newBody)
       }
     }
 

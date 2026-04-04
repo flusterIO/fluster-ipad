@@ -42,8 +42,10 @@ Here are the core pieces of information you need to know as it pertains to calli
 This `Card` component accepts `children`, so we use the `>` closing bracket on the opening tag.
 
 ```tsx title="components.mdx"
-<Card title="My title" desc="My optional description">
+<Card title={<>My title</>} subtitle={<>My optional description</>} >
+{<>
 This is my card's body.
+</>}
 </Card>
 ```
 

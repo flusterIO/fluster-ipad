@@ -29,12 +29,31 @@ export type ParsedElement =
 	| { tag: "Javascript", content: ParsedJavascriptElement }
 	| { tag: "Logic", content: ConundrumLogicToken };
 
+/**
+ * The representation of 'children', usually other markdown content. Unlike
+ * other UI frameworks like React, `children` does not necessarily refer only
+ * to the components that go within the main `children` property, but rather
+ * any Conundrum content that is rendered inside of any of it's slots. A
+ * `title`, a `subtitle` or a `label` might all be represented as children
+ * since they accept Conundrum content and are represented in the UI, while
+ * something like a `columns` property obviously is not.
+ */
 export type Children = ParsedElement[];
 
 export type ConundrumString = string;
 
+/**
+ * A simple utility around the heading depth, 1-6 just to add some convenience
+ * methods.
+ */
 export type HeadingDepth = number;
 
+/**
+ * A set of common styles that can be applied as a group to indicate common
+ * scenarios. These will become customizable soon so you won't be limited to
+ * the default color values.
+ * The emphasis documentation can be viewed via the `Emphasis??` command.
+ */
 export enum Emphasis {
 	Info = "info",
 	Error = "error",
@@ -179,6 +198,10 @@ export interface FrontMatterResult {
 	summary?: string;
 }
 
+/**
+ * When a component is rendered in a markdown environment, apply these styles
+ * if the more complex rendering strategies are not available.
+ */
 export enum InlineMarkdownOverride {
 	Plain = "plain",
 	BoldItalic = "bold_italic",
@@ -190,7 +213,12 @@ export interface Highlight {
 	children: Children;
 	/** Default: .highlight */
 	emphasis: Emphasis;
-	/** Default: .Plain */
+	/**
+	 * Control the markdown formatting when the output format is a markdown
+	 * variant. This property is common throughout Conundrum, but the default
+	 * is unique to each component.
+	 * Default: `.Italic`
+	 */
 	markdown?: InlineMarkdownOverride;
 }
 
@@ -255,7 +283,7 @@ export interface JavascriptNumberResult {
 
 export interface JavascriptObjectKeyValuePair {
 	key: string;
-	value: ParsedJavascriptElement;
+	value: ParsedElement;
 }
 
 export interface JavascriptObjectResult {
@@ -268,8 +296,6 @@ export interface JavascriptStringResult {
 }
 
 export interface JsxStringPropertyResult {
-	key: string;
-	value: ConundrumString;
 }
 
 export interface MarkdownBoldAndItalicTextResult {
@@ -418,6 +444,7 @@ export interface ParsedTag {
 }
 
 export type ConundrumComponentType = 
+	| { tag: "Container", content: UtilityContainer }
 	| { tag: "Card", content: Card }
 	| { tag: "Admonition", content: Admonition }
 	| { tag: "Hint", content: Hint }
@@ -446,16 +473,96 @@ export enum SizableOption {
 	Full = "full",
 }
 
+/**
+ * This is applicable to pretty much any component where changing it's size
+ * makes sense. Not so much text, where you're changing the content of the text
+ * itself, but rather containers, where the size is changing irrespective of
+ * the content inside of it.
+ * This shouldn't be confused though, since this struct contains a **lot** more
+ * properties than just those that can modify _size._ You can also modify
+ * color, padding, margin, borders, and more.
+ */
 export interface SizablePropsGroup {
+	/** Hides the MathJax labels in all child components. */
 	hide_math_labels?: ConundrumBoolean;
+	/**
+	 * 'Floats' the component to the right. This is often combined with `width`
+	 * or the `sidebar` property to create sidebar layouts.
+	 */
 	right?: ConundrumBoolean;
+	/**
+	 * 'Floats' the component to the left. This is often combined with `width`
+	 * or the `sidebar` property to create sidebar layouts.
+	 */
 	left?: ConundrumBoolean;
+	/**
+	 * A utility property that sets a responsive max-width to create sidebar
+	 * like layouts on large screens while allowing for full-width when the
+	 * window is smaller.
+	 */
 	sidebar?: ConundrumBoolean;
 	center_self?: ConundrumBoolean;
+	/**
+	 * Centers the content of this component's children, not the component
+	 * itself.    center_self: Option<ConundrumBoolean>,
+	 */
 	center_content?: ConundrumBoolean;
+	/** Add a small, muted border to the object. */
 	border?: ConundrumBoolean;
+	/**
+	 * Tells the container to not forcefully create a new line and instead to
+	 * flow with the rest of the content. Unless you're trying to apply
+	 * properties to text inside of a paragraph using the Container component
+	 * this is most likely not what you are looking for. If you want text to
+	 * wrap around an element, use the `right` or `left` properties paired with
+	 * a desired `width`.
+	 */
 	inline?: ConundrumBoolean;
+	/** Casts an inset shadow from the object. */
 	in_shadow?: SizableOption;
+	/** Casts a shadow from the object. */
+	shadow?: SizableOption;
+	/** Rounds the corners of the container. Use `rounded=\ */
+	rounded?: SizableOption;
+	/**
+	 * Change the text content of the container's children. Beware though, some
+	 * edge cases might not respond as expected.
+	 */
+	text?: SizableOption;
+	/** Set some custom width properties to create responsive layouts. */
+	width?: SizableOption;
+	/** Set some custom height properties to create responsive layouts. */
+	height?: SizableOption;
+	/**
+	 * Add some padding around the **outside** of an object. If you are looking
+	 * to create space on the _inside_ of an object you are looking for
+	 * `padding`.
+	 */
+	margin?: SizableOption;
+	margin_left?: SizableOption;
+	margin_right?: SizableOption;
+	margin_top?: SizableOption;
+	margin_bottom?: SizableOption;
+	margin_y?: SizableOption;
+	margin_x?: SizableOption;
+	/**
+	 * Create padding on the _inside_ of an object. If you are trying to create
+	 * space _around_ an object. you are probably looking for `margin`.
+	 */
+	padding?: SizableOption;
+	padding_left?: SizableOption;
+	padding_right?: SizableOption;
+	padding_top?: SizableOption;
+	padding_bottom?: SizableOption;
+	padding_y?: SizableOption;
+	padding_x?: SizableOption;
+	/**
+	 * When in Grid mode or in some other select layouts, this property create
+	 * a gap between _all_ children.
+	 */
+	gap?: SizableOption;
+	gap_y?: SizableOption;
+	gap_x?: SizableOption;
 }
 
 export interface TitleGroup {
@@ -469,6 +576,12 @@ export interface Underline {
 	emphasis: Emphasis;
 	/** Default: .Plain */
 	markdown?: InlineMarkdownOverride;
+}
+
+export interface UtilityContainer {
+	sizable: SizablePropsGroup;
+	emphasis?: Emphasis;
+	children: Children;
 }
 
 export enum AiSerializationRequestType {
@@ -492,12 +605,13 @@ export enum AutoInsertedComponentName {
 }
 
 /**
- * Don't be an idiot... stick to one casing style. I forget what the name of
- * this casing is, but it seems the most readable for new users that might not
- * know the joys of camel case.
+ * To enforce some uniformity and ease-of-use between components, this enum
+ * represents a list of commonly used property keys. The code itself doesn't
+ * care that these keys are the same, but the predictability should help new
+ * users.
  */
 export enum CommonComponentPropertyKey {
-	MarkdownHeading = "markdown_heading",
+	MarkdownHeading = "markdownHeading",
 	InlineMarkdownOverride = "markdown",
 }
 

@@ -1,6 +1,7 @@
 <AutoInsertedHeading depth={2} id="documentation" subtitle={null} >Documentation</AutoInsertedHeading>
 
 
+
 Trigger documentation by placing specific keywords followed by either 1 or 2 `?`. All triggers must appear alone on a line, meaning no trailing or leading white space for specificity's sake.
 
 
@@ -9,9 +10,10 @@ Trigger documentation by placing specific keywords followed by either 1 or 2 `?`
 | `Docs??` | The one you probably want to remember. This will take you back here. |
 | `Markdown??` | A quick markdown reference for those just getting started. |
 | `Jsx??` | A quick jsx reference for those that are ready to take advantage of the 'x' in mdx. |
-| `Syntax??` | A reference to Fluster specific syntax. |
-| `Emoji??` | A sample table of many of the emojis available in Fluster. |
+| `Syntax??` | A reference to Conundrum specific syntax. |
+| `Emoji??` | A sample table of many of the emojis available in Conundrum. |
 | `Components??` | A list of all available components. |
+| `Conundrum??` | A few details about the Conundrum transpiler that drives Fluster. If you ever want to take your notes elsewhere, this free & open-source tool can convert everything back to regular markdown, plain text, and more! |
 
 Every component also has documentation, available at that component's name with the same `?` syntax.
 
@@ -27,7 +29,37 @@ Many of the components share certain property models between them, making the ap
 | `Emphasis??` | A list of boolean properties that can apply unique styles like `info` or `important`. | `Highlight`, <br /> `Underline`, <br /> `Admonition`, <br /> ... |
 
 
-<AutoInsertedHeading depth={3} id="app-usage-suggestions" subtitle={null} >App Usage Suggestions</AutoInsertedHeading>
+
+<AutoInsertedHeading depth={2} id="what-is-conundrum" subtitle={<>While I'm trying to separate the project that I hope to develop myself, Fluster, with the project that I'm hoping to open-source, Conundrum, that's difficult to do when one was born from the other and they work so closely together in the only existing example. So, until somebody else builds something with it, I'm going to talk about my own app...</>} >What is Conundrum?</AutoInsertedHeading>
+
+Conundrum is a lot of things. It's a `.mdx` transpiler, a `.mdx` superset, and soon, it won't be affiliated directly with `.mdx` at all as it will be able to operate as a completely independent language with it's own runtime. Conundrum came to be as <AutoInsertedMarkdownLink data={{"text":"Fluster","url":"https://flusterapp.com"}} /> continued to develop, and since this is the very initial release of both Fluster and Conundrum, let's talk about Fluster:
+
+<AutoInsertedHeading depth={3} id="fluster" subtitle={null} >Fluster</AutoInsertedHeading>
+
+Fluster is a note taking application that was built to suite my own personal note taking requirements while I was pursuing a <AutoInsertedMarkdownLink data={{"text":"modified model of relativity","url":"https://flusterapp.com/docs/user"}} />. While it was originally built as a `.mdx` application, it's syntax has grown to support even more than that.
+
+With the ability to keep your hand-drawn notes linked to your AI-friendly markdown notes in a format that can expressive, yet transpile to the simple formats that AI and other platforms deal with seamlessly, I don't think there are any other applications like Fluster available. I built Fluster in the first place because none of the existing applications met my requirements, and I imagine that many users feel the same. While no application will ever be perfect, Fluster takes a simple approach: Separate your inputs, but keep them linked. Draw things that need to be drawn, type things as much as you can if you incoprorate a lot of AI into your workflow, and Fluster will help you find <span className="italic">both</span> types of content. These are some of the features that inspired the creation of Fluster:
+
+- Search by:
+  - Tag
+  - Topic
+  - Subject
+  - Citation
+  - Equation (Feature currently missing after migration, but will be back!)
+- Embed:
+  - Images (Currently remote only supported. As soon as I can afford internet and a real device I can work on the embedded media.)
+  - Video (See above)
+  - Gltf (3d-images, also... see above)
+- Be more expressive, find what you're looking for with:
+  - Cards, subtle, tinted backgrounds behind your content.
+  - 'Admonitions', a more styled and flashy Card that can be used to draw attention to content.
+  - 'Grid' to create responsive layouts easily that look good on any screen size.
+  - 'Containers' as a blank-canvas, with dozens of accepted properties to create the layout you need.
+  - Plus all of the class markdown features <span className="font-bold">with</span> a special markdown-extension syntax for things like a horizontal-rule that accepts child-text (look below) or a tag that is automatically associated with your note.
+
+
+
+<Hr>App Usage Suggestions</Hr>
 
 - The first should go without saying, but remember the documentation commands! Just `Docs??` to get you back to the root, on a new line all by itself without any leading or trailing whitespace and you should be able to find everything you need to know to operate Fluster.
 - The render method is set to 'on-change' by default to give users a feel for the application, but you'll almost surely want to change this. This will become <span className="italic">incredibly</span> jumpy when notes contain content that requires a second render pass like math, 3d models, or plots. To get around this there's an option to set this to 'on-save'. This is a little misleading as your notes still save every time you change them, but when this setting is turned on your notes will only render cmd+s is pressed, creating far less distraction and much less needless work for your device.

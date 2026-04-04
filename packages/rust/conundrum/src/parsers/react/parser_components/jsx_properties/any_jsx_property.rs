@@ -3,9 +3,9 @@ use winnow::combinator::alt;
 
 use crate::lang::elements::parsed_elements::ParsedElement;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumResult;
-use crate::parsers::javascript::javascript_boolean::JavascriptBooleanResult;
+use crate::parsers::conundrum::logic::bool::boolean::ConundrumBoolean;
+use crate::parsers::conundrum::logic::token::ConundrumLogicToken;
 use crate::parsers::javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair;
-use crate::parsers::javascript::parsed_javascript_elements::ParsedJavascriptElement;
 use crate::parsers::react::parser_components::jsx_properties::jsx_curly_bracket_wrapped_property::any_curly_bracket_jsx_property;
 use crate::parsers::react::parser_components::jsx_properties::jsx_property_key::jsx_property_key;
 use crate::parsers::react::parser_components::jsx_properties::string_property::JsxStringPropertyResult;
@@ -19,13 +19,13 @@ pub fn any_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<Javascrip
          any_curly_bracket_jsx_property,
          jsx_property_key.map(|key| {
                              JavascriptObjectKeyValuePair { key,
-                                                                   value: Box::new(ParsedElement::Javascript(
-ParsedJavascriptElement::Boolean(
-                                                                           JavascriptBooleanResult {
-                                                                               value: true
-                                                                           }
-                                                                   )
-                                                                   )) }
+             value: Box::new(ParsedElement::Logic(
+                     ConundrumLogicToken::Bool(
+                         ConundrumBoolean {
+                             value: true
+                         }
+                     )
+             )) }
                          }))).parse_next(input)
 }
 

@@ -44,7 +44,7 @@ export const AutoInsertedHeading = ({ depth, id, children, subtitle }: AutoInser
         case 2: {
             return subtitle ? (
                 <TitleWithSubTitleContainer>
-                    <H2 className="mb-0" id={id ?? undefined}>{children}</H2>
+                    <H2 className="mb-0 w-full" id={id ?? undefined}>{children}</H2>
                     <Subtitle className="mt-2" depth={depth}>
                         {subtitle}
                     </Subtitle>
