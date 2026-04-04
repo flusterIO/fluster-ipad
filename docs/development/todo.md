@@ -100,7 +100,7 @@
 - [x] Handle pre-parsing of documentation and initial docs with new internal cli method. It's already in place, you just need to write the script to call it.
 - [x] Fix issue with Safari keeping around 20 instances of the editor view.
 - [x] Handle issue with command palette not changing a variety of different state fields when the editor is focused, requiring a user navigation away from an then back to the editor page to see the changes.
-- [ ] Handle actual setting of component properties now that we're parsing the entire fucking component. Nothing is getting through now that doesn't go through the compiler, so it's crucial that everything is actualy _reset_ back to mdx.
+- [x] Handle actual setting of component properties now that we're parsing the entire fucking component. Nothing is getting through now that doesn't go through the compiler, so it's crucial that everything is actualy _reset_ back to mdx.
 - [ ] Now that you're getting back great, _detailed_ errors, relay that information to the user in the webview! Pipe the error to the webview error display in a type-safe way.
 - [ ] Verify that the iPad app is working again. It will need at least changes to:
   - [ ] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.

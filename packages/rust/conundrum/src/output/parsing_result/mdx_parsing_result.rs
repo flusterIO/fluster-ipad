@@ -29,12 +29,6 @@ pub struct MdxParsingResult {
     /// to avoid further parsing.
     pub ignore_all_parsers: bool,
     pub ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
-    pub success: bool,
-    /// Errors are kept seperate when at all possible to encourage displaying
-    /// _something_ useful to the user since this will likey be used in a
-    /// lot of real-time applications like note taking, blogging and the
-    /// like.
-    pub error: Option<ConundrumErrorVariant>,
 }
 
 impl Default for MdxParsingResult {
@@ -48,20 +42,11 @@ impl Default for MdxParsingResult {
                toc: Vec::new(),
                outgoing_links: Vec::new(),
                ignore_all_parsers: false,
-               ai_secondary_parse_requests: Vec::new(),
-               success: true,
-               error: None }
+               ai_secondary_parse_requests: Vec::new() }
     }
 }
 
 impl MdxParsingResult {
-    pub fn get_fail_result(error: ConundrumErrorVariant) -> Self {
-        let mut x = MdxParsingResult::default();
-        x.success = false;
-        x.error = Some(error);
-        x
-    }
-
     pub fn contains_tag(&self, tag_body: &str) -> bool {
         self.tags.iter().any(|x| x.body == tag_body)
     }
@@ -100,8 +85,6 @@ impl MdxParsingResult {
                                None => None,
                            },
                            ignore_all_parsers: false,
-                           ai_secondary_parse_requests: Vec::new(),
-                           success: true,
-                           error: None }
+                           ai_secondary_parse_requests: Vec::new() }
     }
 }

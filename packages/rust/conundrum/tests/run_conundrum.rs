@@ -18,7 +18,7 @@ async fn runs_conundrum() {
                                  content: test_content,
                                  modifiers: Vec::new() };
 
-    let res = run_conundrum(opts).await;
+    let res = run_conundrum(opts).await.expect("Returns a valid result when vald input was provided.");
 
     print!("{}", res.content);
     assert!(!&res.content.is_empty(), "Conundrum response is not empty.");
@@ -54,13 +54,14 @@ async fn conundrum_parses_documentation_requests() {
                                            content: short_test_content,
                                            modifiers: Vec::new() };
 
-        let short_res = run_conundrum(short_opts).await;
+        let short_res =
+            run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
 
         let full_opts = ParseMdxOptions { note_id: None,
                                           content: full_test_content,
                                           modifiers: Vec::new() };
 
-        let full_res = run_conundrum(full_opts).await;
+        let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
 
         assert!(short_res.content
                          .contains(&format!("<InContentDocumentationContainer componentName=\"{}\" format=\"short\">",
@@ -83,13 +84,14 @@ async fn conundrum_parses_documentation_requests() {
                                            content: short_test_content,
                                            modifiers: Vec::new() };
 
-        let short_res = run_conundrum(short_opts).await;
+        let short_res =
+            run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
 
         let full_opts = ParseMdxOptions { note_id: None,
                                           content: full_test_content,
                                           modifiers: Vec::new() };
 
-        let full_res = run_conundrum(full_opts).await;
+        let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
 
         assert!(short_res.content
                          .contains(&format!("<InContentDocumentationContainer inContentId=\"{}\" format=\"short\">",

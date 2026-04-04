@@ -66,6 +66,10 @@ export enum Emphasis {
 	Card = "card",
 }
 
+export interface ConundrumBoolean {
+	value: boolean;
+}
+
 export interface Admonition {
 	title: Children;
 	children: Children;
@@ -83,6 +87,14 @@ export interface Admonition {
 	 */
 	markdown_title_depth?: HeadingDepth;
 	emphasis: Emphasis;
+	/** Set to true to make the admonition foldable. Default: `false` */
+	foldable?: ConundrumBoolean;
+	/**
+	 * If the admonition is `foldable`, `folded` can make the admonition folded
+	 * by default. If the `foldable` property is false, this property does
+	 * nothing.
+	 */
+	folded?: ConundrumBoolean;
 }
 
 export interface ParsedCodeBlock {
@@ -141,10 +153,6 @@ export interface CitationResult {
 export interface CitationSummaryData {
 	citation_key: string;
 	body: string;
-}
-
-export interface ConundrumBoolean {
-	value: boolean;
 }
 
 export interface ConundrumCommentResult {
@@ -578,6 +586,17 @@ export interface Underline {
 	markdown?: InlineMarkdownOverride;
 }
 
+/**
+ * > Note that the `label` property can also be changed from it's default
+ * > 'Hint' to any string.
+ * The `Container` component is an intentionally almost entirely unstyled
+ * component that accepts most of the _generic_ properties accepted elsewhere.
+ * This means that it takes an optional `Emphasis` as a boolean, and all of the
+ * `SizableObject` properties like `width`, `margin`, `padding`, `text` for
+ * font size and a handful of positionable props. The goal with the `Container`
+ * component is to provide a blank canvas to allow you to create some
+ * responsive & informative layouts that fit your own use case.
+ */
 export interface UtilityContainer {
 	sizable: SizablePropsGroup;
 	emphasis?: Emphasis;

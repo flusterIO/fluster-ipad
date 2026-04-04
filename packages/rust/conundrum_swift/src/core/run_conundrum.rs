@@ -9,7 +9,7 @@ use tokio::task::spawn;
 pub async fn run_conundrum(options: ParseMdxOptions) -> FlusterResult<MdxParsingResult> {
     let x = spawn(async move { run_conundrum_swift(options).await }).await;
     x.map_err(|x| {
-         println!("Error: {:#?}", x);
+         println!("Threading Error: {:#?}", x);
          FlusterError::ConundrumParsingError
      })
 }
