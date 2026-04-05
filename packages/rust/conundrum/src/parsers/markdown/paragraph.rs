@@ -10,7 +10,7 @@ use crate::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
-                conundrum_error_variant::ConundrumResult,
+                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
@@ -57,7 +57,7 @@ impl MdxComponentResult for MarkdownParagraphResult {
 }
 
 impl MarkdownParagraphResult {
-    fn parse_input_string<'a>(input: &'a mut ConundrumInput<'a>) -> ConundrumResult<MarkdownParagraphResult> {
+    fn parse_input_string<'a>(input: &'a mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownParagraphResult> {
         let res = alt((take_until(1.., "```"), take_until(1.., "\n\n"))).parse_next(input)?;
         let state = input.state.borrow_mut();
         let mut new_input: Stateful<&str, RefCell<ParseState>> = get_conundrum_input(res, state.modifiers.clone());

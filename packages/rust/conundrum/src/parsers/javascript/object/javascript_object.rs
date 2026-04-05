@@ -9,7 +9,10 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            state::{conundrum_error_variant::ConundrumResult, parse_state::ParseState},
+            state::{
+                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+                parse_state::ParseState,
+            },
             traits::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
                 jsx_component_result::JsxComponentResult, mdx_component_result::MdxComponentResult,
@@ -42,7 +45,7 @@ impl JavascriptObjectResult {
 }
 
 impl JavascriptParser<JavascriptObjectResult> for JavascriptObjectResult {
-    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectResult> {
+    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptObjectResult> {
         let entries: Vec<JavascriptObjectKeyValuePair> =
             delimited('{',
                       separated(0.., white_space_delimited(JavascriptObjectKeyValuePair::parse_javascript), ','),

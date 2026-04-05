@@ -4,7 +4,7 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            state::conundrum_error_variant::ConundrumResult,
+            state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
             traits::conundrum_input::{ConundrumInput, get_conundrum_input},
         },
     },
@@ -24,7 +24,7 @@ use crate::{
 pub struct JsxNumberPropertyResult {}
 
 impl JsxPropertyParser for JsxNumberPropertyResult {
-    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
+    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptObjectKeyValuePair> {
         let start = input.input.checkpoint();
         let (key, bracketed_content) = jsx_curly_bracket_wrapped_property.parse_next(input)
                                                                          .inspect_err(|_| {

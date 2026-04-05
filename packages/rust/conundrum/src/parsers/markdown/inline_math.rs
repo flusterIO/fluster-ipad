@@ -5,7 +5,7 @@ use winnow::{Parser, combinator::delimited, token::take_till};
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumResult,
+            conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -49,12 +49,12 @@ impl MarkdownComponentResult for InlineMathResult {
 
 impl MdxComponentResult for InlineMathResult {
     fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("<span className=\"conundrum-math conundrum-math-inline\">{}</span>", self.body)
+        format!("<span className=\"conundrum-math conundrum-math-inline\">${}$</span>", self.body)
     }
 }
 
 impl ConundrumParser<InlineMathResult> for InlineMathResult {
-    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumResult<InlineMathResult> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<InlineMathResult> {
         let body = delimited('$', take_till(1.., |c: char| c == '$'), '$').parse_next(input)?;
         Ok(InlineMathResult { body: body.to_string() })
     }

@@ -5,7 +5,7 @@ use winnow::{Parser, combinator::delimited, token::take_while};
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumResult,
+            conundrum_error_variant::ConundrumModalResult,
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -52,7 +52,7 @@ impl MdxComponentResult for MarkdownLinkResult {
 }
 
 impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<MarkdownLinkResult> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownLinkResult> {
         let (text, url) =
             (delimited('[', take_while(1.., |c| c != ']' && c != '\n'), ']'),
              delimited('(', take_while(5.., |c| c != ')' && c != '\n' && c != ' ' && c != '\t'), ')'))

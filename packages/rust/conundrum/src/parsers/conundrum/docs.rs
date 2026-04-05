@@ -17,7 +17,7 @@ use crate::{
     },
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumResult,
+            conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -93,7 +93,7 @@ impl MdxComponentResult for ParsedInspectionRequest {
 }
 
 impl ConundrumParser<ParsedInspectionRequest> for ParsedInspectionRequest {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<ParsedInspectionRequest> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<ParsedInspectionRequest> {
         let start = input.input.checkpoint();
         let ((keyword, marks), full_match) =
             (|input: &mut ConundrumInput<'a>| {

@@ -8,7 +8,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumResult,
+            conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -52,12 +52,12 @@ impl MarkdownComponentResult for BlockMathResult {
 
 impl MdxComponentResult for BlockMathResult {
     fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("<div className=\"conundrum-math conundrum-math-block\">\n{}\n</div>", self.body)
+        format!("<div className=\"conundrum-math conundrum-math-block\">\n$${}$$\n</div>", self.body)
     }
 }
 
 impl ConundrumParser<BlockMathResult> for BlockMathResult {
-    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumResult<BlockMathResult> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<BlockMathResult> {
         let body = delimited(literal("$$"), take_until(1.., "$$"), literal("$$")).parse_next(input)?;
         Ok(BlockMathResult { body: body.to_string() })
     }

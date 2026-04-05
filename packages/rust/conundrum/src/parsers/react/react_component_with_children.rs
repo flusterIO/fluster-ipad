@@ -3,9 +3,10 @@ use std::{cell::RefCell, str::FromStr};
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
-    Parser, Stateful,
+    ModalResult, Parser, Stateful,
     ascii::alphanumeric1,
     combinator::{delimited, repeat},
+    error::ErrMode,
     stream::{AsChar, Stream},
     token::{literal, take_until, take_while},
 };
@@ -15,7 +16,7 @@ use crate::{
         parse_conundrum_string::parse_elements,
         state::{
             conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
             parse_state::ParseState,
         },
         traits::{
@@ -63,7 +64,7 @@ impl MdxComponentResult for ReactComponentWithChildrenResult {
     }
 }
 
-fn react_closing_tag_parser_by_name(component_name: &str) -> impl Fn(&mut ConundrumInput) -> ConundrumResult<()> {
+fn react_closing_tag_parser_by_name(component_name: &str) -> impl Fn(&mut ConundrumInput) -> ConundrumModalResult<()> {
     move |input| {
         let _ = delimited(literal("</"),
                           (take_while(0.., is_space_or_newline),
@@ -75,7 +76,7 @@ fn react_closing_tag_parser_by_name(component_name: &str) -> impl Fn(&mut Conund
 }
 
 fn parse_react_component_with_children(input: &mut ConundrumInput)
-                                       -> ConundrumResult<ReactComponentWithChildrenResult> {
+                                       -> ConundrumModalResult<ReactComponentWithChildrenResult> {
     let start = input.input.checkpoint();
 
     '<'.void().parse_next(input).inspect_err(|e| {
@@ -96,12 +97,13 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                                       })?;
 
     let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
-    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).inspect_err(|e| {
+    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).map_err(|e| {
                                                                                               input.input.reset(&start);
+                                                                                              ErrMode::Backtrack(e)
                                                                                           })?;
 
     let props_kv_pairs: Vec<JavascriptObjectKeyValuePair> =
-        repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
+        repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|e| {
                                                                                    input.input.reset(&start);
                                                                                })?;
 
@@ -126,7 +128,10 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
         get_conundrum_input(children_string, state.modifiers.clone());
     let children = parse_elements(&mut new_input)?;
 
-    let component_getter_kv = COMPONENT_MAP.get(&component_name.to_component_id()).ok_or_else( || ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Failed to find component", format!("You provided a component name of {} but that component is not supported by Conundrum.", component_name.clone()).as_str())))?;
+    let component_getter_kv = COMPONENT_MAP.get(&component_name.to_component_id()).ok_or_else( || {
+            let e = ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Failed to find component", format!("You provided a component name of {} but that component is not supported by Conundrum.", component_name.clone()).as_str()));
+            ErrMode::Cut(e)
+    })?;
 
     let getter = component_getter_kv.value();
 
@@ -139,7 +144,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
 
 impl ConundrumParser<ReactComponentWithChildrenResult> for ReactComponentWithChildrenResult {
     fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
-                          -> ConundrumResult<ReactComponentWithChildrenResult> {
+                          -> ConundrumModalResult<ReactComponentWithChildrenResult> {
         let (mut res, taken) = parse_react_component_with_children.with_taken().parse_next(input)?;
         res.full_text = taken.to_string();
         Ok(res)

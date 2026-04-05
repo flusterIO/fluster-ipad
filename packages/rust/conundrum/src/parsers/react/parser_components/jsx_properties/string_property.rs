@@ -7,7 +7,7 @@ use crate::{
         lib::ui::ui_types::children::Children,
         runtime::{
             parse_conundrum_string::parse_elements,
-            state::conundrum_error_variant::ConundrumResult,
+            state::conundrum_error_variant::ConundrumModalResult,
             traits::conundrum_input::{ConundrumInput, get_conundrum_input},
         },
     },
@@ -28,7 +28,8 @@ use crate::{
 #[derive(Debug, Serialize, Default, Clone)]
 pub struct JsxStringPropertyResult {}
 
-fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
+fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
+                                          -> ConundrumModalResult<JavascriptObjectKeyValuePair> {
     let start = input.input.checkpoint();
     let (key, wrapped_content) = jsx_curly_bracket_wrapped_property.parse_next(input).inspect_err(|_| {
                                                                                           input.input.reset(&start);
@@ -51,7 +52,7 @@ fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput) -> Conundr
 }
 
 fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
-                                              -> ConundrumResult<JavascriptObjectKeyValuePair> {
+                                              -> ConundrumModalResult<JavascriptObjectKeyValuePair> {
     let start = input.input.checkpoint();
     let key = jsx_property_key.parse_next(input).inspect_err(|_| {
                                                      input.input.reset(&start);
@@ -78,7 +79,7 @@ fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
 }
 
 impl JsxPropertyParser for JsxStringPropertyResult {
-    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
+    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptObjectKeyValuePair> {
         alt((curly_bracket_wrapped_jsx_string_value, not_curly_bracket_wrapped_jsx_string_value)).parse_next(input)
     }
 }

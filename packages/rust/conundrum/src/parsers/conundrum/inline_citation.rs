@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     combinator::delimited,
     token::{literal, take_until},
 };
@@ -9,7 +9,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumResult,
+            conundrum_error_variant::ConundrumModalResult,
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -64,7 +64,7 @@ impl MdxComponentResult for ParsedCitation {
 }
 
 impl ConundrumParser<ParsedCitation> for ParsedCitation {
-    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumResult<ParsedCitation> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<ParsedCitation> {
         let (key, full_match) =
             delimited(literal("[[cite:"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
 

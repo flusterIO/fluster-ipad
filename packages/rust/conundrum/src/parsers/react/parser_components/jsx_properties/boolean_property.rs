@@ -2,7 +2,7 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            state::conundrum_error_variant::ConundrumResult,
+            state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
             traits::conundrum_input::{ConundrumInput, get_conundrum_input},
         },
     },
@@ -24,7 +24,7 @@ use winnow::{Parser, stream::Stream};
 #[derive(Debug, Serialize)]
 pub struct JsxBooleanPropertyResult {}
 
-pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
+pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptObjectKeyValuePair> {
     let start = input.input.checkpoint();
     let (key, wrapped_content) = jsx_curly_bracket_wrapped_property.parse_next(input).inspect_err(|_| {
                                                                                           input.input.reset(&start);
@@ -39,7 +39,7 @@ pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ConundrumResul
 }
 
 impl JsxPropertyParser for JsxBooleanPropertyResult {
-    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
+    fn parse_jsx_property(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptObjectKeyValuePair> {
         alt((parse_full_boolean_property,
                        jsx_property_key.map(|key| JavascriptObjectKeyValuePair { key,
                                                                                  value: Box::new(

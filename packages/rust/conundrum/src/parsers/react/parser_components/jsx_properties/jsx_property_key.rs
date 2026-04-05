@@ -5,9 +5,11 @@ use winnow::{
     token::take_while,
 };
 
-use crate::lang::runtime::{state::conundrum_error_variant::ConundrumResult, traits::conundrum_input::ConundrumInput};
+use crate::lang::runtime::{
+    state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput,
+};
 
-pub fn jsx_property_key(input: &mut ConundrumInput) -> ConundrumResult<String> {
+pub fn jsx_property_key(input: &mut ConundrumInput) -> ConundrumModalResult<String> {
     let start = input.input.checkpoint();
     let first_char = take_while(1, AsChar::is_alpha).parse_next(input).inspect_err(|_| {
                                                                            input.input.reset(&start);

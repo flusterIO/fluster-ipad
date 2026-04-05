@@ -7,11 +7,10 @@ use winnow::{
 };
 
 use crate::lang::runtime::apply_parsed_conundrum_result::apply_parsed_conundrum_input_state;
-use crate::lang::runtime::state::conundrum_error::ConundrumError;
-use crate::lang::runtime::state::conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult};
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
+use crate::parsers::conundrum::comment::ConundrumCommentResult;
 use crate::parsers::conundrum::docs::ParsedInspectionRequest;
-use crate::parsers::conundrum::fluster_comment::ConundrumCommentResult;
 use crate::parsers::conundrum::hr_with_children::HrWithChildrenResult;
 use crate::parsers::markdown::block_math::BlockMathResult;
 use crate::parsers::markdown::block_quote::BlockQuoteResult;
@@ -35,9 +34,9 @@ use crate::{
 /// Core recursive parser.  Returns a `ModalResult` so it can be called from
 /// inside other winnow parsers (e.g. `BlockQuoteResult::parse_input_string`)
 /// without a type-mismatch.
-pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<Vec<ParsedElement>> {
+pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<Vec<ParsedElement>> {
     let mut at_line_start: bool = true;
-    repeat(0.., |input_inner: &mut ConundrumInput<'a>| -> ConundrumResult<ParsedElement> {
+    repeat(0.., |input_inner: &mut ConundrumInput<'a>| -> ConundrumModalResult<ParsedElement> {
         let result =
             dispatch! {peek(take(1usize));
                 "-" => |x: &mut ConundrumInput<'a>| {
@@ -95,18 +94,11 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<Vec
                     }
                 },
                 "$" => |x: &mut ConundrumInput<'a>| {
-                        if at_line_start  {
                             alt((
                                 BlockMathResult::parse_input_string.map(ParsedElement::BlockMath),
                                 InlineMathResult::parse_input_string.map(ParsedElement::InlineMath),
                                 any.map(|c: char| ParsedElement::Text(c.to_string()))
                             )).parse_next(x)
-                        } else {
-                            alt((
-                                InlineMathResult::parse_input_string.map(ParsedElement::InlineMath),
-                                any.map(|c: char| ParsedElement::Text(c.to_string()))
-                            )).parse_next(x)
-                        }
                 },
                 ":" => |x: &mut ConundrumInput<'a>| {
                             alt((
@@ -152,6 +144,12 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<Vec
 
         at_line_start = match &result {
             ParsedElement::Text(s) => s == "\n" || s == "\r\n",
+            ParsedElement::ReactComponentWithChildren(c) => {
+                c.component.component_is_new_line()
+            },
+            ParsedElement::ReactComponentSelfClosing(c) => {
+                c.component.component_is_new_line()
+            },
             ParsedElement::Heading(_)
             | ParsedElement::BlockQuote(_)
             | ParsedElement::BlockMath(_)
@@ -170,12 +168,8 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<Vec
 /// Application-level entry point.  Parses the entire input and converts any
 /// winnow error into a `FlusterError` for the rest of the app.
 pub fn parse_conundrum_string<'a>(input: &'a mut ConundrumInput<'a>)
-                                  -> ConundrumResult<(Vec<ParsedElement>, &'a mut ConundrumInput<'a>)> {
-    let elements = parse_elements(input).map_err(|e| {
-                                            println!("Conundrum Error: {:#?}", e);
-                                            ConundrumErrorVariant::UserFacingGeneralParserError(ConundrumError::from_message("Something went wrong while parsing this document. I'm working on a much, _much_ improved error experience.")
-                                                )
-                                        })?;
+                                  -> ConundrumModalResult<(Vec<ParsedElement>, &'a mut ConundrumInput<'a>)> {
+    let elements = parse_elements(input)?;
     apply_parsed_conundrum_input_state(input);
     Ok((elements, input))
 }

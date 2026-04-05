@@ -5,7 +5,7 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            state::conundrum_error_variant::ConundrumResult,
+            state::conundrum_error_variant::ConundrumModalResult,
             traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
         },
     },
@@ -28,7 +28,7 @@ pub struct JavascriptObjectKeyValuePair {
 }
 
 impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValuePair {
-    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumResult<JavascriptObjectKeyValuePair> {
+    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptObjectKeyValuePair> {
         let start = input.input.checkpoint();
         let key = javascript_object_key.parse_next(input).inspect_err(|_| {
                                                               input.input.reset(&start);

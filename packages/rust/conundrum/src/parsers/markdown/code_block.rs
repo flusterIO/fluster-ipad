@@ -11,7 +11,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumResult,
+            conundrum_error_variant::ConundrumModalResult,
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -75,7 +75,7 @@ impl MdxComponentResult for ParsedCodeBlock {
 }
 
 impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<ParsedCodeBlock> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<ParsedCodeBlock> {
         let ((language, meta_opt, raw_content), full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let cp = input.input.checkpoint();

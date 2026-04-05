@@ -6,6 +6,7 @@ use winnow::{
     Parser,
     ascii::alphanumeric1,
     combinator::repeat,
+    error::ErrMode,
     stream::{AsChar, Stream},
     token::{literal, take_while},
 };
@@ -14,7 +15,7 @@ use crate::{
     lang::runtime::{
         state::{
             conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -83,7 +84,8 @@ impl ConundrumComponentResult for ReactComponentSelfClosingResult {
     }
 }
 
-fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ConundrumResult<ReactComponentSelfClosingResult> {
+fn parse_self_closing_react_component(input: &mut ConundrumInput)
+                                      -> ConundrumModalResult<ReactComponentSelfClosingResult> {
     let start = input.input.checkpoint();
 
     let _ = '<'.parse_next(input).inspect_err(|_| {
@@ -107,8 +109,15 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ConundrumRe
     // RESUME: Pick back up here by handling the passing of th unique errors back to
     // the user. Currently only the top leve, 'woops we fucked up' error is
     // being returned.
-    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).inspect_err(|e| {
+    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).map_err(|e| {
                                                                                               input.input.reset(&start);
+                                                                                              // Could
+                                                                                              // just
+                                                                                              // be
+                                                                                              // an
+                                                                                              // html
+                                                                                              // tag
+                                                                                              ErrMode::Backtrack(e)
                                                                                           })?;
     let props_kv: Vec<JavascriptObjectKeyValuePair> =
         repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
@@ -117,7 +126,10 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ConundrumRe
 
     let props = ConundrumObject::from_kv_pair_vec(props_kv);
 
-    let component_getter_kv = COMPONENT_MAP.get(&component_name.to_component_id()).ok_or_else( || ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Failed to find component", format!("You provided a component name of {} but that component is not supported by Conundrum.", component_name.clone()).as_str())))?;
+    let component_getter_kv = COMPONENT_MAP.get(&component_name.to_component_id()).ok_or_else( || {
+            let e = ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Failed to find component", format!("You provided a component name of {} but that component is not supported by Conundrum.", component_name.clone()).as_str()));
+            ErrMode::Cut(e)
+    })?;
 
     let component_getter = component_getter_kv.value();
 
@@ -132,7 +144,7 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput) -> ConundrumRe
 
 impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClosingResult {
     fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
-                          -> ConundrumResult<ReactComponentSelfClosingResult> {
+                          -> ConundrumModalResult<ReactComponentSelfClosingResult> {
         let (mut res, taken) = parse_self_closing_react_component.with_taken().parse_next(input)?;
         res.full_text = taken.to_string();
         Ok(res)

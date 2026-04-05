@@ -5,9 +5,14 @@ use winnow::{
     token::take_while,
 };
 
-use crate::lang::runtime::{state::conundrum_error_variant::ConundrumResult, traits::conundrum_input::ConundrumInput};
+use crate::lang::runtime::{
+    state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+    traits::conundrum_input::ConundrumInput,
+};
 
-pub fn parse_close_of_opening_tag(input: &mut ConundrumInput) -> ConundrumResult<()> {
+/// What the fuck was I doing here? Come back and clean this up when the error
+/// type has been moved over.
+pub fn parse_close_of_opening_tag(input: &mut ConundrumInput) -> ConundrumModalResult<()> {
     let mut in_quotes = false;
     let mut in_object = false;
     // Iterate over the characters one by one here, handling the opening and closing
@@ -15,7 +20,7 @@ pub fn parse_close_of_opening_tag(input: &mut ConundrumInput) -> ConundrumResult
     Ok(())
 }
 
-pub fn react_component_opening_tag(input: &mut ConundrumInput) -> ConundrumResult<()> {
+pub fn react_component_opening_tag(input: &mut ConundrumInput) -> ConundrumModalResult<()> {
     let start = input.input.checkpoint();
 
     let _ = '<'.parse_next(input).inspect_err(|_| {

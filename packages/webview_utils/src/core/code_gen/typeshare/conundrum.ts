@@ -546,7 +546,9 @@ export type ConundrumComponentType =
 	| { tag: "Admonition", content: Admonition }
 	| { tag: "Hint", content: Hint }
 	| { tag: "Ul", content: Underline }
-	| { tag: "Hl", content: Highlight };
+	| { tag: "Hl", content: Highlight }
+	| { tag: "Tabs", content: TabsGroup }
+	| { tag: "Tab", content: Tab };
 
 export interface ReactComponentSelfClosingResult {
 	full_text: string;
@@ -556,6 +558,59 @@ export interface ReactComponentSelfClosingResult {
 export interface ReactComponentWithChildrenResult {
 	full_text: string;
 	component: ConundrumComponentType;
+}
+
+export interface Tab {
+	/** The label of the button that toggles this tab. */
+	label: ConundrumString;
+	/**
+	 * This is only required if the `label` field occurs more than once in the
+	 * same `Tabs` component. Each `Tab` must have a unique `id` field, it's
+	 * just set to the label by default.
+	 */
+	id?: ConundrumString;
+	children: Children;
+}
+
+/**
+ * Group and organize your notes by swappable tabs. Pretty self explanatory
+ * honestly...
+ * 
+ * ### Usage
+ * > I know it's called `TabsGroup` below, but in Conundrum it's actually
+ * > implemented as `Tabs`.
+ * 
+ * ```jsx
+ * <Tabs>
+ * <Tab label="My label">
+ * My tab content one
+ * </Tab>
+ * <Tab label="My label 2">
+ * My tab content two
+ * </Tab>
+ * <Tab label="My label"
+ * // This id is required because the
+ * // label appears more than once!
+ * id="myUniqueId">
+ * My tab content three
+ * </Tab>
+ * </Tabs>
+ * ```
+ */
+export interface TabsGroup {
+	/** The styles applied to the active tab. Default: `.card` */
+	emphasis?: Emphasis;
+	/**
+	 * The `Tabs` component extends the `SizablePropsGroup` struct, but be
+	 * careful... you're getting into the struggles of a developer now as
+	 * these responsive containers can be difficult to make look good on
+	 * all screen sizes. You'll get the hang of it, but be sure not to be too
+	 * ambitious and implement a look that _barely_ fits, because it almost
+	 * surely **won't** fit when you rotate the device or open another
+	 * window.
+	 */
+	sizable?: SizablePropsGroup;
+	children: Children;
 }
 
 export interface TitleGroup {

@@ -2,7 +2,7 @@ use serde::Serialize;
 use winnow::Parser;
 use winnow::combinator::alt;
 
-use crate::lang::runtime::state::conundrum_error_variant::ConundrumResult;
+use crate::lang::runtime::state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult};
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::lang::runtime::traits::jsx_component_result::JsxComponentResult;
 use crate::{
@@ -24,7 +24,7 @@ pub struct JavascriptFunction {
 }
 
 impl JavascriptParser<JavascriptFunction> for JavascriptFunction {
-    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumResult<JavascriptFunction> {
+    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptFunction> {
         alt((javascript_function, javascript_arrow_function)).parse_next(input)
     }
 }

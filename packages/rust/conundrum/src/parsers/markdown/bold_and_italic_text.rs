@@ -9,7 +9,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumResult,
+            conundrum_error_variant::ConundrumModalResult,
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -60,7 +60,7 @@ impl ConundrumComponentResult for MarkdownBoldAndItalicTextResult {
 }
 
 impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicTextResult {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<MarkdownBoldAndItalicTextResult> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownBoldAndItalicTextResult> {
         let cp = input.input.checkpoint();
         let first_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
                                                                                   input.input.reset(&cp);

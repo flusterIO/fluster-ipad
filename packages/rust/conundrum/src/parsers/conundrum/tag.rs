@@ -11,7 +11,7 @@ use crate::{
         lib::ui::ui_types::inline_markdown_override::InlineMarkdownOverride,
         runtime::{
             state::{
-                conundrum_error_variant::ConundrumResult,
+                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
@@ -99,7 +99,7 @@ impl MdxComponentResult for ParsedTag {
 }
 
 impl ConundrumParser<ParsedTag> for ParsedTag {
-    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumResult<ParsedTag> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<ParsedTag> {
         let (body, full_match) =
             delimited(literal("[[#"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
 

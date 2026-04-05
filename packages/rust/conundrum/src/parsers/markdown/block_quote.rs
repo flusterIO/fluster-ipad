@@ -16,7 +16,7 @@ use crate::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
-                conundrum_error_variant::ConundrumResult,
+                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
@@ -84,7 +84,7 @@ impl MdxComponentResult for BlockQuoteResult {
 ///
 /// Grammar (GFM spec §5.1):
 ///   0-3-spaces  `>`  optional-space  rest-of-line  line-ending-or-eof
-fn parse_bq_line(input: &mut ConundrumInput) -> ConundrumResult<String> {
+fn parse_bq_line(input: &mut ConundrumInput) -> ConundrumModalResult<String> {
     let _ = take_while(0..=3, |c: char| c == ' ').parse_next(input)?;
     let _ = literal(">").parse_next(input)?;
     let _ = space0.parse_next(input)?;
@@ -98,7 +98,7 @@ fn parse_bq_line(input: &mut ConundrumInput) -> ConundrumResult<String> {
 // ---------------------------------------------------------------------------
 
 impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
-    fn parse_input_string<'a>(input_outer: &mut ConundrumInput<'a>) -> ConundrumResult<BlockQuoteResult> {
+    fn parse_input_string<'a>(input_outer: &mut ConundrumInput<'a>) -> ConundrumModalResult<BlockQuoteResult> {
         let (parsed_content, full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let start = input.input.checkpoint();

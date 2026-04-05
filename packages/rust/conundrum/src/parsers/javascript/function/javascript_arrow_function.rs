@@ -6,7 +6,10 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::{state::conundrum_error_variant::ConundrumResult, traits::conundrum_input::ConundrumInput},
+    lang::runtime::{
+        state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+        traits::conundrum_input::ConundrumInput,
+    },
     parsers::{
         javascript::{
             function::{
@@ -18,7 +21,7 @@ use crate::{
     },
 };
 
-pub fn javascript_arrow_function(input: &mut ConundrumInput) -> ConundrumResult<JavascriptFunction> {
+pub fn javascript_arrow_function(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptFunction> {
     white_space_delimited(|input_inner| {
         let start = input_inner.input.checkpoint();
         let _ = '('.parse_next(input_inner).inspect_err(|_| {

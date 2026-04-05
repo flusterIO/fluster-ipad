@@ -15,7 +15,7 @@ use crate::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
-                conundrum_error_variant::ConundrumResult,
+                conundrum_error_variant::ConundrumModalResult,
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
@@ -128,7 +128,7 @@ impl MdxComponentResult for MarkdownHeadingResult {
     }
 }
 
-pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumResult<Vec<ParsedElement>> {
+pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumModalResult<Vec<ParsedElement>> {
     let start = input.input.checkpoint();
     '\n'.parse_next(input).inspect_err(|_| {
                                input.input.reset(&start);
@@ -152,7 +152,7 @@ pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumResult<Vec<
 }
 
 impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumResult<MarkdownHeadingResult> {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownHeadingResult> {
         let start = input.input.checkpoint();
         let level: Vec<char> = repeat(1..=6, '#').parse_next(input).inspect_err(|_| {
                                                                         input.input.reset(&start);

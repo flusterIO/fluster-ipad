@@ -9,14 +9,14 @@ use crate::{
         parse_conundrum_string::parse_conundrum_string,
         state::{
             citation_list::CitationList,
-            conundrum_error_variant::ConundrumResult,
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
             parse_state::{ConundrumModifier, ParseState},
         },
     },
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
     parsers::markdown::heading_sluggger::Slugger,
 };
-use winnow::Stateful;
+use winnow::{Stateful, error::ErrMode};
 
 #[typeshare]
 #[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone)]
@@ -51,4 +51,5 @@ pub async fn run_conundrum(opts: ParseMdxOptions) -> ConundrumResult<MdxParsingR
                                                    x.data.content = compiled;
                                                    x.data.clone()
                                                })
+                                               .map_err(ConundrumErrorVariant::from)
 }

@@ -12,8 +12,8 @@ use crate::{
     },
     parsers::{
         conundrum::{
+            comment::ConundrumCommentResult,
             docs::ParsedInspectionRequest,
-            fluster_comment::ConundrumCommentResult,
             hr_with_children::HrWithChildrenResult,
             inline_citation::ParsedCitation,
             logic::{

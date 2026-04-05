@@ -2,7 +2,7 @@ use serde::Serialize;
 use winnow::ascii::{dec_int, float};
 use winnow::{Parser, combinator::alt};
 
-use crate::lang::runtime::state::conundrum_error_variant::ConundrumResult;
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::state::parse_state::ParseState;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
@@ -34,18 +34,18 @@ impl PartialEq<f64> for JavascriptNumberResult {
     }
 }
 
-pub fn javascript_int(input: &mut ConundrumInput) -> ConundrumResult<JavascriptNumberResult> {
+pub fn javascript_int(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptNumberResult> {
     let n: i128 = dec_int.parse_next(input)?;
     Ok(JavascriptNumberResult { value: ConundrumNumber::Int(n) })
 }
 
-pub fn javascript_float(input: &mut ConundrumInput) -> ConundrumResult<JavascriptNumberResult> {
+pub fn javascript_float(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptNumberResult> {
     let x: f64 = float.parse_next(input)?;
     Ok(JavascriptNumberResult { value: ConundrumNumber::Float(x) })
 }
 
 impl JavascriptParser<JavascriptNumberResult> for JavascriptNumberResult {
-    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumResult<JavascriptNumberResult> {
+    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptNumberResult> {
         alt((javascript_float, javascript_int)).parse_next(input)
     }
 }
