@@ -21,6 +21,8 @@ import { AutoInsertedComponentName } from "../../../core/code_gen/typeshare/conu
 import { hrComponentNames } from "../embeddable_mdx_components/hr/hr_component_config";
 import { embeddableHintComponentNames } from "../embeddable_mdx_components/hint/hint_component_config";
 import { FoundationModelAvailabilityWrapper } from "../../ai/presentation/foundation_model_availability_wrapper";
+import { embeddableTabComponentNames } from "../embeddable_mdx_components/tabs/embeddable_tab_config";
+import { tabGroupComponentNames } from "../embeddable_mdx_components/tabs/tab_group_component_config";
 
 enum ComponentItemType {
     userInserted,
@@ -158,6 +160,20 @@ const items: ComponentMapItem[] = [
         componentType: ComponentItemType.userInserted,
         importComponent: async () => {
             return import("../embeddable_mdx_components/grid/embeddable_responsive_grid").then((a) => a.EmbeddableResponsiveGrid)
+        }
+    },
+    {
+        query: tabGroupComponentNames,
+        componentType: ComponentItemType.userInserted,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/tabs/tab_group").then((a) => a.WrappedEmbeddableTabGroup)
+        }
+    },
+    {
+        query: embeddableTabComponentNames,
+        componentType: ComponentItemType.userInserted,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/tabs/tab_group_tab").then((a) => a.EmbeddableTab)
         }
     },
     /* // -- Text -- */

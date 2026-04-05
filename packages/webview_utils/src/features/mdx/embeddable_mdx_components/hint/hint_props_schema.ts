@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { emphasisForegroundTransform, emphasisSchema } from "../schemas/emphasis_schema";
+import { Emphasis, emphasisForegroundTransform, emphasisSchema } from "../schemas/emphasis_schema";
 import { childrenSchema } from "../schemas/children_schema";
 import { getSizableObjectClasses, sizableObjectSchema } from "../schemas/sizable_object_schema";
 
@@ -12,7 +12,7 @@ export const embeddableHintComponentPropsSchema = emphasisSchema
         return {
             ...c,
             containerClasses: getSizableObjectClasses(c),
-            textGroup: emphasisForegroundTransform("success")(c)
+            textGroup: emphasisForegroundTransform(Emphasis.Success)(c)
         }
     })
 

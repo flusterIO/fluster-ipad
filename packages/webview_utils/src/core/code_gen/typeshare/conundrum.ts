@@ -650,6 +650,8 @@ export enum EmbeddableComponentId {
 	UtlityContainer = "util-container",
 	HrWithChildren = "hr-with-children",
 	Hint = "embeddable-hint-component",
+	Tabs = "tab-group",
+	Tab = "tab-group-tab",
 	AINoteSummary = "ai-note-summary",
 }
 
@@ -664,6 +666,8 @@ export enum EmbeddableComponentName {
 	UtlityContainer = "Container",
 	HrWithChildren = "Hr",
 	Hint = "Hint",
+	Tabs = "Tabs",
+	Tab = "Tab",
 	AINoteSummary = "AINoteSummary",
 }
 

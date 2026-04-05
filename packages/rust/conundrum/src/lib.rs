@@ -25,8 +25,14 @@
 //!
 //! Still, take a look at the [component's
 //! documentation](crate::lang::lib::ui::components), as they will have links to
-//! all of the recurring properties like the Sizable struct that you'll use over
+//! all of the recurring properties like the [Sizable
+//! struct](crate::lang::lib::ui::shared_props::sizable) that you'll use over
 //! and over again while writing Conundrum.
+//!
+//! Throughout the documentation, if you see a `Sizable` struct attached to a
+//! component, that means that that component can accept the `Sizable` struct's
+//! properties. Same thing with the `Emphasis` enum ([found
+//! here](crate::lang::lib::ui::ui_types::emphasis)).
 //!
 //! ## Future Plans
 //!
@@ -37,6 +43,12 @@
 //! something similar), but within a year I hope to have a language that is
 //! fully capable of acting as a first-step, exploratory language that is
 //! perfect for the note taking environment.
+//!
+//! I don't want this language to be a toy, but a real tool that _researchers_
+//! from miiddle school to post-doc can reach to as their frst-choice when they
+//! need something extremely easy to write, something expressive, and most
+//! importantly, something capable of handling the varied inputs a
+//! modern academc requires, because we all know markdown's not enough...
 //!
 //! Longer term plans are a little more ambitious. The goal is to create a
 //! high-level API in this parent language, Conundrum, that exposes it's memory

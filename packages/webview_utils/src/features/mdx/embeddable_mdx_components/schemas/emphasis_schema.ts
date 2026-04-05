@@ -1,5 +1,6 @@
 import { type CSSProperties } from "react";
 import { z, type ZodBoolean, type ZodOptional } from "zod";
+import { Emphasis } from "../../../../core/code_gen/typeshare/conundrum";
 
 
 export interface ZodStylesGroup {
@@ -8,15 +9,15 @@ export interface ZodStylesGroup {
 }
 
 export const emphasisOptions = [
-    "info",
-    "error",
-    "warn",
-    "success",
-    "primary",
-    "important",
-    "research",
-    "highlight",
-    "card",
+    Emphasis.Info,
+    Emphasis.Error,
+    Emphasis.Warn,
+    Emphasis.Success,
+    Emphasis.Primary,
+    Emphasis.Important,
+    Emphasis.Research,
+    Emphasis.Highlight,
+    Emphasis.Card,
 ] as const;
 
 export const _emphasisSchema = {
@@ -41,7 +42,9 @@ export const emphasisSchema = z.object(_emphasisSchema, {
 export const getEmphasisOptions = () => emphasisOptions
 
 export type EmphasisSchema = z.infer<typeof emphasisSchema>
-export type Emphasis = typeof emphasisOptions[number]
+export {
+    Emphasis
+}
 
 export type EmphasisTransform = (k: Partial<Record<Emphasis, boolean>>) => string
 export type EmphasisTransformToGroup = (k: Partial<Record<Emphasis, boolean>>) => ZodStylesGroup
@@ -77,23 +80,23 @@ export const emphasisMapTransform = (classMap: Record<Emphasis, string>): Emphas
 
 export const emphasisToBackgroundClasses = (emphasis: Emphasis) => {
     switch (emphasis) {
-        case "info":
+        case Emphasis.Info:
             return "bg-emphasis-info text-emphasis-info-foreground [&>p]:text-emphasis-info-foreground"
-        case "error":
+        case Emphasis.Error:
             return "bg-emphasis-error text-emphasis-error-foreground [&>p]:text-emphasis-error-foreground"
-        case "warn":
+        case Emphasis.Warn:
             return "bg-emphasis-warn text-emphasis-warn-foreground [&>p]:text-emphasis-warn-foreground"
-        case "success":
+        case Emphasis.Success:
             return "bg-emphasis-success text-emphasis-success-foreground [&>p]:text-emphasis-success-foreground"
-        case "important":
+        case Emphasis.Important:
             return "bg-emphasis-important text-emphasis-important-foreground [&>p]:text-emphasis-important-foreground"
-        case "research":
+        case Emphasis.Research:
             return "bg-emphasis-research text-emphasis-research-foreground [&>p]:text-emphasis-research-foreground"
-        case "primary":
+        case Emphasis.Primary:
             return "bg-primary text-primary-foreground [&>p]:text-primary-foreground"
-        case "highlight":
+        case Emphasis.Highlight:
             return "bg-emphasis-highlight text-emphasis-highlight-foreground [&>p]:text-emphasis-highlight-foreground"
-        case "card":
+        case Emphasis.Card:
             return "bg-fd-card text-fd-card-foreground [&>p]:text-fd-card-foreground"
     }
 }
@@ -105,23 +108,23 @@ export const emphasisToBackgroundClasses = (emphasis: Emphasis) => {
  */
 export const emphasisToForegroundClasses = (emphasis: Emphasis) => {
     switch (emphasis) {
-        case "info":
+        case Emphasis.Info:
             return "text-emphasis-info! [&>p]:text-emphasis-info!"
-        case "error":
+        case Emphasis.Error:
             return "text-emphasis-error! [&>p]:text-emphasis-error!"
-        case "warn":
+        case Emphasis.Warn:
             return "text-emphasis-warn! [&>p]:text-emphasis-warn!"
-        case "success":
+        case Emphasis.Success:
             return "text-emphasis-success! [&>p]:text-emphasis-success!"
-        case "important":
+        case Emphasis.Important:
             return "text-emphasis-important! [&>p]:text-emphasis-important!"
-        case "research":
+        case Emphasis.Research:
             return "text-emphasis-research! [&>p]:text-emphasis-research!"
-        case "primary":
+        case Emphasis.Primary:
             return "text-primary! [&>p]:text-primary!"
-        case "highlight":
+        case Emphasis.Highlight:
             return "text-emphasis-highlight! [&>p]:text-emphasis-highlight!"
-        case "card":
+        case Emphasis.Card:
             return "text-fd-card! [&>p]:text-fd-card!"
     }
 }

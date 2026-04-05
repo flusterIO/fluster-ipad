@@ -11,23 +11,23 @@ const AdmonitionVariantIcon = (
     props: AdmonitionVariantIconProps
 ): NonNullable<ReactNode> => {
     switch (props.variant) {
-        case "info":
+        case Emphasis.Info:
             return <Info className={props.className} />;
-        case "warn":
+        case Emphasis.Warn:
             return <TriangleAlertIcon className={props.className} />;
-        case "error":
+        case Emphasis.Error:
             return <Hand className={props.className} />;
-        case "success":
+        case Emphasis.Success:
             return <CircleCheck className={props.className} />;
-        case "primary":
+        case Emphasis.Primary:
             return <Info className={props.className} />;
-        case "important":
+        case Emphasis.Important:
             return <BadgeAlert className={props.className} />
-        case "research":
+        case Emphasis.Research:
             return <Microscope className={props.className} />
-        case "highlight":
+        case Emphasis.Highlight:
             return <BellRing className={props.className} />
-        case "card":
+        case Emphasis.Card:
             return <Info className={props.className} />
     }
 };

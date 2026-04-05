@@ -52,7 +52,7 @@ impl MarkdownComponentResult for BlockMathResult {
 
 impl MdxComponentResult for BlockMathResult {
     fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("<div className=\"conundrum-math conundrum-math-block\">\n$${}$$\n</div>", self.body)
+        format!("<div className=\"conundrum-math conundrum-math-block\">\n{}\n</div>", self.body)
     }
 }
 

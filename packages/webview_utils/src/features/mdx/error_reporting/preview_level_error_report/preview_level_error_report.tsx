@@ -20,6 +20,7 @@ declare global {
 
 
 const getConundrumError = (content: ConundrumErrorVariant): ConundrumError | undefined => {
+    console.log("Conundrum Error: ", content);
     if (typeof content.content === "object" && "msg" in content.content) {
         return content.content
     } else {
@@ -73,10 +74,12 @@ export const PreviewLevelErrorReport = ({ debounceTimeout, showWebviewAction, ad
                 </div>
                 <div className="w-full flex flex-col justify-center items-center @[540px]:inline-block">
                     <div className="font-bold">{error?.msg ?? "Error"}</div>
-                    <div className="text-muted-foreground text-sm text-center">
-                        <InlineMdxContent
-                            mdx={error?.details ?? "Fluster encountered an error while attempting to parse this document. Please double-check your syntax."}
-                        />
+                    <div className="text-muted-foreground text-sm text-center [&_p]:text-muted-foreground [&_p]:text-sm [&_p]:text-center">
+                        {error?.details ? (
+                            <InlineMdxContent
+                                mdx={error.details}
+                            />
+                        ) : "Fluster encountered an error while attempting to parse this document. Please double-check your syntax."}
                     </div>
                 </div>
             </motion.div>

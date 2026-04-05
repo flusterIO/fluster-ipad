@@ -694,6 +694,7 @@ extension AppSchemaV1 {
       self.lastRender = lastRender
     }
   }
+    
   @Model
   public final class BibEntryModel: Identifiable {
     @Attribute(.unique) public var id: String

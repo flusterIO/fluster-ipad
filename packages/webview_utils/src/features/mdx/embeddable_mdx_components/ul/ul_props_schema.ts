@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { emphasisSchema, getFirstEmphasisKey } from "../schemas/emphasis_schema";
+import { Emphasis, emphasisSchema, getFirstEmphasisKey } from "../schemas/emphasis_schema";
 
 export const ulPropsSchema = emphasisSchema.extend({
     thick: z.boolean({ message: "The 'thick' and 'thin' fields are optional booleans." }).optional(),
@@ -11,23 +11,23 @@ export const ulPropsSchema = emphasisSchema.extend({
     }
     const thicknessClass = c.thick ? "decoration-4" : c.thin ? "decoration-1" : "decoration-2"
     switch (firstKey) {
-        case "info":
+        case Emphasis.Info:
             return ["decoration-emphasis-info", thicknessClass]
-        case "error":
+        case Emphasis.Error:
             return ["decoration-emphasis-error", thicknessClass]
-        case "warn":
+        case Emphasis.Warn:
             return ["decoration-emphasis-warn", thicknessClass]
-        case "success":
+        case Emphasis.Success:
             return ["decoration-emphasis-success", thicknessClass]
-        case "important":
+        case Emphasis.Important:
             return ["decoration-emphasis-important", thicknessClass]
-        case "research":
+        case Emphasis.Research:
             return ["decoration-emphasis-research", thicknessClass]
-        case "primary":
+        case Emphasis.Primary:
             return ["decoration-primary", thicknessClass]
-        case "highlight":
+        case Emphasis.Highlight:
             return ["decoration-emphasis-highlight", thicknessClass]
-        case "card":
+        case Emphasis.Card:
             return ["decoration-fd-card", thicknessClass]
     }
 })

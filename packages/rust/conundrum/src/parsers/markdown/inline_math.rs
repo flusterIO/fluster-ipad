@@ -49,7 +49,7 @@ impl MarkdownComponentResult for InlineMathResult {
 
 impl MdxComponentResult for InlineMathResult {
     fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("<span className=\"conundrum-math conundrum-math-inline\">${}$</span>", self.body)
+        format!("<span className=\"conundrum-math conundrum-math-inline\">{}</span>", self.body)
     }
 }
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { defaultWidthTransform, getSizableObjectClasses, sizableObjectSchema } from "../schemas/sizable_object_schema";
 import { reactNodeSchema } from "../schemas/read_node_schema";
 import { classRecordSchema } from "../schemas/class_record_schema";
-import { emphasisSchema, getFirstEmphasisKey } from "../schemas/emphasis_schema";
+import { Emphasis, emphasisSchema, getFirstEmphasisKey } from "../schemas/emphasis_schema";
 import { SizableOption, sizablePropSchema, sizablePropsMapTransform } from "../schemas/sizable_props_schema";
 
 export const admonitionPropsSchema = sizableObjectSchema
@@ -16,7 +16,7 @@ export const admonitionPropsSchema = sizableObjectSchema
     }).transform((c) => {
         return {
             ...c,
-            type: getFirstEmphasisKey(c) ?? "primary",
+            type: getFirstEmphasisKey(c) ?? Emphasis.Primary,
             parsedContainerClasses: getSizableObjectClasses(c)
         }
     })

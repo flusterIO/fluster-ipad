@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { emphasisForegroundTransform, emphasisToForegroundClasses, EmphasisTransformDefaultKey, ZodStylesGroup } from '../emphasis_schema';
+import { Emphasis, emphasisForegroundTransform, emphasisToForegroundClasses, type EmphasisTransformDefaultKey, type ZodStylesGroup } from '../emphasis_schema';
 
 
 
@@ -17,9 +17,9 @@ describe('Returns proper emphasis properties from varied css/class input.', () =
             }
         },
         {
-            input: "important",
+            input: Emphasis.Important,
             expected: {
-                classes: emphasisToForegroundClasses("important"),
+                classes: emphasisToForegroundClasses(Emphasis.Important),
                 css: {}
             }
         }

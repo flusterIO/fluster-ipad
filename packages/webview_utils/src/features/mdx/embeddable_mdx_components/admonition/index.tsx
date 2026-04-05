@@ -6,6 +6,7 @@ import { cn } from "@/utils/cn";
 import { type AdmonitionPropsInput, admonitionPropsSchema } from "./admonition_props_schema";
 import { type WithChildren } from "@/utils/types/utility_types";
 import { type WithInlineMdx } from "#/mdx/components/inline_mdx_content";
+import { type Emphasis } from "../schemas/emphasis_schema";
 
 
 /**

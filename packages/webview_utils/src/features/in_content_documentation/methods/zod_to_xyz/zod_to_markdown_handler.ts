@@ -194,24 +194,11 @@ export class ZodToMarkdownHandler {
                 this.anyZodToMarkdown(itemType._def.innerType, undefined, d); return;
             }
         }
-        if (!itemType?.typeName) {
+        if (!itemType?.typeName && itemType) {
             console.log("Without type: ", itemType)
             throw new Error(`Found a zod value without a vald type`)
         }
 
-        // if (itemType.typeName === "ZodBoolean") {
-        //     return this.logBoolean()
-        // }
-        // if (itemType.typeName === "ZodEnum") {
-        //     return this.logZodEnum(itemType)
-        // }
-
-        // if (itemType.options) {
-        //     return this.logZodUnion(itemType as WeirdZodType & Required<Pick<WeirdZodType, "options">>)
-        // }
-
-        console.warn("itemType reached here: ", itemType)
-        throw new Error("Found a Zod object that was not handled properly.")
     }
     /**
      * For use in development only. This this is likely going to be super unreliable.
