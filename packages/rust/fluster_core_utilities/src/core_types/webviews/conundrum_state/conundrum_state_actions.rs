@@ -7,5 +7,5 @@ use uniffi::Enum;
 pub enum ConundrumStateActions {
     #[serde(rename = "set-conundrum-error")]
     #[strum(to_string = "set-conundrum-error")]
-    SetConundrumError,
+    SetConundrumErrors,
 }

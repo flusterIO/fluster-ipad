@@ -1,4 +1,4 @@
-import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions, type SetWebviewFontSizeAction, type SetAiThinkingAction, type AiAction, type SetFoundationModelAvailabilityAction, type SetNoteSummaryAction, type SetConundrumErrorStateAction, type ConundrumStateActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorStateActions, type SetEditorSaveMethodEditorAction, type SetEditorInitialStateEditorAction, type SetEditorKeymapAction, type WebviewContainerActions, type SetDarkModeAction, type SetAllCitationIdsAction, type SetAutoSaveTimeoutAction, type SetBaseKeymapAction, type SetLockEditorScrollToPreviewAction, type SetSnippetPropsAction, type SetEditorTagsAction, type SetFlusterThemeAction, type SetEditorThemeDarkAction, type SetEditorThemeLightAction, type SetParsedValueAction, type SetEditorContentAction, type SetNoteDeletedAction, type SetEditingBibEntryAction, type NoteDetailActions, type SetNoteDetailsAction, type GlobalWebviewState, type SetDictionaryEntriesAction, type DictionaryStateActions, type SetWebviewFontSizeAction, type SetAiThinkingAction, type AiAction, type SetFoundationModelAvailabilityAction, type SetNoteSummaryAction, type SetConundrumErrorsStateAction, type ConundrumStateActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type WithNullableOptionals } from "@/utils/types/utility_types";
 import { type Reducer } from "@reduxjs/toolkit";
 import { type ByteBuffer } from "flatbuffers";
@@ -70,8 +70,8 @@ interface SetEditingBibEntryActionRefined extends SetEditingBibEntryAction {
     type: EditorStateActions.SetEditingBibEntry
 }
 
-interface SetConundrumErrorStateActionRefined extends SetConundrumErrorStateAction {
-    type: ConundrumStateActions.SetConundrumError
+interface SetConundrumErrorStateActionRefined extends SetConundrumErrorsStateAction {
+    type: ConundrumStateActions.SetConundrumErrors
 }
 
 

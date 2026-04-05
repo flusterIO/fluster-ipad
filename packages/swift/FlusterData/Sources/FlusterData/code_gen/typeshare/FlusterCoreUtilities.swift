@@ -109,10 +109,10 @@ public struct ConundrumParseErrorState: Codable {
 }
 
 public struct ConundrumState: Codable {
-	public let error: ConundrumErrorVariant?
+	public let errors: [ConundrumError]
 
-	public init(error: ConundrumErrorVariant?) {
-		self.error = error
+	public init(errors: [ConundrumError]) {
+		self.errors = errors
 	}
 }
 
@@ -682,14 +682,14 @@ public struct SetBaseKeymapAction: Codable {
 }
 
 public enum ConundrumStateActions: String, Codable {
-	case setConundrumError = "set-conundrum-error"
+	case setConundrumErrors = "set-conundrum-error"
 }
 
-public struct SetConundrumErrorStateAction: Codable {
+public struct SetConundrumErrorsStateAction: Codable {
 	public let type: ConundrumStateActions
-	public let payload: ConundrumErrorVariant?
+	public let payload: [ConundrumError]
 
-	public init(type: ConundrumStateActions, payload: ConundrumErrorVariant?) {
+	public init(type: ConundrumStateActions, payload: [ConundrumError]) {
 		self.type = type
 		self.payload = payload
 	}

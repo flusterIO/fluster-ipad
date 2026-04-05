@@ -10,6 +10,7 @@ import { type GlobalAppState } from "#/webview_global_state/store";
 import { connect } from "react-redux";
 import consola from "consola";
 import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
+import { ConundrumErrorListener } from "./conundrum_error_listener";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -18,8 +19,9 @@ const connector = connect((state: GlobalAppState) => ({
     parsedValue: state.editor.parsedValue,
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview,
     isEditorView: state.editor.editorView === EditorView.Splitview,
-    conundrumError: state.conundrum.error
 }))
+
+
 
 /**
  * For use _only_ in the primary mdx preview views, either the standalone-preview webview
@@ -31,9 +33,8 @@ export const MdxEditorPreview = connector(({
     parsedValue,
     lockEditorScrollToPreview,
     isEditorView,
-    conundrumError,
     ...props
-}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview" | "parsedValue"> & { isEditorView: boolean, conundrumError: WithNullableOptionals<ConundrumState>["error"] }): ReactNode => {
+}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview" | "parsedValue"> & { isEditorView: boolean }): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
     const id = useId()
 
@@ -73,19 +74,13 @@ export const MdxEditorPreview = connector(({
         );
     }
 
-    if (conundrumError) {
-        return (
-            <div className="w-screen h-screen min-h-screen top-0 left-0 right-0 bottom-0 fixed flex flex-col justify-center items-center mdx-preview-loading-container">
-                <PreviewLevelErrorReport conundrumError={conundrumError} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />
-            </div>
-        )
-    }
 
     return (
         <ErrorBoundary
             onError={(e) => { consola.error("Error: ", e); }}
             FallbackComponent={(p) => <PreviewLevelErrorReport {...p} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />}
         >
+            <ConundrumErrorListener />
             <MdxContent
                 id={SplitviewEditorDomIds.MdxPreview}
                 {...props}

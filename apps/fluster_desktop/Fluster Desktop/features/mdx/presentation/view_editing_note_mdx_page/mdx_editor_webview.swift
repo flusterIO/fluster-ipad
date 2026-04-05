@@ -159,7 +159,9 @@ struct MdxEditorWebview: View {
               try await en.preParseIfEdited(modelContext: modelContext)
             } catch {
               print("Error here: \(error.localizedDescription)")
-              self.setEditorError(error: error)
+              if editorSaveMethod == .onChange {
+                self.setEditorError(error: error)
+              }
             }
           }
         }
@@ -209,12 +211,14 @@ struct MdxEditorWebview: View {
   public func setEditorError(error: any Error) {
     if let conundrumErrorVariant = error as? ConundrumErrorVariant {
       print("Found one of them shits...")
-      Task {
-        do {
-          try await ConundrumState.setConundrumError(
-            error: conundrumErrorVariant, eval: webView.evaluateJavaScript)
-        } catch {
-          print("Error setting error: \(error.localizedDescription)")
+      if let cError = conundrumErrorVariant.toConundrumError() {
+        Task {
+          do {
+            try await ConundrumState.setConundrumError(
+              error: cError, eval: webView.evaluateJavaScript)
+          } catch {
+            print("Error setting error: \(error.localizedDescription)")
+          }
         }
       }
     }

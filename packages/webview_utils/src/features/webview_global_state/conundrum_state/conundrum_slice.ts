@@ -5,6 +5,7 @@ import { conundrumSwiftStateReducer } from './condundrum_swift_state_reducer'
 import { type WithNullableOptionals } from '@/utils/types/utility_types'
 import { handleSwiftAction } from '#/webview_global_state/container/webview_container_global_state/webview_container_slice'
 import { type AnyCrossLanguageWebviewAction } from '#/webview_global_state/cross_language_state_types'
+import { type ConundrumError } from '@/code_gen/typeshare/conundrum'
 
 export interface CounterState {
     value: number
@@ -14,12 +15,26 @@ export const notificationSlice = createSlice({
     name: 'notifications',
     initialState: initialConundrumState,
     reducers: {
-        clearConundrumError(state) {
+
+
+        setConundrumErrors(state, action: PayloadAction<ConundrumError[]>) {
             return {
                 ...state,
-                error: null
+                errors: action.payload
             }
-        }
+        },
+        appendConundrumError(state, action: PayloadAction<ConundrumError>) {
+            return {
+                ...state,
+                errors: [...state.errors, action.payload]
+            }
+        },
+        clearConundrumErrors(state) {
+            return {
+                ...state,
+                errors: []
+            }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(handleSwiftAction, (state, action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<ConundrumState> => {
@@ -30,6 +45,6 @@ export const notificationSlice = createSlice({
 })
 
 // // Action creators are generated for each case reducer function
-export const { clearConundrumError } = notificationSlice.actions
+export const { clearConundrumErrors, appendConundrumError, setConundrumErrors } = notificationSlice.actions
 
 export default notificationSlice.reducer

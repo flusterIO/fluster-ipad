@@ -6,6 +6,7 @@ import { WebViewContainer } from '#/webview_container/presentation/webview_conta
 import { WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
 import { HeadingDevelopmentWrapper } from './development_wrapped_components/embeddable_components/heading';
 import { TabGroupDevWrapper } from './development_wrapped_components/embeddable_components/tab_group_dev_wrapper';
+import { PreviewLevelErrorContainerDevWrapper } from './development_wrapped_components/preview_level_error_container_dev_wrapper';
 
 const storeData = createFlusterStore();
 
@@ -19,7 +20,7 @@ window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
 const CurrentDevelopmentComponent = (): ReactNode => {
     return (
         <div className="w-full h-full min-h-screen flex flex-col justify-center items-center bg-black">
-            <TabGroupDevWrapper />
+            <PreviewLevelErrorContainerDevWrapper />
         </div>
     )
 }

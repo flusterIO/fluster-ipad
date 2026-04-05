@@ -6,10 +6,10 @@ import { type PayloadAction } from "@reduxjs/toolkit";
 export const conundrumSwiftStateReducer = (state: GlobalWebviewStateDeepNullable["conundrum"], action: PayloadAction<AnyCrossLanguageWebviewAction>): WithNullableOptionals<ConundrumState> => {
     /* eslint-disable-next-line  -- I know it's not exhaustive... */
     switch (action.payload.type) {
-        case ConundrumStateActions.SetConundrumError: {
+        case ConundrumStateActions.SetConundrumErrors: {
             return {
                 ...state,
-                error: action.payload.payload ?? null
+                errors: action.payload.payload
             }
         }
         default: {
