@@ -1,8 +1,8 @@
-use crate::{
-    lang::runtime::state::parse_state::ParseState, output::parsing_result::mdx_parsing_result::MdxParsingResult,
-};
+use crate::lang::runtime::state::parse_state::ParseState;
 
 pub trait PlainTextComponentResult {
-    /// Useful mostly for searchability. Formatting may be hideous.
+    /// Useful mostly for searchability, so markdown mdx or Conundrum syntax
+    /// doesn't interfere with the text matching algorithm. Formatting may
+    /// be hideous.
     fn to_plain_text(&self, res: &mut ParseState) -> String;
 }

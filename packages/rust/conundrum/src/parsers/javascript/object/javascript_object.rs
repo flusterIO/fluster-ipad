@@ -65,7 +65,7 @@ impl JsxComponentResult for JavascriptObjectResult {
     fn to_jsx_component(&self, res: &mut ParseState) -> String {
         let mut s = String::from("{\n");
         for (k, v) in self.data.clone() {
-            if let Ok(key) = ConundrumString::new(k.as_str()).to_quotable_string() {
+            if let Ok(key) = ConundrumString::new(k.as_str()).to_quoted_string() {
                 s += format!("\"{}\": {}", key, v.to_mdx_component(res)).as_str();
             }
         }

@@ -362,6 +362,13 @@ const items: ComponentMapItem[] = [
         importComponent: async () => {
             return import("../../mdx/embeddable_mdx_components/auto_inserted/block_quote").then((a) => a.AutoInsertedBlockQuote)
         }
+    },
+    {
+        query: [AutoInsertedComponentName.AutoInsertedCodeBlock],
+        componentType: ComponentItemType.autoInserted,
+        importComponent: async () => {
+            return import("../../mdx/embeddable_mdx_components/math/auto_inserted_math_block").then((a) => a.AutoInsertedMathBlock)
+        }
     }
 ];
 

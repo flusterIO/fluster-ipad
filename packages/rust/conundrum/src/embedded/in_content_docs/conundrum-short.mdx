@@ -45,9 +45,10 @@ While Fluster remains my own personal project for the time being, the compiler f
 
 Try adding a React component to your title, something like:
 
-```mdx
+<AutoInsertedCodeBlock language="mdx">
 # My title <Hl>here</Hl>
-```
+
+</AutoInsertedCodeBlock>
 
 And then take a look at your dashboard! The title should look like the `Hl` component isn't even there, despite the fact that Swift can't render the component directly. The transpiler is actually stripping away the component, with each component having it's own syntax unique to each environment. This means that your notes will remain compatible with <span className="italic">any</span> markdown based note taking application, should you choose to switch to another platform. The transpiler is <span className="italic">already</span> powering <AutoInsertedMarkdownLink data={{"text":"Fluster","url":"https://flusterapp.com"}} />, it'll just take another few weeks to write the tools to convert your notes... my to-do list is <span className="font-bold">long.</span>
 

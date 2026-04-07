@@ -46,7 +46,7 @@ lint:
 	cd {{justfile_directory()}}/apps/fluster; swiftlint lint
 
 build_internal_cli:
-	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build
+	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build --offline
 
 build_fluster_wasm:
 	cd {{justfile_directory()}}/packages/rust/wasm/fluster_wasm; pnpm build
@@ -95,7 +95,7 @@ build_cross_language_schemas: generate_initial_note_data
 
 
 build_conundrum_swift:
-	cd {{justfile_directory()}}/packages/rust/conundrum_swift; cargo swift package -y --xcframework-name Conundrum
+	cd {{justfile_directory()}}/packages/rust/conundrum_swift; cargo swift package -y --xcframework-name Conundrum 
 	cp -r {{justfile_directory()}}/packages/rust/conundrum_swift/extra_swift/ {{justfile_directory()}}/packages/rust/conundrum_swift/ConundrumSwift/Sources/ConundrumSwift/
 
 build_desktop_fs:
@@ -122,13 +122,14 @@ launch_ipad_simulator: build_ipad_simulator
 	cd {{justfile_directory()}}/apps/fluster; xcrun simctl launch "iPad Pro 13-inch M5 26.1" iglooDevelopment.Fluster 
 
 build_all_rust: build_cross_language_all
-	cargo build
-
+	cargo build --offline
 
 build_fluster_core_rust_utilities: build_cross_language_all
-	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
+	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build --offline
 
-build_webview_utils: build_cross_language_all build_fluster_lezer gather_component_docs build_fluster_wasm
+
+# Add `build_fluster_wasm` back to the end in here once the fucking internet isnt stopping the build
+build_webview_utils: build_cross_language_all build_fluster_lezer gather_component_docs 
 	pnpm run -C packages/webview_utils build
 
 build_dictionary_webview: build_cross_language_all build_webview_utils

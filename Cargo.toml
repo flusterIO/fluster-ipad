@@ -11,7 +11,7 @@ members = [
     "packages/rust/fluster_desktop_fs/",
     "packages/rust/fluster_bibliography",
     "packages/rust/conundrum_lsp",
-    "packages/rust/conundrum_cli",
+    # "packages/rust/conundrum_cli",
 ]
 
 

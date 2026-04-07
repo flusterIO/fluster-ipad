@@ -35,13 +35,14 @@ Citations are alphabetized by the optional 'title' field. All entries without th
 
 The citation key must match the bibliography entry key in your bibliography. For example:
 
-```mdx
+<AutoInsertedCodeBlock language="mdx">
 As you can see, according to Ives & Stillwell [[cite:IvesStillwell]]...
-```
+
+</AutoInsertedCodeBlock>
 
 Will work with the bibliography entry:
 
-```bibtex
+<AutoInsertedCodeBlock language="bibtex">
 @article{IvesStillwell,
     author = {Herbert E. Ives and G. R. Stilwell},
     journal = {J. Opt. Soc. Am.},
@@ -57,29 +58,32 @@ Will work with the bibliography entry:
     doi = {10.1364/JOSA.28.000215},
     abstract = {},
 }                
-```
+
+</AutoInsertedCodeBlock>
 
 
 <AutoInsertedHeading depth={3} id="dictionary-entries" subtitle={null} >Dictionary Entries</AutoInsertedHeading>
 
 You can insert dictionary entries in any note using the following syntax:
 
-````mdx
+<AutoInsertedCodeBlock language="mdx">
 ```dictionary -- My Dictionary Title
 This is my dictionary entry.
 I can insert any mdx content I like here.
 ```
-````
+
+</AutoInsertedCodeBlock>
 
 These entries will automatically collected and inserted into your user defined dictionary.
 
 <AutoInsertedHeading depth={3} id="horizontal-rule-with-children" subtitle={null} >Horizontal Rule with Children</AutoInsertedHeading>
 
-```mdx
+<AutoInsertedCodeBlock language="mdx">
 --- My title with math $\delta$ ---
-```
 
-<Hr>My title with math <span className="conundrum-math conundrum-math-inline">$\delta$</span></Hr>
+</AutoInsertedCodeBlock>
+
+<Hr>My title with math <AutoInsertedCodeBlock math="\\delta" /></Hr>
 
 
 <AutoInsertedHeading depth={3} id="title-with-subtitle" subtitle={null} >Title with Subtitle</AutoInsertedHeading>
@@ -87,10 +91,11 @@ These entries will automatically collected and inserted into your user defined d
 
 Since the margin between text can be too much to create some common layouts like a title/subtitle combo, there is a reasonably styled combo component that can be accessed with the following syntax:
 
-```mdx
+<AutoInsertedCodeBlock language="mdx">
 # My title {#myTitleWithAnId}
 > My subtitle that follows immediately on the next line
-```
+
+</AutoInsertedCodeBlock>
 
 
 <Hint label="hint" success>

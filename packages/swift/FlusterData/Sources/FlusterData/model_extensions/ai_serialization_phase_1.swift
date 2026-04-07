@@ -9,7 +9,6 @@ import ConundrumSwift
 import Foundation
 
 extension AiSerializationRequestType: @retroactive Codable {
-
   enum MatchingStringKeys: String, Codable {
     case createNoteSpecificStudyGuide, recommendSearch, summarizeNote
   }
@@ -38,7 +37,6 @@ extension AiSerializationRequestType: @retroactive Codable {
         try container.encode(MatchingStringKeys.summarizeNote)
     }
   }
-
 }
 
 extension ParsedCodeBlock: @retroactive Codable {
@@ -46,7 +44,8 @@ extension ParsedCodeBlock: @retroactive Codable {
     case fullMatch,
       language,
       content,
-      metaData
+      metaData,
+      depth
   }
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -54,8 +53,10 @@ extension ParsedCodeBlock: @retroactive Codable {
     let langTag = try container.decode(String.self, forKey: .language)
     let blockContent = try container.decode(String.self, forKey: .content)
     let metaData = try container.decode(String.self, forKey: .metaData)
+    let depth = try container.decode(UInt8.self, forKey: .depth)
     self.init(
-        language: langTag, metaData: metaData, content: blockContent, fullMatch: fullMatch
+      language: langTag, metaData: metaData, depth: depth, content: blockContent,
+      fullMatch: fullMatch
     )
   }
 
@@ -65,6 +66,7 @@ extension ParsedCodeBlock: @retroactive Codable {
     try container.encode(self.fullMatch, forKey: .fullMatch)
     try container.encode(self.language, forKey: .language)
     try container.encode(self.metaData, forKey: .metaData)
+    try container.encode(self.depth, forKey: .depth)
   }
 }
 

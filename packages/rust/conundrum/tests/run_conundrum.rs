@@ -1,6 +1,6 @@
 use conundrum::{
     embedded::in_content_documentation_id::InContentDocumentationId,
-    lang::runtime::run_conundrum::{ParseMdxOptions, run_conundrum},
+    lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum},
     output::general::component_constants::{
         auto_inserted_component_name::AutoInsertedComponentName, component_names::EmbeddableComponentName,
     },
@@ -14,9 +14,9 @@ mod parser_tests;
 async fn runs_conundrum() {
     let test_content = get_test_content("full_test.mdx");
 
-    let opts = ParseMdxOptions { note_id: None,
-                                 content: test_content,
-                                 modifiers: Vec::new() };
+    let opts = ParseConundrumOptions { note_id: None,
+                                       content: test_content,
+                                       modifiers: Vec::new() };
 
     let res = run_conundrum(opts).await.expect("Returns a valid result when vald input was provided.");
 
@@ -50,16 +50,16 @@ async fn conundrum_parses_documentation_requests() {
         let short_test_content = format!("# My markdown\n\n{}?", name);
         let full_test_content = format!("# My markdown\n\n{}??", name);
 
-        let short_opts = ParseMdxOptions { note_id: None,
-                                           content: short_test_content,
-                                           modifiers: Vec::new() };
+        let short_opts = ParseConundrumOptions { note_id: None,
+                                                 content: short_test_content,
+                                                 modifiers: Vec::new() };
 
         let short_res =
             run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
 
-        let full_opts = ParseMdxOptions { note_id: None,
-                                          content: full_test_content,
-                                          modifiers: Vec::new() };
+        let full_opts = ParseConundrumOptions { note_id: None,
+                                                content: full_test_content,
+                                                modifiers: Vec::new() };
 
         let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
 
@@ -80,16 +80,16 @@ async fn conundrum_parses_documentation_requests() {
         let short_test_content = format!("# My markdown\n\n{}?", id);
         let full_test_content = format!("# My markdown\n\n{}??", id);
 
-        let short_opts = ParseMdxOptions { note_id: None,
-                                           content: short_test_content,
-                                           modifiers: Vec::new() };
+        let short_opts = ParseConundrumOptions { note_id: None,
+                                                 content: short_test_content,
+                                                 modifiers: Vec::new() };
 
         let short_res =
             run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
 
-        let full_opts = ParseMdxOptions { note_id: None,
-                                          content: full_test_content,
-                                          modifiers: Vec::new() };
+        let full_opts = ParseConundrumOptions { note_id: None,
+                                                content: full_test_content,
+                                                modifiers: Vec::new() };
 
         let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
 

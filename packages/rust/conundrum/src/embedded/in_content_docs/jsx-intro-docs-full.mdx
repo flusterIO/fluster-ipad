@@ -117,10 +117,11 @@ This gives a situation where in the following code, `shrink` and `important` wil
 
 Numbers in javascript are straight-forward, defined exactly as you'd expect. One important property to note however, is that to provide a number as a value to a jsx property, you <span className="italic">must</span> wrap the value in curly brackets. This gives something that looks like:
 
-```tsx
+<AutoInsertedCodeBlock language="tsx">
 <Grid medium={2} >
 ...
-```
+
+</AutoInsertedCodeBlock>
 
 It's important to note here that there is a small distinction between integers and floats (decimals) made by Fluster, despite the fact that javascript really doesn't care much. To enforce some css (style language) level requirements, Fluster will notify you if you provide a float where a decimal is expected, meaning that `2.0` and `2` are not the same in some rare edge cases.
 
@@ -161,7 +162,7 @@ What is much more likely however, is that whatever arrays you do work with insid
 
 'Objects' are at the core of most programming languages, and javascript is no exception. This subject does however start to bridge the gap between what is required to use Fluster and what is the beginning of a software career, but I would encourage more advanced users to learn more <AutoInsertedMarkdownLink data={{"text":"here","url":"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects"}} />. Objects are defined as a set of key-value pairs, where the value can be almost anything, including another object.
 
-```tsx
+<AutoInsertedCodeBlock language="tsx">
 <MyFakeComponent 
     // Notice that there are 2 `{{}}` here.
     // 1 is required for jsx, the other for javascript.
@@ -175,4 +176,5 @@ What is much more likely however, is that whatever arrays you do work with insid
         }
     }}
 />
-```
+
+</AutoInsertedCodeBlock>

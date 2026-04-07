@@ -1,6 +1,6 @@
 use conundrum::lang::runtime::{
     queries::get_title::get_title_group,
-    run_conundrum::{ParseMdxOptions, run_conundrum},
+    run_conundrum::{ParseConundrumOptions, run_conundrum},
     state::parse_state::ConundrumModifier,
 };
 use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
@@ -38,7 +38,7 @@ fn conundrum_full_parse_benchmark(c: &mut Criterion) {
                     || get_unchanging_benchmark_test_content(mag, &benchmark_date),
                     // 2. MEASUREMENT: This is what is timed
                     |file_content| async move {
-                        run_conundrum(ParseMdxOptions {
+                        run_conundrum(ParseConundrumOptions {
                             note_id: None,
                             content: file_content,
                             modifiers: Vec::new(),

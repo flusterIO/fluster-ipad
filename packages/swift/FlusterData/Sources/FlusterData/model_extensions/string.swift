@@ -48,7 +48,7 @@ extension String {
   public func preParseAsMdx(noteId: String?) async -> MdxParsingResult? {
     do {
       let res = try await runConundrum(
-        options: ParseMdxOptions(noteId: noteId, content: self, modifiers: [])
+        options: ParseConundrumOptions(noteId: noteId, content: self, modifiers: [], hideComponents: [])
       )
       return res
     } catch {
@@ -63,7 +63,7 @@ extension String {
   {
     do {
       let res = try await runConundrum(
-        options: ParseMdxOptions(noteId: noteId, content: self, modifiers: modifiers)
+        options: ParseConundrumOptions(noteId: noteId, content: self, modifiers: modifiers, hideComponents: [])
       )
       return res
     } catch {

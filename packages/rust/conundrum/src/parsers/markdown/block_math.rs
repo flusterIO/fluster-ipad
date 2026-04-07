@@ -6,29 +6,37 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::ui::components::markdown::math::props::MathData,
+        runtime::{
+            state::{
+                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
-    parsers::parser_trait::ConundrumParser,
+    output::{
+        general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
+        output_components::output_utils::format_embedded_object_property,
+    },
+    parsers::{conundrum::logic::string::conundrum_string::ConundrumString, parser_trait::ConundrumParser},
 };
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct BlockMathResult {
-    pub body: String,
+    pub body: ConundrumString,
 }
 
 impl PlainTextComponentResult for BlockMathResult {
     fn to_plain_text(&self, _: &mut ParseState) -> String {
-        self.body.clone()
+        self.body.0.clone()
     }
 }
 
@@ -36,8 +44,10 @@ impl ConundrumComponentResult for BlockMathResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> String {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
-        } else if res.is_markdown() {
+        } else if res.is_markdown_or_search_or_ai() {
             self.to_markdown(res)
+        } else if res.targets_jsx() {
+            self.to_jsx_component(res)
         } else {
             self.to_mdx_component(res)
         }
@@ -50,16 +60,32 @@ impl MarkdownComponentResult for BlockMathResult {
     }
 }
 
-impl MdxComponentResult for BlockMathResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
+impl JsxComponentResult for BlockMathResult {
+    fn to_jsx_component(&self, res: &mut ParseState) -> String {
+        let math_data = MathData { math: self.body.0.clone(),
+                                   display: true };
+        format!("<{} math={{{}}} />",
+                AutoInsertedComponentName::AutoInsertedCodeBlock,
+                serde_json::to_string(&math_data).unwrap_or_else(|_| String::from("{}")))
+    }
+}
+
+impl HtmlJsComponentResult for BlockMathResult {
+    fn to_html_js_component(&self, res: &mut ParseState) -> String {
         format!("<div className=\"conundrum-math conundrum-math-block\">\n$${}$$\n</div>", self.body)
+    }
+}
+
+impl MdxComponentResult for BlockMathResult {
+    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+        self.to_jsx_component(res)
     }
 }
 
 impl ConundrumParser<BlockMathResult> for BlockMathResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<BlockMathResult> {
         let body = delimited(literal("$$"), take_until(1.., "$$"), literal("$$")).parse_next(input)?;
-        Ok(BlockMathResult { body: body.to_string() })
+        Ok(BlockMathResult { body: ConundrumString(body.to_string()) })
     }
 
     fn matches_first_char(char: char) -> bool {

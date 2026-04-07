@@ -77,7 +77,7 @@ export const MdxEditorPreview = connector(({
 
     return (
         <ErrorBoundary
-            onError={(e) => { consola.error("Error: ", e); }}
+            onError={(e) => { consola.error("Preview boundary error: ", e); }}
             FallbackComponent={(p) => <PreviewLevelErrorReport {...p} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />}
         >
             <ConundrumErrorListener />

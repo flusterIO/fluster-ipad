@@ -52,6 +52,7 @@ export const PreviewLevelErrorReport = connector(({ debounceTimeout, showWebview
 
 
     const totalErrors = conundrumErrors?.length ?? 1;
+
     return (
         <div className="@container/preview-error w-full px-4 h-screen z-999 flex flex-col justify-center items-center absolute top-0 left-0 right-0 bottom-0 border rounded">
             <motion.div
@@ -79,8 +80,8 @@ export const PreviewLevelErrorReport = connector(({ debounceTimeout, showWebview
                         <ConundrumErrorsReport errors={conundrumErrors} />
                     ) : (
                         <>
-                            <div className="font-bold mt-6 mb-4">Error</div>
-                            <div className="text-muted-foreground text-sm text-center [&_p]:text-muted-foreground [&_p]:text-sm [&_p]:text-center pb-4">
+                            <div className="font-bold mt-6 mb-4 px-4">Error</div>
+                            <div className="text-muted-foreground prose-sm [&_p]:text-muted-foreground pb-4 px-4">
                                 Fluster encountered an error while attempting to parse this document. Please double-check your syntax.
                             </div>
                         </>

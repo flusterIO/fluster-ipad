@@ -203,8 +203,9 @@ export interface Admonition {
 }
 
 export interface ParsedCodeBlock {
-	language: string;
+	language: ConundrumString;
 	meta_data?: string;
+	depth: number;
 	content: string;
 	full_match: string;
 }
@@ -214,7 +215,7 @@ export interface AiSerializationRequestPhase1 {
 }
 
 export interface BlockMathResult {
-	body: string;
+	body: ConundrumString;
 }
 
 export interface BlockQuoteResult {
@@ -361,7 +362,7 @@ export interface InlineCodeResult {
 }
 
 export interface InlineMathResult {
-	body: string;
+	body: ConundrumString;
 }
 
 export interface JavascriptBooleanResult {
@@ -449,6 +450,11 @@ export interface MarkdownParagraphResult {
 	children: ParsedElement[];
 }
 
+export interface MathData {
+	math: string;
+	display: boolean;
+}
+
 export interface TagResult {
 	body: string;
 }
@@ -475,12 +481,52 @@ export interface MdxParsingResult {
 	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
 }
 
+/**
+ * The goal with these modifiers is to have a few different compile targets
+ * (markdown, mdx, jsx, eventually straight to html/js, and then to an AST that
+ * can be handled by other UI ecosystems), and these modifiers is how we can
+ * achieve that.
+ * 
+ * All modifiers that start with `TargetXYZ` are applied as sort of a
+ * collection of other modifiers, or at least that's how they're intended to
+ * work.
+ */
 export enum ConundrumModifier {
+	/**
+	 * This might as well be called `TargetMarkdown`, but this was created
+	 * before the idea of 'targets' came to be merged with 'modifiers' and I'm
+	 * in too much of a hurry to change it now.
+	 * 
+	 * As with the `.PreferInlineMarkdownSyntax` flag, many components allow
+	 * you to customize the bahavior of each component:
+	 * 
+	 * ```jsx
+	 * <Card
+	 * title="My title"
+	 * /// Set the heading title depth.
+	 * markdownHeading={3}
+	 * >
+	 * ...
+	 * </Card>
+	 * ```
+	 */
 	PreferMarkdownSyntax = "PreferMarkdownSyntax",
 	/**
 	 * Curretly does pretty much the same thing as .PreferMarkdownSyntax, but
 	 * once the markdown parser has been completely migrated this will stop
 	 * things like wrapping the outermost block in a paragraph.
+	 * 
+	 * The goal with this is to behave much like SwiftUI's markdown support,
+	 * with the ability to render only inline markdown for things like
+	 * titles where a full `Admonition` wouldn't make sense.
+	 * 
+	 * Keep in mind that many components allow you to customize the
+	 * **markdown** output as well as the html/js output. You can do the
+	 * following:
+	 * 
+	 * ```jsx
+	 * <Hl markdown="italic" highlight>My text</Hl>
+	 * ```
 	 */
 	PreferInlineMarkdownSyntax = "PreferInlineMarkdownSyntax",
 	/**
@@ -490,7 +536,7 @@ export enum ConundrumModifier {
 	ForcePlainText = "ForcePlainText",
 	/**
 	 * Set this flag when the output is intended to be consumed by AI, probably
-	 * with the 'PreferMarkdownSyntax' flag.
+	 * with the `.PreferMarkdownSyntax` flag.
 	 */
 	ForAIInput = "ForAIInput",
 	/**
@@ -499,12 +545,75 @@ export enum ConundrumModifier {
 	 * searchable text.
 	 */
 	ForSearchInput = "ForSearchInput",
+	/** Don't touch the code blocks, just return them exactly as is. */
+	CodeBlocksAsIs = "CodeBlocksAsIs",
+	/**
+	 * Leave the markdown output mostly alone and render to mdx instead of jsx.
+	 * This is a super easy gateway for developers to build around
+	 * Conundrum as the compile target is **super** forgiving.
+	 * 
+	 * This is the default target for now, but the current goal is to finish
+	 * rest of the parser, which would make the dependence on mdx obsolete.
+	 */
+	TargetMdx = "TargetMdx",
+	/**
+	 * This is the goal, but this is still _super_ buggy and should in no way
+	 * be used in any application that you expect someone to actually use,
+	 * but we'll get there...
+	 */
+	TargetJsx = "TargetJsx",
+	/**
+	 * This is even more of a futuristic goal, but for ultimate performance we
+	 * can even leave behind React. There are other priorities for now, but
+	 * this is something that will naturally come together as the framework
+	 * progresses.
+	 */
+	TargetHtmlJs = "TargetHtmlJs",
 }
 
-export interface ParseMdxOptions {
+export enum EmbeddableComponentName {
+	Admonition = "Admonition",
+	Hl = "Hl",
+	Highlight = "Highlight",
+	Ul = "Ul",
+	Underline = "Underline",
+	Card = "Card",
+	Grid = "Grid",
+	UtlityContainer = "Container",
+	HrWithChildren = "Hr",
+	Hint = "Hint",
+	Tabs = "Tabs",
+	Tab = "Tab",
+	AINoteSummary = "AINoteSummary",
+}
+
+/** This is the core 'input' for Conundrum. */
+export interface ParseConundrumOptions {
+	/**
+	 * The id of your note. This can be generic, unique to each application,
+	 * but so-long as the note has the **concept** of an id the id can be
+	 * inserted into certain components to make it easier for the front-end
+	 * to collect data without the need for complicated outside state.
+	 */
 	note_id?: string;
+	/** Your conundrum content, obviously. */
 	content: string;
+	/**
+	 * Kind of the core piece of Conundrum, the ability to write in a superset
+	 * of Markdown and to compile to a variety of targets, including just
+	 * regular, traditional markdown (the goal is to comply with the Commonmark
+	 * spec eventually, we're still missing some things that are being cleaned
+	 * up by the runtime environment).
+	 */
 	modifiers: ConundrumModifier[];
+	/**
+	 * Hide specific components that are incompatable with the target output
+	 * environment. This is done automatically with the `.ForAiInput` flag
+	 * for all AI input components so not to confuse the AI, but there
+	 * maybe other use cases as well. Any component added here will render
+	 * _nothing_, but it's state will still be applied to the result.
+	 */
+	hide_components: EmbeddableComponentName[];
 }
 
 export interface ParsedCitation {
@@ -562,7 +671,7 @@ export interface ReactComponentWithChildrenResult {
 
 export interface Tab {
 	/** The label of the button that toggles this tab. */
-	label: ConundrumString;
+	label: Children;
 	/**
 	 * This is only required if the `label` field occurs more than once in the
 	 * same `Tabs` component. Each `Tab` must have a unique `id` field, it's
@@ -577,7 +686,7 @@ export interface Tab {
  * honestly...
  * 
  * ### Usage
- * > I know it's called `TabsGroup` below, but in Conundrum it's actually
+ * > I know it's called `TabsGroup` here, but in Conundrum it's actually
  * > implemented as `Tabs`.
  * 
  * ```jsx
@@ -629,6 +738,8 @@ export interface Underline {
 /**
  * > Note that the `label` property can also be changed from it's default
  * > 'Hint' to any string.
+ * 
+ * 
  * The `Container` component is an intentionally almost entirely unstyled
  * component that accepts most of the _generic_ properties accepted elsewhere.
  * This means that it takes an optional `Emphasis` as a boolean, and all of the
@@ -656,6 +767,7 @@ export enum AutoInsertedComponentName {
 	DictionaryEntry = "DictionaryEntry",
 	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
 	AutoInsertedHeading = "AutoInsertedHeading",
+	AutoInsertedCodeBlock = "AutoInsertedCodeBlock",
 	AutoInsertedBlockQuote = "AutoInsertedBlockQuote",
 	AutoInsertedBlockMath = "AutoInsertedBlockMath",
 	AutoInsertedInlineMath = "AutoInsertedInlineMath",
@@ -708,22 +820,6 @@ export enum EmbeddableComponentId {
 	Tabs = "tab-group",
 	Tab = "tab-group-tab",
 	AINoteSummary = "ai-note-summary",
-}
-
-export enum EmbeddableComponentName {
-	Admonition = "Admonition",
-	Hl = "Hl",
-	Highlight = "Highlight",
-	Ul = "Ul",
-	Underline = "Underline",
-	Card = "Card",
-	Grid = "Grid",
-	UtlityContainer = "Container",
-	HrWithChildren = "Hr",
-	Hint = "Hint",
-	Tabs = "Tabs",
-	Tab = "Tab",
-	AINoteSummary = "AINoteSummary",
 }
 
 export enum InContentDocumentationFormat {

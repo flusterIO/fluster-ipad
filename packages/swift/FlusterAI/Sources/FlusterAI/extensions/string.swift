@@ -11,11 +11,11 @@ import ConundrumSwift
 
 public extension String {
     func conundrumToAIInput(noteId: String?) async throws -> String {
-       let res = try await ConundrumSwift.runConundrum(options: ParseMdxOptions(noteId: noteId, content: self, modifiers: [.preferMarkdownSyntax, .forAiInput]))
+       let res = try await ConundrumSwift.runConundrum(options: ParseConundrumOptions(noteId: noteId, content: self, modifiers: [.preferMarkdownSyntax, .forAiInput], hideComponents: []))
         return res.content
     }
     func conundrumToSwiftCompatibleMarkdown(noteId: String?, inline: Bool) async throws -> String {
-       let res = try await ConundrumSwift.runConundrum(options: ParseMdxOptions(noteId: noteId, content: self, modifiers: [.preferMarkdownSyntax, .forAiInput]))
+       let res = try await ConundrumSwift.runConundrum(options: ParseConundrumOptions(noteId: noteId, content: self, modifiers: [.preferMarkdownSyntax, .forAiInput], hideComponents: []))
         return res.content
     }
 }

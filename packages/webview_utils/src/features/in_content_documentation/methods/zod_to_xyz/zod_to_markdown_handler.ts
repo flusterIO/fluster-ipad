@@ -4,6 +4,7 @@ import { markedTerminal } from 'marked-terminal';
 import { z } from "zod"
 import { _sizableObjectSchema } from "../../../mdx/embeddable_mdx_components/schemas/sizable_object_schema";
 import { _emphasisSchema } from "../../../mdx/embeddable_mdx_components/schemas/emphasis_schema";
+import consola from "consola";
 
 
 /* @ts-expect-error -- Just a useless development tool */
@@ -195,8 +196,8 @@ export class ZodToMarkdownHandler {
             }
         }
         if (!itemType?.typeName && itemType) {
-            console.log("Without type: ", itemType)
-            throw new Error(`Found a zod value without a vald type`)
+            consola.error("Zod input without a type: ", itemType)
+            // throw new Error(`Found a zod value without a valid type`)
         }
 
     }

@@ -106,8 +106,17 @@
 ```jsx
 $<span className=\"conundrum-math conundrum-math-inline\">\n    e=mc^2\n  </span>$\n  </Tab>\n</Tabs>\n
 ```
+- [ ] Fix issue with this syntax. It's currently trying to implement an italic field in the title.
+````md
+```swift title="webview_container_view.swift"
+// WITH_WIFI: Figure out how to move this back to a background thread _immediately._ It's causing a memory issue right now but that's crucial for performance, as the plain text results are only useful for search related features.
+```
+````
 
 - [ ] Now that you're getting back great, _detailed_ errors, relay that information to the user in the webview! Pipe the error to the webview error display in a type-safe way.
+- [ ] ~~Move~~ Create a new `subtle` or `underline` property for the `Tabs` component so that the `Emphasis` variants of `Tabs` component use border under button style instead of that ridiculous full background for bright colors.
+- [ ] Handle `Icon` component that dynamically loads icon from that one library using the icon's name.
+  - [ ] Create a component that render's a searchable _lazy_ list of all available icons.
 - [ ] Verify that the iPad app is working again. It will need at least changes to:
   - [ ] Send new `ErrorStateReset` event after manual save request content change on the iPad app so that error state can be cleared by user without requiring navigation away and back to note.
   - [ ] Initial State function

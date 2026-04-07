@@ -12,10 +12,9 @@ use crate::{
         },
     },
     parsers::{
+        conundrum::logic::string::conundrum_string::ConundrumString,
         javascript::{
-            javascript_parser_trait::JavascriptParser,
-            object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
-            string::javascript_string::{self, double_quoted_javascript_string, single_quoted_javascript_string},
+            javascript_parser_trait::JavascriptParser, object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
         },
         react::parser_components::jsx_properties::{
             jsx_curly_bracket_wrapped_property::jsx_curly_bracket_wrapped_property, jsx_property::JsxPropertyParser,
@@ -39,12 +38,12 @@ fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
 
     let mut wrapped_content_input = get_conundrum_input(&wrapped_content, state.modifiers.clone());
 
-    let js_string = javascript_string::JavascriptStringResult::parse_javascript.parse_next(&mut wrapped_content_input)
-                                                                               .inspect_err(|_| {
-                                                                                   input.input.reset(&start);
-                                                                               })?;
+    let js_string = ConundrumString::parse_javascript.parse_next(&mut wrapped_content_input)
+                                                     .inspect_err(|_| {
+                                                         input.input.reset(&start);
+                                                     })?;
 
-    let mut new_input = get_conundrum_input(&js_string.value, state.modifiers.clone());
+    let mut new_input = get_conundrum_input(&js_string.0, state.modifiers.clone());
 
     let children = parse_elements(&mut new_input).map(Children)?;
     Ok(JavascriptObjectKeyValuePair { key,
@@ -61,8 +60,8 @@ fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
                                                input.input.reset(&start);
                                            })?;
     let js_string = alt((
-            single_quoted_javascript_string,
-            double_quoted_javascript_string,
+            ConundrumString::single_quoted_javascript_string,
+            ConundrumString::double_quoted_javascript_string,
             // TODO: Implement a special backtick syntax without the curly brackets since that's
             // not allowed in jsx anyways that automatically parses the output as Conundrum logic
             // and returns the output like a jupyter cell once the memory layer is in place.
@@ -70,7 +69,7 @@ fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
         input.input.reset(&start);
     })?;
     let state = input.state.borrow();
-    let mut new_input = get_conundrum_input(&js_string.value, state.modifiers.clone());
+    let mut new_input = get_conundrum_input(&js_string.0, state.modifiers.clone());
 
     let children = parse_elements(&mut new_input).map(Children)?;
 
