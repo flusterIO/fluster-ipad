@@ -3,7 +3,7 @@ use std::{cell::RefCell, str::FromStr};
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
-    ModalResult, Parser, Stateful,
+    Parser, Stateful,
     ascii::alphanumeric1,
     combinator::{delimited, repeat},
     error::ErrMode,
@@ -47,7 +47,7 @@ pub struct ReactComponentWithChildrenResult {
 }
 
 impl ConundrumComponentResult for ReactComponentWithChildrenResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         self.component.to_conundrum_component(res)
     }
 }
@@ -59,8 +59,8 @@ impl MdxComponentResult for ReactComponentWithChildrenResult {
     // reliability, which it currently won't be with this `>` limitation, but
     // after that is handled add a field to the conundrum state to
     // allow creating the list of included components here.
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        self.full_text.clone()
+    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.full_text.clone())
     }
 }
 
@@ -79,7 +79,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                        -> ConundrumModalResult<ReactComponentWithChildrenResult> {
     let start = input.input.checkpoint();
 
-    '<'.void().parse_next(input).inspect_err(|e| {
+    '<'.void().parse_next(input).inspect_err(|_| {
                                      input.input.reset(&start);
                                  })?;
 
@@ -103,7 +103,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                                           })?;
 
     let props_kv_pairs: Vec<JavascriptObjectKeyValuePair> =
-        repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|e| {
+        repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
                                                                                    input.input.reset(&start);
                                                                                })?;
 

@@ -28,13 +28,13 @@ pub struct MarkdownLinkResult {
 }
 
 impl PlainTextComponentResult for MarkdownLinkResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> String {
-        self.text.clone()
+    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.text.clone())
     }
 }
 
 impl ConundrumComponentResult for MarkdownLinkResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else {
@@ -44,10 +44,10 @@ impl ConundrumComponentResult for MarkdownLinkResult {
 }
 
 impl MdxComponentResult for MarkdownLinkResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("<{} data={{{}}} />",
-                AutoInsertedComponentName::AutoInsertedMarkdownLink,
-                serde_json::to_string(self).unwrap_or(javascript_null_prop()))
+    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("<{} data={{{}}} />",
+                   AutoInsertedComponentName::AutoInsertedMarkdownLink,
+                   serde_json::to_string(self).unwrap_or(javascript_null_prop())))
     }
 }
 

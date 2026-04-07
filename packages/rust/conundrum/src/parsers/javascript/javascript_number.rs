@@ -53,11 +53,11 @@ impl JavascriptParser<JavascriptNumberResult> for JavascriptNumberResult {
 }
 
 impl ConundrumComponentResult for JavascriptNumberResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.is_markdown_or_plain_text() {
-            String::from("")
+            Ok(String::from(""))
         } else {
-            self.value.to_string()
+            Ok(self.value.to_string())
         }
     }
 }

@@ -2,7 +2,7 @@ use serde::Serialize;
 use winnow::Parser;
 use winnow::combinator::alt;
 
-use crate::lang::runtime::state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult};
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::lang::runtime::traits::jsx_component_result::JsxComponentResult;
 use crate::{
@@ -30,13 +30,20 @@ impl JavascriptParser<JavascriptFunction> for JavascriptFunction {
 }
 
 impl JsxComponentResult for JavascriptFunction {
-    fn to_jsx_component(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
-        format!("")
+    fn to_jsx_component(&self,
+                        _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                        -> ConundrumModalResult<String> {
+        // FIXME: This obviously won't work. You'll need to handle this all with
+        // Conundrum and code blocks and just bail on the javascript environment
+        // support.
+        Ok(String::from(""))
     }
 }
 
 impl ConundrumComponentResult for JavascriptFunction {
-    fn to_conundrum_component(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+    fn to_conundrum_component(&self,
+                              _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                              -> ConundrumModalResult<String> {
         todo!()
     }
 }

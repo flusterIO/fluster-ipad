@@ -53,9 +53,11 @@ impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValue
 }
 
 impl ConundrumComponentResult for JavascriptObjectKeyValuePair {
-    fn to_conundrum_component(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+    fn to_conundrum_component(&self,
+                              _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                              -> ConundrumModalResult<String> {
         // This element represents nothing visual, only a temporary data representation
         // of jsx kv pairs.
-        String::from("")
+        Ok(String::from(""))
     }
 }

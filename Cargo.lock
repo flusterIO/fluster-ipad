@@ -1064,6 +1064,7 @@ dependencies = [
  "gray_matter",
  "insta",
  "lazy_static",
+ "lexopt",
  "lsp-types 0.97.0",
  "maud",
  "miette",
@@ -1071,6 +1072,7 @@ dependencies = [
  "num-format",
  "once_cell",
  "qrcode",
+ "ratatui",
  "rayon",
  "regex",
  "rssn",
@@ -1089,6 +1091,7 @@ dependencies = [
  "twemoji-assets",
  "typeshare",
  "typst",
+ "typst-as-lib",
  "unicode-segmentation",
  "uniffi",
  "winnow 0.7.15",
@@ -3956,6 +3959,12 @@ dependencies = [
  "ryu",
  "static_assertions",
 ]
+
+[[package]]
+name = "lexopt"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "803ec87c9cfb29b9d2633f20cba1f488db3fd53f2158b1024cbefb47ba05d413"
 
 [[package]]
 name = "libc"
@@ -7633,6 +7642,20 @@ dependencies = [
  "typst-syntax",
  "typst-timing",
  "typst-utils",
+]
+
+[[package]]
+name = "typst-as-lib"
+version = "0.15.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c5d1310816d33fa3582dbb60bf0e5272af44d955a5fa13b148ddea62005088df"
+dependencies = [
+ "chrono",
+ "comemo",
+ "dirs",
+ "ecow",
+ "thiserror 2.0.17",
+ "typst",
 ]
 
 [[package]]

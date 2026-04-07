@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     combinator::delimited,
     token::{literal, take_until},
 };
@@ -46,13 +46,13 @@ impl ConundrumStateModifier for ParsedOutgoingNoteLink {
 }
 
 impl PlainTextComponentResult for ParsedOutgoingNoteLink {
-    fn to_plain_text(&self, _: &mut ParseState) -> String {
-        self.full_match.clone()
+    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.full_match.clone())
     }
 }
 
 impl ConundrumComponentResult for ParsedOutgoingNoteLink {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         self.set_state(res);
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
@@ -63,9 +63,9 @@ impl ConundrumComponentResult for ParsedOutgoingNoteLink {
 }
 
 impl MdxComponentResult for ParsedOutgoingNoteLink {
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.data.ignore_all_parsers {
-            return self.full_match.clone();
+            return Ok(self.full_match.clone());
         }
 
         if res.data
@@ -73,14 +73,14 @@ impl MdxComponentResult for ParsedOutgoingNoteLink {
               .as_ref()
               .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::NoteLink.to_string()))
         {
-            return self.full_match.clone();
+            return Ok(self.full_match.clone());
         }
 
         if !res.data.contains_outgoing_link(&self.note_id) {
             res.data.outgoing_links.push(NoteOutgoingLinkResult { link_to_note_id: self.note_id.clone() });
         }
 
-        format!("<NoteLink id=\"{}\">{}</NoteLink>", self.note_id, self.content)
+        Ok(format!("<NoteLink id=\"{}\">{}</NoteLink>", self.note_id, self.content))
     }
 }
 

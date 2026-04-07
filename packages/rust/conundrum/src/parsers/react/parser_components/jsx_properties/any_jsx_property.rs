@@ -21,9 +21,7 @@ pub fn any_jsx_property(input: &mut ConundrumInput) -> ConundrumModalResult<Java
                              JavascriptObjectKeyValuePair { key,
              value: Box::new(ParsedElement::Logic(
                      ConundrumLogicToken::Bool(
-                         ConundrumBoolean {
-                             value: true
-                         }
+                         ConundrumBoolean(true)
                      )
              )) }
                          }))).parse_next(input)

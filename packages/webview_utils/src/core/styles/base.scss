@@ -180,6 +180,10 @@ body {
 }
 
 .hide-math-labels {
+  .conundrum-math-label {
+    display: none;
+  }
+
   mjx-labels {
     display: none;
   }

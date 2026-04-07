@@ -17,7 +17,7 @@ use crate::{
     },
     lang::runtime::{
         state::{
-            conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+            conundrum_error_variant::ConundrumModalResult,
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -42,13 +42,13 @@ pub struct ParsedInspectionRequest {
 }
 
 impl PlainTextComponentResult for ParsedInspectionRequest {
-    fn to_plain_text(&self, _: &mut ParseState) -> String {
-        String::from("")
+    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(String::from(""))
     }
 }
 
 impl ConundrumComponentResult for ParsedInspectionRequest {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else {
@@ -58,7 +58,7 @@ impl ConundrumComponentResult for ParsedInspectionRequest {
 }
 
 impl MdxComponentResult for ParsedInspectionRequest {
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
+    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
         if let Some(depth) = match self.level {
             1 => Some(InContentDocumentationFormat::Short),
             2 => Some(InContentDocumentationFormat::Full),
@@ -66,12 +66,12 @@ impl MdxComponentResult for ParsedInspectionRequest {
         } {
             if let Some(doc_id) = InContentDocumentationId::iter().find(|x| x.to_string() == self.keyword) {
                 let body_as_string = EmbeddedInContentDocs::get_incontent_docs_by_id(&doc_id, &depth);
-                return format!("\n<{} inContentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
-                               DocumentationComponentName::InContentDocumentationContainer,
-                               doc_id,
-                               depth,
-                               body_as_string,
-                               DocumentationComponentName::InContentDocumentationContainer,);
+                return Ok(format!("\n<{} inContentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
+                                  DocumentationComponentName::InContentDocumentationContainer,
+                                  doc_id,
+                                  depth,
+                                  body_as_string,
+                                  DocumentationComponentName::InContentDocumentationContainer,));
             } else if let Some(comp_name) = EmbeddableComponentName::iter().find(|x| x.to_string() == self.keyword)
                                                                            .map(|component_name| {
                                                                                COMPONENT_NAME_ID_MAP
@@ -80,15 +80,15 @@ impl MdxComponentResult for ParsedInspectionRequest {
                                                                            })
             {
                 let body_as_string = EmbeddedComponentDocs::get_incontent_docs_by_id(comp_name, &depth);
-                return format!("\n<{} componentName=\"{}\" format=\"{}\">\n{}\n</{}>\n",
-                               DocumentationComponentName::InContentDocumentationContainer,
-                               comp_name,
-                               depth,
-                               body_as_string,
-                               DocumentationComponentName::InContentDocumentationContainer,);
+                return Ok(format!("\n<{} componentName=\"{}\" format=\"{}\">\n{}\n</{}>\n",
+                                  DocumentationComponentName::InContentDocumentationContainer,
+                                  comp_name,
+                                  depth,
+                                  body_as_string,
+                                  DocumentationComponentName::InContentDocumentationContainer,));
             }
         }
-        self.full_match.clone()
+        Ok(self.full_match.clone())
     }
 }
 

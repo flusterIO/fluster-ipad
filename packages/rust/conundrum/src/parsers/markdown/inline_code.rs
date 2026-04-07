@@ -26,22 +26,28 @@ pub struct InlineCodeResult {
 }
 
 impl MarkdownComponentResult for InlineCodeResult {
-    fn to_markdown(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
-        format!("`{}`", self.content)
+    fn to_markdown(&self,
+                   _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                   -> ConundrumModalResult<String> {
+        Ok(format!("`{}`", self.content))
     }
 }
 
 impl MdxComponentResult for InlineCodeResult {
-    fn to_mdx_component(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+    fn to_mdx_component(&self,
+                        _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                        -> ConundrumModalResult<String> {
         match &self.lang {
-            CodeBlockLanguage::DefaultLanguage => format!("`{}`", self.content),
-            CodeBlockLanguage::UserProvided(s) => format!("`{}{{:{}}}`", self.content, s),
+            CodeBlockLanguage::DefaultLanguage => Ok(format!("`{}`", self.content)),
+            CodeBlockLanguage::UserProvided(s) => Ok(format!("`{}{{:{}}}`", self.content, s)),
         }
     }
 }
 
 impl ConundrumComponentResult for InlineCodeResult {
-    fn to_conundrum_component(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+    fn to_conundrum_component(&self,
+                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                              -> ConundrumModalResult<String> {
         if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
                                               ConundrumModifier::PreferInlineMarkdownSyntax])
         {

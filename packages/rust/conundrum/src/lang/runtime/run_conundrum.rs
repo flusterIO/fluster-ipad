@@ -19,7 +19,7 @@ use crate::{
     },
     parsers::markdown::heading_sluggger::Slugger,
 };
-use winnow::{Stateful, error::ErrMode};
+use winnow::Stateful;
 
 /// This is the core 'input' for Conundrum.
 #[typeshare]
@@ -71,11 +71,10 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
     let mut stateful_input = Stateful { input: opts.content.as_str(),
                                         state };
 
-    parse_conundrum_string(&mut stateful_input).map(|(elements, input_data)| {
-                                                   let mut x = input_data.state.borrow_mut();
-                                                   let compiled = compile_elements(&elements, &mut x);
-                                                   x.data.content = compiled;
-                                                   x.data.clone()
-                                               })
-                                               .map_err(ConundrumErrorVariant::from)
+    let (elements, input_data) = parse_conundrum_string(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
+
+    let mut x = input_data.state.borrow_mut();
+    let compiled = compile_elements(&elements, &mut x)?;
+    x.data.content = compiled;
+    Ok(x.data.clone())
 }

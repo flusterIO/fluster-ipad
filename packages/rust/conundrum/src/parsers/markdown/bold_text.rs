@@ -9,7 +9,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+            conundrum_error_variant::ConundrumModalResult,
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -28,25 +28,25 @@ pub struct MarkdownBoldTextResult {
 }
 
 impl MarkdownComponentResult for MarkdownBoldTextResult {
-    fn to_markdown(&self, _: &mut ParseState) -> String {
-        format!("**{}**", self.content)
+    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("**{}**", self.content))
     }
 }
 
 impl MdxComponentResult for MarkdownBoldTextResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("<span className=\"font-bold\">{}</span>", self.content)
+    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("<span className=\"font-bold\">{}</span>", self.content))
     }
 }
 
 impl PlainTextComponentResult for MarkdownBoldTextResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> String {
-        self.content.clone()
+    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.content.clone())
     }
 }
 
 impl ConundrumComponentResult for MarkdownBoldTextResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText, ConundrumModifier::ForSearchInput]) {
             self.to_plain_text(res)
         } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,

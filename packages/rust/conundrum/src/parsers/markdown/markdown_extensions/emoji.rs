@@ -3,10 +3,7 @@ use winnow::{Parser, combinator::delimited, stream::AsChar, token::take_while};
 
 use crate::{
     lang::runtime::{
-        state::{
-            conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
-            parse_state::ConundrumModifier,
-        },
+        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumModifier},
         traits::{
             fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult,
             plain_text_component_result::PlainTextComponentResult,
@@ -22,19 +19,25 @@ pub struct EmojiResult {
 }
 
 impl PlainTextComponentResult for EmojiResult {
-    fn to_plain_text(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
-        String::from("")
+    fn to_plain_text(&self,
+                     _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                     -> ConundrumModalResult<String> {
+        Ok(String::from(""))
     }
 }
 
 impl MdxComponentResult for EmojiResult {
-    fn to_mdx_component(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
-        format!(":{}:", self.value)
+    fn to_mdx_component(&self,
+                        _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                        -> ConundrumModalResult<String> {
+        Ok(format!(":{}:", self.value))
     }
 }
 
 impl ConundrumComponentResult for EmojiResult {
-    fn to_conundrum_component(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+    fn to_conundrum_component(&self,
+                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                              -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForSearchInput) {
             self.to_plain_text(res)
         } else {

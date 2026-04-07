@@ -8,7 +8,8 @@ export const mathSwiftActionReducer = (state: MathState, action: PayloadAction<A
         case EditorStateActions.SetInitialEditorState: {
             return {
                 ...state,
-                ...action.payload.payload.math
+                ...action.payload.payload.math,
+                equation_refs: {}
             }
         }
         default: {

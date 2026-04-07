@@ -9,17 +9,15 @@ use winnow::{
 };
 
 use crate::{
-    lang::{
-        runtime::{
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
-            },
-            traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
-            },
+    lang::runtime::{
+        state::{
+            conundrum_error_variant::ConundrumModalResult,
+            parse_state::{ConundrumModifier, ParseState},
+        },
+        traits::{
+            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
         },
     },
     output::{
@@ -43,47 +41,47 @@ pub struct ParsedCodeBlock {
 }
 
 impl PlainTextComponentResult for ParsedCodeBlock {
-    fn to_plain_text(&self, res: &mut ParseState) -> String {
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         self.to_markdown(res)
     }
 }
 
 impl MarkdownComponentResult for ParsedCodeBlock {
-    fn to_markdown(&self, _: &mut ParseState) -> String {
+    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
         let mut tick_string = String::from("");
         for _ in 0..self.depth {
             tick_string += "`";
         }
-        format!(
-                "{}{}
+        Ok(format!(
+                   "{}{}
 {}
 {}",
-                tick_string, self.language.0, self.content, tick_string
-        )
+                   tick_string, self.language.0, self.content, tick_string
+        ))
     }
 }
 
 impl ConundrumComponentResult for ParsedCodeBlock {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         match self.language.0.as_str() {
             "dictionary" => {
                 if res.should_ignore_parser(&ParserId::Dictionary) {
-                    return self.full_match.clone();
+                    return Ok(self.full_match.clone());
                 }
 
                 // Extract the metadata or provide a fallback
-                get_dictionary_content(self, &mut res.data)
+                Ok(get_dictionary_content(self, &mut res.data))
             }
-            "fluster-ai" => get_ai_parsing_request_phase_1_content(self, &mut res.data),
+            "fluster-ai" => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
             _ => {
                 if res.data.ignore_all_parsers {
-                    self.full_match.clone()
+                    Ok(self.full_match.clone())
                 } else if res.is_markdown() {
                     self.to_markdown(res)
                 } else if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
                     self.to_plain_text(res)
                 } else if res.contains_modifier(&ConundrumModifier::CodeBlocksAsIs) {
-                    self.full_match.clone()
+                    Ok(self.full_match.clone())
                 } else {
                     self.to_mdx_component(res)
                 }
@@ -93,30 +91,28 @@ impl ConundrumComponentResult for ParsedCodeBlock {
 }
 
 impl MdxComponentResult for ParsedCodeBlock {
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         match self.language.0.as_str() {
             "dictionary" => {
                 if res.should_ignore_parser(&ParserId::Dictionary) {
-                    return self.full_match.clone();
+                    return Ok(self.full_match.clone());
                 }
 
                 // Extract the metadata or provide a fallback
-                get_dictionary_content(self, &mut res.data)
+                Ok(get_dictionary_content(self, &mut res.data))
             }
-            "fluster-ai" => get_ai_parsing_request_phase_1_content(self, &mut res.data),
-            _ => {
-                format!(
-                        r#"<{} {}>
+            "fluster-ai" => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
+            _ => Ok(format!(
+                            r#"<{} {}>
 {}
 </{}>"#,
-                        AutoInsertedComponentName::AutoInsertedCodeBlock,
-                        self.language
-                            .to_jsx_prop_as_string("language")
-                            .unwrap_or_else(|_| String::from(self.language.0.clone())),
-                        self.content,
-                        AutoInsertedComponentName::AutoInsertedCodeBlock,
-                )
-            }
+                            AutoInsertedComponentName::AutoInsertedCodeBlock,
+                            self.language
+                                .to_jsx_prop_as_string("language")
+                                .unwrap_or_else(|_| String::from(self.language.0.clone())),
+                            self.content,
+                            AutoInsertedComponentName::AutoInsertedCodeBlock,
+            )),
         }
     }
 }

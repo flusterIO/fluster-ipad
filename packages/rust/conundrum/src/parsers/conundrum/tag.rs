@@ -11,7 +11,7 @@ use crate::{
         lib::ui::ui_types::inline_markdown_override::InlineMarkdownOverride,
         runtime::{
             state::{
-                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+                conundrum_error_variant::ConundrumModalResult,
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
@@ -47,13 +47,13 @@ impl ConundrumStateModifier for ParsedTag {
 }
 
 impl PlainTextComponentResult for ParsedTag {
-    fn to_plain_text(&self, _: &mut ParseState) -> String {
-        self.body.clone()
+    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.body.clone())
     }
 }
 
 impl ConundrumComponentResult for ParsedTag {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         self.set_state(res);
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
@@ -64,15 +64,15 @@ impl ConundrumComponentResult for ParsedTag {
 }
 
 impl MarkdownComponentResult for ParsedTag {
-    fn to_markdown(&self, res: &mut ParseState) -> String {
-        self.markdown.unwrap_or(InlineMarkdownOverride::Bold).wrap_content(&self.body)
+    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.markdown.unwrap_or(InlineMarkdownOverride::Bold).wrap_content(&self.body))
     }
 }
 
 impl MdxComponentResult for ParsedTag {
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.data.ignore_all_parsers {
-            return self.full_match.clone();
+            return Ok(self.full_match.clone());
         }
 
         if res.data
@@ -80,7 +80,7 @@ impl MdxComponentResult for ParsedTag {
               .as_ref()
               .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::NoteLink.to_string()))
         {
-            return self.full_match.clone();
+            return Ok(self.full_match.clone());
         }
 
         if res.data
@@ -88,13 +88,13 @@ impl MdxComponentResult for ParsedTag {
               .as_ref()
               .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::Tags.to_string()))
         {
-            return self.full_match.clone();
+            return Ok(self.full_match.clone());
         }
 
-        format!("<{}>{}</{}>",
-                AutoInsertedComponentName::AutoInsertedTag,
-                self.body,
-                AutoInsertedComponentName::AutoInsertedTag)
+        Ok(format!("<{}>{}</{}>",
+                   AutoInsertedComponentName::AutoInsertedTag,
+                   self.body,
+                   AutoInsertedComponentName::AutoInsertedTag))
     }
 }
 

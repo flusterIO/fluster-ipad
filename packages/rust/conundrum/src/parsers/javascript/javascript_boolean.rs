@@ -3,7 +3,7 @@ use winnow::Parser;
 use winnow::combinator::alt;
 use winnow::token::literal;
 
-use crate::lang::runtime::state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult};
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
@@ -22,11 +22,13 @@ impl JavascriptParser<JavascriptBooleanResult> for JavascriptBooleanResult {
 }
 
 impl ConundrumComponentResult for JavascriptBooleanResult {
-    fn to_conundrum_component(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+    fn to_conundrum_component(&self,
+                              _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                              -> ConundrumModalResult<String> {
         if self.value {
-            String::from("true")
+            Ok(String::from("true"))
         } else {
-            String::from("false")
+            Ok(String::from("false"))
         }
     }
 }

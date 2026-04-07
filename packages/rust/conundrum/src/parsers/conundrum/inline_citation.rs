@@ -30,13 +30,13 @@ pub struct ParsedCitation {
 }
 
 impl PlainTextComponentResult for ParsedCitation {
-    fn to_plain_text(&self, _: &mut ParseState) -> String {
-        self.key.clone()
+    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.key.clone())
     }
 }
 
 impl ConundrumComponentResult for ParsedCitation {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else {
@@ -46,9 +46,9 @@ impl ConundrumComponentResult for ParsedCitation {
 }
 
 impl MdxComponentResult for ParsedCitation {
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.data.ignore_all_parsers {
-            return self.full_match.clone();
+            return Ok(self.full_match.clone());
         }
 
         if res.data
@@ -56,10 +56,10 @@ impl MdxComponentResult for ParsedCitation {
               .as_ref()
               .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::Citations.to_string()))
         {
-            return self.full_match.clone();
+            return Ok(self.full_match.clone());
         }
 
-        format!("<FlusterCitation citationKey=\"{}\" idx={{{}}} />", self.key, self.idx)
+        Ok(format!("<FlusterCitation citationKey=\"{}\" idx={{{}}} />", self.key, self.idx))
     }
 }
 

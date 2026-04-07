@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use gray_matter::{Matter, engine::YAML};
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
@@ -29,6 +31,9 @@ pub struct MdxParsingResult {
     /// to avoid further parsing.
     pub ignore_all_parsers: bool,
     pub ai_secondary_parse_requests: Vec<AiSerializationRequestPhase1>,
+    /// The map of the user provided equation id (to the `EqRef` component) and
+    /// the index that the equation appears.
+    pub eq_ref_map: HashMap<String, u32>,
 }
 
 impl Default for MdxParsingResult {
@@ -42,6 +47,7 @@ impl Default for MdxParsingResult {
                toc: Vec::new(),
                outgoing_links: Vec::new(),
                ignore_all_parsers: false,
+               eq_ref_map: HashMap::new(),
                ai_secondary_parse_requests: Vec::new() }
     }
 }
@@ -85,6 +91,7 @@ impl MdxParsingResult {
                                None => None,
                            },
                            ignore_all_parsers: false,
+                           eq_ref_map: HashMap::new(),
                            ai_secondary_parse_requests: Vec::new() }
     }
 }

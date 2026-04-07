@@ -1,7 +1,10 @@
 use serde::Serialize;
 
 use crate::{
-    lang::runtime::{state::parse_state::ParseState, traits::fluster_component_result::ConundrumComponentResult},
+    lang::runtime::{
+        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+        traits::fluster_component_result::ConundrumComponentResult,
+    },
     parsers::javascript::{
         function::javascript_function::JavascriptFunction,
         javascript_boolean::JavascriptBooleanResult,
@@ -24,7 +27,7 @@ pub enum ParsedJavascriptElement {
 }
 
 impl ConundrumComponentResult for ParsedJavascriptElement {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         match self {
             ParsedJavascriptElement::KeyValuePair(k) => k.to_conundrum_component(res),
             ParsedJavascriptElement::Number(n) => n.to_conundrum_component(res),

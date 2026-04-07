@@ -56,46 +56,47 @@ pub struct MarkdownHeadingStringifiedResult {
 }
 
 impl MarkdownHeadingResult {
-    pub fn to_stringified_result(&self, res: &mut ParseState) -> MarkdownHeadingStringifiedResult {
-        let children_string = compile_elements(&self.children, res);
-        MarkdownHeadingStringifiedResult { depth: self.depth,
-                                           content: children_string,
-                                           id: self.id.clone() }
+    pub fn to_stringified_result(&self,
+                                 res: &mut ParseState)
+                                 -> ConundrumModalResult<MarkdownHeadingStringifiedResult> {
+        let children_string = compile_elements(&self.children, res)?;
+        Ok(MarkdownHeadingStringifiedResult { depth: self.depth,
+                                              content: children_string,
+                                              id: self.id.clone() })
     }
 }
 
 impl InlineMarkdownComponentResult for MarkdownHeadingResult {
-    fn to_inline_markdown(&self, res: &mut ParseState) -> String {
+    fn to_inline_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         compile_elements(&self.children, res)
     }
 }
 
 impl MarkdownComponentResult for MarkdownHeadingResult {
-    fn to_markdown(&self, res: &mut ParseState) -> String {
+    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         let mut s = String::from("");
         for _ in 1..self.depth {
             s += "#"
         }
-        let children = compile_elements(&self.children, res);
-        format!("{} {}", s, children)
+        let children = compile_elements(&self.children, res)?;
+        Ok(format!("{} {}", s, children))
     }
 }
 
 impl ConundrumStateModifier for MarkdownHeadingResult {
     fn set_state(&self, res: &mut ParseState) {
-        let x = self.to_stringified_result(res);
-        res.data.toc.push(x)
+        self.to_stringified_result(res).map(|x| res.data.toc.push(x));
     }
 }
 
 impl PlainTextComponentResult for MarkdownHeadingResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> String {
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         compile_elements(&self.children, res)
     }
 }
 
 impl ConundrumComponentResult for MarkdownHeadingResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         self.set_state(res);
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
@@ -110,21 +111,24 @@ impl ConundrumComponentResult for MarkdownHeadingResult {
 }
 
 impl MdxComponentResult for MarkdownHeadingResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
-        let children_string = compile_elements(&self.children, res);
-        let subtitle_string = self.subtitle
-                                  .as_ref()
-                                  .map(|s| compile_elements(s, res))
-                                  .map(|x| format_markdown_fragment_property(x.as_str()))
-                                  .unwrap_or_else(|| String::from("{null}"));
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let children_string = compile_elements(&self.children, res)?;
+        let subtitle_string = match &self.subtitle {
+            Some(s) => {
+                let x = compile_elements(&s, res)?;
+                let y = x.as_str();
+                format_markdown_fragment_property(y)
+            }
+            None => "{null}".to_string(),
+        };
 
-        format!("<{} depth={} id={} subtitle={} >{}</{}>",
-                AutoInsertedComponentName::AutoInsertedHeading,
-                format_embedded_object_property(self.depth.to_string()),
-                format!("\"{}\"", self.id),
-                subtitle_string,
-                children_string,
-                AutoInsertedComponentName::AutoInsertedHeading)
+        Ok(format!("<{} depth={} id={} subtitle={} >{}</{}>",
+                   AutoInsertedComponentName::AutoInsertedHeading,
+                   format_embedded_object_property(self.depth.to_string()),
+                   format!("\"{}\"", self.id),
+                   subtitle_string,
+                   children_string,
+                   AutoInsertedComponentName::AutoInsertedHeading))
     }
 }
 

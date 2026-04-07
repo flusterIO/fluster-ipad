@@ -1,5 +1,3 @@
-use crate::lang::lib::ui::ui_types::children::Children;
-use crate::lang::runtime::parse_conundrum_string::parse_elements;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::state::parse_state::ParseState;
 use crate::lang::runtime::traits::conundrum_input::{ConundrumInput, get_conundrum_input};
@@ -50,15 +48,15 @@ impl JavascriptParser<JavascriptStringResult> for JavascriptStringResult {
 }
 
 impl JsxComponentResult for JavascriptStringResult {
-    fn to_jsx_component(&self, _: &mut ParseState) -> String {
-        format!("{}{}{}", self.delimiter, self.value, self.delimiter)
+    fn to_jsx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("{}{}{}", self.delimiter, self.value, self.delimiter))
     }
 }
 
 impl ConundrumComponentResult for JavascriptStringResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.is_markdown_or_plain_text() {
-            String::from("")
+            Ok(String::from(""))
         } else {
             self.to_jsx_component(res)
         }

@@ -44,7 +44,7 @@ impl JsxPropertyParser for JsxBooleanPropertyResult {
                        jsx_property_key.map(|key| JavascriptObjectKeyValuePair { key,
                                                                                  value: Box::new(
                                                                                      ParsedElement::Logic(
-                                                                                         ConundrumLogicToken::Bool(ConundrumBoolean { value: true })
+                                                                                         ConundrumLogicToken::Bool(ConundrumBoolean (true ))
                                                                                      )
                                                                                  )})
                                                                                  )).parse_next(input)

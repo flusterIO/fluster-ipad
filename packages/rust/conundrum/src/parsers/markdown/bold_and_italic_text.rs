@@ -28,25 +28,25 @@ pub struct MarkdownBoldAndItalicTextResult {
 }
 
 impl MarkdownComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_markdown(&self, _: &mut ParseState) -> String {
-        format!("**_{}_**", self.content)
+    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("**_{}_**", self.content))
     }
 }
 
 impl MdxComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        format!("<span className=\"italic font-bold\">{}</span>", self.content)
+    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("<span className=\"italic font-bold\">{}</span>", self.content))
     }
 }
 
 impl PlainTextComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> String {
-        self.content.clone()
+    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.content.clone())
     }
 }
 
 impl ConundrumComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText, ConundrumModifier::ForSearchInput]) {
             self.to_plain_text(res)
         } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
@@ -72,7 +72,7 @@ impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicT
                                                                                   input.input.reset(&cp);
                                                                               })?;
         let content = take_while(1.., |c: char| c.to_string() != third_token && c != '\n').parse_next(input)
-                                                                                          .inspect_err(|e| {
+                                                                                          .inspect_err(|_| {
                                                                                               input.input.reset(&cp);
                                                                                           })?;
         let _ = literal(third_token).parse_next(input).inspect_err(|_| {

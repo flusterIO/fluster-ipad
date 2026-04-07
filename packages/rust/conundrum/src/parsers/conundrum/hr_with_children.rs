@@ -1,6 +1,6 @@
 use serde::Serialize;
 use winnow::{
-    ModalResult, Parser,
+    Parser,
     combinator::delimited,
     stream::Stream,
     token::{literal, take_until},
@@ -13,7 +13,7 @@ use crate::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
-                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+                conundrum_error_variant::ConundrumModalResult,
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
@@ -34,13 +34,13 @@ pub struct HrWithChildrenResult {
 }
 
 impl PlainTextComponentResult for HrWithChildrenResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> String {
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         compile_elements(&self.children, res)
     }
 }
 
 impl ConundrumComponentResult for HrWithChildrenResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else {
@@ -52,10 +52,10 @@ impl ConundrumComponentResult for HrWithChildrenResult {
 impl MdxComponentResult for HrWithChildrenResult {
     // No need to handle this implementation of the to_mdx_component method for the
     // ignore_all_parsers component since children will ignore it.
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
-        let children_string = compile_elements(&self.children, res);
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let children_string = compile_elements(&self.children, res)?;
 
-        format!("<Hr>{}</Hr>", children_string)
+        Ok(format!("<Hr>{}</Hr>", children_string))
     }
 }
 

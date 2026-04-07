@@ -184,14 +184,14 @@ export interface EditorInitialStatePayload {
 	saveMethod: EditorSaveMethod;
 }
 
-export interface MathState {
+export interface InitialMathState {
 	mathjax_font_url: string;
 }
 
 export interface EditorBasedWebviewInitialState {
 	container: WebviewContainerSharedInitialState;
 	editor: EditorInitialStatePayload;
-	math: MathState;
+	math: InitialMathState;
 	ai: AiInitialStatePayload;
 }
 
@@ -268,6 +268,9 @@ export interface EditorState {
 	saveMethod: EditorSaveMethod;
 	autoSaveTimeout: number;
 	bib_editor: BibtexEditorState;
+}
+
+export interface EquationReferenceRecord {
 }
 
 export enum UserSetLLM {
@@ -352,6 +355,11 @@ export interface NoteDetailState {
 	citations: EditorCitation[];
 	last_modified_string: string;
 	last_read_string: string;
+}
+
+export interface MathState {
+	mathjax_font_url: string;
+	equation_refs: Record<string, number>;
 }
 
 export interface GlobalWebviewState {

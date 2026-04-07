@@ -16,7 +16,7 @@ use crate::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
-                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+                conundrum_error_variant::ConundrumModalResult,
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
@@ -45,13 +45,13 @@ pub struct BlockQuoteResult {
 }
 
 impl PlainTextComponentResult for BlockQuoteResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> String {
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         compile_elements(&self.children, res)
     }
 }
 
 impl ConundrumComponentResult for BlockQuoteResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else {
@@ -65,14 +65,14 @@ impl ConundrumComponentResult for BlockQuoteResult {
 // ---------------------------------------------------------------------------
 
 impl MdxComponentResult for BlockQuoteResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         // Recursively render inner elements through the same MdxParsingResult
         // so side-effects (citations, tags, etc.) are collected correctly.
-        let children_string = compile_elements(&self.children, res);
+        let children_string = compile_elements(&self.children, res)?;
 
-        format!("\n<{component}>\n{inner}\n</{component}>\n",
-                component = AutoInsertedComponentName::AutoInsertedBlockQuote,
-                inner = children_string,)
+        Ok(format!("\n<{component}>\n{inner}\n</{component}>\n",
+                   component = AutoInsertedComponentName::AutoInsertedBlockQuote,
+                   inner = children_string,))
     }
 }
 

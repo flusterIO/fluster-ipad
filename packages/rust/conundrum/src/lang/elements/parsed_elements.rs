@@ -1,12 +1,10 @@
-use std::ops::Deref;
-
 use serde::Serialize;
 
 use crate::{
     lang::{
         lib::ui::ui_types::children::Children,
         runtime::{
-            state::parse_state::ParseState,
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
             traits::{fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult},
         },
     },
@@ -39,8 +37,8 @@ use crate::{
 };
 
 impl MdxComponentResult for String {
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        self.clone()
+    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.clone())
     }
 }
 
@@ -83,14 +81,14 @@ pub enum ParsedElement {
 }
 
 impl MdxComponentResult for ParsedElement {
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         match self {
             ParsedElement::ParsedInspectionRequest(req) => req.to_conundrum_component(res),
             ParsedElement::ParsedCodeBlock(block) => block.to_conundrum_component(res),
             ParsedElement::ParsedCitation(cite) => cite.to_conundrum_component(res),
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_conundrum_component(res),
             ParsedElement::Tag(tag) => tag.to_conundrum_component(res),
-            ParsedElement::Text(s) => s.clone(),
+            ParsedElement::Text(s) => Ok(s.clone()),
             ParsedElement::Heading(heading) => heading.to_conundrum_component(res),
             ParsedElement::BlockMath(math) => math.to_conundrum_component(res),
             ParsedElement::InlineMath(math) => math.to_conundrum_component(res),

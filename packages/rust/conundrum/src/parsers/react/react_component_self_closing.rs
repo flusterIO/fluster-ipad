@@ -45,33 +45,35 @@ pub struct ReactComponentSelfClosingResult {
 }
 
 impl AIInputComponentResult for ReactComponentSelfClosingResult {
-    fn to_ai_input(&self, _: &mut ParseState) -> String {
-        String::from("")
+    fn to_ai_input(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(String::from(""))
     }
 }
 
 impl MarkdownComponentResult for ReactComponentSelfClosingResult {
-    fn to_markdown(&self, _: &mut ParseState) -> String {
-        String::from("")
+    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(String::from(""))
     }
 }
 
 impl PlainTextComponentResult for ReactComponentSelfClosingResult {
     // TODO: Parse specific Fragment based properties as markdown and figure out a
     // way to format everything nicely here.
-    fn to_plain_text(&self, _: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
-        String::from("")
+    fn to_plain_text(&self,
+                     _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                     -> ConundrumModalResult<String> {
+        Ok(String::from(""))
     }
 }
 
 impl MdxComponentResult for ReactComponentSelfClosingResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> String {
-        self.full_text.clone()
+    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.full_text.clone())
     }
 }
 
 impl ConundrumComponentResult for ReactComponentSelfClosingResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForAIInput) {
             self.to_ai_input(res)
         } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,

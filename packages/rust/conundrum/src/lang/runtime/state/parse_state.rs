@@ -1,3 +1,4 @@
+use dashmap::DashMap;
 use serde::{Deserialize, Serialize};
 use uniffi::Enum;
 

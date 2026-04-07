@@ -277,7 +277,7 @@ public struct EditorInitialStatePayload: Codable {
 	}
 }
 
-public struct MathState: Codable {
+public struct InitialMathState: Codable {
 	public let mathjax_font_url: String
 
 	public init(mathjax_font_url: String) {
@@ -288,10 +288,10 @@ public struct MathState: Codable {
 public struct EditorBasedWebviewInitialState: Codable {
 	public let container: WebviewContainerSharedInitialState
 	public let editor: EditorInitialStatePayload
-	public let math: MathState
+	public let math: InitialMathState
 	public let ai: AiInitialStatePayload
 
-	public init(container: WebviewContainerSharedInitialState, editor: EditorInitialStatePayload, math: MathState, ai: AiInitialStatePayload) {
+	public init(container: WebviewContainerSharedInitialState, editor: EditorInitialStatePayload, math: InitialMathState, ai: AiInitialStatePayload) {
 		self.container = container
 		self.editor = editor
 		self.math = math
@@ -406,6 +406,10 @@ public struct EditorState: Codable {
 		self.autoSaveTimeout = autoSaveTimeout
 		self.bib_editor = bib_editor
 	}
+}
+
+public struct EquationReferenceRecord: Codable {
+	public init() {}
 }
 
 public enum UserSetLLM: String, Codable {
@@ -538,6 +542,16 @@ public struct NoteDetailState: Codable {
 		self.citations = citations
 		self.last_modified_string = last_modified_string
 		self.last_read_string = last_read_string
+	}
+}
+
+public struct MathState: Codable {
+	public let mathjax_font_url: String
+	public let equation_refs: [String: UInt32]
+
+	public init(mathjax_font_url: String, equation_refs: [String: UInt32]) {
+		self.mathjax_font_url = mathjax_font_url
+		self.equation_refs = equation_refs
 	}
 }
 

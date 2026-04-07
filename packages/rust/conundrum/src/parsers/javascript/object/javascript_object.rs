@@ -9,10 +9,7 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            state::{
-                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
-                parse_state::ParseState,
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
             traits::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
                 jsx_component_result::JsxComponentResult, mdx_component_result::MdxComponentResult,
@@ -62,22 +59,25 @@ impl JavascriptParser<JavascriptObjectResult> for JavascriptObjectResult {
 }
 
 impl JsxComponentResult for JavascriptObjectResult {
-    fn to_jsx_component(&self, res: &mut ParseState) -> String {
+    fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         let mut s = String::from("{\n");
         for (k, v) in self.data.clone() {
             if let Ok(key) = ConundrumString::new(k.as_str()).to_quoted_string() {
-                s += format!("\"{}\": {}", key, v.to_mdx_component(res)).as_str();
+                let val_string = v.to_mdx_component(res)?;
+                s += format!("\"{}\": {}", key, val_string).as_str();
             }
         }
         s += "\n};";
-        s.to_string()
+        Ok(s.to_string())
     }
 }
 
 impl ConundrumComponentResult for JavascriptObjectResult {
-    fn to_conundrum_component(&self, res: &mut crate::lang::runtime::state::parse_state::ParseState) -> String {
+    fn to_conundrum_component(&self,
+                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                              -> ConundrumModalResult<String> {
         if res.is_markdown_or_plain_text() {
-            String::from("")
+            Ok(String::from(""))
         } else {
             self.to_jsx_component(res)
         }

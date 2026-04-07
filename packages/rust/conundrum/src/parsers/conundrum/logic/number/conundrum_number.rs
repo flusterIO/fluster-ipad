@@ -3,7 +3,10 @@ use std::fmt::Display;
 use serde::Serialize;
 
 use crate::{
-    lang::runtime::{state::parse_state::ParseState, traits::fluster_component_result::ConundrumComponentResult},
+    lang::runtime::{
+        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+        traits::fluster_component_result::ConundrumComponentResult,
+    },
     parsers::conundrum::logic::number::{conundrum_float::ConundrumFloat, conundrum_int::ConundrumInt},
 };
 
@@ -36,7 +39,7 @@ impl ConundrumNumber {
 }
 
 impl ConundrumComponentResult for ConundrumNumber {
-    fn to_conundrum_component(&self, _: &mut ParseState) -> String {
-        self.to_string()
+    fn to_conundrum_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(self.to_string())
     }
 }

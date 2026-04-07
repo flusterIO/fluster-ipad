@@ -10,7 +10,7 @@ use crate::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
-                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+                conundrum_error_variant::ConundrumModalResult,
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
@@ -31,13 +31,13 @@ pub struct MarkdownParagraphResult {
 }
 
 impl PlainTextComponentResult for MarkdownParagraphResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> String {
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         compile_elements(&self.children, res)
     }
 }
 
 impl ConundrumComponentResult for MarkdownParagraphResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else {
@@ -47,12 +47,12 @@ impl ConundrumComponentResult for MarkdownParagraphResult {
 }
 
 impl MdxComponentResult for MarkdownParagraphResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> String {
-        let children_string = compile_elements(&self.children, res);
-        format!("<{}>\n{}\n</{}>",
-                AutoInsertedComponentName::AutoInsertedMarkdownParagraph,
-                children_string.trim(),
-                AutoInsertedComponentName::AutoInsertedMarkdownParagraph,)
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let children_string = compile_elements(&self.children, res)?;
+        Ok(format!("<{}>\n{}\n</{}>",
+                   AutoInsertedComponentName::AutoInsertedMarkdownParagraph,
+                   children_string.trim(),
+                   AutoInsertedComponentName::AutoInsertedMarkdownParagraph,))
     }
 }
 
