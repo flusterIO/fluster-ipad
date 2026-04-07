@@ -8,6 +8,9 @@ interface AutoInsertedInlineMathProps {
     children: ReactNode
 }
 
+/**
+ * @deprecated -- oined with other math component.
+ */
 export const AutoInsertedInlineMath = ({ data, children }: AutoInsertedInlineMathProps): ReactNode => {
     console.log("data: ", data)
     return (
@@ -16,4 +19,3 @@ export const AutoInsertedInlineMath = ({ data, children }: AutoInsertedInlineMat
 }
 
 
-AutoInsertedInlineMath.displayName = "AutoInsertedInlineMath"

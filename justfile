@@ -9,6 +9,10 @@ set dotenv-required
 set dotenv-path := ".env.local"
 set dotenv-load := true
 
+
+run_when_online:
+	zsh {{justfile_directory()}}/scripts/when_online.zsh
+
 format_package_jsons:
 	pnpm syncpack fix-mismatches
 	pnpm syncpack format

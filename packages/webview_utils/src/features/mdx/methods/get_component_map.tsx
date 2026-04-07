@@ -343,20 +343,6 @@ const items: ComponentMapItem[] = [
         }
     },
     {
-        query: [AutoInsertedComponentName.AutoInsertedBlockMath],
-        componentType: ComponentItemType.autoInserted,
-        importComponent: async () => {
-            return import("../../mdx/embeddable_mdx_components/auto_inserted/block_math").then((a) => a.AutoInsertedBlockMath)
-        }
-    },
-    {
-        query: [AutoInsertedComponentName.AutoInsertedInlineMath],
-        componentType: ComponentItemType.autoInserted,
-        importComponent: async () => {
-            return import("../../mdx/embeddable_mdx_components/auto_inserted/inline_math").then((a) => a.AutoInsertedInlineMath)
-        }
-    },
-    {
         query: [AutoInsertedComponentName.AutoInsertedBlockQuote],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
@@ -364,7 +350,7 @@ const items: ComponentMapItem[] = [
         }
     },
     {
-        query: [AutoInsertedComponentName.AutoInsertedCodeBlock],
+        query: [AutoInsertedComponentName.AutoInsertedMathBlock],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {
             return import("../../mdx/embeddable_mdx_components/math/auto_inserted_math_block").then((a) => a.AutoInsertedMathBlock)

@@ -56,6 +56,9 @@ pub enum ConundrumModifier {
     /// Useful for search related features, being able to match text without
     /// markdown syntax interfering. Not super useful for much else.
     ForcePlainText,
+    /// This is really only useful for when your environment can't support any
+    /// other output format.
+    DecoratedPlainText,
     /// Set this flag when the output is intended to be consumed by AI, probably
     /// with the `.PreferMarkdownSyntax` flag.
     ForAIInput,
@@ -91,6 +94,8 @@ pub struct ParseState {
     // should be converted to a map in the `run_conundrum` function before everything else
     // executes for quick lookup, since there is a **lot** of lookup in this list.
     pub modifiers: Vec<ConundrumModifier>,
+    /// The equation count, for those sweet numbered equations..
+    pub eq_count: u32,
     pub slugger: Slugger,
 }
 

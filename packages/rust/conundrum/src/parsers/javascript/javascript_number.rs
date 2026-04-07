@@ -6,6 +6,8 @@ use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::state::parse_state::ParseState;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
+use crate::parsers::conundrum::logic::number::conundrum_float::ConundrumFloat;
+use crate::parsers::conundrum::logic::number::conundrum_int::ConundrumInt;
 use crate::parsers::conundrum::logic::number::conundrum_number::ConundrumNumber;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
 
@@ -18,8 +20,8 @@ pub struct JavascriptNumberResult {
     pub value: ConundrumNumber,
 }
 
-impl PartialEq<i128> for JavascriptNumberResult {
-    fn eq(&self, other: &i128) -> bool {
+impl PartialEq<i64> for JavascriptNumberResult {
+    fn eq(&self, other: &i64) -> bool {
         match self.value {
             ConundrumNumber::Float(_) => false,
             ConundrumNumber::Int(n) => n == *other,
@@ -35,13 +37,13 @@ impl PartialEq<f64> for JavascriptNumberResult {
 }
 
 pub fn javascript_int(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptNumberResult> {
-    let n: i128 = dec_int.parse_next(input)?;
-    Ok(JavascriptNumberResult { value: ConundrumNumber::Int(n) })
+    let n: i64 = dec_int.parse_next(input)?;
+    Ok(JavascriptNumberResult { value: ConundrumNumber::Int(ConundrumInt(n)) })
 }
 
 pub fn javascript_float(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptNumberResult> {
     let x: f64 = float.parse_next(input)?;
-    Ok(JavascriptNumberResult { value: ConundrumNumber::Float(x) })
+    Ok(JavascriptNumberResult { value: ConundrumNumber::Float(ConundrumFloat(x)) })
 }
 
 impl JavascriptParser<JavascriptNumberResult> for JavascriptNumberResult {

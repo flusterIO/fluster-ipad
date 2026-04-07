@@ -8,6 +8,9 @@ interface AutoInsertedBlockMathProps {
     children: ReactNode
 }
 
+/**
+ * @deprecated - Joined with other math component.
+ */
 export const AutoInsertedBlockMath = ({ data, children }: AutoInsertedBlockMathProps): ReactNode => {
     console.log("data: ", data)
     return (
@@ -16,4 +19,3 @@ export const AutoInsertedBlockMath = ({ data, children }: AutoInsertedBlockMathP
 }
 
 
-AutoInsertedBlockMath.displayName = "AutoInsertedBlockMath"

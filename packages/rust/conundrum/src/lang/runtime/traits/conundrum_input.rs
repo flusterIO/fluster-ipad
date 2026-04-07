@@ -18,5 +18,6 @@ pub fn get_conundrum_input(val: &str, modifiers: Vec<ConundrumModifier>) -> Conu
                      state: RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(val),
                                                       bib: CitationList::default(),
                                                       modifiers,
+                                                      eq_count: 0,
                                                       slugger: Slugger::default() }) }
 }

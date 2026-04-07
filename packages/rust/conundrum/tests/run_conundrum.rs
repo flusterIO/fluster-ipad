@@ -16,7 +16,8 @@ async fn runs_conundrum() {
 
     let opts = ParseConundrumOptions { note_id: None,
                                        content: test_content,
-                                       modifiers: Vec::new() };
+                                       modifiers: Vec::new(),
+                                       hide_components: Vec::new() };
 
     let res = run_conundrum(opts).await.expect("Returns a valid result when vald input was provided.");
 
@@ -52,14 +53,17 @@ async fn conundrum_parses_documentation_requests() {
 
         let short_opts = ParseConundrumOptions { note_id: None,
                                                  content: short_test_content,
-                                                 modifiers: Vec::new() };
+                                                 modifiers: Vec::new(),
+
+                                                 hide_components: Vec::new() };
 
         let short_res =
             run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
 
         let full_opts = ParseConundrumOptions { note_id: None,
                                                 content: full_test_content,
-                                                modifiers: Vec::new() };
+                                                modifiers: Vec::new(),
+                                                hide_components: Vec::new() };
 
         let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
 
@@ -82,14 +86,16 @@ async fn conundrum_parses_documentation_requests() {
 
         let short_opts = ParseConundrumOptions { note_id: None,
                                                  content: short_test_content,
-                                                 modifiers: Vec::new() };
+                                                 modifiers: Vec::new(),
+                                                 hide_components: Vec::new() };
 
         let short_res =
             run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
 
         let full_opts = ParseConundrumOptions { note_id: None,
                                                 content: full_test_content,
-                                                modifiers: Vec::new() };
+                                                modifiers: Vec::new(),
+                                                hide_components: Vec::new() };
 
         let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
 

@@ -65,6 +65,7 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
     let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
                                           bib: CitationList::default(),
                                           modifiers: opts.modifiers.clone(),
+                                          eq_count: 0,
                                           slugger: Slugger::default() });
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),

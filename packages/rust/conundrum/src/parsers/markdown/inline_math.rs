@@ -3,16 +3,19 @@ use typeshare::typeshare;
 use winnow::{Parser, combinator::delimited, token::take_till};
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::ui::components::markdown::math::props::MathData,
+        runtime::{
+            state::{
+                conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
@@ -33,9 +36,10 @@ impl PlainTextComponentResult for InlineMathResult {
 
 impl JsxComponentResult for InlineMathResult {
     fn to_jsx_component(&self, res: &mut ParseState) -> String {
-        format!("<{} math={} />",
-                AutoInsertedComponentName::AutoInsertedCodeBlock,
-                self.body.to_quoted_string().unwrap_or_else(|_| self.body.0.clone()))
+        format!("<{}>{}</{}>",
+                AutoInsertedComponentName::AutoInsertedMathBlock,
+                self.body.0.clone(),
+                AutoInsertedComponentName::AutoInsertedMathBlock,)
     }
 }
 

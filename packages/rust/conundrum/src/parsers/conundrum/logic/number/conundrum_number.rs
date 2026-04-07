@@ -2,16 +2,26 @@ use std::fmt::Display;
 
 use serde::Serialize;
 
-use crate::lang::runtime::{
-    state::parse_state::ParseState, traits::fluster_component_result::ConundrumComponentResult,
+use crate::{
+    lang::runtime::{state::parse_state::ParseState, traits::fluster_component_result::ConundrumComponentResult},
+    parsers::conundrum::logic::number::{conundrum_float::ConundrumFloat, conundrum_int::ConundrumInt},
 };
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone, Copy)]
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumNumber {
-    Int(i128),
-    Float(f64),
+    Int(ConundrumInt),
+    Float(ConundrumFloat),
+}
+
+impl Display for ConundrumNumber {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            ConundrumNumber::Float(f) => f.0.to_string(),
+            ConundrumNumber::Int(n) => n.0.to_string(),
+        })
+    }
 }
 
 impl ConundrumNumber {
@@ -19,17 +29,8 @@ impl ConundrumNumber {
     /// `ConundrumNumber::Float`, else just a simple type cast.
     pub fn as_float(&self) -> f64 {
         match self {
-            ConundrumNumber::Int(n) => *n as f64,
-            ConundrumNumber::Float(n) => *n,
-        }
-    }
-}
-
-impl Display for ConundrumNumber {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            ConundrumNumber::Int(n) => write!(f, "{}", n),
-            ConundrumNumber::Float(n) => write!(f, "{}", n),
+            ConundrumNumber::Int(n) => n.0 as f64,
+            ConundrumNumber::Float(n) => n.0,
         }
     }
 }

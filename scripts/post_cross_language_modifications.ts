@@ -16,12 +16,13 @@ const replacers: Record<
     }
 > = {
     "packages/webview_utils/src/core/code_gen/typeshare/conundrum.ts": {
+        header: "export type ConundrumInt = number;",
         replacers: [
-            {
-                query: '| { tag: "Int", content: i128 }',
-                dontPanicIfExists: ['| { tag: "Int", content: number }'],
-                replaceWith: '| { tag: "Int", content: number }',
-            },
+            // {
+            //     query: '| { tag: "Int", content: i128 }',
+            //     dontPanicIfExists: ['| { tag: "Int", content: number }'],
+            //     replaceWith: '| { tag: "Int", content: number }',
+            // },
             {
                 query: "DashMap<",
                 dontPanicIfExists: ["Map<"],

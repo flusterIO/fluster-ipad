@@ -17,7 +17,7 @@ use crate::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
                 html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
                 markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                plain_text_component_result::PlainTextComponentResult, state_modifier::ConundrumStateModifier,
             },
         },
     },
@@ -25,7 +25,13 @@ use crate::{
         general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
         output_components::output_utils::format_embedded_object_property,
     },
-    parsers::{conundrum::logic::string::conundrum_string::ConundrumString, parser_trait::ConundrumParser},
+    parsers::{
+        conundrum::logic::{
+            number::{conundrum_int::ConundrumInt, conundrum_number::ConundrumNumber},
+            string::conundrum_string::ConundrumString,
+        },
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
@@ -42,6 +48,7 @@ impl PlainTextComponentResult for BlockMathResult {
 
 impl ConundrumComponentResult for BlockMathResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> String {
+        self.set_state(res);
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else if res.is_markdown_or_search_or_ai() {
@@ -54,24 +61,30 @@ impl ConundrumComponentResult for BlockMathResult {
     }
 }
 
+impl ConundrumStateModifier for BlockMathResult {
+    fn set_state(&self, res: &mut ParseState) {
+        res.eq_count += 1;
+    }
+}
+
 impl MarkdownComponentResult for BlockMathResult {
-    fn to_markdown(&self, res: &mut ParseState) -> String {
+    fn to_markdown(&self, _: &mut ParseState) -> String {
         format!("$$\n{}\n$$", self.body)
     }
 }
 
 impl JsxComponentResult for BlockMathResult {
     fn to_jsx_component(&self, res: &mut ParseState) -> String {
-        let math_data = MathData { math: self.body.0.clone(),
-                                   display: true };
-        format!("<{} math={{{}}} />",
-                AutoInsertedComponentName::AutoInsertedCodeBlock,
-                serde_json::to_string(&math_data).unwrap_or_else(|_| String::from("{}")))
+        format!("<{} idx={{{}}} display>\n{}\n</{}>",
+                AutoInsertedComponentName::AutoInsertedMathBlock,
+                res.eq_count - 1, // To make it 0 based, since it will have already been incrememnted
+                self.body.0.clone(),
+                AutoInsertedComponentName::AutoInsertedMathBlock,)
     }
 }
 
 impl HtmlJsComponentResult for BlockMathResult {
-    fn to_html_js_component(&self, res: &mut ParseState) -> String {
+    fn to_html_js_component(&self, _: &mut ParseState) -> String {
         format!("<div className=\"conundrum-math conundrum-math-block\">\n$${}$$\n</div>", self.body)
     }
 }
