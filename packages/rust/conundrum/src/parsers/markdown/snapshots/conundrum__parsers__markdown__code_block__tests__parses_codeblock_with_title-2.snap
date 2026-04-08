@@ -1,0 +1,8 @@
+---
+source: packages/rust/conundrum/src/parsers/markdown/code_block.rs
+expression: mdx_content
+---
+<AutoInsertedCodeBlock language="swift" title="my_webview_content.swift">
+// MY_COMMENT: My comment here
+
+</AutoInsertedCodeBlock>

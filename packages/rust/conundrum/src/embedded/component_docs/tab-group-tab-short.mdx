@@ -1,0 +1,30 @@
+# Tab
+
+> Remember, this component **MUST** be used inside of a `Tabs` provider.
+
+
+```jsx
+<Tabs>
+    <Tab label="My label">
+        My tab content one
+    </Tab>
+    <Tab label="My label 2">
+        My tab content two
+    </Tab>
+    <Tab label="My label" 
+        // This id is required because the 
+        // label appears more than once!
+        id="myUniqueId">
+        My tab content three
+    </Tab>
+</Tabs>
+```
+
+
+
+## Important
+
+Remember that you _must_ provide a unique `id` property if the same `label` field occurs twice in the same `Tabs` component.
+
+
+

@@ -1,0 +1,138 @@
+use std::path::PathBuf;
+
+use serde::{Deserialize, Serialize};
+use strum_macros::EnumIter;
+use typeshare::typeshare;
+
+#[typeshare]
+#[derive(strum_macros::Display, uniffi::Enum, Clone, EnumIter, Serialize, Deserialize)]
+pub enum InContentDocumentationSource {
+    #[serde(rename = "component")]
+    #[strum(to_string = "component")]
+    ComponentDocs,
+    #[serde(rename = "internal-docs")]
+    #[strum(to_string = "internal-docs")]
+    InternalDocs,
+}
+
+#[typeshare]
+#[derive(strum_macros::Display, uniffi::Enum, Clone, EnumIter, Serialize, Deserialize)]
+pub enum InContentDocumentationFormat {
+    #[serde(rename = "full")]
+    #[strum(to_string = "full")]
+    Full,
+    #[serde(rename = "short")]
+    #[strum(to_string = "short")]
+    Short,
+}
+
+#[typeshare]
+#[derive(strum_macros::Display, uniffi::Enum, Clone, Copy, EnumIter, Serialize, Deserialize)]
+pub enum InContentDocumentationId {
+    #[serde(rename = "Markdown")]
+    #[strum(to_string = "Markdown")]
+    Markdown,
+    #[serde(rename = "Docs")]
+    #[strum(to_string = "Docs")]
+    Docs,
+    #[serde(rename = "Syntax")]
+    #[strum(to_string = "Syntax")]
+    Syntax,
+    #[serde(rename = "Jsx")]
+    #[strum(to_string = "Jsx")]
+    Jsx,
+    #[serde(rename = "Sizable")]
+    #[strum(to_string = "Sizable")]
+    SizableObject,
+    #[serde(rename = "Emphasis")]
+    #[strum(to_string = "Emphasis")]
+    Emphasis,
+    #[serde(rename = "Emoji")]
+    #[strum(to_string = "Emoji")]
+    Emoji,
+    #[serde(rename = "Components")]
+    #[strum(to_string = "Components")]
+    Components,
+    #[serde(rename = "AI")]
+    #[strum(to_string = "AI")]
+    AI,
+    #[serde(rename = "Conundrum")]
+    #[strum(to_string = "Conundrum")]
+    Conundrum,
+}
+
+impl InContentDocumentationId {
+    pub fn to_embedded_file_name(self, format: &InContentDocumentationFormat) -> String {
+        let base_file_name = match self {
+            InContentDocumentationId::Markdown => "markdown-docs",
+            InContentDocumentationId::Docs => "documentation-docs",
+            InContentDocumentationId::SizableObject => "sizable-object-docs",
+            InContentDocumentationId::Emphasis => "emphasis-docs",
+            InContentDocumentationId::Syntax => "syntax-docs",
+            InContentDocumentationId::Jsx => "jsx-intro-docs",
+            InContentDocumentationId::Emoji => "emoji-docs",
+            InContentDocumentationId::Components => "generated-component-list",
+            InContentDocumentationId::AI => "ai-docs",
+            InContentDocumentationId::Conundrum => "conundrum",
+        };
+        format!("{}-{}.mdx", base_file_name, format)
+    }
+}
+
+/// Returns a list of file names, not the complete file path and completely
+/// ignores directories.
+pub fn get_file_names_in_dir(dir_path: &PathBuf) -> std::io::Result<Vec<String>> {
+    let mut file_names = Vec::new();
+
+    // Read the directory entries, handling potential IO errors
+    for entry in std::fs::read_dir(dir_path)? {
+        let entry = entry?; // Propagate the individual entry's IO error
+
+        let path = entry.path();
+
+        // Check if the entry is a file and not a directory
+        if path.is_file() {
+            // Extract the file name as an OsStr
+            if let Some(file_name_os) = path.file_name() {
+                // Convert OsStr to a String, handling potential non-UTF-8 names
+                if let Some(file_name_str) = file_name_os.to_str() {
+                    file_names.push(file_name_str.to_owned());
+                }
+            }
+        }
+    }
+
+    Ok(file_names)
+}
+
+#[cfg(test)]
+mod tests {
+    use strum::IntoEnumIterator;
+
+    use crate::testing::get_workspace_root::get_workspace_root;
+
+    use super::*;
+
+    #[test]
+    fn all_in_content_documentation_exists() {
+        let root = get_workspace_root();
+        let p = std::path::Path::new(&root).join("packages")
+                                           .join("rust")
+                                           .join("conundrum")
+                                           .join("src")
+                                           .join("embedded")
+                                           .join("in_content_docs");
+        let file_names =
+            get_file_names_in_dir(&p).expect("Reads 'in_content' notes directory without throwing an error.");
+        for doc_format in InContentDocumentationFormat::iter() {
+            for id in InContentDocumentationId::iter() {
+                let file_name_should_exist = id.to_embedded_file_name(&doc_format.clone());
+                assert!(file_names.iter().any(|x| x == &file_name_should_exist),
+                        "The {} does not appear to exist.",
+                        file_name_should_exist)
+            }
+        }
+
+        // assert_eq!(result, 4);
+    }
+}

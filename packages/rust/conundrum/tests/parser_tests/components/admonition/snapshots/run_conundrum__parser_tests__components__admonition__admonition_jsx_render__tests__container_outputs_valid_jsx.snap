@@ -1,0 +1,9 @@
+---
+source: packages/rust/conundrum/tests/parser_tests/components/admonition/admonition_jsx_render.rs
+expression: res.content
+---
+<Admonition title={<>My admonition's title</>} error folded foldable >
+
+My content goes here.
+
+</Admonition>

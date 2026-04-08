@@ -1,0 +1,97 @@
+use serde::Serialize;
+use typeshare::typeshare;
+
+use crate::lang::{
+    lib::ui::components::{
+        attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
+        layout::{
+            card::card::Card,
+            container::container_model::UtilityContainer,
+            tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
+        },
+    },
+    runtime::{
+        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+        traits::{
+            fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
+        },
+    },
+};
+
+#[typeshare]
+#[derive(Debug, Serialize, Clone)]
+#[serde(tag = "tag", content = "content")]
+pub enum ConundrumComponentType {
+    // Layout
+    // Grid(Grid),
+    Container(UtilityContainer),
+    Card(Card),
+    // Attention
+    Admonition(Admonition),
+    Hint(Hint),
+    Ul(Underline),
+    Hl(Highlight),
+    Tabs(TabsGroup),
+    Tab(Tab),
+}
+
+impl ConundrumComponentType {
+    pub fn component_is_new_line(&self) -> bool {
+        match self {
+            ConundrumComponentType::Card(_) => true,
+            ConundrumComponentType::Admonition(_) => true,
+            ConundrumComponentType::Hint(_) => true,
+            ConundrumComponentType::Ul(_) => false,
+            ConundrumComponentType::Hl(_) => false,
+            ConundrumComponentType::Container(_) => true,
+            ConundrumComponentType::Tabs(_) => true,
+            ConundrumComponentType::Tab(_) => true,
+        }
+    }
+}
+
+impl PlainTextComponentResult for ConundrumComponentType {
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        match self {
+            ConundrumComponentType::Card(s) => s.to_plain_text(res),
+            ConundrumComponentType::Admonition(s) => s.to_plain_text(res),
+            ConundrumComponentType::Hint(s) => s.to_plain_text(res),
+            ConundrumComponentType::Ul(s) => s.to_plain_text(res),
+            ConundrumComponentType::Hl(s) => s.to_plain_text(res),
+            ConundrumComponentType::Container(s) => s.to_plain_text(res),
+            ConundrumComponentType::Tabs(s) => s.to_plain_text(res),
+            ConundrumComponentType::Tab(s) => s.to_plain_text(res),
+        }
+    }
+}
+
+impl MarkdownComponentResult for ConundrumComponentType {
+    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        match self {
+            ConundrumComponentType::Card(s) => s.to_markdown(res),
+            ConundrumComponentType::Admonition(s) => s.to_markdown(res),
+            ConundrumComponentType::Hint(s) => s.to_markdown(res),
+            ConundrumComponentType::Ul(s) => s.to_markdown(res),
+            ConundrumComponentType::Hl(s) => s.to_markdown(res),
+            ConundrumComponentType::Container(s) => s.to_markdown(res),
+            ConundrumComponentType::Tabs(s) => s.to_markdown(res),
+            ConundrumComponentType::Tab(s) => s.to_markdown(res),
+        }
+    }
+}
+
+impl ConundrumComponentResult for ConundrumComponentType {
+    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        match self {
+            ConundrumComponentType::Card(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Admonition(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Hint(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Ul(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Hl(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Container(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Tabs(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Tab(s) => s.to_conundrum_component(res),
+        }
+    }
+}

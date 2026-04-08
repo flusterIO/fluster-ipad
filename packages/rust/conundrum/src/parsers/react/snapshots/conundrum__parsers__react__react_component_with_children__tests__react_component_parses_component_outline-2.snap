@@ -1,0 +1,6 @@
+---
+source: packages/rust/conundrum/src/parsers/react/react_component_with_children.rs
+expression: children
+---
+
+This is my children markdown test content

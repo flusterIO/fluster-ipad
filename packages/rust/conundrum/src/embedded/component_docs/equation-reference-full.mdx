@@ -1,0 +1,21 @@
+## Equation Reference
+
+Reference your equations by their index number without worrying about the structure of your notes changing. Just add the unique `{#myId}` syntax (same as with heading id's) and you'll be able to reference that equation by index anywhere within your note.
+
+### Example
+
+````mdx
+This is my awesome equation
+
+$$ {#myEquationsId}
+e=mc^2
+$$
+
+My awesome equation is numbered <EqRef id="myEquationsId" />!
+````
+
+
+### Properties
+
+This component's properties also extend the `Emphasis` struct so that the inserted equation tag can be styled with any of the app's current **Emphasis** colors, as well as two other properties, `super` and `sub` for super and subscript notation.
+

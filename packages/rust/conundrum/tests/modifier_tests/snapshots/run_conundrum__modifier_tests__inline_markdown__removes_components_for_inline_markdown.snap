@@ -1,0 +1,6 @@
+---
+source: packages/rust/conundrum/tests/modifier_tests/inline_markdown.rs
+expression: res.content
+---
+
+My title **_here_**

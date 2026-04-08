@@ -1,0 +1,7 @@
+---
+source: packages/rust/conundrum/src/parsers/react/react_component_with_children.rs
+expression: mdx_component
+---
+<Card title="My card's title" desc="My card's description!" >
+This is my children markdown test content 
+</Card>
