@@ -14,6 +14,8 @@ extension MdxParsingResult: @retroactive Codable {
     case ai_secondary_parse_requests
     case success
     case toc
+    case eqRefMap
+    case warnings
   }
 
   public init(from decoder: Decoder) throws {
@@ -31,6 +33,9 @@ extension MdxParsingResult: @retroactive Codable {
       [DictionaryEntryResult].self, forKey: .dictionary_entries)
     let aiParsingRequests = try container.decode(
       [AiSerializationRequestPhase1].self, forKey: .ai_secondary_parse_requests)
+    let eqRefMap = try container.decode(
+      [String: UInt32].self, forKey: .eqRefMap)
+    let warnings = try container.decode([ConundrumError].self, forKey: .warnings)
 
     self.init(
       noteId: id,
@@ -43,6 +48,8 @@ extension MdxParsingResult: @retroactive Codable {
       toc: toc,
       ignoreAllParsers: ignoreAllParsers,
       aiSecondaryParseRequests: aiParsingRequests,
+      eqRefMap: eqRefMap,
+      warnings: []
     )
   }
 
@@ -53,5 +60,7 @@ extension MdxParsingResult: @retroactive Codable {
     try container.encodeIfPresent(frontMatter, forKey: .front_matter)
     try container.encode(orderedCitationKeys, forKey: .orderedCitationKeys)
     try container.encode(aiSecondaryParseRequests, forKey: .ai_secondary_parse_requests)
+    try container.encode(eqRefMap, forKey: .eqRefMap)
+    try container.encode(warnings, forKey: .warnings)
   }
 }

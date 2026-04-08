@@ -411,7 +411,7 @@ struct WebViewContainerView: View {
               implementation: self.implementation,
               fluster_theme: flusterTheme
             ),
-            mathPayload: MathState(mathjax_font_url: mathjaxFontUrl),
+            mathPayload: InitialMathState(mathjax_font_url: mathjaxFontUrl),
             aiPayload: AiInitialStatePayload(
               foundation_model_access: llm.availability.toReduxRepresentation()
             ),

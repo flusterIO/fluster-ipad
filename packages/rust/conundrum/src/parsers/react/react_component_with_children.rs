@@ -174,12 +174,12 @@ This is my children markdown test content
         let res = ReactComponentWithChildrenResult::parse_input_string(&mut test_data).expect("Parses vald component successfully.");
 
         let mut state = test_data.state.borrow_mut();
-        let mdx_component = res.to_mdx_component(&mut state);
+        let mdx_component = res.to_mdx_component(&mut state).expect("Compiles to mdx without throwing an error.");
         assert!(mdx_component == test_content, "Returns the input component as the mdx component for an mdx input.");
         assert!(test_data.is_empty(), "Consumes the entire input string.");
         assert_snapshot!(mdx_component);
         let children = match res.component {
-            ConundrumComponentType::Card(c) => c.children.render(&mut state),
+            ConundrumComponentType::Card(c) => c.children.render(&mut state).expect("Compiles children successfully"),
             _ => panic!("Found a component that's not the `Card` that was inserted."),
         };
         assert_snapshot!(children);

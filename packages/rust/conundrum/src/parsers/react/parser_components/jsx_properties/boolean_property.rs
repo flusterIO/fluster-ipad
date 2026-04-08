@@ -2,7 +2,7 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+            state::conundrum_error_variant::ConundrumModalResult,
             traits::conundrum_input::{ConundrumInput, get_conundrum_input},
         },
     },
@@ -67,7 +67,7 @@ mod tests {
 
         assert!(match res.value.as_ref() {
                     ParsedElement::Logic(l) => match l {
-                        ConundrumLogicToken::Bool(b) => b.value,
+                        ConundrumLogicToken::Bool(b) => b.0,
                         _ => false,
                     },
                     _ => false,
@@ -90,7 +90,7 @@ mod tests {
 
         assert!(match res.value.as_ref() {
                     ParsedElement::Logic(l) => match l {
-                        ConundrumLogicToken::Bool(b) => b.value,
+                        ConundrumLogicToken::Bool(b) => b.0,
                         _ => false,
                     },
                     _ => false,
@@ -111,7 +111,7 @@ mod tests {
 
         assert!(match res.value.as_ref() {
                     ParsedElement::Logic(l) => match l {
-                        ConundrumLogicToken::Bool(b) => !b.value,
+                        ConundrumLogicToken::Bool(b) => !b.0,
                         _ => false,
                     },
                     _ => false,
@@ -132,7 +132,7 @@ mod tests {
 
         assert!(match res.value.as_ref() {
                     ParsedElement::Logic(l) => match l {
-                        ConundrumLogicToken::Bool(b) => !b.value,
+                        ConundrumLogicToken::Bool(b) => !b.0,
                         _ => false,
                     },
                     _ => false,

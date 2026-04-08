@@ -7,6 +7,7 @@ import { embeddableGridComponentConfig } from "./grid/embeddable_responsive_grid
 import { embeddableHintComponentConfig } from "./hint/hint_component_config";
 import { hlComponentConfig } from "./hl/hl_component_config";
 import { hrComponentConfig } from "./hr/hr_component_config";
+import { eqRefComponentConfig } from "./math/equation_reference/equation_reference_config";
 import { embeddableTabComponentConfig } from "./tabs/embeddable_tab_config";
 import { tabGroupComponentConfig } from "./tabs/tab_group_component_config";
 import { ulComponentConfig } from "./ul/ul_component_config";
@@ -22,5 +23,6 @@ export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
     embeddableHintComponentConfig,
     embeddableTabComponentConfig,
     tabGroupComponentConfig,
+    eqRefComponentConfig,
     aiNoteSummaryComponentConfig
 ]

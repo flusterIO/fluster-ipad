@@ -32,7 +32,7 @@ extension EditorState {
 
   public static func setInitialEditorState(
     editorPayload: EditorInitialStatePayload, containerPayload: WebviewContainerSharedInitialState,
-    mathPayload: MathState,
+    mathPayload: InitialMathState,
     aiPayload: AiInitialStatePayload,
     eval: @escaping EvalJavascriptFunc
   ) async throws {

@@ -5,10 +5,20 @@
 - [ ] Handle parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST.
 - [ ] Implement equation tag components.
 - [ ] Enable click-to-scroll functionality for equations if the id is present.
+- [ ] Move on to code block parsing issue with nested italics.
+- [ ] Work on integrating new emoji crate directly into the transpiler.
+
+````mdx
+```swift title="webview_container_view.swift"
+// WITH_WIFI: Figure out how to move this back to a background thread _immediately._ It's causing a memory issue right now but that's crucial for performance, as the plain text results are only useful for search related features.
+```
+````
 
 ### Components that need to move over still
 
 - [ ] Grid
+- [ ] Container (Double check functionality)
+- [ ] Table of Contents (TOC)
 
 ## Bug Log
 

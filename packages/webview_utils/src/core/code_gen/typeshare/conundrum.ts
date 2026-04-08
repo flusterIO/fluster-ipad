@@ -41,6 +41,8 @@ export type ParsedElement =
  */
 export type Children = ParsedElement[];
 
+export type ConundrumBoolean = boolean;
+
 export type ConundrumFloat = number;
 
 export type ConundrumString = string;
@@ -67,10 +69,6 @@ export enum Emphasis {
 	Research = "research",
 	Highlight = "highlight",
 	Card = "card",
-}
-
-export interface ConundrumBoolean {
-	value: boolean;
 }
 
 export enum SizableOption {
@@ -219,6 +217,7 @@ export interface AiSerializationRequestPhase1 {
 
 export interface BlockMathResult {
 	body: ConundrumString;
+	id?: ConundrumString;
 }
 
 export interface BlockQuoteResult {
@@ -303,6 +302,50 @@ export interface DictionaryEntryResultData {
 
 export interface EmojiResult {
 	value: string;
+}
+
+/**
+ * ## Example Usage
+ * 
+ * ```mdx
+ * <EqRef id="my-equation" anchor>
+ * $$
+ * e=mc^2
+ * $$
+ * </EqRef>
+ * 
+ * yada, yada, yada, My equation <EqRef id="my-equation" /> is awesome...
+ * ```
+ * 
+ * The above will result in something like:
+ * 
+ * _yada, yada, yada, My equation 1 is awesome..._
+ * 
+ * Or whatever index is represented by that equation, allowing you to reference
+ * equations by index without worrying about the structure of your note
+ * changing.
+ */
+export interface EquationReference {
+	/**
+	 * The `id` field is a string that can be referenced later to use this
+	 * equation's number.
+	 */
+	id: ConundrumString;
+	/**
+	 * This has no effect when `anchor=true`, but will have make the index
+	 * subscript when `anchor` is not set.
+	 */
+	subscript?: ConundrumBoolean;
+	/**
+	 * This has no effect when `anchor=true`, but will have make the index
+	 * superscript when `anchor` is not set.
+	 */
+	superscript?: ConundrumBoolean;
+	/**
+	 * Style the output index according to one of the available Emphasis styles
+	 * if you like.
+	 */
+	emphasis?: Emphasis;
 }
 
 export interface FrontMatterResult {
@@ -427,7 +470,7 @@ export interface MarkdownHeadingResult {
 	depth: number;
 	children: ParsedElement[];
 	subtitle?: ParsedElement[];
-	id: string;
+	id: ConundrumString;
 }
 
 /**
@@ -487,6 +530,12 @@ export interface MdxParsingResult {
 	 */
 	ignore_all_parsers: boolean;
 	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
+	/**
+	 * The map of the user provided equation id (to the `EqRef` component) and
+	 * the index that the equation appears.
+	 */
+	eq_ref_map: Record<string, number>;
+	warnings: ConundrumError[];
 }
 
 /**
@@ -595,6 +644,7 @@ export enum EmbeddableComponentName {
 	UtlityContainer = "Container",
 	HrWithChildren = "Hr",
 	Hint = "Hint",
+	EqRef = "EqRef",
 	Tabs = "Tabs",
 	Tab = "Tab",
 	AINoteSummary = "AINoteSummary",
@@ -800,6 +850,7 @@ export enum CommonComponentPropertyKey {
 
 export type ConundrumErrorVariant = 
 	| { tag: "MultiThreadingError", content?: undefined }
+	| { tag: "FailToFindTitleGroup", content?: undefined }
 	| { tag: "FailToFindComponent", content: string }
 	| { tag: "FailToGenerateString", content?: undefined }
 	| { tag: "FrontMatterError", content?: undefined }
@@ -831,6 +882,7 @@ export enum EmbeddableComponentId {
 	Hint = "embeddable-hint-component",
 	Tabs = "tab-group",
 	Tab = "tab-group-tab",
+	EqRef = "equation-reference",
 	AINoteSummary = "ai-note-summary",
 }
 

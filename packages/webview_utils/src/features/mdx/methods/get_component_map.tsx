@@ -23,6 +23,7 @@ import { embeddableHintComponentNames } from "../embeddable_mdx_components/hint/
 import { FoundationModelAvailabilityWrapper } from "../../ai/presentation/foundation_model_availability_wrapper";
 import { embeddableTabComponentNames } from "../embeddable_mdx_components/tabs/embeddable_tab_config";
 import { tabGroupComponentNames } from "../embeddable_mdx_components/tabs/tab_group_component_config";
+import { eqRefComponentNames } from "../embeddable_mdx_components/math/equation_reference/equation_reference_config";
 
 enum ComponentItemType {
     userInserted,
@@ -174,6 +175,13 @@ const items: ComponentMapItem[] = [
         componentType: ComponentItemType.userInserted,
         importComponent: async () => {
             return import("../embeddable_mdx_components/tabs/tab_group_tab").then((a) => a.EmbeddableTab)
+        }
+    },
+    {
+        query: eqRefComponentNames,
+        componentType: ComponentItemType.userInserted,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/math/equation_reference/equation_reference").then((a) => a.EquationReference)
         }
     },
     /* // -- Text -- */

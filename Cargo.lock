@@ -1052,7 +1052,6 @@ dependencies = [
  "askama 0.15.6",
  "askama_derive 0.15.6",
  "cargo-doc-md",
- "clap",
  "cli-table",
  "criterion",
  "crossbeam",

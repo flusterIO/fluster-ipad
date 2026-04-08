@@ -2,22 +2,28 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
     Parser,
-    ascii::{line_ending, space0, space1},
-    combinator,
+    ascii::{line_ending, space0, space1, till_line_ending},
+    combinator::{self, repeat},
+    error::ErrMode,
     stream::Stream,
     token::{literal, take_till, take_until, take_while},
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        elements::parsed_elements::ParsedElement,
+        runtime::{
+            state::{
+                conundrum_error_variant::ConundrumModalResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::{ConundrumInput, get_conundrum_input},
+                fluster_component_result::ConundrumComponentResult,
+                markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     output::{
@@ -27,7 +33,12 @@ use crate::{
             dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
         },
     },
-    parsers::{conundrum::logic::string::conundrum_string::ConundrumString, parser_trait::ConundrumParser},
+    parsers::{
+        conundrum::logic::{
+            object::object::ConundrumObject, string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
+        },
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare]
@@ -38,6 +49,21 @@ pub struct ParsedCodeBlock {
     pub depth: u8,
     pub content: String,
     pub full_match: String,
+}
+
+impl ParsedCodeBlock {
+    pub fn get_meta_data(&self) -> Option<ConundrumObject> {
+        if let Some(meta) = &self.meta_data {
+            let input = &mut get_conundrum_input(meta.as_str(), vec![]);
+            if let Ok(x) = ConundrumObject::from_single_line_property_string_parser(input) {
+                Some(x)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
 }
 
 impl PlainTextComponentResult for ParsedCodeBlock {
@@ -102,19 +128,55 @@ impl MdxComponentResult for ParsedCodeBlock {
                 Ok(get_dictionary_content(self, &mut res.data))
             }
             "fluster-ai" => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
-            _ => Ok(format!(
-                            r#"<{} {}>
+            _ => {
+                let mut props =
+                    vec![self.language.to_jsx_prop_as_string("language").unwrap_or_else(|_| self.language.0.clone())];
+                #[allow(clippy::collapsible_if)]
+                if let Some(x) = self.get_meta_data() {
+                    if let Some(title_em) = x.data.get("title") {
+                        println!("Here: {:#?}", title_em.value());
+                        if let Some(title_string) = match title_em.value() {
+                            #[allow(clippy::collapsible_match)]
+                            ParsedElement::Logic(l) => match l {
+                                ConundrumLogicToken::String(s) => Some(s),
+                                _ => None,
+                            },
+                            _ => None,
+                        } {
+                            println!("Title: {:#?}", title_string.0.clone());
+                            let title_jsx_prop =
+                                title_string.to_jsx_prop_as_string("title").map_err(ErrMode::Backtrack)?;
+                            props.push(title_jsx_prop)
+                        }
+                    }
+                }
+                Ok(format!(
+                           r#"<{} {}>
 {}
 </{}>"#,
-                            AutoInsertedComponentName::AutoInsertedCodeBlock,
-                            self.language
-                                .to_jsx_prop_as_string("language")
-                                .unwrap_or_else(|_| String::from(self.language.0.clone())),
-                            self.content,
-                            AutoInsertedComponentName::AutoInsertedCodeBlock,
-            )),
+                           AutoInsertedComponentName::AutoInsertedCodeBlock,
+                           props.join(" "),
+                           self.content,
+                           AutoInsertedComponentName::AutoInsertedCodeBlock,
+                ))
+            }
         }
     }
+}
+
+pub fn code_block_meta_string<'a>(input: &'a mut ConundrumInput<'a>) -> ConundrumModalResult<&'a str> {
+    let start = input.input.checkpoint();
+    space1.void().parse_next(input).inspect_err(|_| {
+                                        input.input.reset(&start);
+                                    })?;
+    let x = ConundrumObject::from_single_line_property_string_parser.parse_next(input).inspect_err(|_| {
+                                                                                           input.input.reset(&start);
+                                                                                       })?;
+    let content = till_line_ending.parse_next(input).inspect_err(|_| {
+                                                         input.input.reset(&start);
+                                                     })?;
+
+    Ok(content)
 }
 
 impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
@@ -170,5 +232,35 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
 
     fn matches_first_char(char: char) -> bool {
         char == '`'
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use insta::assert_snapshot;
+
+    use crate::testing::wrap_test_content::wrap_test_conundrum_content;
+
+    use super::*;
+
+    #[test]
+    fn parses_codeblock_with_title() {
+        let test_content = r#"```swift -- title="my_webview_content.swift"
+// MY_COMMENT: My comment here
+```"#;
+        let mut test_data = wrap_test_conundrum_content(test_content);
+        let res =
+            ParsedCodeBlock::parse_input_string(&mut test_data).expect("Parses code block without throwing an error.");
+
+        assert_snapshot!(res.content);
+
+        let mut state = test_data.state.borrow_mut();
+
+        let mdx_content =
+            res.to_mdx_component(&mut state).expect("Compiles code block to mdx without throwing an error.");
+
+        assert_snapshot!(mdx_content);
+        // assert_eq!(result, 4);
     }
 }

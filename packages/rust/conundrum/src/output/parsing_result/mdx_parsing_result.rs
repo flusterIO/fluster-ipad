@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
 use crate::{
-    lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
+    lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
     output::parsing_result::{
         ai_serialization_request::AiSerializationRequestPhase1,
         dictionary_result::DictionaryEntryResult,
@@ -34,6 +34,7 @@ pub struct MdxParsingResult {
     /// The map of the user provided equation id (to the `EqRef` component) and
     /// the index that the equation appears.
     pub eq_ref_map: HashMap<String, u32>,
+    pub warnings: Vec<ConundrumError>,
 }
 
 impl Default for MdxParsingResult {
@@ -48,6 +49,7 @@ impl Default for MdxParsingResult {
                outgoing_links: Vec::new(),
                ignore_all_parsers: false,
                eq_ref_map: HashMap::new(),
+               warnings: Vec::new(),
                ai_secondary_parse_requests: Vec::new() }
     }
 }
@@ -92,6 +94,7 @@ impl MdxParsingResult {
                            },
                            ignore_all_parsers: false,
                            eq_ref_map: HashMap::new(),
+                           warnings: Vec::new(),
                            ai_secondary_parse_requests: Vec::new() }
     }
 }

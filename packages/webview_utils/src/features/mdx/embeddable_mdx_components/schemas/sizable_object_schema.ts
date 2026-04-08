@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SizableOptionRecord, sizablePropSchema, sizablePropsMapTransform, sizablePropsOrBooleanTransform, sizablePropsSchemaOrBool } from "./sizable_props_schema";
+import { type SizableOptionRecord, sizablePropSchema, sizablePropsMapTransform, sizablePropsOrBooleanTransform, sizablePropsSchemaOrBool } from "./sizable_props_schema";
 import { componentNeverProperty } from "./component_never_property";
 
 
@@ -282,6 +282,7 @@ export const getSizableObjectClasses = (data: { [K in keyof SizableObject]: stri
     const classes: string[] = []
 
     Object.keys(_sizableObjectSchema).forEach((k) => {
+        /* eslint-disable-next-line  -- F--k yu eslint, I don't trust you. */
         if (!ignoreSizableKeys || (ignoreSizableKeys && !ignoreSizableKeys.includes(k as keyof typeof _sizableObjectSchema))) {
             classes.push(data[k as keyof typeof _sizableObjectSchema])
         }

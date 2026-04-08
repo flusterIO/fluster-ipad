@@ -1,7 +1,8 @@
 use serde::Serialize;
 use winnow::{
     Parser,
-    combinator::opt,
+    combinator::{opt, preceded},
+    error::ErrMode,
     stream::Stream,
     token::{literal, take_until},
 };
@@ -9,7 +10,8 @@ use winnow::{
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumModalResult,
+            conundrum_error::ConundrumError,
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
             parse_state::{ConundrumModifier, ParseState},
         },
         traits::{
@@ -19,7 +21,10 @@ use crate::{
             plain_text_component_result::PlainTextComponentResult, state_modifier::ConundrumStateModifier,
         },
     },
-    output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
+    output::{
+        general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
+        output_components::output_utils::javascript_null_prop,
+    },
     parsers::{
         conundrum::logic::string::conundrum_string::ConundrumString,
         markdown::subtypes::inline_id_syntax::inline_id_syntax,
@@ -42,7 +47,6 @@ impl PlainTextComponentResult for BlockMathResult {
 
 impl ConundrumComponentResult for BlockMathResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        self.set_state(res);
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else if res.is_markdown_or_search_or_ai() {
@@ -55,12 +59,6 @@ impl ConundrumComponentResult for BlockMathResult {
     }
 }
 
-impl ConundrumStateModifier for BlockMathResult {
-    fn set_state(&self, res: &mut ParseState) {
-        res.eq_count += 1;
-    }
-}
-
 impl MarkdownComponentResult for BlockMathResult {
     fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
         Ok(format!("$$\n{}\n$$", self.body))
@@ -69,9 +67,21 @@ impl MarkdownComponentResult for BlockMathResult {
 
 impl JsxComponentResult for BlockMathResult {
     fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<{} idx={{{}}} display>\n{}\n</{}>",
+        let id_string = self.id
+                            .as_ref()
+                            .map(|id| id.to_quoted_string().map_err(|err| {
+                                if let Some(id) = &self.id {
+                                    let e = ConundrumErrorVariant::UserFacingGeneralParserError(ConundrumError::from_msg_and_details("Invalid `id`", format!("Conundrum tried and failed to serialize an id of `{}` for a math block.", id).as_str()));
+                                    ErrMode::Backtrack(e)
+                                } else {
+                                    ErrMode::Backtrack(err)
+                                }
+                            }))
+                            .unwrap_or_else(|| Ok(javascript_null_prop()))?;
+        Ok(format!("<{} idx={{{}}} id={} display>\n{}\n</{}>",
                    AutoInsertedComponentName::AutoInsertedMathBlock,
-                   res.eq_count - 1, // To make it 0 based, since it will have already been incrememnted
+                   res.eq_count, // To make it 0 based, since it will have already been incrememnted
+                   id_string,
                    self.body.0.clone(),
                    AutoInsertedComponentName::AutoInsertedMathBlock,))
     }
@@ -95,18 +105,26 @@ impl ConundrumParser<BlockMathResult> for BlockMathResult {
         literal("$$").void().parse_next(input).inspect_err(|_| {
                                                    input.input.reset(&start);
                                                })?;
-        consume_white_space(0..).parse_next(input).inspect_err(|_| {
-                                                       input.input.reset(&start);
-                                                   })?;
-        let id = opt(inline_id_syntax).parse_next(input).inspect_err(|_| {
-                                                             input.input.reset(&start);
-                                                         })?;
+        let id = opt(preceded(consume_white_space(0..), inline_id_syntax)).parse_next(input)
+                                                                          .inspect_err(|_| {
+                                                                              input.input.reset(&start);
+                                                                          })?;
         let body = take_until(1.., "$$").parse_next(input).inspect_err(|_| {
                                                                input.input.reset(&start);
                                                            })?;
         literal("$$").void().parse_next(input).inspect_err(|_| {
                                                    input.input.reset(&start);
                                                })?;
+
+        // Need to modify state during the parsing phase so that it's available during
+        // the rendering phase for the math component indices, otherwise the
+        // indices wll only be able to read downwards.
+        let mut res = input.state.borrow_mut();
+        if let Some(_id) = &id {
+            let current_last_index = res.eq_count;
+            res.data.eq_ref_map.insert(_id.clone(), current_last_index);
+        }
+        res.eq_count += 1;
         Ok(BlockMathResult { body: ConundrumString(body.to_string()),
                              id: id.map(|d| ConundrumString(d.to_string())) })
     }
@@ -128,6 +146,7 @@ mod tests {
         let mut test_props = wrap_test_conundrum_content(test_content);
         let res =
             BlockMathResult::parse_input_string(&mut test_props).expect("Parses math block without throwing an error.");
-        assert_eq!(res.body, "\n\ne=mc^2\n\n", "Finds the proper math body when parsing inline math.");
+        println!("Res: {:#?}", res);
+        assert_eq!(res.body.0, "\n\ne=mc^2\n\n", "Finds the proper math body when parsing inline math.");
     }
 }

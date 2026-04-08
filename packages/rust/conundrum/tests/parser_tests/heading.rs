@@ -11,6 +11,7 @@ pub async fn parses_title_with_heading() {
 
     let res = run_conundrum(ParseConundrumOptions { note_id: None,
                                               content: test_content.to_string(),
+                                              hide_components: Vec::new(),
                                               modifiers: Vec::new() }).await.expect("Returns a vald result when a valid input was provided.");
 
     assert!(!res.toc.is_empty(), "Appends the heading to the table of contents.");

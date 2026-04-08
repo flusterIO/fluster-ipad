@@ -65,9 +65,8 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
         let res = delimited(literal("--- "),
                             take_until(1.., " ---").verify(|s: &str| !s.contains("\n")),
                             literal(" ---")).parse_next(input)
-                                            .map_err(|e| {
+                                            .inspect_err(|_| {
                                                 input.input.reset(&start);
-                                                e
                                             })?;
 
         let state = input.state.borrow_mut();
@@ -100,7 +99,7 @@ mod tests {
         let res = HrWithChildrenResult::parse_input_string(&mut test_data).expect("Parses hr with children without throwing an error.");
         let state = test_data.state.borrow();
         let mut res_data = state.clone();
-        let child = res.to_mdx_component(&mut res_data);
+        let child = res.to_mdx_component(&mut res_data).expect("Compiles to valid mdx");
         assert_snapshot!(child)
         // assert_eq!(result, 4);
     }
