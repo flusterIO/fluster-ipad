@@ -12,7 +12,7 @@ use crate::{
         },
     },
     parsers::{
-        conundrum::logic::string::conundrum_string::ConundrumString,
+        conundrum::logic::{string::conundrum_string::ConundrumString, token::ConundrumLogicToken},
         javascript::{
             javascript_parser_trait::JavascriptParser, object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
         },
@@ -43,11 +43,8 @@ fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
                                                          input.input.reset(&start);
                                                      })?;
 
-    let mut new_input = get_conundrum_input(&js_string.0, state.modifiers.clone());
-
-    let children = parse_elements(&mut new_input).map(Children)?;
     Ok(JavascriptObjectKeyValuePair { key,
-                                      value: Box::new(ParsedElement::Children(children)) })
+                                      value: Box::new(ParsedElement::Logic(ConundrumLogicToken::String(js_string))) })
 }
 
 fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
@@ -68,13 +65,9 @@ fn not_curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
     )).parse_next(input).inspect_err(|_| {
         input.input.reset(&start);
     })?;
-    let state = input.state.borrow();
-    let mut new_input = get_conundrum_input(&js_string.0, state.modifiers.clone());
-
-    let children = parse_elements(&mut new_input).map(Children)?;
 
     Ok(JavascriptObjectKeyValuePair { key,
-                                      value: Box::new(ParsedElement::Children(children)) })
+                                      value: Box::new(ParsedElement::Logic(ConundrumLogicToken::String(js_string))) })
 }
 
 impl JsxPropertyParser for JsxStringPropertyResult {

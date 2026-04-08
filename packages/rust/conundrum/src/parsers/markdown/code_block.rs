@@ -134,7 +134,6 @@ impl MdxComponentResult for ParsedCodeBlock {
                 #[allow(clippy::collapsible_if)]
                 if let Some(x) = self.get_meta_data() {
                     if let Some(title_em) = x.data.get("title") {
-                        println!("Here: {:#?}", title_em.value());
                         if let Some(title_string) = match title_em.value() {
                             #[allow(clippy::collapsible_match)]
                             ParsedElement::Logic(l) => match l {
@@ -143,7 +142,6 @@ impl MdxComponentResult for ParsedCodeBlock {
                             },
                             _ => None,
                         } {
-                            println!("Title: {:#?}", title_string.0.clone());
                             let title_jsx_prop =
                                 title_string.to_jsx_prop_as_string("title").map_err(ErrMode::Backtrack)?;
                             props.push(title_jsx_prop)
