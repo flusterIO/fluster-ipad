@@ -27,15 +27,15 @@ export const EquationReferenceOutput = ({ idx, super: _super, sub: subscript, em
 
     if (_super) {
         return (
-            <sup style={emphasisClasses?.css} onClick={handleEquationTagClick} className={cn("text-sm", emphasisClasses?.classes)}>{idx + 1}</sup>
+            <sup style={emphasisClasses?.css} onClick={handleEquationTagClick} className={cn("text-sm cursor-pointer", emphasisClasses?.classes)}>{idx + 1}</sup>
         )
     } else if (subscript) {
         return (
-            <sub style={emphasisClasses?.css} onClick={handleEquationTagClick} className={cn("text-sm", emphasisClasses?.classes)}>{idx + 1}</sub>
+            <sub style={emphasisClasses?.css} onClick={handleEquationTagClick} className={cn("text-sm cursor-pointer", emphasisClasses?.classes)}>{idx + 1}</sub>
         )
     } else {
         return (
-            <span style={emphasisClasses?.css} className={cn("font-bold", emphasisClasses?.classes)} onClick={handleEquationTagClick}>{idx + 1}</span>
+            <span style={emphasisClasses?.css} className={cn("font-bold cursor-pointer", emphasisClasses?.classes)} onClick={handleEquationTagClick}>{idx + 1}</span>
         )
     }
 }

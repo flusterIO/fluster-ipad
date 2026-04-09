@@ -45,6 +45,7 @@ askama_derive = "0.15.6"
 lexopt = "0.3.2"
 typst-as-lib = "0.15.4"
 ratatui = "0.30.0"
+emoji = "0.2.1"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

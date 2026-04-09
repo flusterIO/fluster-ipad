@@ -15,7 +15,10 @@ use crate::{
         runtime::state::conundrum_error_variant::ConundrumModalResult,
     },
     output::general::component_constants::component_ids::EmbeddableComponentId,
-    parsers::{conundrum::logic::object::object::ConundrumObject, react::conundrum_component::ConundrumComponentType},
+    parsers::{
+        conundrum::logic::object::object::ConundrumObject, markdown::markdown_extensions::emoji::EmojiResult,
+        react::conundrum_component::ConundrumComponentType,
+    },
 };
 use dashmap::DashMap;
 use lazy_static::lazy_static;
@@ -58,6 +61,10 @@ lazy_static! {
         m.insert(EmbeddableComponentId::Grid,
                  Box::new(|props, children| {
                      ResponsiveGrid::from_props(props, children).map(ConundrumComponentType::Grid)
+                 }));
+        m.insert(EmbeddableComponentId::Emoji,
+                 Box::new(|props, children| {
+                     EmojiResult::from_props(props, children).map(ConundrumComponentType::Emoji)
                  }));
         m
     };

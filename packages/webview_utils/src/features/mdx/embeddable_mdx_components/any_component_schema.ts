@@ -2,6 +2,7 @@ import { type aiNoteSummaryProps } from "#/ai/embeddable_components/ai_note_summ
 import type { admonitionPropsSchema } from "./admonition/admonition_props_schema";
 import type { embeddableCardPropsSchema } from "./card/embeddable_card_props";
 import type { embeddableUtiltyContainerProps } from "./container/embeddable_utility_container_props";
+import { type emojiComponentProps } from "./emoji/emoji_component_props";
 import type { embeddableResponsiveGridPropsSchema } from "./grid/embeddable_responsive_grid_props";
 import type { embeddableHintComponentPropsSchema } from "./hint/hint_props_schema";
 import type { hlPropsSchema } from "./hl/hl_props_schema";
@@ -11,4 +12,4 @@ import { type embeddableTabProps } from "./tabs/embeddable_tab_props";
 import { type tabGroupComponentProps } from "./tabs/tab_group_props";
 import type { ulPropsSchema } from "./ul/ul_props_schema";
 
-export type AnyComponentSchema = typeof embeddableResponsiveGridPropsSchema | typeof embeddableUtiltyContainerProps | typeof hlPropsSchema | typeof ulPropsSchema | typeof admonitionPropsSchema | typeof embeddableCardPropsSchema | typeof hrPropsSchema | typeof embeddableHintComponentPropsSchema | typeof aiNoteSummaryProps | typeof tabGroupComponentProps | typeof embeddableTabProps | typeof equationReferencePropsSchema;
+export type AnyComponentSchema = typeof embeddableResponsiveGridPropsSchema | typeof embeddableUtiltyContainerProps | typeof hlPropsSchema | typeof ulPropsSchema | typeof admonitionPropsSchema | typeof embeddableCardPropsSchema | typeof hrPropsSchema | typeof embeddableHintComponentPropsSchema | typeof aiNoteSummaryProps | typeof tabGroupComponentProps | typeof embeddableTabProps | typeof equationReferencePropsSchema | typeof emojiComponentProps;

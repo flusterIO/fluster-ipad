@@ -110,7 +110,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
 
     react_closing_tag_parser_by_name(component_name_string.as_str()).parse_next(input)?;
 
-    let state = input.state.borrow_mut();
+    let mut state = input.state.borrow_mut();
     let mut new_input: Stateful<&str, RefCell<ParseState>> =
         get_conundrum_input(children_string, state.modifiers.clone());
     let children = parse_elements(&mut new_input)?;
@@ -123,6 +123,8 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
     let getter = component_getter_kv.value();
 
     let component = getter(props, Some(children))?;
+
+    state.data.append_embeddable_component(&component_name);
 
     Ok(ReactComponentWithChildrenResult { full_text: "".to_string(), // This field will be
                                           // replaced below anyways.

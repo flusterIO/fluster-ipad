@@ -3,6 +3,17 @@ import { type SizableOptionRecord, sizablePropSchema, sizablePropsMapTransform, 
 import { componentNeverProperty } from "./component_never_property";
 
 
+export const widthTransformFirstChild: SizableOptionRecord<string> = {
+    none: "[&>*]:w-full [&>*]:@[768px]/mdx:hidden",
+    small: "[&>*]:w-full [&>*]:@[450px]/mdx:w-[320px]",
+    smedium: "[&>*]:w-full [&>*]:@[550px]/mdx:w-[384px]]",
+    medium: "[&>*]:w-full [&>*]:@[650px]/mdx:w-[448px]",
+    large: "[&>*]:w-full [&>*]:@[768px]/mdx:w-[576px]",
+    xl: "[&>*]:w-full [&>*]:@[1080px]/mdx:w-[672px]",
+    xxl: "[&>*]:w-full [&>*]:@[1080px]/mdx:w-[896px]",
+    full: "w-full",
+    fit: "w-fit"
+}
 
 export const defaultWidthTransform: SizableOptionRecord<string> = {
     none: "w-full @[768px]/mdx:hidden",
@@ -16,6 +27,17 @@ export const defaultWidthTransform: SizableOptionRecord<string> = {
     fit: "w-fit"
 }
 
+export const heightTransformFirstChild: SizableOptionRecord<string> = {
+    none: "[&>*]:h-fit",
+    small: "[&>*]:h-24",
+    smedium: "[&>*]:h-32",
+    medium: "[&>*]:h-48",
+    large: "[&>*]:h-64",
+    xl: "[&>*]:h-96",
+    xxl: "[&>*]:h-screen",
+    full: "[&>*]:h-full",
+    fit: "[&>*]:h-fit"
+}
 export const defaultHeightTransform: SizableOptionRecord<string> = {
     none: "h-fit",
     small: "h-24",

@@ -302,7 +302,8 @@ export interface DictionaryEntryResultData {
 }
 
 export interface EmojiResult {
-	value: string;
+	name: ConundrumString;
+	sizable?: SizablePropsGroup;
 }
 
 /**
@@ -657,6 +658,7 @@ export enum EmbeddableComponentName {
 	UtlityContainer = "Container",
 	HrWithChildren = "Hr",
 	Hint = "Hint",
+	Emoji = "Emoji",
 	EqRef = "EqRef",
 	Tabs = "Tabs",
 	Tab = "Tab",
@@ -735,6 +737,7 @@ export type ConundrumComponentType =
 	| { tag: "Tabs", content: TabsGroup }
 	| { tag: "Tab", content: Tab }
 	| { tag: "Grid", content: ResponsiveGrid }
+	| { tag: "Emoji", content: EmojiResult }
 	| { tag: "EqRef", content: EquationReference };
 
 export interface ReactComponentSelfClosingResult {
@@ -900,6 +903,7 @@ export enum EmbeddableComponentId {
 	UtlityContainer = "util-container",
 	HrWithChildren = "hr-with-children",
 	Hint = "embeddable-hint-component",
+	Emoji = "emoji-component",
 	Tabs = "tab-group",
 	Tab = "tab-group-tab",
 	EqRef = "equation-reference",

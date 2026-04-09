@@ -1,20 +1,17 @@
 use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    lang::{
-        elements::parsed_elements::ParsedElement,
-        runtime::{
-            compile_conundrum::compile_elements,
-            parse_conundrum_string::parse_conundrum_string,
-            state::{
-                conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
-                parse_state::ConundrumModifier,
-            },
-            traits::conundrum_input::get_conundrum_input,
+use crate::lang::{
+    elements::parsed_elements::ParsedElement,
+    runtime::{
+        compile_conundrum::compile_elements,
+        parse_conundrum_string::parse_conundrum_string,
+        state::{
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
+            parse_state::ConundrumModifier,
         },
+        traits::conundrum_input::get_conundrum_input,
     },
-    output::output_components::output_utils::format_markdown_fragment_property,
 };
 
 #[typeshare::typeshare]

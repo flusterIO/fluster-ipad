@@ -1,6 +1,6 @@
-<AutoInsertedHeading depth={2} id="fluster-syntax" subtitle={null} >Fluster Syntax</AutoInsertedHeading>
+## Fluster Syntax
 
-<AutoInsertedHeading depth={3} id="frontmatter" subtitle={null} >FrontMatter</AutoInsertedHeading>
+### FrontMatter
 
 Insert front matter into your note using yaml syntax seperated by 3 `---`:
 
@@ -18,32 +18,27 @@ title: My optional note title
 | id | An optional id for the note that can be used for dynamic linking via the `[myLink](note:myNoteId)` syntax. |
 | ignoreParsers | Used mostly for internal development, can be a list of parsers that will not be applied to the note. Valid options are a list of 'tags', 'citations', 'note_link' and/or 'dictionary'. |
 
-<AutoInsertedHeading depth={3} id="tags" subtitle={null} >Tags</AutoInsertedHeading>
+### Tags 
 
-Insert <span className="font-bold">tags</span> into your note using the following syntax:
+Insert **tags** into your note using the following syntax:
 
-<AutoInsertedCodeBlock language="mdx" title="my_tag_demo.mdx">
+```mdx -- title="my_tag_demo.mdx"
 This is my tag [[#myTag]] called 'myTag'.
+```
 
-</AutoInsertedCodeBlock>
+### Citations
 
-<AutoInsertedHeading depth={3} id="citations" subtitle={null} >Citations</AutoInsertedHeading>
-
-
-<AutoInsertedBlockQuote>
-Citations are alphabetized by the optional 'title' field. All entries without this field will appear grouped at "No title found".
-</AutoInsertedBlockQuote>
+> Citations are alphabetized by the optional 'title' field. All entries without this field will appear grouped at "No title found".
 
 The citation key must match the bibliography entry key in your bibliography. For example:
 
-<AutoInsertedCodeBlock language="mdx">
+```mdx
 As you can see, according to Ives & Stillwell [[cite:IvesStillwell]]...
-
-</AutoInsertedCodeBlock>
+```
 
 Will work with the bibliography entry:
 
-<AutoInsertedCodeBlock language="bibtex">
+```bibtex
 @article{IvesStillwell,
     author = {Herbert E. Ives and G. R. Stilwell},
     journal = {J. Opt. Soc. Am.},
@@ -59,52 +54,49 @@ Will work with the bibliography entry:
     doi = {10.1364/JOSA.28.000215},
     abstract = {},
 }                
+```
 
-</AutoInsertedCodeBlock>
 
-
-<AutoInsertedHeading depth={3} id="dictionary-entries" subtitle={null} >Dictionary Entries</AutoInsertedHeading>
+### Dictionary Entries
 
 You can insert dictionary entries in any note using the following syntax:
 
-<AutoInsertedCodeBlock language="mdx">
+````mdx
 ```dictionary -- My Dictionary Title
 This is my dictionary entry.
 I can insert any mdx content I like here.
 ```
-
-</AutoInsertedCodeBlock>
+````
 
 These entries will automatically collected and inserted into your user defined dictionary.
 
-<AutoInsertedHeading depth={3} id="horizontal-rule-with-children" subtitle={null} >Horizontal Rule with Children</AutoInsertedHeading>
+### Horizontal Rule with Children
 
-<AutoInsertedCodeBlock language="mdx">
+```mdx
+--- My title with math $\delta$ ---
+```
+
 --- My title with math $\delta$ ---
 
-</AutoInsertedCodeBlock>
 
-<Hr>My title with math <AutoInsertedMathBlock data={{"display":false,"idx":null,"id":null,"content":"\\delta"}}/></Hr>
-
-
-<AutoInsertedHeading depth={3} id="title-with-subtitle" subtitle={null} >Title with Subtitle</AutoInsertedHeading>
+### Title with Subtitle
 
 
 Since the margin between text can be too much to create some common layouts like a title/subtitle combo, there is a reasonably styled combo component that can be accessed with the following syntax:
 
-<AutoInsertedCodeBlock language="mdx">
+```mdx
 # My title {#myTitleWithAnId}
 > My subtitle that follows immediately on the next line
+```
 
-</AutoInsertedCodeBlock>
 
-
-<Hint label="hint" success>
-It is important to note though that there must be <span className="italic">no</span> whitespace between the title and the block quote. That is what distingishes the behavior between a block quote and a subtitle.
+<Hint>
+It is important to note though that there must be _no_ whitespace between the title and the block quote. That is what distingishes the behavior between a block quote and a subtitle.
 </Hint>
 
-<Hr>Output</Hr>
+--- Output ---
 
-<AutoInsertedHeading depth={1} id="my-title" subtitle={<>My subtitle that follows immediately on the next line</>} >My title</AutoInsertedHeading>
+# My title 
+> My subtitle that follows immediately on the next line
 
 

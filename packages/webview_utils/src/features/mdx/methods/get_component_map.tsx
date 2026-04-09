@@ -24,6 +24,7 @@ import { FoundationModelAvailabilityWrapper } from "../../ai/presentation/founda
 import { embeddableTabComponentNames } from "../embeddable_mdx_components/tabs/embeddable_tab_config";
 import { tabGroupComponentNames } from "../embeddable_mdx_components/tabs/tab_group_component_config";
 import { eqRefComponentNames } from "../embeddable_mdx_components/math/equation_reference/equation_reference_config";
+import { emojiComponentNames } from "../embeddable_mdx_components/emoji/emoji_component_config";
 
 enum ComponentItemType {
     userInserted,
@@ -203,6 +204,13 @@ const items: ComponentMapItem[] = [
             return import("../embeddable_mdx_components/hl/hl").then((a) => a.Hl)
         }
     },
+    {
+        query: emojiComponentNames,
+        componentType: ComponentItemType.userInserted,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/emoji/emoji_container").then((a) => a.EmojiContainer)
+        }
+    }
     /* { */
     /*     query: "Quote", */
     /*     component: Blockquote, */

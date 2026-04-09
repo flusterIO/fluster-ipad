@@ -6,12 +6,17 @@ use typeshare::typeshare;
 
 use crate::{
     lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
-    output::parsing_result::{
-        ai_serialization_request::AiSerializationRequestPhase1,
-        dictionary_result::DictionaryEntryResult,
-        front_matter::{FrontMatterParser, FrontMatterResult},
-        note_outgoing_link_result::NoteOutgoingLinkResult,
-        tag_result::TagResult,
+    output::{
+        general::component_constants::{
+            auto_inserted_component_name::AutoInsertedComponentName, component_names::EmbeddableComponentName,
+        },
+        parsing_result::{
+            ai_serialization_request::AiSerializationRequestPhase1,
+            dictionary_result::DictionaryEntryResult,
+            front_matter::{FrontMatterParser, FrontMatterResult},
+            note_outgoing_link_result::NoteOutgoingLinkResult,
+            tag_result::TagResult,
+        },
     },
     parsers::markdown::heading::MarkdownHeadingStringifiedResult,
 };
@@ -35,6 +40,7 @@ pub struct MdxParsingResult {
     /// the index that the equation appears.
     pub eq_ref_map: HashMap<String, u32>,
     pub warnings: Vec<ConundrumError>,
+    included_components: Vec<String>,
 }
 
 impl Default for MdxParsingResult {
@@ -50,6 +56,7 @@ impl Default for MdxParsingResult {
                ignore_all_parsers: false,
                eq_ref_map: HashMap::new(),
                warnings: Vec::new(),
+               included_components: Vec::new(),
                ai_secondary_parse_requests: Vec::new() }
     }
 }
@@ -61,6 +68,14 @@ impl MdxParsingResult {
 
     pub fn contains_outgoing_link(&self, link_note_id: &str) -> bool {
         self.outgoing_links.iter().any(|x| x.link_to_note_id == link_note_id)
+    }
+
+    pub fn append_auto_inserted_component(&mut self, name: &AutoInsertedComponentName) {
+        self.included_components.push(name.to_string());
+    }
+
+    pub fn append_embeddable_component(&mut self, name: &EmbeddableComponentName) {
+        self.included_components.push(name.to_string());
     }
 }
 
@@ -95,6 +110,7 @@ impl MdxParsingResult {
                            ignore_all_parsers: false,
                            eq_ref_map: HashMap::new(),
                            warnings: Vec::new(),
+                           included_components: Vec::new(),
                            ai_secondary_parse_requests: Vec::new() }
     }
 }

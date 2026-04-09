@@ -1,24 +1,27 @@
 use serde::Serialize;
 use typeshare::typeshare;
 
-use crate::lang::{
-    lib::ui::components::{
-        academic::equation_reference::equation_reference_model::EquationReference,
-        attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
-        layout::{
-            card::card::Card,
-            container::container_model::UtilityContainer,
-            grid::grid::ResponsiveGrid,
-            tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
+use crate::{
+    lang::{
+        lib::ui::components::{
+            academic::equation_reference::equation_reference_model::EquationReference,
+            attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
+            layout::{
+                card::card::Card,
+                container::container_model::UtilityContainer,
+                grid::grid::ResponsiveGrid,
+                tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
+            },
+        },
+        runtime::{
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+            traits::{
+                fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
-    runtime::{
-        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
-        traits::{
-            fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
-        },
-    },
+    parsers::markdown::markdown_extensions::emoji::EmojiResult,
 };
 
 #[typeshare]
@@ -37,6 +40,7 @@ pub enum ConundrumComponentType {
     Tabs(TabsGroup),
     Tab(Tab),
     Grid(ResponsiveGrid),
+    Emoji(EmojiResult),
     // Academic
     EqRef(EquationReference),
 }
@@ -54,6 +58,7 @@ impl ConundrumComponentType {
             ConundrumComponentType::Tab(_) => true,
             ConundrumComponentType::EqRef(_) => false,
             ConundrumComponentType::Grid(_) => true,
+            ConundrumComponentType::Emoji(_) => false,
         }
     }
 }
@@ -71,6 +76,7 @@ impl PlainTextComponentResult for ConundrumComponentType {
             ConundrumComponentType::Tab(s) => s.to_plain_text(res),
             ConundrumComponentType::EqRef(s) => s.to_plain_text(res),
             ConundrumComponentType::Grid(s) => s.to_plain_text(res),
+            ConundrumComponentType::Emoji(s) => s.to_plain_text(res),
         }
     }
 }
@@ -88,6 +94,7 @@ impl MarkdownComponentResult for ConundrumComponentType {
             ConundrumComponentType::Tab(s) => s.to_markdown(res),
             ConundrumComponentType::EqRef(s) => s.to_markdown(res),
             ConundrumComponentType::Grid(s) => s.to_markdown(res),
+            ConundrumComponentType::Emoji(s) => s.to_markdown(res),
         }
     }
 }
@@ -105,6 +112,7 @@ impl ConundrumComponentResult for ConundrumComponentType {
             ConundrumComponentType::Tab(s) => s.to_conundrum_component(res),
             ConundrumComponentType::EqRef(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Grid(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Emoji(s) => s.to_conundrum_component(res),
         }
     }
 }
