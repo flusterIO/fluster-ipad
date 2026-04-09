@@ -37,6 +37,9 @@ pub enum EmbeddableComponentId {
     #[serde(rename = "embeddable-hint-component")]
     #[strum(to_string = "embeddable-hint-component")]
     Hint,
+    #[serde(rename = "emoji-component")]
+    #[strum(to_string = "emoji-component")]
+    Emoji,
     #[serde(rename = "tab-group")]
     #[strum(to_string = "tab-group")]
     Tabs,

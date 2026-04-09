@@ -5,10 +5,12 @@ use crate::{
     lang::runtime::{
         state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumModifier},
         traits::{
-            fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult,
+            fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
+            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
             plain_text_component_result::PlainTextComponentResult,
         },
     },
+    output::general::component_constants::component_names::EmbeddableComponentName,
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -16,6 +18,10 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct EmojiResult {
     pub value: String,
+}
+
+impl EmojiResult {
+    pub fn get_svg() {}
 }
 
 impl PlainTextComponentResult for EmojiResult {
@@ -26,11 +32,20 @@ impl PlainTextComponentResult for EmojiResult {
     }
 }
 
-impl MdxComponentResult for EmojiResult {
-    fn to_mdx_component(&self,
-                        _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                        -> ConundrumModalResult<String> {
+impl MarkdownComponentResult for EmojiResult {
+    fn to_markdown(&self,
+                   res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                   -> ConundrumModalResult<String> {
         Ok(format!(":{}:", self.value))
+    }
+}
+
+impl JsxComponentResult for EmojiResult {
+    fn to_jsx_component(&self,
+                        res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                        -> ConundrumModalResult<String> {
+        // let svg = self.get_svg()
+        format!("<{}>{}</{}>", EmbeddableComponentName::Emoji,)
     }
 }
 
@@ -40,8 +55,10 @@ impl ConundrumComponentResult for EmojiResult {
                               -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::ForSearchInput) {
             self.to_plain_text(res)
+        } else if res.is_markdown() {
+            self.to_markdown(res)
         } else {
-            self.to_mdx_component(res)
+            self.to_jsx_component(res)
         }
     }
 }

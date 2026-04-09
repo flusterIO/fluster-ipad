@@ -1,14 +1,14 @@
-import { ManualSaveRequestEvent, MdxPreviewWebviewActions, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type ManualSaveRequestEvent, MdxPreviewWebviewActions, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 
-export class EditorClient {
-    static navigateToNoteById(noteId: string) {
+export const EditorClient = {
+    navigateToNoteById: (noteId: string) => {
         sendToSwift(MdxPreviewWebviewActions.ViewNoteById, noteId)
-    }
-    static handleTagClick(tagValue: string) {
+    },
+    handleTagClick: (tagValue: string) => {
         sendToSwift(MdxPreviewWebviewActions.OnTagClick, tagValue);
-    }
-    static sendManualSaveRequest(data: ManualSaveRequestEvent) {
+    },
+    sendManualSaveRequest: (data: ManualSaveRequestEvent) => {
         sendToSwift(SplitviewEditorWebviewActions.ManualSaveRequest, JSON.stringify(data))
-    }
+    },
 }

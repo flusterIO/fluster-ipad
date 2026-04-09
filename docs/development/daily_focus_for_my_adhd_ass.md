@@ -1,74 +1,64 @@
-# Daily Focus for My ADHD-Ass
+### Daily Focus for My ADHD Ass
 
-## Priority Tasks
+**Current Date:** Thursday, April 9th, 2026 — 8:52 AM (America/Chicago) / 2026-04-09 13:52 UTC
 
-### 1. Equation Tag Parsing and Components
-- Implement equation tag components
-- Enable click-to-scroll functionality for equations if the id is present
-- Handle parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST
+**Summary of To-Do List Prioritized for Next 2 Weeks Release:**
 
-### 2. AI Triggers and Summarization
-- Create 'triggers' similar to the `Docs??` concept for AI-generated content
-- Implement `FlusterAI.generateStudyGuide()` and `FlusterAI.createFlashCards()`
-- Handle light mode of `AISummaryContainer` card
-- Handle force regeneration
-- Handle React property parsers for AI integration
+#### 🚀 High Priority Tasks
 
-### 3. Offline and Performance
-- Handle inline-code parser and slugger implementation for all headings
-- Move regex queries in `get_component_map` to a `HashMap<String, bool>`
-- Fix issue with Safari keeping around 20 instances of the editor view
-- Handle command palette not changing state fields when the editor is focused
+1. **Equation Tag Parsing and Components**
+   - Handle parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST.
+   - Implement equation tag components.
+   - Enable click-to-scroll functionality for equations if the id is present.
 
-### 4. Webviews and Syncing
-- Make sure all taggables have a 'cursor-pointer' class
-- Work on syncing method to create notes from file system
-- Handle math output issue with the snapshot
+2. **Bug Fixes and Performance Improvements**
+   - Handle bugs with bold, italic, and bold-italic text parsing.
+   - Fix syntax docs that are completely broken, especially related to the `-- title="my_title"` syntax.
+   - Move all regex queries in the `get_component_map` file to a `HashMap<String, bool>` for faster lookups.
 
-### 5. Documentation and Release
-- Update docs to reflect upcoming Apple release
-- Review YouTube link about creating 'Nominations' for Apple's editor team
-- Handle AI summary output format and color scheme note changes
+3. **AI Integration and Features**
+   - Work on integrating the new emoji crate directly into the transpiler.
+   - Create 'triggers' for AI-generated content (e.g., `FlusterAI.generateStudyGuide()`, `FlusterAI.createFlashCards()`).
+   - Make sure AI triggers can be set to 1 of 3 modes: `auto`, `confirm`, or `never`.
 
-## High Priority
-- Fix issue with iPad app loading in portrait view
-- Handle bug with color scheme note changing editor theme
-- Add `output_format` property to `ConundrumInput.state`
-- Create `SiaString` class in Typescript for compression and comparison
+4. **UI and Component Development**
+   - Work on the `Tabs` component that accepts children and a context provider.
+   - Create a flip-card like component for studying.
+   - Handle light mode for `AISummaryContainer` card.
 
-## Medium Priority
-- Work on AI summarization and syncing method
-- Handle issue with new note being set late
-- Fix issue with Mac `NoteDetailSheet` requiring refresh
-- Write tests for all `-ignoreParser` flags
+5. **Offline and Syncing Features**
+   - Handle slugger implementation for all headings to generate unique ids.
+   - Setup a unique error enum for Conundrum.
+   - Fix issue with Safari keeping around 20 instances of the editor view.
 
-## Low Priority
-- Handle issue with new line items not working on initial new line
-- Create quick plot generator for mean conundrum parsing time
-- Handle bug that requires initial note to be refreshed
-- Handle issue with dictionary entries not being found
+#### 📌 Medium Priority Tasks
 
-## Notes
-- Make sure to parse title for markdown model with plainText output
-- Store an alternative title in markdown format next to the model if needed
-- Apply the note's front matter summary to the new summary class if one exists
+- Move remaining components (e.g., `HrWithChildren`, `AINoteSummary`) to Rust.
+- Implement `SiaString` class in Typescript for easy compression and comparison.
+- Handle math output issue with the provided snapshot.
+- Fix issue with the `NoteDetailSheet` requiring refresh on Mac.
+- Work on syncing method to create notes from file system.
 
-## Deadline
-- Release the application within the next 2 weeks
-- All tests must be passing for Swift, Typescript, and Rust
-- Review and update docs to reflect upcoming Apple release
-- Handle AI availability states and generate note summary
+#### 📝 Documentation and Testing
 
-## Tools
-- Use `FlusterAI.generateStudyGuide()` and `FlusterAI.createFlashCards()` for AI-generated content
-- Use `SiaString` class in Typescript for compression and comparison
-- Use `AISummaryContainer` card for AI summary output
-- Use `output_format` property to conditionally render each item as either plain text, inline markdown, markdown or mdx
+- Update docs to reflect upcoming Apple release.
+- Fix admonition padding issue on website and in the main app.
+- Write tests for all `-ignoreParser` flags.
+- Ensure all tests are passing (Swift, Typescript, Rust).
 
-## Final Thoughts
-- Prioritize tasks that have the most impact on the release date
-- Focus on high priority tasks first
-- Make sure to handle all bugs and issues before release
-- Use the tools provided to help with AI integration and documentation
-- Stay focused and organized to meet the release deadline
+#### 📅 Release Preparation
 
+- Review the YouTube link about creating 'Nominations' for being featured by Apple's editor team.
+- Handle force regeneration of AI summaries.
+- Ensure all tests are passing before release.
+
+**Next Steps:**
+- Focus on high-priority tasks first, especially those related to performance, AI integration, and critical bug fixes.
+- Break down complex tasks into smaller, manageable chunks to maintain focus.
+- Regularly review progress and adjust priorities as needed.
+
+**Note:** This summary is a prioritized list of tasks to ensure the application is released within the next 2 weeks. Focus on the most critical issues first and gradually move to medium and low priority tasks as time permits.
+
+**Remember:** Stay organized, take breaks, and celebrate small wins to maintain motivation and productivity.
+
+**End of Summary**

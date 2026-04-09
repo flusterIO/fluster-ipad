@@ -1,10 +1,9 @@
 use serde::Serialize;
 use winnow::{
     Parser,
-    ascii::newline,
     combinator::{alt, repeat_till},
     stream::Stream,
-    token::{any, literal, take},
+    token::{literal, take},
 };
 
 use crate::{
@@ -79,7 +78,6 @@ impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicT
                                                                             input.input.reset(&cp);
                                                                         })?;
 
-        println!("First: {:#?}", third_token);
         let (c, _): (Vec<&str>, ()) = repeat_till(1..,
                                                   take(1usize),
                                                   alt(((literal(third_token.as_str()),
@@ -90,18 +88,7 @@ impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicT
                                                                      .inspect_err(|_| {
                                                                          input.input.reset(&cp);
                                                                      })?;
-        println!("Chars: {:#?}", c);
         let content = String::from_iter(c);
-        println!("Content: {:#?}", content);
-        // let _ = literal(third_token).parse_next(input).inspect_err(|_| {
-        //                                                    input.input.reset(&cp);
-        //                                                })?;
-        // let _ = literal(second_token).parse_next(input).inspect_err(|_| {
-        //                                                     input.input.reset(&cp);
-        //                                                 })?;
-        // let _ = literal(first_token).parse_next(input).inspect_err(|_| {
-        //                                                    input.input.reset(&cp);
-        //                                                })?;
 
         let mut state = input.state.borrow_mut();
 

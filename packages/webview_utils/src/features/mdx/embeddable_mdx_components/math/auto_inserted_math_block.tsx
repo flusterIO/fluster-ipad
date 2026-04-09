@@ -1,4 +1,4 @@
-import React, { Children, type FC, useId, useMemo } from 'react';
+import React, { useId, useMemo } from 'react';
 import { mathjax } from 'mathjax-full/js/mathjax.js';
 import { TeX } from 'mathjax-full/js/input/tex.js';
 import { CHTML } from 'mathjax-full/js/output/chtml.js';
