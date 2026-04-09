@@ -39,7 +39,7 @@ unicode-segmentation = "1.13.2"
 qrcode = "0.14.1"
 tabled = "0.20.0"
 maud = "0.27.0"
-askama = { version = "0.15.6", features = ["serde_json"] }
+askama = { version = "0.15.6", features = ["code-in-doc", "serde_json"] }
 shlex = "1.3.0"
 askama_derive = "0.15.6"
 lexopt = "0.3.2"

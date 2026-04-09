@@ -33,12 +33,7 @@ pub struct EmojiResult {
 
 impl EmojiResult {
     pub fn get_svg(&self) -> Option<String> {
-        if let Some(res) = twemoji_assets::svg::SvgTwemojiAsset::from_name(&self.name.0) {
-            let svg_data: &str = res;
-            Some(svg_data.to_string())
-        } else {
-            None
-        }
+        twemoji_assets::svg::SvgTwemojiAsset::from_name(&self.name.0).map(|res| res.data.0.to_string())
     }
 }
 
@@ -69,7 +64,19 @@ impl JsxComponentResult for EmojiResult {
                 )
             )
         })?;
-        Ok(format!("<{}>{}</{}>", EmbeddableComponentName::Emoji, svg, EmbeddableComponentName::Emoji))
+        Ok(format!(
+                   "<{} {} inline>{}</{}>",
+                   EmbeddableComponentName::Emoji,
+                   self.name.to_jsx_prop_as_string("name").map_err(|_| {
+                       ErrMode::Cut(
+    ConundrumErrorVariant::UserFacingGeneralParserError(
+        ConundrumError::from_msg_and_details("Serialization error", "Conundrum failed to serialize an emoji name.")
+    )
+)
+                   })?,
+                   svg,
+                   EmbeddableComponentName::Emoji
+        ))
     }
 }
 

@@ -76,7 +76,7 @@ export const AutoInsertedMathBlock = connector(({ data, mathFontUrl }: Props) =>
                 <style>
                     {cssString}
                 </style>
-                {typeof idx === "number" ? (<div className="conundrum-math-label text-sm text-muted-foreground absolute top-[50%] translate-y-[-50%] right-0">
+                {typeof idx === "number" ? (<div className="conundrum-math-label text-sm text-muted-foreground absolute top-[50%] translate-y-[-50%] right-0 font-mono">
                     {idx + 1}
                 </div>) : null}
             </div>

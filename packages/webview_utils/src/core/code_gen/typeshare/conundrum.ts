@@ -301,6 +301,11 @@ export interface DictionaryEntryResultData {
 	note_id?: string;
 }
 
+export interface EmojiData {
+	name: string;
+	svg: string;
+}
+
 export interface EmojiResult {
 	name: ConundrumString;
 	sizable?: SizablePropsGroup;
@@ -550,6 +555,7 @@ export interface MdxParsingResult {
 	 */
 	eq_ref_map: Record<string, number>;
 	warnings: ConundrumError[];
+	included_components: string[];
 }
 
 /**
@@ -891,6 +897,7 @@ export enum DocumentationComponentName {
 	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
 	InContentDocsHighlightDemo = "InContentDocsHighlightDemo",
 	InContentDocsUnderlineDemo = "InContentDocsUnderlineDemo",
+	EmojiDocumentationDemo = "AutoInsertedNestedEmojiDocumentation",
 }
 
 /** From typescript to swift. */

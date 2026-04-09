@@ -210,7 +210,7 @@ const items: ComponentMapItem[] = [
         importComponent: async () => {
             return import("../embeddable_mdx_components/emoji/emoji_container").then((a) => a.EmojiContainer)
         }
-    }
+    },
     /* { */
     /*     query: "Quote", */
     /*     component: Blockquote, */
@@ -337,6 +337,14 @@ const items: ComponentMapItem[] = [
         componentType: ComponentItemType.documentation,
         importComponent: async () => {
             return import("../../mdx/embeddable_mdx_components/ul/documentation_underline_demo").then((a) => a.InContentUnderlineDocumentationDemo)
+        }
+    },
+
+    {
+        query: [DocumentationComponentName.EmojiDocumentationDemo],
+        componentType: ComponentItemType.documentation,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/emoji/emoji_docs_demo").then((a) => a.EmojiDocsDemo)
         }
     },
     // --- Auto Inserted ---

@@ -17,4 +17,7 @@ pub enum DocumentationComponentName {
     #[serde(rename = "InContentDocsUnderlineDemo")]
     #[strum(to_string = "InContentDocsUnderlineDemo")]
     InContentDocsUnderlineDemo,
+    #[serde(rename = "AutoInsertedNestedEmojiDocumentation")]
+    #[strum(to_string = "AutoInsertedNestedEmojiDocumentation")]
+    EmojiDocumentationDemo,
 }

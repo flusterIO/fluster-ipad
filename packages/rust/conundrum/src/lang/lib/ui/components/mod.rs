@@ -7,5 +7,6 @@
 pub mod academic;
 pub mod attention;
 pub mod component_trait;
+pub mod documentation;
 pub mod layout;
 pub mod markdown;
