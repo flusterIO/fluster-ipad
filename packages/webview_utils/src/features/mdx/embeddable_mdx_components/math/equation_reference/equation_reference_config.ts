@@ -35,5 +35,5 @@ My equation number is <EqRef id="${id}"/>.`
     testProps: {
         quantityScalar: 0.2
     },
-    isInline: false
+    isInline: true
 }

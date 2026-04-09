@@ -79,10 +79,6 @@ const items: ComponentMapItem[] = [
         }
     },
     /* { */
-    /*     query: "EqRef", */
-    /*     component: EqRef, */
-    /* }, */
-    /* { */
     /*     query: "TaskList", */
     /*     component: WrappedTaskList, */
     /* }, */

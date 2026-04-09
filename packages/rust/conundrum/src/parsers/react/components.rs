@@ -2,31 +2,23 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::ui::components::{
+            academic::equation_reference::equation_reference_model::EquationReference,
             attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
             component_trait::ConundrumComponent,
             layout::{
                 card::card::Card,
+                container::container_model::UtilityContainer,
+                grid::grid::ResponsiveGrid,
                 tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
             },
         },
-        runtime::state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+        runtime::state::conundrum_error_variant::ConundrumModalResult,
     },
     output::general::component_constants::component_ids::EmbeddableComponentId,
     parsers::{conundrum::logic::object::object::ConundrumObject, react::conundrum_component::ConundrumComponentType},
 };
 use dashmap::DashMap;
 use lazy_static::lazy_static;
-
-// static COMPONENT_LIST: Lazy<DashMap<ConundrumComponentId,
-// FnOnce(ConundrumObject) -> ConundrumComponentType>> =     Lazy::new(|| {
-//         let data: DashMap<ConundrumComponentId, impl FnOnce(ConundrumObject)
-// -> ConundrumComponentType> =             DashMap::new();
-
-//         data.insert(ConundrumComponentId::Card, Card::from_props);
-
-//         data
-//     });
-//
 
 pub type ComponentGetter =
     Box<dyn Fn(ConundrumObject, Option<Vec<ParsedElement>>) -> ConundrumModalResult<ConundrumComponentType>
@@ -55,6 +47,18 @@ lazy_static! {
                  Box::new(|props, children| Tab::from_props(props, children).map(ConundrumComponentType::Tab)));
         m.insert(EmbeddableComponentId::Tabs,
                  Box::new(|props, children| TabsGroup::from_props(props, children).map(ConundrumComponentType::Tabs)));
+        m.insert(EmbeddableComponentId::EqRef,
+                 Box::new(|props, children| {
+                     EquationReference::from_props(props, children).map(ConundrumComponentType::EqRef)
+                 }));
+        m.insert(EmbeddableComponentId::UtlityContainer,
+                 Box::new(|props, children| {
+                     UtilityContainer::from_props(props, children).map(ConundrumComponentType::Container)
+                 }));
+        m.insert(EmbeddableComponentId::Grid,
+                 Box::new(|props, children| {
+                     ResponsiveGrid::from_props(props, children).map(ConundrumComponentType::Grid)
+                 }));
         m
     };
 }

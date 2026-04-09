@@ -22,7 +22,6 @@ use crate::{
         traits::{
             conundrum_input::{ConundrumInput, get_conundrum_input},
             fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult,
         },
     },
     output::general::component_constants::component_names::EmbeddableComponentName,
@@ -49,18 +48,6 @@ pub struct ReactComponentWithChildrenResult {
 impl ConundrumComponentResult for ReactComponentWithChildrenResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         self.component.to_conundrum_component(res)
-    }
-}
-
-impl MdxComponentResult for ReactComponentWithChildrenResult {
-    // PERFORMANCE: Consider moving the `get_component_map` regex query to a hashmap
-    // or something in Rust equivalent to a Set for speedy lookup. This would
-    // require that the component parser is working at basically 100%
-    // reliability, which it currently won't be with this `>` limitation, but
-    // after that is handled add a field to the conundrum state to
-    // allow creating the list of included components here.
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(self.full_text.clone())
     }
 }
 
@@ -174,7 +161,8 @@ This is my children markdown test content
         let res = ReactComponentWithChildrenResult::parse_input_string(&mut test_data).expect("Parses vald component successfully.");
 
         let mut state = test_data.state.borrow_mut();
-        let mdx_component = res.to_mdx_component(&mut state).expect("Compiles to mdx without throwing an error.");
+        let mdx_component =
+            res.component.to_conundrum_component(&mut state).expect("Compiles to mdx without throwing an error.");
         assert!(mdx_component == test_content, "Returns the input component as the mdx component for an mdx input.");
         assert!(test_data.is_empty(), "Consumes the entire input string.");
         assert_snapshot!(mdx_component);

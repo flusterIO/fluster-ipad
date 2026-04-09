@@ -8,23 +8,23 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult, state_modifier::ConundrumStateModifier,
+    lang::{
+        lib::ui::components::markdown::math::props::MathData,
+        runtime::{
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
-    output::{
-        general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-        output_components::output_utils::javascript_null_prop,
-    },
+    output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
     parsers::{
         conundrum::logic::string::conundrum_string::ConundrumString,
         markdown::subtypes::inline_id_syntax::inline_id_syntax,
@@ -37,6 +37,7 @@ use crate::{
 pub struct BlockMathResult {
     pub body: ConundrumString,
     pub id: Option<ConundrumString>,
+    pub idx: u32,
 }
 
 impl PlainTextComponentResult for BlockMathResult {
@@ -66,24 +67,20 @@ impl MarkdownComponentResult for BlockMathResult {
 }
 
 impl JsxComponentResult for BlockMathResult {
-    fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let id_string = self.id
-                            .as_ref()
-                            .map(|id| id.to_quoted_string().map_err(|err| {
-                                if let Some(id) = &self.id {
-                                    let e = ConundrumErrorVariant::UserFacingGeneralParserError(ConundrumError::from_msg_and_details("Invalid `id`", format!("Conundrum tried and failed to serialize an id of `{}` for a math block.", id).as_str()));
-                                    ErrMode::Backtrack(e)
-                                } else {
-                                    ErrMode::Backtrack(err)
-                                }
-                            }))
-                            .unwrap_or_else(|| Ok(javascript_null_prop()))?;
-        Ok(format!("<{} idx={{{}}} id={} display>\n{}\n</{}>",
+    fn to_jsx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        let math_data = MathData { display: true,
+                                   idx: Some(self.idx),
+                                   id: self.id.as_ref().map(|id| id.0.clone()),
+                                   content: self.body.0.clone() };
+        Ok(format!("<{} data={{{}}} />",
                    AutoInsertedComponentName::AutoInsertedMathBlock,
-                   res.eq_count, // To make it 0 based, since it will have already been incrememnted
-                   id_string,
-                   self.body.0.clone(),
-                   AutoInsertedComponentName::AutoInsertedMathBlock,))
+                   serde_json::to_string(&math_data).map_err(|e| {
+                       println!("Error: {:#?}", e);
+                       ErrMode::Backtrack(ConundrumErrorVariant::UserFacingGeneralParserError(
+                               ConundrumError::from_msg_and_details("Parser error", "Could not successfully serialize the data provided to a math equation.")
+                       ))
+                   })?
+                   ))
     }
 }
 
@@ -120,13 +117,14 @@ impl ConundrumParser<BlockMathResult> for BlockMathResult {
         // the rendering phase for the math component indices, otherwise the
         // indices wll only be able to read downwards.
         let mut res = input.state.borrow_mut();
+        let current_last_index = res.eq_count;
         if let Some(_id) = &id {
-            let current_last_index = res.eq_count;
             res.data.eq_ref_map.insert(_id.clone(), current_last_index);
         }
         res.eq_count += 1;
         Ok(BlockMathResult { body: ConundrumString(body.to_string()),
-                             id: id.map(|d| ConundrumString(d.to_string())) })
+                             id: id.map(|d| ConundrumString(d.to_string())),
+                             idx: current_last_index })
     }
 
     fn matches_first_char(char: char) -> bool {

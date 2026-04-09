@@ -49,8 +49,16 @@ use crate::{
 /// Or whatever index is represented by that equation, allowing you to reference
 /// equations by index without worrying about the structure of your note
 /// changing.
+///
+/// #### Indices
+///
+/// The equation reference component uses 1 based indices for plain text and
+/// markdown since they are likely going to be displayed directly, and zero
+/// based indices for everything where the output will be handled by a developer
+/// before being displayed (React, HTML, Swift, etc..) because 1 based indices
+/// suck.
 #[typeshare::typeshare]
-#[derive(Serialize, uniffi::Record)]
+#[derive(Serialize, uniffi::Record, Debug, Clone)]
 pub struct EquationReference {
     /// The `id` field is a string that can be referenced later to use this
     /// equation's number.
@@ -77,20 +85,28 @@ impl EquationReference {
 
 impl MarkdownComponentResult for EquationReference {
     fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        self.get_equation_index(res).map(|s| s.to_string())
+        self.get_equation_index(res).map(|s| (s + 1).to_string())
     }
 }
 
 impl PlainTextComponentResult for EquationReference {
     fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        self.get_equation_index(res).map(|s| s.to_string())
+        self.get_equation_index(res).map(|s| (s + 1).to_string())
     }
 }
 
 impl JsxComponentResult for EquationReference {
     fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         let x = self.get_equation_index(res)?;
-        let mut props = vec![format!("idx={{{}}}", x)];
+        let id_string = self.id.to_jsx_prop_as_string("id").map_err(|e| {
+            eprintln!("Error: {:#?}", e);
+            ErrMode::Backtrack(
+                ConundrumErrorVariant::UserFacingGeneralParserError(
+                    ConundrumError::from_msg_and_details("Serialization error", "Conundrum could not successfully seralize an id provided to the equation reference component")
+                )
+            )
+        })?;
+        let mut props = vec![format!("idx={{{}}}", x), id_string];
         if let Some(subscript) = self.subscript {
             props.push(subscript.to_jsx_prop("sub"))
         }

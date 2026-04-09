@@ -22,9 +22,10 @@ title: My optional note title
 
 Insert <span className="font-bold">tags</span> into your note using the following syntax:
 
-```mdx title="my<span className="italic">tag</span>demo.mdx"
-This is my tag <AutoInsertedTag>myTag</AutoInsertedTag> called 'myTag'.
-```
+<AutoInsertedCodeBlock language="mdx" title="my_tag_demo.mdx">
+This is my tag [[#myTag]] called 'myTag'.
+
+</AutoInsertedCodeBlock>
 
 <AutoInsertedHeading depth={3} id="citations" subtitle={null} >Citations</AutoInsertedHeading>
 
@@ -83,7 +84,7 @@ These entries will automatically collected and inserted into your user defined d
 
 </AutoInsertedCodeBlock>
 
-<Hr>My title with math <AutoInsertedMathBlock>\delta</AutoInsertedMathBlock></Hr>
+<Hr>My title with math <AutoInsertedMathBlock data={{"display":false,"idx":null,"id":null,"content":"\\delta"}}/></Hr>
 
 
 <AutoInsertedHeading depth={3} id="title-with-subtitle" subtitle={null} >Title with Subtitle</AutoInsertedHeading>

@@ -1,18 +1,22 @@
 use serde::Serialize;
 use typeshare::typeshare;
-use winnow::{Parser, combinator::delimited, token::take_till};
+use winnow::{Parser, combinator::delimited, error::ErrMode, token::take_till};
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::ui::components::markdown::math::props::MathData,
+        runtime::{
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
@@ -33,10 +37,19 @@ impl PlainTextComponentResult for InlineMathResult {
 
 impl JsxComponentResult for InlineMathResult {
     fn to_jsx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<{}>{}</{}>",
-                   AutoInsertedComponentName::AutoInsertedMathBlock,
-                   self.body.0.clone(),
-                   AutoInsertedComponentName::AutoInsertedMathBlock,))
+        let math_data = MathData { display: false,
+                                   content: self.body.0.clone(),
+                                   id: None,
+                                   idx: None };
+        let s = serde_json::to_string(&math_data).map_err(|e| {
+            eprintln!("Error: {:#?}", e);
+            ErrMode::Backtrack(
+                ConundrumErrorVariant::UserFacingGeneralParserError(
+                    ConundrumError::from_msg_and_details("Serialization error", "Conundrum failed to serialize the math data provided to one of your inline equations.")
+                )
+            )
+        })?;
+        Ok(format!("<{} data={{{}}}/>", AutoInsertedComponentName::AutoInsertedMathBlock, s,))
     }
 }
 

@@ -100,51 +100,13 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::MarkdownParagraph(p) => p.to_conundrum_component(res),
             ParsedElement::HrWithChildren(c) => c.to_conundrum_component(res),
             ParsedElement::Comment(c) => c.to_conundrum_component(res),
-            ParsedElement::ReactComponentSelfClosing(c) => c.to_conundrum_component(res),
-            ParsedElement::ReactComponentWithChildren(c) => c.to_conundrum_component(res),
+            ParsedElement::ReactComponentSelfClosing(c) => c.component.to_conundrum_component(res),
+            ParsedElement::ReactComponentWithChildren(c) => c.component.to_conundrum_component(res),
             ParsedElement::Emoji(e) => e.to_conundrum_component(res),
             ParsedElement::InlineCode(m) => m.to_conundrum_component(res),
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
-        }
-    }
-}
-
-impl ParsedElement {
-    fn logic_bool(&self, matcher: impl Fn(ConundrumBoolean) -> bool) -> Option<ConundrumBoolean> {
-        match self {
-            ParsedElement::Logic(l) => match l {
-                ConundrumLogicToken::Bool(b) => {
-                    let res = matcher(b.clone());
-                    if res {
-                        Some(b.clone())
-                    } else {
-                        None
-                    }
-                }
-                _ => None,
-            },
-            _ => None,
-        }
-    }
-
-    /// The input function must return a boolean indicating whether or not to
-    /// the value is a match.
-    fn logic_number(&self, matcher: impl Fn(ConundrumNumber) -> bool) -> Option<ConundrumNumber> {
-        match self {
-            ParsedElement::Logic(l) => match l {
-                ConundrumLogicToken::Number(n) => {
-                    let res = matcher(n.clone());
-                    if res {
-                        Some(n.clone())
-                    } else {
-                        None
-                    }
-                }
-                _ => None,
-            },
-            _ => None,
         }
     }
 }

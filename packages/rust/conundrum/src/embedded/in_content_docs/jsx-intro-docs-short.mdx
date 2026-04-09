@@ -14,19 +14,19 @@
 
 This `Card` component accepts `children`, so we use the `>` closing bracket on the opening tag.
 
-```tsx title="components.mdx"
-<Card title={<>My title</>} subtitle={<>My optional description</>} >
-{<>
+<AutoInsertedCodeBlock language="tsx" title="components.mdx">
+<Card title="My title" desc="My optional description">
 This is my card's body.
-</>}
 </Card>
-```
+
+</AutoInsertedCodeBlock>
 
 This fictitious `Slider` component (there are no components that make sense to self close, <span className="italic">yet</span>) does not accept any children, so we don't need the closing tag and we can write it as:
 
-```tsx title="components.mdx"
+<AutoInsertedCodeBlock language="tsx" title="components.mdx">
 <Slider min={0} max={5} />
-```
+
+</AutoInsertedCodeBlock>
 
 <AutoInsertedHeading depth={3} id="strings" subtitle={null} >Strings</AutoInsertedHeading>
 
@@ -36,7 +36,7 @@ This fictitious `Slider` component (there are no components that make sense to s
 
 <AutoInsertedHeading depth={4} id="examples-1" subtitle={null} >Examples</AutoInsertedHeading>
 
-```tsx title="strings.mdx"
+<AutoInsertedCodeBlock language="tsx" title="strings.mdx">
 <Card
     // I can wrap the title with single quotes, 
     // double quotes or backticks.
@@ -45,22 +45,21 @@ This fictitious `Slider` component (there are no components that make sense to s
     // use the single quotes here without escaping it,
     // So I'll use backticks here.
     desc={`This is my description's content.`}
-
-<AutoInsertedBlockQuote>
-
-</AutoInsertedBlockQuote>
+>
 ...
-```
+
+</AutoInsertedCodeBlock>
 
 If we <span className="italic">really</span> wanted to use single quotes inside of another pair of single quotes, or double quotes inside of double quotes, we can do that as:
 
-```tsx title="strings.mdx"
+<AutoInsertedCodeBlock language="tsx" title="strings.mdx">
 <Card 
     // If I really need to include matching quotations within the string itself,
     // I have to lead it with a leading `\` character.
     desc={"This is my \"quotation\" here"}
 />
-```
+
+</AutoInsertedCodeBlock>
 
 <AutoInsertedHeading depth={2} id="booleans" subtitle={null} >Booleans</AutoInsertedHeading>
 
@@ -68,16 +67,14 @@ If we <span className="italic">really</span> wanted to use single quotes inside 
 
 
 
-```tsx title="booleans.mdx"
+<AutoInsertedCodeBlock language="tsx" title="booleans.mdx">
 <Card 
     shrink={true}
     important
-
-<AutoInsertedBlockQuote>
-
-</AutoInsertedBlockQuote>
+>
 ...
-```
+
+</AutoInsertedCodeBlock>
 
 <AutoInsertedHeading depth={2} id="numbers" subtitle={null} >Numbers</AutoInsertedHeading>
 
@@ -96,11 +93,12 @@ If we <span className="italic">really</span> wanted to use single quotes inside 
 
 
 
-```tsx title="arrays.mdx"
+<AutoInsertedCodeBlock language="tsx" title="arrays.mdx">
 // This is an empty array. 
 // This pie plot is sad because it has no data, but the syntax is valid.
 <PiePlot data={[]} />
-```
+
+</AutoInsertedCodeBlock>
 
 
 

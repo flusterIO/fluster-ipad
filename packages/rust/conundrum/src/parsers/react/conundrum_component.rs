@@ -3,10 +3,12 @@ use typeshare::typeshare;
 
 use crate::lang::{
     lib::ui::components::{
+        academic::equation_reference::equation_reference_model::EquationReference,
         attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
         layout::{
             card::card::Card,
             container::container_model::UtilityContainer,
+            grid::grid::ResponsiveGrid,
             tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
         },
     },
@@ -34,6 +36,9 @@ pub enum ConundrumComponentType {
     Hl(Highlight),
     Tabs(TabsGroup),
     Tab(Tab),
+    Grid(ResponsiveGrid),
+    // Academic
+    EqRef(EquationReference),
 }
 
 impl ConundrumComponentType {
@@ -47,6 +52,8 @@ impl ConundrumComponentType {
             ConundrumComponentType::Container(_) => true,
             ConundrumComponentType::Tabs(_) => true,
             ConundrumComponentType::Tab(_) => true,
+            ConundrumComponentType::EqRef(_) => false,
+            ConundrumComponentType::Grid(_) => true,
         }
     }
 }
@@ -62,6 +69,8 @@ impl PlainTextComponentResult for ConundrumComponentType {
             ConundrumComponentType::Container(s) => s.to_plain_text(res),
             ConundrumComponentType::Tabs(s) => s.to_plain_text(res),
             ConundrumComponentType::Tab(s) => s.to_plain_text(res),
+            ConundrumComponentType::EqRef(s) => s.to_plain_text(res),
+            ConundrumComponentType::Grid(s) => s.to_plain_text(res),
         }
     }
 }
@@ -77,6 +86,8 @@ impl MarkdownComponentResult for ConundrumComponentType {
             ConundrumComponentType::Container(s) => s.to_markdown(res),
             ConundrumComponentType::Tabs(s) => s.to_markdown(res),
             ConundrumComponentType::Tab(s) => s.to_markdown(res),
+            ConundrumComponentType::EqRef(s) => s.to_markdown(res),
+            ConundrumComponentType::Grid(s) => s.to_markdown(res),
         }
     }
 }
@@ -92,6 +103,8 @@ impl ConundrumComponentResult for ConundrumComponentType {
             ConundrumComponentType::Container(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Tabs(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Tab(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::EqRef(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Grid(s) => s.to_conundrum_component(res),
         }
     }
 }

@@ -16,13 +16,8 @@ use crate::{
         state::{
             conundrum_error::ConundrumError,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-            parse_state::{ConundrumModifier, ParseState},
         },
-        traits::{
-            ai_input_component_result::AIInputComponentResult, conundrum_input::ConundrumInput,
-            fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
-        },
+        traits::conundrum_input::ConundrumInput,
     },
     output::general::component_constants::component_names::EmbeddableComponentName,
     parsers::{
@@ -42,48 +37,6 @@ use crate::{
 pub struct ReactComponentSelfClosingResult {
     pub full_text: String,
     pub component: ConundrumComponentType,
-}
-
-impl AIInputComponentResult for ReactComponentSelfClosingResult {
-    fn to_ai_input(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(String::from(""))
-    }
-}
-
-impl MarkdownComponentResult for ReactComponentSelfClosingResult {
-    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(String::from(""))
-    }
-}
-
-impl PlainTextComponentResult for ReactComponentSelfClosingResult {
-    // TODO: Parse specific Fragment based properties as markdown and figure out a
-    // way to format everything nicely here.
-    fn to_plain_text(&self,
-                     _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                     -> ConundrumModalResult<String> {
-        Ok(String::from(""))
-    }
-}
-
-impl MdxComponentResult for ReactComponentSelfClosingResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(self.full_text.clone())
-    }
-}
-
-impl ConundrumComponentResult for ReactComponentSelfClosingResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForAIInput) {
-            self.to_ai_input(res)
-        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                                     ConundrumModifier::PreferInlineMarkdownSyntax])
-        {
-            self.to_markdown(res)
-        } else {
-            self.to_mdx_component(res)
-        }
-    }
 }
 
 fn parse_self_closing_react_component(input: &mut ConundrumInput)
@@ -158,44 +111,33 @@ impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClos
 }
 
 // TODO: Turn these tests back on when we've enabled a self-closing react
-// component on the Rust side. Something like the `<AiNoteSummary` component or
-// something. #[cfg(test)]
-// mod tests {
-//     use crate::testing::wrap_test_content::wrap_test_conundrum_content;
+// component on the Rust side.
+#[cfg(test)]
+mod tests {
+    use crate::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
 
-//     use super::*;
+    use super::*;
 
-//     #[test]
-//     fn parses_self_closing_react_component() {
-//         let test_content = r#"<Card myBool myObject={{}} myString="Here is a
-// string" />"#;         let mut test_data =
-// wrap_test_conundrum_content(test_content);         let res =
-//             ReactComponentSelfClosingResult::parse_input_string(&mut
-// test_data).expect("Parses valid self closing react component without throwing
-// an error");         assert!(test_data.input.is_empty(), "Consumes the entire
-// component string.");         assert!(res.full_text == test_content, "Returns
-// the complete test content");         let mut state =
-// test_data.state.borrow_mut();         let mdx_component =
-// res.to_mdx_component(&mut state);         assert!(mdx_component ==
-// test_content, "Returns the input component as an mdx input");         assert!
-// (matches!(res.component, ConundrumComponentType::Card(_)), "Returns the
-// proper component name");         // assert_eq!(result, 4);
-//     }
+    #[tokio::test]
+    async fn parses_self_closing_react_component() {
+        let test_content = r#"
+$$ {#myId}
+e=mc^2
+$$
+My equation <EqRef id="myId" super />."#;
+        // let mut test_data = wrap_test_conundrum_content(test_content);
+        let res =
+            run_conundrum(ParseConundrumOptions {
+            content: test_content.to_string(),
+            modifiers: vec![],
+            note_id: None,
+            hide_components: vec![]
+            }).await.expect("Parses valid self closing react component without throwing
+an error");
 
-//     #[test]
-//     fn parses_self_closing_react_component_that_contains_closing_tag_in_str()
-// {         let test_content = r#"<Container error width="full">My
-// children.</Container>"#;         let mut test_data =
-// wrap_test_conundrum_content(test_content);         let res =
-//             ReactComponentSelfClosingResult::parse_input_string(&mut
-// test_data).expect("Parses valid self closing react component without throwing
-// an error.");         assert!(test_data.input.is_empty(), "Consumes the entire
-// component string.");         assert!(res.full_text == test_content, "Returns
-// the complete test content");         let mut state =
-// test_data.state.borrow_mut();         let mdx_component =
-// res.to_mdx_component(&mut state);         assert!(mdx_component ==
-// test_content, "Returns the input component as an mdx input");         assert!
-// (matches!(res.component, ConundrumComponentType::Container(_)), "Returns the
-// proper component name");         // assert_eq!(result, 4);
-//     }
-// }
+        assert!(res.eq_ref_map.get("myId").is_some_and(|n| *n == 0),
+                "Returns the proper index for the EqRef component.");
+
+        insta::assert_snapshot!(res.content)
+    }
+}

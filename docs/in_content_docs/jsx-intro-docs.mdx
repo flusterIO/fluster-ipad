@@ -45,7 +45,7 @@ Here are the core pieces of information you need to know as it pertains to calli
 
 This `Card` component accepts `children`, so we use the `>` closing bracket on the opening tag.
 
-```tsx title="components.mdx"
+```tsx -- title="components.mdx"
 <Card title="My title" desc="My optional description">
 This is my card's body.
 </Card>
@@ -53,7 +53,7 @@ This is my card's body.
 
 This fictitious `Slider` component (there are no components that make sense to self close, _yet_) does not accept any children, so we don't need the closing tag and we can write it as:
 
-```tsx title="components.mdx"
+```tsx -- title="components.mdx"
 <Slider min={0} max={5} />
 ```
 
@@ -72,7 +72,7 @@ Unfortunately, string's are the most common property (title's, description's, et
 
 #### Examples
 
-```tsx title="strings.mdx"
+```tsx -- title="strings.mdx"
 <Card
     // I can wrap the title with single quotes, 
     // double quotes or backticks.
@@ -87,7 +87,7 @@ Unfortunately, string's are the most common property (title's, description's, et
 
 If we _really_ wanted to use single quotes inside of another pair of single quotes, or double quotes inside of double quotes, we can do that as:
 
-```tsx title="strings.mdx"
+```tsx -- title="strings.mdx"
 <Card 
     // If I really need to include matching quotations within the string itself,
     // I have to lead it with a leading `\` character.
@@ -105,7 +105,7 @@ This gives a situation where in the following code, `shrink` and `important` wil
 ````
 
 
-```tsx title="booleans.mdx"
+```tsx -- title="booleans.mdx"
 <Card 
     shrink={true}
     important
@@ -135,7 +135,7 @@ It's important to note here that there is a small distinction between integers a
 Arrays are just lists and are familiar to every programmer, and thankfully, they're incredibly easy to work with in javascript. Like numbers, the value must be wrapped in a set of `{}` brackets, but inside of those brackets, the actual `Array` notation requires another set of **square** brackets. This ends up looking like the following:
 ````
 
-```tsx title="arrays.mdx"
+```tsx -- title="arrays.mdx"
 // This is an empty array. 
 // This pie plot is sad because it has no data, but the syntax is valid.
 <PiePlot data={[]} />

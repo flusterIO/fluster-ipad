@@ -176,7 +176,7 @@ export interface SizablePropsGroup {
 }
 
 export interface Admonition {
-	title: Children;
+	title: ConundrumString;
 	children: Children;
 	/**
 	 * The title depth between 1-6 for the markdown output. This will have no
@@ -218,6 +218,7 @@ export interface AiSerializationRequestPhase1 {
 export interface BlockMathResult {
 	body: ConundrumString;
 	id?: ConundrumString;
+	idx: number;
 }
 
 export interface BlockQuoteResult {
@@ -232,8 +233,8 @@ export interface BlockQuoteResult {
 }
 
 export interface Card {
-	title: Children;
-	subtitle?: Children;
+	title: ConundrumString;
+	subtitle?: ConundrumString;
 	children: Children;
 	/**
 	 * The title depth between 1-6 for the markdown output. This will have no
@@ -324,6 +325,14 @@ export interface EmojiResult {
  * Or whatever index is represented by that equation, allowing you to reference
  * equations by index without worrying about the structure of your note
  * changing.
+ * 
+ * #### Indices
+ * 
+ * The equation reference component uses 1 based indices for plain text and
+ * markdown since they are likely going to be displayed directly, and zero
+ * based indices for everything where the output will be handled by a developer
+ * before being displayed (React, HTML, Swift, etc..) because 1 based indices
+ * suck.
  */
 export interface EquationReference {
 	/**
@@ -504,6 +513,10 @@ export interface MathData {
 	 * obvious reasons.
 	 */
 	idx?: number;
+	/** An optional user provided id, only applicable for block-level math. */
+	id?: string;
+	/** The primary math content. */
+	content: string;
 }
 
 export interface TagResult {
@@ -720,7 +733,9 @@ export type ConundrumComponentType =
 	| { tag: "Ul", content: Underline }
 	| { tag: "Hl", content: Highlight }
 	| { tag: "Tabs", content: TabsGroup }
-	| { tag: "Tab", content: Tab };
+	| { tag: "Tab", content: Tab }
+	| { tag: "Grid", content: ResponsiveGrid }
+	| { tag: "EqRef", content: EquationReference };
 
 export interface ReactComponentSelfClosingResult {
 	full_text: string;
@@ -732,9 +747,14 @@ export interface ReactComponentWithChildrenResult {
 	component: ConundrumComponentType;
 }
 
+export interface ResponsiveGrid {
+	sizable?: SizablePropsGroup;
+	children: Children;
+}
+
 export interface Tab {
 	/** The label of the button that toggles this tab. */
-	label: Children;
+	label: ConundrumString;
 	/**
 	 * This is only required if the `label` field occurs more than once in the
 	 * same `Tabs` component. Each `Tab` must have a unique `id` field, it's

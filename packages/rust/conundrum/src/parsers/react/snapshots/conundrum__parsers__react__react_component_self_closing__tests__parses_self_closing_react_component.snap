@@ -1,0 +1,7 @@
+---
+source: packages/rust/conundrum/src/parsers/react/react_component_self_closing.rs
+expression: res.content
+---
+
+<AutoInsertedMathBlock data={{"display":true,"idx":0,"id":"myId","content":"\ne=mc^2\n"}} />
+My equation <EqRef idx={0} superscript={true} />.

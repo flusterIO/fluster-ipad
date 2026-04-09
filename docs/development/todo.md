@@ -16,8 +16,13 @@
 
 ### Components that need to move over still
 
-- [ ] Grid
-- [ ] Container (Double check functionality)
+- [x] Container
+- [x] Grid
+- [ ] HrWithChildren (in jsx form)
+- [ ] AINoteSummary
+
+#### Then Add
+
 - [ ] Table of Contents (TOC)
 
 ## Bug Log

@@ -96,6 +96,8 @@ impl ConundrumString {
 }
 
 impl JsxPropRepresentable for ConundrumString {
+    /// Sets the property as a Fragment here. Use the `to_jsx_prop_as_string`
+    /// method to set the property as a string.
     fn to_jsx_prop(&self, key: &str) -> String {
         format!("{}={{<>{}</>}}", key, self.0)
     }

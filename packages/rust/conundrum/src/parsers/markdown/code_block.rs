@@ -3,7 +3,7 @@ use typeshare::typeshare;
 use winnow::{
     Parser,
     ascii::{line_ending, space0, space1, till_line_ending},
-    combinator::{self, repeat},
+    combinator::{self},
     error::ErrMode,
     stream::Stream,
     token::{literal, take_till, take_until, take_while},
@@ -55,11 +55,7 @@ impl ParsedCodeBlock {
     pub fn get_meta_data(&self) -> Option<ConundrumObject> {
         if let Some(meta) = &self.meta_data {
             let input = &mut get_conundrum_input(meta.as_str(), vec![]);
-            if let Ok(x) = ConundrumObject::from_single_line_property_string_parser(input) {
-                Some(x)
-            } else {
-                None
-            }
+            ConundrumObject::from_single_line_property_string_parser(input).ok()
         } else {
             None
         }
@@ -160,21 +156,6 @@ impl MdxComponentResult for ParsedCodeBlock {
             }
         }
     }
-}
-
-pub fn code_block_meta_string<'a>(input: &'a mut ConundrumInput<'a>) -> ConundrumModalResult<&'a str> {
-    let start = input.input.checkpoint();
-    space1.void().parse_next(input).inspect_err(|_| {
-                                        input.input.reset(&start);
-                                    })?;
-    let x = ConundrumObject::from_single_line_property_string_parser.parse_next(input).inspect_err(|_| {
-                                                                                           input.input.reset(&start);
-                                                                                       })?;
-    let content = till_line_ending.parse_next(input).inspect_err(|_| {
-                                                         input.input.reset(&start);
-                                                     })?;
-
-    Ok(content)
 }
 
 impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {

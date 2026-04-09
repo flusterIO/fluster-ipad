@@ -12,6 +12,13 @@ import consola from 'consola';
 import { type MathDocument } from 'mathjax-full/js/core/MathDocument';
 import { type LiteText } from 'mathjax-full/js/adaptors/lite/Text';
 import { type LiteDocument } from 'mathjax-full/js/adaptors/lite/Document';
+import { type MathData } from '../../../../core/code_gen/typeshare/conundrum';
+
+
+interface Props {
+    data: MathData,
+    mathFontUrl: GlobalWebviewStateDeepNullable["math"]["mathjax_font_url"]
+}
 
 
 // 1. Initialize MathJax outside the component so it only runs once
@@ -30,13 +37,8 @@ const tex = new TeX({
     processEnvironments: true
 });
 
-const getStringFromFunctionProp = (children: FC<{ children: string }>): string | undefined => {
-    const child = Children.only(children);
-    const nodeValue = child.valueOf();
-    return (nodeValue as { props?: { children?: string } } | undefined)?.props?.children;
-}
-
-export const AutoInsertedMathBlock = connector(({ children, idx, id, display, mathFontUrl }: { children: FC<{ children: string }> | string, id?: string | null, idx?: number, display?: boolean, mathFontUrl: GlobalWebviewStateDeepNullable["math"]["mathjax_font_url"] }) => {
+export const AutoInsertedMathBlock = connector(({ data, mathFontUrl }: Props) => {
+    const { content, display, id, idx } = data;
     const reactId = useId()
     const [htmlString, cssString] = useMemo((): [string, string] => {
         if (!mathFontUrl.length) {
@@ -52,11 +54,7 @@ export const AutoInsertedMathBlock = connector(({ children, idx, id, display, ma
                 scale: 1.2
             });
             const doc: MathDocument<LiteElement, LiteText, LiteDocument> = mathjax.document('', { InputJax: tex, OutputJax: htmlOutput }) as MathDocument<LiteElement, LiteText, LiteDocument>;
-            const value = typeof children === "string" ? children : getStringFromFunctionProp(children)
-            if (!value) {
-                return [`<span class="text-destructive">Math Error</span>`, ""];
-            }
-            const node: LiteElement = doc.convert(value, { display: typeof display === "boolean" ? display : false }) as LiteElement;
+            const node: LiteElement = doc.convert(content, { display: typeof display === "boolean" ? display : false }) as LiteElement;
             const res = adaptor.outerHTML(node);
             const styleSheet: LiteElement = htmlOutput.styleSheet(doc as MathDocument<unknown, unknown, unknown>) as LiteElement;
             return [res, (styleSheet.children[0] as { value?: string } | undefined)?.value ?? ""]
@@ -64,7 +62,7 @@ export const AutoInsertedMathBlock = connector(({ children, idx, id, display, ma
             consola.error("MathJax formatting error:", error);
             return [`<span class="text-destructive">Math Error</span>`, ""];
         }
-    }, [children, mathFontUrl]);
+    }, [content, mathFontUrl]);
 
 
 
