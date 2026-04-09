@@ -68,7 +68,7 @@ impl JsxComponentResult for Card {
                    EmbeddableComponentName::Card,
                    title_string,
                    subtitle_string,
-                   self.children.to_jsx_fragment_string(res)?,
+                   self.children.render(res)?,
                    EmbeddableComponentName::Card,
         ))
     }

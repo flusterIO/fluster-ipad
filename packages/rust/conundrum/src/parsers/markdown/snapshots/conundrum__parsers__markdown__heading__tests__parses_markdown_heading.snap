@@ -2,4 +2,4 @@
 source: packages/rust/conundrum/src/parsers/markdown/heading.rs
 expression: children_string
 ---
-My heading with <AutoInsertedMathBlock>\delta</AutoInsertedMathBlock>
+My heading with <AutoInsertedMathBlock data={{"display":false,"idx":null,"id":null,"content":"\\delta"}}/>

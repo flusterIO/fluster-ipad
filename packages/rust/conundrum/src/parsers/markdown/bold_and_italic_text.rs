@@ -1,47 +1,54 @@
 use serde::Serialize;
 use winnow::{
     Parser,
-    combinator::alt,
+    ascii::newline,
+    combinator::{alt, repeat_till},
     stream::Stream,
-    token::{literal, take_while},
+    token::{any, literal, take},
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::{shared::traits::from_with_state::FromWithState, ui::ui_types::children::Children},
+        runtime::{
+            state::{
+                conundrum_error_variant::ConundrumModalResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
-    parsers::parser_trait::ConundrumParser,
+    parsers::{
+        markdown::markdown_extensions::markdown_bold_italic_anchor::markdown_bold_italic_anchor,
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownBoldAndItalicTextResult {
-    pub content: String,
+    pub children: Children,
 }
 
 impl MarkdownComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("**_{}_**", self.content))
+    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("**_{}_**", self.children.render(res)?))
     }
 }
 
 impl MdxComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<span className=\"italic font-bold\">{}</span>", self.content))
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("<span className=\"italic font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 
 impl PlainTextComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(self.content.clone())
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        self.children.render(res)
     }
 }
 
@@ -62,34 +69,49 @@ impl ConundrumComponentResult for MarkdownBoldAndItalicTextResult {
 impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicTextResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownBoldAndItalicTextResult> {
         let cp = input.input.checkpoint();
-        let first_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
-                                                                                  input.input.reset(&cp);
-                                                                              })?;
-        let second_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
-                                                                                   input.input.reset(&cp);
-                                                                               })?;
-        let third_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
-                                                                                  input.input.reset(&cp);
-                                                                              })?;
-        let content = take_while(1.., |c: char| c.to_string() != third_token && c != '\n').parse_next(input)
-                                                                                          .inspect_err(|_| {
-                                                                                              input.input.reset(&cp);
-                                                                                          })?;
-        let _ = literal(third_token).parse_next(input).inspect_err(|_| {
-                                                           input.input.reset(&cp);
-                                                       })?;
-        let _ = literal(second_token).parse_next(input).inspect_err(|_| {
-                                                            input.input.reset(&cp);
-                                                        })?;
-        let _ = literal(first_token).parse_next(input).inspect_err(|_| {
-                                                           input.input.reset(&cp);
-                                                       })?;
+        let first_token = markdown_bold_italic_anchor.parse_next(input).inspect_err(|_| {
+                                                                            input.input.reset(&cp);
+                                                                        })?;
+        let second_token = markdown_bold_italic_anchor.parse_next(input).inspect_err(|_| {
+                                                                             input.input.reset(&cp);
+                                                                         })?;
+        let third_token = markdown_bold_italic_anchor.parse_next(input).inspect_err(|_| {
+                                                                            input.input.reset(&cp);
+                                                                        })?;
 
-        Ok(MarkdownBoldAndItalicTextResult { content: content.to_string() })
+        println!("First: {:#?}", third_token);
+        let (c, _): (Vec<&str>, ()) = repeat_till(1..,
+                                                  take(1usize),
+                                                  alt(((literal(third_token.as_str()),
+                                                        literal(second_token.as_str()),
+                                                        literal(first_token.as_str()))
+                                                                                      .void(),
+                                                       '\n'.void()))).parse_next(input)
+                                                                     .inspect_err(|_| {
+                                                                         input.input.reset(&cp);
+                                                                     })?;
+        println!("Chars: {:#?}", c);
+        let content = String::from_iter(c);
+        println!("Content: {:#?}", content);
+        // let _ = literal(third_token).parse_next(input).inspect_err(|_| {
+        //                                                    input.input.reset(&cp);
+        //                                                })?;
+        // let _ = literal(second_token).parse_next(input).inspect_err(|_| {
+        //                                                     input.input.reset(&cp);
+        //                                                 })?;
+        // let _ = literal(first_token).parse_next(input).inspect_err(|_| {
+        //                                                    input.input.reset(&cp);
+        //                                                })?;
+
+        let mut state = input.state.borrow_mut();
+
+        let children = Children::from_with_state(content.as_str(), &mut state)?;
+
+        Ok(MarkdownBoldAndItalicTextResult { children })
     }
 
     fn matches_first_char(char: char) -> bool {
-        char == '$'
+        char == '*' || char == '_'
     }
 }
 
@@ -103,10 +125,12 @@ mod tests {
     fn markdown_bold_and_italic_text_asterisk() {
         let test_input = "***My bold and italic text***";
         let mut wrapped = wrap_test_conundrum_content(test_input);
-        let res = MarkdownBoldAndItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
+        let res = MarkdownBoldAndItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown bold & italic text without throwing an error.");
 
-        assert!(res.content == "My bold and italic text",
+        let mut state = wrapped.state.borrow_mut();
+        assert!(res.children.render(&mut state).is_ok_and(|x| x == ("My bold and italic text")),
                 "Finds the proper text in the markdown bold and italic text with asterisks.");
+        assert!(wrapped.input.is_empty(), "Consumes the entire input");
     }
 
     #[test]
@@ -115,7 +139,8 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldAndItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.content == "My bold and italic text",
+        let mut state = wrapped.state.borrow_mut();
+        assert!(res.children.render(&mut state).is_ok_and(|x| x == "My bold and italic text"),
                 "Finds the proper text in the markdown bold and italic text with underscores.");
     }
 
@@ -125,7 +150,8 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldAndItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.content == "My bold and italic text",
+        let mut state = wrapped.state.borrow_mut();
+        assert!(res.children.render(&mut state).is_ok_and(|x| x == "My bold and italic text"),
                 "Finds the proper text in the markdown bold and italic text with underscores.");
     }
 

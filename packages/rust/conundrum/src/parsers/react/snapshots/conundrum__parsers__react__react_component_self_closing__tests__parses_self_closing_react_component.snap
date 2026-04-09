@@ -4,4 +4,4 @@ expression: res.content
 ---
 
 <AutoInsertedMathBlock data={{"display":true,"idx":0,"id":"myId","content":"\ne=mc^2\n"}} />
-My equation <EqRef idx={0} superscript={true} />.
+My equation <EqRef idx={0} id="myId" superscript={true} />.

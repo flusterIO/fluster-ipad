@@ -468,11 +468,11 @@ export interface JsxStringPropertyResult {
 }
 
 export interface MarkdownBoldAndItalicTextResult {
-	content: string;
+	children: Children;
 }
 
 export interface MarkdownBoldTextResult {
-	content: string;
+	children: Children;
 }
 
 export interface MarkdownHeadingResult {
@@ -493,7 +493,7 @@ export interface MarkdownHeadingStringifiedResult {
 }
 
 export interface MarkdownItalicTextResult {
-	content: string;
+	children: Children;
 }
 
 export interface MarkdownLinkResult {

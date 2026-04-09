@@ -1,21 +1,25 @@
 use serde::Serialize;
 use winnow::{
     Parser,
-    combinator::alt,
+    ascii::newline,
+    combinator::{alt, repeat_till},
     stream::Stream,
-    token::{literal, take_while},
+    token::{any, literal, take},
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::{shared::traits::from_with_state::FromWithState, ui::ui_types::children::Children},
+        runtime::{
+            state::{
+                conundrum_error_variant::ConundrumModalResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     parsers::parser_trait::ConundrumParser,
@@ -24,24 +28,24 @@ use crate::{
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownBoldTextResult {
-    pub content: String,
+    pub children: Children,
 }
 
 impl MarkdownComponentResult for MarkdownBoldTextResult {
-    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("**{}**", self.content))
+    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("**{}**", self.children.render(res)?))
     }
 }
 
 impl MdxComponentResult for MarkdownBoldTextResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<span className=\"font-bold\">{}</span>", self.content))
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("<span className=\"font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 
 impl PlainTextComponentResult for MarkdownBoldTextResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(self.content.clone())
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        self.children.render(res)
     }
 }
 
@@ -61,8 +65,6 @@ impl ConundrumComponentResult for MarkdownBoldTextResult {
 
 impl ConundrumParser<MarkdownBoldTextResult> for MarkdownBoldTextResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownBoldTextResult> {
-        // FIXME: Handle the resetting of state to this checkpoint if the entire parser
-        // fails.
         let start = input.input.checkpoint();
         let first_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
                                                                                   input.input.reset(&start);
@@ -70,23 +72,25 @@ impl ConundrumParser<MarkdownBoldTextResult> for MarkdownBoldTextResult {
         let second_token = alt((literal("*"), literal("_"))).parse_next(input).inspect_err(|_| {
                                                                                    input.input.reset(&start);
                                                                                })?;
-        let content = take_while(1.., |c: char| c.to_string() != second_token && c != '\n').parse_next(input)
-                                                                                           .inspect_err(|_| {
-                                                                                               input.input
-                                                                                                    .reset(&start);
-                                                                                           })?;
-        let _ = literal(second_token).parse_next(input).inspect_err(|_| {
-                                                            input.input.reset(&start);
-                                                        })?;
-        let _ = literal(first_token).parse_next(input).inspect_err(|_| {
-                                                           input.input.reset(&start);
-                                                       })?;
 
-        Ok(MarkdownBoldTextResult { content: content.to_string() })
+        let (c, _): (Vec<&str>, ()) = repeat_till(1..,
+                                                  take(1usize),
+                                                  alt(((literal(second_token), literal(first_token)).void(),
+                                                       newline.void()))).parse_next(input)
+                                                                        .inspect_err(|_| {
+                                                                            input.input.reset(&start);
+                                                                        })?;
+        let content = String::from_iter(c);
+
+        let mut state = input.state.borrow_mut();
+
+        let children = Children::from_with_state(content.as_str(), &mut state)?;
+
+        Ok(MarkdownBoldTextResult { children })
     }
 
     fn matches_first_char(char: char) -> bool {
-        char == '$'
+        char == '_' || char == '*'
     }
 }
 
@@ -102,7 +106,9 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.content == "My bold text", "Finds the proper text in the markdown bold text with asterisks.");
+        let mut state = wrapped.state.borrow_mut();
+        assert!(res.children.render(&mut state).is_ok_and(|s| s == "My bold text"),
+                "Finds the proper text in the markdown bold text with asterisks.");
     }
 
     #[test]
@@ -111,7 +117,9 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.content == "My bold text", "Finds the proper text in the markdown bold text with underscores.");
+        let mut state = wrapped.state.borrow_mut();
+        assert!(res.children.render(&mut state).is_ok_and(|s| s == "My bold text"),
+                "Finds the proper text in the markdown bold text with underscores.");
     }
 
     #[test]
@@ -120,7 +128,9 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.content == "My bold text", "Finds the proper text in the markdown bold text with underscores.");
+        let mut state = wrapped.state.borrow_mut();
+        assert!(res.children.render(&mut state).is_ok_and(|s| s == "My bold text"),
+                "Finds the proper text in the markdown bold text with underscores.");
     }
 
     #[test]

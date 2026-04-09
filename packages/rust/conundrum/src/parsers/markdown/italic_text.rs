@@ -6,15 +6,18 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::{shared::traits::from_with_state::FromWithState, ui::ui_types::children::Children},
+        runtime::{
+            state::{
+                conundrum_error_variant::ConundrumModalResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     parsers::parser_trait::ConundrumParser,
@@ -23,24 +26,24 @@ use crate::{
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownItalicTextResult {
-    pub content: String,
+    pub children: Children,
 }
 
 impl MarkdownComponentResult for MarkdownItalicTextResult {
-    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("_{}_", self.content))
+    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("_{}_", self.children.render(res)?))
     }
 }
 
 impl PlainTextComponentResult for MarkdownItalicTextResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(self.content.clone())
+    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        self.children.render(res)
     }
 }
 
 impl MdxComponentResult for MarkdownItalicTextResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<span className=\"italic\">{}</span>", self.content))
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("<span className=\"italic\">{}</span>", self.children.render(res)?))
     }
 }
 
@@ -63,7 +66,11 @@ impl ConundrumParser<MarkdownItalicTextResult> for MarkdownItalicTextResult {
         let content = alt((delimited('*', take_while(1.., |c| c != '\n' && c != '*'), '*'),
                            delimited('_', take_while(1.., |c| c != '\n' && c != '_'), '_'))).parse_next(input)?;
 
-        Ok(MarkdownItalicTextResult { content: content.to_string() })
+        let mut state = input.state.borrow_mut();
+
+        let children = Children::from_with_state(content, &mut state)?;
+
+        Ok(MarkdownItalicTextResult { children })
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -83,8 +90,10 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.content == "My italic text", "Finds the proper text in the markdown italic text with asterisks.");
-        // assert_eq!(result, 4);
+        let mut state = wrapped.state.borrow_mut();
+
+        assert!(res.children.render(&mut state).is_ok_and(|s| s == "My italic text"),
+                "Finds the proper text in the markdown italic text with asterisks.");
     }
 
     #[test]
@@ -92,8 +101,9 @@ mod tests {
         let test_input = "_My italic text_";
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
+        let mut state = wrapped.state.borrow_mut();
 
-        assert!(res.content == "My italic text", "Finds the proper text in the markdown italic text with underscors.");
-        // assert_eq!(result, 4);
+        assert!(res.children.render(&mut state).is_ok_and(|s| s == "My italic text"),
+                "Finds the proper text in the markdown italic text with asterisks.");
     }
 }

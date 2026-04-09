@@ -2,11 +2,13 @@
 
 ## Remainder of Today
 
-- [ ] Handle parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST.
-- [ ] Implement equation tag components.
+- [x] Handle parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST.
+- [x] Implement equation tag components.
+- [x] Move on to code block parsing issue with nested italics.
+- [ ] Handle bugs with bold, italic and bold-italic text parsing now that everything has been moved to `Children`.
 - [ ] Enable click-to-scroll functionality for equations if the id is present.
-- [ ] Move on to code block parsing issue with nested italics.
 - [ ] Work on integrating new emoji crate directly into the transpiler.
+- [ ] Fix syntax docs... they're completely fucking broken... (likely arising from the `-- title="my_title"` syntax. It's failing elsehwere too.)
 
 ````mdx
 ```swift title="webview_container_view.swift"

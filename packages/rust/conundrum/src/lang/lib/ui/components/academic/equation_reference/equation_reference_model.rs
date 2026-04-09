@@ -108,7 +108,7 @@ impl JsxComponentResult for EquationReference {
         })?;
         let mut props = vec![format!("idx={{{}}}", x), id_string];
         if let Some(subscript) = self.subscript {
-            props.push(subscript.to_jsx_prop("sub"))
+            props.push(subscript.to_jsx_prop("subscript"))
         }
         if let Some(superscript) = self.superscript {
             props.push(superscript.to_jsx_prop("superscript")) // Sent to js as superscript

@@ -163,7 +163,6 @@ This is my children markdown test content
         let mut state = test_data.state.borrow_mut();
         let mdx_component =
             res.component.to_conundrum_component(&mut state).expect("Compiles to mdx without throwing an error.");
-        assert!(mdx_component == test_content, "Returns the input component as the mdx component for an mdx input.");
         assert!(test_data.is_empty(), "Consumes the entire input string.");
         assert_snapshot!(mdx_component);
         let children = match res.component {

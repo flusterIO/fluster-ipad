@@ -4,14 +4,18 @@ use winnow::error::ErrMode;
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        lib::ui::ui_traits::jsx_prop_representable::FromJsxPropsOptional,
+        lib::{
+            shared::traits::from_with_state::FromWithState, ui::ui_traits::jsx_prop_representable::FromJsxPropsOptional,
+        },
         runtime::{
             compile_conundrum::compile_elements,
+            parse_conundrum_string::parse_elements,
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult, ConundrumResult},
                 parse_state::ParseState,
             },
+            traits::conundrum_input::get_conundrum_input,
         },
     },
     output::output_components::output_utils::format_markdown_fragment_property,
@@ -71,6 +75,14 @@ impl Children {
     pub fn to_jsx_prop(&self, prop_name: &str, res: &mut ParseState) -> ConundrumModalResult<String> {
         let s = self.to_jsx_fragment_string(res)?;
         Ok(format!("{}={}", prop_name, s))
+    }
+}
+
+impl FromWithState<&str> for Children {
+    fn from_with_state(value: &str, state: &mut ParseState) -> ConundrumModalResult<Self> {
+        let mut input = &mut get_conundrum_input(value, state.modifiers.clone());
+        let res = parse_elements(&mut input)?;
+        Ok(Children(res))
     }
 }
 
