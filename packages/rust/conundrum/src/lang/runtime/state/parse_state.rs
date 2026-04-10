@@ -38,6 +38,8 @@ pub enum ConundrumModifier {
     /// </Card>
     /// ```
     PreferMarkdownSyntax,
+    /// Hide the emojis completely for platforms that don't support them.
+    HideEmojis,
     /// Curretly does pretty much the same thing as .PreferMarkdownSyntax, but
     /// once the markdown parser has been completely migrated this will stop
     /// things like wrapping the outermost block in a paragraph.

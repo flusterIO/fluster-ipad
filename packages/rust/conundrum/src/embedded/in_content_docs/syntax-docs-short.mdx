@@ -1,80 +1,75 @@
-<AutoInsertedHeading depth={2} id="fluster-syntax" subtitle={null} >Fluster Syntax</AutoInsertedHeading>
+## Fluster Syntax
 
-<AutoInsertedHeading depth={3} id="frontmatter" subtitle={null} >FrontMatter</AutoInsertedHeading>
+### FrontMatter
 
 Insert front matter into your note using yaml syntax seperated by 3 `---`:
 
-<AutoInsertedCodeBlock language="yaml">
+```yaml
 ---
 title: My optional note title
 ---
-
-</AutoInsertedCodeBlock>
-
+```
 
 
 
-<AutoInsertedHeading depth={3} id="tags" subtitle={null} >Tags</AutoInsertedHeading>
 
-Insert <span className="font-bold">tags</span> into your note using the following syntax:
+### Tags 
 
-<AutoInsertedCodeBlock language="mdx" title="my_tag_demo.mdx">
+Insert **tags** into your note using the following syntax:
+
+```mdx -- title="my_tag_demo.mdx"
 This is my tag [[#myTag]] called 'myTag'.
+```
 
-</AutoInsertedCodeBlock>
-
-<AutoInsertedHeading depth={3} id="citations" subtitle={null} >Citations</AutoInsertedHeading>
+### Citations
 
 
 
 The citation key must match the bibliography entry key in your bibliography. For example:
 
-<AutoInsertedCodeBlock language="mdx">
+```mdx
 As you can see, according to Ives & Stillwell [[cite:IvesStillwell]]...
-
-</AutoInsertedCodeBlock>
-
+```
 
 
-<AutoInsertedHeading depth={3} id="dictionary-entries" subtitle={null} >Dictionary Entries</AutoInsertedHeading>
+
+### Dictionary Entries
 
 You can insert dictionary entries in any note using the following syntax:
 
-<AutoInsertedCodeBlock language="mdx">
+````mdx
 ```dictionary -- My Dictionary Title
 This is my dictionary entry.
 I can insert any mdx content I like here.
 ```
-
-</AutoInsertedCodeBlock>
-
+````
 
 
-<AutoInsertedHeading depth={3} id="horizontal-rule-with-children" subtitle={null} >Horizontal Rule with Children</AutoInsertedHeading>
 
-<AutoInsertedCodeBlock language="mdx">
+### Horizontal Rule with Children
+
+```mdx
 --- My title with math $\delta$ ---
-
-</AutoInsertedCodeBlock>
-
+```
 
 
 
-<AutoInsertedHeading depth={3} id="title-with-subtitle" subtitle={null} >Title with Subtitle</AutoInsertedHeading>
+
+### Title with Subtitle
 
 
 
-<AutoInsertedCodeBlock language="mdx">
+```mdx
 # My title {#myTitleWithAnId}
 > My subtitle that follows immediately on the next line
-
-</AutoInsertedCodeBlock>
-
+```
 
 
 
-<Hr>Output</Hr>
 
-<AutoInsertedHeading depth={1} id="my-title" subtitle={<>My subtitle that follows immediately on the next line</>} >My title</AutoInsertedHeading>
+--- Output ---
+
+# My title 
+> My subtitle that follows immediately on the next line
 
 

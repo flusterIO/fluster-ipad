@@ -614,7 +614,7 @@ extension AppSchemaV1 {
     public func updateTitleGroup() {
       if let res = try? ConundrumTextUtils.getTitleGroupSync(
         content: self.markdown.body,
-        modifiers: [.preferInlineMarkdownSyntax, .preferMarkdownSyntax])
+        modifiers: [.preferInlineMarkdownSyntax, .preferMarkdownSyntax, .hideEmojis])
       {
         self.markdown.title = res.title
         if let subtitle = res.subtitle, self.frontMatter.summary == nil {

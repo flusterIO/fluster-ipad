@@ -79,7 +79,7 @@ impl JsxComponentResult for EmojiResult {
     )
 )
                    })?,
-                   self.size.as_ref().unwrap_or_else(|| &SizableOption::Small).to_string(),
+                   self.size.as_ref().unwrap_or(&SizableOption::Small),
                    svg,
                    EmbeddableComponentName::Emoji
         ))
@@ -90,7 +90,10 @@ impl ConundrumComponentResult for EmojiResult {
     fn to_conundrum_component(&self,
                               res: &mut crate::lang::runtime::state::parse_state::ParseState)
                               -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForSearchInput) {
+        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput,
+                                              ConundrumModifier::ForcePlainText,
+                                              ConundrumModifier::HideEmojis])
+        {
             self.to_plain_text(res)
         } else if res.is_markdown() {
             self.to_markdown(res)

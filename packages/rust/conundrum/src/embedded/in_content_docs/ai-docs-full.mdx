@@ -1,23 +1,20 @@
-<AutoInsertedHeading depth={2} id="fluster-ai" subtitle={null} >Fluster AI</AutoInsertedHeading>
+## Fluster AI
+
+> Please keep in mind that while Apple's on-device AI models are impressive, they are not as capable as server scale models. Fluster will integrate with server scale providers soon, but as I'm builiding this while homeless, I can't sign up for the necessary accounts to even test those capabilities. If you can, please consider supporting Fluster either directly or via sharing it with others so that we can expand Fluster's capabilities.
 
 
-<AutoInsertedBlockQuote>
-Please keep in mind that while Apple's on-device AI models are impressive, they are not as capable as server scale models. Fluster will integrate with server scale providers soon, but as I'm builiding this while homeless, I can't sign up for the necessary accounts to even test those capabilities. If you can, please consider supporting Fluster either directly or via sharing it with others so that we can expand Fluster's capabilities.
-</AutoInsertedBlockQuote>
-
-
-<AutoInsertedHeading depth={3} id="components" subtitle={null} >Components</AutoInsertedHeading>
+### Components
 
 | Task | Description |
 | ---- | ----------- |
 | `AINoteSummary` | Summarize the current note. This component can then optionally persist the note's summary alongside the note in your database, making this summary appear in the search results. |
-| `AINoteQuiz` | Generate a note specific quiz using on-device AI. This is a prime example of a feature that is <span className="italic">possible</span> with device-scale AI models, but will be improved <span className="font-bold">significantly</span> with access to server scale models. |
+| `AINoteQuiz` | Generate a note specific quiz using on-device AI. This is a prime example of a feature that is _possible_ with device-scale AI models, but will be improved **significantly** with access to server scale models. |
 
 Or use a `fluster-ai` code block to generate arbitrary markdown content with on-device language models. 
 
-Keep in mind that in order for your code block to be replaced successfully, it must remain <span className="italic">exactly</span> as-is during the AI's 'thinking' process. If your note changes during this period, Fluster can't safely find and replace the content in your note, making it impossible for the component to overwrite itself without making assumptions that would jeopordize the integrity of user's notes.
+Keep in mind that in order for your code block to be replaced successfully, it must remain _exactly_ as-is during the AI's 'thinking' process. If your note changes during this period, Fluster can't safely find and replace the content in your note, making it impossible for the component to overwrite itself without making assumptions that would jeopordize the integrity of user's notes.
 
 
-With many, <span className="italic">many</span> more planned for the near future. Having access to first-class, on-device AI models on almost every user's device is a dream for a developer, and Fluster will take full advantage of the AI capabilities provided by Apple as the app continues to grow.
+With many, _many_ more planned for the near future. Having access to first-class, on-device AI models on almost every user's device is a dream for a developer, and Fluster will take full advantage of the AI capabilities provided by Apple as the app continues to grow.
 
-Have more ideas? Send them my way on <AutoInsertedMarkdownLink data={{"text":"Github","url":"https://github.com/flusterIO"}} />!
+Have more ideas? Send them my way on [Github](https://github.com/flusterIO)!

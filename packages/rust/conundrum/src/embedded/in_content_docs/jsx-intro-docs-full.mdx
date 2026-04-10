@@ -1,12 +1,12 @@
-<AutoInsertedHeading depth={2} id="intro-to-jsx" subtitle={null} >Intro to Jsx</AutoInsertedHeading>
+## Intro to Jsx
 
 
 
-If you've never written jsx or any other programming language, don't worry. You don't <span className="italic">need</span> to know much of it, but Fluster will make many features available to you. How far you take this dive into javascript and jsx is up to you and your academic goals, but some basic familiarity will take Fluster from just another markdown application to something truly powerful.
+If you've never written jsx or any other programming language, don't worry. You don't _need_ to know much of it, but Fluster will make many features available to you. How far you take this dive into javascript and jsx is up to you and your academic goals, but some basic familiarity will take Fluster from just another markdown application to something truly powerful.
 
 While plotting components accept parameters like functions in javascript, you can still get much out of Fluster by understanding the basics of a few property types.
 
-<span className="font-bold">Documented Properties</span>
+**Documented Properties**
 
 - Strings
 - Booleans
@@ -15,16 +15,16 @@ While plotting components accept parameters like functions in javascript, you ca
 - Objects
 
 
-While I encourage you to learn to write basic mathematical functions in Javascript for the plotting components included in Fluster if they fit your use case, I'll leave that explanation to a solid <AutoInsertedMarkdownLink data={{"text":"youtube video","url":"https://www.youtube.com/watch?v=BI1o2H9z9fo"}} /> but your go-to source of information if you choose to move more into this is likely going to be the <AutoInsertedMarkdownLink data={{"text":"Mozilla Developer docs","url":"https://developer.mozilla.org/"}} />.
+While I encourage you to learn to write basic mathematical functions in Javascript for the plotting components included in Fluster if they fit your use case, I'll leave that explanation to a solid [youtube video](https://www.youtube.com/watch?v=BI1o2H9z9fo) but your go-to source of information if you choose to move more into this is likely going to be the [Mozilla Developer docs](https://developer.mozilla.org/).
 
 
 
 
-<AutoInsertedHeading depth={2} id="components" subtitle={null} >Components</AutoInsertedHeading>
+## Components
 
 Components are the core of jsx, and a fundamental reason of why the language is so popular. Jsx allows us to organize 'code' in a format that makes it incredibly easy to read, very unlike the tradtional code that makes up the jsx components behind the scenes.
 
-Fluster provides a long list of components for you, and wth snippets to help with each component, you'll rarely have to write a component by hand. That doesn't mean however that it's not beneficial to know how to edit them for the inevitable moment when you delete the wrong quotation mark or bracket. If you've written any programming language, or even if you haven't, this is <span className="italic">not</span> as big of an ask as it my seem. On your end, you don't <span className="italic">need</span> to know javascript or jsx, although it expands the capablities of Fluster, but your notes will be <span className="italic">calling</span> functions that are written for you. All you need to know is the name of the function, and the properties that function accepts... and <span className="font-bold">bam</span> <Emoji name="boom" inline small><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#BB1A34" d="M22 0l-4 8.028-5-5.018v7.024L3 8.028l8 8.028-11 6.02h12L6 34.118l12-8.028 11 10.035-3-14.049h10l-8-6.021 8-9.031-12 3.01L22 0z"/><path fill="#FCAB40" d="M22.914 12.924l1.86-.467L30 11.146l-3.381 3.816-1.319 1.49 1.59 1.195 2.925 2.202h-5.918l.473 2.218 1.551 7.26-5.845-5.332-1.056-.964-1.188.795-5.24 3.506 2.406-4.828 1.322-2.655H9.564l3.759-2.059 2.145-1.172-1.727-1.735-3.044-3.053 3.221.646 2.186.439V8.686l1.45 1.455 1.794 1.799 1.133-2.276 1.273-2.556"/><path fill="#F5F8FA" d="M21.512 14.301l.767-.193 2.158-.541-1.396 1.576-.545.615.656.493 1.208.909h-2.443l.195.916.641 2.997-2.413-2.201-.437-.398-.49.328-2.163 1.448.993-1.994.546-1.096H16l1.553-.85.885-.484-.713-.716-1.257-1.261 1.329.267.903.181v-1.745l.599.6.74.743.468-.939.525-1.056"/></svg></Emoji> Your markdown notes are now more capable than they've ever been.
+Fluster provides a long list of components for you, and wth snippets to help with each component, you'll rarely have to write a component by hand. That doesn't mean however that it's not beneficial to know how to edit them for the inevitable moment when you delete the wrong quotation mark or bracket. If you've written any programming language, or even if you haven't, this is _not_ as big of an ask as it my seem. On your end, you don't _need_ to know javascript or jsx, although it expands the capablities of Fluster, but your notes will be _calling_ functions that are written for you. All you need to know is the name of the function, and the properties that function accepts... and **bam** :boom: Your markdown notes are now more capable than they've ever been.
 
 Each component includes a set of short and long documentation that can be accessed using the `?` or `??` syntax, snippets to help with auto-completion, syntax highlighting within the editor, and some hopefully helpful error messages to help when you provide an incorrect property.
 
@@ -33,42 +33,40 @@ Here are the core pieces of information you need to know as it pertains to calli
 
 - Components will always start with a `<` and a capital letter. Fluster also renders html, which uses a similar syntax in lowercase.
 - Components can accept any number of properties. While components traditionally each have their own set of properties, Fluster bundles them into common, repeated models for familiarity, while some components still accept unique properties.
-- `Children` is a unique property, being wrapped <span className="italic">between</span> the component. This is a big part of what makes jsx so readable, as we insert regular mdx content <span className="italic">inside</span> of the component where that content will actually render.
-  - If a component <span className="font-bold">does</span> accept <span className="italic">children</span>, it's opening tag is closed with a single `>`, if it does not accept children the component accepts a shorthand where the second tag is not needed at all, and the first tag can be closed with a `/>`.
+- `Children` is a unique property, being wrapped _between_ the component. This is a big part of what makes jsx so readable, as we insert regular mdx content _inside_ of the component where that content will actually render.
+  - If a component **does** accept _children_, it's opening tag is closed with a single `>`, if it does not accept children the component accepts a shorthand where the second tag is not needed at all, and the first tag can be closed with a `/>`.
 
 
-<AutoInsertedHeading depth={4} id="examples" subtitle={null} >Examples</AutoInsertedHeading>
+#### Examples
 
 This `Card` component accepts `children`, so we use the `>` closing bracket on the opening tag.
 
-<AutoInsertedCodeBlock language="tsx" title="components.mdx">
+```tsx -- title="components.mdx"
 <Card title="My title" desc="My optional description">
 This is my card's body.
 </Card>
+```
 
-</AutoInsertedCodeBlock>
+This fictitious `Slider` component (there are no components that make sense to self close, _yet_) does not accept any children, so we don't need the closing tag and we can write it as:
 
-This fictitious `Slider` component (there are no components that make sense to self close, <span className="italic">yet</span>) does not accept any children, so we don't need the closing tag and we can write it as:
-
-<AutoInsertedCodeBlock language="tsx" title="components.mdx">
+```tsx -- title="components.mdx"
 <Slider min={0} max={5} />
+```
 
-</AutoInsertedCodeBlock>
+### Strings
 
-<AutoInsertedHeading depth={3} id="strings" subtitle={null} >Strings</AutoInsertedHeading>
-
-<AutoInsertedMarkdownLink data={{"text":"See these docs","url":"https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Strings"}} /> for a much more thorough explanation
+[See these docs](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Strings) for a much more thorough explanation
 
 Unfortunately, string's are the most common property (title's, description's, etc.) but they're also the only one that's remotely challenging.
 
 1. The single quote `'`, the double quote `"` and the backtick `\`` are interchangeable, but the opening and closing quotation must match.
 2. The `\` character is a special character, sometimes giving the character in front of it super powers (`\n` creates a new line, `\t` creates a tab). If you want to include a quotation that is used to wrap your string within the string itself, escape it with this character just before the quotation within your string, but in reality... just wrap the string with a different type of quotations.
-3. If you want to include new lines, you <span className="italic font-bold">must</span> use the backtick (top left of an English keyboard). Other quotations will break if you include a new line within the quotation.
-4. To use the backticks, you <span className="italic">must</span> wrap the value in `{}` brackets to give something like ``title={`My title`}``. Wrapping the value in these curly brackets is optional for the other two types of quotations.
+3. If you want to include new lines, you ***must*** use the backtick (top left of an English keyboard). Other quotations will break if you include a new line within the quotation.
+4. To use the backticks, you _must_ wrap the value in `{}` brackets to give something like ``title={`My title`}``. Wrapping the value in these curly brackets is optional for the other two types of quotations.
 
-<AutoInsertedHeading depth={4} id="examples-1" subtitle={null} >Examples</AutoInsertedHeading>
+#### Examples
 
-<AutoInsertedCodeBlock language="tsx" title="strings.mdx">
+```tsx -- title="strings.mdx"
 <Card
     // I can wrap the title with single quotes, 
     // double quotes or backticks.
@@ -79,21 +77,19 @@ Unfortunately, string's are the most common property (title's, description's, et
     desc={`This is my description's content.`}
 >
 ...
+```
 
-</AutoInsertedCodeBlock>
+If we _really_ wanted to use single quotes inside of another pair of single quotes, or double quotes inside of double quotes, we can do that as:
 
-If we <span className="italic">really</span> wanted to use single quotes inside of another pair of single quotes, or double quotes inside of double quotes, we can do that as:
-
-<AutoInsertedCodeBlock language="tsx" title="strings.mdx">
+```tsx -- title="strings.mdx"
 <Card 
     // If I really need to include matching quotations within the string itself,
     // I have to lead it with a leading `\` character.
     desc={"This is my \"quotation\" here"}
 />
+```
 
-</AutoInsertedCodeBlock>
-
-<AutoInsertedHeading depth={2} id="booleans" subtitle={null} >Booleans</AutoInsertedHeading>
+## Booleans
 
 
 Booleans are just true or false values, indicated by `true` or `false` in lowercase. To make things easier, jsx allows a shorthand syntax where when a property is `false` by default, it can be set true by simply passing the property's name.
@@ -101,38 +97,35 @@ Booleans are just true or false values, indicated by `true` or `false` in lowerc
 This gives a situation where in the following code, `shrink` and `important` will both evaluate to true.
 
 
-<AutoInsertedCodeBlock language="tsx" title="booleans.mdx">
+```tsx -- title="booleans.mdx"
 <Card 
     shrink={true}
     important
 >
 ...
+```
 
-</AutoInsertedCodeBlock>
+## Numbers
 
-<AutoInsertedHeading depth={2} id="numbers" subtitle={null} >Numbers</AutoInsertedHeading>
+Numbers in javascript are straight-forward, defined exactly as you'd expect. One important property to note however, is that to provide a number as a value to a jsx property, you _must_ wrap the value in curly brackets. This gives something that looks like:
 
-Numbers in javascript are straight-forward, defined exactly as you'd expect. One important property to note however, is that to provide a number as a value to a jsx property, you <span className="italic">must</span> wrap the value in curly brackets. This gives something that looks like:
-
-<AutoInsertedCodeBlock language="tsx">
+```tsx
 <Grid medium={2} >
 ...
-
-</AutoInsertedCodeBlock>
+```
 
 It's important to note here that there is a small distinction between integers and floats (decimals) made by Fluster, despite the fact that javascript really doesn't care much. To enforce some css (style language) level requirements, Fluster will notify you if you provide a float where a decimal is expected, meaning that `2.0` and `2` are not the same in some rare edge cases.
 
 
-<AutoInsertedHeading depth={2} id="arrays" subtitle={null} >Arrays</AutoInsertedHeading>
+## Arrays
 
-Arrays are just lists and are familiar to every programmer, and thankfully, they're incredibly easy to work with in javascript. Like numbers, the value must be wrapped in a set of `{}` brackets, but inside of those brackets, the actual `Array` notation requires another set of <span className="font-bold">square</span> brackets. This ends up looking like the following:
+Arrays are just lists and are familiar to every programmer, and thankfully, they're incredibly easy to work with in javascript. Like numbers, the value must be wrapped in a set of `{}` brackets, but inside of those brackets, the actual `Array` notation requires another set of **square** brackets. This ends up looking like the following:
 
-<AutoInsertedCodeBlock language="tsx" title="arrays.mdx">
+```tsx -- title="arrays.mdx"
 // This is an empty array. 
 // This pie plot is sad because it has no data, but the syntax is valid.
 <PiePlot data={[]} />
-
-</AutoInsertedCodeBlock>
+```
 
 To include values within the array, just seperate the normal javascript syntax (not necessarily jsx syntax, so no extra curly brackets everywhere) of whatever data type you're trying to insert.
 
@@ -154,13 +147,13 @@ To include values within the array, just seperate the normal javascript syntax (
 ```
 
 
-What is much more likely however, is that whatever arrays you do work with inside of Fluster will be generated for you. There is currently a math extension that is in beta that will provide a very <AutoInsertedMarkdownLink data={{"text":"numpy","url":"https://numpy.org/doc/stable/"}} /> like array interface for plotting and mathematical calculations directly within your note.
+What is much more likely however, is that whatever arrays you do work with inside of Fluster will be generated for you. There is currently a math extension that is in beta that will provide a very [numpy](https://numpy.org/doc/stable/) like array interface for plotting and mathematical calculations directly within your note.
 
-<AutoInsertedHeading depth={2} id="objects" subtitle={null} >Objects</AutoInsertedHeading>
+## Objects
 
-'Objects' are at the core of most programming languages, and javascript is no exception. This subject does however start to bridge the gap between what is required to use Fluster and what is the beginning of a software career, but I would encourage more advanced users to learn more <AutoInsertedMarkdownLink data={{"text":"here","url":"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects"}} />. Objects are defined as a set of key-value pairs, where the value can be almost anything, including another object.
+'Objects' are at the core of most programming languages, and javascript is no exception. This subject does however start to bridge the gap between what is required to use Fluster and what is the beginning of a software career, but I would encourage more advanced users to learn more [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects). Objects are defined as a set of key-value pairs, where the value can be almost anything, including another object.
 
-<AutoInsertedCodeBlock language="tsx">
+```tsx
 <MyFakeComponent 
     // Notice that there are 2 `{{}}` here.
     // 1 is required for jsx, the other for javascript.
@@ -174,5 +167,4 @@ What is much more likely however, is that whatever arrays you do work with insid
         }
     }}
 />
-
-</AutoInsertedCodeBlock>
+```

@@ -1,0 +1,13 @@
+---
+source: packages/rust/conundrum/tests/documentation/emoji/renders_emoji_documentation.rs
+assertion_line: 15
+expression: res.content
+---
+
+<InContentDocumentationContainer inContentId="Emoji" format="full">
+<AutoInsertedHeading depth={2} id="emojis" subtitle={null} >Emojis</AutoInsertedHeading>
+
+
+<AutoInsertedNestedEmojiDocumentation />
+
+</InContentDocumentationContainer>

@@ -589,6 +589,8 @@ export enum ConundrumModifier {
 	 * ```
 	 */
 	PreferMarkdownSyntax = "PreferMarkdownSyntax",
+	/** Hide the emojis completely for platforms that don't support them. */
+	HideEmojis = "HideEmojis",
 	/**
 	 * Curretly does pretty much the same thing as .PreferMarkdownSyntax, but
 	 * once the markdown parser has been completely migrated this will stop

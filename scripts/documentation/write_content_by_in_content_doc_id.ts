@@ -75,14 +75,14 @@ export const writeContentToDocumentationId = (
     );
 
     fs.writeFileSync(shortOutputPath, group.short, { encoding: "utf-8" });
-    formatText(shortOutputPath, shortOutputPath).catch((err: unknown) => {
-        console.error("Error: ", err);
-    });
+    // formatText(shortOutputPath, shortOutputPath).catch((err: unknown) => { // No more formatting docs ahead of time. This might break a LOT.
+    //     console.error("Error: ", err);
+    // });
     console.log(`Wrote documentation from ${inputPath} to ${shortOutputPath}.`);
     fs.writeFileSync(longOutputPath, group.full, { encoding: "utf-8" });
-    formatText(longOutputPath, longOutputPath).catch((err: unknown) => {
-        console.error("Error: ", err);
-    });
+    // formatText(longOutputPath, longOutputPath).catch((err: unknown) => {
+    //     console.error("Error: ", err);
+    // });
     console.log(`Wrote documentation from ${inputPath} to ${longOutputPath}.`);
 };
 

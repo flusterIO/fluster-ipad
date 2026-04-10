@@ -64,7 +64,7 @@ impl ConundrumComponentResult for ParsedInspectionRequest {
 }
 
 impl MdxComponentResult for ParsedInspectionRequest {
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if let Some(depth) = match self.level {
             1 => Some(InContentDocumentationFormat::Short),
             2 => Some(InContentDocumentationFormat::Full),
@@ -72,14 +72,14 @@ impl MdxComponentResult for ParsedInspectionRequest {
         } {
             if let Some(doc_id) = InContentDocumentationId::iter().find(|x| x.to_string() == self.keyword) {
                 let body_as_string = EmbeddedInContentDocs::get_incontent_docs_by_id(&doc_id, &depth);
-                // let mut new_input = get_conundrum_input(body_as_string.as_str(),
-                // res.modifiers.clone()); let c = parse_elements(&mut
-                // new_input)?; let rendered_body = Children(c).render(res)?;
+                let mut new_input = get_conundrum_input(body_as_string.as_str(), res.modifiers.clone());
+                let c = parse_elements(&mut new_input)?;
+                let rendered_body = Children(c).render(res)?;
                 return Ok(format!("\n<{} inContentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
                                   DocumentationComponentName::InContentDocumentationContainer,
                                   doc_id,
                                   depth,
-                                  body_as_string,
+                                  rendered_body,
                                   DocumentationComponentName::InContentDocumentationContainer,));
             } else if let Some(comp_name) = EmbeddableComponentName::iter().find(|x| x.to_string() == self.keyword)
                                                                            .map(|component_name| {
@@ -89,14 +89,14 @@ impl MdxComponentResult for ParsedInspectionRequest {
                                                                            })
             {
                 let body_as_string = EmbeddedComponentDocs::get_incontent_docs_by_id(comp_name, &depth);
-                // let mut new_input = get_conundrum_input(body_as_string.as_str(),
-                // res.modifiers.clone()); let c = parse_elements(&mut
-                // new_input)?; let rendered_body = children(c).render(res)?;
+                let mut new_input = get_conundrum_input(body_as_string.as_str(), res.modifiers.clone());
+                let c = parse_elements(&mut new_input)?;
+                let rendered_body = Children(c).render(res)?;
                 return Ok(format!("\n<{} componentName=\"{}\" format=\"{}\">\n{}\n</{}>\n",
                                   DocumentationComponentName::InContentDocumentationContainer,
                                   comp_name,
                                   depth,
-                                  body_as_string,
+                                  rendered_body,
                                   DocumentationComponentName::InContentDocumentationContainer,));
             }
         }
