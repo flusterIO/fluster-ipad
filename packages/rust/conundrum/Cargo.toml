@@ -45,6 +45,8 @@ askama_derive = "0.15.6"
 lexopt = "0.3.2"
 typst-as-lib = "0.15.4"
 emoji = "0.2.1"
+wasm-bindgen = { version = "0.2.114", features = ["serde", "serde-serialize", "serde_json"] }
+serde-wasm-bindgen = "0.6.5"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

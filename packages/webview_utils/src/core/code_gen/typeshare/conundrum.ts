@@ -306,22 +306,6 @@ export interface EmojiData {
 	svg: string;
 }
 
-/**
- * ## The Jsx template
- * 
- * ```askama
- * <{{crate::output::general::component_constants::component_names::EmbeddableComponentName::Grid}}
- * responsive="medium"
- * gap="medium"
- * >
- * {% for emoji in get_emoji_data() %}
- * <{{crate::output::general::component_constants::documentation_component_name::DocumentationComponentName::EmojiDocumentationDemo}}} name="{{emoji.name}}">
- * {{ emoji.svg }}
- * </{{crate::output::general::component_constants::documentation_component_name::DocumentationComponentName::EmojiDocumentationDemo}}}>
- * {% endfor %}
- * </{{crate::output::general::component_constants::component_names::EmbeddableComponentName::Grid}}>
- * ```
- */
 export interface EmojiDocsDemo {
 }
 
@@ -601,6 +585,11 @@ export interface MdxParsingResult {
 	eq_ref_map: Record<string, number>;
 	warnings: ConundrumError[];
 	included_components: string[];
+}
+
+export interface PaginationParams {
+	per_page: number;
+	page: number;
 }
 
 /**

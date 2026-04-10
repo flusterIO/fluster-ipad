@@ -1,9 +1,7 @@
-use askama::Template;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use serde::Serialize;
 use tabled::{Table, settings::Style};
 use typeshare::typeshare;
-use winnow::error::ErrMode;
 
 use crate::{
     lang::{
@@ -12,10 +10,7 @@ use crate::{
             component_trait::ConundrumComponent, documentation::emoji::emoji_data::EmojiData,
         },
         runtime::{
-            state::{
-                conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant,
-                parse_state::ConundrumModifier,
-            },
+            state::parse_state::ConundrumModifier,
             traits::{
                 fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
                 markdown_component_result::MarkdownComponentResult,
@@ -28,23 +23,8 @@ use crate::{
     },
 };
 
-///  ## The Jsx template
-///
-/// ```askama
-/// <{{crate::output::general::component_constants::component_names::EmbeddableComponentName::Grid}}
-///     responsive="medium"
-///     gap="medium"
-/// >
-/// {% for emoji in get_emoji_data() %}
-///     <{{crate::output::general::component_constants::documentation_component_name::DocumentationComponentName::EmojiDocumentationDemo}}} name="{{emoji.name}}">
-///         {{ emoji.svg }}
-///     </{{crate::output::general::component_constants::documentation_component_name::DocumentationComponentName::EmojiDocumentationDemo}}}>
-/// {% endfor %}
-/// </{{crate::output::general::component_constants::component_names::EmbeddableComponentName::Grid}}>
-/// ```
 #[typeshare]
-#[derive(Debug, Template, Serialize, Clone)]
-#[template(ext = "jinja2", in_doc = true)]
+#[derive(Debug, Serialize, Clone)]
 pub struct EmojiDocsDemo {}
 
 impl EmojiDocsDemo {
@@ -96,12 +76,7 @@ impl JsxComponentResult for EmojiDocsDemo {
     fn to_jsx_component(&self,
                         _: &mut crate::lang::runtime::state::parse_state::ParseState)
                         -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
-        self.render().map_err(|e| {
-            eprintln!("Error: {:#?}", e);
-            ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(
-                ConundrumError::from_message("Fail to render askama template.")
-            ))
-        })
+        Ok(format!("<{} />", DocumentationComponentName::EmojiDocumentationDemo))
     }
 }
 

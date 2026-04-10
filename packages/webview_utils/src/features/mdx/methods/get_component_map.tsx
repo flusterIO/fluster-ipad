@@ -339,12 +339,11 @@ const items: ComponentMapItem[] = [
             return import("../../mdx/embeddable_mdx_components/ul/documentation_underline_demo").then((a) => a.InContentUnderlineDocumentationDemo)
         }
     },
-
     {
         query: [DocumentationComponentName.EmojiDocumentationDemo],
         componentType: ComponentItemType.documentation,
         importComponent: async () => {
-            return import("../embeddable_mdx_components/emoji/emoji_docs_demo").then((a) => a.EmojiDocsDemo)
+            return import("../embeddable_mdx_components/emoji/emoji_search/emoji_search_panel").then((a) => a.EmojiSearchPanel)
         }
     },
     // --- Auto Inserted ---

@@ -50,7 +50,6 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput)
                                                                 .inspect_err(|_| {
                                                                     input.input.reset(&start);
                                                                 })?;
-    println!("Leading char: {:#?}", component_leading_char);
 
     let rest_component_name: Vec<&str> = repeat(1.., alphanumeric1).parse_next(input).inspect_err(|_| {
                                                                                           input.input.reset(&start);

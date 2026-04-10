@@ -6,14 +6,9 @@ import { cn } from '@/utils/cn'
 
 
 export const EmojiContainer = ({ children, ..._props }: EmojiComponentProps & WithChildren): ReactNode => {
-    const { containerClasses, inline } = emojiComponentProps.parse(_props)
-    if (inline) {
-        return (
-            <span className={cn("inline-block [&>svg]:max-w-full [&>svg]:max-h-full", containerClasses)}>{children}</span>
-        )
-    }
+    const { containerClasses } = emojiComponentProps.parse(_props)
     return (
-        <div className={cn("[&>svg]:max-w-full [&>svg]:max-h-full block", containerClasses)}>{children}</div>
+        <div className={cn("[&>svg]:max-w-full [&>svg]:max-h-full", containerClasses)}>{children}</div>
     )
 }
 
