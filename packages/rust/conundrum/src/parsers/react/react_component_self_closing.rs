@@ -12,13 +12,7 @@ use winnow::{
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-        },
-        traits::conundrum_input::ConundrumInput,
-    },
+    lang::runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput},
     output::general::component_constants::component_names::EmbeddableComponentName,
     parsers::{
         conundrum::logic::object::object::ConundrumObject,
@@ -81,14 +75,7 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput)
 
     let props = ConundrumObject::from_kv_pair_vec(props_kv);
 
-    let component_getter_kv = COMPONENT_MAP.get(&component_name.to_component_id()).ok_or_else( || {
-            let e = ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Failed to find component", format!("You provided a component name of {} but that component is not supported by Conundrum.", component_name.clone()).as_str()));
-            ErrMode::Cut(e)
-    })?;
-
-    let component_getter = component_getter_kv.value();
-
-    let component = component_getter(props, None)?;
+    let component = COMPONENT_MAP.get_by_component_id(&component_name.to_component_id(), props, None)?;
 
     let _ = literal("/>").parse_next(input).inspect_err(|_| {
                                                 input.input.reset(&start);

@@ -19,6 +19,7 @@ pub async fn parse_initial_notes() {
     let mut results: Vec<MdxParsingResult> = Vec::new();
 
     for p in initial_note_paths.iter() {
+        println!("Parsing the initial note docs at {}", p);
         let _p = format!("{}.mdx",
                          Path::new(&root).join("docs")
                                          .join(p)

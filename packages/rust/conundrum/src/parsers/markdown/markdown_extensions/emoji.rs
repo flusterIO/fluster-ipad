@@ -1,10 +1,10 @@
 use serde::Serialize;
-use winnow::{Parser, combinator::delimited, error::ErrMode, stream::AsChar, token::take_while};
+use winnow::{Parser, combinator::delimited, error::ErrMode, token::take_while};
 
 use crate::{
     lang::{
         lib::ui::{
-            components::component_trait::ConundrumComponent, shared_props::sizable::SizablePropsGroup,
+            components::component_trait::ConundrumComponent, shared_props::sizable_option::SizableOption,
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
         },
         runtime::{
@@ -21,14 +21,18 @@ use crate::{
         },
     },
     output::general::component_constants::component_names::EmbeddableComponentName,
-    parsers::{conundrum::logic::string::conundrum_string::ConundrumString, parser_trait::ConundrumParser},
+    parsers::{
+        as_char_extensions::is_space_or_newline, conundrum::logic::string::conundrum_string::ConundrumString,
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct EmojiResult {
     pub name: ConundrumString,
-    pub sizable: Option<SizablePropsGroup>,
+    /// Default: "small", text sized.
+    pub size: Option<SizableOption>,
 }
 
 impl EmojiResult {
@@ -57,7 +61,8 @@ impl JsxComponentResult for EmojiResult {
     fn to_jsx_component(&self,
                         _: &mut crate::lang::runtime::state::parse_state::ParseState)
                         -> ConundrumModalResult<String> {
-        let svg = self.get_svg().ok_or_else(|| {
+        let svg = self.get_svg()
+            .ok_or_else(|| {
             ErrMode::Cut(
                 ConundrumErrorVariant::UserFacingGeneralParserError(
                     ConundrumError::from_msg_and_details("Invalid emoji", format!("The `{}` key is not a valid emoji name. Use the `Emoji??` docs to see available Emojis.", self.name).as_str())
@@ -65,7 +70,7 @@ impl JsxComponentResult for EmojiResult {
             )
         })?;
         Ok(format!(
-                   "<{} {} inline>{}</{}>",
+                   "<{} {} inline {}>{}</{}>",
                    EmbeddableComponentName::Emoji,
                    self.name.to_jsx_prop_as_string("name").map_err(|_| {
                        ErrMode::Cut(
@@ -74,6 +79,7 @@ impl JsxComponentResult for EmojiResult {
     )
 )
                    })?,
+                   self.size.as_ref().unwrap_or_else(|| &SizableOption::Small).to_string(),
                    svg,
                    EmbeddableComponentName::Emoji
         ))
@@ -97,10 +103,10 @@ impl ConundrumComponentResult for EmojiResult {
 impl ConundrumParser<EmojiResult> for EmojiResult {
     fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
                           -> ConundrumModalResult<EmojiResult> {
-        let value = delimited(':', take_while(1.., |c| !AsChar::is_space(c) && c != ':'), ':').parse_next(input)?;
+        let value = delimited(':', take_while(1.., |c| !is_space_or_newline(c) && c != ':'), ':').parse_next(input)?;
 
         Ok(EmojiResult { name: ConundrumString(value.to_string()),
-                         sizable: None })
+                         size: None })
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -118,8 +124,8 @@ impl ConundrumComponent for EmojiResult {
                   -> ConundrumModalResult<Self>
         where Self: Sized {
         let name = ConundrumString::from_jsx_props(&props, "name")?;
-        let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
+        let size = SizableOption::from_jsx_props_bool_record(&props);
         Ok(EmojiResult { name,
-                         sizable })
+                         size })
     }
 }

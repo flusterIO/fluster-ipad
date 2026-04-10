@@ -7,6 +7,7 @@ use conundrum::{
     testing::get_test_content::get_test_content,
 };
 use strum::IntoEnumIterator;
+mod documentation;
 mod modifier_tests;
 mod parser_tests;
 
@@ -37,8 +38,6 @@ async fn runs_conundrum() {
             "Conundrum parses Ai Parsing Request components");
 
     assert!(res.outgoing_links.iter().any(|x| x.link_to_note_id == "testNoteId"), "Finds nested outgoing links.");
-
-    println!("{}", res.content);
 
     // assert!(res.content.contains("<FlusterCitation"))
 

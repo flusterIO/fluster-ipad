@@ -9,8 +9,8 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
+        lib::ui::{components::component_trait::ConundrumComponent, ui_types::children::Children},
         runtime::{
-            compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
                 conundrum_error_variant::ConundrumModalResult,
@@ -19,23 +19,25 @@ use crate::{
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
                 fluster_component_result::ConundrumComponentResult,
+                markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
+    output::general::component_constants::component_ids::EmbeddableComponentId,
     parsers::parser_trait::ConundrumParser,
 };
 
 #[typeshare::typeshare]
 #[derive(Serialize, Debug, Clone)]
 pub struct HrWithChildrenResult {
-    pub children: Vec<ParsedElement>,
+    pub children: Children,
 }
 
 impl PlainTextComponentResult for HrWithChildrenResult {
     fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        compile_elements(&self.children, res)
+        self.children.render(res)
     }
 }
 
@@ -49,11 +51,17 @@ impl ConundrumComponentResult for HrWithChildrenResult {
     }
 }
 
+impl MarkdownComponentResult for HrWithChildrenResult {
+    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(String::from("---"))
+    }
+}
+
 impl MdxComponentResult for HrWithChildrenResult {
     // No need to handle this implementation of the to_mdx_component method for the
     // ignore_all_parsers component since children will ignore it.
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let children_string = compile_elements(&self.children, res)?;
+        let children_string = self.children.render(res)?;
 
         Ok(format!("<Hr>{}</Hr>", children_string))
     }
@@ -76,11 +84,25 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
         // WITH_WIFI: Figure out how to call this without throwing reference errors.
         // apply_nested_parser_state(input, &new_input);
 
-        Ok(HrWithChildrenResult { children: elements })
+        Ok(HrWithChildrenResult { children: Children(elements) })
     }
 
     fn matches_first_char(char: char) -> bool {
         char == '['
+    }
+}
+
+impl ConundrumComponent for HrWithChildrenResult {
+    fn get_component_id() -> crate::output::general::component_constants::component_ids::EmbeddableComponentId {
+        EmbeddableComponentId::HrWithChildren
+    }
+
+    fn from_props(_: super::logic::object::object::ConundrumObject,
+                  children: Option<Vec<ParsedElement>>)
+                  -> ConundrumModalResult<Self>
+        where Self: Sized {
+        let children = Children(children.unwrap_or_default());
+        Ok(HrWithChildrenResult { children })
     }
 }
 

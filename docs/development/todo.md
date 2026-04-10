@@ -6,9 +6,12 @@
 - [x] Implement equation tag components.
 - [x] Move on to code block parsing issue with nested italics.
 - [x] Handle bugs with bold, italic and bold-italic text parsing now that everything has been moved to `Children`.
-- [ ] Enable click-to-scroll functionality for equations if the id is present.
 - [ ] Work on integrating new emoji crate directly into the transpiler.
+  - [ ] Move `ComponentMap` to `DashMap<String, ...>` to allow for including other components that won't have documentation.
+  - [ ] Enable the nested documentation in the emoji docs.
+- [x] Enable click-to-scroll functionality for equations if the id is present.
 - [ ] Fix syntax docs... they're completely fucking broken... (likely arising from the `-- title="my_title"` syntax. It's failing elsehwere too.)
+- [ ] Move over rest of components below:
 
 ````mdx
 ```swift title="webview_container_view.swift"
@@ -19,8 +22,8 @@
 ### Components that need to move over still
 
 - [x] Container
-- [x] Grid
-- [ ] HrWithChildren (in jsx form)
+- [x] HrWithChildren (in jsx form)
+- [ ] Grid (Have not yet moved over all properties)
 - [ ] AINoteSummary
 
 #### Then Add

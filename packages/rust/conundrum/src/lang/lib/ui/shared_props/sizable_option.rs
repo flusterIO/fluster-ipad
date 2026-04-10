@@ -1,11 +1,12 @@
 use std::str::FromStr;
 
 use serde::{Deserialize, Serialize};
-use strum::{Display, EnumIter};
+use strum::{Display, EnumIter, IntoEnumIterator};
 use winnow::error::ErrMode;
 
 use crate::{
     lang::{
+        elements::parsed_elements::ParsedElement,
         lib::ui::ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
         runtime::state::{
             conundrum_error::ConundrumError,
@@ -45,6 +46,33 @@ pub enum SizableOption {
     #[serde(rename = "full")]
     #[strum(to_string = "full")]
     Full,
+}
+
+impl SizableOption {
+    /// Returns an `Option<SizableOption` from a `{[K in SizableOption]?:
+    /// boolean}`
+    pub fn from_jsx_props_bool_record(props: &ConundrumObject) -> Option<Self> {
+        for item in SizableOption::iter() {
+            if let Some(data) = props.data.get(&item.to_string()) {
+                if let Some(res) = match data.value() {
+                    ParsedElement::Logic(l) => match l {
+                        crate::parsers::conundrum::logic::token::ConundrumLogicToken::Bool(b) => {
+                            if b.0 {
+                                Some(item)
+                            } else {
+                                None
+                            }
+                        }
+                        _ => None,
+                    },
+                    _ => None,
+                } {
+                    return Some(res);
+                }
+            }
+        }
+        None
+    }
 }
 
 impl JsxPropRepresentable for SizableOption {

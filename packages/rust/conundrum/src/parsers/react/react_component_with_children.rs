@@ -14,11 +14,7 @@ use winnow::{
 use crate::{
     lang::runtime::{
         parse_conundrum_string::parse_elements,
-        state::{
-            conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-            parse_state::ParseState,
-        },
+        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
         traits::{
             conundrum_input::{ConundrumInput, get_conundrum_input},
             fluster_component_result::ConundrumComponentResult,
@@ -115,14 +111,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
         get_conundrum_input(children_string, state.modifiers.clone());
     let children = parse_elements(&mut new_input)?;
 
-    let component_getter_kv = COMPONENT_MAP.get(&component_name.to_component_id()).ok_or_else( || {
-            let e = ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Failed to find component", format!("You provided a component name of {} but that component is not supported by Conundrum.", component_name.clone()).as_str()));
-            ErrMode::Cut(e)
-    })?;
-
-    let getter = component_getter_kv.value();
-
-    let component = getter(props, Some(children))?;
+    let component = COMPONENT_MAP.get_by_component_id(&component_name.to_component_id(), props, Some(children))?;
 
     state.data.append_embeddable_component(&component_name);
 

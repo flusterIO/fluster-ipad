@@ -308,7 +308,8 @@ export interface EmojiData {
 
 export interface EmojiResult {
 	name: ConundrumString;
-	sizable?: SizablePropsGroup;
+	/** Default: "small", text sized. */
+	size?: SizableOption;
 }
 
 /**
@@ -410,7 +411,7 @@ export interface Hint {
 }
 
 export interface HrWithChildrenResult {
-	children: ParsedElement[];
+	children: Children;
 }
 
 export type CodeBlockLanguage = 
@@ -736,13 +737,14 @@ export interface ParsedTag {
 export type ConundrumComponentType = 
 	| { tag: "Container", content: UtilityContainer }
 	| { tag: "Card", content: Card }
+	| { tag: "Tabs", content: TabsGroup }
+	| { tag: "Tab", content: Tab }
+	| { tag: "Grid", content: ResponsiveGrid }
+	| { tag: "Hr", content: HrWithChildrenResult }
 	| { tag: "Admonition", content: Admonition }
 	| { tag: "Hint", content: Hint }
 	| { tag: "Ul", content: Underline }
 	| { tag: "Hl", content: Highlight }
-	| { tag: "Tabs", content: TabsGroup }
-	| { tag: "Tab", content: Tab }
-	| { tag: "Grid", content: ResponsiveGrid }
 	| { tag: "Emoji", content: EmojiResult }
 	| { tag: "EqRef", content: EquationReference };
 

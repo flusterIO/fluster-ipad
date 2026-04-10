@@ -15,14 +15,20 @@ use crate::{
         embedded_in_content_docs::EmbeddedInContentDocs,
         in_content_documentation_id::{InContentDocumentationFormat, InContentDocumentationId},
     },
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::ui::ui_types::children::Children,
+        runtime::{
+            parse_conundrum_string::parse_elements,
+            state::{
+                conundrum_error_variant::ConundrumModalResult,
+                parse_state::{ConundrumModifier, ParseState},
+            },
+            traits::{
+                conundrum_input::{ConundrumInput, get_conundrum_input},
+                fluster_component_result::ConundrumComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     output::general::component_constants::{
@@ -66,6 +72,9 @@ impl MdxComponentResult for ParsedInspectionRequest {
         } {
             if let Some(doc_id) = InContentDocumentationId::iter().find(|x| x.to_string() == self.keyword) {
                 let body_as_string = EmbeddedInContentDocs::get_incontent_docs_by_id(&doc_id, &depth);
+                // let mut new_input = get_conundrum_input(body_as_string.as_str(),
+                // res.modifiers.clone()); let c = parse_elements(&mut
+                // new_input)?; let rendered_body = Children(c).render(res)?;
                 return Ok(format!("\n<{} inContentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
                                   DocumentationComponentName::InContentDocumentationContainer,
                                   doc_id,
@@ -80,6 +89,9 @@ impl MdxComponentResult for ParsedInspectionRequest {
                                                                            })
             {
                 let body_as_string = EmbeddedComponentDocs::get_incontent_docs_by_id(comp_name, &depth);
+                // let mut new_input = get_conundrum_input(body_as_string.as_str(),
+                // res.modifiers.clone()); let c = parse_elements(&mut
+                // new_input)?; let rendered_body = children(c).render(res)?;
                 return Ok(format!("\n<{} componentName=\"{}\" format=\"{}\">\n{}\n</{}>\n",
                                   DocumentationComponentName::InContentDocumentationContainer,
                                   comp_name,

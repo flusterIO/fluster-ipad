@@ -21,7 +21,7 @@ use crate::{
             },
         },
     },
-    parsers::markdown::markdown_extensions::emoji::EmojiResult,
+    parsers::{conundrum::hr_with_children::HrWithChildrenResult, markdown::markdown_extensions::emoji::EmojiResult},
 };
 
 #[typeshare]
@@ -32,14 +32,15 @@ pub enum ConundrumComponentType {
     // Grid(Grid),
     Container(UtilityContainer),
     Card(Card),
+    Tabs(TabsGroup),
+    Tab(Tab),
+    Grid(ResponsiveGrid),
+    Hr(HrWithChildrenResult),
     // Attention
     Admonition(Admonition),
     Hint(Hint),
     Ul(Underline),
     Hl(Highlight),
-    Tabs(TabsGroup),
-    Tab(Tab),
-    Grid(ResponsiveGrid),
     Emoji(EmojiResult),
     // Academic
     EqRef(EquationReference),
@@ -59,6 +60,7 @@ impl ConundrumComponentType {
             ConundrumComponentType::EqRef(_) => false,
             ConundrumComponentType::Grid(_) => true,
             ConundrumComponentType::Emoji(_) => false,
+            ConundrumComponentType::Hr(_) => true,
         }
     }
 }
@@ -77,6 +79,7 @@ impl PlainTextComponentResult for ConundrumComponentType {
             ConundrumComponentType::EqRef(s) => s.to_plain_text(res),
             ConundrumComponentType::Grid(s) => s.to_plain_text(res),
             ConundrumComponentType::Emoji(s) => s.to_plain_text(res),
+            ConundrumComponentType::Hr(s) => s.to_plain_text(res),
         }
     }
 }
@@ -95,6 +98,7 @@ impl MarkdownComponentResult for ConundrumComponentType {
             ConundrumComponentType::EqRef(s) => s.to_markdown(res),
             ConundrumComponentType::Grid(s) => s.to_markdown(res),
             ConundrumComponentType::Emoji(s) => s.to_markdown(res),
+            ConundrumComponentType::Hr(s) => s.to_markdown(res),
         }
     }
 }
@@ -113,6 +117,7 @@ impl ConundrumComponentResult for ConundrumComponentType {
             ConundrumComponentType::EqRef(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Grid(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Emoji(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Hr(s) => s.to_conundrum_component(res),
         }
     }
 }
