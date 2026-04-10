@@ -1,24 +1,25 @@
-use std::str::FromStr;
-
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
     Parser,
-    ascii::alphanumeric1,
-    combinator::repeat,
-    error::ErrMode,
+    ascii::{alphanumeric1, space0},
+    combinator::{delimited, repeat},
     stream::{AsChar, Stream},
     token::{literal, take_while},
 };
 
 use crate::{
     lang::runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput},
-    output::general::component_constants::component_names::EmbeddableComponentName,
+    output::general::component_constants::any_component_id::AnyComponentName,
     parsers::{
         conundrum::logic::object::object::ConundrumObject,
         javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
-        parser_components::white_space_delimited::white_space_delimited,
+        parser_components::{
+            consume_white_space::{self, consume_white_space},
+            white_space_delimited::white_space_delimited,
+        },
         parser_trait::ConundrumParser,
+        parsers_shared::space_or_new_line::space_or_newline0,
         react::{
             components::COMPONENT_MAP, conundrum_component::ConundrumComponentType,
             parser_components::jsx_properties::any_jsx_property::any_jsx_property,
@@ -49,33 +50,28 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput)
                                                                 .inspect_err(|_| {
                                                                     input.input.reset(&start);
                                                                 })?;
+    println!("Leading char: {:#?}", component_leading_char);
 
     let rest_component_name: Vec<&str> = repeat(1.., alphanumeric1).parse_next(input).inspect_err(|_| {
                                                                                           input.input.reset(&start);
                                                                                       })?;
 
     let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
-    // RESUME: Pick back up here by handling the passing of th unique errors back to
-    // the user. Currently only the top leve, 'woops we fucked up' error is
-    // being returned.
-    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).map_err(|e| {
-                                                                                              input.input.reset(&start);
-                                                                                              // Could
-                                                                                              // just
-                                                                                              // be
-                                                                                              // an
-                                                                                              // html
-                                                                                              // tag
-                                                                                              ErrMode::Backtrack(e)
-                                                                                          })?;
-    let props_kv: Vec<JavascriptObjectKeyValuePair> =
-        repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
-                                                                                   input.input.reset(&start);
-                                                                               })?;
+    let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|e| {
+                                                                                                 input.input
+                                                                                                      .reset(&start);
+                                                                                             })?;
+
+    let props_kv: Vec<JavascriptObjectKeyValuePair> = delimited(space_or_newline0,
+                                                                repeat(0.., white_space_delimited(any_jsx_property)),
+                                                                space_or_newline0).parse_next(input)
+                                                                                  .inspect_err(|_| {
+                                                                                      input.input.reset(&start);
+                                                                                  })?;
 
     let props = ConundrumObject::from_kv_pair_vec(props_kv);
 
-    let component = COMPONENT_MAP.get_by_component_id(&component_name.to_component_id(), props, None)?;
+    let component = COMPONENT_MAP.get_by_component_name(&component_name, props, None)?;
 
     let _ = literal("/>").parse_next(input).inspect_err(|_| {
                                                 input.input.reset(&start);

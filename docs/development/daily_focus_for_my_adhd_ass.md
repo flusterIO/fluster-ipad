@@ -1,64 +1,64 @@
-### Daily Focus for My ADHD Ass
+## Daily Focus for My ADHD-Ass
 
-**Current Date:** Thursday, April 9th, 2026 — 8:52 AM (America/Chicago) / 2026-04-09 13:52 UTC
+### Summary of To-Do List
 
-**Summary of To-Do List Prioritized for Next 2 Weeks Release:**
+#### **Priority Tasks (Next 2 Weeks)**
 
-#### 🚀 High Priority Tasks
-
-1. **Equation Tag Parsing and Components**
-   - Handle parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST.
+1. **Equation Tag Parsing & Components**
    - Implement equation tag components.
+   - Handle parsing of equation tag ids using new syntax.
    - Enable click-to-scroll functionality for equations if the id is present.
 
-2. **Bug Fixes and Performance Improvements**
-   - Handle bugs with bold, italic, and bold-italic text parsing.
-   - Fix syntax docs that are completely broken, especially related to the `-- title="my_title"` syntax.
-   - Move all regex queries in the `get_component_map` file to a `HashMap<String, bool>` for faster lookups.
+2. **Bug Fixes & Documentation**
+   - Fix syntax docs (especially with `-- title="my_title"` syntax).
+   - Double-check Tabs docs and move away from pre-parsing the docs as a whole.
+   - Fix admonition padding issue on website and main app.
 
-3. **AI Integration and Features**
-   - Work on integrating the new emoji crate directly into the transpiler.
-   - Create 'triggers' for AI-generated content (e.g., `FlusterAI.generateStudyGuide()`, `FlusterAI.createFlashCards()`).
-   - Make sure AI triggers can be set to 1 of 3 modes: `auto`, `confirm`, or `never`.
+3. **Component Migration & New Features**
+   - Move remaining components (Grid, AINoteSummary, Table of Contents) to Rust.
+   - Implement `FlusterAI.generateStudyGuide()` and `FlusterAI.createFlashCards()`.
+   - Create 'triggers' for AI-generated content with modes: `auto`, `confirm`, `never`.
 
-4. **UI and Component Development**
-   - Work on the `Tabs` component that accepts children and a context provider.
-   - Create a flip-card like component for studying.
-   - Handle light mode for `AISummaryContainer` card.
-
-5. **Offline and Syncing Features**
+4. **Performance & Offline Support**
+   - Move regex queries to `HashMap<String, bool>` for faster lookup.
    - Handle slugger implementation for all headings to generate unique ids.
-   - Setup a unique error enum for Conundrum.
    - Fix issue with Safari keeping around 20 instances of the editor view.
 
-#### 📌 Medium Priority Tasks
+5. **UI/UX Improvements**
+   - Ensure all taggables have `cursor-pointer` class.
+   - Handle light mode for `AISummaryContainer` card.
+   - Fix issue with command palette not updating state fields when editor is focused.
 
-- Move remaining components (e.g., `HrWithChildren`, `AINoteSummary`) to Rust.
-- Implement `SiaString` class in Typescript for easy compression and comparison.
-- Handle math output issue with the provided snapshot.
-- Fix issue with the `NoteDetailSheet` requiring refresh on Mac.
-- Work on syncing method to create notes from file system.
+6. **Testing & Release Preparation**
+   - Ensure all tests (Swift, Typescript, Rust) are passing.
+   - Review YouTube video on creating 'Nominations' for Apple's editor team.
+   - Prepare for release by reviewing pre-release checklist.
 
-#### 📝 Documentation and Testing
+#### **Medium Priority Tasks**
 
-- Update docs to reflect upcoming Apple release.
-- Fix admonition padding issue on website and in the main app.
+- Work on AI summarization and syncing method to create notes from file system.
+- Handle issue with iPad app loading in portrait view.
+- Fix issue with `Icon` component dynamically loading icons from a library.
+- Create `SiaString` class in Typescript for string compression and comparison.
+- Handle math output issue with the given snapshot.
+- Fix issue with the `-- title="my_title"` syntax causing broken docs.
+
+#### **Low Priority Tasks**
+
+- Work on webview note details to ensure all taggables are clickable.
+- Update website and docs to reflect upcoming Apple release.
+- Handle bug with color scheme note changing editor theme.
 - Write tests for all `-ignoreParser` flags.
-- Ensure all tests are passing (Swift, Typescript, Rust).
 
-#### 📅 Release Preparation
+### Notes
 
-- Review the YouTube link about creating 'Nominations' for being featured by Apple's editor team.
-- Handle force regeneration of AI summaries.
-- Ensure all tests are passing before release.
+- Focus on high-priority tasks first to ensure we meet the 2-week release deadline.
+- Break down complex tasks into smaller, manageable chunks.
+- Use the `output_format` property to conditionally render note content as plain text, inline markdown, markdown, or mdx.
+- Ensure all AI-generated content is properly formatted and integrated into the app.
+- Test all components thoroughly before release to avoid any last-minute issues.
 
-**Next Steps:**
-- Focus on high-priority tasks first, especially those related to performance, AI integration, and critical bug fixes.
-- Break down complex tasks into smaller, manageable chunks to maintain focus.
-- Regularly review progress and adjust priorities as needed.
+### Final Thoughts
 
-**Note:** This summary is a prioritized list of tasks to ensure the application is released within the next 2 weeks. Focus on the most critical issues first and gradually move to medium and low priority tasks as time permits.
+This is a critical release, so it's important to stay focused and organized. Prioritize tasks that have the most impact on the user experience and ensure that all components are working as expected. Good luck with the release!
 
-**Remember:** Stay organized, take breaks, and celebrate small wins to maintain motivation and productivity.
-
-**End of Summary**

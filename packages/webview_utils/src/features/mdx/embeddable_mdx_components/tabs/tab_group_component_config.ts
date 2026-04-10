@@ -9,7 +9,7 @@ export const getTabsString = (count: number): string => {
     const s = []
     for (let i = 0; i < count; i++) {
         s.push(`    <Tab label="#{Tab Label${i === 0 ? "" : ` ${i + 1}`}}">
-        #{Conundrum Content}
+        #{Content ${i + 1}}
     </Tab>`)
 
     }

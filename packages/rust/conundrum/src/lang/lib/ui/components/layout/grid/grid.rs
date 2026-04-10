@@ -13,7 +13,8 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        component_ids::EmbeddableComponentId, component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
+        component_names::EmbeddableComponentName,
     },
 };
 
@@ -79,8 +80,8 @@ impl ConundrumComponentResult for ResponsiveGrid {
 }
 
 impl ConundrumComponent for ResponsiveGrid {
-    fn get_component_id() -> crate::output::general::component_constants::component_ids::EmbeddableComponentId {
-        EmbeddableComponentId::Grid
+    fn get_component_id() -> AnyComponentName {
+        AnyComponentName::UserEmbedded(EmbeddableComponentName::Grid)
     }
 
     fn from_props(props: crate::parsers::conundrum::logic::object::object::ConundrumObject,

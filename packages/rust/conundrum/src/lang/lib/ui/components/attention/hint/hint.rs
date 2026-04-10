@@ -23,7 +23,8 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        component_ids::EmbeddableComponentId, component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
+        component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::{
         object::object::ConundrumObject, string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
@@ -98,8 +99,8 @@ impl ConundrumComponentResult for Hint {
 }
 
 impl ConundrumComponent for Hint {
-    fn get_component_id() -> EmbeddableComponentId {
-        EmbeddableComponentId::Hint
+    fn get_component_id() -> AnyComponentName {
+        AnyComponentName::UserEmbedded(EmbeddableComponentName::Hint)
     }
 
     fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self>

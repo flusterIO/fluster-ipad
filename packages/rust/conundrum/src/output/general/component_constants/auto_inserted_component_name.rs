@@ -1,6 +1,11 @@
+use std::str::FromStr;
+
 use serde::{Deserialize, Serialize};
+use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter};
 use typeshare::typeshare;
+
+use crate::lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant};
 
 #[typeshare]
 #[derive(Display, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize)]
@@ -39,4 +44,17 @@ pub enum AutoInsertedComponentName {
     #[serde(rename = "AutoInsertedMarkdownParagraph")]
     #[strum(to_string = "AutoInsertedMarkdownParagraph")]
     AutoInsertedMarkdownParagraph,
+}
+
+impl FromStr for AutoInsertedComponentName {
+    type Err = ConundrumErrorVariant;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        for item in AutoInsertedComponentName::iter() {
+            if item.to_string() == s.to_string() {
+                return Ok(item);
+            }
+        }
+        Err(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Fail to find auto inserted component. This aint good.")))
+    }
 }

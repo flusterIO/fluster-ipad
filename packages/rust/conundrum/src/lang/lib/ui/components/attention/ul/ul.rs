@@ -22,7 +22,8 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        component_ids::EmbeddableComponentId, component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
+        component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
@@ -80,14 +81,14 @@ impl ConundrumComponentResult for Underline {
 }
 
 impl ConundrumComponent for Underline {
-    fn get_component_id() -> EmbeddableComponentId {
-        EmbeddableComponentId::Ul
+    fn get_component_id() -> AnyComponentName {
+        AnyComponentName::UserEmbedded(EmbeddableComponentName::Ul)
     }
 
     fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self> {
         let markdown_output = InlineMarkdownOverride::from_jsx_props(&props, "markdown").ok();
         let emphasis = Emphasis::from_jsx_props(&props, "").unwrap_or(Emphasis::Highlight);
-        Ok(Underline { children: Children(children.unwrap_or(Vec::new())),
+        Ok(Underline { children: Children(children.unwrap_or_default()),
                        emphasis,
                        markdown: markdown_output })
     }

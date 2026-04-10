@@ -23,7 +23,8 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        component_ids::EmbeddableComponentId, component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
+        component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::{
         bool::boolean::ConundrumBoolean, object::object::ConundrumObject, string::conundrum_string::ConundrumString,
@@ -141,8 +142,8 @@ impl ConundrumComponentResult for EquationReference {
 }
 
 impl ConundrumComponent for EquationReference {
-    fn get_component_id() -> EmbeddableComponentId {
-        EmbeddableComponentId::EqRef
+    fn get_component_id() -> AnyComponentName {
+        AnyComponentName::UserEmbedded(EmbeddableComponentName::EqRef)
     }
 
     fn from_props(props: ConundrumObject, _: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self>

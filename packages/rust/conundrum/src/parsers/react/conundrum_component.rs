@@ -6,6 +6,7 @@ use crate::{
         lib::ui::components::{
             academic::equation_reference::equation_reference_model::EquationReference,
             attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
+            documentation::emoji::emoji_docs_demo::EmojiDocsDemo,
             layout::{
                 card::card::Card,
                 container::container_model::UtilityContainer,
@@ -44,6 +45,8 @@ pub enum ConundrumComponentType {
     Emoji(EmojiResult),
     // Academic
     EqRef(EquationReference),
+    // Nested Documentation
+    EmojiDocsDemo(EmojiDocsDemo),
 }
 
 impl ConundrumComponentType {
@@ -61,6 +64,7 @@ impl ConundrumComponentType {
             ConundrumComponentType::Grid(_) => true,
             ConundrumComponentType::Emoji(_) => false,
             ConundrumComponentType::Hr(_) => true,
+            ConundrumComponentType::EmojiDocsDemo(_) => true,
         }
     }
 }
@@ -80,6 +84,7 @@ impl PlainTextComponentResult for ConundrumComponentType {
             ConundrumComponentType::Grid(s) => s.to_plain_text(res),
             ConundrumComponentType::Emoji(s) => s.to_plain_text(res),
             ConundrumComponentType::Hr(s) => s.to_plain_text(res),
+            ConundrumComponentType::EmojiDocsDemo(s) => s.to_plain_text(res),
         }
     }
 }
@@ -99,6 +104,7 @@ impl MarkdownComponentResult for ConundrumComponentType {
             ConundrumComponentType::Grid(s) => s.to_markdown(res),
             ConundrumComponentType::Emoji(s) => s.to_markdown(res),
             ConundrumComponentType::Hr(s) => s.to_markdown(res),
+            ConundrumComponentType::EmojiDocsDemo(s) => s.to_markdown(res),
         }
     }
 }
@@ -118,6 +124,7 @@ impl ConundrumComponentResult for ConundrumComponentType {
             ConundrumComponentType::Grid(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Emoji(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Hr(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::EmojiDocsDemo(s) => s.to_conundrum_component(res),
         }
     }
 }

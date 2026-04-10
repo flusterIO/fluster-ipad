@@ -72,6 +72,7 @@ impl MdxComponentResult for ParsedInspectionRequest {
         } {
             if let Some(doc_id) = InContentDocumentationId::iter().find(|x| x.to_string() == self.keyword) {
                 let body_as_string = EmbeddedInContentDocs::get_incontent_docs_by_id(&doc_id, &depth);
+                println!("Body: {:#?}", body_as_string);
                 let mut new_input = get_conundrum_input(body_as_string.as_str(), res.modifiers.clone());
                 let c = parse_elements(&mut new_input)?;
                 let rendered_body = Children(c).render(res)?;

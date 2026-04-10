@@ -4,8 +4,7 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::ui::{
-            components::component_trait::ConundrumComponent,
-            ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
+            components::component_trait::ConundrumComponent, ui_traits::jsx_prop_representable::FromJsxPropsOptional,
             ui_types::children::Children,
         },
         runtime::{
@@ -21,7 +20,8 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        component_ids::EmbeddableComponentId, component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
+        component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::{object::object::ConundrumObject, string::conundrum_string::ConundrumString},
 };
@@ -63,8 +63,8 @@ impl ConundrumComponentResult for Tab {
 }
 
 impl ConundrumComponent for Tab {
-    fn get_component_id() -> EmbeddableComponentId {
-        EmbeddableComponentId::Tab
+    fn get_component_id() -> AnyComponentName {
+        AnyComponentName::UserEmbedded(EmbeddableComponentName::Tab)
     }
 
     fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self> {
@@ -89,6 +89,7 @@ impl JsxComponentResult for Tab {
         if let Some(id) = &self.id {
             props.push(id.to_jsx_prop_as_string("id").map_err(ErrMode::Backtrack)?)
         }
+        println!("Res here: {:#?}", res);
         let children_string = self.children.render(res)?;
         Ok(format!(
                    r#"<{} {}>

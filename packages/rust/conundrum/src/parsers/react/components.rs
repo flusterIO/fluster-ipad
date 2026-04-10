@@ -5,6 +5,7 @@ use crate::{
             academic::equation_reference::equation_reference_model::EquationReference,
             attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
             component_trait::ConundrumComponent,
+            documentation::emoji::emoji_docs_demo::EmojiDocsDemo,
             layout::{
                 card::card::Card,
                 container::container_model::UtilityContainer,
@@ -18,7 +19,8 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        auto_inserted_component_name::AutoInsertedComponentName, component_ids::EmbeddableComponentId,
+        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
+        documentation_component_name::DocumentationComponentName,
     },
     parsers::{
         conundrum::{hr_with_children::HrWithChildrenResult, logic::object::object::ConundrumObject},
@@ -77,17 +79,26 @@ lazy_static! {
                  Box::new(|props, children| {
                      EmojiResult::from_props(props, children).map(ConundrumComponentType::Emoji)
                  }));
+        m.insert(DocumentationComponentName::EmojiDocumentationDemo.to_string(),
+                 Box::new(|props, children| {
+                     EmojiDocsDemo::from_props(props, children).map(ConundrumComponentType::EmojiDocsDemo)
+                 }));
         m
     };
 }
 
 impl COMPONENT_MAP {
-    pub fn get_by_component_id(&self,
-                               id: &EmbeddableComponentId,
-                               props: ConundrumObject,
-                               children: Option<Vec<ParsedElement>>)
-                               -> ConundrumModalResult<ConundrumComponentType> {
-        let res = self.get(&id.to_string());
+    pub fn get_by_component_name(&self,
+                                 id: &AnyComponentName,
+                                 props: ConundrumObject,
+                                 children: Option<Vec<ParsedElement>>)
+                                 -> ConundrumModalResult<ConundrumComponentType> {
+        let component_name_string = match id {
+            AnyComponentName::UserEmbedded(u) => u.to_component_id().to_string(),
+            AnyComponentName::Docs(d) => d.to_string(),
+            AnyComponentName::AutoInserted(a) => a.to_string(),
+        };
+        let res = self.get(&component_name_string);
         match res {
             Some(s) => {
                 let f = s.value();

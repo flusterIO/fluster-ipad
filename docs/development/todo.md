@@ -8,7 +8,10 @@
 - [x] Handle bugs with bold, italic and bold-italic text parsing now that everything has been moved to `Children`.
 - [ ] Work on integrating new emoji crate directly into the transpiler.
   - [x] Move `ComponentMap` to `DashMap<String, ...>` to allow for including other components that won't have documentation.
+  - [x] Add full `sizable` props back to emoji component for positioning.
   - [ ] Enable the nested documentation in the emoji docs.
+- [ ] Fix bug with nested equations being numbered improperly.
+- [ ] Handle math block escapability so `$` can be used in the user's regular note content reliably.
 - [x] Enable click-to-scroll functionality for equations if the id is present.
 - [ ] Fix syntax docs... they're completely fucking broken... (likely arising from the `-- title="my_title"` syntax. It's failing elsehwere too.)
   - [ ] Double check Tabs docs too, as the nested components aren't rendering since the docs aren't being rendered as Children. Move away from pre-parsing the docs as a whole anyways to support multiple outputs, not just jsx in the future.
@@ -31,6 +34,7 @@
 
 - [ ] Table (GFM if it's not a performance hit)
 - [ ] Strikethrough text
+- [ ] Escapable math blocks.
 
 ---
 

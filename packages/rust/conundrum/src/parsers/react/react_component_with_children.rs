@@ -1,4 +1,4 @@
-use std::{cell::RefCell, str::FromStr};
+use std::cell::RefCell;
 
 use serde::Serialize;
 use typeshare::typeshare;
@@ -6,7 +6,6 @@ use winnow::{
     Parser, Stateful,
     ascii::alphanumeric1,
     combinator::{delimited, repeat},
-    error::ErrMode,
     stream::{AsChar, Stream},
     token::{literal, take_until, take_while},
 };
@@ -20,13 +19,14 @@ use crate::{
             fluster_component_result::ConundrumComponentResult,
         },
     },
-    output::general::component_constants::component_names::EmbeddableComponentName,
+    output::general::component_constants::any_component_id::AnyComponentName,
     parsers::{
         as_char_extensions::is_space_or_newline,
         conundrum::logic::object::object::ConundrumObject,
         javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
         parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
+        parsers_shared::space_or_new_line::space_or_newline0,
         react::{
             components::COMPONENT_MAP, conundrum_component::ConundrumComponentType,
             parser_components::jsx_properties::any_jsx_property::any_jsx_property,
@@ -80,15 +80,18 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                                       })?;
 
     let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
-    let component_name = EmbeddableComponentName::from_str(component_name_string.as_str()).map_err(|e| {
-                                                                                              input.input.reset(&start);
-                                                                                              ErrMode::Backtrack(e)
-                                                                                          })?;
+    let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|_| {
+                                                                                                 input.input
+                                                                                                      .reset(&start);
+                                                                                             })?;
 
-    let props_kv_pairs: Vec<JavascriptObjectKeyValuePair> =
-        repeat(0.., white_space_delimited(any_jsx_property)).parse_next(input).inspect_err(|_| {
-                                                                                   input.input.reset(&start);
-                                                                               })?;
+    let props_kv_pairs: Vec<JavascriptObjectKeyValuePair> = delimited(space_or_newline0,
+                                                                      repeat(0..,
+                                                                             white_space_delimited(any_jsx_property)),
+                                                                      space_or_newline0).parse_next(input)
+                                                                                        .inspect_err(|_| {
+                                                                                            input.input.reset(&start);
+                                                                                        })?;
 
     let props = ConundrumObject::from_kv_pair_vec(props_kv_pairs);
 
@@ -111,7 +114,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
         get_conundrum_input(children_string, state.modifiers.clone());
     let children = parse_elements(&mut new_input)?;
 
-    let component = COMPONENT_MAP.get_by_component_id(&component_name.to_component_id(), props, Some(children))?;
+    let component = COMPONENT_MAP.get_by_component_name(&component_name, props, Some(children))?;
 
     state.data.append_embeddable_component(&component_name);
 

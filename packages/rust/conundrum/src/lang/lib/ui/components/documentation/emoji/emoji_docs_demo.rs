@@ -1,22 +1,30 @@
 use askama::Template;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use serde::Serialize;
 use tabled::{Table, settings::Style};
+use typeshare::typeshare;
 use winnow::error::ErrMode;
 
-use crate::lang::{
-    lib::ui::components::{
-        attention::emoji::currently_supported_emoji_names::CURRENTLY_SUPPORTED_EMOJI_NAMES,
-        documentation::emoji::emoji_data::EmojiData,
+use crate::{
+    lang::{
+        lib::ui::components::{
+            attention::emoji::currently_supported_emoji_names::CURRENTLY_SUPPORTED_EMOJI_NAMES,
+            component_trait::ConundrumComponent, documentation::emoji::emoji_data::EmojiData,
+        },
+        runtime::{
+            state::{
+                conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant,
+                parse_state::ConundrumModifier,
+            },
+            traits::{
+                fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
+        },
     },
-    runtime::{
-        state::{
-            conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant,
-            parse_state::ConundrumModifier,
-        },
-        traits::{
-            fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
-            markdown_component_result::MarkdownComponentResult, plain_text_component_result::PlainTextComponentResult,
-        },
+    output::general::component_constants::{
+        any_component_id::AnyComponentName, documentation_component_name::DocumentationComponentName,
     },
 };
 
@@ -34,7 +42,8 @@ use crate::lang::{
 /// {% endfor %}
 /// </{{crate::output::general::component_constants::component_names::EmbeddableComponentName::Grid}}>
 /// ```
-#[derive(Template)]
+#[typeshare]
+#[derive(Debug, Template, Serialize, Clone)]
 #[template(ext = "jinja2", in_doc = true)]
 pub struct EmojiDocsDemo {}
 
@@ -108,5 +117,18 @@ impl ConundrumComponentResult for EmojiDocsDemo {
         } else {
             self.to_jsx_component(res)
         }
+    }
+}
+
+impl ConundrumComponent for EmojiDocsDemo {
+    fn from_props(_: crate::parsers::conundrum::logic::object::object::ConundrumObject,
+                  _: Option<Vec<crate::lang::elements::parsed_elements::ParsedElement>>)
+                  -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<Self>
+        where Self: Sized {
+        Ok(EmojiDocsDemo {})
+    }
+
+    fn get_component_id() -> AnyComponentName {
+        AnyComponentName::Docs(DocumentationComponentName::EmojiDocumentationDemo)
     }
 }

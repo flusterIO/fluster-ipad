@@ -306,8 +306,52 @@ export interface EmojiData {
 	svg: string;
 }
 
+/**
+ * ## The Jsx template
+ * 
+ * ```askama
+ * <{{crate::output::general::component_constants::component_names::EmbeddableComponentName::Grid}}
+ * responsive="medium"
+ * gap="medium"
+ * >
+ * {% for emoji in get_emoji_data() %}
+ * <{{crate::output::general::component_constants::documentation_component_name::DocumentationComponentName::EmojiDocumentationDemo}}} name="{{emoji.name}}">
+ * {{ emoji.svg }}
+ * </{{crate::output::general::component_constants::documentation_component_name::DocumentationComponentName::EmojiDocumentationDemo}}}>
+ * {% endfor %}
+ * </{{crate::output::general::component_constants::component_names::EmbeddableComponentName::Grid}}>
+ * ```
+ */
+export interface EmojiDocsDemo {
+}
+
+/**
+ * Use the built-in `:smile:` syntax to insert a text sized emoji, or use the
+ * `Emoji` component to create a scalable and resizable emoji as an image.
+ */
 export interface EmojiResult {
 	name: ConundrumString;
+	/**
+	 * Because images are notoriously finicky to style, you should prefer the
+	 * sizable boolean keys instead of the `width="small"` or similar
+	 * properties. This means that your component might end up looking
+	 * something like:
+	 * 
+	 * ```tsx
+	 * <Emoji name="smile" medium border ... />
+	 * ```
+	 * 
+	 * Instead of
+	 * 
+	 * ```tsx
+	 * <Emoji name="smile" width="medium" border ... />
+	 * ```
+	 * 
+	 * The other properties are still available, but these unique boolean
+	 * properties will apply styles that will more reliably shape the
+	 * underlying image.
+	 */
+	sizable?: SizablePropsGroup;
 	/** Default: "small", text sized. */
 	size?: SizableOption;
 }
@@ -748,7 +792,8 @@ export type ConundrumComponentType =
 	| { tag: "Ul", content: Underline }
 	| { tag: "Hl", content: Highlight }
 	| { tag: "Emoji", content: EmojiResult }
-	| { tag: "EqRef", content: EquationReference };
+	| { tag: "EqRef", content: EquationReference }
+	| { tag: "EmojiDocsDemo", content: EmojiDocsDemo };
 
 export interface ReactComponentSelfClosingResult {
 	full_text: string;

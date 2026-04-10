@@ -25,7 +25,10 @@ use crate::{
             },
         },
     },
-    output::general::component_constants::component_ids::EmbeddableComponentId,
+    output::general::component_constants::{
+        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
+        component_names::EmbeddableComponentName,
+    },
     parsers::parser_trait::ConundrumParser,
 };
 
@@ -52,7 +55,7 @@ impl ConundrumComponentResult for HrWithChildrenResult {
 }
 
 impl MarkdownComponentResult for HrWithChildrenResult {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
         Ok(String::from("---"))
     }
 }
@@ -93,8 +96,8 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
 }
 
 impl ConundrumComponent for HrWithChildrenResult {
-    fn get_component_id() -> crate::output::general::component_constants::component_ids::EmbeddableComponentId {
-        EmbeddableComponentId::HrWithChildren
+    fn get_component_id() -> AnyComponentName {
+        AnyComponentName::UserEmbedded(EmbeddableComponentName::HrWithChildren)
     }
 
     fn from_props(_: super::logic::object::object::ConundrumObject,

@@ -1,3 +1,4 @@
+pub mod any_component_id;
 pub mod auto_inserted_component_name;
 pub mod component_ids;
 pub mod component_name_id_map;

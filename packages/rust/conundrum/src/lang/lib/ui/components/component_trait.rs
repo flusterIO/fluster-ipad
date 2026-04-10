@@ -9,7 +9,7 @@ use crate::{
             },
         },
     },
-    output::general::component_constants::component_ids::EmbeddableComponentId,
+    output::general::component_constants::any_component_id::AnyComponentName,
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
 
@@ -18,7 +18,7 @@ use crate::{
 /// we read the properties that you provide to Conundrum and see if they make
 /// sense.
 pub trait ConundrumComponent: ConundrumComponentResult + MarkdownComponentResult + PlainTextComponentResult {
-    fn get_component_id() -> EmbeddableComponentId;
+    fn get_component_id() -> AnyComponentName;
     fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self>
         where Self: Sized;
 }

@@ -4,7 +4,8 @@ use winnow::{Parser, combinator::delimited, error::ErrMode, token::take_while};
 use crate::{
     lang::{
         lib::ui::{
-            components::component_trait::ConundrumComponent, shared_props::sizable_option::SizableOption,
+            components::component_trait::ConundrumComponent,
+            shared_props::{sizable::SizablePropsGroup, sizable_option::SizableOption},
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
         },
         runtime::{
@@ -20,17 +21,41 @@ use crate::{
             },
         },
     },
-    output::general::component_constants::component_names::EmbeddableComponentName,
+    output::general::component_constants::{
+        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
+        component_names::EmbeddableComponentName,
+    },
     parsers::{
         as_char_extensions::is_space_or_newline, conundrum::logic::string::conundrum_string::ConundrumString,
         parser_trait::ConundrumParser,
     },
 };
 
+/// Use the built-in `:smile:` syntax to insert a text sized emoji, or use the
+/// `Emoji` component to create a scalable and resizable emoji as an image.
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct EmojiResult {
     pub name: ConundrumString,
+    /// Because images are notoriously finicky to style, you should prefer the
+    /// sizable boolean keys instead of the `width="small"` or similar
+    /// properties. This means that your component might end up looking
+    /// something like:
+    ///
+    /// ```tsx
+    /// <Emoji name="smile" medium border ... />
+    /// ```
+    ///
+    /// Instead of
+    ///
+    /// ```tsx
+    /// <Emoji name="smile" width="medium" border ... />
+    /// ```
+    ///
+    /// The other properties are still available, but these unique boolean
+    /// properties will apply styles that will more reliably shape the
+    /// underlying image.
+    pub sizable: Option<SizablePropsGroup>,
     /// Default: "small", text sized.
     pub size: Option<SizableOption>,
 }
@@ -69,20 +94,22 @@ impl JsxComponentResult for EmojiResult {
                 )
             )
         })?;
-        Ok(format!(
-                   "<{} {} inline {}>{}</{}>",
+        let s = self.name.to_jsx_prop_as_string("name").map_err(|_| {
+            ErrMode::Cut(
+                ConundrumErrorVariant::UserFacingGeneralParserError(
+                    ConundrumError::from_msg_and_details("Serialization error", "Conundrum failed to serialize an emoji name.")
+                )
+            )
+        })?;
+        let mut props = vec!["inline".to_string(), s, self.size.as_ref().unwrap_or(&SizableOption::Small).to_string()];
+        if let Some(sizable) = &self.sizable {
+            props.push(sizable.to_jsx_prop());
+        }
+        Ok(format!("<{} {}>{}</{}>",
                    EmbeddableComponentName::Emoji,
-                   self.name.to_jsx_prop_as_string("name").map_err(|_| {
-                       ErrMode::Cut(
-    ConundrumErrorVariant::UserFacingGeneralParserError(
-        ConundrumError::from_msg_and_details("Serialization error", "Conundrum failed to serialize an emoji name.")
-    )
-)
-                   })?,
-                   self.size.as_ref().unwrap_or(&SizableOption::Small),
+                   props.join(" "),
                    svg,
-                   EmbeddableComponentName::Emoji
-        ))
+                   EmbeddableComponentName::Emoji))
     }
 }
 
@@ -109,7 +136,8 @@ impl ConundrumParser<EmojiResult> for EmojiResult {
         let value = delimited(':', take_while(1.., |c| !is_space_or_newline(c) && c != ':'), ':').parse_next(input)?;
 
         Ok(EmojiResult { name: ConundrumString(value.to_string()),
-                         size: None })
+                         size: None,
+                         sizable: None })
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -118,8 +146,8 @@ impl ConundrumParser<EmojiResult> for EmojiResult {
 }
 
 impl ConundrumComponent for EmojiResult {
-    fn get_component_id() -> crate::output::general::component_constants::component_ids::EmbeddableComponentId {
-        todo!()
+    fn get_component_id() -> AnyComponentName {
+        AnyComponentName::UserEmbedded(EmbeddableComponentName::Emoji)
     }
 
     fn from_props(props: crate::parsers::conundrum::logic::object::object::ConundrumObject,
@@ -128,7 +156,9 @@ impl ConundrumComponent for EmojiResult {
         where Self: Sized {
         let name = ConundrumString::from_jsx_props(&props, "name")?;
         let size = SizableOption::from_jsx_props_bool_record(&props);
+        let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
         Ok(EmojiResult { name,
-                         size })
+                         size,
+                         sizable })
     }
 }

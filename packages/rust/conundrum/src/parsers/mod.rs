@@ -5,4 +5,5 @@ pub mod javascript;
 pub mod markdown;
 pub mod parser_components;
 pub mod parser_trait;
+pub mod parsers_shared;
 pub mod react;

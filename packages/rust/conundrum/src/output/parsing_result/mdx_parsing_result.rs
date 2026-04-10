@@ -8,7 +8,8 @@ use crate::{
     lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
     output::{
         general::component_constants::{
-            auto_inserted_component_name::AutoInsertedComponentName, component_names::EmbeddableComponentName,
+            any_component_id::AnyComponentName, auto_inserted_component_name::AutoInsertedComponentName,
+            component_names::EmbeddableComponentName,
         },
         parsing_result::{
             ai_serialization_request::AiSerializationRequestPhase1,
@@ -70,11 +71,7 @@ impl MdxParsingResult {
         self.outgoing_links.iter().any(|x| x.link_to_note_id == link_note_id)
     }
 
-    pub fn append_auto_inserted_component(&mut self, name: &AutoInsertedComponentName) {
-        self.included_components.push(name.to_string());
-    }
-
-    pub fn append_embeddable_component(&mut self, name: &EmbeddableComponentName) {
+    pub fn append_embeddable_component(&mut self, name: &AnyComponentName) {
         self.included_components.push(name.to_string());
     }
 }
