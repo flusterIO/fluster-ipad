@@ -21,3 +21,8 @@ pub fn get_conundrum_input(val: &str, modifiers: Vec<ConundrumModifier>) -> Conu
                                                       eq_count: 0,
                                                       slugger: Slugger::default() }) }
 }
+
+pub fn duplicate_conundrum_input(new_value: &str, state: RefCell<ParseState>) -> ConundrumInput {
+    ConundrumInput { input: new_value,
+                     state }
+}

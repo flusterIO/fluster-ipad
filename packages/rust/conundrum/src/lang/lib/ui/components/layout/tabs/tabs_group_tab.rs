@@ -69,7 +69,7 @@ impl ConundrumComponent for Tab {
 
     fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self> {
         let label = ConundrumString::from_jsx_props(&props, "label").map_err(|e| e.cut())?;
-        let id = ConundrumString::from_jsx_props(&props, "label").ok();
+        let id = ConundrumString::from_jsx_props(&props, "id").ok();
         let children = Children(children.unwrap_or_default());
         Ok(Tab { label,
                  id,
@@ -82,14 +82,11 @@ impl JsxComponentResult for Tab {
         let label_children = self.label.to_children(res.modifiers.clone())?;
         let j = label_children.to_jsx_prop("label", res)?;
         let mut props = vec![j];
-        let mut nested_state = ParseState { modifiers: vec![ConundrumModifier::ForcePlainText],
-                                            ..Default::default() };
-        let label_res = label_children.to_jsx_prop_as_string("labelString", &mut nested_state)?;
+        let label_res = label_children.to_jsx_prop_as_string("labelString", res)?;
         props.push(label_res);
         if let Some(id) = &self.id {
             props.push(id.to_jsx_prop_as_string("id").map_err(ErrMode::Backtrack)?)
         }
-        println!("Res here: {:#?}", res);
         let children_string = self.children.render(res)?;
         Ok(format!(
                    r#"<{} {}>

@@ -26,7 +26,8 @@ use crate::{
         component_names::EmbeddableComponentName,
     },
     parsers::{
-        as_char_extensions::is_space_or_newline, conundrum::logic::string::conundrum_string::ConundrumString,
+        as_char_extensions::is_space_or_newline,
+        conundrum::logic::{bool::boolean::ConundrumBoolean, string::conundrum_string::ConundrumString},
         parser_trait::ConundrumParser,
     },
 };
@@ -55,7 +56,7 @@ pub struct EmojiResult {
     /// The other properties are still available, but these unique boolean
     /// properties will apply styles that will more reliably shape the
     /// underlying image.
-    pub sizable: Option<SizablePropsGroup>,
+    pub sizable: SizablePropsGroup,
     /// Default: "small", text sized.
     pub size: Option<SizableOption>,
 }
@@ -101,13 +102,11 @@ impl JsxComponentResult for EmojiResult {
                 )
             )
         })?;
-        let mut props = vec!["inline".to_string(), s, self.size.as_ref().unwrap_or(&SizableOption::Small).to_string()];
-        if let Some(sizable) = &self.sizable {
-            props.push(sizable.to_jsx_prop());
-        }
-        Ok(format!("<{} {}>{}</{}>",
+        Ok(format!("<{} {} {} {}>{}</{}>",
                    EmbeddableComponentName::Emoji,
-                   props.join(" "),
+                   s,
+                   self.size.as_ref().unwrap_or(&SizableOption::Small),
+                   self.sizable.to_jsx_prop(),
                    svg,
                    EmbeddableComponentName::Emoji))
     }
@@ -135,9 +134,12 @@ impl ConundrumParser<EmojiResult> for EmojiResult {
                           -> ConundrumModalResult<EmojiResult> {
         let value = delimited(':', take_while(1.., |c| !is_space_or_newline(c) && c != ':'), ':').parse_next(input)?;
 
+        let sizable = SizablePropsGroup { inline: Some(ConundrumBoolean(true)),
+                                          ..Default::default() };
+
         Ok(EmojiResult { name: ConundrumString(value.to_string()),
                          size: None,
-                         sizable: None })
+                         sizable })
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -156,7 +158,7 @@ impl ConundrumComponent for EmojiResult {
         where Self: Sized {
         let name = ConundrumString::from_jsx_props(&props, "name")?;
         let size = SizableOption::from_jsx_props_bool_record(&props);
-        let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
+        let sizable = SizablePropsGroup::from_jsx_props(&props, "").unwrap_or_default();
         Ok(EmojiResult { name,
                          size,
                          sizable })

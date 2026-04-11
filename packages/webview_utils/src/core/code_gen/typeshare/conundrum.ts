@@ -114,7 +114,7 @@ export interface SizablePropsGroup {
 	center_self?: ConundrumBoolean;
 	/**
 	 * Centers the content of this component's children, not the component
-	 * itself.    center_self: Option<ConundrumBoolean>,
+	 * itself.    pub center_self: Option<ConundrumBoolean>,
 	 */
 	center_content?: ConundrumBoolean;
 	/** Add a small, muted border to the object. */
@@ -335,7 +335,7 @@ export interface EmojiResult {
 	 * properties will apply styles that will more reliably shape the
 	 * underlying image.
 	 */
-	sizable?: SizablePropsGroup;
+	sizable: SizablePropsGroup;
 	/** Default: "small", text sized. */
 	size?: SizableOption;
 }

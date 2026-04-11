@@ -1,4 +1,4 @@
-import React, { type FC, useEffect, type ReactNode, type ReactElement } from 'react'
+import React, { useEffect, type ReactNode, type ReactElement } from 'react'
 import { embeddableTabProps, type EmbeddableTabItemProps } from './embeddable_tab_props'
 import { type WithChildren } from '../../../../core/utils/types/utility_types'
 import { useEmbeddableTabGroupContext, useEmbeddableTabGroupDispatch } from './state/embeddable_tab_group_context'
@@ -10,6 +10,7 @@ export const EmbeddableTab = ({ children, ..._props }: EmbeddableTabItemProps & 
     const { tabs, focusedIndex, tabGroupId } = useEmbeddableTabGroupContext()
     const dispatch = useEmbeddableTabGroupDispatch()
     const props = embeddableTabProps.transform((t) => {
+        console.log("t: ", t)
         const item: EmbeddableTabItem = {
             label: (t.label as ReactElement | undefined) ?? t.labelString,
             id: t.id ?? t.labelString

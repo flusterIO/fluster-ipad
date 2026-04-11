@@ -22,67 +22,104 @@ use crate::{
 #[derive(Serialize, Debug, Clone)]
 pub struct SizablePropsGroup {
     /// Hides the MathJax labels in all child components.
-    hide_math_labels: Option<ConundrumBoolean>,
+    pub hide_math_labels: Option<ConundrumBoolean>,
     /// 'Floats' the component to the right. This is often combined with `width`
     /// or the `sidebar` property to create sidebar layouts.
-    right: Option<ConundrumBoolean>,
+    pub right: Option<ConundrumBoolean>,
     /// 'Floats' the component to the left. This is often combined with `width`
     /// or the `sidebar` property to create sidebar layouts.
-    left: Option<ConundrumBoolean>,
+    pub left: Option<ConundrumBoolean>,
     /// A utility property that sets a responsive max-width to create sidebar
     /// like layouts on large screens while allowing for full-width when the
     /// window is smaller.
-    sidebar: Option<ConundrumBoolean>,
-    center_self: Option<ConundrumBoolean>,
+    pub sidebar: Option<ConundrumBoolean>,
+    pub center_self: Option<ConundrumBoolean>,
     /// Centers the content of this component's children, not the component
-    /// itself.    center_self: Option<ConundrumBoolean>,
-    center_content: Option<ConundrumBoolean>,
+    /// itself.    pub center_self: Option<ConundrumBoolean>,
+    pub center_content: Option<ConundrumBoolean>,
     /// Add a small, muted border to the object.
-    border: Option<ConundrumBoolean>,
+    pub border: Option<ConundrumBoolean>,
     /// Tells the container to not forcefully create a new line and instead to
     /// flow with the rest of the content. Unless you're trying to apply
     /// properties to text inside of a paragraph using the Container component
     /// this is most likely not what you are looking for. If you want text to
     /// wrap around an element, use the `right` or `left` properties paired with
     /// a desired `width`.
-    inline: Option<ConundrumBoolean>,
+    pub inline: Option<ConundrumBoolean>,
     /// Casts an inset shadow from the object.
-    in_shadow: Option<SizableOption>,
+    pub in_shadow: Option<SizableOption>,
     /// Casts a shadow from the object.
-    shadow: Option<SizableOption>,
+    pub shadow: Option<SizableOption>,
     /// Rounds the corners of the container. Use `rounded=\
-    rounded: Option<SizableOption>,
+    pub rounded: Option<SizableOption>,
     /// Change the text content of the container's children. Beware though, some
     /// edge cases might not respond as expected.
-    text: Option<SizableOption>,
+    pub text: Option<SizableOption>,
     /// Set some custom width properties to create responsive layouts.
-    width: Option<SizableOption>,
+    pub width: Option<SizableOption>,
     /// Set some custom height properties to create responsive layouts.
-    height: Option<SizableOption>,
+    pub height: Option<SizableOption>,
     /// Add some padding around the **outside** of an object. If you are looking
     /// to create space on the _inside_ of an object you are looking for
     /// `padding`.
-    margin: Option<SizableOption>,
-    margin_left: Option<SizableOption>,
-    margin_right: Option<SizableOption>,
-    margin_top: Option<SizableOption>,
-    margin_bottom: Option<SizableOption>,
-    margin_y: Option<SizableOption>,
-    margin_x: Option<SizableOption>,
+    pub margin: Option<SizableOption>,
+    pub margin_left: Option<SizableOption>,
+    pub margin_right: Option<SizableOption>,
+    pub margin_top: Option<SizableOption>,
+    pub margin_bottom: Option<SizableOption>,
+    pub margin_y: Option<SizableOption>,
+    pub margin_x: Option<SizableOption>,
     /// Create padding on the _inside_ of an object. If you are trying to create
     /// space _around_ an object. you are probably looking for `margin`.
-    padding: Option<SizableOption>,
-    padding_left: Option<SizableOption>,
-    padding_right: Option<SizableOption>,
-    padding_top: Option<SizableOption>,
-    padding_bottom: Option<SizableOption>,
-    padding_y: Option<SizableOption>,
-    padding_x: Option<SizableOption>,
+    pub padding: Option<SizableOption>,
+    pub padding_left: Option<SizableOption>,
+    pub padding_right: Option<SizableOption>,
+    pub padding_top: Option<SizableOption>,
+    pub padding_bottom: Option<SizableOption>,
+    pub padding_y: Option<SizableOption>,
+    pub padding_x: Option<SizableOption>,
     /// When in Grid mode or in some other select layouts, this property create
     /// a gap between _all_ children.
-    gap: Option<SizableOption>,
-    gap_y: Option<SizableOption>,
-    gap_x: Option<SizableOption>,
+    pub gap: Option<SizableOption>,
+    pub gap_y: Option<SizableOption>,
+    pub gap_x: Option<SizableOption>,
+}
+
+#[allow(clippy::derivable_impls)]
+impl Default for SizablePropsGroup {
+    fn default() -> Self {
+        Self { hide_math_labels: None,
+               right: None,
+               left: None,
+               sidebar: None,
+               center_self: None,
+               center_content: None,
+               border: None,
+               inline: None,
+               in_shadow: None,
+               shadow: None,
+               rounded: None,
+               text: None,
+               width: None,
+               height: None,
+               margin: None,
+               margin_left: None,
+               margin_right: None,
+               margin_top: None,
+               margin_bottom: None,
+               margin_y: None,
+               margin_x: None,
+               padding: None,
+               padding_left: None,
+               padding_right: None,
+               padding_top: None,
+               padding_bottom: None,
+               padding_y: None,
+               padding_x: None,
+               gap: None,
+               gap_y: None,
+               gap_x: None }
+    }
 }
 
 impl SizablePropsGroup {

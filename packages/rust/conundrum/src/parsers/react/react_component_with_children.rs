@@ -1,9 +1,7 @@
-use std::cell::RefCell;
-
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
-    Parser, Stateful,
+    Parser,
     ascii::alphanumeric1,
     combinator::{delimited, repeat},
     stream::{AsChar, Stream},
@@ -15,7 +13,7 @@ use crate::{
         parse_conundrum_string::parse_elements,
         state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
         traits::{
-            conundrum_input::{ConundrumInput, get_conundrum_input},
+            conundrum_input::{ConundrumInput, duplicate_conundrum_input, get_conundrum_input},
             fluster_component_result::ConundrumComponentResult,
         },
     },
@@ -109,10 +107,15 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
 
     react_closing_tag_parser_by_name(component_name_string.as_str()).parse_next(input)?;
 
-    let mut state = input.state.borrow_mut();
-    let mut new_input: Stateful<&str, RefCell<ParseState>> =
-        get_conundrum_input(children_string, state.modifiers.clone());
+    // BUG: This is the cause of the disconnect between the parent state and the
+    // nested state, why equations numbers are resetting.
+    // let mut state = input.state.borrow_mut();
+    // let mut new_input: Stateful<&str, RefCell<ParseState>> =
+    //     get_conundrum_input(children_string, state.modifiers.clone());
+    let mut new_input = duplicate_conundrum_input(children_string, input.state.clone());
     let children = parse_elements(&mut new_input)?;
+
+    let mut state = input.state.borrow_mut();
 
     let component = COMPONENT_MAP.get_by_component_name(&component_name, props, Some(children))?;
 
