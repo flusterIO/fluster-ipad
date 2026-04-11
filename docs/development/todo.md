@@ -10,11 +10,12 @@
   - [x] Move `ComponentMap` to `DashMap<String, ...>` to allow for including other components that won't have documentation.
   - [x] Add full `sizable` props back to emoji component for positioning.
   - [x] Enable the nested documentation in the emoji docs.
-- [ ] Fix bug with nested equations being numbered improperly.
-- [ ] Handle math block escapability so `$` can be used in the user's regular note content reliably.
+- [x] Fix bug with nested equations being numbered improperly.
 - [x] Enable click-to-scroll functionality for equations if the id is present.
 - [x] Fix syntax docs... they're completely fucking broken... (likely arising from the `-- title="my_title"` syntax. It's failing elsehwere too.)
   - [x] Double check Tabs docs too, as the nested components aren't rendering since the docs aren't being rendered as Children. Move away from pre-parsing the docs as a whole anyways to support multiple outputs, not just jsx in the future.
+- [ ] Move all nested state duplications to new approach used in the admonition component to allow for maintaining state in nested parsers.
+- [ ] Handle math block escapability so `$` can be used in the user's regular note content reliably.
 - [ ] Move over rest of components below:
 
 ### Components that need to move over still
