@@ -1,5 +1,6 @@
 pub mod apply_parsed_conundrum_result;
 pub mod compile_conundrum;
+pub mod mem;
 pub mod parse_conundrum_string;
 pub mod queries;
 pub mod run_conundrum;

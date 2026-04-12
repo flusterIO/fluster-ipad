@@ -12,6 +12,7 @@ use crate::{
                 container::container_model::UtilityContainer,
                 grid::grid::ResponsiveGrid,
                 tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
+                toc::table_of_contents::TableOfContents,
             },
         },
         runtime::{
@@ -30,7 +31,7 @@ use crate::{
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumComponentType {
     // Layout
-    // Grid(Grid),
+    Toc(TableOfContents),
     Container(UtilityContainer),
     Card(Card),
     Tabs(TabsGroup),
@@ -65,6 +66,7 @@ impl ConundrumComponentType {
             ConundrumComponentType::Emoji(_) => false,
             ConundrumComponentType::Hr(_) => true,
             ConundrumComponentType::EmojiDocsDemo(_) => true,
+            ConundrumComponentType::Toc(_) => true,
         }
     }
 }
@@ -85,6 +87,7 @@ impl PlainTextComponentResult for ConundrumComponentType {
             ConundrumComponentType::Emoji(s) => s.to_plain_text(res),
             ConundrumComponentType::Hr(s) => s.to_plain_text(res),
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_plain_text(res),
+            ConundrumComponentType::Toc(s) => s.to_plain_text(res),
         }
     }
 }
@@ -105,6 +108,7 @@ impl MarkdownComponentResult for ConundrumComponentType {
             ConundrumComponentType::Emoji(s) => s.to_markdown(res),
             ConundrumComponentType::Hr(s) => s.to_markdown(res),
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_markdown(res),
+            ConundrumComponentType::Toc(s) => s.to_markdown(res),
         }
     }
 }
@@ -125,6 +129,7 @@ impl ConundrumComponentResult for ConundrumComponentType {
             ConundrumComponentType::Emoji(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Hr(s) => s.to_conundrum_component(res),
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Toc(s) => s.to_conundrum_component(res),
         }
     }
 }

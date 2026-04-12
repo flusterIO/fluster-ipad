@@ -1,64 +1,93 @@
-## Daily Focus for My ADHD-Ass
+# Daily Focus for My ADHD-Ass
 
-### Summary of To-Do List
+## Priority Tasks to Release Within 2 Weeks
 
-#### **Priority Tasks (Next 2 Weeks)**
+### 1. Equation Tag Parsing and Components
+- Complete parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST.
+- Implement equation tag components.
+- Enable click-to-scroll functionality for equations if the id is present.
+- Fix bugs with bold, italic, and bold-italic text parsing.
+- Handle math block escapability so `$` can be used in user content reliably.
 
-1. **Equation Tag Parsing & Components**
-   - Implement equation tag components.
-   - Handle parsing of equation tag ids using new syntax.
-   - Enable click-to-scroll functionality for equations if the id is present.
+### 2. Emoji and Component Integration
+- Move `ComponentMap` to `DashMap<String, ...>` to allow including other components.
+- Add full `sizable` props back to emoji component for positioning.
+- Enable nested documentation in emoji docs.
+- Handle nested equations being numbered improperly by moving `ParseState` to a `Mutex`.
 
-2. **Bug Fixes & Documentation**
-   - Fix syntax docs (especially with `-- title="my_title"` syntax).
-   - Double-check Tabs docs and move away from pre-parsing the docs as a whole.
-   - Fix admonition padding issue on website and main app.
+### 3. Documentation and Syntax Fixes
+- Fix syntax docs that are completely broken, especially with `-- title="my_title"` syntax.
+- Double check Tabs docs as nested components aren't rendering.
+- Move away from pre-parsing docs as a whole to support multiple outputs.
+- Fix bug with nested equations being numbered improperly.
 
-3. **Component Migration & New Features**
-   - Move remaining components (Grid, AINoteSummary, Table of Contents) to Rust.
-   - Implement `FlusterAI.generateStudyGuide()` and `FlusterAI.createFlashCards()`.
-   - Create 'triggers' for AI-generated content with modes: `auto`, `confirm`, `never`.
+### 4. Component Migration and Features
+- Move over remaining components: Container, HrWithChildren, Grid, and AINoteSummary.
+- Add Table of Contents (TOC) feature.
+- Implement Table (GFM if performance allows), Strikethrough text, Escapable math blocks, and Escapable strings.
+- Reimplement Paragraphs.
 
-4. **Performance & Offline Support**
-   - Move regex queries to `HashMap<String, bool>` for faster lookup.
-   - Handle slugger implementation for all headings to generate unique ids.
-   - Fix issue with Safari keeping around 20 instances of the editor view.
+### 5. Bug Fixes and Performance
+- Fix bibliography entries not being associated with notes properly.
+- Create 'paper' button on desktop that doesn't create 2 pages.
+- Handle scroll restoration on desktop app in landscape mode.
+- Sync method to create notes from file system.
+- Fix iPad issue with note loading in portrait view.
+- Handle Safari keeping around 20 editor view instances.
+- Fix command palette not updating state fields when editor is focused.
+- Handle math output issue with snapshot.
+- Fix issue with title syntax implementing italic field.
 
-5. **UI/UX Improvements**
-   - Ensure all taggables have `cursor-pointer` class.
-   - Handle light mode for `AISummaryContainer` card.
-   - Fix issue with command palette not updating state fields when editor is focused.
-
-6. **Testing & Release Preparation**
-   - Ensure all tests (Swift, Typescript, Rust) are passing.
-   - Review YouTube video on creating 'Nominations' for Apple's editor team.
-   - Prepare for release by reviewing pre-release checklist.
-
-#### **Medium Priority Tasks**
-
-- Work on AI summarization and syncing method to create notes from file system.
-- Handle issue with iPad app loading in portrait view.
-- Fix issue with `Icon` component dynamically loading icons from a library.
+### 6. AI and Documentation Enhancements
+- Create AI triggers for generating study guides and flash cards.
+- Implement light mode for `AISummaryContainer` card.
+- Handle force regeneration of AI summaries.
+- Handle React property parsers for reliable component parsing.
+- Add `subtle` or `underline` property for `Tabs` component.
+- Create searchable `Icon` component for dynamic icon loading.
+- Verify iPad app functionality with error state reset and initial state function.
+- Add `output_format` property to `ConundrumInput.state` for conditional rendering.
 - Create `SiaString` class in Typescript for string compression and comparison.
-- Handle math output issue with the given snapshot.
-- Fix issue with the `-- title="my_title"` syntax causing broken docs.
+- Start setting AI availability states and adjust `AiContainerPhase1...` component.
 
-#### **Low Priority Tasks**
-
-- Work on webview note details to ensure all taggables are clickable.
-- Update website and docs to reflect upcoming Apple release.
-- Handle bug with color scheme note changing editor theme.
+### 7. Offline and Search Features
+- Handle slugger implementation for all headings to generate ids during parsing.
+- Move rest of components over to Rust.
+- Fix issue with new note being set too late.
+- Handle bug requiring initial note refresh.
+- Handle global search page on Mac with toggle for search type.
+- Fix issue with note being set as modified just by viewing it in Mac app.
 - Write tests for all `-ignoreParser` flags.
 
-### Notes
+## Release Preparation
+- Ensure all tests are passing for Swift, Typescript, and Rust.
+- Review YouTube video on creating 'Nominations' for Apple's editor team.
+- Update docs to reflect upcoming Apple release.
+- Fix admonition padding issue on website and in main app.
+- Download **Crafting Interpreters** for offline reading.
+- Move regex queries in `get_component_map` to `HashMap<String, bool>` in Rust.
+- Handle offline editor instances and inline-code parser.
+- Create unique error enum for Conundrum.
+- Handle pre-parsing of documentation and initial docs with new internal CLI method.
+- Fix issue with Safari keeping around 20 editor view instances.
+- Handle command palette not updating state fields when editor is focused.
+- Handle math output issue with snapshot.
+- Fix issue with title syntax implementing italic field.
+- Relay detailed errors to users in webviews.
+- Handle `Icon` component that dynamically loads icons from a library.
+- Verify iPad app functionality with error state reset and initial state function.
+- Add `output_format` property to `ConundrumInput.state` for conditional rendering.
+- Create `SiaString` class in Typescript for string compression and comparison.
+- Start setting AI availability states and adjust `AiContainerPhase1...` component.
+- Handle global search page on Mac with toggle for search type.
+- Fix issue with note being set as modified just by viewing it in Mac app.
+- Write tests for all `-ignoreParser` flags.
 
-- Focus on high-priority tasks first to ensure we meet the 2-week release deadline.
-- Break down complex tasks into smaller, manageable chunks.
-- Use the `output_format` property to conditionally render note content as plain text, inline markdown, markdown, or mdx.
-- Ensure all AI-generated content is properly formatted and integrated into the app.
-- Test all components thoroughly before release to avoid any last-minute issues.
+## Final Notes
+- Prioritize tasks that will have the most impact on user experience and app functionality.
+- Keep daily focus on high-priority tasks to ensure release within the next 2 weeks.
+- Regularly review and update the to-do list to reflect progress and any new tasks that arise.
+- Stay organized and focused to manage the workload effectively.
+- Celebrate small wins to maintain motivation and momentum throughout the development process.
 
-### Final Thoughts
-
-This is a critical release, so it's important to stay focused and organized. Prioritize tasks that have the most impact on the user experience and ensure that all components are working as expected. Good luck with the release!
-
+**Remember:** This is a daily focus list, so adjust as needed based on your progress and any new tasks that come up. Stay on track and keep pushing forward to achieve the release goal within the next two weeks!

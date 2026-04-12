@@ -25,7 +25,6 @@ use crate::{
                 markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
-                state_modifier::ConundrumStateModifier,
             },
         },
     },
@@ -40,6 +39,10 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownHeadingResult {
     pub depth: u16,
+    /// The indentation level to be used when displaying this in an inline table
+    /// of contents, not necessarily the level of the heading since some heading
+    /// lists will skip a depth.
+    pub tab_depth: u16,
     pub children: Vec<ParsedElement>,
     pub subtitle: Option<Vec<ParsedElement>>,
     pub id: ConundrumString,
@@ -51,6 +54,7 @@ pub struct MarkdownHeadingResult {
 #[derive(Debug, Serialize, Deserialize, Clone, uniffi::Record)]
 pub struct MarkdownHeadingStringifiedResult {
     pub depth: u16,
+    pub tab_depth: u16,
     pub content: String,
     pub id: String,
 }
@@ -61,6 +65,7 @@ impl MarkdownHeadingResult {
                                  -> ConundrumModalResult<MarkdownHeadingStringifiedResult> {
         let children_string = compile_elements(&self.children, res)?;
         Ok(MarkdownHeadingStringifiedResult { depth: self.depth,
+                                              tab_depth: self.tab_depth,
                                               content: children_string,
                                               id: self.id.0.clone() })
     }
@@ -83,10 +88,19 @@ impl MarkdownComponentResult for MarkdownHeadingResult {
     }
 }
 
-impl ConundrumStateModifier for MarkdownHeadingResult {
-    fn set_state(&self, res: &mut ParseState) {
-        if let Ok(x) = self.to_stringified_result(res) {
-            res.data.toc.push(x)
+impl MarkdownHeadingResult {
+    fn set_state(res: &mut ParseState, heading: &mut MarkdownHeadingResult) {
+        if let Ok(mut x) =
+            heading.to_stringified_result(res).inspect_err(|e| eprintln!("Error serializing heading: {:#?}", e))
+        {
+            if heading.depth > res.last_heading_depth {
+                res.last_heading_tab_depth += 1;
+            } else if heading.depth < res.last_heading_depth && res.last_heading_tab_depth > 0 {
+                res.last_heading_tab_depth -= 1;
+            }
+            res.last_heading_depth = x.depth;
+            x.tab_depth = res.last_heading_tab_depth;
+            res.data.toc.push(x.clone());
         }
     }
 }
@@ -99,7 +113,6 @@ impl PlainTextComponentResult for MarkdownHeadingResult {
 
 impl ConundrumComponentResult for MarkdownHeadingResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        self.set_state(res);
         if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
             self.to_plain_text(res)
         } else if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
@@ -197,11 +210,15 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
         let mut new_input = get_conundrum_input(content_string.as_str(), state.modifiers.clone());
         let children = parse_elements(&mut new_input)?;
 
-        Ok(MarkdownHeadingResult { depth: level.len() as u16,
-                                   children,
-                                   subtitle,
-                                   id: id.map(|x| ConundrumString(x.to_string()))
-                                         .unwrap_or_else(|| ConundrumString(state.slugger.slug(content))) })
+        let heading = MarkdownHeadingResult { depth: level.len() as u16,
+                                              children,
+                                              subtitle,
+                                              tab_depth: state.last_heading_tab_depth,
+                                              id: id.map(|x| ConundrumString(x.to_string()))
+                                                    .unwrap_or_else(|| ConundrumString(state.slugger.slug(content))) };
+
+        MarkdownHeadingResult::set_state(&mut state, &mut heading.clone());
+        Ok(heading)
     }
 
     fn matches_first_char(char: char) -> bool {

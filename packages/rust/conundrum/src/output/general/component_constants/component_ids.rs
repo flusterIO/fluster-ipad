@@ -13,6 +13,9 @@ use crate::{
 #[typeshare]
 #[derive(strum_macros::Display, PartialEq, Eq, Hash, Clone, Copy, EnumIter, Serialize, Deserialize, uniffi::Enum)]
 pub enum EmbeddableComponentId {
+    #[serde(rename = "toc")]
+    #[strum(to_string = "toc")]
+    Toc,
     #[serde(rename = "admonition")]
     #[strum(to_string = "admonition")]
     Admonition,

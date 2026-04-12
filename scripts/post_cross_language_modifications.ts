@@ -56,6 +56,11 @@ const replacers: Record<
                 replaceWith:
                     "public enum ConundrumErrorVariant: Swift.Error, Codable {",
             },
+            {
+                query: "public enum ConundrumErrorPurpose {",
+                dontPanicIfExists: ["public enum ConundrumErrorPurpose: Codable {"],
+                replaceWith: "public enum ConundrumErrorPurpose: Codable {",
+            },
         ],
     },
     "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":

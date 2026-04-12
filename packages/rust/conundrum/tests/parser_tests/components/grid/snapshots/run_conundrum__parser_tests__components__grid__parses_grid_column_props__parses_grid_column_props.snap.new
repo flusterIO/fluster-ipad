@@ -1,0 +1,27 @@
+---
+source: packages/rust/conundrum/tests/parser_tests/components/grid/parses_grid_column_props.rs
+assertion_line: 27
+expression: res.content
+---
+
+<Grid
+    columns={2}
+
+<AutoInsertedBlockQuote>
+
+</AutoInsertedBlockQuote>
+<Container
+
+card>
+
+   Container 1
+
+</Container>
+<Container
+
+card>
+
+   Container 2
+
+</Container>
+</Grid>

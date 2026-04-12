@@ -97,7 +97,6 @@ export class ZodToMarkdownHandler {
         })
         for (const itemKey of itemKeys) {
             const itemData = shape[itemKey]
-            console.log("itemData: ", itemData)
             this.logPropertyKey(itemKey)
             if (typeof itemData._def.description === "string") {
                 this.logDescription(itemData._def.description as string)
@@ -184,9 +183,7 @@ export class ZodToMarkdownHandler {
         }
         if (itemType instanceof z.ZodDefault) {
             const d = itemType._def.defaultValue()
-            console.log("itemType: ", itemType)
 
-            console.log("d: ", d)
             // assert(typeof d === "object" && Object.keys(d).length === 0, "If this is triggered, there's a default value that isn't an empty object that should probably be documented.")
 
             if (typeof d === "object" && Object.keys(d).length === 0) {

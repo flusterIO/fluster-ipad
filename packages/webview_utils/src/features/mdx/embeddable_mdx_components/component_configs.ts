@@ -11,6 +11,7 @@ import { hrComponentConfig } from "./hr/hr_component_config";
 import { eqRefComponentConfig } from "./math/equation_reference/equation_reference_config";
 import { embeddableTabComponentConfig } from "./tabs/embeddable_tab_config";
 import { tabGroupComponentConfig } from "./tabs/tab_group_component_config";
+import { tocComponentConfg } from "./toc/toc_config";
 import { ulComponentConfig } from "./ul/ul_component_config";
 
 export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
@@ -26,5 +27,6 @@ export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
     tabGroupComponentConfig,
     eqRefComponentConfig,
     aiNoteSummaryComponentConfig,
-    emojiComponentConfig
+    emojiComponentConfig,
+    tocComponentConfg
 ]

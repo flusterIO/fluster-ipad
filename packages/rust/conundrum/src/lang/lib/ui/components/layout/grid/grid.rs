@@ -26,6 +26,7 @@ use crate::{
 
 #[typeshare::typeshare]
 #[derive(Serialize, Debug, Clone)]
+#[serde(tag = "tag", content = "content")]
 pub enum GridColumnProps {
     ByColumn(GridColumnGroup),
     Generalized(ConundrumInt),

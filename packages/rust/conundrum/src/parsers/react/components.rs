@@ -11,6 +11,7 @@ use crate::{
                 container::container_model::UtilityContainer,
                 grid::grid::ResponsiveGrid,
                 tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
+                toc::table_of_contents::TableOfContents,
             },
         },
         runtime::state::{
@@ -82,6 +83,10 @@ lazy_static! {
         m.insert(DocumentationComponentName::EmojiDocumentationDemo.to_string(),
                  Box::new(|props, children| {
                      EmojiDocsDemo::from_props(props, children).map(ConundrumComponentType::EmojiDocsDemo)
+                 }));
+        m.insert(EmbeddableComponentId::Toc.to_string(),
+                 Box::new(|props, children| {
+                     TableOfContents::from_props(props, children).map(ConundrumComponentType::Toc)
                  }));
         m
     };

@@ -32,73 +32,73 @@ export const AutoInsertedHeading = ({ depth, id, children, subtitle }: AutoInser
         case 1: {
             return subtitle ? (
                 <TitleWithSubTitleContainer>
-                    <H1 className="mb-0" id={id ?? undefined}>{children}</H1>
+                    <H1 className="mb-0" id={id ? `h-${id}` : undefined}>{children}</H1>
                     <Subtitle depth={depth}>
                         {subtitle}
                     </Subtitle>
                 </TitleWithSubTitleContainer>
             ) : (
-                <H1 id={id ?? undefined}>{children}</H1>
+                <H1 id={id ? `h-${id}` : undefined}>{children}</H1>
             )
         }
         case 2: {
             return subtitle ? (
                 <TitleWithSubTitleContainer>
-                    <H2 className="mb-0 w-full" id={id ?? undefined}>{children}</H2>
+                    <H2 className="mb-0 w-full" id={id ? `h-${id}` : undefined}>{children}</H2>
                     <Subtitle className="mt-2" depth={depth}>
                         {subtitle}
                     </Subtitle>
                 </TitleWithSubTitleContainer>
             ) : (
-                <H2 id={id ?? undefined}>{children}</H2>
+                <H2 id={id ? `h-${id}` : undefined}>{children}</H2>
             )
         }
         case 3: {
             return subtitle ? (
                 <TitleWithSubTitleContainer>
-                    <H3 className="mb-0" id={id ?? undefined}>{children}</H3>
+                    <H3 className="mb-0" id={id ? `h-${id}` : undefined}>{children}</H3>
                     <Subtitle depth={depth}>
                         {subtitle}
                     </Subtitle>
                 </TitleWithSubTitleContainer>
             ) : (
-                <H3 id={id ?? undefined}>{children}</H3>
+                <H3 id={id ? `h-${id}` : undefined}>{children}</H3>
             )
         }
         case 4: {
             return subtitle ? (
                 <TitleWithSubTitleContainer>
-                    <H4 className="mb-0" id={id ?? undefined}>{children}</H4>
+                    <H4 className="mb-0" id={id ? `h-${id}` : undefined}>{children}</H4>
                     <Subtitle depth={depth}>
                         {subtitle}
                     </Subtitle>
                 </TitleWithSubTitleContainer>
             ) : (
-                <H4 id={id ?? undefined}>{children}</H4>
+                <H4 id={id ? `h-${id}` : undefined}>{children}</H4>
             )
         }
         case 5: {
             return subtitle ? (
                 <TitleWithSubTitleContainer>
-                    <H5 className="mb-0" id={id ?? undefined}>{children}</H5>
+                    <H5 className="mb-0" id={id ? `h-${id}` : undefined}>{children}</H5>
                     <Subtitle depth={depth}>
                         {subtitle}
                     </Subtitle>
                 </TitleWithSubTitleContainer>
             ) : (
-                <H5 id={id ?? undefined}>{children}</H5>
+                <H5 id={id ? `h-${id}` : undefined}>{children}</H5>
             )
         }
         case 6: {
             return subtitle ? (
                 <TitleWithSubTitleContainer>
-                    <H6 className="mb-0" id={id ?? undefined}>{children}</H6>
+                    <H6 className="mb-0" id={id ? `h-${id}` : undefined}>{children}</H6>
                     <Subtitle depth={depth}>
                         {subtitle}
                     </Subtitle>
                 </TitleWithSubTitleContainer>
             ) : (
-                <H6 id={id ?? undefined}>{children}</H6>
+                <H6 id={id ? `h-${id}` : undefined}>{children}</H6>
             )
         }
     }

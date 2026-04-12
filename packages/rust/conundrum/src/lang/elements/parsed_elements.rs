@@ -1,10 +1,15 @@
 use serde::Serialize;
+use winnow::error::ErrMode;
 
 use crate::{
     lang::{
         lib::ui::ui_types::children::Children,
         runtime::{
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ParseState,
+            },
             traits::{fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult},
         },
     },
@@ -15,7 +20,8 @@ use crate::{
             hr_with_children::HrWithChildrenResult,
             inline_citation::ParsedCitation,
             logic::{
-                bool::boolean::ConundrumBoolean, number::conundrum_number::ConundrumNumber, token::ConundrumLogicToken,
+                bool::boolean::ConundrumBoolean, number::conundrum_number::ConundrumNumber,
+                string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
             },
             note_link::ParsedOutgoingNoteLink,
             tag::ParsedTag,
@@ -111,13 +117,16 @@ impl MdxComponentResult for ParsedElement {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn delete_md() {
-        // let res =
-        // assert_eq!(result, 4);
+impl ParsedElement {
+    pub fn get_string(&self) -> ConundrumModalResult<ConundrumString> {
+        match self {
+            ParsedElement::Logic(l) => match l {
+                ConundrumLogicToken::String(s) => Some(s.clone()),
+                _ => None
+            },
+            _ => None
+        }.ok_or_else(|| {
+            ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Fail to find string")))
+        })
     }
 }

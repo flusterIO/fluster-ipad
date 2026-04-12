@@ -273,6 +273,14 @@ export interface DocumentSpan {
 	end: number;
 }
 
+export enum ConundrumErrorPurpose {
+	Info = "info",
+	Warn = "warn",
+	Suggest = "suggestion",
+	SyntaxError = "syntax",
+	ConfigurationBug = "config",
+}
+
 export interface ConundrumError {
 	/**
 	 * A required message displayed in a toast or card header. Can contain
@@ -285,6 +293,16 @@ export interface ConundrumError {
 	 * explanation to the user if one can be generated.
 	 */
 	details?: string;
+	/**
+	 * An indicator that can be used when the warning UI is implemented to show
+	 * user's errors that allowed their notes to still compile. There's
+	 * lot's of useful information that can be gathered from these errors,
+	 * inclduding property suggestions & more.
+	 * 
+	 * Making it optional for now because I'm too lazy to go back and rewrite
+	 * all of the errors.
+	 */
+	purpose?: ConundrumErrorPurpose;
 }
 
 export interface ConundrumObject {
@@ -402,6 +420,23 @@ export interface FrontMatterResult {
 	summary?: string;
 }
 
+export type GridColumnPropUnion = 
+	| { tag: "Number", content: ConundrumInt }
+	| { tag: "String", content: ConundrumString };
+
+export interface GridColumnGroup {
+	none?: GridColumnPropUnion;
+	small?: GridColumnPropUnion;
+	smedium?: GridColumnPropUnion;
+	medium?: GridColumnPropUnion;
+	large?: GridColumnPropUnion;
+	xl?: GridColumnPropUnion;
+	xxl?: GridColumnPropUnion;
+	full?: GridColumnPropUnion;
+	fit?: ConundrumBoolean;
+	responsive?: ConundrumBoolean;
+}
+
 /**
  * When a component is rendered in a markdown environment, apply these styles
  * if the more complex rendering strategies are not available.
@@ -512,6 +547,12 @@ export interface MarkdownBoldTextResult {
 
 export interface MarkdownHeadingResult {
 	depth: number;
+	/**
+	 * The indentation level to be used when displaying this in an inline table
+	 * of contents, not necessarily the level of the heading since some heading
+	 * lists will skip a depth.
+	 */
+	tab_depth: number;
 	children: ParsedElement[];
 	subtitle?: ParsedElement[];
 	id: ConundrumString;
@@ -523,6 +564,7 @@ export interface MarkdownHeadingResult {
  */
 export interface MarkdownHeadingStringifiedResult {
 	depth: number;
+	tab_depth: number;
 	content: string;
 	id: string;
 }
@@ -690,6 +732,7 @@ export enum ConundrumModifier {
 }
 
 export enum EmbeddableComponentName {
+	Toc = "Toc",
 	Admonition = "Admonition",
 	Hl = "Hl",
 	Highlight = "Highlight",
@@ -770,6 +813,7 @@ export interface ParsedTag {
 }
 
 export type ConundrumComponentType = 
+	| { tag: "Toc", content: TableOfContents }
 	| { tag: "Container", content: UtilityContainer }
 	| { tag: "Card", content: Card }
 	| { tag: "Tabs", content: TabsGroup }
@@ -794,9 +838,19 @@ export interface ReactComponentWithChildrenResult {
 	component: ConundrumComponentType;
 }
 
+export type GridColumnProps = 
+	| { tag: "ByColumn", content: GridColumnGroup }
+	| { tag: "Generalized", content: ConundrumInt };
+
 export interface ResponsiveGrid {
 	sizable?: SizablePropsGroup;
+	columns?: GridColumnProps;
 	children: Children;
+}
+
+export interface StringUnion {
+	opts: string[];
+	value: string;
 }
 
 export interface Tab {
@@ -809,6 +863,10 @@ export interface Tab {
 	 */
 	id?: ConundrumString;
 	children: Children;
+}
+
+export interface TableOfContents {
+	expanded?: ConundrumBoolean;
 }
 
 /**
@@ -940,6 +998,7 @@ export enum DocumentationComponentName {
 
 /** From typescript to swift. */
 export enum EmbeddableComponentId {
+	Toc = "toc",
 	Admonition = "admonition",
 	Hl = "highlight",
 	Ul = "underline",

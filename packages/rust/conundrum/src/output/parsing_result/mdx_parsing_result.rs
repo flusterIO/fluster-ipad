@@ -7,10 +7,7 @@ use typeshare::typeshare;
 use crate::{
     lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
     output::{
-        general::component_constants::{
-            any_component_id::AnyComponentName, auto_inserted_component_name::AutoInsertedComponentName,
-            component_names::EmbeddableComponentName,
-        },
+        general::component_constants::any_component_id::AnyComponentName,
         parsing_result::{
             ai_serialization_request::AiSerializationRequestPhase1,
             dictionary_result::DictionaryEntryResult,

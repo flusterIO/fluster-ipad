@@ -13,6 +13,9 @@ use crate::{
 #[typeshare]
 #[derive(Display, uniffi::Enum, Debug, Clone, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize)]
 pub enum EmbeddableComponentName {
+    #[serde(rename = "Toc")]
+    #[strum(to_string = "Toc")]
+    Toc,
     #[serde(rename = "Admonition")]
     #[strum(to_string = "Admonition")]
     Admonition,
@@ -88,6 +91,7 @@ impl EmbeddableComponentName {
             EmbeddableComponentName::Tab => EmbeddableComponentId::Tab,
             EmbeddableComponentName::EqRef => EmbeddableComponentId::EqRef,
             EmbeddableComponentName::Emoji => EmbeddableComponentId::Emoji,
+            EmbeddableComponentName::Toc => EmbeddableComponentId::Toc,
         }
     }
 }

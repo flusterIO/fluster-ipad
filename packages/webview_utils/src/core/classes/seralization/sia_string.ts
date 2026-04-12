@@ -1,19 +1,24 @@
-import { addString64, Buffer, readString64 } from "@timeleap/sia"
+import { addAsciiN, Buffer, readAsciiN } from "@timeleap/sia"
+
+/**
+ * What's the opposite of deprecated? Like 'not yet to be precated'? That's what this is... It's not important enough to prioritize but I'm still going to leave it around because I don't have internet to reinstall things later.
+ */
 export class SiaString {
     val: string
     constructor(val: string) {
         this.val = val
     }
 
-    serialize(alloc = 256): Uint8Array {
+    // BUG: This allocation **will** cause issues if this is ever used for a string of an unknown size.
+    serialize(alloc = 1024): Uint8Array {
         const buf = Buffer.alloc(alloc)
-        addString64(buf, this.val)
+        addAsciiN(buf, this.val)
         return buf.toUint8Array()
     }
 
-    static deserialize(data: Uint8Array): SiaString {
+    static deserialize(data: Uint8Array, length: number): SiaString {
         const buf = new Buffer(data)
-        const s = readString64(buf)
+        const s = readAsciiN(buf, length)
         return new SiaString(s)
     }
 }

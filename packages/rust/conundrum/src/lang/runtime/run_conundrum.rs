@@ -66,6 +66,8 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
                                                    bib: CitationList::default(),
                                                    modifiers: opts.modifiers.clone(),
                                                    eq_count: 0,
+                                                   last_heading_depth: 0,
+                                                   last_heading_tab_depth: 0,
                                                    slugger: Slugger::default() }));
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),

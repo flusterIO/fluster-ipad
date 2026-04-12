@@ -20,6 +20,8 @@ pub fn get_conundrum_input(val: &str, modifiers: Vec<ConundrumModifier>) -> Conu
                                                                bib: CitationList::default(),
                                                                modifiers,
                                                                eq_count: 0,
+                                                               last_heading_depth: 0,
+                                                               last_heading_tab_depth: 0,
                                                                slugger: Slugger::default() })) }
 }
 

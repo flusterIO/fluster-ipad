@@ -100,6 +100,8 @@ pub struct ParseState {
     /// The equation count, for those sweet numbered equations..
     pub eq_count: u32,
     pub slugger: Slugger,
+    pub last_heading_depth: u16,
+    pub last_heading_tab_depth: u16,
 }
 
 impl ParseState {

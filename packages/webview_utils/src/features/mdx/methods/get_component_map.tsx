@@ -25,6 +25,7 @@ import { embeddableTabComponentNames } from "../embeddable_mdx_components/tabs/e
 import { tabGroupComponentNames } from "../embeddable_mdx_components/tabs/tab_group_component_config";
 import { eqRefComponentNames } from "../embeddable_mdx_components/math/equation_reference/equation_reference_config";
 import { emojiComponentNames } from "../embeddable_mdx_components/emoji/emoji_component_config";
+import { tocComponentNames } from "../embeddable_mdx_components/toc/toc_config";
 
 enum ComponentItemType {
     userInserted,
@@ -172,6 +173,13 @@ const items: ComponentMapItem[] = [
         componentType: ComponentItemType.userInserted,
         importComponent: async () => {
             return import("../embeddable_mdx_components/tabs/tab_group_tab").then((a) => a.EmbeddableTab)
+        }
+    },
+    {
+        query: tocComponentNames,
+        componentType: ComponentItemType.userInserted,
+        importComponent: async () => {
+            return import("../embeddable_mdx_components/toc/table_of_contents").then((a) => a.TableOfContents)
         }
     },
     {
