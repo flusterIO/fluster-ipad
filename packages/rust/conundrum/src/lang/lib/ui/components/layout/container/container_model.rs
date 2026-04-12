@@ -22,8 +22,7 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
@@ -69,7 +68,7 @@ impl JsxComponentResult for UtilityContainer {
 </{}>"#,
                    EmbeddableComponentName::UtlityContainer,
                    self.sizable.to_jsx_prop(),
-                   self.emphasis.as_ref().unwrap_or(&Emphasis::Card),
+                   self.emphasis.as_ref().map(|x| x.to_string()).unwrap_or_else(|| String::from("")),
                    self.children.render(res)?,
                    EmbeddableComponentName::UtlityContainer,
         ))
@@ -104,6 +103,6 @@ impl ConundrumComponent for UtilityContainer {
         let emphasis = Emphasis::from_jsx_props(&props, "").ok();
         Ok(UtilityContainer { sizable,
                               emphasis,
-                              children: Children(children.unwrap_or(Vec::new())) })
+                              children: Children(children.unwrap_or_default()) })
     }
 }

@@ -2,26 +2,40 @@ use serde::Serialize;
 
 use crate::{
     lang::{
+        elements::parsed_elements::ParsedElement,
         lib::ui::{
-            components::component_trait::ConundrumComponent, shared_props::sizable::SizablePropsGroup,
-            ui_traits::jsx_prop_representable::FromJsxPropsOptional, ui_types::children::Children,
+            components::{component_trait::ConundrumComponent, layout::grid::grid_column_group::GridColumnGroup},
+            shared_props::sizable::SizablePropsGroup,
+            ui_traits::jsx_prop_representable::FromJsxPropsOptional,
+            ui_types::children::Children,
         },
-        runtime::traits::{
-            fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+        runtime::{
+            state::conundrum_error_variant::ConundrumModalResult,
+            traits::{
+                fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
+    parsers::conundrum::logic::{number::conundrum_int::ConundrumInt, object::object::ConundrumObject},
 };
+
+#[typeshare::typeshare]
+#[derive(Serialize, Debug, Clone)]
+pub enum GridColumnProps {
+    ByColumn(GridColumnGroup),
+    Generalized(ConundrumInt),
+}
 
 #[typeshare::typeshare]
 #[derive(Serialize, Debug, Clone)]
 pub struct ResponsiveGrid {
     pub sizable: Option<SizablePropsGroup>,
+    pub columns: Option<GridColumnProps>,
     pub children: Children,
 }
 
@@ -84,13 +98,22 @@ impl ConundrumComponent for ResponsiveGrid {
         AnyComponentName::UserEmbedded(EmbeddableComponentName::Grid)
     }
 
-    fn from_props(props: crate::parsers::conundrum::logic::object::object::ConundrumObject,
-                  children: Option<Vec<crate::lang::elements::parsed_elements::ParsedElement>>)
-                  -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<Self>
+    fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self>
         where Self: Sized {
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
         let children = Children(children.unwrap_or_default());
+        let columns = match ConundrumInt::from_jsx_props(&props, "columns") {
+            Ok(n) => Some(GridColumnProps::Generalized(n)),
+            Err(e) => {
+                if let Ok(col_group) = GridColumnGroup::from_jsx_props(&props, "") {
+                    Some(GridColumnProps::ByColumn(col_group))
+                } else {
+                    None
+                }
+            }
+        };
         Ok(ResponsiveGrid { sizable,
+                            columns,
                             children })
     }
 }

@@ -20,6 +20,26 @@ impl From<Range<usize>> for DocumentSpan {
 }
 
 #[typeshare::typeshare]
+#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Clone, strum_macros::Display)]
+pub enum ConundrumErrorPurpose {
+    #[serde(rename = "info")]
+    #[strum(to_string = "info")]
+    Info,
+    #[serde(rename = "warn")]
+    #[strum(to_string = "warn")]
+    Warn,
+    #[serde(rename = "suggestion")]
+    #[strum(to_string = "suggestion")]
+    Suggest,
+    #[serde(rename = "syntax")]
+    #[strum(to_string = "syntax")]
+    SyntaxError,
+    #[serde(rename = "config")]
+    #[strum(to_string = "config")]
+    ConfigurationBug,
+}
+
+#[typeshare::typeshare]
 #[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone)]
 pub struct ConundrumError {
     /// A required message displayed in a toast or card header. Can contain
@@ -29,6 +49,15 @@ pub struct ConundrumError {
     /// Details is an optional conundrum string offering a more thorough
     /// explanation to the user if one can be generated.
     pub details: Option<String>,
+
+    /// An indicator that can be used when the warning UI is implemented to show
+    /// user's errors that allowed their notes to still compile. There's
+    /// lot's of useful information that can be gathered from these errors,
+    /// inclduding property suggestions & more.
+    ///
+    /// Making it optional for now because I'm too lazy to go back and rewrite
+    /// all of the errors.
+    pub purpose: Option<ConundrumErrorPurpose>,
 }
 
 impl Display for ConundrumError {
@@ -48,7 +77,8 @@ impl ConundrumError {
         let span = error.char_span();
         Self { msg: message,
                pos: Some(DocumentSpan::from(span)),
-               details: None }
+               details: None,
+               purpose: None }
     }
 }
 
@@ -60,6 +90,7 @@ impl From<ErrMode<ContextError>> for ConundrumError {
 Error"
                               .to_string(),
                          pos: None,
+                         purpose: None,
                          details: Some(value.to_string()) }
     }
 }
@@ -70,6 +101,7 @@ impl From<ParseError<&str, ContextError>> for ConundrumError {
 Error"
                               .to_string(),
                          pos: None,
+                         purpose: None,
                          details: Some(value.to_string()) }
     }
 }
@@ -78,12 +110,14 @@ impl ConundrumError {
     pub fn from_msg_and_details(msg: &str, details: &str) -> Self {
         ConundrumError { msg: msg.to_string(),
                          pos: None,
+                         purpose: None,
                          details: Some(details.to_string()) }
     }
 
     pub fn from_message(msg: &str) -> Self {
         ConundrumError { msg: msg.to_string(),
                          pos: None,
+                         purpose: None,
                          details: None }
     }
 }
