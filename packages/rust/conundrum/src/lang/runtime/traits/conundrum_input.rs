@@ -1,4 +1,4 @@
-use std::cell::RefCell;
+use std::{cell::RefCell, sync::Arc};
 
 use winnow::Stateful;
 
@@ -11,18 +11,19 @@ use crate::{
     parsers::markdown::heading_sluggger::Slugger,
 };
 
-pub type ConundrumInput<'a> = Stateful<&'a str, RefCell<ParseState>>;
+pub type ConundrumInput<'a> = Stateful<&'a str, Arc<RefCell<ParseState>>>;
 
 pub fn get_conundrum_input(val: &str, modifiers: Vec<ConundrumModifier>) -> ConundrumInput {
     ConundrumInput { input: val,
-                     state: RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(val),
-                                                      bib: CitationList::default(),
-                                                      modifiers,
-                                                      eq_count: 0,
-                                                      slugger: Slugger::default() }) }
+                     state: Arc::new(RefCell::new(ParseState { data:
+                                                                   MdxParsingResult::from_initial_mdx_content(val),
+                                                               bib: CitationList::default(),
+                                                               modifiers,
+                                                               eq_count: 0,
+                                                               slugger: Slugger::default() })) }
 }
 
-pub fn duplicate_conundrum_input(new_value: &str, state: RefCell<ParseState>) -> ConundrumInput {
+pub fn duplicate_conundrum_input(new_value: &str, state: Arc<RefCell<ParseState>>) -> ConundrumInput {
     ConundrumInput { input: new_value,
                      state }
 }

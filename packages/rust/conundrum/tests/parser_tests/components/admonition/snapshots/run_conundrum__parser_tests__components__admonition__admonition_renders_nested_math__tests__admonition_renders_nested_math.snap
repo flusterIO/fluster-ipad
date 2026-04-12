@@ -1,0 +1,15 @@
+---
+source: packages/rust/conundrum/tests/parser_tests/components/admonition/admonition_renders_nested_math.rs
+expression: res.content
+---
+
+<AutoInsertedHeading depth={1} id="my-title" subtitle={<>Lorem ipsum, I don't remember the poem..</>} >My title</AutoInsertedHeading>
+
+<AutoInsertedMathBlock data={{"display":true,"idx":0,"id":null,"content":"\n\\Delta T = m\n"}} />
+
+
+<Admonition title={<>My admonition</>} >
+
+  <AutoInsertedMathBlock data={{"display":true,"idx":1,"id":null,"content":"\n  e=mc^2\n  "}} />
+
+</Admonition>

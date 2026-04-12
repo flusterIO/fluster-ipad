@@ -1,3 +1,5 @@
+use std::{cell::RefCell, sync::Arc};
+
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
@@ -12,10 +14,7 @@ use crate::{
     lang::runtime::{
         parse_conundrum_string::parse_elements,
         state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
-        traits::{
-            conundrum_input::{ConundrumInput, duplicate_conundrum_input, get_conundrum_input},
-            fluster_component_result::ConundrumComponentResult,
-        },
+        traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
     },
     output::general::component_constants::any_component_id::AnyComponentName,
     parsers::{
@@ -112,7 +111,13 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
     // let mut state = input.state.borrow_mut();
     // let mut new_input: Stateful<&str, RefCell<ParseState>> =
     //     get_conundrum_input(children_string, state.modifiers.clone());
-    let mut new_input = duplicate_conundrum_input(children_string, input.state.clone());
+    // let mut new_input = duplicate_conundrum_input(children_string,
+    // input.state.clone());
+    //
+    let rc = Arc::clone(&input.state);
+
+    let mut new_input = ConundrumInput { input: children_string,
+                                         state: rc };
     let children = parse_elements(&mut new_input)?;
 
     let mut state = input.state.borrow_mut();

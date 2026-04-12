@@ -1,4 +1,4 @@
-use std::cell::RefCell;
+use std::{cell::RefCell, sync::Arc};
 
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
@@ -62,11 +62,11 @@ impl ParseConundrumOptions {
 pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
     // let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
     // result.note_id = opts.note_id.clone();
-    let state = RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
-                                          bib: CitationList::default(),
-                                          modifiers: opts.modifiers.clone(),
-                                          eq_count: 0,
-                                          slugger: Slugger::default() });
+    let state = Arc::new(RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
+                                                   bib: CitationList::default(),
+                                                   modifiers: opts.modifiers.clone(),
+                                                   eq_count: 0,
+                                                   slugger: Slugger::default() }));
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),
                                         state };

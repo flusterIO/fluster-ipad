@@ -1,7 +1,5 @@
-use std::cell::RefCell;
-
 use serde::Serialize;
-use winnow::{Parser, Stateful, combinator::alt, token::take_until};
+use winnow::{Parser, combinator::alt, token::take_until};
 
 use crate::{
     lang::{
@@ -60,7 +58,7 @@ impl MarkdownParagraphResult {
     fn parse_input_string<'a>(input: &'a mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownParagraphResult> {
         let res = alt((take_until(1.., "```"), take_until(1.., "\n\n"))).parse_next(input)?;
         let state = input.state.borrow_mut();
-        let mut new_input: Stateful<&str, RefCell<ParseState>> = get_conundrum_input(res, state.modifiers.clone());
+        let mut new_input = get_conundrum_input(res, state.modifiers.clone());
         let children = parse_elements(&mut new_input)?;
         // apply_nested_parser_state(input, &new_input);
         Ok(MarkdownParagraphResult { children })

@@ -1,4 +1,4 @@
-use std::cell::RefCell;
+use std::{cell::RefCell, sync::Arc};
 
 use serde::Serialize;
 use winnow::{
@@ -109,9 +109,8 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
                 // Join stripped lines then recursively parse the inner content
                 // so math, citations, nested block quotes, etc. are recognised.
                 let inner_src = lines.join("\n");
-                let mut new_state: Stateful<&str, RefCell<ParseState>> =
-                    ConundrumInput { input: &inner_src,
-                                     state: RefCell::new(ParseState::default()) };
+                let mut new_state = ConundrumInput { input: &inner_src,
+                                                     state: Arc::new(RefCell::new(ParseState::default())) };
 
                 let new_parsed_content =
                     parse_elements(&mut new_state).unwrap_or_else(|_| vec![ParsedElement::Text(inner_src.clone())]);

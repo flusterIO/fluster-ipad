@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
-use std::cell::RefCell;
 use winnow::{
-    Parser, Stateful,
+    Parser,
     ascii::{multispace0, space1, till_line_ending},
     combinator::{alt, delimited, opt, preceded, repeat},
     error::ErrMode,
@@ -153,7 +152,7 @@ pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumModalResult
 
     let state = input.state.borrow();
 
-    let mut new_input: Stateful<&str, RefCell<ParseState>> = get_conundrum_input(content, state.modifiers.clone());
+    let mut new_input = get_conundrum_input(content, state.modifiers.clone());
     let children = parse_elements(&mut new_input)?;
     Ok(children)
 }
@@ -195,8 +194,7 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
 
         let mut state = input.state.borrow_mut();
 
-        let mut new_input: Stateful<&str, RefCell<ParseState>> =
-            get_conundrum_input(content_string.as_str(), state.modifiers.clone());
+        let mut new_input = get_conundrum_input(content_string.as_str(), state.modifiers.clone());
         let children = parse_elements(&mut new_input)?;
 
         Ok(MarkdownHeadingResult { depth: level.len() as u16,
