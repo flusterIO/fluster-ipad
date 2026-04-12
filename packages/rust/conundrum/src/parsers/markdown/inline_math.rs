@@ -1,6 +1,6 @@
 use serde::Serialize;
 use typeshare::typeshare;
-use winnow::{Parser, combinator::delimited, error::ErrMode, token::take_till};
+use winnow::{Parser, combinator::delimited, error::ErrMode, stream::AsChar, token::take_till};
 
 use crate::{
     lang::{
@@ -89,7 +89,7 @@ impl MdxComponentResult for InlineMathResult {
 
 impl ConundrumParser<InlineMathResult> for InlineMathResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<InlineMathResult> {
-        let body = delimited('$', take_till(1.., |c: char| c == '$'), '$').parse_next(input)?;
+        let body = delimited('$', take_till(1.., |c: char| c == '$' || AsChar::is_newline(c)), '$').parse_next(input)?;
         Ok(InlineMathResult { body: ConundrumString(body.to_string()) })
     }
 

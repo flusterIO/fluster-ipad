@@ -1,0 +1,48 @@
+---
+source: packages/rust/conundrum/tests/parser_tests/math/inline_math.rs
+assertion_line: 67
+expression: res.content
+---
+
+1. Parse all content <span className="italic">linearly</span>. Don't worry about multi-threading during the parsing phase.
+    - All state must be set during the parsing phase.
+2. The compilation phase can then be multi-threaded, using a Rayon iterator to take $advantage$ of the entire system.
+
+<Hr><Emoji name="heart" smedium ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#DD2E44" d="M35.885 11.833c0-5.45-4.418-9.868-9.867-9.868-3.308 0-6.227 1.633-8.018 4.129-1.791-2.496-4.71-4.129-8.017-4.129-5.45 0-9.868 4.417-9.868 9.868 0 .772.098 1.52.266 2.241C1.751 22.587 11.216 31.568 18 34.034c6.783-2.466 16.249-11.447 17.617-19.959.17-.721.268-1.469.268-2.242z"/></svg></Emoji></Hr>
+
+<AutoInsertedMathBlock data={{"display":true,"idx":0,"id":null,"content":"\ne=mc^2\n"}} />
+
+<Admonition title={<>My admonition</>} foldable >
+
+
+<AutoInsertedMathBlock data={{"display":true,"idx":1,"id":null,"content":"\ne=mc^2\n"}} />
+
+
+</Admonition>
+
+<AutoInsertedMathBlock data={{"display":true,"idx":2,"id":null,"content":"\ne=mc^2\n"}} />
+
+
+<AutoInsertedMathBlock data={{"display":true,"idx":3,"id":null,"content":"\ne=mc^2\n"}} />
+
+
+<Tabs> 
+    <Tab label={<>Tab 1</>} labelString="Tab 1">
+
+        <AutoInsertedMathBlock data={{"display":true,"idx":4,"id":null,"content":"\n      e=mc^2\n      "}} />
+    
+</Tab>
+    <Tab label={<>Tab Label 2</>} labelString="Tab Label 2">
+
+        <AutoInsertedMathBlock data={{"display":true,"idx":5,"id":null,"content":"\n      e=mc^2\n      "}} />
+    
+</Tab>
+    <Tab label={<>Tab Label 3</>} labelString="Tab Label 3">
+
+        <AutoInsertedMathBlock data={{"display":true,"idx":6,"id":null,"content":"\n      e=mc^2\n      "}} />
+    
+</Tab>
+</Tabs>
+
+
+        <AutoInsertedMathBlock data={{"display":true,"idx":7,"id":null,"content":"\n      e=mc^2\n      "}} />

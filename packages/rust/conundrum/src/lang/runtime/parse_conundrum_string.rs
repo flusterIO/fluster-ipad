@@ -130,6 +130,11 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
+                "\\" => |x: &mut ConundrumInput<'a>| {
+                    (take(1usize).void(),take(1usize)).map(|(_, c): (_, &str)| {
+                        ParsedElement::Text(c.to_string())
+                    }).parse_next(x)
+                },
                 _ => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
