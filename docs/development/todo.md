@@ -2,23 +2,10 @@
 
 ## Remainder of Today
 
-- [x] Handle parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST.
-- [x] Implement equation tag components.
-- [x] Move on to code block parsing issue with nested italics.
-- [x] Handle bugs with bold, italic and bold-italic text parsing now that everything has been moved to `Children`.
-- [x] Work on integrating new emoji crate directly into the transpiler.
-  - [x] Move `ComponentMap` to `DashMap<String, ...>` to allow for including other components that won't have documentation.
-  - [x] Add full `sizable` props back to emoji component for positioning.
-  - [x] Enable the nested documentation in the emoji docs.
-- [x] Enable click-to-scroll functionality for equations if the id is present.
-- [x] Fix syntax docs... they're completely fucking broken... (likely arising from the `-- title="my_title"` syntax. It's failing elsehwere too.)
-  - [x] Double check Tabs docs too, as the nested components aren't rendering since the docs aren't being rendered as Children. Move away from pre-parsing the docs as a whole anyways to support multiple outputs, not just jsx in the future.
-- [x] Fix bug with nested equations being numbered improperly. You'll probably need to move the `ParseState` from a `RefCell` to a `Mutex`... fuck my life.
-  - Working on the downstream, but the parent state remains unaffected. Create a parent state equation, a nested state equation and another parent state equation to see.
-- [x] Handle math block escapability so `$` can be used in the user's regular note content reliably.
-- [x] Fix issue with heading parser creating nested headings when they should be at the same depth.
-- [ ] Handle blog page on website and first blog post announcing the launch of Fluster!
+- [ ] Handle new images on blog post.
 - [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
+- [ ] Handle bug requiring details page to be refreshed on Mac.
+- [ ] Work on integrating typst support! That's a **major** value add that can actually be handled offline, and in time to release!
 - [ ] Move over rest of components below:
 
 ### Components that need to move over still

@@ -22,6 +22,7 @@ pub fn get_conundrum_input(val: &str, modifiers: Vec<ConundrumModifier>) -> Conu
                                                                eq_count: 0,
                                                                last_heading_depth: 0,
                                                                last_heading_tab_depth: 0,
+                                                               valid_footnote_indices: Vec::new(),
                                                                slugger: Slugger::default() })) }
 }
 

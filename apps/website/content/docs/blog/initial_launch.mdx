@@ -20,7 +20,22 @@ To accomplish this, Fluster gradually turned to what I'm calling _Conundrum_, a 
 While Conundrum is a large part of what makes Fluster unique, it's not it's only input method! Fluster keeps your hand drawn sketches right next to your typed notes. This allows users to provide AI with the type of content it consumes best (regular, plain-old markdown transpiled by Conundrum) while allowing for the input method that the user finds most fitting in non-AI or text related workflows.
 
 
-![Fluster also supports hand-drawn sketches](/assets/images/mockups/ipad/mockups/paper.png)
+<ImageCarousel 
+    images={[
+    {
+        image: "/assets/images/mockups/ipad/mockups/paper.png",
+        id: "blog-img-1",
+        alt: "Fluster supports hand drawn notes on both iPad and Mac",
+        title: "iPad Paper"
+    },
+    {
+         image: "/assets/images/mockups/mac/mockups/mac_hand_drawn-front.png",
+        id: "blog-img-2",
+        alt: "Fluster supports hand-drawn notes on the Mac as well!",
+        title: "Mac Paper"
+    }
+    ]}
+/>
 
 Thanks to Apple's amazing `PaperKit`, users will have access to the same drawing tools they're used to throughout the rest of their applications, supported on both Mac and iPad (and eventually iPhone, whenever that app comes around). Support for annotating PDF's with the ability to link them to your citations is on it's way shortly, as well as integration with the rest of the Apple ecosystem (think about being able to embed events from your calendar directly in your note or similar).
 
@@ -51,7 +66,29 @@ Well, because you need more from your note taking application. Fluster was built
 
 If you're worried about the learning curve, don't be! Fluster includes it's own set of embedded documentation available directly in the application! Inspired by some of my best workflow setups that I had during my time pursuing this model, I wanted to bring that experience to the non-developer through Fluster, so all you have to do is type `Docs??` for a list of all documentation commands, or use the same syntax with **any** component! Below is an example of this syntax with the `Card` component.
 
-![Fluster includes it's own set of embedded documentation](/assets/images/mockups/mac/mockups/mac_docs_example-front.png)
+
+<ImageCarousel 
+images={[
+    {
+    image: "/assets/images/mockups/mac/mockups/mac_docs_example-front.png",
+    id: "blog-img-4",
+   alt: "An example of Fluster's built-in documentation, in this case for the Card component.",
+   title: "Embedded Documentation"
+    },
+   {
+    image: "/assets/images/mockups/mac/mockups/emoji_docs-front.png",
+    id: "blog-img-5",
+    alt: "The included documentation is completely interactive, with a full emoji search panel with over 2,000 options!",
+title: "Interactive Documentation"
+    },
+    {
+    image: "/assets/images/mockups/mac/mockups/mac_every_component-front.png",
+    id: "blog-img-6",
+    alt: "Conundrum documents every component",
+    title: "Interactive Documentation"
+    },
+]}
+/>
 
 
 #### Helpful Features

@@ -1051,12 +1051,14 @@ dependencies = [
  "anyhow",
  "askama 0.15.6",
  "askama_derive 0.15.6",
+ "bytemuck",
  "cargo-doc-md",
  "cli-table",
  "criterion",
  "crossbeam",
  "css-color",
  "dashmap 6.1.0",
+ "derive_more",
  "emoji",
  "flatbuffers",
  "fluster_core_utilities",
@@ -1070,6 +1072,7 @@ dependencies = [
  "maud",
  "miette",
  "molc",
+ "num-bigint",
  "num-format",
  "once_cell",
  "parking_lot",
@@ -1800,6 +1803,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d751e9e49156b02b44f9c1815bcb94b984cdcc4396ecc32521c739452808b134"
 dependencies = [
  "derive_more-impl",
+ "rustc_version",
 ]
 
 [[package]]
@@ -4660,8 +4664,10 @@ version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9"
 dependencies = [
+ "arbitrary",
  "num-integer",
  "num-traits",
+ "quickcheck",
  "rand 0.8.5",
  "serde",
 ]
@@ -5600,6 +5606,15 @@ checksum = "b66c2058c55a409d601666cffe35f04333cf1013010882cec174a7467cd4e21c"
 dependencies = [
  "memchr",
  "serde",
+]
+
+[[package]]
+name = "quickcheck"
+version = "1.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "588f6378e4dd99458b60ec275b4477add41ce4fa9f64dcba6f15adccb19b50d6"
+dependencies = [
+ "rand 0.8.5",
 ]
 
 [[package]]

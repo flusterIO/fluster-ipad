@@ -50,6 +50,9 @@ serde-wasm-bindgen = "0.6.5"
 css-color = "0.2.8"
 tsify = { version = "0.5.6", features = ["js"] }
 parking_lot = { version = "0.12.5", features = ["serde", "arc_lock", "owning_ref", "deadlock_detection"] }
+derive_more = { version = "2.1.1", features = ["deref", "deref_mut", "from", "from_str", "is_variant", "testing-helpers"] }
+bytemuck = { version = "1.25.0", features = ["derive"] }
+num-bigint = { version = "0.4.6", features = ["arbitrary", "quickcheck", "rand", "serde"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

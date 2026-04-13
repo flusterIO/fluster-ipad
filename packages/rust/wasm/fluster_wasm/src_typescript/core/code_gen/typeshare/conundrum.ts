@@ -409,6 +409,19 @@ export interface EquationReference {
 	emphasis?: Emphasis;
 }
 
+/**
+ * The `[^1]` syntax that goes in the markdown content, _not_ the footnote that
+ * goes in the footer.
+ */
+export interface FootNoteAnchor {
+	idx: ConundrumInt;
+}
+
+export interface FootNoteFooter {
+	idx: number;
+	content: Children;
+}
+
 export interface FrontMatterResult {
 	ignored_parsers: string[];
 	title?: string;

@@ -68,6 +68,7 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
                                                    eq_count: 0,
                                                    last_heading_depth: 0,
                                                    last_heading_tab_depth: 0,
+                                                   valid_footnote_indices: Vec::new(),
                                                    slugger: Slugger::default() }));
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),

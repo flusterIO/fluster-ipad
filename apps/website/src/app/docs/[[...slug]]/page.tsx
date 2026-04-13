@@ -9,6 +9,7 @@ import {
 import { notFound } from "next/navigation";
 import { Admonition, Ul, Hl, AutoInsertedHeading, Hr } from "./client_mdx";
 import { BlogHero } from "../../../features/blog/hero/blog_hero";
+import { IPadCarousel } from "#/features/landing_page/sections/ipad_section/ipad_screenshot_carousel/carousel";
 
 export default async function Page(props: {
     params: Promise<{ slug?: string[] }>;
@@ -32,6 +33,7 @@ export default async function Page(props: {
                         AutoInsertedHeading,
                         BlogHero,
                         Hr,
+                        ImageCarousel: IPadCarousel,
                     })}
                 />
             </DocsBody>

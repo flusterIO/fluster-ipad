@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useRef, useState, type ReactNode } from "react";
 import { animate, motion, useMotionValue } from "framer-motion";
 import image1 from "../../../../../../public/assets/images/mockups/ipad/mockups/welcome_splitview.png";
@@ -9,18 +10,19 @@ import image6 from "../../../../../../public/assets/images/mockups/ipad/mockups/
 import image7 from "../../../../../../public/assets/images/mockups/mac/mockups/mac_editor-front.png";
 import image8 from "../../../../../../public/assets/images/mockups/mac/mockups/mac_docs_example-front.png";
 import image9 from "../../../../../../public/assets/images/mockups/mac/mockups/mac_dashboard-front.png";
-import Image, { StaticImageData } from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { LiquidGlassCard } from "../liquid_glass_card";
 
-interface CarouselProps {
-    breakpoints?: Record<number, { slidesToShow: number }>;
-}
 
 interface ImageData {
     image: StaticImageData;
     id: string;
     title: string;
     alt: string;
+}
+interface CarouselProps {
+    breakpoints?: Record<number, { slidesToShow: number }>;
+    images: ImageData[]
 }
 
 export const IPadCarousel = ({
@@ -29,8 +31,7 @@ export const IPadCarousel = ({
         768: { slidesToShow: 1 },
         1024: { slidesToShow: 1 },
     },
-}: CarouselProps): ReactNode => {
-    const items: ImageData[] = [
+    images = [
         {
             image: image7,
             id: "img-7",
@@ -85,7 +86,8 @@ export const IPadCarousel = ({
             title: "MacOS Dashboard",
             alt: "Both the MacOS and iPad application have their own varient of a dashboard for the user to use as the home for all of their notes.",
         },
-    ];
+    ]
+}: CarouselProps): ReactNode => {
     const [index, setIndex] = useState(0);
     const [slidesToShow, setSlidesToShow] = useState(1);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -110,7 +112,7 @@ export const IPadCarousel = ({
 
         updateSlidesToShow();
         window.addEventListener("resize", updateSlidesToShow);
-        return () => window.removeEventListener("resize", updateSlidesToShow);
+        return () => { window.removeEventListener("resize", updateSlidesToShow); };
     }, [breakpoints]);
 
     useEffect(() => {
@@ -129,20 +131,20 @@ export const IPadCarousel = ({
 
     // Reset index if it exceeds max when resizing
     useEffect(() => {
-        const maxIndex = Math.max(0, items.length - slidesToShow);
+        const maxIndex = Math.max(0, images.length - slidesToShow);
         if (index > maxIndex) {
             setIndex(maxIndex);
         }
     }, [slidesToShow, index]);
 
-    const maxIndex = Math.max(0, items.length - slidesToShow);
+    const maxIndex = Math.max(0, images.length - slidesToShow);
 
     return (
         <div className="w-full lg:p-10 sm:p-4 p-2 flex flex-col justify-center items-center">
             <div className="flex flex-col gap-3 w-[min(640px,90vw)]">
                 <div className="relative overflow-hidden rounded-lg" ref={containerRef}>
                     <motion.div className="flex flex-row" style={{ x }}>
-                        {items.map((item) => (
+                        {images.map((item) => (
                             <div
                                 key={item.id}
                                 className="relative shrink-0 h-[min(768px,80vh)] w-[min(640px,90vw)] rounded-lg overflow-hidden relative flex flex-col justify-center items-center"
@@ -160,7 +162,7 @@ export const IPadCarousel = ({
                     {/* Navigation Buttons */}
                     <motion.button
                         disabled={index === 0}
-                        onClick={() => setIndex((i) => Math.max(0, i - 1))}
+                        onClick={() => { setIndex((i) => Math.max(0, i - 1)); }}
                         className={`absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform z-10
               ${index === 0
                                 ? "bg-muted bg-gray-300"
@@ -191,7 +193,7 @@ export const IPadCarousel = ({
 
                     <motion.button
                         disabled={index === maxIndex}
-                        onClick={() => setIndex((i) => Math.min(maxIndex, i + 1))}
+                        onClick={() => { setIndex((i) => Math.min(maxIndex, i + 1)); }}
                         className={`absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform z-10
               ${index === maxIndex
                                 ? "bg-muted bg-gray-300"
@@ -220,7 +222,7 @@ export const IPadCarousel = ({
                         </svg>
                     </motion.button>
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                        {items.map((_, i) => (
+                        {images.map((_, i) => (
                             <LiquidGlassCard
                                 glowIntensity={i === index ? "lg" : "sm"}
                                 shadowIntensity="sm"
@@ -228,7 +230,7 @@ export const IPadCarousel = ({
                                 blurIntensity="lg"
                                 draggable={false}
                                 key={`pos-indc-${i}`}
-                                onClick={() => setIndex(i)}
+                                onClick={() => { setIndex(i); }}
                                 className={`h-2 rounded-full transition-all bg-muted  cursor-pointer ${i === index ? "w-8" : "w-2"}`}
                             />
                         ))}
