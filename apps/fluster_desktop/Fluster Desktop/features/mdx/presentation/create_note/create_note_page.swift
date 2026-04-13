@@ -133,16 +133,19 @@ struct CreateNotePage: View {
                     let topic = existingTopic ?? TopicModel(value: topicText)
                     item.topic = topic
                   }
-                  modelContext.insert(item)
-                  do {
-                    try modelContext.save()
-                    titleText = ""
-                    subjectText = ""
-                    topicText = ""
-                    appState.mainView = .dashboard
-                  } catch {
-                    print("Error creating note: \(error.localizedDescription)")
-                  }
+                    Task {
+                        do {
+                            try await item.preParse(modelContext: modelContext)
+                            modelContext.insert(item)
+                            try modelContext.save()
+                            titleText = ""
+                            subjectText = ""
+                            topicText = ""
+                            appState.mainView = .dashboard
+                        } catch {
+                            print("Error creating note: \(error.localizedDescription)")
+                        }
+                    }
                 }
               },
               label: {

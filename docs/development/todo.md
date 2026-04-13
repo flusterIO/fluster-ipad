@@ -2,11 +2,14 @@
 
 ## Remainder of Today
 
-- [ ] Handle new images on blog post.
-- [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
+- [x] Handle new images on blog post.
 - [ ] Handle bug requiring details page to be refreshed on Mac.
 - [ ] Work on integrating typst support! That's a **major** value add that can actually be handled offline, and in time to release!
+- [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
 - [ ] Move over rest of components below:
+- [ ] Work on remaining parsers
+
+---
 
 ### Components that need to move over still
 

@@ -118,7 +118,6 @@ struct NoteDetailWebview: View {
   }
 
   func handleCitationClick(citationKey: String) {
-      print("Citation Id: \(citationKey)")
     var descriptor = FetchDescriptor<BibEntryModel>(
       predicate: #Predicate<BibEntryModel> { entry in
         entry.citationKey == citationKey
@@ -146,7 +145,7 @@ struct NoteDetailWebview: View {
         self.handleTopicClick(topicValue: msgBody as! String)
       case NoteDetailWebviewActions.onSubjectClick.rawValue:
         self.handleSubjectClick(subjectValue: msgBody as! String)
-    case MdxPreviewWebviewActions.onCitationClick.rawValue:
+      case MdxPreviewWebviewActions.onCitationClick.rawValue:
         self.handleCitationClick(citationKey: msgBody as! String)
       default:
         return
@@ -173,10 +172,17 @@ struct NoteDetailWebview: View {
         return EditorTag(body: t.value)
       }
 
+      do { // Keep this in a separate loop to allow failing while still setting state.
+        try await en.preParse(modelContext: modelContext)
+      } catch {
+        print("Parsing error: \(error.localizedDescription)")
+      }
+
       do {
         try await EditorState.setNoteDetails(
           payload: NoteDetailState(
-            note_id: en.id, title: en.getPreferedTitle(), summary: en.frontMatter.summary?.toSummaryState(),
+            note_id: en.id, title: en.getPreferedTitle(),
+            summary: en.frontMatter.summary?.toSummaryState(),
             topic: en.topic?.value, subject: en.subject?.value, tags: tags, citations: citations,
             last_modified_string: lastModified, last_read_string: lastRead),
           eval: self.webView.evaluateJavaScript
