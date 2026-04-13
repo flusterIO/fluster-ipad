@@ -85,7 +85,7 @@ const InlineTocItem = ({ item, nested, initiallyExpanded, tocGroupId }: { tocGro
                     <InlineMdxContent
                         onClick={handleItemClick}
                         mdx={item.content}
-                        className="opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                        className="w-full z-1 opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                     />
                 </div>
                 <motion.div

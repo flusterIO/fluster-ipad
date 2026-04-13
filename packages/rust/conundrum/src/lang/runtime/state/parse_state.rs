@@ -102,6 +102,9 @@ pub struct ParseState {
     pub slugger: Slugger,
     pub last_heading_depth: u16,
     pub last_heading_tab_depth: u16,
+    /// A list of footnote indices that is appended to during parsing, and then
+    /// validated against during compilation.
+    pub valid_footnote_indices: Vec<u32>,
 }
 
 impl ParseState {

@@ -313,6 +313,8 @@ extension AppSchemaV1 {
       let note = NoteModel(
         markdown: MarkdownNote(body: noteBody)
       )
+      note.markdown.requiresPlainTextUpdate = true
+      note.markdown.isEdited = true
       return note
     }
     public func applyMdxParsingResults(
@@ -493,7 +495,8 @@ extension AppSchemaV1 {
       let _body = self.markdown.body
       let task: Task<MdxParsingResult?, any Error> = try await Task.detached {
         let res = try await ConundrumSwift.runConundrum(
-          options: ParseConundrumOptions(noteId: _id, content: _body, modifiers: [], hideComponents: []))
+          options: ParseConundrumOptions(
+            noteId: _id, content: _body, modifiers: [], hideComponents: []))
         return res
       }
 
@@ -694,7 +697,7 @@ extension AppSchemaV1 {
       self.lastRender = lastRender
     }
   }
-    
+
   @Model
   public final class BibEntryModel: Identifiable {
     @Attribute(.unique) public var id: String
@@ -993,11 +996,13 @@ extension AppSchemaV1 {
     @MainActor
     public func parsePlainText(noteId: String) async throws {
       let res = try await ConundrumSwift.runConundrum(
-        options: ParseConundrumOptions(noteId: noteId, content: self._body, modifiers: [.forcePlainText], hideComponents: []))
+        options: ParseConundrumOptions(
+          noteId: noteId, content: self._body, modifiers: [.forcePlainText], hideComponents: []))
       self.plainText = res.content
       if let title = self.title {
         let titleResponse = try await ConundrumSwift.runConundrum(
-          options: ParseConundrumOptions(noteId: noteId, content: title, modifiers: [.forcePlainText], hideComponents: []))
+          options: ParseConundrumOptions(
+            noteId: noteId, content: title, modifiers: [.forcePlainText], hideComponents: []))
         if titleResponse.content != title {
           self.titlePlainText = titleResponse.content
         } else {

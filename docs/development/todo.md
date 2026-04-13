@@ -18,6 +18,7 @@
 - [x] Handle math block escapability so `$` can be used in the user's regular note content reliably.
 - [x] Fix issue with heading parser creating nested headings when they should be at the same depth.
 - [ ] Handle blog page on website and first blog post announcing the launch of Fluster!
+- [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
 - [ ] Move over rest of components below:
 
 ### Components that need to move over still
@@ -41,6 +42,7 @@
 - [ ] Escapable math blocks.
 - [ ] Escapable strings
 - [ ] Paragraphs (reimplemented)
+- [ ] `[My link](myId@10:30:00)` timestamp link syntax.
 
 ---
 
