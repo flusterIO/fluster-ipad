@@ -156,7 +156,7 @@ struct MdxEditorWebview: View {
           // when the next change event is fired.
           if let en = editingNote {
             do {
-              try await en.preParseIfEdited(modelContext: modelContext)
+              try await en.preParse(modelContext: modelContext)
             } catch {
               print("Error here: \(error.localizedDescription)")
               if editorSaveMethod == .onChange {

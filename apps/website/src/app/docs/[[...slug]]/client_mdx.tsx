@@ -16,4 +16,22 @@ const Ul = dynamic(() => import("@fluster/webview_utils").then((a) => a.Ul), {
     ssr: false,
 });
 
-export { Admonition, Ul, Hl };
+const AutoInsertedHeading = dynamic(
+    () => import("@fluster/webview_utils").then((a) => a.AutoInsertedHeading),
+    {
+        ssr: false,
+    },
+);
+
+const Hr = dynamic(
+    () => {
+        return import("@fluster/webview_utils").then(
+            (a) => a.EmbeddedHrWithChildren,
+        );
+    },
+    {
+        ssr: false,
+    },
+);
+
+export { Admonition, Ul, Hl, AutoInsertedHeading, Hr };

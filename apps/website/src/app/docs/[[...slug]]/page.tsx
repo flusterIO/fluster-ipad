@@ -7,7 +7,8 @@ import {
     DocsTitle,
 } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
-import { Admonition, Ul, Hl } from "./client_mdx";
+import { Admonition, Ul, Hl, AutoInsertedHeading, Hr } from "./client_mdx";
+import { BlogHero } from "../../../features/blog/hero/blog_hero";
 
 export default async function Page(props: {
     params: Promise<{ slug?: string[] }>;
@@ -28,6 +29,9 @@ export default async function Page(props: {
                         Admonition,
                         Ul,
                         Hl,
+                        AutoInsertedHeading,
+                        BlogHero,
+                        Hr,
                     })}
                 />
             </DocsBody>

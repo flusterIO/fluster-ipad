@@ -85,7 +85,7 @@ const InlineTocItem = ({ item, nested, initiallyExpanded, tocGroupId }: { tocGro
                     <InlineMdxContent
                         onClick={handleItemClick}
                         mdx={item.content}
-                        className="opacity-80 hover:opacity-100 transition-opacity duration-300"
+                        className="opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                     />
                 </div>
                 <motion.div
@@ -120,7 +120,7 @@ const InlineTocItem = ({ item, nested, initiallyExpanded, tocGroupId }: { tocGro
             }}
             onClick={handleItemClick}
             mdx={item.content}
-            className="py-1 w-full text-fd-card-foreground/80 hover:text-fd-card-foreground transition-colors duration-300 opacity-80 hover:opacity-100 transition-opacity duration-300" />
+            className="py-1 cursor-pointer w-full text-fd-card-foreground/80 hover:text-fd-card-foreground transition-colors duration-300 opacity-80 hover:opacity-100 transition-opacity duration-300" />
     )
 }
 

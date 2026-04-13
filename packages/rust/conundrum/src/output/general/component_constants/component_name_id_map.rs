@@ -23,6 +23,7 @@ lazy_static! {
         map.insert(EmbeddableComponentName::Tabs, EmbeddableComponentId::Tabs);
         map.insert(EmbeddableComponentName::Tab, EmbeddableComponentId::Tab);
         map.insert(EmbeddableComponentName::EqRef, EmbeddableComponentId::EqRef);
+        map.insert(EmbeddableComponentName::Toc, EmbeddableComponentId::Toc);
         map
     };
 }

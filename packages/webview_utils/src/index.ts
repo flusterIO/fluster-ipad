@@ -104,6 +104,8 @@ export * from "./features/dictionary/hooks/use_dictionary_data"
 export * from "./features/mdx/embeddable_mdx_components/admonition/index"
 export * from "./features/mdx/embeddable_mdx_components/ul/ul"
 export * from "./features/mdx/embeddable_mdx_components/hl/hl"
+export * from "./features/mdx/embeddable_mdx_components/auto_inserted/heading"
+export * from "./features/mdx/embeddable_mdx_components/hr/embedded_hr_with_children"
 
 //      -- Mdx: Components --
 export * from "./features/mdx/components/mdx_content";

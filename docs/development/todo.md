@@ -16,7 +16,8 @@
 - [x] Fix bug with nested equations being numbered improperly. You'll probably need to move the `ParseState` from a `RefCell` to a `Mutex`... fuck my life.
   - Working on the downstream, but the parent state remains unaffected. Create a parent state equation, a nested state equation and another parent state equation to see.
 - [x] Handle math block escapability so `$` can be used in the user's regular note content reliably.
-- [ ] Fix issue with heading parser creating nested headings when they should be at the same depth.
+- [x] Fix issue with heading parser creating nested headings when they should be at the same depth.
+- [ ] Handle blog page on website and first blog post announcing the launch of Fluster!
 - [ ] Move over rest of components below:
 
 ### Components that need to move over still
@@ -28,12 +29,13 @@
 
 #### Then Add
 
-- [ ] Table of Contents (TOC)
+- [x] Table of Contents (TOC)
 
 ---
 
 ## Missing or Incomplete Parsers
 
+- [ ] Footnote
 - [ ] Table (GFM if it's not a performance hit)
 - [ ] Strikethrough text
 - [ ] Escapable math blocks.

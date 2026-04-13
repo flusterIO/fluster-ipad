@@ -1,6 +1,3 @@
 {
-    "pages": [
-        "user",
-        "my_work"
-    ]
+  "pages": ["user", "my_work", "blog"]
 }

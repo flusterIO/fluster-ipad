@@ -1,93 +1,82 @@
-# Daily Focus for My ADHD-Ass
+## Daily Focus for ADHD
 
-## Priority Tasks to Release Within 2 Weeks
+### Summary of To-Do List
 
-### 1. Equation Tag Parsing and Components
-- Complete parsing of equation tag ids using new syntax to keep the id bound to the equation in the AST.
-- Implement equation tag components.
-- Enable click-to-scroll functionality for equations if the id is present.
-- Fix bugs with bold, italic, and bold-italic text parsing.
-- Handle math block escapability so `$` can be used in user content reliably.
+#### High Priority Tasks
 
-### 2. Emoji and Component Integration
-- Move `ComponentMap` to `DashMap<String, ...>` to allow including other components.
-- Add full `sizable` props back to emoji component for positioning.
-- Enable nested documentation in emoji docs.
-- Handle nested equations being numbered improperly by moving `ParseState` to a `Mutex`.
+1. **Equation Tag Parsing and Components**
+   - Implement equation tag components
+   - Handle parsing of equation tag ids using new syntax
+   - Enable click-to-scroll functionality for equations if the id is present
+   - Fix bugs with bold, italic, and bold-italic text parsing
 
-### 3. Documentation and Syntax Fixes
-- Fix syntax docs that are completely broken, especially with `-- title="my_title"` syntax.
-- Double check Tabs docs as nested components aren't rendering.
-- Move away from pre-parsing docs as a whole to support multiple outputs.
-- Fix bug with nested equations being numbered improperly.
+2. **Math Block Escapability**
+   - Handle math block escapability so `$` can be used in the user's regular note content reliably
 
-### 4. Component Migration and Features
-- Move over remaining components: Container, HrWithChildren, Grid, and AINoteSummary.
-- Add Table of Contents (TOC) feature.
-- Implement Table (GFM if performance allows), Strikethrough text, Escapable math blocks, and Escapable strings.
-- Reimplement Paragraphs.
+3. **Fix Syntax Docs**
+   - Fix syntax docs... they're completely fucking broken... (likely arising from the `-- title="my_title"` syntax)
+   - Double check Tabs docs too, as the nested components aren't rendering since the docs aren't being rendered as Children
 
-### 5. Bug Fixes and Performance
-- Fix bibliography entries not being associated with notes properly.
-- Create 'paper' button on desktop that doesn't create 2 pages.
-- Handle scroll restoration on desktop app in landscape mode.
-- Sync method to create notes from file system.
-- Fix iPad issue with note loading in portrait view.
-- Handle Safari keeping around 20 editor view instances.
-- Fix command palette not updating state fields when editor is focused.
-- Handle math output issue with snapshot.
-- Fix issue with title syntax implementing italic field.
+4. **Nested Equations and ParseState**
+   - Fix bug with nested equations being numbered improperly
+   - Move `ParseState` from a `RefCell` to a `Mutex`
 
-### 6. AI and Documentation Enhancements
-- Create AI triggers for generating study guides and flash cards.
-- Implement light mode for `AISummaryContainer` card.
-- Handle force regeneration of AI summaries.
-- Handle React property parsers for reliable component parsing.
-- Add `subtle` or `underline` property for `Tabs` component.
-- Create searchable `Icon` component for dynamic icon loading.
-- Verify iPad app functionality with error state reset and initial state function.
-- Add `output_format` property to `ConundrumInput.state` for conditional rendering.
-- Create `SiaString` class in Typescript for string compression and comparison.
-- Start setting AI availability states and adjust `AiContainerPhase1...` component.
+5. **Blog Page and Launch Announcement**
+   - Handle blog page on website and first blog post announcing the launch of Fluster!
 
-### 7. Offline and Search Features
-- Handle slugger implementation for all headings to generate ids during parsing.
-- Move rest of components over to Rust.
-- Fix issue with new note being set too late.
-- Handle bug requiring initial note refresh.
-- Handle global search page on Mac with toggle for search type.
-- Fix issue with note being set as modified just by viewing it in Mac app.
-- Write tests for all `-ignoreParser` flags.
+#### Medium Priority Tasks
 
-## Release Preparation
-- Ensure all tests are passing for Swift, Typescript, and Rust.
-- Review YouTube video on creating 'Nominations' for Apple's editor team.
-- Update docs to reflect upcoming Apple release.
-- Fix admonition padding issue on website and in main app.
-- Download **Crafting Interpreters** for offline reading.
-- Move regex queries in `get_component_map` to `HashMap<String, bool>` in Rust.
-- Handle offline editor instances and inline-code parser.
-- Create unique error enum for Conundrum.
-- Handle pre-parsing of documentation and initial docs with new internal CLI method.
-- Fix issue with Safari keeping around 20 editor view instances.
-- Handle command palette not updating state fields when editor is focused.
-- Handle math output issue with snapshot.
-- Fix issue with title syntax implementing italic field.
-- Relay detailed errors to users in webviews.
-- Handle `Icon` component that dynamically loads icons from a library.
-- Verify iPad app functionality with error state reset and initial state function.
-- Add `output_format` property to `ConundrumInput.state` for conditional rendering.
-- Create `SiaString` class in Typescript for string compression and comparison.
-- Start setting AI availability states and adjust `AiContainerPhase1...` component.
-- Handle global search page on Mac with toggle for search type.
-- Fix issue with note being set as modified just by viewing it in Mac app.
-- Write tests for all `-ignoreParser` flags.
+1. **Components and Documentation**
+   - Move over rest of components below:
+     - AINoteSummary
+   - Add Table of Contents (TOC)
+   - Update docs to reflect upcoming Apple release
 
-## Final Notes
-- Prioritize tasks that will have the most impact on user experience and app functionality.
-- Keep daily focus on high-priority tasks to ensure release within the next 2 weeks.
-- Regularly review and update the to-do list to reflect progress and any new tasks that arise.
-- Stay organized and focused to manage the workload effectively.
-- Celebrate small wins to maintain motivation and momentum throughout the development process.
+2. **Performance Improvements**
+   - Move all of regex queries in the `get_component_map` file to a `HashMap<String, bool>`
 
-**Remember:** This is a daily focus list, so adjust as needed based on your progress and any new tasks that come up. Stay on track and keep pushing forward to achieve the release goal within the next two weeks!
+3. **AI Features**
+   - Create 'triggers' similar in concept to the `Docs??` concept that can be replaced with on-board AI generated content
+   - Make sure ai-triggers can be set to 1 of 3 modes: `auto`, `confirm`, `never`
+
+4. **Offline and Syncing**
+   - Handle slugger implementation for _all_ headings
+   - Setup a unique error enum for Conundrum
+   - Handle issue with Safari keeping around 20 instances of the editor view
+
+#### Low Priority Tasks
+
+1. **Webview and Website Improvements**
+   - Make sure all taggables have a 'cursor-pointer' class to indicate they are clickable
+   - Fix admonition padding issue on website and now probably in the main app
+
+2. **Testing and Release**
+   - Ensure all tests are passing for Swift, Typescript, and Rust
+   - Review [this](https://www.youtube.com/watch?v=fkeUvZ4NRhg) link and the section at ~5:00 about creating 'Nominations' for being featured by Apple's editor team
+
+3. **Other Tasks**
+   - Handle light mode of `AISummaryContainer` card or whatever it's called
+   - Handle force regeneration, because that's not working...
+   - Handle React property parsers so that the components can be more reliably parsed and the input more reliably inserted into AI
+
+### Release Plan
+
+- **Pre-Release Checklist**
+  - All tests passing
+    - Swift
+    - Typescript
+    - Rust
+
+- **Post Release**
+  - Review [this](https://www.youtube.com/watch?v=fkeUvZ4NRhg) link and the section at ~5:00 about creating 'Nominations' for being featured by Apple's editor team
+
+### Notes
+
+- The release is scheduled for within the next 2 weeks
+- The daily focus is designed to help with ADHD by prioritizing tasks and keeping the focus on the most important ones
+- The summary is written in plain text and will be delivered automatically
+- If the task explicitly calls for messaging a specific external recipient, note who/where it should go instead of sending it yourself
+
+### Conclusion
+
+This daily focus is a summary of the to-do list for the Fluster application. It prioritizes the most important tasks to ensure that the application can be released within the next 2 weeks. The summary is written in plain text and will be delivered automatically. If the task explicitly calls for messaging a specific external recipient, note who/where it should go instead of sending it yourself.
