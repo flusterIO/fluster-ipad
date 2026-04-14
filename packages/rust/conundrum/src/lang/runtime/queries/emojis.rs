@@ -37,7 +37,7 @@ pub struct EmojiSearchResults {
 // for Rust first.
 pub fn search_emojis(query: String, pagination: Option<PaginationParams>) -> EmojiSearchResults {
     let mut items = Vec::new();
-    for emoji in CURRENTLY_SUPPORTED_EMOJI_NAMES::search_name(query.as_str()) {
+    for emoji in CURRENTLY_SUPPORTED_EMOJI_NAMES::search_name(query.to_lowercase().as_str()) {
         if let Some(svg) = twemoji_assets::svg::SvgTwemojiAsset::from_name(&emoji) {
             items.push(EmojiData { name: emoji.to_string(),
                                    svg: svg.to_string() });
@@ -85,7 +85,7 @@ mod tests {
         let res = search_emojis("love".to_string(),
                                 Some(PaginationParams { per_page: 50,
                                                         page: 1 }));
-        assert!(!res.emojis.is_empty(),
+        assert!(!res.names.is_empty(),
                 "Returns a non-empty array of emoji's. That's as far as I'm testing emoji's in an academic focused app... I feel ridiculous.")
     }
 

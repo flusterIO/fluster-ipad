@@ -1,12 +1,12 @@
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/shared_components/shad/input-group'
-import { ChevronLeft, SearchIcon } from 'lucide-react'
+import { ChevronLeft, ChevronRight, SearchIcon } from 'lucide-react'
 import React, { useEffect, useRef, useState, type ReactNode } from 'react'
 import { EmojiDocsDemo } from '../emoji_docs_demo'
 import { type EmojiSearchResults } from '@/code_gen/typeshare/conundrum'
 import { search_conundrum_emojis } from "@fluster/wasm"
 import { Button } from '@/shared_components/shad/button'
 
-const DEBOUNCE_TIMEOUT = 500;
+const DEBOUNCE_TIMEOUT = 150;
 const PER_PAGE = 50;
 
 export const EmojiSearchPanel = (): ReactNode => {
@@ -25,7 +25,7 @@ export const EmojiSearchPanel = (): ReactNode => {
             const r = search_conundrum_emojis(query, page, PER_PAGE) as EmojiSearchResults;
             setEmojis(r);
         }, DEBOUNCE_TIMEOUT)
-    }, [query])
+    }, [query, page])
     return (
         <div className="flex flex-col justify-center items-center gap-y-4">
             <div className="w-full flex flex-row justify-end items-center gap-4">
@@ -33,7 +33,10 @@ export const EmojiSearchPanel = (): ReactNode => {
                     <InputGroupAddon >
                         <SearchIcon />
                     </InputGroupAddon>
-                    <InputGroupInput value={query} onChange={(e) => { setQuery(e.target.value); }} />
+                    <InputGroupInput value={query} onChange={(e) => {
+                        setPage(1);
+                        setQuery(e.target.value);
+                    }} />
                 </InputGroup>
             </div>
             <div
@@ -73,6 +76,7 @@ const EmojiDocsPagination = ({ total, page, setPage }: EmojiDocsPaginationProps)
                 disabled={page <= 1}
                 size={"icon-sm"}
                 onClick={() => { setPage(page - 1); }}
+                variant={"outline"}
             >
                 <ChevronLeft
                     size={"text-sm"}
@@ -82,8 +86,9 @@ const EmojiDocsPagination = ({ total, page, setPage }: EmojiDocsPaginationProps)
                 disabled={endIndex >= total}
                 size={"icon-sm"}
                 onClick={() => { setPage(page + 1); }}
+                variant={"outline"}
             >
-                <ChevronLeft className="text-sm" />
+                <ChevronRight className="text-sm" />
             </Button>
         </div>
     )
