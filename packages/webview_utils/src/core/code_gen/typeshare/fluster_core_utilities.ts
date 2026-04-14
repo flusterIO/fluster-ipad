@@ -5,7 +5,7 @@ import { type SizableOption, type ConundrumError } from "./conundrum";
 
 
 export interface AIUserDetails {
-	preferred_name: string;
+	preferred_name?: string;
 }
 
 export enum FoundationModelAccessStatus {

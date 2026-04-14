@@ -19,10 +19,7 @@ use crate::{
             docs::ParsedInspectionRequest,
             hr_with_children::HrWithChildrenResult,
             inline_citation::ParsedCitation,
-            logic::{
-                bool::boolean::ConundrumBoolean, number::conundrum_number::ConundrumNumber,
-                string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
-            },
+            logic::{string::conundrum_string::ConundrumString, token::ConundrumLogicToken},
             note_link::ParsedOutgoingNoteLink,
             tag::ParsedTag,
         },
@@ -30,7 +27,7 @@ use crate::{
         markdown::{
             block_math::BlockMathResult, block_quote::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
-            code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_code::InlineCodeResult,
+            code_block::code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_code::InlineCodeResult,
             inline_math::InlineMathResult, italic_text::MarkdownItalicTextResult,
             markdown_extensions::emoji::EmojiResult, markdown_link::MarkdownLinkResult,
             paragraph::MarkdownParagraphResult,

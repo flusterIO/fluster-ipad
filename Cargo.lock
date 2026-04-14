@@ -1059,9 +1059,11 @@ dependencies = [
  "css-color",
  "dashmap 6.1.0",
  "derive_more",
+ "derive_typst_intoval",
  "emoji",
  "flatbuffers",
  "fluster_core_utilities",
+ "fuzzy-matcher",
  "github-slugger",
  "googletest",
  "gray_matter",
@@ -1082,6 +1084,7 @@ dependencies = [
  "regex",
  "rssn",
  "rust-embed",
+ "rust-fuzzy-search",
  "rustdoc-md",
  "serde",
  "serde-wasm-bindgen",
@@ -1099,6 +1102,7 @@ dependencies = [
  "typeshare",
  "typst",
  "typst-as-lib",
+ "typst-html",
  "unicode-segmentation",
  "uniffi",
  "wasm-bindgen",
@@ -1820,6 +1824,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "derive_typst_intoval"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f6efc4e922a436e0468168c9f5f2013ca599b7d6d0a0456b771413637319725"
+dependencies = [
+ "heck",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.117",
+ "typst",
+ "typst-macros",
+]
+
+[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2417,7 +2435,6 @@ dependencies = [
  "tsify",
  "wasm-bindgen",
  "wasm-bindgen-futures",
- "wasm-react",
  "web-sys",
 ]
 
@@ -2480,12 +2497,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "875488b8711a968268c7cf5d139578713097ca4635a76044e8fe8eedf831d07e"
 
 [[package]]
+name = "fontconfig-parser"
+version = "0.5.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bbc773e24e02d4ddd8395fd30dc147524273a83e54e0f312d986ea30de5f5646"
+dependencies = [
+ "roxmltree",
+]
+
+[[package]]
 name = "fontdb"
 version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "457e789b3d1202543297a350643cf459f836cade38934e7a4cf6a39e7cde2905"
 dependencies = [
+ "fontconfig-parser",
  "log",
+ "memmap2",
  "slotmap",
  "tinyvec",
  "ttf-parser 0.25.1",
@@ -4278,6 +4306,15 @@ name = "memchr"
 version = "2.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273"
+
+[[package]]
+name = "memmap2"
+version = "0.9.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "714098028fe011992e1c3962653c96b2d578c4b4bce9036e15ff220319b1e0e3"
+dependencies = [
+ "libc",
+]
 
 [[package]]
 name = "memmem"
@@ -6231,6 +6268,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "rust-fuzzy-search"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a157657054ffe556d8858504af8a672a054a6e0bd9e8ee531059100c0fa11bb2"
+
+[[package]]
 name = "rust_decimal"
 version = "1.40.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7880,6 +7923,7 @@ dependencies = [
  "ecow",
  "thiserror 2.0.17",
  "typst",
+ "typst-kit",
 ]
 
 [[package]]
@@ -7924,6 +7968,24 @@ dependencies = [
  "typst-library",
  "typst-macros",
  "typst-svg",
+ "typst-syntax",
+ "typst-timing",
+ "typst-utils",
+]
+
+[[package]]
+name = "typst-kit"
+version = "0.14.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "31476ec753e080ffdd543a0e74b6d319355449ff3eca3f216634f31cfd09a92a"
+dependencies = [
+ "ecow",
+ "fontdb",
+ "once_cell",
+ "serde",
+ "serde_json",
+ "typst-assets",
+ "typst-library",
  "typst-syntax",
  "typst-timing",
  "typst-utils",
@@ -8749,18 +8811,6 @@ dependencies = [
  "indexmap",
  "wasm-encoder",
  "wasmparser 0.244.0",
-]
-
-[[package]]
-name = "wasm-react"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a780c707d43e664b3a7963e0f12dfcdcab15384c746ed1b526fdc5e2dcb187b"
-dependencies = [
- "js-sys",
- "paste",
- "wasm-bindgen",
- "web-sys",
 ]
 
 [[package]]

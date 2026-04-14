@@ -5,7 +5,7 @@ use crate::{
             ai_serialization_request::AiSerializationRequestPhase1, mdx_parsing_result::MdxParsingResult,
         },
     },
-    parsers::markdown::code_block::ParsedCodeBlock,
+    parsers::markdown::code_block::code_block::ParsedCodeBlock,
 };
 
 pub fn get_ai_parsing_request_phase_1_content(block: &ParsedCodeBlock, res: &mut MdxParsingResult) -> String {

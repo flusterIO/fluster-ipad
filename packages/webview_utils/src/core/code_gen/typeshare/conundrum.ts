@@ -358,6 +358,12 @@ export interface EmojiResult {
 	size?: SizableOption;
 }
 
+export interface EmojiSearchResults {
+	names: EmojiData[];
+	/** The total number of matches */
+	total: number;
+}
+
 /**
  * ## Example Usage
  * 

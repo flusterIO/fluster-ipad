@@ -1,8 +1,12 @@
+use serde::Serialize;
 use winnow::stream::AsChar;
 
 use crate::lang::lib::{
     general::pagination::pagination_params::PaginationParams,
-    ui::components::documentation::emoji::emoji_data::EmojiData,
+    ui::components::{
+        attention::emoji::currently_supported_emoji_names::CURRENTLY_SUPPORTED_EMOJI_NAMES,
+        documentation::emoji::emoji_data::EmojiData,
+    },
 };
 
 pub fn format_emoji_name(name: &str) -> String {
@@ -20,15 +24,25 @@ pub fn format_emoji_name(name: &str) -> String {
     String::from_iter(chars)
 }
 
-pub fn search_emojis(query: String, pagination: Option<PaginationParams>) -> Vec<EmojiData> {
+#[typeshare::typeshare]
+#[derive(Serialize, uniffi::Record)]
+pub struct EmojiSearchResults {
+    pub names: Vec<EmojiData>,
+    /// The total number of matches
+    pub total: u32,
+}
+
+// TODO: Move this to using the provided names as they don't all match and their
+// are extra possibilities. You'll need to find a decent fuzzy matching library
+// for Rust first.
+pub fn search_emojis(query: String, pagination: Option<PaginationParams>) -> EmojiSearchResults {
     let mut items = Vec::new();
-    for emoji in emoji::search::search_name(query.as_str()) {
-        let formatted_name = format_emoji_name(emoji.name);
-        if let Some(svg) = twemoji_assets::svg::SvgTwemojiAsset::from_name(&formatted_name) {
-            items.push(EmojiData { name: formatted_name,
+    for emoji in CURRENTLY_SUPPORTED_EMOJI_NAMES::search_name(query.as_str()) {
+        if let Some(svg) = twemoji_assets::svg::SvgTwemojiAsset::from_name(&emoji) {
+            items.push(EmojiData { name: emoji.to_string(),
                                    svg: svg.to_string() });
         } else {
-            eprintln!("Found an emoji without a valid svg: {:#?}", emoji.glyph);
+            eprintln!("Found an emoji without a valid svg: {:#?}", emoji);
         }
     }
 
@@ -36,9 +50,12 @@ pub fn search_emojis(query: String, pagination: Option<PaginationParams>) -> Vec
         let start = (((pag.page - 1) * pag.per_page) as usize).max(0);
         let end = (start + pag.per_page as usize).min(items.len());
         let x = &items[start..end];
-        x.to_vec()
+        EmojiSearchResults { names: x.to_vec(),
+                             total: items.len() as u32 }
     } else {
-        items
+        let total = items.len() as u32;
+        EmojiSearchResults { names: items,
+                             total }
     }
 }
 
@@ -68,7 +85,7 @@ mod tests {
         let res = search_emojis("love".to_string(),
                                 Some(PaginationParams { per_page: 50,
                                                         page: 1 }));
-        assert!(!res.is_empty(),
+        assert!(!res.emojis.is_empty(),
                 "Returns a non-empty array of emoji's. That's as far as I'm testing emoji's in an academic focused app... I feel ridiculous.")
     }
 

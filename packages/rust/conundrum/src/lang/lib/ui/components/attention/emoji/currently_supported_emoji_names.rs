@@ -1,4 +1,5 @@
 use lazy_static::lazy_static;
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 lazy_static! {
     pub static ref CURRENTLY_SUPPORTED_EMOJI_NAMES: Vec<String> = {
@@ -4803,6 +4804,34 @@ lazy_static! {
              String::from("ja_secret"),
              String::from("secret"),]
     };
+}
+
+impl CURRENTLY_SUPPORTED_EMOJI_NAMES {
+    #[cfg(feature = "wasm")]
+    pub fn search_name(query: &str) -> Vec<String> {
+        CURRENTLY_SUPPORTED_EMOJI_NAMES.iter()
+                                       .filter_map(|f| {
+                                           if f.contains(query) {
+                                               Some(f.clone())
+                                           } else {
+                                               None
+                                           }
+                                       })
+                                       .collect::<Vec<String>>()
+    }
+
+    #[cfg(not(feature = "wasm"))]
+    pub fn search_name(query: &str) -> Vec<String> {
+        CURRENTLY_SUPPORTED_EMOJI_NAMES.par_iter()
+                                       .filter_map(|f| {
+                                           if f.contains(query) {
+                                               Some(f.clone())
+                                           } else {
+                                               None
+                                           }
+                                       })
+                                       .collect::<Vec<String>>()
+    }
 }
 
 #[cfg(test)]

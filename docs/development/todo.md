@@ -3,7 +3,9 @@
 ## Remainder of Today
 
 - [x] Handle new images on blog post.
-- [ ] Handle bug requiring details page to be refreshed on Mac.
+- [x] Handle bug requiring details page to be refreshed on Mac.
+- [ ] Fix new note first display issue. It's _still_ not resolved!
+- [ ] Resume work on AI features until App is ready for release.
 - [ ] Work on integrating typst support! That's a **major** value add that can actually be handled offline, and in time to release!
 - [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
 - [ ] Move over rest of components below:

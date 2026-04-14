@@ -1,16 +1,20 @@
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/shared_components/shad/input-group'
-import { SearchIcon } from 'lucide-react'
+import { ChevronLeft, SearchIcon } from 'lucide-react'
 import React, { useEffect, useRef, useState, type ReactNode } from 'react'
 import { EmojiDocsDemo } from '../emoji_docs_demo'
-import { type EmojiData } from '@/code_gen/typeshare/conundrum'
+import { type EmojiSearchResults } from '@/code_gen/typeshare/conundrum'
 import { search_conundrum_emojis } from "@fluster/wasm"
+import { Button } from '@/shared_components/shad/button'
 
 const DEBOUNCE_TIMEOUT = 500;
-const PAGE = 1;
 const PER_PAGE = 50;
 
 export const EmojiSearchPanel = (): ReactNode => {
-    const [emojis, setEmojis] = useState<EmojiData[]>([])
+    const [emojis, setEmojis] = useState<EmojiSearchResults>({
+        names: [],
+        total: 0
+    });
+    const [page, setPage] = useState(1)
     const debounce = useRef<NodeJS.Timeout | null>(null);
     const [query, setQuery] = useState("")
     useEffect(() => {
@@ -18,7 +22,7 @@ export const EmojiSearchPanel = (): ReactNode => {
             clearTimeout(debounce.current)
         }
         debounce.current = setTimeout(() => {
-            const r = search_conundrum_emojis(query, PAGE, PER_PAGE) as EmojiData[];
+            const r = search_conundrum_emojis(query, page, PER_PAGE) as EmojiSearchResults;
             setEmojis(r);
         }, DEBOUNCE_TIMEOUT)
     }, [query])
@@ -39,12 +43,48 @@ export const EmojiSearchPanel = (): ReactNode => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))"
                 }}
             >
-                {emojis.map((e) => {
+                {emojis.names.map((e) => {
                     return (
                         <EmojiDocsDemo data={e} key={e.name} />
                     )
                 })}
             </div>
+            <EmojiDocsPagination setPage={setPage} total={emojis.total} page={page} />
+        </div>
+    )
+}
+
+
+interface EmojiDocsPaginationProps {
+    total: number;
+    page: number;
+    setPage: (p: number) => void
+}
+
+const EmojiDocsPagination = ({ total, page, setPage }: EmojiDocsPaginationProps): ReactNode => {
+    if (total <= PER_PAGE) {
+        return null
+    }
+    const startIndex = page * PER_PAGE;
+    const endIndex = startIndex + PER_PAGE;
+    return (
+        <div className="w-full h-fit flex flex-row justify-end items-center gap-x-2">
+            <Button
+                disabled={page <= 1}
+                size={"icon-sm"}
+                onClick={() => { setPage(page - 1); }}
+            >
+                <ChevronLeft
+                    size={"text-sm"}
+                />
+            </Button>
+            <Button
+                disabled={endIndex >= total}
+                size={"icon-sm"}
+                onClick={() => { setPage(page + 1); }}
+            >
+                <ChevronLeft className="text-sm" />
+            </Button>
         </div>
     )
 }

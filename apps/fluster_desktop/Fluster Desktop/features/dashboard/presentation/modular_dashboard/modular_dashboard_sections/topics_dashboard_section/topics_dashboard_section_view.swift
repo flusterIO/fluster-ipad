@@ -49,6 +49,7 @@ struct TopicsDashboardSectionView: View {
       .frame(minHeight: 200)
       .frame(maxWidth: .infinity)
       .scrollContentBackground(.hidden)
+      .scrollIndicators(.never)
     }
     .padding()
     .glassEffect(in: .rect(cornerRadius: 12))

@@ -22,6 +22,7 @@ let package = Package(
       .upToNextMajor(from: "1.0.0")
     ),
     .package(path: "../FlusterData"),
+    .package(path: "../FlusterAI"),
     .package(path: "../FlusterWebviewClients"),
     .package(
       url: "https://github.com/google/flatbuffers.git",
@@ -41,6 +42,7 @@ let package = Package(
       dependencies: [
         "SwiftyBibtex",
         .product(name: "FlusterData", package: "FlusterData"),
+        .product(name: "FlusterAI", package: "FlusterAI"),
         .product(name: "FlusterWebviewClients", package: "FlusterWebviewClients"),
         .product(name: "FlatBuffers", package: "flatbuffers"),
         .product(name: "AlertToast", package: "AlertToast")

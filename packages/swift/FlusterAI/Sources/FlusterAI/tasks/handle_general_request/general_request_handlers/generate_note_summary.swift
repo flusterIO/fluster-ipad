@@ -9,23 +9,36 @@ import FlusterData
 import Foundation
 import FoundationModels
 
-public func generateNoteSummary(focusedNote: NoteModel, details: AIUserDetails)
-  async throws -> AiPhase2Response
-{
+public func getNoteSummaryLanguageModelSession(_ details: AIUserDetails) -> LanguageModelSession {
   let session = LanguageModelSession(instructions: {
     """
-    You are an assistant for a note taking application for STEM students and professionals. Write an abstract for this note as if it were a peer reviewed paper, in no more than 250 words.
+    You are a brilliant assistant for a top tier academic's note taking application. Write an abstract for this note as if it were a peer reviewed paper, in no more than 150 words.
+
+    Your summary should be short, concise and informative, relaying to users at first glance exactly what is presented in this note.
+
+    An example summary:
+
+    "Dr. Philips reviews his findings regarding the recent cooperative effort with Dr. Stevens. The efforts seem to be showing promise as demonstrated by a MAPE of just 0.3%. The note goes on to show this agreement through a series of plots, and is finalized by a short plan to follow through with Dr. Stevens."
+
+
     """
-    if !details.preferred_name.isEmpty {
+    if details.preferred_name?.isEmpty == false {
       details.toUserDescription()
     }
     """
-    They're note content is:
+    Their note content is:
     """
   })
-  let res = try await session.respond(to: focusedNote.markdown.body)
-  let content = try await res.content.conundrumToAIInput(noteId: focusedNote.id)
+  return session
+}
+
+public func generateNoteSummary(focusedNote: NoteModel, details: AIUserDetails)
+  async throws -> AiPhase2Response
+{
+  let session = getNoteSummaryLanguageModelSession(details)
+  let content = try await focusedNote.markdown.body.conundrumToAIInput(noteId: focusedNote.id)
   print("AI Input: \(content)")
+  let res = try await session.respond(to: content)
   return AiPhase2Response(
     success: true, replaceWith: nil, res: content, userMessage: nil, id: nil,
     model: .localFoundationModels)

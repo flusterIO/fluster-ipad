@@ -6,9 +6,9 @@ import ConundrumSwift
 import Foundation
 
 public struct AIUserDetails: Codable {
-	public let preferred_name: String
+	public let preferred_name: String?
 
-	public init(preferred_name: String) {
+	public init(preferred_name: String?) {
 		self.preferred_name = preferred_name
 	}
 }

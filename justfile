@@ -50,7 +50,7 @@ lint:
 	cd {{justfile_directory()}}/apps/fluster; swiftlint lint
 
 build_internal_cli:
-	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build --offline
+	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build 
 
 build_fluster_wasm:
 	cd {{justfile_directory()}}/packages/rust/wasm/fluster_wasm; pnpm build
@@ -127,10 +127,10 @@ launch_ipad_simulator: build_ipad_simulator
 	cd {{justfile_directory()}}/apps/fluster; xcrun simctl launch "iPad Pro 13-inch M5 26.1" iglooDevelopment.Fluster 
 
 build_all_rust: build_cross_language_all
-	cargo build --offline
+	cargo build
 
 build_fluster_core_rust_utilities: build_cross_language_all
-	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build --offline
+	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
 
 
 # Add `build_fluster_wasm` back to the end in here once the fucking internet isnt stopping the build
