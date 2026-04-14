@@ -313,6 +313,7 @@ extension AppSchemaV1 {
       let note = NoteModel(
         markdown: MarkdownNote(body: noteBody)
       )
+      note.updateTitleGroup()
       note.markdown.requiresPlainTextUpdate = true
       note.markdown.isEdited = true
       return note

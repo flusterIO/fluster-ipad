@@ -19,6 +19,8 @@ struct CreateNotePage: View {
   @Query private var subjects: [SubjectModel]
   @Query private var topics: [TopicModel]
   @Environment(\.modelContext) private var modelContext: ModelContext
+  @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+    DefaultNoteView = .editor
   var body: some View {
     GeometryReader { geo in
       VStack {
@@ -78,7 +80,7 @@ struct CreateNotePage: View {
               }
             }
             .onAppear {
-                focusedInitialField = true
+              focusedInitialField = true
             }
           } else {
             VStack {
@@ -119,7 +121,7 @@ struct CreateNotePage: View {
             Button(
               action: {
                 // Handle create note here
-                if !titleText.isEmpty {
+                if !titleText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                   let item = NoteModel.fromNoteBody(noteBody: "# \(titleText)")
                   if !subjectText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     let sl = subjectText.lowercased()
@@ -133,19 +135,20 @@ struct CreateNotePage: View {
                     let topic = existingTopic ?? TopicModel(value: topicText)
                     item.topic = topic
                   }
-                    Task {
-                        do {
-                            try await item.preParse(modelContext: modelContext)
-                            modelContext.insert(item)
-                            try modelContext.save()
-                            titleText = ""
-                            subjectText = ""
-                            topicText = ""
-                            appState.mainView = .dashboard
-                        } catch {
-                            print("Error creating note: \(error.localizedDescription)")
-                        }
+                  Task {
+                    do {
+                      try await item.preParse(modelContext: modelContext)
+                      modelContext.insert(item)
+                      try modelContext.save()
+                      titleText = ""
+                      subjectText = ""
+                      topicText = ""
+                      appState.setEditingNote(editingNote: item)
+                      appState.mainView = defaultNoteView.toMainKey()
+                    } catch {
+                      print("Error creating note: \(error.localizedDescription)")
                     }
+                  }
                 }
               },
               label: {
