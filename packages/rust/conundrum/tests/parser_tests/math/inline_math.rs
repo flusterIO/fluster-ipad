@@ -61,7 +61,8 @@ $$
                content: test_content.to_string(),
                note_id: None,
                modifiers: Vec::new(),
-               hide_components: Vec::new()
+               hide_components: Vec::new(),
+               ..Default::default()
            }
        ).await.expect("Runs conundrum without throwing an error.");
     insta::assert_snapshot!(res.content);

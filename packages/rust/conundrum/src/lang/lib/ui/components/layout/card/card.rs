@@ -22,8 +22,7 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::{object::object::ConundrumObject, string::conundrum_string::ConundrumString},
 };
@@ -55,10 +54,11 @@ pub struct Card {
 
 impl JsxComponentResult for Card {
     fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title_string = self.title.to_children(res.modifiers.clone())?.to_jsx_fragment_string(res)?;
+        let title_string =
+            self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.to_jsx_fragment_string(res)?;
 
         let subtitle_string = match &self.subtitle {
-            Some(s) => s.to_children(res.modifiers.clone())?.to_jsx_fragment_string(res)?,
+            Some(s) => s.to_children(res.modifiers.clone(), res.ui_params.clone())?.to_jsx_fragment_string(res)?,
             None => "".to_string(),
         };
 
@@ -83,7 +83,7 @@ impl InlineMarkdownComponentResult for Card {
 
 impl PlainTextComponentResult for Card {
     fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title = self.title.to_children(res.modifiers.clone())?.render(res)?;
+        let title = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
         let children = self.children.render(res)?;
 
         Ok(format!(
@@ -96,11 +96,12 @@ impl PlainTextComponentResult for Card {
 
 impl MarkdownComponentResult for Card {
     fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title_string = self.title.to_children(res.modifiers.clone())?.render(res)?;
+        let title_string = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
 
         let subtitle_string = match &self.subtitle {
             Some(s) => {
-                let subtitle_children_string = s.to_children(res.modifiers.clone())?.render(res)?;
+                let subtitle_children_string =
+                    s.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
                 format!("\n\n> {}", subtitle_children_string)
             }
             None => "".to_string(),

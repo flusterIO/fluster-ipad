@@ -4,9 +4,7 @@ use winnow::{Parser, combinator::alt, stream::Stream, token::literal};
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        lib::ui::ui_types::children::Children,
         runtime::{
-            parse_conundrum_string::parse_elements,
             state::conundrum_error_variant::ConundrumModalResult,
             traits::conundrum_input::{ConundrumInput, get_conundrum_input},
         },
@@ -36,7 +34,8 @@ fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
 
     let state = input.state.borrow();
 
-    let mut wrapped_content_input = get_conundrum_input(&wrapped_content, state.modifiers.clone());
+    let mut wrapped_content_input =
+        get_conundrum_input(&wrapped_content, state.modifiers.clone(), state.ui_params.clone());
 
     let js_string = ConundrumString::parse_javascript.parse_next(&mut wrapped_content_input)
                                                      .inspect_err(|_| {

@@ -67,7 +67,8 @@ pub struct Admonition {
 
 impl JsxComponentResult for Admonition {
     fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title_string = self.title.to_children(res.modifiers.clone())?.to_jsx_prop("title", res)?;
+        let title_string =
+            self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.to_jsx_prop("title", res)?;
         let mut props = vec![title_string];
         if let Some(emphasis) = &self.emphasis {
             props.push(emphasis.to_string())
@@ -98,7 +99,7 @@ impl MarkdownComponentResult for Admonition {
                    res: &mut crate::lang::runtime::state::parse_state::ParseState)
                    -> ConundrumModalResult<String> {
         let depth = self.markdown_title_depth.unwrap_or(HeadingDepth(ConundrumInt(5)));
-        let title_string = self.title.to_children(res.modifiers.clone())?.render(res)?;
+        let title_string = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
         Ok(format!(
                    r#"{} {}
 
@@ -115,7 +116,7 @@ impl InlineMarkdownComponentResult for Admonition {
                           res: &mut crate::lang::runtime::state::parse_state::ParseState)
                           -> ConundrumModalResult<String> {
         self.children.render_bypassed(res);
-        let title_string = self.title.to_children(res.modifiers.clone())?.render(res)?;
+        let title_string = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
         Ok(title_string)
     }
 }
@@ -124,7 +125,7 @@ impl PlainTextComponentResult for Admonition {
     fn to_plain_text(&self,
                      res: &mut crate::lang::runtime::state::parse_state::ParseState)
                      -> ConundrumModalResult<String> {
-        let title_string = self.title.to_children(res.modifiers.clone())?.render(res)?;
+        let title_string = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
         Ok(format!(
                    r#"{}
 {}"#,

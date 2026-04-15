@@ -1,5 +1,8 @@
 use conundrum::{
-    lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum},
+    lang::runtime::{
+        run_conundrum::{ParseConundrumOptions, run_conundrum},
+        state::ui_params::UIParams,
+    },
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
@@ -26,7 +29,13 @@ pub async fn parse_initial_notes() {
                                          .to_str()
                                          .expect("Converts path to string without throwing an error."));
         let file_content = fs::read_to_string(_p).expect("Failed to read mdx file.");
-        let mut res = run_conundrum(ParseConundrumOptions::new(None, file_content.clone(), Vec::new(), Vec::new())).await.expect("Returns a vald result when a valid input was provided.");
+        // TODO: This will break things now with the syntex themes. We'll need to render
+        // both dark and light versions and then pick the proper one at build
+        // time, or just compile the fucking thing at runtime.
+        let mut res = run_conundrum(ParseConundrumOptions::new(None, file_content.clone(), Vec::new(), Vec::new(), UIParams {
+            dark_mode: true,
+            font_scalar: 1
+        })).await.expect("Returns a vald result when a valid input was provided.");
 
         // Need to re-assign file_content to _content so that the front-matter is still
         // present during the seeding of the initial note data.

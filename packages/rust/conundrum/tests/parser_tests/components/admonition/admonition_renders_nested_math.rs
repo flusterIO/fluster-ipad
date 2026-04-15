@@ -23,9 +23,11 @@ $$
 "#;
 
         let res = run_conundrum(ParseConundrumOptions { content: input.to_string(),
-                                                  note_id: None,
-                                                  hide_components: Vec::new(),
-                                                  modifiers: Vec::new() }).await.expect("Returns a vald result when a valid input was provided.");
+        note_id: None,
+        hide_components: Vec::new(),
+        modifiers: Vec::new(),
+        ..Default::default()
+        }).await.expect("Returns a vald result when a valid input was provided.");
 
         assert_snapshot!(res.content)
     }

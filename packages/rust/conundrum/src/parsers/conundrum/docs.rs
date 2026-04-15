@@ -72,7 +72,8 @@ impl MdxComponentResult for ParsedInspectionRequest {
         } {
             if let Some(doc_id) = InContentDocumentationId::iter().find(|x| x.to_string() == self.keyword) {
                 let body_as_string = EmbeddedInContentDocs::get_incontent_docs_by_id(&doc_id, &depth);
-                let mut new_input = get_conundrum_input(body_as_string.as_str(), res.modifiers.clone());
+                let mut new_input =
+                    get_conundrum_input(body_as_string.as_str(), res.modifiers.clone(), res.ui_params.clone());
                 let c = parse_elements(&mut new_input)?;
                 let rendered_body = Children(c).render(res)?;
                 return Ok(format!("\n<{} inContentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
@@ -89,7 +90,8 @@ impl MdxComponentResult for ParsedInspectionRequest {
                                                                            })
             {
                 let body_as_string = EmbeddedComponentDocs::get_incontent_docs_by_id(comp_name, &depth);
-                let mut new_input = get_conundrum_input(body_as_string.as_str(), res.modifiers.clone());
+                let mut new_input =
+                    get_conundrum_input(body_as_string.as_str(), res.modifiers.clone(), res.ui_params.clone());
                 let c = parse_elements(&mut new_input)?;
                 let rendered_body = Children(c).render(res)?;
                 return Ok(format!("\n<{} componentName=\"{}\" format=\"{}\">\n{}\n</{}>\n",

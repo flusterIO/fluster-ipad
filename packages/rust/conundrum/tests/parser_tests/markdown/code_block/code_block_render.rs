@@ -9,9 +9,11 @@ async fn parses_code_block() {
         "#;
 
     let res = run_conundrum(ParseConundrumOptions { note_id: None,
-                                              content: test_content.to_string(),
-                                              hide_components: Vec::new(),
-                                              modifiers: Vec::new() }).await.expect("Returns a vald result when a valid input was provided.");
+        content: test_content.to_string(),
+        hide_components: Vec::new(),
+        modifiers: Vec::new(),
+        ..Default::default()
+    }).await.expect("Returns a vald result when a valid input was provided.");
 
     insta::assert_snapshot!(res.content);
 }

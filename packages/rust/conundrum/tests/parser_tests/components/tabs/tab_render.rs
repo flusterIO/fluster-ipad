@@ -24,7 +24,9 @@ pub async fn renders_tabs() {
         run_conundrum(ParseConundrumOptions { content: test_content.to_string(),
                                         note_id: None,
                                         hide_components: Vec::new(),
-                                        modifiers: Vec::new() }).await
+                                        modifiers: Vec::new(),
+                                        ..Default::default()
+        }).await
                                                                 .expect("Parses tabs input without throwing an error.");
 
     insta::assert_debug_snapshot!(res.content);

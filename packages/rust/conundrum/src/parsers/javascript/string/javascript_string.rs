@@ -1,6 +1,6 @@
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::state::parse_state::ParseState;
-use crate::lang::runtime::traits::conundrum_input::{ConundrumInput, get_conundrum_input};
+use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::lang::runtime::traits::jsx_component_result::JsxComponentResult;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;

@@ -165,7 +165,7 @@ pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumModalResult
 
     let state = input.state.borrow();
 
-    let mut new_input = get_conundrum_input(content, state.modifiers.clone());
+    let mut new_input = get_conundrum_input(content, state.modifiers.clone(), state.ui_params.clone());
     let children = parse_elements(&mut new_input)?;
     Ok(children)
 }
@@ -207,7 +207,8 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
 
         let mut state = input.state.borrow_mut();
 
-        let mut new_input = get_conundrum_input(content_string.as_str(), state.modifiers.clone());
+        let mut new_input =
+            get_conundrum_input(content_string.as_str(), state.modifiers.clone(), state.ui_params.clone());
         let children = parse_elements(&mut new_input)?;
 
         let heading = MarkdownHeadingResult { depth: level.len() as u16,

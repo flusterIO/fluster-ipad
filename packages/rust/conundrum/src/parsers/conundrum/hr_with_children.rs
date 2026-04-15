@@ -82,7 +82,7 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
 
         let state = input.state.borrow_mut();
 
-        let mut new_input = get_conundrum_input(res, state.modifiers.clone());
+        let mut new_input = get_conundrum_input(res, state.modifiers.clone(), state.ui_params.clone());
         let elements = parse_elements(&mut new_input)?;
         // WITH_WIFI: Figure out how to call this without throwing reference errors.
         // apply_nested_parser_state(input, &new_input);

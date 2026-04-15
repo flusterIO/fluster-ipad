@@ -11,6 +11,7 @@ use crate::{
             citation_list::CitationList,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
             parse_state::{ConundrumModifier, ParseState},
+            ui_params::UIParams,
         },
     },
     output::{
@@ -44,18 +45,32 @@ pub struct ParseConundrumOptions {
     /// maybe other use cases as well. Any component added here will render
     /// _nothing_, but it's state will still be applied to the result.
     pub hide_components: Vec<EmbeddableComponentName>,
+    pub ui_params: UIParams,
+}
+
+#[allow(clippy::derivable_impls)]
+impl Default for ParseConundrumOptions {
+    fn default() -> Self {
+        Self { note_id: None,
+               content: String::from(""),
+               modifiers: vec![],
+               hide_components: vec![],
+               ui_params: UIParams::default() }
+    }
 }
 
 impl ParseConundrumOptions {
     pub fn new(note_id: Option<String>,
                content: String,
                modifiers: Vec<ConundrumModifier>,
-               hide_components: Vec<EmbeddableComponentName>)
+               hide_components: Vec<EmbeddableComponentName>,
+               ui_params: UIParams)
                -> Self {
         ParseConundrumOptions { note_id,
                                 content,
                                 modifiers,
-                                hide_components }
+                                hide_components,
+                                ui_params }
     }
 }
 
@@ -69,6 +84,7 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
                                                    last_heading_depth: 0,
                                                    last_heading_tab_depth: 0,
                                                    valid_footnote_indices: Vec::new(),
+                                                   ui_params: opts.ui_params.clone(),
                                                    slugger: Slugger::default() }));
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),

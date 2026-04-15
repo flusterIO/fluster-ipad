@@ -20,8 +20,7 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::{object::object::ConundrumObject, string::conundrum_string::ConundrumString},
 };
@@ -79,7 +78,7 @@ impl ConundrumComponent for Tab {
 
 impl JsxComponentResult for Tab {
     fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let label_children = self.label.to_children(res.modifiers.clone())?;
+        let label_children = self.label.to_children(res.modifiers.clone(), res.ui_params.clone())?;
         let j = label_children.to_jsx_prop("label", res)?;
         let mut props = vec![j];
         let label_res = label_children.to_jsx_prop_as_string("labelString", res)?;

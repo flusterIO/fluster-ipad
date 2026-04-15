@@ -9,6 +9,7 @@ use crate::lang::{
         state::{
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
             parse_state::ConundrumModifier,
+            ui_params::UIParams,
         },
         traits::conundrum_input::get_conundrum_input,
     },
@@ -22,7 +23,7 @@ pub struct TitleGroup {
 }
 
 pub fn get_title_group(content: String, modifiers: Vec<ConundrumModifier>) -> ConundrumResult<TitleGroup> {
-    let mut input = get_conundrum_input(content.as_str(), modifiers);
+    let mut input = get_conundrum_input(content.as_str(), modifiers, UIParams::default());
     if let Ok((ems, res)) = parse_conundrum_string(&mut input) {
         let x = ems.par_iter().find_map_first(|em| match em {
                                   ParsedElement::Heading(h) => Some(h),

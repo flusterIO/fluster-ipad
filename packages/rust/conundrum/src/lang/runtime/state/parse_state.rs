@@ -1,9 +1,8 @@
-use dashmap::DashMap;
 use serde::{Deserialize, Serialize};
 use uniffi::Enum;
 
 use crate::{
-    lang::runtime::state::citation_list::CitationList,
+    lang::runtime::state::{citation_list::CitationList, ui_params::UIParams},
     output::{
         general::component_constants::parser_ids::ParserId, parsing_result::mdx_parsing_result::MdxParsingResult,
     },
@@ -105,6 +104,7 @@ pub struct ParseState {
     /// A list of footnote indices that is appended to during parsing, and then
     /// validated against during compilation.
     pub valid_footnote_indices: Vec<u32>,
+    pub ui_params: UIParams,
 }
 
 impl ParseState {

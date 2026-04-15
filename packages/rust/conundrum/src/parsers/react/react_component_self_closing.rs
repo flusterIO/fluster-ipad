@@ -2,7 +2,7 @@ use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
     Parser,
-    ascii::{alphanumeric1, space0},
+    ascii::alphanumeric1,
     combinator::{delimited, repeat},
     stream::{AsChar, Stream},
     token::{literal, take_while},
@@ -14,10 +14,7 @@ use crate::{
     parsers::{
         conundrum::logic::object::object::ConundrumObject,
         javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
-        parser_components::{
-            consume_white_space::{self, consume_white_space},
-            white_space_delimited::white_space_delimited,
-        },
+        parser_components::white_space_delimited::white_space_delimited,
         parser_trait::ConundrumParser,
         parsers_shared::space_or_new_line::space_or_newline0,
         react::{
@@ -100,7 +97,10 @@ impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClos
 // component on the Rust side.
 #[cfg(test)]
 mod tests {
-    use crate::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
+    use crate::lang::runtime::{
+        run_conundrum::{ParseConundrumOptions, run_conundrum},
+        state::ui_params::UIParams,
+    };
 
     use super::*;
 
@@ -117,6 +117,7 @@ My equation <EqRef id="myId" super />."#;
             content: test_content.to_string(),
             modifiers: vec![],
             note_id: None,
+            ui_params: UIParams::default(),
             hide_components: vec![]
             }).await.expect("Parses valid self closing react component without throwing
 an error");

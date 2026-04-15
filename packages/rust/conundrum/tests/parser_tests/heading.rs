@@ -10,9 +10,11 @@ pub async fn parses_title_with_heading() {
     let test_content = get_test_content("title_with_id.mdx");
 
     let res = run_conundrum(ParseConundrumOptions { note_id: None,
-                                              content: test_content.to_string(),
-                                              hide_components: Vec::new(),
-                                              modifiers: Vec::new() }).await.expect("Returns a vald result when a valid input was provided.");
+        content: test_content.to_string(),
+        hide_components: Vec::new(),
+        modifiers: Vec::new(),
+        ..Default::default()
+    }).await.expect("Returns a vald result when a valid input was provided.");
 
     assert!(!res.toc.is_empty(), "Appends the heading to the table of contents.");
     assert!(res.toc.index(0).id == "myIdHere", "Sets the proper id in the table of contents.");

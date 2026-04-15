@@ -21,6 +21,7 @@ use crate::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult, ConundrumResult},
                 parse_state::{ConundrumModifier, ParseState},
+                ui_params::{self, UIParams},
             },
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
@@ -59,8 +60,11 @@ impl ConundrumString {
         ConundrumString(content.to_string())
     }
 
-    pub fn to_children(&self, modifiers: Vec<ConundrumModifier>) -> ConundrumModalResult<Children> {
-        let mut state = get_conundrum_input(&self.0, modifiers);
+    pub fn to_children(&self,
+                       modifiers: Vec<ConundrumModifier>,
+                       ui_params: UIParams)
+                       -> ConundrumModalResult<Children> {
+        let mut state = get_conundrum_input(&self.0, modifiers, ui_params);
         let res = parse_elements(&mut state)?;
         Ok(Children(res))
     }
