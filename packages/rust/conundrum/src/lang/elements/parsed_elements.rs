@@ -27,8 +27,8 @@ use crate::{
         markdown::{
             block_math::BlockMathResult, block_quote::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
-            code_block::code_block::ParsedCodeBlock, heading::MarkdownHeadingResult, inline_code::InlineCodeResult,
-            inline_math::InlineMathResult, italic_text::MarkdownItalicTextResult,
+            code_block::code_block_model::ParsedCodeBlock, heading::MarkdownHeadingResult,
+            inline_code::InlineCodeResult, inline_math::InlineMathResult, italic_text::MarkdownItalicTextResult,
             markdown_extensions::emoji::EmojiResult, markdown_link::MarkdownLinkResult,
             paragraph::MarkdownParagraphResult,
         },

@@ -13,6 +13,7 @@ mod tests {
     #[test]
     fn gets_supported_syntaxes() {
         let res = get_supported_syntaxes();
+        println!("Response: {:#?}", res);
         assert!(!res.is_empty(), "Finds valid syntaxes.");
     }
 }

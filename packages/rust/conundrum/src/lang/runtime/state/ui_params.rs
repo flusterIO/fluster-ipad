@@ -7,11 +7,13 @@ pub struct UIParams {
     pub dark_mode: bool,
     /// A number 0-n, where n > 1 increases the fontsize.
     pub font_scalar: u8,
+    pub syntax_theme: Option<String>,
 }
 
 impl Default for UIParams {
     fn default() -> Self {
         Self { dark_mode: true,
-               font_scalar: 1 }
+               font_scalar: 1,
+               syntax_theme: None }
     }
 }

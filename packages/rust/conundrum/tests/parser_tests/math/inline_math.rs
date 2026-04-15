@@ -1,7 +1,5 @@
 use conundrum::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
 
-use crate::runs_conundrum;
-
 #[tokio::test]
 pub async fn allows_escape_math() {
     let test_content = r#"

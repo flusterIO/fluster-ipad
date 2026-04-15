@@ -16,7 +16,7 @@ use crate::parsers::markdown::block_math::BlockMathResult;
 use crate::parsers::markdown::block_quote::BlockQuoteResult;
 use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextResult;
 use crate::parsers::markdown::bold_text::MarkdownBoldTextResult;
-use crate::parsers::markdown::code_block::code_block::ParsedCodeBlock;
+use crate::parsers::markdown::code_block::code_block_model::ParsedCodeBlock;
 use crate::parsers::markdown::heading::MarkdownHeadingResult;
 use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::inline_math::InlineMathResult;

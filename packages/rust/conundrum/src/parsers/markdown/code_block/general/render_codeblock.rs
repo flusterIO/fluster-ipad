@@ -15,7 +15,7 @@ pub struct RenderCodeToHtmlReq {
 
 /// Renders codeblocks to html using syntec.
 /// The `lang` property must be a valid syntec name.
-pub fn render_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumModalResult<String> {
+pub fn render_general_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumModalResult<String> {
     let ss = match req.code.inline {
         true => SyntaxSet::load_defaults_newlines(),
         false => SyntaxSet::load_defaults_nonewlines(),
@@ -26,11 +26,14 @@ pub fn render_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumModalResul
     })?;
 
     let theme_sets = ThemeSet::load_defaults();
-    let theme = &theme_sets.themes["base16-ocean.dark"];
+    let theme = &theme_sets.themes[req.code.theme.unwrap_or("base16-ocean.dark".to_string()).as_str()];
 
-    let x = highlighted_html_for_string(req.code.content.as_str(), &ss, syntax, theme);
+    let x = highlighted_html_for_string(req.code.content.as_str(), &ss, syntax, theme).map_err(|e| {
+        eprintln!("Error: {:#?}", e);
+        ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid syntax name", "Conundrum failed to parse a provided codeblock.")))
+    })?;
 
-    Ok(String::from(""))
+    Ok(x)
 }
 
 #[cfg(test)]
@@ -47,6 +50,8 @@ class MyDataclass:
     def __post_init__(self):
         print(self)
             "#;
-        let r = render_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content: test_content.to_string(), lang: "python".to_string(), theme: Some("base16-ocean.dark".to_string()), inline: false } });
+        let res = render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content: test_content.to_string(), lang: "Python".to_string(), theme: Some("base16-ocean.dark".to_string()), inline: false } }).expect("Successfully highlights a python codeblock.");
+
+        println!("Res: {:#?}", res);
     }
 }

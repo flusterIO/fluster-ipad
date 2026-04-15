@@ -6,7 +6,7 @@ use crate::{
         },
         parsing_result::{dictionary_result::DictionaryEntryResult, mdx_parsing_result::MdxParsingResult},
     },
-    parsers::markdown::code_block::code_block::ParsedCodeBlock,
+    parsers::markdown::code_block::code_block_model::ParsedCodeBlock,
 };
 
 pub fn get_dictionary_content(block: &ParsedCodeBlock, res: &mut MdxParsingResult) -> String {
