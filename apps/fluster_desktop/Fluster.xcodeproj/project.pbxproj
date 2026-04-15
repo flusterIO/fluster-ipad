@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		79274F642F8DA33700357D75 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEDD2F1992BC00A82F5A /* FlusterMdx */; };
+		79274F652F8DA33700357D75 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEE02F19930200A82F5A /* FlusterData */; };
+		79274F662F8DA33700357D75 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79CB00712F4000F700C7BDFB /* FlusterWebviewClients */; };
+		79274F672F8DA33700357D75 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4642F4A489100F8194A /* FlusterMdx */; };
+		79274F682F8DA33700357D75 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4672F4A48AF00F8194A /* FlusterWebviewClients */; };
+		79274F692F8DA33700357D75 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD46A2F4A492100F8194A /* FlusterSwift */; };
 		7931B9F42F6F4C8E003B5C56 /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79DFBB632F58980100DA7C4E /* FlusterAI */; };
 		7947AB222F5358C0009CEA5E /* standalone_mdx_preview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB212F5358C0009CEA5E /* standalone_mdx_preview_mac */; };
 		7947AB242F5363A2009CEA5E /* splitview_mdx_editor_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB232F5363A2009CEA5E /* splitview_mdx_editor_mac */; };
@@ -95,6 +101,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79274F692F8DA33700357D75 /* FlusterSwift in Frameworks */,
+				79274F682F8DA33700357D75 /* FlusterWebviewClients in Frameworks */,
+				79274F672F8DA33700357D75 /* FlusterMdx in Frameworks */,
+				79274F662F8DA33700357D75 /* FlusterWebviewClients in Frameworks */,
+				79274F652F8DA33700357D75 /* FlusterData in Frameworks */,
+				79274F642F8DA33700357D75 /* FlusterMdx in Frameworks */,
 				7931B9F42F6F4C8E003B5C56 /* FlusterAI in Frameworks */,
 				79C6BD362F6A0ACC00916BE7 /* ConundrumSwift in Frameworks */,
 				79C6BD3C2F6A0AE500916BE7 /* FlusterWebviewClients in Frameworks */,
@@ -287,6 +299,7 @@
 				79C6BD3D2F6A0B0400916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */,
 				79C6BD402F6A0B2600916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
 				79C6BD432F6A0B3C00916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterMdx" */,
+				792750792F8FE22C00357D75 /* XCRemoteSwiftPackageReference "starscream" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 798752EB2F1810B90055ABF1 /* Products */;
@@ -734,6 +747,17 @@
 			relativePath = ../../packages/swift/FlusterMdx;
 		};
 /* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		792750792F8FE22C00357D75 /* XCRemoteSwiftPackageReference "starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/starscream";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.8;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		794FD4642F4A489100F8194A /* FlusterMdx */ = {

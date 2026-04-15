@@ -16,8 +16,6 @@ export const TabGroupButton = ({ item, isLast, idx }: TabGroupButtonProps): Reac
     const dispatch = useEmbeddableTabGroupDispatch()
     const { focusedIndex, activeTabClasses, subtle, lastIndex } = useEmbeddableTabGroupContext()
 
-    console.log("subtle: ", subtle)
-
     if (!subtle) {
         return (
             <button

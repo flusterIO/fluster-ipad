@@ -283,6 +283,15 @@ const items: ComponentMapItem[] = [
     },
     // --- AUTO-INSERTED ---
     {
+        query: [AutoInsertedComponentName.AutoInsertedCodeBlock],
+        componentType: ComponentItemType.autoInserted,
+        importComponent: async () => {
+            return await new Promise((resolveComponent) => {
+                resolveComponent(AutoInsertedCodeBlock);
+            })
+        }
+    },
+    {
         query: [AutoInsertedComponentName.NoteLink],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {

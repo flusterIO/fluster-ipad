@@ -11,76 +11,91 @@ import FlusterData
 import FoundationModels
 import SwiftUI
 
-public typealias EvalJavascriptFunc = @Sendable (String) async throws -> Sendable?
+// 1. PIN THE TYPEALIAS TO THE MAIN ACTOR
+// This ensures that the closure body is always isolated to the main thread.
+public typealias EvalJavascriptFunc = @MainActor @Sendable (String) async throws -> Sendable?
 
 public struct GenerateAINoteSummaryButton: View {
   public var editingNote: NoteModel?
   public var evalJs: EvalJavascriptFunc
-  @AppStorage(AppStorageKeys.userPreferredName.rawValue) private var userPreferredName: String?
+
+  @AppStorage(AppStorageKeys.userPreferredName.rawValue)
+  private var userPreferredName: String?
+
   @State private var summary: String.PartiallyGenerated? = nil
+
   public init(
     editingNote: NoteModel?,
-      evalJavascript: @escaping EvalJavascriptFunc
+    evalJavascript: @escaping EvalJavascriptFunc
   ) {
     self.editingNote = editingNote
     self.evalJs = evalJavascript
   }
+
   public var body: some View {
-    var summaryShowing: Binding<Bool> {
-      Binding(
-        get: {
-          self.summary != nil
-        },
-        set: { newShowing in
-          if !newShowing {
-            self.summary = nil
-          }
-        })
+    Button(action: {
+      performSummaryGeneration()
+    }) {
+      Label(
+        title: { Text("Summarize") },
+        icon: { Image(systemName: "pencil") }
+      )
     }
-    Button(
-      action: {
-        Task {
-          do {
-            if let en = editingNote {
-              let session = getNoteSummaryLanguageModelSession(
-                AIUserDetails(preferred_name: userPreferredName))
-              let content = try await en.markdown.body.conundrumToAIInput(
-                noteId: en.id)
-              let res = try await session.streamResponse(to: Prompt(content))
-              var isInitial = true
-              for try await partiallyGeneratedSummary in res {
-                self.summary = partiallyGeneratedSummary.content
-                let parsedContent = try await ConundrumSwift.runConundrum(
-                  options: ParseConundrumOptions(
-                    noteId: editingNote?.id, content: partiallyGeneratedSummary.content,
-                    modifiers: [.preferMarkdownSyntax], hideComponents: []))
-                let serializedString = parsedContent.content.toFlatBufferSerializedString()
-                  // WITH_WIFI: Figure out how to run this on the main thread.
-//                await MainActor.run(body: {
-//                  try await evalJs(
-//                    """
-//                    window.sendNoteSummaryStream(\(serializedString), \(isInitial ? "true" : "false")
-//                    """)
-//                })
-                isInitial = false
-              }
-            } else {
-              // Show user notification here.
+  }
+
+  private func performSummaryGeneration() {
+    guard let note = editingNote else { return }
+
+    let noteId = note.id
+    let preferredName = userPreferredName
+
+    // Start background processing
+    Task {
+      do {
+        let session = getNoteSummaryLanguageModelSession(
+          AIUserDetails(preferred_name: preferredName)
+        )
+
+        let inputContent = try await note.markdown.body.conundrumToAIInput(noteId: noteId)
+        let responseStream = try await session.streamResponse(to: Prompt(inputContent))
+
+        var isInitial = true
+
+        for try await partial in responseStream {
+          // Keep heavy work on the background thread
+          let options = ParseConundrumOptions(
+            noteId: noteId,
+            content: partial.content,
+            modifiers: [.preferMarkdownSyntax],
+            hideComponents: []
+          )
+
+          let parsed = try await ConundrumSwift.runConundrum(options: options)
+          let serializedString = parsed.content.toFlatBufferSerializedString()
+
+          let isFirstChunk = isInitial
+          isInitial = false
+
+          // Construct the JS string on the background thread
+          let js = "window.sendNoteSummaryStream(\(serializedString), \(isFirstChunk))"
+
+          // 2. DISPATCH TO MAIN ACTOR
+          // Because 'evalJs' is now @MainActor, this call is guaranteed safe.
+          Task { @MainActor in
+            // Update UI state
+            self.summary = partial.content
+
+            do {
+              // This call will no longer trigger a Main Thread warning
+              _ = try await evalJs(js)
+            } catch {
+              print("JS Stream Error: \(error)")
             }
-          } catch {
-            print("Error: \(error.localizedDescription)")
           }
         }
-      },
-      label: {
-        Label(
-          title: {
-            Text("Summarize")
-          },
-          icon: {
-            Image(systemName: "pencil")
-          })
+      } catch {
+        print("Generation failed: \(error.localizedDescription)")
       }
-    )
+    }
   }
 }

@@ -7,7 +7,6 @@ import React, { type HTMLProps, useRef, useState, type ReactNode } from 'react'
 import { type BundledLanguage } from 'shiki'
 
 
-
 export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLProps<HTMLPreElement>): ReactNode => {
     const [hovered, setHovered] = useState(false)
     const ref = useRef<HTMLPreElement | null>(null)

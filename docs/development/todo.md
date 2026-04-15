@@ -28,12 +28,16 @@
 
 ## Missing or Incomplete Parsers
 
+- [ ] CodeBlock
+  - [ ] Check for meta string without `--` and alert user.
 - [ ] Footnote
 - [ ] Table (GFM if it's not a performance hit)
 - [ ] Strikethrough text
 - [ ] Escapable math blocks.
 - [ ] Escapable strings
 - [ ] Paragraphs (reimplemented)
+- [ ] Line Item
+  - [ ] With various checked states: `[?]`, `[x]`, `[-]`, `[ ]`, `[$stateVariable]`, etc...
 - [ ] `[My link](myId@10:30:00)` timestamp link syntax.
 
 ---
@@ -125,25 +129,6 @@
 - [ ] Handle React property parsers so that the components can be more reliably parsed and the input more reliably inserted into AI. This will open the door to a **TON** new possibilities.
 
 ## Offline
-
-**_PRIORITY:_** Handle this issue with the editor instances first.
-
-- [x] Review Conundrum docs... you were spaced out as shit.
-- [x] Handle inline-code parser. Make sure it's last in the list, but it's required to document the note id syntax.
-- [x] Setup a unique error enum for Conundrum
-- [x] Handle slugger implementation for _all_ headings. Generate an id during the parsing stage if none exists.
-- [x] Move rest of components over to Rust.
-  - [x] Move away from `ComponentProps` struct as the types will be known and the type conversions would be unnecessary. It's better to keep things typed if they're coming in typed.
-- [x] Finish move of `ParsedJavascriptElement` to `ParsedElement` so that jsx properties can be expanded to contain all kinds of variables. There's no reason to be limited by the rules of jsx anymore.
-- [x] Handle pre-parsing of documentation and initial docs with new internal cli method. It's already in place, you just need to write the script to call it.
-- [x] Fix issue with Safari keeping around 20 instances of the editor view.
-- [x] Handle issue with command palette not changing a variety of different state fields when the editor is focused, requiring a user navigation away from an then back to the editor page to see the changes.
-- [x] Handle actual setting of component properties now that we're parsing the entire fucking component. Nothing is getting through now that doesn't go through the compiler, so it's crucial that everything is actualy _reset_ back to mdx.
-- [x] Handle math output issue with _this_ snapshot:
-
-```jsx
-$<span className=\"conundrum-math conundrum-math-inline\">\n    e=mc^2\n  </span>$\n  </Tab>\n</Tabs>\n
-```
 
 - [ ] Fix issue with this syntax. It's currently trying to implement an italic field in the title.
 
