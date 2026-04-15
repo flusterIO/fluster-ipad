@@ -1,11 +1,10 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any -- No need to type library stuff */
 import { compile } from "@mdx-js/mdx";
 import type { CompileOptions } from "@mdx-js/mdx";
-import remarkMath from "remark-math";
+/* import remarkMath from "remark-math"; */
 import remarkGfm from "remark-gfm";
-import rehypeMathjax from "rehype-mathjax/chtml";
+/* import rehypeMathjax from "rehype-mathjax/chtml"; */
 import rehypePrettyCode from "rehype-pretty-code";
-import emoji from "remark-emoji";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 import { CodeEditorTheme } from "@/code_gen/typeshare/fluster_core_utilities";
 import { type BundledTheme } from "shiki";
@@ -85,7 +84,7 @@ const codeThemeStringToThemeName = (input: CodeEditorTheme): BundledTheme => {
 const rehypePlugins = ({
     lightCodeTheme,
     darkCodeTheme,
-    mathjaxFontUrl
+    /* mathjaxFontUrl */
 }: RehypePluginProps): CompileOptions["rehypePlugins"] => {
     const darkMode = document
         .getElementById("webview-container")
@@ -93,13 +92,13 @@ const rehypePlugins = ({
     // let shikiTransformers = await getShikiTransformers(config)
     return [
         /* TODO: Add an embeded video component for this rehypeVideo that then utilizes the existing video element. */
-        [rehypeMathjax as any, {
-            ...mathOptions,
-            chtml: {
-                ...mathOptions.chtml,
-                fontURL: mathjaxFontUrl
-            }
-        }],
+        /* [rehypeMathjax as any, { */
+        /*     ...mathOptions, */
+        /*     chtml: { */
+        /*         ...mathOptions.chtml, */
+        /*         fontURL: mathjaxFontUrl */
+        /*     } */
+        /* }], */
         [
             rehypeMermaid,
             {
@@ -154,7 +153,7 @@ const rehypePlugins = ({
 
 const remarkPlugins = (): /* config?: AppConfigSchemaOutput, */
     CompileOptions["remarkPlugins"] => {
-    return [remarkMath, remarkGfm, emoji];
+    return [remarkGfm];
 };
 
 export const parseMdxString = async ({

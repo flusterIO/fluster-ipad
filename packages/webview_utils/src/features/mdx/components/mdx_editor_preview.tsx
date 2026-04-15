@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import consola from "consola";
 import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
 import { ConundrumErrorListener } from "./conundrum_error_listener";
+import { SummaryStreamContainer } from "#/ai/presentation/tasks/summary_stream/summary_stream_container";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -95,6 +96,7 @@ export const MdxEditorPreview = connector(({
                 mdx={parsedValue}
                 showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
             />
+            <SummaryStreamContainer />
         </ErrorBoundary>
     );
 });

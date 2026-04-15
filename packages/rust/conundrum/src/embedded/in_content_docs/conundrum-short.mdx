@@ -17,7 +17,7 @@ Along with this object there is a primary `content` property that is compiled ba
 
 | Flags | Description |
 | ----- | ----------- |
-| `.preferMarkdownSyntax` | For now just removes all jsx components to allow the note to be rendered in markdown based applications, but will soon come with a special Markdown renderer for most internal components so that things like the title of an admonition isn't lost. |
+| `.preferMarkdownSyntax` | Each component can render in a variety of formats including regular, commonmark compatible markdown. |
 | `.forAIInput` | Similar to `.preferMarkdownSyntax`, but this is set specifically when the output is meant to be consumed by AI. |
 | `.preferPlainText` | Output the note to plain text. Useful for things like full-text search without the markdown and jsx syntax getting in the way. |
 
@@ -45,6 +45,6 @@ Try adding a React component to your title, something like:
 # My title <Hl>here</Hl>
 ```
 
-And then take a look at your dashboard! The title should look like the `Hl` component isn't even there, despite the fact that Swift can't render the component directly. The transpiler is actually stripping away the component, with each component having it's own syntax unique to each environment. This means that your notes will remain compatible with _any_ markdown based note taking application, should you choose to switch to another platform. The transpiler is _already_ powering [Fluster](https://flusterapp.com), it'll just take another few weeks to write the tools to convert your notes... my to-do list is **long.**
+And then take a look at your dashboard! The title should look like the `Hl` component isn't even there, despite the fact that Swift can't render the component directly. Instead, the compiler converted the `Hl` component to italicized text, a syntax supported in regular markdown. You can even change the way the component renders to markdown specifically with the `markdown` property. This means that your notes will remain compatible with _any_ markdown based note taking application, should you choose to switch to another platform. The transpiler is _already_ powering [Fluster](https://flusterapp.com), it'll just take another few weeks to write the tools to convert your notes... my to-do list is **long**, and still being borderline homeless is slowing progress _a lot_.
 
 Perhaps the best part is that features like this documentation syntax is built directly into the language. Maybe if this application takes off we can afford to have someone more capable write it for version 2.

@@ -618,6 +618,18 @@ public struct RemoveBannerNotificationByIdAction: Codable {
 	}
 }
 
+public struct SendGeneratedSummaryUserResponse: Codable {
+	public let note_id: String
+	public let content: String
+	public let accepted: Bool
+
+	public init(note_id: String, content: String, accepted: Bool) {
+		self.note_id = note_id
+		self.content = content
+		self.accepted = accepted
+	}
+}
+
 public enum AiAction: String, Codable {
 	case setAiThinking = "set-ai-thinking"
 	case setFoundationModelAvailability = "set-foundation-model-avail"
@@ -1062,8 +1074,20 @@ public struct SetWebviewFontSizeAction: Codable {
 	}
 }
 
+public struct StreamGeneratedSummaryAction: Codable {
+	public let note_id: String
+	public let content: String
+
+	public init(note_id: String, content: String) {
+		self.note_id = note_id
+		self.content = content
+	}
+}
+
 public enum AiStateEvents: String, Codable {
 	case sendGeneralAiRequestPhase2 = "send-general-ai-request-phase-2"
+	case streamGeneratedSummary = "stream-generated-summary"
+	case setGeneratedSummaryAcceptance = "generated-summary-acceptance"
 }
 
 public enum AutoTaggableType: String, Codable {

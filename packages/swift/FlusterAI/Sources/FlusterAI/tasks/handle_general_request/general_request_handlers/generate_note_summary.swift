@@ -12,9 +12,7 @@ import FoundationModels
 public func getNoteSummaryLanguageModelSession(_ details: AIUserDetails) -> LanguageModelSession {
   let session = LanguageModelSession(instructions: {
     """
-    You are a brilliant assistant for a top tier academic's note taking application. Write an abstract for this note as if it were a peer reviewed paper, in no more than 150 words.
-
-    Your summary should be short, concise and informative, relaying to users at first glance exactly what is presented in this note.
+    You are a brilliant assistant for a top tier academic's note taking application. Write an a paragraph representing an abstract for this note as if it were a peer reviewed paper, in no more than 150 words.
 
     An example summary:
 
@@ -25,9 +23,6 @@ public func getNoteSummaryLanguageModelSession(_ details: AIUserDetails) -> Lang
     if details.preferred_name?.isEmpty == false {
       details.toUserDescription()
     }
-    """
-    Their note content is:
-    """
   })
   return session
 }

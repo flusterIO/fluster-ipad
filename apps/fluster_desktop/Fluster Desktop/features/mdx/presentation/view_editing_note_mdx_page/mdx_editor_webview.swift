@@ -105,7 +105,8 @@ struct MdxEditorWebview: View {
         ToolbarItem(
           placement: .destructiveAction,
           content: {
-            GenerateAINoteSummaryButton(editingNote: editingNote)
+            GenerateAINoteSummaryButton(
+              editingNote: editingNote, evalJavascript: webView.evaluateJavaScript)
           }
         )
         ToolbarItem(

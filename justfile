@@ -134,7 +134,7 @@ build_fluster_core_rust_utilities: build_cross_language_all
 
 
 # Add `build_fluster_wasm` back to the end in here once the fucking internet isnt stopping the build
-build_webview_utils: build_cross_language_all build_fluster_lezer gather_component_docs build_fluster_wasm
+build_webview_utils: build_cross_language_all build_fluster_lezer gather_component_docs
 	pnpm run -C packages/webview_utils build
 
 build_dictionary_webview: build_cross_language_all build_webview_utils

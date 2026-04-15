@@ -25,7 +25,7 @@ export const TabGroupButton = ({ item, isLast, idx }: TabGroupButtonProps): Reac
                 })
             }}
             aria-disabled={idx === focusedIndex}
-            className={cn("px-2 flex-grow-1 px-3 py-1 border cursor-pointer text-nowrap text-left", idx === 0 && "rounded-tl", isLast && "rounded-tr", idx === focusedIndex && activeTabClasses)}>{item.label}</button>
+            className={cn("px-2 flex-grow-1 px-3 py-1 border cursor-pointer text-nowrap text-left transition-colors duration-300", idx === 0 && "rounded-tl", isLast && "rounded-tr", idx === focusedIndex && activeTabClasses)}>{item.label}</button>
     )
 }
 

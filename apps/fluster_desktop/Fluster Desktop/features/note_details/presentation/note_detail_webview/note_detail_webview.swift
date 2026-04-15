@@ -47,7 +47,7 @@ struct NoteDetailWebview: View {
     }
   }
   var body: some View {
-    if editingNote != nil {
+    if editingNote != nil && editingNoteId != nil {
       WebViewContainerView(
         implementation: WebviewImplementation.noteDetails,
         editingNoteId: editingNoteId,

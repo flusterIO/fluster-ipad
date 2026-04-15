@@ -397,6 +397,12 @@ export interface RemoveBannerNotificationByIdAction {
 	payload: RemoveBannerNotificationByIdPayload;
 }
 
+export interface SendGeneratedSummaryUserResponse {
+	note_id: string;
+	content: string;
+	accepted: boolean;
+}
+
 export enum AiAction {
 	SetAiThinking = "set-ai-thinking",
 	SetFoundationModelAvailability = "set-foundation-model-avail",
@@ -639,8 +645,15 @@ export interface SetWebviewFontSizeAction {
 	payload: SetWebviewFontSizePayload;
 }
 
+export interface StreamGeneratedSummaryAction {
+	note_id: string;
+	content: string;
+}
+
 export enum AiStateEvents {
 	SendGeneralAiRequestPhase2 = "send-general-ai-request-phase-2",
+	StreamGeneratedSummary = "stream-generated-summary",
+	SetGeneratedSummaryAcceptance = "generated-summary-acceptance",
 }
 
 export enum AutoTaggableType {
