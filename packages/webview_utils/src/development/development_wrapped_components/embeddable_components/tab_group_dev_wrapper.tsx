@@ -17,7 +17,7 @@ const FakeTab = (): ReactNode => {
 
 export const TabGroupDevWrapper = (): ReactNode => {
     return (
-        <WrappedEmbeddableTabGroup card>
+        <WrappedEmbeddableTabGroup primary subtle>
             <FakeTab />
             <FakeTab />
             <FakeTab />

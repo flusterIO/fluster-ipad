@@ -1,8 +1,10 @@
 import { Emphasis, emphasisBackgroundTransform, emphasisSchema } from "../schemas/emphasis_schema";
 import { getSizableObjectClasses, sizableObjectSchema } from "../schemas/sizable_object_schema";
-import { type z } from "zod"
+import { z } from "zod"
 
-export const tabGroupComponentProps = sizableObjectSchema.merge(emphasisSchema).transform((c) => {
+export const tabGroupComponentProps = sizableObjectSchema.merge(emphasisSchema).extend({
+    subtle: z.boolean().optional(),
+}).transform((c) => {
     return {
         ...c,
         containerClasses: getSizableObjectClasses(c),

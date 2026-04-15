@@ -7,14 +7,17 @@ export interface EmbeddableTabGroupState {
     tabs: EmbeddableTabItem[],
     focusedIndex: number,
     activeTabClasses: string,
+    lastIndex: number | null,
     /// Use for making sure actions are uniquely applied to the tabgroup that they're orginated from.
     tabGroupId: string
+    subtle?: boolean
 }
 
-const defaultInitialValues: Omit<EmbeddableTabGroupState, "activeTabClasses"> = {
+const defaultInitialValues: Omit<EmbeddableTabGroupState, "activeTabClasses" | "subtle"> = {
     tabs: [],
     focusedIndex: 0,
-    tabGroupId: ""
+    tabGroupId: "",
+    lastIndex: null
 }
 
 export const EmbeddableTabGroupContext = createContext<EmbeddableTabGroupState>({ ...defaultInitialValues, activeTabClasses: "" });
@@ -28,6 +31,9 @@ type EmbeddableTabGroupContextActions = { type: "addTab", payload: EmbeddableTab
 } | {
     type: "setFocusedTabIndex",
     payload: number
+} | {
+    type: "setSubtle",
+    payload: boolean
 };
 
 /* eslint-disable-next-line  -- It won't be null for long... */
@@ -58,7 +64,14 @@ export const EmbeddableTabGroupContextReducer = (state: EmbeddableTabGroupState,
         case "setFocusedTabIndex": {
             return {
                 ...state,
+                lastIndex: state.focusedIndex,
                 focusedIndex: action.payload
+            }
+        }
+        case "setSubtle": {
+            return {
+                ...state,
+                subtle: action.payload
             }
         }
         default: {
@@ -71,7 +84,7 @@ EmbeddableTabGroupContextReducer.displayName = "EmbeddableTabGroupContextReducer
 
 interface EmbeddableTabGroupProviderProps {
     children: ReactNode
-    initialValues: Partial<EmbeddableTabGroupState> & { activeTabClasses: string, tabGroupId: string }
+    initialValues: Partial<EmbeddableTabGroupState> & { activeTabClasses: string, tabGroupId: string, subtle: boolean }
 }
 
 export const EmbeddableTabGroupProvider = ({ children, initialValues }: EmbeddableTabGroupProviderProps) => {

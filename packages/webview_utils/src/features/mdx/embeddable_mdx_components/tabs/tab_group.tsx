@@ -95,7 +95,8 @@ export const WrappedEmbeddableTabGroup = ({ children, ..._props }: EmbeddableTab
         <EmbeddableTabGroupProvider
             initialValues={{
                 activeTabClasses: props.buttonClasses,
-                tabGroupId: v4()
+                tabGroupId: v4(),
+                subtle: props.subtle ?? false
             }}
         >
             <EmbeddableTabGroup {...props}>
