@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
@@ -12,6 +14,7 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
+        lib::ui::ui_traits::jsx_prop_representable::JsxPropRepresentable,
         runtime::{
             state::{
                 conundrum_error_variant::ConundrumModalResult,
@@ -35,12 +38,13 @@ use crate::{
         },
     },
     parsers::{
-        conundrum::logic::{
-            object::object::ConundrumObject, string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
-        },
-        markdown::code_block::general::{
-            general_codeblock::GeneralPresentationCodeBlock,
-            render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
+        conundrum::logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
+        markdown::code_block::{
+            general::{
+                general_codeblock::GeneralPresentationCodeBlock,
+                render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
+            },
+            supported_languages::SupportedCodeBlockSyntax,
         },
         parser_trait::ConundrumParser,
     },
@@ -49,7 +53,7 @@ use crate::{
 #[typeshare]
 #[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug)]
 pub struct ParsedCodeBlock {
-    pub language: ConundrumString,
+    pub language: SupportedCodeBlockSyntax,
     pub meta_data: Option<String>,
     pub depth: u8,
     pub content: String,
@@ -83,15 +87,18 @@ impl MarkdownComponentResult for ParsedCodeBlock {
                    "{}{}
 {}
 {}",
-                   tick_string, self.language.0, self.content, tick_string
+                   tick_string,
+                   self.language.markdown_representation(),
+                   self.content,
+                   tick_string
         ))
     }
 }
 
 impl ConundrumComponentResult for ParsedCodeBlock {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        match self.language.0.as_str() {
-            "dictionary" => {
+        match self.language {
+            SupportedCodeBlockSyntax::Dictionary => {
                 if res.should_ignore_parser(&ParserId::Dictionary) {
                     return Ok(self.full_match.clone());
                 }
@@ -99,7 +106,7 @@ impl ConundrumComponentResult for ParsedCodeBlock {
                 // Extract the metadata or provide a fallback
                 Ok(get_dictionary_content(self, &mut res.data))
             }
-            "fluster-ai" => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
+            SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
             _ => {
                 if res.data.ignore_all_parsers {
                     Ok(self.full_match.clone())
@@ -119,8 +126,8 @@ impl ConundrumComponentResult for ParsedCodeBlock {
 
 impl MdxComponentResult for ParsedCodeBlock {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        match self.language.0.as_str() {
-            "dictionary" => {
+        match self.language {
+            SupportedCodeBlockSyntax::Dictionary => {
                 if res.should_ignore_parser(&ParserId::Dictionary) {
                     return Ok(self.full_match.clone());
                 }
@@ -128,10 +135,9 @@ impl MdxComponentResult for ParsedCodeBlock {
                 // Extract the metadata or provide a fallback
                 Ok(get_dictionary_content(self, &mut res.data))
             }
-            "fluster-ai" => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
+            SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
             _ => {
-                let mut props =
-                    vec![self.language.to_jsx_prop_as_string("language").unwrap_or_else(|_| self.language.0.clone())];
+                let mut props = vec![self.language.to_jsx_prop("language")];
                 #[allow(clippy::collapsible_if)]
                 if let Some(x) = self.get_meta_data() {
                     if let Some(title_em) = x.data.get("title") {
@@ -152,7 +158,7 @@ impl MdxComponentResult for ParsedCodeBlock {
                 let highlighted_content = render_general_codeblock_to_html(RenderCodeToHtmlReq {
                     code: GeneralPresentationCodeBlock {
                         content: self.content.clone(),
-                        lang: self.language.0.clone(),
+                        lang: self.language.clone(),
                         theme: res.ui_params.syntax_theme.clone(),
                         inline: false
                     }
@@ -180,7 +186,11 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                                                                                       input.input.reset(&cp);
                                                                                   })?;
                 let language =
-                    take_while(1.., |c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r').parse_next(input)?;
+                    take_while(1.., |c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r').verify_map(|s: &'a str| {
+                        let _s = SupportedCodeBlockSyntax::format_string_for_key(s);
+                        SupportedCodeBlockSyntax::from_str(_s.as_str()).ok()
+                    })
+                    .parse_next(input)?;
 
                 let meta_opt = combinator::opt(|input: &mut ConundrumInput<'a>| {
                                    let _ = space1.parse_next(input)?;
@@ -215,7 +225,7 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
               .parse_next(input)?;
 
         let meta_data = meta_opt.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
-        Ok(ParsedCodeBlock { language: ConundrumString(language.to_string()),
+        Ok(ParsedCodeBlock { language,
                              meta_data,
                              depth: tick_length as u8,
                              content: raw_content.to_string(),

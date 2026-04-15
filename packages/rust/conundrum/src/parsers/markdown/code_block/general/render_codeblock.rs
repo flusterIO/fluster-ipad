@@ -21,7 +21,7 @@ pub fn render_general_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumMo
         false => SyntaxSet::load_defaults_nonewlines(),
     };
 
-    let syntax = ss.find_syntax_by_name(req.code.lang.as_str()).ok_or_else(|| {
+    let syntax = ss.find_syntax_by_name(req.code.lang.to_string().as_str()).ok_or_else(|| {
             ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid syntax name", "Conundrum found an invalid syntax name, or a language that is not supported by the syntec highlighter.")))
     })?;
 
@@ -38,6 +38,8 @@ pub fn render_general_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumMo
 
 #[cfg(test)]
 mod tests {
+    use crate::parsers::markdown::code_block::supported_languages::SupportedCodeBlockSyntax;
+
     use super::*;
 
     #[test]
@@ -50,7 +52,7 @@ class MyDataclass:
     def __post_init__(self):
         print(self)
             "#;
-        let res = render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content: test_content.to_string(), lang: "Python".to_string(), theme: Some("base16-ocean.dark".to_string()), inline: false } }).expect("Successfully highlights a python codeblock.");
+        let res = render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content: test_content.to_string(), lang: SupportedCodeBlockSyntax::Python, theme: Some("base16-ocean.dark".to_string()), inline: false } }).expect("Successfully highlights a python codeblock.");
 
         println!("Res: {:#?}", res);
     }

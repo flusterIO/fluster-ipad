@@ -1,8 +1,18 @@
 use serde::{Deserialize, Serialize};
 use strum::EnumIter;
 
+use crate::lang::lib::ui::ui_traits::jsx_prop_representable::JsxPropRepresentable;
+
 /// All keys must be cast to lowercase and all `_` replaced with `-`.
-#[derive(Serialize, Deserialize, strum_macros::Display, EnumIter)]
+#[typeshare::typeshare]
+#[derive(Serialize,
+           Deserialize,
+           strum_macros::Display,
+           strum_macros::EnumString,
+           EnumIter,
+           uniffi::Enum,
+           Clone,
+           Debug)]
 pub enum SupportedCodeBlockSyntax {
     #[serde(rename = "Plain Text", alias = "text", alias = "txt")]
     #[strum(to_string = "Plain Text")]
@@ -245,4 +255,110 @@ pub enum SupportedCodeBlockSyntax {
     #[serde(rename = "YAML", alias = "yaml")]
     #[strum(to_string = "YAML")]
     YAML,
+    // Conundrum specific blocks
+    #[serde(rename = "conundrum-ai", alias = "fluster-ai")]
+    #[strum(to_string = "conundrum-ai")]
+    ConundrumAi,
+    #[serde(rename = "dictionary")]
+    #[strum(to_string = "dictionary")]
+    Dictionary,
+}
+
+impl SupportedCodeBlockSyntax {
+    pub fn format_string_for_key(val: &str) -> String {
+        val.trim().to_lowercase().replace("_", "-")
+    }
+
+    /// Since markdown rendering is completely left up to the platform, and with
+    /// that, the languages they support and the keys that they use, this
+    /// function attempts to sacrifice some highlighter accuracy for some
+    /// more generic syntaxes that are more likely to be
+    /// supported elsewhere.
+    pub fn markdown_representation(&self) -> String {
+        match self {
+            SupportedCodeBlockSyntax::PlainText => "text".to_string(),
+            SupportedCodeBlockSyntax::ASP => "asp".to_string(),
+            SupportedCodeBlockSyntax::HTML_ASP => "html".to_string(),
+            SupportedCodeBlockSyntax::ActionScript => "actionscript".to_string(),
+            SupportedCodeBlockSyntax::AppleScript => "applescript".to_string(),
+            SupportedCodeBlockSyntax::BatchFile => "batchfile".to_string(),
+            SupportedCodeBlockSyntax::NAntBuildFile => "nantbuildfile".to_string(),
+            SupportedCodeBlockSyntax::CSharp => "c#".to_string(),
+            SupportedCodeBlockSyntax::Cpp => "c++".to_string(),
+            SupportedCodeBlockSyntax::C => "c".to_string(),
+            SupportedCodeBlockSyntax::CSS => "css".to_string(),
+            SupportedCodeBlockSyntax::Clojure => "clojure".to_string(),
+            SupportedCodeBlockSyntax::D => "d".to_string(),
+            SupportedCodeBlockSyntax::Diff => "diff".to_string(),
+            SupportedCodeBlockSyntax::Erlang => "erlang".to_string(),
+            SupportedCodeBlockSyntax::HTML_Erlang => "html".to_string(),
+            SupportedCodeBlockSyntax::Go => "go".to_string(),
+            SupportedCodeBlockSyntax::GraphvizDOT => "graphviz".to_string(),
+            SupportedCodeBlockSyntax::Groovy => "groovy".to_string(),
+            SupportedCodeBlockSyntax::HTML => "html".to_string(),
+            SupportedCodeBlockSyntax::Haskell => "haskell".to_string(),
+            SupportedCodeBlockSyntax::LiterateHaskell => "haskell".to_string(),
+            SupportedCodeBlockSyntax::JavaServerPage => "java".to_string(),
+            SupportedCodeBlockSyntax::Java => "java".to_string(),
+            SupportedCodeBlockSyntax::JavaDoc => "javadoc".to_string(),
+            SupportedCodeBlockSyntax::JavaProperties => "java-properties".to_string(),
+            SupportedCodeBlockSyntax::JSON => "json".to_string(),
+            SupportedCodeBlockSyntax::JavaScript => "javascript".to_string(),
+            SupportedCodeBlockSyntax::RegularExpressionsJavascript => "regexp".to_string(),
+            SupportedCodeBlockSyntax::BibTeX => "bibtex".to_string(),
+            SupportedCodeBlockSyntax::LaTeXLog => "latexlog".to_string(),
+            SupportedCodeBlockSyntax::LaTeX => "latex".to_string(),
+            SupportedCodeBlockSyntax::TeX => "tex".to_string(),
+            SupportedCodeBlockSyntax::Lisp => "lisp".to_string(),
+            SupportedCodeBlockSyntax::Lua => "lua".to_string(),
+            SupportedCodeBlockSyntax::MakeOutput => "shell".to_string(),
+            SupportedCodeBlockSyntax::Makefile => "make".to_string(),
+            SupportedCodeBlockSyntax::Markdown => "markdown".to_string(),
+            SupportedCodeBlockSyntax::MultiMarkdown => "markdown".to_string(),
+            SupportedCodeBlockSyntax::MATLAB => "matlab".to_string(),
+            SupportedCodeBlockSyntax::OCaml => "ocaml".to_string(),
+            SupportedCodeBlockSyntax::OCamllex => "ocamllex".to_string(),
+            SupportedCodeBlockSyntax::OCamlyacc => "ocamlyacc".to_string(),
+            SupportedCodeBlockSyntax::Camlp4 => "camlp4".to_string(),
+            SupportedCodeBlockSyntax::ObjectiveCpp => "objective-cpp".to_string(),
+            SupportedCodeBlockSyntax::ObjectiveC => "objective-c".to_string(),
+            SupportedCodeBlockSyntax::PHPSource => "php-source".to_string(),
+            SupportedCodeBlockSyntax::PHP => "php".to_string(),
+            SupportedCodeBlockSyntax::Pascal => "pascal".to_string(),
+            SupportedCodeBlockSyntax::Perl => "perl".to_string(),
+            SupportedCodeBlockSyntax::Python => "python".to_string(),
+            SupportedCodeBlockSyntax::RegularExpressionsPython => "regexp".to_string(),
+            SupportedCodeBlockSyntax::RConsole => "r-console".to_string(),
+            SupportedCodeBlockSyntax::R => "r".to_string(),
+            SupportedCodeBlockSyntax::Rdoc => "rdoc".to_string(),
+            SupportedCodeBlockSyntax::HTML_Rails => "html".to_string(),
+            SupportedCodeBlockSyntax::JavaScript_Rails => "javascript".to_string(),
+            SupportedCodeBlockSyntax::RubyHaml => "html".to_string(),
+            SupportedCodeBlockSyntax::RubyOnRails => "rubyonrails".to_string(),
+            SupportedCodeBlockSyntax::SQL_Rails => "sql".to_string(),
+            SupportedCodeBlockSyntax::RegularExpression => "regexp".to_string(),
+            SupportedCodeBlockSyntax::ReStructuredText => "restructuredtext".to_string(),
+            SupportedCodeBlockSyntax::Ruby => "ruby".to_string(),
+            SupportedCodeBlockSyntax::CargoBuildResults => "shell".to_string(),
+            SupportedCodeBlockSyntax::Rust => "rust".to_string(),
+            SupportedCodeBlockSyntax::SQL => "sql".to_string(),
+            SupportedCodeBlockSyntax::Scala => "scala".to_string(),
+            SupportedCodeBlockSyntax::Bash => "bash".to_string(),
+            SupportedCodeBlockSyntax::GenericUnixShell => "shell".to_string(),
+            SupportedCodeBlockSyntax::CommandsBuiltinShellBash => "shell".to_string(),
+            SupportedCodeBlockSyntax::HTML_TCL => "html".to_string(),
+            SupportedCodeBlockSyntax::Tcl => "tcl".to_string(),
+            SupportedCodeBlockSyntax::Textile => "textile".to_string(),
+            SupportedCodeBlockSyntax::XML => "xml".to_string(),
+            SupportedCodeBlockSyntax::YAML => "yaml".to_string(),
+            SupportedCodeBlockSyntax::ConundrumAi => "text".to_string(),
+            SupportedCodeBlockSyntax::Dictionary => "text".to_string(),
+        }
+    }
+}
+
+impl JsxPropRepresentable for SupportedCodeBlockSyntax {
+    fn to_jsx_prop(&self, key: &str) -> String {
+        format!("{}=\"{}\"", key, self)
+    }
 }
