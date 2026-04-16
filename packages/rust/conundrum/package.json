@@ -1,0 +1,54 @@
+{
+    "name": "@conundrum/generated",
+    "version": "0.0.1",
+    "keywords": [
+        "academic",
+        "fluster",
+        "note taking",
+        "science",
+        "STEM"
+    ],
+    "funding": [
+        {
+            "type": "paypal",
+            "url": "https://www.paypal.com/ncp/payment/D6S6NP4AHJD6Y"
+        },
+        {
+            "type": "patreon",
+            "url": "https://www.patreon.com/uhlittlelessdum/about"
+        },
+        {
+            "type": "github",
+            "url": "https://github.com/flusterIO/fluster"
+        }
+    ],
+    "type": "module",
+    "private": true,
+    "files": [
+        "generated/web"
+    ],
+    "scripts": {
+        "build": "../../../node_modules/@tailwindcss/cli/dist/index.mjs --input ./generated/web/conundrum_input.scss --output ./generated/web/conundrum.css"
+    },
+    "types": "./dist/index.d.ts",
+    "main": "./dist/index.umd.js",
+    "exports": {
+        "./styles.css": {
+            "import": "./dist/styles.css",
+            "require": "./dist/styles.css"
+        }
+    },
+    "dependencies": {
+        "@tailwindcss/container-queries": "0.1.1",
+        "@tailwindcss/postcss": "4.1.10",
+        "tailwind-merge": "3.3.0",
+        "tailwindcss": "4.2.1"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "4.2.1",
+        "@tailwindcss/typography": "0.5.19"
+    },
+    "prettier": "../../shared_config/prettier.config.ts",
+    "packageManager": "pnpm@9.7.1",
+    "license": "MIT"
+}

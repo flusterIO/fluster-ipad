@@ -61,7 +61,7 @@ struct EditingNoteBibliographyPageView: View {
         content: {
           Button(
             action: {
-              AppState.shared.commandPaletteNavigate(to: .createBibEntry)
+              AppState.shared.commandPaletteNavigate(to: .createBibEntry(true))
             },
             label: {
               Label(

@@ -17,7 +17,7 @@ struct GlobalBibliographyPageView: View {
         ToolbarItem {
           Button(
             action: {
-                AppState.shared.commandPaletteNavigate(to: .createBibEntry)
+                AppState.shared.commandPaletteNavigate(to: .createBibEntry(false))
             },
             label: {
               Label(

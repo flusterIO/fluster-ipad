@@ -35,8 +35,24 @@ struct BibliographyEntryListView: View {
         LazyVStack(alignment: .center, spacing: 16, pinnedViews: .sectionHeaders) {
           ForEach(filteredEntries, id: \.id) { entry in
             BibliographyEntrySearchResultListItemView(
-              item: entry, abstractLineLimit: abstractLineLimit
+              item: entry, abstractLineLimit: abstractLineLimit,
+              toCitation: self.toCitation
             )
+            .contextMenu(menuItems: {
+              Button(
+                action: {
+                  self.toEditCitation(entry)
+                },
+                label: {
+                  Label(
+                    title: {
+                      Text("Edit")
+                    },
+                    icon: {
+                      Image(systemName: "pencil")
+                    })
+                })
+            })
             .listStyle(.plain)
             .listRowSeparator(.hidden)
           }
@@ -47,6 +63,14 @@ struct BibliographyEntryListView: View {
       .frame(maxWidth: 768)
       .searchable(text: $searchQuery, placement: .toolbarPrincipal, prompt: "Search bibliography")
     }
+  }
+
+  public func toCitation(_ item: BibEntryModel) {
+    AppState.shared.commandPaletteNavigate(to: .searchByCitation(item))
+  }
+
+  public func toEditCitation(_ item: BibEntryModel) {
+    AppState.shared.commandPaletteNavigate(to: .editBibEntry(item))
   }
 }
 

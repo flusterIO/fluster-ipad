@@ -6,6 +6,7 @@ use winnow::error::ErrMode;
 
 use crate::{
     lang::{
+        constants::ui_constants::MAX_DOCUMENT_WIDTH,
         elements::parsed_elements::ParsedElement,
         lib::ui::ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
         runtime::state::{
@@ -108,5 +109,23 @@ impl FromJsxPropsOptional for SizableOption {
             props.get_string(key,
                         Some("Failed to get a valid sizable property. Please see the `Sizable` docs for more information.")).map_err(ErrMode::Backtrack)?;
         SizableOption::from_str(k_value.0.as_str()).map_err(|e| ErrMode::Backtrack(e))
+    }
+}
+
+impl SizableOption {
+    /// The point at which a sizable component expands to be full width,
+    /// depending on the size obviously.
+    pub fn to_width_css_breakpoint(&self) -> u16 {
+        match self {
+            SizableOption::None => 0,
+            SizableOption::Small => 320,
+            SizableOption::Smedium => 480,
+            SizableOption::Medium => 640,
+            SizableOption::Large => 768,
+            SizableOption::Xl => 896,
+            SizableOption::Xxl => 1024,
+            SizableOption::Fit => 0,
+            SizableOption::Full => MAX_DOCUMENT_WIDTH.clone() as u16,
+        }
     }
 }

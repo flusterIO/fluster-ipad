@@ -15,7 +15,9 @@ public enum CommandPaletteSecondaryView: Codable, Hashable {
   case searchBySubject(SubjectModel)
   case searchByCitation(BibEntryModel)
   case associateByEntriesWithEditingNote
-  case createBibEntry
+  /// Accepts a boolean indicating whether or not a new bib entry is associated with the current note being edited, if one exists. This has no effect if `editingNote == nil`
+  case createBibEntry(Bool)
+  case editBibEntry(BibEntryModel)
 }
 
 public enum CommandPaletteId: Codable, Hashable {

@@ -14,6 +14,7 @@ struct BibliographyEntrySearchResultListItemView: View {
   let abstractLineLimit: Int
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
+  let toCitation: (BibEntryModel) -> Void
 
   var citationData: FormattedCitation? {
     item.safelyGetFormatted(activeCslFormat: cslFile)
@@ -47,7 +48,7 @@ struct BibliographyEntrySearchResultListItemView: View {
       .frame(maxWidth: .infinity)
       .glassEffect(in: .rect(cornerRadius: 16))
       .onTapGesture {
-        AppState.shared.commandPaletteNavigate(to: .searchByCitation(item))
+        self.toCitation(item)
       }
     } else {
       Color.clear

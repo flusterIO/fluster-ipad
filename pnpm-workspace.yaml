@@ -16,3 +16,4 @@ packages:
   - packages/swift/desktop_plugins/fluster_swift_data/
   - packages/rust/wasm/fluster_wasm/
   - packages/rust/conundrum_lsp/lezer
+  - packages/rust/conundrum

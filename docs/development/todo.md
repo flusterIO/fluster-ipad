@@ -5,13 +5,12 @@
 - [x] Handle new images on blog post.
 - [x] Handle bug requiring details page to be refreshed on Mac.
 - [x] Fix new note first display issue. It's _still_ not resolved!
-- [ ] Handle rendering code to HTML
+- [x] Handle rendering code to HTML
+- [ ] Reimplement `window.setBibtexEditorContent`. It's a buffer operation that's currently MIA.
+- [ ] Handle auto-inserted code block. It has the potential to look really good, but it definitely needs to be fixed.
+- [ ] Fix code block title-underscore parsing issue.
 - [ ] Handle rest of summary UI
 - [ ] Make sure summary can be accepted or declined from the UI appropriately.
-- [ ] Work on integrating typst support! That's a **major** value add that can actually be handled offline, and in time to release!
-- [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
-- [ ] Move over rest of components below:
-- [ ] Work on remaining parsers
 
 ---
 
@@ -25,6 +24,15 @@
 #### Then Add
 
 - [x] Table of Contents (TOC)
+
+---
+
+### Up Next
+
+- [ ] Work on integrating typst support! That's a **major** value add that can actually be handled offline, and in time to release!
+- [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
+- [ ] Move over rest of components below:
+- [ ] Work on remaining parsers
 
 ---
 

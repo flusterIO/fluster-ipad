@@ -8,7 +8,9 @@ import { type GlobalAppState } from "#/webview_global_state/store";
 import { WebviewImplementation, EditorView, SplitviewEditorWebviewActions, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { connect } from 'react-redux';
+import { setBibtexEditorWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/bibtex_editor_swift_events";
 
+setBibtexEditorWindowBridgeFunctions();
 
 const DEBOUNCE_TIMEOUT = 100
 const MAX_TIME = 5000

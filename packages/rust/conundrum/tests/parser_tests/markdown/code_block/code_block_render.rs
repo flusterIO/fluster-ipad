@@ -3,7 +3,7 @@ use conundrum::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundr
 #[tokio::test]
 async fn parses_code_block() {
     let test_content = r#"
-```swift title="webview_container_view.swift"
+```js -- title="webview_container_view.swift"
 // Some Comment: Do some stuff...
 ```
         "#;

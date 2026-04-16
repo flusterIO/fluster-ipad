@@ -2,7 +2,7 @@ use std::{cell::RefCell, sync::Arc};
 
 use serde::Serialize;
 use winnow::{
-    Parser, Stateful,
+    Parser,
     ascii::{line_ending, space0, till_line_ending},
     combinator::{alt, eof, repeat},
     stream::Stream,

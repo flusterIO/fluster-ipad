@@ -3,6 +3,6 @@ source: packages/rust/conundrum/tests/parser_tests/markdown/code_block/code_bloc
 expression: res.content
 ---
 
-```swift title="webview<span className="italic">container</span>view.swift"
+```javascript -- title="webview<span className="italic">container</span>view.swift"
 // Some Comment: Do some stuff...
 ```

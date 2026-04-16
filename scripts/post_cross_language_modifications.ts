@@ -75,14 +75,6 @@ const replacers: Record<
                 ],
                 replaceWith: "public enum SupportedCodeBlockTheme: String, Codable {",
             },
-            {
-                query: "public enum SupportedCodeBlockSyntax {",
-                dontPanicIfExists: [
-                    "public enum SupportedCodeBlockSyntax: String, Codable {",
-                ],
-                replaceWith:
-                    "public enum SupportedCodeBlockSyntax: String, Codable {",
-            },
         ],
     },
     "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":

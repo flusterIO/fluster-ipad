@@ -4,7 +4,7 @@ use winnow::{
     ascii::newline,
     combinator::{alt, repeat_till},
     stream::Stream,
-    token::{any, literal, take},
+    token::{literal, take},
 };
 
 use crate::{

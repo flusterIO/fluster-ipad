@@ -1,75 +1,55 @@
-## Daily Focus for ADHD
+## Daily Focus for My ADHD-Ass
 
-### Summary of To-Do List
+### Prioritized Tasks to Release Fluster in 2 Weeks
 
-**Priority 1: Core Features and Stability**
-- Fix new note first display issue (still unresolved)
-- Handle bug requiring details page to be refreshed on Mac
-- Setup seeding of notes on desktop app (first app to release)
-- Work on integrating typst support (major value add)
-- Move remaining components (AINoteSummary, Table of Contents)
-- Handle inline-code parser and slugger implementation for all headings
+#### 1. **Integrate Typst Support**
+- This is a major value add that can be handled offline and is critical for release.
+- Focus on enabling typst support to enhance the app's capabilities.
 
-**Priority 2: Parsers and Performance**
-- Implement missing parsers: Footnote, Table, Strikethrough, Escapable math blocks, Escapable strings, Paragraphs, Timestamp links
-- Move regex queries to HashMap for performance optimization
-- Handle math output issue with snapshot
-- Fix issue with Safari keeping around 20 editor instances
+#### 2. **Setup Seeding of Notes on Desktop App**
+- This will be the first app released, so ensure the seeding functionality is robust.
+- Work on the desktop app to handle note seeding effectively.
 
-**Priority 3: AI Features**
-- Create AI triggers (auto, confirm, never)
-- Implement FlusterAI.generateStudyGuide() and FlusterAI.createFlashCards()
-- Handle light mode for AISummaryContainer
-- Fix force regeneration issue
-- Work on AI summarization and output components
+#### 3. **Fix Code Block Title-Underscore Parsing Issue**
+- Address the issue with code block titles that have underscores.
+- Ensure the parsing logic is accurate and user-friendly.
 
-**Priority 4: Desktop and iPad**
-- Handle scroll restoration in landscape mode
-- Make sure note can be loaded in portrait view on iPad
-- Work on syncing method to create notes from file system
-- Fix command palette issue with state changes
+#### 4. **Handle Auto-Inserted Code Block Rendering**
+- Fix the rendering of auto-inserted code blocks to ensure they look good and are functional.
+- Ensure the code blocks are properly displayed and formatted.
 
-**Priority 5: Documentation and Release**
-- Update docs to reflect Apple release
-- Review YouTube video on creating nominations for Apple's editor team
-- Handle pre-release checklist (all tests passing)
-- Write tests for all -ignoreParser flags
+#### 5. **Work on Remaining Parsers**
+- Focus on completing the parsers for missing or incomplete features like tables, footnotes, and strikethrough text.
+- Ensure all parsers are functional and meet the app's requirements.
 
-**Other Important Tasks**
-- Handle issue with new note being set too late
-- Fix bug with color scheme note changing editor theme
-- Create SiaString class in Typescript for compression and comparison
-- Work on global search page on Mac
-- Start setting AI availability states
+#### 6. **Fix Bug with Bibliography Entries**
+- Ensure bibliography entries are correctly associated with notes.
+- Address any issues that prevent proper linking of bibliography entries.
 
-**Deadline:** Release within next 2 weeks
+#### 7. **Handle Scroll Restoration on Desktop App**
+- Ensure the desktop app correctly restores scroll positions when switching between landscape and portrait modes.
+- Test and fix any issues related to scroll restoration.
 
-**Notes:**
-- Focus on high-impact tasks first
-- Break down complex tasks into smaller steps
-- Use the pre-parser for documentation and initial docs
-- Prioritize tasks that will have the most impact on user experience
-- Keep the release checklist up to date with progress
+#### 8. **Work on AI Summarization**
+- Develop the AI summarization feature to provide accurate and concise summaries of notes.
+- Ensure the AI triggers are set to the correct modes (auto, confirm, never) as needed.
 
-**Next Steps:**
-1. Tackle the most critical bugs first
-2. Focus on core features and stability
-3. Work on AI features that will add value to users
-4. Ensure all tests are passing before release
-5. Update documentation and release checklist regularly
+#### 9. **Handle React Property Parsers**
+- Improve the parsing of React properties to ensure components are reliably parsed and inserted into AI.
+- This will open up new possibilities for AI integration and component handling.
 
-**Remember:**
-- Stay focused on the most important tasks
-- Break down complex tasks into manageable steps
-- Keep the release deadline in mind
-- Celebrate small wins to stay motivated
-- Stay organized and prioritize effectively
+#### 10. **Verify iPad App Functionality**
+- Ensure the iPad app is working correctly, especially in portrait mode.
+- Address any issues related to initial loading and error state management.
 
-**Final Thoughts:**
-- This is a crucial time for the project
-- Stay focused and driven
-- Keep the user experience at the forefront
-- Make sure the app is stable and reliable before release
-- Stay organized and prioritize effectively
+### Additional Tasks
+- **Handle Light Mode for AISummaryContainer**: Ensure the light mode is functional and visually appealing.
+- **Force Regeneration of AI Summaries**: Fix any issues that prevent force regeneration of summaries.
+- **Offline Functionality**: Ensure all offline features are working correctly, including error handling and user feedback.
+- **Testing and Documentation**: Conduct thorough testing of all features and update documentation to reflect the latest changes and requirements.
 
-**Let's make this release a success!**
+### Release Preparation
+- **Pre-Release Checklist**: Ensure all tests are passing for Swift, Typescript, and Rust.
+- **Post-Release Tasks**: Review the YouTube link for Apple's editor team nominations and prepare the back story for the app.
+
+By focusing on these tasks, we can ensure a smooth release of Fluster within the next two weeks. Stay organized and prioritize these tasks to meet the release deadline.

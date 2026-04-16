@@ -1,5 +1,6 @@
 pub mod ai_input_component_result;
 pub mod conundrum_input;
+pub mod conundrum_template;
 pub mod fluster_component_result;
 pub mod full_text_search_input_component_result;
 pub mod html_js_component_result;

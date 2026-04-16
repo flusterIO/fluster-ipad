@@ -27,7 +27,7 @@ export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLPro
             <div
                 role="button"
                 className={cn("auto-codeblock-icon absolute top-2 right-2 transition-opacity duration-300", hovered && "opacity-100 hovered flex-col justify-center items-center")}
-                /* eslint-disable-next-line  -- Not creatng another function just to make eslint happy. */
+                /* eslint-disable-next-line  -- Not creating another function just to make eslint happy. */
                 onClick={async (e) => {
                     e.stopPropagation()
                     e.preventDefault()

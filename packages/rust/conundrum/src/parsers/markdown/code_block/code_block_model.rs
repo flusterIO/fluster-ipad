@@ -4,10 +4,10 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
     Parser,
-    ascii::{line_ending, space0, space1},
+    ascii::{space0, space1},
     combinator::{self},
     error::ErrMode,
-    stream::Stream,
+    stream::{AsChar, Stream},
     token::{literal, take_till, take_until, take_while},
 };
 
@@ -22,11 +22,7 @@ use crate::{
                 ui_params::UIParams,
             },
             traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input},
-                fluster_component_result::ConundrumComponentResult,
-                markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::{ConundrumInput, get_conundrum_input}, fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult
             },
         },
     },
@@ -92,6 +88,12 @@ impl MarkdownComponentResult for ParsedCodeBlock {
                    self.content,
                    tick_string
         ))
+    }
+}
+
+impl HtmlJsComponentResult for ParsedCodeBlock {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        todo!()
     }
 }
 
@@ -185,6 +187,7 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                 let ticks = take_while(1.., |c: char| c == '`').parse_next(input).inspect_err(|_| {
                                                                                       input.input.reset(&cp);
                                                                                   })?;
+
                 let language =
                     take_while(1.., |c: char| c != ' ' && c != '\t' && c != '\n' && c != '\r').verify_map(|s: &'a str| {
                         let _s = SupportedCodeBlockSyntax::format_string_for_key(s);
@@ -192,22 +195,24 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                     })
                     .parse_next(input)?;
 
+                println!("language: {:#?}", language);
+
                 let meta_opt = combinator::opt(|input: &mut ConundrumInput<'a>| {
                                    let _ = space1.parse_next(input)?;
                                    let _ = literal("--").parse_next(input)?;
                                    let _ = space0.parse_next(input)?;
-                                   take_till(0.., ('\n', '\r')).parse_next(input)
+                                   take_till(0.., AsChar::is_newline).parse_next(input)
                                }).parse_next(input)
                                  .inspect_err(|_| {
                                      input.input.reset(&cp);
                                  })?;
 
-                let _ = space0.parse_next(input).inspect_err(|_| {
-                                                     input.input.reset(&cp);
-                                                 })?;
-                let _ = line_ending(input).inspect_err(|_| {
-                                              input.input.reset(&cp);
-                                          })?;
+                // let _ = space0.parse_next(input).inspect_err(|_| {
+                //                                      input.input.reset(&cp);
+                //                                  })?;
+                // let _ = line_ending(input).inspect_err(|_| {
+                //                               input.input.reset(&cp);
+                //                           })?;
 
                 let raw_content = take_until(0.., ticks).parse_next(input).map_err(|e| {
                                                                                println!("Error: {:#?}", e);

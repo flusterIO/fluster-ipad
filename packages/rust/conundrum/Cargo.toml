@@ -14,7 +14,7 @@ wasm = []
 [dependencies]
 crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }
 miette = { version = "7.6.0", features = ["fancy"] }
-serde.workspace = true
+serde = { workspace = true, features = ["alloc", "rc"] }
 serde_json.workspace = true
 tower-lsp = "0.20.0"
 typeshare.workspace = true
@@ -63,6 +63,7 @@ fuzzy-matcher = "0.3.7"
 rust-fuzzy-search = "0.1.1"
 syntect = { version = "5.3.0", default-features = false, features = ["default-fancy"] }
 tw_merge = { version = "0.1.21", features = ["variant"] }
+serde_with = { version = "3.18.0", features = ["base64", "chrono", "json"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

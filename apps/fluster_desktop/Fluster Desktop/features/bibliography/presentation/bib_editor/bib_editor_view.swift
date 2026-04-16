@@ -16,12 +16,13 @@ import WebKit
 struct BibtexEditorWebview: View {
   let editingNoteId: String?
   /// If editingItem != nil, the editingItem will be updated. Else, a new bibEntry will be created
-  @Binding public var editingItem: BibEntryModel?
+  public var editingItem: BibEntryModel?
   @State private var newItemData: String = ""
   @State private var showCantSaveEmpty: Bool = false
   @State private var webView: WKWebView = WKWebView(
     frame: .zero, configuration: getWebViewConfig()
   )
+  @State private var warningMsg: NotificationItem? = nil
   @Environment(\.modelContext) private var modelContext: ModelContext
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @Environment(\.dismiss) private var dismiss
@@ -32,15 +33,20 @@ struct BibtexEditorWebview: View {
   @AppStorage(AppStorageKeys.editorThemeLight.rawValue) private var editorThemeLight:
     CodeEditorTheme = .materialLight
   /// If associateWithEditingNote == true, *new* BibEntryModel will be associated with the note currently being edited.
-  let associateWithEditingNote: Bool = true
+  var associateWithEditingNote: Bool = true
   @Query private var notes: [NoteModel]
   var editingNote: NoteModel? {
     notes.isEmpty ? nil : notes.first
   }
 
-  init(editingNoteId: String?, editingBibEntry: Binding<BibEntryModel?>) {
+  init(
+    editingNoteId: String?,
+    editingBibEntry: BibEntryModel?,
+    associateWithEditingNote: Bool = false
+  ) {
+    self.associateWithEditingNote = associateWithEditingNote
     self.editingNoteId = editingNoteId
-    self._editingItem = editingBibEntry
+    self.editingItem = editingBibEntry
     if let id = editingNoteId {
       self._notes = Query(
         filter: #Predicate<NoteModel> { note in
@@ -72,12 +78,12 @@ struct BibtexEditorWebview: View {
       mathjaxFontUrl: "/bibtex_editor_webview_mac"
     )
     .sheet(
-      isPresented: $showCantSaveEmpty,
-      content: {
+      item: $warningMsg,
+      content: { s in
         NotificationConfirmationContainerView(
           buttonText: "Go back",
           content: {
-            Text("You can't save an empty file. Please enter valid biblatex.")
+            Text(s.msg)
           })
       }
     )
@@ -110,12 +116,17 @@ struct BibtexEditorWebview: View {
         }
       }
     )
+    .task(priority: .high, {
+        if let ei = editingItem {
+            await self.setBibEntryData(data: ei)
+        }
+    })
   }
   func handleSave() {
     // Nothing to do if editingItem != nil, item should have been updated as the content was updated. Thanks to Apple's magic, that's all that needs to be done, which still blows my mind.
     if editingItem == nil {
       if newItemData.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-        showCantSaveEmpty = true
+          warningMsg = NotificationItem.fromMessage("You can't save an empty file. Please enter valid biblatex.")
       } else {
         let splitByEntry = FlusterBibliography.splitBiblatexToRawStrings(fileContent: newItemData)
         for entryText in splitByEntry {
@@ -138,7 +149,12 @@ struct BibtexEditorWebview: View {
         dismiss()
       }
     } else {
-      // TODO: Need to handle updating of bibentry here.
+      let splitByEntry = FlusterBibliography.splitBiblatexToRawStrings(fileContent: newItemData)
+      if let ei = editingItem, splitByEntry.count == 1 {
+        ei.data = splitByEntry[0]
+        modelContext.insert(ei)
+      } else {
+      }
     }
   }
   func setEditorKeymap(editorKeymap: CodeEditorKeymap) async throws {
@@ -161,15 +177,13 @@ struct BibtexEditorWebview: View {
       }
     }
   }
-  func setBibEntryData(data: BibEntryModel) {
-    Task {
+  func setBibEntryData(data: BibEntryModel) async {
       do {
         try await BibtexEditorClient.setBibEntryContent(
           entryBody: data.data, evalutateJavaScript: webView.evaluateJavaScript)
       } catch {
         print("Error setting bibliography editor data: \(error.localizedDescription)")
       }
-    }
   }
   func messageHandler(_ msgKey: String, msgBody: Any) {
     switch msgKey {
@@ -187,7 +201,7 @@ struct BibtexEditorWebview: View {
   }
   func onWebviewLoad() async {
     if let entry = editingItem {
-      setBibEntryData(data: entry)
+      await setBibEntryData(data: entry)
     } else {
       setEntryBodyByString(entryBody: newItemData)
     }

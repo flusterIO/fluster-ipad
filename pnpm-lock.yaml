@@ -768,6 +768,9 @@ importers:
       fumadocs-ui:
         specifier: 15.8.3
         version: 15.8.3(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(lucide-react@0.554.0(react@19.2.0))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1)
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
       lucide-react:
         specifier: 0.554.0
         version: 0.554.0(react@19.2.0)
@@ -802,7 +805,7 @@ importers:
         specifier: 9.2.1
         version: 9.2.1(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react-player:
-        specifier: ^3.4.0
+        specifier: 3.4.0
         version: 3.4.0(@svta/cml-cta@1.0.1(@svta/cml-structured-field-values@1.0.1(@svta/cml-utils@1.0.1))(@svta/cml-utils@1.0.1))(@svta/cml-structured-field-values@1.0.1(@svta/cml-utils@1.0.1))(@svta/cml-utils@1.0.1)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react-plotly.js:
         specifier: 2.6.0
@@ -8113,6 +8116,9 @@ packages:
 
   grid-index@1.1.0:
     resolution: {integrity: sha512-HZRwumpOGUrHyxO5bqKZL0B0GlUpwtCAzZ42sgxUPniu33R1LSFH5yrIcBCHjkctCAh3mtWKcKd9J4vDDdeVHA==}
+
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
 
   hachure-fill@0.5.2:
     resolution: {integrity: sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==}
@@ -20038,6 +20044,8 @@ snapshots:
       strip-bom-string: 1.0.0
 
   grid-index@1.1.0: {}
+
+  gsap@3.15.0: {}
 
   hachure-fill@0.5.2: {}
 

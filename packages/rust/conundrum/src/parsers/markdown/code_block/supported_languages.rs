@@ -22,250 +22,250 @@ use crate::lang::{
            Clone,
            Debug)]
 pub enum SupportedCodeBlockSyntax {
-    #[serde(rename = "Plain Text", alias = "text", alias = "txt")]
-    #[strum(to_string = "Plain Text")]
+    #[serde(rename = "Plain Text")]
+    #[strum(to_string = "Plain Text", serialize = "text", serialize = "txt")]
     PlainText,
-    #[serde(rename = "ASP", alias = "asp")]
-    #[strum(to_string = "ASP")]
+    #[serde(rename = "ASP")]
+    #[strum(to_string = "ASP", serialize = "asp")]
     ASP,
-    #[serde(rename = "HTML (ASP)", alias = "html-asp")]
-    #[strum(to_string = "HTML (ASP)")]
+    #[serde(rename = "HTML (ASP)")]
+    #[strum(to_string = "HTML (ASP)", serialize = "html-asp")]
     #[allow(non_camel_case_types)]
     HTML_ASP,
-    #[serde(rename = "ActionScript", alias = "actionscript", alias = "action-script")]
-    #[strum(to_string = "ActionScript")]
+    #[serde(rename = "ActionScript")]
+    #[strum(to_string = "ActionScript", serialize = "actionscript", serialize = "action-script")]
     ActionScript,
-    #[serde(rename = "AppleScript", alias = "applescript")]
-    #[strum(to_string = "AppleScript")]
+    #[serde(rename = "AppleScript")]
+    #[strum(to_string = "AppleScript", serialize = "applescript")]
     AppleScript,
-    #[serde(rename = "Batch File", alias = "batchfile", alias = "batch-file")]
-    #[strum(to_string = "Batch File")]
+    #[serde(rename = "Batch File")]
+    #[strum(to_string = "Batch File", serialize = "batchfile", serialize = "batch-file")]
     BatchFile,
-    #[serde(rename = "NAnt Build File", alias = "nantbuild", alias = "nantbuildfile")]
-    #[strum(to_string = "NAnt Build File")]
+    #[serde(rename = "NAnt Build File")]
+    #[strum(to_string = "NAnt Build File", serialize = "nantbuild", serialize = "nantbuildfile")]
     NAntBuildFile,
-    #[serde(rename = "C#", alias = "c#", alias = "csharp")]
-    #[strum(to_string = "C#")]
+    #[serde(rename = "C#")]
+    #[strum(to_string = "C#", serialize = "c#", serialize = "csharp")]
     CSharp,
-    #[serde(rename = "C++", alias = "cpp", alias = "c++")]
-    #[strum(to_string = "C++")]
+    #[serde(rename = "C++")]
+    #[strum(to_string = "C++", serialize = "cpp", serialize = "c++")]
     Cpp,
-    #[serde(rename = "C", alias = "c")]
-    #[strum(to_string = "C")]
+    #[serde(rename = "C")]
+    #[strum(to_string = "C", serialize = "c")]
     C,
-    #[serde(rename = "CSS", alias = "css")]
-    #[strum(to_string = "CSS")]
+    #[serde(rename = "CSS")]
+    #[strum(to_string = "CSS", serialize = "css")]
     CSS,
-    #[serde(rename = "Clojure", alias = "clojure")]
-    #[strum(to_string = "Clojure")]
+    #[serde(rename = "Clojure")]
+    #[strum(to_string = "Clojure", serialize = "clojure")]
     Clojure,
-    #[serde(rename = "D", alias = "d")]
-    #[strum(to_string = "D")]
+    #[serde(rename = "D")]
+    #[strum(to_string = "D", serialize = "d")]
     D,
-    #[serde(rename = "Diff", alias = "diff")]
-    #[strum(to_string = "Diff")]
+    #[serde(rename = "Diff")]
+    #[strum(to_string = "Diff", serialize = "diff")]
     Diff,
-    #[serde(rename = "Erlang", alias = "erlang")]
-    #[strum(to_string = "Erlang")]
+    #[serde(rename = "Erlang")]
+    #[strum(to_string = "Erlang", serialize = "erlang")]
     Erlang,
-    #[serde(rename = "HTML (Erlang)", alias = "html-erlang")]
-    #[strum(to_string = "HTML (Erlang)")]
+    #[serde(rename = "HTML (Erlang)")]
+    #[strum(to_string = "HTML (Erlang)", serialize = "html-erlang")]
     #[allow(non_camel_case_types)]
     HTML_Erlang,
-    #[serde(rename = "Go", alias = "go")]
-    #[strum(to_string = "Go")]
+    #[serde(rename = "Go")]
+    #[strum(to_string = "Go", serialize = "go")]
     Go,
-    #[serde(rename = "Graphviz (DOT)", alias = "graphiv", alias = "graphviz-dot", alias = "graphvizdot")]
-    #[strum(to_string = "Graphviz (DOT)")]
+    #[serde(rename = "Graphviz (DOT)")]
+    #[strum(to_string = "Graphviz (DOT)", serialize = "graphiv", serialize = "graphviz-dot", serialize = "graphvizdot")]
     GraphvizDOT,
-    #[serde(rename = "Groovy", alias = "groovy")]
-    #[strum(to_string = "Groovy")]
+    #[serde(rename = "Groovy")]
+    #[strum(to_string = "Groovy", serialize = "groovy")]
     Groovy,
-    #[serde(rename = "HTML", alias = "html")]
-    #[strum(to_string = "HTML")]
+    #[serde(rename = "HTML")]
+    #[strum(to_string = "HTML", serialize = "html")]
     HTML,
-    #[serde(rename = "Haskell", alias = "haskell")]
-    #[strum(to_string = "Haskell")]
+    #[serde(rename = "Haskell")]
+    #[strum(to_string = "Haskell", serialize = "haskell")]
     Haskell,
-    #[serde(rename = "Literate Haskell", alias = "literate-haskell", alias = "literatehaskell")]
-    #[strum(to_string = "Literate Haskell")]
+    #[serde(rename = "Literate Haskell")]
+    #[strum(to_string = "Literate Haskell", serialize = "literate-haskell", serialize = "literatehaskell")]
     LiterateHaskell,
-    #[serde(rename = "Java Server Page (JSP)", alias = "jsp", alias = "java-server-page")]
-    #[strum(to_string = "Java Server Page (JSP)")]
+    #[serde(rename = "Java Server Page (JSP)")]
+    #[strum(to_string = "Java Server Page (JSP)", serialize = "jsp", serialize = "java-server-page")]
     JavaServerPage,
-    #[serde(rename = "Java", alias = "java")]
-    #[strum(to_string = "Java")]
+    #[serde(rename = "Java")]
+    #[strum(to_string = "Java", serialize = "java")]
     Java,
-    #[serde(rename = "JavaDoc", alias = "javadoc")]
-    #[strum(to_string = "JavaDoc")]
+    #[serde(rename = "JavaDoc")]
+    #[strum(to_string = "JavaDoc", serialize = "javadoc")]
     JavaDoc,
-    #[serde(rename = "Java Properties", alias = "java-properties", alias = "java-props")]
-    #[strum(to_string = "Java Properties")]
+    #[serde(rename = "Java Properties")]
+    #[strum(to_string = "Java Properties", serialize = "java-properties", serialize = "java-props")]
     JavaProperties,
-    #[serde(rename = "JSON", alias = "json")]
-    #[strum(to_string = "JSON")]
+    #[serde(rename = "JSON")]
+    #[strum(to_string = "JSON", serialize = "json")]
     JSON,
-    #[serde(rename = "JavaScript", alias = "js", alias = "javascript")]
-    #[strum(to_string = "JavaScript")]
+    #[serde(rename = "JavaScript")]
+    #[strum(to_string = "JavaScript", serialize = "js", serialize = "javascript")]
     JavaScript,
-    #[serde(rename = "Regular Expressions (Javascript)", alias = "regex-js", alias = "regex-javascript")]
-    #[strum(to_string = "Regular Expressions (Javascript)")]
-    RegularExpressionsJavascript,
-    #[serde(rename = "BibTeX", alias = "bibtex")]
-    #[strum(to_string = "BibTeX")]
+    #[serde(rename = "Regular Expressions (Javascript)")]
+    #[strum(to_string = "Regular Expressions (Javascript)", serialize = "regex-js", serialize = "regex-javascript")]
+    RegexJs,
+    #[serde(rename = "BibTeX")]
+    #[strum(to_string = "BibTeX", serialize = "bibtex")]
     BibTeX,
-    #[serde(rename = "LaTeX Log", alias = "latex-log", alias = "latexlog")]
-    #[strum(to_string = "LaTeX Log")]
+    #[serde(rename = "LaTeX Log")]
+    #[strum(to_string = "LaTeX Log", serialize = "latex-log", serialize = "latexlog")]
     LaTeXLog,
-    #[serde(rename = "LaTeX", alias = "latex")]
-    #[strum(to_string = "LaTeX")]
+    #[serde(rename = "LaTeX")]
+    #[strum(to_string = "LaTeX", serialize = "latex")]
     LaTeX,
-    #[serde(rename = "TeX", alias = "tex")]
-    #[strum(to_string = "TeX")]
+    #[serde(rename = "TeX")]
+    #[strum(to_string = "TeX", serialize = "tex")]
     TeX,
-    #[serde(rename = "Lisp", alias = "lisp")]
-    #[strum(to_string = "Lisp")]
+    #[serde(rename = "Lisp")]
+    #[strum(to_string = "Lisp", serialize = "lisp")]
     Lisp,
-    #[serde(rename = "Lua", alias = "lua")]
-    #[strum(to_string = "Lua")]
+    #[serde(rename = "Lua")]
+    #[strum(to_string = "Lua", serialize = "lua")]
     Lua,
-    #[serde(rename = "Make Output", alias = "make-output", alias = "makeoutput")]
-    #[strum(to_string = "Make Output")]
+    #[serde(rename = "Make Output")]
+    #[strum(to_string = "Make Output", serialize = "make-output", serialize = "makeoutput")]
     MakeOutput,
-    #[serde(rename = "Makefile", alias = "makefile")]
-    #[strum(to_string = "Makefile")]
+    #[serde(rename = "Makefile")]
+    #[strum(to_string = "Makefile", serialize = "makefile")]
     Makefile,
-    #[serde(rename = "Markdown", alias = "markdown", alias = "md")]
-    #[strum(to_string = "Markdown")]
+    #[serde(rename = "Markdown")]
+    #[strum(to_string = "Markdown", serialize = "markdown", serialize = "md")]
     Markdown,
-    #[serde(rename = "MultiMarkdown", alias = "multi-markdown", alias = "multi-md")]
-    #[strum(to_string = "MultiMarkdown")]
+    #[serde(rename = "MultiMarkdown")]
+    #[strum(to_string = "MultiMarkdown", serialize = "multi-markdown", serialize = "multi-md")]
     MultiMarkdown,
-    #[serde(rename = "MATLAB", alias = "matlab")]
-    #[strum(to_string = "MATLAB")]
+    #[serde(rename = "MATLAB")]
+    #[strum(to_string = "MATLAB", serialize = "matlab")]
     MATLAB,
-    #[serde(rename = "OCaml", alias = "ocaml")]
-    #[strum(to_string = "OCaml")]
+    #[serde(rename = "OCaml")]
+    #[strum(to_string = "OCaml", serialize = "ocaml")]
     OCaml,
-    #[serde(rename = "OCamllex", alias = "ocamllex")]
-    #[strum(to_string = "OCamllex")]
+    #[serde(rename = "OCamllex")]
+    #[strum(to_string = "OCamllex", serialize = "ocamllex")]
     OCamllex,
-    #[serde(rename = "OCamlyacc", alias = "ocamlyacc")]
-    #[strum(to_string = "OCamlyacc")]
+    #[serde(rename = "OCamlyacc")]
+    #[strum(to_string = "OCamlyacc", serialize = "ocamlyacc")]
     OCamlyacc,
     #[serde(rename = "camlp4")]
     #[strum(to_string = "camlp4")]
     Camlp4,
-    #[serde(rename = "Objective-C++", alias = "objective-cpp", alias = "objective-c++")]
-    #[strum(to_string = "Objective-C++")]
+    #[serde(rename = "Objective-C++")]
+    #[strum(to_string = "Objective-C++", serialize = "objective-cpp", serialize = "objective-c++")]
     ObjectiveCpp,
-    #[serde(rename = "Objective-C", alias = "objective-c")]
-    #[strum(to_string = "Objective-C")]
+    #[serde(rename = "Objective-C")]
+    #[strum(to_string = "Objective-C", serialize = "objective-c")]
     ObjectiveC,
-    #[serde(rename = "PHP Source", alias = "php-source")]
-    #[strum(to_string = "PHP Source")]
+    #[serde(rename = "PHP Source")]
+    #[strum(to_string = "PHP Source", serialize = "php-source")]
     PHPSource,
-    #[serde(rename = "PHP", alias = "php")]
-    #[strum(to_string = "PHP")]
+    #[serde(rename = "PHP")]
+    #[strum(to_string = "PHP", serialize = "php")]
     PHP,
-    #[serde(rename = "Pascal", alias = "pascal")]
-    #[strum(to_string = "Pascal")]
+    #[serde(rename = "Pascal")]
+    #[strum(to_string = "Pascal", serialize = "pascal")]
     Pascal,
-    #[serde(rename = "Perl", alias = "perl")]
-    #[strum(to_string = "Perl")]
+    #[serde(rename = "Perl")]
+    #[strum(to_string = "Perl", serialize = "perl")]
     Perl,
-    #[serde(rename = "Python", alias = "python", alias = "py")]
-    #[strum(to_string = "Python")]
+    #[serde(rename = "Python")]
+    #[strum(to_string = "Python", serialize = "python", serialize = "py")]
     Python,
-    #[serde(rename = "Regular Expressions (Python)", alias = "regex-py", alias = "regex-python")]
-    #[strum(to_string = "Regular Expressions (Python)")]
-    RegularExpressionsPython,
-    #[serde(rename = "R Console", alias = "r-console")]
-    #[strum(to_string = "R Console")]
+    #[serde(rename = "Regular Expressions (Python)")]
+    #[strum(to_string = "Regular Expressions (Python)", serialize = "regex-py", serialize = "regex-python")]
+    RegexPython,
+    #[serde(rename = "R Console")]
+    #[strum(to_string = "R Console", serialize = "r-console")]
     RConsole,
-    #[serde(rename = "R", alias = "r")]
-    #[strum(to_string = "R")]
+    #[serde(rename = "R")]
+    #[strum(to_string = "R", serialize = "r")]
     R,
-    #[serde(rename = "Rd (R Documentation)", alias = "rdoc", alias = "r-doc", alias = "r-documentation")]
-    #[strum(to_string = "Rd (R Documentation)")]
+    #[serde(rename = "Rd (R Documentation)")]
+    #[strum(to_string = "Rd (R Documentation)", serialize = "rdoc", serialize = "r-doc", serialize = "r-documentation")]
     Rdoc,
-    #[serde(rename = "HTML (Rails)", alias = "html-rails", alias = "htmlrails")]
-    #[strum(to_string = "HTML (Rails)")]
+    #[serde(rename = "HTML (Rails)")]
+    #[strum(to_string = "HTML (Rails)", serialize = "html-rails", serialize = "htmlrails")]
     #[allow(non_camel_case_types)]
     HTML_Rails,
-    #[serde(rename = "JavaScript (Rails)",
-            alias = "jsrails",
-            alias = "js-rails",
-            alias = "javascript-rails",
-            alias = "javascriptrails")]
-    #[strum(to_string = "JavaScript (Rails)")]
+    #[serde(rename = "JavaScript (Rails)")]
+    #[strum(to_string = "JavaScript (Rails)",
+            serialize = "jsrails",
+            serialize = "js-rails",
+            serialize = "javascript-rails",
+            serialize = "javascriptrails")]
     #[allow(non_camel_case_types)]
     JavaScript_Rails,
-    #[serde(rename = "Ruby Haml", alias = "ruby-haml", alias = "rubyhaml")]
-    #[strum(to_string = "Ruby Haml")]
+    #[serde(rename = "Ruby Haml")]
+    #[strum(to_string = "Ruby Haml", serialize = "ruby-haml", serialize = "rubyhaml")]
     RubyHaml,
-    #[serde(rename = "Ruby on Rails", alias = "rubyonrails", alias = "ruby-on-rails", alias = "rails")]
-    #[strum(to_string = "Ruby on Rails")]
+    #[serde(rename = "Ruby on Rails")]
+    #[strum(to_string = "Ruby on Rails", serialize = "rubyonrails", serialize = "ruby-on-rails", serialize = "rails")]
     RubyOnRails,
-    #[serde(rename = "SQL (Rails)", alias = "sql-rails", alias = "sqlrails")]
-    #[strum(to_string = "SQL (Rails)")]
+    #[serde(rename = "SQL (Rails)")]
+    #[strum(to_string = "SQL (Rails)", serialize = "sql-rails", serialize = "sqlrails")]
     #[allow(non_camel_case_types)]
     SQL_Rails,
-    #[serde(rename = "Regular Expression", alias = "regular-expression", alias = "regex")]
-    #[strum(to_string = "Regular Expression")]
-    RegularExpression,
-    #[serde(rename = "reStructuredText", alias = "restructuredtext", alias = "restructured-text")]
-    #[strum(to_string = "reStructuredText")]
+    #[serde(rename = "Regular Expression")]
+    #[strum(to_string = "Regular Expression", serialize = "regular-expression", serialize = "regex")]
+    Regex,
+    #[serde(rename = "reStructuredText")]
+    #[strum(to_string = "reStructuredText", serialize = "restructuredtext", serialize = "restructured-text")]
     ReStructuredText,
-    #[serde(rename = "Ruby", alias = "ruby")]
-    #[strum(to_string = "Ruby")]
+    #[serde(rename = "Ruby")]
+    #[strum(to_string = "Ruby", serialize = "ruby")]
     Ruby,
-    #[serde(rename = "Cargo Build Results",
-            alias = "cargo-build-results",
-            alias = "cargo-build-output",
-            alias = "cargo-build",
-            alias = "cargobuildresults",
-            alias = "cargobuildoutput",
-            alias = "cargobuild")]
-    #[strum(to_string = "Cargo Build Results")]
+    #[serde(rename = "Cargo Build Results")]
+    #[strum(to_string = "Cargo Build Results",
+            serialize = "cargo-build-results",
+            serialize = "cargo-build-output",
+            serialize = "cargo-build",
+            serialize = "cargobuildresults",
+            serialize = "cargobuildoutput",
+            serialize = "cargobuild")]
     CargoBuildResults,
-    #[serde(rename = "Rust", alias = "rust", alias = "rs")]
-    #[strum(to_string = "Rust")]
+    #[serde(rename = "Rust")]
+    #[strum(to_string = "Rust", serialize = "rust", serialize = "rs")]
     Rust,
-    #[serde(rename = "SQL", alias = "sql")]
-    #[strum(to_string = "SQL")]
+    #[serde(rename = "SQL")]
+    #[strum(to_string = "SQL", serialize = "sql")]
     SQL,
-    #[serde(rename = "Scala", alias = "scalar")]
-    #[strum(to_string = "Scala")]
+    #[serde(rename = "Scala")]
+    #[strum(to_string = "Scala", serialize = "scalar")]
     Scala,
-    #[serde(rename = "Bourne Again Shell (bash)", alias = "bash")]
-    #[strum(to_string = "Bourne Again Shell (bash)")]
+    #[serde(rename = "Bourne Again Shell (bash)")]
+    #[strum(to_string = "Bourne Again Shell (bash)", serialize = "bash")]
     Bash,
-    #[serde(rename = "Shell-Unix-Generic", alias = "unix-shell", alias = "unixshell")]
-    #[strum(to_string = "Shell-Unix-Generic")]
+    #[serde(rename = "Shell-Unix-Generic")]
+    #[strum(to_string = "Shell-Unix-Generic", serialize = "unix-shell", serialize = "unixshell")]
     GenericUnixShell,
     #[serde(rename = "commands-builtin-shell-bash")]
     #[strum(to_string = "commands-builtin-shell-bash")]
     CommandsBuiltinShellBash,
-    #[serde(rename = "HTML (Tcl)", alias = "html-tcl", alias = "htmltcl")]
-    #[strum(to_string = "HTML (Tcl)")]
+    #[serde(rename = "HTML (Tcl)")]
+    #[strum(to_string = "HTML (Tcl)", serialize = "html-tcl", serialize = "htmltcl")]
     #[allow(non_camel_case_types)]
     HTML_TCL,
-    #[serde(rename = "Tcl", alias = "tcl")]
-    #[strum(to_string = "Tcl")]
+    #[serde(rename = "Tcl")]
+    #[strum(to_string = "Tcl", serialize = "tcl")]
     Tcl,
-    #[serde(rename = "Textile", alias = "textile")]
-    #[strum(to_string = "Textile")]
+    #[serde(rename = "Textile")]
+    #[strum(to_string = "Textile", serialize = "textile")]
     Textile,
-    #[serde(rename = "XML", alias = "xml")]
-    #[strum(to_string = "XML")]
+    #[serde(rename = "XML")]
+    #[strum(to_string = "XML", serialize = "xml")]
     XML,
-    #[serde(rename = "YAML", alias = "yaml")]
-    #[strum(to_string = "YAML")]
+    #[serde(rename = "YAML")]
+    #[strum(to_string = "YAML", serialize = "yaml")]
     YAML,
     // Conundrum specific blocks
-    #[serde(rename = "conundrum-ai", alias = "fluster-ai")]
-    #[strum(to_string = "conundrum-ai")]
+    #[serde(rename = "conundrum-ai")]
+    #[strum(to_string = "conundrum-ai", serialize = "fluster-ai")]
     ConundrumAi,
     #[serde(rename = "dictionary")]
     #[strum(to_string = "dictionary")]
@@ -280,7 +280,7 @@ impl SupportedCodeBlockSyntax {
     pub fn load_syntax(&self, ss: &SyntaxSet) -> ConundrumModalResult<SyntaxReference> {
         ss.find_syntax_by_name(self.to_string().as_str()).cloned().ok_or_else(|| {
             ErrMode::Cut(
-                ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Parser Error", format!("The `{}` language grammar could not be loaded. If this continues please file an issue on Github.", self.to_string()).as_str()))
+                ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Parser Error", format!("The `{}` language grammar could not be loaded. If this continues please file an issue on Github.", self).as_str()))
             )
         })
     }
@@ -320,7 +320,7 @@ impl SupportedCodeBlockSyntax {
             SupportedCodeBlockSyntax::JavaProperties => "java-properties".to_string(),
             SupportedCodeBlockSyntax::JSON => "json".to_string(),
             SupportedCodeBlockSyntax::JavaScript => "javascript".to_string(),
-            SupportedCodeBlockSyntax::RegularExpressionsJavascript => "regexp".to_string(),
+            SupportedCodeBlockSyntax::RegexJs => "regexp".to_string(),
             SupportedCodeBlockSyntax::BibTeX => "bibtex".to_string(),
             SupportedCodeBlockSyntax::LaTeXLog => "latexlog".to_string(),
             SupportedCodeBlockSyntax::LaTeX => "latex".to_string(),
@@ -343,7 +343,7 @@ impl SupportedCodeBlockSyntax {
             SupportedCodeBlockSyntax::Pascal => "pascal".to_string(),
             SupportedCodeBlockSyntax::Perl => "perl".to_string(),
             SupportedCodeBlockSyntax::Python => "python".to_string(),
-            SupportedCodeBlockSyntax::RegularExpressionsPython => "regexp".to_string(),
+            SupportedCodeBlockSyntax::RegexPython => "regexp".to_string(),
             SupportedCodeBlockSyntax::RConsole => "r-console".to_string(),
             SupportedCodeBlockSyntax::R => "r".to_string(),
             SupportedCodeBlockSyntax::Rdoc => "rdoc".to_string(),
@@ -352,7 +352,7 @@ impl SupportedCodeBlockSyntax {
             SupportedCodeBlockSyntax::RubyHaml => "html".to_string(),
             SupportedCodeBlockSyntax::RubyOnRails => "rubyonrails".to_string(),
             SupportedCodeBlockSyntax::SQL_Rails => "sql".to_string(),
-            SupportedCodeBlockSyntax::RegularExpression => "regexp".to_string(),
+            SupportedCodeBlockSyntax::Regex => "regexp".to_string(),
             SupportedCodeBlockSyntax::ReStructuredText => "restructuredtext".to_string(),
             SupportedCodeBlockSyntax::Ruby => "ruby".to_string(),
             SupportedCodeBlockSyntax::CargoBuildResults => "shell".to_string(),
@@ -376,5 +376,18 @@ impl SupportedCodeBlockSyntax {
 impl JsxPropRepresentable for SupportedCodeBlockSyntax {
     fn to_jsx_prop(&self, key: &str) -> String {
         format!("{}=\"{}\"", key, self)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::str::FromStr;
+
+    use super::*;
+
+    #[test]
+    fn gets_basic_languages() {
+        SupportedCodeBlockSyntax::from_str("javascript").expect("Parses alias successfully.");
+        // assert_eq!(result, 4);
     }
 }

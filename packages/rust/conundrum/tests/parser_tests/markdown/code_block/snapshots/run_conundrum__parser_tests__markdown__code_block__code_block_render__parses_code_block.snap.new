@@ -1,0 +1,13 @@
+---
+source: packages/rust/conundrum/tests/parser_tests/markdown/code_block/code_block_render.rs
+assertion_line: 18
+expression: res.content
+---
+
+<AutoInsertedCodeBlock language="JavaScript" title="webview_container_view.swift">
+<pre style="background-color:#002b36;">
+<span style="color:#839496;">
+</span><span style="color:#586e75;">// Some Comment: Do some stuff...
+</span></pre>
+
+</AutoInsertedCodeBlock>
