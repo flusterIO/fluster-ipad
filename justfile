@@ -102,6 +102,7 @@ build_cross_language_schemas: generate_initial_note_data
 build_conundrum_swift:
 	cd {{justfile_directory()}}/packages/rust/conundrum_swift; cargo swift package -y --xcframework-name Conundrum 
 	cp -r {{justfile_directory()}}/packages/rust/conundrum_swift/extra_swift/ {{justfile_directory()}}/packages/rust/conundrum_swift/ConundrumSwift/Sources/ConundrumSwift/
+	tsx {{justfile_directory()}}/scripts/post_cross_language_modifications.ts
 
 build_desktop_fs:
 	cd {{justfile_directory()}}/packages/rust/fluster_desktop_fs; cargo swift package -y --xcframework-name FlusterDT
@@ -131,6 +132,10 @@ build_all_rust: build_cross_language_all
 
 build_fluster_core_rust_utilities: build_cross_language_all
 	cd {{justfile_directory()}}/packages/rust/fluster_core_utilities; cargo build
+
+
+transpile_component_glue_web:
+	tsc -p {{justfile_directory()}}/packages/rust/conundrum/tsconfig.json
 
 
 # Add `build_fluster_wasm` back to the end in here once the fucking internet isnt stopping the build

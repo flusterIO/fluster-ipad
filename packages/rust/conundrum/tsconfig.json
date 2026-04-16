@@ -1,0 +1,12 @@
+{
+    "include": [
+        "./src/output/html/glue/component_glue/"
+    ],
+    "compilerOptions": {
+        "moduleResolution": "nodenext",
+        "target": "ESNext",
+        "module": "NodeNext",
+        "outDir": "./src/output/html/glue/component_glue_output/",
+        "allowJs": true
+    },
+}

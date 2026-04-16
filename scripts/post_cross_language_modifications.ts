@@ -107,14 +107,25 @@ const replacers: Record<
             // },
             {
                 query: `public enum CodeEditorTheme: String, Codable {`,
+                dontPanicIfExists: [
+                    `public enum CodeEditorTheme: String, Codable, CaseIterable {`,
+                ],
                 replaceWith: `public enum CodeEditorTheme: String, Codable, CaseIterable {`,
             },
             {
                 query: `public enum CodeEditorKeymap: String, Codable {`,
+
+                dontPanicIfExists: [
+                    `public enum CodeEditorKeymap: String, Codable, CaseIterable {`,
+                ],
                 replaceWith: `public enum CodeEditorKeymap: String, Codable, CaseIterable {`,
             },
             {
                 query: `public enum FlusterTheme: String, Codable {`,
+
+                dontPanicIfExists: [
+                    `public enum FlusterTheme: String, Codable, CaseIterable {`,
+                ],
                 replaceWith: `public enum FlusterTheme: String, Codable, CaseIterable {`,
             },
         ],
@@ -132,7 +143,7 @@ export const replaceStuff = (replacers: Replacer[], filePath: string) => {
         const queryExists = content.includes(replacer.query);
         if (
             !queryExists &&
-            !replacer.dontPanicIfExists.some((item) => content.includes(item))
+            !replacer.dontPanicIfExists?.some((item) => content.includes(item))
         ) {
             assert(
                 queryExists,

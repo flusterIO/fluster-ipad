@@ -2,3 +2,14 @@
 @source "../../src/**/*.{jsx,mdx,js,ts,rs}";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
+
+
+.cdrm-codeblock {
+  .auto-codeblock-icon {
+    display: none;
+  }
+
+  &.show-copy {
+    display: block;
+  }
+}

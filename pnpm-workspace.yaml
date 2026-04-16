@@ -1,6 +1,7 @@
 packages:
   - apps/website
   - apps/fluster_desktop
+  - packages/rust/conundrum_ts
   - packages/webviews/splitview_mdx_editor
   - packages/webviews/bibtex_editor_webview
   - packages/webviews/bib_entry_details_webview

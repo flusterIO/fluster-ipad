@@ -2,7 +2,6 @@ import { z } from "zod";
 import { type SizableOptionRecord, sizablePropSchema, sizablePropsMapTransform, sizablePropsOrBooleanTransform, sizablePropsSchemaOrBool } from "./sizable_props_schema";
 import { componentNeverProperty } from "./component_never_property";
 
-
 export const widthTransformFirstChild: SizableOptionRecord<string> = {
     none: "[&>*]:w-full [&>*]:@[768px]/mdx:hidden",
     small: "[&>*]:w-full [&>*]:@[450px]/mdx:w-[320px]",

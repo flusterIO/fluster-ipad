@@ -1,4 +1,5 @@
 pub mod ai_input_component_result;
+pub mod component_glue;
 pub mod conundrum_input;
 pub mod conundrum_template;
 pub mod fluster_component_result;

@@ -10,6 +10,7 @@ use crate::{
         state::{
             citation_list::CitationList,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
+            dom_data::DomData,
             parse_state::{ConundrumModifier, ParseState},
             ui_params::UIParams,
         },
@@ -85,6 +86,7 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
                                                    last_heading_tab_depth: 0,
                                                    valid_footnote_indices: Vec::new(),
                                                    ui_params: opts.ui_params.clone(),
+                                                   dom: DomData { id_count: 0 },
                                                    slugger: Slugger::default() }));
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),

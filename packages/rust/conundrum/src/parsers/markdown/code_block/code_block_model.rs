@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use askama::Template;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
@@ -14,15 +15,20 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        lib::ui::ui_traits::jsx_prop_representable::JsxPropRepresentable,
         runtime::{
             state::{
-                conundrum_error_variant::ConundrumModalResult,
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
                 parse_state::{ConundrumModifier, ParseState},
                 ui_params::UIParams,
             },
             traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input}, fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult
+                conundrum_input::{ConundrumInput, get_conundrum_input},
+                fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
+                markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -36,11 +42,13 @@ use crate::{
     parsers::{
         conundrum::logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
         markdown::code_block::{
+            code_block_html_template::CodeBlockHTMLTemplate,
             general::{
                 general_codeblock::GeneralPresentationCodeBlock,
                 render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
             },
             supported_languages::SupportedCodeBlockSyntax,
+            supported_themes::SupportedCodeBlockTheme,
         },
         parser_trait::ConundrumParser,
     },
@@ -64,6 +72,36 @@ impl ParsedCodeBlock {
         } else {
             None
         }
+    }
+
+    pub fn get_title(&self) -> Option<String> {
+        if let Some(x) = self.get_meta_data() {
+            if let Some(title_em) = x.data.get("title") {
+                if let Some(title_string) = match title_em.value() {
+                    #[allow(clippy::collapsible_match)]
+                    ParsedElement::Logic(l) => match l {
+                        ConundrumLogicToken::String(s) => Some(s),
+                        _ => None,
+                    },
+                    _ => None,
+                } {
+                    return Some(title_string.0.clone());
+                }
+            }
+        }
+        None
+    }
+
+    pub fn get_highlighted_content(&self, theme: SupportedCodeBlockTheme) -> ConundrumModalResult<String> {
+        render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content:
+                                                                                                        self.content
+                                                                                                            .clone(),
+                                                                                                    lang:
+                                                                                                        self.language
+                                                                                                            .clone(),
+                                                                                                    theme:
+                                                                                                        Some(theme),
+                                                                                                    inline: false } })
     }
 }
 
@@ -93,7 +131,17 @@ impl MarkdownComponentResult for ParsedCodeBlock {
 
 impl HtmlJsComponentResult for ParsedCodeBlock {
     fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        todo!()
+        let id = res.dom.new_id();
+        let template = CodeBlockHTMLTemplate::new(self.get_highlighted_content(res.ui_params
+                                                                                  .syntax_theme
+                                                                                  .clone()
+                                                                                  .unwrap_or_default())?,
+                                                  self.get_title(),
+                                                  id);
+        template.render().map_err(|e| {
+                             eprintln!("Error: {:#?}", e);
+                             ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("")))
+                         })
     }
 }
 
@@ -138,43 +186,7 @@ impl MdxComponentResult for ParsedCodeBlock {
                 Ok(get_dictionary_content(self, &mut res.data))
             }
             SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
-            _ => {
-                let mut props = vec![self.language.to_jsx_prop("language")];
-                #[allow(clippy::collapsible_if)]
-                if let Some(x) = self.get_meta_data() {
-                    if let Some(title_em) = x.data.get("title") {
-                        if let Some(title_string) = match title_em.value() {
-                            #[allow(clippy::collapsible_match)]
-                            ParsedElement::Logic(l) => match l {
-                                ConundrumLogicToken::String(s) => Some(s),
-                                _ => None,
-                            },
-                            _ => None,
-                        } {
-                            let title_jsx_prop =
-                                title_string.to_jsx_prop_as_string("title").map_err(ErrMode::Backtrack)?;
-                            props.push(title_jsx_prop)
-                        }
-                    }
-                }
-                let highlighted_content = render_general_codeblock_to_html(RenderCodeToHtmlReq {
-                    code: GeneralPresentationCodeBlock {
-                        content: self.content.clone(),
-                        lang: self.language.clone(),
-                        theme: res.ui_params.syntax_theme.clone(),
-                        inline: false
-                    }
-                })?;
-                Ok(format!(
-                           r#"<{} {}>
-{}
-</{}>"#,
-                           AutoInsertedComponentName::AutoInsertedCodeBlock,
-                           props.join(" "),
-                           highlighted_content,
-                           AutoInsertedComponentName::AutoInsertedCodeBlock,
-                ))
-            }
+            _ => self.to_html_js_component(res),
         }
     }
 }

@@ -68,7 +68,7 @@ export const componentOverrides: MDXComponents = {
     a: AnchorTag,
     /* hr: Hr, */
     input: MdxInput,
-    pre: AutoInsertedCodeBlock,
+    /* pre: AutoInsertedCodeBlock, */
 };
 
 const items: ComponentMapItem[] = [

@@ -5,6 +5,7 @@ use winnow::Stateful;
 use crate::{
     lang::runtime::state::{
         citation_list::CitationList,
+        dom_data::DomData,
         parse_state::{ConundrumModifier, ParseState},
         ui_params::UIParams,
     },
@@ -25,6 +26,7 @@ pub fn get_conundrum_input(val: &str, modifiers: Vec<ConundrumModifier>, ui_para
                                                                last_heading_tab_depth: 0,
                                                                valid_footnote_indices: Vec::new(),
                                                                ui_params,
+                                                               dom: DomData::default(),
                                                                slugger: Slugger::default() })) }
 }
 
