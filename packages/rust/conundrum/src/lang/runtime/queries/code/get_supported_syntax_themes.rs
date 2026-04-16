@@ -13,6 +13,7 @@ mod tests {
     #[test]
     fn gets_supported_syntax_themes() {
         let res = get_supported_syntax_themes();
+        println!("Res: {:#?}", res);
         assert!(!res.is_empty(), "Returns valid syntax themes.");
     }
 }

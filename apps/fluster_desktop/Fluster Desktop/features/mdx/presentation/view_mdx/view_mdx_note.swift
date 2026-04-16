@@ -5,6 +5,7 @@
 //  Created by Andrew on 1/19/26.
 //
 
+import ConundrumSwift
 import FlusterData
 import FlusterSwift
 import FlusterWebviewClients
@@ -22,6 +23,14 @@ struct MdxContentWebview: View {
   @Query private var notes: [NoteModel]
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFormat: EmbeddedCslFileSwift =
     .apa
+
+  @Environment(\.colorScheme) private var colorScheme: ColorScheme
+  @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
+    SupportedCodeBlockTheme = .solarizedDark
+  @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
+    SupportedCodeBlockTheme = .solarizedLight
+  @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
+  @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
 
   var editingNote: NoteModel? {
     notes.isEmpty ? nil : notes.first!
@@ -90,13 +99,18 @@ struct MdxContentWebview: View {
       .task {
         if let en = editingNote {
           do {
-            try await en.preParseIfEdited(modelContext: modelContext)
+            try await en.preParseIfEdited(
+              modelContext: modelContext,
+              uiParams: UiParams(
+                darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                mathFontScalar: Float(webviewMathFontScale),
+                syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
+            )
           } catch {
             print("Error: \(error.localizedDescription)")
           }
         }
       }
-      
     }
   }
 

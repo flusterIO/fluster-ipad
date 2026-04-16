@@ -50,7 +50,7 @@ extension ParsedCodeBlock: @retroactive Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let fullMatch = try container.decode(String.self, forKey: .fullMatch)
-    let langTag = try container.decode(String.self, forKey: .language)
+    let langTag = try container.decode(SupportedCodeBlockSyntax.self, forKey: .language)
     let blockContent = try container.decode(String.self, forKey: .content)
     let metaData = try container.decode(String.self, forKey: .metaData)
     let depth = try container.decode(UInt8.self, forKey: .depth)

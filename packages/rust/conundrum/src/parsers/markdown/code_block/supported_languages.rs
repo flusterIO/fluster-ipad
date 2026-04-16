@@ -1,7 +1,15 @@
 use serde::{Deserialize, Serialize};
 use strum::EnumIter;
+use syntect::parsing::{SyntaxReference, SyntaxSet};
+use winnow::error::ErrMode;
 
-use crate::lang::lib::ui::ui_traits::jsx_prop_representable::JsxPropRepresentable;
+use crate::lang::{
+    lib::ui::ui_traits::jsx_prop_representable::JsxPropRepresentable,
+    runtime::state::{
+        conundrum_error::ConundrumError,
+        conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+    },
+};
 
 /// All keys must be cast to lowercase and all `_` replaced with `-`.
 #[typeshare::typeshare]
@@ -267,6 +275,14 @@ pub enum SupportedCodeBlockSyntax {
 impl SupportedCodeBlockSyntax {
     pub fn format_string_for_key(val: &str) -> String {
         val.trim().to_lowercase().replace("_", "-")
+    }
+
+    pub fn load_syntax(&self, ss: &SyntaxSet) -> ConundrumModalResult<SyntaxReference> {
+        ss.find_syntax_by_name(self.to_string().as_str()).cloned().ok_or_else(|| {
+            ErrMode::Cut(
+                ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Parser Error", format!("The `{}` language grammar could not be loaded. If this continues please file an issue on Github.", self.to_string()).as_str()))
+            )
+        })
     }
 
     /// Since markdown rendering is completely left up to the platform, and with

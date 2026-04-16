@@ -5,6 +5,7 @@
 //  Created by Andrew on 3/23/26.
 //
 
+import ConundrumSwift
 import FlusterData
 import Foundation
 import FoundationModels
@@ -31,8 +32,11 @@ public func generateNoteSummary(focusedNote: NoteModel, details: AIUserDetails)
   async throws -> AiPhase2Response
 {
   let session = getNoteSummaryLanguageModelSession(details)
-  let content = try await focusedNote.markdown.body.conundrumToAIInput(noteId: focusedNote.id)
-  print("AI Input: \(content)")
+  let content = try await focusedNote.markdown.body.conundrumToAIInput(
+    noteId: focusedNote.id,
+    // uiParams should be completely irrelevant here since we're only rendering for AI.
+    uiParams: UiParams(
+      darkMode: true, fontScalar: 1, mathFontScalar: 1.2, syntaxTheme: .solarizedDark))
   let res = try await session.respond(to: content)
   return AiPhase2Response(
     success: true, replaceWith: nil, res: content, userMessage: nil, id: nil,

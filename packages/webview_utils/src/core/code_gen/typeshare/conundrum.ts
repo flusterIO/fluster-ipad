@@ -203,8 +203,89 @@ export interface Admonition {
 	folded?: ConundrumBoolean;
 }
 
+/** All keys must be cast to lowercase and all `_` replaced with `-`. */
+export enum SupportedCodeBlockSyntax {
+	PlainText = "Plain Text",
+	ASP = "ASP",
+	HTML_ASP = "HTML (ASP)",
+	ActionScript = "ActionScript",
+	AppleScript = "AppleScript",
+	BatchFile = "Batch File",
+	NAntBuildFile = "NAnt Build File",
+	CSharp = "C#",
+	Cpp = "C++",
+	C = "C",
+	CSS = "CSS",
+	Clojure = "Clojure",
+	D = "D",
+	Diff = "Diff",
+	Erlang = "Erlang",
+	HTML_Erlang = "HTML (Erlang)",
+	Go = "Go",
+	GraphvizDOT = "Graphviz (DOT)",
+	Groovy = "Groovy",
+	HTML = "HTML",
+	Haskell = "Haskell",
+	LiterateHaskell = "Literate Haskell",
+	JavaServerPage = "Java Server Page (JSP)",
+	Java = "Java",
+	JavaDoc = "JavaDoc",
+	JavaProperties = "Java Properties",
+	JSON = "JSON",
+	JavaScript = "JavaScript",
+	RegularExpressionsJavascript = "Regular Expressions (Javascript)",
+	BibTeX = "BibTeX",
+	LaTeXLog = "LaTeX Log",
+	LaTeX = "LaTeX",
+	TeX = "TeX",
+	Lisp = "Lisp",
+	Lua = "Lua",
+	MakeOutput = "Make Output",
+	Makefile = "Makefile",
+	Markdown = "Markdown",
+	MultiMarkdown = "MultiMarkdown",
+	MATLAB = "MATLAB",
+	OCaml = "OCaml",
+	OCamllex = "OCamllex",
+	OCamlyacc = "OCamlyacc",
+	Camlp4 = "camlp4",
+	ObjectiveCpp = "Objective-C++",
+	ObjectiveC = "Objective-C",
+	PHPSource = "PHP Source",
+	PHP = "PHP",
+	Pascal = "Pascal",
+	Perl = "Perl",
+	Python = "Python",
+	RegularExpressionsPython = "Regular Expressions (Python)",
+	RConsole = "R Console",
+	R = "R",
+	Rdoc = "Rd (R Documentation)",
+	HTML_Rails = "HTML (Rails)",
+	JavaScript_Rails = "JavaScript (Rails)",
+	RubyHaml = "Ruby Haml",
+	RubyOnRails = "Ruby on Rails",
+	SQL_Rails = "SQL (Rails)",
+	RegularExpression = "Regular Expression",
+	ReStructuredText = "reStructuredText",
+	Ruby = "Ruby",
+	CargoBuildResults = "Cargo Build Results",
+	Rust = "Rust",
+	SQL = "SQL",
+	Scala = "Scala",
+	Bash = "Bourne Again Shell (bash)",
+	GenericUnixShell = "Shell-Unix-Generic",
+	CommandsBuiltinShellBash = "commands-builtin-shell-bash",
+	HTML_TCL = "HTML (Tcl)",
+	Tcl = "Tcl",
+	Textile = "Textile",
+	XML = "XML",
+	YAML = "YAML",
+	ConundrumAi = "conundrum-ai",
+	Dictionary = "dictionary",
+}
+
 export interface ParsedCodeBlock {
-	language: ConundrumString;
+	language: SupportedCodeBlockSyntax;
 	meta_data?: string;
 	depth: number;
 	content: string;
@@ -769,6 +850,24 @@ export enum EmbeddableComponentName {
 	AINoteSummary = "AINoteSummary",
 }
 
+export enum SupportedCodeBlockTheme {
+	InspiredGitHub = "InspiredGitHub",
+	SolarizedDark = "Solarized (dark)",
+	SolarizedLight = "Solarized (light)",
+	Base16_80sDark = "base16-eighties.dark",
+	Base16_MochaDark = "base16-mocha.dark",
+	Base16_OceanDark = "base16-ocean.dark",
+	Base16_OceanLight = "base16-ocean.light",
+}
+
+export interface UIParams {
+	dark_mode: boolean;
+	/** A number 0-n, where n > 1 increases the fontsize. */
+	font_scalar: number;
+	math_font_scalar: number;
+	syntax_theme?: SupportedCodeBlockTheme;
+}
+
 /** This is the core 'input' for Conundrum. */
 export interface ParseConundrumOptions {
 	/**
@@ -796,6 +895,7 @@ export interface ParseConundrumOptions {
 	 * _nothing_, but it's state will still be applied to the result.
 	 */
 	hide_components: EmbeddableComponentName[];
+	ui_params: UIParams;
 }
 
 export interface ParsedCitation {
@@ -1043,6 +1143,7 @@ export enum InContentDocumentationId {
 	Docs = "Docs",
 	Syntax = "Syntax",
 	Jsx = "Jsx",
+	Code = "Code",
 	SizableObject = "Sizable",
 	Emphasis = "Emphasis",
 	Emoji = "Emoji",

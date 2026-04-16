@@ -5,6 +5,7 @@
 //  Created by Andrew on 1/17/26.
 //
 
+import ConundrumSwift
 import FlusterData
 import FlusterMdx
 import SwiftData
@@ -21,6 +22,14 @@ struct CreateNotePage: View {
   @Environment(\.modelContext) private var modelContext: ModelContext
   @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
     DefaultNoteView = .editor
+  @Environment(\.colorScheme) private var colorScheme: ColorScheme
+  @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
+    SupportedCodeBlockTheme = .solarizedDark
+  @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
+    SupportedCodeBlockTheme = .solarizedLight
+  @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
+  @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
+
   var body: some View {
     GeometryReader { geo in
       VStack {
@@ -137,7 +146,14 @@ struct CreateNotePage: View {
                   }
                   Task {
                     do {
-                      try await item.preParse(modelContext: modelContext)
+                      try await item.preParse(
+                        modelContext: modelContext,
+                        uiParams: UiParams(
+                          darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                          mathFontScalar: Float(webviewMathFontScale),
+                          syntaxTheme: colorScheme == .dark
+                            ? codeBlockThemeDark : codeBlockThemeLight)
+                      )
                       modelContext.insert(item)
                       try modelContext.save()
                       titleText = ""

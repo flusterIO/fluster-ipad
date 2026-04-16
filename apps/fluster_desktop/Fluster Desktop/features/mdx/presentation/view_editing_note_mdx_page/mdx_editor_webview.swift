@@ -44,6 +44,12 @@ struct MdxEditorWebview: View {
   @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets: Bool =
     true
   @AppStorage(AppStorageKeys.storePlainText.rawValue) private var storePlainText: Bool = true
+  @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
+    SupportedCodeBlockTheme = .solarizedDark
+  @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
+    SupportedCodeBlockTheme = .solarizedLight
+  @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
+  @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1
 
   init(editingNoteId: String?, webView: Binding<WKWebView>) {
     self.editingNoteId = editingNoteId
@@ -167,7 +173,12 @@ struct MdxEditorWebview: View {
           // when the next change event is fired.
           if let en = editingNote {
             do {
-              try await en.preParse(modelContext: modelContext)
+              try await en.preParse(
+                modelContext: modelContext,
+                uiParams: UiParams(
+                  darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                  mathFontScalar: Float(webviewMathFontScale),
+                  syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight))
             } catch {
               print("Error here: \(error.localizedDescription)")
               if editorSaveMethod == .onChange {
@@ -181,7 +192,12 @@ struct MdxEditorWebview: View {
         if let en = editingNote {
           en.setLastRead()
           Task {
-            try? await en.preParse(modelContext: modelContext)
+            try? await en.preParse(
+              modelContext: modelContext,
+              uiParams: UiParams(
+                darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                mathFontScalar: Float(webviewMathFontScale),
+                syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight))
           }
         }
       }
@@ -282,7 +298,13 @@ struct MdxEditorWebview: View {
           let event = try decoder.decode(ManualSaveRequestEvent.self, from: jsonData)
           if event.note_id == en.id {
             en.markdown.body = event.current_note_content
-            try await en.preParse(modelContext: modelContext)
+            try await en.preParse(
+              modelContext: modelContext,
+              uiParams: UiParams(
+                darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                mathFontScalar: Float(webviewMathFontScale),
+                syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
+            )
             let citations = en.citations.compactMap { cit in
               cit.toEditorCitation(activeCslFile: cslFile)
             }

@@ -41,6 +41,9 @@ pub enum InContentDocumentationId {
     #[serde(rename = "Jsx")]
     #[strum(to_string = "Jsx")]
     Jsx,
+    #[serde(rename = "Code")]
+    #[strum(to_string = "Code")]
+    Code,
     #[serde(rename = "Sizable")]
     #[strum(to_string = "Sizable")]
     SizableObject,
@@ -74,6 +77,7 @@ impl InContentDocumentationId {
             InContentDocumentationId::Components => "generated-component-list",
             InContentDocumentationId::AI => "ai-docs",
             InContentDocumentationId::Conundrum => "conundrum",
+            InContentDocumentationId::Code => "code-docs",
         };
         format!("{}-{}.mdx", base_file_name, format)
     }

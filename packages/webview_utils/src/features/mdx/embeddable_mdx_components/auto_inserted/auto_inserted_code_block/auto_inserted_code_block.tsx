@@ -7,23 +7,23 @@ import React, { type HTMLProps, useRef, useState, type ReactNode } from 'react'
 import { type BundledLanguage } from 'shiki'
 
 
-export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLProps<HTMLPreElement>): ReactNode => {
+export const AutoInsertedCodeBlock = ({ className, children, ...props }: HTMLProps<HTMLDivElement>): ReactNode => {
     const [hovered, setHovered] = useState(false)
-    const ref = useRef<HTMLPreElement | null>(null)
+    const ref = useRef<HTMLDivElement | null>(null)
     const sendSplitviewNotificationBanner = useSendNotificationBanner()
     const getLanguage = (): BundledLanguage | undefined => {
         return ref.current?.getAttribute("data-language") as BundledLanguage | undefined
     }
     return (
         <>
-            <pre
+            <div
                 className={cn("rounded", className)}
                 {...props}
                 onClick={() => { setHovered(!hovered); }}
                 ref={ref}
             >
                 {children}
-            </pre>
+            </div>
             <div
                 role="button"
                 className={cn("auto-codeblock-icon absolute top-2 right-2 transition-opacity duration-300", hovered && "opacity-100 hovered flex-col justify-center items-center")}

@@ -5,6 +5,7 @@
 //  Created by Andrew on 2/17/26.
 //
 
+import ConundrumSwift
 import FlusterData
 import FlusterSwift
 import FlusterWebviewClients
@@ -21,6 +22,13 @@ struct NoteDetailWebview: View {
   @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
     .apa
   @Environment(\.modelContext) private var modelContext: ModelContext
+  @Environment(\.colorScheme) private var colorScheme: ColorScheme
+  @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
+    SupportedCodeBlockTheme = .solarizedDark
+  @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
+    SupportedCodeBlockTheme = .solarizedLight
+  @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
+  @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
   var editingNote: NoteModel? {
     notes.isEmpty ? nil : notes.first
   }
@@ -172,8 +180,14 @@ struct NoteDetailWebview: View {
         return EditorTag(body: t.value)
       }
 
-      do { // Keep this in a separate loop to allow failing while still setting state.
-        try await en.preParse(modelContext: modelContext)
+      do {  // Keep this in a separate loop to allow failing while still setting state.
+        try await en.preParse(
+          modelContext: modelContext,
+          uiParams: UiParams(
+            darkMode: colorScheme == .dark,
+            fontScalar: Float(webviewFontScale),
+            mathFontScalar: Float(webviewMathFontScale),
+            syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight))
       } catch {
         print("Parsing error: \(error.localizedDescription)")
       }

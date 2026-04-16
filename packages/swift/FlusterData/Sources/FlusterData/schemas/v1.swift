@@ -491,13 +491,13 @@ extension AppSchemaV1 {
     }
 
     @MainActor
-    public func preParse(modelContext: ModelContext) async throws {
+    public func preParse(modelContext: ModelContext, uiParams: UiParams) async throws {
       let _id = self.id
       let _body = self.markdown.body
       let task: Task<MdxParsingResult?, any Error> = try await Task.detached {
         let res = try await ConundrumSwift.runConundrum(
           options: ParseConundrumOptions(
-            noteId: _id, content: _body, modifiers: [], hideComponents: []))
+            noteId: _id, content: _body, modifiers: [], hideComponents: [], uiParams: uiParams))
         return res
       }
 
@@ -511,17 +511,19 @@ extension AppSchemaV1 {
       }  // No need for else block, get() already throws.
     }
     @MainActor
-    public func preParseIfEdited(modelContext: ModelContext) async throws {
+    public func preParseIfEdited(modelContext: ModelContext, uiParams: UiParams) async throws {
       if self.markdown.isEdited || self.markdown.preParsedBody == nil {
-        try await self.preParse(modelContext: modelContext)
+        try await self.preParse(modelContext: modelContext, uiParams: uiParams)
       }
     }
     @MainActor
-    public func preParsedOrParse(modelContext: ModelContext) async throws -> String {
+    public func preParsedOrParse(modelContext: ModelContext, uiParams: UiParams) async throws
+      -> String
+    {
       if let preParsed = self.markdown.preParsedBody {
         return preParsed
       } else {
-        try await self.preParse(modelContext: modelContext)
+        try await self.preParse(modelContext: modelContext, uiParams: uiParams)
         return self.markdown.preParsedBody ?? ""
       }
     }
@@ -995,15 +997,17 @@ extension AppSchemaV1 {
     // PERFORMANCE: Figure out how to move this to a background thread immediately.
     /// The noteId is the database id of the note, _not_ the user-defined id.
     @MainActor
-    public func parsePlainText(noteId: String) async throws {
+    public func parsePlainText(noteId: String, uiParams: UiParams) async throws {
       let res = try await ConundrumSwift.runConundrum(
         options: ParseConundrumOptions(
-          noteId: noteId, content: self._body, modifiers: [.forcePlainText], hideComponents: []))
+          noteId: noteId, content: self._body, modifiers: [.forcePlainText], hideComponents: [],
+          uiParams: uiParams))
       self.plainText = res.content
       if let title = self.title {
         let titleResponse = try await ConundrumSwift.runConundrum(
           options: ParseConundrumOptions(
-            noteId: noteId, content: title, modifiers: [.forcePlainText], hideComponents: []))
+            noteId: noteId, content: title, modifiers: [.forcePlainText], hideComponents: [],
+            uiParams: uiParams))
         if titleResponse.content != title {
           self.titlePlainText = titleResponse.content
         } else {

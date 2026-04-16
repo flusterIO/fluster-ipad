@@ -22,11 +22,11 @@ pub fn render_general_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumMo
     };
 
     let syntax = ss.find_syntax_by_name(req.code.lang.to_string().as_str()).ok_or_else(|| {
-            ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid syntax name", "Conundrum found an invalid syntax name, or a language that is not supported by the syntec highlighter.")))
+            ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid syntax name", "Conundrum found an invalid syntax name, or a language that is not supported by the syntec highlighter. See the `Code??` documentation for more information.")))
     })?;
 
     let theme_sets = ThemeSet::load_defaults();
-    let theme = &theme_sets.themes[req.code.theme.unwrap_or("base16-ocean.dark".to_string()).as_str()];
+    let theme = &req.code.theme.unwrap_or_default().to_theme(&theme_sets);
 
     let x = highlighted_html_for_string(req.code.content.as_str(), &ss, syntax, theme).map_err(|e| {
         eprintln!("Error: {:#?}", e);
@@ -38,7 +38,9 @@ pub fn render_general_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumMo
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::markdown::code_block::supported_languages::SupportedCodeBlockSyntax;
+    use crate::parsers::markdown::code_block::{
+        supported_languages::SupportedCodeBlockSyntax, supported_themes::SupportedCodeBlockTheme,
+    };
 
     use super::*;
 
@@ -52,7 +54,7 @@ class MyDataclass:
     def __post_init__(self):
         print(self)
             "#;
-        let res = render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content: test_content.to_string(), lang: SupportedCodeBlockSyntax::Python, theme: Some("base16-ocean.dark".to_string()), inline: false } }).expect("Successfully highlights a python codeblock.");
+        let res = render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content: test_content.to_string(), lang: SupportedCodeBlockSyntax::Python, theme: Some(SupportedCodeBlockTheme::SolarizedDark), inline: false } }).expect("Successfully highlights a python codeblock.");
 
         println!("Res: {:#?}", res);
     }

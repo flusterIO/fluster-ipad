@@ -5,6 +5,7 @@
 //  Created by Andrew on 1/20/26.
 //
 
+import ConundrumSwift
 import FlusterAI
 import FlusterData
 import FlusterWebviewClients
@@ -249,6 +250,14 @@ struct WebViewContainerView: View {
   @AppStorage(AppStorageKeys.storePlainText.rawValue) private var storePlainText: Bool = true
   @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets: Bool =
     true
+  @Environment(\.colorScheme) private var colorScheme: ColorScheme
+  @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
+    SupportedCodeBlockTheme = .solarizedDark
+  @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
+    SupportedCodeBlockTheme = .solarizedLight
+  @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
+  @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
+
   @Binding var webview: WKWebView
   public let url: URL
   public let messageHandlerKeys: [String]
@@ -264,7 +273,6 @@ struct WebViewContainerView: View {
 
   @State private var show: Bool = false
   @AppStorage(AppStorageKeys.theme.rawValue) private var theme: FlusterTheme = .fluster
-  @Environment(\.colorScheme) private var colorScheme: ColorScheme
 
   init(
     implementation: WebviewImplementation,
@@ -327,7 +335,13 @@ struct WebViewContainerView: View {
     .task(id: editingNote?.markdown._body, priority: .low) {
       if let en = editingNote, storePlainText {
         do {
-          try await en.markdown.parsePlainText(noteId: en.id)
+          try await en.markdown.parsePlainText(
+            noteId: en.id,
+            uiParams: UiParams(
+              darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+              mathFontScalar: Float(webviewMathFontScale),
+              syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
+          )
         } catch {
           print("Error parsing plain text: \(error.localizedDescription)")
         }
@@ -388,7 +402,13 @@ struct WebViewContainerView: View {
       Task {
         let llm = SystemLanguageModel()
         do {
-          try await en.preParseIfEdited(modelContext: modelContext)
+          try await en.preParseIfEdited(
+            modelContext: modelContext,
+            uiParams: UiParams(
+              darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+              mathFontScalar: Float(webviewMathFontScale),
+              syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
+          )
           try await EditorState.setInitialEditorState(
             editorPayload: EditorInitialStatePayload(
               note_id: en.id,
@@ -447,7 +467,13 @@ struct WebViewContainerView: View {
   func updateParsedEditorValue() {
     if let en = editingNote {
       Task(priority: .high) {
-        try? await en.preParseIfEdited(modelContext: modelContext)
+        try? await en.preParseIfEdited(
+          modelContext: modelContext,
+          uiParams: UiParams(
+            darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+            mathFontScalar: Float(webviewMathFontScale),
+            syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
+        )
         let citations: [EditorCitation] = en.citations.compactMap { cit in
           cit.toEditorCitation(activeCslFile: cslFile)
         }

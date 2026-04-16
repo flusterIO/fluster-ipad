@@ -16,6 +16,11 @@ import SwiftUI
 public typealias EvalJavascriptFunc = @MainActor @Sendable (String) async throws -> Sendable?
 
 public struct GenerateAINoteSummaryButton: View {
+  @Environment(\.colorScheme) private var colorScheme: ColorScheme
+  @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
+    SupportedCodeBlockTheme = .solarizedDark
+  @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
+    SupportedCodeBlockTheme = .solarizedLight
   public var editingNote: NoteModel?
   public var evalJs: EvalJavascriptFunc
 
@@ -53,10 +58,15 @@ public struct GenerateAINoteSummaryButton: View {
     Task {
       do {
         let session = getNoteSummaryLanguageModelSession(
-          AIUserDetails(preferred_name: preferredName)
+          AIUserDetails(preferred_name: preferredName),
         )
+        let uiParams = UiParams(
+          darkMode: colorScheme == .dark, fontScalar: 1, mathFontScalar: 1.2,
+          syntaxTheme: .solarizedDark)
 
-        let inputContent = try await note.markdown.body.conundrumToAIInput(noteId: noteId)
+        let inputContent = try await note.markdown.body.conundrumToAIInput(
+          noteId: noteId,
+          uiParams: uiParams)
         let responseStream = try await session.streamResponse(to: Prompt(inputContent))
 
         var isInitial = true
@@ -67,7 +77,8 @@ public struct GenerateAINoteSummaryButton: View {
             noteId: noteId,
             content: partial.content,
             modifiers: [.preferMarkdownSyntax],
-            hideComponents: []
+            hideComponents: [],
+            uiParams: uiParams
           )
 
           let parsed = try await ConundrumSwift.runConundrum(options: options)

@@ -8,9 +8,10 @@
 import Foundation
 import SwiftData
 import FlusterData
+import ConundrumSwift
 
 @MainActor
-public func getTestNote(modelContext: ModelContext) async -> NoteModel {
+public func getTestNote(modelContext: ModelContext, uiParams: UiParams) async -> NoteModel {
     do {
         let testNoteUrl = try URL("file:///Users/bigsexy/Desktop/notes/content/physics/ipad_app_notes/on_the_gravitational_nature_of_time.mdx", strategy: .url)
         let fileContents = try String(contentsOf: testNoteUrl, encoding: .utf8)
@@ -19,7 +20,7 @@ public func getTestNote(modelContext: ModelContext) async -> NoteModel {
             body: fileContents,
           )
         )
-        if let parsingResults = await fileContents.preParseAsMdx(noteId: nil) {
+        if let parsingResults = await fileContents.preParseAsMdx(noteId: nil, uiParams: uiParams) {
             res.applyMdxParsingResults(results: parsingResults, modelContext: modelContext)
         }
         return res

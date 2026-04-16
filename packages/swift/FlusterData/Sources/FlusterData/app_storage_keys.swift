@@ -9,16 +9,17 @@ public enum AppStorageKeys: String {
   case theme,
     editorThemeDark,
     editorThemeLight,
+    codeBlockThemeDark,
+    codeBlockThemeLight,
     colorScheme,
     editorKeymap,
-    webviewFontSize,
     tabviewCustomization,
     hasLaunchedPreviously,
     splitViewEditorSplit,
     silenceParsingErrors,
     lockEditorScrollToPreview,
     embeddedCslFile,
-    
+
     editorSaveMethod,
     // Snippets
     includeEmojiSnippets,
@@ -32,13 +33,19 @@ public enum AppStorageKeys: String {
     noteSidebarSectionOpen,
     flusterSidebarSectionOpen,
     desktopWebviewTheme
-    /// Store the plain text alongside the markdown text for full text search compatibility
-    case storePlainText
-    /// A user name used only for the AI to personalize the application.
-    case userPreferredName
-    /// The global search function selected on the mac, allowing seperate settings if data ever overlaps
-    case globalSearchFunctionMac
-    /// The global search function selected on the iPad, allowing seperate settings if data ever overlaps
-    case globalSearchFunctionIpad
-    case noteSummaryGenerationStrategy
+  /// Store the plain text alongside the markdown text for full text search compatibility
+  case storePlainText
+  /// A user name used only for the AI to personalize the application.
+  case userPreferredName
+  /// The global search function selected on the mac, allowing seperate settings if data ever overlaps
+  case globalSearchFunctionMac
+  /// The global search function selected on the iPad, allowing seperate settings if data ever overlaps
+  case globalSearchFunctionIpad
+  case noteSummaryGenerationStrategy
+  /// deprecated in favor of webviewFontScale.
+  case webviewFontSize
+  /// `webviewFontSize = (16 * webviewFontScale)px`
+  case webviewFontScale
+  /// `webviewMathFontSize = (webviewFontScale * webviewMathFontScale)px`
+  case webviewMathFontScale
 }
