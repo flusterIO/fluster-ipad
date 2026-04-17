@@ -132,12 +132,9 @@ impl MarkdownComponentResult for ParsedCodeBlock {
 impl HtmlJsComponentResult for ParsedCodeBlock {
     fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         let id = res.dom.new_id();
-        let template = CodeBlockHTMLTemplate::new(self.get_highlighted_content(res.ui_params
-                                                                                  .syntax_theme
-                                                                                  .clone()
-                                                                                  .unwrap_or_default())?,
-                                                  self.get_title(),
-                                                  id);
+        let code_string = self.get_highlighted_content(res.ui_params.syntax_theme.clone().unwrap_or_default())?;
+        println!("Code: {:#?}", code_string);
+        let template = CodeBlockHTMLTemplate::new(code_string, self.get_title(), id);
         template.render().map_err(|e| {
                              eprintln!("Error: {:#?}", e);
                              ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("")))

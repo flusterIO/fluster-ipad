@@ -46,7 +46,7 @@
     }
   },
   "dependencies": {
-    "@citedrive/codemirror-lang-bibtex": "6.4.1",
+    "@conundrum/generated": "workspace:*",
     "@fluster/webview_utils": "workspace:*",
     "autoprefixer": "10.4.21",
     "flatbuffers": "25.9.23",

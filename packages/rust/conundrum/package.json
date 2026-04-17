@@ -1,54 +1,54 @@
 {
-    "name": "@conundrum/generated",
-    "version": "0.0.1",
-    "keywords": [
-        "academic",
-        "fluster",
-        "note taking",
-        "science",
-        "STEM"
-    ],
-    "funding": [
-        {
-            "type": "paypal",
-            "url": "https://www.paypal.com/ncp/payment/D6S6NP4AHJD6Y"
-        },
-        {
-            "type": "patreon",
-            "url": "https://www.patreon.com/uhlittlelessdum/about"
-        },
-        {
-            "type": "github",
-            "url": "https://github.com/flusterIO/fluster"
-        }
-    ],
-    "type": "module",
-    "private": true,
-    "files": [
-        "generated/web/conundrum.css"
-    ],
-    "scripts": {
-        "build": "../../../node_modules/@tailwindcss/cli/dist/index.mjs --input ./generated/web/conundrum_input.scss --output ./generated/web/conundrum.css"
+  "name": "@conundrum/generated",
+  "version": "0.0.1",
+  "keywords": [
+    "academic",
+    "fluster",
+    "note taking",
+    "science",
+    "STEM"
+  ],
+  "funding": [
+    {
+      "type": "paypal",
+      "url": "https://www.paypal.com/ncp/payment/D6S6NP4AHJD6Y"
     },
-    "types": "./dist/index.d.ts",
-    "main": "./dist/index.umd.js",
-    "exports": {
-        "./conundrum.css": {
-            "import": "./generated/web/conundrum.css",
-            "require": "./generated/web/conundrum.css"
-        }
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/uhlittlelessdum/about"
     },
-    "dependencies": {
-        "@tailwindcss/container-queries": "0.1.1",
-        "@tailwindcss/postcss": "4.1.10",
-        "tailwind-merge": "3.3.0",
-        "tailwindcss": "4.2.1"
-    },
-    "devDependencies": {
-        "@tailwindcss/typography": "0.5.19",
-        "@tailwindcss/vite": "4.2.1"
-    },
-    "prettier": "../../shared_config/prettier.config.ts",
-    "packageManager": "pnpm@9.7.1",
-    "license": "MIT"
+    {
+      "type": "github",
+      "url": "https://github.com/flusterIO/fluster"
+    }
+  ],
+  "type": "module",
+  "private": true,
+  "files": [
+    "generated/web/conundrum.css"
+  ],
+  "scripts": {
+    "build": "../../../node_modules/@tailwindcss/cli/dist/index.mjs --input ./generated/web/conundrum_input.scss --output ./generated/web/conundrum.css"
+  },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.umd.js",
+  "exports": {
+    "./conundrum.css": {
+      "import": "./generated/web/conundrum.css",
+      "require": "./generated/web/conundrum.css"
+    }
+  },
+  "dependencies": {
+    "@tailwindcss/container-queries": "0.1.1",
+    "@tailwindcss/postcss": "4.1.10",
+    "tailwind-merge": "3.3.0",
+    "tailwindcss": "4.2.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "0.5.19",
+    "@tailwindcss/vite": "4.2.1"
+  },
+  "prettier": "../../shared_config/prettier.config.ts",
+  "packageManager": "pnpm@9.7.1",
+  "license": "MIT"
 }

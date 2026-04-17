@@ -6,14 +6,12 @@ use crate::output::html::dom::dom_id::DOMId;
 ///
 /// ```askama
 /// <div class="cdrm-codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded
-/// relative">
-///   {% if let Some(title) = title %}
+/// relative">   {% if let Some(title) = title %}
 ///   <div
-///   class="px-2 py-0 text-fd-card-foreground/80"
+///   class="my-6 px-2 py-0 text-fd-card-foreground/80"
 ///   >
 ///   {{title}}
-///   </div>
-///   {% endif %}
+///   </div> {% endif %}
 ///    <div class="w-full relative" id="{{id}}">
 ///    <div
 ///      data-cdrm-copy-for="{{id}}"
@@ -30,7 +28,7 @@ use crate::output::html::dom::dom_id::DOMId;
 /// </div>
 /// ```
 #[derive(Template)]
-#[template(ext = "html", in_doc = true)]
+#[template(ext = "html", escape = "none", in_doc = true)]
 pub struct CodeBlockHTMLTemplate {
     pub id: DOMId,
     pub code: String,

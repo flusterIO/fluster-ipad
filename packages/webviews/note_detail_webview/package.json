@@ -46,6 +46,7 @@
     }
   },
   "dependencies": {
+    "@conundrum/generated": "workspace:*",
     "@fluster/webview_utils": "workspace:*",
     "autoprefixer": "10.4.21",
     "flatbuffers": "25.9.23",
