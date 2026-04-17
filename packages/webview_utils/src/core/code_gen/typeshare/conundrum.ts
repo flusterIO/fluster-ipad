@@ -203,7 +203,15 @@ export interface Admonition {
 	folded?: ConundrumBoolean;
 }
 
-/** All keys must be cast to lowercase and all `_` replaced with `-`. */
+/**
+ * All keys must be cast to lowercase and all `_` replaced with `-`.
+ * 
+ * I gave up and used AI 1/2 way through for these... I don't have internet and
+ * I haven't written 70% of these languages... so blame a local qwen
+ * model for if these are wrong, until I can get some stable time on WIFI. I
+ * didn't really feel like basically emoji's was the best use of my precious
+ * homeless-wifi time.:
+ */
 export enum SupportedCodeBlockSyntax {
 	PlainText = "Plain Text",
 	ASP = "ASP",

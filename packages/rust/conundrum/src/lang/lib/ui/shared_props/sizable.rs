@@ -165,28 +165,28 @@ impl SizablePropsGroup {
     pub fn to_css_classes(&self) -> String {
         let mut classes: Vec<&str> = Vec::new();
 
-        if let Some(hide_math_labels) = &self.hide_math_labels {
+        if self.hide_math_labels.is_some_and(|x| x.0) {
             classes.push("hide-math-labels");
         }
-        if let Some(right) = &self.right {
+        if self.right.is_some_and(|x| x.0) {
             classes.push("float-right ml-4 mr-0");
         }
-        if let Some(left) = &self.left {
+        if self.left.is_some_and(|x| x.0) {
             classes.push("float-left mr-4 ml-0");
         }
-        if let Some(sidebar) = &self.sidebar {
+        if self.sidebar.is_some_and(|x| x.0) {
             classes.push("w-full min-w-full @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]");
         }
-        if let Some(center_self) = &self.center_self {
+        if self.center_self.is_some_and(|x| x.0) {
             classes.push("mx-auto block");
         }
-        if let Some(center_content) = &self.center_content {
+        if self.center_content.is_some_and(|x| x.0) {
             classes.push("flex flex-col justify-center items-center text-center [&>p]:text-center");
         }
-        if let Some(border) = &self.border {
+        if self.border.is_some_and(|x| x.0) {
             classes.push("border");
         }
-        if let Some(inline) = &self.inline {
+        if self.inline.is_some_and(|x| x.0) {
             classes.push("inline")
         }
         if let Some(in_shadow) = &self.in_shadow {

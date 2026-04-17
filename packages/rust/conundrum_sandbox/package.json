@@ -1,0 +1,10 @@
+{
+    "name": "@conundrum/sandbox",
+    "dependencies": {
+        "@fluster/webview_utils": "workspace:*",
+        "@fluster/wasm": "workspace:*",
+        "react": "19.2.0",
+        "react-day-picker": "9.13.0",
+        "react-dom": "19.2.0"
+    }
+}

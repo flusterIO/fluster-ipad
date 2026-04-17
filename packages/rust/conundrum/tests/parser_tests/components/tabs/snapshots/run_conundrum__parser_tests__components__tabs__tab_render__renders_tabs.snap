@@ -2,4 +2,4 @@
 source: packages/rust/conundrum/tests/parser_tests/components/tabs/tab_render.rs
 expression: res.content
 ---
-"\n<Tabs>\n  <Tab label={<>One</>} labelString=\"One\" id=\"One\">\n\n    My tabs content one\n  \n</Tab>\n  <Tab label={<>Two</>} labelString=\"Two\" id=\"Two\">\n\n    My label content two\n  \n</Tab>\n  <Tab label={<>Three</>} labelString=\"Three\" id=\"Three\">\n\n   <AutoInsertedMathBlock data={{\"display\":true,\"idx\":0,\"id\":null,\"content\":\"\\n    e=mc^2\\n   \"}} />\n  \n</Tab>\n</Tabs>\n"
+"\n<Tabs>\n  <Tab label={<>One</>} labelString=\"One\">\n\n    My tabs content one\n  \n</Tab>\n  <Tab label={<>Two</>} labelString=\"Two\">\n\n    My label content two\n  \n</Tab>\n  <Tab label={<>Three</>} labelString=\"Three\">\n\n   <AutoInsertedMathBlock data={{\"display\":true,\"idx\":0,\"id\":null,\"content\":\"\\n    e=mc^2\\n   \"}} />\n  \n</Tab>\n</Tabs>\n"

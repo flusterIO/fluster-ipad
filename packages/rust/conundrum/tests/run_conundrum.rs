@@ -10,6 +10,7 @@ use strum::IntoEnumIterator;
 mod documentation;
 mod modifier_tests;
 mod parser_tests;
+mod render_tests;
 
 #[tokio::test]
 async fn runs_conundrum() {
@@ -57,6 +58,7 @@ async fn conundrum_parses_documentation_requests() {
                                                  hide_components: Vec::new(),
                                                  ..Default::default() };
 
+        println!("Name: {:#?}", name);
         let short_res =
             run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
 
@@ -68,17 +70,21 @@ async fn conundrum_parses_documentation_requests() {
 
         let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
 
-        assert!(short_res.content
+        if name != EmbeddableComponentName::Emoji {
+            // Emoji docs are stored in the core
+            // documentation, not with components.
+            assert!(short_res.content
                          .contains(&format!("<InContentDocumentationContainer componentName=\"{}\" format=\"short\">",
                                             name.to_component_id())),
                 "Conundrum parses the proper 'short' documentation request for {}.",
                 name);
 
-        assert!(full_res.content
-                        .contains(&format!("<InContentDocumentationContainer componentName=\"{}\" format=\"full\">",
-                                           name.to_component_id())),
-                "Conundrum parses the proper 'full' documentation request for {}.",
-                name);
+            assert!(full_res.content
+                            .contains(&format!("<InContentDocumentationContainer componentName=\"{}\" format=\"full\">",
+                                               name.to_component_id())),
+                    "Conundrum parses the proper 'full' documentation request for {}.",
+                    name);
+        }
     }
 
     for id in InContentDocumentationId::iter() {

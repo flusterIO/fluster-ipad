@@ -4,6 +4,8 @@
 @plugin "@tailwindcss/container-queries";
 
 
+
+/// --- Code Block --
 .cdrm-codeblock {
   .auto-codeblock-icon {
     display: none;
@@ -13,3 +15,8 @@
     display: block;
   }
 }
+
+
+// -- Tab Group --
+
+.cdrm-tab-group-tab {}

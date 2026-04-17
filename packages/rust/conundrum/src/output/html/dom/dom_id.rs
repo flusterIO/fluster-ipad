@@ -2,6 +2,7 @@ use std::fmt::Display;
 
 use askama::FastWritable;
 
+// BUG: Maybe the problem?
 pub struct DOMId(String);
 
 impl DOMId {

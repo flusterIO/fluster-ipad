@@ -7,6 +7,7 @@
         "target": "ESNext",
         "module": "NodeNext",
         "outDir": "./src/output/html/glue/component_glue_output/",
+        "rootDir": "src/output/html/glue/component_glue",
         "allowJs": true
     },
 }

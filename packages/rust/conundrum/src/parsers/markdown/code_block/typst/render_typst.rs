@@ -1,4 +1,3 @@
-use std::include_str;
 use typst_as_lib::TypstEngine;
 use winnow::error::ErrMode;
 
@@ -36,5 +35,3 @@ mod tests {
         // assert_eq!(result, 4);
     }
 }
-
-

@@ -64,6 +64,11 @@ rust-fuzzy-search = "0.1.1"
 syntect = { version = "5.3.0", default-features = false, features = ["default-fancy"] }
 tw_merge = { version = "0.1.21", features = ["variant"] }
 serde_with = { version = "3.18.0", features = ["base64", "chrono", "json"] }
+devicons = "0.6.12"
+lightningcss = { version = "1.0.0-alpha.71", features = ["serde", "serde_json", "substitute_variables"] }
+lucide-icons = { version = "1.8.0", features = ["serde"] }
+yewdux = "0.13.0"
+syntect-assets = { version = "0.23.6", features = ["regex-fancy"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

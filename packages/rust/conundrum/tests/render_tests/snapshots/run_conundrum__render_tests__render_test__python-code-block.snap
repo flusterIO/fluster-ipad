@@ -1,0 +1,7 @@
+---
+source: packages/rust/conundrum/tests/render_tests/render_test.rs
+expression: r.content
+---
+<div>
+Here
+</div>

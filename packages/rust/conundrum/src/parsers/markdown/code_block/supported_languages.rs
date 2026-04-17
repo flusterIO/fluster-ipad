@@ -12,6 +12,12 @@ use crate::lang::{
 };
 
 /// All keys must be cast to lowercase and all `_` replaced with `-`.
+///
+/// I gave up and used AI 1/2 way through for these... I don't have internet and
+/// I haven't written 70% of these languages... so blame a local qwen
+/// model for if these are wrong, until I can get some stable time on WIFI. I
+/// didn't really feel like basically emoji's was the best use of my precious
+/// homeless-wifi time.:
 #[typeshare::typeshare]
 #[derive(Serialize,
            Deserialize,
@@ -285,6 +291,89 @@ impl SupportedCodeBlockSyntax {
         })
     }
 
+    pub fn devicon(&self, is_dark_mode: &bool) -> devicons::FileIcon {
+        match self {
+            Self::PlainText => devicons::FileIcon::from("txt"),
+            Self::ASP => devicons::FileIcon::from("cs"),
+            Self::HTML_ASP => devicons::FileIcon::from("cshtml"),
+            Self::ActionScript => devicons::FileIcon::from("actionscript"),
+            Self::AppleScript => devicons::FileIcon::from("applescript"),
+            Self::BatchFile => devicons::FileIcon::from("txt"),
+            Self::NAntBuildFile => devicons::FileIcon::from("build"),
+            Self::CSharp => devicons::FileIcon::from("cs"),
+            Self::Cpp => devicons::FileIcon::from("cpp"),
+            Self::C => devicons::FileIcon::from("c"),
+            Self::CSS => devicons::FileIcon::from("css"),
+            Self::Clojure => devicons::FileIcon::from(""),
+            Self::D => devicons::FileIcon::from("d"),
+            Self::Diff => devicons::FileIcon::from("diff"),
+            Self::Erlang => devicons::FileIcon::from("erl"),
+            Self::HTML_Erlang => devicons::FileIcon::from("html"),
+            Self::Go => devicons::FileIcon::from("go"),
+            Self::GraphvizDOT => devicons::FileIcon::from("graph"),
+            Self::Groovy => devicons::FileIcon::from("gb"),
+            Self::HTML => devicons::FileIcon::from("html"),
+            Self::Haskell => devicons::FileIcon::from("hs"),
+            Self::LiterateHaskell => devicons::FileIcon::from("lhs"),
+            Self::JavaServerPage => devicons::FileIcon::from("java"),
+            Self::Java => devicons::FileIcon::from("java"),
+            Self::JavaDoc => devicons::FileIcon::from("java"),
+            Self::JavaProperties => devicons::FileIcon::from("java"),
+            Self::JSON => devicons::FileIcon::from("json"),
+            Self::JavaScript => devicons::FileIcon::from("js"),
+            Self::RegexJs => devicons::FileIcon::from("js"),
+            Self::BibTeX => devicons::FileIcon::from("bib"),
+            Self::LaTeXLog => devicons::FileIcon::from("tex"),
+            Self::LaTeX => devicons::FileIcon::from("tex"),
+            Self::TeX => devicons::FileIcon::from("tex"),
+            Self::Lisp => devicons::FileIcon::from(""),
+            Self::Lua => devicons::FileIcon::from("lua"),
+            Self::MakeOutput => devicons::FileIcon::from("makefile"),
+            Self::Makefile => devicons::FileIcon::from("makefile"),
+            Self::Markdown => devicons::FileIcon::from("md"),
+            Self::MultiMarkdown => devicons::FileIcon::from("md"),
+            Self::MATLAB => devicons::FileIcon::from("m"),
+            Self::OCaml => devicons::FileIcon::from("ml"), // OCaml source files
+            Self::OCamllex => devicons::FileIcon::from("mll"), // OCamllex lexer files
+            Self::OCamlyacc => devicons::FileIcon::from("mly"), // OCamlyacc parser files
+            Self::Camlp4 => devicons::FileIcon::from("ml"), // Uncertain; Camlp4 is a preprocessor
+            Self::ObjectiveCpp => devicons::FileIcon::from("mm"), // Objective-C++ source files
+            Self::ObjectiveC => devicons::FileIcon::from("m"), // Objective-C source files
+            Self::PHPSource => devicons::FileIcon::from("php"), // PHP source files
+            Self::PHP => devicons::FileIcon::from("php"),  // PHP source files
+            Self::Pascal => devicons::FileIcon::from("pas"), // Pascal source files
+            Self::Perl => devicons::FileIcon::from("pl"),  // Perl source files
+            Self::Python => devicons::FileIcon::from("py"), // Python source files
+            Self::RegexPython => devicons::FileIcon::from("py"), // Python regex files (guess)
+            Self::RConsole => devicons::FileIcon::from("R"), // R console script (guess)
+            Self::R => devicons::FileIcon::from("R"),      // R source files
+            Self::Rdoc => devicons::FileIcon::from("Rd"),  // R documentation files
+            Self::HTML_Rails => devicons::FileIcon::from("html"), // Rails HTML views (guess)
+            Self::JavaScript_Rails => devicons::FileIcon::from("js"), // Rails JavaScript files
+            Self::RubyHaml => devicons::FileIcon::from("haml"), // Haml templates
+            Self::RubyOnRails => devicons::FileIcon::from("rb"), // Ruby source files
+            Self::SQL_Rails => devicons::FileIcon::from("sql"), // Rails SQL files (guess)
+            Self::Regex => devicons::FileIcon::from("regex"), // Regex files (guess)
+            Self::ReStructuredText => devicons::FileIcon::from("rst"), // ReStructuredText files
+            Self::Ruby => devicons::FileIcon::from("rb"),  // Ruby source files
+            Self::CargoBuildResults => devicons::FileIcon::from("build"), // Uncertain; Cargo build output
+            Self::Rust => devicons::FileIcon::from("rs"),  // Rust source files
+            Self::SQL => devicons::FileIcon::from("sql"),  // SQL files
+            Self::Scala => devicons::FileIcon::from("scala"), // Scala source files
+            Self::Bash => devicons::FileIcon::from("sh"),  // Bash scripts
+            Self::GenericUnixShell => devicons::FileIcon::from("sh"), // Unix shell scripts
+            Self::CommandsBuiltinShellBash => devicons::FileIcon::from("sh"), // Bash commands
+            Self::HTML_TCL => devicons::FileIcon::from("html"), // HTML with TCL (guess)
+            Self::Tcl => devicons::FileIcon::from("tcl"),  // Tcl scripts
+            Self::Textile => devicons::FileIcon::from("txt"), // Textile files
+            Self::XML => devicons::FileIcon::from("xml"),  // XML files
+            Self::YAML => devicons::FileIcon::from("yml"), // YAML files (common)
+            // TODO: Actually create a Conundrum logo and add that guy here...
+            Self::ConundrumAi => devicons::FileIcon::from("txt"), // Uncertain; AI framework
+            Self::Dictionary => devicons::FileIcon::from("txt"),  // Dictionary files (guess)
+        }
+    }
+
     /// Since markdown rendering is completely left up to the platform, and with
     /// that, the languages they support and the keys that they use, this
     /// function attempts to sacrifice some highlighter accuracy for some
@@ -383,11 +472,25 @@ impl JsxPropRepresentable for SupportedCodeBlockSyntax {
 mod tests {
     use std::str::FromStr;
 
+    use strum::IntoEnumIterator;
+
     use super::*;
 
     #[test]
     fn gets_basic_languages() {
         SupportedCodeBlockSyntax::from_str("javascript").expect("Parses alias successfully.");
-        // assert_eq!(result, 4);
+    }
+
+    #[test]
+    fn renders_all_icons() {
+        SupportedCodeBlockSyntax::iter().for_each(|s| {
+                                            let svg = s.devicon(&true);
+                                            println!("Svg (dark) for {}: {}", s, svg);
+                                        });
+
+        SupportedCodeBlockSyntax::iter().for_each(|s| {
+                                            let svg = s.devicon(&false);
+                                            println!("Svg (light) for {}: {}", s, svg);
+                                        });
     }
 }

@@ -1,5 +1,7 @@
 use askama::Template;
 
+/// ## Template (HTML)
+///
 /// ```askama
 /// <style>
 /// {{css}}

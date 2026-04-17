@@ -6,7 +6,6 @@ pub fn get_supported_syntaxes() -> Vec<String> {
 
 #[cfg(test)]
 mod tests {
-    use rssn::prelude::argmin::seq::IndexedRandom;
 
     use super::*;
 

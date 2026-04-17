@@ -98,8 +98,10 @@ build_cross_language_schemas: generate_initial_note_data
 	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/wasm/fluster_wasm/src_typescript/core/code_gen/typeshare
 
+build_conundrum_rust:
+	cargo build -p conundrum
 
-build_conundrum_swift:
+build_conundrum_swift: 
 	cd {{justfile_directory()}}/packages/rust/conundrum_swift; cargo swift package -y --xcframework-name Conundrum 
 	cp -r {{justfile_directory()}}/packages/rust/conundrum_swift/extra_swift/ {{justfile_directory()}}/packages/rust/conundrum_swift/ConundrumSwift/Sources/ConundrumSwift/
 	tsx {{justfile_directory()}}/scripts/post_cross_language_modifications.ts

@@ -59,6 +59,14 @@
 //! C or Rust in 1 code block, and then use that array of numbers in Python in
 //! the next code-block to generate a plot, without ever saving anything to
 //! disk.
+//!
+//!
+//! ## Shameless Plug
+//!
+//! I'm still kinda homeless, so if anyone's looking for a
+//! Rust/Typescript/Python/Go/Swift/Lua/Kinda-Dart developer, please let me
+//! know! I haven't had a regular paycheck in more than 5 years afteer quiting
+//! my job to work on a [modified model of relativity](https://flusterapp.com/docs/my_work/on_the_gravitational_nature_of_time).
 
 uniffi::setup_scaffolding!();
 

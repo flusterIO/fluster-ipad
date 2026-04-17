@@ -1,17 +1,10 @@
 use serde::{Deserialize, Serialize};
 use strum::EnumIter;
+use strum_macros::{Display, EnumString};
 use syntect::highlighting::{Theme, ThemeSet};
 
 #[typeshare::typeshare]
-#[derive(Serialize,
-           Deserialize,
-           strum_macros::Display,
-           strum_macros::EnumString,
-           EnumIter,
-           uniffi::Enum,
-           Clone,
-           Default,
-           Debug)]
+#[derive(Serialize, Deserialize, Display, EnumString, EnumIter, uniffi::Enum, Clone, Default, Debug)]
 #[allow(non_camel_case_types)]
 pub enum SupportedCodeBlockTheme {
     #[serde(rename = "InspiredGitHub", alias = "github")]

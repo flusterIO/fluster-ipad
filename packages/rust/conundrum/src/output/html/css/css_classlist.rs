@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use askama::FastWritable;
+
 pub struct CSSClassList(Vec<String>);
 
 impl CSSClassList {
@@ -32,6 +33,6 @@ impl FastWritable for CSSClassList {
                                                 values: &dyn askama::Values)
                                                 -> askama::Result<()> {
         let css_string = self.0.clone().into_iter().collect::<Vec<String>>().join(" ");
-        css_string.write_into(dest, values)
+        css_string.as_str().write_into(dest, values)
     }
 }

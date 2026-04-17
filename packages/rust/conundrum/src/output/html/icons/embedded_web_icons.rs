@@ -1,3 +1,4 @@
+use lucide_icons;
 use std::fmt::Display;
 
 use askama::FastWritable;
@@ -9,7 +10,10 @@ pub enum EmbeddedIcon {
 impl EmbeddedIcon {
     pub fn to_web_svg(&self) -> String {
         match self {
-            EmbeddedIcon::Copy => "FIX ME".to_string(),
+            EmbeddedIcon::Copy => {
+                let r = lucide_icons::Icon::Copy;
+                String::from(r.unicode())
+            }
         }
     }
 }

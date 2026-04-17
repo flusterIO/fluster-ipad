@@ -43,8 +43,8 @@ export const bibtexLanguage = LRLanguage.define({
             foldNodeProp.add({
                 Entry: (context) => {
                     return {
-                        from: context.node.firstChild.to,
-                        to: context.node.lastChild.to + 1,
+                        from: context.node.firstChild ? context.node.firstChild.to : 0,
+                        to: context.node.lastChild ? context.node.lastChild.to + 1 : 1,
                     };
                 },
                 FieldValue: (context) => {
@@ -56,16 +56,16 @@ export const bibtexLanguage = LRLanguage.define({
             }),
             indentNodeProp.add({
                 Entry: (context) => {
-                    return context.column(context.node.parent.from) + context.unit;
+                    return context.column(context.node.parent?.from ?? 0) + context.unit;
                 },
                 FieldValue: (context) => {
-                    return context.column(context.node.parent.from) + context.unit;
+                    return context.column(context.node.parent?.from ?? 1) + context.unit;
                 },
             }),
         ],
     }),
     languageData: {
-        closeBrackets: { brackets: ["{", "\'", '"'] },
+        closeBrackets: { brackets: ["{", "'", '"'] },
         commentTokens: { line: "%" },
     },
 });
@@ -118,7 +118,7 @@ export interface UserConfig {
 ///     - When enabled, suppresses inline comments like "% Recommended Fields:" and "% Optional Fields:" in generated snippets.
 export const bibtex = (config: UserConfig = {}) => {
     // allow user to only specify config options that they care about
-    let userConfig: Required<UserConfig> = {
+    const userConfig: Required<UserConfig> = {
         biblatex: false,
         smartSuggest: true,
         snippetRecs: true,
@@ -198,9 +198,9 @@ export const bibtex = (config: UserConfig = {}) => {
     };
 
     // setup language/autocompletion behavior based on user config
-    let bibLanguage = userConfig.biblatex ? biblatexLanguage : bibtexLanguage;
-    let bibSnippets = userConfig.biblatex ? biblatexSnippets : bibtexSnippets;
-    let bibSnippetExtension = userConfig.smartSuggest
+    const bibLanguage = userConfig.biblatex ? biblatexLanguage : bibtexLanguage;
+    const bibSnippets = userConfig.biblatex ? biblatexSnippets : bibtexSnippets;
+    const bibSnippetExtension = userConfig.smartSuggest
         ? [
             bibLanguage.data.of({
                 autocomplete: ifIn(
@@ -227,7 +227,7 @@ export const bibtex = (config: UserConfig = {}) => {
             }),
         ];
 
-    let bibExtensions = userConfig.syntaxLinter
+    const bibExtensions = userConfig.syntaxLinter
         ? [bibtexLinter, bibtexCompletion, bibSnippetExtension]
         : [bibtexCompletion, bibSnippetExtension];
 

@@ -33,7 +33,7 @@ use crate::{
         },
     },
     output::{
-        general::component_constants::{auto_inserted_component_name::AutoInsertedComponentName, parser_ids::ParserId},
+        general::component_constants::parser_ids::ParserId,
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
             dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
@@ -134,7 +134,8 @@ impl HtmlJsComponentResult for ParsedCodeBlock {
         let id = res.dom.new_id();
         let code_string = self.get_highlighted_content(res.ui_params.syntax_theme.clone().unwrap_or_default())?;
         println!("Code: {:#?}", code_string);
-        let template = CodeBlockHTMLTemplate::new(code_string, self.get_title(), id);
+        let template =
+            CodeBlockHTMLTemplate::new(code_string, self.get_title(), id, &self.language, &res.ui_params.dark_mode);
         template.render().map_err(|e| {
                              eprintln!("Error: {:#?}", e);
                              ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("")))
@@ -204,8 +205,6 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                     })
                     .parse_next(input)?;
 
-                println!("language: {:#?}", language);
-
                 let meta_opt = combinator::opt(|input: &mut ConundrumInput<'a>| {
                                    let _ = space1.parse_next(input)?;
                                    let _ = literal("--").parse_next(input)?;
@@ -262,7 +261,7 @@ mod tests {
 
     #[test]
     fn parses_codeblock_with_title() {
-        let test_content = r#"```Swift -- title="my_webview_content.swift"
+        let test_content = r#"```js -- title="my_webview_content.swift"
 // MY_COMMENT: My comment here
 ```"#;
         let mut test_data = wrap_test_conundrum_content(test_content);

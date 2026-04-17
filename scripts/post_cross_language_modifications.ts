@@ -164,11 +164,25 @@ ${content}`;
     fs.writeFileSync(fp, new_content, { encoding: "utf-8" });
 };
 
-for (const fp in replacers) {
+if (process.argv.length < 3) {
+    for (const fp in replacers) {
+        const item = replacers[fp];
+        replaceStuff(item.replacers, fp);
+        const header = item.header;
+        if (header) {
+            writeHeader(header, fp);
+        }
+    }
+} else {
+    const fp = process.argv[2];
     const item = replacers[fp];
-    replaceStuff(item.replacers, fp);
-    const header = item.header;
-    if (header) {
-        writeHeader(header, fp);
+    if (item) {
+        replaceStuff(item.replacers, fp);
+        const header = item.header;
+        if (header) {
+            writeHeader(header, fp);
+        }
+    } else {
+        console.error("No replacable item found. Can't replace anything.");
     }
 }
