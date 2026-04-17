@@ -1,8 +1,8 @@
 import React, { type HTMLProps, useId, useRef, type ReactNode } from "react";
-import { MdxContent } from "./mdx_content";
+/* import { MdxContent } from "./mdx_content"; */
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
-import { type ConundrumState, type EditorState, EditorView, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorState, EditorView, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
@@ -32,9 +32,9 @@ const connector = connect((state: GlobalAppState) => ({
 export const MdxEditorPreview = connector(({
     className,
     parsedValue,
-    lockEditorScrollToPreview,
+    /* lockEditorScrollToPreview, */
     isEditorView,
-    ...props
+    /* ...props */
 }: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview" | "parsedValue"> & { isEditorView: boolean }): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
     const id = useId()
@@ -82,20 +82,30 @@ export const MdxEditorPreview = connector(({
             FallbackComponent={(p) => <PreviewLevelErrorReport {...p} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />}
         >
             <ConundrumErrorListener />
-            <MdxContent
+            <div
                 id={SplitviewEditorDomIds.MdxPreview}
-                {...props}
-                ref={ref}
-                asMain
+                dangerouslySetInnerHTML={{ __html: parsedValue }}
                 className={cn(
                     "max-w-[1080px]",
                     isEditorView ? "px-6 pt-4 pb-16 mx-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
                     className,
                 )}
-                lockToEditorScroll={lockEditorScrollToPreview}
-                mdx={parsedValue}
-                showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded}
+                ref={ref}
             />
+            {/* <MdxContent */}
+            {/*     id={SplitviewEditorDomIds.MdxPreview} */}
+            {/*     {...props} */}
+            {/*     asMain */}
+            {/*     className={cn( */}
+            {/*         "max-w-[1080px]", */}
+            {/*         isEditorView ? "px-6 pt-4 pb-16 mx-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16", */}
+            {/*         className, */}
+            {/*     )} */}
+            {/*     ref={ref} */}
+            {/*     lockToEditorScroll={lockEditorScrollToPreview} */}
+            {/*     mdx={parsedValue} */}
+            {/*     showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} */}
+            {/* /> */}
             <SummaryStreamContainer />
         </ErrorBoundary>
     );

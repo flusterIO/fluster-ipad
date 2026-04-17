@@ -41,7 +41,7 @@ export const TabGroupButton = ({ item, isLast, idx }: TabGroupButtonProps): Reac
                     })
                 }}
                 aria-disabled={idx === focusedIndex}
-                className={"px-3 text-nowrap text-left"}>{item.label}</div>
+                className={"px-3 text-nowrap text-left w-full"}>{item.label}</div>
             <div className="w-full h-1">
                 <motion.div
                     className={cn("w-full h-1 bg-transparent", idx === focusedIndex && activeTabClasses)}

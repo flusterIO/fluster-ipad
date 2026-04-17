@@ -8,8 +8,28 @@ use crate::{
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <div>
-/// Here
+/// <div class="cdrm-codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative">   {% if let Some(title) = title %}
+///   <div class="my-6 px-2 py-0 text-fd-card-foreground/80 text-sm w-full grid grid-cols-[auto_1fr] gap-x-2">
+///   <div style="color:{{file_icon.color}};">
+///   {{file_icon.icon}}
+///   </div>
+///   <div>
+///   {{title}}
+///   </div>
+///   </div> {% endif %}
+///    <div class="w-full relative" id="{{id}}">
+///    <div
+///      data-cdrm-copy-for="{{id}}"
+///      role="button"
+///      class="auto-codeblock-icon absolute top-2 right-2 transition-opacity duration-300"
+///      onclick="copyCodeblockCode"
+///    >
+///    {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::Copy}}
+///    </div>
+///    <div class="[&>pre]:p-2 [&>code]:rounded-bl [&>code]:rounded-br">
+///    {{code | safe}}
+///    </div>
+///    </div>
 /// </div>
 /// ```
 #[derive(Template)]
@@ -18,7 +38,7 @@ pub struct CodeBlockHTMLTemplate {
     pub id: DOMId,
     pub code: String,
     pub title: Option<String>,
-    // pub file_icon: FileIcon,
+    pub file_icon: FileIcon,
 }
 
 impl CodeBlockHTMLTemplate {
@@ -39,6 +59,7 @@ impl CodeBlockHTMLTemplate {
 
         CodeBlockHTMLTemplate { id,
                                 code,
-                                title /* file_icon */ }
+                                title,
+                                file_icon }
     }
 }
