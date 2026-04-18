@@ -85,8 +85,9 @@ impl JsxComponentResult for BlockMathResult {
 }
 
 impl HtmlJsComponentResult for BlockMathResult {
-    fn to_html_js_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<div className=\"conundrum-math conundrum-math-block\">\n$${}$$\n</div>", self.body))
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let math_string = self.body.to_math(false, res.trusted)?;
+        Ok(format!("<div className=\"conundrum-math conundrum-math-block\">\n{}\n</div>", math_string))
     }
 }
 

@@ -42,6 +42,9 @@ pub enum ConundrumModifier {
     ForSearchInput,
     /// Don't touch the code blocks, just return them exactly as is.
     CodeBlocksAsIs,
+    /// This is like extra beta... but will eventually output standalone html
+    /// files capable of rendering a note outside of any application.
+    Standalone,
 }
 
 #[typeshare]

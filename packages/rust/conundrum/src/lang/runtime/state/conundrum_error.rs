@@ -80,6 +80,11 @@ impl ConundrumError {
                details: None,
                purpose: None }
     }
+
+    pub fn general_render_error() -> Self {
+        ConundrumError::from_msg_and_details("Invalid Heading",
+                                             "An unknown rendering error occurred. Conundrum ams to have great, helpful error reporting but this is not one of those cases unfortunately. If this issue continues, please file an issue on Github.")
+    }
 }
 
 impl std::error::Error for ConundrumError {}

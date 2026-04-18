@@ -1,10 +1,12 @@
 use std::{cell::RefCell, sync::Arc};
 
+use askama::Template;
 use serde::Serialize;
 use winnow::{
     Parser,
     ascii::{line_ending, space0, till_line_ending},
     combinator::{alt, eof, repeat},
+    error::ErrMode,
     stream::Stream,
     token::{literal, take_while},
 };
@@ -12,21 +14,24 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
+        lib::ui::ui_types::children::Children,
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
             state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::{ConundrumCompileTarget, ParseState},
             },
             traits::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                html_js_component_result::HtmlJsComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-    parsers::parser_trait::ConundrumParser,
+    parsers::{markdown::block_quote::block_quote_html_templ::BlockQuoteHtmlTemplate, parser_trait::ConundrumParser},
 };
 
 // ---------------------------------------------------------------------------
@@ -39,14 +44,24 @@ pub struct BlockQuoteResult {
     /// The inner content already fully parsed into `ParsedElement`s.
     /// Nesting is handled recursively: a `> > ...` line becomes a
     /// `BlockQuote` variant inside this `Vec`.
-    pub children: Vec<ParsedElement>,
+    pub children: Children,
     /// The full original source text that was consumed.
     pub full_match: String,
 }
 
+impl HtmlJsComponentResult for BlockQuoteResult {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let templ = BlockQuoteHtmlTemplate { children: self.children.render(res)? };
+        templ.render().map_err(|e| {
+            eprintln!("Error: {:#?}", e);
+            ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+        })
+    }
+}
+
 impl PlainTextComponentResult for BlockQuoteResult {
     fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        compile_elements(&self.children, res)
+        self.children.render(res)
     }
 }
 
@@ -68,7 +83,7 @@ impl MdxComponentResult for BlockQuoteResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         // Recursively render inner elements through the same MdxParsingResult
         // so side-effects (citations, tags, etc.) are collected correctly.
-        let children_string = compile_elements(&self.children, res)?;
+        let children_string = compile_elements(&self.children.0, res)?;
 
         Ok(format!("\n<{component}>\n{inner}\n</{component}>\n",
                    component = AutoInsertedComponentName::AutoInsertedBlockQuote,
@@ -119,7 +134,7 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
             }).with_taken()
               .parse_next(input_outer)?;
 
-        Ok(BlockQuoteResult { children: parsed_content,
+        Ok(BlockQuoteResult { children: Children(parsed_content),
                               full_match: full_match.to_string() })
     }
 
@@ -148,7 +163,7 @@ mod tests {
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses simple block quote");
         assert!(test_props.input.is_empty(), "all input consumed");
         assert_eq!(res.full_match, "> Hello, world!\n");
-        assert_eq!(get_children_content_text(&res.children), "Hello, world!");
+        assert_eq!(get_children_content_text(&res.children.0), "Hello, world!");
     }
 
     #[test]
@@ -157,7 +172,7 @@ mod tests {
         let mut test_props = wrap_test_conundrum_content(input);
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses multi-line block quote");
         assert!(test_props.input.is_empty());
-        assert_eq!(get_children_content_text(&res.children), "Line one\nLine two\nLine three");
+        assert_eq!(get_children_content_text(&res.children.0), "Line one\nLine two\nLine three");
     }
 
     #[test]
@@ -166,7 +181,7 @@ mod tests {
         let mut test_props = wrap_test_conundrum_content(input);
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses nested block quote");
         assert!(test_props.input.is_empty());
-        let has_nested = res.children.iter().any(|e| matches!(e, ParsedElement::BlockQuote(_)));
+        let has_nested = res.children.0.iter().any(|e| matches!(e, ParsedElement::BlockQuote(_)));
         assert!(has_nested, "nested > produces a BlockQuote element");
     }
 
@@ -176,7 +191,7 @@ mod tests {
         let mut test_props = wrap_test_conundrum_content(input);
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses block quote ending at EOF");
         assert!(test_props.input.is_empty());
-        assert_eq!(get_children_content_text(&res.children), "No newline at end");
+        assert_eq!(get_children_content_text(&res.children.0), "No newline at end");
     }
 
     #[test]
@@ -184,7 +199,7 @@ mod tests {
         let input = "   > Indented marker\n";
         let mut test_props = wrap_test_conundrum_content(input);
         let res = BlockQuoteResult::parse_input_string(&mut test_props).expect("parses indented block quote marker");
-        assert_eq!(get_children_content_text(&res.children), "Indented marker");
+        assert_eq!(get_children_content_text(&res.children.0), "Indented marker");
     }
 
     #[test]

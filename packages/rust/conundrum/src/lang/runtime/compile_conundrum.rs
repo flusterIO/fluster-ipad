@@ -5,7 +5,6 @@ use crate::lang::runtime::state::parse_state::{ConundrumCompileTarget, ParseStat
 
 use crate::lang::elements::parsed_elements::ParsedElement;
 use crate::lang::runtime::traits::html_js_component_result::HtmlJsComponentResult;
-use crate::lang::runtime::traits::mdx_component_result::MdxComponentResult;
 
 /// Renders a slice of parsed elements into a single MDX string.
 /// This is the shared rendering primitive used by both the top-level

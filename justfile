@@ -27,6 +27,9 @@ resolve_swift_packages:
 	cd {{justfile_directory()}}/packages/swift/FlusterSwift; swift package resolve
 	cd {{justfile_directory()}}/packages/swift/FlusterAI; swift package resolve
 
+compile_conundrum_scss:
+	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm run build
+
 copy_mathjax_to_public_dir:
 	sh {{justfile_directory()}}/scripts/copy_mathjax_font_files.sh
 

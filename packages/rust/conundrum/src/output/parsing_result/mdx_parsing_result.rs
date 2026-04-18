@@ -8,6 +8,7 @@ use crate::{
     lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
     output::{
         general::component_constants::any_component_id::AnyComponentName,
+        html::glue::component_glue_manager::JS_GLUE_CODE_MAP,
         parsing_result::{
             ai_serialization_request::AiSerializationRequestPhase1,
             dictionary_result::DictionaryEntryResult,
@@ -16,7 +17,7 @@ use crate::{
             tag_result::TagResult,
         },
     },
-    parsers::markdown::heading::MarkdownHeadingStringifiedResult,
+    parsers::markdown::heading::heading_model::MarkdownHeadingStringifiedResult,
 };
 
 #[typeshare]
@@ -70,6 +71,16 @@ impl MdxParsingResult {
 
     pub fn append_embeddable_component(&mut self, name: &AnyComponentName) {
         self.included_components.push(name.to_string());
+    }
+
+    pub fn compile_javascript_kinda(&self) -> String {
+        let mut s = String::from("");
+        for c in &self.included_components {
+            if let Some(js) = JS_GLUE_CODE_MAP.get(c) {
+                s += js.to_string().as_str();
+            }
+        }
+        s
     }
 }
 

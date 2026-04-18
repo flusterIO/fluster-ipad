@@ -2,6 +2,30 @@
 source: packages/rust/conundrum/tests/render_tests/render_test.rs
 expression: r.content
 ---
-<div>
-Here
+<div class="cdrm-codeblock @container/codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative">   
+  <div class="my-2 px-2 py-0 text-sm w-full grid grid-cols-[auto_1fr] gap-x-2">
+  <div class="w-fit" style="color:#ffbc03;">
+  
+  </div>
+  <div class="text-fd-card-foreground/70">
+  my_code_block.py
+  </div>
+  </div> 
+   <div class="w-full relative" id="cdrm-0">
+   <div
+     data-cdrm-copy-for="cdrm-0"
+     role="button"
+     class="auto-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300"
+     onclick="copyCodeblockCode"
+   >
+   
+   </div>
+   <div class="[&>pre]:p-2! [&>pre]:rounded-bl [&>pre]:rounded-br [&>pre]:rounded-tl-none [&_pre]:rounded-tr-none [&>pre]:my-0 [&>pre]:text-sm">
+   <pre style="background-color:#002b36;">
+<span style="color:#859900;">def </span><span style="color:#b58900;">my_func</span><span style="color:#657b83;">():
+</span><span style="color:#839496;">       </span><span style="color:#859900;">return </span><span style="color:#839496;">np.</span><span style="color:#b58900;">linspace</span><span style="color:#657b83;">(</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">, smp.pi, </span><span style="color:#6c71c4;">100</span><span style="color:#657b83;">)
+</span></pre>
+
+   </div>
+   </div>
 </div>

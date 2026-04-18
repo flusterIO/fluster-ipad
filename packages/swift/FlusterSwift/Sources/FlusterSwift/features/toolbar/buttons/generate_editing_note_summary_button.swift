@@ -76,9 +76,11 @@ public struct GenerateAINoteSummaryButton: View {
           let options = ParseConundrumOptions(
             noteId: noteId,
             content: partial.content,
-            modifiers: [.preferMarkdownSyntax],
+            modifiers: [],
             hideComponents: [],
-            uiParams: uiParams
+            uiParams: uiParams,
+            target: .markdown,
+            trusted: true
           )
 
           let parsed = try await ConundrumSwift.runConundrum(options: options)

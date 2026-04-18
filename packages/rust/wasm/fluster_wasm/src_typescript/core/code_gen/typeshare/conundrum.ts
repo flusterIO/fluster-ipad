@@ -662,8 +662,8 @@ export interface MarkdownHeadingResult {
 	 * lists will skip a depth.
 	 */
 	tab_depth: number;
-	children: ParsedElement[];
-	subtitle?: ParsedElement[];
+	children: Children;
+	subtitle?: Children;
 	id: ConundrumString;
 }
 
@@ -754,50 +754,17 @@ export interface PaginationParams {
  * work.
  */
 export enum ConundrumModifier {
-	/**
-	 * This might as well be called `TargetMarkdown`, but this was created
-	 * before the idea of 'targets' came to be merged with 'modifiers' and I'm
-	 * in too much of a hurry to change it now.
-	 * 
-	 * As with the `.PreferInlineMarkdownSyntax` flag, many components allow
-	 * you to customize the bahavior of each component:
-	 * 
-	 * ```jsx
-	 * <Card
-	 * title="My title"
-	 * /// Set the heading title depth.
-	 * markdownHeading={3}
-	 * >
-	 * ...
-	 * </Card>
-	 * ```
-	 */
-	PreferMarkdownSyntax = "PreferMarkdownSyntax",
-	/** Hide the emojis completely for platforms that don't support them. */
 	HideEmojis = "HideEmojis",
 	/**
-	 * Curretly does pretty much the same thing as .PreferMarkdownSyntax, but
-	 * once the markdown parser has been completely migrated this will stop
-	 * things like wrapping the outermost block in a paragraph.
+	 * The goal with this flag is to make **some** components collapsable to be
+	 * inline, even when they traditionally are not. This will likely be
+	 * buggy, producing some good output in some cases but some
+	 * questionable output in others.
 	 * 
-	 * The goal with this is to behave much like SwiftUI's markdown support,
-	 * with the ability to render only inline markdown for things like
-	 * titles where a full `Admonition` wouldn't make sense.
-	 * 
-	 * Keep in mind that many components allow you to customize the
-	 * **markdown** output as well as the html/js output. You can do the
-	 * following:
-	 * 
-	 * ```jsx
-	 * <Hl markdown="italic" highlight>My text</Hl>
-	 * ```
+	 * As the list of component properties grows, this output will become
+	 * customizable directly in your note.
 	 */
 	PreferInlineMarkdownSyntax = "PreferInlineMarkdownSyntax",
-	/**
-	 * Useful for search related features, being able to match text without
-	 * markdown syntax interfering. Not super useful for much else.
-	 */
-	ForcePlainText = "ForcePlainText",
 	/**
 	 * This is really only useful for when your environment can't support any
 	 * other output format.
@@ -816,28 +783,6 @@ export enum ConundrumModifier {
 	ForSearchInput = "ForSearchInput",
 	/** Don't touch the code blocks, just return them exactly as is. */
 	CodeBlocksAsIs = "CodeBlocksAsIs",
-	/**
-	 * Leave the markdown output mostly alone and render to mdx instead of jsx.
-	 * This is a super easy gateway for developers to build around
-	 * Conundrum as the compile target is **super** forgiving.
-	 * 
-	 * This is the default target for now, but the current goal is to finish
-	 * rest of the parser, which would make the dependence on mdx obsolete.
-	 */
-	TargetMdx = "TargetMdx",
-	/**
-	 * This is the goal, but this is still _super_ buggy and should in no way
-	 * be used in any application that you expect someone to actually use,
-	 * but we'll get there...
-	 */
-	TargetJsx = "TargetJsx",
-	/**
-	 * This is even more of a futuristic goal, but for ultimate performance we
-	 * can even leave behind React. There are other priorities for now, but
-	 * this is something that will naturally come together as the framework
-	 * progresses.
-	 */
-	TargetHtmlJs = "TargetHtmlJs",
 }
 
 export enum EmbeddableComponentName {
@@ -881,6 +826,8 @@ export enum ConundrumCompileTarget {
 	Jsx = "Jsx",
 	Html = "Html",
 	Markdown = "Markdown",
+	PlainText = "PlainText",
+	Mdx = "Mdx",
 }
 
 /** This is the core 'input' for Conundrum. */
@@ -912,6 +859,7 @@ export interface ParseConundrumOptions {
 	hide_components: EmbeddableComponentName[];
 	ui_params: UIParams;
 	target: ConundrumCompileTarget;
+	trusted: boolean;
 }
 
 export interface ParsedCitation {

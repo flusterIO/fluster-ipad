@@ -67,5 +67,4 @@ $$
            }
        ).await.expect("Runs conundrum without throwing an error.");
     insta::assert_snapshot!(res.content);
-    render_sample::TestRenderPage::new_run(test_content, "Nested Math State");
 }

@@ -20,7 +20,6 @@ use crate::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
                 parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
-                ui_params::UIParams,
             },
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
@@ -33,7 +32,10 @@ use crate::{
         },
     },
     output::{
-        general::component_constants::parser_ids::ParserId,
+        general::component_constants::{
+            any_component_id::AnyComponentName, auto_inserted_component_name::AutoInsertedComponentName,
+            parser_ids::ParserId,
+        },
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
             dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
@@ -238,6 +240,8 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
               .parse_next(input)?;
 
         let meta_data = meta_opt.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
+        let mut state = input.state.borrow_mut();
+        state.data.append_embeddable_component(&AnyComponentName::AutoInserted(AutoInsertedComponentName::AutoInsertedCodeBlock));
         Ok(ParsedCodeBlock { language,
                              meta_data,
                              depth: tick_length as u8,

@@ -14,7 +14,10 @@ public struct ConundrumTextUtils {
   public static func getTitleFromConundrum(content: String) async -> TitleGroup? {
     do {
       let res = try await getTitle(
-        content: content, modifiers: [.preferInlineMarkdownSyntax, .preferMarkdownSyntax])
+        content: content,
+        modifiers: [.preferInlineMarkdownSyntax],
+        target: .markdown
+      )
       return res
     } catch {
       print("Error retrieving note title: \(error.localizedDescription)")

@@ -36,17 +36,13 @@ Next, let's break down why exactly the speed of light is presumed to be constant
 
 
 $$
-\begin{align}
 c = \frac{1}{\sqrt{\mu_0 \epsilon_0}}
-\end{align}
 $$
 
 Here, $c$ represents the speed of light, $\mu_0$ the magnetic constant, and $\epsilon_0$ the electric constant. The magnetic and electric constants are often referred to as the permeability and permittivity of free space, respectively. Both of these _'constants'_ act as a scalar of the electric and magnetic forces, but more importantly, both have units proportional to length.
 
 $$
-\begin{align}
  \epsilon_0 = \left[ \frac{F}{m} \right] \qquad  \mu_0 = \left[ \frac{H}{m} \right]
-\end{align}
 $$
 
 
@@ -79,12 +75,10 @@ Now imagine that we are at rest in spaceship $A$, while spaceship $B$ (containin
 
 
 $$
-\begin{align}
-t_{\prime}^2 v^2 + t^2 c^2 & = t_{\prime}^2 c^2 \\
-\frac{v^2}{c^2} + \frac{t^2}{t_{\prime}^2} & = 1 \\
-\frac{t^2}{t_{\prime}^2} & = 1 - \frac{v^2}{c^2} \\
-t_{\prime} & = t \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
-\end{align}
+t_{\prime}^2 v^2 + t^2 c^2 = t_{\prime}^2 c^2 \\
+\frac{v^2}{c^2} + \frac{t^2}{t_{\prime}^2} = 1 \\
+\frac{t^2}{t_{\prime}^2} = 1 - \frac{v^2}{c^2} \\
+t_{\prime} = t \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}
 $$
 
 This factor of $1/\sqrt{1-v^2/c^2}$ is such an important part of relativity that it gets it's own symbol, $\gamma$ (_gamma_).
@@ -97,9 +91,7 @@ First, we have the emission of the photon from the 'laser'. Let's say that this 
 Time dilation is only 1 possible solution here. What we have really discovered is the Euclidean distance between these two events is elongated by an additional factor of $\gamma$.
 
 $$
-\begin{align}
 \text{distance} = \text{velocity}\cdot \text{time} \cdot \gamma
-\end{align}
 $$
 
 So we are left with two possible solutions:
@@ -134,9 +126,7 @@ First, let's start with our cosmological velocity. The following is our standard
 
 
 $$
-\begin{align}
 \vec{g} = G \frac{M \cancel{m}}{R^2} \hat{R}
-\end{align}
 $$
 
 <Admonition title="Mass Independence" type="info" foldable sidebar right>
@@ -148,9 +138,7 @@ Above, $\vec{g}$ is the acceleration due to gravity, $G$ is the gravitational co
 If we then take the derivative (break things into really, really small pieces) of this equation with respect to radius[^5] we find
 
 $$
-\begin{align}
 \delta = 2 G \frac{M_{\oplus}}{R_{\oplus}^3}\hat{R}
-\end{align}
 $$
 
 Above, $\oplus$ indicates that a value pertains specifically to Earth, and $\delta$ (_delta_) is an arbitrary variable used for this equation elsewhere. By taking the derivative of this equation we've found another equation that when integrated (adding up all of the really, really small pieces) we get an acceleration of gravity that matches precisely with what we experience.
@@ -160,25 +148,19 @@ We're getting closer, but as $\gamma$ is applied as a scalar, we should take the
 The average of this integral gives us:
 
 $$
-\begin{align}
 \xi = \frac{1}{R} \int 2 G \frac{M_{\oplus}}{R_{\oplus}^3}\ dR = 1 + G \frac{M_{\oplus}}{R^3_{\oplus}} = 1 + \frac{g}{R_{\oplus}}
-\end{align}
 $$
 
 This means that we can now solve $\gamma$ for $v$ to find
 
 $$
-\begin{align}
 v_{\omega} = c \sqrt{1 - \frac{1}{\gamma}} 
-\end{align}
 $$
 
 And since $\xi \equiv \gamma$, we can substitute:
 
 $$
-\begin{align}
 v_{\omega} = c \sqrt{1 - \frac{1}{\xi}} \Rightarrow c \sqrt{1 - \frac{1}{\left( 1 + G \frac{M_{\oplus}}{R_{\oplus}^3} \right)^2}} = 528.142 \ \frac{\text{km}}{\text{sec}}
-\end{align}
 $$
 
 
@@ -221,48 +203,36 @@ $\dot{x}$ does not indicate a time derivative in the traditional sense. Instead,
 To demonstrate this equivalence, let's consider the proposed $\xi$. Since $\xi$ and $\gamma$ represent the same process in different reference frames, lets set them to be equivalent.
 
 $$
-\begin{align}
-\xi & = \gamma
-\end{align}
+\xi = \gamma
 $$
 
 $$
-\begin{align}
-\left( 1 + \frac{g}{R} \right)^{2} \left( 1 - \beta^{2} \right) & = 1
-\end{align}
+\left( 1 + \frac{g}{R} \right)^{2} \left( 1 - \beta^{2} \right) = 1
 $$
 
 Expanding this gives:
 
 $$
-\begin{align}
 2 G \frac{M}{R^{3}} + G^{2} \frac{M^{2}}{R^{6}} = \beta^{2} + 2 G \frac{M}{R^{3}} \beta^{2} + G^{2} \frac{M^{2}}{R^{6}} \beta^{2}
-\end{align}
 $$
 
 
 Or:
 
 $$
-\begin{align}
 \frac{\sqrt{GM \left( GM + 2R^{3} \right)}}{GM + R^{3}} = \frac{v}{c}
-\end{align}
 $$
 
 And if we solve this for $v$, we recover our cosmological velocity times a function:
 
 $$
-\begin{align}
 v = c \frac{\sqrt{GM \left( GM + 2R^{3} \right)}}{GM + R^{3}} = \Gamma c \sqrt{1 - \frac{1}{(1 + \frac{g}{R})^{2}}} 
-\end{align}
 $$
 
 Where $\Gamma$ is:
 
 $$
-\begin{align}
 \frac{\sqrt{G M \left(G M + 2 R^{3}\right)}}{\sqrt{\frac{- R^{6} + \left(G M + R^{3}\right)^{2}}{\left(G M + R^{3}\right)^{2}}} \left(G M + R^{3}\right)} = 0.99999999999512
-\end{align}
 $$
 
 In other words, $\xi = \gamma \times \sim 1$ when $v =  \Gamma v_{\omega}$, with all quantities being consistent with observation.
@@ -275,9 +245,7 @@ If the 'dough' dilates as a function of the magnitude of a body's motion _throug
 In it's integral (adding up all of the small changes) form, this might look like:
 
 $$
-\begin{align}
  \Delta  \tau = \frac{\int_p \dot{x}}{\int \dot{x}}
-\end{align}
 $$
 
 This notation is likely confusing, so let me explain. The denominator indicates the change in displacement integrated over a single unit of "time", giving a measure of length equivalent to the velocity in units of length, while the subscript $p$ indicates an integral that continues to grow as the Universe progress temporally.
@@ -289,9 +257,7 @@ To put this in human language, there is no time anymore. There is only motion _t
 Consider that for $\int \dot{x}$ as it appears in equation above, $1$ unit of _pseudo-time_ will pass. Because the passage of pseudo-time is _defined_ by the relationship between proportional derivatives and distances, where $t_{p}$ indicates 1 unit of pseudo-time in units applied to the traditional notion of velocity, we can easily infer the following:
 
 $$
-\begin{align}
 \tau_o = \frac{1 ~ t_{p}}{dt_p} \equiv \frac{\int \dot{x}_\sigma}{dx_\sigma}
-\end{align}
 $$
 
 This gives $\tau_o$ time derivatives per unit of time, but more importantly, a time derivative, $1/\tau_o$ that is proportional to $dx$ if $\int x$ is defined by $dx$.
@@ -307,9 +273,7 @@ Since $\delta$ in traditional models is proportional to time, $\delta$ in it's c
 
 
 $$
-\begin{align}
 \delta^\prime = 2 G \frac{M_{\oplus}}{R_{\oplus}^3} \frac{1}{v} \tau
-\end{align}
 $$
 
 
@@ -317,18 +281,14 @@ When we then integrate this in the same manner in which we did to find the repla
 
 
 $$
-\begin{align}
- \delta_\alpha & = \frac{1}{R_{\oplus}} \int \int_0^{R} \left[ 2 G \frac{M_{\oplus}}{R_{\oplus}^{3}} \frac{1}{v_{0}} \tau \right] ~ dR\ d\tau \\
- & = 1 + \frac{1}{2} G\frac{M_{\oplus}}{R_{\oplus}^3}
-\end{align}
+ \delta_\alpha = \frac{1}{R_{\oplus}} \int \int_0^{R} \left[ 2 G \frac{M_{\oplus}}{R_{\oplus}^{3}} \frac{1}{v_{0}} \tau \right] ~ dR\ d\tau \\
+ = 1 + \frac{1}{2} G\frac{M_{\oplus}}{R_{\oplus}^3}
 $$
 
 Substituting this back in for $ \gamma$ gives:
 
 $$
-\begin{align}
 \gamma_\alpha = c \sqrt{1 - \frac{1}{\left( 1 + \frac{1}{2} G\frac{M_{\oplus}}{R_{\oplus}^3} \right)^2}} = 371.4 ~ \text{km} ~ \text{s}^{-1}
-\end{align}
 $$
 
 Our observed velocity relative to the [CMB](https://en.wikipedia.org/wiki/Cosmic_microwave_background) (the _dough_ in this model) is approximately $370 ~ \text{km}\ \text{s}^{-1}$, and some gravitational _"turbulence"_ would be expected to give a reasonable margin of error.
@@ -343,17 +303,13 @@ For the math types out there, it is important to note that the integral of $\tau
 The [Pound-Rebka](https://en.wikipedia.org/wiki/Pound%E2%80%93Rebka_experiment) experiment was an experiment carried out at Harvard in which researchers setup a light clock, not too dissimilar from the one we've setup in our previous thought experiment. The difference (at least the difference that matters) is that they moved the two 'mirrors' apart from each other at a velocity that would perfectly cancel out the [Doppler shift](https://en.wikipedia.org/wiki/Doppler_effect) induced by gravity. They found a result of 
 
 $$
-\begin{align}
 v \approx g \frac{h}{c}
-\end{align}
 $$
 
 And because $t = d/v$
 
 $$
-\begin{align}
 v \approx g \Delta t
-\end{align}
 $$
 
 If you're unfamiliar, $\Delta$ (_delta,_ I know, we've already used delta) just means the 'change of' $t$, and $h$ is the height between the emitter and the receiver.
@@ -400,9 +356,7 @@ Because light has to travel to us, the further away an object is the further in 
 Consider that for some unit of pseudo-time $d\tau$, some photon travels $c\ d\tau$, being equivalent to one 'event'. In that same unit of pseudo-time, some body $i$ travels $v_{i}\ d\tau$, making the following true and making super-evolved galaxies at early epochs not only possible, but inevitable.
 
 $$
-\begin{align}
 \frac{\text{Events}}{\text{Distance}} \propto \frac{c}{v_{i}}
-\end{align}
 $$
 
 ### Fine Tuning and the Fermi Paradox
@@ -431,17 +385,13 @@ This model in which cosmic inflation is derived from the sum of all gravitationa
 For body $j$, this may be represented as:
 
 $$
-\begin{align}
 \vec{g}_j = \int_0^R 2 G \frac{M_{j}}{R_{ji}^{3}}\hat{R}_{ji}
-\end{align}
 $$
 
 But $j$ would be met by:
 
 $$
-\begin{align}
 \text{Inertia} = \sum \int_0^R 2 G  \Xi \frac{M_{i}}{R_{ij}^{3}}\hat{R}_{ij}
-\end{align}
 $$
 
 Where $R$ in the latter equation is the distance from the secondary body to $i$ and $\Xi$ some unknown function scaling the magnitude of this interaction. It is this sum that gives rise to Machian inertia, and _I believe_, the source of ***inertial*** mass, as well as the proper but simplistic description of the relationship between gravity and inertia have.
@@ -476,21 +426,17 @@ One of the biggest mysteries in modern physics is how to describe the interior o
 In short, this model needs to be bound with electromagnetism. The potential outcome of such a unity would change the world on par with the wheel or the discovery of electricity. Through this new description of gravity, cosmic inflation and time we can infer that the divergence of the magnetic field is **not** 0, but rather equivalent to the determinant of some time dependent 3x3 matrix that describes the dilation of space at that point. In a manner that is similar to the way in which the dilation of space remains hidden apart from the apparent acceleration due to gravity, our co-motion keeps this divergence hidden from us directly. Through this relationship I am confident that gravity and electromagnetism can finally be unified.
 
 $$
-\begin{align}
 \nabla B = 0 \quad \Rightarrow \quad \nabla B = \xi \left|\begin{array}{ccc}
     1 & 0 & 0 \\
     0 & 1 & 0 \\
     0 & 0 & 1
     \end{array}\right|
-\end{align}
 $$
 
 There also exists an intriguing coincidence, where if we treat $v$ as being not proportional to time, but as the fundamental rate of change mentioned above, making $v$ a pure magnitude of distance proportional only to other velocities where $d/v = 1$, we can derive a ratio of
 
 $$
-\begin{align}
 \frac{ds}{dx} \approx 1.618 = \phi
-\end{align}
 $$
 
 

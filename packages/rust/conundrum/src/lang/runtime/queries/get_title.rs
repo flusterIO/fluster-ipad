@@ -8,7 +8,7 @@ use crate::lang::{
         parse_conundrum_string::parse_conundrum_string,
         state::{
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
-            parse_state::{ConundrumModifier, ParseState},
+            parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
         },
         traits::conundrum_input::get_conundrum_input,
     },
@@ -21,9 +21,13 @@ pub struct TitleGroup {
     pub subtitle: Option<String>,
 }
 
-pub fn get_title_group(content: String, modifiers: Vec<ConundrumModifier>) -> ConundrumResult<TitleGroup> {
+pub fn get_title_group(content: String,
+                       modifiers: Vec<ConundrumModifier>,
+                       target: ConundrumCompileTarget)
+                       -> ConundrumResult<TitleGroup> {
     let mut input = get_conundrum_input(content.as_str(),
                                         ParseState { modifiers,
+                                                     compile_target: target,
                                                      ..Default::default() });
     if let Ok((ems, res)) = parse_conundrum_string(&mut input) {
         let x = ems.par_iter().find_map_first(|em| match em {
@@ -34,10 +38,10 @@ pub fn get_title_group(content: String, modifiers: Vec<ConundrumModifier>) -> Co
         match x {
             Some(heading) => {
                 let mut state = res.state.borrow_mut();
-                let title_string = compile_elements(&heading.children, &mut state)?;
+                let title_string = compile_elements(&heading.children.0, &mut state)?;
                 let subtitle_string = match &heading.subtitle {
                     Some(s) => {
-                        let res = compile_elements(s, &mut state)?;
+                        let res = compile_elements(&s.0, &mut state)?;
                         Some(res)
                     }
                     None => None,
@@ -62,13 +66,14 @@ mod tests {
     fn gets_proper_title_group() {
         let test_content = get_test_mdx_content::get_test_note_content_with_everything();
 
-        let title_group = get_title_group(test_content, vec![ConundrumModifier::PreferInlineMarkdownSyntax]).expect("Finds title group when title is present.");
+        let title_group =
+            get_title_group(test_content,
+                            vec![ConundrumModifier::PreferInlineMarkdownSyntax],
+                            ConundrumCompileTarget::Markdown).expect("Finds title group when title is present.");
 
         assert!(title_group.title == "Metuque at _inferius_ nebulas", "Finds the proper title");
         println!("Title Group: {:#?}", title_group);
 
         assert!(title_group.subtitle.is_some_and(|s| s == "My note with a subtitle"), "Finds the proper subtitle");
-
-        // assert_eq!(result, 4);
     }
 }

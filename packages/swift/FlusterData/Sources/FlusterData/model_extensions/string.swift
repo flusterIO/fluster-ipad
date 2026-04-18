@@ -45,10 +45,12 @@ extension String {
 
   @MainActor
   /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
-    public func preParseAsMdx(noteId: String?, uiParams: UiParams) async -> MdxParsingResult? {
+  public func preParseAsMdx(noteId: String?, uiParams: UiParams) async -> MdxParsingResult? {
     do {
       let res = try await runConundrum(
-        options: ParseConundrumOptions(noteId: noteId, content: self, modifiers: [], hideComponents: [], uiParams: uiParams)
+        options: ParseConundrumOptions(
+          noteId: noteId, content: self, modifiers: [], hideComponents: [], uiParams: uiParams,
+          target: .html, trusted: true)
       )
       return res
     } catch {
@@ -58,12 +60,16 @@ extension String {
   }
   @MainActor
   /// This will apply the Fluster specific pre-parsers to any string asyncrhonously.
-    public func parseAsConundrumOutput(noteId: String?, modifiers: [ConundrumModifier], uiParams: UiParams) async
+  public func parseAsConundrumOutput(
+    noteId: String?, modifiers: [ConundrumModifier], uiParams: UiParams
+  ) async
     -> MdxParsingResult?
   {
     do {
       let res = try await runConundrum(
-        options: ParseConundrumOptions(noteId: noteId, content: self, modifiers: modifiers, hideComponents: [], uiParams: uiParams)
+        options: ParseConundrumOptions(
+          noteId: noteId, content: self, modifiers: modifiers, hideComponents: [],
+          uiParams: uiParams, target: .html, trusted: true)
       )
       return res
     } catch {

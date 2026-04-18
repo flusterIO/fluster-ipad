@@ -8,9 +8,9 @@ use crate::{
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <div class="cdrm-codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative">   {% if let Some(title) = title %}
+/// <div class="cdrm-codeblock @container/codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative">   {% if let Some(title) = title %}
 ///   <div class="my-2 px-2 py-0 text-sm w-full grid grid-cols-[auto_1fr] gap-x-2">
-///   <div style="color:{{file_icon.color}};">
+///   <div class="w-fit" style="color:{{file_icon.color}};">
 ///   {{file_icon.icon}}
 ///   </div>
 ///   <div class="text-fd-card-foreground/70">
@@ -21,12 +21,12 @@ use crate::{
 ///    <div
 ///      data-cdrm-copy-for="{{id}}"
 ///      role="button"
-///      class="auto-codeblock-icon absolute top-2 right-2 transition-opacity duration-300"
+///      class="auto-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300"
 ///      onclick="copyCodeblockCode"
 ///    >
 ///    {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::Copy}}
 ///    </div>
-///    <div class="[&>pre]:p-2 [&>code]:rounded-bl [&>code]:rounded-br [&>pre]:my-0">
+///    <div class="[&>pre]:p-2! [&>pre]:rounded-bl [&>pre]:rounded-br [&>pre]:rounded-tl-none [&_pre]:rounded-tr-none [&>pre]:my-0 [&>pre]:text-sm">
 ///    {{code | safe}}
 ///    </div>
 ///    </div>
@@ -48,6 +48,7 @@ impl CodeBlockHTMLTemplate {
                language: &SupportedCodeBlockSyntax,
                dark_mode: &bool)
                -> Self {
+        println!("Title: {:#?}", title);
         let file_icon = match &title {
             Some(n) => devicons::icon_for_file(n,
                                                &Some(match dark_mode {

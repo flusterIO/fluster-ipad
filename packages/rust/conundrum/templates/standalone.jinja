@@ -4,16 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{label}}</title>
+    <title>{% if let Some(l) = label %}{{l}}{% else %}Conundrum{% endif %}</title>
     <style>
-        {{css_content | safe}}
+        {{css | safe}}
     </style>
 </head>
 
-<body data-cdrm-theme="cdrm" class="dark fluster-mac force-background">
+<body data-cdrm-theme="cdrm" {% if ui.dark_mode %}class="dark"{% endif %}>
     <div id="content" class="w-full flex flex-col justify-start items-center px-4 py-6 min-h-screen">
-        {{content | safe}}
+        {{body | safe}}
     </div>
 </body>
-
+<script>
+    {{js | safe}}
+</script>
 </html>

@@ -1,3 +1,4 @@
+use askama::Template;
 use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
@@ -11,12 +12,18 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
+        lib::ui::ui_types::children::Children,
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ParseState,
+            },
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
+                html_js_component_result::HtmlJsComponentResult,
                 inline_markdown_component_result::InlineMarkdownComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
@@ -28,7 +35,13 @@ use crate::{
         general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
         output_components::output_utils::{format_embedded_object_property, format_markdown_fragment_property},
     },
-    parsers::{conundrum::logic::string::conundrum_string::ConundrumString, parser_trait::ConundrumParser},
+    parsers::{
+        conundrum::logic::string::conundrum_string::ConundrumString,
+        markdown::heading::{
+            heading_html_templ::HeadingHtmlTemplate, heading_with_subtitle_templ::HeadingSubtitleHtmlTemplate,
+        },
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
@@ -39,8 +52,8 @@ pub struct MarkdownHeadingResult {
     /// of contents, not necessarily the level of the heading since some heading
     /// lists will skip a depth.
     pub tab_depth: u16,
-    pub children: Vec<ParsedElement>,
-    pub subtitle: Option<Vec<ParsedElement>>,
+    pub children: Children,
+    pub subtitle: Option<Children>,
     pub id: ConundrumString,
 }
 
@@ -59,7 +72,7 @@ impl MarkdownHeadingResult {
     pub fn to_stringified_result(&self,
                                  res: &mut ParseState)
                                  -> ConundrumModalResult<MarkdownHeadingStringifiedResult> {
-        let children_string = compile_elements(&self.children, res)?;
+        let children_string = compile_elements(&self.children.0, res)?;
         Ok(MarkdownHeadingStringifiedResult { depth: self.depth,
                                               tab_depth: self.tab_depth,
                                               content: children_string,
@@ -69,7 +82,7 @@ impl MarkdownHeadingResult {
 
 impl InlineMarkdownComponentResult for MarkdownHeadingResult {
     fn to_inline_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        compile_elements(&self.children, res)
+        compile_elements(&self.children.0, res)
     }
 }
 
@@ -79,7 +92,7 @@ impl MarkdownComponentResult for MarkdownHeadingResult {
         for _ in 1..self.depth {
             s += "#"
         }
-        let children = compile_elements(&self.children, res)?;
+        let children = compile_elements(&self.children.0, res)?;
         Ok(format!("{} {}", s, children))
     }
 }
@@ -103,16 +116,63 @@ impl MarkdownHeadingResult {
 
 impl PlainTextComponentResult for MarkdownHeadingResult {
     fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        compile_elements(&self.children, res)
+        compile_elements(&self.children.0, res)
+    }
+}
+
+impl HtmlJsComponentResult for MarkdownHeadingResult {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        if let Some(subtitle) = &self.subtitle {
+            let subtitle_string = subtitle.render(res)?;
+            let children_string = self.children.render(res)?;
+            if let Some(templ) = match self.depth {
+                1 => Some(HeadingSubtitleHtmlTemplate::H1(children_string, subtitle_string, self.id.0.clone())),
+                2 => Some(HeadingSubtitleHtmlTemplate::H2(children_string, subtitle_string, self.id.0.clone())),
+                3 => Some(HeadingSubtitleHtmlTemplate::H3(children_string, subtitle_string, self.id.0.clone())),
+                4 => Some(HeadingSubtitleHtmlTemplate::H4(children_string, subtitle_string, self.id.0.clone())),
+                5 => Some(HeadingSubtitleHtmlTemplate::H5(children_string, subtitle_string, self.id.0.clone())),
+                6 => Some(HeadingSubtitleHtmlTemplate::H6(children_string, subtitle_string, self.id.0.clone())),
+                _ => None,
+            } {
+                let r = templ.render().map_err(|_| {
+                    eprintln!("Failed to render heading");
+                ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })?;
+                return Ok(r);
+            } else {
+                return Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Heading",
+                                                                                                                    "Conundrum, like markdown only accepts headings up to a depth of 6."))));
+            }
+        } else {
+            let children_string = self.children.render(res)?;
+            if let Some(templ) = match self.depth {
+                1 => Some(HeadingHtmlTemplate::H1(children_string, self.id.0.clone())),
+                2 => Some(HeadingHtmlTemplate::H2(children_string, self.id.0.clone())),
+                3 => Some(HeadingHtmlTemplate::H3(children_string, self.id.0.clone())),
+                4 => Some(HeadingHtmlTemplate::H4(children_string, self.id.0.clone())),
+                5 => Some(HeadingHtmlTemplate::H5(children_string, self.id.0.clone())),
+                6 => Some(HeadingHtmlTemplate::H6(children_string, self.id.0.clone())),
+                _ => None,
+            } {
+                let r = templ.render().map_err(|_| {
+                    eprintln!("Failed to render heading");
+                ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })?;
+                return Ok(r);
+            } else {
+                return Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Heading",
+                                                                                                                    "Conundrum, like markdown only accepts headings up to a depth of 6."))));
+            }
+        }
     }
 }
 
 impl MdxComponentResult for MarkdownHeadingResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let children_string = compile_elements(&self.children, res)?;
+        let children_string = compile_elements(&self.children.0, res)?;
         let subtitle_string = match &self.subtitle {
             Some(s) => {
-                let x = compile_elements(s, res)?;
+                let x = compile_elements(&s.0, res)?;
                 let y = x.as_str();
                 format_markdown_fragment_property(y)
             }
@@ -193,8 +253,8 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
         let children = parse_elements(&mut new_input)?;
 
         let heading = MarkdownHeadingResult { depth: level.len() as u16,
-                                              children,
-                                              subtitle,
+                                              children: Children(children),
+                                              subtitle: subtitle.map(Children),
                                               tab_depth: state.last_heading_tab_depth,
                                               id: id.map(|x| ConundrumString(x.to_string()))
                                                     .unwrap_or_else(|| ConundrumString(state.slugger.slug(content))) };
@@ -224,7 +284,7 @@ mod tests {
         assert!(res.depth == 3, "Finds the proper heading depth when no id is present..");
         let mut state = test_data.state.borrow_mut();
 
-        let children_string = compile_elements(&res.children, &mut state).expect("Compiles to valid mdx");
+        let children_string = compile_elements(&res.children.0, &mut state).expect("Compiles to valid mdx");
         // TODO: Add this test back in both of these tests for the renderd
         // children instead of the stringified content.
         insta::assert_snapshot!(children_string);
@@ -244,7 +304,7 @@ mod tests {
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let mut state = test_data.state.borrow_mut();
-        let children_string = compile_elements(&res.children, &mut state).expect("Compiles to valid mdx");
+        let children_string = compile_elements(&res.children.0, &mut state).expect("Compiles to valid mdx");
         assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
     }
 
@@ -260,7 +320,7 @@ mod tests {
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let mut state = test_data.state.borrow_mut();
-        let children_string = compile_elements(&res.children, &mut state).expect("Compiles to valid mdx");
+        let children_string = compile_elements(&res.children.0, &mut state).expect("Compiles to valid mdx");
         assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
         assert!(res.subtitle.is_none(), "Finds no subtitle when there is a line break.")
     }
@@ -276,12 +336,12 @@ mod tests {
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let mut state = test_data.state.borrow_mut();
-        let children_string = compile_elements(&res.children, &mut state).expect("Compiles to valid mdx");
+        let children_string = compile_elements(&res.children.0, &mut state).expect("Compiles to valid mdx");
         assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
 
         let subtitle = res.subtitle.expect("Should have a subtitle.");
 
-        let subtitle_string = compile_elements(&subtitle, &mut state).expect("Compiles subtitle successfully.");
+        let subtitle_string = compile_elements(&subtitle.0, &mut state).expect("Compiles subtitle successfully.");
         assert!(subtitle_string == "My note has a subtitle!", "Finds the note's subtitle.")
     }
 }

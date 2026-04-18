@@ -304,7 +304,7 @@ extension AppSchemaV1 {
 
     public static func isTitleMatch(noteBody: String, query: String) -> Bool {
       let title = ConundrumTextUtils.getTitleGroupSync(
-        content: noteBody, modifiers: [.forcePlainText])?.title
+        content: noteBody, modifiers: [], target: .html)?.title
       return title == nil
         ? false : title!.localizedCaseInsensitiveContains(query)
     }
@@ -497,7 +497,8 @@ extension AppSchemaV1 {
       let task: Task<MdxParsingResult?, any Error> = try await Task.detached {
         let res = try await ConundrumSwift.runConundrum(
           options: ParseConundrumOptions(
-            noteId: _id, content: _body, modifiers: [], hideComponents: [], uiParams: uiParams))
+            noteId: _id, content: _body, modifiers: [], hideComponents: [], uiParams: uiParams,
+            target: .html, trusted: true))
         return res
       }
 
@@ -620,7 +621,8 @@ extension AppSchemaV1 {
     public func updateTitleGroup() {
       if let res = try? ConundrumTextUtils.getTitleGroupSync(
         content: self.markdown.body,
-        modifiers: [.preferInlineMarkdownSyntax, .preferMarkdownSyntax, .hideEmojis])
+        modifiers: [.preferInlineMarkdownSyntax, .hideEmojis],
+        target: .markdown)
       {
         self.markdown.title = res.title
         if let subtitle = res.subtitle, self.frontMatter.summary == nil {
@@ -1000,14 +1002,14 @@ extension AppSchemaV1 {
     public func parsePlainText(noteId: String, uiParams: UiParams) async throws {
       let res = try await ConundrumSwift.runConundrum(
         options: ParseConundrumOptions(
-          noteId: noteId, content: self._body, modifiers: [.forcePlainText], hideComponents: [],
-          uiParams: uiParams))
+          noteId: noteId, content: self._body, modifiers: [], hideComponents: [],
+          uiParams: uiParams, target: .plainText, trusted: true))
       self.plainText = res.content
       if let title = self.title {
         let titleResponse = try await ConundrumSwift.runConundrum(
           options: ParseConundrumOptions(
-            noteId: noteId, content: title, modifiers: [.forcePlainText], hideComponents: [],
-            uiParams: uiParams))
+            noteId: noteId, content: title, modifiers: [], hideComponents: [],
+            uiParams: uiParams, target: .plainText, trusted: true))
         if titleResponse.content != title {
           self.titlePlainText = titleResponse.content
         } else {

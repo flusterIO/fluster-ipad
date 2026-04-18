@@ -53,7 +53,7 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput)
                                                                                       })?;
 
     let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
-    let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|e| {
+    let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|_| {
                                                                                                  input.input
                                                                                                       .reset(&start);
                                                                                              })?;
@@ -99,7 +99,7 @@ impl ConundrumParser<ReactComponentSelfClosingResult> for ReactComponentSelfClos
 mod tests {
     use crate::lang::runtime::{
         run_conundrum::{ParseConundrumOptions, run_conundrum},
-        state::ui_params::UIParams,
+        state::{parse_state::ConundrumCompileTarget, ui_params::UIParams},
     };
 
     use super::*;
@@ -118,7 +118,9 @@ My equation <EqRef id="myId" super />."#;
             modifiers: vec![],
             note_id: None,
             ui_params: UIParams::default(),
-            hide_components: vec![]
+            hide_components: vec![],
+            target: ConundrumCompileTarget::Html,
+            ..Default::default()
             }).await.expect("Parses valid self closing react component without throwing
 an error");
 

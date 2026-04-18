@@ -1,5 +1,6 @@
 use std::{cell::RefCell, sync::Arc};
 
+use askama::Template;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
@@ -7,8 +8,10 @@ use crate::{
     lang::runtime::{
         compile_conundrum::compile_elements,
         parse_conundrum_string::parse_conundrum_string,
+        queries::get_title::get_title_group,
         state::{
             citation_list::CitationList,
+            conundrum_error::ConundrumError,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
             dom_data::DomData,
             parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
@@ -17,11 +20,12 @@ use crate::{
     },
     output::{
         general::component_constants::component_names::EmbeddableComponentName,
+        html::standalone::standalone_template::StandaloneTemplate,
         parsing_result::mdx_parsing_result::MdxParsingResult,
     },
     parsers::markdown::heading_sluggger::Slugger,
 };
-use winnow::Stateful;
+use winnow::{Stateful, error::ErrMode};
 
 /// This is the core 'input' for Conundrum.
 #[typeshare]
@@ -48,7 +52,7 @@ pub struct ParseConundrumOptions {
     pub hide_components: Vec<EmbeddableComponentName>,
     pub ui_params: UIParams,
     pub target: ConundrumCompileTarget,
-    pub trusted: bool
+    pub trusted: bool,
 }
 
 #[allow(clippy::derivable_impls)]
@@ -60,7 +64,7 @@ impl Default for ParseConundrumOptions {
                hide_components: vec![],
                ui_params: UIParams::default(),
                target: ConundrumCompileTarget::Html,
-        trusted: false}
+               trusted: false }
     }
 }
 
@@ -79,7 +83,7 @@ impl ParseConundrumOptions {
                                 hide_components,
                                 ui_params,
                                 target,
-        trusted }
+                                trusted }
     }
 }
 
@@ -97,15 +101,30 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
                                                    dom: DomData { id_count: 0 },
                                                    compile_target: ConundrumCompileTarget::Html,
                                                    slugger: Slugger::default(),
-    trusted: opts.trusted}));
+                                                   trusted: opts.trusted }));
+    let b = opts.content.clone();
 
-    let mut stateful_input = Stateful { input: opts.content.as_str(),
+    let mut stateful_input = Stateful { input: b.as_str(),
                                         state };
 
     let (elements, input_data) = parse_conundrum_string(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
 
     let mut x = input_data.state.borrow_mut();
     let compiled = compile_elements(&elements, &mut x)?;
-    x.data.content = compiled;
+    if opts.modifiers.contains(&ConundrumModifier::Standalone) {
+        let js_string = x.data.compile_javascript_kinda();
+        let templ =
+            StandaloneTemplate::new(get_title_group(opts.content, opts.modifiers, opts.target).map(|n| n.title).ok(),
+                                    compiled,
+                                    js_string,
+                                    x.ui_params.clone());
+        let rendered_standalone = templ.render() .map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })?;
+        x.data.content = rendered_standalone;
+    } else {
+        x.data.content = compiled;
+    }
     Ok(x.data.clone())
 }
