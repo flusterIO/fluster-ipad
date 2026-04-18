@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
     Parser,
-    ascii::{space0, space1},
+    ascii::{line_ending, space0, space1},
     combinator::{self},
     error::ErrMode,
     stream::{AsChar, Stream},
@@ -215,12 +215,12 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
                                      input.input.reset(&cp);
                                  })?;
 
-                // let _ = space0.parse_next(input).inspect_err(|_| {
-                //                                      input.input.reset(&cp);
-                //                                  })?;
-                // let _ = line_ending(input).inspect_err(|_| {
-                //                               input.input.reset(&cp);
-                //                           })?;
+                let _ = space0.parse_next(input).inspect_err(|_| {
+                                                     input.input.reset(&cp);
+                                                 })?;
+                let _ = line_ending(input).inspect_err(|_| {
+                                              input.input.reset(&cp);
+                                          })?;
 
                 let raw_content = take_until(0.., ticks).parse_next(input).map_err(|e| {
                                                                                println!("Error: {:#?}", e);

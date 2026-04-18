@@ -1,55 +1,83 @@
-## Daily Focus for My ADHD-Ass
+# Daily Focus for My ADHD-Ass
 
-### Prioritized Tasks to Release Fluster in 2 Weeks
+## Prioritized Summary of To-Do List
 
-#### 1. **Integrate Typst Support**
-- This is a major value add that can be handled offline and is critical for release.
-- Focus on enabling typst support to enhance the app's capabilities.
+### High Priority (Next 2 Weeks)
 
-#### 2. **Setup Seeding of Notes on Desktop App**
-- This will be the first app released, so ensure the seeding functionality is robust.
-- Work on the desktop app to handle note seeding effectively.
+1. **Integrate Typst Support** - A major value add that can be handled offline and is on track for release. This will significantly enhance the app's functionality for STEM users.
 
-#### 3. **Fix Code Block Title-Underscore Parsing Issue**
-- Address the issue with code block titles that have underscores.
-- Ensure the parsing logic is accurate and user-friendly.
+2. **Setup Seeding of Notes on Desktop App** - This will be the first app released, so ensuring notes can be seeded properly is critical.
 
-#### 4. **Handle Auto-Inserted Code Block Rendering**
-- Fix the rendering of auto-inserted code blocks to ensure they look good and are functional.
-- Ensure the code blocks are properly displayed and formatted.
+3. **Fix Code Block Title-Underscore Parsing Issue** - This is a critical bug that affects the display of code blocks and needs immediate attention.
 
-#### 5. **Work on Remaining Parsers**
-- Focus on completing the parsers for missing or incomplete features like tables, footnotes, and strikethrough text.
-- Ensure all parsers are functional and meet the app's requirements.
+4. **Handle Auto-Inserted Code Block** - Ensure the code block looks good and is properly formatted.
 
-#### 6. **Fix Bug with Bibliography Entries**
-- Ensure bibliography entries are correctly associated with notes.
-- Address any issues that prevent proper linking of bibliography entries.
+5. **Work on Remaining Parsers** - Specifically, focus on CodeBlock, Footnote, Table, Strikethrough text, Escapable math blocks, Escap, Paragraphs, Line Item with various checked states, and Timestamp link syntax.
 
-#### 7. **Handle Scroll Restoration on Desktop App**
-- Ensure the desktop app correctly restores scroll positions when switching between landscape and portrait modes.
-- Test and fix any issues related to scroll restoration.
+6. **AI Summarization and Triggers** - Implement AI triggers for generating study guides and flash cards. Ensure these can be set to auto, confirm, or never modes.
 
-#### 8. **Work on AI Summarization**
-- Develop the AI summarization feature to provide accurate and concise summaries of notes.
-- Ensure the AI triggers are set to the correct modes (auto, confirm, never) as needed.
+7. **Handle Light Mode for AISummaryContainer** - While dark mode looks good, light mode needs adjustments to ensure usability.
 
-#### 9. **Handle React Property Parsers**
-- Improve the parsing of React properties to ensure components are reliably parsed and inserted into AI.
-- This will open up new possibilities for AI integration and component handling.
+8. **Fix Bug with Note Display on Mac** - The new note first display issue is still unresolved and needs to be fixed.
 
-#### 10. **Verify iPad App Functionality**
-- Ensure the iPad app is working correctly, especially in portrait mode.
-- Address any issues related to initial loading and error state management.
+9. **Ensure Summary Can Be Accepted or Declined from UI** - This is crucial for user interaction and feedback.
 
-### Additional Tasks
-- **Handle Light Mode for AISummaryContainer**: Ensure the light mode is functional and visually appealing.
-- **Force Regeneration of AI Summaries**: Fix any issues that prevent force regeneration of summaries.
-- **Offline Functionality**: Ensure all offline features are working correctly, including error handling and user feedback.
-- **Testing and Documentation**: Conduct thorough testing of all features and update documentation to reflect the latest changes and requirements.
+10. **Handle Scroll Restoration on Desktop App in Landscape Mode** - This will improve the user experience when switching between orientations.
 
-### Release Preparation
-- **Pre-Release Checklist**: Ensure all tests are passing for Swift, Typescript, and Rust.
-- **Post-Release Tasks**: Review the YouTube link for Apple's editor team nominations and prepare the back story for the app.
+### Medium Priority
 
-By focusing on these tasks, we can ensure a smooth release of Fluster within the next two weeks. Stay organized and prioritize these tasks to meet the release deadline.
+- **Move Remaining Components** - Ensure all components are moved over and integrated properly.
+
+- **Fix Bug with Bibliography Entries** - Ensure bibliography entries are correctly associated with notes.
+
+- **Handle Webview Components** - Ensure all taggables have a 'cursor-pointer' class for clickability.
+
+- **Update Documentation** - Reflect upcoming Apple releases and fix any padding issues in the main app.
+
+- **Work on Offline Functionality** - Ensure the app works seamlessly offline, especially for reading and note-taking.
+
+### Low Priority
+
+- **Performance Optimization** - Move regex queries to a HashMap for faster lookups.
+
+- **UI/UX Enhancements** - Improve the overall user experience with better design and functionality.
+
+- **Testing and Debugging** - Ensure all tests are passing across Swift, Typescript, and Rust.
+
+## Release Checklist
+
+- **All Tests Passing** - Ensure Swift, Typescript, and Rust tests are all passing before release.
+
+- **Review Apple's Nominations Guide** - Prepare the back story and features for potential Apple feature recognition.
+
+- **Handle AI Summary Regeneration** - Ensure force regeneration works properly.
+
+- **Handle React Property Parsers** - Improve component parsing reliability for better AI integration.
+
+- **Verify iPad App Functionality** - Ensure the iPad app is working correctly, especially with error state handling.
+
+## Additional Notes
+
+- **Offline Reading of Crafting Interpreters** - Download as much of the book as possible for offline reading, especially as the memory layer implementation approaches.
+
+- **Error Handling in Webviews** - Relay detailed errors to users in a type-safe manner.
+
+- **Icon Component Development** - Create a searchable, lazy-loaded list of available icons.
+
+- **Note Detail Sheet Refresh Issues** - Ensure the NoteDetailSheet works correctly without requiring refreshes.
+
+- **Global Search Page on Mac** - Implement a simple search field with toggle for search type.
+
+- **AI Availability States** - Adjust components to reflect AI availability and generate note summaries.
+
+- **Comment Syntax Parser** - Generate a parser to handle commented-out notes for users.
+
+- **R3 Vector and Summary Storage** - Store R3 vectors and summaries with a 'valid' property to track changes.
+
+- **SiaString Class in Typescript** - Implement a class for string compression and comparison to improve benchmarking.
+
+- **Output Components for Markdown Elements** - Ensure all parsed markdown elements have proper output components.
+
+- **Tests for -ignoreParser Flags** - Write comprehensive tests for all ignore parser flags.
+
+This prioritized list ensures that the most critical tasks are addressed first, allowing for a smooth release within the next two weeks. Focus on high-priority items to meet the release deadline and ensure a robust, user-friendly application.

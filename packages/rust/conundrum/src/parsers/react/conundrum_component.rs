@@ -51,7 +51,7 @@ pub enum ConundrumComponentType {
 }
 
 impl ConundrumComponentType {
-    pub fn component_is_new_line(&self) -> bool {
+    pub fn component_is_block_level(&self) -> bool {
         match self {
             ConundrumComponentType::Card(_) => true,
             ConundrumComponentType::Admonition(_) => true,

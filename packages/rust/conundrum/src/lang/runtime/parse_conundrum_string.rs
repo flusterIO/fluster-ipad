@@ -150,10 +150,10 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
         at_line_start = match &result {
             ParsedElement::Text(s) => s == "\n" || s == "\r\n",
             ParsedElement::ReactComponentWithChildren(c) => {
-                c.component.component_is_new_line()
+                c.component.component_is_block_level()
             },
             ParsedElement::ReactComponentSelfClosing(c) => {
-                c.component.component_is_new_line()
+                c.component.component_is_block_level()
             },
             ParsedElement::Heading(_)
             | ParsedElement::BlockQuote(_)

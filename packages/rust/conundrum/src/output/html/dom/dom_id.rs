@@ -1,8 +1,10 @@
 use std::fmt::Display;
 
 use askama::FastWritable;
+use serde::Serialize;
 
 // BUG: Maybe the problem?
+#[derive(Debug, Serialize, Clone)]
 pub struct DOMId(String);
 
 impl DOMId {

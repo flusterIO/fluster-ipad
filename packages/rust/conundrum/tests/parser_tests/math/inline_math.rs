@@ -1,4 +1,7 @@
-use conundrum::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
+use conundrum::{
+    lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum},
+    testing::render_sample,
+};
 
 #[tokio::test]
 pub async fn allows_escape_math() {
@@ -50,7 +53,7 @@ $$
 </Tabs>
 
 
-        $$
+      $$
       e=mc^2
       $$
         "#;
@@ -64,4 +67,5 @@ $$
            }
        ).await.expect("Runs conundrum without throwing an error.");
     insta::assert_snapshot!(res.content);
+    render_sample::TestRenderPage::new_run(test_content, "Nested Math State");
 }

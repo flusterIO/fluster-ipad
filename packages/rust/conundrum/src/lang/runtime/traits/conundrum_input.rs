@@ -6,7 +6,7 @@ use crate::{
     lang::runtime::state::{
         citation_list::CitationList,
         dom_data::DomData,
-        parse_state::{ConundrumModifier, ParseState},
+        parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
         ui_params::UIParams,
     },
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
@@ -27,6 +27,11 @@ pub fn get_conundrum_input(val: &str, modifiers: Vec<ConundrumModifier>, ui_para
                                                                valid_footnote_indices: Vec::new(),
                                                                ui_params,
                                                                dom: DomData::default(),
+                                                               // FIXME: THIS IS BROKEN... This will not
+                                                               // work with targets other than html
+                                                               // and will break output. This needs to be passed
+                                                               // in from the parent state.
+                                                               compile_target: ConundrumCompileTarget::Html,
                                                                slugger: Slugger::default() })) }
 }
 

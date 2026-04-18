@@ -44,4 +44,4 @@ expression: res.content
 </Tabs>
 
 
-        <AutoInsertedMathBlock data={{"display":true,"idx":7,"id":null,"content":"\n      e=mc^2\n      "}} />
+      <AutoInsertedMathBlock data={{"display":true,"idx":7,"id":null,"content":"\n      e=mc^2\n      "}} />

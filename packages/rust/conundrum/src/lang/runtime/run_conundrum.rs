@@ -11,7 +11,7 @@ use crate::{
             citation_list::CitationList,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
             dom_data::DomData,
-            parse_state::{ConundrumModifier, ParseState},
+            parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             ui_params::UIParams,
         },
     },
@@ -47,6 +47,7 @@ pub struct ParseConundrumOptions {
     /// _nothing_, but it's state will still be applied to the result.
     pub hide_components: Vec<EmbeddableComponentName>,
     pub ui_params: UIParams,
+    pub target: ConundrumCompileTarget,
 }
 
 #[allow(clippy::derivable_impls)]
@@ -56,7 +57,8 @@ impl Default for ParseConundrumOptions {
                content: String::from(""),
                modifiers: vec![],
                hide_components: vec![],
-               ui_params: UIParams::default() }
+               ui_params: UIParams::default(),
+               target: ConundrumCompileTarget::Html }
     }
 }
 
@@ -65,13 +67,15 @@ impl ParseConundrumOptions {
                content: String,
                modifiers: Vec<ConundrumModifier>,
                hide_components: Vec<EmbeddableComponentName>,
-               ui_params: UIParams)
+               ui_params: UIParams,
+               target: ConundrumCompileTarget)
                -> Self {
         ParseConundrumOptions { note_id,
                                 content,
                                 modifiers,
                                 hide_components,
-                                ui_params }
+                                ui_params,
+                                target }
     }
 }
 
@@ -87,6 +91,7 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
                                                    valid_footnote_indices: Vec::new(),
                                                    ui_params: opts.ui_params.clone(),
                                                    dom: DomData { id_count: 0 },
+                                                   compile_target: ConundrumCompileTarget::Html,
                                                    slugger: Slugger::default() }));
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),

@@ -1,29 +1,42 @@
+use askama::Template;
+use winnow::error::ErrMode;
+
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::ui::{
-            components::component_trait::ConundrumComponent,
+            components::{
+                component_trait::ConundrumComponent,
+                layout::tabs::{
+                    tab_group_html_template::TabGroupHtmlTemplate,
+                    tab_html_template::{TabButtonHtmlTemplate, TabContentTemplate},
+                },
+            },
             shared_props::sizable::SizablePropsGroup,
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
             ui_types::{children::Children, emphasis::Emphasis},
         },
         runtime::{
             state::{
-                conundrum_error_variant::ConundrumModalResult,
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
                 parse_state::{ConundrumModifier, ParseState},
             },
             traits::{
-                fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
+                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
-    output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+    output::{
+        general::component_constants::{any_component_id::AnyComponentName, component_names::EmbeddableComponentName},
+        html::dom::dom_id::DOMId,
     },
-    parsers::conundrum::logic::object::object::ConundrumObject,
+    parsers::{
+        conundrum::logic::{bool::boolean::ConundrumBoolean, object::object::ConundrumObject},
+        react::conundrum_component::ConundrumComponentType,
+    },
 };
 
 /// Group and organize your notes by swappable tabs. Pretty self explanatory
@@ -63,6 +76,7 @@ pub struct TabsGroup {
     /// window.
     pub sizable: Option<SizablePropsGroup>,
     pub children: Children,
+    pub id: DOMId,
 }
 
 impl PlainTextComponentResult for TabsGroup {
@@ -74,6 +88,22 @@ impl PlainTextComponentResult for TabsGroup {
 impl MdxComponentResult for TabsGroup {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         self.to_jsx_component(res)
+    }
+}
+
+impl HtmlJsComponentResult for TabsGroup {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let group_id = self.id.to_string();
+        let group = TabGroupHtmlTemplate { children: self.children.render(res)?,
+                                           tab_group_id: group_id.clone(),
+                                           tabs: self.get_tabs(&group_id, res)? };
+
+        group.render().map_err(|e| {
+            eprintln!("Error: {:#?}", e);
+            ErrMode::Cut(
+                ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Compiler error", "Well this is new, usually the errors are on the parser side of things. If this continues, please file an issue on [Github](https://github.com/flusterIO) so I can resolve it immediately."))
+                )
+        })
     }
 }
 
@@ -89,18 +119,56 @@ impl ConundrumComponentResult for TabsGroup {
     }
 }
 
+impl TabsGroup {
+    pub fn get_tabs(&self, group_id: &str, res: &mut ParseState) -> ConundrumModalResult<Vec<TabButtonHtmlTemplate>> {
+        let mut children = Vec::new();
+        for (i, x) in self.children.0.iter().enumerate() {
+            if let Some(tab) = match x {
+                ParsedElement::ReactComponentWithChildren(n) => match &n.component {
+                    ConundrumComponentType::Tab(t) => {
+                        Some(TabButtonHtmlTemplate { btn_children:
+                                                         t.label
+                                                          .to_children(res.modifiers.clone(), res.ui_params.clone())?
+                                                          .render(res)?,
+                                                     tab_group_id: group_id.to_string(),
+                                                     idx: i as u8,
+                                                     initial: t.initial.unwrap_or(ConundrumBoolean(false)),
+                                                     tab_children: TabContentTemplate { idx: i as u8,
+                                                                                        group_id:
+                                                                                            group_id.to_string(),
+                                                                                        content: t.children
+                                                                                                  .render(res)? } })
+                    }
+                    _ => None,
+                },
+                _ => None,
+            } {
+                children.push(tab);
+            } else {
+                eprintln!("Found a component that is not a tab. Should definitely notify the user.")
+            }
+        }
+        Ok(children)
+    }
+}
+
 impl ConundrumComponent for TabsGroup {
     fn get_component_id() -> AnyComponentName {
         AnyComponentName::UserEmbedded(EmbeddableComponentName::Tabs)
     }
 
+    /// Pass in state here so it can be modified, and then clean up this file
+    /// before rendering shit directly to html all day tommorow. The
+    /// feedback loop is pretty tight so it should be a good experience.
     fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self> {
         let emphasis = Emphasis::from_jsx_props(&props, "").ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
         let children = Children(children.unwrap_or_default());
+        let id = DOMId::new("my-temp-broken-id".to_string());
         Ok(TabsGroup { emphasis,
                        sizable,
-                       children })
+                       children,
+                       id })
     }
 }
 

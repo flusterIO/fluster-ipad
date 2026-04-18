@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use typeshare::typeshare;
 use uniffi::Enum;
 
 use crate::{
@@ -88,6 +89,15 @@ pub enum ConundrumModifier {
     TargetHtmlJs,
 }
 
+#[typeshare]
+#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Default, Clone)]
+pub enum ConundrumCompileTarget {
+    Jsx,
+    #[default]
+    Html,
+    Markdown,
+}
+
 #[derive(Debug, Default, Clone)]
 pub struct ParseState {
     pub data: MdxParsingResult,
@@ -106,6 +116,7 @@ pub struct ParseState {
     pub valid_footnote_indices: Vec<u32>,
     pub ui_params: UIParams,
     pub dom: DomData,
+    pub compile_target: ConundrumCompileTarget,
 }
 
 impl ParseState {

@@ -9,11 +9,11 @@ use crate::{
 ///
 /// ```askama
 /// <div class="cdrm-codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative">   {% if let Some(title) = title %}
-///   <div class="my-6 px-2 py-0 text-fd-card-foreground/80 text-sm w-full grid grid-cols-[auto_1fr] gap-x-2">
+///   <div class="my-2 px-2 py-0 text-sm w-full grid grid-cols-[auto_1fr] gap-x-2">
 ///   <div style="color:{{file_icon.color}};">
 ///   {{file_icon.icon}}
 ///   </div>
-///   <div>
+///   <div class="text-fd-card-foreground/70">
 ///   {{title}}
 ///   </div>
 ///   </div> {% endif %}
@@ -26,7 +26,7 @@ use crate::{
 ///    >
 ///    {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::Copy}}
 ///    </div>
-///    <div class="[&>pre]:p-2 [&>code]:rounded-bl [&>code]:rounded-br">
+///    <div class="[&>pre]:p-2 [&>code]:rounded-bl [&>code]:rounded-br [&>pre]:my-0">
 ///    {{code | safe}}
 ///    </div>
 ///    </div>

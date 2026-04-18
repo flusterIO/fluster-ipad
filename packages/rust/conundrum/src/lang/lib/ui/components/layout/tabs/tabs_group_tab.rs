@@ -22,7 +22,9 @@ use crate::{
     output::general::component_constants::{
         any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
-    parsers::conundrum::logic::{object::object::ConundrumObject, string::conundrum_string::ConundrumString},
+    parsers::conundrum::logic::{
+        bool::boolean::ConundrumBoolean, object::object::ConundrumObject, string::conundrum_string::ConundrumString,
+    },
 };
 
 #[typeshare::typeshare]
@@ -35,6 +37,7 @@ pub struct Tab {
     /// just set to the label by default.
     pub id: Option<ConundrumString>,
     pub children: Children,
+    pub initial: Option<ConundrumBoolean>,
 }
 
 impl PlainTextComponentResult for Tab {
@@ -69,9 +72,11 @@ impl ConundrumComponent for Tab {
     fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self> {
         let label = ConundrumString::from_jsx_props(&props, "label").map_err(|e| e.cut())?;
         let id = ConundrumString::from_jsx_props(&props, "id").ok();
+        let initial = ConundrumBoolean::from_jsx_props(&props, "initial").ok();
         let children = Children(children.unwrap_or_default());
         Ok(Tab { label,
                  id,
+                 initial,
                  children })
     }
 }
