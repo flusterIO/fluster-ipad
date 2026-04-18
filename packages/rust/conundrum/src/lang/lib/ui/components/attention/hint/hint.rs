@@ -12,7 +12,7 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
                 fluster_component_result::ConundrumComponentResult,
@@ -88,9 +88,9 @@ impl ConundrumComponentResult for Hint {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
             self.to_inline_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::PreferMarkdownSyntax) {
+        } else if res.compile_target == ConundrumCompileTarget::Markdown {
             self.to_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        } else if res.compile_target == ConundrumCompileTarget::PlainText {
             self.to_plain_text(res)
         } else {
             self.to_mdx_component(res)

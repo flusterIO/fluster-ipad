@@ -33,7 +33,7 @@ impl JsxPropertyParser for JsxNumberPropertyResult {
 
         let state = input.state.borrow();
 
-        let mut new_input = get_conundrum_input(&bracketed_content, state.modifiers.clone(), state.ui_params.clone());
+        let mut new_input = get_conundrum_input(&bracketed_content, state.clone());
 
         let n = white_space_delimited(JavascriptNumberResult::parse_javascript).parse_next(&mut new_input)
                                                                                .inspect_err(|_| {

@@ -48,6 +48,7 @@ pub struct ParseConundrumOptions {
     pub hide_components: Vec<EmbeddableComponentName>,
     pub ui_params: UIParams,
     pub target: ConundrumCompileTarget,
+    pub trusted: bool
 }
 
 #[allow(clippy::derivable_impls)]
@@ -58,7 +59,8 @@ impl Default for ParseConundrumOptions {
                modifiers: vec![],
                hide_components: vec![],
                ui_params: UIParams::default(),
-               target: ConundrumCompileTarget::Html }
+               target: ConundrumCompileTarget::Html,
+        trusted: false}
     }
 }
 
@@ -68,14 +70,16 @@ impl ParseConundrumOptions {
                modifiers: Vec<ConundrumModifier>,
                hide_components: Vec<EmbeddableComponentName>,
                ui_params: UIParams,
-               target: ConundrumCompileTarget)
+               target: ConundrumCompileTarget,
+               trusted: bool)
                -> Self {
         ParseConundrumOptions { note_id,
                                 content,
                                 modifiers,
                                 hide_components,
                                 ui_params,
-                                target }
+                                target,
+        trusted }
     }
 }
 
@@ -92,7 +96,8 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
                                                    ui_params: opts.ui_params.clone(),
                                                    dom: DomData { id_count: 0 },
                                                    compile_target: ConundrumCompileTarget::Html,
-                                                   slugger: Slugger::default() }));
+                                                   slugger: Slugger::default(),
+    trusted: opts.trusted}));
 
     let mut stateful_input = Stateful { input: opts.content.as_str(),
                                         state };

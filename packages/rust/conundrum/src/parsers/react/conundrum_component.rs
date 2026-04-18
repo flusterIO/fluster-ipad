@@ -18,7 +18,8 @@ use crate::{
         runtime::{
             state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
             traits::{
-                fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
+                fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
+                markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -67,6 +68,27 @@ impl ConundrumComponentType {
             ConundrumComponentType::Hr(_) => true,
             ConundrumComponentType::EmojiDocsDemo(_) => true,
             ConundrumComponentType::Toc(_) => true,
+        }
+    }
+}
+
+impl HtmlJsComponentResult for ConundrumComponentType {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        match self {
+            ConundrumComponentType::Card(s) => s.to_plain_text(res),
+            ConundrumComponentType::Admonition(s) => s.to_plain_text(res),
+            ConundrumComponentType::Hint(s) => s.to_plain_text(res),
+            ConundrumComponentType::Ul(s) => s.to_plain_text(res),
+            ConundrumComponentType::Hl(s) => s.to_plain_text(res),
+            ConundrumComponentType::Container(s) => s.to_plain_text(res),
+            ConundrumComponentType::Tabs(s) => s.to_plain_text(res),
+            ConundrumComponentType::Tab(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::EqRef(s) => s.to_plain_text(res),
+            ConundrumComponentType::Grid(s) => s.to_plain_text(res),
+            ConundrumComponentType::Emoji(s) => s.to_plain_text(res),
+            ConundrumComponentType::Hr(s) => s.to_plain_text(res),
+            ConundrumComponentType::EmojiDocsDemo(s) => s.to_plain_text(res),
+            ConundrumComponentType::Toc(s) => s.to_plain_text(res),
         }
     }
 }

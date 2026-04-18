@@ -10,7 +10,7 @@ use crate::{
     lang::runtime::{
         state::{
             conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumModifier, ParseState},
+            parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
         },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
@@ -37,7 +37,7 @@ impl PlainTextComponentResult for ParsedCitation {
 
 impl ConundrumComponentResult for ParsedCitation {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        if res.compile_target == ConundrumCompileTarget::PlainText {
             self.to_plain_text(res)
         } else {
             self.to_mdx_component(res)

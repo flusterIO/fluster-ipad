@@ -2,7 +2,7 @@ use std::fs;
 
 use conundrum::lang::runtime::{
     run_conundrum::{ParseConundrumOptions, run_conundrum},
-    state::ui_params::UIParams,
+    state::{parse_state::ConundrumCompileTarget, ui_params::UIParams},
 };
 
 /// Definitely moving this to the Conundrum cli, but need this for generating
@@ -14,6 +14,7 @@ pub async fn parse_conundrum(file_path: &str, output: &str) -> std::io::Result<(
                                             note_id: None,
                                             modifiers: Vec::new(),
                                             ui_params: UIParams::default(),
+                                            target: ConundrumCompileTarget::Html,
                                             hide_components: Vec::new()
     }).await.expect("Returns a vald result when a valid input was provided.");
     println!("Content: {}", p.content);

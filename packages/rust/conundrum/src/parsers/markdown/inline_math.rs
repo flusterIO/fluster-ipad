@@ -9,13 +9,12 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::ParseState,
             },
             traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::ConundrumInput, html_js_component_result::HtmlJsComponentResult,
+                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -54,24 +53,9 @@ impl JsxComponentResult for InlineMathResult {
 }
 
 impl HtmlJsComponentResult for InlineMathResult {
-    fn to_html_js_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<span className=\"conundrum-math conundrum-math-inline\">${}$</span>", self.body.0))
-    }
-}
-
-impl ConundrumComponentResult for InlineMathResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
-            self.to_plain_text(res)
-        } else if res.is_markdown_or_search_or_ai() {
-            self.to_markdown(res)
-        } else if res.targets_jsx() {
-            self.to_jsx_component(res)
-        } else if res.targets_html_js() {
-            self.to_html_js_component(res)
-        } else {
-            self.to_mdx_component(res)
-        }
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let math_string = self.body.to_math(false, res.trusted)?;
+        Ok(format!("<span className=\"conundrum-math conundrum-math-inline\">{}</span>", math_string))
     }
 }
 

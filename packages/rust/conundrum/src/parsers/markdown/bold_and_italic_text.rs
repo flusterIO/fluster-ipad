@@ -53,11 +53,9 @@ impl PlainTextComponentResult for MarkdownBoldAndItalicTextResult {
 
 impl ConundrumComponentResult for MarkdownBoldAndItalicTextResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText, ConundrumModifier::ForSearchInput]) {
+        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput]) {
             self.to_plain_text(res)
-        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                                     ConundrumModifier::PreferInlineMarkdownSyntax,])
-        {
+        } else if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
             self.to_markdown(res)
         } else {
             self.to_mdx_component(res)

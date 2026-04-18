@@ -3,7 +3,7 @@ use std::fmt::Display;
 use askama::FastWritable;
 use serde::Serialize;
 
-// BUG: Maybe the problem?
+#[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct DOMId(String);
 

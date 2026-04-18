@@ -12,7 +12,7 @@ use crate::{
         runtime::{
             state::{
                 conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
                 fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
@@ -68,11 +68,9 @@ impl PlainTextComponentResult for Underline {
 
 impl ConundrumComponentResult for Underline {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                              ConundrumModifier::PreferInlineMarkdownSyntax])
-        {
+        if res.targets_markdown() {
             self.to_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        } else if res.compile_target == ConundrumCompileTarget::PlainText {
             self.to_plain_text(res)
         } else {
             self.to_mdx_component(res)

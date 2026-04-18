@@ -14,7 +14,7 @@ use crate::{
             parse_conundrum_string::parse_elements,
             state::{
                 conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ParseState},
             },
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
@@ -26,8 +26,7 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
     parsers::parser_trait::ConundrumParser,
 };
@@ -46,7 +45,7 @@ impl PlainTextComponentResult for HrWithChildrenResult {
 
 impl ConundrumComponentResult for HrWithChildrenResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        if res.compile_target == ConundrumCompileTarget::PlainText {
             self.to_plain_text(res)
         } else {
             self.to_mdx_component(res)
@@ -82,7 +81,7 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
 
         let state = input.state.borrow_mut();
 
-        let mut new_input = get_conundrum_input(res, state.modifiers.clone(), state.ui_params.clone());
+        let mut new_input = get_conundrum_input(res, state.clone());
         let elements = parse_elements(&mut new_input)?;
         // WITH_WIFI: Figure out how to call this without throwing reference errors.
         // apply_nested_parser_state(input, &new_input);

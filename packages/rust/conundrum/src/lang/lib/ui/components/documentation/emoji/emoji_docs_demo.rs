@@ -10,7 +10,7 @@ use crate::{
             component_trait::ConundrumComponent, documentation::emoji::emoji_data::EmojiData,
         },
         runtime::{
-            state::parse_state::ConundrumModifier,
+            state::parse_state::{ConundrumCompileTarget, ConundrumModifier},
             traits::{
                 fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
                 markdown_component_result::MarkdownComponentResult,
@@ -85,9 +85,9 @@ impl ConundrumComponentResult for EmojiDocsDemo {
                               res: &mut crate::lang::runtime::state::parse_state::ParseState)
                               -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String>
     {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        if res.compile_target == ConundrumCompileTarget::PlainText {
             self.to_plain_text(res)
-        } else if res.is_markdown() {
+        } else if res.targets_markdown() {
             self.to_markdown(res)
         } else {
             self.to_jsx_component(res)

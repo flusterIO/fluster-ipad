@@ -15,8 +15,8 @@ use crate::{
             },
             traits::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -27,6 +27,13 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownItalicTextResult {
     pub children: Children,
+}
+
+impl HtmlJsComponentResult for MarkdownItalicTextResult {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let children_string = self.children.render(res)?;
+        Ok(format!("<div class=\"italic\">{}</div>", children_string))
+    }
 }
 
 impl MarkdownComponentResult for MarkdownItalicTextResult {
@@ -44,20 +51,6 @@ impl PlainTextComponentResult for MarkdownItalicTextResult {
 impl MdxComponentResult for MarkdownItalicTextResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         Ok(format!("<span className=\"italic\">{}</span>", self.children.render(res)?))
-    }
-}
-
-impl ConundrumComponentResult for MarkdownItalicTextResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText, ConundrumModifier::ForSearchInput]) {
-            self.to_plain_text(res)
-        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                                     ConundrumModifier::PreferInlineMarkdownSyntax,])
-        {
-            self.to_markdown(res)
-        } else {
-            self.to_mdx_component(res)
-        }
     }
 }
 

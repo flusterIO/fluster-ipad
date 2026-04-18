@@ -22,8 +22,7 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
     parsers::{
         as_char_extensions::is_space_or_newline,
@@ -116,12 +115,9 @@ impl ConundrumComponentResult for EmojiResult {
     fn to_conundrum_component(&self,
                               res: &mut crate::lang::runtime::state::parse_state::ParseState)
                               -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput,
-                                              ConundrumModifier::ForcePlainText,
-                                              ConundrumModifier::HideEmojis])
-        {
+        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput, ConundrumModifier::HideEmojis]) {
             self.to_plain_text(res)
-        } else if res.is_markdown() {
+        } else if res.targets_markdown() {
             self.to_markdown(res)
         } else {
             self.to_jsx_component(res)

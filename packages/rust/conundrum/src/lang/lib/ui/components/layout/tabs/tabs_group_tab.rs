@@ -10,7 +10,7 @@ use crate::{
         runtime::{
             state::{
                 conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ParseState},
             },
             traits::{
                 fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
@@ -52,11 +52,17 @@ impl MdxComponentResult for Tab {
     }
 }
 
+// impl HtmlJsComponentResult for Tab {
+//     fn to_html_js_component(&self, res: &mut ParseState) ->
+// ConundrumModalResult<String> {         TabButtonHtmlTemplate
+//     }
+// }
+
 impl ConundrumComponentResult for Tab {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.is_markdown() {
+        if res.targets_markdown() {
             self.to_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        } else if res.compile_target == ConundrumCompileTarget::PlainText {
             self.to_plain_text(res)
         } else {
             self.to_mdx_component(res)
@@ -83,7 +89,7 @@ impl ConundrumComponent for Tab {
 
 impl JsxComponentResult for Tab {
     fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let label_children = self.label.to_children(res.modifiers.clone(), res.ui_params.clone())?;
+        let label_children = self.label.to_children(res.clone())?;
         let j = label_children.to_jsx_prop("label", res)?;
         let mut props = vec![j];
         let label_res = label_children.to_jsx_prop_as_string("labelString", res)?;

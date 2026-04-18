@@ -15,7 +15,7 @@ use crate::{
         runtime::{
             state::{
                 conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
                 fluster_component_result::ConundrumComponentResult,
@@ -67,8 +67,7 @@ pub struct Admonition {
 
 impl JsxComponentResult for Admonition {
     fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title_string =
-            self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.to_jsx_prop("title", res)?;
+        let title_string = self.title.to_children(res.clone())?.to_jsx_prop("title", res)?;
         let mut props = vec![title_string];
         if let Some(emphasis) = &self.emphasis {
             props.push(emphasis.to_string())
@@ -99,7 +98,7 @@ impl MarkdownComponentResult for Admonition {
                    res: &mut crate::lang::runtime::state::parse_state::ParseState)
                    -> ConundrumModalResult<String> {
         let depth = self.markdown_title_depth.unwrap_or(HeadingDepth(ConundrumInt(5)));
-        let title_string = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
+        let title_string = self.title.to_children(res.clone())?.render(res)?;
         Ok(format!(
                    r#"{} {}
 
@@ -116,7 +115,7 @@ impl InlineMarkdownComponentResult for Admonition {
                           res: &mut crate::lang::runtime::state::parse_state::ParseState)
                           -> ConundrumModalResult<String> {
         self.children.render_bypassed(res);
-        let title_string = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
+        let title_string = self.title.to_children(res.clone())?.render(res)?;
         Ok(title_string)
     }
 }
@@ -125,7 +124,7 @@ impl PlainTextComponentResult for Admonition {
     fn to_plain_text(&self,
                      res: &mut crate::lang::runtime::state::parse_state::ParseState)
                      -> ConundrumModalResult<String> {
-        let title_string = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
+        let title_string = self.title.to_children(res.clone())?.render(res)?;
         Ok(format!(
                    r#"{}
 {}"#,
@@ -141,10 +140,10 @@ impl ConundrumComponentResult for Admonition {
                               -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
             self.to_inline_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::PreferMarkdownSyntax) {
+        } else if res.targets_markdown() {
             self.to_markdown(res)
-        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText,
-                                                     ConundrumModifier::ForSearchInput])
+        } else if res.contains_modifier_or_matches_target(vec![ConundrumModifier::ForSearchInput],
+                                                          vec![ConundrumCompileTarget::PlainText])
         {
             self.to_plain_text(res)
         } else {

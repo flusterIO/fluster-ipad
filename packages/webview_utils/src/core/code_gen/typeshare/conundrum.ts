@@ -47,6 +47,8 @@ export type ConundrumFloat = number;
 
 export type ConundrumString = string;
 
+export type DOMId = string;
+
 /**
  * A simple utility around the heading depth, 1-6 just to add some convenience
  * methods.
@@ -876,6 +878,12 @@ export interface UIParams {
 	syntax_theme?: SupportedCodeBlockTheme;
 }
 
+export enum ConundrumCompileTarget {
+	Jsx = "Jsx",
+	Html = "Html",
+	Markdown = "Markdown",
+}
+
 /** This is the core 'input' for Conundrum. */
 export interface ParseConundrumOptions {
 	/**
@@ -904,6 +912,7 @@ export interface ParseConundrumOptions {
 	 */
 	hide_components: EmbeddableComponentName[];
 	ui_params: UIParams;
+	target: ConundrumCompileTarget;
 }
 
 export interface ParsedCitation {
@@ -990,6 +999,7 @@ export interface Tab {
 	 */
 	id?: ConundrumString;
 	children: Children;
+	initial?: ConundrumBoolean;
 }
 
 export interface TableOfContents {
@@ -1035,6 +1045,7 @@ export interface TabsGroup {
 	 */
 	sizable?: SizablePropsGroup;
 	children: Children;
+	id: DOMId;
 }
 
 export interface TitleGroup {

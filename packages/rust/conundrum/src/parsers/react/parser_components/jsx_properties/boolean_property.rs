@@ -30,8 +30,7 @@ pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ConundrumModal
                                                                                           input.input.reset(&start);
                                                                                       })?;
     let state = input.state.borrow();
-    let mut wrapped_content_input =
-        get_conundrum_input(&wrapped_content, state.modifiers.clone(), state.ui_params.clone());
+    let mut wrapped_content_input = get_conundrum_input(&wrapped_content, state.clone());
     let value =
         ConundrumBoolean::parse_javascript.map(ConundrumLogicToken::Bool).parse_next(&mut wrapped_content_input)?;
 

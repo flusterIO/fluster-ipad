@@ -21,44 +21,15 @@ use crate::{
 #[typeshare::typeshare]
 #[derive(Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy)]
 pub enum ConundrumModifier {
-    /// This might as well be called `TargetMarkdown`, but this was created
-    /// before the idea of 'targets' came to be merged with 'modifiers' and I'm
-    /// in too much of a hurry to change it now.
-    ///
-    /// As with the `.PreferInlineMarkdownSyntax` flag, many components allow
-    /// you to customize the bahavior of each component:
-    ///
-    /// ```jsx
-    /// <Card
-    ///     title="My title"
-    ///     /// Set the heading title depth.
-    ///     markdownHeading={3}
-    /// >
-    /// ...
-    /// </Card>
-    /// ```
-    PreferMarkdownSyntax,
-    /// Hide the emojis completely for platforms that don't support them.
     HideEmojis,
-    /// Curretly does pretty much the same thing as .PreferMarkdownSyntax, but
-    /// once the markdown parser has been completely migrated this will stop
-    /// things like wrapping the outermost block in a paragraph.
+    /// The goal with this flag is to make **some** components collapsable to be
+    /// inline, even when they traditionally are not. This will likely be
+    /// buggy, producing some good output in some cases but some
+    /// questionable output in others.
     ///
-    /// The goal with this is to behave much like SwiftUI's markdown support,
-    /// with the ability to render only inline markdown for things like
-    /// titles where a full `Admonition` wouldn't make sense.
-    ///
-    /// Keep in mind that many components allow you to customize the
-    /// **markdown** output as well as the html/js output. You can do the
-    /// following:
-    ///
-    /// ```jsx
-    /// <Hl markdown="italic" highlight>My text</Hl>
-    /// ```
+    /// As the list of component properties grows, this output will become
+    /// customizable directly in your note.
     PreferInlineMarkdownSyntax,
-    /// Useful for search related features, being able to match text without
-    /// markdown syntax interfering. Not super useful for much else.
-    ForcePlainText,
     /// This is really only useful for when your environment can't support any
     /// other output format.
     DecoratedPlainText,
@@ -71,31 +42,17 @@ pub enum ConundrumModifier {
     ForSearchInput,
     /// Don't touch the code blocks, just return them exactly as is.
     CodeBlocksAsIs,
-    /// Leave the markdown output mostly alone and render to mdx instead of jsx.
-    /// This is a super easy gateway for developers to build around
-    /// Conundrum as the compile target is **super** forgiving.
-    ///
-    /// This is the default target for now, but the current goal is to finish
-    /// rest of the parser, which would make the dependence on mdx obsolete.
-    TargetMdx,
-    /// This is the goal, but this is still _super_ buggy and should in no way
-    /// be used in any application that you expect someone to actually use,
-    /// but we'll get there...
-    TargetJsx,
-    /// This is even more of a futuristic goal, but for ultimate performance we
-    /// can even leave behind React. There are other priorities for now, but
-    /// this is something that will naturally come together as the framework
-    /// progresses.
-    TargetHtmlJs,
 }
 
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Default, Clone)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Default, Clone, Eq, PartialEq)]
 pub enum ConundrumCompileTarget {
     Jsx,
     #[default]
     Html,
     Markdown,
+    PlainText,
+    Mdx,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -117,6 +74,7 @@ pub struct ParseState {
     pub ui_params: UIParams,
     pub dom: DomData,
     pub compile_target: ConundrumCompileTarget,
+    pub trusted: bool,
 }
 
 impl ParseState {
@@ -149,52 +107,81 @@ impl ParseState {
         false
     }
 
+    pub fn targets_one_of(&self, targets: Vec<ConundrumCompileTarget>) -> bool {
+        for t in targets {
+            if self.compile_target == t {
+                return true;
+            }
+        }
+        false
+    }
+
     /// A simple utility wrapper around the `TargetXYZ` flags.
     pub fn targets_jsx(&self) -> bool {
-        self.contains_modifier(&ConundrumModifier::TargetJsx)
+        self.compile_target == ConundrumCompileTarget::Jsx
     }
 
     /// A simple utility wrapper around the `TargetXYZ` flags.
     pub fn targets_html_js(&self) -> bool {
-        self.contains_modifier(&ConundrumModifier::TargetHtmlJs)
+        self.compile_target == ConundrumCompileTarget::Html
     }
 
     /// A simple utility wrapper around the `TargetXYZ` flags.
     pub fn targets_mdx(&self) -> bool {
-        self.contains_modifier(&ConundrumModifier::TargetMdx)
+        self.compile_target == ConundrumCompileTarget::Mdx
     }
 
     /// Will be `true` for either inline or normal markdown.
-    pub fn is_markdown(&self) -> bool {
-        self.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                            ConundrumModifier::PreferInlineMarkdownSyntax])
+    pub fn targets_markdown(&self) -> bool {
+        self.compile_target == ConundrumCompileTarget::Markdown
     }
 
     /// Will be `true` when the flags indicate that the output is either for
     /// markdown, for search input, or to be consumed by AI.
     pub fn is_markdown_or_search_or_ai(&self) -> bool {
-        self.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                            ConundrumModifier::PreferInlineMarkdownSyntax,
-                                            ConundrumModifier::ForAIInput,
-                                            ConundrumModifier::ForSearchInput])
+        if self.targets_markdown() {
+            true
+        } else {
+            self.contains_one_of_modifiers(vec![ConundrumModifier::PreferInlineMarkdownSyntax,
+                                                ConundrumModifier::ForAIInput,
+                                                ConundrumModifier::ForSearchInput])
+        }
     }
 
     /// Will be `true` when the flags indicate that the output is either for
     /// markdown or for plain text.
     pub fn is_markdown_or_plain_text(&self) -> bool {
-        self.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                            ConundrumModifier::PreferInlineMarkdownSyntax,
-                                            ConundrumModifier::ForcePlainText])
+        if self.targets_markdown() {
+            true
+        } else {
+            self.targets_one_of(vec![ConundrumCompileTarget::Markdown, ConundrumCompileTarget::PlainText])
+        }
     }
 
     /// A lazy utility to check if the modifiers list indicates that the output
     /// is targeting a plain text environment.
     pub fn is_plain_text(&self) -> bool {
-        self.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText])
+        self.compile_target == ConundrumCompileTarget::PlainText
     }
 
     pub fn contains_modifier(&self, modifier: &ConundrumModifier) -> bool {
         self.modifiers.iter().any(|x| x == modifier)
+    }
+
+    pub fn contains_modifier_or_matches_target(&self,
+                                               modifiers: Vec<ConundrumModifier>,
+                                               targets: Vec<ConundrumCompileTarget>)
+                                               -> bool {
+        if self.contains_one_of_modifiers(modifiers) {
+            return true;
+        } else {
+            for t in targets {
+                if t == self.compile_target {
+                    return true;
+                }
+            }
+        }
+        false
     }
 
     pub fn should_ignore_parser(&self, id: &ParserId) -> bool {

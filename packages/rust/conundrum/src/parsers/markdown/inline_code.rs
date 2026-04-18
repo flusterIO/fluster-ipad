@@ -9,10 +9,10 @@ use winnow::{
 
 use crate::{
     lang::runtime::{
-        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumModifier},
+        state::conundrum_error_variant::ConundrumModalResult,
         traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+            conundrum_input::ConundrumInput, markdown_component_result::MarkdownComponentResult,
+            mdx_component_result::MdxComponentResult,
         },
     },
     parsers::{markdown::subtypes::code_block_language::CodeBlockLanguage, parser_trait::ConundrumParser},
@@ -40,20 +40,6 @@ impl MdxComponentResult for InlineCodeResult {
         match &self.lang {
             CodeBlockLanguage::DefaultLanguage => Ok(format!("`{}`", self.content)),
             CodeBlockLanguage::UserProvided(s) => Ok(format!("`{}{{:{}}}`", self.content, s)),
-        }
-    }
-}
-
-impl ConundrumComponentResult for InlineCodeResult {
-    fn to_conundrum_component(&self,
-                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
-                              -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                              ConundrumModifier::PreferInlineMarkdownSyntax])
-        {
-            self.to_markdown(res)
-        } else {
-            self.to_mdx_component(res)
         }
     }
 }

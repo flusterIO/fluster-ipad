@@ -4,13 +4,10 @@ use winnow::{Parser, combinator::delimited, token::take_while};
 
 use crate::{
     lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumModifier, ParseState},
-        },
+        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
         traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+            conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
         },
     },
     output::{
@@ -30,16 +27,6 @@ pub struct MarkdownLinkResult {
 impl PlainTextComponentResult for MarkdownLinkResult {
     fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
         Ok(self.text.clone())
-    }
-}
-
-impl ConundrumComponentResult for MarkdownLinkResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
-            self.to_plain_text(res)
-        } else {
-            self.to_mdx_component(res)
-        }
     }
 }
 

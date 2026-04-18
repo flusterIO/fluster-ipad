@@ -19,7 +19,7 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
                 ui_params::UIParams,
             },
             traits::{
@@ -67,7 +67,7 @@ pub struct ParsedCodeBlock {
 impl ParsedCodeBlock {
     pub fn get_meta_data(&self) -> Option<ConundrumObject> {
         if let Some(meta) = &self.meta_data {
-            let input = &mut get_conundrum_input(meta.as_str(), vec![], UIParams::default());
+            let input = &mut get_conundrum_input(meta.as_str(), ParseState::default());
             ConundrumObject::from_single_line_property_string_parser(input).ok()
         } else {
             None
@@ -158,9 +158,9 @@ impl ConundrumComponentResult for ParsedCodeBlock {
             _ => {
                 if res.data.ignore_all_parsers {
                     Ok(self.full_match.clone())
-                } else if res.is_markdown() {
+                } else if res.targets_markdown() {
                     self.to_markdown(res)
-                } else if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+                } else if res.compile_target == ConundrumCompileTarget::PlainText {
                     self.to_plain_text(res)
                 } else if res.contains_modifier(&ConundrumModifier::CodeBlocksAsIs) {
                     Ok(self.full_match.clone())

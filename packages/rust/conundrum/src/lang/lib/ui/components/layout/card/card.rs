@@ -11,7 +11,7 @@ use crate::{
         runtime::{
             state::{
                 conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
                 fluster_component_result::ConundrumComponentResult,
@@ -54,11 +54,10 @@ pub struct Card {
 
 impl JsxComponentResult for Card {
     fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title_string =
-            self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.to_jsx_fragment_string(res)?;
+        let title_string = self.title.to_children(res.clone())?.to_jsx_fragment_string(res)?;
 
         let subtitle_string = match &self.subtitle {
-            Some(s) => s.to_children(res.modifiers.clone(), res.ui_params.clone())?.to_jsx_fragment_string(res)?,
+            Some(s) => s.to_children(res.clone())?.to_jsx_fragment_string(res)?,
             None => "".to_string(),
         };
 
@@ -83,7 +82,7 @@ impl InlineMarkdownComponentResult for Card {
 
 impl PlainTextComponentResult for Card {
     fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
+        let title = self.title.to_children(res.clone())?.render(res)?;
         let children = self.children.render(res)?;
 
         Ok(format!(
@@ -96,12 +95,11 @@ impl PlainTextComponentResult for Card {
 
 impl MarkdownComponentResult for Card {
     fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title_string = self.title.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
+        let title_string = self.title.to_children(res.clone())?.render(res)?;
 
         let subtitle_string = match &self.subtitle {
             Some(s) => {
-                let subtitle_children_string =
-                    s.to_children(res.modifiers.clone(), res.ui_params.clone())?.render(res)?;
+                let subtitle_children_string = s.to_children(res.clone())?.render(res)?;
                 format!("\n\n> {}", subtitle_children_string)
             }
             None => "".to_string(),
@@ -127,12 +125,10 @@ impl ConundrumComponentResult for Card {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
             self.to_inline_markdown(res)
-        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                                     ConundrumModifier::ForAIInput])
-        {
+        } else if res.contains_modifier(&ConundrumModifier::ForAIInput) {
             self.to_markdown(res)
-        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText,
-                                                     ConundrumModifier::ForSearchInput])
+        } else if res.contains_modifier_or_matches_target(vec![ConundrumModifier::ForSearchInput],
+                                                          vec![ConundrumCompileTarget::PlainText])
         {
             self.to_plain_text(res)
         } else {

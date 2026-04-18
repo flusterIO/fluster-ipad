@@ -14,13 +14,9 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
-                fluster_component_result::ConundrumComponentResult,
                 inline_markdown_component_result::InlineMarkdownComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
@@ -111,20 +107,6 @@ impl PlainTextComponentResult for MarkdownHeadingResult {
     }
 }
 
-impl ConundrumComponentResult for MarkdownHeadingResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
-            self.to_plain_text(res)
-        } else if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
-            self.to_inline_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::PreferMarkdownSyntax) {
-            self.to_markdown(res)
-        } else {
-            self.to_mdx_component(res)
-        }
-    }
-}
-
 impl MdxComponentResult for MarkdownHeadingResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         let children_string = compile_elements(&self.children, res)?;
@@ -165,7 +147,7 @@ pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumModalResult
 
     let state = input.state.borrow();
 
-    let mut new_input = get_conundrum_input(content, state.modifiers.clone(), state.ui_params.clone());
+    let mut new_input = get_conundrum_input(content, state.clone());
     let children = parse_elements(&mut new_input)?;
     Ok(children)
 }
@@ -207,8 +189,7 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
 
         let mut state = input.state.borrow_mut();
 
-        let mut new_input =
-            get_conundrum_input(content_string.as_str(), state.modifiers.clone(), state.ui_params.clone());
+        let mut new_input = get_conundrum_input(content_string.as_str(), state.clone());
         let children = parse_elements(&mut new_input)?;
 
         let heading = MarkdownHeadingResult { depth: level.len() as u16,

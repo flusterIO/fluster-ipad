@@ -80,7 +80,7 @@ impl Children {
 
 impl FromWithState<&str> for Children {
     fn from_with_state(value: &str, state: &mut ParseState) -> ConundrumModalResult<Self> {
-        let mut input = &mut get_conundrum_input(value, state.modifiers.clone(), state.ui_params.clone());
+        let mut input = &mut get_conundrum_input(value, state.clone());
         let res = parse_elements(&mut input)?;
         Ok(Children(res))
     }

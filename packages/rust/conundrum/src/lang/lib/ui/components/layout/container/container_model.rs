@@ -77,14 +77,9 @@ impl JsxComponentResult for UtilityContainer {
 
 impl ConundrumComponentResult for UtilityContainer {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                              ConundrumModifier::PreferInlineMarkdownSyntax])
-        {
+        if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
             self.to_markdown(res)
-        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText,
-                                                     ConundrumModifier::ForSearchInput,
-                                                     ConundrumModifier::ForSearchInput])
-        {
+        } else if res.contains_modifier(&ConundrumModifier::ForSearchInput) {
             self.to_plain_text(res)
         } else {
             self.to_jsx_component(res)

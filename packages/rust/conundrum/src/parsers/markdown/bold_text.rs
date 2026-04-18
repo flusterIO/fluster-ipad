@@ -11,14 +11,10 @@ use crate::{
     lang::{
         lib::{shared::traits::from_with_state::FromWithState, ui::ui_types::children::Children},
         runtime::{
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
             traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::ConundrumInput, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -46,20 +42,6 @@ impl MdxComponentResult for MarkdownBoldTextResult {
 impl PlainTextComponentResult for MarkdownBoldTextResult {
     fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         self.children.render(res)
-    }
-}
-
-impl ConundrumComponentResult for MarkdownBoldTextResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForcePlainText, ConundrumModifier::ForSearchInput]) {
-            self.to_plain_text(res)
-        } else if res.contains_one_of_modifiers(vec![ConundrumModifier::PreferMarkdownSyntax,
-                                                     ConundrumModifier::PreferInlineMarkdownSyntax,])
-        {
-            self.to_markdown(res)
-        } else {
-            self.to_mdx_component(res)
-        }
     }
 }
 

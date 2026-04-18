@@ -14,7 +14,7 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
@@ -48,7 +48,7 @@ impl PlainTextComponentResult for BlockMathResult {
 
 impl ConundrumComponentResult for BlockMathResult {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        if res.compile_target == ConundrumCompileTarget::PlainText {
             self.to_plain_text(res)
         } else if res.is_markdown_or_search_or_ai() {
             self.to_markdown(res)
@@ -80,7 +80,7 @@ impl JsxComponentResult for BlockMathResult {
                                ConundrumError::from_msg_and_details("Parser error", "Could not successfully serialize the data provided to a math equation.")
                        ))
                    })?
-                   ))
+           ))
     }
 }
 

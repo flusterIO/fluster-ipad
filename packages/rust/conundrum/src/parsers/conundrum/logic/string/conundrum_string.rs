@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use katex::{KatexContext, Settings, TrustSetting, render_to_string};
+use rssn::prelude::faer::traits::ByRef;
 use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
@@ -60,13 +62,30 @@ impl ConundrumString {
         ConundrumString(content.to_string())
     }
 
-    pub fn to_children(&self,
-                       modifiers: Vec<ConundrumModifier>,
-                       ui_params: UIParams)
-                       -> ConundrumModalResult<Children> {
-        let mut state = get_conundrum_input(&self.0, modifiers, ui_params);
-        let res = parse_elements(&mut state)?;
+    pub fn to_children(&self, state: ParseState) -> ConundrumModalResult<Children> {
+        let mut nested_state = get_conundrum_input(&self.0, state);
+        let res = parse_elements(&mut nested_state)?;
         Ok(Children(res))
+    }
+
+    pub fn to_math(&self, block_level: bool, trusted: bool) -> ConundrumModalResult<String> {
+        let context = KatexContext::default();
+        let settings = Settings::builder().display_mode(block_level)
+                                          .trust(TrustSetting::Bool(trusted))
+                                          .color_is_text_color(true)
+                                          .build();
+
+        render_to_string(&context, &self.0, &settings).map_err(|e| {
+            eprintln!("Error: {:#?}", e);
+            ErrMode::Cut(
+                ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Math Error", format!(r#"Conundrum could not compile a math block with the following content:
+
+```tex
+{}
+```
+                        "#, self.0).as_str()))
+            )
+        })
     }
 
     /// Returns a string that is ***already*** wrapped in quotes, with all

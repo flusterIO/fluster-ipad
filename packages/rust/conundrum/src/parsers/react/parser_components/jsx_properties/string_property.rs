@@ -34,8 +34,7 @@ fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
 
     let state = input.state.borrow();
 
-    let mut wrapped_content_input =
-        get_conundrum_input(&wrapped_content, state.modifiers.clone(), state.ui_params.clone());
+    let mut wrapped_content_input = get_conundrum_input(&wrapped_content, state.clone());
 
     let js_string = ConundrumString::parse_javascript.parse_next(&mut wrapped_content_input)
                                                      .inspect_err(|_| {

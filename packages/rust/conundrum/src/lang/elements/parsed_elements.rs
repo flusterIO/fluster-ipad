@@ -10,7 +10,10 @@ use crate::{
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
                 parse_state::ParseState,
             },
-            traits::{fluster_component_result::ConundrumComponentResult, mdx_component_result::MdxComponentResult},
+            traits::{
+                fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     parsers::{
@@ -83,6 +86,37 @@ pub enum ParsedElement {
     Logic(ConundrumLogicToken),
 }
 
+impl HtmlJsComponentResult for ParsedElement {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        match self {
+            ParsedElement::ParsedInspectionRequest(req) => req.to_conundrum_component(res),
+            ParsedElement::ParsedCodeBlock(block) => block.to_conundrum_component(res),
+            ParsedElement::ParsedCitation(cite) => cite.to_conundrum_component(res),
+            ParsedElement::ParsedOutgoingNoteLink(l) => l.to_conundrum_component(res),
+            ParsedElement::Tag(tag) => tag.to_conundrum_component(res),
+            ParsedElement::Text(s) => Ok(s.clone()),
+            ParsedElement::Heading(heading) => heading.to_mdx_component(res),
+            ParsedElement::BlockMath(math) => math.to_conundrum_component(res),
+            ParsedElement::InlineMath(math) => math.to_html_js_component(res),
+            ParsedElement::BlockQuote(quote) => quote.to_conundrum_component(res),
+            ParsedElement::BoldText(t) => t.to_mdx_component(res),
+            ParsedElement::ItalicText(t) => t.to_html_js_component(res),
+            ParsedElement::BoldAndItalicText(t) => t.to_conundrum_component(res),
+            ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
+            ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
+            ParsedElement::HrWithChildren(c) => c.to_conundrum_component(res),
+            ParsedElement::Comment(c) => c.to_conundrum_component(res),
+            ParsedElement::ReactComponentSelfClosing(c) => c.component.to_html_js_component(res),
+            ParsedElement::ReactComponentWithChildren(c) => c.component.to_html_js_component(res),
+            ParsedElement::Emoji(e) => e.to_conundrum_component(res),
+            ParsedElement::InlineCode(m) => m.to_mdx_component(res),
+            ParsedElement::Children(c) => c.render(res),
+            ParsedElement::Javascript(js) => js.to_conundrum_component(res),
+            ParsedElement::Logic(l) => l.to_conundrum_component(res),
+        }
+    }
+}
+
 impl MdxComponentResult for ParsedElement {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         match self {
@@ -92,21 +126,21 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_conundrum_component(res),
             ParsedElement::Tag(tag) => tag.to_conundrum_component(res),
             ParsedElement::Text(s) => Ok(s.clone()),
-            ParsedElement::Heading(heading) => heading.to_conundrum_component(res),
+            ParsedElement::Heading(heading) => heading.to_mdx_component(res),
             ParsedElement::BlockMath(math) => math.to_conundrum_component(res),
-            ParsedElement::InlineMath(math) => math.to_conundrum_component(res),
+            ParsedElement::InlineMath(math) => math.to_mdx_component(res),
             ParsedElement::BlockQuote(quote) => quote.to_conundrum_component(res),
-            ParsedElement::BoldText(t) => t.to_conundrum_component(res),
-            ParsedElement::ItalicText(t) => t.to_conundrum_component(res),
+            ParsedElement::BoldText(t) => t.to_mdx_component(res),
+            ParsedElement::ItalicText(t) => t.to_mdx_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_conundrum_component(res),
-            ParsedElement::MarkdownLink(l) => l.to_conundrum_component(res),
-            ParsedElement::MarkdownParagraph(p) => p.to_conundrum_component(res),
+            ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
+            ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
             ParsedElement::HrWithChildren(c) => c.to_conundrum_component(res),
             ParsedElement::Comment(c) => c.to_conundrum_component(res),
             ParsedElement::ReactComponentSelfClosing(c) => c.component.to_conundrum_component(res),
             ParsedElement::ReactComponentWithChildren(c) => c.component.to_conundrum_component(res),
             ParsedElement::Emoji(e) => e.to_conundrum_component(res),
-            ParsedElement::InlineCode(m) => m.to_conundrum_component(res),
+            ParsedElement::InlineCode(m) => m.to_mdx_component(res),
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),

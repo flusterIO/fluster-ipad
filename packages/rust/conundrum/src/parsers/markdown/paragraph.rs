@@ -7,13 +7,9 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_string::parse_elements,
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
             traits::{
                 conundrum_input::{ConundrumInput, get_conundrum_input},
-                fluster_component_result::ConundrumComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
@@ -34,16 +30,6 @@ impl PlainTextComponentResult for MarkdownParagraphResult {
     }
 }
 
-impl ConundrumComponentResult for MarkdownParagraphResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
-            self.to_plain_text(res)
-        } else {
-            self.to_mdx_component(res)
-        }
-    }
-}
-
 impl MdxComponentResult for MarkdownParagraphResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         let children_string = compile_elements(&self.children, res)?;
@@ -58,7 +44,7 @@ impl MarkdownParagraphResult {
     fn parse_input_string<'a>(input: &'a mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownParagraphResult> {
         let res = alt((take_until(1.., "```"), take_until(1.., "\n\n"))).parse_next(input)?;
         let state = input.state.borrow_mut();
-        let mut new_input = get_conundrum_input(res, state.modifiers.clone(), state.ui_params.clone());
+        let mut new_input = get_conundrum_input(res, state.clone());
         let children = parse_elements(&mut new_input)?;
         // apply_nested_parser_state(input, &new_input);
         Ok(MarkdownParagraphResult { children })

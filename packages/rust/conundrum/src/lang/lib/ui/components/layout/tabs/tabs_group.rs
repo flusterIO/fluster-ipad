@@ -20,7 +20,7 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
                 fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
@@ -109,9 +109,9 @@ impl HtmlJsComponentResult for TabsGroup {
 
 impl ConundrumComponentResult for TabsGroup {
     fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.is_markdown() {
+        if res.targets_markdown() {
             self.to_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::ForcePlainText) {
+        } else if res.compile_target == ConundrumCompileTarget::PlainText {
             self.to_plain_text(res)
         } else {
             self.to_mdx_component(res)
@@ -126,10 +126,7 @@ impl TabsGroup {
             if let Some(tab) = match x {
                 ParsedElement::ReactComponentWithChildren(n) => match &n.component {
                     ConundrumComponentType::Tab(t) => {
-                        Some(TabButtonHtmlTemplate { btn_children:
-                                                         t.label
-                                                          .to_children(res.modifiers.clone(), res.ui_params.clone())?
-                                                          .render(res)?,
+                        Some(TabButtonHtmlTemplate { btn_children: t.label.to_children(res.clone())?.render(res)?,
                                                      tab_group_id: group_id.to_string(),
                                                      idx: i as u8,
                                                      initial: t.initial.unwrap_or(ConundrumBoolean(false)),
