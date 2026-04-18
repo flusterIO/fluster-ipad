@@ -95,7 +95,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_conundrum_component(res),
             ParsedElement::Tag(tag) => tag.to_conundrum_component(res),
             ParsedElement::Text(s) => Ok(s.clone()),
-            ParsedElement::Heading(heading) => heading.to_mdx_component(res),
+            ParsedElement::Heading(heading) => heading.to_html_js_component(res),
             ParsedElement::BlockMath(math) => math.to_html_js_component(res),
             ParsedElement::InlineMath(math) => math.to_html_js_component(res),
             ParsedElement::BlockQuote(quote) => quote.to_conundrum_component(res),

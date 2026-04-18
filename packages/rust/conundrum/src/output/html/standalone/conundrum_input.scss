@@ -136,7 +136,7 @@
 @theme inline {
   --radius: var(--radius);
   --color-brand: hsl(var(--brand));
-  --color-background: var(--desktop-background-match);
+  --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
@@ -189,7 +189,12 @@
 }
 
 body {
-  background-color: var(--color-background);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+
+  * {
+    border-color: hsl(var(--border));
+  }
 }
 
 .cdrm-codeblock {

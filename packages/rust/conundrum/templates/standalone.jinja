@@ -10,8 +10,8 @@
     </style>
 </head>
 
-<body data-cdrm-theme="cdrm" {% if ui.dark_mode %}class="dark"{% endif %}>
-    <div id="content" class="w-full flex flex-col justify-start items-center px-4 py-6 min-h-screen">
+<body data-cdrm-theme="cdrm" {% if ui.dark_mode %}class="dark"{% else %}class=""{% endif %}>
+    <div id="content" class="w-full flex flex-col justify-start items-center px-4 py-6 min-h-screen mx-auto prose {% if ui.dark_mode %}prose-invert{% endif %} max-w-[min(1080px,100vw)]">
         {{body | safe}}
     </div>
 </body>
