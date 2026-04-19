@@ -8,8 +8,10 @@ async fn renders_codeblock_to_html() {
 My paragraph goes here.
 My paragraph without a new line.
 
-My paragraph after two new lines.  
+My paragraph _after_ **two** ***new lines***.  
 My paragraph after two spaces and a line break.
+
+This is my [[#tagHere]] and my citation[[cite:Einstein]] here.
 
 $$
 \delta = 2 G \frac{M_\oplus}{R_\oplus}\hat{R}

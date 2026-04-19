@@ -16,8 +16,8 @@ use crate::{
             },
             traits::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -41,7 +41,13 @@ impl MarkdownComponentResult for MarkdownBoldAndItalicTextResult {
 
 impl MdxComponentResult for MarkdownBoldAndItalicTextResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<span className=\"italic font-bold\">{}</span>", self.children.render(res)?))
+        Ok(format!("<span italic=\"italic font-bold\">{}</span>", self.children.render(res)?))
+    }
+}
+
+impl HtmlJsComponentResult for MarkdownBoldAndItalicTextResult {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        Ok(format!("<span italic=\"italic font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 

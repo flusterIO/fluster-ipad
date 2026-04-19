@@ -32,7 +32,7 @@ pub struct MarkdownItalicTextResult {
 impl HtmlJsComponentResult for MarkdownItalicTextResult {
     fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         let children_string = self.children.render(res)?;
-        Ok(format!("<div class=\"italic\">{}</div>", children_string))
+        Ok(format!("<span class=\"italic\">{}</span>", children_string))
     }
 }
 

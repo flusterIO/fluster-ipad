@@ -1,8 +1,10 @@
+use askama::Template;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
     Parser,
     combinator::delimited,
+    error::ErrMode,
     token::{literal, take_until},
 };
 
@@ -11,13 +13,15 @@ use crate::{
         lib::ui::ui_types::inline_markdown_override::InlineMarkdownOverride,
         runtime::{
             state::{
-                conundrum_error_variant::ConundrumModalResult,
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
                 parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
                 conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult, state_modifier::ConundrumStateModifier,
+                html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                state_modifier::ConundrumStateModifier,
             },
         },
     },
@@ -28,8 +32,14 @@ use crate::{
     parsers::parser_trait::ConundrumParser,
 };
 
+/// # Template (HTML)
+///
+/// ```askama
+/// <span class="bg-primary hover:bg-primary/80 transition-colors duration-150 cursor-pointer text-primary-foreground rounded p-1 py-0.5">#{{body}}</span>
+/// ```
 #[typeshare]
-#[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug)]
+#[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug, Template)]
+#[template(ext = "html", in_doc = true)]
 pub struct ParsedTag {
     /// The tag's body
     pub body: String,
@@ -60,6 +70,15 @@ impl ConundrumComponentResult for ParsedTag {
         } else {
             self.to_mdx_component(res)
         }
+    }
+}
+
+impl HtmlJsComponentResult for ParsedTag {
+    fn to_html_js_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        self.render().map_err(|e| {
+            eprintln!("Error: {:#?}", e);
+            ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+        })
     }
 }
 

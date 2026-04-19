@@ -35,7 +35,7 @@ impl MarkdownComponentResult for MarkdownBoldTextResult {
 
 impl MdxComponentResult for MarkdownBoldTextResult {
     fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        Ok(format!("<span className=\"font-bold\">{}</span>", self.children.render(res)?))
+        Ok(format!("<span class=\"font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 

@@ -1,32 +1,50 @@
+use askama::Template;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
     Parser,
     combinator::delimited,
+    error::ErrMode,
     token::{literal, take_until},
 };
 
 use crate::{
     lang::runtime::{
         state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
+            conundrum_error::ConundrumError,
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+            parse_state::{ConundrumCompileTarget, ParseState},
         },
         traits::{
             conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+            html_js_component_result::HtmlJsComponentResult, mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
         },
     },
     output::general::component_constants::parser_ids::ParserId,
     parsers::parser_trait::ConundrumParser,
 };
 
+/// ## Template (HTML)
+/// ```askama
+/// <sup data-cdrm-cit-key="{{key}}">{{idx + 1}}</sup>
+/// ```
 #[typeshare]
-#[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug)]
+#[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug, Template)]
+#[template(ext = "html", in_doc = true)]
 pub struct ParsedCitation {
     pub key: String,
     pub full_match: String,
     pub idx: u32,
+}
+
+impl HtmlJsComponentResult for ParsedCitation {
+    fn to_html_js_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+        self.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
+    }
 }
 
 impl PlainTextComponentResult for ParsedCitation {
