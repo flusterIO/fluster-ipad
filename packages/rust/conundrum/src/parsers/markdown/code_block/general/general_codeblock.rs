@@ -1,3 +1,7 @@
+use std::rc::Rc;
+
+use syntect_assets::assets::HighlightingAssets;
+
 use crate::parsers::markdown::code_block::{
     supported_languages::SupportedCodeBlockSyntax, supported_themes::SupportedCodeBlockTheme,
 };
@@ -12,4 +16,5 @@ pub struct GeneralPresentationCodeBlock {
     pub theme: Option<SupportedCodeBlockTheme>,
     /// Indicates whether the codeblock is an inline codeblock or not.
     pub inline: bool,
+    pub assets: Rc<HighlightingAssets>,
 }

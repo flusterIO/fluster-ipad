@@ -1,10 +1,9 @@
 use serde::Serialize;
 use winnow::{
     Parser,
-    combinator::{alt, repeat, repeat_till, separated},
-    error::ErrMode,
-    token::take,
-    token::{any, literal, take_until},
+    combinator::{alt, repeat, repeat_till},
+    error::{ContextError, ErrMode},
+    token::{literal, take, take_till},
 };
 
 use crate::{
@@ -62,7 +61,7 @@ impl MdxComponentResult for MarkdownParagraphResult {
 }
 
 pub fn markdown_paragraph_line_break(input: &mut ConundrumInput) -> ConundrumModalResult<String> {
-    alt((literal("  \n"), literal("\n\n"))).parse_next(input).map(String::from).map_err(|_| {
+    alt((literal("  \n"), literal("\n\n"))).parse_next(input).map(String::from).map_err(|_: ContextError| {
                                                                                    ErrMode::Backtrack(
             ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Fail to find paragraph break."))
         )
@@ -80,8 +79,7 @@ impl ConundrumParser<MarkdownParagraphResult> for MarkdownParagraphResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<MarkdownParagraphResult> {
         // let res = alt((take_until(1.., "  \n"), take_until(1..,
         // "\n\n"))).parse_next(input)?;
-        let res: Vec<String> = repeat(0.., markdown_paragraph_line_break).parse_next(input)?;
-        let joined_paragraph = String::from_iter(res);
+        let joined_paragraph = markdown_paragraph.parse_next(input)?;
         let state = input.state.borrow_mut();
         let mut new_input = get_conundrum_input(&joined_paragraph, state.clone());
         let children = parse_elements(&mut new_input)?;

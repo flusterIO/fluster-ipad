@@ -1,7 +1,8 @@
-use std::str::FromStr;
+use std::{rc::Rc, str::FromStr};
 
 use askama::Template;
 use serde::{Deserialize, Serialize};
+use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
 use winnow::{
     Parser,
@@ -94,7 +95,10 @@ impl ParsedCodeBlock {
         None
     }
 
-    pub fn get_highlighted_content(&self, theme: SupportedCodeBlockTheme) -> ConundrumModalResult<String> {
+    pub fn get_highlighted_content(&self,
+                                   theme: SupportedCodeBlockTheme,
+                                   hl: Rc<HighlightingAssets>)
+                                   -> ConundrumModalResult<String> {
         render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content:
                                                                                                         self.content
                                                                                                             .clone(),
@@ -103,7 +107,8 @@ impl ParsedCodeBlock {
                                                                                                             .clone(),
                                                                                                     theme:
                                                                                                         Some(theme),
-                                                                                                    inline: false } })
+                                                                                                    inline: false,
+                                                                                                    assets: hl } })
     }
 }
 
@@ -134,7 +139,8 @@ impl MarkdownComponentResult for ParsedCodeBlock {
 impl HtmlJsComponentResult for ParsedCodeBlock {
     fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
         let id = res.dom.new_id();
-        let code_string = self.get_highlighted_content(res.ui_params.syntax_theme.clone().unwrap_or_default())?;
+        let assets = Rc::clone(&res.highlight_assets);
+        let code_string = self.get_highlighted_content(res.ui_params.syntax_theme.clone().unwrap_or_default(), assets)?;
         let template =
             CodeBlockHTMLTemplate::new(code_string, self.get_title(), id, &self.language, &res.ui_params.dark_mode);
         template.render().map_err(|e| {

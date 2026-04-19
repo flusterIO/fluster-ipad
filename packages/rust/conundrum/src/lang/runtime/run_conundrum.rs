@@ -108,30 +108,44 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
     let mut stateful_input = Stateful { input: b.as_str(),
                                         state };
 
-    // let doc = ConundrumDocument::parse_input(&mut
+    let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);
+    let doc = ConundrumDocument::parse_input(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
+
+    let mut state = stateful_input.state.borrow_mut();
+    let rendered_string = match is_standalone {
+        true => doc.render_standalone(&mut state)?,
+        false => doc.render_app_embedded(&mut state)?,
+    };
+
+    // println!("Rendered: {:#?}", rendered_string);
+
+    state.data.content = rendered_string;
+
+    Ok(state.data.clone())
+
+    // let (elements, input_data) = parse_conundrum_string(&mut
     // stateful_input).map_err(ConundrumErrorVariant::from)?;
 
-    let (elements, input_data) = parse_conundrum_string(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
-
-    let mut x = input_data.state.borrow_mut();
-    let compiled = compile_elements(&elements, &mut x)?;
-    let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);
-    let glue = get_glue_asset_data(&x, &is_standalone);
-    println!("Glue: {:#?}", glue);
-    if is_standalone {
-        let templ =
-            StandaloneTemplate::new(get_title_group(opts.content, opts.modifiers, opts.target).map(|n| n.title).ok(),
-                                    compiled,
-                                    glue.js,
-                                    glue.css,
-                                    x.ui_params.clone());
-        let rendered_standalone = templ.render() .map_err(|e| {
-                    eprintln!("Error: {:#?}", e);
-                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
-                })?;
-        x.data.content = rendered_standalone;
-    } else {
-        x.data.content = compiled;
-    }
-    Ok(x.data.clone())
+    // let mut x = input_data.state.borrow_mut();
+    // let compiled = compile_elements(&elements, &mut x)?;
+    // let is_standalone =
+    // opts.modifiers.contains(&ConundrumModifier::Standalone); let glue =
+    // get_glue_asset_data(&x, &is_standalone); println!("Glue: {:#?}",
+    // glue); if is_standalone {
+    //     let templ =
+    //         StandaloneTemplate::new(get_title_group(opts.content,
+    // opts.modifiers, opts.target).map(|n| n.title).ok(),
+    // compiled,                                 glue.js,
+    //                                 glue.css,
+    //                                 x.ui_params.clone());
+    //     let rendered_standalone = templ.render() .map_err(|e| {
+    //                 eprintln!("Error: {:#?}", e);
+    //
+    // ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+    //             })?;
+    //     x.data.content = rendered_standalone;
+    // } else {
+    //     x.data.content = compiled;
+    // }
+    // Ok(x.data.clone())
 }
