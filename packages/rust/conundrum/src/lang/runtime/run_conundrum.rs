@@ -23,7 +23,7 @@ use crate::{
         html::{glue::gather_glue_assets::get_glue_asset_data, standalone::standalone_template::StandaloneTemplate},
         parsing_result::mdx_parsing_result::MdxParsingResult,
     },
-    parsers::markdown::heading_sluggger::Slugger,
+    parsers::{document::ConundrumDocument, markdown::heading_sluggger::Slugger},
 };
 use winnow::{Stateful, error::ErrMode};
 
@@ -107,6 +107,9 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
 
     let mut stateful_input = Stateful { input: b.as_str(),
                                         state };
+
+    // let doc = ConundrumDocument::parse_input(&mut
+    // stateful_input).map_err(ConundrumErrorVariant::from)?;
 
     let (elements, input_data) = parse_conundrum_string(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
 

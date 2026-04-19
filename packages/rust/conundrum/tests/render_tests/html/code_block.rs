@@ -6,6 +6,10 @@ async fn renders_codeblock_to_html() {
 > My subtitle
 
 My paragraph goes here.
+My paragraph without a new line.
+
+My paragraph after two new lines.  
+My paragraph after two spaces and a line break.
 
 $$
 \delta = 2 G \frac{M_\oplus}{R_\oplus}\hat{R}
