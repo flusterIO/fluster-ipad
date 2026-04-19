@@ -130,7 +130,7 @@ export const bibtex = (config: UserConfig = {}) => {
         additionalSnippets: {
             fields: [],
             entries: [],
-            ...config?.additionalSnippets,
+            ...config.additionalSnippets,
         },
     };
 

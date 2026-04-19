@@ -12,6 +12,7 @@ use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::parsers::conundrum::comment::ConundrumCommentResult;
 use crate::parsers::conundrum::docs::ParsedInspectionRequest;
 use crate::parsers::conundrum::hr_with_children::HrWithChildrenResult;
+use crate::parsers::conundrum::note_link::note_link_model::ParsedOutgoingNoteLink;
 use crate::parsers::markdown::block_math::BlockMathResult;
 use crate::parsers::markdown::block_quote::block_quote_model::BlockQuoteResult;
 use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextResult;
@@ -23,12 +24,13 @@ use crate::parsers::markdown::inline_math::InlineMathResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::markdown::markdown_extensions::emoji::EmojiResult;
 use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
+use crate::parsers::markdown::paragraph::MarkdownParagraphResult;
 use crate::parsers::parser_trait::ConundrumParser;
 use crate::parsers::react::react_component_self_closing::ReactComponentSelfClosingResult;
 use crate::parsers::react::react_component_with_children::ReactComponentWithChildrenResult;
 use crate::{
     lang::elements::parsed_elements::ParsedElement,
-    parsers::conundrum::{inline_citation::ParsedCitation, note_link::ParsedOutgoingNoteLink, tag::ParsedTag},
+    parsers::conundrum::{inline_citation::ParsedCitation, tag::ParsedTag},
 };
 
 /// Core recursive parser.  Returns a `ModalResult` so it can be called from
@@ -138,6 +140,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 _ => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
+                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)

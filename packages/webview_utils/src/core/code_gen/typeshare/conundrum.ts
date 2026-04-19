@@ -318,7 +318,7 @@ export interface BlockQuoteResult {
 	 * Nesting is handled recursively: a `> > ...` line becomes a
 	 * `BlockQuote` variant inside this `Vec`.
 	 */
-	children: ParsedElement[];
+	children: Children;
 	/** The full original source text that was consumed. */
 	full_match: string;
 }
@@ -689,7 +689,7 @@ export interface MarkdownLinkResult {
 }
 
 export interface MarkdownParagraphResult {
-	children: ParsedElement[];
+	children: Children;
 }
 
 /** The 'math' is embedded in `.jsx` as a child. */
@@ -784,6 +784,11 @@ export enum ConundrumModifier {
 	ForSearchInput = "ForSearchInput",
 	/** Don't touch the code blocks, just return them exactly as is. */
 	CodeBlocksAsIs = "CodeBlocksAsIs",
+	/**
+	 * This is like extra beta... but will eventually output standalone html
+	 * files capable of rendering a note outside of any application.
+	 */
+	Standalone = "Standalone",
 }
 
 export enum EmbeddableComponentName {
@@ -880,7 +885,7 @@ export interface ParsedOutgoingNoteLink {
 	/** The user-defined id of the note which is being linked to. */
 	note_id: string;
 	/** The text content of the link. `[The stuff here](note:MyNote)` */
-	content: string;
+	content: Children;
 	/**
 	 * The full content of the input string that represents this outgoing note
 	 * link.

@@ -11,4 +11,4 @@ export {
     Tex,
     YAMLFrontMatter,
 } from "./extensions";
-export { bibtex } from "./bibtex/index";
+export { bibtex, bibtexLanguage } from "./bibtex/index";

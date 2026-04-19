@@ -16,11 +16,11 @@ pub struct StandaloneTemplate {
 }
 
 impl StandaloneTemplate {
-    pub fn new(label: Option<String>, body: String, js: String, ui: UIParams) -> Self {
-        let css =
-            JS_GLUE_CODE_MAP.get(WebGlueCodeGeneralFiles::Styles.to_string().as_str()).expect("Css better be there...");
+    pub fn new(label: Option<String>, body: String, js: String, css: String, ui: UIParams) -> Self {
+        // let font_s = include_str!("../../../../assets/fonts/Fira Code Regular Nerd
+        // Font Complete.ttf");
         StandaloneTemplate { label,
-                             css: css.to_string(),
+                             css,
                              js,
                              body,
                              ui }

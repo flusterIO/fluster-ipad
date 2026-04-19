@@ -1,4 +1,7 @@
+use std::rc::Rc;
+
 use serde::{Deserialize, Serialize};
+use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
 use uniffi::Enum;
 
@@ -58,7 +61,7 @@ pub enum ConundrumCompileTarget {
     Mdx,
 }
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Clone)]
 pub struct ParseState {
     pub data: MdxParsingResult,
     pub bib: CitationList,
@@ -78,6 +81,25 @@ pub struct ParseState {
     pub dom: DomData,
     pub compile_target: ConundrumCompileTarget,
     pub trusted: bool,
+    pub highlight_assets: Rc<HighlightingAssets>,
+}
+
+impl Default for ParseState {
+    fn default() -> Self {
+        Self { data: Default::default(),
+               bib: Default::default(),
+               modifiers: Default::default(),
+               eq_count: Default::default(),
+               slugger: Default::default(),
+               last_heading_depth: Default::default(),
+               last_heading_tab_depth: Default::default(),
+               valid_footnote_indices: Default::default(),
+               ui_params: Default::default(),
+               dom: Default::default(),
+               compile_target: Default::default(),
+               trusted: Default::default(),
+               highlight_assets: Rc::new(HighlightingAssets::from_binary()) }
+    }
 }
 
 impl ParseState {

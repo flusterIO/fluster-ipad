@@ -1,37 +1,50 @@
-use serde::{Deserialize, Serialize};
+use askama::Template;
+use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
     Parser,
     combinator::delimited,
+    error::ErrMode,
     token::{literal, take_until},
 };
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
-        },
-        traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
-            state_modifier::ConundrumStateModifier,
+    lang::{
+        lib::ui::ui_types::children::Children,
+        runtime::{
+            parse_conundrum_string::parse_elements,
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::{ConundrumCompileTarget, ParseState},
+            },
+            traits::{
+                conundrum_input::{ConundrumInput, get_conundrum_input},
+                fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+                state_modifier::ConundrumStateModifier,
+            },
         },
     },
     output::{
-        general::component_constants::parser_ids::ParserId,
+        general::component_constants::{
+            any_component_id::AnyComponentName, auto_inserted_component_name::AutoInsertedComponentName,
+            parser_ids::ParserId,
+        },
         parsing_result::note_outgoing_link_result::NoteOutgoingLinkResult,
     },
-    parsers::parser_trait::ConundrumParser,
+    parsers::{conundrum::note_link::note_link_html_templ::NoteLinkHtmlTemplate, parser_trait::ConundrumParser},
 };
 
 #[typeshare]
-#[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Clone, Debug)]
 pub struct ParsedOutgoingNoteLink {
     /// The user-defined id of the note which is being linked to.
     pub note_id: String,
     /// The text content of the link. `[The stuff here](note:MyNote)`
-    pub content: String,
+    pub content: Children,
     /// The full content of the input string that represents this outgoing note
     /// link.
     pub full_match: String,
@@ -48,6 +61,17 @@ impl ConundrumStateModifier for ParsedOutgoingNoteLink {
 impl PlainTextComponentResult for ParsedOutgoingNoteLink {
     fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
         Ok(self.full_match.clone())
+    }
+}
+
+impl HtmlJsComponentResult for ParsedOutgoingNoteLink {
+    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+        let tmpl = NoteLinkHtmlTemplate { children: self.content.render(res)?,
+                                          note_id: self.note_id.clone() };
+        tmpl.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
     }
 }
 
@@ -80,7 +104,7 @@ impl MdxComponentResult for ParsedOutgoingNoteLink {
             res.data.outgoing_links.push(NoteOutgoingLinkResult { link_to_note_id: self.note_id.clone() });
         }
 
-        Ok(format!("<NoteLink id=\"{}\">{}</NoteLink>", self.note_id, self.content))
+        Ok(format!("<NoteLink id=\"{}\">{}</NoteLink>", self.note_id, self.content.render(res)?))
     }
 }
 
@@ -93,8 +117,12 @@ impl ConundrumParser<ParsedOutgoingNoteLink> for ParsedOutgoingNoteLink {
         .with_taken()
         .parse_next(input)?;
 
+        let mut state = input.state.borrow_mut();
+        state.data.append_embeddable_component(&AnyComponentName::AutoInserted(AutoInsertedComponentName::NoteLink));
+        let mut nested_state = get_conundrum_input(display_text, state.clone());
+        let res = parse_elements(&mut nested_state)?;
         Ok(ParsedOutgoingNoteLink { note_id: note_id.to_string(),
-                                    content: display_text.to_string(),
+                                    content: Children(res),
                                     full_match: full_match.to_string() })
     }
 
@@ -119,7 +147,11 @@ mod tests {
 
         assert!(test_data.input.is_empty(), "NoteLink returns the proper left over text.");
 
-        assert!(res.content == "This is my link", "NoteLink finds the proper content.");
+        let mut state = test_data.state.borrow_mut();
+
+        assert!(res.content.render(&mut state).expect("renders children without throwing an error.")
+                == "This is my link",
+                "NoteLink finds the proper content.");
         assert!(res.note_id == "myNote", "NoteLink finds the proper note id.");
     }
 }

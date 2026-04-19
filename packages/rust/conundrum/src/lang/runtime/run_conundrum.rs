@@ -20,7 +20,7 @@ use crate::{
     },
     output::{
         general::component_constants::component_names::EmbeddableComponentName,
-        html::standalone::standalone_template::StandaloneTemplate,
+        html::{glue::gather_glue_assets::get_glue_asset_data, standalone::standalone_template::StandaloneTemplate},
         parsing_result::mdx_parsing_result::MdxParsingResult,
     },
     parsers::markdown::heading_sluggger::Slugger,
@@ -101,7 +101,8 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
                                                    dom: DomData { id_count: 0 },
                                                    compile_target: ConundrumCompileTarget::Html,
                                                    slugger: Slugger::default(),
-                                                   trusted: opts.trusted }));
+                                                   trusted: opts.trusted,
+                                                   ..Default::default() }));
     let b = opts.content.clone();
 
     let mut stateful_input = Stateful { input: b.as_str(),
@@ -111,12 +112,15 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
 
     let mut x = input_data.state.borrow_mut();
     let compiled = compile_elements(&elements, &mut x)?;
-    if opts.modifiers.contains(&ConundrumModifier::Standalone) {
-        let js_string = x.data.compile_javascript_kinda();
+    let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);
+    let glue = get_glue_asset_data(&x, &is_standalone);
+    println!("Glue: {:#?}", glue);
+    if is_standalone {
         let templ =
             StandaloneTemplate::new(get_title_group(opts.content, opts.modifiers, opts.target).map(|n| n.title).ok(),
                                     compiled,
-                                    js_string,
+                                    glue.js,
+                                    glue.css,
                                     x.ui_params.clone());
         let rendered_standalone = templ.render() .map_err(|e| {
                     eprintln!("Error: {:#?}", e);

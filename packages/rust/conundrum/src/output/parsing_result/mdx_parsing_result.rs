@@ -69,6 +69,10 @@ impl MdxParsingResult {
         self.outgoing_links.iter().any(|x| x.link_to_note_id == link_note_id)
     }
 
+    pub fn get_included_components(&self) -> Vec<String> {
+        self.included_components.clone()
+    }
+
     pub fn append_embeddable_component(&mut self, name: &AnyComponentName) {
         self.included_components.push(name.to_string());
     }

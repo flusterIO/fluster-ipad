@@ -3,12 +3,7 @@ use std::{cell::RefCell, sync::Arc};
 use winnow::Stateful;
 
 use crate::{
-    lang::runtime::state::{
-        citation_list::CitationList,
-        dom_data::DomData,
-        parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
-        ui_params::UIParams,
-    },
+    lang::runtime::state::{citation_list::CitationList, dom_data::DomData, parse_state::ParseState},
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
     parsers::markdown::heading_sluggger::Slugger,
 };
@@ -27,13 +22,10 @@ pub fn get_conundrum_input(val: &str, state: ParseState) -> ConundrumInput {
                                                                valid_footnote_indices: Vec::new(),
                                                                ui_params: state.ui_params.clone(),
                                                                dom: DomData::default(),
-                                                               // FIXME: THIS IS BROKEN... This will not
-                                                               // work with targets other than html
-                                                               // and will break output. This needs to be passed
-                                                               // in from the parent state.
                                                                compile_target: state.compile_target.clone(),
                                                                slugger: Slugger::default(),
-                                                               trusted: state.trusted.clone() })) }
+                                                               trusted: state.trusted.clone(),
+                                                               ..Default::default() })) }
 }
 
 pub fn duplicate_conundrum_input(new_value: &str, state: Arc<RefCell<ParseState>>) -> ConundrumInput {

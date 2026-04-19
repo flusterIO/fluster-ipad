@@ -1246,6 +1246,7 @@ dependencies = [
  "askama-enum",
  "askama-markdown-cmark",
  "askama_derive 0.15.6",
+ "base64",
  "bytemuck",
  "cargo-doc-md",
  "cli-table",
