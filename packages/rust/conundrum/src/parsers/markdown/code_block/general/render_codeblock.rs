@@ -34,7 +34,6 @@ pub fn render_general_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumMo
     })?;
 
     let theme = data.get_theme(req.code.theme.unwrap_or_default().to_string().as_str());
-    println!("Theme: {:#?}", theme);
 
     let x = highlighted_html_for_string(req.code.content.as_str(), ss, syntax, theme).map_err(|e| {
         eprintln!("Error: {:#?}", e);
