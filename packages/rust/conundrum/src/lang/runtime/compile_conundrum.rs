@@ -35,7 +35,7 @@ pub fn compile_elements(elements: &[ParsedElement], res: &ArcState) -> Conundrum
 pub fn compile_elements_multi_threaded(elements: &[ParsedElement], res: &ArcState) -> ConundrumModalResult<String> {
     let r: String = elements.par_iter().filter_map(|em| {
         let state = res.read_arc();
-        if let Ok(component_res) = match state.compile_target {
+        match state.compile_target {
             ConundrumCompileTarget::Html => {
                 drop(state);
                 em.to_html_js_component(Arc::clone(&res))
@@ -43,11 +43,7 @@ pub fn compile_elements_multi_threaded(elements: &[ParsedElement], res: &ArcStat
             _ => {
                 panic!("You're early. Right now Conundrum is being built with the HTML+JS target in mind for performance and portability, but a jsx target will be available shortly.")
             }
-        } {
-            Some(component_res)
-        } else {
-            None
-        }
+        }.ok()
     }).collect::<Vec<String>>().join("");
     Ok(r)
 }

@@ -41,7 +41,14 @@ impl Children {
     /// Outputs to the various conundrum outputs depending on the associated
     /// flags.
     pub fn render(&self, res: ArcState) -> ConundrumModalResult<String> {
-        compile_elements(&self.0, &res)
+        let thread_state = Arc::clone(&res);
+        let children = self.0.clone();
+        let handle = std::thread::spawn(move || compile_elements(&children, &thread_state));
+        if let Ok(joined_thread) = handle.join() {
+            joined_thread
+        } else {
+            Err(ErrMode::Backtrack(ConundrumErrorVariant::MultiThreadingError))
+        }
     }
 
     /// Render will not be called fo these elements. To maintain an accurate
