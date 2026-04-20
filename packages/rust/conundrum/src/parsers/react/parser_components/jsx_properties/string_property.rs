@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use serde::Serialize;
 use winnow::{Parser, combinator::alt, stream::Stream, token::literal};
 
@@ -32,9 +34,8 @@ fn curly_bracket_wrapped_jsx_string_value(input: &mut ConundrumInput)
                                                                                           input.input.reset(&start);
                                                                                       })?;
 
-    let state = input.state.borrow();
-
-    let mut wrapped_content_input = get_conundrum_input(&wrapped_content, state.clone());
+    let mut wrapped_content_input = ConundrumInput { input: &wrapped_content,
+                                                     state: Arc::clone(&input.state) };
 
     let js_string = ConundrumString::parse_javascript.parse_next(&mut wrapped_content_input)
                                                      .inspect_err(|_| {

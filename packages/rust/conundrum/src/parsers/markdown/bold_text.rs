@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::sync::Arc;
 use winnow::{
     Parser,
     ascii::newline,
@@ -11,10 +12,12 @@ use crate::{
     lang::{
         lib::{shared::traits::from_with_state::FromWithState, ui::ui_types::children::Children},
         runtime::{
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+            state::conundrum_error_variant::ConundrumModalResult,
             traits::{
-                conundrum_input::ConundrumInput, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::{ArcState, ConundrumInput},
+                markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -28,19 +31,19 @@ pub struct MarkdownBoldTextResult {
 }
 
 impl MarkdownComponentResult for MarkdownBoldTextResult {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("**{}**", self.children.render(res)?))
     }
 }
 
 impl MdxComponentResult for MarkdownBoldTextResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("<span class=\"font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 
 impl PlainTextComponentResult for MarkdownBoldTextResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
@@ -64,9 +67,7 @@ impl ConundrumParser<MarkdownBoldTextResult> for MarkdownBoldTextResult {
                                                                         })?;
         let content = String::from_iter(c);
 
-        let mut state = input.state.borrow_mut();
-
-        let children = Children::from_with_state(content.as_str(), &mut state)?;
+        let children = Children::from_with_state(content.as_str(), Arc::clone(&input.state))?;
 
         Ok(MarkdownBoldTextResult { children })
     }
@@ -88,8 +89,7 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        let mut state = wrapped.state.borrow_mut();
-        assert!(res.children.render(&mut state).is_ok_and(|s| s == "My bold text"),
+        assert!(res.children.render(Arc::clone(&wrapped.state)).is_ok_and(|s| s == "My bold text"),
                 "Finds the proper text in the markdown bold text with asterisks.");
     }
 
@@ -99,8 +99,7 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        let mut state = wrapped.state.borrow_mut();
-        assert!(res.children.render(&mut state).is_ok_and(|s| s == "My bold text"),
+        assert!(res.children.render(Arc::clone(&wrapped.state)).is_ok_and(|s| s == "My bold text"),
                 "Finds the proper text in the markdown bold text with underscores.");
     }
 
@@ -110,8 +109,7 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        let mut state = wrapped.state.borrow_mut();
-        assert!(res.children.render(&mut state).is_ok_and(|s| s == "My bold text"),
+        assert!(res.children.render(Arc::clone(&wrapped.state)).is_ok_and(|s| s == "My bold text"),
                 "Finds the proper text in the markdown bold text with underscores.");
     }
 

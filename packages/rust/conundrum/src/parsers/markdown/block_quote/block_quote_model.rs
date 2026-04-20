@@ -1,4 +1,4 @@
-use std::{cell::RefCell, sync::Arc};
+use std::sync::Arc;
 
 use askama::Template;
 use serde::Serialize;
@@ -21,11 +21,13 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumCompileTarget, ParseState},
+                parse_state::ConundrumCompileTarget,
             },
             traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                html_js_component_result::HtmlJsComponentResult, mdx_component_result::MdxComponentResult,
+                conundrum_input::{ArcState, ConundrumInput},
+                fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
+                mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -50,7 +52,7 @@ pub struct BlockQuoteResult {
 }
 
 impl HtmlJsComponentResult for BlockQuoteResult {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let templ = BlockQuoteHtmlTemplate { children: self.children.render(res)? };
         templ.render().map_err(|e| {
             eprintln!("Error: {:#?}", e);
@@ -60,16 +62,19 @@ impl HtmlJsComponentResult for BlockQuoteResult {
 }
 
 impl PlainTextComponentResult for BlockQuoteResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl ConundrumComponentResult for BlockQuoteResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.compile_target == ConundrumCompileTarget::PlainText {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
@@ -80,10 +85,10 @@ impl ConundrumComponentResult for BlockQuoteResult {
 // ---------------------------------------------------------------------------
 
 impl MdxComponentResult for BlockQuoteResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         // Recursively render inner elements through the same MdxParsingResult
         // so side-effects (citations, tags, etc.) are collected correctly.
-        let children_string = compile_elements(&self.children.0, res)?;
+        let children_string = compile_elements(&self.children.0, &res)?;
 
         Ok(format!("\n<{component}>\n{inner}\n</{component}>\n",
                    component = AutoInsertedComponentName::AutoInsertedBlockQuote,
@@ -125,7 +130,7 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
                 // so math, citations, nested block quotes, etc. are recognised.
                 let inner_src = lines.join("\n");
                 let mut new_state = ConundrumInput { input: &inner_src,
-                                                     state: Arc::new(RefCell::new(ParseState::default())) };
+                                                     state: Arc::clone(&input.state) };
 
                 let new_parsed_content =
                     parse_elements(&mut new_state).unwrap_or_else(|_| vec![ParsedElement::Text(inner_src.clone())]);

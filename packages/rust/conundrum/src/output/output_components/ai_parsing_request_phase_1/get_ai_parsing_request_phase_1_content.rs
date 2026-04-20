@@ -1,15 +1,9 @@
 use crate::{
-    output::{
-        general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-        parsing_result::{
-            ai_serialization_request::AiSerializationRequestPhase1, mdx_parsing_result::MdxParsingResult,
-        },
-    },
+    output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
     parsers::markdown::code_block::code_block_model::ParsedCodeBlock,
 };
 
-pub fn get_ai_parsing_request_phase_1_content(block: &ParsedCodeBlock, res: &mut MdxParsingResult) -> String {
-    res.ai_secondary_parse_requests.push(AiSerializationRequestPhase1 { parsing_result: block.clone() });
+pub fn get_ai_parsing_request_phase_1_content(block: &ParsedCodeBlock) -> String {
     format!(
             r#"
 <{} res={}>

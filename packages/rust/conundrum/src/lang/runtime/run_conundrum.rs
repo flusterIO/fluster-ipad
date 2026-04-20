@@ -1,31 +1,23 @@
-use std::{cell::RefCell, sync::Arc};
-
-use askama::Template;
+use parking_lot::RwLock;
 use serde::{Deserialize, Serialize};
+use std::{cell::RefCell, sync::Arc};
 use typeshare::typeshare;
 
 use crate::{
-    lang::runtime::{
-        compile_conundrum::compile_elements,
-        parse_conundrum_string::parse_conundrum_string,
-        queries::get_title::get_title_group,
-        state::{
-            citation_list::CitationList,
-            conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
-            dom_data::DomData,
-            parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
-            ui_params::UIParams,
-        },
+    lang::runtime::state::{
+        citation_list::CitationList,
+        conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
+        dom_data::DomData,
+        parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
+        ui_params::UIParams,
     },
     output::{
         general::component_constants::component_names::EmbeddableComponentName,
-        html::{glue::gather_glue_assets::get_glue_asset_data, standalone::standalone_template::StandaloneTemplate},
         parsing_result::mdx_parsing_result::MdxParsingResult,
     },
     parsers::{document::ConundrumDocument, markdown::heading_sluggger::Slugger},
 };
-use winnow::{Stateful, error::ErrMode};
+use winnow::Stateful;
 
 /// This is the core 'input' for Conundrum.
 #[typeshare]
@@ -88,21 +80,19 @@ impl ParseConundrumOptions {
 }
 
 pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
-    // let mut result = MdxParsingResult::from_initial_mdx_content(&opts.content);
-    // result.note_id = opts.note_id.clone();
-    let state = Arc::new(RefCell::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
-                                                   bib: CitationList::default(),
-                                                   modifiers: opts.modifiers.clone(),
-                                                   eq_count: 0,
-                                                   last_heading_depth: 0,
-                                                   last_heading_tab_depth: 0,
-                                                   valid_footnote_indices: Vec::new(),
-                                                   ui_params: opts.ui_params.clone(),
-                                                   dom: DomData { id_count: 0 },
-                                                   compile_target: ConundrumCompileTarget::Html,
-                                                   slugger: Slugger::default(),
-                                                   trusted: opts.trusted,
-                                                   ..Default::default() }));
+    let state = Arc::new(RwLock::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
+                                                  bib: CitationList::default(),
+                                                  modifiers: opts.modifiers.clone(),
+                                                  eq_count: 0,
+                                                  last_heading_depth: 0,
+                                                  last_heading_tab_depth: 0,
+                                                  valid_footnote_indices: Vec::new(),
+                                                  ui_params: opts.ui_params.clone(),
+                                                  dom: DomData { id_count: 0 },
+                                                  compile_target: ConundrumCompileTarget::Html,
+                                                  slugger: Slugger::default(),
+                                                  trusted: opts.trusted,
+                                                  ..Default::default() }));
     let b = opts.content.clone();
 
     let mut stateful_input = Stateful { input: b.as_str(),
@@ -111,41 +101,19 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
     let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);
     let doc = ConundrumDocument::parse_input(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
 
-    let mut state = stateful_input.state.borrow_mut();
-    let rendered_string = match is_standalone {
-        true => doc.render_standalone(&mut state)?,
-        false => doc.render_app_embedded(&mut state)?,
-    };
+    println!("Doc: {:#?}", doc);
 
-    // println!("Rendered: {:#?}", rendered_string);
+    // let mut state = stateful_input.state.borrow_mut();
+    // let rendered_string = match is_standalone {
+    //     true => doc.render_standalone(Arc::clone(&stateful_input.state))?,
+    //     false => doc.render_app_embedded(Arc::clone(&stateful_input.state))?,
+    // };
 
-    state.data.content = rendered_string;
+    println!("Rendered: {:#?}", is_standalone);
+    // let mut state = stateful_input.state.borrow_mut();
 
-    Ok(state.data.clone())
+    // state.data.content = rendered_string;
 
-    // let (elements, input_data) = parse_conundrum_string(&mut
-    // stateful_input).map_err(ConundrumErrorVariant::from)?;
-
-    // let mut x = input_data.state.borrow_mut();
-    // let compiled = compile_elements(&elements, &mut x)?;
-    // let is_standalone =
-    // opts.modifiers.contains(&ConundrumModifier::Standalone); let glue =
-    // get_glue_asset_data(&x, &is_standalone); println!("Glue: {:#?}",
-    // glue); if is_standalone {
-    //     let templ =
-    //         StandaloneTemplate::new(get_title_group(opts.content,
-    // opts.modifiers, opts.target).map(|n| n.title).ok(),
-    // compiled,                                 glue.js,
-    //                                 glue.css,
-    //                                 x.ui_params.clone());
-    //     let rendered_standalone = templ.render() .map_err(|e| {
-    //                 eprintln!("Error: {:#?}", e);
-    //
-    // ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
-    //             })?;
-    //     x.data.content = rendered_standalone;
-    // } else {
-    //     x.data.content = compiled;
-    // }
-    // Ok(x.data.clone())
+    // Ok(state.data.clone())
+    Ok(MdxParsingResult::default())
 }

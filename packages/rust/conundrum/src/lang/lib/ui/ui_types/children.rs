@@ -1,4 +1,5 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
+use std::sync::Arc;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -13,9 +14,8 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::ParseState,
             },
-            traits::conundrum_input::get_conundrum_input,
+            traits::conundrum_input::{ArcState, ConundrumInput},
         },
     },
     output::output_components::output_utils::format_markdown_fragment_property,
@@ -40,14 +40,14 @@ impl Children {
 
     /// Outputs to the various conundrum outputs depending on the associated
     /// flags.
-    pub fn render(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        compile_elements(&self.0, res)
+    pub fn render(&self, res: ArcState) -> ConundrumModalResult<String> {
+        compile_elements(&self.0, &res)
     }
 
     /// Render will not be called fo these elements. To maintain an accurate
     /// state that represents the _inserted_ note, not the _rendered_ note
     /// we need to pass the state here anyways.
-    pub fn render_bypassed(&self, _: &mut ParseState) {
+    pub fn render_bypassed(&self, _: ArcState) {
         todo!()
     }
 
@@ -56,13 +56,13 @@ impl Children {
     /// highlighter didn't break, but we will be able to fix that in the
     /// coming months once the Conundrum LSP & syntax highlighter are
     /// online.
-    pub fn to_jsx_fragment_string(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    pub fn to_jsx_fragment_string(&self, res: ArcState) -> ConundrumModalResult<String> {
         let res = self.render(res)?;
         Ok(format_markdown_fragment_property(res.as_str()))
     }
 
     /// Inserts the prop not as a Fragment, but as a string.
-    pub fn to_jsx_prop_as_string(&self, prop_name: &str, res: &mut ParseState) -> ConundrumModalResult<String> {
+    pub fn to_jsx_prop_as_string(&self, prop_name: &str, res: ArcState) -> ConundrumModalResult<String> {
         let children_string = self.render(res)?;
         let x = serde_json::to_string(children_string.as_str()).map_err(|e| {
                     println!("Error: {:#?}", e);
@@ -72,15 +72,16 @@ impl Children {
         Ok(format!("{}={}", prop_name, x))
     }
 
-    pub fn to_jsx_prop(&self, prop_name: &str, res: &mut ParseState) -> ConundrumModalResult<String> {
+    pub fn to_jsx_prop(&self, prop_name: &str, res: ArcState) -> ConundrumModalResult<String> {
         let s = self.to_jsx_fragment_string(res)?;
         Ok(format!("{}={}", prop_name, s))
     }
 }
 
 impl FromWithState<&str> for Children {
-    fn from_with_state(value: &str, state: &mut ParseState) -> ConundrumModalResult<Self> {
-        let mut input = &mut get_conundrum_input(value, state.clone());
+    fn from_with_state(value: &str, state: ArcState) -> ConundrumModalResult<Self> {
+        let mut input = ConundrumInput { input: value,
+                                         state };
         let res = parse_elements(&mut input)?;
         Ok(Children(res))
     }

@@ -10,13 +10,10 @@ use crate::{
             ui_types::{children::Children, emphasis::Emphasis},
         },
         runtime::{
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumModifier},
             traits::{
-                fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
-                markdown_component_result::MarkdownComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -47,19 +44,19 @@ pub struct UtilityContainer {
 }
 
 impl MarkdownComponentResult for UtilityContainer {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl PlainTextComponentResult for UtilityContainer {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl JsxComponentResult for UtilityContainer {
-    fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!(
                    r#"<{}
 {}
@@ -76,12 +73,16 @@ impl JsxComponentResult for UtilityContainer {
 }
 
 impl ConundrumComponentResult for UtilityContainer {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+            drop(state);
             self.to_markdown(res)
-        } else if res.contains_modifier(&ConundrumModifier::ForSearchInput) {
+        } else if state.contains_modifier(&ConundrumModifier::ForSearchInput) {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_jsx_component(res)
         }
     }
@@ -92,7 +93,10 @@ impl ConundrumComponent for UtilityContainer {
         AnyComponentName::UserEmbedded(EmbeddableComponentName::UtlityContainer)
     }
 
-    fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self>
+    fn from_props(props: ConundrumObject,
+                  children: Option<Vec<ParsedElement>>,
+                  _: ArcState)
+                  -> ConundrumModalResult<Self>
         where Self: Sized {
         let sizable = SizablePropsGroup::from_jsx_props(&props, "")?;
         let emphasis = Emphasis::from_jsx_props(&props, "").ok();

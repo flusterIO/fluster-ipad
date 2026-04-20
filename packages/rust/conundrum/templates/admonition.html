@@ -1,0 +1,14 @@
+<div class="{{tw_merge!("my-4 w-full overflow-hidden", self.sizable.as_class())}}">
+<div 
+data-cdm-folded="{{folded}}"
+data-cdm-foldable="{{foldable}}"
+>
+<div class="w-full p-2 rounded-tl rounded-tr relative cursor-pointer z-[1] min-h-[42px] font-semibold grid place-items-center {{self.emphasis.to_background_color_classes()}}">
+{{self.get_icon()}}
+</div>
+{{title_children}}
+</div>
+<div class="p-4 first:mt-0 last:mb-0 admonitionBody inline-mdx {% if self.is_center_self() %} flex flex-col justify-center items-center {% endif %}">
+{{body_children}}
+</div>
+</div>

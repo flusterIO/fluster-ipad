@@ -11,7 +11,8 @@ use crate::{
     lang::runtime::{
         state::conundrum_error_variant::ConundrumModalResult,
         traits::{
-            conundrum_input::ConundrumInput, markdown_component_result::MarkdownComponentResult,
+            conundrum_input::{ArcState, ConundrumInput},
+            markdown_component_result::MarkdownComponentResult,
             mdx_component_result::MdxComponentResult,
         },
     },
@@ -26,17 +27,13 @@ pub struct InlineCodeResult {
 }
 
 impl MarkdownComponentResult for InlineCodeResult {
-    fn to_markdown(&self,
-                   _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                   -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("`{}`", self.content))
     }
 }
 
 impl MdxComponentResult for InlineCodeResult {
-    fn to_mdx_component(&self,
-                        _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                        -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         match &self.lang {
             CodeBlockLanguage::DefaultLanguage => Ok(format!("`{}`", self.content)),
             CodeBlockLanguage::UserProvided(s) => Ok(format!("`{}{{:{}}}`", self.content, s)),

@@ -1,12 +1,11 @@
+use std::sync::Arc;
+
 use winnow::{Parser, stream::Stream};
 
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        runtime::{
-            state::conundrum_error_variant::ConundrumModalResult,
-            traits::conundrum_input::{ConundrumInput, get_conundrum_input},
-        },
+        runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput},
     },
     parsers::{
         javascript::{
@@ -31,9 +30,8 @@ impl JsxPropertyParser for JsxNumberPropertyResult {
                                                                              input.input.reset(&start);
                                                                          })?;
 
-        let state = input.state.borrow();
-
-        let mut new_input = get_conundrum_input(&bracketed_content, state.clone());
+        let mut new_input = ConundrumInput { input: &bracketed_content,
+                                             state: Arc::clone(&input.state) };
 
         let n = white_space_delimited(JavascriptNumberResult::parse_javascript).parse_next(&mut new_input)
                                                                                .inspect_err(|_| {

@@ -9,8 +9,8 @@ use crate::{
         runtime::{
             state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
             traits::{
-                fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
-                markdown_component_result::MarkdownComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -33,12 +33,13 @@ pub struct TableOfContents {
 
 impl MarkdownComponentResult for TableOfContents {
     fn to_markdown(&self,
-                   res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                   res: ArcState)
                    -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
         let mut s = String::from("");
         let mut last_depth = 0;
         let mut last_tab_depth = 0;
-        for item in &res.data.toc {
+        let state = res.read_arc();
+        for item in &state.data.toc {
             if item.depth > last_depth {
                 last_tab_depth += 1;
             } else if item.depth < last_depth {
@@ -57,7 +58,7 @@ impl MarkdownComponentResult for TableOfContents {
 
 impl PlainTextComponentResult for TableOfContents {
     fn to_plain_text(&self,
-                     _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                     _: ArcState)
                      -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
         Ok(String::from(""))
     }
@@ -65,9 +66,10 @@ impl PlainTextComponentResult for TableOfContents {
 
 impl JsxComponentResult for TableOfContents {
     fn to_jsx_component(&self,
-                        res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                        res: ArcState)
                         -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
-        let json_string = serde_json::to_string(&res.data.toc).map_err(|e| {
+        let state = res.read_arc();
+        let json_string = serde_json::to_string(&state.data.toc).map_err(|e| {
             eprintln!("Error: {:#?}", e);
             ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("JSON error", "Conundrum could not parse the table of contents to json. This is almost surely a bug on my end, and I'm working on it.")))
         })?;
@@ -88,14 +90,18 @@ impl JsxComponentResult for TableOfContents {
 
 impl ConundrumComponentResult for TableOfContents {
     fn to_conundrum_component(&self,
-                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                              res: ArcState)
                               -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String>
     {
-        if res.is_markdown_or_search_or_ai() {
+        let state = res.read_arc();
+        if state.is_markdown_or_search_or_ai() {
+            drop(state);
             self.to_markdown(res)
-        } else if res.is_plain_text() {
+        } else if state.is_plain_text() {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_jsx_component(res)
         }
     }
@@ -107,7 +113,8 @@ impl ConundrumComponent for TableOfContents {
     }
 
     fn from_props(props: crate::parsers::conundrum::logic::object::object::ConundrumObject,
-                  _: Option<Vec<crate::lang::elements::parsed_elements::ParsedElement>>)
+                  _: Option<Vec<crate::lang::elements::parsed_elements::ParsedElement>>,
+                  _: ArcState)
                   -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<Self>
         where Self: Sized {
         let expanded = ConundrumBoolean::from_jsx_props(&props, "expanded").ok();

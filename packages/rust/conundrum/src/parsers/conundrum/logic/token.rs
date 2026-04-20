@@ -3,7 +3,7 @@ use serde::Serialize;
 use crate::{
     lang::runtime::{
         state::conundrum_error_variant::ConundrumModalResult,
-        traits::fluster_component_result::ConundrumComponentResult,
+        traits::{conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult},
     },
     parsers::conundrum::logic::{
         bool::boolean::ConundrumBoolean, number::conundrum_number::ConundrumNumber,
@@ -23,9 +23,7 @@ pub enum ConundrumLogicToken {
 }
 
 impl ConundrumComponentResult for ConundrumLogicToken {
-    fn to_conundrum_component(&self,
-                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
-                              -> ConundrumModalResult<String> {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ConundrumLogicToken::Number(n) => n.to_conundrum_component(res),
             ConundrumLogicToken::String(s) => s.to_conundrum_component(res),

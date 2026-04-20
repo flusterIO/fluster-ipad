@@ -1,3 +1,5 @@
+use std::{cell::RefCell, sync::Arc};
+
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
@@ -14,9 +16,13 @@ use crate::{
                 toc::table_of_contents::TableOfContents,
             },
         },
-        runtime::state::{
-            conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+        runtime::{
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ParseState,
+            },
+            traits::conundrum_input::ArcState,
         },
     },
     output::general::component_constants::{
@@ -34,7 +40,7 @@ use lazy_static::lazy_static;
 use winnow::error::ErrMode;
 
 pub type ComponentGetter =
-    Box<dyn Fn(ConundrumObject, Option<Vec<ParsedElement>>) -> ConundrumModalResult<ConundrumComponentType>
+    Box<dyn Fn(ConundrumObject, Option<Vec<ParsedElement>>, ArcState) -> ConundrumModalResult<ConundrumComponentType>
             + Send
             + Sync>;
 
@@ -44,49 +50,60 @@ lazy_static! {
     pub static ref COMPONENT_MAP: ComponentMap = {
         let m: ComponentMap = DashMap::new();
         m.insert(EmbeddableComponentId::Card.to_string(),
-                 Box::new(|props, children| Card::from_props(props, children).map(ConundrumComponentType::Card)));
-
+                 Box::new(|props, children, state| {
+                     Card::from_props(props, children, state).map(ConundrumComponentType::Card)
+                 }));
         m.insert(EmbeddableComponentId::Admonition.to_string(),
-                 Box::new(|props, children| {
-                     Admonition::from_props(props, children).map(ConundrumComponentType::Admonition)
+                 Box::new(|props, children, state| {
+                     Admonition::from_props(props, children, state).map(ConundrumComponentType::Admonition)
                  }));
         m.insert(EmbeddableComponentId::Hint.to_string(),
-                 Box::new(|props, children| Hint::from_props(props, children).map(ConundrumComponentType::Hint)));
+                 Box::new(|props, children, state| {
+                     Hint::from_props(props, children, state).map(ConundrumComponentType::Hint)
+                 }));
         m.insert(EmbeddableComponentId::Ul.to_string(),
-                 Box::new(|props, children| Underline::from_props(props, children).map(ConundrumComponentType::Ul)));
+                 Box::new(|props, children, state| {
+                     Underline::from_props(props, children, state).map(ConundrumComponentType::Ul)
+                 }));
         m.insert(EmbeddableComponentId::Hl.to_string(),
-                 Box::new(|props, children| Highlight::from_props(props, children).map(ConundrumComponentType::Hl)));
+                 Box::new(|props, children, state| {
+                     Highlight::from_props(props, children, state).map(ConundrumComponentType::Hl)
+                 }));
         m.insert(EmbeddableComponentId::Tab.to_string(),
-                 Box::new(|props, children| Tab::from_props(props, children).map(ConundrumComponentType::Tab)));
+                 Box::new(|props, children, state| {
+                     Tab::from_props(props, children, state).map(ConundrumComponentType::Tab)
+                 }));
         m.insert(EmbeddableComponentId::Tabs.to_string(),
-                 Box::new(|props, children| TabsGroup::from_props(props, children).map(ConundrumComponentType::Tabs)));
+                 Box::new(|props, children, state| {
+                     TabsGroup::from_props(props, children, state).map(ConundrumComponentType::Tabs)
+                 }));
         m.insert(EmbeddableComponentId::EqRef.to_string(),
-                 Box::new(|props, children| {
-                     EquationReference::from_props(props, children).map(ConundrumComponentType::EqRef)
+                 Box::new(|props, children, state| {
+                     EquationReference::from_props(props, children, state).map(ConundrumComponentType::EqRef)
                  }));
         m.insert(EmbeddableComponentId::HrWithChildren.to_string(),
-                 Box::new(|props, children| {
-                     HrWithChildrenResult::from_props(props, children).map(ConundrumComponentType::Hr)
+                 Box::new(|props, children, state| {
+                     HrWithChildrenResult::from_props(props, children, state).map(ConundrumComponentType::Hr)
                  }));
         m.insert(EmbeddableComponentId::UtlityContainer.to_string(),
-                 Box::new(|props, children| {
-                     UtilityContainer::from_props(props, children).map(ConundrumComponentType::Container)
+                 Box::new(|props, children, state| {
+                     UtilityContainer::from_props(props, children, state).map(ConundrumComponentType::Container)
                  }));
         m.insert(EmbeddableComponentId::Grid.to_string(),
-                 Box::new(|props, children| {
-                     ResponsiveGrid::from_props(props, children).map(ConundrumComponentType::Grid)
+                 Box::new(|props, children, state| {
+                     ResponsiveGrid::from_props(props, children, state).map(ConundrumComponentType::Grid)
                  }));
         m.insert(EmbeddableComponentId::Emoji.to_string(),
-                 Box::new(|props, children| {
-                     EmojiResult::from_props(props, children).map(ConundrumComponentType::Emoji)
+                 Box::new(|props, children, state| {
+                     EmojiResult::from_props(props, children, state).map(ConundrumComponentType::Emoji)
                  }));
         m.insert(DocumentationComponentName::EmojiDocumentationDemo.to_string(),
-                 Box::new(|props, children| {
-                     EmojiDocsDemo::from_props(props, children).map(ConundrumComponentType::EmojiDocsDemo)
+                 Box::new(|props, children, state| {
+                     EmojiDocsDemo::from_props(props, children, state).map(ConundrumComponentType::EmojiDocsDemo)
                  }));
         m.insert(EmbeddableComponentId::Toc.to_string(),
-                 Box::new(|props, children| {
-                     TableOfContents::from_props(props, children).map(ConundrumComponentType::Toc)
+                 Box::new(|props, children, state| {
+                     TableOfContents::from_props(props, children, state).map(ConundrumComponentType::Toc)
                  }));
         m
     };
@@ -96,7 +113,8 @@ impl COMPONENT_MAP {
     pub fn get_by_component_name(&self,
                                  id: &AnyComponentName,
                                  props: ConundrumObject,
-                                 children: Option<Vec<ParsedElement>>)
+                                 children: Option<Vec<ParsedElement>>,
+                                 state: ArcState)
                                  -> ConundrumModalResult<ConundrumComponentType> {
         let component_name_string = match id {
             AnyComponentName::UserEmbedded(u) => u.to_component_id().to_string(),
@@ -107,7 +125,7 @@ impl COMPONENT_MAP {
         match res {
             Some(s) => {
                 let f = s.value();
-                let r = f(props, children)?;
+                let r = f(props, children, state)?;
                 Ok(r)
             }
             None => {

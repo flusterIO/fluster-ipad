@@ -1,4 +1,4 @@
-use std::{cell::RefCell, sync::Arc};
+use std::sync::Arc;
 
 use serde::Serialize;
 use typeshare::typeshare;
@@ -13,8 +13,11 @@ use winnow::{
 use crate::{
     lang::runtime::{
         parse_conundrum_string::parse_elements,
-        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
-        traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
+        state::conundrum_error_variant::ConundrumModalResult,
+        traits::{
+            conundrum_input::{ArcState, ConundrumInput},
+            fluster_component_result::ConundrumComponentResult,
+        },
     },
     output::general::component_constants::any_component_id::AnyComponentName,
     parsers::{
@@ -39,7 +42,7 @@ pub struct ReactComponentWithChildrenResult {
 }
 
 impl ConundrumComponentResult for ReactComponentWithChildrenResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.component.to_conundrum_component(res)
     }
 }
@@ -105,14 +108,6 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                })?;
 
     react_closing_tag_parser_by_name(component_name_string.as_str()).parse_next(input)?;
-
-    // BUG: This is the cause of the disconnect between the parent state and the
-    // nested state, why equations numbers are resetting.
-    // let mut state = input.state.borrow_mut();
-    // let mut new_input: Stateful<&str, RefCell<ParseState>> =
-    //     get_conundrum_input(children_string, state.modifiers.clone());
-    // let mut new_input = duplicate_conundrum_input(children_string,
-    // input.state.clone());
     //
     let rc = Arc::clone(&input.state);
 
@@ -120,11 +115,13 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                          state: rc };
     let children = parse_elements(&mut new_input)?;
 
-    let mut state = input.state.borrow_mut();
+    let cloned_state = Arc::clone(&input.state);
 
-    let component = COMPONENT_MAP.get_by_component_name(&component_name, props, Some(children))?;
+    let component = COMPONENT_MAP.get_by_component_name(&component_name, props, Some(children), cloned_state)?;
 
+    let mut state = input.state.write();
     state.data.append_embeddable_component(&component_name);
+    drop(state);
 
     Ok(ReactComponentWithChildrenResult { full_text: "".to_string(), // This field will be
                                           // replaced below anyways.
@@ -162,13 +159,15 @@ This is my children markdown test content
 
         let res = ReactComponentWithChildrenResult::parse_input_string(&mut test_data).expect("Parses vald component successfully.");
 
-        let mut state = test_data.state.borrow_mut();
-        let mdx_component =
-            res.component.to_conundrum_component(&mut state).expect("Compiles to mdx without throwing an error.");
+        let mdx_component = res.component
+                               .to_conundrum_component(Arc::clone(&test_data.state))
+                               .expect("Compiles to mdx without throwing an error.");
         assert!(test_data.is_empty(), "Consumes the entire input string.");
         assert_snapshot!(mdx_component);
         let children = match res.component {
-            ConundrumComponentType::Card(c) => c.children.render(&mut state).expect("Compiles children successfully"),
+            ConundrumComponentType::Card(c) => {
+                c.children.render(Arc::clone(&test_data.state)).expect("Compiles children successfully")
+            }
             _ => panic!("Found a component that's not the `Card` that was inserted."),
         };
         assert_snapshot!(children);

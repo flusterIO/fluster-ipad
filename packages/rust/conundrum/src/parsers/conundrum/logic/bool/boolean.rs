@@ -11,7 +11,10 @@ use crate::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
             },
-            traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
+            traits::{
+                conundrum_input::{ArcState, ConundrumInput},
+                fluster_component_result::ConundrumComponentResult,
+            },
         },
     },
     parsers::{
@@ -27,6 +30,12 @@ use winnow::{error::ErrMode, token::literal};
 pub struct ConundrumBoolean(pub bool);
 
 uniffi::custom_newtype!(ConundrumBoolean, bool);
+
+impl Default for ConundrumBoolean {
+    fn default() -> Self {
+        Self(false)
+    }
+}
 
 impl JavascriptParser<ConundrumBoolean> for ConundrumBoolean {
     fn parse_javascript(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumBoolean> {
@@ -69,9 +78,7 @@ impl Display for ConundrumBoolean {
 }
 
 impl ConundrumComponentResult for ConundrumBoolean {
-    fn to_conundrum_component(&self,
-                              _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                              -> ConundrumModalResult<String> {
+    fn to_conundrum_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         if self.0 {
             Ok(String::from("true"))
         } else {

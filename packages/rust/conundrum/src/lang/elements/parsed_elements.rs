@@ -11,8 +11,8 @@ use crate::{
                 parse_state::ParseState,
             },
             traits::{
-                fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
-                mdx_component_result::MdxComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult, mdx_component_result::MdxComponentResult,
             },
         },
     },
@@ -31,9 +31,9 @@ use crate::{
             block_math::BlockMathResult, block_quote::block_quote_model::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
             code_block::code_block_model::ParsedCodeBlock, heading::heading_model::MarkdownHeadingResult,
-            inline_code::InlineCodeResult, inline_math::InlineMathResult, italic_text::MarkdownItalicTextResult,
-            markdown_extensions::emoji::EmojiResult, markdown_link::MarkdownLinkResult,
-            paragraph::MarkdownParagraphResult,
+            hr::MarkdownHorizontalRule, inline_code::InlineCodeResult, inline_math::InlineMathResult,
+            italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::EmojiResult,
+            markdown_link::MarkdownLinkResult, paragraph::MarkdownParagraphResult,
         },
         react::{
             react_component_self_closing::ReactComponentSelfClosingResult,
@@ -43,7 +43,7 @@ use crate::{
 };
 
 impl MdxComponentResult for String {
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.clone())
     }
 }
@@ -62,6 +62,7 @@ pub enum ParsedElement {
     BlockMath(BlockMathResult),
     InlineMath(InlineMathResult),
     Text(String),
+    Hr(MarkdownHorizontalRule),
     BoldText(MarkdownBoldTextResult),
     ItalicText(MarkdownItalicTextResult),
     BoldAndItalicText(MarkdownBoldAndItalicTextResult),
@@ -87,7 +88,7 @@ pub enum ParsedElement {
 }
 
 impl HtmlJsComponentResult for ParsedElement {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ParsedElement::ParsedInspectionRequest(req) => req.to_conundrum_component(res),
             ParsedElement::ParsedCodeBlock(block) => block.to_html_js_component(res),
@@ -98,12 +99,13 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::Heading(heading) => heading.to_html_js_component(res),
             ParsedElement::BlockMath(math) => math.to_html_js_component(res),
             ParsedElement::InlineMath(math) => math.to_html_js_component(res),
-            ParsedElement::BlockQuote(quote) => quote.to_conundrum_component(res),
+            ParsedElement::BlockQuote(quote) => quote.to_html_js_component(res),
             ParsedElement::BoldText(t) => t.to_mdx_component(res),
             ParsedElement::ItalicText(t) => t.to_html_js_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_html_js_component(res),
             ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
             ParsedElement::MarkdownParagraph(p) => p.to_html_js_component(res),
+            ParsedElement::Hr(l) => l.to_conundrum_component(res),
             ParsedElement::HrWithChildren(c) => c.to_conundrum_component(res),
             ParsedElement::Comment(c) => c.to_conundrum_component(res),
             ParsedElement::ReactComponentSelfClosing(c) => c.component.to_html_js_component(res),
@@ -118,7 +120,7 @@ impl HtmlJsComponentResult for ParsedElement {
 }
 
 impl MdxComponentResult for ParsedElement {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ParsedElement::ParsedInspectionRequest(req) => req.to_conundrum_component(res),
             ParsedElement::ParsedCodeBlock(block) => block.to_conundrum_component(res),
@@ -136,6 +138,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
             ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
             ParsedElement::HrWithChildren(c) => c.to_conundrum_component(res),
+            ParsedElement::Hr(c) => c.to_conundrum_component(res),
             ParsedElement::Comment(c) => c.to_conundrum_component(res),
             ParsedElement::ReactComponentSelfClosing(c) => c.component.to_conundrum_component(res),
             ParsedElement::ReactComponentWithChildren(c) => c.component.to_conundrum_component(res),

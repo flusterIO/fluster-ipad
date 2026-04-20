@@ -1,7 +1,6 @@
 use std::fmt::Display;
 
 use katex::{KatexContext, Settings, TrustSetting, render_to_string};
-use rssn::prelude::faer::traits::ByRef;
 use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
@@ -22,11 +21,9 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult, ConundrumResult},
-                parse_state::{ConundrumModifier, ParseState},
-                ui_params::{self, UIParams},
             },
             traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input},
+                conundrum_input::{ArcState, ConundrumInput},
                 fluster_component_result::ConundrumComponentResult,
                 jsx_component_result::JsxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
@@ -62,8 +59,9 @@ impl ConundrumString {
         ConundrumString(content.to_string())
     }
 
-    pub fn to_children(&self, state: ParseState) -> ConundrumModalResult<Children> {
-        let mut nested_state = get_conundrum_input(&self.0, state);
+    pub fn to_children(&self, state: ArcState) -> ConundrumModalResult<Children> {
+        let mut nested_state = ConundrumInput { input: self.0.as_str(),
+                                                state };
         let res = parse_elements(&mut nested_state)?;
         Ok(Children(res))
     }
@@ -127,22 +125,25 @@ impl JsxPropRepresentable for ConundrumString {
 }
 
 impl PlainTextComponentResult for ConundrumString {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(String::from(""))
     }
 }
 
 impl JsxComponentResult for ConundrumString {
-    fn to_jsx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("\"{}\"", self.to_quoted_string().unwrap_or(String::from(""))))
     }
 }
 
 impl ConundrumComponentResult for ConundrumString {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.is_markdown_or_plain_text() {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.is_markdown_or_plain_text() {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_jsx_component(res)
         }
     }

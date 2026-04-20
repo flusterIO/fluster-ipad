@@ -1,10 +1,9 @@
+use std::sync::Arc;
+
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        runtime::{
-            state::conundrum_error_variant::ConundrumModalResult,
-            traits::conundrum_input::{ConundrumInput, get_conundrum_input},
-        },
+        runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput},
     },
     parsers::{
         conundrum::logic::{bool::boolean::ConundrumBoolean, token::ConundrumLogicToken},
@@ -29,8 +28,8 @@ pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ConundrumModal
     let (key, wrapped_content) = jsx_curly_bracket_wrapped_property.parse_next(input).inspect_err(|_| {
                                                                                           input.input.reset(&start);
                                                                                       })?;
-    let state = input.state.borrow();
-    let mut wrapped_content_input = get_conundrum_input(&wrapped_content, state.clone());
+    let mut wrapped_content_input = ConundrumInput { input: &wrapped_content,
+                                                     state: Arc::clone(&input.state) };
     let value =
         ConundrumBoolean::parse_javascript.map(ConundrumLogicToken::Bool).parse_next(&mut wrapped_content_input)?;
 

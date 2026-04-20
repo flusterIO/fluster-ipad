@@ -1,11 +1,13 @@
 use std::fmt::Display;
 
 use askama::FastWritable;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct DOMId(String);
+
+uniffi::custom_newtype!(DOMId, String);
 
 impl DOMId {
     pub fn new(id: String) -> Self {

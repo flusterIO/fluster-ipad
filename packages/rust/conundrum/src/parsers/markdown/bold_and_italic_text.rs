@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::sync::Arc;
 use winnow::{
     Parser,
     combinator::{alt, repeat_till},
@@ -10,14 +11,14 @@ use crate::{
     lang::{
         lib::{shared::traits::from_with_state::FromWithState, ui::ui_types::children::Children},
         runtime::{
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumModifier, ParseState},
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumModifier},
             traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::{ArcState, ConundrumInput},
+                fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
+                markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -34,36 +35,40 @@ pub struct MarkdownBoldAndItalicTextResult {
 }
 
 impl MarkdownComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("**_{}_**", self.children.render(res)?))
     }
 }
 
 impl MdxComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("<span italic=\"italic font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 
 impl HtmlJsComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("<span italic=\"italic font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 
 impl PlainTextComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl ConundrumComponentResult for MarkdownBoldAndItalicTextResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput]) {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput]) {
+            drop(state);
             self.to_plain_text(res)
-        } else if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+        } else if state.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+            drop(state);
             self.to_markdown(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
@@ -94,9 +99,7 @@ impl ConundrumParser<MarkdownBoldAndItalicTextResult> for MarkdownBoldAndItalicT
                                                                      })?;
         let content = String::from_iter(c);
 
-        let mut state = input.state.borrow_mut();
-
-        let children = Children::from_with_state(content.as_str(), &mut state)?;
+        let children = Children::from_with_state(content.as_str(), Arc::clone(&input.state))?;
 
         Ok(MarkdownBoldAndItalicTextResult { children })
     }
@@ -118,8 +121,7 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldAndItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown bold & italic text without throwing an error.");
 
-        let mut state = wrapped.state.borrow_mut();
-        assert!(res.children.render(&mut state).is_ok_and(|x| x == ("My bold and italic text")),
+        assert!(res.children.render(Arc::clone(&wrapped.state)).is_ok_and(|x| x == ("My bold and italic text")),
                 "Finds the proper text in the markdown bold and italic text with asterisks.");
         assert!(wrapped.input.is_empty(), "Consumes the entire input");
     }
@@ -130,8 +132,7 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldAndItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        let mut state = wrapped.state.borrow_mut();
-        assert!(res.children.render(&mut state).is_ok_and(|x| x == "My bold and italic text"),
+        assert!(res.children.render(Arc::clone(&wrapped.state)).is_ok_and(|x| x == "My bold and italic text"),
                 "Finds the proper text in the markdown bold and italic text with underscores.");
     }
 
@@ -141,8 +142,7 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownBoldAndItalicTextResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        let mut state = wrapped.state.borrow_mut();
-        assert!(res.children.render(&mut state).is_ok_and(|x| x == "My bold and italic text"),
+        assert!(res.children.render(Arc::clone(&wrapped.state)).is_ok_and(|x| x == "My bold and italic text"),
                 "Finds the proper text in the markdown bold and italic text with underscores.");
     }
 

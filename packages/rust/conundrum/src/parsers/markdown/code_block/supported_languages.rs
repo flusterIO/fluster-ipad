@@ -1,3 +1,4 @@
+use devicons;
 use serde::{Deserialize, Serialize};
 use strum::EnumIter;
 use syntect::parsing::{SyntaxReference, SyntaxSet};
@@ -26,7 +27,9 @@ use crate::lang::{
            EnumIter,
            uniffi::Enum,
            Clone,
-           Debug)]
+           Debug,
+           Eq,
+           PartialEq)]
 pub enum SupportedCodeBlockSyntax {
     #[serde(rename = "Plain Text")]
     #[strum(to_string = "Plain Text", serialize = "text", serialize = "txt")]

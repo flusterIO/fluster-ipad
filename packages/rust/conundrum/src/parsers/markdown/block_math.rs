@@ -14,12 +14,15 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
+                parse_state::ConundrumCompileTarget,
             },
             traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                conundrum_input::{ArcState, ConundrumInput},
+                fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
+                jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -41,33 +44,38 @@ pub struct BlockMathResult {
 }
 
 impl PlainTextComponentResult for BlockMathResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.body.0.clone())
     }
 }
 
 impl ConundrumComponentResult for BlockMathResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.compile_target == ConundrumCompileTarget::PlainText {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
-        } else if res.is_markdown_or_search_or_ai() {
+        } else if state.is_markdown_or_search_or_ai() {
+            drop(state);
             self.to_markdown(res)
-        } else if res.targets_jsx() {
+        } else if state.targets_jsx() {
+            drop(state);
             self.to_jsx_component(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
 }
 
 impl MarkdownComponentResult for BlockMathResult {
-    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("$$\n{}\n$$", self.body))
     }
 }
 
 impl JsxComponentResult for BlockMathResult {
-    fn to_jsx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         let math_data = MathData { display: true,
                                    idx: Some(self.idx),
                                    id: self.id.as_ref().map(|id| id.0.clone()),
@@ -85,14 +93,15 @@ impl JsxComponentResult for BlockMathResult {
 }
 
 impl HtmlJsComponentResult for BlockMathResult {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let math_string = self.body.to_math(false, res.trusted)?;
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        let math_string = self.body.to_math(false, state.trusted)?;
         Ok(format!("<div className=\"conundrum-math conundrum-math-block\">\n{}\n</div>", math_string))
     }
 }
 
 impl MdxComponentResult for BlockMathResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.to_jsx_component(res)
     }
 }
@@ -117,7 +126,7 @@ impl ConundrumParser<BlockMathResult> for BlockMathResult {
         // Need to modify state during the parsing phase so that it's available during
         // the rendering phase for the math component indices, otherwise the
         // indices wll only be able to read downwards.
-        let mut res = input.state.borrow_mut();
+        let mut res = input.state.write_arc();
         let current_last_index = res.eq_count;
         if let Some(_id) = &id {
             res.data.eq_ref_map.insert(_id.clone(), current_last_index);

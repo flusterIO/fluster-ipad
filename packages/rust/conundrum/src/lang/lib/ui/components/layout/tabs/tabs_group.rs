@@ -1,4 +1,5 @@
 use askama::Template;
+use std::sync::Arc;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -20,12 +21,13 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
+                parse_state::ConundrumCompileTarget,
             },
             traits::{
-                fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
-                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -80,23 +82,23 @@ pub struct TabsGroup {
 }
 
 impl PlainTextComponentResult for TabsGroup {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl MdxComponentResult for TabsGroup {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.to_jsx_component(res)
     }
 }
 
 impl HtmlJsComponentResult for TabsGroup {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let group_id = self.id.to_string();
-        let group = TabGroupHtmlTemplate { children: self.children.render(res)?,
+        let group = TabGroupHtmlTemplate { children: self.children.render(Arc::clone(&res))?,
                                            tab_group_id: group_id.clone(),
-                                           tabs: self.get_tabs(&group_id, res)? };
+                                           tabs: self.get_tabs(&group_id, Arc::clone(&res))? };
 
         group.render().map_err(|e| {
             eprintln!("Error: {:#?}", e);
@@ -108,33 +110,40 @@ impl HtmlJsComponentResult for TabsGroup {
 }
 
 impl ConundrumComponentResult for TabsGroup {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.targets_markdown() {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.targets_markdown() {
+            drop(state);
             self.to_markdown(res)
-        } else if res.compile_target == ConundrumCompileTarget::PlainText {
+        } else if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
 }
 
 impl TabsGroup {
-    pub fn get_tabs(&self, group_id: &str, res: &mut ParseState) -> ConundrumModalResult<Vec<TabButtonHtmlTemplate>> {
+    pub fn get_tabs(&self, group_id: &str, res: ArcState) -> ConundrumModalResult<Vec<TabButtonHtmlTemplate>> {
         let mut children = Vec::new();
         for (i, x) in self.children.0.iter().enumerate() {
             if let Some(tab) = match x {
                 ParsedElement::ReactComponentWithChildren(n) => match &n.component {
                     ConundrumComponentType::Tab(t) => {
-                        Some(TabButtonHtmlTemplate { btn_children: t.label.to_children(res.clone())?.render(res)?,
+                        Some(TabButtonHtmlTemplate { btn_children: t.label
+                                                                    .to_children(Arc::clone(&res))?
+                                                                    .render(Arc::clone(&res))?,
                                                      tab_group_id: group_id.to_string(),
                                                      idx: i as u8,
                                                      initial: t.initial.unwrap_or(ConundrumBoolean(false)),
                                                      tab_children: TabContentTemplate { idx: i as u8,
                                                                                         group_id:
                                                                                             group_id.to_string(),
-                                                                                        content: t.children
-                                                                                                  .render(res)? } })
+                                                                                        content:
+                                                                                            t.children
+                                                                                             .render(Arc::clone(&res))? } })
                     }
                     _ => None,
                 },
@@ -157,7 +166,10 @@ impl ConundrumComponent for TabsGroup {
     /// Pass in state here so it can be modified, and then clean up this file
     /// before rendering shit directly to html all day tommorow. The
     /// feedback loop is pretty tight so it should be a good experience.
-    fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self> {
+    fn from_props(props: ConundrumObject,
+                  children: Option<Vec<ParsedElement>>,
+                  _: ArcState)
+                  -> ConundrumModalResult<Self> {
         let emphasis = Emphasis::from_jsx_props(&props, "").ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
         let children = Children(children.unwrap_or_default());
@@ -170,7 +182,7 @@ impl ConundrumComponent for TabsGroup {
 }
 
 impl JsxComponentResult for TabsGroup {
-    fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let mut props = vec![self.emphasis.as_ref().unwrap_or(&Emphasis::Card).to_string()];
         if let Some(sizable) = &self.sizable {
             props.push(sizable.to_jsx_prop())
@@ -188,7 +200,7 @@ impl JsxComponentResult for TabsGroup {
 }
 
 impl MarkdownComponentResult for TabsGroup {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }

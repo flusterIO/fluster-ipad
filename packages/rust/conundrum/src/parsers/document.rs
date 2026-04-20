@@ -7,9 +7,11 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumModifier, ParseState},
             },
-            traits::{conundrum_input::ConundrumInput, html_js_component_result::HtmlJsComponentResult},
+            traits::{
+                conundrum_input::{ArcState, ConundrumInput},
+                html_js_component_result::HtmlJsComponentResult,
+            },
         },
     },
     output::html::{
@@ -18,10 +20,12 @@ use crate::{
     },
 };
 use askama::Template;
+use std::sync::Arc;
 use winnow::{Parser, error::ErrMode};
 
 pub enum AnyBlockLevelElement {}
 
+#[derive(Debug)]
 pub struct ConundrumDocument(Vec<ParsedElement>);
 
 impl ConundrumDocument {
@@ -40,17 +44,17 @@ impl ConundrumDocument {
         self.0.clone()
     }
 
-    pub fn compile_sync(&self, state: &mut ParseState) -> ConundrumModalResult<String> {
+    pub fn compile_sync(&self, state: ArcState) -> ConundrumModalResult<String> {
         let mut s = String::from("");
         for em in self.elements() {
-            let r = em.to_html_js_component(state)?;
+            let r = em.to_html_js_component(Arc::clone(&state))?;
             s += r.as_str();
         }
         Ok(s)
     }
 
-    pub fn get_glue(&self, state: &ParseState) -> WebGlueAssetData {
-        get_glue_asset_data(state, &state.contains_modifier(&ConundrumModifier::Standalone))
+    pub fn get_glue(&self, state: ArcState) -> WebGlueAssetData {
+        get_glue_asset_data(state)
     }
 
     /// ### Requirements for a completely standalone html file
@@ -59,17 +63,18 @@ impl ConundrumDocument {
     /// - [x] Gathers component javascript
     /// - [ ] Embeds katex fonts
     /// - [ ] Embeds nerd fonts
-    pub fn render_standalone(&self, params: &mut ParseState) -> ConundrumModalResult<String> {
-        let glue = self.get_glue(params);
-        let compiled = self.compile_sync(params)?;
-        let templ = StandaloneTemplate::new(get_title_group(params.data.content.clone(),
-                                                            params.modifiers.clone(),
-                                                            params.compile_target.clone()).map(|n| n.title)
-                                                                                          .ok(),
+    pub fn render_standalone(&self, params: ArcState) -> ConundrumModalResult<String> {
+        let glue = self.get_glue(Arc::clone(&params));
+        let compiled = self.compile_sync(Arc::clone(&params))?;
+        let state = params.read_arc();
+        let templ = StandaloneTemplate::new(get_title_group(state.data.content.clone(),
+                                                            state.modifiers.clone(),
+                                                            state.compile_target.clone()).map(|n| n.title)
+                                                                                         .ok(),
                                             compiled,
                                             glue.js,
                                             glue.css,
-                                            params.ui_params.clone());
+                                            state.ui_params.clone());
         let rendered_standalone = templ.render().map_err(|_| {
 
     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
@@ -77,7 +82,7 @@ impl ConundrumDocument {
         Ok(rendered_standalone)
     }
 
-    pub fn render_app_embedded(&self, params: &mut ParseState) -> ConundrumModalResult<String> {
+    pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
         Ok(String::from(""))
     }
 }

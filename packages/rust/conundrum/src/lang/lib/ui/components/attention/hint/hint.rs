@@ -12,10 +12,10 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier},
             },
             traits::{
-                fluster_component_result::ConundrumComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
                 inline_markdown_component_result::InlineMarkdownComponentResult,
                 jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
@@ -23,8 +23,7 @@ use crate::{
         },
     },
     output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::{
         object::object::ConundrumObject, string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
@@ -50,25 +49,25 @@ impl Hint {
 }
 
 impl MarkdownComponentResult for Hint {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("**{}:** {}", self.get_label(), self.children.render(res)?))
     }
 }
 
 impl InlineMarkdownComponentResult for Hint {
-    fn to_inline_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_inline_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl PlainTextComponentResult for Hint {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("{}: {}", self.get_label(), self.children.render(res)?))
     }
 }
 
 impl JsxComponentResult for Hint {
-    fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("<{} label=\"{}\" {}>{}</{}>",
                    EmbeddableComponentName::Hint,
                    self.get_label(),
@@ -79,20 +78,25 @@ impl JsxComponentResult for Hint {
 }
 
 impl MdxComponentResult for Hint {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.to_jsx_component(res)
     }
 }
 
 impl ConundrumComponentResult for Hint {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+            drop(state);
             self.to_inline_markdown(res)
-        } else if res.compile_target == ConundrumCompileTarget::Markdown {
+        } else if state.compile_target == ConundrumCompileTarget::Markdown {
+            drop(state);
             self.to_markdown(res)
-        } else if res.compile_target == ConundrumCompileTarget::PlainText {
+        } else if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
@@ -103,7 +107,10 @@ impl ConundrumComponent for Hint {
         AnyComponentName::UserEmbedded(EmbeddableComponentName::Hint)
     }
 
-    fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self>
+    fn from_props(props: ConundrumObject,
+                  children: Option<Vec<ParsedElement>>,
+                  _: ArcState)
+                  -> ConundrumModalResult<Self>
         where Self: Sized {
         let label = props.data.get("label").map(|c| match c.value() {
                                                ParsedElement::Logic(s) => match s.clone() {

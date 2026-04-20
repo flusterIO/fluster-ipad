@@ -1,5 +1,6 @@
 use askama::Template;
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 use typeshare::typeshare;
 use winnow::{
     Parser,
@@ -15,12 +16,15 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
+                parse_state::ConundrumCompileTarget,
             },
             traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::{ArcState, ConundrumInput},
+                fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
+                markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
                 state_modifier::ConundrumStateModifier,
             },
         },
@@ -48,33 +52,37 @@ pub struct ParsedTag {
     pub markdown: Option<InlineMarkdownOverride>,
 }
 
-impl ConundrumStateModifier for ParsedTag {
-    fn set_state(&self, res: &mut ParseState) {
-        if !res.data.contains_tag(&self.body) {
-            res.data.tags.push(TagResult { body: self.body.clone() });
+impl ConundrumStateModifier<ParsedTag> for ParsedTag {
+    fn set_state(res: ArcState, _data: Option<ParsedTag>) {
+        let data = _data.unwrap();
+        let mut state = res.write_arc();
+        if !state.data.contains_tag(&data.body) {
+            state.data.tags.push(TagResult { body: data.body.clone() });
         }
     }
 }
 
 impl PlainTextComponentResult for ParsedTag {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.body.clone())
     }
 }
 
 impl ConundrumComponentResult for ParsedTag {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        self.set_state(res);
-        if res.compile_target == ConundrumCompileTarget::PlainText {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
 }
 
 impl HtmlJsComponentResult for ParsedTag {
-    fn to_html_js_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         self.render().map_err(|e| {
             eprintln!("Error: {:#?}", e);
             ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
@@ -83,29 +91,30 @@ impl HtmlJsComponentResult for ParsedTag {
 }
 
 impl MarkdownComponentResult for ParsedTag {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.markdown.unwrap_or(InlineMarkdownOverride::Bold).wrap_content(&self.body))
     }
 }
 
 impl MdxComponentResult for ParsedTag {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.data.ignore_all_parsers {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.data.ignore_all_parsers {
             return Ok(self.full_match.clone());
         }
 
-        if res.data
-              .front_matter
-              .as_ref()
-              .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::NoteLink.to_string()))
+        if state.data
+                .front_matter
+                .as_ref()
+                .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::NoteLink.to_string()))
         {
             return Ok(self.full_match.clone());
         }
 
-        if res.data
-              .front_matter
-              .as_ref()
-              .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::Tags.to_string()))
+        if state.data
+                .front_matter
+                .as_ref()
+                .is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &ParserId::Tags.to_string()))
         {
             return Ok(self.full_match.clone());
         }
@@ -122,9 +131,11 @@ impl ConundrumParser<ParsedTag> for ParsedTag {
         let (body, full_match) =
             delimited(literal("[[#"), take_until(1.., "]]"), literal("]]")).with_taken().parse_next(input)?;
 
-        Ok(ParsedTag { body: body.to_string(),
-                       full_match: full_match.to_string(),
-                       markdown: None })
+        let t = ParsedTag { body: body.to_string(),
+                            full_match: full_match.to_string(),
+                            markdown: None };
+        ParsedTag::set_state(Arc::clone(&input.state), Some(t.clone()));
+        Ok(t)
     }
 
     fn matches_first_char(char: char) -> bool {

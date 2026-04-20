@@ -9,12 +9,14 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::ParseState,
             },
             traits::{
-                conundrum_input::ConundrumInput, html_js_component_result::HtmlJsComponentResult,
-                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::{ArcState, ConundrumInput},
+                html_js_component_result::HtmlJsComponentResult,
+                jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -29,13 +31,13 @@ pub struct InlineMathResult {
 }
 
 impl PlainTextComponentResult for InlineMathResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.body.0.clone())
     }
 }
 
 impl JsxComponentResult for InlineMathResult {
-    fn to_jsx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         let math_data = MathData { display: false,
                                    content: self.body.0.clone(),
                                    id: None,
@@ -53,20 +55,21 @@ impl JsxComponentResult for InlineMathResult {
 }
 
 impl HtmlJsComponentResult for InlineMathResult {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let math_string = self.body.to_math(false, res.trusted)?;
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        let math_string = self.body.to_math(false, state.trusted)?;
         Ok(format!("<span className=\"conundrum-math conundrum-math-inline\">{}</span>", math_string))
     }
 }
 
 impl MarkdownComponentResult for InlineMathResult {
-    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("${}$", self.body.0))
     }
 }
 
 impl MdxComponentResult for InlineMathResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.to_jsx_component(res)
     }
 }

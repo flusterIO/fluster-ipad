@@ -10,10 +10,10 @@ use crate::{
             component_trait::ConundrumComponent, documentation::emoji::emoji_data::EmojiData,
         },
         runtime::{
-            state::parse_state::{ConundrumCompileTarget, ConundrumModifier},
+            state::parse_state::ConundrumCompileTarget,
             traits::{
-                fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
-                markdown_component_result::MarkdownComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -41,7 +41,7 @@ impl EmojiDocsDemo {
 
 impl MarkdownComponentResult for EmojiDocsDemo {
     fn to_markdown(&self,
-                   _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                   _: ArcState)
                    -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
         let emojis =
             CURRENTLY_SUPPORTED_EMOJI_NAMES.par_iter()
@@ -62,7 +62,7 @@ impl MarkdownComponentResult for EmojiDocsDemo {
 
 impl PlainTextComponentResult for EmojiDocsDemo {
     fn to_plain_text(&self,
-                     _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                     _: ArcState)
                      -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
         let mut s = String::from("Emoji names:\n");
         for item in CURRENTLY_SUPPORTED_EMOJI_NAMES.iter() {
@@ -74,7 +74,7 @@ impl PlainTextComponentResult for EmojiDocsDemo {
 
 impl JsxComponentResult for EmojiDocsDemo {
     fn to_jsx_component(&self,
-                        _: &mut crate::lang::runtime::state::parse_state::ParseState)
+                        _: ArcState)
                         -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
         Ok(format!("<{} />", DocumentationComponentName::EmojiDocumentationDemo))
     }
@@ -82,14 +82,18 @@ impl JsxComponentResult for EmojiDocsDemo {
 
 impl ConundrumComponentResult for EmojiDocsDemo {
     fn to_conundrum_component(&self,
-                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
+                              res: ArcState)
                               -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String>
     {
-        if res.compile_target == ConundrumCompileTarget::PlainText {
+        let state = res.read_arc();
+        if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
-        } else if res.targets_markdown() {
+        } else if state.targets_markdown() {
+            drop(state);
             self.to_markdown(res)
         } else {
+            drop(state);
             self.to_jsx_component(res)
         }
     }
@@ -97,7 +101,8 @@ impl ConundrumComponentResult for EmojiDocsDemo {
 
 impl ConundrumComponent for EmojiDocsDemo {
     fn from_props(_: crate::parsers::conundrum::logic::object::object::ConundrumObject,
-                  _: Option<Vec<crate::lang::elements::parsed_elements::ParsedElement>>)
+                  _: Option<Vec<crate::lang::elements::parsed_elements::ParsedElement>>,
+                  _: ArcState)
                   -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<Self>
         where Self: Sized {
         Ok(EmojiDocsDemo {})

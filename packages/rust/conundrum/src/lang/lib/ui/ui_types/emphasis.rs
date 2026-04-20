@@ -1,5 +1,6 @@
 use std::{ops::Deref, str::FromStr};
 
+use lucide_icons::Icon;
 use serde::Serialize;
 use strum::{EnumIter, IntoEnumIterator};
 use winnow::error::ErrMode;
@@ -54,6 +55,47 @@ pub enum Emphasis {
     #[serde(rename = "card")]
     #[strum(to_string = "card")]
     Card,
+}
+
+impl Emphasis {
+    pub fn to_icon(&self) -> Icon {
+        match self {
+            Emphasis::Info => Icon::Info,
+            Emphasis::Error => Icon::Bug,
+            Emphasis::Warn => Icon::AlertTriangle,
+            Emphasis::Success => Icon::Check,
+            Emphasis::Primary => Icon::Info,
+            Emphasis::Important => Icon::PoundSterling,
+            Emphasis::Research => Icon::TestTube,
+            Emphasis::Highlight => Icon::Highlighter,
+            Emphasis::Card => Icon::Square,
+        }
+    }
+
+    pub fn to_background_color_classes(&self) -> String {
+        match self {
+            Emphasis::Success => {
+                "bg-emphasis-success text-emphasis-success-foreground [&_*]:text-emphasis-success-foreground".to_string()
+            }
+            Emphasis::Info => "bg-emphasis-info text-emphasis-info-foreground [&_*]:text-emphasis-info-foreground".to_string(),
+            Emphasis::Error => "bg-emphasis-error text-emphasis-error-foreground [&_*]:text-emphasis-error-foreground".to_string(),
+            Emphasis::Warn => "bg-emphasis-warn text-emphasis-warn-foreground [&_*]:text-emphasis-warn-foreground".to_string(),
+            Emphasis::Primary => "bg-primary text-primary-foreground [&_*]:text-primary-foreground".to_string(),
+            Emphasis::Research => {
+                "bg-emphasis-research text-emphasis-research-foreground [&_*]:text-emphasis-research-foreground".to_string()
+
+            }
+            Emphasis::Important => {
+                "bg-emphasis-important text-emphasis-important-foreground [&_*]:text-emphasis-important-foreground".to_string()
+
+            }
+            Emphasis::Highlight => {
+                "bg-emphasis-highlight text-emphasis-highlight-foreground [&_*]:text-emphasis-highlight-foreground".to_string()
+
+            }
+            Emphasis::Card => "bg-fd-card text-fd-card-foreground [&_*]:text-fd-card-foreground".to_string(),
+        }
+    }
 }
 
 impl FromStr for Emphasis {

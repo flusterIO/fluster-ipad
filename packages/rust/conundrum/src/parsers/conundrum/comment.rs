@@ -3,13 +3,12 @@ use winnow::{Parser, ascii::till_line_ending, combinator::preceded, stream::Stre
 
 use crate::{
     lang::runtime::{
-        state::{
-            conundrum_error_variant::ConundrumModalResult,
-            parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
-        },
+        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumCompileTarget},
         traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+            conundrum_input::{ArcState, ConundrumInput},
+            fluster_component_result::ConundrumComponentResult,
+            mdx_component_result::MdxComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
         },
     },
     parsers::parser_trait::ConundrumParser,
@@ -22,16 +21,19 @@ pub struct ConundrumCommentResult {
 }
 
 impl PlainTextComponentResult for ConundrumCommentResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(String::from(""))
     }
 }
 
 impl ConundrumComponentResult for ConundrumCommentResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.compile_target == ConundrumCompileTarget::PlainText {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
@@ -40,7 +42,7 @@ impl ConundrumComponentResult for ConundrumCommentResult {
 impl MdxComponentResult for ConundrumCommentResult {
     // No need to handle this implementation of the to_mdx_component method for the
     // ignore_all_parsers component since children will ignore it.
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(String::from(""))
     }
 }

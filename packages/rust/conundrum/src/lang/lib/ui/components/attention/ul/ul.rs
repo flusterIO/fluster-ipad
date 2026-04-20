@@ -10,20 +10,16 @@ use crate::{
             ui_types::{children::Children, emphasis::Emphasis, inline_markdown_override::InlineMarkdownOverride},
         },
         runtime::{
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumCompileTarget},
             traits::{
-                fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
-                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
-                plain_text_component_result::PlainTextComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
     output::general::component_constants::{
-        any_component_id::AnyComponentName, component_ids::EmbeddableComponentId,
-        component_names::EmbeddableComponentName,
+        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
@@ -39,7 +35,7 @@ pub struct Underline {
 }
 
 impl JsxComponentResult for Underline {
-    fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(format!(r#"<{} {}>{}</{}>"#,
                    EmbeddableComponentName::Ul,
                    self.emphasis,
@@ -49,30 +45,34 @@ impl JsxComponentResult for Underline {
 }
 
 impl MdxComponentResult for Underline {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.to_jsx_component(res)
     }
 }
 
 impl MarkdownComponentResult for Underline {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         Ok(self.markdown.unwrap_or(InlineMarkdownOverride::Italic).wrap_content(self.children.render(res)?.as_str()))
     }
 }
 
 impl PlainTextComponentResult for Underline {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl ConundrumComponentResult for Underline {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.targets_markdown() {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.targets_markdown() {
+            drop(state);
             self.to_markdown(res)
-        } else if res.compile_target == ConundrumCompileTarget::PlainText {
+        } else if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
@@ -83,7 +83,10 @@ impl ConundrumComponent for Underline {
         AnyComponentName::UserEmbedded(EmbeddableComponentName::Ul)
     }
 
-    fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self> {
+    fn from_props(props: ConundrumObject,
+                  children: Option<Vec<ParsedElement>>,
+                  _: ArcState)
+                  -> ConundrumModalResult<Self> {
         let markdown_output = InlineMarkdownOverride::from_jsx_props(&props, "markdown").ok();
         let emphasis = Emphasis::from_jsx_props(&props, "").unwrap_or(Emphasis::Highlight);
         Ok(Underline { children: Children(children.unwrap_or_default()),

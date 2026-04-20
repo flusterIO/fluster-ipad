@@ -16,10 +16,10 @@ use crate::{
             },
         },
         runtime::{
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+            state::conundrum_error_variant::ConundrumModalResult,
             traits::{
-                fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
-                markdown_component_result::MarkdownComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -73,7 +73,7 @@ impl ConundrumComponentType {
 }
 
 impl HtmlJsComponentResult for ConundrumComponentType {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ConundrumComponentType::Card(s) => s.to_plain_text(res),
             ConundrumComponentType::Admonition(s) => s.to_plain_text(res),
@@ -94,7 +94,7 @@ impl HtmlJsComponentResult for ConundrumComponentType {
 }
 
 impl PlainTextComponentResult for ConundrumComponentType {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ConundrumComponentType::Card(s) => s.to_plain_text(res),
             ConundrumComponentType::Admonition(s) => s.to_plain_text(res),
@@ -115,7 +115,7 @@ impl PlainTextComponentResult for ConundrumComponentType {
 }
 
 impl MarkdownComponentResult for ConundrumComponentType {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ConundrumComponentType::Card(s) => s.to_markdown(res),
             ConundrumComponentType::Admonition(s) => s.to_markdown(res),
@@ -136,7 +136,7 @@ impl MarkdownComponentResult for ConundrumComponentType {
 }
 
 impl ConundrumComponentResult for ConundrumComponentType {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ConundrumComponentType::Card(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Admonition(s) => s.to_conundrum_component(res),

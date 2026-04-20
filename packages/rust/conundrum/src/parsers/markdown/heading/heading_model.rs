@@ -1,5 +1,6 @@
 use askama::Template;
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 use winnow::{
     Parser,
     ascii::{multispace0, space1, till_line_ending},
@@ -19,10 +20,9 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::ParseState,
             },
             traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input},
+                conundrum_input::{ArcState, ConundrumInput},
                 html_js_component_result::HtmlJsComponentResult,
                 inline_markdown_component_result::InlineMarkdownComponentResult,
                 markdown_component_result::MarkdownComponentResult,
@@ -69,10 +69,9 @@ pub struct MarkdownHeadingStringifiedResult {
 }
 
 impl MarkdownHeadingResult {
-    pub fn to_stringified_result(&self,
-                                 res: &mut ParseState)
-                                 -> ConundrumModalResult<MarkdownHeadingStringifiedResult> {
-        let children_string = compile_elements(&self.children.0, res)?;
+    pub fn to_stringified_result(&self, res: ArcState) -> ConundrumModalResult<MarkdownHeadingStringifiedResult> {
+        let children_string = self.children.render(res)?;
+
         Ok(MarkdownHeadingStringifiedResult { depth: self.depth,
                                               tab_depth: self.tab_depth,
                                               content: children_string,
@@ -81,50 +80,54 @@ impl MarkdownHeadingResult {
 }
 
 impl InlineMarkdownComponentResult for MarkdownHeadingResult {
-    fn to_inline_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        compile_elements(&self.children.0, res)
+    fn to_inline_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
+        compile_elements(&self.children.0, &res)
     }
 }
 
 impl MarkdownComponentResult for MarkdownHeadingResult {
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         let mut s = String::from("");
         for _ in 1..self.depth {
             s += "#"
         }
-        let children = compile_elements(&self.children.0, res)?;
+        let children = compile_elements(&self.children.0, &res)?;
         Ok(format!("{} {}", s, children))
     }
 }
 
 impl MarkdownHeadingResult {
-    fn set_state(res: &mut ParseState, heading: &mut MarkdownHeadingResult) {
-        if let Ok(mut x) =
-            heading.to_stringified_result(res).inspect_err(|e| eprintln!("Error serializing heading: {:#?}", e))
+    fn set_state(res: ArcState, heading: &mut MarkdownHeadingResult) {
+        // WARN: Not too sure about this nested borrow when things become
+        // multi-threaded...
+        let cloned_state = Arc::clone(&res);
+        if let Ok(mut x) = heading.to_stringified_result(cloned_state)
+                                  .inspect_err(|e| eprintln!("Error serializing heading: {:#?}", e))
         {
-            if heading.depth > res.last_heading_depth {
-                res.last_heading_tab_depth += 1;
-            } else if heading.depth < res.last_heading_depth && res.last_heading_tab_depth > 0 {
-                res.last_heading_tab_depth -= 1;
+            let mut state = res.write_arc();
+            if heading.depth > state.last_heading_depth {
+                state.last_heading_tab_depth += 1;
+            } else if heading.depth < state.last_heading_depth && state.last_heading_tab_depth > 0 {
+                state.last_heading_tab_depth -= 1;
             }
-            res.last_heading_depth = x.depth;
-            x.tab_depth = res.last_heading_tab_depth;
-            res.data.toc.push(x.clone());
+            state.last_heading_depth = x.depth;
+            x.tab_depth = state.last_heading_tab_depth;
+            state.data.toc.push(x.clone());
         }
     }
 }
 
 impl PlainTextComponentResult for MarkdownHeadingResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        compile_elements(&self.children.0, res)
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
+        compile_elements(&self.children.0, &res)
     }
 }
 
 impl HtmlJsComponentResult for MarkdownHeadingResult {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         if let Some(subtitle) = &self.subtitle {
-            let subtitle_string = subtitle.render(res)?;
-            let children_string = self.children.render(res)?;
+            let subtitle_string = subtitle.render(Arc::clone(&res))?;
+            let children_string = self.children.render(Arc::clone(&res))?;
             if let Some(templ) = match self.depth {
                 1 => Some(HeadingSubtitleHtmlTemplate::H1(children_string, subtitle_string, self.id.0.clone())),
                 2 => Some(HeadingSubtitleHtmlTemplate::H2(children_string, subtitle_string, self.id.0.clone())),
@@ -138,10 +141,10 @@ impl HtmlJsComponentResult for MarkdownHeadingResult {
                     eprintln!("Failed to render heading");
                 ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })?;
-                return Ok(r);
+                Ok(r)
             } else {
-                return Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Heading",
-                                                                                                                    "Conundrum, like markdown only accepts headings up to a depth of 6."))));
+                Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Heading",
+                                                                                                                 "Conundrum, like markdown only accepts headings up to a depth of 6."))))
             }
         } else {
             let children_string = self.children.render(res)?;
@@ -158,21 +161,21 @@ impl HtmlJsComponentResult for MarkdownHeadingResult {
                     eprintln!("Failed to render heading");
                 ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })?;
-                return Ok(r);
+                Ok(r)
             } else {
-                return Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Heading",
-                                                                                                                    "Conundrum, like markdown only accepts headings up to a depth of 6."))));
+                Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Heading",
+                                                                                                                 "Conundrum, like markdown only accepts headings up to a depth of 6."))))
             }
         }
     }
 }
 
 impl MdxComponentResult for MarkdownHeadingResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let children_string = compile_elements(&self.children.0, res)?;
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let children_string = compile_elements(&self.children.0, &res)?;
         let subtitle_string = match &self.subtitle {
             Some(s) => {
-                let x = compile_elements(&s.0, res)?;
+                let x = compile_elements(&s.0, &res)?;
                 let y = x.as_str();
                 format_markdown_fragment_property(y)
             }
@@ -205,9 +208,8 @@ pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumModalResult
                                                          input.input.reset(&start);
                                                      })?;
 
-    let state = input.state.borrow();
-
-    let mut new_input = get_conundrum_input(content, state.clone());
+    let mut new_input = ConundrumInput { input: content,
+                                         state: Arc::clone(&input.state) };
     let children = parse_elements(&mut new_input)?;
     Ok(children)
 }
@@ -247,19 +249,26 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
                                                                         input.input.reset(&start);
                                                                     })?;
 
-        let mut state = input.state.borrow_mut();
+        // WARN: This is a jumbled mess of borrows here. If this works without causing a
+        // deadlock or a hang it will be a miracle.
 
-        let mut new_input = get_conundrum_input(content_string.as_str(), state.clone());
+        // let mut new_input = get_conundrum_input(content_string.as_str(),
+        // state.clone());
+        let mut new_input = ConundrumInput { input: &content_string,
+                                             state: Arc::clone(&input.state) };
         let children = parse_elements(&mut new_input)?;
 
-        let heading = MarkdownHeadingResult { depth: level.len() as u16,
-                                              children: Children(children),
-                                              subtitle: subtitle.map(Children),
-                                              tab_depth: state.last_heading_tab_depth,
-                                              id: id.map(|x| ConundrumString(x.to_string()))
-                                                    .unwrap_or_else(|| ConundrumString(state.slugger.slug(content))) };
+        let state_borrowed = input.state.read_arc();
 
-        MarkdownHeadingResult::set_state(&mut state, &mut heading.clone());
+        let heading =
+            MarkdownHeadingResult { depth: level.len() as u16,
+                                    children: Children(children),
+                                    subtitle: subtitle.map(Children),
+                                    tab_depth: state_borrowed.last_heading_tab_depth,
+                                    id: id.map(|x| ConundrumString(x.to_string()))
+                                          .unwrap_or_else(|| ConundrumString(input.state.write_arc().slugger.slug(content))) };
+
+        MarkdownHeadingResult::set_state(Arc::clone(&input.state), &mut heading.clone());
         Ok(heading)
     }
 
@@ -282,12 +291,13 @@ mod tests {
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
         // assert!(res.id.is_none(), "Finds no heading id when none is present.");
         assert!(res.depth == 3, "Finds the proper heading depth when no id is present..");
-        let mut state = test_data.state.borrow_mut();
 
-        let children_string = compile_elements(&res.children.0, &mut state).expect("Compiles to valid mdx");
+        let children_string =
+            compile_elements(&res.children.0, &Arc::clone(&test_data.state)).expect("Compiles to valid mdx");
         // TODO: Add this test back in both of these tests for the renderd
         // children instead of the stringified content.
         insta::assert_snapshot!(children_string);
+        let mut state = test_data.state.write_arc();
         let title_slug = state.slugger.slug("My heading with $\\delta$");
 
         assert!(title_slug != res.id.0,
@@ -303,8 +313,8 @@ mod tests {
         assert!(res.id == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
-        let mut state = test_data.state.borrow_mut();
-        let children_string = compile_elements(&res.children.0, &mut state).expect("Compiles to valid mdx");
+        let children_string =
+            compile_elements(&res.children.0, &Arc::clone(&test_data.state)).expect("Compiles to valid mdx");
         assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
     }
 
@@ -319,8 +329,8 @@ mod tests {
         assert!(res.id == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
-        let mut state = test_data.state.borrow_mut();
-        let children_string = compile_elements(&res.children.0, &mut state).expect("Compiles to valid mdx");
+        let children_string =
+            compile_elements(&res.children.0, &Arc::clone(&test_data.state)).expect("Compiles to valid mdx");
         assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
         assert!(res.subtitle.is_none(), "Finds no subtitle when there is a line break.")
     }
@@ -335,13 +345,14 @@ mod tests {
         assert!(res.id == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
-        let mut state = test_data.state.borrow_mut();
-        let children_string = compile_elements(&res.children.0, &mut state).expect("Compiles to valid mdx");
+        let children_string =
+            compile_elements(&res.children.0, &Arc::clone(&test_data.state)).expect("Compiles to valid mdx");
         assert!(children_string == "My heading depth 2", "Finds the proper heading content when no id is present.");
 
         let subtitle = res.subtitle.expect("Should have a subtitle.");
 
-        let subtitle_string = compile_elements(&subtitle.0, &mut state).expect("Compiles subtitle successfully.");
+        let subtitle_string =
+            compile_elements(&subtitle.0, &Arc::clone(&test_data.state)).expect("Compiles subtitle successfully.");
         assert!(subtitle_string == "My note has a subtitle!", "Finds the note's subtitle.")
     }
 }

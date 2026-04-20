@@ -1,6 +1,5 @@
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
-use crate::lang::runtime::state::parse_state::ParseState;
-use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
+use crate::lang::runtime::traits::conundrum_input::{ArcState, ConundrumInput};
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::lang::runtime::traits::jsx_component_result::JsxComponentResult;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
@@ -48,16 +47,18 @@ impl JavascriptParser<JavascriptStringResult> for JavascriptStringResult {
 }
 
 impl JsxComponentResult for JavascriptStringResult {
-    fn to_jsx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("{}{}{}", self.delimiter, self.value, self.delimiter))
     }
 }
 
 impl ConundrumComponentResult for JavascriptStringResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.is_markdown_or_plain_text() {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.is_markdown_or_plain_text() {
             Ok(String::from(""))
         } else {
+            drop(state);
             self.to_jsx_component(res)
         }
     }

@@ -15,8 +15,8 @@ use crate::{
                 parse_state::ConundrumModifier,
             },
             traits::{
-                fluster_component_result::ConundrumComponentResult, jsx_component_result::JsxComponentResult,
-                markdown_component_result::MarkdownComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -67,25 +67,19 @@ impl EmojiResult {
 }
 
 impl PlainTextComponentResult for EmojiResult {
-    fn to_plain_text(&self,
-                     _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                     -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(String::from(""))
     }
 }
 
 impl MarkdownComponentResult for EmojiResult {
-    fn to_markdown(&self,
-                   _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                   -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(format!(":{}:", self.name))
     }
 }
 
 impl JsxComponentResult for EmojiResult {
-    fn to_jsx_component(&self,
-                        _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                        -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         let svg = self.get_svg()
             .ok_or_else(|| {
             ErrMode::Cut(
@@ -112,14 +106,16 @@ impl JsxComponentResult for EmojiResult {
 }
 
 impl ConundrumComponentResult for EmojiResult {
-    fn to_conundrum_component(&self,
-                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
-                              -> ConundrumModalResult<String> {
-        if res.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput, ConundrumModifier::HideEmojis]) {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput, ConundrumModifier::HideEmojis]) {
+            drop(state);
             self.to_plain_text(res)
-        } else if res.targets_markdown() {
+        } else if state.targets_markdown() {
+            drop(state);
             self.to_markdown(res)
         } else {
+            drop(state);
             self.to_jsx_component(res)
         }
     }
@@ -149,7 +145,8 @@ impl ConundrumComponent for EmojiResult {
     }
 
     fn from_props(props: crate::parsers::conundrum::logic::object::object::ConundrumObject,
-                  _: Option<Vec<crate::lang::elements::parsed_elements::ParsedElement>>)
+                  _: Option<Vec<crate::lang::elements::parsed_elements::ParsedElement>>,
+                  _: ArcState)
                   -> ConundrumModalResult<Self>
         where Self: Sized {
         let name = ConundrumString::from_jsx_props(&props, "name")?;

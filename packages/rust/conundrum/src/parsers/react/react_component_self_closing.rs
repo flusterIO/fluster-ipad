@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{
@@ -67,15 +69,17 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput)
 
     let props = ConundrumObject::from_kv_pair_vec(props_kv);
 
-    let component = COMPONENT_MAP.get_by_component_name(&component_name, props, None)?;
+    let cloned_state = Arc::clone(&input.state);
+
+    let component = COMPONENT_MAP.get_by_component_name(&component_name, props, None, cloned_state)?;
 
     let _ = literal("/>").parse_next(input).inspect_err(|_| {
                                                 input.input.reset(&start);
                                             })?;
 
-    let mut state = input.state.borrow_mut();
-
+    let mut state = input.state.write();
     state.data.append_embeddable_component(&component_name);
+    drop(state);
     Ok(ReactComponentSelfClosingResult { full_text: "".to_string(), // Get's replaced anyways,
                                          component })
 }

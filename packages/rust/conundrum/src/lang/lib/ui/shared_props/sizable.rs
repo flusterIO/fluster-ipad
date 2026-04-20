@@ -2,6 +2,7 @@ use std::fmt::Display;
 
 use askama::FastWritable;
 use serde::Serialize;
+use tw_merge::TwClass;
 
 use crate::{
     lang::{
@@ -162,7 +163,7 @@ impl SizablePropsGroup {
         items.iter().filter_map(|c| c.clone()).collect::<Vec<String>>().join(" ")
     }
 
-    pub fn to_css_classes(&self) -> String {
+    pub fn to_css_classes(&self) -> Vec<&str> {
         let mut classes: Vec<&str> = Vec::new();
 
         if self.hide_math_labels.is_some_and(|x| x.0) {
@@ -489,7 +490,11 @@ impl SizablePropsGroup {
                          });
         }
 
-        classes.join(" ")
+        classes
+    }
+
+    pub fn as_class(&self) -> String {
+        self.to_css_classes().join(" ")
     }
 }
 
@@ -534,7 +539,7 @@ impl FromJsxPropsOptional for SizablePropsGroup {
 
 impl Display for SizablePropsGroup {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_css_classes())
+        write!(f, "{}", self.as_class())
     }
 }
 
@@ -543,6 +548,6 @@ impl FastWritable for SizablePropsGroup {
                                                 dest: &mut W,
                                                 values: &dyn askama::Values)
                                                 -> askama::Result<()> {
-        self.to_css_classes().as_str().write_into(dest, values)
+        self.as_class().as_str().write_into(dest, values)
     }
 }

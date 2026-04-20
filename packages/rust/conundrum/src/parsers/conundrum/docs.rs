@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 use strum::IntoEnumIterator;
 use typeshare::typeshare;
 use winnow::{
@@ -19,12 +20,9 @@ use crate::{
         lib::ui::ui_types::children::Children,
         runtime::{
             parse_conundrum_string::parse_elements,
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumCompileTarget, ParseState},
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumCompileTarget},
             traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input},
+                conundrum_input::{ArcState, ConundrumInput},
                 fluster_component_result::ConundrumComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
@@ -48,23 +46,26 @@ pub struct ParsedInspectionRequest {
 }
 
 impl PlainTextComponentResult for ParsedInspectionRequest {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(String::from(""))
     }
 }
 
 impl ConundrumComponentResult for ParsedInspectionRequest {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.compile_target == ConundrumCompileTarget::PlainText {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
 }
 
 impl MdxComponentResult for ParsedInspectionRequest {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         if let Some(depth) = match self.level {
             1 => Some(InContentDocumentationFormat::Short),
             2 => Some(InContentDocumentationFormat::Full),
@@ -72,7 +73,8 @@ impl MdxComponentResult for ParsedInspectionRequest {
         } {
             if let Some(doc_id) = InContentDocumentationId::iter().find(|x| x.to_string() == self.keyword) {
                 let body_as_string = EmbeddedInContentDocs::get_incontent_docs_by_id(&doc_id, &depth);
-                let mut new_input = get_conundrum_input(body_as_string.as_str(), res.clone());
+                let mut new_input = ConundrumInput { input: &body_as_string,
+                                                     state: Arc::clone(&res) };
                 let c = parse_elements(&mut new_input)?;
                 let rendered_body = Children(c).render(res)?;
                 return Ok(format!("\n<{} inContentId=\"{}\" format=\"{}\">\n{}\n</{}>\n",
@@ -89,7 +91,8 @@ impl MdxComponentResult for ParsedInspectionRequest {
                                                                            })
             {
                 let body_as_string = EmbeddedComponentDocs::get_incontent_docs_by_id(comp_name, &depth);
-                let mut new_input = get_conundrum_input(body_as_string.as_str(), res.clone());
+                let mut new_input = ConundrumInput { input: &body_as_string,
+                                                     state: Arc::clone(&res) };
                 let c = parse_elements(&mut new_input)?;
                 let rendered_body = Children(c).render(res)?;
                 return Ok(format!("\n<{} componentName=\"{}\" format=\"{}\">\n{}\n</{}>\n",
@@ -140,8 +143,6 @@ impl ConundrumParser<ParsedInspectionRequest> for ParsedInspectionRequest {
         } else {
             1
         };
-        let mut state = input.state.borrow_mut();
-        state.data.ignore_all_parsers = true;
         Ok(ParsedInspectionRequest { keyword: keyword.to_string(),
                                      level,
                                      full_match: full_match.to_string() })

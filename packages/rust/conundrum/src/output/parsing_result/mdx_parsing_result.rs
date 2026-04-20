@@ -80,8 +80,10 @@ impl MdxParsingResult {
     pub fn compile_javascript_kinda(&self) -> String {
         let mut s = String::from("");
         for c in &self.included_components {
-            if let Some(js) = JS_GLUE_CODE_MAP.get(c) {
-                s += js.to_string().as_str();
+            if let Some(js_bytes) = JS_GLUE_CODE_MAP.get(c) {
+                if let Ok(js) = String::from_utf8(js_bytes.to_vec()) {
+                    s += js.as_str();
+                }
             }
         }
         s

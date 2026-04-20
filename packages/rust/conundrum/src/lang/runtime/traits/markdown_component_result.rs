@@ -1,7 +1,4 @@
-use crate::{
-    lang::runtime::state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
-    output::parsing_result::mdx_parsing_result::MdxParsingResult,
-};
+use crate::lang::runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ArcState};
 
 pub trait MarkdownComponentResult {
     /// For backwards compatability each Conundrum component has it's own
@@ -10,5 +7,5 @@ pub trait MarkdownComponentResult {
     /// [flag](crate::lang::runtime::state::parse_state::ConundrumModifier) to
     /// the transpiler to output regular, commonmark (that's the goal at least)
     /// compatible markdown.
-    fn to_markdown(&self, res: &mut ParseState) -> ConundrumModalResult<String>;
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String>;
 }

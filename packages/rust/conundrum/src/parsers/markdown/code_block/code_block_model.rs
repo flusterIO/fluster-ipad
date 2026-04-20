@@ -1,4 +1,4 @@
-use std::{rc::Rc, str::FromStr};
+use std::{rc::Rc, str::FromStr, sync::Arc};
 
 use askama::Template;
 use serde::{Deserialize, Serialize};
@@ -23,12 +23,13 @@ use crate::{
                 parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input},
+                conundrum_input::{ArcState, ConundrumInput, get_conundrum_input},
                 fluster_component_result::ConundrumComponentResult,
                 html_js_component_result::HtmlJsComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
+                state_modifier::ConundrumStateModifier,
             },
         },
     },
@@ -37,9 +38,13 @@ use crate::{
             any_component_id::AnyComponentName, auto_inserted_component_name::AutoInsertedComponentName,
             parser_ids::ParserId,
         },
+        html::dom::dom_id::DOMId,
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
             dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
+        },
+        parsing_result::{
+            ai_serialization_request::AiSerializationRequestPhase1, dictionary_result::DictionaryEntryResult,
         },
     },
     parsers::{
@@ -65,6 +70,24 @@ pub struct ParsedCodeBlock {
     pub depth: u8,
     pub content: String,
     pub full_match: String,
+    pub id: DOMId,
+}
+
+impl ConundrumStateModifier<ParsedCodeBlock> for ParsedCodeBlock {
+    fn set_state(res: ArcState, data: Option<ParsedCodeBlock>) {
+        let cb = data.unwrap();
+        if cb.language == SupportedCodeBlockSyntax::Dictionary {
+            let mut state = res.write_arc();
+            let term = cb.meta_data.as_deref().unwrap_or("Untitled");
+            state.data.dictionary_entries.push(DictionaryEntryResult { label: term.to_string(),
+                                                                       body: cb.content.clone() });
+            drop(state);
+        } else if cb.language == SupportedCodeBlockSyntax::ConundrumAi {
+            let mut state = res.write_arc();
+            state.data.ai_secondary_parse_requests.push(AiSerializationRequestPhase1 { parsing_result: cb.clone() });
+            drop(state);
+        }
+    }
 }
 
 impl ParsedCodeBlock {
@@ -113,13 +136,13 @@ impl ParsedCodeBlock {
 }
 
 impl PlainTextComponentResult for ParsedCodeBlock {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.to_markdown(res)
     }
 }
 
 impl MarkdownComponentResult for ParsedCodeBlock {
-    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
         let mut tick_string = String::from("");
         for _ in 0..self.depth {
             tick_string += "`";
@@ -136,13 +159,18 @@ impl MarkdownComponentResult for ParsedCodeBlock {
     }
 }
 
+/// Move this id to the parsing stage!
 impl HtmlJsComponentResult for ParsedCodeBlock {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let id = res.dom.new_id();
-        let assets = Rc::clone(&res.highlight_assets);
-        let code_string = self.get_highlighted_content(res.ui_params.syntax_theme.clone().unwrap_or_default(), assets)?;
-        let template =
-            CodeBlockHTMLTemplate::new(code_string, self.get_title(), id, &self.language, &res.ui_params.dark_mode);
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let read_state = res.read_arc();
+        let assets = Rc::clone(&read_state.highlight_assets);
+        let code_string =
+            self.get_highlighted_content(read_state.ui_params.syntax_theme.clone().unwrap_or_default(), assets)?;
+        let template = CodeBlockHTMLTemplate::new(code_string,
+                                                  self.get_title(),
+                                                  self.id.clone(),
+                                                  &self.language,
+                                                  &read_state.ui_params.dark_mode);
         template.render().map_err(|e| {
                              eprintln!("Error: {:#?}", e);
                              ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("")))
@@ -151,27 +179,34 @@ impl HtmlJsComponentResult for ParsedCodeBlock {
 }
 
 impl ConundrumComponentResult for ParsedCodeBlock {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
         match self.language {
             SupportedCodeBlockSyntax::Dictionary => {
-                if res.should_ignore_parser(&ParserId::Dictionary) {
+                if state.should_ignore_parser(&ParserId::Dictionary) {
                     return Ok(self.full_match.clone());
                 }
 
+                drop(state);
                 // Extract the metadata or provide a fallback
-                Ok(get_dictionary_content(self, &mut res.data))
+                Ok(get_dictionary_content(self, Arc::clone(&res)))
             }
-            SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
+            SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self)),
             _ => {
-                if res.data.ignore_all_parsers {
+                if state.data.ignore_all_parsers {
+                    drop(state);
                     Ok(self.full_match.clone())
-                } else if res.targets_markdown() {
+                } else if state.targets_markdown() {
+                    drop(state);
                     self.to_markdown(res)
-                } else if res.compile_target == ConundrumCompileTarget::PlainText {
+                } else if state.compile_target == ConundrumCompileTarget::PlainText {
+                    drop(state);
                     self.to_plain_text(res)
-                } else if res.contains_modifier(&ConundrumModifier::CodeBlocksAsIs) {
+                } else if state.contains_modifier(&ConundrumModifier::CodeBlocksAsIs) {
+                    drop(state);
                     Ok(self.full_match.clone())
                 } else {
+                    drop(state);
                     self.to_mdx_component(res)
                 }
             }
@@ -180,18 +215,23 @@ impl ConundrumComponentResult for ParsedCodeBlock {
 }
 
 impl MdxComponentResult for ParsedCodeBlock {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
         match self.language {
             SupportedCodeBlockSyntax::Dictionary => {
-                if res.should_ignore_parser(&ParserId::Dictionary) {
+                if state.should_ignore_parser(&ParserId::Dictionary) {
                     return Ok(self.full_match.clone());
+                } else {
+                    drop(state);
                 }
-
                 // Extract the metadata or provide a fallback
-                Ok(get_dictionary_content(self, &mut res.data))
+                Ok(get_dictionary_content(self, Arc::clone(&res)))
             }
-            SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self, &mut res.data)),
-            _ => self.to_html_js_component(res),
+            SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self)),
+            _ => {
+                drop(state);
+                self.to_html_js_component(res)
+            }
         }
     }
 }
@@ -245,10 +285,13 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
               .parse_next(input)?;
 
         let meta_data = meta_opt.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
-        let mut state = input.state.borrow_mut();
+        let mut state = input.state.write_arc();
+        let id = state.dom.new_id();
         state.data.append_embeddable_component(&AnyComponentName::AutoInserted(AutoInsertedComponentName::AutoInsertedCodeBlock));
+        drop(state);
         Ok(ParsedCodeBlock { language,
                              meta_data,
+                             id,
                              depth: tick_length as u8,
                              content: raw_content.to_string(),
                              full_match: full_match.to_string() })
@@ -279,10 +322,8 @@ mod tests {
 
         assert_snapshot!(res.content);
 
-        let mut state = test_data.state.borrow_mut();
-
-        let mdx_content =
-            res.to_mdx_component(&mut state).expect("Compiles code block to mdx without throwing an error.");
+        let mdx_content = res.to_mdx_component(Arc::clone(&test_data.state))
+                             .expect("Compiles code block to mdx without throwing an error.");
 
         assert_snapshot!(mdx_content);
         // assert_eq!(result, 4);

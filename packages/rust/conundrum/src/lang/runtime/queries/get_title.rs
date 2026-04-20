@@ -1,5 +1,6 @@
 use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 
 use crate::lang::{
     elements::parsed_elements::ParsedElement,
@@ -37,11 +38,12 @@ pub fn get_title_group(content: String,
 
         match x {
             Some(heading) => {
-                let mut state = res.state.borrow_mut();
-                let title_string = compile_elements(&heading.children.0, &mut state)?;
+                // let mut state = res.state.borrow_mut();
+                let state = Arc::clone(&res.state);
+                let title_string = compile_elements(&heading.children.0, &state)?;
                 let subtitle_string = match &heading.subtitle {
                     Some(s) => {
-                        let res = compile_elements(&s.0, &mut state)?;
+                        let res = compile_elements(&s.0, &state)?;
                         Some(res)
                     }
                     None => None,

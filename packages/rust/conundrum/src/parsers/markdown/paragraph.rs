@@ -1,9 +1,10 @@
 use serde::Serialize;
+use std::sync::Arc;
 use winnow::{
     Parser,
-    combinator::{alt, repeat, repeat_till},
+    combinator::{alt, repeat_till},
     error::{ContextError, ErrMode},
-    token::{literal, take, take_till},
+    token::{literal, take},
 };
 
 use crate::{
@@ -14,10 +15,9 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::ParseState,
             },
             traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input},
+                conundrum_input::{ArcState, ConundrumInput},
                 html_js_component_result::HtmlJsComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
@@ -35,7 +35,7 @@ pub struct MarkdownParagraphResult {
 }
 
 impl HtmlJsComponentResult for MarkdownParagraphResult {
-    fn to_html_js_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         if self.children.0.is_empty() {
             Ok(String::from(""))
         } else {
@@ -45,13 +45,13 @@ impl HtmlJsComponentResult for MarkdownParagraphResult {
 }
 
 impl PlainTextComponentResult for MarkdownParagraphResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl MdxComponentResult for MarkdownParagraphResult {
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let children_string = self.children.render(res)?;
         Ok(format!("<{}>\n{}\n</{}>",
                    AutoInsertedComponentName::AutoInsertedMarkdownParagraph,
@@ -69,10 +69,18 @@ pub fn markdown_paragraph_line_break(input: &mut ConundrumInput) -> ConundrumMod
 }
 
 pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<String> {
-    let (res, _): (Vec<&str>, String) =
-        repeat_till(1.., take(1usize), markdown_paragraph_line_break).parse_next(input)?;
-    let joined_paragraph = String::from_iter(res);
-    Ok(joined_paragraph)
+    let res =
+        repeat_till(1.., take(1usize), markdown_paragraph_line_break).verify_map(|(res, _): (Vec<&str>, String)| {
+                                                                         let joined_paragraph = String::from_iter(res);
+                                                                         println!("J: {:#?}", joined_paragraph);
+                                                                         if joined_paragraph.trim().is_empty() {
+                                                                             None
+                                                                         } else {
+                                                                             Some(joined_paragraph)
+                                                                         }
+                                                                     })
+                                                                     .parse_next(input)?;
+    Ok(res)
 }
 
 impl ConundrumParser<MarkdownParagraphResult> for MarkdownParagraphResult {
@@ -80,10 +88,9 @@ impl ConundrumParser<MarkdownParagraphResult> for MarkdownParagraphResult {
         // let res = alt((take_until(1.., "  \n"), take_until(1..,
         // "\n\n"))).parse_next(input)?;
         let joined_paragraph = markdown_paragraph.parse_next(input)?;
-        let state = input.state.borrow_mut();
-        let mut new_input = get_conundrum_input(&joined_paragraph, state.clone());
+        let mut new_input = ConundrumInput { input: &joined_paragraph,
+                                             state: Arc::clone(&input.state) };
         let children = parse_elements(&mut new_input)?;
-        // apply_nested_parser_state(input, &new_input);
         Ok(MarkdownParagraphResult { children: Children(children) })
     }
 

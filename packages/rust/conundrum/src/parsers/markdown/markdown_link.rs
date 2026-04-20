@@ -6,7 +6,8 @@ use crate::{
     lang::runtime::{
         state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
         traits::{
-            conundrum_input::ConundrumInput, mdx_component_result::MdxComponentResult,
+            conundrum_input::{ArcState, ConundrumInput},
+            mdx_component_result::MdxComponentResult,
             plain_text_component_result::PlainTextComponentResult,
         },
     },
@@ -25,13 +26,13 @@ pub struct MarkdownLinkResult {
 }
 
 impl PlainTextComponentResult for MarkdownLinkResult {
-    fn to_plain_text(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.text.clone())
     }
 }
 
 impl MdxComponentResult for MarkdownLinkResult {
-    fn to_mdx_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(format!("<{} data={{{}}} />",
                    AutoInsertedComponentName::AutoInsertedMarkdownLink,
                    serde_json::to_string(self).unwrap_or(javascript_null_prop())))

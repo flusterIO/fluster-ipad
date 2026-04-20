@@ -19,6 +19,7 @@ use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextRes
 use crate::parsers::markdown::bold_text::MarkdownBoldTextResult;
 use crate::parsers::markdown::code_block::code_block_model::ParsedCodeBlock;
 use crate::parsers::markdown::heading::heading_model::MarkdownHeadingResult;
+use crate::parsers::markdown::hr::MarkdownHorizontalRule;
 use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::inline_math::InlineMathResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
@@ -45,6 +46,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                     if at_line_start {
                         alt((
                             HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
+                            MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {
@@ -120,6 +122,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 "*" | "_" => |x: &mut ConundrumInput<'a>| {
                     alt((
                        MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
+                        MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
                        MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
                        MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
                         any.map(|c: char| ParsedElement::Text(c.to_string()))

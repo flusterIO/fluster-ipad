@@ -1,10 +1,13 @@
+use std::sync::Arc;
+
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            state::conundrum_error_variant::ConundrumModalResult,
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
             traits::{
-                fluster_component_result::ConundrumComponentResult, markdown_component_result::MarkdownComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -19,6 +22,9 @@ use crate::{
 /// sense.
 pub trait ConundrumComponent: ConundrumComponentResult + MarkdownComponentResult + PlainTextComponentResult {
     fn get_component_id() -> AnyComponentName;
-    fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self>
+    fn from_props(props: ConundrumObject,
+                  children: Option<Vec<ParsedElement>>,
+                  state: ArcState)
+                  -> ConundrumModalResult<Self>
         where Self: Sized;
 }

@@ -1,8 +1,8 @@
 use askama::Template;
 
 /// ```askama
-/// <div class="border-primary! pl-2 border-l-[4px]">
-/// {{self.children}}
+/// <div class="border-primary! pl-2 border-l-[4px] w-full">
+/// {{self.children | safe}}
 /// </div>
 /// ```
 #[derive(Template)]

@@ -3,8 +3,7 @@ use winnow::ascii::{dec_int, float};
 use winnow::{Parser, combinator::alt};
 
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
-use crate::lang::runtime::state::parse_state::ParseState;
-use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
+use crate::lang::runtime::traits::conundrum_input::{ArcState, ConundrumInput};
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::parsers::conundrum::logic::number::conundrum_float::ConundrumFloat;
 use crate::parsers::conundrum::logic::number::conundrum_int::ConundrumInt;
@@ -53,10 +52,13 @@ impl JavascriptParser<JavascriptNumberResult> for JavascriptNumberResult {
 }
 
 impl ConundrumComponentResult for JavascriptNumberResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.is_markdown_or_plain_text() {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.is_markdown_or_plain_text() {
+            drop(state);
             Ok(String::from(""))
         } else {
+            drop(state);
             Ok(self.value.to_string())
         }
     }

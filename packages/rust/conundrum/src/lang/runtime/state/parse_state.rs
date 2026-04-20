@@ -189,6 +189,10 @@ impl ParseState {
         self.compile_target == ConundrumCompileTarget::PlainText
     }
 
+    pub fn is_standalone(&self) -> bool {
+        self.contains_modifier(&ConundrumModifier::Standalone)
+    }
+
     pub fn contains_modifier(&self, modifier: &ConundrumModifier) -> bool {
         self.modifiers.iter().any(|x| x == modifier)
     }

@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use serde::Serialize;
 use winnow::{
     Parser,
@@ -12,12 +14,9 @@ use crate::{
         lib::ui::{components::component_trait::ConundrumComponent, ui_types::children::Children},
         runtime::{
             parse_conundrum_string::parse_elements,
-            state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumCompileTarget, ParseState},
-            },
+            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumCompileTarget},
             traits::{
-                conundrum_input::{ConundrumInput, get_conundrum_input},
+                conundrum_input::{ArcState, ConundrumInput, get_conundrum_input},
                 fluster_component_result::ConundrumComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
@@ -38,23 +37,26 @@ pub struct HrWithChildrenResult {
 }
 
 impl PlainTextComponentResult for HrWithChildrenResult {
-    fn to_plain_text(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
     }
 }
 
 impl ConundrumComponentResult for HrWithChildrenResult {
-    fn to_conundrum_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        if res.compile_target == ConundrumCompileTarget::PlainText {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.compile_target == ConundrumCompileTarget::PlainText {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_mdx_component(res)
         }
     }
 }
 
 impl MarkdownComponentResult for HrWithChildrenResult {
-    fn to_markdown(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(String::from("---"))
     }
 }
@@ -62,7 +64,7 @@ impl MarkdownComponentResult for HrWithChildrenResult {
 impl MdxComponentResult for HrWithChildrenResult {
     // No need to handle this implementation of the to_mdx_component method for the
     // ignore_all_parsers component since children will ignore it.
-    fn to_mdx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let children_string = self.children.render(res)?;
 
         Ok(format!("<Hr>{}</Hr>", children_string))
@@ -79,12 +81,9 @@ impl ConundrumParser<HrWithChildrenResult> for HrWithChildrenResult {
                                                 input.input.reset(&start);
                                             })?;
 
-        let state = input.state.borrow_mut();
-
-        let mut new_input = get_conundrum_input(res, state.clone());
+        let mut new_input = ConundrumInput { input: res,
+                                             state: Arc::clone(&input.state) };
         let elements = parse_elements(&mut new_input)?;
-        // WITH_WIFI: Figure out how to call this without throwing reference errors.
-        // apply_nested_parser_state(input, &new_input);
 
         Ok(HrWithChildrenResult { children: Children(elements) })
     }
@@ -100,7 +99,8 @@ impl ConundrumComponent for HrWithChildrenResult {
     }
 
     fn from_props(_: super::logic::object::object::ConundrumObject,
-                  children: Option<Vec<ParsedElement>>)
+                  children: Option<Vec<ParsedElement>>,
+                  _: ArcState)
                   -> ConundrumModalResult<Self>
         where Self: Sized {
         let children = Children(children.unwrap_or_default());
@@ -121,9 +121,7 @@ mod tests {
         let test_content = "--- My Hr with children ---";
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res = HrWithChildrenResult::parse_input_string(&mut test_data).expect("Parses hr with children without throwing an error.");
-        let state = test_data.state.borrow();
-        let mut res_data = state.clone();
-        let child = res.to_mdx_component(&mut res_data).expect("Compiles to valid mdx");
+        let child = res.to_mdx_component(Arc::clone(&test_data.state)).expect("Compiles to valid mdx");
         assert_snapshot!(child)
         // assert_eq!(result, 4);
     }

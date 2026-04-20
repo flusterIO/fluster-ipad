@@ -5,7 +5,7 @@ use serde::Serialize;
 use crate::{
     lang::runtime::{
         state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
-        traits::fluster_component_result::ConundrumComponentResult,
+        traits::{conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult},
     },
     parsers::conundrum::logic::number::{conundrum_float::ConundrumFloat, conundrum_int::ConundrumInt},
 };
@@ -39,7 +39,7 @@ impl ConundrumNumber {
 }
 
 impl ConundrumComponentResult for ConundrumNumber {
-    fn to_conundrum_component(&self, _: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_conundrum_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.to_string())
     }
 }

@@ -1,5 +1,6 @@
 use dashmap::DashMap;
 use serde::Serialize;
+use std::sync::Arc;
 use winnow::{
     Parser,
     combinator::{delimited, separated},
@@ -9,10 +10,12 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         runtime::{
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
+            state::conundrum_error_variant::ConundrumModalResult,
             traits::{
-                conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-                jsx_component_result::JsxComponentResult, mdx_component_result::MdxComponentResult,
+                conundrum_input::{ArcState, ConundrumInput},
+                fluster_component_result::ConundrumComponentResult,
+                jsx_component_result::JsxComponentResult,
+                mdx_component_result::MdxComponentResult,
             },
         },
     },
@@ -59,11 +62,11 @@ impl JavascriptParser<JavascriptObjectResult> for JavascriptObjectResult {
 }
 
 impl JsxComponentResult for JavascriptObjectResult {
-    fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
+    fn to_jsx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let mut s = String::from("{\n");
         for (k, v) in self.data.clone() {
             if let Ok(key) = ConundrumString::new(k.as_str()).to_quoted_string() {
-                let val_string = v.to_mdx_component(res)?;
+                let val_string = v.to_mdx_component(Arc::clone(&res))?;
                 s += format!("\"{}\": {}", key, val_string).as_str();
             }
         }
@@ -73,12 +76,13 @@ impl JsxComponentResult for JavascriptObjectResult {
 }
 
 impl ConundrumComponentResult for JavascriptObjectResult {
-    fn to_conundrum_component(&self,
-                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
-                              -> ConundrumModalResult<String> {
-        if res.is_markdown_or_plain_text() {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.is_markdown_or_plain_text() {
+            drop(state);
             Ok(String::from(""))
         } else {
+            drop(state);
             self.to_jsx_component(res)
         }
     }

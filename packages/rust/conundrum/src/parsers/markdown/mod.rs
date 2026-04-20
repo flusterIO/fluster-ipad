@@ -5,6 +5,7 @@ pub mod bold_text;
 pub mod code_block;
 pub mod heading;
 pub mod heading_sluggger;
+pub mod hr;
 pub mod inline_code;
 pub mod inline_math;
 pub mod italic_text;

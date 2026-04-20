@@ -1,10 +1,16 @@
+use askama::Template;
 use serde::Serialize;
+use std::sync::Arc;
+use winnow::error::ErrMode;
 
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::ui::{
-            components::component_trait::ConundrumComponent,
+            components::{
+                attention::admonition::admonition_html_template::AdmonitionHtmlTemplate,
+                component_trait::ConundrumComponent,
+            },
             shared_props::sizable::SizablePropsGroup,
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
             ui_types::{
@@ -14,11 +20,13 @@ use crate::{
         },
         runtime::{
             state::{
-                conundrum_error_variant::ConundrumModalResult,
-                parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::{ConundrumCompileTarget, ConundrumModifier},
             },
             traits::{
-                fluster_component_result::ConundrumComponentResult,
+                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
                 inline_markdown_component_result::InlineMarkdownComponentResult,
                 jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
@@ -41,7 +49,7 @@ fn default_markdown_title_depth() -> HeadingDepth {
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Default, Clone)]
 pub struct Admonition {
-    pub title: ConundrumString,
+    pub title: Children,
     pub children: Children,
     /// The title depth between 1-6 for the markdown output. This will have no
     /// effect on mdx, jsx, or plain text output. Defaults to 5
@@ -66,8 +74,9 @@ pub struct Admonition {
 }
 
 impl JsxComponentResult for Admonition {
-    fn to_jsx_component(&self, res: &mut ParseState) -> ConundrumModalResult<String> {
-        let title_string = self.title.to_children(res.clone())?.to_jsx_prop("title", res)?;
+    fn to_jsx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let cloned_state = Arc::clone(&res);
+        let title_string = self.title.to_jsx_prop("title", cloned_state)?;
         let mut props = vec![title_string];
         if let Some(emphasis) = &self.emphasis {
             props.push(emphasis.to_string())
@@ -94,11 +103,10 @@ impl JsxComponentResult for Admonition {
 }
 
 impl MarkdownComponentResult for Admonition {
-    fn to_markdown(&self,
-                   res: &mut crate::lang::runtime::state::parse_state::ParseState)
-                   -> ConundrumModalResult<String> {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         let depth = self.markdown_title_depth.unwrap_or(HeadingDepth(ConundrumInt(5)));
-        let title_string = self.title.to_children(res.clone())?.render(res)?;
+        let cloned_state = Arc::clone(&res);
+        let title_string = self.title.render(cloned_state)?;
         Ok(format!(
                    r#"{} {}
 
@@ -110,21 +118,33 @@ impl MarkdownComponentResult for Admonition {
     }
 }
 
+impl HtmlJsComponentResult for Admonition {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let templ = AdmonitionHtmlTemplate { sizable: self.sizable.as_ref().cloned().unwrap_or_default(),
+                                             foldable: self.foldable.unwrap_or_default(),
+                                             folded: self.folded.unwrap_or_default(),
+                                             title_children: self.title.render(Arc::clone(&res))?,
+                                             body_children: self.children.render(Arc::clone(&res))?,
+                                             emphasis: self.emphasis.as_ref().cloned().unwrap_or(Emphasis::Primary) };
+        templ.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
+    }
+}
+
 impl InlineMarkdownComponentResult for Admonition {
-    fn to_inline_markdown(&self,
-                          res: &mut crate::lang::runtime::state::parse_state::ParseState)
-                          -> ConundrumModalResult<String> {
-        self.children.render_bypassed(res);
-        let title_string = self.title.to_children(res.clone())?.render(res)?;
+    fn to_inline_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
+        self.children.render_bypassed(Arc::clone(&res));
+        let title_string = self.title.render(res)?;
         Ok(title_string)
     }
 }
 
 impl PlainTextComponentResult for Admonition {
-    fn to_plain_text(&self,
-                     res: &mut crate::lang::runtime::state::parse_state::ParseState)
-                     -> ConundrumModalResult<String> {
-        let title_string = self.title.to_children(res.clone())?.render(res)?;
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let cloned_res = Arc::clone(&res);
+        let title_string = self.title.render(cloned_res)?;
         Ok(format!(
                    r#"{}
 {}"#,
@@ -135,18 +155,21 @@ impl PlainTextComponentResult for Admonition {
 }
 
 impl ConundrumComponentResult for Admonition {
-    fn to_conundrum_component(&self,
-                              res: &mut crate::lang::runtime::state::parse_state::ParseState)
-                              -> ConundrumModalResult<String> {
-        if res.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+    fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+        if state.contains_modifier(&ConundrumModifier::PreferInlineMarkdownSyntax) {
+            drop(state);
             self.to_inline_markdown(res)
-        } else if res.targets_markdown() {
+        } else if state.targets_markdown() {
+            drop(state);
             self.to_markdown(res)
-        } else if res.contains_modifier_or_matches_target(vec![ConundrumModifier::ForSearchInput],
-                                                          vec![ConundrumCompileTarget::PlainText])
+        } else if state.contains_modifier_or_matches_target(vec![ConundrumModifier::ForSearchInput],
+                                                            vec![ConundrumCompileTarget::PlainText])
         {
+            drop(state);
             self.to_plain_text(res)
         } else {
+            drop(state);
             self.to_jsx_component(res)
         }
     }
@@ -157,7 +180,10 @@ impl ConundrumComponent for Admonition {
         AnyComponentName::UserEmbedded(EmbeddableComponentName::Admonition)
     }
 
-    fn from_props(props: ConundrumObject, children: Option<Vec<ParsedElement>>) -> ConundrumModalResult<Self>
+    fn from_props(props: ConundrumObject,
+                  children: Option<Vec<ParsedElement>>,
+                  state: ArcState)
+                  -> ConundrumModalResult<Self>
         where Self: Sized {
         let markdown_title_depth =
             HeadingDepth::from_props(&props, CommonComponentPropertyKey::MarkdownHeading.to_string().as_str()).ok();
@@ -170,7 +196,9 @@ impl ConundrumComponent for Admonition {
         let foldable = ConundrumBoolean::from_jsx_props(&props, "foldable").ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
 
-        Ok(Admonition { title,
+        let title_children = title.to_children(state)?;
+
+        Ok(Admonition { title: title_children,
                         children: children.map(Children).unwrap_or_else(Children::new_empty),
                         markdown_title_depth,
                         emphasis,

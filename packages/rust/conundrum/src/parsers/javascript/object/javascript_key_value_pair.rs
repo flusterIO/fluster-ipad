@@ -6,7 +6,10 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         runtime::{
             state::conundrum_error_variant::ConundrumModalResult,
-            traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
+            traits::{
+                conundrum_input::{ArcState, ConundrumInput},
+                fluster_component_result::ConundrumComponentResult,
+            },
         },
     },
     parsers::{
@@ -53,9 +56,7 @@ impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValue
 }
 
 impl ConundrumComponentResult for JavascriptObjectKeyValuePair {
-    fn to_conundrum_component(&self,
-                              _: &mut crate::lang::runtime::state::parse_state::ParseState)
-                              -> ConundrumModalResult<String> {
+    fn to_conundrum_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         // This element represents nothing visual, only a temporary data representation
         // of jsx kv pairs.
         Ok(String::from(""))

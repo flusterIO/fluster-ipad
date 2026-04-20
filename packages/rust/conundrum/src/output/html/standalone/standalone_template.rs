@@ -1,9 +1,6 @@
 use askama::Template;
 
-use crate::{
-    lang::runtime::state::ui_params::UIParams,
-    output::html::glue::component_glue_manager::{JS_GLUE_CODE_MAP, WebGlueCodeGeneralFiles},
-};
+use crate::lang::runtime::state::ui_params::UIParams;
 
 #[derive(Template)]
 #[template(ext = "jinja", path = "standalone.jinja")]
