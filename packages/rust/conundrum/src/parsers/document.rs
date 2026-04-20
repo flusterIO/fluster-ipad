@@ -20,6 +20,7 @@ use crate::{
     },
 };
 use askama::Template;
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::sync::Arc;
 use winnow::{Parser, error::ErrMode};
 
@@ -30,11 +31,6 @@ pub struct ConundrumDocument(Vec<ParsedElement>);
 
 impl ConundrumDocument {
     pub fn parse_input(input: &mut ConundrumInput) -> ConundrumModalResult<Self> {
-        // let r: Vec<MarkdownParagraphResult> =
-        //     repeat(0..,
-        // MarkdownParagraphResult::parse_input_string).parse_next(input)?;
-        // Ok(ConundrumDocument(r))
-        // let segments = segmentiz
         let res = parse_elements.parse_next(input)?;
         Ok(Self(res))
     }
@@ -43,6 +39,15 @@ impl ConundrumDocument {
         // let y: Vec<ParsedElement> = self.0.iter().map(|n|
         // n.children.0.clone()).flatten().collect(); y
         self.0.clone()
+    }
+
+    pub fn compile_multithreaded(&self, state: ArcState) -> ConundrumModalResult<String> {
+        let elements = &self.0;
+        let res = elements.par_iter()
+                          .filter_map(|em| em.to_html_js_component(Arc::clone(&state)).ok())
+                          .collect::<Vec<String>>()
+                          .join("");
+        Ok(res)
     }
 
     pub fn compile_sync(&self, state: ArcState) -> ConundrumModalResult<String> {
@@ -64,9 +69,12 @@ impl ConundrumDocument {
     /// - [x] Gathers component javascript
     /// - [ ] Embeds katex fonts
     /// - [ ] Embeds nerd fonts
+    ///
+    /// ### If I'm lucky...
+    /// - [x] Multi-threaded compilation
     pub fn render_standalone(&self, params: ArcState) -> ConundrumModalResult<String> {
         let glue = self.get_glue(Arc::clone(&params));
-        let compiled = self.compile_sync(Arc::clone(&params))?;
+        let compiled = self.compile_multithreaded(Arc::clone(&params))?;
         let state = params.read_arc();
         let templ = StandaloneTemplate::new(get_title_group(state.data.content.clone(),
                                                             state.modifiers.clone(),
