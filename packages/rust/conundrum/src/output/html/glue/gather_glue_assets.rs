@@ -4,16 +4,17 @@ use crate::{
         component_glue_manager::JS_GLUE_CODE_MAP,
         glue_asset::GlueCssAsset,
         individual_glue_assets::{
-            katex_ams_regular::KatexFontAmsReg, katex_caligraphic_bold::KatexFontCaligBold,
-            katex_caligraphic_regular::KatexFontCaligReg, katex_css::KatexCssAsset,
-            katex_fraktur_bold::KatexFontFrakturBold, katex_fraktur_regular::KatexFontFracturReg,
-            katex_main_bold::KatexFontMainBold, katex_main_italic::KatexFontMainItalic,
-            katex_main_regular::KatexFontMainReg, katex_math_bolditalic::KatexFontMathBoldItalic,
-            katex_math_italic::KatexFontMathItalic, katex_sansserif_bold::KatexFontSansBold,
-            katex_sansserif_italic::KatexFontSansItalic, katex_sansserif_regular::KatexFontSansReg,
-            katex_script_regular::KatexFontScriptReg, katex_size1_regular::KatexFontSize1,
-            katex_size2_regular::KatexFontSize2, katex_size3_regular::KatexFontSize3,
-            katex_size4_regular::KatexFontSize4, katex_typewriter_regular::KatexFontTypewriterReg,
+            katex_ams_regular::KatexFontAssetAmsRegular, katex_caligraphic_bold::KatexFontAssetCaligraphicBold,
+            katex_caligraphic_regular::KatexFontAssetCaligraphicRegular, katex_css::KatexCssAsset,
+            katex_fraktur_bold::KatexFontAssetFrakturBold, katex_fraktur_regular::KatexFontAssetFrakturRegular,
+            katex_main_bold::KatexFontAssetMainBold, katex_main_italic::KatexFontAssetMainItalic,
+            katex_main_regular::KatexFontAssetMainRegular, katex_math_bolditalic::KatexFontAssetMathBolditalic,
+            katex_math_italic::KatexFontAssetMathItalic, katex_sansserif_bold::KatexFontAssetSansserifBold,
+            katex_sansserif_italic::KatexFontAssetSansserifItalic,
+            katex_sansserif_regular::KatexFontAssetSansserifRegular, katex_script_regular::KatexFontAssetScriptRegular,
+            katex_size1_regular::KatexFontAssetSize1Regular, katex_size2_regular::KatexFontAssetSize2Regular,
+            katex_size3_regular::KatexFontAssetSize3Regular, katex_size4_regular::KatexFontAssetSize4Regular,
+            katex_typewriter_regular::KatexFontAssetTypewriterRegular,
         },
         webglue_general_files::WebGlueCodeGeneralFiles,
     },
@@ -48,26 +49,26 @@ pub fn get_glue_asset_data(_state: ArcState) -> WebGlueAssetData {
     KatexCssAsset::default().append_to_css(&mut css_string, &is_standalone);
 
     if is_standalone {
-        KatexFontAmsReg::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontCaligBold::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontCaligReg::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontFrakturBold::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontFracturReg::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontMainItalic::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontMainBold::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontMainItalic::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontMainReg::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontMathBoldItalic::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontMathItalic::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontSansBold::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontSansItalic::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontSansReg::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontScriptReg::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontSize1::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontSize2::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontSize3::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontSize4::default().append_to_css(&mut css_string, &is_standalone);
-        KatexFontTypewriterReg::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetAmsRegular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetCaligraphicBold::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetCaligraphicRegular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetFrakturBold::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetFrakturRegular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetMainItalic::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetMainBold::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetMainItalic::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetMainRegular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetMathBolditalic::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetMathItalic::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetSansserifBold::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetSansserifItalic::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetSansserifRegular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetScriptRegular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetSize1Regular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetSize2Regular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetSize3Regular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetSize4Regular::default().append_to_css(&mut css_string, &is_standalone);
+        KatexFontAssetTypewriterRegular::default().append_to_css(&mut css_string, &is_standalone);
     }
 
     // Get all of the conditional css.
