@@ -260,18 +260,13 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
         // state.clone());
         let mut new_input = ConundrumInput { input: &content_string,
                                              state: Arc::clone(&input.state) };
-        println!("Here?");
         let children = parse_elements(&mut new_input)?;
-        println!("Here2?");
 
         let c = Children(children.clone());
-        println!("Here3?");
 
         drop(children);
 
-        println!("Here4?");
         let state_borrowed = input.state.upgradable_read_arc();
-        println!("Here5?");
 
         let heading =
             MarkdownHeadingResult { depth: level.len() as u16,
@@ -285,12 +280,7 @@ ConundrumString(writable_state.slugger.slug(content))
                                           }),
             };
 
-        // println!("Here6?");
-        // drop(state_borrowed);
-
-        println!("Here7?");
         MarkdownHeadingResult::set_state(Arc::clone(&input.state), &mut heading.clone());
-        println!("Here8?");
         Ok(heading)
     }
 

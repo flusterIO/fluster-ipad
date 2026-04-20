@@ -25,7 +25,13 @@ use crate::{
         },
     },
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-    parsers::parser_trait::ConundrumParser,
+    parsers::{
+        markdown::block_quote::{
+            self,
+            block_quote_model::{self, BlockQuoteResult},
+        },
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
@@ -72,7 +78,8 @@ pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<St
     let res =
         repeat_till(1.., take(1usize), markdown_paragraph_line_break).verify_map(|(res, _): (Vec<&str>, String)| {
                                                                          let joined_paragraph = String::from_iter(res);
-                                                                         println!("J: {:#?}", joined_paragraph);
+                                                                         println!("Joined Paragraph: {:#?}",
+                                                                                  joined_paragraph);
                                                                          if joined_paragraph.trim().is_empty() {
                                                                              None
                                                                          } else {
