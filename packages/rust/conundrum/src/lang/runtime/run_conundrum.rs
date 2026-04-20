@@ -103,17 +103,19 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
 
     println!("Doc: {:#?}", doc);
 
-    // let mut state = stateful_input.state.borrow_mut();
-    // let rendered_string = match is_standalone {
-    //     true => doc.render_standalone(Arc::clone(&stateful_input.state))?,
-    //     false => doc.render_app_embedded(Arc::clone(&stateful_input.state))?,
-    // };
+    let rendered_string = match is_standalone {
+        true => doc.render_standalone(Arc::clone(&stateful_input.state))?,
+        false => doc.render_app_embedded(Arc::clone(&stateful_input.state))?,
+    };
+    {
+        let mut state = stateful_input.state.write_arc();
+        state.data.content = rendered_string;
+    }
 
     println!("Rendered: {:#?}", is_standalone);
     // let mut state = stateful_input.state.borrow_mut();
 
-    // state.data.content = rendered_string;
-
     // Ok(state.data.clone())
-    Ok(MdxParsingResult::default())
+    let x = stateful_input.state.read_arc();
+    Ok(x.data.clone())
 }

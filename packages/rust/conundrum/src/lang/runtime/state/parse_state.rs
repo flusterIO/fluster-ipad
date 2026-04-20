@@ -1,4 +1,4 @@
-use std::rc::Rc;
+use std::{rc::Rc, sync::Arc};
 
 use serde::{Deserialize, Serialize};
 use syntect_assets::assets::HighlightingAssets;
@@ -81,7 +81,7 @@ pub struct ParseState {
     pub dom: DomData,
     pub compile_target: ConundrumCompileTarget,
     pub trusted: bool,
-    pub highlight_assets: Rc<HighlightingAssets>,
+    pub highlight_assets: Arc<HighlightingAssets>,
 }
 
 impl Default for ParseState {
@@ -98,7 +98,7 @@ impl Default for ParseState {
                dom: Default::default(),
                compile_target: Default::default(),
                trusted: Default::default(),
-               highlight_assets: Rc::new(HighlightingAssets::from_binary()) }
+               highlight_assets: Arc::new(HighlightingAssets::from_binary()) }
     }
 }
 

@@ -120,7 +120,7 @@ impl ParsedCodeBlock {
 
     pub fn get_highlighted_content(&self,
                                    theme: SupportedCodeBlockTheme,
-                                   hl: Rc<HighlightingAssets>)
+                                   hl: Arc<HighlightingAssets>)
                                    -> ConundrumModalResult<String> {
         render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content:
                                                                                                         self.content
@@ -163,7 +163,7 @@ impl MarkdownComponentResult for ParsedCodeBlock {
 impl HtmlJsComponentResult for ParsedCodeBlock {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let read_state = res.read_arc();
-        let assets = Rc::clone(&read_state.highlight_assets);
+        let assets = Arc::clone(&read_state.highlight_assets);
         let code_string =
             self.get_highlighted_content(read_state.ui_params.syntax_theme.clone().unwrap_or_default(), assets)?;
         let template = CodeBlockHTMLTemplate::new(code_string,

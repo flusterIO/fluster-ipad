@@ -1,4 +1,5 @@
 use askama::Template;
+use parking_lot::ArcRwLockUpgradableReadGuard;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use winnow::{
@@ -217,6 +218,9 @@ pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumModalResult
 impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownHeadingResult> {
         let start = input.input.checkpoint();
+        let _: Option<Vec<char>> = opt(repeat(0..=3, ' ')).parse_next(input).inspect_err(|_| {
+                                                                                 input.input.reset(&start);
+                                                                             })?;
         let level: Vec<char> = repeat(1..=6, '#').parse_next(input).inspect_err(|_| {
                                                                         input.input.reset(&start);
                                                                     })?;
@@ -256,19 +260,37 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
         // state.clone());
         let mut new_input = ConundrumInput { input: &content_string,
                                              state: Arc::clone(&input.state) };
+        println!("Here?");
         let children = parse_elements(&mut new_input)?;
+        println!("Here2?");
 
-        let state_borrowed = input.state.read_arc();
+        let c = Children(children.clone());
+        println!("Here3?");
+
+        drop(children);
+
+        println!("Here4?");
+        let state_borrowed = input.state.upgradable_read_arc();
+        println!("Here5?");
 
         let heading =
             MarkdownHeadingResult { depth: level.len() as u16,
-                                    children: Children(children),
+                                    children: c,
                                     subtitle: subtitle.map(Children),
                                     tab_depth: state_borrowed.last_heading_tab_depth,
                                     id: id.map(|x| ConundrumString(x.to_string()))
-                                          .unwrap_or_else(|| ConundrumString(input.state.write_arc().slugger.slug(content))) };
+                                          .unwrap_or_else(|| {
+                                              let mut writable_state = ArcRwLockUpgradableReadGuard::upgrade(state_borrowed);
+ConundrumString(writable_state.slugger.slug(content))
+                                          }),
+            };
 
+        // println!("Here6?");
+        // drop(state_borrowed);
+
+        println!("Here7?");
         MarkdownHeadingResult::set_state(Arc::clone(&input.state), &mut heading.clone());
+        println!("Here8?");
         Ok(heading)
     }
 

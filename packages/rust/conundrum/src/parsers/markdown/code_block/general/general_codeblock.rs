@@ -1,4 +1,4 @@
-use std::rc::Rc;
+use std::sync::Arc;
 
 use syntect_assets::assets::HighlightingAssets;
 
@@ -16,5 +16,5 @@ pub struct GeneralPresentationCodeBlock {
     pub theme: Option<SupportedCodeBlockTheme>,
     /// Indicates whether the codeblock is an inline codeblock or not.
     pub inline: bool,
-    pub assets: Rc<HighlightingAssets>,
+    pub assets: Arc<HighlightingAssets>,
 }
