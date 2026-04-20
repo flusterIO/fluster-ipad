@@ -1,6 +1,7 @@
 use std::{rc::Rc, str::FromStr, sync::Arc};
 
 use askama::Template;
+use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
@@ -120,7 +121,7 @@ impl ParsedCodeBlock {
 
     pub fn get_highlighted_content(&self,
                                    theme: SupportedCodeBlockTheme,
-                                   hl: Arc<HighlightingAssets>)
+                                   hl: Arc<Mutex<HighlightingAssets>>)
                                    -> ConundrumModalResult<String> {
         render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content:
                                                                                                         self.content

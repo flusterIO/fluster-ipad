@@ -1,11 +1,11 @@
 use askama::Template;
-use syntect::highlighting::ThemeSet;
 
 use crate::lang::runtime::state::parse_state::ParseState;
 
 pub fn get_supported_syntax_themes() -> Vec<String> {
     let s = ParseState::default();
-    s.highlight_assets.themes().map(String::from).collect::<Vec<String>>()
+    let data = s.highlight_assets.lock();
+    data.themes().map(String::from).collect::<Vec<String>>()
 }
 
 /// ```askama

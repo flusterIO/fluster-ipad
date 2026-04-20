@@ -1,5 +1,6 @@
-use std::{rc::Rc, sync::Arc};
+use std::sync::Arc;
 
+use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
@@ -81,7 +82,7 @@ pub struct ParseState {
     pub dom: DomData,
     pub compile_target: ConundrumCompileTarget,
     pub trusted: bool,
-    pub highlight_assets: Arc<HighlightingAssets>,
+    pub highlight_assets: Arc<Mutex<HighlightingAssets>>,
 }
 
 impl Default for ParseState {
@@ -98,7 +99,7 @@ impl Default for ParseState {
                dom: Default::default(),
                compile_target: Default::default(),
                trusted: Default::default(),
-               highlight_assets: Arc::new(HighlightingAssets::from_binary()) }
+               highlight_assets: Arc::new(Mutex::new(HighlightingAssets::from_binary())) }
     }
 }
 

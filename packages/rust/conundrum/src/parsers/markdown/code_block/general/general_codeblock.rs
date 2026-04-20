@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use parking_lot::Mutex;
 use syntect_assets::assets::HighlightingAssets;
 
 use crate::parsers::markdown::code_block::{
@@ -16,5 +17,5 @@ pub struct GeneralPresentationCodeBlock {
     pub theme: Option<SupportedCodeBlockTheme>,
     /// Indicates whether the codeblock is an inline codeblock or not.
     pub inline: bool,
-    pub assets: Arc<HighlightingAssets>,
+    pub assets: Arc<Mutex<HighlightingAssets>>,
 }
