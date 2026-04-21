@@ -9,7 +9,7 @@ use crate::{
 ///
 /// ```askama
 /// <div class="cdrm-codeblock @container/codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative my-6">   {% if let Some(title) = title %}
-///   <div class="my-2 px-2 py-0 w-full grid grid-cols-[auto_1fr] gap-x-3">
+///   <div class="py-0 px-2 w-full grid grid-cols-[auto_1fr] gap-x-3">
 ///   <span class="w-fit font-nerd" style="color:{{file_icon.color}};">
 ///   {{file_icon.icon}}
 ///   </span>

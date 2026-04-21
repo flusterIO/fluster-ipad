@@ -39,7 +39,7 @@ use crate::{
 /// # Template (HTML)
 ///
 /// ```askama
-/// <span class="bg-primary hover:bg-primary/80 transition-colors duration-150 cursor-pointer text-primary-foreground rounded p-1 py-0.5">#{{body}}</span>
+/// <span class="bg-primary hover:bg-primary/80 transition-colors duration-300 cursor-pointer text-primary-foreground rounded p-1 py-0.5">#{{body}}</span>
 /// ```
 #[typeshare]
 #[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug, Template)]

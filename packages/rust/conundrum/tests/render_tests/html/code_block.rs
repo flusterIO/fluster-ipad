@@ -17,6 +17,10 @@ This is my [[#tagHere]] and my citation[[cite:Einstein]] here.
 My admonition's body goes here!
 </Admonition>
 
+<Card title="My card here" desc="My card's description">
+This is my card's body...
+</Card>
+
 > My block quote
 > With a nested line
 >> And a neted block quote.  
