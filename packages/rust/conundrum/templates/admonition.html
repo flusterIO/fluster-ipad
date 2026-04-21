@@ -3,12 +3,17 @@
 data-cdm-folded="{{folded}}"
 data-cdm-foldable="{{foldable}}"
 >
-<div class="w-full p-2 rounded-tl rounded-tr relative cursor-pointer z-[1] min-h-[42px] font-semibold grid place-items-center {{self.emphasis.to_background_color_classes()}}">
+<div class="w-full grid grid-cols-[auto_1fr] gap-x-2 p-2 rounded-tl rounded-tr relative z-[1] min-h-[42px] font-semibold grid place-items-center {{self.emphasis.to_background_color_classes()}}">
+<div class="place-self-center text-lg font-lucide">
 {{self.get_icon()}}
 </div>
+<div class="w-full" style="line-height:normal;">
 {{title_children}}
 </div>
+</div>
+<div class="rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground [&_*]:text-fd-card-foreground relative">
 <div class="p-4 first:mt-0 last:mb-0 admonitionBody inline-mdx {% if self.is_center_self() %} flex flex-col justify-center items-center {% endif %}">
 {{body_children}}
+</div>
 </div>
 </div>

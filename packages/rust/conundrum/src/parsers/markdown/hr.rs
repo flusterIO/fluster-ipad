@@ -30,7 +30,7 @@ pub struct MarkdownHorizontalRule {}
 
 impl HtmlJsComponentResult for MarkdownHorizontalRule {
     fn to_html_js_component(&self, _: ArcState) -> ConundrumModalResult<String> {
-        Ok(String::from("<hr class=\"w-full h-2 bg-muted/80\" />"))
+        Ok(String::from("<hr class=\"w-full h-[1px] bg-border\" />"))
     }
 }
 

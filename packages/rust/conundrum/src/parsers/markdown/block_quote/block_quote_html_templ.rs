@@ -1,7 +1,7 @@
 use askama::Template;
 
 /// ```askama
-/// <div class="border-primary! pl-2 border-l-[4px] w-full">
+/// <div class="border-primary! pl-2 border-l-[4px] w-full mt-4">
 /// {{self.children | safe}}
 /// </div>
 /// ```

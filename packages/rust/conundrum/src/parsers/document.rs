@@ -67,7 +67,7 @@ impl ConundrumDocument {
     /// - [x] Renders math straight to html and MML.
     /// - [x] Gathers katex css
     /// - [x] Gathers component javascript
-    /// - [ ] Embeds katex fonts
+    /// - [x] Embeds katex fonts
     /// - [ ] Embeds nerd fonts
     ///
     /// ### If I'm lucky...

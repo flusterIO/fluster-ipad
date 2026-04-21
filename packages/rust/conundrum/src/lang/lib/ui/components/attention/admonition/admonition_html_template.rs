@@ -18,8 +18,8 @@ pub struct AdmonitionHtmlTemplate {
 
 impl AdmonitionHtmlTemplate {
     pub fn get_icon(&self) -> String {
-        let icon_string = self.emphasis.to_icon();
-        icon_string.to_string()
+        let icon = self.emphasis.to_icon();
+        icon.unicode().to_string()
     }
 
     pub fn is_center_self(&self) -> bool {

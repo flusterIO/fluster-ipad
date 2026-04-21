@@ -96,7 +96,8 @@ impl HtmlJsComponentResult for BlockMathResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let state = res.read_arc();
         let math_string = self.body.to_math(false, state.trusted)?;
-        Ok(format!("<div className=\"conundrum-math conundrum-math-block\">\n{}\n</div>", math_string))
+        Ok(format!("<div class=\"conundrum-math conundrum-math-block flex justify-center items-center\">\n{}\n</div>",
+                   math_string))
     }
 }
 

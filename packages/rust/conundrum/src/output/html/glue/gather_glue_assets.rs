@@ -14,7 +14,8 @@ use crate::{
             katex_sansserif_regular::KatexFontAssetSansserifRegular, katex_script_regular::KatexFontAssetScriptRegular,
             katex_size1_regular::KatexFontAssetSize1Regular, katex_size2_regular::KatexFontAssetSize2Regular,
             katex_size3_regular::KatexFontAssetSize3Regular, katex_size4_regular::KatexFontAssetSize4Regular,
-            katex_typewriter_regular::KatexFontAssetTypewriterRegular,
+            katex_typewriter_regular::KatexFontAssetTypewriterRegular, lucide_font::LucideFontAsset,
+            nerd_font_asset::NerdFontAsset,
         },
         webglue_general_files::WebGlueCodeGeneralFiles,
     },
@@ -69,6 +70,8 @@ pub fn get_glue_asset_data(_state: ArcState) -> WebGlueAssetData {
         KatexFontAssetSize3Regular::default().append_to_css(&mut css_string, &is_standalone);
         KatexFontAssetSize4Regular::default().append_to_css(&mut css_string, &is_standalone);
         KatexFontAssetTypewriterRegular::default().append_to_css(&mut css_string, &is_standalone);
+        NerdFontAsset::default().append_to_css(&mut css_string, &is_standalone);
+        LucideFontAsset {}.append_to_css(&mut css_string, &is_standalone);
     }
 
     // Get all of the conditional css.

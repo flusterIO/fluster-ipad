@@ -19,12 +19,10 @@ lazy_static! {
         let map: DashMap<String, Vec<u8>> = DashMap::new();
         map.insert(WebGlueCodeGeneralFiles::Styles.to_string(),
                    include_str!("../standalone/conundrum.css").to_string().as_bytes().to_vec());
+        map.insert(WebGlueCodeGeneralFiles::NerdFont.to_string(),
+                   include_bytes!("./component_glue_output/other/fonts/Fira_Code_Regular.ttf").to_vec());
         map.insert(WebGlueCodeGeneralFiles::KatexCss.to_string(),
                    include_str!("../glue/component_glue/other/katex.min.css").to_string().as_bytes().to_vec());
-        map.insert(AutoInsertedComponentName::AutoInsertedCodeBlock.to_string(),
-                   include_str!("./component_glue_output/code_block.js").to_string().as_bytes().to_vec());
-        map.insert(AutoInsertedComponentName::NoteLink.to_string(),
-                   include_str!("./component_glue_output/note_link.js").to_string().as_bytes().to_vec());
         map.insert(WebGlueCodeGeneralFiles::Katex_ams_regular.to_string(),
                    include_bytes!("./component_glue_output/other/fonts/KaTeX_AMS-Regular.woff2").to_vec());
         map.insert(WebGlueCodeGeneralFiles::Katex_caligraphic_bold.to_string(),
@@ -65,6 +63,12 @@ lazy_static! {
                    include_bytes!("./component_glue_output/other/fonts/KaTeX_Size4-Regular.woff2").to_vec());
         map.insert(WebGlueCodeGeneralFiles::Katex_typewriter_regular.to_string(),
                    include_bytes!("./component_glue_output/other/fonts/KaTeX_Typewriter-Regular.woff2").to_vec());
+
+        // --- Components ---
+        map.insert(AutoInsertedComponentName::AutoInsertedCodeBlock.to_string(),
+                   include_str!("./component_glue_output/code_block.js").to_string().as_bytes().to_vec());
+        map.insert(AutoInsertedComponentName::NoteLink.to_string(),
+                   include_str!("./component_glue_output/note_link.js").to_string().as_bytes().to_vec());
         map
     };
 }

@@ -4,6 +4,7 @@
 
 
 
+
 @layer base {
   :root {
     --emphasis-info: 221.0 100.0% 65.0%;
@@ -95,6 +96,8 @@
     --color-border: hsl(var(--border));
     --color-input: hsl(var(--input));
     --color-ring: hsl(var(--ring));
+    --font-nerd: "FontNerd";
+    --font-lucide: "FontLucide";
     --color-general-link-color: hsl(var(--general-link-color));
     --color-emphasis-info: hsl(var(--emphasis-info));
     --color-emphasis-info-foreground: hsl(var(--emphasis-info-foreground));

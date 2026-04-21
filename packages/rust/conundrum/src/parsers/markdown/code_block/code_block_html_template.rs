@@ -9,19 +9,20 @@ use crate::{
 ///
 /// ```askama
 /// <div class="cdrm-codeblock @container/codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative my-6">   {% if let Some(title) = title %}
-///   <div class="my-2 px-2 py-0 text-sm w-full grid grid-cols-[auto_1fr] gap-x-2">
-///   <div class="w-fit" style="color:{{file_icon.color}};">
+///   <div class="my-2 px-2 py-0 w-full grid grid-cols-[auto_1fr] gap-x-3">
+///   <span class="w-fit font-nerd" style="color:{{file_icon.color}};">
 ///   {{file_icon.icon}}
-///   </div>
-///   <div class="text-fd-card-foreground/70">
+///   </span>
+///   <span class="text-fd-card-foreground/70 text-sm" style="line-height:inherit;">
 ///   {{title}}
-///   </div>
+///   </span>
 ///   </div> {% endif %}
 ///    <div class="w-full relative" id="{{id}}">
 ///    <div
 ///      data-cdrm-copy-for="{{id}}"
 ///      role="button"
-///      class="auto-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300"
+///      class="auto-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300
+///      font-lucide"
 ///      onclick="copyCodeblockCode"
 ///    >
 ///    {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::Copy}}

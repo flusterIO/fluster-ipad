@@ -76,7 +76,7 @@ impl HtmlJsComponentResult for ConundrumComponentType {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ConundrumComponentType::Card(s) => s.to_plain_text(res),
-            ConundrumComponentType::Admonition(s) => s.to_plain_text(res),
+            ConundrumComponentType::Admonition(s) => s.to_html_js_component(res),
             ConundrumComponentType::Hint(s) => s.to_plain_text(res),
             ConundrumComponentType::Ul(s) => s.to_plain_text(res),
             ConundrumComponentType::Hl(s) => s.to_plain_text(res),

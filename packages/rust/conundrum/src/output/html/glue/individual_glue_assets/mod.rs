@@ -19,3 +19,5 @@ pub mod katex_size2_regular;
 pub mod katex_size3_regular;
 pub mod katex_size4_regular;
 pub mod katex_typewriter_regular;
+pub mod lucide_font;
+pub mod nerd_font_asset;
