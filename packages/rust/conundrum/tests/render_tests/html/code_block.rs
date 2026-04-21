@@ -5,7 +5,7 @@ async fn renders_codeblock_to_html() {
     let test_content = r#"# My title
 > My subtitle
 
-My paragraph goes here.
+My paragraph goes here with inline $e=mc^2$ math.
 My paragraph without a new line.
 
 My paragraph _after_ **two** ***new lines***.  
@@ -17,8 +17,12 @@ This is my [[#tagHere]] and my citation[[cite:Einstein]] here.
 My admonition's body goes here!
 </Admonition>
 
-<Card title="My card here" desc="My card's description">
-This is my card's body...
+<Card title="My card here" desc="My card's description" centerBody sidebar right>
+
+$$
+e=mc^2
+$$
+
 </Card>
 
 > My block quote

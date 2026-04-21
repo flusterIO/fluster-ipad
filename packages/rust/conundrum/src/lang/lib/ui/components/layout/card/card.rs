@@ -31,7 +31,9 @@ use crate::{
     output::general::component_constants::{
         any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
-    parsers::conundrum::logic::{object::object::ConundrumObject, string::conundrum_string::ConundrumString},
+    parsers::conundrum::logic::{
+        bool::boolean::ConundrumBoolean, object::object::ConundrumObject, string::conundrum_string::ConundrumString,
+    },
 };
 
 fn default_markdown_title_depth() -> u8 {
@@ -58,6 +60,7 @@ pub struct Card {
     #[serde(default = "default_markdown_title_depth")]
     pub markdown_title_depth: Option<HeadingDepth>,
     pub sizable: Option<SizablePropsGroup>,
+    pub center_body: Option<ConundrumBoolean>,
 }
 
 impl HtmlJsComponentResult for Card {
@@ -184,11 +187,13 @@ impl ConundrumComponent for Card {
 
         let title = title_string.to_children(Arc::clone(&state))?;
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
+        let center_body = ConundrumBoolean::from_jsx_props(&props, "centerBody").ok();
 
         Ok(Card { markdown_title_depth: heading_depth,
                   children: Children(unwrapped_children),
                   title,
                   sizable,
+                  center_body,
                   subtitle })
     }
 }

@@ -42,10 +42,6 @@ use crate::{
     },
 };
 
-fn default_markdown_title_depth() -> HeadingDepth {
-    HeadingDepth(ConundrumInt(5))
-}
-
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Default, Clone)]
 pub struct Admonition {
@@ -53,15 +49,6 @@ pub struct Admonition {
     pub children: Children,
     /// The title depth between 1-6 for the markdown output. This will have no
     /// effect on mdx, jsx, or plain text output. Defaults to 5
-    /// ```rust
-    /// let admonition = Admonition {
-    ///    title: vec![],
-    ///    children: vec![],
-    ///    markdown_title_depth: None
-    /// }
-    /// assert_eq!(admonition.markdown_title_depth, Some(5));
-    /// ```
-    #[serde(default = "default_markdown_title_depth")]
     pub markdown_title_depth: Option<HeadingDepth>,
     pub emphasis: Option<Emphasis>,
     pub sizable: Option<SizablePropsGroup>,
