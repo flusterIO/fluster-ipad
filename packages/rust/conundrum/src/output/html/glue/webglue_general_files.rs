@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-#[derive(strum_macros::Display, Serialize, Deserialize, Clone)]
+#[derive(strum_macros::Display, Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Hash, uniffi::Enum)]
 pub enum WebGlueCodeGeneralFiles {
     #[serde(rename = "styles.css")]
     #[strum(to_string = "styles.css")]
@@ -91,4 +91,3 @@ pub enum WebGlueCodeGeneralFiles {
     #[strum(to_string = "Fira_Code_Regular.ttf")]
     NerdFont,
 }
-

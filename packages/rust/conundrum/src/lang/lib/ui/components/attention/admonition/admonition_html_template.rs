@@ -22,6 +22,13 @@ impl AdmonitionHtmlTemplate {
         icon.unicode().to_string()
     }
 
+    pub fn chevron(&self) -> String {
+        let s = lucide_icons::Icon::ChevronUp.unicode().to_string();
+
+        println!("S: {:#?}", s);
+        s
+    }
+
     pub fn is_center_self(&self) -> bool {
         self.sizable.center_self.is_some_and(|a| a.0)
     }

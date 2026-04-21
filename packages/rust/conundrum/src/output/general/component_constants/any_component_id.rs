@@ -7,9 +7,12 @@ use crate::{
         conundrum_error::ConundrumError,
         conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
     },
-    output::general::component_constants::{
-        auto_inserted_component_name::AutoInsertedComponentName, component_names::EmbeddableComponentName,
-        documentation_component_name::DocumentationComponentName,
+    output::{
+        general::component_constants::{
+            auto_inserted_component_name::AutoInsertedComponentName, component_names::EmbeddableComponentName,
+            documentation_component_name::DocumentationComponentName,
+        },
+        html::glue::component_glue_manager::AnyComponentKey,
     },
 };
 
@@ -31,6 +34,14 @@ impl AnyComponentName {
             Err(
             ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Fail to find component", format!("Conundrum attempted to lookup a component `{}` that does not exist. See the `Components??` documentation for a list of available components.", name).as_str())))
         )
+        }
+    }
+
+    pub fn to_component_key(&self) -> AnyComponentKey {
+        match self {
+            AnyComponentName::UserEmbedded(u) => AnyComponentKey::Embeddable(u.to_component_id()),
+            AnyComponentName::AutoInserted(n) => AnyComponentKey::AutoInserted(n.clone()),
+            AnyComponentName::Docs(d) => AnyComponentKey::Docs(d.clone()),
         }
     }
 }

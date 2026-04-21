@@ -1,0 +1,12 @@
+div[data-cdrm-folded="true"] .cdrm-fold-icon {
+    transform: rotateZ(180deg);
+}
+
+.cdrm-admon-body-container {
+    interpolate-size: allow-keywords;
+    height: fit-content;
+}
+
+div[data-cdrm-folded="true"] .cdrm-admon-body-container {
+    height: 0px;
+}

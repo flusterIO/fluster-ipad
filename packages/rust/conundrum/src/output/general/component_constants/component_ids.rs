@@ -11,7 +11,17 @@ use crate::{
 
 /// From typescript to swift.
 #[typeshare]
-#[derive(strum_macros::Display, PartialEq, Eq, Hash, Clone, Copy, EnumIter, Serialize, Deserialize, uniffi::Enum)]
+#[derive(strum_macros::Display,
+           Debug,
+           PartialEq,
+           Eq,
+           Hash,
+           Clone,
+           Copy,
+           EnumIter,
+           Serialize,
+           Deserialize,
+           uniffi::Enum)]
 pub enum EmbeddableComponentId {
     #[serde(rename = "toc")]
     #[strum(to_string = "toc")]

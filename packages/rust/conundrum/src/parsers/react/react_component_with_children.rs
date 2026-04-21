@@ -120,7 +120,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
     let component = COMPONENT_MAP.get_by_component_name(&component_name, props, Some(children), cloned_state)?;
 
     let mut state = input.state.write();
-    state.data.append_embeddable_component(&component_name);
+    state.data.append_embeddable_component(&component_name.to_component_key());
     drop(state);
 
     Ok(ReactComponentWithChildrenResult { full_text: "".to_string(), // This field will be

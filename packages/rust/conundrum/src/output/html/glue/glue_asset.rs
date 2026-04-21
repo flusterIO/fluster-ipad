@@ -8,7 +8,7 @@ pub trait GlueJsAsset {
 
 // /// A GlueAsset is a wrapper around an embedded path in the JS_GLUE_MAP or
 // /// whatever it's called.
-// pub struct GlueAsset(AnyGlueCodeKey);
+// pub struct GlueAsset(AnyComponentKey);
 
 // impl GlueAsset {
 //     pub fn read(&self) -> String {

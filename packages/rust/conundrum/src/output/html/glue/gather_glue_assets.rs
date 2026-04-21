@@ -1,7 +1,7 @@
 use crate::{
     lang::runtime::traits::conundrum_input::ArcState,
     output::html::glue::{
-        component_glue_manager::JS_GLUE_CODE_MAP,
+        component_glue_manager::WEB_GLUE_CODE_MAP,
         glue_asset::GlueCssAsset,
         individual_glue_assets::{
             katex_ams_regular::KatexFontAssetAmsRegular, katex_caligraphic_bold::KatexFontAssetCaligraphicBold,
@@ -34,12 +34,10 @@ pub fn get_glue_asset_data(_state: ArcState) -> WebGlueAssetData {
     // Get all the css that goes into the app regardless.
     let mut css_string = match is_standalone {
         true => {
-            if let Some(g) = JS_GLUE_CODE_MAP.get(WebGlueCodeGeneralFiles::Styles.to_string().as_str()) {
-                if let Ok(s) = String::from_utf8(g.to_vec()) {
-                    s
-                } else {
-                    String::from("")
-                }
+            if let Some(g) = WEB_GLUE_CODE_MAP::get_css_string_by_key(super::component_glue_manager::AnyComponentKey::General(
+WebGlueCodeGeneralFiles::Styles
+            )) {
+                g
             } else {
                 String::from("")
             }
@@ -77,11 +75,12 @@ pub fn get_glue_asset_data(_state: ArcState) -> WebGlueAssetData {
     // Get all of the conditional css.
     // Get general javascript glue code.
     // Get component glue code
-    for c in &state.data.get_included_components() {
-        if let Some(js_bytes) = JS_GLUE_CODE_MAP.get(c) {
-            if let Ok(js) = String::from_utf8(js_bytes.to_vec()) {
-                js_string += js.as_str();
-            }
+    for k in &state.data.get_included_components() {
+        if let Some(js) = WEB_GLUE_CODE_MAP::get_js_string_by_key(k.clone()) {
+            js_string += js.as_str();
+        }
+        if let Some(css) = WEB_GLUE_CODE_MAP::get_css_string_by_key(k.clone()) {
+            css_string += css.as_str();
         }
     }
 

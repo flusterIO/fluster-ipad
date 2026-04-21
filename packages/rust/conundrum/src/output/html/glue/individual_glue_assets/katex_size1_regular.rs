@@ -2,7 +2,7 @@ use askama::Template;
 use base64::Engine;
 
 use crate::output::html::glue::{
-    component_glue_manager::{AnyGlueCodeKey, JS_GLUE_CODE_MAP},
+    component_glue_manager::{AnyComponentKey, WEB_GLUE_CODE_MAP},
     glue_asset::GlueCssAsset,
     webglue_general_files::WebGlueCodeGeneralFiles,
 };
@@ -23,7 +23,7 @@ pub struct KatexFontAssetSize1Regular(WebGlueCodeGeneralFiles);
 
 impl KatexFontAssetSize1Regular {
     fn get_font_data(&self) -> String {
-        if let Some(data) = JS_GLUE_CODE_MAP::get_bytes_by_key(AnyGlueCodeKey::General(self.0.clone())) {
+        if let Some(data) = WEB_GLUE_CODE_MAP::get_font_bytes_by_key(AnyComponentKey::General(self.0.clone())) {
             // TODO: Lift this up the parent and pass it in so we don't have to recreate
             // this engine 20 times.
             let r = base64::engine::GeneralPurpose::new(&base64::alphabet::STANDARD,
@@ -49,4 +49,3 @@ impl GlueCssAsset for KatexFontAssetSize1Regular {
         }
     }
 }
-

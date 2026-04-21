@@ -78,7 +78,7 @@ fn parse_self_closing_react_component(input: &mut ConundrumInput)
                                             })?;
 
     let mut state = input.state.write();
-    state.data.append_embeddable_component(&component_name);
+    state.data.append_embeddable_component(&component_name.to_component_key());
     drop(state);
     Ok(ReactComponentSelfClosingResult { full_text: "".to_string(), // Get's replaced anyways,
                                          component })

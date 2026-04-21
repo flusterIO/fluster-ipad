@@ -3,11 +3,12 @@
         "./src/output/html/glue/component_glue/"
     ],
     "compilerOptions": {
-        "moduleResolution": "nodenext",
+        "moduleResolution": "node",
         "target": "ESNext",
-        "module": "NodeNext",
+        "module": "CommonJS",
         "outDir": "./src/output/html/glue/component_glue_output/",
         "rootDir": "src/output/html/glue/component_glue",
-        "allowJs": true
+        "allowJs": true,
+        "types": []
     },
 }

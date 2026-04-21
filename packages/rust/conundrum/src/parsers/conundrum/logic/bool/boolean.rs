@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+use askama::PrimitiveType;
 use serde::Serialize;
 
 use crate::{
@@ -41,6 +42,14 @@ impl JavascriptParser<ConundrumBoolean> for ConundrumBoolean {
     fn parse_javascript(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumBoolean> {
         let res = alt((literal("true"), literal("false"))).parse_next(input)?;
         Ok(ConundrumBoolean(res == "true"))
+    }
+}
+
+impl PrimitiveType for ConundrumBoolean {
+    type Value = bool;
+
+    fn get(&self) -> Self::Value {
+        self.0
     }
 }
 

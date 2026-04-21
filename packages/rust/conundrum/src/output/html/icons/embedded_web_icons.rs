@@ -5,6 +5,7 @@ use askama::FastWritable;
 
 pub enum EmbeddedIcon {
     Copy,
+    ChevronUp,
 }
 
 impl EmbeddedIcon {
@@ -12,6 +13,10 @@ impl EmbeddedIcon {
         match self {
             EmbeddedIcon::Copy => {
                 let r = lucide_icons::Icon::Copy;
+                String::from(r.unicode())
+            }
+            EmbeddedIcon::ChevronUp => {
+                let r = lucide_icons::Icon::ChevronUp;
                 String::from(r.unicode())
             }
         }

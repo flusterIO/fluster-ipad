@@ -13,7 +13,7 @@ My paragraph after two spaces and a line break.
 
 This is my [[#tagHere]] and my citation[[cite:Einstein]] here.
 
-<Admonition title="My admonition" foldable>
+<Admonition title="My admonition" foldable folded>
 My admonition's body goes here!
 </Admonition>
 

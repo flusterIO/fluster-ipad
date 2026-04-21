@@ -39,7 +39,7 @@ use crate::{
             any_component_id::AnyComponentName, auto_inserted_component_name::AutoInsertedComponentName,
             parser_ids::ParserId,
         },
-        html::dom::dom_id::DOMId,
+        html::{dom::dom_id::DOMId, glue::component_glue_manager::AnyComponentKey},
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
             dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
@@ -288,7 +288,7 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
         let meta_data = meta_opt.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
         let mut state = input.state.write_arc();
         let id = state.dom.new_id();
-        state.data.append_embeddable_component(&AnyComponentName::AutoInserted(AutoInsertedComponentName::AutoInsertedCodeBlock));
+        state.data.append_embeddable_component(&AnyComponentKey::AutoInserted(AutoInsertedComponentName::AutoInsertedCodeBlock));
         drop(state);
         Ok(ParsedCodeBlock { language,
                              meta_data,

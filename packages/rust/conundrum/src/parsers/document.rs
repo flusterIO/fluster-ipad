@@ -66,9 +66,10 @@ impl ConundrumDocument {
     /// ### Requirements for a completely standalone html file
     /// - [x] Renders math straight to html and MML.
     /// - [x] Gathers katex css
-    /// - [x] Gathers component javascript
     /// - [x] Embeds katex fonts
-    /// - [ ] Embeds nerd fonts
+    /// - [x] Embeds nerd fonts
+    /// - [ ] Embeds component javascript conditionally
+    /// - [ ] Embeds component css conditionally
     ///
     /// ### If I'm lucky...
     /// - [x] Multi-threaded compilation

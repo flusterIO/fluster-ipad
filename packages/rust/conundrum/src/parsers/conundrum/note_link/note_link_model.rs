@@ -34,6 +34,7 @@ use crate::{
             any_component_id::AnyComponentName, auto_inserted_component_name::AutoInsertedComponentName,
             parser_ids::ParserId,
         },
+        html::glue::component_glue_manager::AnyComponentKey,
         parsing_result::note_outgoing_link_result::NoteOutgoingLinkResult,
     },
     parsers::{conundrum::note_link::note_link_html_templ::NoteLinkHtmlTemplate, parser_trait::ConundrumParser},
@@ -120,7 +121,7 @@ impl ConundrumParser<ParsedOutgoingNoteLink> for ParsedOutgoingNoteLink {
         .parse_next(input)?;
 
         let mut state = input.state.write_arc();
-        state.data.append_embeddable_component(&AnyComponentName::AutoInserted(AutoInsertedComponentName::NoteLink));
+        state.data.append_embeddable_component(&AnyComponentKey::AutoInserted(AutoInsertedComponentName::NoteLink));
         drop(state);
         let mut nested_state = ConundrumInput { input: display_text,
                                                 state: Arc::clone(&input.state) };

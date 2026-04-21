@@ -7,8 +7,7 @@ use typeshare::typeshare;
 use crate::{
     lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
     output::{
-        general::component_constants::any_component_id::AnyComponentName,
-        html::glue::component_glue_manager::JS_GLUE_CODE_MAP,
+        html::glue::component_glue_manager::AnyComponentKey,
         parsing_result::{
             ai_serialization_request::AiSerializationRequestPhase1,
             dictionary_result::DictionaryEntryResult,
@@ -39,7 +38,7 @@ pub struct MdxParsingResult {
     /// the index that the equation appears.
     pub eq_ref_map: HashMap<String, u32>,
     pub warnings: Vec<ConundrumError>,
-    included_components: Vec<String>,
+    included_components: Vec<AnyComponentKey>,
 }
 
 impl Default for MdxParsingResult {
@@ -69,24 +68,14 @@ impl MdxParsingResult {
         self.outgoing_links.iter().any(|x| x.link_to_note_id == link_note_id)
     }
 
-    pub fn get_included_components(&self) -> Vec<String> {
+    pub fn get_included_components(&self) -> Vec<AnyComponentKey> {
         self.included_components.clone()
     }
 
-    pub fn append_embeddable_component(&mut self, name: &AnyComponentName) {
-        self.included_components.push(name.to_string());
-    }
-
-    pub fn compile_javascript_kinda(&self) -> String {
-        let mut s = String::from("");
-        for c in &self.included_components {
-            if let Some(js_bytes) = JS_GLUE_CODE_MAP.get(c) {
-                if let Ok(js) = String::from_utf8(js_bytes.to_vec()) {
-                    s += js.as_str();
-                }
-            }
+    pub fn append_embeddable_component(&mut self, name: &AnyComponentKey) {
+        if !self.included_components.iter().any(|x| x == name) {
+            self.included_components.push(name.clone());
         }
-        s
     }
 }
 
