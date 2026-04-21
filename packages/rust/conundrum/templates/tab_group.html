@@ -1,0 +1,21 @@
+<div class="cdrm-tab-group w-full bg-fd-card rounded-br rounded-bl relative overflow-x-hidden overflow-y-auto"
+    data-cdrm-tab-group="{{tab_group_id}}">
+    <div class="w-full flex flex-row justify-start items-start flex-nowrap overflow-x-auto
+    overflow-y-none">
+        {% for tab in tabs %}
+        <div data-cdrm-idx="{{tab.idx}}" data-cdrm-active="false" class"">
+            {{tab.btn_children | safe}}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="w-full bg-fd-card rounded-br rounded-bl relative overflow-x-hidden
+    overflow-y-auto" id="{{tab_group_id}}" data-cdrm-n-tabs="{{tabs.len()}}">
+        {% for tab in tabs %}
+        <div id="{{tab_group_id}}-{{tab.idx}}"
+            class="cdrm-tab-group-tab w-full {% if !tab.is_longest %}absolute{% endif %} px-4 py-3"
+            style="transform: translateX({{tab.idx * 100}}%);">
+            {{tab.tab_children | safe}}
+        </div>
+        {% endfor %}
+    </div>
+</div>

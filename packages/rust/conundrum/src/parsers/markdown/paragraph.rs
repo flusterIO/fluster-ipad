@@ -2,7 +2,7 @@ use serde::Serialize;
 use std::sync::Arc;
 use winnow::{
     Parser,
-    combinator::{alt, repeat_till},
+    combinator::{alt, peek, repeat_till},
     error::{ContextError, ErrMode},
     token::{literal, take},
 };
@@ -41,10 +41,7 @@ impl HtmlJsComponentResult for MarkdownParagraphResult {
         if self.children.0.is_empty() {
             Ok(String::from(""))
         } else {
-            Ok(format!("<p>{}</p>{}", self.children.render(Arc::clone(&res))?, match &self.terminator {
-                Some(s) => s.to_html_js_component(res)?,
-                None => "".to_string(),
-            }))
+            Ok(format!("<p>{}</p>", self.children.render(Arc::clone(&res))?))
         }
     }
 }
@@ -82,10 +79,10 @@ pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<(C
     let (joined_paragraph, terminator) =
         repeat_till(1..,
                     take(1usize),
-                    alt((markdown_paragraph_line_break.map(|_| {
+                    peek(alt((markdown_paragraph_line_break.map(|_| {
                         ParagraphTerminator::LineEnding
                     }),
-                        any_block_element.map(ParagraphTerminator::Content)))).verify_map(|(res, terminator): (Vec<&str>, ParagraphTerminator)| {
+                        any_block_element.map(ParagraphTerminator::Content))))).verify_map(|(res, terminator): (Vec<&str>, ParagraphTerminator)| {
                                                                           let joined_paragraph = String::from_iter(res);
                                                                           println!("Joined Paragraph: {:#?}",
                                                                                    joined_paragraph);

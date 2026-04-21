@@ -5,9 +5,9 @@ use typeshare::typeshare;
 use winnow::{
     Parser,
     ascii::alphanumeric1,
-    combinator::{delimited, repeat},
+    combinator::{delimited, opt, repeat, repeat_till},
     stream::{AsChar, Stream},
-    token::{literal, take_until, take_while},
+    token::{literal, take, take_until, take_while},
 };
 
 use crate::{
@@ -62,7 +62,8 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                        -> ConundrumModalResult<ReactComponentWithChildrenResult> {
     let start = input.input.checkpoint();
 
-    '<'.void().parse_next(input).inspect_err(|_| {
+    '<'.void().parse_next(input).inspect_err(|e| {
+                                     eprintln!("Error: {:#?}", e);
                                      input.input.reset(&start);
                                  })?;
 
@@ -71,7 +72,8 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                     s == s.to_uppercase()
                                                                 })
                                                                 .parse_next(input)
-                                                                .inspect_err(|_| {
+                                                                .inspect_err(|e| {
+                                                                    eprintln!("Error: {:#?}", e);
                                                                     input.input.reset(&start);
                                                                 })?;
 
@@ -80,49 +82,50 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                                       })?;
 
     let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
-    let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|_| {
-                                                                                                 input.input
-                                                                                                      .reset(&start);
-                                                                                             })?;
+    let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|e| {
+                             eprintln!("Error: {:#?}", e);
+                             input.input.reset(&start);
+                         })?;
 
-    let props_kv_pairs: Vec<JavascriptObjectKeyValuePair> = delimited(space_or_newline0,
-                                                                      repeat(0..,
-                                                                             white_space_delimited(any_jsx_property)),
-                                                                      space_or_newline0).parse_next(input)
-                                                                                        .inspect_err(|_| {
-                                                                                            input.input.reset(&start);
-                                                                                        })?;
+    let props_kv_pairs: Option<Vec<JavascriptObjectKeyValuePair>> = opt(delimited(space_or_newline0,
+                                       repeat(0.., white_space_delimited(any_jsx_property)),
+                                       space_or_newline0)).parse_next(input)
+                                                          .inspect_err(|e| {
+                                                              eprintln!("Error: {:#?}", e);
+                                                              input.input.reset(&start);
+                                                          })?;
 
-    let props = ConundrumObject::from_kv_pair_vec(props_kv_pairs);
+    let props = ConundrumObject::from_kv_pair_vec(props_kv_pairs.unwrap_or_default());
 
     '>'.parse_next(input).inspect_err(|_| {
                               input.input.reset(&start);
                           })?;
 
-    let children_string = take_until(0.., "</").parse_next(input).inspect_err(|_| {
-                                                                      input.input.reset(&start);
-                                                                  })?;
+    let (children_chars, _): (Vec<&str>, ()) = repeat_till(0.., take(1usize), react_closing_tag_parser_by_name(component_name_string.as_str())).parse_next(input).inspect_err(|_| {
+        input.input.reset(&start);
+    })?;
 
-    take_while(0.., AsChar::is_space).void().parse_next(input).inspect_err(|_| {
-                                                                   input.input.reset(&start);
-                                                               })?;
-
-    react_closing_tag_parser_by_name(component_name_string.as_str()).parse_next(input)?;
+    let children_string = String::from_iter(children_chars);
     //
     let rc = Arc::clone(&input.state);
 
-    let mut new_input = ConundrumInput { input: children_string,
+    let mut new_input = ConundrumInput { input: children_string.as_str(),
                                          state: rc };
+    println!("Here: {}", component_name_string.clone());
     let children = parse_elements(&mut new_input)?;
+    println!("Here2: {}", component_name_string.clone());
 
     let cloned_state = Arc::clone(&input.state);
+    println!("Here3: {}", component_name_string.clone());
 
     let component = COMPONENT_MAP.get_by_component_name(&component_name, props, Some(children), cloned_state)?;
+    println!("Here4: {}", component_name_string.clone());
 
     let mut state = input.state.write();
     state.data.append_embeddable_component(&component_name.to_component_key());
     drop(state);
 
+    println!("HEre 5?: {}", component_name_string.clone());
     Ok(ReactComponentWithChildrenResult { full_text: "".to_string(), // This field will be
                                           // replaced below anyways.
                                           component })

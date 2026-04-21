@@ -4,9 +4,16 @@ div[data-cdrm-folded="true"] .cdrm-fold-icon {
 
 .cdrm-admon-body-container {
     interpolate-size: allow-keywords;
-    height: fit-content;
+    /* height: auto; */
+    max-height: fit-content;
+    overflow: hidden;
+}
+
+div[data-cdrm-folded="true"] .cdrm-admon-body {
+    transform: translateY(-100%);
 }
 
 div[data-cdrm-folded="true"] .cdrm-admon-body-container {
-    height: 0px;
+    max-height: 0px;
+    /* height: 0px; */
 }

@@ -96,6 +96,20 @@ impl Emphasis {
             Emphasis::Card => "bg-fd-card text-fd-card-foreground [&_*]:text-fd-card-foreground".to_string(),
         }
     }
+
+    pub fn to_border_color(&self) -> String {
+        match self {
+            Emphasis::Success => "border-emphasis-success".to_string(),
+            Emphasis::Info => "border-emphasis-info".to_string(),
+            Emphasis::Error => "border-emphasis-error".to_string(),
+            Emphasis::Warn => "border-emphasis-warn".to_string(),
+            Emphasis::Primary => "border-primary".to_string(),
+            Emphasis::Research => "border-emphasis-research".to_string(),
+            Emphasis::Important => "border-emphasis-important".to_string(),
+            Emphasis::Highlight => "border-emphasis-highlight".to_string(),
+            Emphasis::Card => "border-fd-card".to_string(),
+        }
+    }
 }
 
 impl FromStr for Emphasis {

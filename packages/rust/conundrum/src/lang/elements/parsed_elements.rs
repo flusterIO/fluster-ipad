@@ -99,7 +99,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::BlockMath(math) => math.to_html_js_component(res),
             ParsedElement::InlineMath(math) => math.to_html_js_component(res),
             ParsedElement::BlockQuote(quote) => quote.to_html_js_component(res),
-            ParsedElement::BoldText(t) => t.to_mdx_component(res),
+            ParsedElement::BoldText(t) => t.to_html_js_component(res),
             ParsedElement::ItalicText(t) => t.to_html_js_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_html_js_component(res),
             ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),

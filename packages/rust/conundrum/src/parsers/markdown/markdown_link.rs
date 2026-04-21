@@ -1,14 +1,21 @@
+use std::sync::Arc;
+
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::{Parser, combinator::delimited, token::take_while};
 
 use crate::{
-    lang::runtime::{
-        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
-        traits::{
-            conundrum_input::{ArcState, ConundrumInput},
-            mdx_component_result::MdxComponentResult,
-            plain_text_component_result::PlainTextComponentResult,
+    lang::{
+        lib::ui::ui_types::children::Children,
+        runtime::{
+            parse_conundrum_string::parse_elements,
+            state::conundrum_error_variant::ConundrumModalResult,
+            traits::{
+                conundrum_input::{ArcState, ConundrumInput},
+                html_js_component_result::HtmlJsComponentResult,
+                mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
+            },
         },
     },
     output::{
@@ -21,13 +28,19 @@ use crate::{
 #[typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownLinkResult {
-    pub text: String,
+    pub text: Children,
     pub url: String,
 }
 
 impl PlainTextComponentResult for MarkdownLinkResult {
-    fn to_plain_text(&self, _: ArcState) -> ConundrumModalResult<String> {
-        Ok(self.text.clone())
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
+        self.text.render(res)
+    }
+}
+
+impl HtmlJsComponentResult for MarkdownLinkResult {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        Ok(format!("<a href=\"{}\">{}</a>", self.url, self.text.render(res)?))
     }
 }
 
@@ -46,7 +59,13 @@ impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
              delimited('(', take_while(5.., |c| c != ')' && c != '\n' && c != ' ' && c != '\t'), ')'))
                                                                                          .parse_next(input)?;
 
-        Ok(MarkdownLinkResult { text: text.trim().to_string(),
+        let state = Arc::clone(&input.state);
+
+        let mut nested_state = ConundrumInput { input: text,
+                                                state };
+        let res = parse_elements(&mut nested_state)?;
+
+        Ok(MarkdownLinkResult { text: Children(res),
                                 url: url.to_string() })
     }
 
@@ -67,7 +86,8 @@ mod tests {
         let mut wrapped = wrap_test_conundrum_content(test_input);
         let res = MarkdownLinkResult::parse_input_string(&mut wrapped).expect("Parses markdown link without throwing an error.");
 
-        assert!(res.text == "My text here", "Finds the proper text in the markdown link");
+        assert!(res.text.render(Arc::clone(&wrapped.state)).is_ok_and(|c| c == "My text here"),
+                "Finds the proper text in the markdown link");
         assert!(res.url == "https://google.com",
                 "Finds the proper url when the markdown link is simple and formatted properly.")
         // assert_eq!(result, 4);

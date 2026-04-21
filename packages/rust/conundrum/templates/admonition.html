@@ -7,20 +7,20 @@ data-cdrm-foldable="{{foldable}}"
             true => "grid-cols-[auto_1fr_auto]",
             false => "grid-cols-[auto_1fr]"
     })}}">
-<div class="cdrm-title-icon place-self-center text-lg font-lucide transition-all duration-300">
+<div class="cdrm-title-icon place-self-center text-lg font-lucide">
 {{self.get_icon()}}
 </div>
 <div class="w-full" style="line-height:normal;">
 {{title_children}}
 </div>
 {% if foldable %}
-<div class="cdrm-fold-icon font-lucide">
+<div class="cdrm-fold-icon font-lucide transition-all duration-300">
 {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::ChevronUp}}
 </div>
 {% endif %}
 </div>
-<div class="cdrm-admon-body-container rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground [&_*]:text-fd-card-foreground relative transition-all duration-300 {% if foldable && folded %}h-0{% else %}h-fit{% endif %}">
-<div class="cdrm-admon-body p-4 first:mt-0 last:mb-0 inline-cdrm h-fit {% if self.is_center_self() %} flex flex-col justify-center items-center {% endif %}">
+<div class="cdrm-admon-body-container rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground [&_*]:text-fd-card-foreground relative transition-all duration-300 h-fit {% if foldable && folded %}max-h-0{% else %}max-h-fit{% endif %}">
+<div class="cdrm-admon-body p-4 first:mt-0 last:mb-0 inline-cdrm h-fit transition-all duration-300 {% if self.is_center_self() %} flex flex-col justify-center items-center {% endif %}">
 {{body_children}}
 </div>
 </div>

@@ -9,8 +9,7 @@ use crate::{
             components::{
                 component_trait::ConundrumComponent,
                 layout::tabs::{
-                    tab_group_html_template::TabGroupHtmlTemplate,
-                    tab_html_template::{TabButtonHtmlTemplate, TabContentTemplate},
+                    tab_group_html_template::TabGroupHtmlTemplate, tab_html_template::TabButtonHtmlTemplate,
                 },
             },
             shared_props::sizable::SizablePropsGroup,
@@ -69,6 +68,7 @@ use crate::{
 pub struct TabsGroup {
     /// The styles applied to the active tab. Default: `.card`
     pub emphasis: Option<Emphasis>,
+    pub subtle: ConundrumBoolean,
     /// The `Tabs` component extends the `SizablePropsGroup` struct, but be
     /// careful... you're getting into the struggles of a developer now as
     /// these responsive containers can be difficult to make look good on
@@ -98,6 +98,9 @@ impl HtmlJsComponentResult for TabsGroup {
         let group_id = self.id.to_string();
         let group = TabGroupHtmlTemplate { children: self.children.render(Arc::clone(&res))?,
                                            tab_group_id: group_id.clone(),
+                                           subtle: self.subtle.0,
+                                           sizable: self.sizable.clone(),
+                                           emphasis: self.emphasis.as_ref().cloned().unwrap_or(Emphasis::Primary),
                                            tabs: self.get_tabs(&group_id, Arc::clone(&res))? };
 
         group.render().map_err(|e| {
@@ -136,14 +139,10 @@ impl TabsGroup {
                                                                     .to_children(Arc::clone(&res))?
                                                                     .render(Arc::clone(&res))?,
                                                      tab_group_id: group_id.to_string(),
-                                                     idx: i as u8,
+                                                     idx: i,
+                                                     is_longest: false,
                                                      initial: t.initial.unwrap_or(ConundrumBoolean(false)),
-                                                     tab_children: TabContentTemplate { idx: i as u8,
-                                                                                        group_id:
-                                                                                            group_id.to_string(),
-                                                                                        content:
-                                                                                            t.children
-                                                                                             .render(Arc::clone(&res))? } })
+                                                     tab_children: t.children.render(Arc::clone(&res))? })
                     }
                     _ => None,
                 },
@@ -153,6 +152,11 @@ impl TabsGroup {
             } else {
                 eprintln!("Found a component that is not a tab. Should definitely notify the user.")
             }
+        }
+        // Iterating over this thing twice hurts me in my soul....
+        let max = children.iter_mut().map(|c| c.tab_children.len()).max().unwrap_or_default();
+        if let Some(c) = children.iter_mut().find(|n| n.tab_children.len() >= max) {
+            c.is_longest = true;
         }
         Ok(children)
     }
@@ -172,10 +176,12 @@ impl ConundrumComponent for TabsGroup {
                   -> ConundrumModalResult<Self> {
         let emphasis = Emphasis::from_jsx_props(&props, "").ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
+        let subtle = ConundrumBoolean::from_jsx_props(&props, "subtle").unwrap_or(ConundrumBoolean(false));
         let children = Children(children.unwrap_or_default());
         let id = DOMId::new("my-temp-broken-id".to_string());
         Ok(TabsGroup { emphasis,
                        sizable,
+                       subtle,
                        children,
                        id })
     }

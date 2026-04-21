@@ -11,7 +11,19 @@ My paragraph without a new line.
 My paragraph _after_ **two** ***new lines***.  
 My paragraph after two spaces and a line break.
 
-This is my [[#tagHere]] and my citation[[cite:Einstein]] here.
+This is my [[#tagHere]] and my citation[[cite:Einstein]] here and [my note link](note:someFakeNoteId).
+
+<Tabs>
+<Tab label="My tab one">
+My tab here
+</Tab>
+<Tab label="My tab two">
+My tab two
+</Tab>
+<Tab label="My tab three">
+My tab three
+</Tab>
+</Tabs>
 
 <Admonition title="My admonition" foldable folded>
 My admonition's body goes here!

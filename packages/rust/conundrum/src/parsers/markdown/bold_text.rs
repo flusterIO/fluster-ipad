@@ -15,6 +15,7 @@ use crate::{
             state::conundrum_error_variant::ConundrumModalResult,
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
+                html_js_component_result::HtmlJsComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
@@ -28,6 +29,12 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownBoldTextResult {
     pub children: Children,
+}
+
+impl HtmlJsComponentResult for MarkdownBoldTextResult {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        Ok(format!("<span class=\"font-bold\">{}</span>", self.children.render(res)?))
+    }
 }
 
 impl MarkdownComponentResult for MarkdownBoldTextResult {

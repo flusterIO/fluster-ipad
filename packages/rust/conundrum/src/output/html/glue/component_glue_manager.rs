@@ -77,6 +77,8 @@ lazy_static! {
                    include_str!("./component_glue_output/note_link.js").to_string().as_bytes().to_vec());
         map.insert(format!("{}-js", EmbeddableComponentId::Admonition), include_str!("./component_glue_output/admonition.js").to_string().as_bytes().to_vec());
         map.insert(format!("{}-css", EmbeddableComponentId::Admonition), include_str!("../../../lang/lib/ui/components/attention/admonition/admonition.css").to_string().as_bytes().to_vec());
+
+        map.insert(format!("{}-js", EmbeddableComponentId::Tabs), include_str!("./component_glue_output/tabs.js").to_string().as_bytes().to_vec());
         map
     };
 }
