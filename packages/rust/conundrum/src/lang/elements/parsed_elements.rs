@@ -102,7 +102,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::BoldText(t) => t.to_html_js_component(res),
             ParsedElement::ItalicText(t) => t.to_html_js_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_html_js_component(res),
-            ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
+            ParsedElement::MarkdownLink(l) => l.to_html_js_component(res),
             ParsedElement::MarkdownParagraph(p) => p.to_html_js_component(res),
             ParsedElement::Hr(l) => l.to_conundrum_component(res),
             ParsedElement::HrWithChildren(c) => c.to_conundrum_component(res),

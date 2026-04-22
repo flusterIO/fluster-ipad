@@ -1,17 +1,13 @@
 (() => {
     function handleTabClick(e: Event) {
         const em = (e.currentTarget as HTMLDivElement).parentElement.parentElement as HTMLDivElement;
-        console.log("em: ", em)
         if (!em) {
             return
         }
         const emphasis = em.getAttribute("data-cdrm-emphasis");
-        console.log("emphasis: ", emphasis)
         let tabs = em.querySelectorAll(".cdrm-tab-subtle-border");
-        console.log("tabs: ", tabs)
         const clickedIndex = parseInt((e.currentTarget as HTMLDivElement).getAttribute("data-cdrm-idx"))
         const groupId = em.getAttribute("data-cdrm-group");
-        console.log("clickedIndex: ", clickedIndex)
         const lastFocusedIndex = parseInt(em.getAttribute("data-cdrm-focused-idx"))
         for (var i = 0; i < tabs.length; i++) {
             const tab = tabs.item(i) as HTMLButtonElement;
@@ -21,14 +17,13 @@
             }
             if (i === clickedIndex) {
                 let activeTabBorder = (e.currentTarget as HTMLDivElement).querySelector(".cdrm-tab-subtle-border") as HTMLDivElement;
-                console.log("activeTabBorder: ", activeTabBorder)
 
                 if (activeTabBorder) {
                     activeTabBorder.style.transformOrigin = lastFocusedIndex < clickedIndex ? "left" : "right";
                     activeTabBorder.classList.remove("bg-transparent");
                     activeTabBorder.classList.remove("scale-x-0");
                     // DO NOT SCAN THESE FILES WITH TAILWIND OR SHIT WILL EXPLODE
-                    activeTabBorder.classList.add(`bg-${emphasis}`)
+                    activeTabBorder.classList.add(`bg-emphasis-${emphasis}`)
                 }
             } else {
                 tab.style.transformOrigin = lastFocusedIndex > clickedIndex ? "left" : "right";

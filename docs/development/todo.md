@@ -6,11 +6,9 @@
 - [x] Handle bug requiring details page to be refreshed on Mac.
 - [x] Fix new note first display issue. It's _still_ not resolved!
 - [x] Handle rendering code to HTML
-- [ ] Move over the `from_props` methods to accepting a state param so we can actually break up the parsing and compilation phases properly.
-- [ ] MOVE OVER ALL KATEX FONT METHODS TO USE BINARY STORED DATA. THIS WILL BREAK THE STANDALONE APP.
+- [x] Move over the `from_props` methods to accepting a state param so we can actually break up the parsing and compilation phases properly.
+- [x] MOVE OVER ALL KATEX FONT METHODS TO USE BINARY STORED DATA. THIS WILL BREAK THE STANDALONE APP.
 - [ ] Reimplement `window.setBibtexEditorContent`. It's a buffer operation that's currently MIA.
-- [ ] Handle auto-inserted code block. It has the potential to look really good, but it definitely needs to be fixed.
-- [ ] Fix code block title-underscore parsing issue.
 - [ ] Handle rest of summary UI
 - [ ] Make sure summary can be accepted or declined from the UI appropriately.
 

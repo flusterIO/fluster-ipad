@@ -21,10 +21,9 @@ use crate::{
     },
     output::general::component_constants::any_component_id::AnyComponentName,
     parsers::{
-        as_char_extensions::is_space_or_newline,
         conundrum::logic::object::object::ConundrumObject,
         javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
-        parser_components::white_space_delimited::white_space_delimited,
+        parser_components::{consume_white_space::consume_white_space, white_space_delimited::white_space_delimited},
         parser_trait::ConundrumParser,
         parsers_shared::space_or_new_line::space_or_newline0,
         react::{
@@ -50,9 +49,7 @@ impl ConundrumComponentResult for ReactComponentWithChildrenResult {
 fn react_closing_tag_parser_by_name(component_name: &str) -> impl Fn(&mut ConundrumInput) -> ConundrumModalResult<()> {
     move |input| {
         let _ = delimited(literal("</"),
-                          (take_while(0.., is_space_or_newline),
-                           literal(component_name),
-                           take_while(0.., is_space_or_newline)),
+                          delimited(consume_white_space(0..), literal(component_name), consume_white_space(0..)),
                           '>').parse_next(input)?;
         Ok(())
     }
@@ -63,7 +60,6 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
     let start = input.input.checkpoint();
 
     '<'.void().parse_next(input).inspect_err(|e| {
-                                     eprintln!("Error: {:#?}", e);
                                      input.input.reset(&start);
                                  })?;
 
@@ -73,7 +69,6 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                 })
                                                                 .parse_next(input)
                                                                 .inspect_err(|e| {
-                                                                    eprintln!("Error: {:#?}", e);
                                                                     input.input.reset(&start);
                                                                 })?;
 
@@ -83,15 +78,16 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
 
     let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
     let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|e| {
-                             eprintln!("Error: {:#?}", e);
-                             input.input.reset(&start);
-                         })?;
+                                                                                                 input.input
+                                                                                                      .reset(&start);
+                                                                                             })?;
+
+    println!("COmponent Name: {}", component_name_string);
 
     let props_kv_pairs: Option<Vec<JavascriptObjectKeyValuePair>> = opt(delimited(space_or_newline0,
                                        repeat(0.., white_space_delimited(any_jsx_property)),
                                        space_or_newline0)).parse_next(input)
                                                           .inspect_err(|e| {
-                                                              eprintln!("Error: {:#?}", e);
                                                               input.input.reset(&start);
                                                           })?;
 
@@ -100,6 +96,8 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
     '>'.parse_next(input).inspect_err(|_| {
                               input.input.reset(&start);
                           })?;
+
+    println!("COmponent: {}", component_name_string);
 
     let (children_chars, _): (Vec<&str>, ()) = repeat_till(0.., take(1usize), react_closing_tag_parser_by_name(component_name_string.as_str())).parse_next(input).inspect_err(|_| {
         input.input.reset(&start);

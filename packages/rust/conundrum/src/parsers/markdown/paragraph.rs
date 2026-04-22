@@ -26,7 +26,10 @@ use crate::{
         },
     },
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-    parsers::{parser_trait::ConundrumParser, parsers_shared::segmentize::any_block_element},
+    parsers::{
+        parser_trait::ConundrumParser, parsers_shared::segmentize::any_block_element,
+        react::react_closing_tag_parser::react_closing_tag_parser_by_name,
+    },
 };
 
 #[typeshare::typeshare]
@@ -79,10 +82,12 @@ pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<(C
     let (joined_paragraph, terminator) =
         repeat_till(1..,
                     take(1usize),
-                    peek(alt((markdown_paragraph_line_break.map(|_| {
+                    peek(alt((
+                    markdown_paragraph_line_break.map(|_| {
                         ParagraphTerminator::LineEnding
                     }),
-                        any_block_element.map(ParagraphTerminator::Content))))).verify_map(|(res, terminator): (Vec<&str>, ParagraphTerminator)| {
+                    any_block_element.map(ParagraphTerminator::Content),
+                    )))).verify_map(|(res, terminator): (Vec<&str>, ParagraphTerminator)| {
                                                                           let joined_paragraph = String::from_iter(res);
                                                                           println!("Joined Paragraph: {:#?}",
                                                                                    joined_paragraph);
@@ -103,6 +108,48 @@ pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<(C
     let children = parse_elements(&mut new_input)?;
     Ok((Children(children), terminator))
 }
+
+// pub fn markdown_paragraph_in_component_children(parent_component_names:
+// Vec<String>)                                                 -> impl Fn(&mut
+// ConundrumInput) -> ConundrumModalResult<Children> {     move |input: &mut
+// ConundrumInput| {         let parsers =
+//             parent_component_names.iter()
+//                                   .map(|component_name| {
+//                                       move |input: &mut ConundrumInput|
+// react_closing_tag_parser_by_name(component_name)
+// })                                   .collect();
+
+//         let (joined_paragraph, terminator) =
+//         repeat_till(1..,
+//                     take(1usize),
+//                     peek(alt((
+//                     markdown_paragraph_line_break.map(|_| {
+//                         ParagraphTerminator::LineEnding
+//                     }),
+//                     any_block_element.map(ParagraphTerminator::Content),
+//                     )))).verify_map(|(res, terminator): (Vec<&str>,
+// ParagraphTerminator)| {
+// let joined_paragraph = String::from_iter(res);
+// println!("Joined Paragraph: {:#?}",
+// joined_paragraph);
+// if joined_paragraph.trim().is_empty() {
+// None
+// } else {
+// let terminator_data = match terminator {
+// ParagraphTerminator::Content(c) => Some(c),
+// ParagraphTerminator::LineEnding => None
+// };
+// Some((joined_paragraph, terminator_data))
+// }                                                                       })
+//
+// .parse_next(input)?;
+
+//         let mut new_input = ConundrumInput { input: &joined_paragraph,
+//                                              state: Arc::clone(&input.state)
+// };         let children = parse_elements(&mut new_input)?;
+//         Ok(Children(children))
+//     }
+// }
 
 impl ConundrumParser<MarkdownParagraphResult> for MarkdownParagraphResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<MarkdownParagraphResult> {

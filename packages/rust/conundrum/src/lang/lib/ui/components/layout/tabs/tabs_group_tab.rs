@@ -9,8 +9,9 @@ use crate::{
             state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumCompileTarget},
             traits::{
                 conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
-                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -49,11 +50,12 @@ impl MdxComponentResult for Tab {
     }
 }
 
-// impl HtmlJsComponentResult for Tab {
-//     fn to_html_js_component(&self, res: ArcState) ->
-// ConundrumModalResult<String> {         TabButtonHtmlTemplate
-//     }
-// }
+impl HtmlJsComponentResult for Tab {
+    fn to_html_js_component(&self, _: ArcState) -> ConundrumModalResult<String> {
+        // This component is rendered by the parent Tabs component.
+        Ok(String::from(""))
+    }
+}
 
 impl ConundrumComponentResult for Tab {
     fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {

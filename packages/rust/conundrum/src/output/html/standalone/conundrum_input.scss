@@ -5,7 +5,7 @@
 @plugin "@tailwindcss/typography";
 
 
-
+@source inline("bg-emphasis-primary bg-emphasis-info bg-emphasis-error bg-emphasis-warn bg-emphasis-success bg-emphasis-important bg-emphasis-research bg-emphasis-highlight");
 
 @layer base {
   :root {
@@ -101,6 +101,8 @@
     --font-nerd: "FontNerd";
     --font-lucide: "FontLucide";
     --color-general-link-color: hsl(var(--general-link-color));
+    --color-emphasis-primary: hsl(var(--primary));
+    --color-emphasis-primary-foreground: hsl(var(--primary-foreground));
     --color-emphasis-info: hsl(var(--emphasis-info));
     --color-emphasis-info-foreground: hsl(var(--emphasis-info-foreground));
     --color-emphasis-error: hsl(var(--emphasis-error));
@@ -206,4 +208,8 @@ body {
 
 p {
   width: 100%;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
 }
