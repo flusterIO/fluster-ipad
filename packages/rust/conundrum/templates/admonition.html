@@ -20,7 +20,7 @@
                                    </div>
                                    {% endif %}
     </div>
-    <div class="cdrm-admon-body-container rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground [&_*]:text-fd-card-foreground relative transition-all duration-300 h-fit {% if foldable && folded %}max-h-0{% else %}max-h-fit{% endif %}">
+    <div class="cdrm-admon-body-container rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground [&_*]:text-fd-card-foreground transition-all duration-300 {% if folded %} max-h-0 {% endif %} {% if foldable %} relative {% endif %}">
         <div class="cdrm-admon-body p-4 first:mt-0 last:mb-0 inline-cdrm h-fit transition-all duration-300 {% if self.is_center_self() %} flex flex-col justify-center items-center {% endif %}">
             {{body_children | safe}}
         </div>

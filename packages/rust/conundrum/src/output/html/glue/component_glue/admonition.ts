@@ -47,8 +47,6 @@
         const ems = document.getElementsByClassName("cdrm-admon");
         for (var i = 0; i < ems.length; i++) {
             const item = ems.item(i) as HTMLDivElement;
-            console.log("folded", item.getAttribute("data-cdrm-folded"))
-            console.log("foldable", item.getAttribute("data-cdrm-foldable"))
             if (item.getAttribute("data-cdrm-folded") === "false" && item.getAttribute("data-cdrm-foldable") === "true") {
                 handleAdmonitionHeight(item)
             }
