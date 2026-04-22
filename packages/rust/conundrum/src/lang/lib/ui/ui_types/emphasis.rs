@@ -97,6 +97,20 @@ impl Emphasis {
         }
     }
 
+    pub fn to_foreground_css_classes(&self) -> String {
+        match self {
+            Emphasis::Info => "text-emphasis-info! [&>p]:text-emphasis-info!".to_string(),
+            Emphasis::Error => "text-emphasis-error! [&>p]:text-emphasis-error!".to_string(),
+            Emphasis::Warn => "text-emphasis-warn! [&>p]:text-emphasis-warn!".to_string(),
+            Emphasis::Success => "text-emphasis-success! [&>p]:text-emphasis-success!".to_string(),
+            Emphasis::Important => "text-emphasis-important! [&>p]:text-emphasis-important!".to_string(),
+            Emphasis::Research => "text-emphasis-research! [&>p]:text-emphasis-research!".to_string(),
+            Emphasis::Primary => "text-primary! [&>p]:text-primary!".to_string(),
+            Emphasis::Highlight => "text-emphasis-highlight! [&>p]:text-emphasis-highlight!".to_string(),
+            Emphasis::Card => "text-fd-card! [&>p]:text-fd-card!".to_string(),
+        }
+    }
+
     pub fn to_border_color(&self) -> String {
         match self {
             Emphasis::Success => "border-emphasis-success".to_string(),

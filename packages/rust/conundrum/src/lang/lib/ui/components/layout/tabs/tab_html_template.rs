@@ -10,4 +10,5 @@ pub struct TabButtonHtmlTemplate {
     /// The rendered children of the tab itself, not the tab button.
     pub tab_children: String,
     pub is_longest: bool,
+    pub is_last: bool,
 }

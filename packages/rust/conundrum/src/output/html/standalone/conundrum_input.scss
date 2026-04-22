@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @source "../../src/**/*.{jsx,mdx,js,ts,rs}";
+@source not "../glue/component_glue/**";
+@source not "../glue/component_glue_output/**";
 @plugin "@tailwindcss/typography";
 
 

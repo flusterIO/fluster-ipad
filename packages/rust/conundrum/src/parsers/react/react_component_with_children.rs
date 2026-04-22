@@ -111,21 +111,16 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
 
     let mut new_input = ConundrumInput { input: children_string.as_str(),
                                          state: rc };
-    println!("Here: {}", component_name_string.clone());
     let children = parse_elements(&mut new_input)?;
-    println!("Here2: {}", component_name_string.clone());
 
     let cloned_state = Arc::clone(&input.state);
-    println!("Here3: {}", component_name_string.clone());
 
     let component = COMPONENT_MAP.get_by_component_name(&component_name, props, Some(children), cloned_state)?;
-    println!("Here4: {}", component_name_string.clone());
 
     let mut state = input.state.write();
     state.data.append_embeddable_component(&component_name.to_component_key());
     drop(state);
 
-    println!("HEre 5?: {}", component_name_string.clone());
     Ok(ReactComponentWithChildrenResult { full_text: "".to_string(), // This field will be
                                           // replaced below anyways.
                                           component })

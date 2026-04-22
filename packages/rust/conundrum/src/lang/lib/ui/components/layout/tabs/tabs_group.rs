@@ -96,12 +96,17 @@ impl MdxComponentResult for TabsGroup {
 impl HtmlJsComponentResult for TabsGroup {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let group_id = self.id.to_string();
+        let tabs = self.get_tabs(&group_id, Arc::clone(&res))?;
+
+        let initial_idx = tabs.iter().position(|item| item.initial.0).unwrap_or_default();
+
         let group = TabGroupHtmlTemplate { children: self.children.render(Arc::clone(&res))?,
                                            tab_group_id: group_id.clone(),
                                            subtle: self.subtle.0,
                                            sizable: self.sizable.clone(),
+                                           initial_idx,
                                            emphasis: self.emphasis.as_ref().cloned().unwrap_or(Emphasis::Primary),
-                                           tabs: self.get_tabs(&group_id, Arc::clone(&res))? };
+                                           tabs };
 
         group.render().map_err(|e| {
             eprintln!("Error: {:#?}", e);
@@ -131,18 +136,23 @@ impl ConundrumComponentResult for TabsGroup {
 impl TabsGroup {
     pub fn get_tabs(&self, group_id: &str, res: ArcState) -> ConundrumModalResult<Vec<TabButtonHtmlTemplate>> {
         let mut children = Vec::new();
+        let mut tab_idx = 0;
         for (i, x) in self.children.0.iter().enumerate() {
             if let Some(tab) = match x {
                 ParsedElement::ReactComponentWithChildren(n) => match &n.component {
                     ConundrumComponentType::Tab(t) => {
-                        Some(TabButtonHtmlTemplate { btn_children: t.label
-                                                                    .to_children(Arc::clone(&res))?
-                                                                    .render(Arc::clone(&res))?,
-                                                     tab_group_id: group_id.to_string(),
-                                                     idx: i,
-                                                     is_longest: false,
-                                                     initial: t.initial.unwrap_or(ConundrumBoolean(false)),
-                                                     tab_children: t.children.render(Arc::clone(&res))? })
+                        let res = Some(TabButtonHtmlTemplate { btn_children: t.label
+                                                                              .to_children(Arc::clone(&res))?
+                                                                              .render(Arc::clone(&res))?,
+                                                               tab_group_id: group_id.to_string(),
+                                                               idx: tab_idx,
+                                                               is_longest: false,
+                                                               is_last: false,
+                                                               initial: t.initial
+                                                                         .unwrap_or(ConundrumBoolean(false)),
+                                                               tab_children: t.children.render(Arc::clone(&res))? });
+                        tab_idx += 1;
+                        res
                     }
                     _ => None,
                 },
@@ -158,6 +168,9 @@ impl TabsGroup {
         if let Some(c) = children.iter_mut().find(|n| n.tab_children.len() >= max) {
             c.is_longest = true;
         }
+        if let Some(last_item) = children.last_mut() {
+            last_item.is_last = true;
+        }
         Ok(children)
     }
 }
@@ -172,13 +185,15 @@ impl ConundrumComponent for TabsGroup {
     /// feedback loop is pretty tight so it should be a good experience.
     fn from_props(props: ConundrumObject,
                   children: Option<Vec<ParsedElement>>,
-                  _: ArcState)
+                  state: ArcState)
                   -> ConundrumModalResult<Self> {
         let emphasis = Emphasis::from_jsx_props(&props, "").ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
         let subtle = ConundrumBoolean::from_jsx_props(&props, "subtle").unwrap_or(ConundrumBoolean(false));
         let children = Children(children.unwrap_or_default());
-        let id = DOMId::new("my-temp-broken-id".to_string());
+        let mut locked_state = state.write_arc();
+        let id = locked_state.dom.new_id();
+        drop(locked_state);
         Ok(TabsGroup { emphasis,
                        sizable,
                        subtle,

@@ -30,14 +30,12 @@ export const EmbeddableTabGroup = ({ children, ...props }: EmbeddableTabGroupPro
     const ref = useChildrenRendered<HTMLDivElement>((em) => {
         const items = em?.querySelectorAll(".tab-group-tab")
         if (items) {
-            console.log("heightOfFocusedIndex(): ", heightOfFocusedIndex())
             setHeight(heightOfFocusedIndex() ?? Math.min(Math.max(...items.entries().map((n) => n[1].getBoundingClientRect().height)), MAX_HEIGHT))
         } else {
             setHeight(heightOfFocusedIndex() ?? MAX_HEIGHT)
         }
     })
     const handleHeight = () => {
-        console.log(`Handling height?`)
         const items = ref.current?.querySelectorAll(".tab-group-tab")
         if (items) {
             console.log("heightOfFocusedIndex(): ", heightOfFocusedIndex())
