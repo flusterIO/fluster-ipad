@@ -2,6 +2,7 @@ interface NoteIdLinkEventProps {
     noteId: string
 }
 
+
 // declare global {
 //     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 //     interface WindowEventMap {

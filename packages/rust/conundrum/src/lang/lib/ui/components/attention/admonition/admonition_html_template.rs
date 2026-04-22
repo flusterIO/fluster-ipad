@@ -1,5 +1,6 @@
 use crate::{
     lang::lib::ui::{shared_props::sizable::SizablePropsGroup, ui_types::emphasis::Emphasis},
+    output::html::dom::dom_id::DOMId,
     parsers::conundrum::logic::bool::boolean::ConundrumBoolean,
 };
 use askama::Template;
@@ -14,6 +15,7 @@ pub struct AdmonitionHtmlTemplate {
     pub title_children: String,
     pub body_children: String,
     pub emphasis: Emphasis,
+    pub id: DOMId,
 }
 
 impl AdmonitionHtmlTemplate {

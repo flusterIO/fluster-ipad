@@ -15,7 +15,7 @@
     </button>
     {% endfor %}
     </div>
-    <div id="tab-body-wrapper-{{tab_group_id}}" class="cdrm-tab-group-body-container w-full h-fit max-h-[450px] overflow-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br">
+    <div id="tab-body-wrapper-{{tab_group_id}}" class="cdrm-tab-group-body-container w-full h-fit max-h-[450px] overflow-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br overflow-y-auto no-scrollbar">
     {% for tab in tabs %}
     <div data-cdrm-group="{{tab_group_id}}" class="cdrm-tab-group-item w-full px-4 py-3 transition-transform duration-300 absolute" id="tab-{{tab_group_id}}-{{tab.idx}}" style="transform: translateX({{(tab.idx - initial_idx) * 100}}%)">
         {{tab.tab_children}}

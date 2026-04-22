@@ -1,4 +1,27 @@
 (() => {
+
+    function handleAdmonitionHeight(container: HTMLDivElement) {
+        const bodyContainer = container.querySelector(".cdrm-admon-body-container") as HTMLDivElement;
+        const body = container.querySelector(".cdrm-admon-body") as HTMLDivElement;
+        body.style.height = 'auto';
+        body.style.transition = 'max-height 500ms ease-in-out';
+        const bodyHeight = body.getBoundingClientRect().height;
+        bodyContainer.style.maxHeight = `${bodyHeight}px`
+    }
+
+
+    function openAdmonition(container: HTMLDivElement) {
+        container.setAttribute("data-cdrm-folded", "false");
+        handleAdmonitionHeight(container)
+    }
+
+    function closeAdmonition(container: HTMLDivElement) {
+        const bodyContainer = container.querySelector(".cdrm-admon-body-container") as HTMLDivElement;
+        bodyContainer.style.maxHeight = "0px";
+        container.setAttribute("data-cdrm-folded", "true");
+    }
+
+
     let ems = document.getElementsByClassName("cdrm-admon-title-group") as HTMLCollectionOf<HTMLDivElement>;
     for (var i = 0; i < ems.length; i++) {
         const item = ems.item(i);
@@ -12,11 +35,26 @@
             }
             if (foldable) {
                 if (folded) {
-                    container.setAttribute("data-cdrm-folded", "false")
+                    openAdmonition(container)
                 } else {
-                    container.setAttribute("data-cdrm-folded", "true")
+                    closeAdmonition(container)
                 }
             }
         })
     }
+
+    function handleAdmonitionResize() {
+        const ems = document.getElementsByClassName("cdrm-admon");
+        for (var i = 0; i < ems.length; i++) {
+            const item = ems.item(i) as HTMLDivElement;
+            console.log("folded", item.getAttribute("data-cdrm-folded"))
+            console.log("foldable", item.getAttribute("data-cdrm-foldable"))
+            if (item.getAttribute("data-cdrm-folded") === "false" && item.getAttribute("data-cdrm-foldable") === "true") {
+                handleAdmonitionHeight(item)
+            }
+        }
+    }
+
+    window.addEventListener("resize", handleAdmonitionResize);
+    window.addEventListener("cdrm-manual-resize", handleAdmonitionResize);
 })()

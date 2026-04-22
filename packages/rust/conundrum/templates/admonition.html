@@ -1,27 +1,28 @@
 <div 
-class="{{tw_merge!("@container/admonition my-4 w-full overflow-hidden", self.sizable.as_class())}}"
-data-cdrm-folded="{{folded}}"
-data-cdrm-foldable="{{foldable}}"
->
-<div class="{{tw_merge!("cdrm-admon-title-group w-full grid gap-x-2 p-2 rounded-tl rounded-tr relative z-[1] min-h-[42px] font-semibold grid place-items-center", self.emphasis.to_background_color_classes(), match self.foldable.0 {
-            true => "grid-cols-[auto_1fr_auto]",
-            false => "grid-cols-[auto_1fr]"
-    })}}">
-<div class="cdrm-title-icon place-self-center text-lg font-lucide">
-{{self.get_icon()}}
-</div>
-<div class="w-full" style="line-height:normal;">
-{{title_children}}
-</div>
-{% if foldable %}
-<div class="cdrm-fold-icon font-lucide transition-all duration-300">
-{{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::ChevronUp}}
-</div>
-{% endif %}
-</div>
-<div class="cdrm-admon-body-container rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground [&_*]:text-fd-card-foreground relative transition-all duration-300 h-fit {% if foldable && folded %}max-h-0{% else %}max-h-fit{% endif %}">
-<div class="cdrm-admon-body p-4 first:mt-0 last:mb-0 inline-cdrm h-fit transition-all duration-300 {% if self.is_center_self() %} flex flex-col justify-center items-center {% endif %}">
-{{body_children}}
-</div>
-</div>
+    class="{{tw_merge!("@container/admonition cdrm-admon my-4 w-full overflow-hidden", self.sizable.as_class())}}"
+    data-cdrm-folded="{{folded}}"
+    data-cdrm-foldable="{{foldable}}"
+    id="{{id}}"
+    >
+    <div class="{{tw_merge!("cdrm-admon-title-group w-full grid gap-x-2 p-2 rounded-tl rounded-tr relative z-[1] min-h-[42px] font-semibold grid place-items-center", self.emphasis.to_background_color_classes(), match self.foldable.0 {
+                true => "grid-cols-[auto_1fr_auto]",
+                         false => "grid-cols-[auto_1fr]"
+                                   })}}">
+                                   <div class="cdrm-title-icon place-self-center text-lg font-lucide">
+                                       {{self.get_icon() | safe}}
+                                   </div>
+                                   <div class="w-full" style="line-height:normal;">
+                                       {{title_children | safe}}
+                                   </div>
+                                   {% if foldable %}
+                                   <div class="cdrm-fold-icon font-lucide transition-all duration-300">
+                                       {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::ChevronUp}}
+                                   </div>
+                                   {% endif %}
+    </div>
+    <div class="cdrm-admon-body-container rounded-bl rounded-br border-l border-b border-r bg-fd-card/80 text-fd-card-foreground [&_*]:text-fd-card-foreground relative transition-all duration-300 h-fit {% if foldable && folded %}max-h-0{% else %}max-h-fit{% endif %}">
+        <div class="cdrm-admon-body p-4 first:mt-0 last:mb-0 inline-cdrm h-fit transition-all duration-300 {% if self.is_center_self() %} flex flex-col justify-center items-center {% endif %}">
+            {{body_children | safe}}
+        </div>
+    </div>
 </div>

@@ -33,8 +33,9 @@ use crate::{
             },
         },
     },
-    output::general::component_constants::{
-        any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
+    output::{
+        general::component_constants::{any_component_id::AnyComponentName, component_names::EmbeddableComponentName},
+        html::dom::dom_id::DOMId,
     },
     parsers::conundrum::logic::{
         bool::boolean::ConundrumBoolean, number::conundrum_int::ConundrumInt, object::object::ConundrumObject,
@@ -43,9 +44,10 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Default, Clone)]
+#[derive(Debug, Serialize, Clone)]
 pub struct Admonition {
     pub title: Children,
+    pub id: DOMId,
     pub children: Children,
     /// The title depth between 1-6 for the markdown output. This will have no
     /// effect on mdx, jsx, or plain text output. Defaults to 5
@@ -109,6 +111,7 @@ impl HtmlJsComponentResult for Admonition {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let templ = AdmonitionHtmlTemplate { sizable: self.sizable.as_ref().cloned().unwrap_or_default(),
                                              foldable: self.foldable.unwrap_or_default(),
+                                             id: self.id.clone(),
                                              folded: self.folded.unwrap_or_default(),
                                              title_children: self.title.render(Arc::clone(&res))?,
                                              body_children: self.children.render(Arc::clone(&res))?,
@@ -183,7 +186,10 @@ impl ConundrumComponent for Admonition {
         let foldable = ConundrumBoolean::from_jsx_props(&props, "foldable").ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
 
-        let title_children = title.to_children(state)?;
+        let title_children = title.to_children(Arc::clone(&state))?;
+        let mut locked_state = state.write_arc();
+        let id = locked_state.dom.new_id();
+        drop(locked_state);
 
         Ok(Admonition { title: title_children,
                         children: children.map(Children).unwrap_or_else(Children::new_empty),
@@ -191,6 +197,7 @@ impl ConundrumComponent for Admonition {
                         emphasis,
                         folded,
                         foldable,
+                        id,
                         sizable })
     }
 }
