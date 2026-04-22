@@ -11,7 +11,7 @@ use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
 use crate::parsers::conundrum::comment::ConundrumCommentResult;
 use crate::parsers::conundrum::docs::ParsedInspectionRequest;
-use crate::parsers::conundrum::hr_with_children::HrWithChildrenResult;
+use crate::parsers::conundrum::hr_with_children::hr_with_children_model::HrWithChildrenResult;
 use crate::parsers::conundrum::note_link::note_link_model::ParsedOutgoingNoteLink;
 use crate::parsers::markdown::block_math::BlockMathResult;
 use crate::parsers::markdown::block_quote::block_quote_model::BlockQuoteResult;

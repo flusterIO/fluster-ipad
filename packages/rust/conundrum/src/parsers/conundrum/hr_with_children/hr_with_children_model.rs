@@ -1,9 +1,11 @@
 use std::sync::Arc;
 
+use askama::Template;
 use serde::Serialize;
 use winnow::{
     Parser,
     combinator::delimited,
+    error::ErrMode,
     stream::Stream,
     token::{literal, take_until},
 };
@@ -14,10 +16,15 @@ use crate::{
         lib::ui::{components::component_trait::ConundrumComponent, ui_types::children::Children},
         runtime::{
             parse_conundrum_string::parse_elements,
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumCompileTarget},
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ConundrumCompileTarget,
+            },
             traits::{
-                conundrum_input::{ArcState, ConundrumInput, get_conundrum_input},
+                conundrum_input::{ArcState, ConundrumInput},
                 fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
@@ -27,7 +34,13 @@ use crate::{
     output::general::component_constants::{
         any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
-    parsers::parser_trait::ConundrumParser,
+    parsers::{
+        conundrum::{
+            hr_with_children::hr_with_children_html_templ::HrWithChildrenHTMLTemplate,
+            logic::object::object::ConundrumObject,
+        },
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
@@ -39,6 +52,16 @@ pub struct HrWithChildrenResult {
 impl PlainTextComponentResult for HrWithChildrenResult {
     fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.children.render(res)
+    }
+}
+
+impl HtmlJsComponentResult for HrWithChildrenResult {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let templ = HrWithChildrenHTMLTemplate { children: self.children.render(res)? };
+        templ.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
     }
 }
 
@@ -98,10 +121,7 @@ impl ConundrumComponent for HrWithChildrenResult {
         AnyComponentName::UserEmbedded(EmbeddableComponentName::HrWithChildren)
     }
 
-    fn from_props(_: super::logic::object::object::ConundrumObject,
-                  children: Option<Vec<ParsedElement>>,
-                  _: ArcState)
-                  -> ConundrumModalResult<Self>
+    fn from_props(_: ConundrumObject, children: Option<Vec<ParsedElement>>, _: ArcState) -> ConundrumModalResult<Self>
         where Self: Sized {
         let children = Children(children.unwrap_or_default());
         Ok(HrWithChildrenResult { children })

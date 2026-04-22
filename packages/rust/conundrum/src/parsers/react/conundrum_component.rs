@@ -24,7 +24,10 @@ use crate::{
             },
         },
     },
-    parsers::{conundrum::hr_with_children::HrWithChildrenResult, markdown::markdown_extensions::emoji::EmojiResult},
+    parsers::{
+        conundrum::hr_with_children::hr_with_children_model::HrWithChildrenResult,
+        markdown::markdown_extensions::emoji::EmojiResult,
+    },
 };
 
 #[typeshare]

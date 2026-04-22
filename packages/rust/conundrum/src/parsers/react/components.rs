@@ -30,7 +30,9 @@ use crate::{
         documentation_component_name::DocumentationComponentName,
     },
     parsers::{
-        conundrum::{hr_with_children::HrWithChildrenResult, logic::object::object::ConundrumObject},
+        conundrum::{
+            hr_with_children::hr_with_children_model::HrWithChildrenResult, logic::object::object::ConundrumObject,
+        },
         markdown::markdown_extensions::emoji::EmojiResult,
         react::conundrum_component::ConundrumComponentType,
     },

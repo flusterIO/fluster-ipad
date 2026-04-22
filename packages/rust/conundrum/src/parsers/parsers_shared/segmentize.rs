@@ -1,15 +1,13 @@
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        runtime::{
-            state::conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-            traits::conundrum_input::ConundrumInput,
-        },
+        runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput},
     },
     parsers::{
         conundrum::{
-            comment::ConundrumCommentResult, docs::ParsedInspectionRequest, hr_with_children::HrWithChildrenResult,
-            inline_citation::ParsedCitation, note_link::note_link_model::ParsedOutgoingNoteLink, tag::ParsedTag,
+            comment::ConundrumCommentResult, docs::ParsedInspectionRequest,
+            hr_with_children::hr_with_children_model::HrWithChildrenResult, inline_citation::ParsedCitation,
+            note_link::note_link_model::ParsedOutgoingNoteLink, tag::ParsedTag,
         },
         markdown::{
             block_math::BlockMathResult, block_quote::block_quote_model::BlockQuoteResult,
@@ -17,7 +15,7 @@ use crate::{
             code_block::code_block_model::ParsedCodeBlock, heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule, inline_code::InlineCodeResult, inline_math::InlineMathResult,
             italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::EmojiResult,
-            markdown_link::MarkdownLinkResult, paragraph::MarkdownParagraphResult,
+            markdown_link::MarkdownLinkResult,
         },
         parser_trait::ConundrumParser,
         react::{

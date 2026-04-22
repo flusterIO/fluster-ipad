@@ -45,6 +45,8 @@ $$
 
 </Card>
 
+--- My hr with $\delta$ children here ---
+
 > My block quote
 > With a nested line
 >> And a neted block quote.  
