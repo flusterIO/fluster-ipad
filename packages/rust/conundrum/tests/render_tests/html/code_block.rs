@@ -13,7 +13,7 @@ My paragraph without a new line that makes me :smile:.
 My paragraph _after_ **two** ***new lines***.  
 My paragraph after two spaces and a line break.
 
-My inline `(x) => y / z{:ts}` code here.
+My inline `const (x) => y / z;{:ts}` code here.
 
 This is my [[#tagHere]] and my citation[[cite:Einstein]] here and [my note link](note:someFakeNoteId).
 
@@ -62,9 +62,10 @@ $$
 \delta = 2 G \frac{M_\oplus}{R_\oplus}\hat{R}
 $$
 
-```python -- title="my_code_block.py"
-def my_func():
-       return np.linspace(0, smp.pi, 100)
+```swift -- title="my_code_block.swift"
+func myFunction() {
+    return MyView.myExtensions()
+}
 ```"#;
     write_test_ast(test_content, "semi-complete").expect("Writes ast successfully.");
     write_test_html(test_content, "semi-complete codeblock").await;

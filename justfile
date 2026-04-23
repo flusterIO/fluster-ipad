@@ -10,6 +10,9 @@ set dotenv-path := ".env.local"
 set dotenv-load := true
 
 
+docgen:
+	cargo run --bin conundrum_docgen
+
 run_when_online:
 	zsh {{justfile_directory()}}/scripts/when_online.zsh
 

@@ -5,7 +5,7 @@ use conundrum::{
     lang::runtime::queries::code::get_supported_syntaxes::get_supported_syntaxes,
     testing::get_workspace_root::get_workspace_root,
 };
-use tabled::{Table, Tabled, settings::Style};
+use tabled::{Table, settings::Style};
 
 #[derive(Clone, tabled::Tabled)]
 pub struct SupportedThemeEnumVariant {
@@ -27,6 +27,21 @@ impl SupportedThemeEnumVariant {
         l = l.replace(".", "Dot");
         let (leading_char, rest) = l.split_at(1);
         format!("{}{}", leading_char.to_ascii_uppercase(), rest)
+    }
+
+    pub fn get_formated_key(&self) -> String {
+        let name = self.format_name();
+        name.to_lowercase().replace("_", "-")
+    }
+
+    pub fn new(lang: String, extensions: Vec<String>) -> Self {
+        let mut item = SupportedThemeEnumVariant { lang,
+                                                   extensions };
+        let formatted_key = item.get_formated_key();
+        if !item.extensions.contains(&formatted_key) {
+            item.extensions.push(formatted_key);
+        }
+        item
     }
 }
 

@@ -19,10 +19,10 @@ impl SupportedSyntaxesRustTemplate {
 }
 
 pub fn write_supported_syntaxes_rust() {
-    let items = get_supported_syntaxes().iter()
-                                        .map(|item| SupportedThemeEnumVariant { lang: item.lang.clone(),
-                                                                                extensions: item.extensions.clone() })
-                                        .collect::<Vec<SupportedThemeEnumVariant>>();
+    let items =
+        get_supported_syntaxes().iter()
+                                .map(|item| SupportedThemeEnumVariant::new(item.lang.clone(), item.extensions.clone()))
+                                .collect::<Vec<SupportedThemeEnumVariant>>();
     let templ = SupportedSyntaxesRustTemplate { items };
     let rendered = templ.render().expect("Renders supported syntaxes rust template without throwing an error.");
     let output_path = std::path::Path::new(&get_workspace_root()).join("packages")
