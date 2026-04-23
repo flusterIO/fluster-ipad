@@ -129,7 +129,6 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
                 // Join stripped lines then recursively parse the inner content
                 // so math, citations, nested block quotes, etc. are recognised.
                 let inner_src = lines.join("\n");
-                println!("Inner Source: {:#?}", inner_src);
                 let mut new_state = ConundrumInput { input: &inner_src,
                                                      state: Arc::clone(&input.state) };
 

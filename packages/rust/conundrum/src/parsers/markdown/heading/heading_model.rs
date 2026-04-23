@@ -17,6 +17,7 @@ use crate::{
         lib::ui::ui_types::children::Children,
         runtime::{
             compile_conundrum::compile_elements,
+            parse_conundrum_children::parse_child_elements,
             parse_conundrum_string::parse_elements,
             state::{
                 conundrum_error::ConundrumError,
@@ -260,7 +261,8 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
         // state.clone());
         let mut new_input = ConundrumInput { input: &content_string,
                                              state: Arc::clone(&input.state) };
-        let children = parse_elements(&mut new_input)?;
+
+        let children = parse_child_elements.parse_next(&mut new_input)?;
 
         let c = Children(children.clone());
 

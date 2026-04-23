@@ -1,3 +1,4 @@
+use askama::Template;
 use serde::Serialize;
 use winnow::{Parser, combinator::delimited, error::ErrMode, token::take_while};
 
@@ -5,7 +6,10 @@ use crate::{
     lang::{
         lib::ui::{
             components::component_trait::ConundrumComponent,
-            shared_props::{sizable::SizablePropsGroup, sizable_option::SizableOption},
+            shared_props::{
+                sizable::{self, SizablePropsGroup},
+                sizable_option::SizableOption,
+            },
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
         },
         runtime::{
@@ -16,7 +20,8 @@ use crate::{
             },
             traits::{
                 conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
-                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -27,6 +32,7 @@ use crate::{
     parsers::{
         as_char_extensions::is_space_or_newline,
         conundrum::logic::{bool::boolean::ConundrumBoolean, string::conundrum_string::ConundrumString},
+        markdown::markdown_extensions::emoji::emoji_html_templ::EmojiHtmlTemplate,
         parser_trait::ConundrumParser,
     },
 };
@@ -55,7 +61,7 @@ pub struct EmojiResult {
     /// The other properties are still available, but these unique boolean
     /// properties will apply styles that will more reliably shape the
     /// underlying image.
-    pub sizable: SizablePropsGroup,
+    pub sizable: Option<SizablePropsGroup>,
     /// Default: "small", text sized.
     pub size: Option<SizableOption>,
 }
@@ -78,28 +84,61 @@ impl MarkdownComponentResult for EmojiResult {
     }
 }
 
+impl HtmlJsComponentResult for EmojiResult {
+    fn to_html_js_component(&self, _: ArcState) -> ConundrumModalResult<String> {
+        if let Some(svg) = self.get_svg() {
+            let templ = EmojiHtmlTemplate { size: self.size.as_ref().cloned().unwrap_or(SizableOption::Small),
+                                            sizable_classes: self.sizable
+                                                                 .as_ref()
+                                                                 .cloned()
+                                                                 .map(|x| x.as_class())
+                                                                 .unwrap_or_default(),
+                                            tag: self.sizable
+                                                     .as_ref()
+                                                     .cloned()
+                                                     .map(|sizable| {
+                                                         if sizable.inline.is_some_and(|x| x.0) {
+                                                             "span".to_string()
+                                                         } else {
+                                                             "div".to_string()
+                                                         }
+                                                     })
+                                                     .unwrap_or_else(|| "div".to_string()),
+                                            emoji: svg };
+            templ.render().map_err(|e| {
+                eprintln!("Error: {:#?}", e);
+                ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+            })
+        } else {
+            Err(
+                ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Emoji", format!("Conundrum attempted to render an invalid emoji: `{}`", self.name ).as_str())))
+            )
+        }
+    }
+}
+
 impl JsxComponentResult for EmojiResult {
     fn to_jsx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         let svg = self.get_svg()
-            .ok_or_else(|| {
-            ErrMode::Cut(
-                ConundrumErrorVariant::UserFacingGeneralParserError(
-                    ConundrumError::from_msg_and_details("Invalid emoji", format!("The `{}` key is not a valid emoji name. Use the `Emoji??` docs to see available Emojis.", self.name).as_str())
-                )
-            )
-        })?;
+                .ok_or_else(|| {
+                    ErrMode::Cut(
+                        ConundrumErrorVariant::UserFacingGeneralParserError(
+                            ConundrumError::from_msg_and_details("Invalid emoji", format!("The `{}` key is not a valid emoji name. Use the `Emoji??` docs to see available Emojis.", self.name).as_str())
+                        )
+                    )
+                })?;
         let s = self.name.to_jsx_prop_as_string("name").map_err(|_| {
-            ErrMode::Cut(
-                ConundrumErrorVariant::UserFacingGeneralParserError(
-                    ConundrumError::from_msg_and_details("Serialization error", "Conundrum failed to serialize an emoji name.")
+                ErrMode::Cut(
+                    ConundrumErrorVariant::UserFacingGeneralParserError(
+                        ConundrumError::from_msg_and_details("Serialization error", "Conundrum failed to serialize an emoji name.")
+                    )
                 )
-            )
-        })?;
+            })?;
         Ok(format!("<{} {} {} {}>{}</{}>",
                    EmbeddableComponentName::Emoji,
                    s,
                    self.size.as_ref().unwrap_or(&SizableOption::Small),
-                   self.sizable.to_jsx_prop(),
+                   self.sizable.as_ref().cloned().map(|x| x.to_jsx_prop()).unwrap_or_default(),
                    svg,
                    EmbeddableComponentName::Emoji))
     }
@@ -131,11 +170,11 @@ impl ConundrumParser<EmojiResult> for EmojiResult {
 
         Ok(EmojiResult { name: ConundrumString(value.to_string()),
                          size: None,
-                         sizable })
+                         sizable: Some(sizable) })
     }
 
     fn matches_first_char(char: char) -> bool {
-        char == ':'
+        char == ':' || char == '<'
     }
 }
 
@@ -149,11 +188,16 @@ impl ConundrumComponent for EmojiResult {
                   _: ArcState)
                   -> ConundrumModalResult<Self>
         where Self: Sized {
-        let name = ConundrumString::from_jsx_props(&props, "name")?;
-        let size = SizableOption::from_jsx_props_bool_record(&props);
-        let sizable = SizablePropsGroup::from_jsx_props(&props, "").unwrap_or_default();
+        let name = ConundrumString::from_jsx_props(&props, "name").map_err(|e| e.cut())?;
+        let size = SizableOption::from_jsx_props_bool_record(&props).unwrap_or_else(|| {
+                                                                        let x =
+                                                                            SizableOption::from_jsx_props(&props,
+                                                                                                          "size").ok();
+                                                                        x.unwrap_or(SizableOption::Small)
+                                                                    });
+        let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
         Ok(EmojiResult { name,
-                         size,
+                         size: Some(size),
                          sizable })
     }
 }

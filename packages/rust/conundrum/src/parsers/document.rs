@@ -68,11 +68,14 @@ impl ConundrumDocument {
     /// - [x] Gathers katex css
     /// - [x] Embeds katex fonts
     /// - [x] Embeds nerd fonts
-    /// - [ ] Embeds component javascript conditionally
-    /// - [ ] Embeds component css conditionally
+    /// - [x] Embeds component javascript conditionally
+    /// - [x] Embeds component css conditionally
     ///
     /// ### If I'm lucky...
     /// - [x] Multi-threaded compilation
+    /// - [ ] Mutli-threaded parsing. I'm not sure if this is even doable, but
+    ///   I'm going to give it
+    /// a shot...
     pub fn render_standalone(&self, params: ArcState) -> ConundrumModalResult<String> {
         let glue = self.get_glue(Arc::clone(&params));
         let compiled = self.compile_multithreaded(Arc::clone(&params))?;
@@ -86,13 +89,12 @@ impl ConundrumDocument {
                                             glue.css,
                                             state.ui_params.clone());
         let rendered_standalone = templ.render().map_err(|_| {
-
-    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
-                })?;
+            ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+        })?;
         Ok(rendered_standalone)
     }
 
     pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
-        Ok(String::from(""))
+        self.compile_multithreaded(Arc::clone(&params))
     }
 }

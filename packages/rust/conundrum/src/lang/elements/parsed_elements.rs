@@ -31,7 +31,7 @@ use crate::{
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
             code_block::code_block_model::ParsedCodeBlock, heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule, inline_code::InlineCodeResult, inline_math::InlineMathResult,
-            italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::EmojiResult,
+            italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::emoji_model::EmojiResult,
             markdown_link::MarkdownLinkResult, paragraph::MarkdownParagraphResult,
         },
         react::{
@@ -109,7 +109,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::Comment(c) => c.to_conundrum_component(res),
             ParsedElement::ReactComponentSelfClosing(c) => c.component.to_html_js_component(res),
             ParsedElement::ReactComponentWithChildren(c) => c.component.to_html_js_component(res),
-            ParsedElement::Emoji(e) => e.to_conundrum_component(res),
+            ParsedElement::Emoji(e) => e.to_html_js_component(res),
             ParsedElement::InlineCode(m) => m.to_mdx_component(res),
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),

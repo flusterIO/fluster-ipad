@@ -172,11 +172,11 @@ impl FromJsxPropsOptional for ConundrumString {
             match res {
                 Some(r) => Ok(r.clone()),
                 None => {
-                    Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Expected a `String`, found something else.", format!("Conundrum was looking for a string at the `{}` key but found something else. Please review the `Syntax??` docs if you're stuck.", key).as_str()))))
+                    Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Expected a `String`, found something else.", format!("Conundrum was looking for a string at the `{}` key but found something else. Please review the `Syntax??` docs if you're stuck.", key).as_str()))))
                 }
             }
         } else {
-            Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Expected a `String`, found something nothing.", format!("Conundrum was looking for a string at the `{}` key but couldn't find anything. Please review the `Syntax??` docs or the documentation for this specific component if you're stuck.", key).as_str()))))
+            Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Expected a `String`, found something else.", format!("Conundrum was looking for a string at the `{}` key but couldn't find anything. Please review the `Syntax??` docs or the documentation for this specific component if you're stuck.", key).as_str()))))
         }
     }
 }

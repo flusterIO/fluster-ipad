@@ -26,7 +26,7 @@ use crate::{
     },
     parsers::{
         conundrum::hr_with_children::hr_with_children_model::HrWithChildrenResult,
-        markdown::markdown_extensions::emoji::EmojiResult,
+        markdown::markdown_extensions::emoji::emoji_model::EmojiResult,
     },
 };
 
@@ -88,8 +88,8 @@ impl HtmlJsComponentResult for ConundrumComponentType {
             ConundrumComponentType::Tab(s) => s.to_plain_text(res),
             ConundrumComponentType::EqRef(s) => s.to_plain_text(res),
             ConundrumComponentType::Grid(s) => s.to_plain_text(res),
-            ConundrumComponentType::Emoji(s) => s.to_plain_text(res),
-            ConundrumComponentType::Hr(s) => s.to_plain_text(res),
+            ConundrumComponentType::Emoji(s) => s.to_html_js_component(res),
+            ConundrumComponentType::Hr(s) => s.to_html_js_component(res),
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_plain_text(res),
             ConundrumComponentType::Toc(s) => s.to_plain_text(res),
         }

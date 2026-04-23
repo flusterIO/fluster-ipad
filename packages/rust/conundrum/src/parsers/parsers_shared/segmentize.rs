@@ -6,16 +6,12 @@ use crate::{
     parsers::{
         conundrum::{
             comment::ConundrumCommentResult, docs::ParsedInspectionRequest,
-            hr_with_children::hr_with_children_model::HrWithChildrenResult, inline_citation::ParsedCitation,
-            note_link::note_link_model::ParsedOutgoingNoteLink, tag::ParsedTag,
+            hr_with_children::hr_with_children_model::HrWithChildrenResult,
         },
         markdown::{
             block_math::BlockMathResult, block_quote::block_quote_model::BlockQuoteResult,
-            bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
             code_block::code_block_model::ParsedCodeBlock, heading::heading_model::MarkdownHeadingResult,
-            hr::MarkdownHorizontalRule, inline_code::InlineCodeResult, inline_math::InlineMathResult,
-            italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::EmojiResult,
-            markdown_link::MarkdownLinkResult,
+            hr::MarkdownHorizontalRule,
         },
         parser_trait::ConundrumParser,
         react::{
@@ -25,101 +21,49 @@ use crate::{
     },
 };
 
+use winnow::combinator::{dispatch, fail, peek};
 use winnow::token::take;
-use winnow::{
-    Parser,
-    combinator::{alt, fail, repeat},
-    token::any,
-};
-use winnow::{
-    combinator::{dispatch, peek},
-    error::ErrMode,
-};
+use winnow::{Parser, combinator::alt};
 
-/// Similar to the main parser function, but this will not catch with a Text
-/// block and will instead throw if nothing is found. This will throw an error
-/// if an element is found that is not block level, allowing for it to be used
-/// inside of the paragraph parser... the simplest, but biggest pain in the a**
-/// I've ever dealt with...
+/// This represent every element capapble of breaking out of the middle of a
+/// paragraph.
 pub fn any_block_element<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<ParsedElement> {
-    let result =
-        dispatch! {peek(take(1usize));
-            "-" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
-                        MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
-                )).parse_next(x)
-            },
-            "/" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        ConundrumCommentResult::parse_input_string.map(ParsedElement::Comment),
-                )).parse_next(x)
-            },
-            "#" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
-                )).parse_next(x)
-            },
-            ">" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
-                )).parse_next(x)
-            },
-            "`" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
-                        InlineCodeResult::parse_input_string.verify(|_| false).map(ParsedElement::InlineCode),
-                )).parse_next(x)
-            },
-            "$" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        BlockMathResult::parse_input_string.map(ParsedElement::BlockMath),
-                        InlineMathResult::parse_input_string.verify(|_| false).map(ParsedElement::InlineMath),
-                )).parse_next(x)
-            },
-            ":" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        EmojiResult::parse_input_string.map(ParsedElement::Emoji),
-                )).verify(|_| false).parse_next(x)
-            },
-            "[" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::ParsedOutgoingNoteLink),
-                        ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
-                        ParsedTag::parse_input_string.map(ParsedElement::Tag),
-                        MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
-                )).verify(|_| false).parse_next(x)
-            },
-            "*" | "_" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
-                        MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
-                        MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
-                        MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
-                )).verify(|_| {
-                    false // The text elements can always be inline
-                }).parse_next(x)
-            },
-            "<" => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        ReactComponentWithChildrenResult::parse_input_string.verify(|c| {
-                            c.component.component_is_block_level()
-                        }).map(ParsedElement::ReactComponentWithChildren),
-                        ReactComponentSelfClosingResult::parse_input_string.verify(|c| {
-                            c.component.component_is_block_level()
-                        }).map(ParsedElement::ReactComponentSelfClosing),
-                )).parse_next(x)
-            },
-            "\\" => |x: &mut ConundrumInput<'a>| {
-                (take(1usize).void(),take(1usize)).map(|(_, c): (_, &str)| {
-                    ParsedElement::Text(c.to_string())
-                }).verify(|_| false).parse_next(x)
-            },
-            _ => |x: &mut ConundrumInput<'a>| {
-                alt((
-                        ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
-                )).parse_next(x)
-            },
-        }.parse_next(input)?;
+    let result = dispatch! {peek(take(1usize));
+                     // "-" => |x: &mut ConundrumInput<'a>| {
+                     //     alt((
+                     //             HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
+                     //             MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
+                     //     )).parse_next(x)
+                     // },
+                     // "/" => |x: &mut ConundrumInput<'a>| {
+                     //             ConundrumCommentResult::parse_input_string.map(ParsedElement::Comment).parse_next(x)
+                     // },
+                     // "#" => |x: &mut ConundrumInput<'a>| {
+                     //             MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading).parse_next(x)
+                     // },
+                     "`" => |x: &mut ConundrumInput<'a>| {
+                                 ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock).parse_next(x)
+                     },
+                     "$" => |x: &mut ConundrumInput<'a>| {
+                                 BlockMathResult::parse_input_string.map(ParsedElement::BlockMath).parse_next(x)
+                     },
+                     // "*" | "_" => |x: &mut ConundrumInput<'a>| {
+                     //             MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr).parse_next(x)
+                     // },
+                     "<" => |x: &mut ConundrumInput<'a>| {
+                         alt((
+                                 ReactComponentWithChildrenResult::parse_input_string.verify(|c| {
+                                     c.component.component_is_block_level()
+                                 }).map(ParsedElement::ReactComponentWithChildren),
+                                 ReactComponentSelfClosingResult::parse_input_string.verify(|c| {
+                                     c.component.component_is_block_level()
+                                 }).map(ParsedElement::ReactComponentSelfClosing),
+                         )).parse_next(x)
+                     },
+                     _ => |x: &mut ConundrumInput<'a>| {
+                                 fail.parse_next(x)
+                     },
+                 }.parse_next(input)?;
+    println!("Result: {:#?}", result);
     Ok(result)
 }

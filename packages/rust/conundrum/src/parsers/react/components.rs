@@ -20,7 +20,6 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::ParseState,
             },
             traits::conundrum_input::ArcState,
         },
@@ -33,7 +32,7 @@ use crate::{
         conundrum::{
             hr_with_children::hr_with_children_model::HrWithChildrenResult, logic::object::object::ConundrumObject,
         },
-        markdown::markdown_extensions::emoji::EmojiResult,
+        markdown::markdown_extensions::emoji::emoji_model::EmojiResult,
         react::conundrum_component::ConundrumComponentType,
     },
 };
@@ -131,8 +130,8 @@ impl COMPONENT_MAP {
                 Ok(r)
             }
             None => {
-                Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Missing Component",
-                                                                                                                   "The component key you provided could not be found."))))
+                Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Missing Component",
+                                                                                                                 "The component key you provided could not be found."))))
             }
         }
     }

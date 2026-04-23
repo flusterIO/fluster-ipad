@@ -4,3 +4,4 @@ generated/web/conundrum.css
 src/output/html/glue/component_glue_output/**
 current_test.zsh
 test_output_ast.json
+test_output_viewable.html

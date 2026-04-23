@@ -22,7 +22,10 @@ pub fn write_test_ast(content: &str, label: &str) -> ConundrumModalResult<()> {
                              Arc::new(RwLock::new(ParseState { data:
                                                                    MdxParsingResult::from_initial_mdx_content(content),
                                                                ..Default::default() })) };
-    let tree = parse_elements(&mut input).map_err(|_| panic!("Parses {} content without throwing an error.", label))
+    let tree = parse_elements(&mut input).map_err(|e| {
+                                             eprintln!("Error: {}", e);
+                                             panic!("Parses {} content without throwing an error.", label);
+                                         })
                                          .map_err(|e| ErrMode::Backtrack(ConundrumErrorVariant::FailToGenerateString))?;
     let json_string = serde_json::to_string_pretty(&tree).expect("Serializes AST to JSON successfully.");
     let repo_root = get_workspace_root();

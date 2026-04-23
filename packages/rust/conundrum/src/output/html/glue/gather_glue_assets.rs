@@ -45,9 +45,8 @@ WebGlueCodeGeneralFiles::Styles
         false => String::from(""),
     };
 
-    KatexCssAsset::default().append_to_css(&mut css_string, &is_standalone);
-
     if is_standalone {
+        KatexCssAsset::default().append_to_css(&mut css_string, &is_standalone);
         KatexFontAssetAmsRegular::default().append_to_css(&mut css_string, &is_standalone);
         KatexFontAssetCaligraphicBold::default().append_to_css(&mut css_string, &is_standalone);
         KatexFontAssetCaligraphicRegular::default().append_to_css(&mut css_string, &is_standalone);
@@ -71,10 +70,6 @@ WebGlueCodeGeneralFiles::Styles
         NerdFontAsset::default().append_to_css(&mut css_string, &is_standalone);
         LucideFontAsset {}.append_to_css(&mut css_string, &is_standalone);
     }
-
-    // Get all of the conditional css.
-    // Get general javascript glue code.
-    // Get component glue code
     for k in &state.data.get_included_components() {
         if let Some(js) = WEB_GLUE_CODE_MAP::get_js_string_by_key(k.clone()) {
             js_string += js.as_str();

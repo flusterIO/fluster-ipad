@@ -188,7 +188,7 @@ impl SizablePropsGroup {
             classes.push("border");
         }
         if self.inline.is_some_and(|x| x.0) {
-            classes.push("inline")
+            classes.push("inline-block");
         }
         if let Some(in_shadow) = &self.in_shadow {
             classes.push(match in_shadow {

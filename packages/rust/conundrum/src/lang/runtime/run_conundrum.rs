@@ -101,8 +101,6 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
     let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);
     let doc = ConundrumDocument::parse_input(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
 
-    println!("Doc: {:#?}", doc);
-
     let rendered_string = match is_standalone {
         true => doc.render_standalone(Arc::clone(&stateful_input.state))?,
         false => doc.render_app_embedded(Arc::clone(&stateful_input.state))?,
