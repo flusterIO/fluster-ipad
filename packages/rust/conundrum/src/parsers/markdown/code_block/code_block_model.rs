@@ -242,7 +242,7 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
         let ((language, meta_opt, raw_content, tick_length), full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let cp = input.input.checkpoint();
-                let ticks = take_while(1.., |c: char| c == '`').parse_next(input).inspect_err(|_| {
+                let ticks = take_while(3.., |c: char| c == '`').parse_next(input).inspect_err(|_| {
                                                                                       input.input.reset(&cp);
                                                                                   })?;
 

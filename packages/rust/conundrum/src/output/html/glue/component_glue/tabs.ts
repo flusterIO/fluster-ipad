@@ -39,14 +39,12 @@
             const tabBody = allTabBodies.item(i) as HTMLDivElement;
             if (tabBody.getAttribute("data-cdrm-group") === groupId) {
                 tabBody.style.transform = `translateX(${(i - clickedIndex) * 100}%)`
+                if (i === clickedIndex) {
+                    tabBody.style.opacity = "1"
+                } else {
+                    tabBody.style.opacity = "0"
+                }
             }
-            // if (i === clickedIndex) {
-            //     tabBody.classList.add("relative")
-            //     tabBody.classList.remove("absolute")
-            // } else {
-            //     tabBody.classList.remove("relative")
-            //     tabBody.classList.add("absolute")
-            // }
         }
     }
     /// If the div passed in is not a valid container this will break.

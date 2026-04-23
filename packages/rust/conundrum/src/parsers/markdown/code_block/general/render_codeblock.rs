@@ -35,10 +35,15 @@ pub fn render_general_codeblock_to_html(req: RenderCodeToHtmlReq) -> ConundrumMo
 
     let theme = data.get_theme(req.code.theme.unwrap_or_default().to_string().as_str());
 
-    let x = highlighted_html_for_string(req.code.content.as_str(), ss, syntax, theme).map_err(|e| {
+    let mut x = highlighted_html_for_string(req.code.content.as_str(), ss, syntax, theme).map_err(|e| {
         eprintln!("Error: {:#?}", e);
         ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid syntax name", "Conundrum failed to parse a provided codeblock.")))
     })?;
+
+    if req.code.inline {
+        x.replace_first("<pre", "<code class=\"not-prose text-sm px-1 py-0.5 rounded\" ");
+        x.replace_last("</pre>", "</code>");
+    }
 
     Ok(x)
 }

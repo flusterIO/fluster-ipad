@@ -1,4 +1,9 @@
+use std::str::FromStr;
+use std::sync::Arc;
+
+use parking_lot::Mutex;
 use serde::Serialize;
+use syntect_assets::assets::HighlightingAssets;
 use winnow::{
     Parser,
     ascii::alphanumeric1,
@@ -12,18 +17,47 @@ use crate::{
         state::conundrum_error_variant::ConundrumModalResult,
         traits::{
             conundrum_input::{ArcState, ConundrumInput},
+            html_js_component_result::HtmlJsComponentResult,
             markdown_component_result::MarkdownComponentResult,
             mdx_component_result::MdxComponentResult,
         },
     },
-    parsers::{markdown::subtypes::code_block_language::CodeBlockLanguage, parser_trait::ConundrumParser},
+    parsers::{
+        markdown::code_block::{
+            general::{
+                general_codeblock::GeneralPresentationCodeBlock,
+                render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
+            },
+            supported_languages::SupportedCodeBlockSyntax,
+            supported_themes::SupportedCodeBlockTheme,
+        },
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct InlineCodeResult {
     pub content: String,
-    pub lang: CodeBlockLanguage,
+    pub lang: SupportedCodeBlockSyntax,
+}
+
+impl InlineCodeResult {
+    pub fn get_highlighted_content(&self,
+                                   theme: SupportedCodeBlockTheme,
+                                   hl: std::sync::Arc<Mutex<HighlightingAssets>>)
+                                   -> ConundrumModalResult<String> {
+        render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content:
+                                                                                                        self.content
+                                                                                                            .clone(),
+                                                                                                    lang:
+                                                                                                        self.lang
+                                                                                                            .clone(),
+                                                                                                    theme:
+                                                                                                        Some(theme),
+                                                                                                    inline: true,
+                                                                                                    assets: hl } })
+    }
 }
 
 impl MarkdownComponentResult for InlineCodeResult {
@@ -34,20 +68,31 @@ impl MarkdownComponentResult for InlineCodeResult {
 
 impl MdxComponentResult for InlineCodeResult {
     fn to_mdx_component(&self, _: ArcState) -> ConundrumModalResult<String> {
-        match &self.lang {
-            CodeBlockLanguage::DefaultLanguage => Ok(format!("`{}`", self.content)),
-            CodeBlockLanguage::UserProvided(s) => Ok(format!("`{}{{:{}}}`", self.content, s)),
-        }
+        Ok(format!("`{}{{:{}}}`", self.content, self.lang))
     }
 }
 
-pub fn parse_inline_code_block_lang(input: &mut &str) -> ConundrumModalResult<CodeBlockLanguage> {
-    let lang = delimited(literal("{:"), alphanumeric1, '}').parse_next(input)?;
-    Ok(CodeBlockLanguage::UserProvided(lang.to_string()))
+impl HtmlJsComponentResult for InlineCodeResult {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let state = res.read_arc();
+
+        let highlighted =
+            self.get_highlighted_content(state.ui_params.syntax_theme.as_ref().cloned().unwrap_or_default(),
+                                         Arc::clone(&state.highlight_assets))?;
+        println!("Highlighted: {}", highlighted);
+        Ok(format!("<span class=\"cdrm-inline-code inline\">{}</span>", highlighted))
+    }
 }
 
-pub fn parse_inner_inline_code_block_for_lang(input: &mut &str) -> ConundrumModalResult<(String, CodeBlockLanguage)> {
-    let (x, lang): (Vec<char>, CodeBlockLanguage) =
+pub fn parse_inline_code_block_lang(input: &mut &str) -> ConundrumModalResult<SupportedCodeBlockSyntax> {
+    let lang = delimited(literal("{:"), alphanumeric1, '}').parse_next(input)?;
+    let l = SupportedCodeBlockSyntax::from_str(lang).unwrap_or(SupportedCodeBlockSyntax::GenericUnixShell);
+    Ok(l)
+}
+
+pub fn parse_inner_inline_code_block_for_lang(input: &mut &str)
+                                              -> ConundrumModalResult<(String, SupportedCodeBlockSyntax)> {
+    let (x, lang): (Vec<char>, SupportedCodeBlockSyntax) =
         repeat_till(1.., any, parse_inline_code_block_lang).parse_next(input)?;
     let content = String::from_iter(x);
     Ok((content, lang))
@@ -69,7 +114,7 @@ impl ConundrumParser<InlineCodeResult> for InlineCodeResult {
                                   lang })
         } else {
             Ok(InlineCodeResult { content: code_block,
-                                  lang: CodeBlockLanguage::DefaultLanguage })
+                                  lang: SupportedCodeBlockSyntax::GenericUnixShell })
         }
     }
 
@@ -90,7 +135,8 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res = InlineCodeResult::parse_input_string(&mut test_data).expect("Parses inline code block with language tag without throwing an error.");
 
-        assert!(matches!(res.lang, CodeBlockLanguage::DefaultLanguage), "Finds the proper language");
+        let d = SupportedCodeBlockSyntax::default();
+        assert!(matches!(res.lang, d), "Finds the proper language");
         assert!(res.content == "<MyTest myBool myString='Contains a {' />", "Finds the proper content");
     }
     #[test]
@@ -99,11 +145,7 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res = InlineCodeResult::parse_input_string(&mut test_data).expect("Parses inline code block with language tag without throwing an error.");
 
-        assert!(match res.lang {
-                    CodeBlockLanguage::UserProvided(s) => s == "tsx",
-                    _ => false,
-                },
-                "Finds the proper language");
+        assert!(res.lang.to_string() == "tsx".to_string(), "Finds the proper language");
         assert!(res.content == "<MyTest myBool myString='Contains a {' />", "Finds the proper content");
     }
 }

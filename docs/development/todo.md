@@ -8,6 +8,9 @@
 - [x] Handle rendering code to HTML
 - [x] Move over the `from_props` methods to accepting a state param so we can actually break up the parsing and compilation phases properly.
 - [x] MOVE OVER ALL KATEX FONT METHODS TO USE BINARY STORED DATA. THIS WILL BREAK THE STANDALONE APP.
+- [ ] Handle Blockquote bug with multi-line entries.
+- [ ] Write javascript to actually copy code from code block.
+  - [ ] Emit an event that can be picked up by other applications, including Fluster.
 - [ ] Reimplement `window.setBibtexEditorContent`. It's a buffer operation that's currently MIA.
 - [ ] Handle rest of summary UI
 - [ ] Make sure summary can be accepted or declined from the UI appropriately.

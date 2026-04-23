@@ -110,7 +110,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::ReactComponentSelfClosing(c) => c.component.to_html_js_component(res),
             ParsedElement::ReactComponentWithChildren(c) => c.component.to_html_js_component(res),
             ParsedElement::Emoji(e) => e.to_html_js_component(res),
-            ParsedElement::InlineCode(m) => m.to_mdx_component(res),
+            ParsedElement::InlineCode(m) => m.to_html_js_component(res),
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),

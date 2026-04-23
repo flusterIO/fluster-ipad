@@ -1,53 +1,45 @@
-# Daily Focus for My ADHD Brain
+## Daily Focus for ADHD
 
-## Priority Tasks
+### Prioritized Tasks
 
-### 1. **Move Over Components**
-- Move over all KateX font methods to use binary stored data.
-- Move over `from_props` methods to accept a state param to break up parsing and compilation phases.
-- Reimplement `window.setBibtexEditorContent`.
-- Move over `AINoteSummary` component.
+1. **Integrate Typst Support**
+   - This is a major value add that can be handled offline and is critical for release.
 
-### 2. **Fix Critical Issues**
-- Fix new note first display issue.
-- Fix code block title-underscore parsing issue.
-- Handle auto-inserted code block.
-- Fix issue with bibliography entries not being associated with note properly.
-- Handle rest of summary UI.
-- Make sure summary can be accepted or declined from the UI appropriately.
+2. **Setup Seeding of Notes on Desktop App**
+   - This will be the first app released, so it's essential to get this right.
 
-### 3. **Parser Improvements**
-- Work on integrating typst support (major value add).
-- Setup seeding of notes on desktop app.
-- Work on remaining parsers (CodeBlock, Footnote, Table, Strikethrough, Escapable math blocks, Escapable strings, Paragraphs, Line Item, Timestamp link syntax).
+3. **Move Remaining Components**
+   - Focus on moving over the `AINoteSummary` component and any other remaining components listed in the todo.
 
-### 4. **UI/UX Enhancements**
-- Handle scroll restoration on desktop app while in landscape mode.
-- Make sure all taggables have a 'cursor-pointer' class.
-- Handle light mode of `AISummaryContainer` card.
-- Handle force regeneration of AI summaries.
-- Handle React property parsers for better component parsing.
+4. **Work on Remaining Parsers**
+   - Prioritize the CodeBlock, Footnote, Table, Strikethrough text, Escapable math blocks, Escapable strings, Line Item, and Timestamp link syntax parsers.
 
-### 5. **Offline & Performance**
-- Fix issue with italic field in title syntax.
-- Move regex queries in `get_component_map` to `HashMap<String, bool>` in Rust.
-- Handle `Icon` component that dynamically loads icons.
-- Create searchable lazy list of icons.
-- Verify iPad app is working again with error state reset and initial state function.
+5. **Fix Critical Bugs**
+   - Ensure the bibliography entries are properly associated with notes.
+   - Resolve the issue with the 'paper' button creating two pages.
+   - Fix the bug where new notes require a refresh to load data.
 
-### 6. **Release Preparation**
-- Ensure all tests are passing (Swift, Typescript, Rust).
-- Review Apple's nomination process for featured app.
-- Handle AI availability states and generate note summaries.
-- Write tests for all `-ignoreParser` flags.
+6. **Improve UI/UX**
+   - Make sure the summary can be accepted or declined from the UI appropriately.
+   - Ensure all taggables have a 'cursor-pointer' class to indicate they are clickable.
 
-## Next Steps
-- Focus on the most critical tasks first to ensure a stable release within the next 2 weeks.
-- Break down larger tasks into smaller, manageable chunks.
-- Prioritize tasks that have the most impact on user experience and app functionality.
+7. **Handle AI Summarization**
+   - Work on AI summarization features and ensure AI triggers can be set to auto, confirm, or never modes.
 
-## Notes
-- Keep the focus on high-impact tasks to ensure a smooth release.
-- Regularly review progress and adjust priorities as needed.
-- Stay organized and maintain a clear plan to stay on track for the release date.
+8. **Offline Functionality**
+   - Fix the issue with italic fields in the title and ensure the webview can relay detailed errors to the user.
 
+9. **Performance Improvements**
+   - Move regex queries to a `HashMap<String, bool>` for faster lookups.
+
+10. **Release Preparation**
+    - Ensure all tests are passing for Swift, Typescript, and Rust.
+    - Review the YouTube link for Apple's editor team nominations and prepare the back story for the app.
+
+### Additional Notes
+
+- Focus on high-impact tasks that will have the most significant effect on the user experience.
+- Break down larger tasks into smaller, manageable sub-tasks to maintain focus and momentum.
+- Regularly review progress and adjust priorities as needed to stay on track for the release within the next two weeks.
+
+Let's tackle these tasks one by one and keep the momentum going!

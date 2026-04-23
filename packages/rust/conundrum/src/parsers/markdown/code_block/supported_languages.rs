@@ -19,6 +19,10 @@ use crate::lang::{
 /// model for if these are wrong, until I can get some stable time on WIFI. I
 /// didn't really feel like basically emoji's was the best use of my precious
 /// homeless-wifi time.:
+///
+/// This defaults to python for code blocks here, and a default of
+/// `GenericUnixShell` is implemented everywhere where an inline syntax is
+/// requested.
 #[typeshare::typeshare]
 #[derive(Serialize,
            Deserialize,
@@ -26,6 +30,7 @@ use crate::lang::{
            strum_macros::EnumString,
            EnumIter,
            uniffi::Enum,
+           Default,
            Clone,
            Debug,
            Eq,
@@ -185,6 +190,7 @@ pub enum SupportedCodeBlockSyntax {
     Perl,
     #[serde(rename = "Python")]
     #[strum(to_string = "Python", serialize = "python", serialize = "py")]
+    #[default]
     Python,
     #[serde(rename = "Regular Expressions (Python)")]
     #[strum(to_string = "Regular Expressions (Python)", serialize = "regex-py", serialize = "regex-python")]
@@ -468,6 +474,12 @@ impl SupportedCodeBlockSyntax {
 impl JsxPropRepresentable for SupportedCodeBlockSyntax {
     fn to_jsx_prop(&self, key: &str) -> String {
         format!("{}=\"{}\"", key, self)
+    }
+}
+
+impl SupportedCodeBlockSyntax {
+    pub fn default_inline() -> Self {
+        SupportedCodeBlockSyntax::GenericUnixShell
     }
 }
 
