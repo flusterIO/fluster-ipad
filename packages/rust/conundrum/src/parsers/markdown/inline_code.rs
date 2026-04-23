@@ -86,7 +86,7 @@ impl HtmlJsComponentResult for InlineCodeResult {
 
 pub fn parse_inline_code_block_lang(input: &mut &str) -> ConundrumModalResult<SupportedCodeBlockSyntax> {
     let lang = delimited(literal("{:"), alphanumeric1, '}').parse_next(input)?;
-    let l = SupportedCodeBlockSyntax::from_str(lang).unwrap_or(SupportedCodeBlockSyntax::GenericUnixShell);
+    let l = SupportedCodeBlockSyntax::from_str(lang).unwrap_or(SupportedCodeBlockSyntax::Shell_Unix_Generic);
     Ok(l)
 }
 
@@ -114,7 +114,7 @@ impl ConundrumParser<InlineCodeResult> for InlineCodeResult {
                                   lang })
         } else {
             Ok(InlineCodeResult { content: code_block,
-                                  lang: SupportedCodeBlockSyntax::GenericUnixShell })
+                                  lang: SupportedCodeBlockSyntax::Shell_Unix_Generic })
         }
     }
 

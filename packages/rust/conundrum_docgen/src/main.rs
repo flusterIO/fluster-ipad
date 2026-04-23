@@ -1,0 +1,15 @@
+pub mod methods;
+use askama::Template;
+use methods::write_supported_syntaxes;
+
+use crate::methods::{
+    write_supported_syntaxes::write_supported_syntaxes, write_supported_syntaxes_rust::write_supported_syntaxes_rust,
+};
+
+#[tokio::main]
+async fn main() {
+    if let Err(err) = write_supported_syntaxes() {
+        eprintln!("Error: {:#?}", err);
+    }
+    write_supported_syntaxes_rust();
+}

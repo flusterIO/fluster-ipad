@@ -1,0 +1,7 @@
+## Supported Syntaxes
+
+```long-docs
+Please keep in mind that I'm doing this while offline. If some of these less common languages seem to be aligned with an icon or syntax that is not what you expected, please let me know. It is very possible that there is a more accurate dev-icon or syntax highlighter already embedded in the application.
+```
+
+{{table_string}}

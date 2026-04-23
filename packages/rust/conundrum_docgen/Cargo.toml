@@ -1,0 +1,17 @@
+[package]
+name = "conundrum_docgen"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+askama = "0.15.6"
+conundrum = {path = "../conundrum/"}
+tabled = "0.20.0"
+tokio = { version = "1.52.1", features = ["full"] }
+
+[lints]
+workspace = true
