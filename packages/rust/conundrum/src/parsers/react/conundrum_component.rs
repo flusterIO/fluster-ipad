@@ -62,7 +62,7 @@ impl ConundrumComponentType {
             ConundrumComponentType::Hint(_) => true,
             ConundrumComponentType::Ul(_) => false,
             ConundrumComponentType::Hl(_) => false,
-            ConundrumComponentType::Container(_) => true,
+            ConundrumComponentType::Container(c) => !c.sizable.inline.is_some_and(|x| x.0),
             ConundrumComponentType::Tabs(_) => true,
             ConundrumComponentType::Tab(_) => true,
             ConundrumComponentType::EqRef(_) => false,

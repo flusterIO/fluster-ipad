@@ -4,6 +4,7 @@ use winnow::{
     Parser,
     combinator::{alt, peek, repeat_till},
     error::{ContextError, ErrMode},
+    stream::Stream,
     token::{literal, take},
 };
 
@@ -36,22 +37,34 @@ pub struct MarkdownParagraphResult {
     pub terminator: Option<Box<ParsedElement>>,
 }
 
+impl MarkdownParagraphResult {
+    /// Returns true if the children should break out of the paragraph,
+    /// rendering without the containing `<p>`.
+    pub fn should_breakout(&self) -> bool {
+        if self.children.0.is_empty() {
+            false
+        } else {
+            !self.children.is_all_inline()
+        }
+    }
+}
+
 impl HtmlJsComponentResult for MarkdownParagraphResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
-        if self.children.0.is_empty() {
+        let children = self.children.render(Arc::clone(&res))?;
+        // if self.should_breakout() {
+        //     if children.trim().is_empty() {
+        //         Ok(String::from(""))
+        //     } else {
+        //         Ok(children)
+        //     }
+        // } else {
+        if children.trim().is_empty() {
             Ok(String::from(""))
-        } else if !self.children.contains_inline_elements() {
-            // If no inline elements are in the paragraph, don't render the paragraph
-            // and just render it's contents.
-            self.children.render(res)
         } else {
-            let children = self.children.render(Arc::clone(&res))?;
-            if children.trim().is_empty() {
-                Ok(String::from(""))
-            } else {
-                Ok(format!("<p>{}</p>", children))
-            }
+            Ok(format!("<p>{}</p>", children))
         }
+        // }
     }
 }
 
@@ -85,27 +98,36 @@ enum ParagraphTerminator {
 }
 
 pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<(Children, Option<ParsedElement>)> {
-    let (joined_paragraph, terminator) =
+    let start = input.input.checkpoint();
+    let paragraph_start =
+        take(1usize).verify(|c: &str| !c.trim().is_empty()).parse_next(input).inspect_err(|_| {
+                                                                                  input.input.reset(&start);
+                                                                              })?;
+    let (rest_paragraph, terminator) =
         repeat_till(1..,
-                    take(1usize),
-                    peek(alt((
-                    markdown_paragraph_line_break.map(|_| {
-                        ParagraphTerminator::LineEnding
-                    }),
-                    any_block_element.map(ParagraphTerminator::Content),
-                    )))).verify_map(|(res, terminator): (Vec<&str>, ParagraphTerminator)| {
-                                                                          let joined_paragraph = String::from_iter(res);
-                                                                          if joined_paragraph.trim().is_empty() {
-                                                                              None
-                                                                          } else {
-                                                                          let terminator_data = match terminator {
-                                                                              ParagraphTerminator::Content(c) => Some(c),
-                                                                              ParagraphTerminator::LineEnding => None
-                                                                          };
-                                                                              Some((joined_paragraph, terminator_data))
-                                                                          }
-                                                                      })
-                                                                      .parse_next(input)?;
+            take(1usize),
+            peek(alt((
+                        markdown_paragraph_line_break.map(|_| {
+                            ParagraphTerminator::LineEnding
+                        }),
+                        any_block_element.map(ParagraphTerminator::Content),
+            )))).verify_map(|(res, terminator): (Vec<&str>, ParagraphTerminator)| {
+            let joined_paragraph = String::from_iter(res);
+            if joined_paragraph.trim().is_empty() {
+                None
+            } else {
+                let terminator_data = match terminator {
+                    ParagraphTerminator::Content(c) => Some(c),
+                    ParagraphTerminator::LineEnding => None
+                };
+                Some((joined_paragraph, terminator_data))
+            }
+        })
+    .parse_next(input).inspect_err(|_| {
+        input.input.reset(&start);
+    })?;
+
+    let joined_paragraph = format!("{}{}", paragraph_start, rest_paragraph);
 
     println!("Paragraph: {}", joined_paragraph);
 

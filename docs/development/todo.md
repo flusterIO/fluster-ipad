@@ -8,7 +8,7 @@
 - [x] Handle rendering code to HTML
 - [x] Move over the `from_props` methods to accepting a state param so we can actually break up the parsing and compilation phases properly.
 - [x] MOVE OVER ALL KATEX FONT METHODS TO USE BINARY STORED DATA. THIS WILL BREAK THE STANDALONE APP.
-- [ ] Handle Grid by fixing issue with integer parser. Currently it's picking up integers as floats which is failing the Grid component when the props are valid.
+- [x] Handle Grid by fixing issue with integer parser. Currently it's picking up integers as floats which is failing the Grid component when the props are valid.
 - [ ] Handle breakout of paragraph when only components are nested. Somehow every fucking thing is being wrapped in a paragraph which is leading the browser to fill in the blanks.
 - [ ] Handle Blockquote bug with multi-line entries.
 - [ ] Write javascript to actually copy code from code block.

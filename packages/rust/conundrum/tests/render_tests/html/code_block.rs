@@ -76,7 +76,5 @@ func myFunction() {
     return MyView.myExtensions()
 }
 ```"#;
-    write_test_ast(test_content, "semi-complete").expect("Writes ast successfully.");
-    write_test_html(test_content, "semi-complete codeblock").await;
     render_test(test_content, "python-code-block").await;
 }

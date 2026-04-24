@@ -38,8 +38,8 @@ impl Children {
         Children(Vec::new())
     }
 
-    pub fn contains_inline_elements(&self) -> bool {
-        self.0.iter().any(|item| !item.is_block_level())
+    pub fn is_all_inline(&self) -> bool {
+        self.0.iter().all(|item| !item.is_block_level())
     }
 
     /// Outputs to the various conundrum outputs depending on the associated

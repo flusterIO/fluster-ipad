@@ -5,7 +5,7 @@ use serde::Serialize;
 use winnow::{
     Parser,
     ascii::{line_ending, space0, till_line_ending},
-    combinator::{alt, eof, repeat},
+    combinator::{alt, eof, opt, repeat},
     error::ErrMode,
     stream::Stream,
     token::{literal, take_while},
@@ -34,11 +34,14 @@ use crate::{
         },
     },
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-    parsers::{markdown::block_quote::block_quote_html_templ::BlockQuoteHtmlTemplate, parser_trait::ConundrumParser},
+    parsers::{
+        markdown::block_quote::block_quote_html_templ::BlockQuoteHtmlTemplate,
+        parser_components::consume_white_space::consume_white_space, parser_trait::ConundrumParser,
+    },
 };
 
 // ---------------------------------------------------------------------------
-// Result type
+// Result
 // ---------------------------------------------------------------------------
 
 #[typeshare::typeshare]
@@ -89,7 +92,7 @@ impl MdxComponentResult for BlockQuoteResult {
     fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         // Recursively render inner elements through the same MdxParsingResult
         // so side-effects (citations, tags, etc.) are collected correctly.
-        let children_string = compile_elements(&self.children.0, &res)?;
+        let children_string = self.children.render(res)?;
 
         Ok(format!("\n<{component}>\n{inner}\n</{component}>\n",
                    component = AutoInsertedComponentName::AutoInsertedBlockQuote,
@@ -106,11 +109,31 @@ impl MdxComponentResult for BlockQuoteResult {
 /// Grammar (GFM spec §5.1):
 ///   0-3-spaces  `>`  optional-space  rest-of-line  line-ending-or-eof
 fn parse_bq_line(input: &mut ConundrumInput) -> ConundrumModalResult<String> {
-    let _ = take_while(0..=3, |c: char| c == ' ').parse_next(input)?;
-    let _ = literal(">").parse_next(input)?;
-    let _ = space0.parse_next(input)?;
-    let body = till_line_ending.parse_next(input)?;
-    let _ = alt((line_ending, eof.value(""))).parse_next(input)?;
+    let start = input.input.checkpoint();
+    let _ = take_while(0..=3, |c: char| c == ' ').parse_next(input).inspect_err(|_| {
+                                                                        input.input.reset(&start);
+                                                                    })?;
+    println!("One");
+    let _ = literal(">").parse_next(input).inspect_err(|_| {
+                                               input.input.reset(&start);
+                                           })?;
+    println!("Two");
+    let _ = space0.parse_next(input).inspect_err(|_| {
+                                         input.input.reset(&start);
+                                     })?;
+    println!("Three");
+    let body = till_line_ending.parse_next(input).inspect_err(|_| {
+                                                      input.input.reset(&start);
+                                                  })?;
+    consume_white_space(0..).parse_next(input).inspect_err(|_| {
+                                                   input.input.reset(&start);
+                                               })?;
+    println!("Four: {}", body);
+    let l = opt(alt((line_ending, eof.value("")))).parse_next(input).inspect_err(|_| {
+                                                                         input.input.reset(&start);
+                                                                     })?;
+    println!("L: {:#?}", l.unwrap_or("None found"));
+    println!("Five");
     Ok(body.to_string())
 }
 
@@ -127,16 +150,17 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
                                                                                           input.input.reset(&start);
                                                                                       })?;
 
+                println!("Lines: {:#?}", lines);
+
                 // Join stripped lines then recursively parse the inner content
                 // so math, citations, nested block quotes, etc. are recognised.
                 let inner_src = lines.join("\n");
+                println!("Inner: {}", inner_src);
                 let mut new_state = ConundrumInput { input: &inner_src,
                                                      state: Arc::clone(&input.state) };
 
                 let new_parsed_content =
-                    parse_child_elements(&mut new_state).unwrap_or_else(|_| {
-                                                            vec![ParsedElement::Text(inner_src.clone())]
-                                                        });
+                    parse_elements(&mut new_state).unwrap_or_else(|_| vec![ParsedElement::Text(inner_src.clone())]);
 
                 Ok(new_parsed_content)
             }).with_taken()

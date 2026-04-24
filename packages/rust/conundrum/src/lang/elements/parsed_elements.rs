@@ -166,6 +166,9 @@ impl ParsedElement {
     /// Currently this logic is in like 3 places, but this is the final source
     /// of truth for what's block level and what's not. I'll replace all of
     /// those when I have time.
+    ///
+    /// This returns false if the element can exist in a paragraph, and true if
+    /// it can't.
     pub fn is_block_level(&self) -> bool {
         match self {
             ParsedElement::ParsedInspectionRequest(_) => true,
@@ -173,7 +176,9 @@ impl ParsedElement {
             ParsedElement::ParsedCitation(_) => false,
             ParsedElement::ParsedOutgoingNoteLink(_) => false,
             ParsedElement::Tag(_) => false,
-            ParsedElement::Text(c) => c != &String::from(" ") && c != &String::from("\n"),
+            // The text element is exempt from the 'at_line_start' requirement as it's filtered
+            // out there.
+            ParsedElement::Text(c) => false,
             ParsedElement::Heading(_) => true,
             ParsedElement::BlockMath(_) => true,
             ParsedElement::InlineMath(_) => false,
