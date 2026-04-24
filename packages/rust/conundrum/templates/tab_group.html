@@ -1,10 +1,10 @@
-<div data-cdrm-emphasis="{{emphasis.to_string()}}" data-cdrm-focused-idx="{{initial_idx}}" data-cdrm-group="{{tab_group_id}}" class="{{tw_merge!("cdrm-tab-group w-full max-w-[1080px] h-fit flex flex-col justify-center items-center", match &self.sizable {
+<div data-cdrm-emphasis="{{emphasis.to_string()}}" data-cdrm-focused-idx="{{initial_idx}}" data-cdrm-group="{{tab_group_id}}" class="{{tw_merge!("cdrm-tab-group w-full max-w-[1080px]", match &self.sizable {
     Some(s) => s.as_class(),
     None => "".to_string()
-    })}}"]>
-    <div class="w-full h-full flex flex-row justify-start items-start flex-nowrap overflow-x-auto overflow-y-none">
+    })}}">
+    <div class="w-full h-full flex flex-row justify-start items-start flex-nowrap overflow-x-auto overflow-y-none no-scrollbar">
     {% for tab in tabs %}
-    <button data-cdrm-active="{{tab.idx == initial_idx}}" data-cdrm-idx="{{tab.idx}}" class="cdrm-tab-btn flex flex-col justify-center items-center gap-0 flex-grow-1 pt-1 pb-0 border cursor-pointer{% if tab.idx == 0 %} rounded-tl {% else if tab.is_last %} rounded-tr {% endif %}">
+    <button data-cdrm-active="{{tab.idx == initial_idx}}" data-cdrm-idx="{{tab.idx}}" class="cdrm-tab-btn flex flex-col justify-center items-center gap-0 flex-grow-1 pt-1 pb-0 border cursor-pointer relative{% if tab.idx == 0 %} rounded-tl {% else if tab.is_last %} rounded-tr {% endif %}">
         <div class="px-3 text-nowrap text-left w-full">
             {{tab.btn_children}}
         </div>
@@ -15,7 +15,7 @@
     </button>
     {% endfor %}
     </div>
-    <div id="tab-body-wrapper-{{tab_group_id}}" class="cdrm-tab-group-body-container w-full h-fit max-h-[450px] overflow-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br overflow-y-auto no-scrollbar">
+    <div id="tab-body-wrapper-{{tab_group_id}}" class="cdrm-tab-group-body-container w-full h-fit overflow-x-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br overflow-y-auto no-scrollbar">
     {% for tab in tabs %}
     <div data-cdrm-group="{{tab_group_id}}" class="cdrm-tab-group-item w-full px-4 py-3 transition-transform duration-300 absolute" id="tab-{{tab_group_id}}-{{tab.idx}}" style="transform: translateX({{(tab.idx - initial_idx) * 100}}%)">
         {{tab.tab_children}}

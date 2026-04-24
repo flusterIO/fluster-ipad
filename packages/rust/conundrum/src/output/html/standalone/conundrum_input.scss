@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./conundrum_input_sizable.scss";
 @source "../../src/**/*.{jsx,mdx,js,ts,rs}";
 @source not "../glue/component_glue/**";
 @source not "../glue/component_glue_output/**";

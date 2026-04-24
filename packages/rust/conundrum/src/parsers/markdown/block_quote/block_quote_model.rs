@@ -17,6 +17,7 @@ use crate::{
         lib::ui::ui_types::children::Children,
         runtime::{
             compile_conundrum::compile_elements,
+            parse_conundrum_children::parse_child_elements,
             parse_conundrum_string::parse_elements,
             state::{
                 conundrum_error::ConundrumError,
@@ -133,7 +134,9 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
                                                      state: Arc::clone(&input.state) };
 
                 let new_parsed_content =
-                    parse_elements(&mut new_state).unwrap_or_else(|_| vec![ParsedElement::Text(inner_src.clone())]);
+                    parse_child_elements(&mut new_state).unwrap_or_else(|_| {
+                                                            vec![ParsedElement::Text(inner_src.clone())]
+                                                        });
 
                 Ok(new_parsed_content)
             }).with_taken()

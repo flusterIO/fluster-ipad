@@ -15,6 +15,9 @@ use crate::{
 };
 
 /// Returns the object key and the bracketed content in a tuple, in that order.
+/// This will absolutely break if the content can contain a `}`, like a string
+/// or an object. This really works for numbers only, and is only still here as
+/// some left-over from when I had even less of an idea about what I was doing.
 pub fn jsx_curly_bracket_wrapped_property(input: &mut ConundrumInput) -> ConundrumModalResult<(String, String)> {
     let (key, _, bracketed_content) =
         (jsx_property_key, '=', delimited('{', take_till(0.., |c| c == '}'), '}')).parse_next(input)?;

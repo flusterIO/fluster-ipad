@@ -38,6 +38,10 @@ impl Children {
         Children(Vec::new())
     }
 
+    pub fn contains_inline_elements(&self) -> bool {
+        self.0.iter().any(|item| !item.is_block_level())
+    }
+
     /// Outputs to the various conundrum outputs depending on the associated
     /// flags.
     pub fn render(&self, res: ArcState) -> ConundrumModalResult<String> {

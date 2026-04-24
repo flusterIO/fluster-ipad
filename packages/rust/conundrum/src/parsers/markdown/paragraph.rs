@@ -40,6 +40,10 @@ impl HtmlJsComponentResult for MarkdownParagraphResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         if self.children.0.is_empty() {
             Ok(String::from(""))
+        } else if !self.children.contains_inline_elements() {
+            // If no inline elements are in the paragraph, don't render the paragraph
+            // and just render it's contents.
+            self.children.render(res)
         } else {
             let children = self.children.render(Arc::clone(&res))?;
             if children.trim().is_empty() {

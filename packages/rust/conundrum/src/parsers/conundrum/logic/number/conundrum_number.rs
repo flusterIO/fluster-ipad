@@ -1,11 +1,18 @@
 use std::fmt::Display;
 
 use serde::Serialize;
+use winnow::error::ErrMode;
 
 use crate::{
-    lang::runtime::{
-        state::{conundrum_error_variant::ConundrumModalResult, parse_state::ParseState},
-        traits::{conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult},
+    lang::{
+        lib::ui::ui_traits::jsx_prop_representable::FromJsxPropsOptional,
+        runtime::{
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+            },
+            traits::{conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult},
+        },
     },
     parsers::conundrum::logic::number::{conundrum_float::ConundrumFloat, conundrum_int::ConundrumInt},
 };
@@ -16,6 +23,23 @@ use crate::{
 pub enum ConundrumNumber {
     Int(ConundrumInt),
     Float(ConundrumFloat),
+}
+
+impl FromJsxPropsOptional for ConundrumNumber {
+    fn from_jsx_props(props: &crate::parsers::conundrum::logic::object::object::ConundrumObject,
+                      key: &str)
+                      -> ConundrumModalResult<Self>
+        where Self: Sized {
+        if let Ok(res) = ConundrumInt::from_jsx_props(&props, &key) {
+            Ok(ConundrumNumber::Int(res))
+        } else if let Ok(from_float) = ConundrumFloat::from_jsx_props(&props, &key) {
+            Ok(ConundrumNumber::Float(from_float))
+        } else {
+            Err(
+                ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid property", format!("The `{}` key expects a number but found something else.", key).as_str())))
+            )
+        }
+    }
 }
 
 impl Display for ConundrumNumber {

@@ -1,19 +1,29 @@
+use askama::Template;
 use serde::Serialize;
+use winnow::error::ErrMode;
 
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::ui::{
-            components::component_trait::ConundrumComponent,
+            components::{
+                component_trait::ConundrumComponent,
+                layout::container::container_html_templ::UtilityContainerHtmlTemplate,
+            },
             shared_props::sizable::SizablePropsGroup,
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
             ui_types::{children::Children, emphasis::Emphasis},
         },
         runtime::{
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumModifier},
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ConundrumModifier,
+            },
             traits::{
                 conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
-                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
         },
@@ -69,6 +79,18 @@ impl JsxComponentResult for UtilityContainer {
                    self.children.render(res)?,
                    EmbeddableComponentName::UtlityContainer,
         ))
+    }
+}
+
+impl HtmlJsComponentResult for UtilityContainer {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let templ = UtilityContainerHtmlTemplate { children: self.children.render(res)?,
+                                                   emphasis: self.emphasis.clone(),
+                                                   sizable: self.sizable.clone() };
+        templ.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
     }
 }
 

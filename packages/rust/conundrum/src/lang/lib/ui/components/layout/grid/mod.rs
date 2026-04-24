@@ -1,2 +1,3 @@
 pub mod grid;
-pub mod grid_column_group;
+pub mod grid_columns;
+pub mod grid_html_template;

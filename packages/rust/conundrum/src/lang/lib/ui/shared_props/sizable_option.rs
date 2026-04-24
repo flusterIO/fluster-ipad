@@ -11,14 +11,14 @@ use crate::{
         lib::ui::ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
         runtime::state::{
             conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult, ConundrumResult},
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
         },
     },
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
 
 #[typeshare::typeshare]
-#[derive(Serialize, uniffi::Enum, Deserialize, Debug, EnumIter, Display, Clone)]
+#[derive(Serialize, uniffi::Enum, Deserialize, Debug, EnumIter, Display, Clone, PartialEq, Eq, Hash)]
 pub enum SizableOption {
     #[serde(rename = "none")]
     #[strum(to_string = "none")]
@@ -50,6 +50,26 @@ pub enum SizableOption {
 }
 
 impl SizableOption {
+    // A simple wrapper because I can't figure out how to import the iter function
+    // and I don't want to waste time on it...
+    pub fn all_sizable_options() -> Vec<SizableOption> {
+        SizableOption::iter().collect::<Vec<SizableOption>>()
+    }
+
+    pub fn one_smaller(&self) -> Option<Self> {
+        match self {
+            Self::None => None,
+            Self::Small => Some(Self::None),
+            Self::Smedium => Some(Self::Small),
+            Self::Medium => Some(Self::Smedium),
+            Self::Large => Some(Self::Medium),
+            Self::Xl => Some(Self::Large),
+            Self::Xxl => Some(Self::Xl),
+            Self::Full => Some(Self::Xxl),
+            Self::Fit => Some(Self::Full),
+        }
+    }
+
     /// Returns an `Option<SizableOption` from a `{[K in SizableOption]?:
     /// boolean}`
     pub fn from_jsx_props_bool_record(props: &ConundrumObject) -> Option<Self> {
@@ -73,6 +93,42 @@ impl SizableOption {
             }
         }
         None
+    }
+
+    pub fn to_css_column_class(&self, n_columns: Option<i32>) -> String {
+        let n = n_columns.unwrap_or_else(|| self.to_default_grid_cols());
+        // This can't be scanned by tailwind or shit will absolutely explode.
+        format!("@[{}px]/mdx:grid-cols-{}", self.to_column_breakpoint(), n)
+    }
+
+    /// The default number of columns at the default breakpoint for this size.
+    pub fn to_default_grid_cols(&self) -> i32 {
+        match self {
+            Self::None => 1,
+            Self::Small => 1,
+            Self::Smedium => 1,
+            Self::Medium => 1,
+            Self::Large => 2,
+            Self::Xl => 2,
+            Self::Xxl => 2,
+            Self::Full => 2,
+            Self::Fit => 4,
+        }
+    }
+
+    /// The breakpoint at which this size should collapse to a single column.
+    pub fn to_column_breakpoint(&self) -> usize {
+        match self {
+            Self::None => 0,
+            Self::Small => 120,
+            Self::Smedium => 180,
+            Self::Medium => 240,
+            Self::Large => 320,
+            Self::Xl => 480,
+            Self::Xxl => 640,
+            Self::Full => 800,
+            Self::Fit => 1200,
+        }
     }
 }
 

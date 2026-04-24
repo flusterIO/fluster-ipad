@@ -162,4 +162,37 @@ impl ParsedElement {
             ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Fail to find string")))
         })
     }
+
+    /// Currently this logic is in like 3 places, but this is the final source
+    /// of truth for what's block level and what's not. I'll replace all of
+    /// those when I have time.
+    pub fn is_block_level(&self) -> bool {
+        match self {
+            ParsedElement::ParsedInspectionRequest(_) => true,
+            ParsedElement::ParsedCodeBlock(_) => true,
+            ParsedElement::ParsedCitation(_) => false,
+            ParsedElement::ParsedOutgoingNoteLink(_) => false,
+            ParsedElement::Tag(_) => false,
+            ParsedElement::Text(c) => c != &String::from(" ") && c != &String::from("\n"),
+            ParsedElement::Heading(_) => true,
+            ParsedElement::BlockMath(_) => true,
+            ParsedElement::InlineMath(_) => false,
+            ParsedElement::BlockQuote(_) => true,
+            ParsedElement::BoldText(_) => false,
+            ParsedElement::ItalicText(_) => false,
+            ParsedElement::BoldAndItalicText(_) => false,
+            ParsedElement::MarkdownLink(_) => false,
+            ParsedElement::MarkdownParagraph(_) => true,
+            ParsedElement::HrWithChildren(_) => true,
+            ParsedElement::Hr(_) => true,
+            ParsedElement::Comment(_) => true,
+            ParsedElement::ReactComponentSelfClosing(c) => c.component.component_is_block_level(),
+            ParsedElement::ReactComponentWithChildren(c) => c.component.component_is_block_level(),
+            ParsedElement::Emoji(_) => false,
+            ParsedElement::InlineCode(_) => false,
+            ParsedElement::Children(c) => c.0.iter().any(|child| child.is_block_level()),
+            ParsedElement::Javascript(_s) => false,
+            ParsedElement::Logic(_) => false,
+        }
+    }
 }

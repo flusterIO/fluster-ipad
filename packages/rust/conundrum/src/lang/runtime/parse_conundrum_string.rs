@@ -164,24 +164,14 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 },
             }.parse_next(input_inner)?;
 
-        at_line_start = match &result {
-            ParsedElement::Text(s) => s == "\n" || s == "\r\n",
-            ParsedElement::ReactComponentWithChildren(c) => {
-                c.component.component_is_block_level()
-            },
-            ParsedElement::ReactComponentSelfClosing(c) => {
-                c.component.component_is_block_level()
-            },
-            ParsedElement::Heading(_)
-            | ParsedElement::BlockQuote(_)
-            | ParsedElement::BlockMath(_)
-            | ParsedElement::MarkdownParagraph(_)
-            | ParsedElement::ParsedInspectionRequest(_)
-            | ParsedElement::HrWithChildren(_)
-            | ParsedElement::Comment(_)
-            | ParsedElement::ParsedCodeBlock(_) => true,
-            _ => false,
-        };
+        if matches!(&result, &ParsedElement::Text(_)) {
+            at_line_start = match &result {
+                ParsedElement::Text(s) => s == "\n" || s == "\r\n" || (at_line_start && s == " "),
+                _ => false
+            };
+        } else {
+           at_line_start = result.is_block_level();
+        }
 
         Ok(result)
     }).parse_next(input)

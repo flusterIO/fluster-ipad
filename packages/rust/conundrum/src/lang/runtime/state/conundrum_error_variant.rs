@@ -14,6 +14,8 @@ use crate::lang::runtime::{state::conundrum_error::ConundrumError, traits::conun
 pub enum ConundrumErrorVariant {
     #[error("Conundrum runs on a background thread by default, and it ran into some issues in your environment.")]
     MultiThreadingError,
+    #[error("The specified key could not be found in the dictionary it was being used against.")]
+    KeyNotFound,
     #[error("This should never happen, some embedded data can not be found.")]
     EmbeddedDataNotFound,
     #[error("Conundrum could not find a valid terminator.")]

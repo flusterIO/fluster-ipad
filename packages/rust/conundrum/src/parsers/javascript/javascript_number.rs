@@ -47,7 +47,7 @@ pub fn javascript_float(input: &mut ConundrumInput) -> ConundrumModalResult<Java
 
 impl JavascriptParser<JavascriptNumberResult> for JavascriptNumberResult {
     fn parse_javascript(input: &mut ConundrumInput) -> ConundrumModalResult<JavascriptNumberResult> {
-        alt((javascript_float, javascript_int)).parse_next(input)
+        alt((javascript_int, javascript_float)).parse_next(input)
     }
 }
 

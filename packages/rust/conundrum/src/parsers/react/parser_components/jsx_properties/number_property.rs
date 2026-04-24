@@ -30,6 +30,8 @@ impl JsxPropertyParser for JsxNumberPropertyResult {
                                                                              input.input.reset(&start);
                                                                          })?;
 
+        println!("Bracketed content: {}", bracketed_content);
+
         let mut new_input = ConundrumInput { input: &bracketed_content,
                                              state: Arc::clone(&input.state) };
 
