@@ -2,7 +2,7 @@ use serde::Serialize;
 use std::sync::Arc;
 use winnow::{
     Parser,
-    combinator::{alt, peek, repeat_till},
+    combinator::alt,
     error::{ContextError, ErrMode},
     stream::Stream,
     token::{literal, take},
@@ -13,7 +13,6 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         lib::ui::ui_types::children::Children,
         runtime::{
-            parse_conundrum_children::parse_child_elements,
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
@@ -27,17 +26,13 @@ use crate::{
         },
     },
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-    parsers::{
-        markdown::paragraph::any_paragraph_nested_element::any_paragraph_nested_element, parser_trait::ConundrumParser,
-        parsers_shared::segmentize::any_block_element,
-    },
+    parsers::{parser_trait::ConundrumParser, parsers_shared::segmentize::until_paragraph_breaking_element},
 };
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownParagraphResult {
     pub children: Children,
-    pub terminator: Option<Box<ParsedElement>>,
 }
 
 impl MarkdownParagraphResult {
@@ -92,38 +87,43 @@ enum ParagraphTerminator {
     Content(ParsedElement),
 }
 
-pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<(Children, Option<ParsedElement>)> {
+pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<Children> {
     let start = input.input.checkpoint();
     // let paragraph_start =
     //     take(1usize).verify(|c: &str|
     // !c.trim().is_empty()).parse_next(input).inspect_err(|_| {
     // input.input.reset(&start);
     // })?;
-    let (children, terminator) =
-        repeat_till(1..,
-                    any_paragraph_nested_element,
-                    alt((markdown_paragraph_line_break.map(|_| ParagraphTerminator::LineEnding),
-                         peek(any_block_element.map(ParagraphTerminator::Content))))).parse_next(input)
-                                                                                     .inspect_err(|_| {
-                                                                                         input.input.reset(&start);
-                                                                                     })?;
-    let terminator_data = match terminator {
-        ParagraphTerminator::Content(c) => Some(c),
-        ParagraphTerminator::LineEnding => None,
-    };
-    Ok((Children(children), terminator_data))
+    // let (children, terminator) =
+    //     repeat_till(1..,
+    //                 any_paragraph_nested_element,
+    //                 alt((markdown_paragraph_line_break.map(|_|
+    // ParagraphTerminator::LineEnding),
+    // peek(any_block_element.map(ParagraphTerminator::Content))))).
+    // parse_next(input)
+    // .inspect_err(|_| {
+    // input.input.reset(&start);
+    // })?;
+    //
+    let children = until_paragraph_breaking_element.parse_next(input).inspect_err(|_| {
+                                                                          input.input.reset(&start);
+                                                                      })?;
+    // let terminator_data = match terminator {
+    //     ParagraphTerminator::Content(c) => Some(c),
+    //     ParagraphTerminator::LineEnding => None,
+    // };
+    Ok(Children(children))
 }
 
 impl ConundrumParser<MarkdownParagraphResult> for MarkdownParagraphResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<MarkdownParagraphResult> {
         // let res = alt((take_until(1.., "  \n"), take_until(1..,
         // "\n\n"))).parse_next(input)?;
-        let (children, terminator) = markdown_paragraph.parse_next(input)?;
-        Ok(MarkdownParagraphResult { children,
-                                     terminator: terminator.map(Box::new) })
+        let children = markdown_paragraph.parse_next(input)?;
+        Ok(MarkdownParagraphResult { children })
     }
 
     fn matches_first_char(char: char) -> bool {
-        char == '$'
+        char != ' '
     }
 }

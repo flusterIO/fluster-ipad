@@ -83,7 +83,6 @@ impl FromJsxPropsOptional for InlineMarkdownOverride {
             }.map(|user_string| {
 
         InlineMarkdownOverride::from_str(user_string.as_str()).map_err(|e| {
-            println!("Error: {:#?}", e);
             ErrMode::Backtrack(ConundrumErrorVariant::UserFacingMissingOrIncorrectProperty(ConundrumError::from_message("Conundrum received a value for the markdown override format that is not supported.")))
         })
             })
