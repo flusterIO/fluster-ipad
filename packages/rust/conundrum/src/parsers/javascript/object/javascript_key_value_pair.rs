@@ -51,7 +51,7 @@ impl JavascriptParser<JavascriptObjectKeyValuePair> for JavascriptObjectKeyValue
                                                               })?;
 
         Ok(JavascriptObjectKeyValuePair { key,
-                                          value: Box::new(ParsedElement::Javascript(value)) })
+                                          value: Box::new(ParsedElement::Logic(value)) })
     }
 }
 

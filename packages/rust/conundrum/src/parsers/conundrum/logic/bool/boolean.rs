@@ -8,6 +8,7 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         lib::ui::ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
         runtime::{
+            mem::mem::MemoryArc,
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
@@ -19,7 +20,10 @@ use crate::{
         },
     },
     parsers::{
-        conundrum::logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
+        conundrum::{
+            conundrum_logic_parser::ConundrumLogicParser,
+            logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
+        },
         javascript::javascript_parser_trait::JavascriptParser,
     },
 };
@@ -38,8 +42,8 @@ impl Default for ConundrumBoolean {
     }
 }
 
-impl JavascriptParser<ConundrumBoolean> for ConundrumBoolean {
-    fn parse_javascript(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumBoolean> {
+impl ConundrumLogicParser for ConundrumBoolean {
+    fn parse_conundrum(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumBoolean> {
         let res = alt((literal("true"), literal("false"))).parse_next(input)?;
         Ok(ConundrumBoolean(res == "true"))
     }

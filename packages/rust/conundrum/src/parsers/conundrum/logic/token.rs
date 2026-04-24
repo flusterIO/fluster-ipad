@@ -6,7 +6,8 @@ use crate::{
         traits::{conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult},
     },
     parsers::conundrum::logic::{
-        bool::boolean::ConundrumBoolean, number::conundrum_number::ConundrumNumber,
+        bool::boolean::ConundrumBoolean, function::conundrum_function::ConundrumFunction,
+        number::conundrum_number::ConundrumNumber, object::object::ConundrumObject,
         string::conundrum_string::ConundrumString,
     },
 };
@@ -20,6 +21,8 @@ pub enum ConundrumLogicToken {
     Number(ConundrumNumber),
     String(ConundrumString),
     Bool(ConundrumBoolean),
+    Object(ConundrumObject),
+    Function(ConundrumFunction),
 }
 
 impl ConundrumComponentResult for ConundrumLogicToken {
@@ -28,6 +31,8 @@ impl ConundrumComponentResult for ConundrumLogicToken {
             ConundrumLogicToken::Number(n) => n.to_conundrum_component(res),
             ConundrumLogicToken::String(s) => s.to_conundrum_component(res),
             ConundrumLogicToken::Bool(b) => b.to_conundrum_component(res),
+            ConundrumLogicToken::Object(b) => b.to_conundrum_component(res),
+            ConundrumLogicToken::Function(f) => f.to_conundrum_component(res),
         }
     }
 }

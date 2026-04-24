@@ -61,5 +61,5 @@ pub fn any_curly_bracket_jsx_property(input: &mut ConundrumInput)
     let (key, em) = jsx_curly_bracket_property(javascript_object_value).parse_next(input)?;
 
     Ok(JavascriptObjectKeyValuePair { key,
-                                      value: Box::new(ParsedElement::Javascript(em)) })
+                                      value: Box::new(ParsedElement::Logic(em)) })
 }

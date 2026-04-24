@@ -2,6 +2,7 @@ use std::cell::RefCell;
 use std::sync::Arc;
 
 use dashmap::DashMap;
+use parking_lot::Mutex;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -34,4 +35,4 @@ impl Mem {
     }
 }
 
-pub type MemoryArc = Arc<RefCell<Mem>>;
+pub type MemoryArc = Arc<Mutex<Mem>>;

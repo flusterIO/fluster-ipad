@@ -7,7 +7,7 @@ use winnow::{
     ascii::alphanumeric1,
     combinator::{delimited, opt, repeat, repeat_till},
     stream::{AsChar, Stream},
-    token::{literal, take, take_until, take_while},
+    token::{literal, take, take_while},
 };
 
 use crate::{
@@ -77,12 +77,10 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                                                                                       })?;
 
     let component_name_string = format!("{}{}", component_leading_char, rest_component_name.join(""));
-    let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|e| {
+    let component_name = AnyComponentName::get_component_name(component_name_string.as_str()).inspect_err(|_| {
                                                                                                  input.input
                                                                                                       .reset(&start);
                                                                                              })?;
-
-    println!("COmponent Name: {}", component_name_string);
 
     let props_kv_pairs: Option<Vec<JavascriptObjectKeyValuePair>> = opt(delimited(space_or_newline0,
                                        repeat(0.., white_space_delimited(any_jsx_property)),
@@ -97,8 +95,6 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
                               input.input.reset(&start);
                           })?;
 
-    println!("COmponent: {}", component_name_string);
-
     let (children_chars, _): (Vec<&str>, ()) = repeat_till(0.., take(1usize), react_closing_tag_parser_by_name(component_name_string.as_str())).parse_next(input).inspect_err(|_| {
         input.input.reset(&start);
     })?;
@@ -109,6 +105,7 @@ fn parse_react_component_with_children(input: &mut ConundrumInput)
 
     let mut new_input = ConundrumInput { input: children_string.as_str(),
                                          state: rc };
+
     let children = parse_elements(&mut new_input)?;
 
     let cloned_state = Arc::clone(&input.state);

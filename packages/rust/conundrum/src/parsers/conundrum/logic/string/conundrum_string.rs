@@ -31,7 +31,17 @@ use crate::{
         },
     },
     parsers::{
-        conundrum::logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
+        conundrum::{
+            conundrum_logic_parser::ConundrumLogicParser,
+            logic::{
+                object::object::ConundrumObject,
+                string::conundrum_string_implementations::{
+                    back_tick_quoted_javascript_string, double_quoted_javascript_string,
+                    single_quoted_javascript_string,
+                },
+                token::ConundrumLogicToken,
+            },
+        },
         javascript::javascript_parser_trait::JavascriptParser,
     },
 };
@@ -41,6 +51,15 @@ use crate::{
 pub struct ConundrumString(pub String);
 
 uniffi::custom_newtype!(ConundrumString, String);
+
+impl ConundrumLogicParser for ConundrumString {
+    fn parse_conundrum(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumString> {
+        let s = alt((back_tick_quoted_javascript_string,
+                     single_quoted_javascript_string,
+                     double_quoted_javascript_string)).parse_next(input)?;
+        Ok(s)
+    }
+}
 
 impl Display for ConundrumString {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

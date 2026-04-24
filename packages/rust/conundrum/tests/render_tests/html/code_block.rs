@@ -17,6 +17,15 @@ My inline `const (x) => y / z;{:ts}` code here.
 
 This is my [[#tagHere]] and my citation[[cite:Einstein]] here and [my note link](note:someFakeNoteId).
 
+<Grid large={2}>
+<Container centerContent>
+My item here
+</Container>
+<Container centerContent>
+My other item here
+</Container>
+</Grid>
+
 <Tabs>
 <Tab label="My tab one">
 My tab here

@@ -1,20 +1,35 @@
 use std::fmt::Display;
 
 use serde::Serialize;
-use winnow::error::ErrMode;
+use winnow::{
+    Parser,
+    ascii::{dec_int, float},
+    combinator::alt,
+    error::ErrMode,
+};
 
 use crate::{
     lang::{
         lib::ui::ui_traits::jsx_prop_representable::FromJsxPropsOptional,
         runtime::{
+            mem::mem::MemoryArc,
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
             },
-            traits::{conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult},
+            traits::{
+                conundrum_input::{ArcState, ConundrumInput},
+                fluster_component_result::ConundrumComponentResult,
+            },
         },
     },
-    parsers::conundrum::logic::number::{conundrum_float::ConundrumFloat, conundrum_int::ConundrumInt},
+    parsers::{
+        conundrum::{
+            conundrum_logic_parser::ConundrumLogicParser,
+            logic::number::{conundrum_float::ConundrumFloat, conundrum_int::ConundrumInt},
+        },
+        javascript::javascript_parser_trait::JavascriptParser,
+    },
 };
 
 #[typeshare::typeshare]
@@ -25,6 +40,21 @@ pub enum ConundrumNumber {
     Float(ConundrumFloat),
 }
 
+pub fn javascript_int(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
+    let n: i64 = dec_int.parse_next(input)?;
+    Ok(ConundrumNumber::Int(ConundrumInt(n)))
+}
+
+pub fn javascript_float(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
+    let x: f64 = float.parse_next(input)?;
+    Ok(ConundrumNumber::Float(ConundrumFloat(x)))
+}
+
+impl ConundrumLogicParser for ConundrumNumber {
+    fn parse_conundrum(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
+        alt((javascript_int, javascript_float)).parse_next(input)
+    }
+}
 impl FromJsxPropsOptional for ConundrumNumber {
     fn from_jsx_props(props: &crate::parsers::conundrum::logic::object::object::ConundrumObject,
                       key: &str)

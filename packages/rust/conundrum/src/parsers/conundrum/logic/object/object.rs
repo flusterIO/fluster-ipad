@@ -5,7 +5,7 @@ use serde::Serialize;
 use winnow::{
     Parser,
     ascii::space0,
-    combinator::{delimited, repeat},
+    combinator::{delimited, repeat, separated},
 };
 
 use crate::{
@@ -13,19 +13,26 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         lib::ui::shared_props::sizable_option::SizableOption,
         runtime::{
+            mem::mem::MemoryArc,
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult, ConundrumResult},
             },
-            traits::conundrum_input::ConundrumInput,
+            traits::{conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult},
         },
     },
     parsers::{
-        conundrum::logic::{
-            bool::boolean::ConundrumBoolean, number::conundrum_number::ConundrumNumber,
-            string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
+        conundrum::{
+            conundrum_logic_parser::ConundrumLogicParser,
+            logic::{
+                bool::boolean::ConundrumBoolean, number::conundrum_number::ConundrumNumber,
+                string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
+            },
         },
-        javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
+        javascript::{
+            javascript_parser_trait::JavascriptParser, object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
+        },
+        parser_components::white_space_delimited::white_space_delimited,
         react::parser_components::jsx_properties::any_jsx_property::any_jsx_property,
     },
 };
@@ -34,6 +41,33 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct ConundrumObject {
     pub data: DashMap<String, ParsedElement>,
+}
+
+impl ConundrumLogicParser for ConundrumObject {
+    fn parse_conundrum(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumObject> {
+        let entries: Vec<JavascriptObjectKeyValuePair> =
+            delimited('{',
+                      separated(0.., white_space_delimited(JavascriptObjectKeyValuePair::parse_javascript), ','),
+                      '}').parse_next(input)?;
+
+        let data: DashMap<String, ParsedElement> = DashMap::new();
+
+        for entry in entries {
+            data.insert(entry.key, *entry.value);
+        }
+
+        Ok(ConundrumObject { data })
+    }
+}
+
+// This is completely broken and will need to be handled from scratch. No
+// objects will be able to be inserted into the output until this is handled.
+impl ConundrumComponentResult for ConundrumObject {
+    fn to_conundrum_component(&self,
+                              res: crate::lang::runtime::traits::conundrum_input::ArcState)
+                              -> ConundrumModalResult<String> {
+        Ok(String::from(""))
+    }
 }
 
 impl ConundrumObject {
@@ -130,8 +164,7 @@ impl ConundrumObject {
             None
         }.ok_or_else(|| {
              if let Some(msg) = error_msg {
-                 ConundrumErrorVariant::InternalParserError(ConundrumError::from_message(msg))
-             } else {
+                 ConundrumErrorVariant::InternalParserError(ConundrumError::from_message(msg)) } else {
                  ConundrumErrorVariant::InternalParserError(ConundrumError::from_message(format!("Conundrum was looking for a _boolean_ and found a different value at the {} key", key).as_str()))
              }
          })

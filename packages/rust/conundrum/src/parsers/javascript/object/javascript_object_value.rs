@@ -1,22 +1,21 @@
+use winnow::Parser;
 use winnow::combinator::alt;
-use winnow::{ModalResult, Parser};
 
-use crate::lang::runtime::state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult};
-use crate::parsers::javascript::function::javascript_function::JavascriptFunction;
-use crate::parsers::javascript::javascript_boolean::JavascriptBooleanResult;
-use crate::parsers::javascript::object::javascript_object::JavascriptObjectResult;
-use crate::{
-    lang::runtime::traits::conundrum_input::ConundrumInput,
-    parsers::javascript::{
-        javascript_number::JavascriptNumberResult, javascript_parser_trait::JavascriptParser,
-        parsed_javascript_elements::ParsedJavascriptElement, string::javascript_string::JavascriptStringResult,
-    },
-};
-
-pub fn javascript_object_value(input: &mut ConundrumInput) -> ConundrumModalResult<ParsedJavascriptElement> {
-    alt((JavascriptStringResult::parse_javascript.map(ParsedJavascriptElement::String),
-         JavascriptFunction::parse_javascript.map(ParsedJavascriptElement::Function),
-         JavascriptObjectResult::parse_javascript.map(ParsedJavascriptElement::Object),
-         JavascriptNumberResult::parse_javascript.map(ParsedJavascriptElement::Number),
-         JavascriptBooleanResult::parse_javascript.map(ParsedJavascriptElement::Boolean))).parse_next(input)
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
+use crate::lang::runtime::traits::conundrum_input::ConundrumInput;
+use crate::parsers::conundrum::conundrum_logic_parser::ConundrumLogicParser;
+use crate::parsers::conundrum::logic::bool::boolean::ConundrumBoolean;
+use crate::parsers::conundrum::logic::function::conundrum_function::ConundrumFunction;
+use crate::parsers::conundrum::logic::number::conundrum_number::ConundrumNumber;
+use crate::parsers::conundrum::logic::object::object::ConundrumObject;
+use crate::parsers::conundrum::logic::string::conundrum_string::ConundrumString;
+use crate::parsers::conundrum::logic::token::ConundrumLogicToken;
+/// - [ ] Move this to a return type of `ConundrumLogicToken` and replace the
+///   number parser so that it catches ints properly.
+pub fn javascript_object_value(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumLogicToken> {
+    alt((ConundrumString::parse_conundrum.map(ConundrumLogicToken::String),
+         ConundrumFunction::parse_conundrum.map(ConundrumLogicToken::Function),
+         ConundrumObject::parse_conundrum.map(ConundrumLogicToken::Object),
+         ConundrumNumber::parse_conundrum.map(ConundrumLogicToken::Number),
+         ConundrumBoolean::parse_conundrum.map(ConundrumLogicToken::Bool))).parse_next(input)
 }

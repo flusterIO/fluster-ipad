@@ -6,7 +6,10 @@ use crate::{
         runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput},
     },
     parsers::{
-        conundrum::logic::{bool::boolean::ConundrumBoolean, token::ConundrumLogicToken},
+        conundrum::{
+            conundrum_logic_parser::ConundrumLogicParser,
+            logic::{bool::boolean::ConundrumBoolean, token::ConundrumLogicToken},
+        },
         javascript::{
             javascript_parser_trait::JavascriptParser, object::javascript_key_value_pair::JavascriptObjectKeyValuePair,
         },
@@ -31,7 +34,7 @@ pub fn parse_full_boolean_property(input: &mut ConundrumInput) -> ConundrumModal
     let mut wrapped_content_input = ConundrumInput { input: &wrapped_content,
                                                      state: Arc::clone(&input.state) };
     let value =
-        ConundrumBoolean::parse_javascript.map(ConundrumLogicToken::Bool).parse_next(&mut wrapped_content_input)?;
+        ConundrumBoolean::parse_conundrum.map(ConundrumLogicToken::Bool).parse_next(&mut wrapped_content_input)?;
 
     Ok(JavascriptObjectKeyValuePair { key,
                                       value: Box::new(ParsedElement::Logic(value)) })

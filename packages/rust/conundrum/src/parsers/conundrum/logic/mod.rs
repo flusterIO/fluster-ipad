@@ -1,4 +1,5 @@
 pub mod bool;
+pub mod function;
 pub mod number;
 pub mod object;
 pub mod operators;
