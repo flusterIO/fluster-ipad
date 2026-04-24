@@ -27,7 +27,10 @@ use crate::{
         },
     },
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-    parsers::{parser_trait::ConundrumParser, parsers_shared::segmentize::any_block_element},
+    parsers::{
+        markdown::paragraph::any_paragraph_nested_element::any_paragraph_nested_element, parser_trait::ConundrumParser,
+        parsers_shared::segmentize::any_block_element,
+    },
 };
 
 #[typeshare::typeshare]
@@ -52,19 +55,11 @@ impl MarkdownParagraphResult {
 impl HtmlJsComponentResult for MarkdownParagraphResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let children = self.children.render(Arc::clone(&res))?;
-        // if self.should_breakout() {
-        //     if children.trim().is_empty() {
-        //         Ok(String::from(""))
-        //     } else {
-        //         Ok(children)
-        //     }
-        // } else {
         if children.trim().is_empty() {
             Ok(String::from(""))
         } else {
             Ok(format!("<p>{}</p>", children))
         }
-        // }
     }
 }
 
@@ -99,43 +94,24 @@ enum ParagraphTerminator {
 
 pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<(Children, Option<ParsedElement>)> {
     let start = input.input.checkpoint();
-    let paragraph_start =
-        take(1usize).verify(|c: &str| !c.trim().is_empty()).parse_next(input).inspect_err(|_| {
-                                                                                  input.input.reset(&start);
-                                                                              })?;
-    let (rest_paragraph, terminator) =
+    // let paragraph_start =
+    //     take(1usize).verify(|c: &str|
+    // !c.trim().is_empty()).parse_next(input).inspect_err(|_| {
+    // input.input.reset(&start);
+    // })?;
+    let (children, terminator) =
         repeat_till(1..,
-            take(1usize),
-            peek(alt((
-                        markdown_paragraph_line_break.map(|_| {
-                            ParagraphTerminator::LineEnding
-                        }),
-                        any_block_element.map(ParagraphTerminator::Content),
-            )))).verify_map(|(res, terminator): (Vec<&str>, ParagraphTerminator)| {
-            let joined_paragraph = String::from_iter(res);
-            if joined_paragraph.trim().is_empty() {
-                None
-            } else {
-                let terminator_data = match terminator {
-                    ParagraphTerminator::Content(c) => Some(c),
-                    ParagraphTerminator::LineEnding => None
-                };
-                Some((joined_paragraph, terminator_data))
-            }
-        })
-    .parse_next(input).inspect_err(|_| {
-        input.input.reset(&start);
-    })?;
-
-    let joined_paragraph = format!("{}{}", paragraph_start, rest_paragraph);
-
-    println!("Paragraph: {}", joined_paragraph);
-
-    let mut new_input = ConundrumInput { input: &joined_paragraph,
-                                         state: Arc::clone(&input.state) };
-    // let children = parse_elements(&mut new_input)?;
-    let children = parse_child_elements(&mut new_input)?;
-    Ok((Children(children), terminator))
+                    any_paragraph_nested_element,
+                    alt((markdown_paragraph_line_break.map(|_| ParagraphTerminator::LineEnding),
+                         peek(any_block_element.map(ParagraphTerminator::Content))))).parse_next(input)
+                                                                                     .inspect_err(|_| {
+                                                                                         input.input.reset(&start);
+                                                                                     })?;
+    let terminator_data = match terminator {
+        ParagraphTerminator::Content(c) => Some(c),
+        ParagraphTerminator::LineEnding => None,
+    };
+    Ok((Children(children), terminator_data))
 }
 
 impl ConundrumParser<MarkdownParagraphResult> for MarkdownParagraphResult {

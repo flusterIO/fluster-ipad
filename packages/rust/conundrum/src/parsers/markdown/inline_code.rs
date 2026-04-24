@@ -148,4 +148,11 @@ mod tests {
         assert!(res.lang.to_string() == "tsx".to_string(), "Finds the proper language");
         assert!(res.content == "<MyTest myBool myString='Contains a {' />", "Finds the proper content");
     }
+
+    #[test]
+    fn parses_ts_code_string() {
+        let test_content = "`const (x) => y / z;{:ts}`";
+        let mut test_data = wrap_test_conundrum_content(test_content);
+        let res = InlineCodeResult::parse_input_string(&mut test_data).expect("Parses inline code block with language tag without throwing an error.");
+    }
 }

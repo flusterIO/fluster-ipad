@@ -57,7 +57,7 @@
             const bodyWrapper = container.querySelector(`#tab-body-wrapper-${groupId}`) as HTMLDivElement;
             if (bodyWrapper) {
                 bodyWrapper.style.transition = "height 0.3s ease-in-out";
-                bodyWrapper.style.height = `${h}px`;
+                bodyWrapper.style.height = `${Math.min(h, 450)}px`;
             }
         }
     }

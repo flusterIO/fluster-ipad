@@ -32,7 +32,7 @@ use crate::{
             code_block::code_block_model::ParsedCodeBlock, heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule, inline_code::InlineCodeResult, inline_math::InlineMathResult,
             italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::emoji_model::EmojiResult,
-            markdown_link::MarkdownLinkResult, paragraph::MarkdownParagraphResult,
+            markdown_link::MarkdownLinkResult, paragraph::paragraph_model::MarkdownParagraphResult,
         },
         react::{
             react_component_self_closing::ReactComponentSelfClosingResult,

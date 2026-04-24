@@ -16,8 +16,6 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         lib::ui::ui_types::children::Children,
         runtime::{
-            compile_conundrum::compile_elements,
-            parse_conundrum_children::parse_child_elements,
             parse_conundrum_string::parse_elements,
             state::{
                 conundrum_error::ConundrumError,
@@ -113,27 +111,21 @@ fn parse_bq_line(input: &mut ConundrumInput) -> ConundrumModalResult<String> {
     let _ = take_while(0..=3, |c: char| c == ' ').parse_next(input).inspect_err(|_| {
                                                                         input.input.reset(&start);
                                                                     })?;
-    println!("One");
     let _ = literal(">").parse_next(input).inspect_err(|_| {
                                                input.input.reset(&start);
                                            })?;
-    println!("Two");
     let _ = space0.parse_next(input).inspect_err(|_| {
                                          input.input.reset(&start);
                                      })?;
-    println!("Three");
     let body = till_line_ending.parse_next(input).inspect_err(|_| {
                                                       input.input.reset(&start);
                                                   })?;
     consume_white_space(0..).parse_next(input).inspect_err(|_| {
                                                    input.input.reset(&start);
                                                })?;
-    println!("Four: {}", body);
     let l = opt(alt((line_ending, eof.value("")))).parse_next(input).inspect_err(|_| {
                                                                          input.input.reset(&start);
                                                                      })?;
-    println!("L: {:#?}", l.unwrap_or("None found"));
-    println!("Five");
     Ok(body.to_string())
 }
 
@@ -150,12 +142,10 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
                                                                                           input.input.reset(&start);
                                                                                       })?;
 
-                println!("Lines: {:#?}", lines);
-
                 // Join stripped lines then recursively parse the inner content
                 // so math, citations, nested block quotes, etc. are recognised.
                 let inner_src = lines.join("\n");
-                println!("Inner: {}", inner_src);
+                println!("Inner: {:#?}", inner_src);
                 let mut new_state = ConundrumInput { input: &inner_src,
                                                      state: Arc::clone(&input.state) };
 

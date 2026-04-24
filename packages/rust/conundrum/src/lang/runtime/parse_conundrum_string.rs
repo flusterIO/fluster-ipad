@@ -25,7 +25,7 @@ use crate::parsers::markdown::inline_math::InlineMathResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::markdown::markdown_extensions::emoji::emoji_model::EmojiResult;
 use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
-use crate::parsers::markdown::paragraph::MarkdownParagraphResult;
+use crate::parsers::markdown::paragraph::paragraph_model::MarkdownParagraphResult;
 use crate::parsers::parser_trait::ConundrumParser;
 use crate::parsers::react::react_component_self_closing::ReactComponentSelfClosingResult;
 use crate::parsers::react::react_component_with_children::ReactComponentWithChildrenResult;
@@ -45,10 +45,10 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 "-" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
-                            MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
+                                MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {
                         any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
@@ -57,9 +57,9 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 "/" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            ConundrumCommentResult::parse_input_string.map(ParsedElement::Comment),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                ConundrumCommentResult::parse_input_string.map(ParsedElement::Comment),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {
                         any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
@@ -68,9 +68,9 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 "#" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                MarkdownHeadingResult::parse_input_string.map(ParsedElement::Heading),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {
                         any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
@@ -79,9 +79,9 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 ">" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {
                         any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
@@ -90,60 +90,60 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 "`" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
-                            InlineCodeResult::parse_input_string.map(ParsedElement::InlineCode),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
+                                InlineCodeResult::parse_input_string.map(ParsedElement::InlineCode),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {
                         alt((
-                            InlineCodeResult::parse_input_string.map(ParsedElement::InlineCode),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                InlineCodeResult::parse_input_string.map(ParsedElement::InlineCode),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     }
                 },
                 "$" => |x: &mut ConundrumInput<'a>| {
-                            alt((
-                                BlockMathResult::parse_input_string.map(ParsedElement::BlockMath),
-                                InlineMathResult::parse_input_string.map(ParsedElement::InlineMath),
+                    alt((
+                            BlockMathResult::parse_input_string.map(ParsedElement::BlockMath),
+                            InlineMathResult::parse_input_string.map(ParsedElement::InlineMath),
                             MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                                any.map(|c: char| ParsedElement::Text(c.to_string()))
-                            )).parse_next(x)
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
                 },
                 ":" => |x: &mut ConundrumInput<'a>| {
-                            alt((
-                                EmojiResult::parse_input_string.map(ParsedElement::Emoji),
+                    alt((
+                            EmojiResult::parse_input_string.map(ParsedElement::Emoji),
                             MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                                any.map(|c: char| ParsedElement::Text(c.to_string()))
-                            )).parse_next(x)
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
                 },
                 "[" => |x: &mut ConundrumInput<'a>| {
                     alt((
-                        ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::ParsedOutgoingNoteLink),
-                        ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
-                        ParsedTag::parse_input_string.map(ParsedElement::Tag),
-                        MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
+                            ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::ParsedOutgoingNoteLink),
+                            ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
+                            ParsedTag::parse_input_string.map(ParsedElement::Tag),
+                            MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
                             MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                        any.map(|c: char| ParsedElement::Text(c.to_string()))
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
                 "*" | "_" => |x: &mut ConundrumInput<'a>| {
                     alt((
-                       MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
-                        MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
-                       MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
-                       MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
+                            MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
+                            MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
+                            MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
+                            MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
                             MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                        any.map(|c: char| ParsedElement::Text(c.to_string()))
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
                 "<" => |x: &mut ConundrumInput<'a>| {
                     alt((
-                       ReactComponentWithChildrenResult::parse_input_string.map(ParsedElement::ReactComponentWithChildren),
-                       ReactComponentSelfClosingResult::parse_input_string.map(ParsedElement::ReactComponentSelfClosing),
+                            ReactComponentWithChildrenResult::parse_input_string.map(ParsedElement::ReactComponentWithChildren),
+                            ReactComponentSelfClosingResult::parse_input_string.map(ParsedElement::ReactComponentSelfClosing),
                             MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                        any.map(|c: char| ParsedElement::Text(c.to_string()))
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
                 "\\" => |x: &mut ConundrumInput<'a>| {
@@ -154,9 +154,9 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 _ => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
-                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {
                         any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
@@ -170,7 +170,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 _ => false
             };
         } else {
-           at_line_start = result.is_block_level();
+            at_line_start = result.is_block_level();
         }
 
         Ok(result)
