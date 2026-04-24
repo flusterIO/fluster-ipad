@@ -98,7 +98,7 @@ impl SizableOption {
     pub fn to_css_column_class(&self, n_columns: Option<i32>) -> String {
         let n = n_columns.unwrap_or_else(|| self.to_default_grid_cols());
         // This can't be scanned by tailwind or shit will absolutely explode.
-        format!("@[{}px]/mdx:grid-cols-{}", self.to_column_breakpoint(), n)
+        format!("@[{}px]/mdx:grid-cols-{}", self.to_width_css_breakpoint(), n)
     }
 
     /// The default number of columns at the default breakpoint for this size.
@@ -113,21 +113,6 @@ impl SizableOption {
             Self::Xxl => 2,
             Self::Full => 2,
             Self::Fit => 4,
-        }
-    }
-
-    /// The breakpoint at which this size should collapse to a single column.
-    pub fn to_column_breakpoint(&self) -> usize {
-        match self {
-            Self::None => 0,
-            Self::Small => 120,
-            Self::Smedium => 180,
-            Self::Medium => 240,
-            Self::Large => 320,
-            Self::Xl => 480,
-            Self::Xxl => 640,
-            Self::Full => 800,
-            Self::Fit => 1200,
         }
     }
 }
