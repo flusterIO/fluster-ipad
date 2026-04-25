@@ -109,7 +109,6 @@ impl GridColumnProps {
                         )
                     )
                 };
-                println!("Size Value: {:#?}", size_value);
                 if let Some(err) = match size_value {
                     Ok(s) => {
                         have_found_column = true;

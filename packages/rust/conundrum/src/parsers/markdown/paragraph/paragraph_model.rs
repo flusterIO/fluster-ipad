@@ -5,7 +5,7 @@ use winnow::{
     combinator::alt,
     error::{ContextError, ErrMode},
     stream::Stream,
-    token::{literal, take},
+    token::literal,
 };
 
 use crate::{
@@ -33,6 +33,7 @@ use crate::{
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownParagraphResult {
     pub children: Children,
+    pub terminator: Box<ParsedElement>,
 }
 
 impl MarkdownParagraphResult {
@@ -51,9 +52,9 @@ impl HtmlJsComponentResult for MarkdownParagraphResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let children = self.children.render(Arc::clone(&res))?;
         if children.trim().is_empty() {
-            Ok(String::from(""))
+            self.terminator.to_html_js_component(Arc::clone(&res))
         } else {
-            Ok(format!("<p>{}</p>", children))
+            Ok(format!("<p>{}</p>{}", children, self.terminator.to_html_js_component(Arc::clone(&res))?))
         }
     }
 }
@@ -87,40 +88,22 @@ enum ParagraphTerminator {
     Content(ParsedElement),
 }
 
-pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<Children> {
+pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<MarkdownParagraphResult> {
     let start = input.input.checkpoint();
-    // let paragraph_start =
-    //     take(1usize).verify(|c: &str|
-    // !c.trim().is_empty()).parse_next(input).inspect_err(|_| {
-    // input.input.reset(&start);
-    // })?;
-    // let (children, terminator) =
-    //     repeat_till(1..,
-    //                 any_paragraph_nested_element,
-    //                 alt((markdown_paragraph_line_break.map(|_|
-    // ParagraphTerminator::LineEnding),
-    // peek(any_block_element.map(ParagraphTerminator::Content))))).
-    // parse_next(input)
-    // .inspect_err(|_| {
-    // input.input.reset(&start);
-    // })?;
-    //
-    let children = until_paragraph_breaking_element.parse_next(input).inspect_err(|_| {
-                                                                          input.input.reset(&start);
-                                                                      })?;
+    let (children, terminator) = until_paragraph_breaking_element.parse_next(input).inspect_err(|_| {
+                                                                                        input.input.reset(&start);
+                                                                                    })?;
     // let terminator_data = match terminator {
     //     ParagraphTerminator::Content(c) => Some(c),
     //     ParagraphTerminator::LineEnding => None,
     // };
-    Ok(Children(children))
+    Ok(MarkdownParagraphResult { children: Children(children),
+                                 terminator: Box::new(terminator) })
 }
 
 impl ConundrumParser<MarkdownParagraphResult> for MarkdownParagraphResult {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<MarkdownParagraphResult> {
-        // let res = alt((take_until(1.., "  \n"), take_until(1..,
-        // "\n\n"))).parse_next(input)?;
-        let children = markdown_paragraph.parse_next(input)?;
-        Ok(MarkdownParagraphResult { children })
+        markdown_paragraph.parse_next(input)
     }
 
     fn matches_first_char(char: char) -> bool {

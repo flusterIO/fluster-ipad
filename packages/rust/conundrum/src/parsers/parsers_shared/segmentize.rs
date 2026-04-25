@@ -16,7 +16,7 @@ use crate::{
             code_block::code_block_model::ParsedCodeBlock, heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule, inline_code::InlineCodeResult, inline_math::InlineMathResult,
             italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::emoji_model::EmojiResult,
-            markdown_link::MarkdownLinkResult, paragraph::paragraph_model::MarkdownParagraphResult,
+            markdown_link::MarkdownLinkResult,
         },
         parser_trait::ConundrumParser,
         react::{
@@ -34,7 +34,7 @@ use winnow::{
 };
 
 pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
-                                            -> ConundrumModalResult<Vec<ParsedElement>> {
+                                            -> ConundrumModalResult<(Vec<ParsedElement>, ParsedElement)> {
     let at_line_start = Rc::new(RefCell::new(false));
     let at_line_start_terminator = Rc::clone(&at_line_start);
     let (res, terminator): (Vec<ParsedElement>, ParsedElement) =
@@ -107,7 +107,7 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
 
                                                                        Ok(inner_res)
                                                                    },
-                                                                   peek(|nested_input: &mut ConundrumInput<'a>| {
+                                                                   |nested_input: &mut ConundrumInput<'a>| {
                                                                        let ls = *at_line_start_terminator.borrow();
                                                                        let result =
                                                                            dispatch! {peek(take(1usize));
@@ -183,8 +183,7 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                },
                                                                            }.parse_next(nested_input)?;
                                                                        Ok(result)
-                                                                   }),
+                                                                   },
                                                                    ).parse_next(input)?;
-    println!("Terminator: {:#?}", terminator);
-    Ok(res)
+    Ok((res, terminator))
 }

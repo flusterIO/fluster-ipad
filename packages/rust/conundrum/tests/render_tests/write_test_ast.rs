@@ -23,7 +23,6 @@ pub fn write_test_ast(content: &str, label: &str) -> ConundrumModalResult<()> {
                                                                    MdxParsingResult::from_initial_mdx_content(content),
                                                                ..Default::default() })) };
     let tree = parse_elements(&mut input).map_err(|e| {
-                                             eprintln!("Error: {}", e);
                                              panic!("Parses {} content without throwing an error.", label);
                                          })
                                          .map_err(|e| ErrMode::Backtrack(ConundrumErrorVariant::FailToGenerateString))?;

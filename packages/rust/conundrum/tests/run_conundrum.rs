@@ -58,7 +58,6 @@ async fn conundrum_parses_documentation_requests() {
                                                  hide_components: Vec::new(),
                                                  ..Default::default() };
 
-        println!("Name: {:#?}", name);
         let short_res =
             run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
 

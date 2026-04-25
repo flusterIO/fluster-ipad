@@ -27,7 +27,6 @@ impl AdmonitionHtmlTemplate {
     pub fn chevron(&self) -> String {
         let s = lucide_icons::Icon::ChevronUp.unicode().to_string();
 
-        println!("S: {:#?}", s);
         s
     }
 

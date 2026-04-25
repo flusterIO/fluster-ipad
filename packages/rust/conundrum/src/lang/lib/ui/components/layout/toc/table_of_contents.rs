@@ -74,7 +74,6 @@ impl HtmlJsComponentResult for TableOfContents {
                                       expanded: self.expanded.map(|n| n.0).unwrap_or_else(|| false),
                                       id: self.id.clone() };
         templ.render().map_err(|e| {
-                    eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })
     }
@@ -94,7 +93,6 @@ impl JsxComponentResult for TableOfContents {
                         -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
         let state = res.read_arc();
         let json_string = serde_json::to_string(&state.data.toc).map_err(|e| {
-            eprintln!("Error: {:#?}", e);
             ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("JSON error", "Conundrum could not parse the table of contents to json. This is almost surely a bug on my end, and I'm working on it.")))
         })?;
         Ok(format!("<{} toc={{{}}} {}/>", EmbeddableComponentName::Toc, json_string, match self.expanded {

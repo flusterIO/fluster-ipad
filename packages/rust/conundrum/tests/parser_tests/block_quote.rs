@@ -34,6 +34,4 @@ async fn parses_block_quote_of_nested_depth() {
         modifiers: Vec::new(),
         ..Default::default()
     }).await.expect("Returns a vald result when a valid input was provided.");
-
-    println!("{}", res.content)
 }

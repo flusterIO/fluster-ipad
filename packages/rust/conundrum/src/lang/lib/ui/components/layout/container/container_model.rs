@@ -88,7 +88,6 @@ impl HtmlJsComponentResult for UtilityContainer {
                                                    emphasis: self.emphasis.clone(),
                                                    sizable: self.sizable.clone() };
         templ.render().map_err(|e| {
-                    eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })
     }

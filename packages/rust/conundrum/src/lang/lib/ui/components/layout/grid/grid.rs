@@ -83,7 +83,6 @@ impl HtmlJsComponentResult for ResponsiveGrid {
                                                              .map(|e| e.to_background_color_classes())
                                                              .unwrap_or_default() };
         templ.render().map_err(|e| {
-                    eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })
     }

@@ -6,7 +6,7 @@ cdrm-heading-id="{{self.item.id | safe}}"
             {{lucide_icons::Icon::ChevronRight.unicode().to_string() | safe}}
         </div>
         <div 
-            class="w-full z-1 opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+            class="w-full z-1 opacity-80 hover:opacity-100 transition-opacity duration-300 cursor-pointer [&_svg]:h-3 [&_svg]:w-auto">
             {{self.item.content | safe}}
         </div>
     </div>

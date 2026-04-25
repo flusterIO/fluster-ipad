@@ -109,7 +109,6 @@ impl HtmlJsComponentResult for TabsGroup {
                                            tabs };
 
         group.render().map_err(|e| {
-            eprintln!("Error: {:#?}", e);
             ErrMode::Cut(
                 ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Compiler error", "Well this is new, usually the errors are on the parser side of things. If this continues, please file an issue on [Github](https://github.com/flusterIO) so I can resolve it immediately."))
                 )

@@ -50,7 +50,6 @@ impl HtmlJsComponentResult for Underline {
                                      emphasis: self.emphasis.clone(),
                                      content: self.children.render(res)? };
         templ.render().map_err(|e| {
-                    eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })
     }

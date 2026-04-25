@@ -73,7 +73,6 @@ impl HtmlJsComponentResult for Card {
                                                         .clone()
                                                         .is_some_and(|c| c.center_content.is_some_and(|b| b.0)) };
         templ.render().map_err(|e| {
-                    eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })
     }

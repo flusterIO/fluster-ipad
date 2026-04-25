@@ -17,7 +17,6 @@ use crate::{
         runtime::{
             compile_conundrum::compile_elements,
             parse_conundrum_children::parse_child_elements,
-            parse_conundrum_string::parse_elements,
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
@@ -140,7 +139,6 @@ impl HtmlJsComponentResult for MarkdownHeadingResult {
                 _ => None,
             } {
                 let r = templ.render().map_err(|_| {
-                    eprintln!("Failed to render heading");
                 ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })?;
                 Ok(r)

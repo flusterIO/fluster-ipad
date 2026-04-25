@@ -57,7 +57,6 @@ impl HtmlJsComponentResult for BlockQuoteResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let templ = BlockQuoteHtmlTemplate { children: self.children.render(res)? };
         templ.render().map_err(|e| {
-            eprintln!("Error: {:#?}", e);
             ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
         })
     }
@@ -145,7 +144,6 @@ impl ConundrumParser<BlockQuoteResult> for BlockQuoteResult {
                 // Join stripped lines then recursively parse the inner content
                 // so math, citations, nested block quotes, etc. are recognised.
                 let inner_src = lines.join("\n");
-                println!("Inner: {:#?}", inner_src);
                 let mut new_state = ConundrumInput { input: &inner_src,
                                                      state: Arc::clone(&input.state) };
 

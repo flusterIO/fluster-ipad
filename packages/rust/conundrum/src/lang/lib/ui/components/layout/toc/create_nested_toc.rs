@@ -19,26 +19,6 @@ impl TocItemWithNested {
     }
 }
 
-// impl TocItemWithNested {
-//     pub fn get_nested_templates(&self) -> Vec<TocItemVariant> {
-//         self.item
-//             .nested
-//             .iter()
-//             .map(|item| {
-//                 if item.nested.is_empty() {
-//                     TocItemVariant::NoNested(TocItemTemplate { item:
-// item.item,
-// expanded: self.expanded,
-// group_id: self.group_id.clone() })                 } else {
-//                     TocItemVariant::WithNested(TocItemWithNestedTemplate {
-// item: item.clone(),
-// expanded: self.expanded,
-// group_id: self.group_id.clone() })                 }
-//             })
-//             .collect::<Vec<TocItemVariant>>()
-//     }
-// }
-
 fn consume_children(items: Vec<MarkdownHeadingStringifiedResult>,
                     expanded: bool,
                     group_id: DOMId)
@@ -68,6 +48,7 @@ pub fn get_toc_nested_items(_toc: Vec<MarkdownHeadingStringifiedResult>,
                             expanded: bool,
                             group_id: DOMId)
                             -> Vec<TocItemWithNested> {
+    println!("Toc: {:#?}", _toc);
     if _toc.is_empty() {
         Vec::new()
     } else {

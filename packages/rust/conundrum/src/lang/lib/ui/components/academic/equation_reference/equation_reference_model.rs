@@ -99,7 +99,6 @@ impl JsxComponentResult for EquationReference {
     fn to_jsx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let x = self.get_equation_index(res)?;
         let id_string = self.id.to_jsx_prop_as_string("id").map_err(|e| {
-            eprintln!("Error: {:#?}", e);
             ErrMode::Backtrack(
                 ConundrumErrorVariant::UserFacingGeneralParserError(
                     ConundrumError::from_msg_and_details("Serialization error", "Conundrum could not successfully seralize an id provided to the equation reference component")

@@ -76,7 +76,6 @@ impl Children {
     pub fn to_jsx_prop_as_string(&self, prop_name: &str, res: ArcState) -> ConundrumModalResult<String> {
         let children_string = self.render(res)?;
         let x = serde_json::to_string(children_string.as_str()).map_err(|e| {
-                    println!("Error: {:#?}", e);
                     ErrMode::Backtrack(ConundrumErrorVariant::FailToGenerateString)
                 })?;
         // String is already quoted, no need to wrap it in quotes.

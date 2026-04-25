@@ -106,7 +106,6 @@ impl HtmlJsComponentResult for EmojiResult {
                                                      .unwrap_or_else(|| "div".to_string()),
                                             emoji: svg };
             templ.render().map_err(|e| {
-                eprintln!("Error: {:#?}", e);
                 ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
             })
         } else {

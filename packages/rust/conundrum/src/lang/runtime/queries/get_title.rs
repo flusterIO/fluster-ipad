@@ -74,7 +74,6 @@ mod tests {
                             ConundrumCompileTarget::Markdown).expect("Finds title group when title is present.");
 
         assert!(title_group.title == "Metuque at _inferius_ nebulas", "Finds the proper title");
-        println!("Title Group: {:#?}", title_group);
 
         assert!(title_group.subtitle.is_some_and(|s| s == "My note with a subtitle"), "Finds the proper subtitle");
     }

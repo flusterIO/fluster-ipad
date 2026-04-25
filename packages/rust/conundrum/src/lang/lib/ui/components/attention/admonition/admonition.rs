@@ -117,7 +117,6 @@ impl HtmlJsComponentResult for Admonition {
                                              body_children: self.children.render(Arc::clone(&res))?,
                                              emphasis: self.emphasis.as_ref().cloned().unwrap_or(Emphasis::Primary) };
         templ.render().map_err(|e| {
-                    eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })
     }
