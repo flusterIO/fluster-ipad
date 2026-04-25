@@ -29,8 +29,7 @@ struct TestPageTemplate {
 pub async fn write_test_html(content: &str, label: &str) -> ConundrumModalResult<()> {
     let res =
         run_conundrum(ParseConundrumOptions { content: content.to_string(),
-                                              ..Default::default() }).await
-                                                                     .expect("Parses input without throwing an error.");
+                                              ..Default::default() }).expect("Parses input without throwing an error.");
 
     let templ = TestPageTemplate { content: res.content.to_string(),
                                    label: label.to_string() };

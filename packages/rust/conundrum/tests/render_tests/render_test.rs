@@ -22,7 +22,7 @@ pub async fn render_test(content: &str, label: &str) -> TestResult {
                                                                    math_font_scalar: 1.2,
                                                                    syntax_theme:
                                                                        Some(SupportedCodeBlockTheme::Darkneon) } };
-    let r = run_conundrum(test_input).await.expect(format!("Failed to parse the `{}` test.", label).as_str());
+    let r = run_conundrum(test_input).expect(format!("Failed to parse the `{}` test.", label).as_str());
 
     // NOTE: Toggle this off for ui development but remember to turn it back on!
     // insta::assert_snapshot!(label, r.content);

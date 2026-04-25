@@ -15,7 +15,7 @@ My content goes here.
         hide_components: Vec::new(),
         modifiers: Vec::new(),
         ..Default::default()
-        }).await.expect("Returns a vald result when a valid input was provided.");
+        }).expect("Returns a vald result when a valid input was provided.");
 
         assert_snapshot!(res.content)
     }

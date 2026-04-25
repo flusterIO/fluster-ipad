@@ -47,6 +47,7 @@ impl Children {
     pub fn render(&self, res: ArcState) -> ConundrumModalResult<String> {
         let thread_state = Arc::clone(&res);
         let children = self.0.clone();
+        // PERFORMANCE: Move this to a thread pool with rayon.
         let handle = std::thread::spawn(move || compile_elements(&children, &thread_state));
         if let Ok(joined_thread) = handle.join() {
             joined_thread

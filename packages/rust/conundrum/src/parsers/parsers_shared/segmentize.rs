@@ -7,8 +7,9 @@ use crate::{
     },
     parsers::{
         conundrum::{
-            comment::ConundrumCommentResult, hr_with_children::hr_with_children_model::HrWithChildrenResult,
-            inline_citation::ParsedCitation, note_link::note_link_model::ParsedOutgoingNoteLink, tag::ParsedTag,
+            comment::ConundrumCommentResult, docs::docs_model::ParsedInspectionRequest,
+            hr_with_children::hr_with_children_model::HrWithChildrenResult, inline_citation::ParsedCitation,
+            note_link::note_link_model::ParsedOutgoingNoteLink, tag::ParsedTag,
         },
         markdown::{
             block_math::BlockMathResult, block_quote::block_quote_model::BlockQuoteResult,
@@ -179,7 +180,7 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                    }).parse_next(x)
                                                                                },
                                                                                _ => |x: &mut ConundrumInput<'a>| {
-                                                                                   fail.parse_next(x)
+                                                                                   ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest).parse_next(x)
                                                                                },
                                                                            }.parse_next(nested_input)?;
                                                                        Ok(result)

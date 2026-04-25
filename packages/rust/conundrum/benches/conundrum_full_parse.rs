@@ -43,7 +43,6 @@ fn conundrum_full_parse_benchmark(c: &mut Criterion) {
                             content: file_content,
                             modifiers: Vec::new(),
                         })
-                        .await
                     },
                     // 3. BATCH SIZE: Controls how many setups happen at once
                     BatchSize::LargeInput,

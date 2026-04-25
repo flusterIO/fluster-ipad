@@ -26,7 +26,7 @@ pub async fn renders_tabs() {
                                         hide_components: Vec::new(),
                                         modifiers: Vec::new(),
                                         ..Default::default()
-        }).await
+        })
                                                                 .expect("Parses tabs input without throwing an error.");
 
     insta::assert_debug_snapshot!(res.content);

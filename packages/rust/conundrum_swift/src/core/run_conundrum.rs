@@ -9,8 +9,8 @@ use tokio::task::spawn;
 
 #[uniffi::export(async_runtime = "tokio")]
 pub async fn run_conundrum(options: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
-    spawn(async move { run_conundrum_swift(options).await }).await.map_err(|x| {
-                                                                       println!("Threading Error: {:#?}", x);
-                                                                       ConundrumErrorVariant::MultiThreadingError
-                                                                   })?
+    spawn(async move { run_conundrum_swift(options) }).await.map_err(|x| {
+                                                                 println!("Threading Error: {:#?}", x);
+                                                                 ConundrumErrorVariant::MultiThreadingError
+                                                             })?
 }

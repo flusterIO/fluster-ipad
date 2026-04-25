@@ -15,7 +15,7 @@ async fn removes_components_for_inline_markdown() {
         modifiers: vec![ConundrumModifier::PreferInlineMarkdownSyntax],
         ..Default::default()
     }
-    ).await
+    )
         .expect("Returns a vald result when a valid input was provided.");
 
     insta::assert_snapshot!(res.content);

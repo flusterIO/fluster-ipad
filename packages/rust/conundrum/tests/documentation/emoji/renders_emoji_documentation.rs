@@ -12,7 +12,7 @@ pub async fn renders_emoji_documentation() {
                                                     note_id: None,
                                                     hide_components: Vec::new(),
                                                     ..Default::default()
-    }).await.expect("Renders documentation without throwing an error.");
+    }).expect("Renders documentation without throwing an error.");
 
     insta::assert_snapshot!(res.content);
 }

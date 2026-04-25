@@ -1,3 +1,4 @@
+use askama::Template;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use strum::IntoEnumIterator;
@@ -6,6 +7,7 @@ use winnow::{
     Parser,
     ascii::{alpha1, line_ending},
     combinator::{alt, eof},
+    error::ErrMode,
     stream::Stream,
     token::literal,
 };
@@ -20,10 +22,16 @@ use crate::{
         lib::ui::ui_types::children::Children,
         runtime::{
             parse_conundrum_string::parse_elements,
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumCompileTarget},
+            run_conundrum::{ParseConundrumOptions, run_conundrum},
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ConundrumCompileTarget,
+            },
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
                 fluster_component_result::ConundrumComponentResult,
+                html_js_component_result::HtmlJsComponentResult,
                 mdx_component_result::MdxComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
@@ -33,7 +41,10 @@ use crate::{
         component_name_id_map::COMPONENT_NAME_ID_MAP, component_names::EmbeddableComponentName,
         documentation_component_name::DocumentationComponentName,
     },
-    parsers::parser_trait::ConundrumParser,
+    parsers::{
+        conundrum::docs::documentation_container_html_templ::DocumentationContainerHtmlTemplate,
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare]
@@ -43,6 +54,57 @@ pub struct ParsedInspectionRequest {
     pub keyword: String,
     pub level: u8, // 1 for '?', 2 for '??'
     pub full_match: String,
+}
+
+impl ParsedInspectionRequest {
+    pub fn get_content(&self) -> Option<String> {
+        if let Some(depth) = match self.level {
+            1 => Some(InContentDocumentationFormat::Short),
+            2 => Some(InContentDocumentationFormat::Full),
+            _ => None,
+        } {
+            if let Some(doc_id) = InContentDocumentationId::iter().find(|x| x.to_string() == self.keyword) {
+                Some(EmbeddedInContentDocs::get_incontent_docs_by_id(&doc_id, &depth))
+            } else if let Some(comp_name) = EmbeddableComponentName::iter().find(|x| x.to_string() == self.keyword)
+                                                                           .map(|component_name| {
+                                                                               COMPONENT_NAME_ID_MAP
+                        .get(&component_name)
+                        .unwrap_or_else(|| panic!("All components must have documentation: {}", &component_name))
+                                                                           })
+            {
+                Some(EmbeddedComponentDocs::get_incontent_docs_by_id(comp_name, &depth))
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
+    pub fn get_rendered_docs(&self) -> Option<String> {
+        if let Some(content) = self.get_content() {
+            let opts = ParseConundrumOptions { content,
+                                               ..Default::default() };
+            run_conundrum(opts).ok().map(|x| x.content)
+        } else {
+            None
+        }
+    }
+}
+
+impl HtmlJsComponentResult for ParsedInspectionRequest {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        if let Some(children) = self.get_rendered_docs() {
+            let templ = DocumentationContainerHtmlTemplate { children };
+            templ.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
+        } else {
+            Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Documentation Request",
+                                                                                                             "The documentation you requested is invalid. See the `Docs??` documentation for all available documentation commands."))))
+        }
+    }
 }
 
 impl PlainTextComponentResult for ParsedInspectionRequest {

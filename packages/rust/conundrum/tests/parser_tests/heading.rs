@@ -14,7 +14,7 @@ pub async fn parses_title_with_heading() {
         hide_components: Vec::new(),
         modifiers: Vec::new(),
         ..Default::default()
-    }).await.expect("Returns a vald result when a valid input was provided.");
+    }).expect("Returns a vald result when a valid input was provided.");
 
     assert!(!res.toc.is_empty(), "Appends the heading to the table of contents.");
     assert!(res.toc.index(0).id == "myIdHere", "Sets the proper id in the table of contents.");

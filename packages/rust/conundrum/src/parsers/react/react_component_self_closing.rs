@@ -125,7 +125,7 @@ My equation <EqRef id="myId" super />."#;
             hide_components: vec![],
             target: ConundrumCompileTarget::Html,
             ..Default::default()
-            }).await.expect("Parses valid self closing react component without throwing
+            }).expect("Parses valid self closing react component without throwing
 an error");
 
         assert!(res.eq_ref_map.get("myId").is_some_and(|n| *n == 0),

@@ -19,7 +19,7 @@ use crate::{
     parsers::{
         conundrum::{
             comment::ConundrumCommentResult,
-            docs::ParsedInspectionRequest,
+            docs::docs_model::ParsedInspectionRequest,
             hr_with_children::hr_with_children_model::HrWithChildrenResult,
             inline_citation::ParsedCitation,
             logic::{string::conundrum_string::ConundrumString, token::ConundrumLogicToken},
@@ -90,7 +90,7 @@ pub enum ParsedElement {
 impl HtmlJsComponentResult for ParsedElement {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
-            ParsedElement::ParsedInspectionRequest(req) => req.to_conundrum_component(res),
+            ParsedElement::ParsedInspectionRequest(req) => req.to_html_js_component(res),
             ParsedElement::ParsedCodeBlock(block) => block.to_html_js_component(res),
             ParsedElement::ParsedCitation(cite) => cite.to_html_js_component(res),
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_html_js_component(res),

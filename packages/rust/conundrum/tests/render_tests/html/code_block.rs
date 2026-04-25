@@ -94,6 +94,11 @@ $$
 func myFunction() {
     return MyView.myExtensions()
 }
-```"#;
+```
+
+Docs??
+
+"#;
+    write_test_ast(test_content, "documentation-ref");
     render_test(test_content, "python-code-block").await;
 }

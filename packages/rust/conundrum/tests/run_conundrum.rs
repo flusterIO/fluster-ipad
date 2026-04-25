@@ -22,7 +22,7 @@ async fn runs_conundrum() {
                                        hide_components: Vec::new(),
                                        ..Default::default() };
 
-    let res = run_conundrum(opts).await.expect("Returns a valid result when vald input was provided.");
+    let res = run_conundrum(opts).expect("Returns a valid result when vald input was provided.");
 
     print!("{}", res.content);
     assert!(!&res.content.is_empty(), "Conundrum response is not empty.");
@@ -58,8 +58,7 @@ async fn conundrum_parses_documentation_requests() {
                                                  hide_components: Vec::new(),
                                                  ..Default::default() };
 
-        let short_res =
-            run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
+        let short_res = run_conundrum(short_opts).expect("Returns a vald result when a valid input was provided.");
 
         let full_opts = ParseConundrumOptions { note_id: None,
                                                 content: full_test_content,
@@ -67,7 +66,7 @@ async fn conundrum_parses_documentation_requests() {
                                                 hide_components: Vec::new(),
                                                 ..Default::default() };
 
-        let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
+        let full_res = run_conundrum(full_opts).expect("Returns a vald result when a valid input was provided.");
 
         if name != EmbeddableComponentName::Emoji {
             // Emoji docs are stored in the core
@@ -96,8 +95,7 @@ async fn conundrum_parses_documentation_requests() {
                                                  hide_components: Vec::new(),
                                                  ..Default::default() };
 
-        let short_res =
-            run_conundrum(short_opts).await.expect("Returns a vald result when a valid input was provided.");
+        let short_res = run_conundrum(short_opts).expect("Returns a vald result when a valid input was provided.");
 
         let full_opts = ParseConundrumOptions { note_id: None,
                                                 content: full_test_content,
@@ -105,7 +103,7 @@ async fn conundrum_parses_documentation_requests() {
                                                 hide_components: Vec::new(),
                                                 ..Default::default() };
 
-        let full_res = run_conundrum(full_opts).await.expect("Returns a vald result when a valid input was provided.");
+        let full_res = run_conundrum(full_opts).expect("Returns a vald result when a valid input was provided.");
 
         assert!(short_res.content
                          .contains(&format!("<InContentDocumentationContainer inContentId=\"{}\" format=\"short\">",

@@ -93,10 +93,6 @@ pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<Ma
     let (children, terminator) = until_paragraph_breaking_element.parse_next(input).inspect_err(|_| {
                                                                                         input.input.reset(&start);
                                                                                     })?;
-    // let terminator_data = match terminator {
-    //     ParagraphTerminator::Content(c) => Some(c),
-    //     ParagraphTerminator::LineEnding => None,
-    // };
     Ok(MarkdownParagraphResult { children: Children(children),
                                  terminator: Box::new(terminator) })
 }

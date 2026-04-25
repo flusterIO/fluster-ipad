@@ -13,7 +13,7 @@ async fn parses_code_block() {
         hide_components: Vec::new(),
         modifiers: Vec::new(),
         ..Default::default()
-    }).await.expect("Returns a vald result when a valid input was provided.");
+    }).expect("Returns a vald result when a valid input was provided.");
 
     insta::assert_snapshot!(res.content);
 }

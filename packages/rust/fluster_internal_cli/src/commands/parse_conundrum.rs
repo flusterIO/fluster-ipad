@@ -17,7 +17,7 @@ pub async fn parse_conundrum(file_path: &str, output: &str) -> std::io::Result<(
                                             target: ConundrumCompileTarget::Html,
                                             hide_components: Vec::new(),
                                             trusted: true
-    }).await.expect("Returns a vald result when a valid input was provided.");
+    }).expect("Returns a vald result when a valid input was provided.");
     println!("Content: {}", p.content);
     fs::write(output, p.content)?;
     Ok(())

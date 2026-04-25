@@ -38,7 +38,7 @@ pub async fn parse_initial_notes() {
                                                                Vec::new(),
                                                                UIParams::default(),
                                                                ConundrumCompileTarget::Html, true)
-                                    ).await
+                                    )
                                          .expect("Returns a vald result when a valid input was provided.");
 
         // Need to re-assign file_content to _content so that the front-matter is still

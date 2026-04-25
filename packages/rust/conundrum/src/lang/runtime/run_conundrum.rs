@@ -79,7 +79,7 @@ impl ParseConundrumOptions {
     }
 }
 
-pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
+pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
     let state = Arc::new(RwLock::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
                                                   bib: CitationList::default(),
                                                   modifiers: opts.modifiers.clone(),
