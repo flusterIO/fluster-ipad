@@ -79,6 +79,8 @@ lazy_static! {
         map.insert(format!("{}-css", EmbeddableComponentId::Admonition), include_str!("../../../lang/lib/ui/components/attention/admonition/admonition.css").to_string().as_bytes().to_vec());
 
         map.insert(format!("{}-js", EmbeddableComponentId::Tabs), include_str!("./component_glue_output/tabs.js").to_string().as_bytes().to_vec());
+
+        map.insert(format!("{}-js", EmbeddableComponentId::Toc), include_str!("./component_glue_output/toc.js").to_string().as_bytes().to_vec());
         map
     };
 }

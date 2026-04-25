@@ -1,57 +1,75 @@
-# Daily Focus for ADHD Assistant
+# Daily Focus for ADHD-Ass
 
-## Priority Tasks
+## Summary of To-Do List
 
-### Critical Fixes
-- Fix new note first display issue
-- Handle rendering code to HTML
-- Move over all KateX font methods to use binary stored data
-- Fix issue with bibliography entries not being associated with note properly
-- Handle breakout of paragraph when only components are nested
-- Fix Grid component integer parser issue
-- Handle Blockquote bug with multi-line entries
-- Implement JavaScript to copy code from code block
-- Reimplement `window.setBibtexEditorContent`
+### High Priority Tasks
 
-### High Priority
-- Work on integrating typst support (major value add)
-- Setup seeding of notes on desktop app
-- Move over remaining components (AINoteSummary, Table of Contents)
-- Work on remaining parsers (CodeBlock, Footnote, Table, Strikethrough, Escapable math blocks, Escap, Paragraphs, Line Item, Timestamp link syntax)
+1. **Fix new note first display issue** - This issue is still unresolved and needs immediate attention.
+2. **Handle rendering code to HTML** - This is critical for the application's functionality.
+3. **Move over all KateX font methods to use binary stored data** - This will break the standalone app, so it's a high priority.
+4. **Handle Grid by fixing issue with integer parser** - This issue is causing the Grid component to fail when props are valid.
+5. **Handle Blockquote bug with multi-line entries** - This is a known issue that needs to be resolved.
 
-### Medium Priority
-- Handle scroll restoration on desktop app in landscape mode
-- Work on syncing method to create notes from file system
-- Make sure note can be loaded when iPad is in portrait view
-- Handle React property parsers for AI components
-- Create `subtle` or `underline` property for Tabs component
-- Handle `Icon` component that dynamically loads icons
-- Verify iPad app is working again
-- Handle color scheme note changing editor theme
-- Create quick plot generator for mean conundrum parsing time
-- Start setting AI availability states
+### Medium Priority Tasks
 
-### Low Priority
-- Update docs to reflect upcoming Apple release
-- Fix issue with italic field in title syntax
-- Handle force regeneration of AI summaries
-- Handle light mode for AISummaryContainer card
-- Create searchable lazy list of icons
-- Handle bug with new line items not working on initial new line
-- Handle Global search page on Mac
-- Fix issue with note being set as modified just by viewing it in Mac app
+1. **Write JavaScript to actually copy code from code block** - This will allow other applications to pick up the event.
+2. **Handle issue with inline underline component breaking out of paragraph** - This is a pain point that needs to be resolved.
+3. **Reimplement `window.setBibtexEditorContent`** - This is a buffer operation that's currently missing.
+4. **Handle rest of summary UI** - This will allow users to accept or decline summaries appropriately.
 
-## Release Preparation
-- Ensure all tests are passing (Swift, Typescript, Rust)
-- Review Apple's nomination process for featured app
-- Handle AI summary regeneration and R3 vector storage
-- Write tests for all `-ignoreParser` flags
+### Low Priority Tasks
 
-## Additional Notes
-- Focus on critical fixes first to ensure stability
-- Prioritize tasks that have the most impact on user experience
-- Break down complex tasks into smaller, manageable chunks
-- Use the release checklist as a guide for final preparations
-- Keep the AI summary and R3 vector generation as high priority for release readiness
+1. **Work on integrating typst support** - This is a major value add that can be handled offline.
+2. **Setup seeding of notes on desktop app** - This will be the first app released.
+3. **Move over rest of components** - This will allow the application to function properly.
+4. **Work on remaining parsers** - This will allow the application to handle more content types.
 
-This focus list is designed to help maintain productivity and ensure the app is ready for release within the next 2 weeks. Remember to take breaks and stay focused on the most important tasks first.
+### Bug Fixes
+
+1. **Fix issue with bibliography entries not being associated with note properly** - This is a known issue that needs to be resolved.
+2. **Create 'paper' button on desktop** - This is creating 2 pages, which is a bug.
+3. **Fix admonition padding issue** - This is an issue that needs to be resolved.
+
+### Documentation
+
+1. **Card component documentation** - This needs to be updated to reflect the latest changes.
+
+### Desktop App
+
+1. **Work on AI summarization** - This will allow users to get summaries of their notes.
+2. **Handle scroll restoration on desktop app while in landscape mode** - This is a known issue that needs to be resolved.
+3. **Work on syncing method to create notes from file system** - This will allow users to create notes from the file system.
+
+### iPad App
+
+1. **Make sure note can be loaded when iPad is initially in portrait view** - This is a known issue that needs to be resolved.
+
+### Webviews
+
+1. **Make sure all taggables have a 'cursor-pointer' class** - This will indicate that they are clickable.
+
+### Website
+
+1. **Update article to same article as what's included in the app** - This will ensure consistency.
+2. **Fix admonition padding issue** - This is an issue that needs to be resolved.
+
+### Conundrum
+
+1. **Download as much of Crafting Interpreters as you can for offline reading** - This will allow users to read the book offline.
+
+### Performance
+
+1. **Move all of regex queries in the `get_component_map` file to a `HashMap<String, bool>`** - This will improve performance.
+
+### Release
+
+1. **All tests passing** - This is critical for the release.
+2. **Review YouTube link and section about creating 'Nominations' for being featured by Apple's editor team** - This is important for marketing.
+3. **Handle light mode of `AISummaryContainer` card** - This needs to be fixed.
+4. **Handle force regeneration** - This is not working and needs to be fixed.
+5. **Handle React property parsers** - This will allow components to be parsed more reliably.
+6. **Handle offline issues** - This includes fixing the syntax for italic fields in the title and ensuring errors are relayed to the user in the webview.
+
+## Conclusion
+
+This is a comprehensive list of tasks that need to be completed to ensure the release of the application within the next two weeks. The most important tasks are prioritized, and the rest are organized by category. The release checklist includes all tests passing, a review of the YouTube link, and handling of light mode and force regeneration. The offline issues are also addressed, including the syntax for italic fields in the title and ensuring errors are relayed to the user in the webview. The release is scheduled for the next two weeks, and the application is expected to be fully functional by then.

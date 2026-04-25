@@ -1,7 +1,10 @@
-use std::fmt::Display;
+use std::{fmt::Display, str::FromStr};
 
 use askama::FastWritable;
 use serde::{Deserialize, Serialize};
+use winnow::error::ErrMode;
+
+use crate::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -9,9 +12,25 @@ pub struct DOMId(String);
 
 uniffi::custom_newtype!(DOMId, String);
 
+impl FromStr for DOMId {
+    type Err = ErrMode<ConundrumErrorVariant>;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(DOMId(s.to_string()))
+    }
+}
+
 impl DOMId {
     pub fn new(id: String) -> Self {
         DOMId(id)
+    }
+
+    pub fn value(&self) -> String {
+        self.0.clone()
+    }
+
+    pub fn to_heading_id(&self) -> String {
+        format!("h-{}", self.0)
     }
 }
 

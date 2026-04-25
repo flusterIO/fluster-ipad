@@ -1,0 +1,15 @@
+<div class="w-full h-fit max-w-[min(1080px,100%,90vw)] bg-fd-card rounded-border px-4 py-3 rounded-lg border">
+    <div className="w-full text-lg font-bold">
+        Table of Contents
+    </div>
+    <div class="w-full">
+        {% for heading in self.get_items() %}
+        {%- match heading -%}
+            {%- when TocItemVariant::WithNested(n) -%}
+            {{n.render()? | safe}}
+            {%- when TocItemVariant::NoNested(n) -%}
+            {{n.render()? | safe}}
+        {%- endmatch -%}
+        {% endfor %}
+    </div>
+</div>

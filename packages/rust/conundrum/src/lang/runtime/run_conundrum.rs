@@ -1,6 +1,6 @@
 use parking_lot::RwLock;
 use serde::{Deserialize, Serialize};
-use std::{cell::RefCell, sync::Arc};
+use std::sync::Arc;
 use typeshare::typeshare;
 
 use crate::{
@@ -110,10 +110,6 @@ pub async fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxPa
         state.data.content = rendered_string;
     }
 
-    println!("Rendered: {:#?}", is_standalone);
-    // let mut state = stateful_input.state.borrow_mut();
-
-    // Ok(state.data.clone())
     let x = stateful_input.state.read_arc();
     Ok(x.data.clone())
 }

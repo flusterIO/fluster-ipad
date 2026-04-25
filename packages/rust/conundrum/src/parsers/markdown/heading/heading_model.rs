@@ -1,7 +1,6 @@
 use askama::Template;
-use parking_lot::ArcRwLockUpgradableReadGuard;
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
+use std::{str::FromStr, sync::Arc};
 use winnow::{
     Parser,
     ascii::{multispace0, space1, till_line_ending},
@@ -35,6 +34,7 @@ use crate::{
     },
     output::{
         general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
+        html::dom::dom_id::DOMId,
         output_components::output_utils::{format_embedded_object_property, format_markdown_fragment_property},
     },
     parsers::{
@@ -56,7 +56,7 @@ pub struct MarkdownHeadingResult {
     pub tab_depth: u16,
     pub children: Children,
     pub subtitle: Option<Children>,
-    pub id: ConundrumString,
+    pub id: DOMId,
 }
 
 /// The same as the `MarkdownHeadingResult` struct but wth the children
@@ -77,7 +77,7 @@ impl MarkdownHeadingResult {
         Ok(MarkdownHeadingStringifiedResult { depth: self.depth,
                                               tab_depth: self.tab_depth,
                                               content: children_string,
-                                              id: self.id.0.clone() })
+                                              id: self.id.value() })
     }
 }
 
@@ -131,12 +131,12 @@ impl HtmlJsComponentResult for MarkdownHeadingResult {
             let subtitle_string = subtitle.render(Arc::clone(&res))?;
             let children_string = self.children.render(Arc::clone(&res))?;
             if let Some(templ) = match self.depth {
-                1 => Some(HeadingSubtitleHtmlTemplate::H1(children_string, subtitle_string, self.id.0.clone())),
-                2 => Some(HeadingSubtitleHtmlTemplate::H2(children_string, subtitle_string, self.id.0.clone())),
-                3 => Some(HeadingSubtitleHtmlTemplate::H3(children_string, subtitle_string, self.id.0.clone())),
-                4 => Some(HeadingSubtitleHtmlTemplate::H4(children_string, subtitle_string, self.id.0.clone())),
-                5 => Some(HeadingSubtitleHtmlTemplate::H5(children_string, subtitle_string, self.id.0.clone())),
-                6 => Some(HeadingSubtitleHtmlTemplate::H6(children_string, subtitle_string, self.id.0.clone())),
+                1 => Some(HeadingSubtitleHtmlTemplate::H1(children_string, subtitle_string, self.id.clone())),
+                2 => Some(HeadingSubtitleHtmlTemplate::H2(children_string, subtitle_string, self.id.clone())),
+                3 => Some(HeadingSubtitleHtmlTemplate::H3(children_string, subtitle_string, self.id.clone())),
+                4 => Some(HeadingSubtitleHtmlTemplate::H4(children_string, subtitle_string, self.id.clone())),
+                5 => Some(HeadingSubtitleHtmlTemplate::H5(children_string, subtitle_string, self.id.clone())),
+                6 => Some(HeadingSubtitleHtmlTemplate::H6(children_string, subtitle_string, self.id.clone())),
                 _ => None,
             } {
                 let r = templ.render().map_err(|_| {
@@ -151,12 +151,12 @@ impl HtmlJsComponentResult for MarkdownHeadingResult {
         } else {
             let children_string = self.children.render(res)?;
             if let Some(templ) = match self.depth {
-                1 => Some(HeadingHtmlTemplate::H1(children_string, self.id.0.clone())),
-                2 => Some(HeadingHtmlTemplate::H2(children_string, self.id.0.clone())),
-                3 => Some(HeadingHtmlTemplate::H3(children_string, self.id.0.clone())),
-                4 => Some(HeadingHtmlTemplate::H4(children_string, self.id.0.clone())),
-                5 => Some(HeadingHtmlTemplate::H5(children_string, self.id.0.clone())),
-                6 => Some(HeadingHtmlTemplate::H6(children_string, self.id.0.clone())),
+                1 => Some(HeadingHtmlTemplate::H1(children_string, self.id.clone())),
+                2 => Some(HeadingHtmlTemplate::H2(children_string, self.id.clone())),
+                3 => Some(HeadingHtmlTemplate::H3(children_string, self.id.clone())),
+                4 => Some(HeadingHtmlTemplate::H4(children_string, self.id.clone())),
+                5 => Some(HeadingHtmlTemplate::H5(children_string, self.id.clone())),
+                6 => Some(HeadingHtmlTemplate::H6(children_string, self.id.clone())),
                 _ => None,
             } {
                 let r = templ.render().map_err(|_| {
@@ -187,7 +187,7 @@ impl MdxComponentResult for MarkdownHeadingResult {
         Ok(format!("<{} depth={} id={} subtitle={} >{}</{}>",
                    AutoInsertedComponentName::AutoInsertedHeading,
                    format_embedded_object_property(self.depth.to_string()),
-                   self.id.to_quoted_string().map_err(ErrMode::Backtrack)?,
+                   ConundrumString(self.id.value()).to_quoted_string().map_err(ErrMode::Backtrack)?,
                    subtitle_string,
                    children_string,
                    AutoInsertedComponentName::AutoInsertedHeading))
@@ -212,7 +212,7 @@ pub fn heading_subtitle_line(input: &mut ConundrumInput) -> ConundrumModalResult
 
     let mut new_input = ConundrumInput { input: content,
                                          state: Arc::clone(&input.state) };
-    let children = parse_elements(&mut new_input)?;
+    let children = parse_child_elements(&mut new_input)?;
     Ok(children)
 }
 
@@ -254,11 +254,6 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
                                                                         input.input.reset(&start);
                                                                     })?;
 
-        // WARN: This is a jumbled mess of borrows here. If this works without causing a
-        // deadlock or a hang it will be a miracle.
-
-        // let mut new_input = get_conundrum_input(content_string.as_str(),
-        // state.clone());
         let mut new_input = ConundrumInput { input: &content_string,
                                              state: Arc::clone(&input.state) };
 
@@ -268,19 +263,19 @@ impl ConundrumParser<MarkdownHeadingResult> for MarkdownHeadingResult {
 
         drop(children);
 
-        let state_borrowed = input.state.upgradable_read_arc();
+        let mut state_borrowed = input.state.upgradable_read_arc();
+        let last_heading_depth = state_borrowed.last_heading_tab_depth;
 
-        let heading =
-            MarkdownHeadingResult { depth: level.len() as u16,
-                                    children: c,
-                                    subtitle: subtitle.map(Children),
-                                    tab_depth: state_borrowed.last_heading_tab_depth,
-                                    id: id.map(|x| ConundrumString(x.to_string()))
-                                          .unwrap_or_else(|| {
-                                              let mut writable_state = ArcRwLockUpgradableReadGuard::upgrade(state_borrowed);
-ConundrumString(writable_state.slugger.slug(content))
-                                          }),
-            };
+        let dom_id =
+            id.map(|s| DOMId::from_str(s).unwrap()).unwrap_or_else(|| state_borrowed.with_upgraded(|r| r.dom.new_id()));
+
+        drop(state_borrowed);
+
+        let heading = MarkdownHeadingResult { depth: level.len() as u16,
+                                              children: c,
+                                              subtitle: subtitle.map(Children),
+                                              tab_depth: last_heading_depth,
+                                              id: dom_id };
 
         MarkdownHeadingResult::set_state(Arc::clone(&input.state), &mut heading.clone());
         Ok(heading)
@@ -314,7 +309,7 @@ mod tests {
         let mut state = test_data.state.write_arc();
         let title_slug = state.slugger.slug("My heading with $\\delta$");
 
-        assert!(title_slug != res.id.0,
+        assert!(title_slug != res.id.value(),
                 "Increments id, or at least they don't match... this is a super unreliable test but it might catch some stray errors.");
     }
 
@@ -324,7 +319,7 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
-        assert!(res.id == "myId", "Finds heading id when one is present.");
+        assert!(res.id.value() == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let children_string =
@@ -340,7 +335,7 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
-        assert!(res.id == "myId", "Finds heading id when one is present.");
+        assert!(res.id.value() == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let children_string =
@@ -356,7 +351,7 @@ mod tests {
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
             MarkdownHeadingResult::parse_input_string(&mut test_data).expect("Parses markdown heading without failing");
-        assert!(res.id == "myId", "Finds heading id when one is present.");
+        assert!(res.id.value() == "myId", "Finds heading id when one is present.");
         assert!(res.depth == 2, "Finds the proper heading depth when no id is present..");
 
         let children_string =

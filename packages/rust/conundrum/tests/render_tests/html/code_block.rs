@@ -7,6 +7,8 @@ async fn renders_codeblock_to_html() {
     let test_content = r#"# My title <Emoji smedium inline name="rocket"/>
 > My subtitle
 
+<Toc />
+
 My paragraph goes here with inline $e=mc^2$ math.
 My paragraph without a new line that makes me :smile:.
 
@@ -30,6 +32,9 @@ My other item here
 </Container>
 </Grid>
 
+## Some other heading
+> With a subtitle
+
 <Tabs>
 <Tab label="My tab one">
 My tab here
@@ -41,6 +46,8 @@ My tab two
 My tab three
 </Tab>
 </Tabs>
+
+## A heading without a subtitle
 
 --- My hr with $\delta$ children here ---
 
