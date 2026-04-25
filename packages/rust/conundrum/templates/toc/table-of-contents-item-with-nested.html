@@ -1,7 +1,7 @@
 <div class="w-full flex flex-col justify-center items-center gap-0">
     <div style="padding-left: {{self.padding_left()}}rem;"
 cdrm-heading-id="{{self.item.id | safe}}"
-        class="cdrm-toc-item w-full grid grid-cols-[2rem_1fr] px-2 py-1 text-fd-card-foreground/80 hover:text-fd-card-foreground transition-colors duration-300">
+        class="cdrm-toc-item w-full grid grid-cols-[2rem_1fr] px-2 text-fd-card-foreground/80 hover:text-fd-card-foreground transition-colors duration-300">
         <div class="place-self-center h-full font-lucide">
             {{lucide_icons::Icon::ChevronRight.unicode().to_string() | safe}}
         </div>

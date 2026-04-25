@@ -4,7 +4,7 @@ use crate::render_tests::{
 
 #[tokio::test]
 async fn renders_codeblock_to_html() {
-    let test_content = r#"# My title <Emoji smedium inline name="rocket"/>
+    let test_content = r#"# My title 1 <Emoji smedium inline name="rocket"/>
 > My subtitle
 
 <Toc />
@@ -32,8 +32,16 @@ My other item here
 </Container>
 </Grid>
 
-## Some other heading
+## Some other 2 heading
 > With a subtitle
+
+### A level 3 heading
+
+#### A level 4 heading
+
+##### A level 5 heading
+
+### A level 3 heading
 
 <Tabs>
 <Tab label="My tab one">
@@ -47,7 +55,7 @@ My tab three
 </Tab>
 </Tabs>
 
-## A heading without a subtitle
+## A heading 2 without a subtitle
 
 --- My hr with $\delta$ children here ---
 

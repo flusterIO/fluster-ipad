@@ -142,10 +142,10 @@ const consumeChildren = (items: MarkdownHeadingStringifiedResult[]): [TocItemWit
             if (typeof firstItem.nested === "undefined") {
                 firstItem.nested = []
             }
-            const newRes = consumeChildren(remaining)
+            const newRes = consumeChildren(remaining);
             if (newRes) {
                 const [newK, newRemaining] = newRes;
-                firstItem.nested.push(newK)
+                firstItem.nested.push(newK);
                 remaining = newRemaining;
             }
         } else {

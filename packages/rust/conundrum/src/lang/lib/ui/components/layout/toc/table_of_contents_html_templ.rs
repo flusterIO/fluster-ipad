@@ -16,7 +16,7 @@ pub struct TocItemTemplate {
 
 impl TocItemTemplate {
     pub fn padding_left(&self) -> f32 {
-        (self.item.tab_depth as f32) * 0.5
+        (self.item.depth as f32) * 0.5
     }
 }
 
@@ -25,7 +25,7 @@ pub enum TocItemVariant {
     NoNested(TocItemTemplate),
 }
 
-#[derive(Template)]
+#[derive(Template, Debug)]
 #[template(ext = "html", path = "toc/table-of-contents.html")]
 pub struct TocHtmlTemplate {
     pub toc: Vec<MarkdownHeadingStringifiedResult>,
