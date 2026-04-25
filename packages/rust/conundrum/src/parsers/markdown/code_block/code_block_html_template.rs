@@ -21,8 +21,8 @@ use crate::{
 ///    <div
 ///      data-cdrm-copy-for="{{id}}"
 ///      role="button"
-///      class="auto-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300
-///      font-lucide"
+///      class="cdrm-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300
+///      font-lucide cursor-pointer"
 ///      onclick="copyCodeblockCode"
 ///    >
 ///    {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::Copy}}
