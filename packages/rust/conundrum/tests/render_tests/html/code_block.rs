@@ -11,7 +11,7 @@ My paragraph goes here with inline $e=mc^2$ math.
 My paragraph without a new line that makes me :smile:.
 
 My <Ul>paragraph</Ul> _after_ **two** ***new lines***.  
-My paragraph after two spaces and a line break.
+My <Hl>paragraph after</Hl> two spaces and a line break.
 
 My inline `const (x) => y / z;{:ts}` code here.
 

@@ -1,11 +1,13 @@
+use askama::Template;
 use serde::Serialize;
 use typeshare::typeshare;
+use winnow::error::ErrMode;
 
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::ui::{
-            components::component_trait::ConundrumComponent,
+            components::{attention::hl::hl_html_templ::HlHtmlTemplate, component_trait::ConundrumComponent},
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
             ui_types::{
                 children::Children, common_component_property_key::CommonComponentPropertyKey, emphasis::Emphasis,
@@ -13,11 +15,16 @@ use crate::{
             },
         },
         runtime::{
-            state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumCompileTarget},
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ConundrumCompileTarget,
+            },
             traits::{
                 conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
-                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -47,6 +54,17 @@ impl JsxComponentResult for Highlight {
                    self.emphasis,
                    self.children.render(res)?,
                    EmbeddableComponentName::Hl))
+    }
+}
+
+impl HtmlJsComponentResult for Highlight {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let templ = HlHtmlTemplate { emphasis: self.emphasis.clone(),
+                                     content: self.children.render(res)? };
+        templ.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
     }
 }
 

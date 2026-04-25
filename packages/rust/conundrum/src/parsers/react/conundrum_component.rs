@@ -82,7 +82,7 @@ impl HtmlJsComponentResult for ConundrumComponentType {
             ConundrumComponentType::Admonition(s) => s.to_html_js_component(res),
             ConundrumComponentType::Hint(s) => s.to_html_js_component(res),
             ConundrumComponentType::Ul(s) => s.to_html_js_component(res),
-            ConundrumComponentType::Hl(s) => s.to_plain_text(res),
+            ConundrumComponentType::Hl(s) => s.to_html_js_component(res),
             ConundrumComponentType::Container(s) => s.to_html_js_component(res),
             ConundrumComponentType::Tabs(s) => s.to_html_js_component(res),
             ConundrumComponentType::Tab(s) => s.to_plain_text(res),
