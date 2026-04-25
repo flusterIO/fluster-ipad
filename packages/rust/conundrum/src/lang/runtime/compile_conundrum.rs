@@ -9,6 +9,7 @@ use crate::lang::runtime::state::parse_state::ConundrumCompileTarget;
 use crate::lang::elements::parsed_elements::ParsedElement;
 use crate::lang::runtime::traits::conundrum_input::ArcState;
 use crate::lang::runtime::traits::html_js_component_result::HtmlJsComponentResult;
+use crate::lang::runtime::traits::plain_text_component_result::PlainTextComponentResult;
 
 /// Renders a slice of parsed elements into a single MDX string.
 /// This is the shared rendering primitive used by both the top-level
@@ -22,6 +23,10 @@ pub fn compile_elements(elements: &[ParsedElement], res: &ArcState) -> Conundrum
             ConundrumCompileTarget::Html => {
                 drop(state);
                 em.to_html_js_component(Arc::clone(&res))
+            }
+            ConundrumCompileTarget::PlainText => {
+                drop(state);
+                em.to_plain_text(Arc::clone(res))
             }
             _ => {
                 panic!("You're early. Right now Conundrum is being built with the HTML+JS target in mind for performance and portability, but a jsx target will be available shortly.")
@@ -38,8 +43,12 @@ pub fn compile_elements_multi_threaded(elements: &[ParsedElement], res: &ArcStat
         match state.compile_target {
             ConundrumCompileTarget::Html => {
                 drop(state);
-                em.to_html_js_component(Arc::clone(&res))
-            }
+                em.to_html_js_component(Arc::clone(res))
+            },
+            ConundrumCompileTarget::PlainText => {
+                drop(state);
+                em.to_plain_text(Arc::clone(res))
+            },
             _ => {
                 panic!("You're early. Right now Conundrum is being built with the HTML+JS target in mind for performance and portability, but a jsx target will be available shortly.")
             }

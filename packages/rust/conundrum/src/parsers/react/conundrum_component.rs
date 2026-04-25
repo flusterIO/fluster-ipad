@@ -81,7 +81,7 @@ impl HtmlJsComponentResult for ConundrumComponentType {
             ConundrumComponentType::Card(s) => s.to_html_js_component(res),
             ConundrumComponentType::Admonition(s) => s.to_html_js_component(res),
             ConundrumComponentType::Hint(s) => s.to_html_js_component(res),
-            ConundrumComponentType::Ul(s) => s.to_plain_text(res),
+            ConundrumComponentType::Ul(s) => s.to_html_js_component(res),
             ConundrumComponentType::Hl(s) => s.to_plain_text(res),
             ConundrumComponentType::Container(s) => s.to_html_js_component(res),
             ConundrumComponentType::Tabs(s) => s.to_html_js_component(res),

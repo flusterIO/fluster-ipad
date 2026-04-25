@@ -11,7 +11,8 @@ use crate::{
             },
             traits::{
                 conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
-                html_js_component_result::HtmlJsComponentResult, mdx_component_result::MdxComponentResult,
+                html_js_component_result::HtmlJsComponentResult, markdown_component_result::MarkdownComponentResult,
+                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -143,6 +144,38 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::ReactComponentWithChildren(c) => c.component.to_conundrum_component(res),
             ParsedElement::Emoji(e) => e.to_conundrum_component(res),
             ParsedElement::InlineCode(m) => m.to_mdx_component(res),
+            ParsedElement::Children(c) => c.render(res),
+            ParsedElement::Javascript(js) => js.to_conundrum_component(res),
+            ParsedElement::Logic(l) => l.to_conundrum_component(res),
+        }
+    }
+}
+
+impl PlainTextComponentResult for ParsedElement {
+    fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
+        match self {
+            ParsedElement::ParsedInspectionRequest(req) => req.to_plain_text(res),
+            ParsedElement::ParsedCodeBlock(block) => block.to_plain_text(res),
+            ParsedElement::ParsedCitation(cite) => cite.to_plain_text(res),
+            ParsedElement::ParsedOutgoingNoteLink(l) => l.to_plain_text(res),
+            ParsedElement::Tag(tag) => tag.to_plain_text(res),
+            ParsedElement::Text(s) => Ok(s.clone()),
+            ParsedElement::Heading(heading) => heading.to_plain_text(res),
+            ParsedElement::BlockMath(math) => math.to_plain_text(res),
+            ParsedElement::InlineMath(math) => math.to_plain_text(res),
+            ParsedElement::BlockQuote(quote) => quote.to_plain_text(res),
+            ParsedElement::BoldText(t) => t.to_plain_text(res),
+            ParsedElement::ItalicText(t) => t.to_plain_text(res),
+            ParsedElement::BoldAndItalicText(t) => t.to_plain_text(res),
+            ParsedElement::MarkdownLink(l) => l.to_plain_text(res),
+            ParsedElement::MarkdownParagraph(p) => p.to_plain_text(res),
+            ParsedElement::HrWithChildren(c) => c.to_plain_text(res),
+            ParsedElement::Hr(c) => c.to_plain_text(res),
+            ParsedElement::Comment(c) => c.to_plain_text(res),
+            ParsedElement::ReactComponentSelfClosing(c) => c.component.to_plain_text(res),
+            ParsedElement::ReactComponentWithChildren(c) => c.component.to_plain_text(res),
+            ParsedElement::Emoji(e) => e.to_plain_text(res),
+            ParsedElement::InlineCode(m) => m.to_markdown(res),
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),

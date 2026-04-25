@@ -10,7 +10,7 @@ const content = fs.readFileSync(changeLogFilePath, { encoding: "utf-8" });
 
 if (!content.trim()) {
     console.log(
-        "Cannot run benchmarks without a benchmark log in the benchmark_changelog.md file because you're too lazy to set this up properly.",
+        "Cannot run benchmarks without a benchmark log in the benchmark_changelog.md file because I'm too lazy to set this up properly.",
     );
     process.exit(1);
 }

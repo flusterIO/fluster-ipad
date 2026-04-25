@@ -1,11 +1,8 @@
 (() => {
     function copyCodeblockCode(e: Event) {
         let target = e.currentTarget as HTMLDivElement;
-        console.log("target: ", target)
         const targetId = target.getAttribute("data-cdrm-copy-for");
-        console.log("targetId: ", targetId)
         const parentEm = document.getElementById(targetId);
-        console.log("parentEm: ", parentEm)
         window.navigator.clipboard.writeText(parentEm.querySelector("pre")?.innerText ?? "")
         window.dispatchEvent(new CustomEvent("cdrm-codeblock-copy"))
     }

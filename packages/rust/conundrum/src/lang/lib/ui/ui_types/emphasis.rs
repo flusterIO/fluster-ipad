@@ -124,6 +124,20 @@ impl Emphasis {
             Emphasis::Card => "border-fd-card".to_string(),
         }
     }
+
+    pub fn to_text_decodartion_classes(&self) -> String {
+        match self {
+            Emphasis::Info => "decoration-emphasis-info".to_string(),
+            Emphasis::Error => "decoration-emphasis-error".to_string(),
+            Emphasis::Warn => "decoration-emphasis-warn".to_string(),
+            Emphasis::Success => "decoration-emphasis-success".to_string(),
+            Emphasis::Important => "decoration-emphasis-important".to_string(),
+            Emphasis::Research => "decoration-emphasis-research".to_string(),
+            Emphasis::Primary => "decoration-primary".to_string(),
+            Emphasis::Highlight => "decoration-emphasis-highlight".to_string(),
+            Emphasis::Card => "decoration-fd-card".to_string(),
+        }
+    }
 }
 
 impl FromStr for Emphasis {

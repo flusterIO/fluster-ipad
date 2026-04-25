@@ -9,21 +9,10 @@
 - [x] Move over the `from_props` methods to accepting a state param so we can actually break up the parsing and compilation phases properly.
 - [x] MOVE OVER ALL KATEX FONT METHODS TO USE BINARY STORED DATA. THIS WILL BREAK THE STANDALONE APP.
 - [x] Handle Grid by fixing issue with integer parser. Currently it's picking up integers as floats which is failing the Grid component when the props are valid.
-- [ ] Handle breakout of paragraph when only components are nested. Somehow every fucking thing is being wrapped in a paragraph which is leading the browser to fill in the blanks.
-
-```ts title="typescript-pseudocode.ts"
-const parse_paragraph = (input) => {
-    let at_line_start = true;
-    const f = (input_inner) => {
-        dispatch...
-        not(SomeBlockElement)
-    }
-}
-```
-
-- [ ] Handle Blockquote bug with multi-line entries.
-- [ ] Write javascript to actually copy code from code block.
-  - [ ] Emit an event that can be picked up by other applications, including Fluster.
+- [x] Handle Blockquote bug with multi-line entries.
+- [x] Write javascript to actually copy code from code block.
+  - [x] Emit an event that can be picked up by other applications, including Fluster.
+- [ ] Handle issue inline underline component breaking out of that f-cking paragraph... the biggest pain in the ass...
 - [ ] Reimplement `window.setBibtexEditorContent`. It's a buffer operation that's currently MIA.
 - [ ] Handle rest of summary UI
 - [ ] Make sure summary can be accepted or declined from the UI appropriately.

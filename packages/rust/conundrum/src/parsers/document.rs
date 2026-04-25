@@ -7,6 +7,7 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ConundrumCompileTarget,
             },
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
@@ -82,8 +83,8 @@ impl ConundrumDocument {
         let state = params.read_arc();
         let templ = StandaloneTemplate::new(get_title_group(state.data.content.clone(),
                                                             state.modifiers.clone(),
-                                                            state.compile_target.clone()).map(|n| n.title)
-                                                                                         .ok(),
+                                                            ConundrumCompileTarget::PlainText).map(|n| n.title)
+                                                                                              .ok(),
                                             compiled,
                                             glue.js,
                                             glue.css,
