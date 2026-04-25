@@ -88,7 +88,7 @@ impl HtmlJsComponentResult for ConundrumComponentType {
             // Tab doesn't need to be rendered to html as the Tabs component is rendering it's
             // children directly.
             ConundrumComponentType::Tab(_) => Ok(String::from("")),
-            ConundrumComponentType::EqRef(s) => s.to_plain_text(res),
+            ConundrumComponentType::EqRef(s) => s.to_html_js_component(res),
             ConundrumComponentType::Grid(s) => s.to_html_js_component(res),
             ConundrumComponentType::Emoji(s) => s.to_html_js_component(res),
             ConundrumComponentType::Hr(s) => s.to_html_js_component(res),

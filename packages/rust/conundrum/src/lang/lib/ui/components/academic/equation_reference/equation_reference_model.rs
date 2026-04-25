@@ -1,3 +1,4 @@
+use askama::Template;
 use serde::Serialize;
 use winnow::error::ErrMode;
 
@@ -5,7 +6,10 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::ui::{
-            components::component_trait::ConundrumComponent,
+            components::{
+                academic::equation_reference::equation_reference_html_templ::EquationRefHtmlTempl,
+                component_trait::ConundrumComponent,
+            },
             ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
             ui_types::emphasis::Emphasis,
         },
@@ -16,8 +20,9 @@ use crate::{
             },
             traits::{
                 conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
-                jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
-                mdx_component_result::MdxComponentResult, plain_text_component_result::PlainTextComponentResult,
+                html_js_component_result::HtmlJsComponentResult, jsx_component_result::JsxComponentResult,
+                markdown_component_result::MarkdownComponentResult, mdx_component_result::MdxComponentResult,
+                plain_text_component_result::PlainTextComponentResult,
             },
         },
     },
@@ -80,6 +85,27 @@ impl EquationReference {
               let e = ConundrumErrorVariant::UserFacingGeneralParserError(ConundrumError::from_msg_and_details("Could not find equation", format!("Conundrum was trying to find an equation with the id of '{}' and couldn't find one in this document.", self.id.0.clone()).as_str()));
               ErrMode::Cut(e)
           })
+    }
+
+    pub fn get_element_tag(&self) -> String {
+        if self.subscript.is_some_and(|s| s.0) {
+            String::from("sub")
+        } else if self.superscript.is_some_and(|s| s.0) {
+            String::from("super")
+        } else {
+            String::from("span")
+        }
+    }
+}
+
+impl HtmlJsComponentResult for EquationReference {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        let templ = EquationRefHtmlTempl { idx: self.get_equation_index(res)?,
+                                           tag: self.get_element_tag() };
+        templ.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
     }
 }
 

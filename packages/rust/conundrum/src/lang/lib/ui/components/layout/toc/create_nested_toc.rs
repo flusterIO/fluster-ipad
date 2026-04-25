@@ -31,7 +31,7 @@ fn consume_children(items: Vec<MarkdownHeadingStringifiedResult>,
 
     let first = items.first().unwrap();
 
-    if parent_depth.is_some_and(|n| n <= first.depth) {
+    if parent_depth.is_some_and(|n| n < first.depth) {
         return None;
     }
 
@@ -39,7 +39,6 @@ fn consume_children(items: Vec<MarkdownHeadingStringifiedResult>,
                                              expanded,
                                              group_id: group_id.clone(),
                                              nested: Vec::new() };
-    println!("First Item: {:#?}", first_item);
     let mut remaining = items.iter().skip(1).cloned().collect::<Vec<MarkdownHeadingStringifiedResult>>();
     for k in remaining.clone() {
         if k.depth > first_item.item.depth {
