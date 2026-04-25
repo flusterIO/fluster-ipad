@@ -161,8 +161,6 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                            ReactComponentSelfClosingResult::parse_input_string.verify(|comp| {
                                                                                                comp.component.component_is_block_level()
                                                                                            }).map(ParsedElement::ReactComponentSelfClosing),
-                                                                                           MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                                                                                           any.map(|c: char| ParsedElement::Text(c.to_string()))
                                                                                    )).parse_next(x)
                                                                                },
                                                                                "\\" => |x: &mut ConundrumInput<'a>| {
