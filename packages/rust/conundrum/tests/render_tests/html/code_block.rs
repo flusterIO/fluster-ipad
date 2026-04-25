@@ -15,6 +15,10 @@ My paragraph after two spaces and a line break.
 
 My inline `const (x) => y / z;{:ts}` code here.
 
+<Hint label="Happy :smile:">
+My new hint goes here.
+</Hint>
+
 This is my [[#tagHere]] and my citation[[cite:Einstein]] here and [my note link](note:someFakeNoteId).
 
 <Grid large={2} gap="small">

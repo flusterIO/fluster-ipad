@@ -33,20 +33,10 @@ use winnow::{
     token::literal,
 };
 
-/// This represent every element capapble of breaking out of the middle of a
-/// paragraph. In other words, a paragraph parser should repeat a **different**
-/// parser with inline elements until this parser succeeds.
-///
-/// Note that this does **not** include all block level elements, as matching
-/// would require a context aware of the previous line break. Also, adding a
-/// markdown paragraph to this function will cause 1 infinite loop.
 pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                             -> ConundrumModalResult<Vec<ParsedElement>> {
     let at_line_start = Rc::new(RefCell::new(false));
     let at_line_start_terminator = Rc::clone(&at_line_start);
-    // RESUME: Implement the any_paragraph_breaking_element parser as if the
-    // at_line_start varable is being passed in, and then come back here and
-    // worry about the loop. It will be a useful function regardless.
     let (res, terminator): (Vec<ParsedElement>, ParsedElement) =
                                                                repeat_till(
                                                                    1..,
