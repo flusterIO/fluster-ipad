@@ -23,6 +23,7 @@ use crate::parsers::markdown::hr::MarkdownHorizontalRule;
 use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::inline_math::InlineMathResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
+use crate::parsers::markdown::lists::unordered::unordered_list_model::UnorderedListModel;
 use crate::parsers::markdown::markdown_extensions::emoji::emoji_model::EmojiResult;
 use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
 use crate::parsers::markdown::paragraph::paragraph_model::MarkdownParagraphResult;
@@ -47,6 +48,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                         alt((
                                 HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
                                 MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
+                                UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
                                 MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                                 any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
@@ -128,7 +130,30 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
-                "*" | "_" => |x: &mut ConundrumInput<'a>| {
+                "*" => |x: &mut ConundrumInput<'a>| {
+                    if at_line_start {
+                    alt((
+                            UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
+                            MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
+                            MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
+                            MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
+                            MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
+                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
+                    } else {
+                    alt((
+                            MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
+                            MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
+                            MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
+                            MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
+                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
+                    }
+
+                },
+                "_" => |x: &mut ConundrumInput<'a>| {
                     alt((
                             MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
                             MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
@@ -150,6 +175,17 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                     (take(1usize).void(),take(1usize)).map(|(_, c): (_, &str)| {
                         ParsedElement::Text(c.to_string())
                     }).parse_next(x)
+                },
+                "+" => |x: &mut ConundrumInput<'a>| {
+                    if at_line_start {
+                        alt((
+                            UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
+                        )).parse_next(x)
+                    } else {
+                        any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
+                    }
                 },
                 _ => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {

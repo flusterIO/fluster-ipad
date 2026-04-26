@@ -75,12 +75,20 @@ impl MdxComponentResult for MarkdownParagraphResult {
     }
 }
 
-pub fn markdown_paragraph_line_break(input: &mut ConundrumInput) -> ConundrumModalResult<String> {
-    alt((literal("  \n"), literal("\n\n"))).parse_next(input).map(String::from).map_err(|_: ContextError| {
-                                                                                   ErrMode::Backtrack(
+pub fn double_space_new_line(input: &mut ConundrumInput) -> ConundrumModalResult<()> {
+    literal("  \n").void().parse_next(input).map_err(|_: ContextError| {
+                                                ErrMode::Backtrack(
+            ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Not a valid line break"))
+        )
+                                            })
+}
+
+pub fn markdown_paragraph_line_break(input: &mut ConundrumInput) -> ConundrumModalResult<()> {
+    alt((double_space_new_line, literal("\n\n").void())).parse_next(input).map_err(|_| {
+                                                                              ErrMode::Backtrack(
             ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Fail to find paragraph break."))
         )
-                                                                               })
+                                                                          })
 }
 
 enum ParagraphTerminator {

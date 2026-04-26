@@ -37,11 +37,9 @@ use crate::{
 /// ## Example Usage
 ///
 /// ```mdx
-/// <EqRef id="my-equation" anchor>
-/// $$
+/// $$ {#my-equation}
 /// e=mc^2
 /// $$
-/// </EqRef>
 ///
 /// yada, yada, yada, My equation <EqRef id="my-equation" /> is awesome...
 /// ```

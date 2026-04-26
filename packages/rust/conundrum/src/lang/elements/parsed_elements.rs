@@ -32,8 +32,9 @@ use crate::{
             bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
             code_block::code_block_model::ParsedCodeBlock, heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule, inline_code::InlineCodeResult, inline_math::InlineMathResult,
-            italic_text::MarkdownItalicTextResult, markdown_extensions::emoji::emoji_model::EmojiResult,
-            markdown_link::MarkdownLinkResult, paragraph::paragraph_model::MarkdownParagraphResult,
+            italic_text::MarkdownItalicTextResult, lists::unordered::unordered_list_model::UnorderedListModel,
+            markdown_extensions::emoji::emoji_model::EmojiResult, markdown_link::MarkdownLinkResult,
+            paragraph::paragraph_model::MarkdownParagraphResult,
         },
         react::{
             react_component_self_closing::ReactComponentSelfClosingResult,
@@ -70,6 +71,7 @@ pub enum ParsedElement {
     InlineCode(InlineCodeResult),
     MarkdownLink(MarkdownLinkResult),
     MarkdownParagraph(MarkdownParagraphResult),
+    UnorderedList(UnorderedListModel),
     // Markdown Extensions
     Emoji(EmojiResult),
     // React
@@ -115,6 +117,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
+            ParsedElement::UnorderedList(l) => l.to_html_js_component(res),
         }
     }
 }
@@ -147,6 +150,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
+            ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
         }
     }
 }
@@ -179,6 +183,7 @@ impl PlainTextComponentResult for ParsedElement {
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
+            ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
         }
     }
 }
@@ -231,6 +236,7 @@ impl ParsedElement {
             ParsedElement::Children(c) => c.0.iter().any(|child| child.is_block_level()),
             ParsedElement::Javascript(_s) => false,
             ParsedElement::Logic(_) => false,
+            ParsedElement::UnorderedList(_) => true,
         }
     }
 }

@@ -1,10 +1,12 @@
 pub mod ai_input_component_result;
+pub mod as_template;
 pub mod component_glue;
 pub mod conundrum_input;
 pub mod conundrum_template;
 pub mod fluster_component_result;
 pub mod full_text_search_input_component_result;
 pub mod html_js_component_result;
+pub mod indented_line_marker;
 pub mod inline_markdown_component_result;
 pub mod jsx_component_result;
 pub mod markdown_component_result;

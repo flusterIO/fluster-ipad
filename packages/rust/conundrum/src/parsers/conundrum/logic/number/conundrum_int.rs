@@ -1,13 +1,13 @@
-use winnow::error::ErrMode;
+use winnow::{Parser, ascii::dec_int, error::{ContextError, ErrMode}};
 
 use crate::{
     lang::{
-        elements::parsed_elements::ParsedElement, lib::ui::ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable}, runtime::state::{
+        elements::parsed_elements::ParsedElement, lib::ui::ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable}, runtime::{state::{
             conundrum_error::ConundrumError,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-        }
+        }, traits::conundrum_input::ConundrumInput}
     },
-    parsers::conundrum::logic::{number::conundrum_number::ConundrumNumber, object::object::ConundrumObject, token::ConundrumLogicToken},
+    parsers::{conundrum::logic::{number::conundrum_number::ConundrumNumber, object::object::ConundrumObject, token::ConundrumLogicToken}, parser_trait::ConundrumParser},
 };
 
 #[derive(Debug, serde::Serialize, Clone, Copy)]
@@ -18,6 +18,21 @@ uniffi::custom_newtype!(ConundrumInt, i64);
 impl PartialEq<i64> for ConundrumInt {
     fn eq(&self, other: &i64) -> bool {
         self.0 == *other
+    }
+}
+
+impl ConundrumParser<ConundrumInt> for ConundrumInt {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumInt> {
+        let n: i64 = dec_int.parse_next(input).map_err(|_: ContextError| {
+            ErrMode::Backtrack(
+                ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid number", "Conundrum was looking for an integer and found something else."))
+            )
+        })?;
+        Ok(ConundrumInt(n))
+    }
+
+    fn matches_first_char(_: char) -> bool {
+        true
     }
 }
 

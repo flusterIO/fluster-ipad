@@ -1,5 +1,13 @@
 # To-Do
 
+## Line Item Parsing Steps
+
+- [ ] Read an entire line to end of line or eof, using preceeded combinator to match & _consume_ for the required indentation.
+  - Failing to match the indentation will fail the parser, terminating the 'repeat' combinator.
+  - Consuming indentation will erase the concern about matching indentation levels, as it will be parsed as a new block.
+- [ ] To satisfy the empty lines that are permitted, this will need to return an enum `Empty, Line(IndentedLine)`
+- [ ] There will need to be a reliable, well tested function to rejoin indented lines after they've been parsed.
+
 ## Remainder of Today
 
 - [x] Handle new images on blog post.
@@ -12,7 +20,15 @@
 - [x] Handle Blockquote bug with multi-line entries.
 - [x] Write javascript to actually copy code from code block.
   - [x] Emit an event that can be picked up by other applications, including Fluster.
-- [ ] Handle issue inline underline component breaking out of that f-cking paragraph... the biggest pain in the ass...
+- [x] Handle issue inline underline component breaking out of that f-cking paragraph... the biggest pain in the ass...
+- [ ] Handle missing parsers
+  - [ ] Line Item with checkbox
+    - [ ] Various checked states (Pass a 'marker' char to the result)
+
+  - [ ] Plain line item
+  - [ ] Numbered line item
+  - [ ] Full table!
+
 - [ ] Reimplement `window.setBibtexEditorContent`. It's a buffer operation that's currently MIA.
 - [ ] Handle rest of summary UI
 - [ ] Make sure summary can be accepted or declined from the UI appropriately.
