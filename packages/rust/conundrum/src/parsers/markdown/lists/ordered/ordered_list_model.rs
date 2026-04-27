@@ -1,3 +1,4 @@
+use serde::Serialize;
 use winnow::stream::AsChar;
 
 use crate::{
@@ -13,6 +14,8 @@ use crate::{
     parsers::{markdown::lists::ordered::ordered_list_item::OrderedListItem, parser_trait::ConundrumParser},
 };
 
+#[typeshare::typeshare]
+#[derive(Debug, Serialize, Clone)]
 pub struct OrderedListModel {
     pub items: Vec<OrderedListItem>,
 }

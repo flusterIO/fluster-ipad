@@ -76,6 +76,7 @@ mermaid-text = "0.2.4"
 tui-math = "0.1.1"
 wildmatch = { version = "2.6.1", features = ["serde"] }
 base64 = "0.22.1"
+polars = "0.39.2"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }
