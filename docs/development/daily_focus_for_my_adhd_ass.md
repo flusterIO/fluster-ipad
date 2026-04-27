@@ -1,75 +1,49 @@
-# Daily Focus for ADHD-Ass
+# Daily Focus for My ADHD-Ass
 
 ## Summary of To-Do List
 
-### High Priority Tasks
+### Prioritized Tasks
 
-1. **Fix new note first display issue** - This issue is still unresolved and needs immediate attention.
-2. **Handle rendering code to HTML** - This is critical for the application's functionality.
-3. **Move over all KateX font methods to use binary stored data** - This will break the standalone app, so it's a high priority.
-4. **Handle Grid by fixing issue with integer parser** - This issue is causing the Grid component to fail when props are valid.
-5. **Handle Blockquote bug with multi-line entries** - This is a known issue that needs to be resolved.
+1. **Handle Line Item Parsing Steps**
+   - Read entire line to end of line or EOF using preceeded combinator to match and consume for required indentation.
+   - Return an enum `Empty, Line(IndentedLine)` for empty lines.
+   - Create a reliable, well-tested function to rejoin indented lines after parsing.
 
-### Medium Priority Tasks
+2. **Fix Remaining Bugs**
+   - Ensure new note first display issue is resolved.
+   - Handle Grid issue with integer parser to prevent floats from breaking the component.
+   - Fix Blockquote bug with multi-line entries.
+   - Handle issue with inline underline component breaking out of paragraphs.
 
-1. **Write JavaScript to actually copy code from code block** - This will allow other applications to pick up the event.
-2. **Handle issue with inline underline component breaking out of paragraph** - This is a pain point that needs to be resolved.
-3. **Reimplement `window.setBibtexEditorContent`** - This is a buffer operation that's currently missing.
-4. **Handle rest of summary UI** - This will allow users to accept or decline summaries appropriately.
+3. **Implement Missing Parsers**
+   - Implement parsers for Line Item with checkbox, Plain line item, Numbered line item, and Full table.
+   - Handle missing parsers for CodeBlock, Footnote, Table, Strikethrough text, Escapable math blocks, Escapable strings, Paragraphs, and Timestamp links.
 
-### Low Priority Tasks
+4. **Component Moves and Additions**
+   - Move over remaining components like AINoteSummary and Table of Contents (TOC).
+   - Work on integrating Typst support for offline use.
 
-1. **Work on integrating typst support** - This is a major value add that can be handled offline.
-2. **Setup seeding of notes on desktop app** - This will be the first app released.
-3. **Move over rest of components** - This will allow the application to function properly.
-4. **Work on remaining parsers** - This will allow the application to handle more content types.
+5. **AI Features**
+   - Create AI triggers for generating study guides and flashcards.
+   - Implement AI summary features with light mode and force regeneration.
 
-### Bug Fixes
+6. **Offline and Performance Improvements**
+   - Fix syntax for italic fields in titles.
+   - Move regex queries to a HashMap for faster lookups.
 
-1. **Fix issue with bibliography entries not being associated with note properly** - This is a known issue that needs to be resolved.
-2. **Create 'paper' button on desktop** - This is creating 2 pages, which is a bug.
-3. **Fix admonition padding issue** - This is an issue that needs to be resolved.
+7. **Release Preparation**
+   - Ensure all tests are passing for Swift, Typescript, and Rust.
+   - Review Apple's nomination guidelines for potential feature recognition.
 
-### Documentation
+### Key Focus Areas
 
-1. **Card component documentation** - This needs to be updated to reflect the latest changes.
+- **Bug Fixes**: Prioritize resolving issues that affect user experience, such as new note display and Grid component problems.
+- **Parser Implementation**: Focus on completing missing parsers to ensure robust content handling.
+- **AI Integration**: Work on AI triggers and summaries to enhance the app's functionality.
+- **Performance Optimization**: Move regex queries to a HashMap to improve performance.
 
-### Desktop App
+### Timeline
 
-1. **Work on AI summarization** - This will allow users to get summaries of their notes.
-2. **Handle scroll restoration on desktop app while in landscape mode** - This is a known issue that needs to be resolved.
-3. **Work on syncing method to create notes from file system** - This will allow users to create notes from the file system.
+- **Next 2 Weeks**: Focus on completing the most critical tasks to ensure a smooth release. Prioritize bug fixes, parser implementation, and AI features.
 
-### iPad App
-
-1. **Make sure note can be loaded when iPad is initially in portrait view** - This is a known issue that needs to be resolved.
-
-### Webviews
-
-1. **Make sure all taggables have a 'cursor-pointer' class** - This will indicate that they are clickable.
-
-### Website
-
-1. **Update article to same article as what's included in the app** - This will ensure consistency.
-2. **Fix admonition padding issue** - This is an issue that needs to be resolved.
-
-### Conundrum
-
-1. **Download as much of Crafting Interpreters as you can for offline reading** - This will allow users to read the book offline.
-
-### Performance
-
-1. **Move all of regex queries in the `get_component_map` file to a `HashMap<String, bool>`** - This will improve performance.
-
-### Release
-
-1. **All tests passing** - This is critical for the release.
-2. **Review YouTube link and section about creating 'Nominations' for being featured by Apple's editor team** - This is important for marketing.
-3. **Handle light mode of `AISummaryContainer` card** - This needs to be fixed.
-4. **Handle force regeneration** - This is not working and needs to be fixed.
-5. **Handle React property parsers** - This will allow components to be parsed more reliably.
-6. **Handle offline issues** - This includes fixing the syntax for italic fields in the title and ensuring errors are relayed to the user in the webview.
-
-## Conclusion
-
-This is a comprehensive list of tasks that need to be completed to ensure the release of the application within the next two weeks. The most important tasks are prioritized, and the rest are organized by category. The release checklist includes all tests passing, a review of the YouTube link, and handling of light mode and force regeneration. The offline issues are also addressed, including the syntax for italic fields in the title and ensuring errors are relayed to the user in the webview. The release is scheduled for the next two weeks, and the application is expected to be fully functional by then.
+This summary is designed to help maintain focus and ensure that the most important tasks are addressed first to meet the release deadline.

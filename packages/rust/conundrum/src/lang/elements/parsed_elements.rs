@@ -28,13 +28,23 @@ use crate::{
         },
         javascript::parsed_javascript_elements::ParsedJavascriptElement,
         markdown::{
-            block_math::BlockMathResult, block_quote::block_quote_model::BlockQuoteResult,
-            bold_and_italic_text::MarkdownBoldAndItalicTextResult, bold_text::MarkdownBoldTextResult,
-            code_block::code_block_model::ParsedCodeBlock, heading::heading_model::MarkdownHeadingResult,
-            hr::MarkdownHorizontalRule, inline_code::InlineCodeResult, inline_math::InlineMathResult,
-            italic_text::MarkdownItalicTextResult, lists::unordered::unordered_list_model::UnorderedListModel,
-            markdown_extensions::emoji::emoji_model::EmojiResult, markdown_link::MarkdownLinkResult,
+            block_math::BlockMathResult,
+            block_quote::block_quote_model::BlockQuoteResult,
+            bold_and_italic_text::MarkdownBoldAndItalicTextResult,
+            bold_text::MarkdownBoldTextResult,
+            code_block::code_block_model::ParsedCodeBlock,
+            heading::heading_model::MarkdownHeadingResult,
+            hr::MarkdownHorizontalRule,
+            inline_code::InlineCodeResult,
+            inline_math::InlineMathResult,
+            italic_text::MarkdownItalicTextResult,
+            lists::{
+                ordered::ordered_list_model::OrderedListModel, unordered::unordered_list_model::UnorderedListModel,
+            },
+            markdown_extensions::emoji::emoji_model::EmojiResult,
+            markdown_link::MarkdownLinkResult,
             paragraph::paragraph_model::MarkdownParagraphResult,
+            table::markdown_table_model::MarkdownTable,
         },
         react::{
             react_component_self_closing::ReactComponentSelfClosingResult,
@@ -72,6 +82,8 @@ pub enum ParsedElement {
     MarkdownLink(MarkdownLinkResult),
     MarkdownParagraph(MarkdownParagraphResult),
     UnorderedList(UnorderedListModel),
+    OrderedList(OrderedListModel),
+    Table(MarkdownTable),
     // Markdown Extensions
     Emoji(EmojiResult),
     // React
@@ -118,6 +130,8 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
             ParsedElement::UnorderedList(l) => l.to_html_js_component(res),
+            ParsedElement::OrderedList(l) => l.to_html_js_component(res),
+            ParsedElement::Table(t) => t.to_html_js_component(res),
         }
     }
 }
@@ -151,6 +165,8 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
             ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
+            ParsedElement::OrderedList(l) => l.to_conundrum_component(res),
+            ParsedElement::Table(t) => t.to_conundrum_component(res),
         }
     }
 }
@@ -184,6 +200,8 @@ impl PlainTextComponentResult for ParsedElement {
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
             ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
+            ParsedElement::OrderedList(l) => l.to_plain_text(res),
+            ParsedElement::Table(t) => t.to_plain_text(res),
         }
     }
 }
@@ -216,7 +234,7 @@ impl ParsedElement {
             ParsedElement::Tag(_) => false,
             // The text element is exempt from the 'at_line_start' requirement as it's filtered
             // out there.
-            ParsedElement::Text(c) => false,
+            ParsedElement::Text(_) => false,
             ParsedElement::Heading(_) => true,
             ParsedElement::BlockMath(_) => true,
             ParsedElement::InlineMath(_) => false,
@@ -237,6 +255,8 @@ impl ParsedElement {
             ParsedElement::Javascript(_s) => false,
             ParsedElement::Logic(_) => false,
             ParsedElement::UnorderedList(_) => true,
+            ParsedElement::OrderedList(_) => true,
+            ParsedElement::Table(_) => true,
         }
     }
 }
