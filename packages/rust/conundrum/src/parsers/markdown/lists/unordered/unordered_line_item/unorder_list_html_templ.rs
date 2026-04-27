@@ -17,7 +17,7 @@ use askama::Template;
 /// </li>
 /// {% endif %}
 /// ```
-#[derive(Template)]
+#[derive(Template, Debug)]
 #[template(ext = "html", in_doc = true)]
 pub struct UnorderedListItemHtmlTemplate {
     pub heading: String,

@@ -1,4 +1,4 @@
-use crate::render_tests::{render_test::render_test, write_test_ast::write_test_ast};
+use conundrum::testing::render_test::render_test;
 
 #[tokio::test]
 async fn renders_tabgroup_to_html() {

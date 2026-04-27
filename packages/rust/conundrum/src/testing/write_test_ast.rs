@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use crate::{
     lang::runtime::{
         parse_conundrum_string::parse_elements,
         state::{
@@ -10,8 +10,8 @@ use conundrum::{
         traits::conundrum_input::ConundrumInput,
     },
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
+    testing::get_workspace_root::get_workspace_root,
 };
-use fluster_core_utilities::test_utilities::get_workspace_root::get_workspace_root;
 use parking_lot::RwLock;
 use winnow::error::ErrMode;
 

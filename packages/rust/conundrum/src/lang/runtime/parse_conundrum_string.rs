@@ -202,7 +202,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
 
         if matches!(&result, &ParsedElement::Text(_)) {
             at_line_start = match &result {
-                ParsedElement::Text(s) => s == "\n" || s == "\r\n" || (at_line_start && s == " "),
+                ParsedElement::Text(s) => s == "\n" || s == "\r\n" || (at_line_start && (s == " " || s == "\t" || s.trim().is_empty())),
                 _ => false
             };
         } else {

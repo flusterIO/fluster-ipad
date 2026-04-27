@@ -1,4 +1,4 @@
-use crate::render_tests::render_test::render_test;
+use conundrum::testing::render_test::render_test;
 
 #[tokio::test]
 async fn renders_admonitions_to_html() {

@@ -1,6 +1,4 @@
-use crate::render_tests::{
-    render_test::render_test, write_test_ast::write_test_ast, write_test_viewable_html::write_test_html,
-};
+use conundrum::testing::render_test::render_test;
 
 #[tokio::test]
 async fn renders_codeblock_to_html() {
@@ -99,6 +97,5 @@ func myFunction() {
 Docs??
 
 "#;
-    write_test_ast(test_content, "documentation-ref");
     render_test(test_content, "python-code-block").await;
 }

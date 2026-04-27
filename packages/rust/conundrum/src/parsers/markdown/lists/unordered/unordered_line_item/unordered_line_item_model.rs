@@ -86,7 +86,7 @@ impl ConundrumParser<UnorderedListItem> for UnorderedListItem {
 
         let (title_line_chars, _): (Vec<String>, LineTerminator) =
             until_line_terminator::<'_, String>(0.., |nested_input| {
-                take(1usize).map(|_| String::from("")).parse_next(nested_input)
+                take(1usize).map(String::from).parse_next(nested_input)
             }).parse_next(input)
               .inspect_err(|_| {
                   input.input.reset(&start);
@@ -119,5 +119,50 @@ impl ConundrumParser<UnorderedListItem> for UnorderedListItem {
 
     fn matches_first_char(char: char) -> bool {
         char == '-' || char == '*' || char == '+'
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::testing::{wrap_test_content::wrap_test_conundrum_content, write_test_ast::write_test_ast};
+
+    use super::*;
+
+    #[test]
+    fn matches_plain_list_item() {
+        let test_content = "- My test item here";
+        let mut input = wrap_test_conundrum_content(test_content);
+        let res = UnorderedListItem::parse_input_string(&mut input).expect("Parses plain list item without throwing an error.");
+        let templ = res.as_template(Arc::clone(&input.state)).expect("Outputs list item template as expected");
+        assert!(templ.heading == "My test item here", "Finds the proper heading");
+        assert!(templ.body.is_none(), "Finds no body when no body is present");
+    }
+
+    #[test]
+    fn matches_plain_list_item_with_body() {
+        let test_content = r#"- My test item here
+  My body goes here!"#;
+        let mut input = wrap_test_conundrum_content(test_content);
+        let res = UnorderedListItem::parse_input_string(&mut input).expect("Parses plain list item without throwing an error.");
+        let templ = res.as_template(Arc::clone(&input.state)).expect("Outputs list item template as expected");
+        println!("Template: {:#?}", templ);
+        assert!(templ.heading == "My test item here", "Finds the proper heading");
+        assert!(templ.body.is_some_and(|b| b == "My body goes here!"), "Finds the proper heading");
+    }
+
+    #[test]
+    fn matches_plain_list_item_with_body_and_empty_lines() {
+        let test_content = r#"- My test item here
+  My body goes here!
+
+  My body continues here!"#;
+        let mut input = wrap_test_conundrum_content(test_content);
+        let res = UnorderedListItem::parse_input_string(&mut input).expect("Parses plain list item without throwing an error.");
+        let templ = res.as_template(Arc::clone(&input.state)).expect("Outputs list item template as expected");
+        println!("Template: {:#?}", templ);
+        assert!(templ.heading == "My test item here", "Finds the proper heading");
+        assert!(templ.body.is_some_and(|b| b == "<p>My body goes here!</p><p>My body continues here!</p>"),
+                "Finds the proper heading");
+        write_test_ast(test_content, "simple-list-item").expect("Writes ast successfully.");
     }
 }

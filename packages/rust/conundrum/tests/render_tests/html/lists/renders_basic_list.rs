@@ -1,6 +1,4 @@
-use crate::render_tests::{
-    render_test::render_test, write_test_ast::write_test_ast, write_test_viewable_html::write_test_html,
-};
+use conundrum::testing::{render_test::render_test, write_test_ast::write_test_ast};
 
 #[tokio::test]
 async fn renders_codeblock_to_html() {
@@ -14,6 +12,6 @@ async fn renders_codeblock_to_html() {
     - My other nested item
 
 "#;
-    write_test_ast(test_content, "basic-lists");
+    write_test_ast(test_content, "renders-basic-lists").expect("Renders plain list without throwing an error.");
     render_test(test_content, "renders-basic-lists").await;
 }
