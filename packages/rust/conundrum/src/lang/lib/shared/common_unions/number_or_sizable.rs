@@ -13,6 +13,7 @@ use crate::{
 
 #[typeshare::typeshare]
 #[derive(Serialize, Debug, Clone)]
+#[serde(tag = "tag", content = "content")]
 pub enum NumberOrSizable {
     Sizable(SizableOption),
     Number(ConundrumNumber),

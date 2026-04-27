@@ -1,10 +1,10 @@
 import React, { type ReactNode } from 'react'
-import { type MarkdownLinkResult } from "@/code_gen/typeshare/conundrum"
+import { type MarkdownLinkResultStringified } from "@/code_gen/typeshare/conundrum"
 import { useSendNotificationBanner } from '#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner'
 
 
 interface AutoInsertedMarkdownLinkProps {
-    data: MarkdownLinkResult
+    data: MarkdownLinkResultStringified
 }
 
 export const AutoInsertedMarkdownLink = ({ data }: AutoInsertedMarkdownLinkProps): ReactNode => {

@@ -2,6 +2,9 @@ use rust_embed::RustEmbed;
 
 use crate::embedded::in_content_documentation_id::{InContentDocumentationFormat, InContentDocumentationId};
 
+
+/// A simple lookup table for the embedded documentation that isn't related to any specific
+/// component.
 #[derive(RustEmbed)]
 #[folder = "src/embedded/in_content_docs/"]
 pub struct EmbeddedInContentDocs;

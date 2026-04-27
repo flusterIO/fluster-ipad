@@ -25,6 +25,7 @@ pub fn horizontal_rule(input: &mut ConundrumInput) -> ConundrumModalResult<()> {
     Ok(())
 }
 
+#[typeshare::typeshare]
 #[derive(Serialize, Clone, Debug)]
 pub struct MarkdownHorizontalRule {}
 

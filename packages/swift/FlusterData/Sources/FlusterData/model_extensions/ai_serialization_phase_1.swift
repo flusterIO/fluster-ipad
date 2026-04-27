@@ -45,7 +45,8 @@ extension ParsedCodeBlock: @retroactive Codable {
       language,
       content,
       metaData,
-      depth
+      depth,
+      id
   }
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -54,9 +55,10 @@ extension ParsedCodeBlock: @retroactive Codable {
     let blockContent = try container.decode(String.self, forKey: .content)
     let metaData = try container.decode(String.self, forKey: .metaData)
     let depth = try container.decode(UInt8.self, forKey: .depth)
+    let id = try container.decode(DomId.self, forKey: .id)
     self.init(
       language: langTag, metaData: metaData, depth: depth, content: blockContent,
-      fullMatch: fullMatch
+      fullMatch: fullMatch, id: id
     )
   }
 
@@ -67,6 +69,7 @@ extension ParsedCodeBlock: @retroactive Codable {
     try container.encode(self.language, forKey: .language)
     try container.encode(self.metaData, forKey: .metaData)
     try container.encode(self.depth, forKey: .depth)
+    try container.encode(self.id, forKey: .id)
   }
 }
 

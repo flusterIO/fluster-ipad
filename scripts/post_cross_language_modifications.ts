@@ -16,7 +16,8 @@ const replacers: Record<
     }
 > = {
     "packages/webview_utils/src/core/code_gen/typeshare/conundrum.ts": {
-        header: "export type ConundrumInt = number;",
+        header: `export type ConundrumInt = number;
+export type GridColumnsMap = Map<SizableOption, number>;`,
         replacers: [
             // {
             //     query: '| { tag: "Int", content: i128 }',
@@ -74,6 +75,35 @@ const replacers: Record<
                     "public enum SupportedCodeBlockTheme: String, Codable {",
                 ],
                 replaceWith: "public enum SupportedCodeBlockTheme: String, Codable {",
+            },
+            {
+                query: "public enum AnyComponentKey {",
+                dontPanicIfExists: ["public enum AnyComponentKey: Codable {"],
+                replaceWith: "public enum AnyComponentKey: Codable {",
+            },
+            {
+                query: "public enum AutoInsertedComponentName {",
+                dontPanicIfExists: [
+                    "public enum AutoInsertedComponentName: Codable {",
+                ],
+                replaceWith: "public enum AutoInsertedComponentName: Codable {",
+            },
+            {
+                query: "public enum EmbeddableComponentId {",
+                dontPanicIfExists: ["public enum EmbeddableComponentId: Codable {"],
+                replaceWith: "public enum EmbeddableComponentId: Codable {",
+            },
+            {
+                query: "public enum WebGlueCodeGeneralFiles {",
+                dontPanicIfExists: ["public enum WebGlueCodeGeneralFiles: Codable {"],
+                replaceWith: "public enum WebGlueCodeGeneralFiles: Codable {",
+            },
+            {
+                query: "public enum DocumentationComponentName {",
+                dontPanicIfExists: [
+                    "public enum DocumentationComponentName: Codable {",
+                ],
+                replaceWith: "public enum DocumentationComponentName: Codable {",
             },
         ],
     },

@@ -147,7 +147,7 @@ mod tests {
         let templ = res.as_template(Arc::clone(&input.state)).expect("Outputs list item template as expected");
         println!("Template: {:#?}", templ);
         assert!(templ.heading == "My test item here", "Finds the proper heading");
-        assert!(templ.body.is_some_and(|b| b == "My body goes here!"), "Finds the proper heading");
+        assert!(templ.body.is_some_and(|b| b == "My body goes here!"), "Finds the proper body");
     }
 
     #[test]
@@ -162,7 +162,7 @@ mod tests {
         println!("Template: {:#?}", templ);
         assert!(templ.heading == "My test item here", "Finds the proper heading");
         assert!(templ.body.is_some_and(|b| b == "<p>My body goes here!</p><p>My body continues here!</p>"),
-                "Finds the proper heading");
+                "Finds the proper list item body");
         write_test_ast(test_content, "simple-list-item").expect("Writes ast successfully.");
     }
 }

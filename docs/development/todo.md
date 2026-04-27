@@ -24,7 +24,6 @@
 - [ ] Handle missing parsers
   - [ ] Line Item with checkbox
     - [ ] Various checked states (Pass a 'marker' char to the result)
-
   - [ ] Plain line item
   - [ ] Numbered line item
   - [ ] Full table!

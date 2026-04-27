@@ -15,6 +15,8 @@ pub enum InContentDocumentationSource {
     InternalDocs,
 }
 
+/// The code representation of the `?` or `??` flag. When you apply a `?` it
+/// sets the documentation to `.Short`, and `.Full` when you apply 2 `??`.
 #[typeshare]
 #[derive(strum_macros::Display, uniffi::Enum, Clone, EnumIter, Serialize, Deserialize)]
 pub enum InContentDocumentationFormat {
@@ -26,6 +28,11 @@ pub enum InContentDocumentationFormat {
     Short,
 }
 
+/// These are all of the keys that are available for documentation, apart from
+/// component specific documentation.
+///
+/// The `Components??` flag described here will print a list of documented
+/// components, which you can look into for further docs.
 #[typeshare]
 #[derive(strum_macros::Display, uniffi::Enum, Clone, Copy, EnumIter, Serialize, Deserialize)]
 pub enum InContentDocumentationId {

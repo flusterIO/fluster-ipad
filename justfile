@@ -56,8 +56,7 @@ lint:
 	cd {{justfile_directory()}}/apps/fluster; swiftlint lint
 
 build_internal_cli:
-	echo "pass"
-	# cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build 
+	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build 
 
 build_fluster_wasm:
 	cd {{justfile_directory()}}/packages/rust/wasm/fluster_wasm; pnpm build

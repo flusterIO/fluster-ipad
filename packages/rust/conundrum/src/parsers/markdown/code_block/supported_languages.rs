@@ -1,10 +1,9 @@
-// WARN: THiS FILE IS AUTO GENERATED. EDIT THINGS HERE AND YOUR WORK WILL BE LOST.
-use devicons;
+// WARN: THiS FILE IS AUTO GENERATED. EDIT THINGS HERE AND YOUR WORK WILL BE
+// LOST.
 use serde::{Deserialize, Serialize};
 use strum::EnumIter;
 use syntect::parsing::{SyntaxReference, SyntaxSet};
 use winnow::error::ErrMode;
-
 
 use crate::lang::{
     lib::ui::ui_traits::jsx_prop_representable::JsxPropRepresentable,
@@ -37,7 +36,7 @@ use crate::lang::{
            Debug,
            Eq,
            PartialEq)]
-pub enum SupportedCodeBlockSyntax { 
+pub enum SupportedCodeBlockSyntax {
     #[serde(rename = "Plain Text")]
     #[strum(to_string = "Plain Text", serialize = "txt", serialize = "plain-text")]
     Plain_Text,
@@ -63,7 +62,20 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "C#", serialize = "cs", serialize = "csx", serialize = "csharp")]
     CSharp,
     #[serde(rename = "C++")]
-    #[strum(to_string = "C++", serialize = "cpp", serialize = "cc", serialize = "cp", serialize = "cxx", serialize = "c++", serialize = "C", serialize = "h", serialize = "hh", serialize = "hpp", serialize = "hxx", serialize = "h++", serialize = "inl", serialize = "ipp")]
+    #[strum(to_string = "C++",
+            serialize = "cpp",
+            serialize = "cc",
+            serialize = "cp",
+            serialize = "cxx",
+            serialize = "c++",
+            serialize = "C",
+            serialize = "h",
+            serialize = "hh",
+            serialize = "hpp",
+            serialize = "hxx",
+            serialize = "h++",
+            serialize = "inl",
+            serialize = "ipp")]
     Cpp,
     #[serde(rename = "C")]
     #[strum(to_string = "C", serialize = "c", serialize = "h")]
@@ -72,7 +84,12 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "CSS", serialize = "css", serialize = "css.erb", serialize = "css.liquid")]
     CSS,
     #[serde(rename = "Clojure")]
-    #[strum(to_string = "Clojure", serialize = "clj", serialize = "cljc", serialize = "cljs", serialize = "edn", serialize = "clojure")]
+    #[strum(to_string = "Clojure",
+            serialize = "clj",
+            serialize = "cljc",
+            serialize = "cljs",
+            serialize = "edn",
+            serialize = "clojure")]
     Clojure,
     #[serde(rename = "D")]
     #[strum(to_string = "D", serialize = "d", serialize = "di")]
@@ -84,25 +101,47 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Diff", serialize = "diff", serialize = "patch")]
     Diff,
     #[serde(rename = "Erlang")]
-    #[strum(to_string = "Erlang", serialize = "erl", serialize = "hrl", serialize = "Emakefile", serialize = "emakefile", serialize = "escript", serialize = "erlang")]
+    #[strum(to_string = "Erlang",
+            serialize = "erl",
+            serialize = "hrl",
+            serialize = "Emakefile",
+            serialize = "emakefile",
+            serialize = "escript",
+            serialize = "erlang")]
     Erlang,
     #[serde(rename = "HTML (Erlang)")]
     #[strum(to_string = "HTML (Erlang)", serialize = "yaws", serialize = "html-erlang")]
     HTML_Erlang,
     #[serde(rename = "Git Attributes")]
-    #[strum(to_string = "Git Attributes", serialize = "attributes", serialize = "gitattributes", serialize = ".gitattributes", serialize = "git-attributes")]
+    #[strum(to_string = "Git Attributes",
+            serialize = "attributes",
+            serialize = "gitattributes",
+            serialize = ".gitattributes",
+            serialize = "git-attributes")]
     Git_Attributes,
     #[serde(rename = "Git Commit")]
-    #[strum(to_string = "Git Commit", serialize = "COMMIT_EDITMSG", serialize = "MERGE_MSG", serialize = "TAG_EDITMSG", serialize = "git-commit")]
+    #[strum(to_string = "Git Commit",
+            serialize = "COMMIT_EDITMSG",
+            serialize = "MERGE_MSG",
+            serialize = "TAG_EDITMSG",
+            serialize = "git-commit")]
     Git_Commit,
     #[serde(rename = "Git Common")]
     #[strum(to_string = "Git Common", serialize = "git-common")]
     Git_Common,
     #[serde(rename = "Git Config")]
-    #[strum(to_string = "Git Config", serialize = "gitconfig", serialize = ".gitconfig", serialize = ".gitmodules", serialize = "git-config")]
+    #[strum(to_string = "Git Config",
+            serialize = "gitconfig",
+            serialize = ".gitconfig",
+            serialize = ".gitmodules",
+            serialize = "git-config")]
     Git_Config,
     #[serde(rename = "Git Ignore")]
-    #[strum(to_string = "Git Ignore", serialize = "exclude", serialize = "gitignore", serialize = ".gitignore", serialize = "git-ignore")]
+    #[strum(to_string = "Git Ignore",
+            serialize = "exclude",
+            serialize = "gitignore",
+            serialize = ".gitignore",
+            serialize = "git-ignore")]
     Git_Ignore,
     #[serde(rename = "Git Link")]
     #[strum(to_string = "Git Link", serialize = ".git", serialize = "git-link")]
@@ -120,10 +159,18 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Go", serialize = "go")]
     Go,
     #[serde(rename = "Graphviz (DOT)")]
-    #[strum(to_string = "Graphviz (DOT)", serialize = "dot", serialize = "DOT", serialize = "gv", serialize = "graphviz-dot")]
+    #[strum(to_string = "Graphviz (DOT)",
+            serialize = "dot",
+            serialize = "DOT",
+            serialize = "gv",
+            serialize = "graphviz-dot")]
     Graphviz_DOT,
     #[serde(rename = "Groovy")]
-    #[strum(to_string = "Groovy", serialize = "groovy", serialize = "gvy", serialize = "gradle", serialize = "Jenkinsfile")]
+    #[strum(to_string = "Groovy",
+            serialize = "groovy",
+            serialize = "gvy",
+            serialize = "gradle",
+            serialize = "Jenkinsfile")]
     Groovy,
     #[serde(rename = "HTML")]
     #[strum(to_string = "HTML", serialize = "html", serialize = "htm", serialize = "shtml", serialize = "xhtml")]
@@ -135,7 +182,21 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Literate Haskell", serialize = "lhs", serialize = "literate-haskell")]
     Literate_Haskell,
     #[serde(rename = "JSON")]
-    #[strum(to_string = "JSON", serialize = "json", serialize = "sublime-settings", serialize = "sublime-menu", serialize = "sublime-keymap", serialize = "sublime-mousemap", serialize = "sublime-theme", serialize = "sublime-build", serialize = "sublime-project", serialize = "sublime-completions", serialize = "sublime-commands", serialize = "sublime-macro", serialize = "sublime-color-scheme", serialize = "ipynb", serialize = "Pipfile.lock")]
+    #[strum(to_string = "JSON",
+            serialize = "json",
+            serialize = "sublime-settings",
+            serialize = "sublime-menu",
+            serialize = "sublime-keymap",
+            serialize = "sublime-mousemap",
+            serialize = "sublime-theme",
+            serialize = "sublime-build",
+            serialize = "sublime-project",
+            serialize = "sublime-completions",
+            serialize = "sublime-commands",
+            serialize = "sublime-macro",
+            serialize = "sublime-color-scheme",
+            serialize = "ipynb",
+            serialize = "Pipfile.lock")]
     JSON,
     #[serde(rename = "Java Server Page (JSP)")]
     #[strum(to_string = "Java Server Page (JSP)", serialize = "jsp", serialize = "java-server-page-jsp")]
@@ -168,7 +229,17 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "TeX", serialize = "sty", serialize = "cls", serialize = "tex")]
     TeX,
     #[serde(rename = "Lisp")]
-    #[strum(to_string = "Lisp", serialize = "lisp", serialize = "cl", serialize = "clisp", serialize = "l", serialize = "mud", serialize = "el", serialize = "scm", serialize = "ss", serialize = "lsp", serialize = "fasl")]
+    #[strum(to_string = "Lisp",
+            serialize = "lisp",
+            serialize = "cl",
+            serialize = "clisp",
+            serialize = "l",
+            serialize = "mud",
+            serialize = "el",
+            serialize = "scm",
+            serialize = "ss",
+            serialize = "lsp",
+            serialize = "fasl")]
     Lisp,
     #[serde(rename = "Lua")]
     #[strum(to_string = "Lua", serialize = "lua")]
@@ -177,10 +248,25 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Make Output", serialize = "make-output")]
     Make_Output,
     #[serde(rename = "Makefile")]
-    #[strum(to_string = "Makefile", serialize = "make", serialize = "GNUmakefile", serialize = "makefile", serialize = "Makefile", serialize = "makefile.am", serialize = "Makefile.am", serialize = "makefile.in", serialize = "Makefile.in", serialize = "OCamlMakefile", serialize = "mak", serialize = "mk")]
+    #[strum(to_string = "Makefile",
+            serialize = "make",
+            serialize = "GNUmakefile",
+            serialize = "makefile",
+            serialize = "Makefile",
+            serialize = "makefile.am",
+            serialize = "Makefile.am",
+            serialize = "makefile.in",
+            serialize = "Makefile.in",
+            serialize = "OCamlMakefile",
+            serialize = "mak",
+            serialize = "mk")]
     Makefile,
     #[serde(rename = "Markdown")]
-    #[strum(to_string = "Markdown", serialize = "md", serialize = "mdown", serialize = "markdown", serialize = "markdn")]
+    #[strum(to_string = "Markdown",
+            serialize = "md",
+            serialize = "mdown",
+            serialize = "markdown",
+            serialize = "markdn")]
     Markdown,
     #[serde(rename = "MultiMarkdown")]
     #[strum(to_string = "MultiMarkdown", serialize = "multimarkdown")]
@@ -201,7 +287,11 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "camlp4", serialize = "camlp4")]
     Camlp4,
     #[serde(rename = "Objective-C++")]
-    #[strum(to_string = "Objective-C++", serialize = "mm", serialize = "M", serialize = "h", serialize = "objective-cpp")]
+    #[strum(to_string = "Objective-C++",
+            serialize = "mm",
+            serialize = "M",
+            serialize = "h",
+            serialize = "objective-cpp")]
     Objective_Cpp,
     #[serde(rename = "Objective-C")]
     #[strum(to_string = "Objective-C", serialize = "m", serialize = "h", serialize = "objective-c")]
@@ -210,7 +300,15 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "PHP Source", serialize = "php-source")]
     PHP_Source,
     #[serde(rename = "PHP")]
-    #[strum(to_string = "PHP", serialize = "php", serialize = "php3", serialize = "php4", serialize = "php5", serialize = "php7", serialize = "phps", serialize = "phpt", serialize = "phtml")]
+    #[strum(to_string = "PHP",
+            serialize = "php",
+            serialize = "php3",
+            serialize = "php4",
+            serialize = "php5",
+            serialize = "php7",
+            serialize = "phps",
+            serialize = "phpt",
+            serialize = "phtml")]
     PHP,
     #[serde(rename = "Regular Expressions (PHP)")]
     #[strum(to_string = "Regular Expressions (PHP)", serialize = "regular-expressions-php")]
@@ -219,11 +317,42 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Pascal", serialize = "pas", serialize = "p", serialize = "dpr", serialize = "pascal")]
     Pascal,
     #[serde(rename = "Perl")]
-    #[strum(to_string = "Perl", serialize = "pl", serialize = "pc", serialize = "pm", serialize = "pmc", serialize = "pod", serialize = "t", serialize = "perl")]
+    #[strum(to_string = "Perl",
+            serialize = "pl",
+            serialize = "pc",
+            serialize = "pm",
+            serialize = "pmc",
+            serialize = "pod",
+            serialize = "t",
+            serialize = "perl")]
     Perl,
     #[serde(rename = "Python")]
-    #[strum(to_string = "Python", serialize = "py", serialize = "py3", serialize = "pyw", serialize = "pyi", serialize = "pyx", serialize = "pyx.in", serialize = "pxd", serialize = "pxd.in", serialize = "pxi", serialize = "pxi.in", serialize = "rpy", serialize = "cpy", serialize = "SConstruct", serialize = "Sconstruct", serialize = "sconstruct", serialize = "SConscript", serialize = "gyp", serialize = "gypi", serialize = "Snakefile", serialize = "vpy", serialize = "wscript", serialize = "bazel", serialize = "bzl", serialize = "python")]
-    #[default] 
+    #[strum(to_string = "Python",
+            serialize = "py",
+            serialize = "py3",
+            serialize = "pyw",
+            serialize = "pyi",
+            serialize = "pyx",
+            serialize = "pyx.in",
+            serialize = "pxd",
+            serialize = "pxd.in",
+            serialize = "pxi",
+            serialize = "pxi.in",
+            serialize = "rpy",
+            serialize = "cpy",
+            serialize = "SConstruct",
+            serialize = "Sconstruct",
+            serialize = "sconstruct",
+            serialize = "SConscript",
+            serialize = "gyp",
+            serialize = "gypi",
+            serialize = "Snakefile",
+            serialize = "vpy",
+            serialize = "wscript",
+            serialize = "bazel",
+            serialize = "bzl",
+            serialize = "python")]
+    #[default]
     Python,
     #[serde(rename = "Regular Expressions (Python)")]
     #[strum(to_string = "Regular Expressions (Python)", serialize = "regular-expressions-python")]
@@ -238,7 +367,12 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Rd (R Documentation)", serialize = "rd", serialize = "rd-r-documentation")]
     Rd_R_Documentation,
     #[serde(rename = "HTML (Rails)")]
-    #[strum(to_string = "HTML (Rails)", serialize = "rails", serialize = "rhtml", serialize = "erb", serialize = "html.erb", serialize = "html-rails")]
+    #[strum(to_string = "HTML (Rails)",
+            serialize = "rails",
+            serialize = "rhtml",
+            serialize = "erb",
+            serialize = "html.erb",
+            serialize = "html-rails")]
     HTML_Rails,
     #[serde(rename = "JavaScript (Rails)")]
     #[strum(to_string = "JavaScript (Rails)", serialize = "js.erb", serialize = "javascript-rails")]
@@ -259,7 +393,41 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "reStructuredText", serialize = "rst", serialize = "rest", serialize = "restructuredtext")]
     ReStructuredText,
     #[serde(rename = "Ruby")]
-    #[strum(to_string = "Ruby", serialize = "rb", serialize = "Appfile", serialize = "Appraisals", serialize = "Berksfile", serialize = "Brewfile", serialize = "capfile", serialize = "cgi", serialize = "Cheffile", serialize = "config.ru", serialize = "Deliverfile", serialize = "Fastfile", serialize = "fcgi", serialize = "Gemfile", serialize = "gemspec", serialize = "Guardfile", serialize = "irbrc", serialize = "jbuilder", serialize = "Podfile", serialize = "podspec", serialize = "prawn", serialize = "rabl", serialize = "rake", serialize = "Rakefile", serialize = "Rantfile", serialize = "rbx", serialize = "rjs", serialize = "ruby.rail", serialize = "Scanfile", serialize = "simplecov", serialize = "Snapfile", serialize = "thor", serialize = "Thorfile", serialize = "Vagrantfile", serialize = "ruby")]
+    #[strum(to_string = "Ruby",
+            serialize = "rb",
+            serialize = "Appfile",
+            serialize = "Appraisals",
+            serialize = "Berksfile",
+            serialize = "Brewfile",
+            serialize = "capfile",
+            serialize = "cgi",
+            serialize = "Cheffile",
+            serialize = "config.ru",
+            serialize = "Deliverfile",
+            serialize = "Fastfile",
+            serialize = "fcgi",
+            serialize = "Gemfile",
+            serialize = "gemspec",
+            serialize = "Guardfile",
+            serialize = "irbrc",
+            serialize = "jbuilder",
+            serialize = "Podfile",
+            serialize = "podspec",
+            serialize = "prawn",
+            serialize = "rabl",
+            serialize = "rake",
+            serialize = "Rakefile",
+            serialize = "Rantfile",
+            serialize = "rbx",
+            serialize = "rjs",
+            serialize = "ruby.rail",
+            serialize = "Scanfile",
+            serialize = "simplecov",
+            serialize = "Snapfile",
+            serialize = "thor",
+            serialize = "Thorfile",
+            serialize = "Vagrantfile",
+            serialize = "ruby")]
     Ruby,
     #[serde(rename = "Cargo Build Results")]
     #[strum(to_string = "Cargo Build Results", serialize = "cargo-build-results")]
@@ -274,7 +442,30 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Scala", serialize = "scala", serialize = "sbt", serialize = "sc")]
     Scala,
     #[serde(rename = "Bourne Again Shell (bash)")]
-    #[strum(to_string = "Bourne Again Shell (bash)", serialize = "sh", serialize = "bash", serialize = "zsh", serialize = "ash", serialize = ".bash_aliases", serialize = ".bash_completions", serialize = ".bash_functions", serialize = ".bash_login", serialize = ".bash_logout", serialize = ".bash_profile", serialize = ".bash_variables", serialize = ".bashrc", serialize = ".profile", serialize = ".textmate_init", serialize = ".zlogin", serialize = ".zlogout", serialize = ".zprofile", serialize = ".zshenv", serialize = ".zshrc", serialize = "PKGBUILD", serialize = "ebuild", serialize = "eclass", serialize = "bourne-again-shell-bash")]
+    #[strum(to_string = "Bourne Again Shell (bash)",
+            serialize = "sh",
+            serialize = "bash",
+            serialize = "zsh",
+            serialize = "ash",
+            serialize = ".bash_aliases",
+            serialize = ".bash_completions",
+            serialize = ".bash_functions",
+            serialize = ".bash_login",
+            serialize = ".bash_logout",
+            serialize = ".bash_profile",
+            serialize = ".bash_variables",
+            serialize = ".bashrc",
+            serialize = ".profile",
+            serialize = ".textmate_init",
+            serialize = ".zlogin",
+            serialize = ".zlogout",
+            serialize = ".zprofile",
+            serialize = ".zshenv",
+            serialize = ".zshrc",
+            serialize = "PKGBUILD",
+            serialize = "ebuild",
+            serialize = "eclass",
+            serialize = "bourne-again-shell-bash")]
     Bourne_Again_Shell_bash,
     #[serde(rename = "Shell-Unix-Generic")]
     #[strum(to_string = "Shell-Unix-Generic", serialize = "shell-unix-generic")]
@@ -292,7 +483,17 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Textile", serialize = "textile")]
     Textile,
     #[serde(rename = "XML")]
-    #[strum(to_string = "XML", serialize = "xml", serialize = "xsd", serialize = "xslt", serialize = "tld", serialize = "dtml", serialize = "rng", serialize = "rss", serialize = "opml", serialize = "svg", serialize = "xaml")]
+    #[strum(to_string = "XML",
+            serialize = "xml",
+            serialize = "xsd",
+            serialize = "xslt",
+            serialize = "tld",
+            serialize = "dtml",
+            serialize = "rng",
+            serialize = "rss",
+            serialize = "opml",
+            serialize = "svg",
+            serialize = "xaml")]
     XML,
     #[serde(rename = "YAML")]
     #[strum(to_string = "YAML", serialize = "yaml", serialize = "yml", serialize = "sublime-syntax")]
@@ -304,22 +505,51 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Ada", serialize = "adb", serialize = "ads", serialize = "gpr", serialize = "ada")]
     Ada,
     #[serde(rename = "Apache Conf")]
-    #[strum(to_string = "Apache Conf", serialize = "envvars", serialize = "htaccess", serialize = "HTACCESS", serialize = "htgroups", serialize = "HTGROUPS", serialize = "htpasswd", serialize = "HTPASSWD", serialize = ".htaccess", serialize = ".HTACCESS", serialize = ".htgroups", serialize = ".HTGROUPS", serialize = ".htpasswd", serialize = ".HTPASSWD", serialize = "apache-conf")]
+    #[strum(to_string = "Apache Conf",
+            serialize = "envvars",
+            serialize = "htaccess",
+            serialize = "HTACCESS",
+            serialize = "htgroups",
+            serialize = "HTGROUPS",
+            serialize = "htpasswd",
+            serialize = "HTPASSWD",
+            serialize = ".htaccess",
+            serialize = ".HTACCESS",
+            serialize = ".htgroups",
+            serialize = ".HTGROUPS",
+            serialize = ".htpasswd",
+            serialize = ".HTPASSWD",
+            serialize = "apache-conf")]
     Apache_Conf,
     #[serde(rename = "AsciiDoc (Asciidoctor)")]
-    #[strum(to_string = "AsciiDoc (Asciidoctor)", serialize = "adoc", serialize = "ad", serialize = "asciidoc", serialize = "asciidoc-asciidoctor")]
+    #[strum(to_string = "AsciiDoc (Asciidoctor)",
+            serialize = "adoc",
+            serialize = "ad",
+            serialize = "asciidoc",
+            serialize = "asciidoc-asciidoctor")]
     AsciiDoc_Asciidoctor,
     #[serde(rename = "ARM Assembly")]
     #[strum(to_string = "ARM Assembly", serialize = "s", serialize = "S", serialize = "arm-assembly")]
     ARM_Assembly,
     #[serde(rename = "Assembly (x86_64)")]
-    #[strum(to_string = "Assembly (x86_64)", serialize = "yasm", serialize = "nasm", serialize = "asm", serialize = "inc", serialize = "mac", serialize = "assembly-x86-64")]
+    #[strum(to_string = "Assembly (x86_64)",
+            serialize = "yasm",
+            serialize = "nasm",
+            serialize = "asm",
+            serialize = "inc",
+            serialize = "mac",
+            serialize = "assembly-x86-64")]
     Assembly_x86_64,
     #[serde(rename = "CMake C Header")]
     #[strum(to_string = "CMake C Header", serialize = "h.in", serialize = "cmake-c-header")]
     CMake_C_Header,
     #[serde(rename = "CMake C++ Header")]
-    #[strum(to_string = "CMake C++ Header", serialize = "hh.in", serialize = "hpp.in", serialize = "hxx.in", serialize = "h++.in", serialize = "cmake-cpp-header")]
+    #[strum(to_string = "CMake C++ Header",
+            serialize = "hh.in",
+            serialize = "hpp.in",
+            serialize = "hxx.in",
+            serialize = "h++.in",
+            serialize = "cmake-cpp-header")]
     CMake_Cpp_Header,
     #[serde(rename = "CMake")]
     #[strum(to_string = "CMake", serialize = "CMakeLists.txt", serialize = "cmake")]
@@ -331,13 +561,21 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "CMakeCommands", serialize = "cmakecommands")]
     CMakeCommands,
     #[serde(rename = "Comma Separated Values")]
-    #[strum(to_string = "Comma Separated Values", serialize = "csv", serialize = "tsv", serialize = "comma-separated-values")]
+    #[strum(to_string = "Comma Separated Values",
+            serialize = "csv",
+            serialize = "tsv",
+            serialize = "comma-separated-values")]
     Comma_Separated_Values,
     #[serde(rename = "Cabal")]
     #[strum(to_string = "Cabal", serialize = "cabal")]
     Cabal,
     #[serde(rename = "CoffeeScript")]
-    #[strum(to_string = "CoffeeScript", serialize = "coffee", serialize = "Cakefile", serialize = "coffee.erb", serialize = "cson", serialize = "coffeescript")]
+    #[strum(to_string = "CoffeeScript",
+            serialize = "coffee",
+            serialize = "Cakefile",
+            serialize = "coffee.erb",
+            serialize = "cson",
+            serialize = "coffeescript")]
     CoffeeScript,
     #[serde(rename = "CpuInfo")]
     #[strum(to_string = "CpuInfo", serialize = "cpuinfo")]
@@ -355,7 +593,33 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Dockerfile", serialize = "Dockerfile", serialize = "dockerfile")]
     Dockerfile,
     #[serde(rename = "DotENV")]
-    #[strum(to_string = "DotENV", serialize = ".env", serialize = ".env.dist", serialize = ".env.local", serialize = ".env.sample", serialize = ".env.example", serialize = ".env.template", serialize = ".env.test", serialize = ".env.test.local", serialize = ".env.testing", serialize = ".env.dev", serialize = ".env.development", serialize = ".env.development.local", serialize = ".env.prod", serialize = ".env.production", serialize = ".env.production.local", serialize = ".env.dusk.local", serialize = ".env.staging", serialize = ".env.default", serialize = ".env.defaults", serialize = ".envrc", serialize = ".flaskenv", serialize = "env", serialize = "env.example", serialize = "env.sample", serialize = "env.template", serialize = "dotenv")]
+    #[strum(to_string = "DotENV",
+            serialize = ".env",
+            serialize = ".env.dist",
+            serialize = ".env.local",
+            serialize = ".env.sample",
+            serialize = ".env.example",
+            serialize = ".env.template",
+            serialize = ".env.test",
+            serialize = ".env.test.local",
+            serialize = ".env.testing",
+            serialize = ".env.dev",
+            serialize = ".env.development",
+            serialize = ".env.development.local",
+            serialize = ".env.prod",
+            serialize = ".env.production",
+            serialize = ".env.production.local",
+            serialize = ".env.dusk.local",
+            serialize = ".env.staging",
+            serialize = ".env.default",
+            serialize = ".env.defaults",
+            serialize = ".envrc",
+            serialize = ".flaskenv",
+            serialize = "env",
+            serialize = "env.example",
+            serialize = "env.sample",
+            serialize = "env.template",
+            serialize = "dotenv")]
     DotENV,
     #[serde(rename = "Elixir")]
     #[strum(to_string = "Elixir", serialize = "ex", serialize = "exs", serialize = "elixir")]
@@ -376,7 +640,12 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Elm", serialize = "elm")]
     Elm,
     #[serde(rename = "Email")]
-    #[strum(to_string = "Email", serialize = "eml", serialize = "msg", serialize = "mbx", serialize = "mboxz", serialize = "email")]
+    #[strum(to_string = "Email",
+            serialize = "eml",
+            serialize = "msg",
+            serialize = "mbx",
+            serialize = "mboxz",
+            serialize = "email")]
     Email,
     #[serde(rename = "F#")]
     #[strum(to_string = "F#", serialize = "fs", serialize = "fsi", serialize = "fsx", serialize = "fsharp")]
@@ -385,10 +654,28 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Fish", serialize = "fish")]
     Fish,
     #[serde(rename = "Fortran (Fixed Form)")]
-    #[strum(to_string = "Fortran (Fixed Form)", serialize = "f", serialize = "F", serialize = "f77", serialize = "F77", serialize = "for", serialize = "FOR", serialize = "fpp", serialize = "FPP", serialize = "fortran-fixed-form")]
+    #[strum(to_string = "Fortran (Fixed Form)",
+            serialize = "f",
+            serialize = "F",
+            serialize = "f77",
+            serialize = "F77",
+            serialize = "for",
+            serialize = "FOR",
+            serialize = "fpp",
+            serialize = "FPP",
+            serialize = "fortran-fixed-form")]
     Fortran_Fixed_Form,
     #[serde(rename = "Fortran (Modern)")]
-    #[strum(to_string = "Fortran (Modern)", serialize = "f90", serialize = "F90", serialize = "f95", serialize = "F95", serialize = "f03", serialize = "F03", serialize = "f08", serialize = "F08", serialize = "fortran-modern")]
+    #[strum(to_string = "Fortran (Modern)",
+            serialize = "f90",
+            serialize = "F90",
+            serialize = "f95",
+            serialize = "F95",
+            serialize = "f03",
+            serialize = "F03",
+            serialize = "f08",
+            serialize = "F08",
+            serialize = "fortran-modern")]
     Fortran_Modern,
     #[serde(rename = "Fortran Namelist")]
     #[strum(to_string = "Fortran Namelist", serialize = "namelist", serialize = "fortran-namelist")]
@@ -403,13 +690,49 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "fstab", serialize = "fstab", serialize = "crypttab", serialize = "mtab")]
     Fstab,
     #[serde(rename = "GLSL")]
-    #[strum(to_string = "GLSL", serialize = "vs", serialize = "fs", serialize = "gs", serialize = "vsh", serialize = "fsh", serialize = "gsh", serialize = "vshader", serialize = "fshader", serialize = "gshader", serialize = "vert", serialize = "frag", serialize = "geom", serialize = "tesc", serialize = "tese", serialize = "comp", serialize = "glsl", serialize = "mesh", serialize = "task", serialize = "rgen", serialize = "rint", serialize = "rahit", serialize = "rchit", serialize = "rmiss", serialize = "rcall")]
+    #[strum(to_string = "GLSL",
+            serialize = "vs",
+            serialize = "fs",
+            serialize = "gs",
+            serialize = "vsh",
+            serialize = "fsh",
+            serialize = "gsh",
+            serialize = "vshader",
+            serialize = "fshader",
+            serialize = "gshader",
+            serialize = "vert",
+            serialize = "frag",
+            serialize = "geom",
+            serialize = "tesc",
+            serialize = "tese",
+            serialize = "comp",
+            serialize = "glsl",
+            serialize = "mesh",
+            serialize = "task",
+            serialize = "rgen",
+            serialize = "rint",
+            serialize = "rahit",
+            serialize = "rchit",
+            serialize = "rmiss",
+            serialize = "rcall")]
     GLSL,
     #[serde(rename = "GraphQL")]
     #[strum(to_string = "GraphQL", serialize = "graphql", serialize = "graphqls", serialize = "gql")]
     GraphQL,
     #[serde(rename = "Groff/troff")]
-    #[strum(to_string = "Groff/troff", serialize = "groff", serialize = "troff", serialize = "1", serialize = "2", serialize = "3", serialize = "4", serialize = "5", serialize = "6", serialize = "7", serialize = "8", serialize = "9", serialize = "groff-troff")]
+    #[strum(to_string = "Groff/troff",
+            serialize = "groff",
+            serialize = "troff",
+            serialize = "1",
+            serialize = "2",
+            serialize = "3",
+            serialize = "4",
+            serialize = "5",
+            serialize = "6",
+            serialize = "7",
+            serialize = "8",
+            serialize = "9",
+            serialize = "groff-troff")]
     Groff_troff,
     #[serde(rename = "group")]
     #[strum(to_string = "group", serialize = "group")]
@@ -421,13 +744,43 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "hosts", serialize = "hosts")]
     Hosts,
     #[serde(rename = "INI")]
-    #[strum(to_string = "INI", serialize = "ini", serialize = "INI", serialize = "inf", serialize = "INF", serialize = "reg", serialize = "REG", serialize = "lng", serialize = "cfg", serialize = "CFG", serialize = "desktop", serialize = "url", serialize = "URL", serialize = ".editorconfig", serialize = ".coveragerc", serialize = ".pylintrc", serialize = ".gitlint", serialize = ".hgrc", serialize = "hgrc")]
+    #[strum(to_string = "INI",
+            serialize = "ini",
+            serialize = "INI",
+            serialize = "inf",
+            serialize = "INF",
+            serialize = "reg",
+            serialize = "REG",
+            serialize = "lng",
+            serialize = "cfg",
+            serialize = "CFG",
+            serialize = "desktop",
+            serialize = "url",
+            serialize = "URL",
+            serialize = ".editorconfig",
+            serialize = ".coveragerc",
+            serialize = ".pylintrc",
+            serialize = ".gitlint",
+            serialize = ".hgrc",
+            serialize = "hgrc")]
     INI,
     #[serde(rename = "JavaScript (Babel)")]
-    #[strum(to_string = "JavaScript (Babel)", serialize = "js", serialize = "mjs", serialize = "jsx", serialize = "babel", serialize = "es6", serialize = "cjs", serialize = "javascript-babel")]
+    #[strum(to_string = "JavaScript (Babel)",
+            serialize = "js",
+            serialize = "mjs",
+            serialize = "jsx",
+            serialize = "babel",
+            serialize = "es6",
+            serialize = "cjs",
+            serialize = "javascript-babel")]
     JavaScript_Babel,
     #[serde(rename = "HTML (Jinja2)")]
-    #[strum(to_string = "HTML (Jinja2)", serialize = "htm.j2", serialize = "html.j2", serialize = "xhtml.j2", serialize = "xml.j2", serialize = "html-jinja2")]
+    #[strum(to_string = "HTML (Jinja2)",
+            serialize = "htm.j2",
+            serialize = "html.j2",
+            serialize = "xhtml.j2",
+            serialize = "xml.j2",
+            serialize = "html-jinja2")]
     HTML_Jinja2,
     #[serde(rename = "Jinja2")]
     #[strum(to_string = "Jinja2", serialize = "j2", serialize = "jinja2", serialize = "jinja")]
@@ -451,7 +804,11 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Lean", serialize = "lean")]
     Lean,
     #[serde(rename = "LiveScript")]
-    #[strum(to_string = "LiveScript", serialize = "ls", serialize = "Slakefile", serialize = "ls.erb", serialize = "livescript")]
+    #[strum(to_string = "LiveScript",
+            serialize = "ls",
+            serialize = "Slakefile",
+            serialize = "ls.erb",
+            serialize = "livescript")]
     LiveScript,
     #[serde(rename = "Manpage")]
     #[strum(to_string = "Manpage", serialize = "man", serialize = "manpage")]
@@ -466,7 +823,15 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "MemInfo", serialize = "meminfo")]
     MemInfo,
     #[serde(rename = "nginx")]
-    #[strum(to_string = "nginx", serialize = "conf.erb", serialize = "conf", serialize = "nginx.conf", serialize = "mime.types", serialize = "fastcgi_params", serialize = "scgi_params", serialize = "uwsgi_params", serialize = "nginx")]
+    #[strum(to_string = "nginx",
+            serialize = "conf.erb",
+            serialize = "conf",
+            serialize = "nginx.conf",
+            serialize = "mime.types",
+            serialize = "fastcgi_params",
+            serialize = "scgi_params",
+            serialize = "uwsgi_params",
+            serialize = "nginx")]
     Nginx,
     #[serde(rename = "Nim")]
     #[strum(to_string = "Nim", serialize = "nim", serialize = "nims", serialize = "nimble")]
@@ -484,13 +849,26 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "passwd", serialize = "passwd")]
     Passwd,
     #[serde(rename = "PowerShell")]
-    #[strum(to_string = "PowerShell", serialize = "ps1", serialize = "psm1", serialize = "psd1", serialize = "powershell")]
+    #[strum(to_string = "PowerShell",
+            serialize = "ps1",
+            serialize = "psm1",
+            serialize = "psd1",
+            serialize = "powershell")]
     PowerShell,
     #[serde(rename = "Protocol Buffer")]
-    #[strum(to_string = "Protocol Buffer", serialize = "proto", serialize = "protodevel", serialize = "protocol-buffer")]
+    #[strum(to_string = "Protocol Buffer",
+            serialize = "proto",
+            serialize = "protodevel",
+            serialize = "protocol-buffer")]
     Protocol_Buffer,
     #[serde(rename = "Protocol Buffer (TEXT)")]
-    #[strum(to_string = "Protocol Buffer (TEXT)", serialize = "pb.txt", serialize = "proto.text", serialize = "textpb", serialize = "pbtxt", serialize = "prototxt", serialize = "protocol-buffer-text")]
+    #[strum(to_string = "Protocol Buffer (TEXT)",
+            serialize = "pb.txt",
+            serialize = "proto.text",
+            serialize = "textpb",
+            serialize = "pbtxt",
+            serialize = "prototxt",
+            serialize = "protocol-buffer-text")]
     Protocol_Buffer_TEXT,
     #[serde(rename = "Puppet")]
     #[strum(to_string = "Puppet", serialize = "pp", serialize = "epp", serialize = "puppet")]
@@ -508,7 +886,11 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Rego", serialize = "rego")]
     Rego,
     #[serde(rename = "Requirements.txt")]
-    #[strum(to_string = "Requirements.txt", serialize = "requirements.txt", serialize = "requirements.in", serialize = "pip", serialize = "requirementsdottxt")]
+    #[strum(to_string = "Requirements.txt",
+            serialize = "requirements.txt",
+            serialize = "requirements.in",
+            serialize = "pip",
+            serialize = "requirementsdottxt")]
     RequirementsDottxt,
     #[serde(rename = "resolv")]
     #[strum(to_string = "resolv", serialize = "resolv.conf", serialize = "resolv")]
@@ -553,19 +935,35 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Swift", serialize = "swift")]
     Swift,
     #[serde(rename = "SystemVerilog")]
-    #[strum(to_string = "SystemVerilog", serialize = "sv", serialize = "v", serialize = "svh", serialize = "vh", serialize = "systemverilog")]
+    #[strum(to_string = "SystemVerilog",
+            serialize = "sv",
+            serialize = "v",
+            serialize = "svh",
+            serialize = "vh",
+            serialize = "systemverilog")]
     SystemVerilog,
     #[serde(rename = "Navigational Bar SV")]
     #[strum(to_string = "Navigational Bar SV", serialize = "navigational-bar-sv")]
     Navigational_Bar_SV,
     #[serde(rename = "TOML")]
-    #[strum(to_string = "TOML", serialize = "toml", serialize = "tml", serialize = "Cargo.lock", serialize = "Gopkg.lock", serialize = "Pipfile", serialize = "pdm.lock", serialize = "poetry.lock")]
+    #[strum(to_string = "TOML",
+            serialize = "toml",
+            serialize = "tml",
+            serialize = "Cargo.lock",
+            serialize = "Gopkg.lock",
+            serialize = "Pipfile",
+            serialize = "pdm.lock",
+            serialize = "poetry.lock")]
     TOML,
     #[serde(rename = "JSON (Terraform)")]
     #[strum(to_string = "JSON (Terraform)", serialize = "tfstate", serialize = "json-terraform")]
     JSON_Terraform,
     #[serde(rename = "Terraform")]
-    #[strum(to_string = "Terraform", serialize = "tf", serialize = "tfvars", serialize = "hcl", serialize = "terraform")]
+    #[strum(to_string = "Terraform",
+            serialize = "tf",
+            serialize = "tfvars",
+            serialize = "hcl",
+            serialize = "terraform")]
     Terraform,
     #[serde(rename = "Todo.txt")]
     #[strum(to_string = "Todo.txt", serialize = "todo.txt", serialize = "done.txt", serialize = "tododottxt")]
@@ -583,7 +981,15 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "VimHelp", serialize = "vimhelp")]
     VimHelp,
     #[serde(rename = "VimL")]
-    #[strum(to_string = "VimL", serialize = "vim", serialize = "vimrc", serialize = "gvimrc", serialize = ".vimrc", serialize = ".gvimrc", serialize = "_vimrc", serialize = "_gvimrc", serialize = "viml")]
+    #[strum(to_string = "VimL",
+            serialize = "vim",
+            serialize = "vimrc",
+            serialize = "gvimrc",
+            serialize = ".vimrc",
+            serialize = ".gvimrc",
+            serialize = "_vimrc",
+            serialize = "_gvimrc",
+            serialize = "viml")]
     VimL,
     #[serde(rename = "Vue Component")]
     #[strum(to_string = "Vue Component", serialize = "vue", serialize = "vue-component")]
@@ -595,7 +1001,13 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "Command Help", serialize = "cmd-help", serialize = "help", serialize = "command-help")]
     Command_Help,
     #[serde(rename = "gnuplot")]
-    #[strum(to_string = "gnuplot", serialize = "gp", serialize = "gpl", serialize = "gnuplot", serialize = "gnu", serialize = "plot", serialize = "plt")]
+    #[strum(to_string = "gnuplot",
+            serialize = "gp",
+            serialize = "gpl",
+            serialize = "gnuplot",
+            serialize = "gnu",
+            serialize = "plot",
+            serialize = "plt")]
     Gnuplot,
     #[serde(rename = "HTTP Request and Response")]
     #[strum(to_string = "HTTP Request and Response", serialize = "http", serialize = "http-request-and-response")]
@@ -604,13 +1016,22 @@ pub enum SupportedCodeBlockSyntax {
     #[strum(to_string = "log", serialize = "log")]
     Log,
     #[serde(rename = "Highlight non-printables")]
-    #[strum(to_string = "Highlight non-printables", serialize = "show-nonprintable", serialize = "highlight-non-printables")]
+    #[strum(to_string = "Highlight non-printables",
+            serialize = "show-nonprintable",
+            serialize = "highlight-non-printables")]
     Highlight_non_printables,
     #[serde(rename = "Authorized Keys")]
-    #[strum(to_string = "Authorized Keys", serialize = "authorized_keys", serialize = "pub", serialize = "authorized_keys2", serialize = "authorized-keys")]
+    #[strum(to_string = "Authorized Keys",
+            serialize = "authorized_keys",
+            serialize = "pub",
+            serialize = "authorized_keys2",
+            serialize = "authorized-keys")]
     Authorized_Keys,
     #[serde(rename = "Known Hosts")]
-    #[strum(to_string = "Known Hosts", serialize = "known_hosts", serialize = "known_hosts.old", serialize = "known-hosts")]
+    #[strum(to_string = "Known Hosts",
+            serialize = "known_hosts",
+            serialize = "known_hosts.old",
+            serialize = "known-hosts")]
     Known_Hosts,
     #[serde(rename = "Private Key")]
     #[strum(to_string = "Private Key", serialize = "private-key")]
@@ -633,7 +1054,7 @@ pub enum SupportedCodeBlockSyntax {
     #[serde(rename = "varlink")]
     #[strum(to_string = "varlink", serialize = "varlink")]
     Varlink,
-    
+
     // Conundrum specific blocks
     #[serde(rename = "conundrum-ai")]
     #[strum(to_string = "conundrum-ai", serialize = "fluster-ai")]
@@ -657,7 +1078,7 @@ impl SupportedCodeBlockSyntax {
     }
 
     pub fn devicon(&self, is_dark_mode: &bool) -> devicons::FileIcon {
-        match self { 
+        match self {
             Self::Plain_Text => devicons::FileIcon::from("txt"),
             Self::ASP => devicons::FileIcon::from("asa"),
             Self::HTML_ASP => devicons::FileIcon::from("asp"),
@@ -869,7 +1290,7 @@ impl SupportedCodeBlockSyntax {
     /// more generic syntaxes that are more likely to be
     /// supported elsewhere.
     pub fn markdown_representation(&self) -> String {
-        match self { 
+        match self {
             SupportedCodeBlockSyntax::Plain_Text => "txt".to_string(),
             SupportedCodeBlockSyntax::ASP => "asa".to_string(),
             SupportedCodeBlockSyntax::HTML_ASP => "asp".to_string(),
@@ -1068,7 +1489,7 @@ impl SupportedCodeBlockSyntax {
             SupportedCodeBlockSyntax::SSHD_Config => "sshd_config".to_string(),
             SupportedCodeBlockSyntax::Syslog => "syslog".to_string(),
             SupportedCodeBlockSyntax::Varlink => "varlink".to_string(),
-            _ => "txt".to_string()
+            _ => "txt".to_string(),
         }
     }
 }
@@ -1105,3 +1526,4 @@ mod tests {
                                         });
     }
 }
+

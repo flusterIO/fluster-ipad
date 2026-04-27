@@ -27,9 +27,24 @@ use crate::{
 
 #[typeshare]
 #[derive(Debug, Serialize, Clone)]
+pub struct MarkdownLinkResultStringified {
+    pub text: String,
+    pub url: String,
+}
+
+#[typeshare]
+#[derive(Debug, Serialize, Clone)]
 pub struct MarkdownLinkResult {
     pub text: Children,
     pub url: String,
+}
+
+impl MarkdownLinkResult {
+    pub fn to_stringified_result(&self, state: ArcState) -> ConundrumModalResult<MarkdownLinkResultStringified> {
+        let res = self.text.render(state)?;
+        Ok(MarkdownLinkResultStringified { text: res,
+                                           url: self.url.clone() })
+    }
 }
 
 impl PlainTextComponentResult for MarkdownLinkResult {

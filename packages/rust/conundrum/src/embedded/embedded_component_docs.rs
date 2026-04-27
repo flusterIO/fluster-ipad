@@ -8,6 +8,7 @@ use crate::{
     output::general::component_constants::component_ids::EmbeddableComponentId,
 };
 
+/// A simple lookup table for the embedded component-specific documentation.
 #[derive(Embed)]
 #[folder = "src/embedded/component_docs/"]
 pub struct EmbeddedComponentDocs;

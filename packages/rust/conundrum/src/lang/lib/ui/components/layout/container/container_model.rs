@@ -34,10 +34,6 @@ use crate::{
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
 
-/// > Note that the `label` property can also be changed from it's default
-/// > 'Hint' to any string.
-///
-///
 /// The `Container` component is an intentionally almost entirely unstyled
 /// component that accepts most of the _generic_ properties accepted elsewhere.
 /// This means that it takes an optional `Emphasis` as a boolean, and all of the

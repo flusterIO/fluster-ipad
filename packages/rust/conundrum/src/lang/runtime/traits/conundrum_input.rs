@@ -9,6 +9,7 @@ use crate::{
     parsers::markdown::heading_sluggger::Slugger,
 };
 
+/// Because you probably have 16+ cores... we might as well use them.
 pub type ArcState = Arc<RwLock<ParseState>>;
 pub type ConundrumInput<'a> = Stateful<&'a str, ArcState>;
 

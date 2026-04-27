@@ -40,6 +40,25 @@ fn default_markdown_title_depth() -> u8 {
     5
 }
 
+/// Just a simple card with a title, a body, and an optional description. It can
+/// be used as a way to segment your notes without making anything stand out
+/// _too_ much.
+///
+/// ## Example Usage
+///
+/// ```jsx
+/// <Card title="My card's title">
+/// My card's body goes here.
+/// </Card>
+/// ```
+///
+/// And you can include an optional description if you like:
+///
+/// ```jsx
+/// <Card title="My card's title" desc="My card's description here">
+/// My card's body goes here.
+/// </Card>
+/// ```
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct Card {

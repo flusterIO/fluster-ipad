@@ -23,6 +23,9 @@ use crate::{
     },
 };
 
+/// This allows you to explore the twemoji set of ~4800 emojis, but don't embed
+/// this directly. This is automatically embedded in the docs container when you
+/// use the `Emoji??` documentation flag.
 #[typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct EmojiDocsDemo {}

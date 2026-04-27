@@ -77,6 +77,8 @@ tui-math = "0.1.1"
 wildmatch = { version = "2.6.1", features = ["serde"] }
 base64 = "0.22.1"
 polars = "0.39.2"
+scraper = { version = "0.26.0", features = ["deterministic", "serde"] }
+polars-lazy = "0.53.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

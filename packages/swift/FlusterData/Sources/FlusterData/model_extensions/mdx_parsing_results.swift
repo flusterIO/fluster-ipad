@@ -37,7 +37,7 @@ extension MdxParsingResult: @retroactive Codable {
     let eqRefMap = try container.decode(
       [String: UInt32].self, forKey: .eqRefMap)
     let warnings = try container.decode([ConundrumError].self, forKey: .warnings)
-    let includedComponents = try container.decode([String].self, forKey: .includedComponents)
+    let includedComponents = try container.decode([AnyComponentKey].self, forKey: .includedComponents)
 
     self.init(
       noteId: id,

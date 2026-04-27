@@ -1,4 +1,6 @@
 use serde::{Deserialize, Serialize};
+
+#[typeshare::typeshare]
 #[derive(strum_macros::Display, Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Hash, uniffi::Enum)]
 pub enum WebGlueCodeGeneralFiles {
     #[serde(rename = "styles.css")]

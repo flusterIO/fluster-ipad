@@ -43,6 +43,25 @@ use crate::{
     },
 };
 
+/// ## Example Usage
+///
+/// This component unlike most others does not rely on conundrum's jsx-like
+/// syntax, but has it's own syntax:
+///
+/// ```mdx
+/// Some paragraph here...
+///
+/// --- My section title ---
+///
+/// Some other paragraph here.
+/// ```
+///
+/// You can still use the component as a regular Conundrum component if you like
+/// though:
+///
+/// ```jsx
+/// <Hr> My section title </Hr>
+/// ```
 #[typeshare::typeshare]
 #[derive(Serialize, Debug, Clone)]
 pub struct HrWithChildrenResult {

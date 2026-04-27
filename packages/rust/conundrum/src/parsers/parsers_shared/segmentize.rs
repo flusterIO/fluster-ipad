@@ -36,12 +36,14 @@ use winnow::{
 
 pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                             -> ConundrumModalResult<(Vec<ParsedElement>, ParsedElement)> {
-    let at_line_start = Rc::new(RefCell::new(false));
+    let at_line_start = Rc::new(RefCell::new(true));
+    let at_paragraph_start = Rc::new(RefCell::new(true));
     let at_line_start_terminator = Rc::clone(&at_line_start);
     let (res, terminator): (Vec<ParsedElement>, ParsedElement) =
                                                                repeat_till(
                                                                    1..,
                                                                    |nested_input: &mut ConundrumInput<'a>| {
+                                                                       let nested_paragraph_start = Rc::clone(&at_paragraph_start);
                                                                        let inner_res = dispatch! {peek(take(1usize));
                                                                            "`" => |x: &mut ConundrumInput<'a>| {
                                                                                alt((
@@ -94,17 +96,36 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                    ParsedElement::Text(c.to_string())
                                                                                }).parse_next(x)
                                                                            },
+                                                                           " " | "\n" | "\t" => |x: &mut ConundrumInput<'a>| {
+                                                                               let p = nested_paragraph_start.borrow();
+                                                                               match *p {
+                                                                                   true => fail.parse_next(x),
+                                                                                   false => any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
+                                                                               }
+                                                                           },
                                                                            _ => |x: &mut ConundrumInput<'a>| {
                                                                                any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
                                                                            },
                                                                        }.parse_next(nested_input)?;
 
-                                                                       let mut ls = at_line_start.borrow_mut();
 
+
+                                                                       let y = Rc::clone(&at_paragraph_start);
+                                                                       let mut b = y.borrow_mut();
+                                                                       *b = match &inner_res {
+                                                                           ParsedElement::Text(t) => *b && (t == " " || t == "\n" || t == "\t"),
+                                                                           _ => false
+                                                                       };
+
+
+                                                                       drop(b);
+
+                                                                       let mut ls = at_line_start.borrow_mut();
                                                                        *ls = match &inner_res {
                                                                            ParsedElement::Text(t) => t == "\n",
                                                                            _ => false
                                                                        };
+                                                                       drop(ls);
 
                                                                        Ok(inner_res)
                                                                    },

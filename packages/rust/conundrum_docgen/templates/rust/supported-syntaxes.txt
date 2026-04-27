@@ -1,5 +1,4 @@
 // WARN: THiS FILE IS AUTO GENERATED. EDIT THINGS HERE AND YOUR WORK WILL BE LOST.
-use devicons;
 use serde::{Deserialize, Serialize};
 use strum::EnumIter;
 use syntect::parsing::{SyntaxReference, SyntaxSet};

@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 
 /// Just like the `AnyComponentName`, except this is unique where the
 /// AnyComponentName allows for component aliases.
+#[typeshare::typeshare]
 #[derive(Clone, Serialize, Deserialize, uniffi::Enum, Debug, PartialEq, Eq, Hash)]
 #[serde(tag = "tag", content = "content")]
 pub enum AnyComponentKey {

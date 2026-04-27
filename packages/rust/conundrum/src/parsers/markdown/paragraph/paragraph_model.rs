@@ -91,11 +91,6 @@ pub fn markdown_paragraph_line_break(input: &mut ConundrumInput) -> ConundrumMod
                                                                           })
 }
 
-enum ParagraphTerminator {
-    LineEnding,
-    Content(ParsedElement),
-}
-
 pub fn markdown_paragraph(input: &mut ConundrumInput) -> ConundrumModalResult<MarkdownParagraphResult> {
     let start = input.input.checkpoint();
     let (children, terminator) = until_paragraph_breaking_element.parse_next(input).inspect_err(|_| {

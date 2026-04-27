@@ -9,6 +9,7 @@ export type ParsedElement =
 	| { tag: "BlockMath", content: BlockMathResult }
 	| { tag: "InlineMath", content: InlineMathResult }
 	| { tag: "Text", content: string }
+	| { tag: "Hr", content: MarkdownHorizontalRule }
 	| { tag: "BoldText", content: MarkdownBoldTextResult }
 	| { tag: "ItalicText", content: MarkdownItalicTextResult }
 	| { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
@@ -16,6 +17,9 @@ export type ParsedElement =
 	| { tag: "InlineCode", content: InlineCodeResult }
 	| { tag: "MarkdownLink", content: MarkdownLinkResult }
 	| { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
+	| { tag: "UnorderedList", content: UnorderedListModel }
+	| { tag: "OrderedList", content: OrderedListModel }
+	| { tag: "Table", content: MarkdownTable }
 	| { tag: "Emoji", content: EmojiResult }
 	| { tag: "ReactComponentSelfClosing", content: ReactComponentSelfClosingResult }
 	| { tag: "ReactComponentWithChildren", content: ReactComponentWithChildrenResult }
@@ -45,6 +49,10 @@ export type ConundrumBoolean = boolean;
 export type ConundrumFloat = number;
 
 export type ConundrumString = string;
+
+export type DOMId = string;
+
+export type GridColumnProps = GridColumnsMap;
 
 /**
  * A simple utility around the heading depth, 1-6 just to add some convenience
@@ -175,19 +183,12 @@ export interface SizablePropsGroup {
 }
 
 export interface Admonition {
-	title: ConundrumString;
+	title: Children;
+	id: DOMId;
 	children: Children;
 	/**
 	 * The title depth between 1-6 for the markdown output. This will have no
 	 * effect on mdx, jsx, or plain text output. Defaults to 5
-	 * ```rust
-	 * let admonition = Admonition {
-	 * title: vec![],
-	 * children: vec![],
-	 * markdown_title_depth: None
-	 * }
-	 * assert_eq!(admonition.markdown_title_depth, Some(5));
-	 * ```
 	 */
 	markdown_title_depth?: HeadingDepth;
 	emphasis?: Emphasis;
@@ -210,44 +211,57 @@ export interface Admonition {
  * model for if these are wrong, until I can get some stable time on WIFI. I
  * didn't really feel like basically emoji's was the best use of my precious
  * homeless-wifi time.:
+ * 
+ * This defaults to python for code blocks, unless otherwise specified in the
+ * applicat
  */
 export enum SupportedCodeBlockSyntax {
-	PlainText = "Plain Text",
+	Plain_Text = "Plain Text",
 	ASP = "ASP",
 	HTML_ASP = "HTML (ASP)",
 	ActionScript = "ActionScript",
 	AppleScript = "AppleScript",
-	BatchFile = "Batch File",
-	NAntBuildFile = "NAnt Build File",
+	Batch_File = "Batch File",
+	NAnt_Build_File = "NAnt Build File",
 	CSharp = "C#",
 	Cpp = "C++",
 	C = "C",
 	CSS = "CSS",
 	Clojure = "Clojure",
 	D = "D",
+	DMD_Output = "DMD Output",
 	Diff = "Diff",
 	Erlang = "Erlang",
 	HTML_Erlang = "HTML (Erlang)",
+	Git_Attributes = "Git Attributes",
+	Git_Commit = "Git Commit",
+	Git_Common = "Git Common",
+	Git_Config = "Git Config",
+	Git_Ignore = "Git Ignore",
+	Git_Link = "Git Link",
+	Git_Log = "Git Log",
+	Git_Mailmap = "Git Mailmap",
+	Git_Rebase_Todo = "Git Rebase Todo",
 	Go = "Go",
-	GraphvizDOT = "Graphviz (DOT)",
+	Graphviz_DOT = "Graphviz (DOT)",
 	Groovy = "Groovy",
 	HTML = "HTML",
 	Haskell = "Haskell",
-	LiterateHaskell = "Literate Haskell",
-	JavaServerPage = "Java Server Page (JSP)",
-	Java = "Java",
-	JavaDoc = "JavaDoc",
-	JavaProperties = "Java Properties",
+	Literate_Haskell = "Literate Haskell",
 	JSON = "JSON",
+	Java_Server_Page_JSP = "Java Server Page (JSP)",
+	Java = "Java",
+	Javadoc = "Javadoc",
+	Java_Properties = "Java Properties",
 	JavaScript = "JavaScript",
-	RegexJs = "Regular Expressions (Javascript)",
+	Regular_Expressions_Javascript = "Regular Expressions (Javascript)",
 	BibTeX = "BibTeX",
-	LaTeXLog = "LaTeX Log",
+	LaTeX_Log = "LaTeX Log",
 	LaTeX = "LaTeX",
 	TeX = "TeX",
 	Lisp = "Lisp",
 	Lua = "Lua",
-	MakeOutput = "Make Output",
+	Make_Output = "Make Output",
 	Makefile = "Makefile",
 	Markdown = "Markdown",
 	MultiMarkdown = "MultiMarkdown",
@@ -256,37 +270,150 @@ export enum SupportedCodeBlockSyntax {
 	OCamllex = "OCamllex",
 	OCamlyacc = "OCamlyacc",
 	Camlp4 = "camlp4",
-	ObjectiveCpp = "Objective-C++",
-	ObjectiveC = "Objective-C",
-	PHPSource = "PHP Source",
+	Objective_Cpp = "Objective-C++",
+	Objective_C = "Objective-C",
+	PHP_Source = "PHP Source",
 	PHP = "PHP",
+	Regular_Expressions_PHP = "Regular Expressions (PHP)",
 	Pascal = "Pascal",
 	Perl = "Perl",
 	Python = "Python",
-	RegexPython = "Regular Expressions (Python)",
-	RConsole = "R Console",
+	Regular_Expressions_Python = "Regular Expressions (Python)",
+	R_Console = "R Console",
 	R = "R",
-	Rdoc = "Rd (R Documentation)",
+	Rd_R_Documentation = "Rd (R Documentation)",
 	HTML_Rails = "HTML (Rails)",
 	JavaScript_Rails = "JavaScript (Rails)",
-	RubyHaml = "Ruby Haml",
-	RubyOnRails = "Ruby on Rails",
+	Ruby_Haml = "Ruby Haml",
+	Ruby_on_Rails = "Ruby on Rails",
 	SQL_Rails = "SQL (Rails)",
-	Regex = "Regular Expression",
+	Regular_Expression = "Regular Expression",
 	ReStructuredText = "reStructuredText",
 	Ruby = "Ruby",
-	CargoBuildResults = "Cargo Build Results",
+	Cargo_Build_Results = "Cargo Build Results",
 	Rust = "Rust",
 	SQL = "SQL",
 	Scala = "Scala",
-	Bash = "Bourne Again Shell (bash)",
-	GenericUnixShell = "Shell-Unix-Generic",
-	CommandsBuiltinShellBash = "commands-builtin-shell-bash",
-	HTML_TCL = "HTML (Tcl)",
+	Bourne_Again_Shell_bash = "Bourne Again Shell (bash)",
+	Shell_Unix_Generic = "Shell-Unix-Generic",
+	Commands_builtin_shell_bash = "commands-builtin-shell-bash",
+	HTML_Tcl = "HTML (Tcl)",
 	Tcl = "Tcl",
 	Textile = "Textile",
 	XML = "XML",
 	YAML = "YAML",
+	AWK = "AWK",
+	Ada = "Ada",
+	Apache_Conf = "Apache Conf",
+	AsciiDoc_Asciidoctor = "AsciiDoc (Asciidoctor)",
+	ARM_Assembly = "ARM Assembly",
+	Assembly_x86_64 = "Assembly (x86_64)",
+	CMake_C_Header = "CMake C Header",
+	CMake_Cpp_Header = "CMake C++ Header",
+	CMake = "CMake",
+	CMakeCache = "CMakeCache",
+	CMakeCommands = "CMakeCommands",
+	Comma_Separated_Values = "Comma Separated Values",
+	Cabal = "Cabal",
+	CoffeeScript = "CoffeeScript",
+	CpuInfo = "CpuInfo",
+	Crontab = "Crontab",
+	Crystal = "Crystal",
+	Dart = "Dart",
+	Dockerfile = "Dockerfile",
+	DotENV = "DotENV",
+	Elixir = "Elixir",
+	HTML_EEx = "HTML (EEx)",
+	Regular_Expressions_Elixir = "Regular Expressions (Elixir)",
+	Elm_Compile_Messages = "Elm Compile Messages",
+	Elm_Documentation = "Elm Documentation",
+	Elm = "Elm",
+	Email = "Email",
+	FSharp = "F#",
+	Fish = "Fish",
+	Fortran_Fixed_Form = "Fortran (Fixed Form)",
+	Fortran_Modern = "Fortran (Modern)",
+	Fortran_Namelist = "Fortran Namelist",
+	GFortran_Build_Results = "GFortran Build Results",
+	OpenMP_Fortran = "OpenMP (Fortran)",
+	Fstab = "fstab",
+	GLSL = "GLSL",
+	GraphQL = "GraphQL",
+	Groff_troff = "Groff/troff",
+	Group = "group",
+	HTML_Twig = "HTML (Twig)",
+	Hosts = "hosts",
+	INI = "INI",
+	JavaScript_Babel = "JavaScript (Babel)",
+	HTML_Jinja2 = "HTML (Jinja2)",
+	Jinja2 = "Jinja2",
+	Jsonnet = "jsonnet",
+	Julia = "Julia",
+	Kotlin = "Kotlin",
+	Less = "Less",
+	LLVM = "LLVM",
+	Lean = "Lean",
+	LiveScript = "LiveScript",
+	Manpage = "Manpage",
+	MediawikerPanel = "MediawikerPanel",
+	MediaWiki = "MediaWiki",
+	MemInfo = "MemInfo",
+	Nginx = "nginx",
+	Nim = "Nim",
+	Ninja = "Ninja",
+	Nix = "Nix",
+	Orgmode = "orgmode",
+	Passwd = "passwd",
+	PowerShell = "PowerShell",
+	Protocol_Buffer = "Protocol Buffer",
+	Protocol_Buffer_TEXT = "Protocol Buffer (TEXT)",
+	Puppet = "Puppet",
+	PureScript = "PureScript",
+	QML = "QML",
+	Racket = "Racket",
+	Rego = "Rego",
+	RequirementsDottxt = "Requirements.txt",
+	Resolv = "resolv",
+	Robot_Framework = "Robot Framework",
+	SCSS = "SCSS",
+	Sass = "Sass",
+	Salt_State_SLS = "Salt State (SLS)",
+	SML = "SML",
+	Ruby_Slim = "Ruby Slim",
+	Strace = "Strace",
+	Stylus = "Stylus",
+	Solidity = "Solidity",
+	Vyper = "Vyper",
+	JQ = "JQ",
+	Svelte = "Svelte",
+	Swift = "Swift",
+	SystemVerilog = "SystemVerilog",
+	Navigational_Bar_SV = "Navigational Bar SV",
+	TOML = "TOML",
+	JSON_Terraform = "JSON (Terraform)",
+	Terraform = "Terraform",
+	TodoDottxt = "Todo.txt",
+	TypeScript = "TypeScript",
+	TypeScriptReact = "TypeScriptReact",
+	Verilog = "Verilog",
+	VimHelp = "VimHelp",
+	VimL = "VimL",
+	Vue_Component = "Vue Component",
+	Zig = "Zig",
+	Command_Help = "Command Help",
+	Gnuplot = "gnuplot",
+	HTTP_Request_and_Response = "HTTP Request and Response",
+	Log = "log",
+	Highlight_non_printables = "Highlight non-printables",
+	Authorized_Keys = "Authorized Keys",
+	Known_Hosts = "Known Hosts",
+	Private_Key = "Private Key",
+	SSH_Common = "SSH Common",
+	SSH_Config = "SSH Config",
+	SSH_Crypto = "SSH Crypto",
+	SSHD_Config = "SSHD Config",
+	Syslog = "syslog",
+	Varlink = "varlink",
 	ConundrumAi = "conundrum-ai",
 	Dictionary = "dictionary",
 }
@@ -297,6 +424,7 @@ export interface ParsedCodeBlock {
 	depth: number;
 	content: string;
 	full_match: string;
+	id: DOMId;
 }
 
 export interface AiSerializationRequestPhase1 {
@@ -315,13 +443,34 @@ export interface BlockQuoteResult {
 	 * Nesting is handled recursively: a `> > ...` line becomes a
 	 * `BlockQuote` variant inside this `Vec`.
 	 */
-	children: ParsedElement[];
+	children: Children;
 	/** The full original source text that was consumed. */
 	full_match: string;
 }
 
+/**
+ * Just a simple card with a title, a body, and an optional description. It can
+ * be used as a way to segment your notes without making anything stand out
+ * _too_ much.
+ * 
+ * ## Example Usage
+ * 
+ * ```jsx
+ * <Card title="My card's title">
+ * My card's body goes here.
+ * </Card>
+ * ```
+ * 
+ * And you can include an optional description if you like:
+ * 
+ * ```jsx
+ * <Card title="My card's title" desc="My card's description here">
+ * My card's body goes here.
+ * </Card>
+ * ```
+ */
 export interface Card {
-	title: ConundrumString;
+	title: Children;
 	subtitle?: ConundrumString;
 	children: Children;
 	/**
@@ -338,6 +487,8 @@ export interface Card {
 	 * ```
 	 */
 	markdown_title_depth?: HeadingDepth;
+	sizable?: SizablePropsGroup;
+	center_body?: ConundrumBoolean;
 }
 
 export interface CitationResult {
@@ -393,6 +544,19 @@ export interface ConundrumError {
 	purpose?: ConundrumErrorPurpose;
 }
 
+export type ParsedJavascriptElement = 
+	| { tag: "Boolean", content: JavascriptBooleanResult }
+	| { tag: "Number", content: JavascriptNumberResult }
+	| { tag: "String", content: JavascriptStringResult }
+	| { tag: "Object", content: JavascriptObjectResult }
+	| { tag: "KeyValuePair", content: JavascriptObjectKeyValuePair }
+	| { tag: "Function", content: JavascriptFunction };
+
+export interface ConundrumFunction {
+	parameters: ParsedJavascriptElement[];
+	javascript_body: string;
+}
+
 export interface ConundrumObject {
 	data: DashMap<string, ParsedElement>;
 }
@@ -412,6 +576,11 @@ export interface EmojiData {
 	svg: string;
 }
 
+/**
+ * This allows you to explore the twemoji set of ~4800 emojis, but don't embed
+ * this directly. This is automatically embedded in the docs container when you
+ * use the `Emoji??` documentation flag.
+ */
 export interface EmojiDocsDemo {
 }
 
@@ -441,7 +610,7 @@ export interface EmojiResult {
 	 * properties will apply styles that will more reliably shape the
 	 * underlying image.
 	 */
-	sizable: SizablePropsGroup;
+	sizable?: SizablePropsGroup;
 	/** Default: "small", text sized. */
 	size?: SizableOption;
 }
@@ -456,11 +625,9 @@ export interface EmojiSearchResults {
  * ## Example Usage
  * 
  * ```mdx
- * <EqRef id="my-equation" anchor>
- * $$
+ * $$ {#my-equation}
  * e=mc^2
  * $$
- * </EqRef>
  * 
  * yada, yada, yada, My equation <EqRef id="my-equation" /> is awesome...
  * ```
@@ -527,23 +694,6 @@ export interface FrontMatterResult {
 	summary?: string;
 }
 
-export type GridColumnPropUnion = 
-	| { tag: "Number", content: ConundrumInt }
-	| { tag: "String", content: ConundrumString };
-
-export interface GridColumnGroup {
-	none?: GridColumnPropUnion;
-	small?: GridColumnPropUnion;
-	smedium?: GridColumnPropUnion;
-	medium?: GridColumnPropUnion;
-	large?: GridColumnPropUnion;
-	xl?: GridColumnPropUnion;
-	xxl?: GridColumnPropUnion;
-	full?: GridColumnPropUnion;
-	fit?: ConundrumBoolean;
-	responsive?: ConundrumBoolean;
-}
-
 /**
  * When a component is rendered in a markdown environment, apply these styles
  * if the more complex rendering strategies are not available.
@@ -574,23 +724,41 @@ export interface Hint {
 	 * that the fragment syntax won't work and markdown may or may not work in
 	 * the label. Default: "hint".
 	 */
-	label?: ConundrumString;
+	label?: Children;
 	children: Children;
 	emphasis: Emphasis;
+	sizable?: SizablePropsGroup;
 	markdown_title_depth?: HeadingDepth;
 }
 
+/**
+ * ## Example Usage
+ * 
+ * This component unlike most others does not rely on conundrum's jsx-like
+ * syntax, but has it's own syntax:
+ * 
+ * ```mdx
+ * Some paragraph here...
+ * 
+ * --- My section title ---
+ * 
+ * Some other paragraph here.
+ * ```
+ * 
+ * You can still use the component as a regular Conundrum component if you like
+ * though:
+ * 
+ * ```jsx
+ * <Hr> My section title </Hr>
+ * ```
+ */
 export interface HrWithChildrenResult {
 	children: Children;
 }
 
-export type CodeBlockLanguage = 
-	| { tag: "DefaultLanguage", content?: undefined }
-	| { tag: "UserProvided", content: string };
-
 export interface InlineCodeResult {
 	content: string;
-	lang: CodeBlockLanguage;
+	lang: SupportedCodeBlockSyntax;
 }
 
 export interface InlineMathResult {
@@ -600,14 +768,6 @@ export interface InlineMathResult {
 export interface JavascriptBooleanResult {
 	value: boolean;
 }
-
-export type ParsedJavascriptElement = 
-	| { tag: "Boolean", content: JavascriptBooleanResult }
-	| { tag: "Number", content: JavascriptNumberResult }
-	| { tag: "String", content: JavascriptStringResult }
-	| { tag: "Object", content: JavascriptObjectResult }
-	| { tag: "KeyValuePair", content: JavascriptObjectKeyValuePair }
-	| { tag: "Function", content: JavascriptFunction };
 
 export interface JavascriptFunction {
 	parameters: ParsedJavascriptElement[];
@@ -660,9 +820,9 @@ export interface MarkdownHeadingResult {
 	 * lists will skip a depth.
 	 */
 	tab_depth: number;
-	children: ParsedElement[];
-	subtitle?: ParsedElement[];
-	id: ConundrumString;
+	children: Children;
+	subtitle?: Children;
+	id: DOMId;
 }
 
 /**
@@ -681,12 +841,16 @@ export interface MarkdownItalicTextResult {
 }
 
 export interface MarkdownLinkResult {
-	text: string;
+	text: Children;
 	url: string;
 }
 
 export interface MarkdownParagraphResult {
-	children: ParsedElement[];
+	children: Children;
+	terminator: ParsedElement;
+}
+
+export interface MarkdownTable {
 }
 
 /** The 'math' is embedded in `.jsx` as a child. */
@@ -733,7 +897,15 @@ export interface MdxParsingResult {
 	 */
 	eq_ref_map: Record<string, number>;
 	warnings: ConundrumError[];
-	included_components: string[];
+	included_components: AnyComponentKey[];
+}
+
+export interface OrderedListItem {
+	content: Children;
+}
+
+export interface OrderedListModel {
+	items: OrderedListItem[];
 }
 
 export interface PaginationParams {
@@ -752,50 +924,17 @@ export interface PaginationParams {
  * work.
  */
 export enum ConundrumModifier {
-	/**
-	 * This might as well be called `TargetMarkdown`, but this was created
-	 * before the idea of 'targets' came to be merged with 'modifiers' and I'm
-	 * in too much of a hurry to change it now.
-	 * 
-	 * As with the `.PreferInlineMarkdownSyntax` flag, many components allow
-	 * you to customize the bahavior of each component:
-	 * 
-	 * ```jsx
-	 * <Card
-	 * title="My title"
-	 * /// Set the heading title depth.
-	 * markdownHeading={3}
-	 * >
-	 * ...
-	 * </Card>
-	 * ```
-	 */
-	PreferMarkdownSyntax = "PreferMarkdownSyntax",
-	/** Hide the emojis completely for platforms that don't support them. */
 	HideEmojis = "HideEmojis",
 	/**
-	 * Curretly does pretty much the same thing as .PreferMarkdownSyntax, but
-	 * once the markdown parser has been completely migrated this will stop
-	 * things like wrapping the outermost block in a paragraph.
+	 * The goal with this flag is to make **some** components collapsable to be
+	 * inline, even when they traditionally are not. This will likely be
+	 * buggy, producing some good output in some cases but some
+	 * questionable output in others.
 	 * 
-	 * The goal with this is to behave much like SwiftUI's markdown support,
-	 * with the ability to render only inline markdown for things like
-	 * titles where a full `Admonition` wouldn't make sense.
-	 * 
-	 * Keep in mind that many components allow you to customize the
-	 * **markdown** output as well as the html/js output. You can do the
-	 * following:
-	 * 
-	 * ```jsx
-	 * <Hl markdown="italic" highlight>My text</Hl>
-	 * ```
+	 * As the list of component properties grows, this output will become
+	 * customizable directly in your note.
 	 */
 	PreferInlineMarkdownSyntax = "PreferInlineMarkdownSyntax",
-	/**
-	 * Useful for search related features, being able to match text without
-	 * markdown syntax interfering. Not super useful for much else.
-	 */
-	ForcePlainText = "ForcePlainText",
 	/**
 	 * This is really only useful for when your environment can't support any
 	 * other output format.
@@ -815,27 +954,10 @@ export enum ConundrumModifier {
 	/** Don't touch the code blocks, just return them exactly as is. */
 	CodeBlocksAsIs = "CodeBlocksAsIs",
 	/**
-	 * Leave the markdown output mostly alone and render to mdx instead of jsx.
-	 * This is a super easy gateway for developers to build around
-	 * Conundrum as the compile target is **super** forgiving.
-	 * 
-	 * This is the default target for now, but the current goal is to finish
-	 * rest of the parser, which would make the dependence on mdx obsolete.
+	 * This is like extra beta... but will eventually output standalone html
+	 * files capable of rendering a note outside of any application.
 	 */
-	TargetMdx = "TargetMdx",
-	/**
-	 * This is the goal, but this is still _super_ buggy and should in no way
-	 * be used in any application that you expect someone to actually use,
-	 * but we'll get there...
-	 */
-	TargetJsx = "TargetJsx",
-	/**
-	 * This is even more of a futuristic goal, but for ultimate performance we
-	 * can even leave behind React. There are other priorities for now, but
-	 * this is something that will naturally come together as the framework
-	 * progresses.
-	 */
-	TargetHtmlJs = "TargetHtmlJs",
+	Standalone = "Standalone",
 }
 
 export enum EmbeddableComponentName {
@@ -858,13 +980,30 @@ export enum EmbeddableComponentName {
 }
 
 export enum SupportedCodeBlockTheme {
-	InspiredGitHub = "InspiredGitHub",
+	ThirteenThirtySeven = "1337",
+	ColdarkCold = "Coldark-Cold",
+	ColdarkDark = "Coldark-Dark",
+	Darkneon = "DarkNeon",
+	Dracula = "Dracula",
+	Github = "GitHub",
+	MonokaiExtended = "Monokai Extended",
+	MonokaiExtendedBright = "Monokai Extended Bright",
+	MonokaiExtendedLight = "Monokai Extended Light",
+	MonoakaiExtendedOrigin = "Monokai Extended Origin",
+	Nord = "Nord",
+	Onehalfdark = "OneHalfDark",
+	Onehalflight = "OneHalfLight",
 	SolarizedDark = "Solarized (dark)",
 	SolarizedLight = "Solarized (light)",
-	Base16_80sDark = "base16-eighties.dark",
-	Base16_MochaDark = "base16-mocha.dark",
-	Base16_OceanDark = "base16-ocean.dark",
-	Base16_OceanLight = "base16-ocean.light",
+	SublimeSnazzy = "Sublime Snazzy",
+	Twodark = "TwoDark",
+	VisualStudioDarkPlus = "Visual Studio Dark+",
+	Ansi = "ansi",
+	Base16 = "base16",
+	Base16_256 = "base16-256",
+	GruvboxDark = "gruvbox-dark",
+	GruvboxLight = "gruvbox-light",
+	Zenburn = "zenburn",
 }
 
 export interface UIParams {
@@ -873,6 +1012,14 @@ export interface UIParams {
 	font_scalar: number;
 	math_font_scalar: number;
 	syntax_theme?: SupportedCodeBlockTheme;
+}
+
+export enum ConundrumCompileTarget {
+	Jsx = "Jsx",
+	Html = "Html",
+	Markdown = "Markdown",
+	PlainText = "PlainText",
+	Mdx = "Mdx",
 }
 
 /** This is the core 'input' for Conundrum. */
@@ -903,8 +1050,16 @@ export interface ParseConundrumOptions {
 	 */
 	hide_components: EmbeddableComponentName[];
 	ui_params: UIParams;
+	target: ConundrumCompileTarget;
+	trusted: boolean;
 }
 
+/**
+ * ## Template (HTML)
+ * ```askama
+ * <sup data-cdrm-cit-key="{{key}}">{{idx + 1}}</sup>
+ * ```
+ */
 export interface ParsedCitation {
 	key: string;
 	full_match: string;
@@ -922,7 +1077,7 @@ export interface ParsedOutgoingNoteLink {
 	/** The user-defined id of the note which is being linked to. */
 	note_id: string;
 	/** The text content of the link. `[The stuff here](note:MyNote)` */
-	content: string;
+	content: Children;
 	/**
 	 * The full content of the input string that represents this outgoing note
 	 * link.
@@ -930,6 +1085,13 @@ export interface ParsedOutgoingNoteLink {
 	full_match: string;
 }
 
+/**
+ * # Template (HTML)
+ * 
+ * ```askama
+ * <span class="bg-primary hover:bg-primary/80 transition-colors duration-300 cursor-pointer text-primary-foreground rounded p-1 py-0.5">#{{body}}</span>
+ * ```
+ */
 export interface ParsedTag {
 	/** The tag's body */
 	body: string;
@@ -964,14 +1126,42 @@ export interface ReactComponentWithChildrenResult {
 	component: ConundrumComponentType;
 }
 
-export type GridColumnProps = 
-	| { tag: "ByColumn", content: GridColumnGroup }
-	| { tag: "Generalized", content: ConundrumInt };
+export type NumberOrSizable = 
+	| { tag: "Sizable", content: SizableOption }
+	| { tag: "Number", content: ConundrumNumber };
 
+/**
+ * ## Example Usage
+ * 
+ * ```tsx
+ * <Grid small={1} large={2}>
+ * <Container>
+ * My item one
+ * </Container>
+ * <Container>
+ * My item one
+ * </Container>
+ * </Grid>
+ * ```
+ * Or if you don't need responsiveness:
+ * ```tsx
+ * <Grid columns={2}>
+ * <Container>
+ * My item one
+ * </Container>
+ * <Container>
+ * My item one
+ * </Container>
+ * </Grid>
+ * ```
+ */
 export interface ResponsiveGrid {
 	sizable?: SizablePropsGroup;
-	columns?: GridColumnProps;
+	columns: GridColumnProps;
 	children: Children;
+	responsive?: NumberOrSizable;
+	fit?: ConundrumBoolean;
+	emphasis?: Emphasis;
 }
 
 export interface StringUnion {
@@ -989,10 +1179,12 @@ export interface Tab {
 	 */
 	id?: ConundrumString;
 	children: Children;
+	initial?: ConundrumBoolean;
 }
 
 export interface TableOfContents {
 	expanded?: ConundrumBoolean;
+	id: DOMId;
 }
 
 /**
@@ -1023,6 +1215,7 @@ export interface TableOfContents {
 export interface TabsGroup {
 	/** The styles applied to the active tab. Default: `.card` */
 	emphasis?: Emphasis;
+	subtle: ConundrumBoolean;
 	/**
 	 * The `Tabs` component extends the `SizablePropsGroup` struct, but be
 	 * careful... you're getting into the struggles of a developer now as
@@ -1034,6 +1227,7 @@ export interface TabsGroup {
 	 */
 	sizable?: SizablePropsGroup;
 	children: Children;
+	id: DOMId;
 }
 
 export interface TitleGroup {
@@ -1045,15 +1239,35 @@ export interface Underline {
 	children: Children;
 	/** Default: .highlight */
 	emphasis: Emphasis;
+	thin?: ConundrumBoolean;
+	thick?: ConundrumBoolean;
 	/** Default: .Plain */
 	markdown?: InlineMarkdownOverride;
 }
 
 /**
- * > Note that the `label` property can also be changed from it's default
- * > 'Hint' to any string.
+ * ## Example Usage
  * 
- * 
+ * ```mdx
+ * - My normal list item
+ * - My cool item's heading
+ * My cool list item's body, indented either 2 spaces or 1 tab.
+ * Unlike other markdown based parsers, Conundrum seperates the list
+ * item's body from it's content in the AST, letting developers treat
+ * each piece of data accordingly.
+ * - This will be a nested item, indented 4 spaces.
+ * ```
+ */
+export interface UnorderedListItem {
+	heading: Children;
+	body?: Children;
+}
+
+export interface UnorderedListModel {
+	items: UnorderedListItem[];
+}
+
+/**
  * The `Container` component is an intentionally almost entirely unstyled
  * component that accepts most of the _generic_ properties accepted elsewhere.
  * This means that it takes an optional `Emphasis` as a boolean, and all of the
@@ -1088,6 +1302,10 @@ export enum AutoInsertedComponentName {
 	AutoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph",
 }
 
+export type CodeBlockLanguage = 
+	| { tag: "DefaultLanguage", content?: undefined }
+	| { tag: "UserProvided", content: string };
+
 /**
  * To enforce some uniformity and ease-of-use between components, this enum
  * represents a list of commonly used property keys. The code itself doesn't
@@ -1101,6 +1319,9 @@ export enum CommonComponentPropertyKey {
 
 export type ConundrumErrorVariant = 
 	| { tag: "MultiThreadingError", content?: undefined }
+	| { tag: "KeyNotFound", content?: undefined }
+	| { tag: "EmbeddedDataNotFound", content?: undefined }
+	| { tag: "TerminatorNotFound", content?: undefined }
 	| { tag: "FailToFindTitleGroup", content?: undefined }
 	| { tag: "FailToFindComponent", content: string }
 	| { tag: "FailToGenerateString", content?: undefined }
@@ -1112,7 +1333,9 @@ export type ConundrumErrorVariant =
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }
 	| { tag: "String", content: ConundrumString }
-	| { tag: "Bool", content: ConundrumBoolean };
+	| { tag: "Bool", content: ConundrumBoolean }
+	| { tag: "Object", content: ConundrumObject }
+	| { tag: "Function", content: ConundrumFunction };
 
 export enum DocumentationComponentName {
 	InContentDocumentationContainer = "InContentDocumentationContainer",
@@ -1140,11 +1363,22 @@ export enum EmbeddableComponentId {
 	AINoteSummary = "ai-note-summary",
 }
 
+/**
+ * The code representation of the `?` or `??` flag. When you apply a `?` it
+ * sets the documentation to `.Short`, and `.Full` when you apply 2 `??`.
+ */
 export enum InContentDocumentationFormat {
 	Full = "full",
 	Short = "short",
 }
 
+/**
+ * These are all of the keys that are available for documentation, apart from
+ * component specific documentation.
+ * 
+ * The `Components??` flag described here will print a list of documented
+ * components, which you can look into for further docs.
+ */
 export enum InContentDocumentationId {
 	Markdown = "Markdown",
 	Docs = "Docs",
