@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use conundrum::testing::get_workspace_root_duplicate::get_workspace_root;
+use crate::workspace_utils::get_workspace_root_duplicate::get_workspace_root;
 
 pub fn write_public_font_file<C: AsRef<[u8]>>(content: C, sub_path: &str) {
     let paths = vec!["packages/webviews/bib_entry_details_webview/public",
@@ -21,7 +21,7 @@ pub fn write_public_font_file<C: AsRef<[u8]>>(content: C, sub_path: &str) {
 
 #[cfg(test)]
 mod tests {
-    use conundrum::output::html::glue::individual_glue_assets::lucide_font::{self, LucideFontAsset};
+    use conundrum::output::html::glue::individual_glue_assets::lucide_font::LucideFontAsset;
 
     use super::*;
 

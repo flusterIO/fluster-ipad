@@ -1463,6 +1463,7 @@ version = "0.0.1"
 dependencies = [
  "askama 0.15.6",
  "conundrum",
+ "strum 0.27.2",
  "strum_macros 0.27.2",
  "tabled",
  "tokio",
@@ -2911,6 +2912,8 @@ dependencies = [
  "ignore",
  "serde",
  "serde_json",
+ "strum 0.27.2",
+ "strum_macros 0.27.2",
  "tokio",
 ]
 

@@ -20,6 +20,7 @@ use crate::{
            Copy,
            EnumIter,
            Serialize,
+           Default,
            Deserialize,
            uniffi::Enum)]
 pub enum EmbeddableComponentId {
@@ -43,6 +44,7 @@ pub enum EmbeddableComponentId {
     Grid,
     #[serde(rename = "util-container")]
     #[strum(to_string = "util-container")]
+    #[default]
     UtlityContainer,
     #[serde(rename = "hr-with-children")]
     #[strum(to_string = "hr-with-children")]

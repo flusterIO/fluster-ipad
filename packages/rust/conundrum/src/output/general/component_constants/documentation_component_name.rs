@@ -8,10 +8,11 @@ use typeshare::typeshare;
 use crate::lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant};
 
 #[typeshare]
-#[derive(Display, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize, Debug, uniffi::Enum, Clone)]
+#[derive(Display, EnumIter, Default, Hash, PartialEq, Eq, Serialize, Deserialize, Debug, uniffi::Enum, Clone)]
 pub enum DocumentationComponentName {
     #[serde(rename = "InContentDocumentationContainer")]
     #[strum(to_string = "InContentDocumentationContainer")]
+    #[default]
     InContentDocumentationContainer,
     #[serde(rename = "InContentDocsEmphasisTypeList")]
     #[strum(to_string = "InContentDocsEmphasisTypeList")]

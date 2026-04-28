@@ -1,10 +1,10 @@
 use askama::Template;
-use conundrum::{
-    lang::runtime::queries::code::get_supported_syntaxes::{SupportedThemeItem, get_supported_syntaxes},
-    testing::get_workspace_root::get_workspace_root,
-};
+use conundrum::lang::runtime::queries::code::get_supported_syntaxes::get_supported_syntaxes;
 
-use crate::methods::write_supported_syntaxes::SupportedThemeEnumVariant;
+use crate::{
+    methods::write_supported_syntaxes::SupportedThemeEnumVariant,
+    workspace_utils::get_workspace_root_duplicate::get_workspace_root,
+};
 
 #[derive(Template)]
 #[template(ext = "txt", escape = "none", path = "rust/supported-syntaxes.txt")]

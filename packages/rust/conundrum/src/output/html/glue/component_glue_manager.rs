@@ -1,24 +1,45 @@
 use crate::output::{
     general::component_constants::{
         auto_inserted_component_name::AutoInsertedComponentName, component_ids::EmbeddableComponentId,
-        documentation_component_name::DocumentationComponentName,
+        component_names::EmbeddableComponentName, documentation_component_name::DocumentationComponentName,
     },
     html::glue::webglue_general_files::WebGlueCodeGeneralFiles,
 };
 use dashmap::DashMap;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
+use strum::{EnumDiscriminants, EnumIter, IntoEnumIterator};
 
 /// Just like the `AnyComponentName`, except this is unique where the
 /// AnyComponentName allows for component aliases.
 #[typeshare::typeshare]
-#[derive(Clone, Serialize, Deserialize, uniffi::Enum, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Serialize, EnumIter, Deserialize, uniffi::Enum, Debug, PartialEq, Eq, Hash)]
 #[serde(tag = "tag", content = "content")]
 pub enum AnyComponentKey {
     AutoInserted(AutoInsertedComponentName),
     Embeddable(EmbeddableComponentId),
     General(WebGlueCodeGeneralFiles),
     Docs(DocumentationComponentName),
+}
+
+impl AnyComponentKey {
+    pub fn get_all() -> Vec<AnyComponentKey> {
+        let mut items: Vec<AnyComponentKey> = Vec::new();
+        for k in AutoInsertedComponentName::iter() {
+            items.push(AnyComponentKey::AutoInserted(k))
+        }
+        for k in EmbeddableComponentId::iter() {
+            items.push(AnyComponentKey::Embeddable(k))
+        }
+        for k in WebGlueCodeGeneralFiles::iter() {
+            items.push(AnyComponentKey::General(k))
+        }
+        for k in DocumentationComponentName::iter() {
+            items.push(AnyComponentKey::Docs(k))
+        }
+
+        items
+    }
 }
 
 lazy_static! {

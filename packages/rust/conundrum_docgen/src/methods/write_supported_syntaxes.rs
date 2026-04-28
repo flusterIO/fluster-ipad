@@ -1,11 +1,10 @@
 use std::fmt::Display;
 
 use askama::{Result, Template};
-use conundrum::{
-    lang::runtime::queries::code::get_supported_syntaxes::get_supported_syntaxes,
-    testing::get_workspace_root::get_workspace_root,
-};
+use conundrum::lang::runtime::queries::code::get_supported_syntaxes::get_supported_syntaxes;
 use tabled::{Table, settings::Style};
+
+use crate::workspace_utils::get_workspace_root_duplicate::get_workspace_root;
 
 #[derive(Clone, tabled::Tabled)]
 pub struct SupportedThemeEnumVariant {

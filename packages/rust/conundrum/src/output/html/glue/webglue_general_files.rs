@@ -1,10 +1,22 @@
 use serde::{Deserialize, Serialize};
+use strum::EnumIter;
 
 #[typeshare::typeshare]
-#[derive(strum_macros::Display, Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Hash, uniffi::Enum)]
+#[derive(strum_macros::Display,
+           EnumIter,
+           Default,
+           Debug,
+           Serialize,
+           Deserialize,
+           Clone,
+           PartialEq,
+           Eq,
+           Hash,
+           uniffi::Enum)]
 pub enum WebGlueCodeGeneralFiles {
     #[serde(rename = "styles.css")]
     #[strum(to_string = "styles.css")]
+    #[default]
     Styles,
     #[serde(rename = "katex.min.css")]
     #[strum(to_string = "katex.min.css")]

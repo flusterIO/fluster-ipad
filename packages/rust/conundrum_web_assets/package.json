@@ -1,0 +1,17 @@
+{
+    "name": "@conundrum/web_static_assets",
+    "files": [
+        "src"
+    ],
+    "exports": {
+        ".": {
+            "require": "./src/js/combined_component_glue.js",
+            "import": "./src/js/combined_component_glue.js"
+        },
+        "./styles.css": {
+            "require": "./src/css/combined_component_glue.css",
+            "import": "./src/css/combined_component_glue.css"
+        }
+    },
+    "packageManager": "pnpm@10.30.3"
+}

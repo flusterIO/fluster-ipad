@@ -8,7 +8,7 @@ use typeshare::typeshare;
 use crate::lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant};
 
 #[typeshare]
-#[derive(Display, Debug, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize, Clone, uniffi::Enum)]
+#[derive(Display, Default, Debug, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize, Clone, uniffi::Enum)]
 pub enum AutoInsertedComponentName {
     #[serde(rename = "NoteLink")]
     #[strum(to_string = "NoteLink")]
@@ -43,6 +43,7 @@ pub enum AutoInsertedComponentName {
     AutoInsertedMarkdownLink,
     #[serde(rename = "AutoInsertedMarkdownParagraph")]
     #[strum(to_string = "AutoInsertedMarkdownParagraph")]
+    #[default]
     AutoInsertedMarkdownParagraph,
 }
 

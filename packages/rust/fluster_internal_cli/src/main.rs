@@ -23,6 +23,7 @@ enum Commands {
         file_path: String,
         output: String,
     },
+    WriteGlueCode {},
 }
 
 #[tokio::main]
@@ -37,6 +38,10 @@ async fn main() {
         Some(Commands::ParseConundrum { file_path,
                                         output, }) => {
             let _ = parse_conundrum(file_path.as_str(), output.as_str()).await;
+        }
+        Some(Commands::WriteGlueCode {}) => {
+            commands::write_combined_glue_code::write_combined_javascript_glue_code();
+            commands::write_combined_glue_code::write_combined_css_glue_code();
         }
         // Some(Commands::Calculate { num1, num2 }) => {
         //     println!("{} + {} = {}", num1, num2, num1 + num2);

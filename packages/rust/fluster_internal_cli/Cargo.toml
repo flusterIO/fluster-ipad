@@ -14,6 +14,8 @@ serde.workspace = true
 serde_json.workspace = true
 conundrum = { path = "../conundrum/" }
 tokio = { version = "1.0", features = ["full"] }
+strum.workspace = true
+strum_macros.workspace = true
 
 # [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 # [target.'cfg(target_arch = "wasm32")'.dependencies]

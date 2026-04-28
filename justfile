@@ -13,6 +13,9 @@ set dotenv-load := true
 docgen:
 	cargo run --bin conundrum_docgen
 
+write_javascript_glue:
+	./target/debug/fluster_internal_cli write-glue-code
+
 run_when_online:
 	zsh {{justfile_directory()}}/scripts/when_online.zsh
 
