@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, type ReactNode } from "react";
+import React, { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import { SplitViewEditorInner } from "./split_view_editor";
 import { MdxEditorPreviewOnly } from "#/mdx/components/mdx_content_preview_only";
 import { LoadingComponent } from "@/shared_components/loading_component";
@@ -9,6 +9,7 @@ import { WebviewImplementation, EditorView, SplitviewEditorWebviewActions, type 
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { connect } from 'react-redux';
 import { setBibtexEditorWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/bibtex_editor_swift_events";
+
 
 setBibtexEditorWindowBridgeFunctions();
 

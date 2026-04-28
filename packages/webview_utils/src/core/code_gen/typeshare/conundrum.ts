@@ -974,10 +974,20 @@ export enum ConundrumModifier {
 	/** Don't touch the code blocks, just return them exactly as is. */
 	CodeBlocksAsIs = "CodeBlocksAsIs",
 	/**
-	 * This is like extra beta... but will eventually output standalone html
-	 * files capable of rendering a note outside of any application.
+	 * Output a standalone application capable of being viewed completely
+	 * offline, with all fonts, javascript and rendered math embedded directly
+	 * into a single html file.
 	 */
 	Standalone = "Standalone",
+	/**
+	 * This is currently required in React environments to work around the
+	 * React render cycle. Since almost everything is wrapepd in a series
+	 * of iiife's, kind of working like React's useEffect hook, embedding
+	 * the javascript as a script tag will ensure that the components
+	 * all have the proper listeners applied. So far it comes out to only about
+	 * 200 lines of javascript.
+	 */
+	EmbedJavascript = "EmbedJavascript",
 }
 
 export enum EmbeddableComponentName {
@@ -1356,6 +1366,16 @@ export type ConundrumLogicToken =
 	| { tag: "Bool", content: ConundrumBoolean }
 	| { tag: "Object", content: ConundrumObject }
 	| { tag: "Function", content: ConundrumFunction };
+
+export enum ConundrumWebEvents {
+	/**
+	 * Useful for things like resizable pains, to more easily emit your own
+	 * resize event that Conundrum will handle to update the components
+	 * accordingly.
+	 */
+	ManualResize = "cdrm-manual-resize",
+	CdrmContentLoaded = "cdrm-content-loaded",
+}
 
 export enum DocumentationComponentName {
 	InContentDocumentationContainer = "InContentDocumentationContainer",

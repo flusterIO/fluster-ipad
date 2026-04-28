@@ -7,15 +7,17 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-                parse_state::ConundrumCompileTarget,
+                parse_state::{ConundrumCompileTarget, ConundrumModifier},
             },
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
                 html_js_component_result::HtmlJsComponentResult,
+                state_modifier::ConundrumStateModifier,
             },
         },
     },
     output::html::{
+        app_and_asset_embedded::app_and_asset_embedded_templ,
         glue::gather_glue_assets::{WebGlueAssetData, get_glue_asset_data},
         standalone::standalone_template::StandaloneTemplate,
     },
@@ -72,6 +74,13 @@ impl ConundrumDocument {
     /// - [x] Embeds component javascript conditionally
     /// - [x] Embeds component css conditionally
     ///
+    /// ## Requirements for app-embedded functionality
+    /// - [x] Generate a standalone javascript file (handled by the internal_cli
+    ///   crate)
+    /// - [x] Generate a standalone css file (handled by the internal_cli crate)
+    /// - [ ] Embed component level javascript when the `EmbedJs`
+    ///   ConundrumModifier is applied
+    ///
     /// ### If I'm lucky...
     /// - [x] Multi-threaded compilation
     /// - [ ] Mutli-threaded parsing. I'm not sure if this is even doable, but
@@ -96,6 +105,20 @@ impl ConundrumDocument {
     }
 
     pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
-        self.compile_multithreaded(Arc::clone(&params))
+        let state = params.read_arc();
+        if state.contains_modifier(&ConundrumModifier::EmbedJavascript) {
+            let glue = self.get_glue(Arc::clone(&params));
+            let content = self.compile_multithreaded(Arc::clone(&params))?;
+
+            let templ = app_and_asset_embedded_templ::AppAndAssetEmbedded { content,
+                                                                            js: glue.js,
+                                                                            css: Some(glue.css) };
+            templ.render().map_err(|e| {
+                        eprintln!("Error: {:#?}", e);
+                        ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                    })
+        } else {
+            self.compile_multithreaded(Arc::clone(&params))
+        }
     }
 }

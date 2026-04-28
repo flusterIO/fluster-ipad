@@ -84,7 +84,6 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
   public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
 
   private func getMimeType(for ext: String) -> String {
-    print("Extension: \(ext.lowercased())")
     // WHENONLINE: Check to make sure that this woff field is right. Need to handle passing of fonts to front-end here.
     switch ext.lowercased() {
       case "wasm": return "application/wasm"

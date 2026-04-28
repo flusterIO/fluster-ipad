@@ -11,7 +11,11 @@ members = [
     "packages/rust/fluster_desktop_fs/",
     "packages/rust/fluster_bibliography",
     "packages/rust/conundrum_lsp",
-    "packages/rust/conundrum_cli", "packages/rust/conundrum_docgen",
+    "packages/rust/conundrum_cli",
+    "packages/rust/conundrum_docgen",
+    "packages/rust/conundrum_logic",
+    "packages/rust/conundrum_logic/codegen",
+    "packages/rust/conundrum_logic/codegen/tests/custom_root",
 ]
 
 

@@ -1,10 +1,7 @@
 # Conundrum Goals & Roadmap
 
 - Provide a general user friendly markup language capable of displaying more complex components usable in a note taking context (video/image components, embedded 3d models, interactive tables, etc.)
-- Create a unified memory layer that can be appended to by nested languages in each cell's code block. This will likely be one of the last features to make it to production because of it's complexity and the security concerns, but would be an invaluable tool to researchers with a background in multiple languages.
-- Create a **simple** programming layer, exposing Conundrum specific functionality in Conundrum code blocks. Things like a first-party AI module with structured generation support for new developers, some simple **high level** file utilities, 
-
-
+- Create a **simple** programming layer, exposing Conundrum specific functionality in Conundrum code blocks. Things like a first-party AI module with structured generation support for new developers and some simple **high level** file utilities.
 
 
 

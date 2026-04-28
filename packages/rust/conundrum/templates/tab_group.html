@@ -17,7 +17,7 @@
     </div>
     <div id="tab-body-wrapper-{{tab_group_id}}" class="cdrm-tab-group-body-container w-full h-fit overflow-x-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br overflow-y-auto no-scrollbar">
     {% for tab in tabs %}
-    <div data-cdrm-group="{{tab_group_id}}" class="cdrm-tab-group-item w-full px-4 py-3 transition-transform duration-300 absolute" id="tab-{{tab_group_id}}-{{tab.idx}}" style="transform: translateX({{(tab.idx - initial_idx) * 100}}%)">
+    <div data-cdrm-group="{{tab_group_id}}" class="cdrm-tab-group-item w-full px-4 py-3 transition-transform duration-300 {% if tab.idx == initial_idx %} relative {% else %} absolute {% endif %}" id="tab-{{tab_group_id}}-{{tab.idx}}" style="transform: translateX({{(tab.idx - initial_idx) * 100}}%)">
         {{tab.tab_children}}
     </div>
     {% endfor %}

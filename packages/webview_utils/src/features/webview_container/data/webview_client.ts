@@ -1,3 +1,4 @@
+import { ConundrumWebEvents } from "@/code_gen/typeshare/conundrum"
 import { type GlobalAppState } from "../../webview_global_state/store"
 
 export const WebviewClient = {
@@ -5,6 +6,7 @@ export const WebviewClient = {
         window.dispatchEvent(new CustomEvent("main-panel-resize", {
             detail: layout
         }))
+        window.dispatchEvent(new CustomEvent(ConundrumWebEvents.ManualResize))
     },
     setMdxContentLoaded: (contentLoadedId: string) => {
         window.dispatchEvent(new CustomEvent("mdx-content-loaded", {

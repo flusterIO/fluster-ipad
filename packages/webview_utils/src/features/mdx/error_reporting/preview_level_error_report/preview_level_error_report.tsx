@@ -1,5 +1,4 @@
 import { type MdxContentProps } from '#/mdx/components/mdx_content_types'
-import { useDebounceMdxParse } from '#/mdx/hooks/use_debounce_mdx_parse'
 import { TriangleAlert } from 'lucide-react'
 import React, { useEffect, type ReactNode } from 'react'
 import { type FallbackProps } from 'react-error-boundary'
@@ -26,20 +25,7 @@ const connector = connect((state: GlobalWebviewStateDeepNullable) => ({
 }))
 
 
-export const PreviewLevelErrorReport = connector(({ debounceTimeout, showWebviewAction, additionalComponents, id, mdx, resetErrorBoundary, conundrumErrors }: Partial<FallbackProps> & Pick<MdxContentProps, "debounceTimeout" | "showWebviewAction" | "additionalComponents"> & { id: string, mdx: string, conundrumErrors?: ConundrumError[] }): ReactNode => {
-    // This is required to eventually 'unlock' the error report once parsing succeeds.
-    const { setValue, value } = useDebounceMdxParse(
-        undefined,
-        debounceTimeout,
-        id,
-        showWebviewAction,
-        additionalComponents
-    );
-    useEffect(() => {
-        if (mdx !== value) {
-            setValue(mdx)
-        }
-    }, [mdx, setValue, value])
+export const PreviewLevelErrorReport = connector(({ resetErrorBoundary, conundrumErrors }: Partial<FallbackProps> & Pick<MdxContentProps, "showWebviewAction" | "additionalComponents"> & { conundrumErrors?: ConundrumError[] }): ReactNode => {
 
     const dispatch = useDispatch();
 

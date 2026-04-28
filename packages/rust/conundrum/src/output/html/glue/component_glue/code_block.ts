@@ -1,9 +1,12 @@
-(() => {
+export const applyCopyConundrumCodeBlockListeners = (): void => {
     function copyCodeblockCode(e: Event) {
         let target = e.currentTarget as HTMLDivElement;
-        const targetId = target.getAttribute("data-cdrm-copy-for");
+        const targetId = target.getAttribute("data-cdrm-copy-for") as string;
         const parentEm = document.getElementById(targetId);
-        window.navigator.clipboard.writeText(parentEm.querySelector("pre")?.innerText ?? "")
+        if (!parentEm) {
+            return
+        }
+        window.navigator.clipboard.writeText(parentEm!.querySelector("pre")?.innerText ?? "")
         window.dispatchEvent(new CustomEvent("cdrm-codeblock-copy"))
     }
     const ems = document.getElementsByClassName("cdrm-codeblock");
@@ -21,4 +24,9 @@
         const item = icons.item(i) as HTMLDivElement;
         item.addEventListener("click", copyCodeblockCode)
     }
-})()
+}
+
+(() => {
+    applyCopyConundrumCodeBlockListeners();
+    window.addEventListener("cdrm-content-loaded", applyCopyConundrumCodeBlockListeners)
+})();

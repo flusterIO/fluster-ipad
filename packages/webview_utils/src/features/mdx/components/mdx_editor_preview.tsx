@@ -1,25 +1,26 @@
-import React, { type HTMLProps, useId, useRef, type ReactNode } from "react";
+import React, { type HTMLProps, useRef, type ReactNode, useEffect } from "react";
 import { cn } from "@/utils/cn";
-import { LoadingComponent } from "@/shared_components/loading_component";
 import { type EditorState, EditorView, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
 import { type GlobalAppState } from "#/webview_global_state/store";
-import { connect } from "react-redux";
+import { connect, useSelector, useStore } from "react-redux";
 import consola from "consola";
 import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
+import { initializeConundrumStaticWebAssets, onConunundrumContentLoaded, cleanupConundrumStaticWebAssets } from "@conundrum/web_static_assets";
 import { ConundrumErrorListener } from "./conundrum_error_listener";
 import { SummaryStreamContainer } from "#/ai/presentation/tasks/summary_stream/summary_stream_container";
 import { NerdFontLoader } from "#/code/nerd_font_loader";
 import { KatexFontLoader } from "#/math/katex_font_loader";
 import { LucideFontLoader } from "#/themeing/lucide_font_loader";
+import { type GlobalWebviewStateDeepNullable } from "#/webview_global_state/cross_language_state_types";
+import { ConundrumWebEvents } from "@/code_gen/typeshare/conundrum";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
 
 const connector = connect((state: GlobalAppState) => ({
-    parsedValue: state.editor.parsedValue,
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview,
     isEditorView: state.editor.editorView === EditorView.Splitview,
 }))
@@ -33,13 +34,19 @@ const connector = connect((state: GlobalAppState) => ({
  */
 export const MdxEditorPreview = connector(({
     className,
-    parsedValue,
     /* lockEditorScrollToPreview, */
     isEditorView,
     /* ...props */
-}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview" | "parsedValue"> & { isEditorView: boolean }): ReactNode => {
+}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean }): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
-    const id = useId()
+
+    const parsedValueIsEmpty = useSelector((state: GlobalWebviewStateDeepNullable) => {
+        const x = state.editor.parsedValue;
+        if (!x) {
+            return false
+        }
+        return x.trim().length === 0
+    })
 
 
     useEventListener("set-editor-scroll-proportion", (e) => {
@@ -53,16 +60,38 @@ export const MdxEditorPreview = connector(({
         ref.current.scrollTop = newProp
     })
 
+    useEventListener(ConundrumWebEvents.CdrmContentLoaded, () => {
+        onConunundrumContentLoaded();
+    })
 
-    if (typeof parsedValue !== "string") {
-        return (
-            <div className="w-screen h-screen min-h-screen top-0 left-0 right-0 bottom-0 fixed flex flex-col justify-center items-center mdx-preview-loading-container">
-                <LoadingComponent />
-            </div>
-        );
-    }
+    const store = useStore<GlobalWebviewStateDeepNullable>();
 
-    if (parsedValue.trim() === "") {
+
+    useEffect(() => {
+        initializeConundrumStaticWebAssets();
+        return () => { cleanupConundrumStaticWebAssets(); };
+    }, [])
+
+
+    useEffect(() => {
+        /// Set the content from the state initiailly, but do not pas any dependencies to avoid the react render cycle, and use direct html injection.
+        const state = store.getState();
+        if (ref.current && state.editor.parsedValue) {
+            ref.current.innerHTML = state.editor.parsedValue
+        }
+    }, [])
+
+
+
+    /* if (typeof parsedValue !== "string") { */
+    /*     return ( */
+    /*         <div className="w-screen h-screen min-h-screen top-0 left-0 right-0 bottom-0 fixed flex flex-col justify-center items-center mdx-preview-loading-container"> */
+    /*             <LoadingComponent /> */
+    /*         </div> */
+    /*     ); */
+    /* } */
+
+    if (parsedValueIsEmpty) {
         return (
             <div className="w-full h-full flex flex-col justify-center items-center note-content-empty-container">
                 <div
@@ -81,7 +110,7 @@ export const MdxEditorPreview = connector(({
     return (
         <ErrorBoundary
             onError={(e) => { consola.error("Preview boundary error: ", e); }}
-            FallbackComponent={(p) => <PreviewLevelErrorReport {...p} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />}
+            FallbackComponent={(p) => <PreviewLevelErrorReport {...p} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} />}
         >
             <ConundrumErrorListener />
             <NerdFontLoader />
@@ -89,7 +118,6 @@ export const MdxEditorPreview = connector(({
             <LucideFontLoader />
             <div
                 id={SplitviewEditorDomIds.MdxPreview}
-                dangerouslySetInnerHTML={{ __html: parsedValue }}
                 className={cn(
                     "max-w-[1080px]",
                     isEditorView ? "px-6 pt-4 pb-16 mx-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",

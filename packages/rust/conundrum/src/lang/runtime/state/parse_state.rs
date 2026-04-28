@@ -50,6 +50,13 @@ pub enum ConundrumModifier {
     /// offline, with all fonts, javascript and rendered math embedded directly
     /// into a single html file.
     Standalone,
+    /// This is currently required in React environments to work around the
+    /// React render cycle. Since almost everything is wrapepd in a series
+    /// of iiife's, kind of working like React's useEffect hook, embedding
+    /// the javascript as a script tag will ensure that the components
+    /// all have the proper listeners applied. So far it comes out to only about
+    /// 200 lines of javascript.
+    EmbedJavascript,
 }
 
 #[typeshare]

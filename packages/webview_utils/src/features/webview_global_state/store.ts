@@ -18,6 +18,7 @@ import { editorValueChangeListenerMiddleware } from './mdx_editor/side_effects/e
 import storage from 'redux-persist-indexeddb-storage';
 import { editorBibValueChangeListenerMiddleware } from './mdx_editor/side_effects/editor_bib_value_side_effect';
 import { type GlobalWebviewStateDeepNullable, type GlobalWebviewStateDeepNullableReducer } from './cross_language_state_types';
+import { parsedValueChangeEffect } from './mdx_editor/side_effects/parsed_value_change_effect';
 
 
 
@@ -61,6 +62,7 @@ export const createFlusterStore = () => {
                     ignoredActions: ["persist/PERSIST", "persist/REHYDRATE", "persist/REGISTER"],
                 },
             })
+                .prepend(parsedValueChangeEffect.middleware)
                 .prepend(darkModeListenerMiddleware.middleware)
                 .prepend(emptyValueListenerMiddleware.middleware)
                 .prepend(editorValueChangeListenerMiddleware.middleware)

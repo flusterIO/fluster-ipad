@@ -3,35 +3,35 @@
 */
 
 
-export type ParsedElement =
-    | { tag: "Heading", content: MarkdownHeadingResult }
-    | { tag: "BlockQuote", content: BlockQuoteResult }
-    | { tag: "BlockMath", content: BlockMathResult }
-    | { tag: "InlineMath", content: InlineMathResult }
-    | { tag: "Text", content: string }
-    | { tag: "Hr", content: MarkdownHorizontalRule }
-    | { tag: "BoldText", content: MarkdownBoldTextResult }
-    | { tag: "ItalicText", content: MarkdownItalicTextResult }
-    | { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
-    | { tag: "ParsedCodeBlock", content: ParsedCodeBlock }
-    | { tag: "InlineCode", content: InlineCodeResult }
-    | { tag: "MarkdownLink", content: MarkdownLinkResult }
-    | { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
-    | { tag: "UnorderedList", content: UnorderedListModel }
-    | { tag: "OrderedList", content: OrderedListModel }
-    | { tag: "Table", content: MarkdownTable }
-    | { tag: "Emoji", content: EmojiResult }
-    | { tag: "ReactComponentSelfClosing", content: ReactComponentSelfClosingResult }
-    | { tag: "ReactComponentWithChildren", content: ReactComponentWithChildrenResult }
-    | { tag: "ParsedCitation", content: ParsedCitation }
-    | { tag: "ParsedOutgoingNoteLink", content: ParsedOutgoingNoteLink }
-    | { tag: "Tag", content: ParsedTag }
-    | { tag: "ParsedInspectionRequest", content: ParsedInspectionRequest }
-    | { tag: "HrWithChildren", content: HrWithChildrenResult }
-    | { tag: "Comment", content: ConundrumCommentResult }
-    | { tag: "Children", content: Children }
-    | { tag: "Javascript", content: ParsedJavascriptElement }
-    | { tag: "Logic", content: ConundrumLogicToken };
+export type ParsedElement = 
+	| { tag: "Heading", content: MarkdownHeadingResult }
+	| { tag: "BlockQuote", content: BlockQuoteResult }
+	| { tag: "BlockMath", content: BlockMathResult }
+	| { tag: "InlineMath", content: InlineMathResult }
+	| { tag: "Text", content: string }
+	| { tag: "Hr", content: MarkdownHorizontalRule }
+	| { tag: "BoldText", content: MarkdownBoldTextResult }
+	| { tag: "ItalicText", content: MarkdownItalicTextResult }
+	| { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
+	| { tag: "ParsedCodeBlock", content: ParsedCodeBlock }
+	| { tag: "InlineCode", content: InlineCodeResult }
+	| { tag: "MarkdownLink", content: MarkdownLinkResult }
+	| { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
+	| { tag: "UnorderedList", content: UnorderedListModel }
+	| { tag: "OrderedList", content: OrderedListModel }
+	| { tag: "Table", content: MarkdownTable }
+	| { tag: "Emoji", content: EmojiResult }
+	| { tag: "ReactComponentSelfClosing", content: ReactComponentSelfClosingResult }
+	| { tag: "ReactComponentWithChildren", content: ReactComponentWithChildrenResult }
+	| { tag: "ParsedCitation", content: ParsedCitation }
+	| { tag: "ParsedOutgoingNoteLink", content: ParsedOutgoingNoteLink }
+	| { tag: "Tag", content: ParsedTag }
+	| { tag: "ParsedInspectionRequest", content: ParsedInspectionRequest }
+	| { tag: "HrWithChildren", content: HrWithChildrenResult }
+	| { tag: "Comment", content: ConundrumCommentResult }
+	| { tag: "Children", content: Children }
+	| { tag: "Javascript", content: ParsedJavascriptElement }
+	| { tag: "Logic", content: ConundrumLogicToken };
 
 /**
  * The representation of 'children', usually other markdown content. Unlike
@@ -67,27 +67,27 @@ export type HeadingDepth = ConundrumInt;
  * The emphasis documentation can be viewed via the `Emphasis??` command.
  */
 export enum Emphasis {
-    Info = "info",
-    Error = "error",
-    Warn = "warn",
-    Success = "success",
-    Primary = "primary",
-    Important = "important",
-    Research = "research",
-    Highlight = "highlight",
-    Card = "card",
+	Info = "info",
+	Error = "error",
+	Warn = "warn",
+	Success = "success",
+	Primary = "primary",
+	Important = "important",
+	Research = "research",
+	Highlight = "highlight",
+	Card = "card",
 }
 
 export enum SizableOption {
-    None = "none",
-    Small = "small",
-    Smedium = "smedium",
-    Medium = "medium",
-    Large = "large",
-    Xl = "xl",
-    Xxl = "xxl",
-    Fit = "fit",
-    Full = "full",
+	None = "none",
+	Small = "small",
+	Smedium = "smedium",
+	Medium = "medium",
+	Large = "large",
+	Xl = "xl",
+	Xxl = "xxl",
+	Fit = "fit",
+	Full = "full",
 }
 
 /**
@@ -100,107 +100,107 @@ export enum SizableOption {
  * color, padding, margin, borders, and more.
  */
 export interface SizablePropsGroup {
-    /** Hides the MathJax labels in all child components. */
-    hide_math_labels?: ConundrumBoolean;
-    /**
-     * 'Floats' the component to the right. This is often combined with `width`
-     * or the `sidebar` property to create sidebar layouts.
-     */
-    right?: ConundrumBoolean;
-    /**
-     * 'Floats' the component to the left. This is often combined with `width`
-     * or the `sidebar` property to create sidebar layouts.
-     */
-    left?: ConundrumBoolean;
-    /**
-     * A utility property that sets a responsive max-width to create sidebar
-     * like layouts on large screens while allowing for full-width when the
-     * window is smaller.
-     */
-    sidebar?: ConundrumBoolean;
-    center_self?: ConundrumBoolean;
-    /**
-     * Centers the content of this component's children, not the component
-     * itself.    pub center_self: Option<ConundrumBoolean>,
-     */
-    center_content?: ConundrumBoolean;
-    /** Add a small, muted border to the object. */
-    border?: ConundrumBoolean;
-    /**
-     * Tells the container to not forcefully create a new line and instead to
-     * flow with the rest of the content. Unless you're trying to apply
-     * properties to text inside of a paragraph using the Container component
-     * this is most likely not what you are looking for. If you want text to
-     * wrap around an element, use the `right` or `left` properties paired with
-     * a desired `width`.
-     */
-    inline?: ConundrumBoolean;
-    /** Casts an inset shadow from the object. */
-    in_shadow?: SizableOption;
-    /** Casts a shadow from the object. */
-    shadow?: SizableOption;
-    /** Rounds the corners of the container. Use `rounded=\ */
-    rounded?: SizableOption;
-    /**
-     * Change the text content of the container's children. Beware though, some
-     * edge cases might not respond as expected.
-     */
-    text?: SizableOption;
-    /** Set some custom width properties to create responsive layouts. */
-    width?: SizableOption;
-    /** Set some custom height properties to create responsive layouts. */
-    height?: SizableOption;
-    /**
-     * Add some padding around the **outside** of an object. If you are looking
-     * to create space on the _inside_ of an object you are looking for
-     * `padding`.
-     */
-    margin?: SizableOption;
-    margin_left?: SizableOption;
-    margin_right?: SizableOption;
-    margin_top?: SizableOption;
-    margin_bottom?: SizableOption;
-    margin_y?: SizableOption;
-    margin_x?: SizableOption;
-    /**
-     * Create padding on the _inside_ of an object. If you are trying to create
-     * space _around_ an object. you are probably looking for `margin`.
-     */
-    padding?: SizableOption;
-    padding_left?: SizableOption;
-    padding_right?: SizableOption;
-    padding_top?: SizableOption;
-    padding_bottom?: SizableOption;
-    padding_y?: SizableOption;
-    padding_x?: SizableOption;
-    /**
-     * When in Grid mode or in some other select layouts, this property create
-     * a gap between _all_ children.
-     */
-    gap?: SizableOption;
-    gap_y?: SizableOption;
-    gap_x?: SizableOption;
+	/** Hides the MathJax labels in all child components. */
+	hide_math_labels?: ConundrumBoolean;
+	/**
+	 * 'Floats' the component to the right. This is often combined with `width`
+	 * or the `sidebar` property to create sidebar layouts.
+	 */
+	right?: ConundrumBoolean;
+	/**
+	 * 'Floats' the component to the left. This is often combined with `width`
+	 * or the `sidebar` property to create sidebar layouts.
+	 */
+	left?: ConundrumBoolean;
+	/**
+	 * A utility property that sets a responsive max-width to create sidebar
+	 * like layouts on large screens while allowing for full-width when the
+	 * window is smaller.
+	 */
+	sidebar?: ConundrumBoolean;
+	center_self?: ConundrumBoolean;
+	/**
+	 * Centers the content of this component's children, not the component
+	 * itself.    pub center_self: Option<ConundrumBoolean>,
+	 */
+	center_content?: ConundrumBoolean;
+	/** Add a small, muted border to the object. */
+	border?: ConundrumBoolean;
+	/**
+	 * Tells the container to not forcefully create a new line and instead to
+	 * flow with the rest of the content. Unless you're trying to apply
+	 * properties to text inside of a paragraph using the Container component
+	 * this is most likely not what you are looking for. If you want text to
+	 * wrap around an element, use the `right` or `left` properties paired with
+	 * a desired `width`.
+	 */
+	inline?: ConundrumBoolean;
+	/** Casts an inset shadow from the object. */
+	in_shadow?: SizableOption;
+	/** Casts a shadow from the object. */
+	shadow?: SizableOption;
+	/** Rounds the corners of the container. Use `rounded=\ */
+	rounded?: SizableOption;
+	/**
+	 * Change the text content of the container's children. Beware though, some
+	 * edge cases might not respond as expected.
+	 */
+	text?: SizableOption;
+	/** Set some custom width properties to create responsive layouts. */
+	width?: SizableOption;
+	/** Set some custom height properties to create responsive layouts. */
+	height?: SizableOption;
+	/**
+	 * Add some padding around the **outside** of an object. If you are looking
+	 * to create space on the _inside_ of an object you are looking for
+	 * `padding`.
+	 */
+	margin?: SizableOption;
+	margin_left?: SizableOption;
+	margin_right?: SizableOption;
+	margin_top?: SizableOption;
+	margin_bottom?: SizableOption;
+	margin_y?: SizableOption;
+	margin_x?: SizableOption;
+	/**
+	 * Create padding on the _inside_ of an object. If you are trying to create
+	 * space _around_ an object. you are probably looking for `margin`.
+	 */
+	padding?: SizableOption;
+	padding_left?: SizableOption;
+	padding_right?: SizableOption;
+	padding_top?: SizableOption;
+	padding_bottom?: SizableOption;
+	padding_y?: SizableOption;
+	padding_x?: SizableOption;
+	/**
+	 * When in Grid mode or in some other select layouts, this property create
+	 * a gap between _all_ children.
+	 */
+	gap?: SizableOption;
+	gap_y?: SizableOption;
+	gap_x?: SizableOption;
 }
 
 export interface Admonition {
-    title: Children;
-    id: DOMId;
-    children: Children;
-    /**
-     * The title depth between 1-6 for the markdown output. This will have no
-     * effect on mdx, jsx, or plain text output. Defaults to 5
-     */
-    markdown_title_depth?: HeadingDepth;
-    emphasis?: Emphasis;
-    sizable?: SizablePropsGroup;
-    /** Set to true to make the admonition foldable. Default: `false` */
-    foldable?: ConundrumBoolean;
-    /**
-     * If the admonition is `foldable`, `folded` can make the admonition folded
-     * by default. If the `foldable` property is false, this property does
-     * nothing.
-     */
-    folded?: ConundrumBoolean;
+	title: Children;
+	id: DOMId;
+	children: Children;
+	/**
+	 * The title depth between 1-6 for the markdown output. This will have no
+	 * effect on mdx, jsx, or plain text output. Defaults to 5
+	 */
+	markdown_title_depth?: HeadingDepth;
+	emphasis?: Emphasis;
+	sizable?: SizablePropsGroup;
+	/** Set to true to make the admonition foldable. Default: `false` */
+	foldable?: ConundrumBoolean;
+	/**
+	 * If the admonition is `foldable`, `folded` can make the admonition folded
+	 * by default. If the `foldable` property is false, this property does
+	 * nothing.
+	 */
+	folded?: ConundrumBoolean;
 }
 
 /**
@@ -216,236 +216,236 @@ export interface Admonition {
  * applicat
  */
 export enum SupportedCodeBlockSyntax {
-    Plain_Text = "Plain Text",
-    ASP = "ASP",
-    HTML_ASP = "HTML (ASP)",
-    ActionScript = "ActionScript",
-    AppleScript = "AppleScript",
-    Batch_File = "Batch File",
-    NAnt_Build_File = "NAnt Build File",
-    CSharp = "C#",
-    Cpp = "C++",
-    C = "C",
-    CSS = "CSS",
-    Clojure = "Clojure",
-    D = "D",
-    DMD_Output = "DMD Output",
-    Diff = "Diff",
-    Erlang = "Erlang",
-    HTML_Erlang = "HTML (Erlang)",
-    Git_Attributes = "Git Attributes",
-    Git_Commit = "Git Commit",
-    Git_Common = "Git Common",
-    Git_Config = "Git Config",
-    Git_Ignore = "Git Ignore",
-    Git_Link = "Git Link",
-    Git_Log = "Git Log",
-    Git_Mailmap = "Git Mailmap",
-    Git_Rebase_Todo = "Git Rebase Todo",
-    Go = "Go",
-    Graphviz_DOT = "Graphviz (DOT)",
-    Groovy = "Groovy",
-    HTML = "HTML",
-    Haskell = "Haskell",
-    Literate_Haskell = "Literate Haskell",
-    JSON = "JSON",
-    Java_Server_Page_JSP = "Java Server Page (JSP)",
-    Java = "Java",
-    Javadoc = "Javadoc",
-    Java_Properties = "Java Properties",
-    JavaScript = "JavaScript",
-    Regular_Expressions_Javascript = "Regular Expressions (Javascript)",
-    BibTeX = "BibTeX",
-    LaTeX_Log = "LaTeX Log",
-    LaTeX = "LaTeX",
-    TeX = "TeX",
-    Lisp = "Lisp",
-    Lua = "Lua",
-    Make_Output = "Make Output",
-    Makefile = "Makefile",
-    Markdown = "Markdown",
-    MultiMarkdown = "MultiMarkdown",
-    MATLAB = "MATLAB",
-    OCaml = "OCaml",
-    OCamllex = "OCamllex",
-    OCamlyacc = "OCamlyacc",
-    Camlp4 = "camlp4",
-    Objective_Cpp = "Objective-C++",
-    Objective_C = "Objective-C",
-    PHP_Source = "PHP Source",
-    PHP = "PHP",
-    Regular_Expressions_PHP = "Regular Expressions (PHP)",
-    Pascal = "Pascal",
-    Perl = "Perl",
-    Python = "Python",
-    Regular_Expressions_Python = "Regular Expressions (Python)",
-    R_Console = "R Console",
-    R = "R",
-    Rd_R_Documentation = "Rd (R Documentation)",
-    HTML_Rails = "HTML (Rails)",
-    JavaScript_Rails = "JavaScript (Rails)",
-    Ruby_Haml = "Ruby Haml",
-    Ruby_on_Rails = "Ruby on Rails",
-    SQL_Rails = "SQL (Rails)",
-    Regular_Expression = "Regular Expression",
-    ReStructuredText = "reStructuredText",
-    Ruby = "Ruby",
-    Cargo_Build_Results = "Cargo Build Results",
-    Rust = "Rust",
-    SQL = "SQL",
-    Scala = "Scala",
-    Bourne_Again_Shell_bash = "Bourne Again Shell (bash)",
-    Shell_Unix_Generic = "Shell-Unix-Generic",
-    Commands_builtin_shell_bash = "commands-builtin-shell-bash",
-    HTML_Tcl = "HTML (Tcl)",
-    Tcl = "Tcl",
-    Textile = "Textile",
-    XML = "XML",
-    YAML = "YAML",
-    AWK = "AWK",
-    Ada = "Ada",
-    Apache_Conf = "Apache Conf",
-    AsciiDoc_Asciidoctor = "AsciiDoc (Asciidoctor)",
-    ARM_Assembly = "ARM Assembly",
-    Assembly_x86_64 = "Assembly (x86_64)",
-    CMake_C_Header = "CMake C Header",
-    CMake_Cpp_Header = "CMake C++ Header",
-    CMake = "CMake",
-    CMakeCache = "CMakeCache",
-    CMakeCommands = "CMakeCommands",
-    Comma_Separated_Values = "Comma Separated Values",
-    Cabal = "Cabal",
-    CoffeeScript = "CoffeeScript",
-    CpuInfo = "CpuInfo",
-    Crontab = "Crontab",
-    Crystal = "Crystal",
-    Dart = "Dart",
-    Dockerfile = "Dockerfile",
-    DotENV = "DotENV",
-    Elixir = "Elixir",
-    HTML_EEx = "HTML (EEx)",
-    Regular_Expressions_Elixir = "Regular Expressions (Elixir)",
-    Elm_Compile_Messages = "Elm Compile Messages",
-    Elm_Documentation = "Elm Documentation",
-    Elm = "Elm",
-    Email = "Email",
-    FSharp = "F#",
-    Fish = "Fish",
-    Fortran_Fixed_Form = "Fortran (Fixed Form)",
-    Fortran_Modern = "Fortran (Modern)",
-    Fortran_Namelist = "Fortran Namelist",
-    GFortran_Build_Results = "GFortran Build Results",
-    OpenMP_Fortran = "OpenMP (Fortran)",
-    Fstab = "fstab",
-    GLSL = "GLSL",
-    GraphQL = "GraphQL",
-    Groff_troff = "Groff/troff",
-    Group = "group",
-    HTML_Twig = "HTML (Twig)",
-    Hosts = "hosts",
-    INI = "INI",
-    JavaScript_Babel = "JavaScript (Babel)",
-    HTML_Jinja2 = "HTML (Jinja2)",
-    Jinja2 = "Jinja2",
-    Jsonnet = "jsonnet",
-    Julia = "Julia",
-    Kotlin = "Kotlin",
-    Less = "Less",
-    LLVM = "LLVM",
-    Lean = "Lean",
-    LiveScript = "LiveScript",
-    Manpage = "Manpage",
-    MediawikerPanel = "MediawikerPanel",
-    MediaWiki = "MediaWiki",
-    MemInfo = "MemInfo",
-    Nginx = "nginx",
-    Nim = "Nim",
-    Ninja = "Ninja",
-    Nix = "Nix",
-    Orgmode = "orgmode",
-    Passwd = "passwd",
-    PowerShell = "PowerShell",
-    Protocol_Buffer = "Protocol Buffer",
-    Protocol_Buffer_TEXT = "Protocol Buffer (TEXT)",
-    Puppet = "Puppet",
-    PureScript = "PureScript",
-    QML = "QML",
-    Racket = "Racket",
-    Rego = "Rego",
-    RequirementsDottxt = "Requirements.txt",
-    Resolv = "resolv",
-    Robot_Framework = "Robot Framework",
-    SCSS = "SCSS",
-    Sass = "Sass",
-    Salt_State_SLS = "Salt State (SLS)",
-    SML = "SML",
-    Ruby_Slim = "Ruby Slim",
-    Strace = "Strace",
-    Stylus = "Stylus",
-    Solidity = "Solidity",
-    Vyper = "Vyper",
-    JQ = "JQ",
-    Svelte = "Svelte",
-    Swift = "Swift",
-    SystemVerilog = "SystemVerilog",
-    Navigational_Bar_SV = "Navigational Bar SV",
-    TOML = "TOML",
-    JSON_Terraform = "JSON (Terraform)",
-    Terraform = "Terraform",
-    TodoDottxt = "Todo.txt",
-    TypeScript = "TypeScript",
-    TypeScriptReact = "TypeScriptReact",
-    Verilog = "Verilog",
-    VimHelp = "VimHelp",
-    VimL = "VimL",
-    Vue_Component = "Vue Component",
-    Zig = "Zig",
-    Command_Help = "Command Help",
-    Gnuplot = "gnuplot",
-    HTTP_Request_and_Response = "HTTP Request and Response",
-    Log = "log",
-    Highlight_non_printables = "Highlight non-printables",
-    Authorized_Keys = "Authorized Keys",
-    Known_Hosts = "Known Hosts",
-    Private_Key = "Private Key",
-    SSH_Common = "SSH Common",
-    SSH_Config = "SSH Config",
-    SSH_Crypto = "SSH Crypto",
-    SSHD_Config = "SSHD Config",
-    Syslog = "syslog",
-    Varlink = "varlink",
-    ConundrumAi = "conundrum-ai",
-    Dictionary = "dictionary",
+	Plain_Text = "Plain Text",
+	ASP = "ASP",
+	HTML_ASP = "HTML (ASP)",
+	ActionScript = "ActionScript",
+	AppleScript = "AppleScript",
+	Batch_File = "Batch File",
+	NAnt_Build_File = "NAnt Build File",
+	CSharp = "C#",
+	Cpp = "C++",
+	C = "C",
+	CSS = "CSS",
+	Clojure = "Clojure",
+	D = "D",
+	DMD_Output = "DMD Output",
+	Diff = "Diff",
+	Erlang = "Erlang",
+	HTML_Erlang = "HTML (Erlang)",
+	Git_Attributes = "Git Attributes",
+	Git_Commit = "Git Commit",
+	Git_Common = "Git Common",
+	Git_Config = "Git Config",
+	Git_Ignore = "Git Ignore",
+	Git_Link = "Git Link",
+	Git_Log = "Git Log",
+	Git_Mailmap = "Git Mailmap",
+	Git_Rebase_Todo = "Git Rebase Todo",
+	Go = "Go",
+	Graphviz_DOT = "Graphviz (DOT)",
+	Groovy = "Groovy",
+	HTML = "HTML",
+	Haskell = "Haskell",
+	Literate_Haskell = "Literate Haskell",
+	JSON = "JSON",
+	Java_Server_Page_JSP = "Java Server Page (JSP)",
+	Java = "Java",
+	Javadoc = "Javadoc",
+	Java_Properties = "Java Properties",
+	JavaScript = "JavaScript",
+	Regular_Expressions_Javascript = "Regular Expressions (Javascript)",
+	BibTeX = "BibTeX",
+	LaTeX_Log = "LaTeX Log",
+	LaTeX = "LaTeX",
+	TeX = "TeX",
+	Lisp = "Lisp",
+	Lua = "Lua",
+	Make_Output = "Make Output",
+	Makefile = "Makefile",
+	Markdown = "Markdown",
+	MultiMarkdown = "MultiMarkdown",
+	MATLAB = "MATLAB",
+	OCaml = "OCaml",
+	OCamllex = "OCamllex",
+	OCamlyacc = "OCamlyacc",
+	Camlp4 = "camlp4",
+	Objective_Cpp = "Objective-C++",
+	Objective_C = "Objective-C",
+	PHP_Source = "PHP Source",
+	PHP = "PHP",
+	Regular_Expressions_PHP = "Regular Expressions (PHP)",
+	Pascal = "Pascal",
+	Perl = "Perl",
+	Python = "Python",
+	Regular_Expressions_Python = "Regular Expressions (Python)",
+	R_Console = "R Console",
+	R = "R",
+	Rd_R_Documentation = "Rd (R Documentation)",
+	HTML_Rails = "HTML (Rails)",
+	JavaScript_Rails = "JavaScript (Rails)",
+	Ruby_Haml = "Ruby Haml",
+	Ruby_on_Rails = "Ruby on Rails",
+	SQL_Rails = "SQL (Rails)",
+	Regular_Expression = "Regular Expression",
+	ReStructuredText = "reStructuredText",
+	Ruby = "Ruby",
+	Cargo_Build_Results = "Cargo Build Results",
+	Rust = "Rust",
+	SQL = "SQL",
+	Scala = "Scala",
+	Bourne_Again_Shell_bash = "Bourne Again Shell (bash)",
+	Shell_Unix_Generic = "Shell-Unix-Generic",
+	Commands_builtin_shell_bash = "commands-builtin-shell-bash",
+	HTML_Tcl = "HTML (Tcl)",
+	Tcl = "Tcl",
+	Textile = "Textile",
+	XML = "XML",
+	YAML = "YAML",
+	AWK = "AWK",
+	Ada = "Ada",
+	Apache_Conf = "Apache Conf",
+	AsciiDoc_Asciidoctor = "AsciiDoc (Asciidoctor)",
+	ARM_Assembly = "ARM Assembly",
+	Assembly_x86_64 = "Assembly (x86_64)",
+	CMake_C_Header = "CMake C Header",
+	CMake_Cpp_Header = "CMake C++ Header",
+	CMake = "CMake",
+	CMakeCache = "CMakeCache",
+	CMakeCommands = "CMakeCommands",
+	Comma_Separated_Values = "Comma Separated Values",
+	Cabal = "Cabal",
+	CoffeeScript = "CoffeeScript",
+	CpuInfo = "CpuInfo",
+	Crontab = "Crontab",
+	Crystal = "Crystal",
+	Dart = "Dart",
+	Dockerfile = "Dockerfile",
+	DotENV = "DotENV",
+	Elixir = "Elixir",
+	HTML_EEx = "HTML (EEx)",
+	Regular_Expressions_Elixir = "Regular Expressions (Elixir)",
+	Elm_Compile_Messages = "Elm Compile Messages",
+	Elm_Documentation = "Elm Documentation",
+	Elm = "Elm",
+	Email = "Email",
+	FSharp = "F#",
+	Fish = "Fish",
+	Fortran_Fixed_Form = "Fortran (Fixed Form)",
+	Fortran_Modern = "Fortran (Modern)",
+	Fortran_Namelist = "Fortran Namelist",
+	GFortran_Build_Results = "GFortran Build Results",
+	OpenMP_Fortran = "OpenMP (Fortran)",
+	Fstab = "fstab",
+	GLSL = "GLSL",
+	GraphQL = "GraphQL",
+	Groff_troff = "Groff/troff",
+	Group = "group",
+	HTML_Twig = "HTML (Twig)",
+	Hosts = "hosts",
+	INI = "INI",
+	JavaScript_Babel = "JavaScript (Babel)",
+	HTML_Jinja2 = "HTML (Jinja2)",
+	Jinja2 = "Jinja2",
+	Jsonnet = "jsonnet",
+	Julia = "Julia",
+	Kotlin = "Kotlin",
+	Less = "Less",
+	LLVM = "LLVM",
+	Lean = "Lean",
+	LiveScript = "LiveScript",
+	Manpage = "Manpage",
+	MediawikerPanel = "MediawikerPanel",
+	MediaWiki = "MediaWiki",
+	MemInfo = "MemInfo",
+	Nginx = "nginx",
+	Nim = "Nim",
+	Ninja = "Ninja",
+	Nix = "Nix",
+	Orgmode = "orgmode",
+	Passwd = "passwd",
+	PowerShell = "PowerShell",
+	Protocol_Buffer = "Protocol Buffer",
+	Protocol_Buffer_TEXT = "Protocol Buffer (TEXT)",
+	Puppet = "Puppet",
+	PureScript = "PureScript",
+	QML = "QML",
+	Racket = "Racket",
+	Rego = "Rego",
+	RequirementsDottxt = "Requirements.txt",
+	Resolv = "resolv",
+	Robot_Framework = "Robot Framework",
+	SCSS = "SCSS",
+	Sass = "Sass",
+	Salt_State_SLS = "Salt State (SLS)",
+	SML = "SML",
+	Ruby_Slim = "Ruby Slim",
+	Strace = "Strace",
+	Stylus = "Stylus",
+	Solidity = "Solidity",
+	Vyper = "Vyper",
+	JQ = "JQ",
+	Svelte = "Svelte",
+	Swift = "Swift",
+	SystemVerilog = "SystemVerilog",
+	Navigational_Bar_SV = "Navigational Bar SV",
+	TOML = "TOML",
+	JSON_Terraform = "JSON (Terraform)",
+	Terraform = "Terraform",
+	TodoDottxt = "Todo.txt",
+	TypeScript = "TypeScript",
+	TypeScriptReact = "TypeScriptReact",
+	Verilog = "Verilog",
+	VimHelp = "VimHelp",
+	VimL = "VimL",
+	Vue_Component = "Vue Component",
+	Zig = "Zig",
+	Command_Help = "Command Help",
+	Gnuplot = "gnuplot",
+	HTTP_Request_and_Response = "HTTP Request and Response",
+	Log = "log",
+	Highlight_non_printables = "Highlight non-printables",
+	Authorized_Keys = "Authorized Keys",
+	Known_Hosts = "Known Hosts",
+	Private_Key = "Private Key",
+	SSH_Common = "SSH Common",
+	SSH_Config = "SSH Config",
+	SSH_Crypto = "SSH Crypto",
+	SSHD_Config = "SSHD Config",
+	Syslog = "syslog",
+	Varlink = "varlink",
+	ConundrumAi = "conundrum-ai",
+	Dictionary = "dictionary",
 }
 
 export interface ParsedCodeBlock {
-    language: SupportedCodeBlockSyntax;
-    meta_data?: string;
-    depth: number;
-    content: string;
-    full_match: string;
-    id: DOMId;
+	language: SupportedCodeBlockSyntax;
+	meta_data?: string;
+	depth: number;
+	content: string;
+	full_match: string;
+	id: DOMId;
 }
 
 export interface AiSerializationRequestPhase1 {
-    parsing_result: ParsedCodeBlock;
+	parsing_result: ParsedCodeBlock;
 }
 
 export interface BlockMathResult {
-    body: ConundrumString;
-    id?: ConundrumString;
-    idx: number;
+	body: ConundrumString;
+	id?: ConundrumString;
+	idx: number;
 }
 
 export interface BlockQuoteResult {
-    /**
-     * The inner content already fully parsed into `ParsedElement`s.
-     * Nesting is handled recursively: a `> > ...` line becomes a
-     * `BlockQuote` variant inside this `Vec`.
-     */
-    children: Children;
-    /** The full original source text that was consumed. */
-    full_match: string;
+	/**
+	 * The inner content already fully parsed into `ParsedElement`s.
+	 * Nesting is handled recursively: a `> > ...` line becomes a
+	 * `BlockQuote` variant inside this `Vec`.
+	 */
+	children: Children;
+	/** The full original source text that was consumed. */
+	full_match: string;
 }
 
 /**
@@ -470,110 +470,110 @@ export interface BlockQuoteResult {
  * ```
  */
 export interface Card {
-    title: Children;
-    subtitle?: ConundrumString;
-    children: Children;
-    /**
-     * The title depth between 1-6 for the markdown output. This will have no
-     * effect on mdx, jsx, or plain text output. Defaults to 5
-     * ```rust
-     * let card = Card {
-     * title: vec![],
-     * subtitle: None,
-     * children: vec![],
-     * markdown_title_depth: None
-     * }
-     * assert_eq!(card.markdown_title_depth, Some(5));
-     * ```
-     */
-    markdown_title_depth?: HeadingDepth;
-    sizable?: SizablePropsGroup;
-    center_body?: ConundrumBoolean;
+	title: Children;
+	subtitle?: ConundrumString;
+	children: Children;
+	/**
+	 * The title depth between 1-6 for the markdown output. This will have no
+	 * effect on mdx, jsx, or plain text output. Defaults to 5
+	 * ```rust
+	 * let card = Card {
+	 * title: vec![],
+	 * subtitle: None,
+	 * children: vec![],
+	 * markdown_title_depth: None
+	 * }
+	 * assert_eq!(card.markdown_title_depth, Some(5));
+	 * ```
+	 */
+	markdown_title_depth?: HeadingDepth;
+	sizable?: SizablePropsGroup;
+	center_body?: ConundrumBoolean;
 }
 
 export interface CitationResult {
-    /** The parsed citation key. */
-    citation_key: string;
-    /** The complete bibtex entry */
-    idx: number;
+	/** The parsed citation key. */
+	citation_key: string;
+	/** The complete bibtex entry */
+	idx: number;
 }
 
 export interface CitationSummaryData {
-    citation_key: string;
-    body: string;
+	citation_key: string;
+	body: string;
 }
 
 export interface ConundrumCommentResult {
-    content: string;
+	content: string;
 }
 
 export interface DocumentSpan {
-    start: number;
-    end: number;
+	start: number;
+	end: number;
 }
 
 export enum ConundrumErrorPurpose {
-    Info = "info",
-    Warn = "warn",
-    Suggest = "suggestion",
-    SyntaxError = "syntax",
-    ConfigurationBug = "config",
+	Info = "info",
+	Warn = "warn",
+	Suggest = "suggestion",
+	SyntaxError = "syntax",
+	ConfigurationBug = "config",
 }
 
 export interface ConundrumError {
-    /**
-     * A required message displayed in a toast or card header. Can contain
-     * regular, swift-inline compatible markdown only.
-     */
-    msg: string;
-    pos?: DocumentSpan;
-    /**
-     * Details is an optional conundrum string offering a more thorough
-     * explanation to the user if one can be generated.
-     */
-    details?: string;
-    /**
-     * An indicator that can be used when the warning UI is implemented to show
-     * user's errors that allowed their notes to still compile. There's
-     * lot's of useful information that can be gathered from these errors,
-     * inclduding property suggestions & more.
-     * 
-     * Making it optional for now because I'm too lazy to go back and rewrite
-     * all of the errors.
-     */
-    purpose?: ConundrumErrorPurpose;
+	/**
+	 * A required message displayed in a toast or card header. Can contain
+	 * regular, swift-inline compatible markdown only.
+	 */
+	msg: string;
+	pos?: DocumentSpan;
+	/**
+	 * Details is an optional conundrum string offering a more thorough
+	 * explanation to the user if one can be generated.
+	 */
+	details?: string;
+	/**
+	 * An indicator that can be used when the warning UI is implemented to show
+	 * user's errors that allowed their notes to still compile. There's
+	 * lot's of useful information that can be gathered from these errors,
+	 * inclduding property suggestions & more.
+	 * 
+	 * Making it optional for now because I'm too lazy to go back and rewrite
+	 * all of the errors.
+	 */
+	purpose?: ConundrumErrorPurpose;
 }
 
-export type ParsedJavascriptElement =
-    | { tag: "Boolean", content: JavascriptBooleanResult }
-    | { tag: "Number", content: JavascriptNumberResult }
-    | { tag: "String", content: JavascriptStringResult }
-    | { tag: "Object", content: JavascriptObjectResult }
-    | { tag: "KeyValuePair", content: JavascriptObjectKeyValuePair }
-    | { tag: "Function", content: JavascriptFunction };
+export type ParsedJavascriptElement = 
+	| { tag: "Boolean", content: JavascriptBooleanResult }
+	| { tag: "Number", content: JavascriptNumberResult }
+	| { tag: "String", content: JavascriptStringResult }
+	| { tag: "Object", content: JavascriptObjectResult }
+	| { tag: "KeyValuePair", content: JavascriptObjectKeyValuePair }
+	| { tag: "Function", content: JavascriptFunction };
 
 export interface ConundrumFunction {
-    parameters: ParsedJavascriptElement[];
-    javascript_body: string;
+	parameters: ParsedJavascriptElement[];
+	javascript_body: string;
 }
 
 export interface ConundrumObject {
-    data: DashMap<string, ParsedElement>;
+	data: DashMap<string, ParsedElement>;
 }
 
 export interface DictionaryEntryResult {
-    label: string;
-    body: string;
+	label: string;
+	body: string;
 }
 
 export interface DictionaryEntryResultData {
-    label: string;
-    note_id?: string;
+	label: string;
+	note_id?: string;
 }
 
 export interface EmojiData {
-    name: string;
-    svg: string;
+	name: string;
+	svg: string;
 }
 
 /**
@@ -589,36 +589,36 @@ export interface EmojiDocsDemo {
  * `Emoji` component to create a scalable and resizable emoji as an image.
  */
 export interface EmojiResult {
-    name: ConundrumString;
-    /**
-     * Because images are notoriously finicky to style, you should prefer the
-     * sizable boolean keys instead of the `width="small"` or similar
-     * properties. This means that your component might end up looking
-     * something like:
-     * 
-     * ```tsx
-     * <Emoji name="smile" medium border ... />
-     * ```
-     * 
-     * Instead of
-     * 
-     * ```tsx
-     * <Emoji name="smile" width="medium" border ... />
-     * ```
-     * 
-     * The other properties are still available, but these unique boolean
-     * properties will apply styles that will more reliably shape the
-     * underlying image.
-     */
-    sizable?: SizablePropsGroup;
-    /** Default: "small", text sized. */
-    size?: SizableOption;
+	name: ConundrumString;
+	/**
+	 * Because images are notoriously finicky to style, you should prefer the
+	 * sizable boolean keys instead of the `width="small"` or similar
+	 * properties. This means that your component might end up looking
+	 * something like:
+	 * 
+	 * ```tsx
+	 * <Emoji name="smile" medium border ... />
+	 * ```
+	 * 
+	 * Instead of
+	 * 
+	 * ```tsx
+	 * <Emoji name="smile" width="medium" border ... />
+	 * ```
+	 * 
+	 * The other properties are still available, but these unique boolean
+	 * properties will apply styles that will more reliably shape the
+	 * underlying image.
+	 */
+	sizable?: SizablePropsGroup;
+	/** Default: "small", text sized. */
+	size?: SizableOption;
 }
 
 export interface EmojiSearchResults {
-    names: EmojiData[];
-    /** The total number of matches */
-    total: number;
+	names: EmojiData[];
+	/** The total number of matches */
+	total: number;
 }
 
 /**
@@ -649,26 +649,26 @@ export interface EmojiSearchResults {
  * suck.
  */
 export interface EquationReference {
-    /**
-     * The `id` field is a string that can be referenced later to use this
-     * equation's number.
-     */
-    id: ConundrumString;
-    /**
-     * This has no effect when `anchor=true`, but will have make the index
-     * subscript when `anchor` is not set.
-     */
-    subscript?: ConundrumBoolean;
-    /**
-     * This has no effect when `anchor=true`, but will have make the index
-     * superscript when `anchor` is not set.
-     */
-    superscript?: ConundrumBoolean;
-    /**
-     * Style the output index according to one of the available Emphasis styles
-     * if you like.
-     */
-    emphasis?: Emphasis;
+	/**
+	 * The `id` field is a string that can be referenced later to use this
+	 * equation's number.
+	 */
+	id: ConundrumString;
+	/**
+	 * This has no effect when `anchor=true`, but will have make the index
+	 * subscript when `anchor` is not set.
+	 */
+	subscript?: ConundrumBoolean;
+	/**
+	 * This has no effect when `anchor=true`, but will have make the index
+	 * superscript when `anchor` is not set.
+	 */
+	superscript?: ConundrumBoolean;
+	/**
+	 * Style the output index according to one of the available Emphasis styles
+	 * if you like.
+	 */
+	emphasis?: Emphasis;
 }
 
 /**
@@ -676,22 +676,22 @@ export interface EquationReference {
  * goes in the footer.
  */
 export interface FootNoteAnchor {
-    idx: ConundrumInt;
+	idx: ConundrumInt;
 }
 
 export interface FootNoteFooter {
-    idx: number;
-    content: Children;
+	idx: number;
+	content: Children;
 }
 
 export interface FrontMatterResult {
-    ignored_parsers: string[];
-    title?: string;
-    user_defined_id?: string;
-    file_path?: string;
-    topic?: string;
-    subject?: string;
-    summary?: string;
+	ignored_parsers: string[];
+	title?: string;
+	user_defined_id?: string;
+	file_path?: string;
+	topic?: string;
+	subject?: string;
+	summary?: string;
 }
 
 /**
@@ -699,36 +699,36 @@ export interface FrontMatterResult {
  * if the more complex rendering strategies are not available.
  */
 export enum InlineMarkdownOverride {
-    Plain = "plain",
-    BoldItalic = "bold_italic",
-    Italic = "italic",
-    Bold = "bold",
+	Plain = "plain",
+	BoldItalic = "bold_italic",
+	Italic = "italic",
+	Bold = "bold",
 }
 
 export interface Highlight {
-    children: Children;
-    /** Default: .highlight */
-    emphasis: Emphasis;
-    /**
-     * Control the markdown formatting when the output format is a markdown
-     * variant. This property is common throughout Conundrum, but the default
-     * is unique to each component.
-     * Default: `.Italic`
-     */
-    markdown?: InlineMarkdownOverride;
+	children: Children;
+	/** Default: .highlight */
+	emphasis: Emphasis;
+	/**
+	 * Control the markdown formatting when the output format is a markdown
+	 * variant. This property is common throughout Conundrum, but the default
+	 * is unique to each component.
+	 * Default: `.Italic`
+	 */
+	markdown?: InlineMarkdownOverride;
 }
 
 export interface Hint {
-    /**
-     * Note that `label` is a String and note a vector of children. This means
-     * that the fragment syntax won't work and markdown may or may not work in
-     * the label. Default: "hint".
-     */
-    label?: Children;
-    children: Children;
-    emphasis: Emphasis;
-    sizable?: SizablePropsGroup;
-    markdown_title_depth?: HeadingDepth;
+	/**
+	 * Note that `label` is a String and note a vector of children. This means
+	 * that the fragment syntax won't work and markdown may or may not work in
+	 * the label. Default: "hint".
+	 */
+	label?: Children;
+	children: Children;
+	emphasis: Emphasis;
+	sizable?: SizablePropsGroup;
+	markdown_title_depth?: HeadingDepth;
 }
 
 /**
@@ -753,30 +753,30 @@ export interface Hint {
  * ```
  */
 export interface HrWithChildrenResult {
-    children: Children;
+	children: Children;
 }
 
 export interface InlineCodeResult {
-    content: string;
-    lang: SupportedCodeBlockSyntax;
+	content: string;
+	lang: SupportedCodeBlockSyntax;
 }
 
 export interface InlineMathResult {
-    body: ConundrumString;
+	body: ConundrumString;
 }
 
 export interface JavascriptBooleanResult {
-    value: boolean;
+	value: boolean;
 }
 
 export interface JavascriptFunction {
-    parameters: ParsedJavascriptElement[];
-    javascript_body: string;
+	parameters: ParsedJavascriptElement[];
+	javascript_body: string;
 }
 
-export type ConundrumNumber =
-    | { tag: "Int", content: ConundrumInt }
-    | { tag: "Float", content: ConundrumFloat };
+export type ConundrumNumber = 
+	| { tag: "Int", content: ConundrumInt }
+	| { tag: "Float", content: ConundrumFloat };
 
 /**
  * Creating the distinction between ints and floats will be important as the
@@ -784,45 +784,45 @@ export type ConundrumNumber =
  * mdx, javascript inputs will be super useful.
  */
 export interface JavascriptNumberResult {
-    value: ConundrumNumber;
+	value: ConundrumNumber;
 }
 
 export interface JavascriptObjectKeyValuePair {
-    key: string;
-    value: ParsedElement;
+	key: string;
+	value: ParsedElement;
 }
 
 export interface JavascriptObjectResult {
-    data: DashMap<string, ParsedElement>;
+	data: DashMap<string, ParsedElement>;
 }
 
 export interface JavascriptStringResult {
-    value: string;
-    delimiter: string;
+	value: string;
+	delimiter: string;
 }
 
 export interface JsxStringPropertyResult {
 }
 
 export interface MarkdownBoldAndItalicTextResult {
-    children: Children;
+	children: Children;
 }
 
 export interface MarkdownBoldTextResult {
-    children: Children;
+	children: Children;
 }
 
 export interface MarkdownHeadingResult {
-    depth: number;
-    /**
-     * The indentation level to be used when displaying this in an inline table
-     * of contents, not necessarily the level of the heading since some heading
-     * lists will skip a depth.
-     */
-    tab_depth: number;
-    children: Children;
-    subtitle?: Children;
-    id: DOMId;
+	depth: number;
+	/**
+	 * The indentation level to be used when displaying this in an inline table
+	 * of contents, not necessarily the level of the heading since some heading
+	 * lists will skip a depth.
+	 */
+	tab_depth: number;
+	children: Children;
+	subtitle?: Children;
+	id: DOMId;
 }
 
 /**
@@ -830,32 +830,32 @@ export interface MarkdownHeadingResult {
  * rendered.
  */
 export interface MarkdownHeadingStringifiedResult {
-    depth: number;
-    tab_depth: number;
-    content: string;
-    id: string;
+	depth: number;
+	tab_depth: number;
+	content: string;
+	id: string;
 }
 
 export interface MarkdownHorizontalRule {
 }
 
 export interface MarkdownItalicTextResult {
-    children: Children;
+	children: Children;
 }
 
 export interface MarkdownLinkResult {
-    text: Children;
-    url: string;
+	text: Children;
+	url: string;
 }
 
 export interface MarkdownLinkResultStringified {
-    text: string;
-    url: string;
+	text: string;
+	url: string;
 }
 
 export interface MarkdownParagraphResult {
-    children: Children;
-    terminator: ParsedElement;
+	children: Children;
+	terminator: ParsedElement;
 }
 
 export interface MarkdownTable {
@@ -863,72 +863,72 @@ export interface MarkdownTable {
 
 /** The 'math' is embedded in `.jsx` as a child. */
 export interface MathData {
-    display: boolean;
-    /**
-     * The `idx` field will only be set for equations where display=true, for
-     * obvious reasons.
-     */
-    idx?: number;
-    /** An optional user provided id, only applicable for block-level math. */
-    id?: string;
-    /** The primary math content. */
-    content: string;
+	display: boolean;
+	/**
+	 * The `idx` field will only be set for equations where display=true, for
+	 * obvious reasons.
+	 */
+	idx?: number;
+	/** An optional user provided id, only applicable for block-level math. */
+	id?: string;
+	/** The primary math content. */
+	content: string;
 }
 
 export interface TagResult {
-    body: string;
+	body: string;
 }
 
 export interface NoteOutgoingLinkResult {
-    /** The user defined id on the target note. */
-    link_to_note_id: string;
+	/** The user defined id on the target note. */
+	link_to_note_id: string;
 }
 
 /**
  * Just like the `AnyComponentName`, except this is unique where the
  * AnyComponentName allows for component aliases.
  */
-export type AnyComponentKey =
-    | { tag: "AutoInserted", content: AutoInsertedComponentName }
-    | { tag: "Embeddable", content: EmbeddableComponentId }
-    | { tag: "General", content: WebGlueCodeGeneralFiles }
-    | { tag: "Docs", content: DocumentationComponentName };
+export type AnyComponentKey = 
+	| { tag: "AutoInserted", content: AutoInsertedComponentName }
+	| { tag: "Embeddable", content: EmbeddableComponentId }
+	| { tag: "General", content: WebGlueCodeGeneralFiles }
+	| { tag: "Docs", content: DocumentationComponentName };
 
 export interface MdxParsingResult {
-    note_id?: string;
-    content: string;
-    tags: TagResult[];
-    front_matter?: FrontMatterResult;
-    ordered_citation_keys: string[];
-    dictionary_entries: DictionaryEntryResult[];
-    outgoing_links: NoteOutgoingLinkResult[];
-    toc: MarkdownHeadingStringifiedResult[];
-    /**
-     * Always set to false initially, but can be set to true by certain parsers
-     * to avoid further parsing.
-     */
-    ignore_all_parsers: boolean;
-    ai_secondary_parse_requests: AiSerializationRequestPhase1[];
-    /**
-     * The map of the user provided equation id (to the `EqRef` component) and
-     * the index that the equation appears.
-     */
-    eq_ref_map: Record<string, number>;
-    warnings: ConundrumError[];
-    included_components: AnyComponentKey[];
+	note_id?: string;
+	content: string;
+	tags: TagResult[];
+	front_matter?: FrontMatterResult;
+	ordered_citation_keys: string[];
+	dictionary_entries: DictionaryEntryResult[];
+	outgoing_links: NoteOutgoingLinkResult[];
+	toc: MarkdownHeadingStringifiedResult[];
+	/**
+	 * Always set to false initially, but can be set to true by certain parsers
+	 * to avoid further parsing.
+	 */
+	ignore_all_parsers: boolean;
+	ai_secondary_parse_requests: AiSerializationRequestPhase1[];
+	/**
+	 * The map of the user provided equation id (to the `EqRef` component) and
+	 * the index that the equation appears.
+	 */
+	eq_ref_map: Record<string, number>;
+	warnings: ConundrumError[];
+	included_components: AnyComponentKey[];
 }
 
 export interface OrderedListItem {
-    content: Children;
+	content: Children;
 }
 
 export interface OrderedListModel {
-    items: OrderedListItem[];
+	items: OrderedListItem[];
 }
 
 export interface PaginationParams {
-    per_page: number;
-    page: number;
+	per_page: number;
+	page: number;
 }
 
 /**
@@ -942,134 +942,144 @@ export interface PaginationParams {
  * work.
  */
 export enum ConundrumModifier {
-    HideEmojis = "HideEmojis",
-    /**
-     * The goal with this flag is to make **some** components collapsable to be
-     * inline, even when they traditionally are not. This will likely be
-     * buggy, producing some good output in some cases but some
-     * questionable output in others.
-     * 
-     * As the list of component properties grows, this output will become
-     * customizable directly in your note.
-     */
-    PreferInlineMarkdownSyntax = "PreferInlineMarkdownSyntax",
-    /**
-     * This is really only useful for when your environment can't support any
-     * other output format.
-     */
-    DecoratedPlainText = "DecoratedPlainText",
-    /**
-     * Set this flag when the output is intended to be consumed by AI, probably
-     * with the `.PreferMarkdownSyntax` flag.
-     */
-    ForAIInput = "ForAIInput",
-    /**
-     * When this component is to be used for search text input, all of the
-     * component jsx and mdx syntax will be removed, leaving only
-     * searchable text.
-     */
-    ForSearchInput = "ForSearchInput",
-    /** Don't touch the code blocks, just return them exactly as is. */
-    CodeBlocksAsIs = "CodeBlocksAsIs",
-    /**
-     * This is like extra beta... but will eventually output standalone html
-     * files capable of rendering a note outside of any application.
-     */
-    Standalone = "Standalone",
+	HideEmojis = "HideEmojis",
+	/**
+	 * The goal with this flag is to make **some** components collapsable to be
+	 * inline, even when they traditionally are not. This will likely be
+	 * buggy, producing some good output in some cases but some
+	 * questionable output in others.
+	 * 
+	 * As the list of component properties grows, this output will become
+	 * customizable directly in your note.
+	 */
+	PreferInlineMarkdownSyntax = "PreferInlineMarkdownSyntax",
+	/**
+	 * This is really only useful for when your environment can't support any
+	 * other output format.
+	 */
+	DecoratedPlainText = "DecoratedPlainText",
+	/**
+	 * Set this flag when the output is intended to be consumed by AI, probably
+	 * with the `.PreferMarkdownSyntax` flag.
+	 */
+	ForAIInput = "ForAIInput",
+	/**
+	 * When this component is to be used for search text input, all of the
+	 * component jsx and mdx syntax will be removed, leaving only
+	 * searchable text.
+	 */
+	ForSearchInput = "ForSearchInput",
+	/** Don't touch the code blocks, just return them exactly as is. */
+	CodeBlocksAsIs = "CodeBlocksAsIs",
+	/**
+	 * Output a standalone application capable of being viewed completely
+	 * offline, with all fonts, javascript and rendered math embedded directly
+	 * into a single html file.
+	 */
+	Standalone = "Standalone",
+	/**
+	 * This is currently required in React environments to work around the
+	 * React render cycle. Since almost everything is wrapepd in a series
+	 * of iiife's, kind of working like React's useEffect hook, embedding
+	 * the javascript as a script tag will ensure that the components
+	 * all have the proper listeners applied. So far it comes out to only about
+	 * 200 lines of javascript.
+	 */
+	EmbedJavascript = "EmbedJavascript",
 }
 
 export enum EmbeddableComponentName {
-    Toc = "Toc",
-    Admonition = "Admonition",
-    Hl = "Hl",
-    Highlight = "Highlight",
-    Ul = "Ul",
-    Underline = "Underline",
-    Card = "Card",
-    Grid = "Grid",
-    UtlityContainer = "Container",
-    HrWithChildren = "Hr",
-    Hint = "Hint",
-    Emoji = "Emoji",
-    EqRef = "EqRef",
-    Tabs = "Tabs",
-    Tab = "Tab",
-    AINoteSummary = "AINoteSummary",
+	Toc = "Toc",
+	Admonition = "Admonition",
+	Hl = "Hl",
+	Highlight = "Highlight",
+	Ul = "Ul",
+	Underline = "Underline",
+	Card = "Card",
+	Grid = "Grid",
+	UtlityContainer = "Container",
+	HrWithChildren = "Hr",
+	Hint = "Hint",
+	Emoji = "Emoji",
+	EqRef = "EqRef",
+	Tabs = "Tabs",
+	Tab = "Tab",
+	AINoteSummary = "AINoteSummary",
 }
 
 export enum SupportedCodeBlockTheme {
-    ThirteenThirtySeven = "1337",
-    ColdarkCold = "Coldark-Cold",
-    ColdarkDark = "Coldark-Dark",
-    Darkneon = "DarkNeon",
-    Dracula = "Dracula",
-    Github = "GitHub",
-    MonokaiExtended = "Monokai Extended",
-    MonokaiExtendedBright = "Monokai Extended Bright",
-    MonokaiExtendedLight = "Monokai Extended Light",
-    MonoakaiExtendedOrigin = "Monokai Extended Origin",
-    Nord = "Nord",
-    Onehalfdark = "OneHalfDark",
-    Onehalflight = "OneHalfLight",
-    SolarizedDark = "Solarized (dark)",
-    SolarizedLight = "Solarized (light)",
-    SublimeSnazzy = "Sublime Snazzy",
-    Twodark = "TwoDark",
-    VisualStudioDarkPlus = "Visual Studio Dark+",
-    Ansi = "ansi",
-    Base16 = "base16",
-    Base16_256 = "base16-256",
-    GruvboxDark = "gruvbox-dark",
-    GruvboxLight = "gruvbox-light",
-    Zenburn = "zenburn",
+	ThirteenThirtySeven = "1337",
+	ColdarkCold = "Coldark-Cold",
+	ColdarkDark = "Coldark-Dark",
+	Darkneon = "DarkNeon",
+	Dracula = "Dracula",
+	Github = "GitHub",
+	MonokaiExtended = "Monokai Extended",
+	MonokaiExtendedBright = "Monokai Extended Bright",
+	MonokaiExtendedLight = "Monokai Extended Light",
+	MonoakaiExtendedOrigin = "Monokai Extended Origin",
+	Nord = "Nord",
+	Onehalfdark = "OneHalfDark",
+	Onehalflight = "OneHalfLight",
+	SolarizedDark = "Solarized (dark)",
+	SolarizedLight = "Solarized (light)",
+	SublimeSnazzy = "Sublime Snazzy",
+	Twodark = "TwoDark",
+	VisualStudioDarkPlus = "Visual Studio Dark+",
+	Ansi = "ansi",
+	Base16 = "base16",
+	Base16_256 = "base16-256",
+	GruvboxDark = "gruvbox-dark",
+	GruvboxLight = "gruvbox-light",
+	Zenburn = "zenburn",
 }
 
 export interface UIParams {
-    dark_mode: boolean;
-    /** A number 0-n, where n > 1 increases the fontsize. */
-    font_scalar: number;
-    math_font_scalar: number;
-    syntax_theme?: SupportedCodeBlockTheme;
+	dark_mode: boolean;
+	/** A number 0-n, where n > 1 increases the fontsize. */
+	font_scalar: number;
+	math_font_scalar: number;
+	syntax_theme?: SupportedCodeBlockTheme;
 }
 
 export enum ConundrumCompileTarget {
-    Jsx = "Jsx",
-    Html = "Html",
-    Markdown = "Markdown",
-    PlainText = "PlainText",
-    Mdx = "Mdx",
+	Jsx = "Jsx",
+	Html = "Html",
+	Markdown = "Markdown",
+	PlainText = "PlainText",
+	Mdx = "Mdx",
 }
 
 /** This is the core 'input' for Conundrum. */
 export interface ParseConundrumOptions {
-    /**
-     * The id of your note. This can be generic, unique to each application,
-     * but so-long as the note has the **concept** of an id the id can be
-     * inserted into certain components to make it easier for the front-end
-     * to collect data without the need for complicated outside state.
-     */
-    note_id?: string;
-    /** Your conundrum content, obviously. */
-    content: string;
-    /**
-     * Kind of the core piece of Conundrum, the ability to write in a superset
-     * of Markdown and to compile to a variety of targets, including just
-     * regular, traditional markdown (the goal is to comply with the Commonmark
-     * spec eventually, we're still missing some things that are being cleaned
-     * up by the runtime environment).
-     */
-    modifiers: ConundrumModifier[];
-    /**
-     * Hide specific components that are incompatable with the target output
-     * environment. This is done automatically with the `.ForAiInput` flag
-     * for all AI input components so not to confuse the AI, but there
-     * maybe other use cases as well. Any component added here will render
-     * _nothing_, but it's state will still be applied to the result.
-     */
-    hide_components: EmbeddableComponentName[];
-    ui_params: UIParams;
-    target: ConundrumCompileTarget;
-    trusted: boolean;
+	/**
+	 * The id of your note. This can be generic, unique to each application,
+	 * but so-long as the note has the **concept** of an id the id can be
+	 * inserted into certain components to make it easier for the front-end
+	 * to collect data without the need for complicated outside state.
+	 */
+	note_id?: string;
+	/** Your conundrum content, obviously. */
+	content: string;
+	/**
+	 * Kind of the core piece of Conundrum, the ability to write in a superset
+	 * of Markdown and to compile to a variety of targets, including just
+	 * regular, traditional markdown (the goal is to comply with the Commonmark
+	 * spec eventually, we're still missing some things that are being cleaned
+	 * up by the runtime environment).
+	 */
+	modifiers: ConundrumModifier[];
+	/**
+	 * Hide specific components that are incompatable with the target output
+	 * environment. This is done automatically with the `.ForAiInput` flag
+	 * for all AI input components so not to confuse the AI, but there
+	 * maybe other use cases as well. Any component added here will render
+	 * _nothing_, but it's state will still be applied to the result.
+	 */
+	hide_components: EmbeddableComponentName[];
+	ui_params: UIParams;
+	target: ConundrumCompileTarget;
+	trusted: boolean;
 }
 
 /**
@@ -1079,28 +1089,28 @@ export interface ParseConundrumOptions {
  * ```
  */
 export interface ParsedCitation {
-    key: string;
-    full_match: string;
-    idx: number;
+	key: string;
+	full_match: string;
+	idx: number;
 }
 
 export interface ParsedInspectionRequest {
-    /** An EmbeddableComponentName or InContentDocumentationId */
-    keyword: string;
-    level: number;
-    full_match: string;
+	/** An EmbeddableComponentName or InContentDocumentationId */
+	keyword: string;
+	level: number;
+	full_match: string;
 }
 
 export interface ParsedOutgoingNoteLink {
-    /** The user-defined id of the note which is being linked to. */
-    note_id: string;
-    /** The text content of the link. `[The stuff here](note:MyNote)` */
-    content: Children;
-    /**
-     * The full content of the input string that represents this outgoing note
-     * link.
-     */
-    full_match: string;
+	/** The user-defined id of the note which is being linked to. */
+	note_id: string;
+	/** The text content of the link. `[The stuff here](note:MyNote)` */
+	content: Children;
+	/**
+	 * The full content of the input string that represents this outgoing note
+	 * link.
+	 */
+	full_match: string;
 }
 
 /**
@@ -1111,42 +1121,42 @@ export interface ParsedOutgoingNoteLink {
  * ```
  */
 export interface ParsedTag {
-    /** The tag's body */
-    body: string;
-    /** The full match of the content that was originally in the note. */
-    full_match: string;
-    markdown?: InlineMarkdownOverride;
+	/** The tag's body */
+	body: string;
+	/** The full match of the content that was originally in the note. */
+	full_match: string;
+	markdown?: InlineMarkdownOverride;
 }
 
-export type ConundrumComponentType =
-    | { tag: "Toc", content: TableOfContents }
-    | { tag: "Container", content: UtilityContainer }
-    | { tag: "Card", content: Card }
-    | { tag: "Tabs", content: TabsGroup }
-    | { tag: "Tab", content: Tab }
-    | { tag: "Grid", content: ResponsiveGrid }
-    | { tag: "Hr", content: HrWithChildrenResult }
-    | { tag: "Admonition", content: Admonition }
-    | { tag: "Hint", content: Hint }
-    | { tag: "Ul", content: Underline }
-    | { tag: "Hl", content: Highlight }
-    | { tag: "Emoji", content: EmojiResult }
-    | { tag: "EqRef", content: EquationReference }
-    | { tag: "EmojiDocsDemo", content: EmojiDocsDemo };
+export type ConundrumComponentType = 
+	| { tag: "Toc", content: TableOfContents }
+	| { tag: "Container", content: UtilityContainer }
+	| { tag: "Card", content: Card }
+	| { tag: "Tabs", content: TabsGroup }
+	| { tag: "Tab", content: Tab }
+	| { tag: "Grid", content: ResponsiveGrid }
+	| { tag: "Hr", content: HrWithChildrenResult }
+	| { tag: "Admonition", content: Admonition }
+	| { tag: "Hint", content: Hint }
+	| { tag: "Ul", content: Underline }
+	| { tag: "Hl", content: Highlight }
+	| { tag: "Emoji", content: EmojiResult }
+	| { tag: "EqRef", content: EquationReference }
+	| { tag: "EmojiDocsDemo", content: EmojiDocsDemo };
 
 export interface ReactComponentSelfClosingResult {
-    full_text: string;
-    component: ConundrumComponentType;
+	full_text: string;
+	component: ConundrumComponentType;
 }
 
 export interface ReactComponentWithChildrenResult {
-    full_text: string;
-    component: ConundrumComponentType;
+	full_text: string;
+	component: ConundrumComponentType;
 }
 
-export type NumberOrSizable =
-    | { tag: "Sizable", content: SizableOption }
-    | { tag: "Number", content: ConundrumNumber };
+export type NumberOrSizable = 
+	| { tag: "Sizable", content: SizableOption }
+	| { tag: "Number", content: ConundrumNumber };
 
 /**
  * ## Example Usage
@@ -1174,35 +1184,35 @@ export type NumberOrSizable =
  * ```
  */
 export interface ResponsiveGrid {
-    sizable?: SizablePropsGroup;
-    columns: GridColumnProps;
-    children: Children;
-    responsive?: NumberOrSizable;
-    fit?: ConundrumBoolean;
-    emphasis?: Emphasis;
+	sizable?: SizablePropsGroup;
+	columns: GridColumnProps;
+	children: Children;
+	responsive?: NumberOrSizable;
+	fit?: ConundrumBoolean;
+	emphasis?: Emphasis;
 }
 
 export interface StringUnion {
-    opts: string[];
-    value: string;
+	opts: string[];
+	value: string;
 }
 
 export interface Tab {
-    /** The label of the button that toggles this tab. */
-    label: ConundrumString;
-    /**
-     * This is only required if the `label` field occurs more than once in the
-     * same `Tabs` component. Each `Tab` must have a unique `id` field, it's
-     * just set to the label by default.
-     */
-    id?: ConundrumString;
-    children: Children;
-    initial?: ConundrumBoolean;
+	/** The label of the button that toggles this tab. */
+	label: ConundrumString;
+	/**
+	 * This is only required if the `label` field occurs more than once in the
+	 * same `Tabs` component. Each `Tab` must have a unique `id` field, it's
+	 * just set to the label by default.
+	 */
+	id?: ConundrumString;
+	children: Children;
+	initial?: ConundrumBoolean;
 }
 
 export interface TableOfContents {
-    expanded?: ConundrumBoolean;
-    id: DOMId;
+	expanded?: ConundrumBoolean;
+	id: DOMId;
 }
 
 /**
@@ -1231,36 +1241,36 @@ export interface TableOfContents {
  * ```
  */
 export interface TabsGroup {
-    /** The styles applied to the active tab. Default: `.card` */
-    emphasis?: Emphasis;
-    subtle: ConundrumBoolean;
-    /**
-     * The `Tabs` component extends the `SizablePropsGroup` struct, but be
-     * careful... you're getting into the struggles of a developer now as
-     * these responsive containers can be difficult to make look good on
-     * all screen sizes. You'll get the hang of it, but be sure not to be too
-     * ambitious and implement a look that _barely_ fits, because it almost
-     * surely **won't** fit when you rotate the device or open another
-     * window.
-     */
-    sizable?: SizablePropsGroup;
-    children: Children;
-    id: DOMId;
+	/** The styles applied to the active tab. Default: `.card` */
+	emphasis?: Emphasis;
+	subtle: ConundrumBoolean;
+	/**
+	 * The `Tabs` component extends the `SizablePropsGroup` struct, but be
+	 * careful... you're getting into the struggles of a developer now as
+	 * these responsive containers can be difficult to make look good on
+	 * all screen sizes. You'll get the hang of it, but be sure not to be too
+	 * ambitious and implement a look that _barely_ fits, because it almost
+	 * surely **won't** fit when you rotate the device or open another
+	 * window.
+	 */
+	sizable?: SizablePropsGroup;
+	children: Children;
+	id: DOMId;
 }
 
 export interface TitleGroup {
-    title: string;
-    subtitle?: string;
+	title: string;
+	subtitle?: string;
 }
 
 export interface Underline {
-    children: Children;
-    /** Default: .highlight */
-    emphasis: Emphasis;
-    thin?: ConundrumBoolean;
-    thick?: ConundrumBoolean;
-    /** Default: .Plain */
-    markdown?: InlineMarkdownOverride;
+	children: Children;
+	/** Default: .highlight */
+	emphasis: Emphasis;
+	thin?: ConundrumBoolean;
+	thick?: ConundrumBoolean;
+	/** Default: .Plain */
+	markdown?: InlineMarkdownOverride;
 }
 
 /**
@@ -1277,12 +1287,12 @@ export interface Underline {
  * ```
  */
 export interface UnorderedListItem {
-    heading: Children;
-    body?: Children;
+	heading: Children;
+	body?: Children;
 }
 
 export interface UnorderedListModel {
-    items: UnorderedListItem[];
+	items: UnorderedListItem[];
 }
 
 /**
@@ -1295,34 +1305,34 @@ export interface UnorderedListModel {
  * responsive & informative layouts that fit your own use case.
  */
 export interface UtilityContainer {
-    sizable: SizablePropsGroup;
-    emphasis?: Emphasis;
-    children: Children;
+	sizable: SizablePropsGroup;
+	emphasis?: Emphasis;
+	children: Children;
 }
 
 export enum AiSerializationRequestType {
-    CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
-    SummarizeNote = "SummarizeNote",
-    RecommendResearch = "RecommendResearch",
+	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
+	SummarizeNote = "SummarizeNote",
+	RecommendResearch = "RecommendResearch",
 }
 
 export enum AutoInsertedComponentName {
-    NoteLink = "NoteLink",
-    AutoInsertedTag = "AutoInsertedTag",
-    FlusterCitation = "FlusterCitation",
-    DictionaryEntry = "DictionaryEntry",
-    FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
-    AutoInsertedHeading = "AutoInsertedHeading",
-    AutoInsertedCodeBlock = "AutoInsertedCodeBlock",
-    AutoInsertedBlockQuote = "AutoInsertedBlockQuote",
-    AutoInsertedMathBlock = "AutoInsertedMathBlock",
-    AutoInsertedMarkdownLink = "AutoInsertedMarkdownLink",
-    AutoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph",
+	NoteLink = "NoteLink",
+	AutoInsertedTag = "AutoInsertedTag",
+	FlusterCitation = "FlusterCitation",
+	DictionaryEntry = "DictionaryEntry",
+	FlusterAiParsePendingContainer = "FlusterAiParsePendingContainer",
+	AutoInsertedHeading = "AutoInsertedHeading",
+	AutoInsertedCodeBlock = "AutoInsertedCodeBlock",
+	AutoInsertedBlockQuote = "AutoInsertedBlockQuote",
+	AutoInsertedMathBlock = "AutoInsertedMathBlock",
+	AutoInsertedMarkdownLink = "AutoInsertedMarkdownLink",
+	AutoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph",
 }
 
-export type CodeBlockLanguage =
-    | { tag: "DefaultLanguage", content?: undefined }
-    | { tag: "UserProvided", content: string };
+export type CodeBlockLanguage = 
+	| { tag: "DefaultLanguage", content?: undefined }
+	| { tag: "UserProvided", content: string };
 
 /**
  * To enforce some uniformity and ease-of-use between components, this enum
@@ -1331,54 +1341,64 @@ export type CodeBlockLanguage =
  * users.
  */
 export enum CommonComponentPropertyKey {
-    MarkdownHeading = "markdownHeading",
-    InlineMarkdownOverride = "markdown",
+	MarkdownHeading = "markdownHeading",
+	InlineMarkdownOverride = "markdown",
 }
 
-export type ConundrumErrorVariant =
-    | { tag: "MultiThreadingError", content?: undefined }
-    | { tag: "KeyNotFound", content?: undefined }
-    | { tag: "EmbeddedDataNotFound", content?: undefined }
-    | { tag: "TerminatorNotFound", content?: undefined }
-    | { tag: "FailToFindTitleGroup", content?: undefined }
-    | { tag: "FailToFindComponent", content: string }
-    | { tag: "FailToGenerateString", content?: undefined }
-    | { tag: "FrontMatterError", content?: undefined }
-    | { tag: "UserFacingGeneralParserError", content: ConundrumError }
-    | { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
-    | { tag: "InternalParserError", content: ConundrumError };
+export type ConundrumErrorVariant = 
+	| { tag: "MultiThreadingError", content?: undefined }
+	| { tag: "KeyNotFound", content?: undefined }
+	| { tag: "EmbeddedDataNotFound", content?: undefined }
+	| { tag: "TerminatorNotFound", content?: undefined }
+	| { tag: "FailToFindTitleGroup", content?: undefined }
+	| { tag: "FailToFindComponent", content: string }
+	| { tag: "FailToGenerateString", content?: undefined }
+	| { tag: "FrontMatterError", content?: undefined }
+	| { tag: "UserFacingGeneralParserError", content: ConundrumError }
+	| { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
+	| { tag: "InternalParserError", content: ConundrumError };
 
-export type ConundrumLogicToken =
-    | { tag: "Number", content: ConundrumNumber }
-    | { tag: "String", content: ConundrumString }
-    | { tag: "Bool", content: ConundrumBoolean }
-    | { tag: "Object", content: ConundrumObject }
-    | { tag: "Function", content: ConundrumFunction };
+export type ConundrumLogicToken = 
+	| { tag: "Number", content: ConundrumNumber }
+	| { tag: "String", content: ConundrumString }
+	| { tag: "Bool", content: ConundrumBoolean }
+	| { tag: "Object", content: ConundrumObject }
+	| { tag: "Function", content: ConundrumFunction };
+
+export enum ConundrumWebEvents {
+	/**
+	 * Useful for things like resizable pains, to more easily emit your own
+	 * resize event that Conundrum will handle to update the components
+	 * accordingly.
+	 */
+	ManualResize = "cdrm-manual-resize",
+	CdrmContentLoaded = "cdrm-content-loaded",
+}
 
 export enum DocumentationComponentName {
-    InContentDocumentationContainer = "InContentDocumentationContainer",
-    InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
-    InContentDocsHighlightDemo = "InContentDocsHighlightDemo",
-    InContentDocsUnderlineDemo = "InContentDocsUnderlineDemo",
-    EmojiDocumentationDemo = "AutoInsertedNestedEmojiDocumentation",
+	InContentDocumentationContainer = "InContentDocumentationContainer",
+	InContentDocsEmphasisTypeList = "InContentDocsEmphasisTypeList",
+	InContentDocsHighlightDemo = "InContentDocsHighlightDemo",
+	InContentDocsUnderlineDemo = "InContentDocsUnderlineDemo",
+	EmojiDocumentationDemo = "AutoInsertedNestedEmojiDocumentation",
 }
 
 /** From typescript to swift. */
 export enum EmbeddableComponentId {
-    Toc = "toc",
-    Admonition = "admonition",
-    Hl = "highlight",
-    Ul = "underline",
-    Card = "card",
-    Grid = "grid",
-    UtlityContainer = "util-container",
-    HrWithChildren = "hr-with-children",
-    Hint = "embeddable-hint-component",
-    Emoji = "emoji-component",
-    Tabs = "tab-group",
-    Tab = "tab-group-tab",
-    EqRef = "equation-reference",
-    AINoteSummary = "ai-note-summary",
+	Toc = "toc",
+	Admonition = "admonition",
+	Hl = "highlight",
+	Ul = "underline",
+	Card = "card",
+	Grid = "grid",
+	UtlityContainer = "util-container",
+	HrWithChildren = "hr-with-children",
+	Hint = "embeddable-hint-component",
+	Emoji = "emoji-component",
+	Tabs = "tab-group",
+	Tab = "tab-group-tab",
+	EqRef = "equation-reference",
+	AINoteSummary = "ai-note-summary",
 }
 
 /**
@@ -1386,8 +1406,8 @@ export enum EmbeddableComponentId {
  * sets the documentation to `.Short`, and `.Full` when you apply 2 `??`.
  */
 export enum InContentDocumentationFormat {
-    Full = "full",
-    Short = "short",
+	Full = "full",
+	Short = "short",
 }
 
 /**
@@ -1398,57 +1418,57 @@ export enum InContentDocumentationFormat {
  * components, which you can look into for further docs.
  */
 export enum InContentDocumentationId {
-    Markdown = "Markdown",
-    Docs = "Docs",
-    Syntax = "Syntax",
-    Jsx = "Jsx",
-    Code = "Code",
-    SizableObject = "Sizable",
-    Emphasis = "Emphasis",
-    Emoji = "Emoji",
-    Components = "Components",
-    AI = "AI",
-    Conundrum = "Conundrum",
+	Markdown = "Markdown",
+	Docs = "Docs",
+	Syntax = "Syntax",
+	Jsx = "Jsx",
+	Code = "Code",
+	SizableObject = "Sizable",
+	Emphasis = "Emphasis",
+	Emoji = "Emoji",
+	Components = "Components",
+	AI = "AI",
+	Conundrum = "Conundrum",
 }
 
 export enum InContentDocumentationSource {
-    ComponentDocs = "component",
-    InternalDocs = "internal-docs",
+	ComponentDocs = "component",
+	InternalDocs = "internal-docs",
 }
 
 export enum ParserId {
-    Tags = "tags",
-    Citations = "citations",
-    Dictionary = "dictionary",
-    NoteLink = "note_link",
-    Documentation = "docs",
-    AiTrigger = "ai",
-    HrWithChildren = "hr",
+	Tags = "tags",
+	Citations = "citations",
+	Dictionary = "dictionary",
+	NoteLink = "note_link",
+	Documentation = "docs",
+	AiTrigger = "ai",
+	HrWithChildren = "hr",
 }
 
 export enum WebGlueCodeGeneralFiles {
-    Styles = "styles.css",
-    KatexCss = "katex.min.css",
-    Katex_ams_regular = "katex_ams_regular.woff2",
-    Katex_caligraphic_bold = "katex_caligraphic_bold.woff2",
-    Katex_caligraphic_regular = "katex_caligraphic_regular.woff2",
-    Katex_fraktur_bold = "katex_fraktur_bold.woff2",
-    Katex_fraktur_regular = "katex_fraktur_regular.woff2",
-    Katex_main_bold = "katex_main_bold.woff2",
-    Katex_main_bolditalic = "katex_main_bolditalic.woff2",
-    Katex_main_italic = "katex_main_italic.woff2",
-    Katex_main_regular = "katex_main_regular.woff2",
-    Katex_math_bolditalic = "katex_math_bolditalic.woff2",
-    Katex_math_italic = "katex_math_italic.woff2",
-    Katex_sansserif_bold = "katex_sansserif_bold.woff2",
-    Katex_sansserif_italic = "katex_sansserif_italic.woff2",
-    Katex_sansserif_regular = "katex_sansserif_regular.woff2",
-    Katex_script_regular = "katex_script_regular.woff2",
-    Katex_size1_regular = "katex_size1_regular.woff2",
-    Katex_size2_regular = "katex_size2_regular.woff2",
-    Katex_size3_regular = "katex_size3_regular.woff2",
-    Katex_size4_regular = "katex_size4_regular.woff2",
-    Katex_typewriter_regular = "katex_typewriter_regular.woff2",
-    NerdFont = "Fira_Code_Regular.ttf",
+	Styles = "styles.css",
+	KatexCss = "katex.min.css",
+	Katex_ams_regular = "katex_ams_regular.woff2",
+	Katex_caligraphic_bold = "katex_caligraphic_bold.woff2",
+	Katex_caligraphic_regular = "katex_caligraphic_regular.woff2",
+	Katex_fraktur_bold = "katex_fraktur_bold.woff2",
+	Katex_fraktur_regular = "katex_fraktur_regular.woff2",
+	Katex_main_bold = "katex_main_bold.woff2",
+	Katex_main_bolditalic = "katex_main_bolditalic.woff2",
+	Katex_main_italic = "katex_main_italic.woff2",
+	Katex_main_regular = "katex_main_regular.woff2",
+	Katex_math_bolditalic = "katex_math_bolditalic.woff2",
+	Katex_math_italic = "katex_math_italic.woff2",
+	Katex_sansserif_bold = "katex_sansserif_bold.woff2",
+	Katex_sansserif_italic = "katex_sansserif_italic.woff2",
+	Katex_sansserif_regular = "katex_sansserif_regular.woff2",
+	Katex_script_regular = "katex_script_regular.woff2",
+	Katex_size1_regular = "katex_size1_regular.woff2",
+	Katex_size2_regular = "katex_size2_regular.woff2",
+	Katex_size3_regular = "katex_size3_regular.woff2",
+	Katex_size4_regular = "katex_size4_regular.woff2",
+	Katex_typewriter_regular = "katex_typewriter_regular.woff2",
+	NerdFont = "Fira_Code_Regular.ttf",
 }
 

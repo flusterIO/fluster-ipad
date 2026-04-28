@@ -58,7 +58,7 @@ impl HtmlJsComponentResult for InlineMathResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let state = res.read_arc();
         let math_string = self.body.to_math(false, state.trusted)?;
-        Ok(format!("<span className=\"conundrum-math conundrum-math-inline\">{}</span>", math_string))
+        Ok(format!("<span className=\"cdrm-math cdrm-math-inline\">{}</span>", math_string))
     }
 }
 

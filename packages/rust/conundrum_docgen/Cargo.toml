@@ -9,6 +9,7 @@ license.workspace = true
 
 [dependencies]
 askama = "0.15.6"
+clap = { version = "4.6.1", features = ["derive"] }
 conundrum = {path = "../conundrum/"}
 strum.workspace = true
 strum_macros.workspace = true

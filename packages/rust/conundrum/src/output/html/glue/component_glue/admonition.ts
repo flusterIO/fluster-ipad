@@ -1,18 +1,16 @@
-(() => {
+function handleConundrumAdmonitionHeight(container: HTMLDivElement) {
+    const bodyContainer = container.querySelector(".cdrm-admon-body-container") as HTMLDivElement;
+    const body = container.querySelector(".cdrm-admon-body") as HTMLDivElement;
+    body.style.height = 'auto';
+    body.style.transition = 'max-height 500ms ease-in-out';
+    const bodyHeight = body.getBoundingClientRect().height;
+    bodyContainer.style.maxHeight = `${bodyHeight}px`
+}
 
-    function handleAdmonitionHeight(container: HTMLDivElement) {
-        const bodyContainer = container.querySelector(".cdrm-admon-body-container") as HTMLDivElement;
-        const body = container.querySelector(".cdrm-admon-body") as HTMLDivElement;
-        body.style.height = 'auto';
-        body.style.transition = 'max-height 500ms ease-in-out';
-        const bodyHeight = body.getBoundingClientRect().height;
-        bodyContainer.style.maxHeight = `${bodyHeight}px`
-    }
-
-
+export function applyAdmonitionClickListeners() {
     function openAdmonition(container: HTMLDivElement) {
         container.setAttribute("data-cdrm-folded", "false");
-        handleAdmonitionHeight(container)
+        handleConundrumAdmonitionHeight(container)
     }
 
     function closeAdmonition(container: HTMLDivElement) {
@@ -25,7 +23,7 @@
     let ems = document.getElementsByClassName("cdrm-admon-title-group") as HTMLCollectionOf<HTMLDivElement>;
     for (var i = 0; i < ems.length; i++) {
         const item = ems.item(i);
-        item.addEventListener("click", (e) => {
+        item?.addEventListener("click", (e) => {
             const container = (e.currentTarget as HTMLDivElement).parentElement as HTMLDivElement;
             let folded = container.getAttribute("data-cdrm-folded") === "true";
             let foldable = container.getAttribute("data-cdrm-foldable") === "true";
@@ -42,17 +40,22 @@
             }
         })
     }
+}
 
-    function handleAdmonitionResize() {
-        const ems = document.getElementsByClassName("cdrm-admon");
-        for (var i = 0; i < ems.length; i++) {
-            const item = ems.item(i) as HTMLDivElement;
-            if (item.getAttribute("data-cdrm-folded") === "false" && item.getAttribute("data-cdrm-foldable") === "true") {
-                handleAdmonitionHeight(item)
-            }
+
+export function handleConundrumAdmonitionResize() {
+    const ems = document.getElementsByClassName("cdrm-admon");
+    for (var i = 0; i < ems.length; i++) {
+        const item = ems.item(i) as HTMLDivElement;
+        if (item.getAttribute("data-cdrm-folded") === "false" && item.getAttribute("data-cdrm-foldable") === "true") {
+            handleConundrumAdmonitionHeight(item)
         }
     }
+}
 
-    window.addEventListener("resize", handleAdmonitionResize);
-    window.addEventListener("cdrm-manual-resize", handleAdmonitionResize);
-})()
+(() => {
+    applyAdmonitionClickListeners()
+    window.addEventListener("resize", handleConundrumAdmonitionResize);
+    window.addEventListener("cdrm-manual-resize", handleConundrumAdmonitionResize);
+    window.addEventListener("cdrm-content-loaded", applyAdmonitionClickListeners)
+})();
