@@ -47,11 +47,9 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
     )
   }
 
-  
   public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
     guard let _url = urlSchemeTask.request.url else { return }
-    if let (url, fileName, fileExtension, subDirectory) = parseAssetUrl(_url, urlSchemeTask)
-    {
+    if let (url, fileName, fileExtension, subDirectory) = parseAssetUrl(_url, urlSchemeTask) {
       // 3. Perform the Bundle lookup
       if let fileUrl = Bundle.main.url(
         forResource: fileName,
@@ -86,6 +84,7 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
   public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
 
   private func getMimeType(for ext: String) -> String {
+    print("Extension: \(ext.lowercased())")
     // WHENONLINE: Check to make sure that this woff field is right. Need to handle passing of fonts to front-end here.
     switch ext.lowercased() {
       case "wasm": return "application/wasm"
@@ -93,6 +92,7 @@ public class WasmSchemeHandler: NSObject, WKURLSchemeHandler {
       case "html": return "text/html"
       case "css": return "text/css"
       case "woff": return "text/woff"
+      case "woff2": return "font/woff2"
       default: return "application/octet-stream"
     }
   }

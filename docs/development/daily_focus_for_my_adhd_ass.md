@@ -2,48 +2,43 @@
 
 ## Summary of To-Do List
 
-### Prioritized Tasks
+### High Priority Tasks
 
-1. **Handle Line Item Parsing Steps**
-   - Read entire line to end of line or EOF using preceeded combinator to match and consume for required indentation.
-   - Return an enum `Empty, Line(IndentedLine)` for empty lines.
-   - Create a reliable, well-tested function to rejoin indented lines after parsing.
+1. **Fix New Note First Display Issue** - This is still unresolved and needs immediate attention.
+2. **Handle Rendering Code to HTML** - Critical for the app's functionality.
+3. **Move Over All Katex Font Methods to Use Binary Stored Data** - This will break the standalone app, so it's a high priority.
+4. **Handle Grid by Fixing Issue with Integer Parser** - The current issue is causing the Grid component to fail when props are valid.
+5. **Handle Blockquote Bug with Multi-Line Entries** - This is a known bug that needs to be fixed.
 
-2. **Fix Remaining Bugs**
-   - Ensure new note first display issue is resolved.
-   - Handle Grid issue with integer parser to prevent floats from breaking the component.
-   - Fix Blockquote bug with multi-line entries.
-   - Handle issue with inline underline component breaking out of paragraphs.
+### Medium Priority Tasks
 
-3. **Implement Missing Parsers**
-   - Implement parsers for Line Item with checkbox, Plain line item, Numbered line item, and Full table.
-   - Handle missing parsers for CodeBlock, Footnote, Table, Strikethrough text, Escapable math blocks, Escapable strings, Paragraphs, and Timestamp links.
+1. **Write JavaScript to Actually Copy Code from Code Block** - This includes emitting an event that can be picked up by other applications, including Fluster.
+2. **Handle Issue with Inline Underline Component Breaking Out of Paragraph** - This is a pain point that needs to be resolved.
+3. **Reattach Theme Selector to Swift** - Create an independent view that can be added to both Mac and iOS using the Rust generated enums.
+4. **Fix Independent Markdown View Page** - This is not rendering at all now, and it's a loading class issue that's never being set to false.
 
-4. **Component Moves and Additions**
-   - Move over remaining components like AINoteSummary and Table of Contents (TOC).
-   - Work on integrating Typst support for offline use.
+### Low Priority Tasks
 
-5. **AI Features**
-   - Create AI triggers for generating study guides and flashcards.
-   - Implement AI summary features with light mode and force regeneration.
+1. **Write Script to Gather and Generate Single JavaScript Typescript File from Combined Component Files from Generated Dashmap** - This is a long-term task that can be done once the main issues are resolved.
+2. **Handle Missing Parsers** - This includes Line Item with checkbox, Plain line item, Numbered line item, and Full table!
+3. **Reimplement `window.setBibtexEditorContent`** - This is a buffer operation that's currently MIA.
+4. **Handle Rest of Summary UI** - This includes making sure the summary can be accepted or declined from the UI appropriately.
 
-6. **Offline and Performance Improvements**
-   - Fix syntax for italic fields in titles.
-   - Move regex queries to a HashMap for faster lookups.
+### Additional Tasks
 
-7. **Release Preparation**
-   - Ensure all tests are passing for Swift, Typescript, and Rust.
-   - Review Apple's nomination guidelines for potential feature recognition.
+1. **Work on Integrating Typst Support** - This is a major value add that can be handled offline and in time to release.
+2. **Setup Seeding of Notes on Desktop App** - This will be the first app that's released most likely.
+3. **Move Over Rest of Components** - This includes Work on remaining parsers.
+4. **Handle Performance Issues** - This includes moving all of regex queries in the `get_component_map` file to a `HashMap<String, bool>` that is generated in Rust now that the component names are being set as an enum.
 
-### Key Focus Areas
+### Release Checklist
 
-- **Bug Fixes**: Prioritize resolving issues that affect user experience, such as new note display and Grid component problems.
-- **Parser Implementation**: Focus on completing missing parsers to ensure robust content handling.
-- **AI Integration**: Work on AI triggers and summaries to enhance the app's functionality.
-- **Performance Optimization**: Move regex queries to a HashMap to improve performance.
+1. **All Tests Passing** - This includes Swift, Typescript, and Rust.
+2. **Review YouTube Link and Section at ~5:00** - This is about creating 'Nominations' for being featured by Apple's editor team.
+3. **Handle Light Mode of `AISummaryContainer` Card** - It looks sick in dark mode, but light mode needs some work.
+4. **Handle Force Regeneration** - This is not working and needs to be fixed.
+5. **Handle React Property Parsers** - This will open the door to a TON new possibilities.
 
-### Timeline
+## Conclusion
 
-- **Next 2 Weeks**: Focus on completing the most critical tasks to ensure a smooth release. Prioritize bug fixes, parser implementation, and AI features.
-
-This summary is designed to help maintain focus and ensure that the most important tasks are addressed first to meet the release deadline.
+The most important tasks are the ones that need immediate attention, such as fixing the new note first display issue and handling rendering code to HTML. These tasks are critical for the app's functionality and need to be prioritized. The medium priority tasks are also important and should be addressed in the coming days. The low priority tasks can be handled once the main issues are resolved. The release checklist includes all the necessary steps to ensure the app is ready for release within the next two weeks.

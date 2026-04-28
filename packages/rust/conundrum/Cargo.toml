@@ -9,7 +9,10 @@ license.workspace = true
 
 
 [features]
+## This is still a work in progress, as Fluster does not use wasm for parsing directly and instead routes the parsing through Swift.
 wasm = []
+## This is mostly used for documentation generation, but might be useful in some edge use cases.
+component_configs = []
 
 [dependencies]
 crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }

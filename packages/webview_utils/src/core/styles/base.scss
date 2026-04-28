@@ -5,6 +5,7 @@
 @import "./themes.scss";
 @import "./editor.scss";
 @import "./ai.scss";
+@import "./katex_without_fonts.css";
 @source "../../**/*.{mdx,tsx,ts}";
 @source "../../../../../docs/**/*.{mdx,tsx,ts}";
 @source "../../../../webviews/bib_entry_details_webview/src/**/*.{ts,tsx,mdx}";

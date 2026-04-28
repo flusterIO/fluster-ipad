@@ -11,7 +11,6 @@ import consola from "consola";
 import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
 import { ConundrumErrorListener } from "./conundrum_error_listener";
 import { SummaryStreamContainer } from "#/ai/presentation/tasks/summary_stream/summary_stream_container";
-import "katex/dist/katex.min.css";
 import { NerdFontLoader } from "#/code/nerd_font_loader";
 import { KatexFontLoader } from "#/math/katex_font_loader";
 import { LucideFontLoader } from "#/themeing/lucide_font_loader";
