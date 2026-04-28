@@ -1,5 +1,4 @@
 import React, { type HTMLProps, useId, useRef, type ReactNode } from "react";
-/* import { MdxContent } from "./mdx_content"; */
 import { cn } from "@/utils/cn";
 import { LoadingComponent } from "@/shared_components/loading_component";
 import { type EditorState, EditorView, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
@@ -12,6 +11,10 @@ import consola from "consola";
 import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
 import { ConundrumErrorListener } from "./conundrum_error_listener";
 import { SummaryStreamContainer } from "#/ai/presentation/tasks/summary_stream/summary_stream_container";
+import "katex/dist/katex.min.css";
+import { NerdFontLoader } from "#/code/nerd_font_loader";
+import { KatexFontLoader } from "#/math/katex_font_loader";
+import { LucideFontLoader } from "#/themeing/lucide_font_loader";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -82,6 +85,9 @@ export const MdxEditorPreview = connector(({
             FallbackComponent={(p) => <PreviewLevelErrorReport {...p} mdx={parsedValue} debounceTimeout={0} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} id={id} />}
         >
             <ConundrumErrorListener />
+            <NerdFontLoader />
+            <KatexFontLoader />
+            <LucideFontLoader />
             <div
                 id={SplitviewEditorDomIds.MdxPreview}
                 dangerouslySetInnerHTML={{ __html: parsedValue }}
@@ -92,20 +98,6 @@ export const MdxEditorPreview = connector(({
                 )}
                 ref={ref}
             />
-            {/* <MdxContent */}
-            {/*     id={SplitviewEditorDomIds.MdxPreview} */}
-            {/*     {...props} */}
-            {/*     asMain */}
-            {/*     className={cn( */}
-            {/*         "max-w-[1080px]", */}
-            {/*         isEditorView ? "px-6 pt-4 pb-16 mx-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16", */}
-            {/*         className, */}
-            {/*     )} */}
-            {/*     ref={ref} */}
-            {/*     lockToEditorScroll={lockEditorScrollToPreview} */}
-            {/*     mdx={parsedValue} */}
-            {/*     showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} */}
-            {/* /> */}
             <SummaryStreamContainer />
         </ErrorBoundary>
     );

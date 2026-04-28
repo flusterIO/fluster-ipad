@@ -18,6 +18,10 @@ use crate::output::html::glue::glue_asset::GlueCssAsset;
 pub struct LucideFontAsset {}
 
 impl LucideFontAsset {
+    pub fn as_bytes() -> &'static [u8] {
+        lucide_icons::LUCIDE_FONT_BYTES
+    }
+
     fn get_font_data(&self) -> String {
         // TODO: Lift this up the parent and pass it in so we don't have to recreate
         // this engine 20 times.

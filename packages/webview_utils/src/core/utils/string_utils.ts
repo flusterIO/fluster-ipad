@@ -13,3 +13,8 @@ export const copyStringToClipboard = async (content: string): Promise<boolean> =
         return false
     }
 }
+
+/**
+ * If `s` ends with `x` then just returns `x`, otherwise appends `x` to `s`
+ */
+export const withTrailingSlash = (s: string, x = "/") => s.endsWith(x) ? s : `${s}${x}`

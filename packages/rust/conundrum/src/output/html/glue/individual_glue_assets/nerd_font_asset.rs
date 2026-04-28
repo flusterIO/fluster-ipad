@@ -8,6 +8,7 @@ use crate::output::html::glue::{
 };
 
 /// ## Template (HTML)
+///
 /// ```askama
 /// @font-face {
 /// font-family: 'FontNerd';

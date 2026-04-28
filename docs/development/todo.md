@@ -1,12 +1,12 @@
 # To-Do
 
-## Line Item Parsing Steps
+## Get app back in working order
 
-- [ ] Read an entire line to end of line or eof, using preceeded combinator to match & _consume_ for the required indentation.
-  - Failing to match the indentation will fail the parser, terminating the 'repeat' combinator.
-  - Consuming indentation will erase the concern about matching indentation levels, as it will be parsed as a new block.
-- [ ] To satisfy the empty lines that are permitted, this will need to return an enum `Empty, Line(IndentedLine)`
-- [ ] There will need to be a reliable, well tested function to rejoin indented lines after they've been parsed.
+- [ ] Add katex css to mdx container so it's always loaded whenever mdx content is displayed.
+- [ ] Write font files to public directories
+  - [ ] Lucide font
+  - [ ] Devicons font
+- [ ] After writing font files to public directories, create proper css font families linking
 
 ## Remainder of Today
 
@@ -21,6 +21,10 @@
 - [x] Write javascript to actually copy code from code block.
   - [x] Emit an event that can be picked up by other applications, including Fluster.
 - [x] Handle issue inline underline component breaking out of that f-cking paragraph... the biggest pain in the ass...
+- [ ] Reattach theme selector to Swift. Create independent view that can be added to both mac and iOS using the Rust generated enums.
+- [ ] Fix independent markdown view page as that's not rendering at all now!
+  - Just a loading class issue that's never being set to false. Can easily remove now.
+- [ ] Write script to gather and generate single javascript typescript file from combined component files from generated dashmap.
 - [ ] Handle missing parsers
   - [ ] Line Item with checkbox
     - [ ] Various checked states (Pass a 'marker' char to the result)

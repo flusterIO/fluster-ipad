@@ -10,7 +10,7 @@ export const MdxEditorPreviewOnly = (
     return (
         <MdxEditorPreview
             {...props}
-            className={cn("loading-hide h-full mx-auto", className, `implementation-${implementation}`)}
+            className={cn("h-full mx-auto", className, `implementation-${implementation}`)}
         />
     );
 };

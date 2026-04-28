@@ -1,3 +1,5 @@
+use gray_matter::ParsedEntity;
+use rssn::prelude::simba::scalar::SupersetOf;
 use serde::Serialize;
 use winnow::error::ErrMode;
 
@@ -161,6 +163,41 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::ReactComponentWithChildren(c) => c.component.to_conundrum_component(res),
             ParsedElement::Emoji(e) => e.to_conundrum_component(res),
             ParsedElement::InlineCode(m) => m.to_mdx_component(res),
+            ParsedElement::Children(c) => c.render(res),
+            ParsedElement::Javascript(js) => js.to_conundrum_component(res),
+            ParsedElement::Logic(l) => l.to_conundrum_component(res),
+            ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
+            ParsedElement::OrderedList(l) => l.to_conundrum_component(res),
+            ParsedElement::Table(t) => t.to_conundrum_component(res),
+        }
+    }
+}
+
+impl MarkdownComponentResult for ParsedElement {
+    fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
+        match self {
+            ParsedElement::ParsedInspectionRequest(req) => req.to_mdx_component(res),
+            ParsedElement::ParsedCodeBlock(block) => block.to_mdx_component(res),
+            ParsedElement::ParsedCitation(cite) => cite.to_mdx_component(res),
+            ParsedElement::ParsedOutgoingNoteLink(l) => l.to_mdx_component(res),
+            ParsedElement::Tag(tag) => tag.to_markdown(res),
+            ParsedElement::Text(s) => Ok(s.clone()),
+            ParsedElement::Heading(heading) => heading.to_markdown(res),
+            ParsedElement::BlockMath(math) => math.to_markdown(res),
+            ParsedElement::InlineMath(math) => math.to_markdown(res),
+            ParsedElement::BlockQuote(quote) => quote.to_mdx_component(res),
+            ParsedElement::BoldText(t) => t.to_markdown(res),
+            ParsedElement::ItalicText(t) => t.to_markdown(res),
+            ParsedElement::BoldAndItalicText(t) => t.to_markdown(res),
+            ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
+            ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
+            ParsedElement::HrWithChildren(c) => c.to_markdown(res),
+            ParsedElement::Hr(c) => c.to_mdx_component(res),
+            ParsedElement::Comment(c) => c.to_mdx_component(res),
+            ParsedElement::ReactComponentSelfClosing(c) => c.component.to_markdown(res),
+            ParsedElement::ReactComponentWithChildren(c) => c.component.to_markdown(res),
+            ParsedElement::Emoji(e) => e.to_markdown(res),
+            ParsedElement::InlineCode(m) => m.to_markdown(res),
             ParsedElement::Children(c) => c.render(res),
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
