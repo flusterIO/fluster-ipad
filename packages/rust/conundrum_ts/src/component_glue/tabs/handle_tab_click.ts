@@ -1,17 +1,14 @@
-import consola from "consola";
-
 export const handleConundrumTabClick = (e: Event) => {
-    consola.info("Target: ", e.currentTarget);
     const target = e.currentTarget as HTMLDivElement;
     const em = target.parentElement?.parentElement as HTMLDivElement | undefined;
     if (!em) {
-        consola.error("Could not find proper parent element.");
+        console.error("Could not find proper parent element.");
         return;
     }
 
     const ti = target.getAttribute("data-cdrm-idx");
     if (typeof ti === "undefined") {
-        consola.error("Could not find tab index.");
+        console.error("Could not find tab index.");
         return;
     }
     /* eslint-disable-next-line  -- I just checked... */
@@ -19,7 +16,7 @@ export const handleConundrumTabClick = (e: Event) => {
     const groupId = em.getAttribute("data-cdrm-group");
     const focusedIdx = em.getAttribute("data-cdrm-focused-idx");
     if (typeof focusedIdx === "undefined") {
-        consola.error("Could not found TabGroup focused index.");
+        console.error("Could not found TabGroup focused index.");
         return;
     }
     /* eslint-disable-next-line  -- I just checkedd.... I'm starting to hate eslint. */
@@ -36,9 +33,9 @@ export const handleConundrumTabClick = (e: Event) => {
             tab.classList.remove(k);
         }
         if (i === clickedIndex) {
-            const activeTabBorder = em.querySelector(".cdrm-tab-subtle-border") as
-                | HTMLDivElement
-                | undefined;
+            const activeTabBorder = target.querySelector(
+                ".cdrm-tab-subtle-border",
+            ) as HTMLDivElement | undefined;
 
             if (activeTabBorder) {
                 activeTabBorder.style.transformOrigin =

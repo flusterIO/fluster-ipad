@@ -21,7 +21,46 @@ const applyCopyConundrumCodeBlockListeners = () => {
   applyCopyConundrumCodeBlockListeners();
   window.addEventListener("cdrm-content-loaded", applyCopyConundrumCodeBlockListeners);
 })();
-const c$1 = {
+const j = (r) => {
+  const t = r.currentTarget, e = t.parentElement?.parentElement;
+  if (!e) {
+    console.error("Could not find proper parent element.");
+    return;
+  }
+  const s = t.getAttribute("data-cdrm-idx");
+  if (typeof s > "u") {
+    console.error("Could not find tab index.");
+    return;
+  }
+  const o = parseInt(s), i = e.getAttribute("data-cdrm-group"), l = e.getAttribute("data-cdrm-focused-idx");
+  if (typeof l > "u") {
+    console.error("Could not found TabGroup focused index.");
+    return;
+  }
+  const a = parseInt(l), p = e.querySelectorAll(".cdrm-tab-subtle-border");
+  for (let d = 0; d < p.length; d++) {
+    const u = p.item(d), C = u.classList.values().toArray().filter((f) => f.startsWith("bg-"));
+    for (const f of C)
+      u.classList.remove(f);
+    if (d === o) {
+      const f = t.querySelector(
+        ".cdrm-tab-subtle-border"
+      );
+      if (f) {
+        f.style.transformOrigin = a < o ? "left" : "right", f.classList.remove("bg-transparent"), f.classList.remove("scale-x-0");
+        const v = e.getAttribute("data-cdrm-emphasis");
+        v && f.classList.add(`bg-emphasis-${v}`);
+      }
+    } else
+      u.style.transformOrigin = a > o ? "left" : "right", u.classList.add("bg-transparent"), u.classList.add("scale-x-0");
+  }
+  e.setAttribute("data-cdrm-focused-idx", `${o}`);
+  const g = document.getElementsByClassName("cdrm-tab-group-item");
+  for (let d = 0; d < g.length; d++) {
+    const u = g.item(d);
+    u.getAttribute("data-cdrm-group") === i && (u.style.transform = `translateX(${(d - o) * 100}%)`, d === o ? u.style.opacity = "1" : u.style.opacity = "0");
+  }
+}, c$1 = {
   fatal: 0,
   error: 0,
   warn: 1,
@@ -84,21 +123,21 @@ const c$1 = {
     level: c$1.verbose
   }
 };
-function m(r) {
+function h(r) {
   if (r === null || typeof r != "object")
     return false;
   const t = Object.getPrototypeOf(r);
   return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in r ? false : Symbol.toStringTag in r ? Object.prototype.toString.call(r) === "[object Module]" : true;
 }
-function _(r, t, e = ".", s) {
-  if (!m(t))
-    return _(r, {}, e);
+function b(r, t, e = ".", s) {
+  if (!h(t))
+    return b(r, {}, e);
   const o = Object.assign({}, t);
   for (const i in r) {
     if (i === "__proto__" || i === "constructor")
       continue;
     const l = r[i];
-    l != null && (Array.isArray(l) && Array.isArray(o[i]) ? o[i] = [...l, ...o[i]] : m(l) && m(o[i]) ? o[i] = _(
+    l != null && (Array.isArray(l) && Array.isArray(o[i]) ? o[i] = [...l, ...o[i]] : h(l) && h(o[i]) ? o[i] = b(
       l,
       o[i],
       (e ? `${e}.` : "") + i.toString()
@@ -109,17 +148,17 @@ function _(r, t, e = ".", s) {
 function S(r) {
   return (...t) => (
     // eslint-disable-next-line unicorn/no-array-reduce
-    t.reduce((e, s) => _(e, s, ""), {})
+    t.reduce((e, s) => b(e, s, ""), {})
   );
 }
 const A = S();
-function T(r) {
+function k(r) {
   return Object.prototype.toString.call(r) === "[object Object]";
 }
-function k(r) {
-  return !(!T(r) || !r.message && !r.args || r.stack);
+function T(r) {
+  return !(!k(r) || !r.message && !r.args || r.stack);
 }
-let y = false;
+let m = false;
 const L = [];
 class n {
   options;
@@ -136,7 +175,7 @@ class n {
       {
         ...t,
         defaults: { ...t.defaults },
-        level: b(t.level, e),
+        level: y(t.level, e),
         reporters: [...t.reporters || []]
       },
       {
@@ -177,7 +216,7 @@ class n {
    * @param {number} level - The new log level to set.
    */
   set level(t) {
-    this.options.level = b(
+    this.options.level = y(
       t,
       this.options.types,
       this.options.level
@@ -315,13 +354,13 @@ class n {
    * Pauses logging, queues incoming logs until resumed.
    */
   pauseLogs() {
-    y = true;
+    m = true;
   }
   /**
    * Resumes logging, processing any queued logs.
    */
   resumeLogs() {
-    y = false;
+    m = false;
     const t = L.splice(0);
     for (const e of t)
       e[0]._logFn(e[1], e[2]);
@@ -339,7 +378,7 @@ class n {
   }
   _wrapLogFn(t, e) {
     return (...s) => {
-      if (y) {
+      if (m) {
         L.push([this, t, s, e]);
         return;
       }
@@ -353,17 +392,17 @@ class n {
       date: /* @__PURE__ */ new Date(),
       args: [],
       ...t,
-      level: b(t.level, this.options.types)
+      level: y(t.level, this.options.types)
     };
-    !s && e.length === 1 && k(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
+    !s && e.length === 1 && T(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
 `)), o.args.push(`
 ` + o.additional.join(`
 `)), delete o.additional), o.type = typeof o.type == "string" ? o.type.toLowerCase() : "log", o.tag = typeof o.tag == "string" ? o.tag : "";
     const i = (a = false) => {
       const p = (this._lastLog.count || 0) - this.options.throttleMin;
       if (this._lastLog.object && p > 0) {
-        const h = [...this._lastLog.object.args];
-        p > 1 && h.push(`(repeated ${p} times)`), this._log({ ...this._lastLog.object, args: h }), this._lastLog.count = 1;
+        const g = [...this._lastLog.object.args];
+        p > 1 && g.push(`(repeated ${p} times)`), this._log({ ...this._lastLog.object, args: g }), this._lastLog.count = 1;
       }
       a && (this._lastLog.object = o, this._log(o));
     };
@@ -394,7 +433,7 @@ class n {
       });
   }
 }
-function b(r, t = {}, e = 3) {
+function y(r, t = {}, e = 3) {
   return r === void 0 ? e : typeof r == "number" ? r : t[r] && t[r].level !== void 0 ? t[r].level : e;
 }
 n.prototype.add = n.prototype.addReporter;
@@ -454,48 +493,10 @@ function I(r = {}) {
     ...r
   });
 }
-const g = I(), j = (r) => {
-  g.info("Target: ", r.currentTarget);
-  const t = r.currentTarget, e = t.parentElement?.parentElement;
-  if (!e) {
-    g.error("Could not find proper parent element.");
-    return;
-  }
-  const s = t.getAttribute("data-cdrm-idx");
-  if (typeof s > "u") {
-    g.error("Could not find tab index.");
-    return;
-  }
-  const o = parseInt(s), i = e.getAttribute("data-cdrm-group"), l = e.getAttribute("data-cdrm-focused-idx");
-  if (typeof l > "u") {
-    g.error("Could not found TabGroup focused index.");
-    return;
-  }
-  const a = parseInt(l), p = e.querySelectorAll(".cdrm-tab-subtle-border");
-  for (let d = 0; d < p.length; d++) {
-    const u = p.item(d), C = u.classList.values().toArray().filter((f) => f.startsWith("bg-"));
-    for (const f of C)
-      u.classList.remove(f);
-    if (d === o) {
-      const f = e.querySelector(".cdrm-tab-subtle-border");
-      if (f) {
-        f.style.transformOrigin = a < o ? "left" : "right", f.classList.remove("bg-transparent"), f.classList.remove("scale-x-0");
-        const v = e.getAttribute("data-cdrm-emphasis");
-        v && f.classList.add(`bg-emphasis-${v}`);
-      }
-    } else
-      u.style.transformOrigin = a > o ? "left" : "right", u.classList.add("bg-transparent"), u.classList.add("scale-x-0");
-  }
-  e.setAttribute("data-cdrm-focused-idx", `${o}`);
-  const h = document.getElementsByClassName("cdrm-tab-group-item");
-  for (let d = 0; d < h.length; d++) {
-    const u = h.item(d);
-    u.getAttribute("data-cdrm-group") === i && (u.style.transform = `translateX(${(d - o) * 100}%)`, d === o ? u.style.opacity = "1" : u.style.opacity = "0");
-  }
-}, B = (r) => {
+const _ = I(), B = (r) => {
   const e = r.currentTarget.getAttribute("data-cdrm-copy-for");
   if (!e) {
-    g.error(
+    _.error(
       "Failed to find a valid targetID on the code block.",
       r.currentTarget
     );
@@ -505,7 +506,7 @@ const g = I(), j = (r) => {
   if (!s)
     return;
   window.navigator.clipboard.writeText(s.querySelector("pre")?.innerText ?? "").catch((i) => {
-    g.error("Copy error: ", i);
+    _.error("Copy error: ", i);
   });
   const o = document.querySelector(
     `div[data-cdrm-codeblock="${e}"]`
@@ -521,7 +522,7 @@ const g = I(), j = (r) => {
     );
   }
 }, q = () => {
-  g.info("Toggle copy icon here.");
+  _.info("Toggle copy icon here.");
 };
 function $(r) {
   const t = r.querySelector(
