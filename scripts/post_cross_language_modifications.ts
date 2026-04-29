@@ -72,9 +72,10 @@ export type GridColumnsMap = Map<SizableOption, number>;`,
             {
                 query: "public enum SupportedCodeBlockTheme {",
                 dontPanicIfExists: [
-                    "public enum SupportedCodeBlockTheme: String, Codable {",
+                    "public enum SupportedCodeBlockTheme: String, Codable, CaseIterable {",
                 ],
-                replaceWith: "public enum SupportedCodeBlockTheme: String, Codable {",
+                replaceWith:
+                    "public enum SupportedCodeBlockTheme: String, Codable, CaseIterable {",
             },
             {
                 query: "public enum AnyComponentKey {",

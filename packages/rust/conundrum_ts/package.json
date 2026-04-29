@@ -1,36 +1,36 @@
 {
-    "name": "@conundrum/ts",
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "vite build"
+  "name": "@conundrum/ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.es.js",
+      "require": "./dist/main.cjs.js"
     },
-    "exports": {
-        ".": {
-            "types": "./dist/main.d.ts",
-            "import": "./dist/main.es.js",
-            "require": "./dist/main.cjs.js"
-        },
-        "./methods": {
-            "types": "./dist/src/methods.d.ts",
-            "import": "./dist/methods.es.js",
-            "require": "./dist/methods.cjs.js"
-        }
-    },
-    "dependencies": {
-        "@conundrum/generated": "workspace:*",
-        "@fluster/wasm": "workspace:*",
-        "@reduxjs/toolkit": "2.8.2",
-        "consola": "3.4.2",
-        "react-redux": "9.2.0"
-    },
-    "devDependencies": {
-        "@tailwindcss/vite": "4.2.1",
-        "typescript": "latest",
-        "vite-plugin-dts": "4.5.4",
-        "vite-tsconfig-paths": "5.1.4",
-        "vitest": "4.0.18"
-    },
-    "packageManager": "pnpm@10.30.3"
+    "./methods": {
+      "types": "./dist/src/methods.d.ts",
+      "import": "./dist/methods.es.js",
+      "require": "./dist/methods.cjs.js"
+    }
+  },
+  "dependencies": {
+    "@conundrum/generated": "workspace:*",
+    "@fluster/wasm": "workspace:*",
+    "@reduxjs/toolkit": "2.8.2",
+    "consola": "3.4.2",
+    "react-redux": "9.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.2.1",
+    "typescript": "latest",
+    "vite-plugin-dts": "4.5.4",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "4.0.18"
+  },
+  "packageManager": "pnpm@10.30.3"
 }

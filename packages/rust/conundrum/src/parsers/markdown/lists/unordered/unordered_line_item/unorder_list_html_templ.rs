@@ -5,7 +5,7 @@ use askama::Template;
 /// {% if let Some(body) = self.body %}
 /// <li class="w-full">
 /// <div>
-/// {{heading}}
+/// {{heading | safe}}
 /// </div>
 /// <div>
 /// {{body}}
@@ -13,7 +13,7 @@ use askama::Template;
 /// </li>
 /// {% else %}
 /// <li class="w-full">
-/// {{heading}}
+/// {{heading | safe}}
 /// </li>
 /// {% endif %}
 /// ```

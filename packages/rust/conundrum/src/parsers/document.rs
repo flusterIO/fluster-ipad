@@ -106,19 +106,12 @@ impl ConundrumDocument {
 
     pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
         let state = params.read_arc();
-        if state.contains_modifier(&ConundrumModifier::EmbedJavascript) {
-            let glue = self.get_glue(Arc::clone(&params));
-            let content = self.compile_multithreaded(Arc::clone(&params))?;
+        let content = self.compile_multithreaded(Arc::clone(&params))?;
 
-            let templ = app_and_asset_embedded_templ::AppAndAssetEmbedded { content,
-                                                                            js: glue.js,
-                                                                            css: Some(glue.css) };
-            templ.render().map_err(|e| {
+        let templ = app_and_asset_embedded_templ::AppAndAssetEmbedded { content };
+        templ.render().map_err(|e| {
                         eprintln!("Error: {:#?}", e);
                         ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                     })
-        } else {
-            self.compile_multithreaded(Arc::clone(&params))
-        }
     }
 }

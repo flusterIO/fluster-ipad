@@ -19,7 +19,7 @@ public struct CodeBlockThemePickerLight: View {
                 .font(.headline)
             Picker(selection: $theme, content: {
                  ForEach(SupportedCodeBlockTheme.allCases, id: \.self) { theme in
-                    Text(theme.rawValue)
+                    Text(theme.toString())
                 }
             }, label: {
                 Label(title: {
@@ -43,7 +43,7 @@ public struct CodeBlockThemePickerDark: View {
                 .font(.headline)
             Picker(selection: $theme, content: {
                  ForEach(SupportedCodeBlockTheme.allCases, id: \.self) { theme in
-                    Text(theme.rawValue)
+                    Text(theme.toString())
                 }
             }, label: {
                 Label(title: {
