@@ -16,7 +16,9 @@ export default defineConfig({
             insertTypesEntry: true,
             copyDtsFiles: true,
         }),
-        viteSingleFile()
+        viteSingleFile({
+            useRecommendedBuildConfig: true
+        })
         // wasm(),
         // topLevelAwait()
     ],
@@ -43,7 +45,7 @@ export default defineConfig({
         outDir: path.resolve(__dirname, "../conundrum_web_assets/src/js"),
         sourcemap: true,
         emptyOutDir: false,
-        minify: isProd ? "esbuild" : undefined,
+        minify: false,
         cssMinify: isProd ? "lightningcss" : undefined
     },
     resolve: {

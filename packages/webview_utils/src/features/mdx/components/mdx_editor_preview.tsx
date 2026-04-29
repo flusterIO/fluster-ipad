@@ -8,7 +8,7 @@ import { type GlobalAppState } from "#/webview_global_state/store";
 import { connect, useSelector, useStore } from "react-redux";
 import consola from "consola";
 import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
-import { initializeConundrumStaticWebAssets, onConunundrumContentLoaded, cleanupConundrumStaticWebAssets } from "@conundrum/web_static_assets";
+import { initializeConundrumStaticWebAssets, onConundrumContentLoaded, cleanupConundrumStaticWebAssets } from "@conundrum/web_static_assets";
 import { ConundrumErrorListener } from "./conundrum_error_listener";
 import { SummaryStreamContainer } from "#/ai/presentation/tasks/summary_stream/summary_stream_container";
 import { NerdFontLoader } from "#/code/nerd_font_loader";
@@ -61,7 +61,7 @@ export const MdxEditorPreview = connector(({
     })
 
     useEventListener(ConundrumWebEvents.CdrmContentLoaded, () => {
-        onConunundrumContentLoaded();
+        onConundrumContentLoaded();
     })
 
     const store = useStore<GlobalWebviewStateDeepNullable>();

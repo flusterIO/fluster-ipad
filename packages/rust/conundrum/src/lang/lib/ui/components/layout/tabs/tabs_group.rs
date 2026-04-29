@@ -158,8 +158,6 @@ impl TabsGroup {
                 _ => None,
             } {
                 children.push(tab);
-            } else {
-                eprintln!("Found a component that is not a tab. Should definitely notify the user.")
             }
         }
         // Iterating over this thing twice hurts me in my soul....

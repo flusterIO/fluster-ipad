@@ -1,0 +1,1 @@
+{"version":3,"file":"initialize_conundrum_web.d.ts","sourceRoot":"","sources":["../../src/initialize_conundrum_web.ts"],"names":[],"mappings":"AAIA,OAAO,EAAE,KAAK,kBAAkB,EAAE,MAAM,iBAAiB,CAAC;AAE1D,OAAO,CAAC,MAAM,CAAC;IACb,UAAU,MAAM;QACd,SAAS,EAAE,kBAAkB,CAAC;KAC/B;CACF;AAED,eAAO,MAAM,sBAAsB,YAOlC,CAAC"}

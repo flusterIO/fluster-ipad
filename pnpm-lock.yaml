@@ -694,6 +694,9 @@ importers:
       '@conundrum/generated':
         specifier: workspace:*
         version: link:../rust/conundrum
+      '@conundrum/ts':
+        specifier: workspace:*
+        version: link:../rust/conundrum_ts
       '@conundrum/web_static_assets':
         specifier: workspace:*
         version: link:../rust/conundrum_web_assets

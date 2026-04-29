@@ -8,7 +8,7 @@ use crate::{
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <div class="cdrm-codeblock @container/codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative my-6">   {% if let Some(title) = title %}
+/// <div class="cdrm-codeblock @container/codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative my-6" onclick="window.conundrum.onCodeBlockContainerClick()">   {% if let Some(title) = title %}
 ///   <div class="py-0 px-2 w-full grid grid-cols-[auto_1fr] gap-x-3">
 ///   <span class="w-fit font-nerd" style="color:{{file_icon.color}};">
 ///   {{file_icon.icon}}
@@ -23,7 +23,7 @@ use crate::{
 ///      role="button"
 ///      class="cdrm-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300
 ///      font-lucide cursor-pointer"
-///      onclick="copyCodeblockCode"
+///      onclick="window.conundrum.onCopyCodeBlockClick()"
 ///    >
 ///    {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::Copy}}
 ///    </div>

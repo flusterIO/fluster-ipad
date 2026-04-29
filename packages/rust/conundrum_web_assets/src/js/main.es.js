@@ -1,121 +1,205 @@
-function C(a) {
-  const s = a.querySelector(".cdrm-admon-body-container"), t = a.querySelector(".cdrm-admon-body");
-  t.style.height = "auto", t.style.transition = "max-height 500ms ease-in-out";
-  const n = t.getBoundingClientRect().height;
-  s.style.maxHeight = `${n}px`;
+function handleConundrumAdmonitionHeight(container) {
+  const bodyContainer = container.querySelector(".cdrm-admon-body-container");
+  const body = container.querySelector(".cdrm-admon-body");
+  body.style.height = "auto";
+  body.style.transition = "max-height 500ms ease-in-out";
+  const bodyHeight = body.getBoundingClientRect().height;
+  bodyContainer.style.maxHeight = `${bodyHeight}px`;
 }
-function y() {
-  function a(e) {
-    e.setAttribute("data-cdrm-folded", "false"), C(e);
+function applyAdmonitionClickListeners() {
+  function openAdmonition(container) {
+    container.setAttribute("data-cdrm-folded", "false");
+    handleConundrumAdmonitionHeight(container);
   }
-  function s(e) {
-    const o = e.querySelector(".cdrm-admon-body-container");
-    o.style.maxHeight = "0px", e.setAttribute("data-cdrm-folded", "true");
+  function closeAdmonition(container) {
+    const bodyContainer = container.querySelector(".cdrm-admon-body-container");
+    bodyContainer.style.maxHeight = "0px";
+    container.setAttribute("data-cdrm-folded", "true");
   }
-  let t = document.getElementsByClassName("cdrm-admon-title-group");
-  for (var n = 0; n < t.length; n++)
-    t.item(n)?.addEventListener("click", (o) => {
-      const r = o.currentTarget.parentElement;
-      let d = r.getAttribute("data-cdrm-folded") === "true", u = r.getAttribute("data-cdrm-foldable") === "true";
-      r.querySelector(".cdrm-admon-body-container") && u && (d ? a(r) : s(r));
-    });
-}
-function f() {
-  const a = document.getElementsByClassName("cdrm-admon");
-  for (var s = 0; s < a.length; s++) {
-    const t = a.item(s);
-    t.getAttribute("data-cdrm-folded") === "false" && t.getAttribute("data-cdrm-foldable") === "true" && C(t);
-  }
-}
-y(), window.addEventListener("resize", f), window.addEventListener("cdrm-manual-resize", f), window.addEventListener("cdrm-content-loaded", y);
-const p = () => {
-  function a(e) {
-    const r = e.currentTarget.getAttribute("data-cdrm-copy-for"), d = document.getElementById(r);
-    d && (window.navigator.clipboard.writeText(d.querySelector("pre")?.innerText ?? ""), window.dispatchEvent(new CustomEvent("cdrm-codeblock-copy")));
-  }
-  const s = document.getElementsByClassName("cdrm-codeblock");
-  for (var t = 0; t < s.length; t++) {
-    const e = s.item(t);
-    e.addEventListener("mouseenter", (o) => {
-      o.target.classList.add("hovered");
-    }), e.addEventListener("mouseleave", (o) => {
-      o.target.classList.add("hovered");
+  let ems = document.getElementsByClassName("cdrm-admon-title-group");
+  for (var i = 0; i < ems.length; i++) {
+    const item = ems.item(i);
+    item?.addEventListener("click", (e) => {
+      const container = e.currentTarget.parentElement;
+      let folded = container.getAttribute("data-cdrm-folded") === "true";
+      let foldable = container.getAttribute("data-cdrm-foldable") === "true";
+      const body = container.querySelector(".cdrm-admon-body-container");
+      if (!body) {
+        return;
+      }
+      if (foldable) {
+        if (folded) {
+          openAdmonition(container);
+        } else {
+          closeAdmonition(container);
+        }
+      }
     });
   }
-  const n = document.getElementsByClassName("cdrm-codeblock-icon");
-  for (var t = 0; t < n.length; t++)
-    n.item(t).addEventListener("click", a);
-};
-p(), window.addEventListener("cdrm-content-loaded", p);
-function v() {
-  function a(n) {
-    const e = n.currentTarget.parentElement.parentElement;
-    if (!e)
+}
+function handleConundrumAdmonitionResize() {
+  const ems = document.getElementsByClassName("cdrm-admon");
+  for (var i = 0; i < ems.length; i++) {
+    const item = ems.item(i);
+    if (item.getAttribute("data-cdrm-folded") === "false" && item.getAttribute("data-cdrm-foldable") === "true") {
+      handleConundrumAdmonitionHeight(item);
+    }
+  }
+}
+const applyCopyConundrumCodeBlockListeners = () => {
+  function copyCodeblockCode(e) {
+    let target = e.currentTarget;
+    const targetId = target.getAttribute("data-cdrm-copy-for");
+    const parentEm = document.getElementById(targetId);
+    if (!parentEm) {
       return;
-    const o = e.getAttribute("data-cdrm-emphasis");
-    let r = e.querySelectorAll(".cdrm-tab-subtle-border");
-    const d = parseInt(n.currentTarget.getAttribute("data-cdrm-idx")), u = e.getAttribute("data-cdrm-group"), l = parseInt(e.getAttribute("data-cdrm-focused-idx"));
-    for (var i = 0; i < r.length; i++) {
-      const g = r.item(i);
-      let m = g.classList.values().toArray().filter((c) => c.startsWith("bg-"));
-      for (const c of m)
-        g.classList.remove(c);
-      if (i === d) {
-        let c = n.currentTarget.querySelector(".cdrm-tab-subtle-border");
-        c && (c.style.transformOrigin = l < d ? "left" : "right", c.classList.remove("bg-transparent"), c.classList.remove("scale-x-0"), c.classList.add(`bg-emphasis-${o}`));
-      } else
-        g.style.transformOrigin = l > d ? "left" : "right", g.classList.add("bg-transparent"), g.classList.add("scale-x-0");
     }
-    e.setAttribute("data-cdrm-focused-idx", `${d}`);
-    const E = document.getElementsByClassName("cdrm-tab-group-item");
-    for (var i = 0; i < E.length; i++) {
-      const m = E.item(i);
-      m.getAttribute("data-cdrm-group") === u && (m.style.transform = `translateX(${(i - d) * 100}%)`, i === d ? m.style.opacity = "1" : m.style.opacity = "0");
+    window.navigator.clipboard.writeText(parentEm.querySelector("pre")?.innerText ?? "");
+    window.dispatchEvent(new CustomEvent("cdrm-codeblock-copy"));
+  }
+  const ems = document.getElementsByClassName("cdrm-codeblock");
+  for (var i = 0; i < ems.length; i++) {
+    const item = ems.item(i);
+    item.addEventListener("mouseenter", (e) => {
+      e.target.classList.add("hovered");
+    });
+    item.addEventListener("mouseleave", (e) => {
+      e.target.classList.add("hovered");
+    });
+  }
+  const icons = document.getElementsByClassName("cdrm-codeblock-icon");
+  for (var i = 0; i < icons.length; i++) {
+    const item = icons.item(i);
+    item.addEventListener("click", copyCodeblockCode);
+  }
+};
+(() => {
+  applyCopyConundrumCodeBlockListeners();
+  window.addEventListener("cdrm-content-loaded", applyCopyConundrumCodeBlockListeners);
+})();
+function addConundrumTabClickListeners() {
+  function handleTabClick(e) {
+    const em = e.currentTarget.parentElement.parentElement;
+    if (!em) {
+      return;
+    }
+    const emphasis = em.getAttribute("data-cdrm-emphasis");
+    let tabs = em.querySelectorAll(".cdrm-tab-subtle-border");
+    const clickedIndex = parseInt(e.currentTarget.getAttribute("data-cdrm-idx"));
+    const groupId = em.getAttribute("data-cdrm-group");
+    const lastFocusedIndex = parseInt(em.getAttribute("data-cdrm-focused-idx"));
+    for (var i2 = 0; i2 < tabs.length; i2++) {
+      const tab = tabs.item(i2);
+      let bgClasses = tab.classList.values().toArray().filter((s) => s.startsWith("bg-"));
+      for (const k of bgClasses) {
+        tab.classList.remove(k);
+      }
+      if (i2 === clickedIndex) {
+        let activeTabBorder = e.currentTarget.querySelector(".cdrm-tab-subtle-border");
+        if (activeTabBorder) {
+          activeTabBorder.style.transformOrigin = lastFocusedIndex < clickedIndex ? "left" : "right";
+          activeTabBorder.classList.remove("bg-transparent");
+          activeTabBorder.classList.remove("scale-x-0");
+          activeTabBorder.classList.add(`bg-emphasis-${emphasis}`);
+        }
+      } else {
+        tab.style.transformOrigin = lastFocusedIndex > clickedIndex ? "left" : "right";
+        tab.classList.add("bg-transparent");
+        tab.classList.add("scale-x-0");
+      }
+    }
+    em.setAttribute("data-cdrm-focused-idx", `${clickedIndex}`);
+    const allTabBodies = document.getElementsByClassName("cdrm-tab-group-item");
+    for (var i2 = 0; i2 < allTabBodies.length; i2++) {
+      const tabBody = allTabBodies.item(i2);
+      if (tabBody.getAttribute("data-cdrm-group") === groupId) {
+        tabBody.style.transform = `translateX(${(i2 - clickedIndex) * 100}%)`;
+        if (i2 === clickedIndex) {
+          tabBody.style.opacity = "1";
+        } else {
+          tabBody.style.opacity = "0";
+        }
+      }
     }
   }
-  const s = document.getElementsByClassName("cdrm-tab-btn");
-  for (var t = 0; t < s.length; t++)
-    s.item(t).addEventListener("click", a);
+  const ems = document.getElementsByClassName("cdrm-tab-btn");
+  for (var i = 0; i < ems.length; i++) {
+    const item = ems.item(i);
+    item.addEventListener("click", handleTabClick);
+  }
 }
-function w() {
-  function a(e) {
-    const o = e.querySelectorAll(".cdrm-tab-group-item");
-    for (var r = 0; r < o.length; r++) {
-      const d = o.item(r);
-      d && (d.style.position = "absolute");
+function handleConundrumTabGroupHeight() {
+  function removeInitialRelativePositions(container) {
+    const tabs = container.querySelectorAll(".cdrm-tab-group-item");
+    for (var i2 = 0; i2 < tabs.length; i2++) {
+      const item = tabs.item(i2);
+      if (item) {
+        item.style.position = "absolute";
+      }
     }
   }
-  function s(e) {
-    const o = parseInt(e.getAttribute("data-cdrm-focused-idx")), r = e.getAttribute("data-cdrm-group"), d = e.querySelector(`#tab-${r}-${o}`);
-    if (d) {
-      const u = d.getBoundingClientRect().height, l = e.querySelector(`#tab-body-wrapper-${r}`);
-      l && (l.style.transition = "height 0.3s ease-in-out", l.style.height = `${Math.min(u, 450)}px`);
+  function handleHeight(container) {
+    const focusedIndex = parseInt(container.getAttribute("data-cdrm-focused-idx"));
+    const groupId = container.getAttribute("data-cdrm-group");
+    const focusedTabBody = container.querySelector(`#tab-${groupId}-${focusedIndex}`);
+    if (focusedTabBody) {
+      const h = focusedTabBody.getBoundingClientRect().height;
+      const bodyWrapper = container.querySelector(`#tab-body-wrapper-${groupId}`);
+      if (bodyWrapper) {
+        bodyWrapper.style.transition = "height 0.3s ease-in-out";
+        bodyWrapper.style.height = `${Math.min(h, 450)}px`;
+      }
     }
   }
-  const t = document.getElementsByClassName("cdrm-tab-group");
-  for (var n = 0; n < t.length; n++) {
-    const e = t.item(n);
-    new MutationObserver(() => {
-      s(e);
-    }).observe(e, {
-      attributes: !0,
+  const containers = document.getElementsByClassName("cdrm-tab-group");
+  for (var i = 0; i < containers.length; i++) {
+    const tabGroup = containers.item(i);
+    const observer = new MutationObserver(() => {
+      handleHeight(tabGroup);
+    });
+    observer.observe(tabGroup, {
+      attributes: true,
       attributeFilter: ["data-cdrm-focused-idx"]
-    }), s(e), a(e);
+    });
+    handleHeight(tabGroup);
+    removeInitialRelativePositions(tabGroup);
   }
 }
-v(), window.addEventListener("resize", w), window.addEventListener("cdrm-content-loaded", v);
-const b = () => {
-  w(), f();
-}, h = () => {
-  f(), w(), y(), p(), v();
-}, L = () => {
-  h(), b(), window.addEventListener("cdrm-content-loaded", h), window.addEventListener("resize", b), window.addEventListener("cdrm-manual-resize", b), console.info("Initialized Conundrum glue code...");
-}, A = () => {
-  window.removeEventListener("cdrm-content-loaded", h), window.removeEventListener("resize", b), window.removeEventListener("cdrm-manual-resize", b);
+(() => {
+  addConundrumTabClickListeners();
+  window.addEventListener("resize", handleConundrumTabGroupHeight);
+  window.addEventListener("cdrm-content-loaded", addConundrumTabClickListeners);
+})();
+const handleConundrumTabClick = () => {
+  console.log(`Click registered!!`);
+};
+const onResize = () => {
+  handleConundrumTabGroupHeight();
+  handleConundrumAdmonitionResize();
+};
+const onConundrumContentLoaded = () => {
+  applyAdmonitionClickListeners();
+  applyCopyConundrumCodeBlockListeners();
+  addConundrumTabClickListeners();
+};
+const initializeConundrumStaticWebAssets = () => {
+  debugger;
+  onResize();
+  onConundrumContentLoaded();
+  window.addEventListener("cdrm-content-loaded", onConundrumContentLoaded);
+  window.addEventListener("resize", onResize);
+  window.addEventListener("cdrm-manual-resize", onResize);
+  console.info("Initialized Conundrum glue code...");
+};
+const cleanupConundrumStaticWebAssets = () => {
+  window.removeEventListener("cdrm-content-loaded", onConundrumContentLoaded);
+  window.removeEventListener("resize", onResize);
+  window.removeEventListener("cdrm-manual-resize", onResize);
 };
 export {
-  A as cleanupConundrumStaticWebAssets,
-  L as initializeConundrumStaticWebAssets,
-  h as onConunundrumContentLoaded
+  cleanupConundrumStaticWebAssets,
+  handleConundrumTabClick,
+  initializeConundrumStaticWebAssets,
+  onConundrumContentLoaded
 };
 //# sourceMappingURL=main.es.js.map

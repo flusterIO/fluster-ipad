@@ -2,8 +2,8 @@
 
 ## Get app back in working order
 
-- [ ] Adjust block math to automatically inject `\displaystyle` tag if not present.
-- [ ] Rework component javascript into a series of files with a separate tunnel file used for vite to create the necessary iffes.
+- [ ] Get component javascript working!
+- [ ] Get Bold & italic text parser working again... that shit broke.
 - [x] Add katex css to mdx container so it's always loaded whenever mdx content is displayed.
 - [x] After writing font files to public directories, create proper css font families linking
 

@@ -1,17 +1,17 @@
 {
-    "name": "@conundrum/web_static_assets",
-    "files": [
-        "src"
-    ],
-    "exports": {
-        ".": {
-            "import": "./src/js/main.es.js",
-            "types": "./src/js/conundrum_component_glue.d.ts"
-        },
-        "./styles.css": {
-            "import": "./src/css/combined_component_glue.css",
-            "require": "./src/css/combined_component_glue.css"
-        }
+  "name": "@conundrum/web_static_assets",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/js/conundrum_component_glue.d.ts",
+      "import": "./src/js/main.es.js"
     },
-    "packageManager": "pnpm@10.30.3"
+    "./styles.css": {
+      "import": "./src/css/combined_component_glue.css",
+      "require": "./src/css/combined_component_glue.css"
+    }
+  },
+  "packageManager": "pnpm@10.30.3"
 }

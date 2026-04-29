@@ -13,6 +13,10 @@ set dotenv-load := true
 docgen:
 	cargo run --bin conundrum_docgen
 
+
+build_conundrum_ts:
+	cd {{justfile_directory()}}/packages/rust/conundrum_ts; pnpm build
+
 build_glue_code:
 	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm vite build
 
@@ -151,7 +155,7 @@ transpile_component_glue_web:
 
 
 # Add `build_fluster_wasm` back to the end in here once the fucking internet isnt stopping the build
-build_webview_utils: build_glue_code build_cross_language_all build_fluster_lezer gather_component_docs
+build_webview_utils: build_glue_code build_conundrum_ts build_cross_language_all build_fluster_lezer gather_component_docs
 	pnpm run -C packages/webview_utils build
 
 build_dictionary_webview: build_cross_language_all build_webview_utils
