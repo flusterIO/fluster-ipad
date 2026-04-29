@@ -7,6 +7,15 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 const isProd = process.env.FLUSTER_PROD_BUILD === "true";
 
 
+const entries = {
+    TABS: path.resolve(__dirname, "./src/output/html/glue/component_glue/tabs.ts"),
+    NOTE_LINK: path.resolve(__dirname, "./src/output/html/glue/component_glue/note_link.ts"),
+    ADMONITION: path.resolve(__dirname, "./src/output/html/glue/component_glue/admonition.ts"),
+    CODE_BLOCK: path.resolve(__dirname, "./src/output/html/glue/component_glue/code_block"),
+    TOC: path.resolve(__dirname, "./src/output/html/glue/component_glue/toc.ts"),
+}
+
+
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -17,7 +26,7 @@ export default defineConfig({
             copyDtsFiles: true,
         }),
         viteSingleFile({
-            useRecommendedBuildConfig: true
+            useRecommendedBuildConfig: true,
         })
         // wasm(),
         // topLevelAwait()
@@ -25,9 +34,7 @@ export default defineConfig({
     build: {
         lib: {
             name: "fluster",
-            entry: {
-                main: path.resolve(__dirname, "src/output/html/glue/component_glue/conundrum_component_glue.ts"),
-            },
+            entry: entries[process.env.CDRM_COMPONENT_NAME],
             formats: ["es"],
             fileName: (format, entryName) => `${entryName}.${format}.js`,
 

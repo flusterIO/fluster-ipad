@@ -435,6 +435,7 @@ extension AppSchemaV1 {
       noteBody: String = "",
     ) -> NoteModel {
       NoteModel(
+        
         markdown: MarkdownNote(body: noteBody)
       )
     }

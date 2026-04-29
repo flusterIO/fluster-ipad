@@ -48,61 +48,61 @@ lazy_static! {
         map.insert(format!("{}-css", WebGlueCodeGeneralFiles::Styles),
                    include_str!("../standalone/conundrum.css").to_string().as_bytes().to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::NerdFont),
-                   include_bytes!("./component_glue_output/other/fonts/Fira_Code_Regular.ttf").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/Fira_Code_Regular.ttf").to_vec());
         map.insert(format!("{}-css", WebGlueCodeGeneralFiles::KatexCss),
                    include_str!("../glue/component_glue/other/katex.min.css").to_string().as_bytes().to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_ams_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_AMS-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_AMS-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_caligraphic_bold),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Caligraphic-Bold.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Caligraphic-Bold.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_caligraphic_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Caligraphic-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Caligraphic-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_fraktur_bold),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Fraktur-Bold.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Fraktur-Bold.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_fraktur_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Fraktur-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Fraktur-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_main_bold),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Main-Bold.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Main-Bold.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_main_bolditalic),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Main-BoldItalic.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Main-BoldItalic.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_main_italic),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Main-Italic.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Main-Italic.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_main_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Main-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Main-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_math_bolditalic),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Math-BoldItalic.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Math-BoldItalic.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_math_italic),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Math-Italic.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Math-Italic.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_sansserif_bold),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_SansSerif-Bold.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_SansSerif-Bold.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_sansserif_italic),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_SansSerif-Italic.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_SansSerif-Italic.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_sansserif_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_SansSerif-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_SansSerif-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_script_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Script-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Script-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_size1_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Size1-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Size1-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_size2_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Size2-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Size2-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_size3_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Size3-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Size3-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_size4_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Size4-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Size4-Regular.woff2").to_vec());
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_typewriter_regular),
-                   include_bytes!("./component_glue_output/other/fonts/KaTeX_Typewriter-Regular.woff2").to_vec());
+                   include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Typewriter-Regular.woff2").to_vec());
 
         // --- Components ---
         map.insert(format!("{}-js", AutoInsertedComponentName::AutoInsertedCodeBlock),
-                   include_str!("./component_glue_output/code_block.js").to_string().as_bytes().to_vec());
+                   include_str!("../../../../../conundrum_web_assets/src/js/code_block.es.js").to_string().as_bytes().to_vec());
         map.insert(format!("{}-js", AutoInsertedComponentName::NoteLink),
-                   include_str!("./component_glue_output/note_link.js").to_string().as_bytes().to_vec());
-        map.insert(format!("{}-js", EmbeddableComponentId::Admonition), include_str!("./component_glue_output/admonition.js").to_string().as_bytes().to_vec());
+                   include_str!("../../../../../conundrum_web_assets/src/js/note_link.es.js").to_string().as_bytes().to_vec());
+        map.insert(format!("{}-js", EmbeddableComponentId::Admonition), include_str!("../../../../../conundrum_web_assets/src/js/admonition.es.js").to_string().as_bytes().to_vec());
         map.insert(format!("{}-css", EmbeddableComponentId::Admonition), include_str!("../../../lang/lib/ui/components/attention/admonition/admonition.css").to_string().as_bytes().to_vec());
 
-        map.insert(format!("{}-js", EmbeddableComponentId::Tabs), include_str!("./component_glue_output/tabs.js").to_string().as_bytes().to_vec());
+        map.insert(format!("{}-js", EmbeddableComponentId::Tabs), include_str!("../../../../../conundrum_web_assets/src/js/tabs.es.js").to_string().as_bytes().to_vec());
 
-        map.insert(format!("{}-js", EmbeddableComponentId::Toc), include_str!("./component_glue_output/toc.js").to_string().as_bytes().to_vec());
+        map.insert(format!("{}-js", EmbeddableComponentId::Toc), include_str!("../../../../../conundrum_web_assets/src/js/toc.es.js").to_string().as_bytes().to_vec());
         map
     };
 }

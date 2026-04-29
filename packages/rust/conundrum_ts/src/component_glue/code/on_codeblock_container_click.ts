@@ -1,3 +1,5 @@
+import consola from "consola";
+
 export const onCodeBlockContainerClick = () => {
-  console.log(`Toggle copy icon here!!!`);
+    consola.info("Toggle copy icon here.");
 };

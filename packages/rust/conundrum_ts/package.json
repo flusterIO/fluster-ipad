@@ -8,15 +8,21 @@
     },
     "exports": {
         ".": {
-            "require": "./dist/initialize_conundrum_web.umd.js",
+            "types": "./dist/src/initialize_conundrum_web.d.ts",
             "import": "./dist/initialize_conundrum_web.es.js",
-            "types": "./dist/src/initialize_conundrum_web.d.ts"
+            "require": "./dist/initialize_conundrum_web.umd.js"
+        },
+        "./methods": {
+            "types": "./dist/src/methods.d.ts",
+            "import": "./dist/methods.es.js",
+            "require": "./dist/methods.cjs.js"
         }
     },
     "dependencies": {
         "@conundrum/generated": "workspace:*",
         "@fluster/wasm": "workspace:*",
         "@reduxjs/toolkit": "2.8.2",
+        "consola": "3.4.2",
         "react-redux": "9.2.0"
     },
     "devDependencies": {
@@ -26,5 +32,5 @@
         "vite-tsconfig-paths": "5.1.4",
         "vitest": "4.0.18"
     },
-    "packageManager": "pnpm@9.7.1"
+    "packageManager": "pnpm@10.30.3"
 }

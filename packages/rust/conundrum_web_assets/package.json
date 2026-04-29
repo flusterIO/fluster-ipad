@@ -4,10 +4,6 @@
     "src"
   ],
   "exports": {
-    ".": {
-      "types": "./src/js/conundrum_component_glue.d.ts",
-      "import": "./src/js/main.es.js"
-    },
     "./styles.css": {
       "import": "./src/css/combined_component_glue.css",
       "require": "./src/css/combined_component_glue.css"

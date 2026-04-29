@@ -22,7 +22,13 @@ export const initializeConundrumWeb = () => {
   };
 
   const onResize = (): void => {
-    handleConundrumAdmonitionHeight();
+    const admonitions = document.getElementsByClassName("cdrm-admon");
+    for (let l = 0; l < admonitions.length; l++) {
+      const admon = admonitions.item(l) as HTMLDivElement | undefined;
+      if (admon) {
+        handleConundrumAdmonitionHeight(admon);
+      }
+    }
   };
 
   window.addEventListener("resize", onResize);

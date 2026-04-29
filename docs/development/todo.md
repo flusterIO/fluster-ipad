@@ -4,6 +4,8 @@
 
 - [ ] Get component javascript working!
 - [ ] Get Bold & italic text parser working again... that shit broke.
+- [ ] Be sure to handle overflow of tab now that you removed the css class. You'll have to toggle it based on the height when you read it to avoid this overflow when the height of the container is small but another one is large.
+- [ ] Revert component glue standalone files to initial setup, but using the imported functions from the `conundrum/ts` package.
 - [x] Add katex css to mdx container so it's always loaded whenever mdx content is displayed.
 - [x] After writing font files to public directories, create proper css font families linking
 

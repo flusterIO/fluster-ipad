@@ -10,7 +10,6 @@ export function handleConundrumAdmonitionHeight(container: HTMLDivElement) {
 
 export function applyAdmonitionClickListeners() {
 
-
     let ems = document.getElementsByClassName("cdrm-admon-title-group") as HTMLCollectionOf<HTMLDivElement>;
     for (var i = 0; i < ems.length; i++) {
         const item = ems.item(i);

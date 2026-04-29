@@ -8,14 +8,12 @@ import { type GlobalAppState } from "#/webview_global_state/store";
 import { connect, useSelector, useStore } from "react-redux";
 import consola from "consola";
 import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
-import { initializeConundrumStaticWebAssets, onConundrumContentLoaded, cleanupConundrumStaticWebAssets } from "@conundrum/web_static_assets";
 import { ConundrumErrorListener } from "./conundrum_error_listener";
 import { SummaryStreamContainer } from "#/ai/presentation/tasks/summary_stream/summary_stream_container";
 import { NerdFontLoader } from "#/code/nerd_font_loader";
 import { KatexFontLoader } from "#/math/katex_font_loader";
 import { LucideFontLoader } from "#/themeing/lucide_font_loader";
 import { type GlobalWebviewStateDeepNullable } from "#/webview_global_state/cross_language_state_types";
-import { ConundrumWebEvents } from "@/code_gen/typeshare/conundrum";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -60,17 +58,7 @@ export const MdxEditorPreview = connector(({
         ref.current.scrollTop = newProp
     })
 
-    useEventListener(ConundrumWebEvents.CdrmContentLoaded, () => {
-        onConundrumContentLoaded();
-    })
-
     const store = useStore<GlobalWebviewStateDeepNullable>();
-
-
-    useEffect(() => {
-        initializeConundrumStaticWebAssets();
-        return () => { cleanupConundrumStaticWebAssets(); };
-    }, [])
 
 
     useEffect(() => {
