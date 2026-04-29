@@ -22,6 +22,6 @@ pub enum HeadingHtmlTemplate {
                source = "<h5 id=\"{{self.1.to_heading_id() | safe}}\" class=\"block w-full scroll-m-20 text-lg font-semibold tracking-tight text-foreground my-6\">{{self.0 | safe}}</h5>")]
     H5(String, DOMId),
     #[template(ext = "html",
-               source = "<h6 id=\"{{self.1.to_heading_id() | safe}}\" class\"block w-full scroll-m-20 text-lg tracking-tight text-foreground my-6\">{{self.0 | safe}}</h6>")]
+               source = "<h6 id=\"{{self.1.to_heading_id() | safe}}\" class=\"block w-full scroll-m-20 text-lg tracking-tight text-foreground my-6\">{{self.0 | safe}}</h6>")]
     H6(String, DOMId),
 }
