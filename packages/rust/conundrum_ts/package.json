@@ -8,9 +8,9 @@
     },
     "exports": {
         ".": {
-            "types": "./dist/src/initialize_conundrum_web.d.ts",
-            "import": "./dist/initialize_conundrum_web.es.js",
-            "require": "./dist/initialize_conundrum_web.umd.js"
+            "types": "./dist/main.d.ts",
+            "import": "./dist/main.es.js",
+            "require": "./dist/main.cjs.js"
         },
         "./methods": {
             "types": "./dist/src/methods.d.ts",

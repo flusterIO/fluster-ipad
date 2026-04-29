@@ -1,113 +1,113 @@
 {
-    "name": "@conundrum/generated",
-    "version": "0.0.1",
-    "keywords": [
-        "academic",
-        "fluster",
-        "note taking",
-        "science",
-        "STEM"
-    ],
-    "funding": [
-        {
-            "type": "paypal",
-            "url": "https://www.paypal.com/ncp/payment/D6S6NP4AHJD6Y"
-        },
-        {
-            "type": "patreon",
-            "url": "https://www.patreon.com/uhlittlelessdum/about"
-        },
-        {
-            "type": "github",
-            "url": "https://github.com/flusterIO/fluster"
-        }
-    ],
-    "type": "module",
-    "private": true,
-    "files": [
-        "src/output/html/standalone/conundrum.css"
-    ],
-    "scripts": {
-        "build": "wireit",
-        "build:scss": "wireit",
-        "build:ts": "wireit",
-        "copy:katexcss": "wireit",
-        "test": "zsh ./current_test.zsh"
+  "name": "@conundrum/generated",
+  "version": "0.0.1",
+  "keywords": [
+    "academic",
+    "fluster",
+    "note taking",
+    "science",
+    "STEM"
+  ],
+  "funding": [
+    {
+      "type": "paypal",
+      "url": "https://www.paypal.com/ncp/payment/D6S6NP4AHJD6Y"
     },
-    "wireit": {
-        "copy:katexcss": {
-            "command": "cp ../../../node_modules/katex/dist/katex.min.css ./src/output/html/glue/component_glue/other/katex.min.css"
-        },
-        "build:scss": {
-            "command": "../../../node_modules/@tailwindcss/cli/dist/index.mjs --input ./src/output/html/standalone/conundrum_input.scss --output ./src/output/html/standalone/conundrum.css"
-        },
-        "build:tabs": {
-            "command": "vite build",
-            "env": {
-                "CDRM_COMPONENT_NAME": "TABS"
-            }
-        },
-        "build:admonition": {
-            "command": "vite build",
-            "env": {
-                "CDRM_COMPONENT_NAME": "ADMONITION"
-            }
-        },
-        "build:code_block": {
-            "command": "vite build",
-            "env": {
-                "CDRM_COMPONENT_NAME": "CODE_BLOCK"
-            }
-        },
-        "build:toc": {
-            "command": "vite build",
-            "env": {
-                "CDRM_COMPONENT_NAME": "TOC"
-            }
-        },
-        "build:note_link": {
-            "command": "vite build",
-            "env": {
-                "CDRM_COMPONENT_NAME": "NOTE_LINK"
-            }
-        },
-        "build:ts": {
-            "dependencies": [
-                "build:tabs",
-                "build:admonition",
-                "build:code_block",
-                "build:note_link",
-                "build:toc"
-            ]
-        },
-        "build": {
-            "dependencies": [
-                "copy:katexcss",
-                "build:scss",
-                "build:ts"
-            ]
-        }
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/uhlittlelessdum/about"
     },
-    "types": "./dist/index.d.ts",
-    "main": "./dist/index.umd.js",
-    "exports": {
-        "./conundrum.css": {
-            "import": "./src/output/html/standalone/conundrum.css",
-            "require": "./src/output/html/standalone/conundrum.css"
-        }
+    {
+      "type": "github",
+      "url": "https://github.com/flusterIO/fluster"
+    }
+  ],
+  "type": "module",
+  "private": true,
+  "files": [
+    "src/output/html/standalone/conundrum.css"
+  ],
+  "scripts": {
+    "build": "wireit",
+    "build:scss": "wireit",
+    "build:ts": "wireit",
+    "copy:katexcss": "wireit",
+    "test": "zsh ./current_test.zsh"
+  },
+  "wireit": {
+    "copy:katexcss": {
+      "command": "cp ../../../node_modules/katex/dist/katex.min.css ./src/output/html/glue/component_glue/other/katex.min.css"
     },
-    "dependencies": {
-        "@tailwindcss/container-queries": "0.1.1",
-        "@tailwindcss/postcss": "4.1.10",
-        "@conundrum/ts": "workspace:*",
-        "tailwind-merge": "3.3.0",
-        "tailwindcss": "4.2.1"
+    "build:scss": {
+      "command": "../../../node_modules/@tailwindcss/cli/dist/index.mjs --input ./src/output/html/standalone/conundrum_input.scss --output ./src/output/html/standalone/conundrum.css"
     },
-    "devDependencies": {
-        "@tailwindcss/typography": "0.5.19",
-        "@tailwindcss/vite": "4.2.1"
+    "build:tabs": {
+      "command": "vite build",
+      "env": {
+        "CDRM_COMPONENT_NAME": "TABS"
+      }
     },
-    "prettier": "../../shared_config/prettier.config.ts",
-    "packageManager": "pnpm@9.7.1",
-    "license": "MIT"
+    "build:admonition": {
+      "command": "vite build",
+      "env": {
+        "CDRM_COMPONENT_NAME": "ADMONITION"
+      }
+    },
+    "build:code_block": {
+      "command": "vite build",
+      "env": {
+        "CDRM_COMPONENT_NAME": "CODE_BLOCK"
+      }
+    },
+    "build:toc": {
+      "command": "vite build",
+      "env": {
+        "CDRM_COMPONENT_NAME": "TOC"
+      }
+    },
+    "build:note_link": {
+      "command": "vite build",
+      "env": {
+        "CDRM_COMPONENT_NAME": "NOTE_LINK"
+      }
+    },
+    "build:ts": {
+      "dependencies": [
+        "build:tabs",
+        "build:admonition",
+        "build:code_block",
+        "build:note_link",
+        "build:toc"
+      ]
+    },
+    "build": {
+      "dependencies": [
+        "copy:katexcss",
+        "build:scss",
+        "build:ts"
+      ]
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.umd.js",
+  "exports": {
+    "./conundrum.css": {
+      "import": "./src/output/html/standalone/conundrum.css",
+      "require": "./src/output/html/standalone/conundrum.css"
+    }
+  },
+  "dependencies": {
+    "@conundrum/ts": "workspace:*",
+    "@tailwindcss/container-queries": "0.1.1",
+    "@tailwindcss/postcss": "4.1.10",
+    "tailwind-merge": "3.3.0",
+    "tailwindcss": "4.2.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "0.5.19",
+    "@tailwindcss/vite": "4.2.1"
+  },
+  "prettier": "../../shared_config/prettier.config.ts",
+  "packageManager": "pnpm@9.7.1",
+  "license": "MIT"
 }

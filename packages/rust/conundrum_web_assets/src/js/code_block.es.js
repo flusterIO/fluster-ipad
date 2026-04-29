@@ -21,34 +21,7 @@ const applyCopyConundrumCodeBlockListeners = () => {
   applyCopyConundrumCodeBlockListeners();
   window.addEventListener("cdrm-content-loaded", applyCopyConundrumCodeBlockListeners);
 })();
-const $ = (r) => {
-  const t = r.currentTarget?.parentElement?.parentElement;
-  if (!t)
-    return;
-  const e = t.getAttribute("data-cdrm-emphasis"), s = t.querySelectorAll(".cdrm-tab-subtle-border"), o = t.getAttribute("data-cdrm-idx");
-  if (!o)
-    return;
-  const i = parseInt(o), a = t.getAttribute("data-cdrm-group"), l2 = t.getAttribute("data-cdrm-focused-idx");
-  if (typeof l2 > "u")
-    return;
-  const p = parseInt(l2);
-  for (let d = 0; d < s.length; d++) {
-    const u = s.item(d), L = u.classList.values().toArray().filter((f) => f.startsWith("bg-"));
-    for (const f of L)
-      u.classList.remove(f);
-    if (d === i) {
-      const f = t.querySelector(".cdrm-tab-subtle-border");
-      f && (f.style.transformOrigin = p < i ? "left" : "right", f.classList.remove("bg-transparent"), f.classList.remove("scale-x-0"), e && f.classList.add(`bg-emphasis-${e}`));
-    } else
-      u.style.transformOrigin = p > i ? "left" : "right", u.classList.add("bg-transparent"), u.classList.add("scale-x-0");
-  }
-  t.setAttribute("data-cdrm-focused-idx", `${i}`);
-  const g = document.getElementsByClassName("cdrm-tab-group-item");
-  for (let d = 0; d < g.length; d++) {
-    const u = g.item(d);
-    u.getAttribute("data-cdrm-group") === a && (u.style.transform = `translateX(${(d - i) * 100}%)`, d === i ? u.style.opacity = "1" : u.style.opacity = "0");
-  }
-}, c = {
+const c$1 = {
   fatal: 0,
   error: 0,
   warn: 1,
@@ -59,95 +32,95 @@ const $ = (r) => {
   debug: 4,
   trace: 5,
   verbose: Number.POSITIVE_INFINITY
-}, v = {
+}, w = {
   // Silent
   silent: {
     level: -1
   },
   // Level 0
   fatal: {
-    level: c.fatal
+    level: c$1.fatal
   },
   error: {
-    level: c.error
+    level: c$1.error
   },
   // Level 1
   warn: {
-    level: c.warn
+    level: c$1.warn
   },
   // Level 2
   log: {
-    level: c.log
+    level: c$1.log
   },
   // Level 3
   info: {
-    level: c.info
+    level: c$1.info
   },
   success: {
-    level: c.success
+    level: c$1.success
   },
   fail: {
-    level: c.fail
+    level: c$1.fail
   },
   ready: {
-    level: c.info
+    level: c$1.info
   },
   start: {
-    level: c.info
+    level: c$1.info
   },
   box: {
-    level: c.info
+    level: c$1.info
   },
   // Level 4
   debug: {
-    level: c.debug
+    level: c$1.debug
   },
   // Level 5
   trace: {
-    level: c.trace
+    level: c$1.trace
   },
   // Verbose
   verbose: {
-    level: c.verbose
+    level: c$1.verbose
   }
 };
-function h(r) {
+function m(r) {
   if (r === null || typeof r != "object")
     return false;
   const t = Object.getPrototypeOf(r);
   return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in r ? false : Symbol.toStringTag in r ? Object.prototype.toString.call(r) === "[object Module]" : true;
 }
 function _(r, t, e = ".", s) {
-  if (!h(t))
+  if (!m(t))
     return _(r, {}, e);
   const o = Object.assign({}, t);
   for (const i in r) {
     if (i === "__proto__" || i === "constructor")
       continue;
-    const a = r[i];
-    a != null && (Array.isArray(a) && Array.isArray(o[i]) ? o[i] = [...a, ...o[i]] : h(a) && h(o[i]) ? o[i] = _(
-      a,
+    const l = r[i];
+    l != null && (Array.isArray(l) && Array.isArray(o[i]) ? o[i] = [...l, ...o[i]] : m(l) && m(o[i]) ? o[i] = _(
+      l,
       o[i],
       (e ? `${e}.` : "") + i.toString()
-    ) : o[i] = a);
+    ) : o[i] = l);
   }
   return o;
 }
-function C(r) {
+function S(r) {
   return (...t) => (
     // eslint-disable-next-line unicorn/no-array-reduce
     t.reduce((e, s) => _(e, s, ""), {})
   );
 }
-const A = C();
-function S(r) {
+const A = S();
+function T(r) {
   return Object.prototype.toString.call(r) === "[object Object]";
 }
 function k(r) {
-  return !(!S(r) || !r.message && !r.args || r.stack);
+  return !(!T(r) || !r.message && !r.args || r.stack);
 }
-let m = false;
-const w = [];
+let y = false;
+const L = [];
 class n {
   options;
   _lastLog;
@@ -158,16 +131,16 @@ class n {
    * @param {Partial<ConsolaOptions>} [options={}] - Configuration options for the Consola instance.
    */
   constructor(t = {}) {
-    const e = t.types || v;
+    const e = t.types || w;
     this.options = A(
       {
         ...t,
         defaults: { ...t.defaults },
-        level: y(t.level, e),
+        level: b(t.level, e),
         reporters: [...t.reporters || []]
       },
       {
-        types: v,
+        types: w,
         throttle: 1e3,
         throttleMin: 5,
         formatOptions: {
@@ -204,7 +177,7 @@ class n {
    * @param {number} level - The new log level to set.
    */
   set level(t) {
-    this.options.level = y(
+    this.options.level = b(
       t,
       this.options.types,
       this.options.level
@@ -342,14 +315,14 @@ class n {
    * Pauses logging, queues incoming logs until resumed.
    */
   pauseLogs() {
-    m = true;
+    y = true;
   }
   /**
    * Resumes logging, processing any queued logs.
    */
   resumeLogs() {
-    m = false;
-    const t = w.splice(0);
+    y = false;
+    const t = L.splice(0);
     for (const e of t)
       e[0]._logFn(e[1], e[2]);
   }
@@ -366,8 +339,8 @@ class n {
   }
   _wrapLogFn(t, e) {
     return (...s) => {
-      if (m) {
-        w.push([this, t, s, e]);
+      if (y) {
+        L.push([this, t, s, e]);
         return;
       }
       return this._logFn(t, s, e);
@@ -380,30 +353,30 @@ class n {
       date: /* @__PURE__ */ new Date(),
       args: [],
       ...t,
-      level: y(t.level, this.options.types)
+      level: b(t.level, this.options.types)
     };
     !s && e.length === 1 && k(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
 `)), o.args.push(`
 ` + o.additional.join(`
 `)), delete o.additional), o.type = typeof o.type == "string" ? o.type.toLowerCase() : "log", o.tag = typeof o.tag == "string" ? o.tag : "";
-    const i = (l2 = false) => {
+    const i = (a = false) => {
       const p = (this._lastLog.count || 0) - this.options.throttleMin;
       if (this._lastLog.object && p > 0) {
-        const g = [...this._lastLog.object.args];
-        p > 1 && g.push(`(repeated ${p} times)`), this._log({ ...this._lastLog.object, args: g }), this._lastLog.count = 1;
+        const h = [...this._lastLog.object.args];
+        p > 1 && h.push(`(repeated ${p} times)`), this._log({ ...this._lastLog.object, args: h }), this._lastLog.count = 1;
       }
-      l2 && (this._lastLog.object = o, this._log(o));
+      a && (this._lastLog.object = o, this._log(o));
     };
     clearTimeout(this._lastLog.timeout);
-    const a = this._lastLog.time && o.date ? o.date.getTime() - this._lastLog.time.getTime() : 0;
-    if (this._lastLog.time = o.date, a < this.options.throttle)
+    const l = this._lastLog.time && o.date ? o.date.getTime() - this._lastLog.time.getTime() : 0;
+    if (this._lastLog.time = o.date, l < this.options.throttle)
       try {
-        const l2 = JSON.stringify([
+        const a = JSON.stringify([
           o.type,
           o.tag,
           o.args
-        ]), p = this._lastLog.serialized === l2;
-        if (this._lastLog.serialized = l2, p && (this._lastLog.count = (this._lastLog.count || 0) + 1, this._lastLog.count > this.options.throttleMin)) {
+        ]), p = this._lastLog.serialized === a;
+        if (this._lastLog.serialized = a, p && (this._lastLog.count = (this._lastLog.count || 0) + 1, this._lastLog.count > this.options.throttleMin)) {
           this._lastLog.timeout = setTimeout(
             i,
             this.options.throttle
@@ -421,7 +394,7 @@ class n {
       });
   }
 }
-function y(r, t = {}, e = 3) {
+function b(r, t = {}, e = 3) {
   return r === void 0 ? e : typeof r == "number" ? r : t[r] && t[r].level !== void 0 ? t[r].level : e;
 }
 n.prototype.add = n.prototype.addReporter;
@@ -431,10 +404,10 @@ n.prototype.withScope = n.prototype.withTag;
 n.prototype.mock = n.prototype.mockTypes;
 n.prototype.pause = n.prototype.pauseLogs;
 n.prototype.resume = n.prototype.resumeLogs;
-function T(r = {}) {
+function x(r = {}) {
   return new n(r);
 }
-class x {
+class F {
   options;
   defaultColor;
   levelColorMap;
@@ -456,45 +429,101 @@ class x {
     return t < 1 ? console.__error || console.error : t === 1 ? console.__warn || console.warn : console.__log || console.log;
   }
   log(t) {
-    const e = this._getLogFn(t.level), s = t.type === "log" ? "" : t.type, o = t.tag || "", a = `
+    const e = this._getLogFn(t.level), s = t.type === "log" ? "" : t.type, o = t.tag || "", l = `
       background: ${this.typeColorMap[t.type] || this.levelColorMap[t.level] || this.defaultColor};
       border-radius: 0.5em;
       color: white;
       font-weight: bold;
       padding: 2px 0.5em;
-    `, l2 = `%c${[o, s].filter(Boolean).join(":")}`;
+    `, a = `%c${[o, s].filter(Boolean).join(":")}`;
     typeof t.args[0] == "string" ? e(
-      `${l2}%c ${t.args[0]}`,
-      a,
+      `${a}%c ${t.args[0]}`,
+      l,
       // Empty string as style resets to default console style
       "",
       ...t.args.slice(1)
-    ) : e(l2, a, ...t.args);
+    ) : e(a, l, ...t.args);
   }
 }
-function F(r = {}) {
-  return T({
-    reporters: r.reporters || [new x({})],
+function I(r = {}) {
+  return x({
+    reporters: r.reporters || [new F({})],
     prompt(e, s = {}) {
       return s.type === "confirm" ? Promise.resolve(confirm(e)) : Promise.resolve(prompt(e));
     },
     ...r
   });
 }
-const b = F(), j = (r) => {
+const g = I(), j = (r) => {
+  g.info("Target: ", r.currentTarget);
+  const t = r.currentTarget, e = t.parentElement?.parentElement;
+  if (!e) {
+    g.error("Could not find proper parent element.");
+    return;
+  }
+  const s = t.getAttribute("data-cdrm-idx");
+  if (typeof s > "u") {
+    g.error("Could not find tab index.");
+    return;
+  }
+  const o = parseInt(s), i = e.getAttribute("data-cdrm-group"), l = e.getAttribute("data-cdrm-focused-idx");
+  if (typeof l > "u") {
+    g.error("Could not found TabGroup focused index.");
+    return;
+  }
+  const a = parseInt(l), p = e.querySelectorAll(".cdrm-tab-subtle-border");
+  for (let d = 0; d < p.length; d++) {
+    const u = p.item(d), C = u.classList.values().toArray().filter((f) => f.startsWith("bg-"));
+    for (const f of C)
+      u.classList.remove(f);
+    if (d === o) {
+      const f = e.querySelector(".cdrm-tab-subtle-border");
+      if (f) {
+        f.style.transformOrigin = a < o ? "left" : "right", f.classList.remove("bg-transparent"), f.classList.remove("scale-x-0");
+        const v = e.getAttribute("data-cdrm-emphasis");
+        v && f.classList.add(`bg-emphasis-${v}`);
+      }
+    } else
+      u.style.transformOrigin = a > o ? "left" : "right", u.classList.add("bg-transparent"), u.classList.add("scale-x-0");
+  }
+  e.setAttribute("data-cdrm-focused-idx", `${o}`);
+  const h = document.getElementsByClassName("cdrm-tab-group-item");
+  for (let d = 0; d < h.length; d++) {
+    const u = h.item(d);
+    u.getAttribute("data-cdrm-group") === i && (u.style.transform = `translateX(${(d - o) * 100}%)`, d === o ? u.style.opacity = "1" : u.style.opacity = "0");
+  }
+}, B = (r) => {
   const e = r.currentTarget.getAttribute("data-cdrm-copy-for");
   if (!e) {
-    b.error("Failed to find a valid targetID on the code block.");
+    g.error(
+      "Failed to find a valid targetID on the code block.",
+      r.currentTarget
+    );
     return;
   }
   const s = document.getElementById(e);
-  s && (window.navigator.clipboard.writeText(s.querySelector("pre")?.innerText ?? "").catch((o) => {
-    b.error("Copy error: ", o);
-  }), window.dispatchEvent(new CustomEvent("cdrm-codeblock-copy")));
-}, B = () => {
-  b.info("Toggle copy icon here.");
+  if (!s)
+    return;
+  window.navigator.clipboard.writeText(s.querySelector("pre")?.innerText ?? "").catch((i) => {
+    g.error("Copy error: ", i);
+  });
+  const o = document.querySelector(
+    `div[data-cdrm-codeblock="${e}"]`
+  );
+  if (o) {
+    const i = o.getAttribute("data-cdrm-lang");
+    window.dispatchEvent(
+      new CustomEvent("cdrm-codeblock-copy", {
+        detail: {
+          lang: i
+        }
+      })
+    );
+  }
+}, q = () => {
+  g.info("Toggle copy icon here.");
 };
-function I(r) {
+function $(r) {
   const t = r.querySelector(
     ".cdrm-admon-body-container"
   );
@@ -508,67 +537,68 @@ function I(r) {
   t.style.maxHeight = `${s}px`;
 }
 const E = (r) => {
-  function t(l2) {
-    l2.setAttribute("data-cdrm-folded", "false"), I(l2);
+  function t(a) {
+    a.setAttribute("data-cdrm-folded", "false"), $(a);
   }
-  function e(l2) {
-    const p = l2.querySelector(
+  function e(a) {
+    const p = a.querySelector(
       ".cdrm-admon-body-container"
     );
-    p && (p.style.maxHeight = "0px", l2.setAttribute("data-cdrm-folded", "true"));
+    p && (p.style.maxHeight = "0px", a.setAttribute("data-cdrm-folded", "true"));
   }
-  console.log("Admonition title clicked!");
-  const s = r.currentTarget.parentElement, o = s.getAttribute("data-cdrm-folded") === "true", i = s.getAttribute("data-cdrm-foldable") === "true";
+  const s = r.currentTarget.parentElement;
+  console.log("container: ", s);
+  const o = s.getAttribute("data-cdrm-folded") === "true", i = s.getAttribute("data-cdrm-foldable") === "true";
   s.querySelector(".cdrm-admon-body-container") && i && (o ? t(s) : e(s));
 };
-const l = () => {
-  function s(t) {
+const c = () => {
+  function a(t) {
     const e = t.querySelectorAll(".cdrm-tab-group-item");
     for (let o = 0; o < e.length; o++) {
-      const r = e.item(o);
-      r && (r.style.position = "absolute");
+      const i = e.item(o);
+      i?.classList.contains("relative") && (i.classList.remove("relative"), i.classList.add("absolute"));
     }
   }
-  function n2(t) {
+  function r(t) {
     const e = parseInt(
       /* eslint-disable-next-line  -- It'll be there... I put it there. */
       t.getAttribute("data-cdrm-focused-idx")
     ), o = t.getAttribute("data-cdrm-group");
     if (!o) {
-      b.warn(
+      console.warn(
         "Compiler Error: Found a tab group without a valid group id."
       );
       return;
     }
-    const r = t.querySelector(
+    const i = t.querySelector(
       `#tab-${o}-${e}`
     );
-    if (r) {
-      const d = r.getBoundingClientRect().height, i = t.querySelector(
+    if (i) {
+      const d = i.getBoundingClientRect().height, n2 = t.querySelector(
         `#tab-body-wrapper-${o}`
       );
-      i && (i.style.transition = "height 0.3s ease-in-out", i.style.height = `${Math.min(d, 450)}px`);
+      n2 && (n2.style.transition = "height 0.3s ease-in-out", n2.style.height = `${Math.min(d, 450)}px`, n2.style.transition = "none");
     }
   }
-  const a = document.getElementsByClassName("cdrm-tab-group");
-  for (let t = 0; t < a.length; t++) {
-    const e = a.item(t);
+  const s = document.getElementsByClassName("cdrm-tab-group");
+  for (let t = 0; t < s.length; t++) {
+    const e = s.item(t);
     new MutationObserver(() => {
-      n2(e);
+      r(e);
     }).observe(e, {
       attributes: true,
       attributeFilter: ["data-cdrm-focused-idx"]
-    }), n2(e), s(e);
+    }), r(e), a(e);
   }
 };
 const methods_es = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  handleConundrumAdmonitionHeight: I,
-  handleConundrumTabClick: $,
+  handleConundrumAdmonitionHeight: $,
+  handleConundrumTabClick: j,
   onAdmonitionHeadingClick: E,
-  onCodeBlockContainerClick: B,
-  onCopyCodeBlockClick: j,
-  onTabResize: l
+  onCodeBlockContainerClick: q,
+  onCopyCodeBlockClick: B,
+  onTabResize: c
 }, Symbol.toStringTag, { value: "Module" }));
 export {
   applyCopyConundrumCodeBlockListeners

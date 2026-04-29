@@ -18,7 +18,7 @@ build_conundrum_ts:
 	cd {{justfile_directory()}}/packages/rust/conundrum_ts; pnpm build
 
 build_glue_code: build_conundrum_ts
-	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm vite build
+	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm build
 
 write_javascript_glue:
 	./target/debug/fluster_internal_cli write-glue-code

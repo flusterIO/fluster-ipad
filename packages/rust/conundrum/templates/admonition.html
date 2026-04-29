@@ -4,7 +4,7 @@
     data-cdrm-foldable="{{foldable}}"
     id="{{id}}"
     >
-    <div onclick="window.conundrum.onAdmonitionHeadingClick()" class="{{tw_merge!("cdrm-admon-title-group w-full grid gap-x-2 p-2 rounded-tl rounded-tr relative z-[1] min-h-[42px] font-semibold grid place-items-center", self.emphasis.to_background_color_classes(), match self.foldable.0 {
+    <div onclick="window.conundrum.onAdmonitionHeadingClick(event)" class="{{tw_merge!("cdrm-admon-title-group w-full grid gap-x-2 p-2 rounded-tl rounded-tr relative z-[1] min-h-[42px] font-semibold grid place-items-center", self.emphasis.to_background_color_classes(), match self.foldable.0 {
                 true => "grid-cols-[auto_1fr_auto]",
                          false => "grid-cols-[auto_1fr]"
                                    })}}">

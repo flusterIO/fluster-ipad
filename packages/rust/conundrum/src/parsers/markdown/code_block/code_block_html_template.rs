@@ -8,7 +8,7 @@ use crate::{
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <div class="cdrm-codeblock @container/codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative my-6" onclick="window.conundrum.onCodeBlockContainerClick()">   {% if let Some(title) = title %}
+/// <div data-cdrm-lang="{{lang}}" data-cdrm-codeblock="{{id}}" class="cdrm-codeblock @container/codeblock h-fit w-full bg-fd-card text-fd-card-foreground border rounded relative my-6" onclick="window.conundrum.onCodeBlockContainerClick(event)">   {% if let Some(title) = title %}
 ///   <div class="py-0 px-2 w-full grid grid-cols-[auto_1fr] gap-x-3">
 ///   <span class="w-fit font-nerd" style="color:{{file_icon.color}};">
 ///   {{file_icon.icon}}
@@ -23,11 +23,11 @@ use crate::{
 ///      role="button"
 ///      class="cdrm-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300
 ///      font-lucide cursor-pointer"
-///      onclick="window.conundrum.onCopyCodeBlockClick()"
+///      onclick="window.conundrum.onCopyCodeBlockClick(event)"
 ///    >
 ///    {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::Copy}}
 ///    </div>
-///    <div class="[&>pre]:p-2! [&>pre]:rounded-bl [&>pre]:rounded-br [&>pre]:rounded-tl-none [&_pre]:rounded-tr-none [&>pre]:my-0 [&>pre]:text-sm">
+///    <div class="[&>pre]:p-2! [&>pre]:rounded-bl [&>pre]:rounded-br {% if self.title.is_some() %} [&>pre]:rounded-tl-none [&_pre]:rounded-tr-none {% else %} [&>pre]:rounded-tl [&>pre]:rounded-tr {% endif %} [&>pre]:my-0 [&>pre]:text-sm">
 ///    {{code | safe}}
 ///    </div>
 ///    </div>
@@ -39,6 +39,7 @@ pub struct CodeBlockHTMLTemplate {
     pub id: DOMId,
     pub code: String,
     pub title: Option<String>,
+    pub lang: SupportedCodeBlockSyntax,
     pub file_icon: FileIcon,
 }
 
@@ -62,6 +63,7 @@ impl CodeBlockHTMLTemplate {
         CodeBlockHTMLTemplate { id,
                                 code,
                                 title,
+                                lang: language.clone(),
                                 file_icon }
     }
 }

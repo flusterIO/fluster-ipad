@@ -1375,6 +1375,8 @@ export enum ConundrumWebEvents {
 	 */
 	ManualResize = "cdrm-manual-resize",
 	CdrmContentLoaded = "cdrm-content-loaded",
+	CodeblockCopied = "cdrm-codeblock-copy",
+	NoteLinkClick = "cdrm-note-id-link-click",
 }
 
 export enum DocumentationComponentName {

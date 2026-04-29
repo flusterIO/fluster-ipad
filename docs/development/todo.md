@@ -3,6 +3,7 @@
 ## Get app back in working order
 
 - [ ] Get component javascript working!
+- [ ] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
 - [ ] Get Bold & italic text parser working again... that shit broke.
 - [ ] Be sure to handle overflow of tab now that you removed the css class. You'll have to toggle it based on the height when you read it to avoid this overflow when the height of the container is small but another one is large.
 - [ ] Revert component glue standalone files to initial setup, but using the imported functions from the `conundrum/ts` package.

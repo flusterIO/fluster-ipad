@@ -12,4 +12,10 @@ pub enum ConundrumWebEvents {
     #[serde(rename = "cdrm-content-loaded")]
     #[strum(to_string = "cdrm-content-loaded")]
     CdrmContentLoaded,
+    #[serde(rename = "cdrm-codeblock-copy")]
+    #[strum(to_string = "cdrm-codeblock-copy")]
+    CodeblockCopied,
+    #[serde(rename = "cdrm-note-id-link-click")]
+    #[strum(to_string = "cdrm-note-id-link-click")]
+    NoteLinkClick,
 }

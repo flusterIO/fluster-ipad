@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, PluginOption } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
@@ -13,27 +13,37 @@ const entries = {
     ADMONITION: path.resolve(__dirname, "./src/output/html/glue/component_glue/admonition.ts"),
     CODE_BLOCK: path.resolve(__dirname, "./src/output/html/glue/component_glue/code_block"),
     TOC: path.resolve(__dirname, "./src/output/html/glue/component_glue/toc.ts"),
+    MAIN: path.resolve(__dirname, "./src/output/html/glue/component_glue/index.ts")
 }
 
+if (!process.env.CDRM_COMPONENT_NAME) {
+    console.error("Cannot continue building without a process.env.CDRM_COMPONENT_NAME variable set.")
+    process.exit(1);
+}
+
+const plugins: PluginOption[] = [
+    tsconfigPaths(),
+    dts({
+        insertTypesEntry: true,
+        copyDtsFiles: true,
+    }),
+]
+
+if (process.env.CDRM_COMPONENT_NAME !== "MAIN") {
+    plugins.push(
+        viteSingleFile({
+            useRecommendedBuildConfig: true,
+        })
+    )
+}
 
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [
-        tsconfigPaths(),
-        dts({
-            insertTypesEntry: true,
-            copyDtsFiles: true,
-        }),
-        viteSingleFile({
-            useRecommendedBuildConfig: true,
-        })
-        // wasm(),
-        // topLevelAwait()
-    ],
+    plugins,
     build: {
         lib: {
-            name: "fluster",
+            name: "conundrum",
             entry: entries[process.env.CDRM_COMPONENT_NAME],
             formats: ["es"],
             fileName: (format, entryName) => `${entryName}.${format}.js`,

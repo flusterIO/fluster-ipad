@@ -435,7 +435,6 @@ extension AppSchemaV1 {
       noteBody: String = "",
     ) -> NoteModel {
       NoteModel(
-        
         markdown: MarkdownNote(body: noteBody)
       )
     }
@@ -498,7 +497,7 @@ extension AppSchemaV1 {
       let task: Task<MdxParsingResult?, any Error> = try await Task.detached {
         let res = try await ConundrumSwift.runConundrum(
           options: ParseConundrumOptions(
-            noteId: _id, content: _body, modifiers: [.embedJavascript], hideComponents: [], uiParams: uiParams,
+            noteId: _id, content: _body, modifiers: [], hideComponents: [], uiParams: uiParams,
             target: .html, trusted: true))
         return res
       }

@@ -1,12 +1,11 @@
-import consola from "consola";
-
 export const onTabResize = () => {
     function removeInitialRelativePositions(container: HTMLDivElement) {
         const tabs = container.querySelectorAll(".cdrm-tab-group-item");
         for (let i = 0; i < tabs.length; i++) {
             const item = tabs.item(i) as HTMLDivElement | undefined;
-            if (item) {
-                item.style.position = "absolute";
+            if (item?.classList.contains("relative")) {
+                item.classList.remove("relative");
+                item.classList.add("absolute");
             }
         }
     }
@@ -18,7 +17,7 @@ export const onTabResize = () => {
         );
         const groupId = container.getAttribute("data-cdrm-group");
         if (!groupId) {
-            consola.warn(
+            console.warn(
                 "Compiler Error: Found a tab group without a valid group id.",
             );
             return;
@@ -34,6 +33,7 @@ export const onTabResize = () => {
             if (bodyWrapper) {
                 bodyWrapper.style.transition = "height 0.3s ease-in-out";
                 bodyWrapper.style.height = `${Math.min(h, 450)}px`;
+                bodyWrapper.style.transition = "none";
             }
         }
     }

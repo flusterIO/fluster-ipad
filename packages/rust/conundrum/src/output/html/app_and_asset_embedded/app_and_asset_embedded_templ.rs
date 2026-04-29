@@ -6,7 +6,10 @@ use askama::Template;
 /// {% if let Some(style) = self.css %}<style>
 /// {{style | safe}}
 /// </style>{% endif %}
+/// <div class="cdrm-body-container w-full h-fit" onresize="window.conundrum.onResize(event)"
+/// onload="window.conundrum.onLoad()">
 /// {{content | safe}}
+/// </div>
 /// <script defer>
 /// {{js | safe}}
 /// console.info("App glue code loaded...")
