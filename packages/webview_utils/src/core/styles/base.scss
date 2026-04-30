@@ -218,3 +218,9 @@ span[data-rehype-pretty-code-figure] {
     }
   }
 }
+
+.hide-equation-labels {
+  .cdrm-equation-label {
+    display: none;
+  }
+}

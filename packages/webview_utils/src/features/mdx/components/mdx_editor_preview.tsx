@@ -21,6 +21,7 @@ export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id"
 const connector = connect((state: GlobalAppState) => ({
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview,
     isEditorView: state.editor.editorView === EditorView.Splitview,
+    hideEquationLabels: state.math.hide_equation_labels
 }))
 
 
@@ -32,10 +33,11 @@ const connector = connect((state: GlobalAppState) => ({
  */
 export const MdxEditorPreview = connector(({
     className,
+    hideEquationLabels,
     /* lockEditorScrollToPreview, */
     isEditorView,
     /* ...props */
-}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean }): ReactNode => {
+}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean, hideEquationLabels: boolean }): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
 
     const parsedValueIsEmpty = useSelector((state: GlobalWebviewStateDeepNullable) => {
@@ -126,6 +128,7 @@ export const MdxEditorPreview = connector(({
                     "max-w-[1080px]",
                     isEditorView ? "px-6 pt-4 pb-16 mx-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
                     className,
+                    hideEquationLabels && "hide-equation-labels"
                 )}
                 ref={ref}
             />

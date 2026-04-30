@@ -12,6 +12,7 @@ pub struct EquationReferenceRecord {}
 pub struct MathState {
     pub mathjax_font_url: String,
     pub equation_refs: HashMap<String, u32>,
+    pub hide_equation_labels: bool,
 }
 
 #[typeshare]

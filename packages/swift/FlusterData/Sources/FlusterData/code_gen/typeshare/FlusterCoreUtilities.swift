@@ -548,10 +548,12 @@ public struct NoteDetailState: Codable {
 public struct MathState: Codable {
 	public let mathjax_font_url: String
 	public let equation_refs: [String: UInt32]
+	public let hide_equation_labels: Bool
 
-	public init(mathjax_font_url: String, equation_refs: [String: UInt32]) {
+	public init(mathjax_font_url: String, equation_refs: [String: UInt32], hide_equation_labels: Bool) {
 		self.mathjax_font_url = mathjax_font_url
 		self.equation_refs = equation_refs
+		self.hide_equation_labels = hide_equation_labels
 	}
 }
 
