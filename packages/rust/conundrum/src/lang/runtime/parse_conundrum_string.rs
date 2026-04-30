@@ -23,6 +23,8 @@ use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::markdown::lists::unordered::unordered_list_model::UnorderedListModel;
 use crate::parsers::markdown::markdown_extensions::emoji::emoji_model::EmojiResult;
+use crate::parsers::markdown::markdown_extensions::footnote::footnote_anchor::FootnoteAnchor;
+use crate::parsers::markdown::markdown_extensions::footnote::footnote_footer::FootnoteFooter;
 use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
 use crate::parsers::markdown::math::block_math::block_math_model::BlockMathResult;
 use crate::parsers::markdown::math::inline_math::inline_math_model::InlineMathResult;
@@ -127,6 +129,8 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                             ParsedTag::parse_input_string.map(ParsedElement::Tag),
                             MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
                             MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                            FootnoteFooter::parse_input_string.map(ParsedElement::FootnoteFooter),
+                            FootnoteAnchor::parse_input_string.map(ParsedElement::FootnoteAnchor),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },

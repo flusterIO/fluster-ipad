@@ -21,6 +21,8 @@ use crate::{
             inline_code::InlineCodeResult,
             italic_text::MarkdownItalicTextResult,
             markdown_extensions::emoji::emoji_model::EmojiResult,
+            markdown_extensions::footnote::footnote_anchor::FootnoteAnchor,
+            markdown_extensions::footnote::footnote_footer::FootnoteFooter,
             markdown_link::MarkdownLinkResult,
             math::{block_math::block_math_model::BlockMathResult, inline_math::inline_math_model::InlineMathResult},
         },
@@ -74,6 +76,7 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                        ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
                                                                                        ParsedTag::parse_input_string.map(ParsedElement::Tag),
                                                                                        MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
+                                                                                        FootnoteAnchor::parse_input_string.map(ParsedElement::FootnoteAnchor),
                                                                                        any.map(|c: char| ParsedElement::Text(c.to_string()))
                                                                                )).parse_next(x)
                                                                            },
@@ -165,6 +168,14 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                ">" => |x: &mut ConundrumInput<'a>| {
                                                                                    if ls {
                                                                                        BlockQuoteResult::parse_input_string.map(ParsedElement::BlockQuote) .parse_next(x)
+                                                                                   } else {
+                                                                                       fail.parse_next(x)
+                                                                                   }
+                                                                               },
+                                                                               "[" => |x: &mut ConundrumInput<'a>| {
+                                                                                   if ls {
+                                                                                       FootnoteFooter::parse_input_string.map(ParsedElement::FootnoteFooter)
+                                                                                           .parse_next(x)
                                                                                    } else {
                                                                                        fail.parse_next(x)
                                                                                    }

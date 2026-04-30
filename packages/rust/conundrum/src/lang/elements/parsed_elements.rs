@@ -41,7 +41,10 @@ use crate::{
             lists::{
                 ordered::ordered_list_model::OrderedListModel, unordered::unordered_list_model::UnorderedListModel,
             },
-            markdown_extensions::emoji::emoji_model::EmojiResult,
+            markdown_extensions::{
+                emoji::emoji_model::EmojiResult,
+                footnote::{footnote_anchor::FootnoteAnchor, footnote_footer::FootnoteFooter},
+            },
             markdown_link::MarkdownLinkResult,
             math::{block_math::block_math_model::BlockMathResult, inline_math::inline_math_model::InlineMathResult},
             paragraph::paragraph_model::MarkdownParagraphResult,
@@ -85,6 +88,8 @@ pub enum ParsedElement {
     UnorderedList(UnorderedListModel),
     OrderedList(OrderedListModel),
     Table(MarkdownTable),
+    FootnoteAnchor(FootnoteAnchor),
+    FootnoteFooter(FootnoteFooter),
     // Markdown Extensions
     Emoji(EmojiResult),
     // React
@@ -133,6 +138,14 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::UnorderedList(l) => l.to_html_js_component(res),
             ParsedElement::OrderedList(l) => l.to_html_js_component(res),
             ParsedElement::Table(t) => t.to_html_js_component(res),
+            // This is
+            // being
+            // handled
+            // by the
+            // footnote
+            // component.
+            ParsedElement::FootnoteFooter(f) => Ok(String::from("")),
+            ParsedElement::FootnoteAnchor(a) => a.to_html_js_component(res),
         }
     }
 }
@@ -168,6 +181,9 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
             ParsedElement::OrderedList(l) => l.to_conundrum_component(res),
             ParsedElement::Table(t) => t.to_conundrum_component(res),
+            // For now people will have to implement their own footer.
+            ParsedElement::FootnoteFooter(f) => Ok(String::from("")),
+            ParsedElement::FootnoteAnchor(a) => a.to_html_js_component(res),
         }
     }
 }
@@ -203,6 +219,8 @@ impl MarkdownComponentResult for ParsedElement {
             ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
             ParsedElement::OrderedList(l) => l.to_conundrum_component(res),
             ParsedElement::Table(t) => t.to_conundrum_component(res),
+            ParsedElement::FootnoteFooter(f) => f.to_markdown(res),
+            ParsedElement::FootnoteAnchor(a) => a.to_html_js_component(res),
         }
     }
 }
@@ -238,6 +256,8 @@ impl PlainTextComponentResult for ParsedElement {
             ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
             ParsedElement::OrderedList(l) => l.to_plain_text(res),
             ParsedElement::Table(t) => t.to_plain_text(res),
+            ParsedElement::FootnoteFooter(f) => f.to_plain_text(res),
+            ParsedElement::FootnoteAnchor(a) => a.to_html_js_component(res),
         }
     }
 }
@@ -293,6 +313,8 @@ impl ParsedElement {
             ParsedElement::UnorderedList(_) => true,
             ParsedElement::OrderedList(_) => true,
             ParsedElement::Table(_) => true,
+            ParsedElement::FootnoteAnchor(_) => false,
+            ParsedElement::FootnoteFooter(f) => true,
         }
     }
 }

@@ -8,7 +8,7 @@ use askama::Template;
 /// {{heading | safe}}
 /// </div>
 /// <div>
-/// {{body}}
+/// {{body | safe}}
 /// </div>
 /// </li>
 /// {% else %}
@@ -29,7 +29,7 @@ pub struct UnorderedListItemHtmlTemplate {
 /// ```askama
 /// <ul>
 /// {% for item in items %}
-/// {{item.render()?}}
+/// {{item.render()? | safe}}
 /// {% endfor %}
 /// </ul>
 /// ```

@@ -1,17 +1,19 @@
-use std::sync::Arc;
-
+use dashmap::DashMap;
 use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
+use std::{collections::HashMap, sync::Arc};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
 use uniffi::Enum;
 
 use crate::{
-    lang::runtime::state::{citation_list::CitationList, dom_data::DomData, ui_params::UIParams},
+    lang::runtime::state::{
+        citation_list::CitationList, dom_data::DomData, footnote_manager::FootnoteManager, ui_params::UIParams,
+    },
     output::{
         general::component_constants::parser_ids::ParserId, parsing_result::mdx_parsing_result::MdxParsingResult,
     },
-    parsers::markdown::heading_sluggger::Slugger,
+    parsers::markdown::{heading_sluggger::Slugger, markdown_extensions::footnote::footnote_result::FootnoteResult},
 };
 
 /// The goal with these modifiers is to have a few different compile targets
@@ -90,6 +92,8 @@ pub struct ParseState {
     pub dom: DomData,
     pub compile_target: ConundrumCompileTarget,
     pub trusted: bool,
+    /// A map of type `Map<The anchor index of the footnote, FootnoteResult>`.
+    pub footnotes: FootnoteManager,
     pub highlight_assets: Arc<Mutex<HighlightingAssets>>,
 }
 
@@ -105,6 +109,7 @@ impl Default for ParseState {
                valid_footnote_indices: Default::default(),
                ui_params: Default::default(),
                dom: Default::default(),
+               footnotes: FootnoteManager::new(HashMap::new()),
                compile_target: Default::default(),
                trusted: Default::default(),
                highlight_assets: Arc::new(Mutex::new(HighlightingAssets::from_binary())) }

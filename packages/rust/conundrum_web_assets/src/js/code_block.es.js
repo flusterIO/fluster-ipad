@@ -1,7 +1,7 @@
 const applyCopyConundrumCodeBlockListeners = () => {
   const ems = document.getElementsByClassName("cdrm-codeblock");
-  for (var i = 0; i < ems.length; i++) {
-    const item = ems.item(i);
+  for (var i2 = 0; i2 < ems.length; i2++) {
+    const item = ems.item(i2);
     item.addEventListener("mouseenter", (e) => {
       e.target.classList.add("hovered");
     });
@@ -10,10 +10,10 @@ const applyCopyConundrumCodeBlockListeners = () => {
     });
   }
   const icons = document.getElementsByClassName("cdrm-codeblock-icon");
-  for (var i = 0; i < icons.length; i++) {
-    const item = icons.item(i);
+  for (var i2 = 0; i2 < icons.length; i2++) {
+    const item = icons.item(i2);
     item.addEventListener("click", async (e) => {
-      Promise.resolve().then(() => methods_es).then((a2) => a2.onCopyCodeBlockClick(e));
+      Promise.resolve().then(() => methods_es).then((a) => a.onCopyCodeBlockClick(e));
     });
   }
 };
@@ -21,44 +21,44 @@ const applyCopyConundrumCodeBlockListeners = () => {
   applyCopyConundrumCodeBlockListeners();
   window.addEventListener("cdrm-content-loaded", applyCopyConundrumCodeBlockListeners);
 })();
-const B = (s) => {
-  const t = s.currentTarget, e = t.parentElement?.parentElement;
+const E = (r) => {
+  const t = r.currentTarget, e = t.parentElement?.parentElement;
   if (!e) {
     console.error("Could not find proper parent element.");
     return;
   }
-  const r = t.getAttribute("data-cdrm-idx");
-  if (typeof r > "u") {
+  const s = t.getAttribute("data-cdrm-idx");
+  if (typeof s > "u") {
     console.error("Could not find tab index.");
     return;
   }
-  const o = parseInt(r), i = e.getAttribute("data-cdrm-group"), l = e.getAttribute("data-cdrm-focused-idx");
+  const o = parseInt(s), n = e.getAttribute("data-cdrm-group"), l = e.getAttribute("data-cdrm-focused-idx");
   if (typeof l > "u") {
     console.error("Could not found TabGroup focused index.");
     return;
   }
-  const n = parseInt(l), d = e.querySelectorAll(".cdrm-tab-subtle-border");
+  const a = parseInt(l), d = e.querySelectorAll(".cdrm-tab-subtle-border");
   for (let p = 0; p < d.length; p++) {
-    const u = d.item(p), C = u.classList.values().toArray().filter((f) => f.startsWith("bg-"));
-    for (const f of C)
+    const u = d.item(p), S = u.classList.values().toArray().filter((f) => f.startsWith("bg-"));
+    for (const f of S)
       u.classList.remove(f);
     if (p === o) {
       const f = t.querySelector(
         ".cdrm-tab-subtle-border"
       );
       if (f) {
-        f.style.transformOrigin = n < o ? "left" : "right", f.classList.remove("bg-transparent"), f.classList.remove("scale-x-0");
-        const v = e.getAttribute("data-cdrm-emphasis");
-        v && f.classList.add(`bg-emphasis-${v}`);
+        f.style.transformOrigin = a < o ? "left" : "right", f.classList.remove("bg-transparent"), f.classList.remove("scale-x-0");
+        const w = e.getAttribute("data-cdrm-emphasis");
+        w && f.classList.add(`bg-emphasis-${w}`);
       }
     } else
-      u.style.transformOrigin = n > o ? "left" : "right", u.classList.add("bg-transparent"), u.classList.add("scale-x-0");
+      u.style.transformOrigin = a > o ? "left" : "right", u.classList.add("bg-transparent"), u.classList.add("scale-x-0");
   }
   e.setAttribute("data-cdrm-focused-idx", `${o}`);
   const g = document.getElementsByClassName("cdrm-tab-group-item");
   for (let p = 0; p < g.length; p++) {
     const u = g.item(p);
-    u.getAttribute("data-cdrm-group") === i && (u.style.transform = `translateX(${(p - o) * 100}%)`, p === o ? u.style.opacity = "1" : u.style.opacity = "0");
+    u.getAttribute("data-cdrm-group") === n && (u.style.transform = `translateX(${(p - o) * 100}%)`, p === o ? u.style.opacity = "1" : u.style.opacity = "0");
   }
 }, c = {
   fatal: 0,
@@ -71,7 +71,7 @@ const B = (s) => {
   debug: 4,
   trace: 5,
   verbose: Number.POSITIVE_INFINITY
-}, w = {
+}, L = {
   // Silent
   silent: {
     level: -1
@@ -123,44 +123,44 @@ const B = (s) => {
     level: c.verbose
   }
 };
-function h(s) {
-  if (s === null || typeof s != "object")
+function h(r) {
+  if (r === null || typeof r != "object")
     return false;
-  const t = Object.getPrototypeOf(s);
-  return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in s ? false : Symbol.toStringTag in s ? Object.prototype.toString.call(s) === "[object Module]" : true;
+  const t = Object.getPrototypeOf(r);
+  return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in r ? false : Symbol.toStringTag in r ? Object.prototype.toString.call(r) === "[object Module]" : true;
 }
-function b(s, t, e = ".", r) {
+function b(r, t, e = ".", s) {
   if (!h(t))
-    return b(s, {}, e);
+    return b(r, {}, e);
   const o = Object.assign({}, t);
-  for (const i in s) {
-    if (i === "__proto__" || i === "constructor")
+  for (const n in r) {
+    if (n === "__proto__" || n === "constructor")
       continue;
-    const l = s[i];
-    l != null && (Array.isArray(l) && Array.isArray(o[i]) ? o[i] = [...l, ...o[i]] : h(l) && h(o[i]) ? o[i] = b(
+    const l = r[n];
+    l != null && (Array.isArray(l) && Array.isArray(o[n]) ? o[n] = [...l, ...o[n]] : h(l) && h(o[n]) ? o[n] = b(
       l,
-      o[i],
-      (e ? `${e}.` : "") + i.toString()
-    ) : o[i] = l);
+      o[n],
+      (e ? `${e}.` : "") + n.toString()
+    ) : o[n] = l);
   }
   return o;
 }
-function S(s) {
+function A(r) {
   return (...t) => (
     // eslint-disable-next-line unicorn/no-array-reduce
-    t.reduce((e, r) => b(e, r, ""), {})
+    t.reduce((e, s) => b(e, s, ""), {})
   );
 }
-const A = S();
-function T(s) {
-  return Object.prototype.toString.call(s) === "[object Object]";
+const T = A();
+function k(r) {
+  return Object.prototype.toString.call(r) === "[object Object]";
 }
-function k(s) {
-  return !(!T(s) || !s.message && !s.args || s.stack);
+function x(r) {
+  return !(!k(r) || !r.message && !r.args || r.stack);
 }
 let m = false;
-const L = [];
-class a {
+const C = [];
+class i {
   options;
   _lastLog;
   _mockFn;
@@ -170,8 +170,8 @@ class a {
    * @param {Partial<ConsolaOptions>} [options={}] - Configuration options for the Consola instance.
    */
   constructor(t = {}) {
-    const e = t.types || w;
-    this.options = A(
+    const e = t.types || L;
+    this.options = T(
       {
         ...t,
         defaults: { ...t.defaults },
@@ -179,7 +179,7 @@ class a {
         reporters: [...t.reporters || []]
       },
       {
-        types: w,
+        types: L,
         throttle: 1e3,
         throttleMin: 5,
         formatOptions: {
@@ -189,13 +189,13 @@ class a {
         }
       }
     );
-    for (const r in e) {
+    for (const s in e) {
       const o = {
-        type: r,
+        type: s,
         ...this.options.defaults,
-        ...e[r]
+        ...e[s]
       };
-      this[r] = this._wrapLogFn(o), this[r].raw = this._wrapLogFn(
+      this[s] = this._wrapLogFn(o), this[s].raw = this._wrapLogFn(
         o,
         true
       );
@@ -243,7 +243,7 @@ class a {
    * @returns {ConsolaInstance} A new Consola instance. See {@link ConsolaInstance}.
    */
   create(t) {
-    const e = new a({
+    const e = new i({
       ...this.options,
       ...t
     });
@@ -337,8 +337,8 @@ class a {
     this._wrapStream(this.options.stdout, "log"), this._wrapStream(this.options.stderr, "log");
   }
   _wrapStream(t, e) {
-    t && (t.__write || (t.__write = t.write), t.write = (r) => {
-      this[e].raw(String(r).trim());
+    t && (t.__write || (t.__write = t.write), t.write = (s) => {
+      this[e].raw(String(s).trim());
     });
   }
   /**
@@ -361,7 +361,7 @@ class a {
    */
   resumeLogs() {
     m = false;
-    const t = L.splice(0);
+    const t = C.splice(0);
     for (const e of t)
       e[0]._logFn(e[1], e[2]);
   }
@@ -373,19 +373,19 @@ class a {
   mockTypes(t) {
     const e = t || this.options.mockFn;
     if (this._mockFn = e, typeof e == "function")
-      for (const r in this.options.types)
-        this[r] = e(r, this.options.types[r]) || this[r], this[r].raw = this[r];
+      for (const s in this.options.types)
+        this[s] = e(s, this.options.types[s]) || this[s], this[s].raw = this[s];
   }
   _wrapLogFn(t, e) {
-    return (...r) => {
+    return (...s) => {
       if (m) {
-        L.push([this, t, r, e]);
+        C.push([this, t, s, e]);
         return;
       }
-      return this._logFn(t, r, e);
+      return this._logFn(t, s, e);
     };
   }
-  _logFn(t, e, r) {
+  _logFn(t, e, s) {
     if ((t.level || 0) > this.level)
       return false;
     const o = {
@@ -394,37 +394,37 @@ class a {
       ...t,
       level: y(t.level, this.options.types)
     };
-    !r && e.length === 1 && k(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
+    !s && e.length === 1 && x(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
 `)), o.args.push(`
 ` + o.additional.join(`
 `)), delete o.additional), o.type = typeof o.type == "string" ? o.type.toLowerCase() : "log", o.tag = typeof o.tag == "string" ? o.tag : "";
-    const i = (n = false) => {
+    const n = (a = false) => {
       const d = (this._lastLog.count || 0) - this.options.throttleMin;
       if (this._lastLog.object && d > 0) {
         const g = [...this._lastLog.object.args];
         d > 1 && g.push(`(repeated ${d} times)`), this._log({ ...this._lastLog.object, args: g }), this._lastLog.count = 1;
       }
-      n && (this._lastLog.object = o, this._log(o));
+      a && (this._lastLog.object = o, this._log(o));
     };
     clearTimeout(this._lastLog.timeout);
     const l = this._lastLog.time && o.date ? o.date.getTime() - this._lastLog.time.getTime() : 0;
     if (this._lastLog.time = o.date, l < this.options.throttle)
       try {
-        const n = JSON.stringify([
+        const a = JSON.stringify([
           o.type,
           o.tag,
           o.args
-        ]), d = this._lastLog.serialized === n;
-        if (this._lastLog.serialized = n, d && (this._lastLog.count = (this._lastLog.count || 0) + 1, this._lastLog.count > this.options.throttleMin)) {
+        ]), d = this._lastLog.serialized === a;
+        if (this._lastLog.serialized = a, d && (this._lastLog.count = (this._lastLog.count || 0) + 1, this._lastLog.count > this.options.throttleMin)) {
           this._lastLog.timeout = setTimeout(
-            i,
+            n,
             this.options.throttle
           );
           return;
         }
       } catch {
       }
-    i(true);
+    n(true);
   }
   _log(t) {
     for (const e of this.options.reporters)
@@ -433,20 +433,20 @@ class a {
       });
   }
 }
-function y(s, t = {}, e = 3) {
-  return s === void 0 ? e : typeof s == "number" ? s : t[s] && t[s].level !== void 0 ? t[s].level : e;
+function y(r, t = {}, e = 3) {
+  return r === void 0 ? e : typeof r == "number" ? r : t[r] && t[r].level !== void 0 ? t[r].level : e;
 }
-a.prototype.add = a.prototype.addReporter;
-a.prototype.remove = a.prototype.removeReporter;
-a.prototype.clear = a.prototype.removeReporter;
-a.prototype.withScope = a.prototype.withTag;
-a.prototype.mock = a.prototype.mockTypes;
-a.prototype.pause = a.prototype.pauseLogs;
-a.prototype.resume = a.prototype.resumeLogs;
-function x(s = {}) {
-  return new a(s);
+i.prototype.add = i.prototype.addReporter;
+i.prototype.remove = i.prototype.removeReporter;
+i.prototype.clear = i.prototype.removeReporter;
+i.prototype.withScope = i.prototype.withTag;
+i.prototype.mock = i.prototype.mockTypes;
+i.prototype.pause = i.prototype.pauseLogs;
+i.prototype.resume = i.prototype.resumeLogs;
+function F(r = {}) {
+  return new i(r);
 }
-class F {
+class I {
   options;
   defaultColor;
   levelColorMap;
@@ -468,118 +468,123 @@ class F {
     return t < 1 ? console.__error || console.error : t === 1 ? console.__warn || console.warn : console.__log || console.log;
   }
   log(t) {
-    const e = this._getLogFn(t.level), r = t.type === "log" ? "" : t.type, o = t.tag || "", l = `
+    const e = this._getLogFn(t.level), s = t.type === "log" ? "" : t.type, o = t.tag || "", l = `
       background: ${this.typeColorMap[t.type] || this.levelColorMap[t.level] || this.defaultColor};
       border-radius: 0.5em;
       color: white;
       font-weight: bold;
       padding: 2px 0.5em;
-    `, n = `%c${[o, r].filter(Boolean).join(":")}`;
+    `, a = `%c${[o, s].filter(Boolean).join(":")}`;
     typeof t.args[0] == "string" ? e(
-      `${n}%c ${t.args[0]}`,
+      `${a}%c ${t.args[0]}`,
       l,
       // Empty string as style resets to default console style
       "",
       ...t.args.slice(1)
-    ) : e(n, l, ...t.args);
+    ) : e(a, l, ...t.args);
   }
 }
-function I(s = {}) {
-  return x({
-    reporters: s.reporters || [new F({})],
-    prompt(e, r = {}) {
-      return r.type === "confirm" ? Promise.resolve(confirm(e)) : Promise.resolve(prompt(e));
+function $(r = {}) {
+  return F({
+    reporters: r.reporters || [new I({})],
+    prompt(e, s = {}) {
+      return s.type === "confirm" ? Promise.resolve(confirm(e)) : Promise.resolve(prompt(e));
     },
-    ...s
+    ...r
   });
 }
-const _ = I(), q = (s) => {
-  const e = s.currentTarget.getAttribute("data-cdrm-copy-for");
+const _ = $(), q = (r) => {
+  const e = r.currentTarget.getAttribute("data-cdrm-copy-for");
   if (!e) {
     _.error(
       "Failed to find a valid targetID on the code block.",
-      s.currentTarget
+      r.currentTarget
     );
     return;
   }
-  const r = document.getElementById(e);
-  if (!r)
+  const s = document.getElementById(e);
+  if (!s)
     return;
-  window.navigator.clipboard.writeText(r.querySelector("pre")?.innerText ?? "").catch((i) => {
-    _.error("Copy error: ", i);
+  window.navigator.clipboard.writeText(s.querySelector("pre")?.innerText ?? "").catch((n) => {
+    _.error("Copy error: ", n);
   });
   const o = document.querySelector(
     `div[data-cdrm-codeblock="${e}"]`
   );
   if (o) {
-    const i = o.getAttribute("data-cdrm-lang");
+    const n = o.getAttribute("data-cdrm-lang");
     window.dispatchEvent(
       new CustomEvent("cdrm-codeblock-copy", {
         detail: {
-          lang: i
+          lang: n
         }
       })
     );
   }
-}, E = () => {
+}, M = () => {
   _.info("Toggle copy icon here.");
 };
-function $(s) {
-  const t = s.querySelector(
+function B(r) {
+  const t = r.querySelector(
     ".cdrm-admon-body-container"
   );
   if (!t)
     return;
-  const e = s.querySelector(".cdrm-admon-body");
+  const e = r.querySelector(".cdrm-admon-body");
   if (!e)
     return;
   e.style.height = "auto", e.style.transition = "max-height 500ms ease-in-out";
-  const r = e.getBoundingClientRect().height;
-  t.style.maxHeight = `${r}px`;
+  const s = e.getBoundingClientRect().height;
+  t.style.maxHeight = `${s}px`;
 }
-const M = (s) => {
-  function t(n) {
-    n.setAttribute("data-cdrm-folded", "false"), $(n);
+const j = (r) => {
+  function t(a) {
+    a.setAttribute("data-cdrm-folded", "false"), B(a);
   }
-  function e(n) {
-    const d = n.querySelector(
+  function e(a) {
+    const d = a.querySelector(
       ".cdrm-admon-body-container"
     );
-    d && (d.style.maxHeight = "0px", n.setAttribute("data-cdrm-folded", "true"));
+    d && (d.style.maxHeight = "0px", a.setAttribute("data-cdrm-folded", "true"));
   }
-  const r = s.currentTarget.parentElement;
-  console.log("container: ", r);
-  const o = r.getAttribute("data-cdrm-folded") === "true", i = r.getAttribute("data-cdrm-foldable") === "true";
-  r.querySelector(".cdrm-admon-body-container") && i && (o ? t(r) : e(r));
-}, j = () => {
-  function s(e) {
-    const r = parseInt(
-      /* eslint-disable-next-line  -- It'll be there... I put it there. */
-      e.getAttribute("data-cdrm-focused-idx")
-    ), o = e.getAttribute("data-cdrm-group");
-    if (!o) {
-      console.warn(
-        "Compiler Error: Found a tab group without a valid group id."
-      );
-      return;
-    }
-    const i = e.querySelector(
-      `#tab-${o}-${r}`
+  const s = r.currentTarget.parentElement;
+  console.log("container: ", s);
+  const o = s.getAttribute("data-cdrm-folded") === "true", n = s.getAttribute("data-cdrm-foldable") === "true";
+  s.querySelector(".cdrm-admon-body-container") && n && (o ? t(s) : e(s));
+};
+function v(r) {
+  const t = parseInt(
+    /* eslint-disable-next-line  -- It'll be there... I put it there. */
+    r.getAttribute("data-cdrm-focused-idx")
+  ), e = r.getAttribute("data-cdrm-group");
+  if (!e) {
+    console.warn("Compiler Error: Found a tab group without a valid group id.");
+    return;
+  }
+  const s = r.querySelector(
+    `#tab-${e}-${t}`
+  );
+  if (s) {
+    const o = s.getBoundingClientRect().height, n = r.querySelector(
+      `#tab-body-wrapper-${e}`
     );
-    if (i) {
-      const l = i.getBoundingClientRect().height, n = e.querySelector(
-        `#tab-body-wrapper-${o}`
-      );
-      n ? (n.style.transition = "height 0.3s ease-in-out", n.style.height = `${Math.min(l, 450)}px`, n.style.overflowY = l > 450 ? "auto" : "hidden") : console.error("Could not find tab body wrapper.");
-    } else
-      console.error("Could not find focused body");
+    n ? (n.style.transition = "height 0.3s ease-in-out", n.style.height = `${Math.min(o, 450)}px`, n.style.overflowY = o > 450 ? "auto" : "hidden") : console.error("Could not find tab body wrapper.");
+  } else
+    console.error("Could not find focused body");
+}
+const O = () => {
+  const r = document.getElementsByClassName("cdrm-tab-group");
+  for (let t = 0; t < r.length; t++) {
+    const e = r.item(t);
+    e && v(e);
   }
-  const t = document.getElementsByClassName("cdrm-tab-group");
-  for (let e = 0; e < t.length; e++) {
-    const r = t.item(e);
-    s(r), new MutationObserver(() => {
-      s(r);
-    }).observe(r, {
+}, R = () => {
+  const r = document.getElementsByClassName("cdrm-tab-group");
+  for (let t = 0; t < r.length; t++) {
+    const e = r.item(t);
+    v(e), new MutationObserver(() => {
+      v(e);
+    }).observe(e, {
       attributes: true,
       attributeFilter: ["data-cdrm-focused-idx"]
     });
@@ -587,12 +592,13 @@ const M = (s) => {
 };
 const methods_es = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  handleConundrumAdmonitionHeight: $,
-  handleConundrumTabClick: B,
-  onAdmonitionHeadingClick: M,
-  onCodeBlockContainerClick: E,
+  handleConundrumAdmonitionHeight: B,
+  handleConundrumTabClick: E,
+  onAdmonitionHeadingClick: j,
+  onCodeBlockContainerClick: M,
   onCopyCodeBlockClick: q,
-  onTabLoad: j
+  onTabLoad: R,
+  onTabResize: O
 }, Symbol.toStringTag, { value: "Module" }));
 export {
   applyCopyConundrumCodeBlockListeners

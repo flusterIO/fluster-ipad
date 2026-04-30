@@ -18,16 +18,15 @@ use crate::{
     },
     output::html::{
         app_and_asset_embedded::app_and_asset_embedded_templ,
-        glue::gather_glue_assets::{get_glue_asset_data, WebGlueAssetData},
+        glue::gather_glue_assets::{WebGlueAssetData, get_glue_asset_data},
         standalone::standalone_template::StandaloneTemplate,
     },
+    parsers::markdown::markdown_extensions::footnote::footnote_footer_html_templ::FootnoteSectionTemplate,
 };
 use askama::Template;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::sync::Arc;
-use winnow::{error::ErrMode, Parser};
-
-pub enum AnyBlockLevelElement {}
+use winnow::{Parser, error::ErrMode};
 
 #[derive(Debug)]
 pub struct ConundrumDocument(Vec<ParsedElement>);
@@ -64,6 +63,11 @@ impl ConundrumDocument {
 
     pub fn get_glue(&self, state: ArcState) -> WebGlueAssetData {
         get_glue_asset_data(state)
+    }
+
+    pub fn get_rendered_footnote_content(&self, state: ArcState) -> ConundrumModalResult<String> {
+        let s = state.read_arc();
+        Ok(String::from(""))
     }
 
     /// ### Requirements for a completely standalone html file
@@ -106,19 +110,30 @@ impl ConundrumDocument {
 
     pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
         let state = params.read_arc();
+        let footnotes = Vec::new();
         if state.contains_modifier(&ConundrumModifier::EmbedJavascript) {
             let glue = self.get_glue(Arc::clone(&params));
             let content = self.compile_multithreaded(Arc::clone(&params))?;
 
             let templ = app_and_asset_embedded_templ::AppAndAssetEmbedded { content,
-                                                                            js: glue.js,
+                                                                            js: Some(glue.js),
+                                                                            footnotes: FootnoteSectionTemplate { footnotes },
                                                                             css: Some(glue.css) };
             templ.render().map_err(|e| {
                         eprintln!("Error: {:#?}", e);
                         ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                     })
         } else {
-            self.compile_multithreaded(Arc::clone(&params))
+            let content = self.compile_multithreaded(Arc::clone(&params))?;
+
+            let templ = app_and_asset_embedded_templ::AppAndAssetEmbedded { content,
+                                                                            js: None,
+                                                                            footnotes: FootnoteSectionTemplate { footnotes },
+                                                                            css: None };
+            templ.render().map_err(|e| {
+                        eprintln!("Error: {:#?}", e);
+                        ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                    })
         }
     }
 }

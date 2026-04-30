@@ -2,12 +2,7 @@
 fn custom_root_test() {
     #[derive(Clone, oldrhai::CustomType)]
     #[rhai_type(name = "MyBar", extra = Self::build_extra, root=oldrhai)]
-    pub struct Bar(
-        #[rhai_type(skip)] f32,
-        u32,
-        #[rhai_type(name = "boo", readonly)] String,
-        Vec<u32>,
-    );
+    pub struct Bar(#[rhai_type(skip)] f32, u32, #[rhai_type(name = "boo", readonly)] String, Vec<u32>);
 
     impl Bar {
         fn build_extra(builder: &mut oldrhai::TypeBuilder<Self>) {
@@ -19,14 +14,13 @@ fn custom_root_test() {
     engine.build_type::<Bar>();
 
     assert_eq!(
-        engine
-            .eval::<i32>(
-                "
+               engine.eval::<i32>(
+        "
                         new_int()
                     "
-            )
-            .unwrap(),
-        42
+    )
+                     .unwrap(),
+               42
     );
 }
 
@@ -44,9 +38,6 @@ fn custom_root_module_test() -> Result<(), Box<oldrhai::EvalAltResult>> {
     let m = oldrhai::exported_module!(advanced_math);
     engine.register_static_module("Math::Advanced", m.into());
 
-    assert_eq!(
-        engine.eval::<oldrhai::FLOAT>(r#"let m = Math::Advanced::get_mystic_number();m"#)?,
-        42.0
-    );
+    assert_eq!(engine.eval::<oldrhai::FLOAT>(r#"let m = Math::Advanced::get_mystic_number();m"#)?, 42.0);
     Ok(())
 }

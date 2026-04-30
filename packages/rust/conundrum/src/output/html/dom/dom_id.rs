@@ -7,7 +7,7 @@ use winnow::error::ErrMode;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Hash)]
 pub struct DOMId(String);
 
 uniffi::custom_newtype!(DOMId, String);

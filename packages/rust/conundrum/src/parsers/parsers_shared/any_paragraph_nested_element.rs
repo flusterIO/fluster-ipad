@@ -13,6 +13,7 @@ use crate::parsers::markdown::bold_text::MarkdownBoldTextResult;
 use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::markdown::markdown_extensions::emoji::emoji_model::EmojiResult;
+use crate::parsers::markdown::markdown_extensions::footnote::footnote_anchor::FootnoteAnchor;
 use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
 use crate::parsers::markdown::math::inline_math::inline_math_model::InlineMathResult;
 use crate::parsers::parser_trait::ConundrumParser;
@@ -48,6 +49,7 @@ pub fn any_paragraph_nested_element<'a>(input: &mut ConundrumInput<'a>) -> Conun
                     ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
                     ParsedTag::parse_input_string.map(ParsedElement::Tag),
                     MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
+                    FootnoteAnchor::parse_input_string.map(ParsedElement::FootnoteAnchor),
                     any.map(|c: char| ParsedElement::Text(c.to_string()))
             )).parse_next(x)
         },

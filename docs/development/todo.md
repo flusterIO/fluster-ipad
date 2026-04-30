@@ -30,6 +30,7 @@
   - Just a loading class issue that's never being set to false. Can easily remove now.
 - [ ] Write script to gather and generate single javascript typescript file from combined component files from generated dashmap.
 - [ ] Handle missing parsers
+  - [ ] Footnote parser
   - [ ] Line Item with checkbox
     - [ ] Various checked states (Pass a 'marker' char to the result)
   - [ ] Plain line item
@@ -214,3 +215,18 @@
 - [ ] Generate comment syntax parser before moving on to sending the AI request since you'll likely need to leave some comments in the user's note.
 - [ ] Generate R3 vector in background tasks for each note along with a note summary if that note's summary is empty.
   - [ ] Also store a 'valid' property alongside the summary and R3 vec that can be set to false when the note's content is updated.
+
+---
+
+# Paper
+
+## Add to paper
+
+- [ ] The derivation of the following, and the significance.
+  $$
+  \frac{dx}{x} = \frac{dr}{R}
+  $$
+- [ ] The following as a form of spatal tension giving rise to $\alpha$
+  $$
+  2 \frac{R_{\oplus}}{\left( 2 G M_{\oplus} \right)^{1/3}} = \frac{1}{\alpha}
+  $$

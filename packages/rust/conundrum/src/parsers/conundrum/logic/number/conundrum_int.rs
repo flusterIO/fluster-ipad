@@ -1,3 +1,6 @@
+
+use std::fmt::Display;
+
 use winnow::{Parser, ascii::dec_int, error::{ContextError, ErrMode}};
 
 use crate::{
@@ -10,16 +13,32 @@ use crate::{
     parsers::{conundrum::logic::{number::conundrum_number::ConundrumNumber, object::object::ConundrumObject, token::ConundrumLogicToken}, parser_trait::ConundrumParser},
 };
 
-#[derive(Debug, serde::Serialize, Clone, Copy)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone, Copy, Hash)]
 pub struct ConundrumInt(pub i64);
 
 uniffi::custom_newtype!(ConundrumInt, i64);
 
+
+impl Eq for ConundrumInt {
+
+}
+
+impl PartialEq<ConundrumInt> for ConundrumInt {
+    fn eq(&self, other: &ConundrumInt) -> bool {
+        self.0 == (*other).0
+    }
+}
 impl PartialEq<i64> for ConundrumInt {
     fn eq(&self, other: &i64) -> bool {
         self.0 == *other
     }
 }
+
+impl Display for ConundrumInt {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+} 
 
 impl ConundrumParser<ConundrumInt> for ConundrumInt {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumInt> {

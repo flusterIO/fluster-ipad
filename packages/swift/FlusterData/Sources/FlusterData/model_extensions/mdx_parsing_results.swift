@@ -17,6 +17,7 @@ extension MdxParsingResult: @retroactive Codable {
     case eqRefMap
     case warnings
     case includedComponents
+    case footnotes
   }
 
   public init(from decoder: Decoder) throws {
@@ -37,7 +38,9 @@ extension MdxParsingResult: @retroactive Codable {
     let eqRefMap = try container.decode(
       [String: UInt32].self, forKey: .eqRefMap)
     let warnings = try container.decode([ConundrumError].self, forKey: .warnings)
-    let includedComponents = try container.decode([AnyComponentKey].self, forKey: .includedComponents)
+    let includedComponents = try container.decode(
+      [AnyComponentKey].self, forKey: .includedComponents)
+    let footnotes = try container.decode([ConundrumInt: FootnoteResult?].self, forKey: .footnotes)
 
     self.init(
       noteId: id,
@@ -52,6 +55,7 @@ extension MdxParsingResult: @retroactive Codable {
       aiSecondaryParseRequests: aiParsingRequests,
       eqRefMap: eqRefMap,
       warnings: [],
+      footnotes: footnotes,
       includedComponents: includedComponents
     )
   }
@@ -66,5 +70,6 @@ extension MdxParsingResult: @retroactive Codable {
     try container.encode(eqRefMap, forKey: .eqRefMap)
     try container.encode(warnings, forKey: .warnings)
     try container.encode(includedComponents, forKey: .includedComponents)
+    try container.encode(footnotes, forKey: .footnotes)
   }
 }

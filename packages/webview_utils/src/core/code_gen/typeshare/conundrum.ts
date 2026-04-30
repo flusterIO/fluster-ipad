@@ -22,6 +22,8 @@ export type ParsedElement =
 	| { tag: "UnorderedList", content: UnorderedListModel }
 	| { tag: "OrderedList", content: OrderedListModel }
 	| { tag: "Table", content: MarkdownTable }
+	| { tag: "FootnoteAnchor", content: FootnoteAnchor }
+	| { tag: "FootnoteFooter", content: FootnoteFooter }
 	| { tag: "Emoji", content: EmojiResult }
 	| { tag: "ReactComponentSelfClosing", content: ReactComponentSelfClosingResult }
 	| { tag: "ReactComponentWithChildren", content: ReactComponentWithChildrenResult }
@@ -676,14 +678,47 @@ export interface EquationReference {
 /**
  * The `[^1]` syntax that goes in the markdown content, _not_ the footnote that
  * goes in the footer.
+ * 
+ * ## Template (HTML)
+ * ```askama
+ * <sup class="text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300">{{self.idx.0}}</sup>
+ * ```
  */
-export interface FootNoteAnchor {
+export interface FootnoteAnchor {
+	/** The user provided idx. */
 	idx: ConundrumInt;
 }
 
-export interface FootNoteFooter {
-	idx: number;
+export interface FootnoteFooter {
+	idx: ConundrumInt;
 	content: Children;
+}
+
+/**
+ * ## Template (HTML)
+ * 
+ * ```askama
+ * <div class="w-full h-full flex flex-col justify-start items-start">
+ * {{idx}}
+ * </div>
+ * <a role="button" data-cdrm-for="{{anchor_id}}" class="cdrm-footnote
+ * w-full text-foreground/80 hover:text-foreground transition-colors
+ * duration-300 cursor-pointer">
+ * {{body}}
+ * </a>
+ * ```
+ */
+export interface FootnoteResult {
+	/** The rendered Conundrum content representing the body of the footnote. */
+	body: string;
+	/** The id of the anchor element associated with this footnote. */
+	anchor_id: DOMId;
+	/**
+	 * The 0 based index of the anchor, the way it appears in the document...
+	 * Not necessarily the user provided index that is used as the key of
+	 * the footnote results map.
+	 */
+	idx: ConundrumInt;
 }
 
 export interface FrontMatterResult {
@@ -917,6 +952,8 @@ export interface MdxParsingResult {
 	 */
 	eq_ref_map: Record<string, number>;
 	warnings: ConundrumError[];
+	/** A map of type `Map<The anchor index of the footnote, FootnoteResult>`. */
+	footnotes: Record<ConundrumInt, FootnoteResult>;
 	included_components: AnyComponentKey[];
 }
 

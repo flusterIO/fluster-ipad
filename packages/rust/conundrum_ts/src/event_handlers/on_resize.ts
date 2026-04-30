@@ -1,13 +1,7 @@
-import { handleConundrumAdmonitionHeight } from "src/component_glue/methods";
+import { onAdmonitionResize } from "src/component_glue/admonition/on_admonition_resize";
+import { onTabResize } from "src/component_glue/methods";
 
-export const onResize = (e?: Event) => {
-    console.info("Resize Event: ", e);
-
-    const admonitions = document.getElementsByClassName("cdrm-admon");
-    for (let l = 0; l < admonitions.length; l++) {
-        const admon = admonitions.item(l) as HTMLDivElement | undefined;
-        if (admon) {
-            handleConundrumAdmonitionHeight(admon);
-        }
-    }
+export const onResize = () => {
+    onTabResize();
+    onAdmonitionResize();
 };

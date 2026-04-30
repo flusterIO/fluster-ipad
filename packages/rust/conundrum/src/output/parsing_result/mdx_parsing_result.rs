@@ -1,13 +1,13 @@
-use std::collections::HashMap;
-
+use dashmap::DashMap;
 use gray_matter::{Matter, engine::YAML};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use typeshare::typeshare;
 
 use crate::{
     lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
     output::{
-        html::glue::component_glue_manager::AnyComponentKey,
+        html::{dom::dom_id::DOMId, glue::component_glue_manager::AnyComponentKey},
         parsing_result::{
             ai_serialization_request::AiSerializationRequestPhase1,
             dictionary_result::DictionaryEntryResult,
@@ -16,7 +16,13 @@ use crate::{
             tag_result::TagResult,
         },
     },
-    parsers::markdown::heading::heading_model::MarkdownHeadingStringifiedResult,
+    parsers::{
+        conundrum::logic::number::conundrum_int::ConundrumInt,
+        markdown::{
+            heading::heading_model::MarkdownHeadingStringifiedResult,
+            markdown_extensions::footnote::footnote_result::RenderedFootnoteResult,
+        },
+    },
 };
 
 #[typeshare]
@@ -38,6 +44,8 @@ pub struct MdxParsingResult {
     /// the index that the equation appears.
     pub eq_ref_map: HashMap<String, u32>,
     pub warnings: Vec<ConundrumError>,
+    /// A map of type `Map<The anchor index of the footnote, FootnoteResult>`.
+    pub footnotes: HashMap<ConundrumInt, Option<RenderedFootnoteResult>>,
     included_components: Vec<AnyComponentKey>,
 }
 
@@ -50,6 +58,7 @@ impl Default for MdxParsingResult {
                ordered_citation_keys: Vec::new(),
                dictionary_entries: Vec::new(),
                toc: Vec::new(),
+               footnotes: HashMap::new(),
                outgoing_links: Vec::new(),
                ignore_all_parsers: false,
                eq_ref_map: HashMap::new(),
@@ -101,6 +110,7 @@ impl MdxParsingResult {
                            toc: Vec::new(),
                            ordered_citation_keys: Vec::new(),
                            dictionary_entries: Vec::new(),
+                           footnotes: HashMap::new(),
                            front_matter: match data {
                                Some(front_matter_data) => {
                                    front_matter_data.data.map(FrontMatterResult::from_gray_matter)

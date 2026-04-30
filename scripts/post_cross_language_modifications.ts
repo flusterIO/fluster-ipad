@@ -106,6 +106,11 @@ export type GridColumnsMap = Map<SizableOption, number>;`,
                 ],
                 replaceWith: "public enum DocumentationComponentName: Codable {",
             },
+            {
+                query: "public struct FootnoteResult {",
+                dontPanicIfExists: ["public struct FootnoteResult: Codable {"],
+                replaceWith: "public struct FootnoteResult: Codable {",
+            },
         ],
     },
     "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":

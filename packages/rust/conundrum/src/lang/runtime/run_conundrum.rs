@@ -105,6 +105,7 @@ pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingR
         true => doc.render_standalone(Arc::clone(&stateful_input.state))?,
         false => doc.render_app_embedded(Arc::clone(&stateful_input.state))?,
     };
+
     {
         let mut state = stateful_input.state.write_arc();
         state.data.content = rendered_string;
