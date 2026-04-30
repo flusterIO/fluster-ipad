@@ -458,12 +458,12 @@ const j = () => {
   const t = document.getElementsByClassName("cdrm-tab-group");
   for (let e = 0; e < t.length; e++) {
     const r = t.item(e);
-    new MutationObserver(() => {
+    s(r), new MutationObserver(() => {
       s(r);
     }).observe(r, {
       attributes: true,
       attributeFilter: ["data-cdrm-focused-idx"]
-    }), s(r);
+    });
   }
 };
 (() => {

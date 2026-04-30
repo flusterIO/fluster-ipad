@@ -4,9 +4,9 @@ use askama::Template;
 ///
 /// ```askama
 /// <div class="cdrm-math cdrm-math-block flex justify-center items-center my-6 no-scrollbar overflow-x-auto overflow-y-hidden relative">
-/// {{content}}
-/// <div class="absolute right-0 top-[50%] translate-y-[-50%] text-sm font-math">
-/// {{idx}}
+/// {{content | safe}}
+/// <div class="absolute right-0 top-[50%] translate-y-[-50%] text-sm font-math opacity-60">
+/// {{idx | safe}}
 /// </div>
 /// </div>
 /// ```

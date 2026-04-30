@@ -102,7 +102,7 @@ impl HtmlJsComponentResult for BlockMathResult {
         let state = res.read_arc();
         let math_string = self.body.to_math(true, state.trusted)?;
         let templ = BlockMathHtmlTemplate { content: math_string,
-                                            idx: self.idx };
+                                            idx: self.idx + 1 };
         templ.render().map_err(|e| {
                     eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))

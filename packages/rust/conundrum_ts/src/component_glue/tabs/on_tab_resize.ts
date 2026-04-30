@@ -34,6 +34,7 @@ export const onTabLoad = () => {
     const containers = document.getElementsByClassName("cdrm-tab-group");
     for (let i = 0; i < containers.length; i++) {
         const tabGroup = containers.item(i) as HTMLDivElement;
+        handleHeight(tabGroup);
 
         const observer = new MutationObserver(() => {
             handleHeight(tabGroup);
@@ -42,6 +43,5 @@ export const onTabLoad = () => {
             attributes: true,
             attributeFilter: ["data-cdrm-focused-idx"],
         });
-        handleHeight(tabGroup);
     }
 };

@@ -37,6 +37,7 @@ use crate::{
     },
 };
 
+
 /// Use the built-in `:smile:` syntax to insert a text sized emoji, or use the
 /// `Emoji` component to create a scalable and resizable emoji as an image.
 #[typeshare::typeshare]
