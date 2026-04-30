@@ -1,3 +1,4 @@
+use crate::output::html::dom::dom_id::DOMId;
 use askama::Template;
 
 /// Accepts a tuple with `(Content, Subtitle, Id)`

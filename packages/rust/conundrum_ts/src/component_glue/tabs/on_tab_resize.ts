@@ -1,14 +1,4 @@
-export const onTabResize = () => {
-    function removeInitialRelativePositions(container: HTMLDivElement) {
-        const tabs = container.querySelectorAll(".cdrm-tab-group-item");
-        for (let i = 0; i < tabs.length; i++) {
-            const item = tabs.item(i) as HTMLDivElement | undefined;
-            if (item?.classList.contains("relative")) {
-                item.classList.remove("relative");
-                item.classList.add("absolute");
-            }
-        }
-    }
+export const onTabLoad = () => {
     /// If the div passed in is not a valid container this will break.
     function handleHeight(container: HTMLDivElement) {
         const focusedIndex = parseInt(
@@ -33,8 +23,12 @@ export const onTabResize = () => {
             if (bodyWrapper) {
                 bodyWrapper.style.transition = "height 0.3s ease-in-out";
                 bodyWrapper.style.height = `${Math.min(h, 450)}px`;
-                bodyWrapper.style.transition = "none";
+                bodyWrapper.style.overflowY = h > 450 ? "auto" : "hidden";
+            } else {
+                console.error("Could not find tab body wrapper.")
             }
+        } else {
+            console.error("Could not find focused body")
         }
     }
     const containers = document.getElementsByClassName("cdrm-tab-group");
@@ -49,6 +43,5 @@ export const onTabResize = () => {
             attributeFilter: ["data-cdrm-focused-idx"],
         });
         handleHeight(tabGroup);
-        removeInitialRelativePositions(tabGroup);
     }
 };

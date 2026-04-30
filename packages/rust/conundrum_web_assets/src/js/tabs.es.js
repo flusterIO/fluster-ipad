@@ -1,4 +1,4 @@
-const c$1 = {
+const c = {
   fatal: 0,
   error: 0,
   warn: 1,
@@ -16,65 +16,65 @@ const c$1 = {
   },
   // Level 0
   fatal: {
-    level: c$1.fatal
+    level: c.fatal
   },
   error: {
-    level: c$1.error
+    level: c.error
   },
   // Level 1
   warn: {
-    level: c$1.warn
+    level: c.warn
   },
   // Level 2
   log: {
-    level: c$1.log
+    level: c.log
   },
   // Level 3
   info: {
-    level: c$1.info
+    level: c.info
   },
   success: {
-    level: c$1.success
+    level: c.success
   },
   fail: {
-    level: c$1.fail
+    level: c.fail
   },
   ready: {
-    level: c$1.info
+    level: c.info
   },
   start: {
-    level: c$1.info
+    level: c.info
   },
   box: {
-    level: c$1.info
+    level: c.info
   },
   // Level 4
   debug: {
-    level: c$1.debug
+    level: c.debug
   },
   // Level 5
   trace: {
-    level: c$1.trace
+    level: c.trace
   },
   // Verbose
   verbose: {
-    level: c$1.verbose
+    level: c.verbose
   }
 };
-function h(r) {
-  if (r === null || typeof r != "object")
+function h(s) {
+  if (s === null || typeof s != "object")
     return false;
-  const t = Object.getPrototypeOf(r);
-  return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in r ? false : Symbol.toStringTag in r ? Object.prototype.toString.call(r) === "[object Module]" : true;
+  const t = Object.getPrototypeOf(s);
+  return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in s ? false : Symbol.toStringTag in s ? Object.prototype.toString.call(s) === "[object Module]" : true;
 }
-function b(r, t, e = ".", s) {
+function b(s, t, e = ".", r) {
   if (!h(t))
-    return b(r, {}, e);
+    return b(s, {}, e);
   const o = Object.assign({}, t);
-  for (const i in r) {
+  for (const i in s) {
     if (i === "__proto__" || i === "constructor")
       continue;
-    const l = r[i];
+    const l = s[i];
     l != null && (Array.isArray(l) && Array.isArray(o[i]) ? o[i] = [...l, ...o[i]] : h(l) && h(o[i]) ? o[i] = b(
       l,
       o[i],
@@ -83,22 +83,22 @@ function b(r, t, e = ".", s) {
   }
   return o;
 }
-function S(r) {
+function S(s) {
   return (...t) => (
     // eslint-disable-next-line unicorn/no-array-reduce
-    t.reduce((e, s) => b(e, s, ""), {})
+    t.reduce((e, r) => b(e, r, ""), {})
   );
 }
 const A = S();
-function k(r) {
-  return Object.prototype.toString.call(r) === "[object Object]";
+function T(s) {
+  return Object.prototype.toString.call(s) === "[object Object]";
 }
-function T(r) {
-  return !(!k(r) || !r.message && !r.args || r.stack);
+function k(s) {
+  return !(!T(s) || !s.message && !s.args || s.stack);
 }
 let m = false;
 const L = [];
-class n {
+class a {
   options;
   _lastLog;
   _mockFn;
@@ -127,13 +127,13 @@ class n {
         }
       }
     );
-    for (const s in e) {
+    for (const r in e) {
       const o = {
-        type: s,
+        type: r,
         ...this.options.defaults,
-        ...e[s]
+        ...e[r]
       };
-      this[s] = this._wrapLogFn(o), this[s].raw = this._wrapLogFn(
+      this[r] = this._wrapLogFn(o), this[r].raw = this._wrapLogFn(
         o,
         true
       );
@@ -181,7 +181,7 @@ class n {
    * @returns {ConsolaInstance} A new Consola instance. See {@link ConsolaInstance}.
    */
   create(t) {
-    const e = new n({
+    const e = new a({
       ...this.options,
       ...t
     });
@@ -275,8 +275,8 @@ class n {
     this._wrapStream(this.options.stdout, "log"), this._wrapStream(this.options.stderr, "log");
   }
   _wrapStream(t, e) {
-    t && (t.__write || (t.__write = t.write), t.write = (s) => {
-      this[e].raw(String(s).trim());
+    t && (t.__write || (t.__write = t.write), t.write = (r) => {
+      this[e].raw(String(r).trim());
     });
   }
   /**
@@ -311,19 +311,19 @@ class n {
   mockTypes(t) {
     const e = t || this.options.mockFn;
     if (this._mockFn = e, typeof e == "function")
-      for (const s in this.options.types)
-        this[s] = e(s, this.options.types[s]) || this[s], this[s].raw = this[s];
+      for (const r in this.options.types)
+        this[r] = e(r, this.options.types[r]) || this[r], this[r].raw = this[r];
   }
   _wrapLogFn(t, e) {
-    return (...s) => {
+    return (...r) => {
       if (m) {
-        L.push([this, t, s, e]);
+        L.push([this, t, r, e]);
         return;
       }
-      return this._logFn(t, s, e);
+      return this._logFn(t, r, e);
     };
   }
-  _logFn(t, e, s) {
+  _logFn(t, e, r) {
     if ((t.level || 0) > this.level)
       return false;
     const o = {
@@ -332,28 +332,28 @@ class n {
       ...t,
       level: y(t.level, this.options.types)
     };
-    !s && e.length === 1 && T(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
+    !r && e.length === 1 && k(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
 `)), o.args.push(`
 ` + o.additional.join(`
 `)), delete o.additional), o.type = typeof o.type == "string" ? o.type.toLowerCase() : "log", o.tag = typeof o.tag == "string" ? o.tag : "";
-    const i = (a = false) => {
-      const p = (this._lastLog.count || 0) - this.options.throttleMin;
-      if (this._lastLog.object && p > 0) {
+    const i = (n = false) => {
+      const d = (this._lastLog.count || 0) - this.options.throttleMin;
+      if (this._lastLog.object && d > 0) {
         const g = [...this._lastLog.object.args];
-        p > 1 && g.push(`(repeated ${p} times)`), this._log({ ...this._lastLog.object, args: g }), this._lastLog.count = 1;
+        d > 1 && g.push(`(repeated ${d} times)`), this._log({ ...this._lastLog.object, args: g }), this._lastLog.count = 1;
       }
-      a && (this._lastLog.object = o, this._log(o));
+      n && (this._lastLog.object = o, this._log(o));
     };
     clearTimeout(this._lastLog.timeout);
     const l = this._lastLog.time && o.date ? o.date.getTime() - this._lastLog.time.getTime() : 0;
     if (this._lastLog.time = o.date, l < this.options.throttle)
       try {
-        const a = JSON.stringify([
+        const n = JSON.stringify([
           o.type,
           o.tag,
           o.args
-        ]), p = this._lastLog.serialized === a;
-        if (this._lastLog.serialized = a, p && (this._lastLog.count = (this._lastLog.count || 0) + 1, this._lastLog.count > this.options.throttleMin)) {
+        ]), d = this._lastLog.serialized === n;
+        if (this._lastLog.serialized = n, d && (this._lastLog.count = (this._lastLog.count || 0) + 1, this._lastLog.count > this.options.throttleMin)) {
           this._lastLog.timeout = setTimeout(
             i,
             this.options.throttle
@@ -371,18 +371,18 @@ class n {
       });
   }
 }
-function y(r, t = {}, e = 3) {
-  return r === void 0 ? e : typeof r == "number" ? r : t[r] && t[r].level !== void 0 ? t[r].level : e;
+function y(s, t = {}, e = 3) {
+  return s === void 0 ? e : typeof s == "number" ? s : t[s] && t[s].level !== void 0 ? t[s].level : e;
 }
-n.prototype.add = n.prototype.addReporter;
-n.prototype.remove = n.prototype.removeReporter;
-n.prototype.clear = n.prototype.removeReporter;
-n.prototype.withScope = n.prototype.withTag;
-n.prototype.mock = n.prototype.mockTypes;
-n.prototype.pause = n.prototype.pauseLogs;
-n.prototype.resume = n.prototype.resumeLogs;
-function x(r = {}) {
-  return new n(r);
+a.prototype.add = a.prototype.addReporter;
+a.prototype.remove = a.prototype.removeReporter;
+a.prototype.clear = a.prototype.removeReporter;
+a.prototype.withScope = a.prototype.withTag;
+a.prototype.mock = a.prototype.mockTypes;
+a.prototype.pause = a.prototype.pauseLogs;
+a.prototype.resume = a.prototype.resumeLogs;
+function x(s = {}) {
+  return new a(s);
 }
 class F {
   options;
@@ -406,70 +406,64 @@ class F {
     return t < 1 ? console.__error || console.error : t === 1 ? console.__warn || console.warn : console.__log || console.log;
   }
   log(t) {
-    const e = this._getLogFn(t.level), s = t.type === "log" ? "" : t.type, o = t.tag || "", l = `
+    const e = this._getLogFn(t.level), r = t.type === "log" ? "" : t.type, o = t.tag || "", l = `
       background: ${this.typeColorMap[t.type] || this.levelColorMap[t.level] || this.defaultColor};
       border-radius: 0.5em;
       color: white;
       font-weight: bold;
       padding: 2px 0.5em;
-    `, a = `%c${[o, s].filter(Boolean).join(":")}`;
+    `, n = `%c${[o, r].filter(Boolean).join(":")}`;
     typeof t.args[0] == "string" ? e(
-      `${a}%c ${t.args[0]}`,
+      `${n}%c ${t.args[0]}`,
       l,
       // Empty string as style resets to default console style
       "",
       ...t.args.slice(1)
-    ) : e(a, l, ...t.args);
+    ) : e(n, l, ...t.args);
   }
 }
-function I(r = {}) {
+function I(s = {}) {
   return x({
-    reporters: r.reporters || [new F({})],
-    prompt(e, s = {}) {
-      return s.type === "confirm" ? Promise.resolve(confirm(e)) : Promise.resolve(prompt(e));
+    reporters: s.reporters || [new F({})],
+    prompt(e, r = {}) {
+      return r.type === "confirm" ? Promise.resolve(confirm(e)) : Promise.resolve(prompt(e));
     },
-    ...r
+    ...s
   });
 }
 I();
-const c = () => {
-  function a(t) {
-    const e = t.querySelectorAll(".cdrm-tab-group-item");
-    for (let o = 0; o < e.length; o++) {
-      const i = e.item(o);
-      i?.classList.contains("relative") && (i.classList.remove("relative"), i.classList.add("absolute"));
-    }
-  }
-  function r(t) {
-    const e = parseInt(
+const j = () => {
+  function s(e) {
+    const r = parseInt(
       /* eslint-disable-next-line  -- It'll be there... I put it there. */
-      t.getAttribute("data-cdrm-focused-idx")
-    ), o = t.getAttribute("data-cdrm-group");
+      e.getAttribute("data-cdrm-focused-idx")
+    ), o = e.getAttribute("data-cdrm-group");
     if (!o) {
       console.warn(
         "Compiler Error: Found a tab group without a valid group id."
       );
       return;
     }
-    const i = t.querySelector(
-      `#tab-${o}-${e}`
+    const i = e.querySelector(
+      `#tab-${o}-${r}`
     );
     if (i) {
-      const d = i.getBoundingClientRect().height, n2 = t.querySelector(
+      const l = i.getBoundingClientRect().height, n = e.querySelector(
         `#tab-body-wrapper-${o}`
       );
-      n2 && (n2.style.transition = "height 0.3s ease-in-out", n2.style.height = `${Math.min(d, 450)}px`, n2.style.transition = "none");
-    }
+      n ? (n.style.transition = "height 0.3s ease-in-out", n.style.height = `${Math.min(l, 450)}px`, n.style.overflowY = l > 450 ? "auto" : "hidden") : console.error("Could not find tab body wrapper.");
+    } else
+      console.error("Could not find focused body");
   }
-  const s = document.getElementsByClassName("cdrm-tab-group");
-  for (let t = 0; t < s.length; t++) {
-    const e = s.item(t);
+  const t = document.getElementsByClassName("cdrm-tab-group");
+  for (let e = 0; e < t.length; e++) {
+    const r = t.item(e);
     new MutationObserver(() => {
-      r(e);
-    }).observe(e, {
+      s(r);
+    }).observe(r, {
       attributes: true,
       attributeFilter: ["data-cdrm-focused-idx"]
-    }), r(e), a(e);
+    }), s(r);
   }
 };
 (() => {
@@ -524,8 +518,11 @@ const c = () => {
       item.addEventListener("click", handleTabClick);
     }
   }
+  j();
   addConundrumTabClickListeners();
-  window.addEventListener("resize", c);
-  window.addEventListener("cdrm-content-loaded", addConundrumTabClickListeners);
+  window.addEventListener("cdrm-content-loaded", () => {
+    addConundrumTabClickListeners();
+    j();
+  });
 })();
 //# sourceMappingURL=tabs.es.js.map

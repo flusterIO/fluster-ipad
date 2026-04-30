@@ -1,4 +1,4 @@
-import { onTabResize } from "@conundrum/ts/methods"
+import { onTabLoad } from "@conundrum/ts/methods"
 
 
 
@@ -58,7 +58,10 @@ import { onTabResize } from "@conundrum/ts/methods"
             item.addEventListener("click", handleTabClick)
         }
     }
+    onTabLoad();
     addConundrumTabClickListeners();
-    window.addEventListener("resize", onTabResize);
-    window.addEventListener("cdrm-content-loaded", addConundrumTabClickListeners);
+    window.addEventListener("cdrm-content-loaded", () => {
+        addConundrumTabClickListeners();
+        onTabLoad();
+    });
 })();

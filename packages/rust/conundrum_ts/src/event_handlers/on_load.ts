@@ -1,7 +1,8 @@
-import consola from "consola";
+import { onTabLoad } from "src/component_glue/methods";
 import { onResize } from "./on_resize";
 
 export const onLoad = () => {
-    consola.info("Conundrum content loaded...");
+    console.info("Conundrum content loaded from @conundrum/ts");
+    onTabLoad();
     onResize();
 };

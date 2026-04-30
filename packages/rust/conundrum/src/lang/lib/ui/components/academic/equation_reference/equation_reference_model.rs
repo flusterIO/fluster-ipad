@@ -77,6 +77,7 @@ pub struct EquationReference {
 }
 
 impl EquationReference {
+    /// Returns the `0` based index, like a sane person.
     pub fn get_equation_index(&self, res: ArcState) -> ConundrumModalResult<u32> {
         let state = res.read_arc();
         state.data.eq_ref_map.get(&self.id.0).cloned().ok_or_else(|| {
@@ -98,7 +99,7 @@ impl EquationReference {
 
 impl HtmlJsComponentResult for EquationReference {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
-        let templ = EquationRefHtmlTempl { idx: self.get_equation_index(res)?,
+        let templ = EquationRefHtmlTempl { idx: self.get_equation_index(res)? + 1,
                                            tag: self.get_element_tag() };
         templ.render().map_err(|e| {
                     eprintln!("Error: {:#?}", e);

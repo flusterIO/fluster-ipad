@@ -12,6 +12,26 @@ declare global {
     }
 }
 
+const handleContainerMutations = (container: HTMLDivElement) => {
+    const haveSet = container.getAttribute("data-cdrm-mutated") === "true";
+    if (haveSet) {
+        return;
+    }
+    /// Document was just reloaded... do your thing.
+    onLoad();
+
+    container.setAttribute("data-cdrm-mutated", "true");
+};
+
+const handleMutations = (): void => {
+    const container = document.getElementById("cdrm-body-container") as
+        | HTMLDivElement
+        | undefined;
+    if (container) {
+        handleContainerMutations(container);
+    }
+};
+
 export const initializeConundrumWeb = () => {
     window.conundrum = {
         handleConundrumTabClick,
@@ -21,4 +41,14 @@ export const initializeConundrumWeb = () => {
         onLoad,
         onResize,
     };
+    const mainObserver = new MutationObserver(handleMutations);
+
+    mainObserver.observe(document.body, {
+        childList: true,
+        attributes: true,
+        attributeFilter: ["data-cdrm-mutated"],
+        subtree: true,
+    });
+
+    window.addEventListener("cdrm-manual-resize", onResize);
 };

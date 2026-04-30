@@ -1,3 +1,4 @@
+use askama::Template;
 use serde::Serialize;
 use winnow::{
     Parser,
@@ -30,8 +31,12 @@ use crate::{
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
     parsers::{
         conundrum::logic::string::conundrum_string::ConundrumString,
-        markdown::subtypes::inline_id_syntax::inline_id_syntax,
-        parser_components::consume_white_space::consume_white_space, parser_trait::ConundrumParser,
+        markdown::{
+            math::block_math::block_math_html_template::BlockMathHtmlTemplate,
+            subtypes::inline_id_syntax::inline_id_syntax,
+        },
+        parser_components::consume_white_space::consume_white_space,
+        parser_trait::ConundrumParser,
     },
 };
 
@@ -96,8 +101,12 @@ impl HtmlJsComponentResult for BlockMathResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let state = res.read_arc();
         let math_string = self.body.to_math(true, state.trusted)?;
-        Ok(format!("<div class=\"cdrm-math cdrm-math-block flex justify-center items-center my-6\">\n{}\n</div>",
-                   math_string))
+        let templ = BlockMathHtmlTemplate { content: math_string,
+                                            idx: self.idx };
+        templ.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
     }
 }
 

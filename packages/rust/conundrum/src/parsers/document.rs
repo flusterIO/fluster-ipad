@@ -18,14 +18,14 @@ use crate::{
     },
     output::html::{
         app_and_asset_embedded::app_and_asset_embedded_templ,
-        glue::gather_glue_assets::{WebGlueAssetData, get_glue_asset_data},
+        glue::gather_glue_assets::{get_glue_asset_data, WebGlueAssetData},
         standalone::standalone_template::StandaloneTemplate,
     },
 };
 use askama::Template;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::sync::Arc;
-use winnow::{Parser, error::ErrMode};
+use winnow::{error::ErrMode, Parser};
 
 pub enum AnyBlockLevelElement {}
 
@@ -106,12 +106,19 @@ impl ConundrumDocument {
 
     pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
         let state = params.read_arc();
-        let content = self.compile_multithreaded(Arc::clone(&params))?;
+        if state.contains_modifier(&ConundrumModifier::EmbedJavascript) {
+            let glue = self.get_glue(Arc::clone(&params));
+            let content = self.compile_multithreaded(Arc::clone(&params))?;
 
-        let templ = app_and_asset_embedded_templ::AppAndAssetEmbedded { content };
-        templ.render().map_err(|e| {
+            let templ = app_and_asset_embedded_templ::AppAndAssetEmbedded { content,
+                                                                            js: glue.js,
+                                                                            css: Some(glue.css) };
+            templ.render().map_err(|e| {
                         eprintln!("Error: {:#?}", e);
                         ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                     })
+        } else {
+            self.compile_multithreaded(Arc::clone(&params))
+        }
     }
 }

@@ -79,39 +79,51 @@ impl PlainTextComponentResult for EmojiResult {
 }
 
 impl MarkdownComponentResult for EmojiResult {
-    fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
-        Ok(format!(":{}:", self.name))
+    fn to_markdown(&self, state: ArcState) -> ConundrumModalResult<String> {
+        let read_state = state.read_arc();
+        if read_state.contains_modifier(&ConundrumModifier::HideEmojis) {
+            Ok(String::from(""))
+        } else {
+            Ok(format!(":{}:", self.name))
+        }
     }
 }
 
 impl HtmlJsComponentResult for EmojiResult {
-    fn to_html_js_component(&self, _: ArcState) -> ConundrumModalResult<String> {
-        if let Some(svg) = self.get_svg() {
-            let templ = EmojiHtmlTemplate { size: self.size.as_ref().cloned().unwrap_or(SizableOption::Small),
-                                            sizable_classes: self.sizable
-                                                                 .as_ref()
-                                                                 .cloned()
-                                                                 .map(|x| x.as_class())
-                                                                 .unwrap_or_default(),
-                                            tag: self.sizable
-                                                     .as_ref()
-                                                     .cloned()
-                                                     .map(|sizable| {
-                                                         if sizable.inline.is_some_and(|x| x.0) {
-                                                             "span".to_string()
-                                                         } else {
-                                                             "div".to_string()
-                                                         }
-                                                     })
-                                                     .unwrap_or_else(|| "div".to_string()),
-                                            emoji: svg };
-            templ.render().map_err(|e| {
+    fn to_html_js_component(&self, state: ArcState) -> ConundrumModalResult<String> {
+        let read_state = state.read_arc();
+        if read_state.contains_one_of_modifiers(vec![ConundrumModifier::ForSearchInput, ConundrumModifier::HideEmojis])
+        {
+            Ok(String::from(""))
+        } else {
+            drop(read_state);
+            if let Some(svg) = self.get_svg() {
+                let templ = EmojiHtmlTemplate { size: self.size.as_ref().cloned().unwrap_or(SizableOption::Small),
+                                                sizable_classes: self.sizable
+                                                                     .as_ref()
+                                                                     .cloned()
+                                                                     .map(|x| x.as_class())
+                                                                     .unwrap_or_default(),
+                                                tag: self.sizable
+                                                         .as_ref()
+                                                         .cloned()
+                                                         .map(|sizable| {
+                                                             if sizable.inline.is_some_and(|x| x.0) {
+                                                                 "span".to_string()
+                                                             } else {
+                                                                 "div".to_string()
+                                                             }
+                                                         })
+                                                         .unwrap_or_else(|| "div".to_string()),
+                                                emoji: svg };
+                templ.render().map_err(|e| {
                 ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
             })
-        } else {
-            Err(
+            } else {
+                Err(
                 ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid Emoji", format!("Conundrum attempted to render an invalid emoji: `{}`", self.name ).as_str())))
             )
+            }
         }
     }
 }

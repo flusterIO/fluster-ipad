@@ -30,7 +30,6 @@ use crate::{
         },
         javascript::parsed_javascript_elements::ParsedJavascriptElement,
         markdown::{
-            block_math::BlockMathResult,
             block_quote::block_quote_model::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult,
             bold_text::MarkdownBoldTextResult,
@@ -38,13 +37,13 @@ use crate::{
             heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule,
             inline_code::InlineCodeResult,
-            inline_math::InlineMathResult,
             italic_text::MarkdownItalicTextResult,
             lists::{
                 ordered::ordered_list_model::OrderedListModel, unordered::unordered_list_model::UnorderedListModel,
             },
             markdown_extensions::emoji::emoji_model::EmojiResult,
             markdown_link::MarkdownLinkResult,
+            math::{block_math::block_math_model::BlockMathResult, inline_math::inline_math_model::InlineMathResult},
             paragraph::paragraph_model::MarkdownParagraphResult,
             table::markdown_table_model::MarkdownTable,
         },

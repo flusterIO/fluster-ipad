@@ -1,4 +1,3 @@
-pub mod block_math;
 pub mod block_quote;
 pub mod bold_and_italic_text;
 pub mod bold_text;
@@ -7,11 +6,11 @@ pub mod heading;
 pub mod heading_sluggger;
 pub mod hr;
 pub mod inline_code;
-pub mod inline_math;
 pub mod italic_text;
 pub mod lists;
 pub mod markdown_extensions;
 pub mod markdown_link;
+pub mod math;
 pub mod paragraph;
 pub mod subtypes;
 pub mod table;

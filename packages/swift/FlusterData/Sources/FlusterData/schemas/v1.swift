@@ -304,7 +304,7 @@ extension AppSchemaV1 {
 
     public static func isTitleMatch(noteBody: String, query: String) -> Bool {
       let title = ConundrumTextUtils.getTitleGroupSync(
-        content: noteBody, modifiers: [], target: .html)?.title
+        content: noteBody, modifiers: [], target: .plainText)?.title
       return title == nil
         ? false : title!.localizedCaseInsensitiveContains(query)
     }

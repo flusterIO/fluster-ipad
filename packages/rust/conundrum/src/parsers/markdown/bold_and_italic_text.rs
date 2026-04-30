@@ -42,13 +42,13 @@ impl MarkdownComponentResult for MarkdownBoldAndItalicTextResult {
 
 impl MdxComponentResult for MarkdownBoldAndItalicTextResult {
     fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
-        Ok(format!("<span italic=\"italic font-bold\">{}</span>", self.children.render(res)?))
+        Ok(format!("<span class=\"italic font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 
 impl HtmlJsComponentResult for MarkdownBoldAndItalicTextResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
-        Ok(format!("<span italic=\"italic font-bold\">{}</span>", self.children.render(res)?))
+        Ok(format!("<span class=\"italic font-bold\">{}</span>", self.children.render(res)?))
     }
 }
 
