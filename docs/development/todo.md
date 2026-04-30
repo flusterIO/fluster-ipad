@@ -2,6 +2,8 @@
 
 ## Get app back in working order
 
+- [ ] Setup 'hide equation labels' state as part of initial state. It's important to have that set accurately every time as part of the UI state, no matter how small, and then make sure to add the necessary `onChange` events to the container webviews.
+- [ ] Handle tabs resizing issue. It's completely broken.
 - [ ] Get component javascript working!
 - [ ] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
 - [ ] Get Bold & italic text parser working again... that shit broke.

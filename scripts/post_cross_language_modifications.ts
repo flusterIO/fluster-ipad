@@ -159,6 +159,14 @@ export type GridColumnsMap = Map<SizableOption, number>;`,
                 ],
                 replaceWith: `public enum FlusterTheme: String, Codable, CaseIterable {`,
             },
+            {
+                query: "public enum EquationNumberingStrategy: String, Codable {",
+                dontPanicIfExists: [
+                    "public enum EquationNumberingStrategy: String, Codable, CaseIterable {",
+                ],
+                replaceWith:
+                    "public enum EquationNumberingStrategy: String, Codable, CaseIterable {",
+            },
         ],
     },
 };

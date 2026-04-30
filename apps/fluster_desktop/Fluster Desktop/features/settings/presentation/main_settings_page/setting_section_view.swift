@@ -31,7 +31,7 @@ public struct SettingsSection<Content: View>: View {
       VStack(alignment: .leading, spacing: 10) {
         content
       }
-      .frame(maxWidth: .infinity)
+      .frame(maxWidth: .infinity, alignment: .leading)
       .padding()
       .clipShape(RoundedRectangle(cornerRadius: 0, style: .continuous))
       .glassEffect(in: .rect(cornerRadius: 16))

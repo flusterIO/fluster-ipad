@@ -115,6 +115,9 @@ build_cross_language_schemas: generate_initial_note_data
 build_conundrum_rust: build_conundrum_ts
 	cargo build -p conundrum
 
+run_post_cross_language_mods:
+	tsx {{justfile_directory()}}/scripts/post_cross_language_modifications.ts
+
 build_conundrum_swift: build_conundrum_ts
 	cd {{justfile_directory()}}/packages/rust/conundrum_swift; cargo swift package -y --xcframework-name Conundrum 
 	cp -r {{justfile_directory()}}/packages/rust/conundrum_swift/extra_swift/ {{justfile_directory()}}/packages/rust/conundrum_swift/ConundrumSwift/Sources/ConundrumSwift/

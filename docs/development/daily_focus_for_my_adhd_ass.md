@@ -1,44 +1,118 @@
-# Daily Focus for My ADHD-Ass
+## Daily Focus for ADHD
 
-## Summary of To-Do List
+### Summary of To-Do List
 
-### High Priority Tasks
+#### High Priority Tasks
 
-1. **Fix New Note First Display Issue** - This is still unresolved and needs immediate attention.
-2. **Handle Rendering Code to HTML** - Critical for the app's functionality.
-3. **Move Over All Katex Font Methods to Use Binary Stored Data** - This will break the standalone app, so it's a high priority.
-4. **Handle Grid by Fixing Issue with Integer Parser** - The current issue is causing the Grid component to fail when props are valid.
-5. **Handle Blockquote Bug with Multi-Line Entries** - This is a known bug that needs to be fixed.
+1. **Get App Back in Working Order**
+   - Setup 'hide equation labels' state and add `onChange` events to webviews.
+   - Fix tabs resizing issue.
+   - Get component JavaScript working.
+   - Add event listener for `cdrm-codeblock-copy` and emit notification.
+   - Fix Bold & italic text parser.
+   - Handle overflow of tab by toggling CSS class based on height.
+   - Revert component glue files to initial setup using `conundrum/ts` package.
+   - Add katex CSS to mdx container.
 
-### Medium Priority Tasks
+2. **Remainder of Today**
+   - Handle new images on blog post.
+   - Fix bug requiring details page refresh on Mac.
+   - Fix new note first display issue.
+   - Handle rendering code to HTML.
+   - Move `from_props` methods to accept state param for parsing/compilation phases.
+   - Move all katex font methods to use binary stored data.
+   - Fix Grid component issue with integer parser.
+   - Fix Blockquote bug with multi-line entries.
+   - Write JavaScript to copy code from code block and emit event.
+   - Fix inline underline component breaking out of paragraph.
 
-1. **Write JavaScript to Actually Copy Code from Code Block** - This includes emitting an event that can be picked up by other applications, including Fluster.
-2. **Handle Issue with Inline Underline Component Breaking Out of Paragraph** - This is a pain point that needs to be resolved.
-3. **Reattach Theme Selector to Swift** - Create an independent view that can be added to both Mac and iOS using the Rust generated enums.
-4. **Fix Independent Markdown View Page** - This is not rendering at all now, and it's a loading class issue that's never being set to false.
+3. **UI/UX Improvements**
+   - Reattach theme selector to Swift for Mac and iOS.
+   - Fix independent markdown view page rendering.
+   - Write script to generate single JavaScript/TypeScript file from component files.
+   - Handle missing parsers (Line Item with checkbox, Plain line item, Numbered line item, Full table).
 
-### Low Priority Tasks
+4. **AI Integration**
+   - Create 'triggers' for AI-generated content (e.g., `FlusterAI.generateStudyGuide()`, `FlusterAI.createFlashCards()`).
+   - Make sure AI triggers can be set to auto, confirm, or never modes.
 
-1. **Write Script to Gather and Generate Single JavaScript Typescript File from Combined Component Files from Generated Dashmap** - This is a long-term task that can be done once the main issues are resolved.
-2. **Handle Missing Parsers** - This includes Line Item with checkbox, Plain line item, Numbered line item, and Full table!
-3. **Reimplement `window.setBibtexEditorContent`** - This is a buffer operation that's currently MIA.
-4. **Handle Rest of Summary UI** - This includes making sure the summary can be accepted or declined from the UI appropriately.
+5. **Documentation & Website**
+   - Update docs to reflect upcoming Apple release.
+   - Fix admonition padding issue on website and main app.
 
-### Additional Tasks
+6. **Performance & Offline**
+   - Move regex queries to `HashMap<String, bool>` in Rust.
+   - Fix issue with italic field in title syntax.
+   - Relay detailed errors to user in webview.
+   - Create `subtle` or `underline` property for `Tabs` component.
+   - Handle `Icon` component dynamically loading icons.
 
-1. **Work on Integrating Typst Support** - This is a major value add that can be handled offline and in time to release.
-2. **Setup Seeding of Notes on Desktop App** - This will be the first app that's released most likely.
-3. **Move Over Rest of Components** - This includes Work on remaining parsers.
-4. **Handle Performance Issues** - This includes moving all of regex queries in the `get_component_map` file to a `HashMap<String, bool>` that is generated in Rust now that the component names are being set as an enum.
+7. **Release Checklist**
+   - Ensure all tests pass (Swift, Typescript, Rust).
+   - Review Apple's nomination process for featured app.
 
-### Release Checklist
+#### Next Steps
 
-1. **All Tests Passing** - This includes Swift, Typescript, and Rust.
-2. **Review YouTube Link and Section at ~5:00** - This is about creating 'Nominations' for being featured by Apple's editor team.
-3. **Handle Light Mode of `AISummaryContainer` Card** - It looks sick in dark mode, but light mode needs some work.
-4. **Handle Force Regeneration** - This is not working and needs to be fixed.
-5. **Handle React Property Parsers** - This will open the door to a TON new possibilities.
+- Work on integrating typst support for offline use.
+- Setup seeding of notes on desktop app.
+- Move remaining components (e.g., `AINoteSummary`).
+- Handle missing parsers (CodeBlock, Footnote, Table, Strikethrough, Escapable math blocks, etc.).
+- Fix bug with bibliography entries not being associated with notes.
+- Ensure AI summarization works and handle light mode for `AISummaryContainer`.
+- Handle force regeneration of AI summaries.
+- Work on React property parsers for better AI integration.
 
-## Conclusion
+#### Bug Fixes
 
-The most important tasks are the ones that need immediate attention, such as fixing the new note first display issue and handling rendering code to HTML. These tasks are critical for the app's functionality and need to be prioritized. The medium priority tasks are also important and should be addressed in the coming days. The low priority tasks can be handled once the main issues are resolved. The release checklist includes all the necessary steps to ensure the app is ready for release within the next two weeks.
+- Fix issue with bibliography entries not being associated with notes.
+- Fix 'paper' button creating 2 pages on desktop.
+- Ensure note can be loaded when iPad is in portrait view.
+- Fix `NoteDetailSheet` requiring refresh on Mac.
+- Handle `Icon` component dynamically loading icons.
+- Ensure iPad app sends `ErrorStateReset` event after manual save.
+
+#### Documentation
+
+- Update card component documentation.
+- Fix admonition padding issue on website and main app.
+- Update docs to reflect upcoming Apple release.
+
+#### Offline & Performance
+
+- Move regex queries to `HashMap<String, bool>` in Rust.
+- Fix issue with italic field in title syntax.
+- Relay detailed errors to user in webview.
+- Create `subtle` or `underline` property for `Tabs` component.
+- Handle `Icon` component dynamically loading icons.
+- Ensure iPad app sends `ErrorStateReset` event after manual save.
+
+#### AI & Release
+
+- Create 'triggers' for AI-generated content (e.g., `FlusterAI.generateStudyGuide()`, `FlusterAI.createFlashCards()`).
+- Make sure AI triggers can be set to auto, confirm, or never modes.
+- Ensure AI summarization works and handle light mode for `AISummaryContainer`.
+- Handle force regeneration of AI summaries.
+- Work on React property parsers for better AI integration.
+
+#### Final Notes
+
+- Ensure all tests pass (Swift, Typescript, Rust) before release.
+- Review Apple's nomination process for featured app.
+- Make sure AI triggers can be set to auto, confirm, or never modes.
+- Ensure AI summarization works and handle light mode for `AISummaryContainer`.
+- Handle force regeneration of AI summaries.
+- Work on React property parsers for better AI integration.
+
+---
+
+### Release Timeline
+
+- **April 30, 2026**: Finalize all tasks and prepare for release.
+- **May 7, 2026**: Release the app, ensuring all features are working as expected.
+- **May 14, 2026**: Monitor user feedback and address any issues promptly.
+
+---
+
+### Summary
+
+This to-do list covers all high-priority tasks needed to get the app back in working order, fix bugs, improve UI/UX, integrate AI, and prepare for release. The goal is to release the app within the next 2 weeks, ensuring all features are functional and user-friendly.

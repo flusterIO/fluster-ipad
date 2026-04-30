@@ -224,3 +224,13 @@ span[data-rehype-pretty-code-figure] {
     display: none;
   }
 }
+
+.hide-no-id-eq-labels {
+  .cdrm-equation-label {
+    display: none;
+
+    &.with-id {
+      display: inline-block;
+    }
+  }
+}

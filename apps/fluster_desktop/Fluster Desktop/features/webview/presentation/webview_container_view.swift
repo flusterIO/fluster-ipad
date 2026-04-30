@@ -257,6 +257,7 @@ struct WebViewContainerView: View {
     SupportedCodeBlockTheme = .solarizedLight
   @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
   @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
+    @AppStorage(AppStorageKeys.showEquationLabels.rawValue) var showEquationLabels: EquationNumberingStrategy = .all
 
   @Binding var webview: WKWebView
   public let url: URL
@@ -431,7 +432,7 @@ struct WebViewContainerView: View {
               implementation: self.implementation,
               fluster_theme: flusterTheme
             ),
-            mathPayload: InitialMathState(mathjax_font_url: mathjaxFontUrl),
+            mathPayload: InitialMathState(mathjax_font_url: mathjaxFontUrl, hide_equation_labels: showEquationLabels),
             aiPayload: AiInitialStatePayload(
               foundation_model_access: llm.availability.toReduxRepresentation()
             ),

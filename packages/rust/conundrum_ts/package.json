@@ -23,7 +23,8 @@
     "@fluster/wasm": "workspace:*",
     "@reduxjs/toolkit": "2.8.2",
     "consola": "3.4.2",
-    "react-redux": "9.2.0"
+    "react-redux": "9.2.0",
+    "stencil": "^0.0.5"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.2.1",

@@ -184,8 +184,15 @@ export interface EditorInitialStatePayload {
 	saveMethod: EditorSaveMethod;
 }
 
+export enum EquationNumberingStrategy {
+	None = "none",
+	IdOnly = "id-only",
+	All = "all",
+}
+
 export interface InitialMathState {
 	mathjax_font_url: string;
+	hide_equation_labels: EquationNumberingStrategy;
 }
 
 export interface EditorBasedWebviewInitialState {
@@ -360,7 +367,7 @@ export interface NoteDetailState {
 export interface MathState {
 	mathjax_font_url: string;
 	equation_refs: Record<string, number>;
-	hide_equation_labels: boolean;
+	hide_equation_labels: EquationNumberingStrategy;
 }
 
 export interface GlobalWebviewState {

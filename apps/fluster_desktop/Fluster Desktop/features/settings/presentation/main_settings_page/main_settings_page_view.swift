@@ -23,34 +23,19 @@ struct MainSettingsPageView: View {
     HStack(alignment: .center) {
       ScrollView {
         SettingPageLogo()
-        SettingsSection(title: "Account & Profile") {
-          HStack {
-            Circle()
-              .fill(.gray.opacity(0.2))
-              .frame(width: 52, height: 52)
-              .overlay(Text("A").font(.title2))
-            VStack(alignment: .leading) {
-              Text("Andrew Smith")
-                .font(.headline)
-              Text("andrew@email.com")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            }
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-        }
+        UISettingSection()
 
         AISettingSectionView()
 
         NotesDirSettingSection()
 
         BibliographySettingSectionView()
+        MathSettingSectionView()
 
         SearchSettingSectionView()
 
         // AutoSettingSettingSection()
 
-        UISettingSection()
 
         EditorSettingSectionView()
       }

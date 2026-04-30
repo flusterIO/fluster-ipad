@@ -1,6 +1,6 @@
 import React, { type HTMLProps, useRef, type ReactNode, useEffect } from "react";
 import { cn } from "@/utils/cn";
-import { type EditorState, EditorView, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
+import { type EditorState, EditorView, EquationNumberingStrategy, SplitviewEditorDomIds, SplitviewEditorWebviewActions } from "@/code_gen/typeshare/fluster_core_utilities";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { ErrorBoundary } from "react-error-boundary";
 import { PreviewLevelErrorReport } from "../error_reporting/preview_level_error_report/preview_level_error_report";
@@ -37,7 +37,7 @@ export const MdxEditorPreview = connector(({
     /* lockEditorScrollToPreview, */
     isEditorView,
     /* ...props */
-}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean, hideEquationLabels: boolean }): ReactNode => {
+}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean, hideEquationLabels: EquationNumberingStrategy }): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
 
     const parsedValueIsEmpty = useSelector((state: GlobalWebviewStateDeepNullable) => {
@@ -128,7 +128,7 @@ export const MdxEditorPreview = connector(({
                     "max-w-[1080px]",
                     isEditorView ? "px-6 pt-4 pb-16 mx-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
                     className,
-                    hideEquationLabels && "hide-equation-labels"
+                    hideEquationLabels === EquationNumberingStrategy.None ? "hide-equation-labels" : hideEquationLabels === EquationNumberingStrategy.IdOnly ? "hide-no-id-eq-labels" : ""
                 )}
                 ref={ref}
             />
