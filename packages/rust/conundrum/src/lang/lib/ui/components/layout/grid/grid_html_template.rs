@@ -13,7 +13,7 @@ use tw_merge::*;
 
 /// ## Template (HTML)
 /// ```askama
-/// <div class="{{tw_merge!("grid w-full p-4 my-6 grid-cols-1", self.sizable.as_ref().cloned().map(|c| c.as_class()).unwrap_or_default(), self.emphasis_classes.clone(), self.columns.to_css_classes(), self.get_responsive_styles())}}">
+/// <div class="{{tw_merge!("grid w-full p-4 my-6 grid-cols-1", self.sizable.as_ref().cloned().map(|c| c.as_class()).unwrap_or_default(), self.emphasis_classes.clone(), self.columns.to_css_classes(), self.get_responsive_styles()) | safe}}">
 /// {{children | safe}}
 /// </div>
 /// ```

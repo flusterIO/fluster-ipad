@@ -6,7 +6,7 @@ use tw_merge::*;
 ///
 /// ```askama
 /// <div class="{{tw_merge!(self.emphasis.as_ref().cloned().map(|emph| emph.to_background_color_classes()).unwrap_or_default(), self.sizable.as_class())}}">
-/// {{children}}
+/// {{children | safe}}
 /// </div>
 /// ```
 #[derive(Template)]
