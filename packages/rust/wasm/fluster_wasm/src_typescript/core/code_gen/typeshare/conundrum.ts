@@ -13,7 +13,7 @@ export type ParsedElement =
 	| { tag: "BoldText", content: MarkdownBoldTextResult }
 	| { tag: "ItalicText", content: MarkdownItalicTextResult }
 	| { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
-	| { tag: "ParsedCodeBlock", content: ParsedCodeBlock }
+	| { tag: "ParsedCodeBlock", content: GeneralCodeBlock }
 	| { tag: "InlineCode", content: InlineCodeResult }
 	| { tag: "MarkdownLink", content: MarkdownLinkResult }
 	| { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
@@ -420,7 +420,7 @@ export enum SupportedCodeBlockSyntax {
 	Dictionary = "dictionary",
 }
 
-export interface ParsedCodeBlock {
+export interface GeneralCodeBlock {
 	language: SupportedCodeBlockSyntax;
 	meta_data?: string;
 	depth: number;
@@ -430,7 +430,7 @@ export interface ParsedCodeBlock {
 }
 
 export interface AiSerializationRequestPhase1 {
-	parsing_result: ParsedCodeBlock;
+	parsing_result: GeneralCodeBlock;
 }
 
 export interface BlockMathResult {

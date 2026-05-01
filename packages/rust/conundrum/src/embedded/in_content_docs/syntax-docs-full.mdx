@@ -22,7 +22,7 @@ title: My optional note title
 
 Insert **tags** into your note using the following syntax:
 
-```md -- title="my_tag_demo.mdx"
+```txt -- title="my_tag_demo.mdx"
 This is my tag [[#myTag]] called 'myTag'.
 ```
 
@@ -32,7 +32,7 @@ This is my tag [[#myTag]] called 'myTag'.
 
 The citation key must match the bibliography entry key in your bibliography. For example:
 
-```md
+```txt
 As you can see, according to Ives & Stillwell [[cite:IvesStillwell]]...
 ```
 
@@ -61,7 +61,7 @@ Will work with the bibliography entry:
 
 You can insert dictionary entries in any note using the following syntax:
 
-````md
+````txt
 ```dictionary -- My Dictionary Title
 This is my dictionary entry.
 I can insert any mdx content I like here.
@@ -72,7 +72,7 @@ These entries will automatically collected and inserted into your user defined d
 
 ### Horizontal Rule with Children
 
-```md
+```txt
 --- My title with math $\delta$ ---
 ```
 
@@ -85,7 +85,7 @@ These entries will automatically collected and inserted into your user defined d
 
 Since the margin between text can be too much to create some common layouts like a title/subtitle combo, there is a reasonably styled combo component that can be accessed with the following syntax:
 
-```md
+```txt
 # My title {#myTitleWithAnId}
 > My subtitle that follows immediately on the next line
 ```

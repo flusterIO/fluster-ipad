@@ -8,6 +8,7 @@ const config = {
     sortFirst: [
         "name",
         "version",
+        "description",
         "homepage",
         "keywords",
         "funding",

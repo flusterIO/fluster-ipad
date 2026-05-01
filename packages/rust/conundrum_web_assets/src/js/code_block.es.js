@@ -71,7 +71,7 @@ const E = (r) => {
   debug: 4,
   trace: 5,
   verbose: Number.POSITIVE_INFINITY
-}, L = {
+}, C = {
   // Silent
   silent: {
     level: -1
@@ -159,7 +159,7 @@ function x(r) {
   return !(!k(r) || !r.message && !r.args || r.stack);
 }
 let m = false;
-const C = [];
+const L = [];
 class i {
   options;
   _lastLog;
@@ -170,7 +170,7 @@ class i {
    * @param {Partial<ConsolaOptions>} [options={}] - Configuration options for the Consola instance.
    */
   constructor(t = {}) {
-    const e = t.types || L;
+    const e = t.types || C;
     this.options = T(
       {
         ...t,
@@ -179,7 +179,7 @@ class i {
         reporters: [...t.reporters || []]
       },
       {
-        types: L,
+        types: C,
         throttle: 1e3,
         throttleMin: 5,
         formatOptions: {
@@ -361,7 +361,7 @@ class i {
    */
   resumeLogs() {
     m = false;
-    const t = C.splice(0);
+    const t = L.splice(0);
     for (const e of t)
       e[0]._logFn(e[1], e[2]);
   }
@@ -379,7 +379,7 @@ class i {
   _wrapLogFn(t, e) {
     return (...s) => {
       if (m) {
-        C.push([this, t, s, e]);
+        L.push([this, t, s, e]);
         return;
       }
       return this._logFn(t, s, e);
@@ -547,10 +547,12 @@ const j = (r) => {
     );
     d && (d.style.maxHeight = "0px", a.setAttribute("data-cdrm-folded", "true"));
   }
-  const s = r.currentTarget.parentElement;
-  console.log("container: ", s);
-  const o = s.getAttribute("data-cdrm-folded") === "true", n = s.getAttribute("data-cdrm-foldable") === "true";
-  s.querySelector(".cdrm-admon-body-container") && n && (o ? t(s) : e(s));
+  const s = r.currentTarget.parentElement, o = s.getAttribute("data-cdrm-folded") === "true", n = s.getAttribute("data-cdrm-foldable") === "true";
+  if (!s.querySelector(".cdrm-admon-body-container")) {
+    console.error("Could not find admonition body");
+    return;
+  }
+  n && (o ? t(s) : e(s));
 };
 function v(r) {
   const t = parseInt(

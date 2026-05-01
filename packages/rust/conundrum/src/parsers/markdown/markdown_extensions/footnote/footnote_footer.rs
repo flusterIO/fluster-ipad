@@ -135,9 +135,13 @@ mod tests {
     fn parses_simple_footnote_footer() {
         let test_content = "[^1]: My footnote footer here.";
         let mut test_input = wrap_test_conundrum_content(test_content);
-        let res = FootnoteFooter::parse_input_string.parse_next(&mut input)
+        let res = FootnoteFooter::parse_input_string.parse_next(&mut test_input)
                                                     .expect("Parses footnote footer without throwing an error.");
-        assert!(res.content == "My footnote footer here.", "Matches content as expected");
+
+        let rendered_content = res.content
+                                  .render(std::sync::Arc::clone(&test_input.state))
+                                  .expect("Renders footnote footer children without throwing an error.");
+        assert!(rendered_content == "My footnote footer here.", "Matches content as expected");
         assert!(res.idx == 1, "Finds the proper footnote index.");
         // assert_eq!(result, 4);
     }
