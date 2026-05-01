@@ -16,7 +16,7 @@ use crate::parsers::conundrum::note_link::note_link_model::ParsedOutgoingNoteLin
 use crate::parsers::markdown::block_quote::block_quote_model::BlockQuoteResult;
 use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextResult;
 use crate::parsers::markdown::bold_text::MarkdownBoldTextResult;
-use crate::parsers::markdown::code_block::code_block_model::ParsedCodeBlock;
+use crate::parsers::markdown::code_block::code_block_model::GeneralCodeBlock;
 use crate::parsers::markdown::heading::heading_model::MarkdownHeadingResult;
 use crate::parsers::markdown::hr::MarkdownHorizontalRule;
 use crate::parsers::markdown::inline_code::InlineCodeResult;
@@ -84,7 +84,7 @@ pub fn parse_child_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModa
                 "`" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
+                            GeneralCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock),
                             InlineCodeResult::parse_input_string.map(ParsedElement::InlineCode),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)

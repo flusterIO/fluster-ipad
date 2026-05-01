@@ -15,7 +15,7 @@ use crate::{
             block_quote::block_quote_model::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult,
             bold_text::MarkdownBoldTextResult,
-            code_block::code_block_model::ParsedCodeBlock,
+            code_block::code_block_model::GeneralCodeBlock,
             heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule,
             inline_code::InlineCodeResult,
@@ -182,7 +182,7 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                },
                                                                                "`" => |x: &mut ConundrumInput<'a>| {
                                                                                    if ls {
-                                                                                       ParsedCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock)
+                                                                                       GeneralCodeBlock::parse_input_string.map(ParsedElement::ParsedCodeBlock)
                                                                                            .parse_next(x)
                                                                                    } else {
                                                                                        fail.parse_next(x)

@@ -1,118 +1,79 @@
-## Daily Focus for ADHD
+# Daily Focus for My ADHD Assistant
 
-### Summary of To-Do List
+## Summary of To-Do List
 
-#### High Priority Tasks
+### High Priority Tasks
 
 1. **Get App Back in Working Order**
-   - Setup 'hide equation labels' state and add `onChange` events to webviews.
-   - Fix tabs resizing issue.
-   - Get component JavaScript working.
-   - Add event listener for `cdrm-codeblock-copy` and emit notification.
-   - Fix Bold & italic text parser.
-   - Handle overflow of tab by toggling CSS class based on height.
-   - Revert component glue files to initial setup using `conundrum/ts` package.
-   - Add katex CSS to mdx container.
+   - Setup 'hide equation labels' state as part of initial state.
+   - Handle tabs resizing issue.
+   - Add katex css to mdx container.
+   - Revert component glue standalone files to initial setup.
+   - Create proper css font families linking.
 
-2. **Remainder of Today**
-   - Handle new images on blog post.
-   - Fix bug requiring details page refresh on Mac.
-   - Fix new note first display issue.
-   - Handle rendering code to HTML.
-   - Move `from_props` methods to accept state param for parsing/compilation phases.
-   - Move all katex font methods to use binary stored data.
-   - Fix Grid component issue with integer parser.
-   - Fix Blockquote bug with multi-line entries.
-   - Write JavaScript to copy code from code block and emit event.
-   - Fix inline underline component breaking out of paragraph.
+2. **Fix Independent Markdown View Page**
+   - Ensure the loading class is set to false.
 
-3. **UI/UX Improvements**
-   - Reattach theme selector to Swift for Mac and iOS.
-   - Fix independent markdown view page rendering.
-   - Write script to generate single JavaScript/TypeScript file from component files.
-   - Handle missing parsers (Line Item with checkbox, Plain line item, Numbered line item, Full table).
+3. **Handle Dictionary Entry Rendering**
+   - Implement proper html output parser and query method.
 
-4. **AI Integration**
-   - Create 'triggers' for AI-generated content (e.g., `FlusterAI.generateStudyGuide()`, `FlusterAI.createFlashCards()`).
-   - Make sure AI triggers can be set to auto, confirm, or never modes.
+4. **Reimplement `window.setBibtexEditorContent`**
+   - Ensure buffer operation is functional.
 
-5. **Documentation & Website**
-   - Update docs to reflect upcoming Apple release.
-   - Fix admonition padding issue on website and main app.
+### Medium Priority Tasks
 
-6. **Performance & Offline**
-   - Move regex queries to `HashMap<String, bool>` in Rust.
-   - Fix issue with italic field in title syntax.
-   - Relay detailed errors to user in webview.
-   - Create `subtle` or `underline` property for `Tabs` component.
-   - Handle `Icon` component dynamically loading icons.
+1. **Work on Integrating Typst Support**
+   - This is a major value add for the release.
 
-7. **Release Checklist**
-   - Ensure all tests pass (Swift, Typescript, Rust).
-   - Review Apple's nomination process for featured app.
+2. **Setup Seeding of Notes on Desktop App**
+   - This will be the first app released.
 
-#### Next Steps
+3. **Move Over Remaining Components**
+   - Work on remaining parsers and components.
 
-- Work on integrating typst support for offline use.
-- Setup seeding of notes on desktop app.
-- Move remaining components (e.g., `AINoteSummary`).
-- Handle missing parsers (CodeBlock, Footnote, Table, Strikethrough, Escapable math blocks, etc.).
-- Fix bug with bibliography entries not being associated with notes.
-- Ensure AI summarization works and handle light mode for `AISummaryContainer`.
-- Handle force regeneration of AI summaries.
-- Work on React property parsers for better AI integration.
+4. **Handle Missing or Incomplete Parsers**
+   - Ensure all parsers are implemented for documentation and markdown.
 
-#### Bug Fixes
+### Low Priority Tasks
 
-- Fix issue with bibliography entries not being associated with notes.
-- Fix 'paper' button creating 2 pages on desktop.
-- Ensure note can be loaded when iPad is in portrait view.
-- Fix `NoteDetailSheet` requiring refresh on Mac.
-- Handle `Icon` component dynamically loading icons.
-- Ensure iPad app sends `ErrorStateReset` event after manual save.
+1. **Handle Bug Log and Embedded Components**
+   - Fix bibliography entries, responsive grid, flip-card component, and AI triggers.
 
-#### Documentation
+2. **Documentation and Website Updates**
+   - Update docs to reflect upcoming Apple release and fix admonition padding.
 
-- Update card component documentation.
-- Fix admonition padding issue on website and main app.
-- Update docs to reflect upcoming Apple release.
+3. **Performance Improvements**
+   - Move regex queries to a HashMap for faster lookups.
 
-#### Offline & Performance
+4. **Release Checklist**
+   - Ensure all tests are passing and review Apple's nomination process for featured status.
 
-- Move regex queries to `HashMap<String, bool>` in Rust.
-- Fix issue with italic field in title syntax.
-- Relay detailed errors to user in webview.
-- Create `subtle` or `underline` property for `Tabs` component.
-- Handle `Icon` component dynamically loading icons.
-- Ensure iPad app sends `ErrorStateReset` event after manual save.
+## AI Summary
 
-#### AI & Release
+- Handle light mode for `AISummaryContainer` card.
+- Handle force regeneration of summaries.
+- Handle React property parsers for reliable component parsing.
 
-- Create 'triggers' for AI-generated content (e.g., `FlusterAI.generateStudyGuide()`, `FlusterAI.createFlashCards()`).
-- Make sure AI triggers can be set to auto, confirm, or never modes.
-- Ensure AI summarization works and handle light mode for `AISummaryContainer`.
-- Handle force regeneration of AI summaries.
-- Work on React property parsers for better AI integration.
+## Offline and Webview Fixes
 
-#### Final Notes
+- Fix syntax for italic fields in titles.
+- Relay detailed errors to users in webviews.
+- Create new `subtle` or `underline` property for `Tabs` component.
+- Handle `Icon` component for dynamic icon loading.
+- Ensure iPad app is working again with error state reset and initial state function.
 
-- Ensure all tests pass (Swift, Typescript, Rust) before release.
-- Review Apple's nomination process for featured app.
-- Make sure AI triggers can be set to auto, confirm, or never modes.
-- Ensure AI summarization works and handle light mode for `AISummaryContainer`.
-- Handle force regeneration of AI summaries.
-- Work on React property parsers for better AI integration.
+## Additional Tasks
 
----
+- Apply note's front matter summary to new summary class.
+- Fix global search page on Mac.
+- Start setting AI availability states.
+- Write tests for all `-ignoreParser` flags.
 
-### Release Timeline
+## Paper Additions
 
-- **April 30, 2026**: Finalize all tasks and prepare for release.
-- **May 7, 2026**: Release the app, ensuring all features are working as expected.
-- **May 14, 2026**: Monitor user feedback and address any issues promptly.
+- Derivation of $\frac{dx}{x} = \frac{dr}{R}$
+- Spatal tension giving rise to $\alpha$: $2 \frac{R_{\oplus}}{\left( 2 G M_{\oplus} \right)^{1/3}} = \frac{1}{\alpha}$
 
----
+## Conclusion
 
-### Summary
-
-This to-do list covers all high-priority tasks needed to get the app back in working order, fix bugs, improve UI/UX, integrate AI, and prepare for release. The goal is to release the app within the next 2 weeks, ensuring all features are functional and user-friendly.
+This summary prioritizes the most important tasks to ensure the release within the next two weeks. Focus on high-priority tasks first, then move to medium and low-priority tasks. Keep the ADHD assistant focused and on track with these priorities.

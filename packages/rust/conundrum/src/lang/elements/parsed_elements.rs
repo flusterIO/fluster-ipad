@@ -33,7 +33,7 @@ use crate::{
             block_quote::block_quote_model::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult,
             bold_text::MarkdownBoldTextResult,
-            code_block::code_block_model::ParsedCodeBlock,
+            code_block::code_block_model::GeneralCodeBlock,
             heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule,
             inline_code::InlineCodeResult,
@@ -81,7 +81,8 @@ pub enum ParsedElement {
     BoldText(MarkdownBoldTextResult),
     ItalicText(MarkdownItalicTextResult),
     BoldAndItalicText(MarkdownBoldAndItalicTextResult),
-    ParsedCodeBlock(ParsedCodeBlock),
+    // TODO: Apply the `ParsedCodeBlockVariant` type here after getting back from the library.
+    ParsedCodeBlock(GeneralCodeBlock),
     InlineCode(InlineCodeResult),
     MarkdownLink(MarkdownLinkResult),
     MarkdownParagraph(MarkdownParagraphResult),

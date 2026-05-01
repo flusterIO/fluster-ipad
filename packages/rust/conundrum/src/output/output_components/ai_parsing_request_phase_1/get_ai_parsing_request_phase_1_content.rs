@@ -1,9 +1,9 @@
 use crate::{
     output::general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
-    parsers::markdown::code_block::code_block_model::ParsedCodeBlock,
+    parsers::markdown::code_block::code_block_model::GeneralCodeBlock,
 };
 
-pub fn get_ai_parsing_request_phase_1_content(block: &ParsedCodeBlock) -> String {
+pub fn get_ai_parsing_request_phase_1_content(block: &GeneralCodeBlock) -> String {
     format!(
             r#"
 <{} res={}>

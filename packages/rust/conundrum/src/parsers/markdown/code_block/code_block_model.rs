@@ -65,7 +65,7 @@ use crate::{
 
 #[typeshare]
 #[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug)]
-pub struct ParsedCodeBlock {
+pub struct GeneralCodeBlock {
     pub language: SupportedCodeBlockSyntax,
     pub meta_data: Option<String>,
     pub depth: u8,
@@ -74,8 +74,8 @@ pub struct ParsedCodeBlock {
     pub id: DOMId,
 }
 
-impl ConundrumStateModifier<ParsedCodeBlock> for ParsedCodeBlock {
-    fn set_state(res: ArcState, data: Option<ParsedCodeBlock>) {
+impl ConundrumStateModifier<GeneralCodeBlock> for GeneralCodeBlock {
+    fn set_state(res: ArcState, data: Option<GeneralCodeBlock>) {
         let cb = data.unwrap();
         if cb.language == SupportedCodeBlockSyntax::Dictionary {
             let mut state = res.write_arc();
@@ -91,7 +91,7 @@ impl ConundrumStateModifier<ParsedCodeBlock> for ParsedCodeBlock {
     }
 }
 
-impl ParsedCodeBlock {
+impl GeneralCodeBlock {
     pub fn get_meta_data(&self) -> Option<ConundrumObject> {
         if let Some(meta) = &self.meta_data {
             let input = &mut get_conundrum_input(meta.as_str(), ParseState::default());
@@ -136,13 +136,13 @@ impl ParsedCodeBlock {
     }
 }
 
-impl PlainTextComponentResult for ParsedCodeBlock {
+impl PlainTextComponentResult for GeneralCodeBlock {
     fn to_plain_text(&self, res: ArcState) -> ConundrumModalResult<String> {
         self.to_markdown(res)
     }
 }
 
-impl MarkdownComponentResult for ParsedCodeBlock {
+impl MarkdownComponentResult for GeneralCodeBlock {
     fn to_markdown(&self, _: ArcState) -> ConundrumModalResult<String> {
         let mut tick_string = String::from("");
         for _ in 0..self.depth {
@@ -161,7 +161,7 @@ impl MarkdownComponentResult for ParsedCodeBlock {
 }
 
 /// Move this id to the parsing stage!
-impl HtmlJsComponentResult for ParsedCodeBlock {
+impl HtmlJsComponentResult for GeneralCodeBlock {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let read_state = res.read_arc();
         let assets = Arc::clone(&read_state.highlight_assets);
@@ -179,7 +179,7 @@ impl HtmlJsComponentResult for ParsedCodeBlock {
     }
 }
 
-impl ConundrumComponentResult for ParsedCodeBlock {
+impl ConundrumComponentResult for GeneralCodeBlock {
     fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let state = res.read_arc();
         match self.language {
@@ -215,7 +215,7 @@ impl ConundrumComponentResult for ParsedCodeBlock {
     }
 }
 
-impl MdxComponentResult for ParsedCodeBlock {
+impl MdxComponentResult for GeneralCodeBlock {
     fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let state = res.read_arc();
         match self.language {
@@ -237,8 +237,8 @@ impl MdxComponentResult for ParsedCodeBlock {
     }
 }
 
-impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<ParsedCodeBlock> {
+impl ConundrumParser<GeneralCodeBlock> for GeneralCodeBlock {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<GeneralCodeBlock> {
         let ((language, meta_opt, raw_content, tick_length), full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let cp = input.input.checkpoint();
@@ -290,12 +290,12 @@ impl ConundrumParser<ParsedCodeBlock> for ParsedCodeBlock {
         let id = state.dom.new_id();
         state.data.append_embeddable_component(&AnyComponentKey::AutoInserted(AutoInsertedComponentName::AutoInsertedCodeBlock));
         drop(state);
-        Ok(ParsedCodeBlock { language,
-                             meta_data,
-                             id,
-                             depth: tick_length as u8,
-                             content: raw_content.to_string(),
-                             full_match: full_match.to_string() })
+        Ok(GeneralCodeBlock { language,
+                              meta_data,
+                              id,
+                              depth: tick_length as u8,
+                              content: raw_content.to_string(),
+                              full_match: full_match.to_string() })
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -319,7 +319,7 @@ mod tests {
 ```"#;
         let mut test_data = wrap_test_conundrum_content(test_content);
         let res =
-            ParsedCodeBlock::parse_input_string(&mut test_data).expect("Parses code block without throwing an error.");
+            GeneralCodeBlock::parse_input_string(&mut test_data).expect("Parses code block without throwing an error.");
 
         assert_snapshot!(res.content);
 

@@ -1,21 +1,12 @@
 # To-Do
 
-## Get app back in working order
-
-- [x] Setup 'hide equation labels' state as part of initial state. It's important to have that set accurately every time as part of the UI state, no matter how small, and then make sure to add the necessary `onChange` events to the container webviews.
-- [x] Handle tabs resizing issue. It's completely broken.
-- [ ] Handle tabs rendering issue on the main markdown page. It's likely a common problem shared with other webviews that aren't the editor.
-- [x] Be sure to handle overflow of tab now that you removed the css class. You'll have to toggle it based on the height when you read it to avoid this overflow when the height of the container is small but another one is large.
-- [x] Revert component glue standalone files to initial setup, but using the imported functions from the `conundrum/ts` package.
-- [x] Add katex css to mdx container so it's always loaded whenever mdx content is displayed.
-- [x] After writing font files to public directories, create proper css font families linking
-
 ## Remainder of Today
 
+- [ ] Apply the `ParsedCodeBlockVariant` type and separate the dictionary and AI code blocks into separate variants in the AST for a variety of reasons, but most importantly so that templates can be generated for each time independently without a million match statements.
 - [ ] Go to the library so you can start a TDD approach again.
 - [?] Fix independent markdown view page as that's not rendering at all now!
   - Just a loading class issue that's never being set to false. Can easily remove now.
-- [ ] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
+- [?] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
 - [ ] Handle dictionary entry rendering to html.
 - [ ] Handle issue with documentation parser not being found in some contexts.
 - [ ] If the CodeBlock finds an invalid language, default to something sensible but alert the user by appending a 'warning' to the result.

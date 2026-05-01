@@ -14,6 +14,7 @@ import { NerdFontLoader } from "#/code/nerd_font_loader";
 import { KatexFontLoader } from "#/math/katex_font_loader";
 import { LucideFontLoader } from "#/themeing/lucide_font_loader";
 import { type GlobalWebviewStateDeepNullable } from "#/webview_global_state/cross_language_state_types";
+import { ConundrumNotificationListener } from "#/webview_global_state/notification_state/conundrum_notification_listener";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -120,6 +121,7 @@ export const MdxEditorPreview = connector(({
             FallbackComponent={(p) => <PreviewLevelErrorReport {...p} showWebviewAction={SplitviewEditorWebviewActions.SetWebviewLoaded} />}
         >
             <ConundrumErrorListener />
+            <ConundrumNotificationListener />
             <NerdFontLoader />
             <KatexFontLoader />
             <LucideFontLoader />
