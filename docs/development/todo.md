@@ -2,34 +2,24 @@
 
 ## Get app back in working order
 
-- [ ] Setup 'hide equation labels' state as part of initial state. It's important to have that set accurately every time as part of the UI state, no matter how small, and then make sure to add the necessary `onChange` events to the container webviews.
-- [ ] Handle tabs resizing issue. It's completely broken.
-- [ ] Get component javascript working!
-- [ ] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
-- [ ] Get Bold & italic text parser working again... that shit broke.
-- [ ] Be sure to handle overflow of tab now that you removed the css class. You'll have to toggle it based on the height when you read it to avoid this overflow when the height of the container is small but another one is large.
-- [ ] Revert component glue standalone files to initial setup, but using the imported functions from the `conundrum/ts` package.
+- [x] Setup 'hide equation labels' state as part of initial state. It's important to have that set accurately every time as part of the UI state, no matter how small, and then make sure to add the necessary `onChange` events to the container webviews.
+- [x] Handle tabs resizing issue. It's completely broken.
+- [ ] Handle tabs rendering issue on the main markdown page. It's likely a common problem shared with other webviews that aren't the editor.
+- [x] Be sure to handle overflow of tab now that you removed the css class. You'll have to toggle it based on the height when you read it to avoid this overflow when the height of the container is small but another one is large.
+- [x] Revert component glue standalone files to initial setup, but using the imported functions from the `conundrum/ts` package.
 - [x] Add katex css to mdx container so it's always loaded whenever mdx content is displayed.
 - [x] After writing font files to public directories, create proper css font families linking
 
 ## Remainder of Today
 
-- [x] Handle new images on blog post.
-- [x] Handle bug requiring details page to be refreshed on Mac.
-- [x] Fix new note first display issue. It's _still_ not resolved!
-- [x] Handle rendering code to HTML
-- [x] Move over the `from_props` methods to accepting a state param so we can actually break up the parsing and compilation phases properly.
-- [x] MOVE OVER ALL KATEX FONT METHODS TO USE BINARY STORED DATA. THIS WILL BREAK THE STANDALONE APP.
-- [x] Handle Grid by fixing issue with integer parser. Currently it's picking up integers as floats which is failing the Grid component when the props are valid.
-- [x] Handle Blockquote bug with multi-line entries.
-- [x] Write javascript to actually copy code from code block.
-  - [x] Emit an event that can be picked up by other applications, including Fluster.
-- [x] Handle issue inline underline component breaking out of that f-cking paragraph... the biggest pain in the ass...
-- [ ] Reattach theme selector to Swift. Create independent view that can be added to both mac and iOS using the Rust generated enums.
-- [ ] Fix independent markdown view page as that's not rendering at all now!
+- [ ] Go to the library so you can start a TDD approach again.
+- [?] Fix independent markdown view page as that's not rendering at all now!
   - Just a loading class issue that's never being set to false. Can easily remove now.
-- [ ] Write script to gather and generate single javascript typescript file from combined component files from generated dashmap.
-- [ ] Handle missing parsers
+- [ ] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
+- [ ] Handle dictionary entry rendering to html.
+- [ ] Handle issue with documentation parser not being found in some contexts.
+- [ ] If the CodeBlock finds an invalid language, default to something sensible but alert the user by appending a 'warning' to the result.
+- [ ] Handle missing parsers (In order of the direction of getting the documentation working again! Work towards that.)
   - [ ] Footnote parser
   - [ ] Line Item with checkbox
     - [ ] Various checked states (Pass a 'marker' char to the result)
@@ -42,6 +32,11 @@
 - [ ] Make sure summary can be accepted or declined from the UI appropriately.
 
 ---
+
+## Pre-Release Milestones
+
+- [ ] Get dictionary entry page working (requires dictionary html output parser and new query method to return properly formatted html)
+- [ ] All documentation pages back in working order (Handle tables, list items and rest of missing parsers)
 
 ### Components that need to move over still
 

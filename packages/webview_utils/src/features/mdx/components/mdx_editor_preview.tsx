@@ -66,10 +66,11 @@ export const MdxEditorPreview = connector(({
     useEffect(() => {
         /// Set the content from the state initiailly, but do not pas any dependencies to avoid the react render cycle, and use direct html injection.
         const state = store.getState();
+        window.conundrum.onLoad();
         let observer: MutationObserver | null = null;
         if (ref.current) {
             if (state.editor.parsedValue) {
-                ref.current.innerHTML = state.editor.parsedValue
+                ref.current.innerHTML = state.editor.parsedValue;
             }
             observer = new MutationObserver(() => {
                 window.conundrum.onLoad()

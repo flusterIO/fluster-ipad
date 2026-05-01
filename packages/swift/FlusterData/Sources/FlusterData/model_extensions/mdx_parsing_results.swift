@@ -40,7 +40,7 @@ extension MdxParsingResult: @retroactive Codable {
     let warnings = try container.decode([ConundrumError].self, forKey: .warnings)
     let includedComponents = try container.decode(
       [AnyComponentKey].self, forKey: .includedComponents)
-    let footnotes = try container.decode([ConundrumInt: FootnoteResult?].self, forKey: .footnotes)
+    let footnotes = try container.decode([ConundrumInt: RenderedFootnoteResult?].self, forKey: .footnotes)
 
     self.init(
       noteId: id,

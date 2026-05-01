@@ -36,11 +36,11 @@ export const onAdmonitionHeadingClick = (e: Event) => {
 
     const container = (e.currentTarget as HTMLDivElement)
         .parentElement as HTMLDivElement;
-    console.log("container: ", container);
     const folded = container.getAttribute("data-cdrm-folded") === "true";
     const foldable = container.getAttribute("data-cdrm-foldable") === "true";
     const body = container.querySelector(".cdrm-admon-body-container");
     if (!body) {
+        console.error("Could not find admonition body");
         return;
     }
     if (foldable) {

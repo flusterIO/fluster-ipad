@@ -125,12 +125,12 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                            _ => false
                                                                        };
 
-
                                                                        drop(b);
+
 
                                                                        let mut ls = at_line_start.borrow_mut();
                                                                        *ls = match &inner_res {
-                                                                           ParsedElement::Text(t) => t == "\n",
+                                                                           ParsedElement::Text(t) => (*ls && (t == " " || t == "\t")) || t == "\n",
                                                                            _ => false
                                                                        };
                                                                        drop(ls);
@@ -217,7 +217,11 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                    }).parse_next(x)
                                                                                },
                                                                                _ => |x: &mut ConundrumInput<'a>| {
-                                                                                   ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest).parse_next(x)
+                                                                                   if ls {
+                                                                                       ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest).parse_next(x)
+                                                                                   } else {
+                                                                                       fail.parse_next(x)
+                                                                                   }
                                                                                },
                                                                            }.parse_next(nested_input)?;
                                                                        Ok(result)

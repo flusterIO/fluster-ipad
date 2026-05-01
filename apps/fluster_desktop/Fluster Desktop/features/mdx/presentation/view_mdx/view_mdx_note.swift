@@ -97,23 +97,26 @@ struct MdxContentWebview: View {
           })
       }
       .task {
-        if let en = editingNote {
-          do {
-            try await en.preParseIfEdited(
-              modelContext: modelContext,
-              uiParams: UiParams(
-                darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
-                mathFontScalar: Float(webviewMathFontScale),
-                syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
-            )
-          } catch {
-            print("Error: \(error.localizedDescription)")
-          }
-        }
+        await self.parseNote()
       }
     }
   }
 
+  func parseNote() async {
+    if let en = editingNote {
+      do {
+        try await en.preParse(
+          modelContext: modelContext,
+          uiParams: UiParams(
+            darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+            mathFontScalar: Float(webviewMathFontScale),
+            syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
+        )
+      } catch {
+        print("Error: \(error.localizedDescription)")
+      }
+    }
+  }
   func onWebviewLoad() async {
   }
   public func messageHandler(_ handlerKey: String, _ messageBody: Any) {

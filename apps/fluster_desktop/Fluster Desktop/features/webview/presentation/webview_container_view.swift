@@ -22,7 +22,7 @@ func getWebViewConfig() -> WKWebViewConfiguration {
   return config
 }
 
-struct WebViewContainer: NSViewRepresentable {  // Use UIViewRepresentable for iOS/iPadOS
+struct WebViewContainer: NSViewRepresentable {
   let parent: WebViewContainerView
   @Binding var webView: WKWebView
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
@@ -392,12 +392,25 @@ struct WebViewContainerView: View {
       of: colorScheme,
       {
         Task {
+            if let en = self.editingNote {
+                do {
+                    try await en.preParse(modelContext: modelContext, uiParams: self.getUiParams())
+                } catch {
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
           await setColorScheme(colorScheme: colorScheme)
         }
       }
     )
     .scrollBounceBehavior(.basedOnSize, axes: [])
   }
+    func getUiParams() -> UiParams {
+        UiParams(
+              darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+              mathFontScalar: Float(webviewMathFontScale),
+              syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
+    }
   public func handleInitialState() async {
     if let en = editingNote {
       Task {
@@ -405,11 +418,7 @@ struct WebViewContainerView: View {
         do {
           try await en.preParseIfEdited(
             modelContext: modelContext,
-            uiParams: UiParams(
-              darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
-              mathFontScalar: Float(webviewMathFontScale),
-              syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
-          )
+            uiParams: self.getUiParams())
           try await EditorState.setInitialEditorState(
             editorPayload: EditorInitialStatePayload(
               note_id: en.id,
