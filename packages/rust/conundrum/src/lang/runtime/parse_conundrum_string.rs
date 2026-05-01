@@ -123,16 +123,28 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                     )).parse_next(x)
                 },
                 "[" => |x: &mut ConundrumInput<'a>| {
+                    if at_line_start {
+                                alt((
+                            FootnoteFooter::parse_input_string.map(ParsedElement::FootnoteFooter),
+                            ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::ParsedOutgoingNoteLink),
+                            ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
+                            ParsedTag::parse_input_string.map(ParsedElement::Tag),
+                            MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
+                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                            FootnoteAnchor::parse_input_string.map(ParsedElement::FootnoteAnchor),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                )).parse_next(x)
+                    } else {
                     alt((
                             ParsedOutgoingNoteLink::parse_input_string.map(ParsedElement::ParsedOutgoingNoteLink),
                             ParsedCitation::parse_input_string.map(ParsedElement::ParsedCitation),
                             ParsedTag::parse_input_string.map(ParsedElement::Tag),
                             MarkdownLinkResult::parse_input_string.map(ParsedElement::MarkdownLink),
                             MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
-                            FootnoteFooter::parse_input_string.map(ParsedElement::FootnoteFooter),
                             FootnoteAnchor::parse_input_string.map(ParsedElement::FootnoteAnchor),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
+                    }
                 },
                 "*" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {

@@ -1,0 +1,6 @@
+---
+source: packages/rust/conundrum/src/parsers/conundrum/hr_with_children/hr_with_children_model.rs
+assertion_line: 164
+expression: child
+---
+<Hr>My Hr with children</Hr>

@@ -99,9 +99,9 @@ impl ConundrumDocument {
     ///   - [ ] Mutli-threaded parsing. I'm not sure if this is even doable, but
     ///   I'm going to give it a shot...
     pub fn render_standalone(&self, params: ArcState) -> ConundrumModalResult<String> {
+        let footnotes = render_footnotes(Arc::clone(&params))?;
         let glue = self.get_glue(Arc::clone(&params));
         let compiled = self.compile_multithreaded(Arc::clone(&params))?;
-        let footnotes = render_footnotes(Arc::clone(&params))?;
         let state = params.read_arc();
         let templ = StandaloneTemplate::new(get_title_group(state.data.content.clone(),
                                                             state.modifiers.clone(),
@@ -119,8 +119,8 @@ impl ConundrumDocument {
     }
 
     pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
-        let state = params.read_arc();
         let footnotes = render_footnotes(Arc::clone(&params))?;
+        let state = params.read_arc();
         if state.contains_modifier(&ConundrumModifier::EmbedJavascript) {
             let glue = self.get_glue(Arc::clone(&params));
             let content = self.compile_multithreaded(Arc::clone(&params))?;

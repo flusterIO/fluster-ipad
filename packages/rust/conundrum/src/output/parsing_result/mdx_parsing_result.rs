@@ -7,7 +7,7 @@ use typeshare::typeshare;
 use crate::{
     lang::runtime::state::{conundrum_error::ConundrumError, conundrum_error_variant::ConundrumErrorVariant},
     output::{
-        html::{dom::dom_id::DOMId, glue::component_glue_manager::AnyComponentKey},
+        html::glue::component_glue_manager::AnyComponentKey,
         parsing_result::{
             ai_serialization_request::AiSerializationRequestPhase1,
             dictionary_result::DictionaryEntryResult,
@@ -45,7 +45,10 @@ pub struct MdxParsingResult {
     pub eq_ref_map: HashMap<String, u32>,
     pub warnings: Vec<ConundrumError>,
     /// A map of type `Map<The anchor index of the footnote, FootnoteResult>`.
-    pub footnotes: HashMap<ConundrumInt, Option<RenderedFootnoteResult>>,
+    /// This field isn't populated until the footnotes are rendered at the end,
+    /// so don't rely on this data during parsing *or* compilation. Use the field on `ParseState`
+    /// instead.
+    pub footnotes: HashMap<ConundrumInt, RenderedFootnoteResult>,
     included_components: Vec<AnyComponentKey>,
 }
 

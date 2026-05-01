@@ -34,14 +34,12 @@ pub struct FootnoteResult {
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <div class="w-full h-full flex flex-col justify-start items-start">
+/// <a role="button" data-cdrm-for="{{anchor_id}}"  class="cdrm-footnote w-full h-full text-foreground/80 hover:text-foreground transition-colors duration-300 flex flex-col justify-start items-start cursor-pointer  text-sm py-1 not-prose">
 /// {{idx | safe}}
-/// </div>
-/// <a role="button" data-cdrm-for="{{anchor_id}}" class="cdrm-footnote
-/// w-full text-foreground/80 hover:text-foreground transition-colors
-/// duration-300 cursor-pointer not-prose">
-/// {{body | safe}}
 /// </a>
+/// <div class="cdrm-footnote-body w-full not-prose">
+/// {{body | safe}}
+/// </div>
 /// ```
 #[typeshare::typeshare]
 #[derive(Debug, uniffi::Record, Serialize, Deserialize, Clone, Template)]

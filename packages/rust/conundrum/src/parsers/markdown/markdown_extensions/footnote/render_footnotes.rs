@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 
 use winnow::error::ErrMode;
 
@@ -11,15 +11,21 @@ use crate::{
         },
         traits::conundrum_input::ArcState,
     },
-    parsers::markdown::markdown_extensions::footnote::footnote_result::RenderedFootnoteResult,
+    parsers::{
+        conundrum::logic::number::conundrum_int::ConundrumInt,
+        markdown::markdown_extensions::footnote::footnote_result::RenderedFootnoteResult,
+    },
 };
 
+/// **BEWARE**: This mutates the state, applying the rendered footnotes to the
+/// returned portion of the state. This must be called once and only once.
 pub fn render_footnotes(state: ArcState) -> ConundrumModalResult<Vec<RenderedFootnoteResult>> {
     let mut items: Vec<RenderedFootnoteResult> = Vec::new();
     let read_state = state.read_arc();
     let footnotes = read_state.footnotes.clone();
     drop(read_state);
-    for (_, value) in footnotes.0.iter() {
+    let mut footnote_map: HashMap<ConundrumInt, RenderedFootnoteResult> = HashMap::new();
+    for (key, value) in footnotes.0.iter() {
         let r = match value {
             FootnoteData::Rendered(r) => Ok(r.clone()),
             FootnoteData::Completed(x) => x.to_rendered_footnote(Arc::clone(&state)),
@@ -29,6 +35,12 @@ pub fn render_footnotes(state: ArcState) -> ConundrumModalResult<Vec<RenderedFoo
             }
         }?;
         items.push(r.clone());
+        footnote_map.insert(*key, r.clone());
     }
+
+    let mut write_state = state.write_arc();
+    write_state.data.footnotes = footnote_map;
+    drop(write_state);
+    items.sort_by(|a, b| a.idx.0.cmp(&b.idx.0));
     Ok(items)
 }

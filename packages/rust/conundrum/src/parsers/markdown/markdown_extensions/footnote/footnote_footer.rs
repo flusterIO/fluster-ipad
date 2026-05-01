@@ -100,8 +100,7 @@ impl ConundrumParser<FootnoteFooter> for FootnoteFooter {
         let children = Children(_children);
 
         let mut state = input.state.write_arc();
-
-        state.footnotes.apply_footnote_footer(&n, children.clone());
+        state.footnotes.apply_footnote_footer(&n, children.clone())?;
         drop(state);
 
         Ok(FootnoteFooter { idx: n,

@@ -1,12 +1,6 @@
 use askama::Template;
 use serde::Serialize;
-use winnow::{
-    Parser,
-    ascii::dec_int,
-    combinator::{delimited, preceded},
-    error::ErrMode,
-    stream::Stream,
-};
+use winnow::{Parser, error::ErrMode, stream::Stream};
 
 use crate::{
     lang::runtime::{
@@ -14,17 +8,10 @@ use crate::{
             conundrum_error::ConundrumError,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
         },
-        traits::{
-            conundrum_input::{ArcState, ConundrumInput},
-            html_js_component_result::HtmlJsComponentResult,
-        },
+        traits::{conundrum_input::ArcState, html_js_component_result::HtmlJsComponentResult},
     },
-    parsers::{
-        conundrum::logic::number::{conundrum_int::ConundrumInt, conundrum_number::ConundrumNumber},
-        javascript::javascript_number::javascript_int,
-        parser_components::white_space_delimited::white_space_delimited,
-        parser_trait::ConundrumParser,
-    },
+    output::html::dom::dom_id::DOMId,
+    parsers::{conundrum::logic::number::conundrum_int::ConundrumInt, parser_trait::ConundrumParser},
 };
 
 /// The `[^1]` syntax that goes in the markdown content, _not_ the footnote that
@@ -32,7 +19,7 @@ use crate::{
 ///
 /// ## Template (HTML)
 /// ```askama
-/// <sup class="text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300">{{self.idx.0}}</sup>
+/// <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300">{{self.idx.0}}</sup>
 /// ```
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone, Template)]
@@ -40,6 +27,7 @@ use crate::{
 pub struct FootnoteAnchor {
     /// The user provided idx.
     pub idx: ConundrumInt,
+    pub id: DOMId,
 }
 
 impl HtmlJsComponentResult for FootnoteAnchor {
@@ -75,10 +63,11 @@ impl ConundrumParser<FootnoteAnchor> for FootnoteAnchor {
 
         let mut mutable_state = input.state.write_arc();
         let anchor_id = mutable_state.dom.new_id();
-        mutable_state.footnotes.append_footnote_anchor(idx.clone(), anchor_id);
+        mutable_state.footnotes.append_footnote_anchor(idx, anchor_id.clone());
         drop(mutable_state);
 
-        Ok(FootnoteAnchor { idx })
+        Ok(FootnoteAnchor { idx,
+                            id: anchor_id })
     }
 
     fn matches_first_char(char: char) -> bool {

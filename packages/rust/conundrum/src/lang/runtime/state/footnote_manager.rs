@@ -1,15 +1,12 @@
-use std::{collections::HashMap, error::Error, sync::Arc};
+use std::collections::HashMap;
 use winnow::error::ErrMode;
 
 use crate::{
     lang::{
         lib::ui::ui_types::children::Children,
-        runtime::{
-            state::{
-                conundrum_error::ConundrumError,
-                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-            },
-            traits::conundrum_input::ArcState,
+        runtime::state::{
+            conundrum_error::ConundrumError,
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
         },
     },
     output::html::dom::dom_id::DOMId,
@@ -55,7 +52,7 @@ impl FootnoteManager {
     }
 
     pub fn append_footnote_anchor(&mut self, key: ConundrumInt, anchor_id: DOMId) {
-        if self.0.get(&key).is_none() {
+        if !self.0.contains_key(&key) {
             let citation_idx = self.get_new_item_index(key);
             self.0.insert(key,
                           FootnoteData::Assigned(PartialFootnote { anchor_id,
@@ -76,7 +73,7 @@ impl FootnoteManager {
                                                            FootnoteData::Assigned(c) => (c.anchor_id.clone(), c.idx),
                                                        })
         {
-            self.0.insert(key.clone(),
+            self.0.insert(*key,
                           FootnoteData::Completed(FootnoteResult { body: body.clone(),
                                                                    idx,
                                                                    anchor_id }));
