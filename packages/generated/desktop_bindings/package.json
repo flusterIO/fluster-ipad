@@ -1,6 +1,7 @@
 {
   "name": "@fluster/desktop_bindings",
   "version": "0.0.1",
+  "description": "",
   "author": "",
   "type": "module",
   "scripts": {
@@ -22,6 +23,5 @@
   },
   "packageManager": "pnpm@9.7.1",
   "license": "ISC",
-  "description": "",
   "module": "src/bindings.ts"
 }

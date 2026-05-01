@@ -34,7 +34,7 @@ pub enum FootnoteData {
 }
 
 #[derive(Debug, Clone)]
-pub struct FootnoteManager(HashMap<ConundrumInt, FootnoteData>);
+pub struct FootnoteManager(pub HashMap<ConundrumInt, FootnoteData>);
 
 impl FootnoteManager {
     pub fn new(data: HashMap<ConundrumInt, FootnoteData>) -> Self {
@@ -89,21 +89,5 @@ impl FootnoteManager {
 
     pub fn get_current_footnote_idx(&self) -> usize {
         self.0.len()
-    }
-
-    pub fn to_rendered_footnotes(&self, state: ArcState) -> ConundrumModalResult<Vec<RenderedFootnoteResult>> {
-        let mut items: Vec<RenderedFootnoteResult> = Vec::new();
-        for (key, value) in self.0.iter() {
-            let r = match value {
-                FootnoteData::Rendered(r) => Ok(r.clone()),
-                FootnoteData::Completed(x) => x.to_rendered_footnote(Arc::clone(&state)),
-                FootnoteData::Assigned(x) => {
-                    Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Forgot something...",
-                                                                                                                     "Conundrum found a footnote anchor without an associated footer. For every `[^1]` anchor, there must also be a matching `[^1]: My footnote...` footer."))))
-                }
-            }?;
-            items.push(r.clone());
-        }
-        Ok(items)
     }
 }

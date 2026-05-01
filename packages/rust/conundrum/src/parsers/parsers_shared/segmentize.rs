@@ -119,6 +119,7 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
 
 
                                                                        let y = Rc::clone(&at_paragraph_start);
+
                                                                        let mut b = y.borrow_mut();
                                                                        *b = match &inner_res {
                                                                            ParsedElement::Text(t) => *b && (t == " " || t == "\n" || t == "\t"),

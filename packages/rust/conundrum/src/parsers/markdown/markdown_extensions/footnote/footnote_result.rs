@@ -35,12 +35,12 @@ pub struct FootnoteResult {
 ///
 /// ```askama
 /// <div class="w-full h-full flex flex-col justify-start items-start">
-/// {{idx}}
+/// {{idx | safe}}
 /// </div>
 /// <a role="button" data-cdrm-for="{{anchor_id}}" class="cdrm-footnote
 /// w-full text-foreground/80 hover:text-foreground transition-colors
-/// duration-300 cursor-pointer">
-/// {{body}}
+/// duration-300 cursor-pointer not-prose">
+/// {{body | safe}}
 /// </a>
 /// ```
 #[typeshare::typeshare]
@@ -61,6 +61,6 @@ impl FootnoteResult {
     pub fn to_rendered_footnote(&self, state: ArcState) -> ConundrumModalResult<RenderedFootnoteResult> {
         Ok(RenderedFootnoteResult { body: self.body.render(state)?,
                                     anchor_id: self.anchor_id.clone(),
-                                    idx: self.idx })
+                                    idx: self.idx + 1 })
     }
 }

@@ -1,5 +1,3 @@
-use gray_matter::ParsedEntity;
-use rssn::prelude::simba::scalar::SupersetOf;
 use serde::Serialize;
 use winnow::error::ErrMode;
 
@@ -33,7 +31,7 @@ use crate::{
             block_quote::block_quote_model::BlockQuoteResult,
             bold_and_italic_text::MarkdownBoldAndItalicTextResult,
             bold_text::MarkdownBoldTextResult,
-            code_block::code_block_model::GeneralCodeBlock,
+            code_block::parsed_codeblock::ParsedCodeBlockVariant,
             heading::heading_model::MarkdownHeadingResult,
             hr::MarkdownHorizontalRule,
             inline_code::InlineCodeResult,
@@ -81,8 +79,7 @@ pub enum ParsedElement {
     BoldText(MarkdownBoldTextResult),
     ItalicText(MarkdownItalicTextResult),
     BoldAndItalicText(MarkdownBoldAndItalicTextResult),
-    // TODO: Apply the `ParsedCodeBlockVariant` type here after getting back from the library.
-    ParsedCodeBlock(GeneralCodeBlock),
+    ParsedCodeBlock(ParsedCodeBlockVariant),
     InlineCode(InlineCodeResult),
     MarkdownLink(MarkdownLinkResult),
     MarkdownParagraph(MarkdownParagraphResult),
@@ -145,7 +142,7 @@ impl HtmlJsComponentResult for ParsedElement {
             // by the
             // footnote
             // component.
-            ParsedElement::FootnoteFooter(f) => Ok(String::from("")),
+            ParsedElement::FootnoteFooter(_) => Ok(String::from("")),
             ParsedElement::FootnoteAnchor(a) => a.to_html_js_component(res),
         }
     }
@@ -155,7 +152,7 @@ impl MdxComponentResult for ParsedElement {
     fn to_mdx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ParsedElement::ParsedInspectionRequest(req) => req.to_conundrum_component(res),
-            ParsedElement::ParsedCodeBlock(block) => block.to_conundrum_component(res),
+            ParsedElement::ParsedCodeBlock(block) => block.to_html_js_component(res),
             ParsedElement::ParsedCitation(cite) => cite.to_conundrum_component(res),
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_conundrum_component(res),
             ParsedElement::Tag(tag) => tag.to_conundrum_component(res),
@@ -193,7 +190,7 @@ impl MarkdownComponentResult for ParsedElement {
     fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         match self {
             ParsedElement::ParsedInspectionRequest(req) => req.to_mdx_component(res),
-            ParsedElement::ParsedCodeBlock(block) => block.to_mdx_component(res),
+            ParsedElement::ParsedCodeBlock(block) => block.to_markdown(res),
             ParsedElement::ParsedCitation(cite) => cite.to_mdx_component(res),
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_mdx_component(res),
             ParsedElement::Tag(tag) => tag.to_markdown(res),
@@ -315,7 +312,7 @@ impl ParsedElement {
             ParsedElement::OrderedList(_) => true,
             ParsedElement::Table(_) => true,
             ParsedElement::FootnoteAnchor(_) => false,
-            ParsedElement::FootnoteFooter(f) => true,
+            ParsedElement::FootnoteFooter(_) => true,
         }
     }
 }

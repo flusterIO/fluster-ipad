@@ -71,5 +71,6 @@ class MyDataclass:
             "#;
         let assets = ParseState::default().highlight_assets;
         let res = render_general_codeblock_to_html(RenderCodeToHtmlReq { code: GeneralPresentationCodeBlock { content: test_content.to_string(), lang: SupportedCodeBlockSyntax::Python, theme: Some(SupportedCodeBlockTheme::SolarizedDark), inline: false, assets } }).expect("Successfully highlights a python codeblock.");
+
     }
 }

@@ -12,7 +12,6 @@ use crate::{
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
                 html_js_component_result::HtmlJsComponentResult,
-                state_modifier::ConundrumStateModifier,
             },
         },
     },
@@ -21,7 +20,9 @@ use crate::{
         glue::gather_glue_assets::{WebGlueAssetData, get_glue_asset_data},
         standalone::standalone_template::StandaloneTemplate,
     },
-    parsers::markdown::markdown_extensions::footnote::footnote_footer_html_templ::FootnoteSectionTemplate,
+    parsers::markdown::markdown_extensions::footnote::{
+        footnote_footer_html_templ::FootnoteSectionTemplate, render_footnotes::render_footnotes,
+    },
 };
 use askama::Template;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
@@ -75,7 +76,11 @@ impl ConundrumDocument {
     /// - [x] Gathers katex css
     /// - [x] Embeds katex fonts
     /// - [x] Embeds nerd fonts
-    /// - [x] Embeds component javascript conditionally
+    /// - [ ] Embeds component javascript conditionally
+    ///   - [ ] Was working, then I broke it, now I'm slowy rebuilding it as I
+    ///     need it for
+    ///   development mostly. There's so little javascript that this will be
+    /// straight forward to   get in order
     /// - [x] Embeds component css conditionally
     ///
     /// ## Requirements for app-embedded functionality
@@ -87,18 +92,23 @@ impl ConundrumDocument {
     ///
     /// ### If I'm lucky...
     /// - [x] Multi-threaded compilation
-    /// - [ ] Mutli-threaded parsing. I'm not sure if this is even doable, but
-    ///   I'm going to give it
-    /// a shot...
+    ///   - [ ] This can be improved, like in this very function. Currently the
+    ///     main parser requests a new thread at each child, but there are
+    ///     portions of the runtime that are still single threaded that don't
+    ///     need to be, like this function.
+    ///   - [ ] Mutli-threaded parsing. I'm not sure if this is even doable, but
+    ///   I'm going to give it a shot...
     pub fn render_standalone(&self, params: ArcState) -> ConundrumModalResult<String> {
         let glue = self.get_glue(Arc::clone(&params));
         let compiled = self.compile_multithreaded(Arc::clone(&params))?;
+        let footnotes = render_footnotes(Arc::clone(&params))?;
         let state = params.read_arc();
         let templ = StandaloneTemplate::new(get_title_group(state.data.content.clone(),
                                                             state.modifiers.clone(),
                                                             ConundrumCompileTarget::PlainText).map(|n| n.title)
                                                                                               .ok(),
                                             compiled,
+                                            FootnoteSectionTemplate { footnotes },
                                             glue.js,
                                             glue.css,
                                             state.ui_params.clone());
@@ -110,7 +120,7 @@ impl ConundrumDocument {
 
     pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
         let state = params.read_arc();
-        let footnotes = Vec::new();
+        let footnotes = render_footnotes(Arc::clone(&params))?;
         if state.contains_modifier(&ConundrumModifier::EmbedJavascript) {
             let glue = self.get_glue(Arc::clone(&params));
             let content = self.compile_multithreaded(Arc::clone(&params))?;

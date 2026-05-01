@@ -13,7 +13,7 @@ export type ParsedElement =
 	| { tag: "BoldText", content: MarkdownBoldTextResult }
 	| { tag: "ItalicText", content: MarkdownItalicTextResult }
 	| { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
-	| { tag: "ParsedCodeBlock", content: GeneralCodeBlock }
+	| { tag: "ParsedCodeBlock", content: ParsedCodeBlockVariant }
 	| { tag: "InlineCode", content: InlineCodeResult }
 	| { tag: "MarkdownLink", content: MarkdownLinkResult }
 	| { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
@@ -561,6 +561,12 @@ export interface ConundrumFunction {
 
 export interface ConundrumObject {
 	data: DashMap<string, ParsedElement>;
+}
+
+export interface DictionaryCodeBlock {
+	leading_char: string;
+	title: Children;
+	content: Children;
 }
 
 export interface DictionaryEntryResult {
@@ -1474,6 +1480,11 @@ export enum InContentDocumentationSource {
 	ComponentDocs = "component",
 	InternalDocs = "internal-docs",
 }
+
+export type ParsedCodeBlockVariant = 
+	| { tag: "General", content: GeneralCodeBlock }
+	| { tag: "Dictionary", content: DictionaryCodeBlock }
+	| { tag: "AI", content: GeneralCodeBlock };
 
 export enum ParserId {
 	Tags = "tags",

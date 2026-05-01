@@ -1,6 +1,7 @@
 {
   "name": "@fluster/conundrum_lezer",
   "version": "1.0.0",
+  "description": "Automatically generated lezer from the Conundrum nom grammar.",
   "author": "",
   "type": "module",
   "scripts": {
@@ -13,6 +14,5 @@
   "devDependencies": {
     "rollup": "4.59.0"
   },
-  "license": "ISC",
-  "description": "Automatically generated lezer from the Conundrum nom grammar."
+  "license": "ISC"
 }

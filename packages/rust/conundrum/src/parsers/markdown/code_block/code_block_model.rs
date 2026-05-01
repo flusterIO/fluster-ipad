@@ -1,4 +1,4 @@
-use std::{rc::Rc, str::FromStr, sync::Arc};
+use std::{str::FromStr, sync::Arc};
 
 use askama::Template;
 use parking_lot::Mutex;
@@ -9,7 +9,7 @@ use winnow::{
     Parser,
     ascii::{line_ending, space0, space1},
     combinator::{self},
-    error::ErrMode,
+    error::{ContextError, ErrMode},
     stream::{AsChar, Stream},
     token::{literal, take_till, take_until, take_while},
 };
@@ -17,7 +17,9 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
+        lib::ui::ui_types::children::Children,
         runtime::{
+            parse_conundrum_string::parse_elements,
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
@@ -35,10 +37,7 @@ use crate::{
         },
     },
     output::{
-        general::component_constants::{
-            any_component_id::AnyComponentName, auto_inserted_component_name::AutoInsertedComponentName,
-            parser_ids::ParserId,
-        },
+        general::component_constants::{auto_inserted_component_name::AutoInsertedComponentName, parser_ids::ParserId},
         html::{dom::dom_id::DOMId, glue::component_glue_manager::AnyComponentKey},
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
@@ -52,10 +51,12 @@ use crate::{
         conundrum::logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
         markdown::code_block::{
             code_block_html_template::CodeBlockHTMLTemplate,
+            dictionary::dictionary_code_block::DictionaryCodeBlock,
             general::{
                 general_codeblock::GeneralPresentationCodeBlock,
                 render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
             },
+            parsed_codeblock::ParsedCodeBlockVariant,
             supported_languages::SupportedCodeBlockSyntax,
             supported_themes::SupportedCodeBlockTheme,
         },
@@ -237,8 +238,8 @@ impl MdxComponentResult for GeneralCodeBlock {
     }
 }
 
-impl ConundrumParser<GeneralCodeBlock> for GeneralCodeBlock {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<GeneralCodeBlock> {
+impl ConundrumParser<ParsedCodeBlockVariant> for GeneralCodeBlock {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<ParsedCodeBlockVariant> {
         let ((language, meta_opt, raw_content, tick_length), full_match) =
             (|input: &mut ConundrumInput<'a>| {
                 let cp = input.input.checkpoint();
@@ -251,7 +252,9 @@ impl ConundrumParser<GeneralCodeBlock> for GeneralCodeBlock {
                         let _s = SupportedCodeBlockSyntax::format_string_for_key(s);
                         SupportedCodeBlockSyntax::from_str(_s.as_str()).ok()
                     })
-                    .parse_next(input)?;
+                    .parse_next(input).unwrap_or_else(|_: ContextError| {
+                        SupportedCodeBlockSyntax::inline_default()
+                    });
 
                 let meta_opt = combinator::opt(|input: &mut ConundrumInput<'a>| {
                                    let _ = space1.parse_next(input)?;
@@ -290,12 +293,64 @@ impl ConundrumParser<GeneralCodeBlock> for GeneralCodeBlock {
         let id = state.dom.new_id();
         state.data.append_embeddable_component(&AnyComponentKey::AutoInserted(AutoInsertedComponentName::AutoInsertedCodeBlock));
         drop(state);
-        Ok(GeneralCodeBlock { language,
-                              meta_data,
-                              id,
-                              depth: tick_length as u8,
-                              content: raw_content.to_string(),
-                              full_match: full_match.to_string() })
+        match &language {
+            SupportedCodeBlockSyntax::ConundrumAi => {
+                Ok(ParsedCodeBlockVariant::AI(GeneralCodeBlock { language,
+                                                                 meta_data,
+                                                                 id,
+                                                                 depth: tick_length as u8,
+                                                                 content: raw_content.to_string(),
+                                                                 full_match: full_match.to_string() }))
+            }
+            SupportedCodeBlockSyntax::Dictionary => {
+                let mut nested_input = ConundrumInput { input: raw_content,
+                                                        state: Arc::clone(&input.state) };
+                let child_ems = parse_elements(&mut nested_input)?;
+
+                let term =
+                    meta_opt.ok_or_else(|| {
+                        ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details(
+                            "Invalid dictionary entry",
+                            r#"Each dictionary entry requires a 'term', defined after two `--` characters:
+
+````txt 
+```dictionary -- Derivative
+A derivative is...
+```
+````"#,
+                        )))
+                    })?;
+
+                let mut title_input = ConundrumInput { input: term,
+                                                       state: Arc::clone(&input.state) };
+
+                let title = parse_elements(&mut title_input)?;
+
+                // let mut nested_title_input =
+                Ok(
+        ParsedCodeBlockVariant::Dictionary(
+            DictionaryCodeBlock {
+                content: Children(child_ems),
+                title: Children(title),
+                leading_char: raw_content.to_ascii_lowercase().chars().find(|c| AsChar::is_alphanum(c)).ok_or_else(|| {
+                    ErrMode::Cut(
+                        ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Invalid dictionary entry", format!(r#"Conundrum doesn't know how to alphabetize the dictionary entry with the following content:
+```md 
+{}
+```"#, full_match).as_str()))
+                    )
+                    })?
+                }
+        )
+    )
+            }
+            _ => Ok(ParsedCodeBlockVariant::General(GeneralCodeBlock { language,
+                                                                       meta_data,
+                                                                       id,
+                                                                       depth: tick_length as u8,
+                                                                       content: raw_content.to_string(),
+                                                                       full_match: full_match.to_string() })),
+        }
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -321,9 +376,14 @@ mod tests {
         let res =
             GeneralCodeBlock::parse_input_string(&mut test_data).expect("Parses code block without throwing an error.");
 
-        assert_snapshot!(res.content);
+        let x = match &res {
+                    ParsedCodeBlockVariant::Dictionary(d) => d.content.render(Arc::clone(&test_data.state)),
+                    ParsedCodeBlockVariant::General(g) => Ok(g.content.clone()),
+                    ParsedCodeBlockVariant::AI(a) => Ok(a.content.clone()),
+                }.expect("Gets match content successfully.");
+        assert_snapshot!(x);
 
-        let mdx_content = res.to_mdx_component(Arc::clone(&test_data.state))
+        let mdx_content = res.to_html_js_component(Arc::clone(&test_data.state))
                              .expect("Compiles code block to mdx without throwing an error.");
 
         assert_snapshot!(mdx_content);

@@ -1,14 +1,7 @@
 use std::sync::Arc;
 
 use serde::Serialize;
-use tokio::io::repeat;
-use winnow::{
-    Parser,
-    ascii::{space1, till_line_ending},
-    combinator::opt,
-    stream::Stream,
-    token::take,
-};
+use winnow::{Parser, combinator::opt, stream::Stream, token::take};
 
 use crate::{
     lang::{
@@ -18,7 +11,6 @@ use crate::{
             state::{conundrum_error_variant::ConundrumModalResult, parse_state::ConundrumModifier},
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
-                html_js_component_result::HtmlJsComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
@@ -26,10 +18,6 @@ use crate::{
     },
     parsers::{
         conundrum::logic::number::conundrum_int::ConundrumInt,
-        markdown::markdown_extensions::footnote::{
-            footnote_anchor,
-            footnote_result::{FootnoteResult, RenderedFootnoteResult},
-        },
         parser_trait::ConundrumParser,
         parsers_shared::{
             indentation_handling::repeated_indented_lines::{join_indentend_line_types, repeated_indented_lines},

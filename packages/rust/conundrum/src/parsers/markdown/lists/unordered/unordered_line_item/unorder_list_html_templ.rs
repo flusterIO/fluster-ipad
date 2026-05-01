@@ -27,7 +27,7 @@ pub struct UnorderedListItemHtmlTemplate {
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <ul>
+/// <ul class="w-full max-w-[1080px] list-disc">
 /// {% for item in items %}
 /// {{item.render()? | safe}}
 /// {% endfor %}

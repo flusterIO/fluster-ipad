@@ -39,7 +39,7 @@ extension AiSerializationRequestType: @retroactive Codable {
   }
 }
 
-extension ParsedCodeBlock: @retroactive Codable {
+extension GeneralCodeBlock: @retroactive Codable {
   public enum CodingKeys: String, CodingKey {
     case fullMatch,
       language,
@@ -81,7 +81,7 @@ extension AiSerializationRequestPhase1: @retroactive Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let codeBlockResult = try container.decode(
-      ConundrumSwift.ParsedCodeBlock.self, forKey: .parsingResult)
+      ConundrumSwift.GeneralCodeBlock.self, forKey: .parsingResult)
     self.init(parsingResult: codeBlockResult)
   }
 

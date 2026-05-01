@@ -5,15 +5,24 @@ use std::{collections::HashMap, sync::Arc};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
 use uniffi::Enum;
+use winnow::error::ErrMode;
 
 use crate::{
     lang::runtime::state::{
-        citation_list::CitationList, dom_data::DomData, footnote_manager::FootnoteManager, ui_params::UIParams,
+        citation_list::CitationList,
+        conundrum_error::ConundrumError,
+        conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+        dom_data::DomData,
+        footnote_manager::{FootnoteData, FootnoteManager},
+        ui_params::UIParams,
     },
     output::{
         general::component_constants::parser_ids::ParserId, parsing_result::mdx_parsing_result::MdxParsingResult,
     },
-    parsers::markdown::{heading_sluggger::Slugger, markdown_extensions::footnote::footnote_result::FootnoteResult},
+    parsers::markdown::{
+        heading_sluggger::Slugger,
+        markdown_extensions::footnote::footnote_result::{FootnoteResult, RenderedFootnoteResult},
+    },
 };
 
 /// The goal with these modifiers is to have a few different compile targets

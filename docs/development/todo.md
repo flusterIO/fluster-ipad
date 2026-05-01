@@ -2,14 +2,12 @@
 
 ## Remainder of Today
 
-- [ ] Apply the `ParsedCodeBlockVariant` type and separate the dictionary and AI code blocks into separate variants in the AST for a variety of reasons, but most importantly so that templates can be generated for each time independently without a million match statements.
-- [ ] Go to the library so you can start a TDD approach again.
-- [?] Fix independent markdown view page as that's not rendering at all now!
-  - Just a loading class issue that's never being set to false. Can easily remove now.
+- [x] Apply the `ParsedCodeBlockVariant` type and separate the dictionary and AI code blocks into separate variants in the AST for a variety of reasons, but most importantly so that templates can be generated for each time independently without a million match statements.
 - [?] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
-- [ ] Handle dictionary entry rendering to html.
-- [ ] Handle issue with documentation parser not being found in some contexts.
-- [ ] If the CodeBlock finds an invalid language, default to something sensible but alert the user by appending a 'warning' to the result.
+- [?] Handle dictionary entry rendering to html.
+- [?] Handle issue with documentation parser not being found in some contexts.
+- [ ] Fix independent markdown view page as that's not rendering tabs properly on load still.
+- [?] If the CodeBlock finds an invalid language, default to something sensible but alert the user by appending a 'warning' to the result.
 - [ ] Handle missing parsers (In order of the direction of getting the documentation working again! Work towards that.)
   - [ ] Footnote parser
   - [ ] Line Item with checkbox
@@ -27,7 +25,15 @@
 ## Pre-Release Milestones
 
 - [ ] Get dictionary entry page working (requires dictionary html output parser and new query method to return properly formatted html)
+  - [x] Render dictionary entries to html
+  - [ ] Handle rendering of dictionary page in React still, directly from the Swift DB.
 - [ ] All documentation pages back in working order (Handle tables, list items and rest of missing parsers)
+  - [ ] Parse & Render Table
+  - [ ] Parse & Render Lists
+    - [ ] Unordered (half complete)
+    - [ ] Ordered
+    - [ ] Checkbox
+  - [ ] Parse & Render Footnotes (half complete)
 
 ### Components that need to move over still
 

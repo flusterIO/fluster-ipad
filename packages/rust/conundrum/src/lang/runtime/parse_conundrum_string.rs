@@ -183,7 +183,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 "+" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                            UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
+                                UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
                                 MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                                 any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
@@ -194,8 +194,8 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 _ => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
-                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                                 ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                                 any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)
                     } else {

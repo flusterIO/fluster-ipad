@@ -1,5 +1,6 @@
 pub mod code_block_html_template;
 pub mod code_block_model;
+pub mod dictionary;
 pub mod general;
 pub mod parsed_codeblock;
 pub mod supported_languages;

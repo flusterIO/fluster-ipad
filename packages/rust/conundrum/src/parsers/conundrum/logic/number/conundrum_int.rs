@@ -1,5 +1,5 @@
 
-use std::fmt::Display;
+use std::{fmt::Display, hash::Hash, ops::Add};
 
 use winnow::{Parser, ascii::dec_int, error::{ContextError, ErrMode}};
 
@@ -13,7 +13,7 @@ use crate::{
     parsers::{conundrum::logic::{number::conundrum_number::ConundrumNumber, object::object::ConundrumObject, token::ConundrumLogicToken}, parser_trait::ConundrumParser},
 };
 
-#[derive(Debug, serde::Serialize, serde::Deserialize, Clone, Copy, Hash)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone, Copy)]
 pub struct ConundrumInt(pub i64);
 
 uniffi::custom_newtype!(ConundrumInt, i64);
@@ -23,9 +23,31 @@ impl Eq for ConundrumInt {
 
 }
 
+impl Add<i64> for ConundrumInt {
+    type Output = ConundrumInt;
+
+    fn add(self, rhs: i64) -> Self::Output {
+        ConundrumInt(self.0 + rhs)
+    }
+}
+
+impl Add for ConundrumInt {
+    type Output = ConundrumInt;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        ConundrumInt(self.0 + rhs.0)
+    }
+}
+
+impl Hash for ConundrumInt {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.0.hash(state);
+    }
+}
+
 impl PartialEq<ConundrumInt> for ConundrumInt {
     fn eq(&self, other: &ConundrumInt) -> bool {
-        self.0 == (*other).0
+        self.0 == other.0
     }
 }
 impl PartialEq<i64> for ConundrumInt {

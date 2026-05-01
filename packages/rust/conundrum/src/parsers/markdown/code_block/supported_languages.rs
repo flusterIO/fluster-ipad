@@ -1077,6 +1077,10 @@ impl SupportedCodeBlockSyntax {
         })
     }
 
+    pub fn inline_default() -> Self {
+        Self::Shell_Unix_Generic
+    }
+
     pub fn devicon(&self, is_dark_mode: &bool) -> devicons::FileIcon {
         match self {
             Self::Plain_Text => devicons::FileIcon::from("txt"),
@@ -1526,4 +1530,3 @@ mod tests {
                                         });
     }
 }
-
