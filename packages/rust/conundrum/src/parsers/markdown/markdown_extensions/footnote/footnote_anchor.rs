@@ -19,7 +19,7 @@ use crate::{
 ///
 /// ## Template (HTML)
 /// ```askama
-/// <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300">{{self.idx.0}}</sup>
+/// <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">{{self.idx.0}}</sup>
 /// ```
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone, Template)]

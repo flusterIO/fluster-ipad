@@ -30,9 +30,9 @@ My content here[^1].
 async fn parses_footnotes() {
     let test_content = r#"# My title here
 
-Consectetur auctor hac lectus ex, a, natoque maecenas arcu pulvinar. Aenean, arcu ac sed nunc adipiscing, in sit laoreet eget. Mus non, elit dui, nascetur cras diam est ac in. Velit, nec, pellentesque suscipit at laoreet suspendisse auctor tempor sed. Porttitor nisi convallis gravida elementum quis consectetur, integer elit tempus.[^1]
+Consectetur auctor hac lectus ex, a, natoque maecenas arcu pulvinar. Aenean, arcu ac sed nunc adipiscing, in sit laoreet eget. Mus non, elit dui, nascetur cras diam est ac in. Velit, nec, pellentesque suscipit at laoreet suspendisse auctor tempor sed. Porttitor nisi convallis gravida elementum quis consectetur, integer elit tempus.[^2]
 
-Ullamcorper congue hac rhoncus consectetur, est urna arcu dui amet. Rhoncus lectus aenean consequat consectetur platea aenean et convallis, auctor. Nisi at convallis convallis, molestie pharetra eget vel lectus aliquam. Velit quis ut elit suspendisse vulputate, ligula nibh libero efficitur. Nisl metus vulputate, posuere, consectetur elit lorem euismod parturient dui.[^2]
+Ullamcorper congue hac rhoncus consectetur, est urna arcu dui amet. Rhoncus lectus aenean consequat consectetur platea aenean et convallis, auctor. Nisi at convallis convallis, molestie pharetra eget vel lectus aliquam. Velit quis ut elit suspendisse vulputate, ligula nibh libero efficitur. Nisl metus vulputate, posuere, consectetur elit lorem euismod parturient dui.[^1]
 
 Velit sit suscipit natoque tortor nunc velit metus ut faucibus. Mus eget, eget, vitae tincidunt nisi elementum id convallis nisi. Vestibulum pretium eu nibh ac eget nunc at, eget, felis. Vel, tristique aliquam condimentum, quis posuere aliquet felis at ut. Dignissim lacus elit non orci faucibus ultricies diam tortor sed.
 

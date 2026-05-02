@@ -24,8 +24,8 @@ use strum::{EnumDiscriminants, EnumIter, IntoEnumIterator};
            Default)]
 pub enum MarkdownElementGlueKey {
     #[default]
-    #[serde(rename = "footnotes")]
-    #[strum(to_string = "footnotes")]
+    #[serde(rename = "footnotes.js")]
+    #[strum(to_string = "footnotes.js")]
     Footnotes,
 }
 
@@ -182,7 +182,6 @@ impl WEB_GLUE_CODE_MAP {
             let v = res.value();
             String::from_utf8(v.to_vec()).ok()
         } else {
-            eprintln!("Could not load resource for the {} key", key);
             None
         }
     }

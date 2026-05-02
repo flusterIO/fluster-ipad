@@ -1,6 +1,6 @@
 const onFootnoteAnchorClick = (e: Event) => {
     const target = e.currentTarget as HTMLElement;
-    const footer = document.querySelector(`div[data-cdrm-for="${target.id}"]`);
+    const footer = document.querySelector(`a[data-cdrm-for="${target.id}"]`);
     if (!footer) {
         console.error("Could not find footer for footnote anchor");
         return;
