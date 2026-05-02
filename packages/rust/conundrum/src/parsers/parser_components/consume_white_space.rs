@@ -15,3 +15,12 @@ pub fn consume_white_space(occurrences: impl Into<Range> + Clone)
         Ok(())
     }
 }
+
+/// Consumes spaces and tabs, but does fails on new lines.
+pub fn consume_linear_space(occurrences: impl Into<Range> + Clone)
+                            -> impl Fn(&mut ConundrumInput) -> ConundrumModalResult<()> {
+    move |input| {
+        take_while(occurrences.clone(), |c| AsChar::is_space(c)).void().parse_next(input)?;
+        Ok(())
+    }
+}

@@ -1,2 +1,10 @@
+pub mod markdown_table_alignment_cell;
+pub mod markdown_table_alignment_row;
+pub mod markdown_table_cell;
+pub mod markdown_table_heading_cell;
+pub mod markdown_table_heading_row;
 pub mod markdown_table_html_templ;
 pub mod markdown_table_model;
+pub mod markdown_table_row;
+pub mod table_cell_data;
+pub mod table_utility_parsers;

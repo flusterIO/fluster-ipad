@@ -51,12 +51,12 @@ impl FootnoteManager {
     /// Returns the document based index from the user provided index.
     pub fn get_footnote_idx(&self, idx: &ConundrumInt) -> ConundrumModalResult<ConundrumInt> {
         let item = self.0.get(idx).ok_or_else(|| {
-             ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx.to_string()).as_str())))
+             ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx).as_str())))
          })?;
         match item {
              FootnoteData::Completed(c) => Ok(c.idx),
              FootnoteData::Rendered(r) => Ok(r.idx),
-             FootnoteData::Assigned(a) => Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx.to_string()).as_str())))),
+             FootnoteData::Assigned(_) => Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx.to_string()).as_str())))),
          }
     }
 

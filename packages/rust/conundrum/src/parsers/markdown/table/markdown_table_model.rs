@@ -6,16 +6,14 @@ use crate::{
             html_js_component_result::HtmlJsComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
-    parsers::parser_trait::ConundrumParser,
+    parsers::{markdown::table::markdown_table_row::MarkdownTableRow, parser_trait::ConundrumParser},
 };
-use polars::frame::DataFrame;
 use serde::Serialize;
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownTable {
-    #[serde(skip)]
-    pub data: DataFrame,
+    pub rows: Vec<MarkdownTableRow>,
 }
 
 impl PlainTextComponentResult for MarkdownTable {

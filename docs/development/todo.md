@@ -3,16 +3,15 @@
 ## Remainder of Today
 
 - [x] Apply the `ParsedCodeBlockVariant` type and separate the dictionary and AI code blocks into separate variants in the AST for a variety of reasons, but most importantly so that templates can be generated for each time independently without a million match statements.
-- [?] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
-- [?] Handle dictionary entry rendering to html.
-- [?] Handle issue with documentation parser not being found in some contexts.
+- [x] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
+- [x] Handle dictionary entry rendering to html.
+- [x] Handle issue with documentation parser not being found in some contexts.
 - [ ] Fix independent markdown view page as that's not rendering tabs properly on load still.
-- [?] If the CodeBlock finds an invalid language, default to something sensible but alert the user by appending a 'warning' to the result.
 - [ ] Handle missing parsers (In order of the direction of getting the documentation working again! Work towards that.)
-  - [ ] Footnote parser
-  - [ ] Line Item with checkbox
+  - [?] Footnote parser
+  - [ ] List Item with checkbox
     - [ ] Various checked states (Pass a 'marker' char to the result)
-  - [ ] Plain line item
+  - [?] Plain line item
   - [ ] Numbered line item
   - [ ] Full table!
 
@@ -33,7 +32,7 @@
     - [ ] Unordered (half complete)
     - [ ] Ordered
     - [ ] Checkbox
-  - [ ] Parse & Render Footnotes (half complete)
+  - [x] Parse & Render Footnotes (half complete)
 
 ### Components that need to move over still
 

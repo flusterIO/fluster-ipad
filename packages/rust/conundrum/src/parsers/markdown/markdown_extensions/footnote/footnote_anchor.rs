@@ -36,8 +36,7 @@ pub struct FootnoteAnchor {
 }
 
 impl HtmlJsComponentResult for FootnoteAnchor {
-    fn to_html_js_component(&self, state: ArcState) -> ConundrumModalResult<String> {
-        let read_state = state.read_arc();
+    fn to_html_js_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         self.render().map_err(|e| {
                     eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
