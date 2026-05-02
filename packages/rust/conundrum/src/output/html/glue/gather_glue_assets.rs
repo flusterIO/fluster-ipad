@@ -1,7 +1,7 @@
 use crate::{
     lang::runtime::traits::conundrum_input::ArcState,
     output::html::glue::{
-        component_glue_manager::WEB_GLUE_CODE_MAP,
+        component_glue_manager::{AnyComponentKey, MarkdownElementGlueKey, WEB_GLUE_CODE_MAP},
         glue_asset::GlueCssAsset,
         individual_glue_assets::{
             katex_ams_regular::KatexFontAssetAmsRegular, katex_caligraphic_bold::KatexFontAssetCaligraphicBold,
@@ -76,6 +76,14 @@ WebGlueCodeGeneralFiles::Styles
         }
         if let Some(css) = WEB_GLUE_CODE_MAP::get_css_string_by_key(k.clone()) {
             css_string += css.as_str();
+        }
+    }
+
+    if !state.footnotes.0.is_empty() {
+        if let Some(js) =
+            WEB_GLUE_CODE_MAP::get_js_string_by_key(AnyComponentKey::Markdown(MarkdownElementGlueKey::Footnotes))
+        {
+            js_string += js.as_str();
         }
     }
 

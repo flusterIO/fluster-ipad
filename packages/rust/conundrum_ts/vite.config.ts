@@ -21,7 +21,7 @@ export default defineConfig({
         lib: {
             entry: {
                 main: path.resolve(__dirname, "./src/initialize_conundrum_web.ts"),
-                methods: path.resolve(__dirname, "./src/component_glue/methods.ts"),
+                methods: path.resolve(__dirname, "./src/methods.ts"),
             },
             fileName(format, entryName) {
                 return `${entryName}.${format}.js`;

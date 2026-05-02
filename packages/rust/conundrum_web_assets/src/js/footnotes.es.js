@@ -1,66 +1,4 @@
-const applyCopyConundrumCodeBlockListeners = () => {
-  const ems = document.getElementsByClassName("cdrm-codeblock");
-  for (var i2 = 0; i2 < ems.length; i2++) {
-    const item = ems.item(i2);
-    item.addEventListener("mouseenter", (e) => {
-      e.target.classList.add("hovered");
-    });
-    item.addEventListener("mouseleave", (e) => {
-      e.target.classList.add("hovered");
-    });
-  }
-  const icons = document.getElementsByClassName("cdrm-codeblock-icon");
-  for (var i2 = 0; i2 < icons.length; i2++) {
-    const item = icons.item(i2);
-    item.addEventListener("click", async (e) => {
-      Promise.resolve().then(() => methods_es).then((a) => a.onCopyCodeBlockClick(e));
-    });
-  }
-};
-(() => {
-  applyCopyConundrumCodeBlockListeners();
-  window.addEventListener("cdrm-content-loaded", applyCopyConundrumCodeBlockListeners);
-})();
-const M = (o) => {
-  const t = o.currentTarget, e = t.parentElement?.parentElement;
-  if (!e) {
-    console.error("Could not find proper parent element.");
-    return;
-  }
-  const s = t.getAttribute("data-cdrm-idx");
-  if (typeof s > "u") {
-    console.error("Could not find tab index.");
-    return;
-  }
-  const r = parseInt(s), n = e.getAttribute("data-cdrm-group"), l = e.getAttribute("data-cdrm-focused-idx");
-  if (typeof l > "u") {
-    console.error("Could not found TabGroup focused index.");
-    return;
-  }
-  const a = parseInt(l), d = e.querySelectorAll(".cdrm-tab-subtle-border");
-  for (let u = 0; u < d.length; u++) {
-    const p = d.item(u), A = p.classList.values().toArray().filter((f) => f.startsWith("bg-"));
-    for (const f of A)
-      p.classList.remove(f);
-    if (u === r) {
-      const f = t.querySelector(
-        ".cdrm-tab-subtle-border"
-      );
-      if (f) {
-        f.style.transformOrigin = a < r ? "left" : "right", f.classList.remove("bg-transparent"), f.classList.remove("scale-x-0");
-        const w = e.getAttribute("data-cdrm-emphasis");
-        w && f.classList.add(`bg-emphasis-${w}`);
-      }
-    } else
-      p.style.transformOrigin = a > r ? "left" : "right", p.classList.add("bg-transparent"), p.classList.add("scale-x-0");
-  }
-  e.setAttribute("data-cdrm-focused-idx", `${r}`);
-  const g = document.getElementsByClassName("cdrm-tab-group-item");
-  for (let u = 0; u < g.length; u++) {
-    const p = g.item(u);
-    p.getAttribute("data-cdrm-group") === n && (p.style.transform = `translateX(${(u - r) * 100}%)`, u === r ? p.style.opacity = "1" : p.style.opacity = "0");
-  }
-}, c = {
+const c = {
   fatal: 0,
   error: 0,
   warn: 1,
@@ -493,67 +431,7 @@ function B(o = {}) {
     ...o
   });
 }
-const _ = B(), j = (o) => {
-  const e = o.currentTarget.getAttribute("data-cdrm-copy-for");
-  if (!e) {
-    _.error(
-      "Failed to find a valid targetID on the code block.",
-      o.currentTarget
-    );
-    return;
-  }
-  const s = document.getElementById(e);
-  if (!s)
-    return;
-  window.navigator.clipboard.writeText(s.querySelector("pre")?.innerText ?? "").catch((n) => {
-    _.error("Copy error: ", n);
-  });
-  const r = document.querySelector(
-    `div[data-cdrm-codeblock="${e}"]`
-  );
-  if (r) {
-    const n = r.getAttribute("data-cdrm-lang");
-    window.dispatchEvent(
-      new CustomEvent("cdrm-codeblock-copy", {
-        detail: {
-          lang: n
-        }
-      })
-    );
-  }
-}, O = () => {
-  _.info("Toggle copy icon here.");
-};
-function E(o) {
-  const t = o.querySelector(
-    ".cdrm-admon-body-container"
-  );
-  if (!t)
-    return;
-  const e = o.querySelector(".cdrm-admon-body");
-  if (!e)
-    return;
-  e.style.height = "auto", e.style.transition = "max-height 500ms ease-in-out";
-  const s = e.getBoundingClientRect().height;
-  t.style.maxHeight = `${s}px`;
-}
-const N = (o) => {
-  function t(a) {
-    a.setAttribute("data-cdrm-folded", "false"), E(a);
-  }
-  function e(a) {
-    const d = a.querySelector(
-      ".cdrm-admon-body-container"
-    );
-    d && (d.style.maxHeight = "0px", a.setAttribute("data-cdrm-folded", "true"));
-  }
-  const s = o.currentTarget.parentElement, r = s.getAttribute("data-cdrm-folded") === "true", n = s.getAttribute("data-cdrm-foldable") === "true";
-  if (!s.querySelector(".cdrm-admon-body-container")) {
-    console.error("Could not find admonition body");
-    return;
-  }
-  n && (r ? t(s) : e(s));
-};
+B();
 function v(o) {
   const t = parseInt(
     /* eslint-disable-next-line  -- It'll be there... I put it there. */
@@ -574,13 +452,7 @@ function v(o) {
   } else
     console.error("Could not find focused body");
 }
-const R = () => {
-  const o = document.getElementsByClassName("cdrm-tab-group");
-  for (let t = 0; t < o.length; t++) {
-    const e = o.item(t);
-    e && v(e);
-  }
-}, P = () => {
+const P = () => {
   const o = document.getElementsByClassName("cdrm-tab-group");
   for (let t = 0; t < o.length; t++) {
     const e = o.item(t);
@@ -591,53 +463,8 @@ const R = () => {
       attributeFilter: ["data-cdrm-focused-idx"]
     });
   }
-}, $ = (o) => {
-  const t = o.currentTarget, e = document.querySelector(`div[data-cdrm-for="${t.id}"]`);
-  if (!e) {
-    console.error("Could not find footer for footnote anchor");
-    return;
-  }
-  e.scrollIntoView({
-    behavior: "smooth"
-  });
-}, q = (o) => {
-  const e = o.currentTarget.getAttribute("data-cdrm-for");
-  if (!e) {
-    console.error("Could not find anchor id.");
-    return;
-  }
-  const s = document.getElementById(e);
-  if (!s) {
-    console.error("Could not find an assocated anchor the footnote footer.");
-    return;
-  }
-  s.scrollIntoView({
-    behavior: "smooth"
-  });
-}, D = () => {
-  const o = document.getElementsByClassName("cdrm-footnote");
-  for (let e = 0; e < o.length; e++) {
-    const s = o.item(e);
-    s && s.addEventListener("click", q);
-  }
-  const t = document.getElementsByClassName("cdrm-footnote-anchor");
-  for (let e = 0; e < t.length; e++) {
-    const s = t.item(e);
-    s && s.addEventListener("click", $);
-  }
 };
-const methods_es = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  handleConundrumAdmonitionHeight: E,
-  handleConundrumTabClick: M,
-  onAdmonitionHeadingClick: N,
-  onCodeBlockContainerClick: O,
-  onCopyCodeBlockClick: j,
-  onFootnotesLoad: D,
-  onTabLoad: P,
-  onTabResize: R
-}, Symbol.toStringTag, { value: "Module" }));
-export {
-  applyCopyConundrumCodeBlockListeners
-};
-//# sourceMappingURL=code_block.es.js.map
+(() => {
+  P();
+})();
+//# sourceMappingURL=footnotes.es.js.map

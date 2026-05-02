@@ -61,40 +61,40 @@ const c = {
     level: c.verbose
   }
 };
-function h(r) {
-  if (r === null || typeof r != "object")
+function h(o) {
+  if (o === null || typeof o != "object")
     return false;
-  const t = Object.getPrototypeOf(r);
-  return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in r ? false : Symbol.toStringTag in r ? Object.prototype.toString.call(r) === "[object Module]" : true;
+  const t = Object.getPrototypeOf(o);
+  return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in o ? false : Symbol.toStringTag in o ? Object.prototype.toString.call(o) === "[object Module]" : true;
 }
-function b(r, t, e = ".", s) {
+function b(o, t, e = ".", s) {
   if (!h(t))
-    return b(r, {}, e);
-  const o = Object.assign({}, t);
-  for (const n in r) {
+    return b(o, {}, e);
+  const r = Object.assign({}, t);
+  for (const n in o) {
     if (n === "__proto__" || n === "constructor")
       continue;
-    const l = r[n];
-    l != null && (Array.isArray(l) && Array.isArray(o[n]) ? o[n] = [...l, ...o[n]] : h(l) && h(o[n]) ? o[n] = b(
+    const l = o[n];
+    l != null && (Array.isArray(l) && Array.isArray(r[n]) ? r[n] = [...l, ...r[n]] : h(l) && h(r[n]) ? r[n] = b(
       l,
-      o[n],
+      r[n],
       (e ? `${e}.` : "") + n.toString()
-    ) : o[n] = l);
+    ) : r[n] = l);
   }
-  return o;
+  return r;
 }
-function A(r) {
+function S(o) {
   return (...t) => (
     // eslint-disable-next-line unicorn/no-array-reduce
     t.reduce((e, s) => b(e, s, ""), {})
   );
 }
-const T = A();
-function k(r) {
-  return Object.prototype.toString.call(r) === "[object Object]";
+const T = S();
+function k(o) {
+  return Object.prototype.toString.call(o) === "[object Object]";
 }
-function x(r) {
-  return !(!k(r) || !r.message && !r.args || r.stack);
+function x(o) {
+  return !(!k(o) || !o.message && !o.args || o.stack);
 }
 let m = false;
 const L = [];
@@ -128,13 +128,13 @@ class i {
       }
     );
     for (const s in e) {
-      const o = {
+      const r = {
         type: s,
         ...this.options.defaults,
         ...e[s]
       };
-      this[s] = this._wrapLogFn(o), this[s].raw = this._wrapLogFn(
-        o,
+      this[s] = this._wrapLogFn(r), this[s].raw = this._wrapLogFn(
+        r,
         true
       );
     }
@@ -326,32 +326,32 @@ class i {
   _logFn(t, e, s) {
     if ((t.level || 0) > this.level)
       return false;
-    const o = {
+    const r = {
       date: /* @__PURE__ */ new Date(),
       args: [],
       ...t,
       level: y(t.level, this.options.types)
     };
-    !s && e.length === 1 && x(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
-`)), o.args.push(`
-` + o.additional.join(`
-`)), delete o.additional), o.type = typeof o.type == "string" ? o.type.toLowerCase() : "log", o.tag = typeof o.tag == "string" ? o.tag : "";
+    !s && e.length === 1 && x(e[0]) ? Object.assign(r, e[0]) : r.args = [...e], r.message && (r.args.unshift(r.message), delete r.message), r.additional && (Array.isArray(r.additional) || (r.additional = r.additional.split(`
+`)), r.args.push(`
+` + r.additional.join(`
+`)), delete r.additional), r.type = typeof r.type == "string" ? r.type.toLowerCase() : "log", r.tag = typeof r.tag == "string" ? r.tag : "";
     const n = (a = false) => {
       const d = (this._lastLog.count || 0) - this.options.throttleMin;
       if (this._lastLog.object && d > 0) {
         const g = [...this._lastLog.object.args];
         d > 1 && g.push(`(repeated ${d} times)`), this._log({ ...this._lastLog.object, args: g }), this._lastLog.count = 1;
       }
-      a && (this._lastLog.object = o, this._log(o));
+      a && (this._lastLog.object = r, this._log(r));
     };
     clearTimeout(this._lastLog.timeout);
-    const l = this._lastLog.time && o.date ? o.date.getTime() - this._lastLog.time.getTime() : 0;
-    if (this._lastLog.time = o.date, l < this.options.throttle)
+    const l = this._lastLog.time && r.date ? r.date.getTime() - this._lastLog.time.getTime() : 0;
+    if (this._lastLog.time = r.date, l < this.options.throttle)
       try {
         const a = JSON.stringify([
-          o.type,
-          o.tag,
-          o.args
+          r.type,
+          r.tag,
+          r.args
         ]), d = this._lastLog.serialized === a;
         if (this._lastLog.serialized = a, d && (this._lastLog.count = (this._lastLog.count || 0) + 1, this._lastLog.count > this.options.throttleMin)) {
           this._lastLog.timeout = setTimeout(
@@ -371,8 +371,8 @@ class i {
       });
   }
 }
-function y(r, t = {}, e = 3) {
-  return r === void 0 ? e : typeof r == "number" ? r : t[r] && t[r].level !== void 0 ? t[r].level : e;
+function y(o, t = {}, e = 3) {
+  return o === void 0 ? e : typeof o == "number" ? o : t[o] && t[o].level !== void 0 ? t[o].level : e;
 }
 i.prototype.add = i.prototype.addReporter;
 i.prototype.remove = i.prototype.removeReporter;
@@ -381,8 +381,8 @@ i.prototype.withScope = i.prototype.withTag;
 i.prototype.mock = i.prototype.mockTypes;
 i.prototype.pause = i.prototype.pauseLogs;
 i.prototype.resume = i.prototype.resumeLogs;
-function F(r = {}) {
-  return new i(r);
+function F(o = {}) {
+  return new i(o);
 }
 class I {
   options;
@@ -406,13 +406,13 @@ class I {
     return t < 1 ? console.__error || console.error : t === 1 ? console.__warn || console.warn : console.__log || console.log;
   }
   log(t) {
-    const e = this._getLogFn(t.level), s = t.type === "log" ? "" : t.type, o = t.tag || "", l = `
+    const e = this._getLogFn(t.level), s = t.type === "log" ? "" : t.type, r = t.tag || "", l = `
       background: ${this.typeColorMap[t.type] || this.levelColorMap[t.level] || this.defaultColor};
       border-radius: 0.5em;
       color: white;
       font-weight: bold;
       padding: 2px 0.5em;
-    `, a = `%c${[o, s].filter(Boolean).join(":")}`;
+    `, a = `%c${[r, s].filter(Boolean).join(":")}`;
     typeof t.args[0] == "string" ? e(
       `${a}%c ${t.args[0]}`,
       l,
@@ -422,40 +422,40 @@ class I {
     ) : e(a, l, ...t.args);
   }
 }
-function $(r = {}) {
+function B(o = {}) {
   return F({
-    reporters: r.reporters || [new I({})],
+    reporters: o.reporters || [new I({})],
     prompt(e, s = {}) {
       return s.type === "confirm" ? Promise.resolve(confirm(e)) : Promise.resolve(prompt(e));
     },
-    ...r
+    ...o
   });
 }
-$();
-function v(r) {
+B();
+function v(o) {
   const t = parseInt(
     /* eslint-disable-next-line  -- It'll be there... I put it there. */
-    r.getAttribute("data-cdrm-focused-idx")
-  ), e = r.getAttribute("data-cdrm-group");
+    o.getAttribute("data-cdrm-focused-idx")
+  ), e = o.getAttribute("data-cdrm-group");
   if (!e) {
     console.warn("Compiler Error: Found a tab group without a valid group id.");
     return;
   }
-  const s = r.querySelector(
+  const s = o.querySelector(
     `#tab-${e}-${t}`
   );
   if (s) {
-    const o = s.getBoundingClientRect().height, n = r.querySelector(
+    const r = s.getBoundingClientRect().height, n = o.querySelector(
       `#tab-body-wrapper-${e}`
     );
-    n ? (n.style.transition = "height 0.3s ease-in-out", n.style.height = `${Math.min(o, 450)}px`, n.style.overflowY = o > 450 ? "auto" : "hidden") : console.error("Could not find tab body wrapper.");
+    n ? (n.style.transition = "height 0.3s ease-in-out", n.style.height = `${Math.min(r, 450)}px`, n.style.overflowY = r > 450 ? "auto" : "hidden") : console.error("Could not find tab body wrapper.");
   } else
     console.error("Could not find focused body");
 }
-const R = () => {
-  const r = document.getElementsByClassName("cdrm-tab-group");
-  for (let t = 0; t < r.length; t++) {
-    const e = r.item(t);
+const P = () => {
+  const o = document.getElementsByClassName("cdrm-tab-group");
+  for (let t = 0; t < o.length; t++) {
+    const e = o.item(t);
     v(e), new MutationObserver(() => {
       v(e);
     }).observe(e, {
@@ -516,11 +516,11 @@ const R = () => {
       item.addEventListener("click", handleTabClick);
     }
   }
-  R();
+  P();
   addConundrumTabClickListeners();
   window.addEventListener("cdrm-content-loaded", () => {
     addConundrumTabClickListeners();
-    R();
+    P();
   });
 })();
 //# sourceMappingURL=tabs.es.js.map

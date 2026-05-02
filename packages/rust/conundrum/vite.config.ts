@@ -13,6 +13,7 @@ const entries = {
     ADMONITION: path.resolve(__dirname, "./src/output/html/glue/component_glue/admonition.ts"),
     CODE_BLOCK: path.resolve(__dirname, "./src/output/html/glue/component_glue/code_block"),
     TOC: path.resolve(__dirname, "./src/output/html/glue/component_glue/toc.ts"),
+    FOOTNOTES: path.resolve(__dirname, "./src/output/html/glue/component_glue/footnotes.ts"),
     MAIN: path.resolve(__dirname, "./src/output/html/glue/component_glue/index.ts")
 }
 

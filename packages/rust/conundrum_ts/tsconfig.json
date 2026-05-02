@@ -6,7 +6,6 @@
         "moduleResolution": "bundler",
         "useDefineForClassFields": true,
         "composite": true,
-        "baseUrl": ".",
         "allowSyntheticDefaultImports": true,
         "allowUmdGlobalAccess": true,
         "noUnusedParameters": true,
@@ -28,7 +27,7 @@
         "esModuleInterop": true,
         "verbatimModuleSyntax": false,
         "outDir": "dist",
-        "strict": true,
+        "strict": true
     },
     "exclude": [
         "dist",

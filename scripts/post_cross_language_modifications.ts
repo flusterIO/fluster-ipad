@@ -100,6 +100,11 @@ export type GridColumnsMap = Map<SizableOption, number>;`,
                 replaceWith: "public enum WebGlueCodeGeneralFiles: Codable {",
             },
             {
+                query: "public enum MarkdownElementGlueKey {",
+                dontPanicIfExists: ["public enum MarkdownElementGlueKey: Codable {"],
+                replaceWith: "public enum MarkdownElementGlueKey: Codable {",
+            },
+            {
                 query: "public enum DocumentationComponentName {",
                 dontPanicIfExists: [
                     "public enum DocumentationComponentName: Codable {",

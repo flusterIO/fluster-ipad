@@ -10,6 +10,25 @@ use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use strum::{EnumDiscriminants, EnumIter, IntoEnumIterator};
 
+#[typeshare::typeshare]
+#[derive(Clone,
+           Serialize,
+           EnumIter,
+           strum_macros::Display,
+           Deserialize,
+           uniffi::Enum,
+           Debug,
+           PartialEq,
+           Eq,
+           Hash,
+           Default)]
+pub enum MarkdownElementGlueKey {
+    #[default]
+    #[serde(rename = "footnotes")]
+    #[strum(to_string = "footnotes")]
+    Footnotes,
+}
+
 /// Just like the `AnyComponentName`, except this is unique where the
 /// AnyComponentName allows for component aliases.
 #[typeshare::typeshare]
@@ -20,6 +39,7 @@ pub enum AnyComponentKey {
     Embeddable(EmbeddableComponentId),
     General(WebGlueCodeGeneralFiles),
     Docs(DocumentationComponentName),
+    Markdown(MarkdownElementGlueKey),
 }
 
 impl AnyComponentKey {
@@ -36,6 +56,9 @@ impl AnyComponentKey {
         }
         for k in DocumentationComponentName::iter() {
             items.push(AnyComponentKey::Docs(k))
+        }
+        for k in MarkdownElementGlueKey::iter() {
+            items.push(AnyComponentKey::Markdown(k))
         }
 
         items
@@ -92,6 +115,10 @@ lazy_static! {
         map.insert(format!("{}-font", WebGlueCodeGeneralFiles::Katex_typewriter_regular),
                    include_bytes!("../../../../../conundrum_web_assets/src/other/fonts/KaTeX_Typewriter-Regular.woff2").to_vec());
 
+        // --- Markdown Elements ---
+        map.insert(format!("{}-js", MarkdownElementGlueKey::Footnotes),
+                   include_str!("../../../../../conundrum_web_assets/src/js/footnotes.es.js").to_string().as_bytes().to_vec());
+
         // --- Components ---
         map.insert(format!("{}-js", AutoInsertedComponentName::AutoInsertedCodeBlock),
                    include_str!("../../../../../conundrum_web_assets/src/js/code_block.es.js").to_string().as_bytes().to_vec());
@@ -114,6 +141,7 @@ impl WEB_GLUE_CODE_MAP {
             AnyComponentKey::Embeddable(n) => n.to_string(),
             AnyComponentKey::General(n) => n.to_string(),
             AnyComponentKey::Docs(n) => n.to_string(),
+            AnyComponentKey::Markdown(n) => n.to_string(),
         };
 
         if let Some(res) = WEB_GLUE_CODE_MAP.get(format!("{}-css", key).as_str()) {
@@ -131,6 +159,7 @@ impl WEB_GLUE_CODE_MAP {
             AnyComponentKey::Embeddable(n) => n.to_string(),
             AnyComponentKey::General(n) => n.to_string(),
             AnyComponentKey::Docs(n) => n.to_string(),
+            AnyComponentKey::Markdown(n) => n.to_string(),
         };
         if let Some(b) = WEB_GLUE_CODE_MAP.get(format!("{}-font", key).as_str()) {
             let x = b.value();
@@ -147,6 +176,7 @@ impl WEB_GLUE_CODE_MAP {
             AnyComponentKey::Embeddable(n) => n.to_string(),
             AnyComponentKey::General(n) => n.to_string(),
             AnyComponentKey::Docs(n) => n.to_string(),
+            AnyComponentKey::Markdown(n) => n.to_string(),
         };
         if let Some(res) = WEB_GLUE_CODE_MAP.get(format!("{}-js", key).as_str()) {
             let v = res.value();

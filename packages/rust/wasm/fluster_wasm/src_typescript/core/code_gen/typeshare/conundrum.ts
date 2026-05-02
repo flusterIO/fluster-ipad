@@ -685,12 +685,13 @@ export interface EquationReference {
  * 
  * ## Template (HTML)
  * ```askama
- * <sup class="text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300">{{self.idx.0}}</sup>
+ * <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300">{{self.idx.0}}</sup>
  * ```
  */
 export interface FootnoteAnchor {
 	/** The user provided idx. */
 	idx: ConundrumInt;
+	id: DOMId;
 }
 
 export interface FootnoteFooter {
@@ -902,14 +903,12 @@ export interface NoteOutgoingLinkResult {
  * ## Template (HTML)
  * 
  * ```askama
- * <div class="w-full h-full flex flex-col justify-start items-start">
- * {{idx}}
- * </div>
- * <a role="button" data-cdrm-for="{{anchor_id}}" class="cdrm-footnote
- * w-full text-foreground/80 hover:text-foreground transition-colors
- * duration-300 cursor-pointer">
- * {{body}}
+ * <a role="button" data-cdrm-for="{{anchor_id}}"  class="cdrm-footnote w-full h-full text-foreground/80 hover:text-foreground transition-colors duration-300 flex flex-col justify-start items-start cursor-pointer text-sm py-1 not-prose text-nowrap">
+ * {{idx | safe}}.
  * </a>
+ * <div class="cdrm-footnote-body w-full not-prose">
+ * {{body | safe}}
+ * </div>
  * ```
  */
 export interface RenderedFootnoteResult {
@@ -933,7 +932,8 @@ export type AnyComponentKey =
 	| { tag: "AutoInserted", content: AutoInsertedComponentName }
 	| { tag: "Embeddable", content: EmbeddableComponentId }
 	| { tag: "General", content: WebGlueCodeGeneralFiles }
-	| { tag: "Docs", content: DocumentationComponentName };
+	| { tag: "Docs", content: DocumentationComponentName }
+	| { tag: "Markdown", content: MarkdownElementGlueKey };
 
 export interface MdxParsingResult {
 	note_id?: string;
@@ -956,7 +956,12 @@ export interface MdxParsingResult {
 	 */
 	eq_ref_map: Record<string, number>;
 	warnings: ConundrumError[];
-	/** A map of type `Map<The anchor index of the footnote, FootnoteResult>`. */
+	/**
+	 * A map of type `Map<The anchor index of the footnote, FootnoteResult>`.
+	 * This field isn't populated until the footnotes are rendered at the end,
+	 * so don't rely on this data during parsing *or* compilation. Use the field on `ParseState`
+	 * instead.
+	 */
 	footnotes: Record<ConundrumInt, RenderedFootnoteResult>;
 	included_components: AnyComponentKey[];
 }
@@ -1479,6 +1484,10 @@ export enum InContentDocumentationId {
 export enum InContentDocumentationSource {
 	ComponentDocs = "component",
 	InternalDocs = "internal-docs",
+}
+
+export enum MarkdownElementGlueKey {
+	Footnotes = "footnotes",
 }
 
 export type ParsedCodeBlockVariant = 
