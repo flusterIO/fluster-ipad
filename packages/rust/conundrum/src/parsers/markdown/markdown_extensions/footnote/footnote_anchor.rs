@@ -7,8 +7,12 @@ use crate::{
         state::{
             conundrum_error::ConundrumError,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+            footnote_manager::FootnoteData,
         },
-        traits::{conundrum_input::ArcState, html_js_component_result::HtmlJsComponentResult},
+        traits::{
+            conundrum_input::{ArcState, ConundrumInput},
+            html_js_component_result::HtmlJsComponentResult,
+        },
     },
     output::html::dom::dom_id::DOMId,
     parsers::{conundrum::logic::number::conundrum_int::ConundrumInt, parser_trait::ConundrumParser},
@@ -19,7 +23,7 @@ use crate::{
 ///
 /// ## Template (HTML)
 /// ```askama
-/// <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">{{self.idx.0}}</sup>
+/// <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">{{self.doc_idx}}</sup>
 /// ```
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone, Template)]
@@ -27,11 +31,13 @@ use crate::{
 pub struct FootnoteAnchor {
     /// The user provided idx.
     pub idx: ConundrumInt,
+    pub doc_idx: ConundrumInt,
     pub id: DOMId,
 }
 
 impl HtmlJsComponentResult for FootnoteAnchor {
-    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+    fn to_html_js_component(&self, state: ArcState) -> ConundrumModalResult<String> {
+        let read_state = state.read_arc();
         self.render().map_err(|e| {
                     eprintln!("Error: {:#?}", e);
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
@@ -40,9 +46,7 @@ impl HtmlJsComponentResult for FootnoteAnchor {
 }
 
 impl ConundrumParser<FootnoteAnchor> for FootnoteAnchor {
-    fn parse_input_string(
-        input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
-        -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<FootnoteAnchor> {
+    fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<FootnoteAnchor> {
         let start = input.input.checkpoint();
 
         '['.void().parse_next(input).inspect_err(|_| {
@@ -62,11 +66,30 @@ impl ConundrumParser<FootnoteAnchor> for FootnoteAnchor {
                               })?;
 
         let mut mutable_state = input.state.write_arc();
-        let anchor_id = mutable_state.dom.new_id();
-        mutable_state.footnotes.append_footnote_anchor(idx, anchor_id.clone());
+        let cloned_state = mutable_state.clone();
+        let found_item = cloned_state.footnotes.0.get(&idx);
+        let anchor_id = match &found_item {
+            Some(s) => s.get_id(),
+            None => {
+                let anchor_id = mutable_state.dom.new_id();
+                mutable_state.footnotes.append_footnote_anchor(idx, anchor_id.clone());
+                anchor_id
+            }
+        };
+        let doc_idx = match &found_item {
+        Some(s) =>  match s {
+             FootnoteData::Completed(c) => Ok(c.idx),
+             FootnoteData::Rendered(r) => Ok(r.idx),
+             FootnoteData::Assigned(_) => Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx.to_string()).as_str())))),
+         },
+         None => {
+            Ok(ConundrumInt(mutable_state.footnotes.0.len() as i64))
+         }
+        }?;
         drop(mutable_state);
 
         Ok(FootnoteAnchor { idx,
+                            doc_idx,
                             id: anchor_id })
     }
 

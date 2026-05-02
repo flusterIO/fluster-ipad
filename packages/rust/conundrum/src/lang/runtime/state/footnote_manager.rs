@@ -30,12 +30,34 @@ pub enum FootnoteData {
     Rendered(RenderedFootnoteResult),
 }
 
+impl FootnoteData {
+    pub fn get_id(&self) -> DOMId {
+        match self {
+            FootnoteData::Assigned(x) => x.anchor_id.clone(),
+            FootnoteData::Completed(c) => c.anchor_id.clone(),
+            FootnoteData::Rendered(r) => r.anchor_id.clone(),
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct FootnoteManager(pub HashMap<ConundrumInt, FootnoteData>);
 
 impl FootnoteManager {
     pub fn new(data: HashMap<ConundrumInt, FootnoteData>) -> Self {
         FootnoteManager(data)
+    }
+
+    /// Returns the document based index from the user provided index.
+    pub fn get_footnote_idx(&self, idx: &ConundrumInt) -> ConundrumModalResult<ConundrumInt> {
+        let item = self.0.get(idx).ok_or_else(|| {
+             ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx.to_string()).as_str())))
+         })?;
+        match item {
+             FootnoteData::Completed(c) => Ok(c.idx),
+             FootnoteData::Rendered(r) => Ok(r.idx),
+             FootnoteData::Assigned(a) => Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx.to_string()).as_str())))),
+         }
     }
 
     fn get_new_item_index(&self, key: ConundrumInt) -> ConundrumInt {
