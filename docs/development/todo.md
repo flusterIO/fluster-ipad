@@ -4,6 +4,7 @@
 
 - [ ] Resume work on Table!!! There's a decent TDD setup already going...
       `cargo nextest run parsers::markdown::table::markdown_table_heading_row::tests::parses_basic_table_heading_row --no-capture`
+- [ ] Work on rewriting paper once caffeine kicks in. Focus on the new derivation and the Solar mass equivalence found. Make sure to validate it against the Earth too though... that's where the value originally came from!
 - [ ] Fix independent markdown view page as that's not rendering tabs properly on load still.
 - [ ] Handle missing parsers (In order of the direction of getting the documentation working again! Work towards that.)
   - [?] Footnote parser
