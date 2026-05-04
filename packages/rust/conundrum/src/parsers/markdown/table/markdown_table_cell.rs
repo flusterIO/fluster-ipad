@@ -9,14 +9,19 @@ use crate::{
     },
     parsers::{
         conundrum::{conundrum_logic_parser::ConundrumLogicParser, logic::number::conundrum_number::ConundrumNumber},
-        markdown::table::table_cell_data::TableCellData,
+        markdown::table::{
+            table_cell_data::TableCellData, table_utility_parsers::terminating_whitespace_and_table_separator,
+        },
+        parser_components::consume_white_space::{consume_linear_space, consume_white_space},
         parser_trait::ConundrumParser,
+        parsers_shared::space_or_tab::space_or_tab,
     },
 };
 
 use winnow::{
     Parser,
-    combinator::{alt, repeat},
+    combinator::{alt, repeat_till},
+    stream::Stream,
 };
 
 #[typeshare::typeshare]
@@ -26,15 +31,37 @@ pub struct MarkdownTableCell {
 }
 
 pub fn numeric_markdown_table_cell(input: &mut ConundrumInput) -> ConundrumModalResult<TableCellData> {
-    ConundrumNumber::parse_conundrum.map(TableCellData::Numeric).parse_next(input)
+    let start = input.input.checkpoint();
+
+    consume_linear_space(0..).parse_next(input).inspect_err(|_| {
+                                                    input.input.reset(&start);
+                                                })?;
+    let n = ConundrumNumber::parse_conundrum.parse_next(input).inspect_err(|_| {
+                                                                   input.input.reset(&start);
+                                                               })?;
+    consume_linear_space(0..).parse_next(input).inspect_err(|_| {
+                                                    input.input.reset(&start);
+                                                })?;
+
+    '|'.parse_next(input).inspect_err(|_| {
+                              input.input.reset(&start);
+                          })?;
+    Ok(TableCellData::Numeric(n))
 }
 
 pub fn conundrum_content_markdown_table_cell(input: &mut ConundrumInput) -> ConundrumModalResult<TableCellData> {
-    let children: Vec<ParsedElement> = repeat(0..,
-                                              parse_inline_element.verify(|em| match em {
-                                                                      ParsedElement::Text(c) => c != &String::from("|"),
-                                                                      _ => true,
-                                                                  })).parse_next(input)?;
+    let start = input.input.checkpoint();
+
+    consume_linear_space(0..).parse_next(input).inspect_err(|_| {
+                                                    input.input.reset(&start);
+                                                })?;
+    let (children, _): (Vec<ParsedElement>, ()) =
+        repeat_till(1.., parse_inline_element, terminating_whitespace_and_table_separator.void()).parse_next(input)
+                                                                                                 .inspect_err(|_| {
+                                                                                                     input.input
+                                                                                                        .reset(&start);
+                                                                                                 })?;
+
     Ok(TableCellData::Conundrum(Children(children)))
 }
 

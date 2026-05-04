@@ -75,25 +75,25 @@ impl Emphasis {
     pub fn to_background_color_classes(&self) -> String {
         match self {
             Emphasis::Success => {
-                "bg-emphasis-success text-emphasis-success-foreground [&_*]:text-emphasis-success-foreground".to_string()
+                "bg-emphasis-success! text-emphasis-success-foreground! [&_*]:text-emphasis-success-foreground!".to_string()
             }
-            Emphasis::Info => "bg-emphasis-info text-emphasis-info-foreground [&_*]:text-emphasis-info-foreground".to_string(),
-            Emphasis::Error => "bg-emphasis-error text-emphasis-error-foreground [&_*]:text-emphasis-error-foreground".to_string(),
-            Emphasis::Warn => "bg-emphasis-warn text-emphasis-warn-foreground [&_*]:text-emphasis-warn-foreground".to_string(),
-            Emphasis::Primary => "bg-primary text-primary-foreground [&_*]:text-primary-foreground".to_string(),
+            Emphasis::Info => "bg-emphasis-info! text-emphasis-info-foreground! [&_*]:text-emphasis-info-foreground!".to_string(),
+            Emphasis::Error => "bg-emphasis-error! text-emphasis-error-foreground! [&_*]:text-emphasis-error-foreground!".to_string(),
+            Emphasis::Warn => "bg-emphasis-warn! text-emphasis-warn-foreground! [&_*]:text-emphasis-warn-foreground!".to_string(),
+            Emphasis::Primary => "bg-primary! text-primary-foreground! [&_*]:text-primary-foreground!".to_string(),
             Emphasis::Research => {
-                "bg-emphasis-research text-emphasis-research-foreground [&_*]:text-emphasis-research-foreground".to_string()
+                "bg-emphasis-research! text-emphasis-research-foreground! [&_*]:text-emphasis-research-foreground!".to_string()
 
             }
             Emphasis::Important => {
-                "bg-emphasis-important text-emphasis-important-foreground [&_*]:text-emphasis-important-foreground".to_string()
+                "bg-emphasis-important! text-emphasis-important-foreground! [&_*]:text-emphasis-important-foreground!".to_string()
 
             }
             Emphasis::Highlight => {
-                "bg-emphasis-highlight text-emphasis-highlight-foreground [&_*]:text-emphasis-highlight-foreground".to_string()
+                "bg-emphasis-highlight! text-emphasis-highlight-foreground! [&_*]:text-emphasis-highlight-foreground!".to_string()
 
             }
-            Emphasis::Card => "bg-fd-card text-fd-card-foreground [&_*]:text-fd-card-foreground".to_string(),
+            Emphasis::Card => "bg-fd-card! text-fd-card-foreground! [&_*]:text-fd-card-foreground!".to_string(),
         }
     }
 
