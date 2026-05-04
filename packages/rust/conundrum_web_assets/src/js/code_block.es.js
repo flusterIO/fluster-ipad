@@ -592,7 +592,7 @@ const R = () => {
     });
   }
 }, $ = (o) => {
-  const t = o.currentTarget, e = document.querySelector(`div[data-cdrm-for="${t.id}"]`);
+  const t = o.currentTarget, e = document.querySelector(`a[data-cdrm-for="${t.id}"]`);
   if (!e) {
     console.error("Could not find footer for footnote anchor");
     return;

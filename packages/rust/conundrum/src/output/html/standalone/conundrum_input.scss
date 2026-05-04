@@ -216,3 +216,15 @@ p {
 .no-scrollbar {
   scrollbar-width: none;
 }
+
+.hideMathLabels {
+  .cdrm-equation-label {
+    display: none;
+  }
+}
+
+.cdrm-math.with-id {
+  span.katex-display {
+    padding-right: 2rem; 
+  }
+}

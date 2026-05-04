@@ -75,6 +75,7 @@ pub enum ParsedElement {
     BlockMath(BlockMathResult),
     InlineMath(InlineMathResult),
     Text(String),
+    EscapedStr(String),
     Hr(MarkdownHorizontalRule),
     BoldText(MarkdownBoldTextResult),
     ItalicText(MarkdownItalicTextResult),
@@ -114,6 +115,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_html_js_component(res),
             ParsedElement::Tag(tag) => tag.to_html_js_component(res),
             ParsedElement::Text(s) => Ok(s.clone()),
+            ParsedElement::EscapedStr(s) => Ok(s.clone()),
             ParsedElement::Heading(heading) => heading.to_html_js_component(res),
             ParsedElement::BlockMath(math) => math.to_html_js_component(res),
             ParsedElement::InlineMath(math) => math.to_html_js_component(res),
@@ -157,6 +159,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_conundrum_component(res),
             ParsedElement::Tag(tag) => tag.to_conundrum_component(res),
             ParsedElement::Text(s) => Ok(s.clone()),
+            ParsedElement::EscapedStr(s) => Ok(s.clone()),
             ParsedElement::Heading(heading) => heading.to_mdx_component(res),
             ParsedElement::BlockMath(math) => math.to_conundrum_component(res),
             ParsedElement::InlineMath(math) => math.to_mdx_component(res),
@@ -195,6 +198,7 @@ impl MarkdownComponentResult for ParsedElement {
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_mdx_component(res),
             ParsedElement::Tag(tag) => tag.to_markdown(res),
             ParsedElement::Text(s) => Ok(s.clone()),
+            ParsedElement::EscapedStr(s) => Ok(s.clone()),
             ParsedElement::Heading(heading) => heading.to_markdown(res),
             ParsedElement::BlockMath(math) => math.to_markdown(res),
             ParsedElement::InlineMath(math) => math.to_markdown(res),
@@ -232,6 +236,7 @@ impl PlainTextComponentResult for ParsedElement {
             ParsedElement::ParsedOutgoingNoteLink(l) => l.to_plain_text(res),
             ParsedElement::Tag(tag) => tag.to_plain_text(res),
             ParsedElement::Text(s) => Ok(s.clone()),
+            ParsedElement::EscapedStr(s) => Ok(s.clone()),
             ParsedElement::Heading(heading) => heading.to_plain_text(res),
             ParsedElement::BlockMath(math) => math.to_plain_text(res),
             ParsedElement::InlineMath(math) => math.to_plain_text(res),
@@ -289,6 +294,7 @@ impl ParsedElement {
             // The text element is exempt from the 'at_line_start' requirement as it's filtered
             // out there.
             ParsedElement::Text(_) => false,
+            ParsedElement::EscapedStr(_) => false,
             ParsedElement::Heading(_) => true,
             ParsedElement::BlockMath(_) => true,
             ParsedElement::InlineMath(_) => false,
@@ -313,6 +319,14 @@ impl ParsedElement {
             ParsedElement::Table(_) => true,
             ParsedElement::FootnoteAnchor(_) => false,
             ParsedElement::FootnoteFooter(_) => true,
+        }
+    }
+
+    pub fn creates_line_start(&self) -> bool {
+        match self {
+            ParsedElement::Text(t) => t.ends_with("\n"),
+            ParsedElement::EscapedStr(t) => t.ends_with("\n"),
+            _ => self.is_block_level(),
         }
     }
 }

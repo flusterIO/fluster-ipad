@@ -11,6 +11,7 @@ export type ParsedElement =
 	| { tag: "BlockMath", content: BlockMathResult }
 	| { tag: "InlineMath", content: InlineMathResult }
 	| { tag: "Text", content: string }
+	| { tag: "EscapedStr", content: string }
 	| { tag: "Hr", content: MarkdownHorizontalRule }
 	| { tag: "BoldText", content: MarkdownBoldTextResult }
 	| { tag: "ItalicText", content: MarkdownItalicTextResult }
@@ -63,6 +64,31 @@ export type GridColumnProps = GridColumnsMap;
  * methods.
  */
 export type HeadingDepth = ConundrumInt;
+
+export enum MarkdownTableAlignmentCell {
+	Default = "Default",
+	Left = "Left",
+	Right = "Right",
+	Center = "Center",
+}
+
+export type MarkdownTableAlignmentRow = MarkdownTableAlignmentCell[];
+
+export type TableCellData = 
+	/**
+	 * Headings are made unique to allow for customizablity when the
+	 * programming layer finally makes it onboard, but they're really the same
+	 * as the body cells apart from the ablity to accept numeric content.
+	 */
+	| { tag: "Heading", content: Children }
+	| { tag: "Conundrum", content: Children }
+	| { tag: "Numeric", content: ConundrumNumber };
+
+export interface MarkdownTableHeadingCell {
+	data: TableCellData;
+}
+
+export type MarkdownTableHeadingRow = MarkdownTableHeadingCell[];
 
 /**
  * A set of common styles that can be applied as a group to indicate common
@@ -687,12 +713,13 @@ export interface EquationReference {
  * 
  * ## Template (HTML)
  * ```askama
- * <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300">{{self.idx.0}}</sup>
+ * <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">{{self.doc_idx}}</sup>
  * ```
  */
 export interface FootnoteAnchor {
 	/** The user provided idx. */
 	idx: ConundrumInt;
+	doc_idx: ConundrumInt;
 	id: DOMId;
 }
 
@@ -875,7 +902,17 @@ export interface MarkdownParagraphResult {
 	terminator: ParsedElement;
 }
 
+export interface MarkdownTableRow {
+}
+
 export interface MarkdownTable {
+	heading: MarkdownTableHeadingRow;
+	alignment: MarkdownTableAlignmentRow;
+	rows: MarkdownTableRow[];
+}
+
+export interface MarkdownTableCell {
+	data: TableCellData;
 }
 
 /** The 'math' is embedded in `.jsx` as a child. */
@@ -969,7 +1006,10 @@ export interface MdxParsingResult {
 }
 
 export interface OrderedListItem {
-	content: Children;
+	heading: Children;
+	body?: Children;
+	/** n will be none if the `n.` syntax was used instead of `1.`. */
+	n?: number;
 }
 
 export interface OrderedListModel {
@@ -1489,7 +1529,7 @@ export enum InContentDocumentationSource {
 }
 
 export enum MarkdownElementGlueKey {
-	Footnotes = "footnotes",
+	Footnotes = "footnotes.js",
 }
 
 export type ParsedCodeBlockVariant = 

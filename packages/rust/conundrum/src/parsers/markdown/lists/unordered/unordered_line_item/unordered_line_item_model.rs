@@ -68,6 +68,40 @@ impl HtmlJsComponentResult for UnorderedListItem {
     }
 }
 
+/// Returns `(TitleChildren, BodyChildren)`
+pub fn parse_list_item_children(input: &mut ConundrumInput) -> ConundrumModalResult<(Children, Option<Children>)> {
+    let start = input.input.checkpoint();
+    let (title_line_chars, _): (Vec<String>, LineTerminator) =
+        until_line_terminator::<'_, String>(0.., |nested_input| {
+            take(1usize).map(String::from).parse_next(nested_input)
+        }).parse_next(input)
+          .inspect_err(|_| {
+              input.input.reset(&start);
+          })?;
+
+    let body = opt(repeated_indented_lines(1..)).parse_next(input)
+                                                .inspect_err(|_| {
+                                                    input.input.reset(&start);
+                                                })?
+                                                .map(join_indentend_line_types);
+    let body_children = match body {
+        Some(b) => {
+            let mut new_input = ConundrumInput { input: &b,
+                                                 state: Arc::clone(&input.state) };
+            let c = parse_elements(&mut new_input)?;
+            Some(Children(c))
+        }
+        None => None,
+    };
+
+    let title_string = title_line_chars.join("");
+    let mut title_input = ConundrumInput { input: &title_string,
+                                           state: Arc::clone(&input.state) };
+
+    let title_children = parse_elements(&mut title_input)?;
+    Ok((Children(title_children), body_children))
+}
+
 impl ConundrumParser<UnorderedListItem> for UnorderedListItem {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<UnorderedListItem> {
         let start = input.input.checkpoint();
@@ -84,37 +118,12 @@ impl ConundrumParser<UnorderedListItem> for UnorderedListItem {
                                              input.input.reset(&start);
                                          })?;
 
-        let (title_line_chars, _): (Vec<String>, LineTerminator) =
-            until_line_terminator::<'_, String>(0.., |nested_input| {
-                take(1usize).map(String::from).parse_next(nested_input)
-            }).parse_next(input)
-              .inspect_err(|_| {
-                  input.input.reset(&start);
-              })?;
+        let (heading, body) = parse_list_item_children.parse_next(input).inspect_err(|_| {
+                                                                             input.input.reset(&start);
+                                                                         })?;
 
-        let body = opt(repeated_indented_lines(1..)).parse_next(input)
-                                                    .inspect_err(|_| {
-                                                        input.input.reset(&start);
-                                                    })?
-                                                    .map(join_indentend_line_types);
-        let body_children = match body {
-            Some(b) => {
-                let mut new_input = ConundrumInput { input: &b,
-                                                     state: Arc::clone(&input.state) };
-                let c = parse_elements(&mut new_input)?;
-                Some(Children(c))
-            }
-            None => None,
-        };
-
-        let title_string = title_line_chars.join("");
-        let mut title_input = ConundrumInput { input: &title_string,
-                                               state: Arc::clone(&input.state) };
-
-        let title_children = parse_elements(&mut title_input)?;
-
-        Ok(UnorderedListItem { heading: Children(title_children),
-                               body: body_children })
+        Ok(UnorderedListItem { heading,
+                               body })
     }
 
     fn matches_first_char(char: char) -> bool {

@@ -20,7 +20,7 @@ pub fn consume_white_space(occurrences: impl Into<Range> + Clone)
 pub fn consume_linear_space(occurrences: impl Into<Range> + Clone)
                             -> impl Fn(&mut ConundrumInput) -> ConundrumModalResult<()> {
     move |input| {
-        take_while(occurrences.clone(), |c| AsChar::is_space(c)).void().parse_next(input)?;
+        take_while(occurrences.clone(), AsChar::is_space).void().parse_next(input)?;
         Ok(())
     }
 }

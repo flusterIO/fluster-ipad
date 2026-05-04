@@ -2,10 +2,8 @@
 
 ## Remainder of Today
 
-- [x] Apply the `ParsedCodeBlockVariant` type and separate the dictionary and AI code blocks into separate variants in the AST for a variety of reasons, but most importantly so that templates can be generated for each time independently without a million match statements.
-- [x] Add event listener for `cdrm-codeblock-copy` event and emit a notification based on the lang if present.
-- [x] Handle dictionary entry rendering to html.
-- [x] Handle issue with documentation parser not being found in some contexts.
+- [ ] Resume work on Table!!! There's a decent TDD setup already going...
+      `cargo nextest run parsers::markdown::table::markdown_table_heading_row::tests::parses_basic_table_heading_row --no-capture`
 - [ ] Fix independent markdown view page as that's not rendering tabs properly on load still.
 - [ ] Handle missing parsers (In order of the direction of getting the documentation working again! Work towards that.)
   - [?] Footnote parser
@@ -33,6 +31,7 @@
     - [ ] Ordered
     - [ ] Checkbox
   - [x] Parse & Render Footnotes (half complete)
+  - [ ] Emoji search and other doc specific components working as expected.
 
 ### Components that need to move over still
 

@@ -24,7 +24,7 @@ pub fn white_space_delimited<'a, T>(mut parser: impl Fn(&mut ConundrumInput<'a>)
     }
 }
 
-pub fn space_or_tab_delimited<'a, T>(mut parser: impl Fn(&mut ConundrumInput<'a>) -> ConundrumModalResult<T>)
+pub fn space_or_tab_delimited<'a, T>(mut parser: impl FnMut(&mut ConundrumInput<'a>) -> ConundrumModalResult<T>)
                                      -> impl FnMut(&mut ConundrumInput<'a>) -> ConundrumModalResult<T> {
     move |input| {
         let start = input.input.checkpoint();

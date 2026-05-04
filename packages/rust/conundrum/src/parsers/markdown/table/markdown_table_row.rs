@@ -5,8 +5,4 @@ use crate::parsers::markdown::table::{
 
 #[typeshare::typeshare]
 #[derive(Debug, serde::Serialize, Clone)]
-pub struct MarkdownTableRow {
-    pub heading: MarkdownTableHeadingRow,
-    pub alignment: MarkdownTableAlignmentRow,
-    pub cells: Vec<MarkdownTableCell>,
-}
+pub struct MarkdownTableRow {}

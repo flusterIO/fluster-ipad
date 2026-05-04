@@ -1,6 +1,8 @@
 use askama::Template;
+use lucide_icons::Icon;
 use serde::Serialize;
 use std::sync::Arc;
+use typeshare::typeshare;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -8,7 +10,9 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         lib::ui::{
             components::{
-                attention::admonition::admonition_html_template::AdmonitionHtmlTemplate,
+                attention::{
+                    admonition::admonition_html_template::AdmonitionHtmlTemplate, icon::supported_icon::SupportedIcon,
+                },
                 component_trait::ConundrumComponent,
             },
             shared_props::sizable::SizablePropsGroup,
@@ -60,6 +64,8 @@ pub struct Admonition {
     /// by default. If the `foldable` property is false, this property does
     /// nothing.
     pub folded: Option<ConundrumBoolean>,
+    #[typeshare(skip)]
+    pub icon: SupportedIcon,
 }
 
 impl JsxComponentResult for Admonition {
@@ -179,6 +185,11 @@ impl ConundrumComponent for Admonition {
 
         let emphasis = Emphasis::from_jsx_props(&props, "").ok();
 
+        let icon = SupportedIcon::from_jsx_props(&props, "icon").unwrap_or_else(|_| match emphasis.clone() {
+                                                                    Some(x) => SupportedIcon(x.clone().to_icon()),
+                                                                    None => SupportedIcon(Emphasis::Primary.to_icon()),
+                                                                });
+
         let title = ConundrumString::from_jsx_props(&props, "title")?;
 
         let folded = ConundrumBoolean::from_jsx_props(&props, "folded").ok();
@@ -196,6 +207,7 @@ impl ConundrumComponent for Admonition {
                         emphasis,
                         folded,
                         foldable,
+                        icon,
                         id,
                         sizable })
     }

@@ -67,8 +67,8 @@ impl Emphasis {
             Emphasis::Primary => Icon::Info,
             Emphasis::Important => Icon::PoundSterling,
             Emphasis::Research => Icon::TestTube,
-            Emphasis::Highlight => Icon::Highlighter,
-            Emphasis::Card => Icon::Square,
+            Emphasis::Highlight => Icon::NotebookText,
+            Emphasis::Card => Icon::Orbit,
         }
     }
 

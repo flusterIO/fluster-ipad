@@ -150,11 +150,11 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                     if at_line_start {
                     alt((
                             UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
+                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
                             MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
                             MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
                             MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                     } else {
@@ -163,7 +163,6 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                             MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
                             MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
                             MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                     }

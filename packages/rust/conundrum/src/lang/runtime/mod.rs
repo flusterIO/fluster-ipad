@@ -3,6 +3,7 @@ pub mod compile_conundrum;
 pub mod mem;
 pub mod parse_conundrum_children;
 pub mod parse_conundrum_string;
+pub mod parse_inline_elements;
 pub mod queries;
 pub mod run_conundrum;
 pub mod state;

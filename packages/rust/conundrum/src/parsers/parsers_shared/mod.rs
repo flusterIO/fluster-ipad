@@ -1,5 +1,7 @@
 pub mod any_paragraph_nested_element;
+pub mod escape_handling;
 pub mod indentation_handling;
+pub mod line_breaks;
 pub mod repeat_with_count;
 pub mod segmentize;
 pub mod shared_enums;

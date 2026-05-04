@@ -1,5 +1,6 @@
 use serde::Serialize;
-use winnow::stream::AsChar;
+use winnow::combinator::repeat;
+use winnow::{Parser, stream::AsChar};
 
 use crate::{
     lang::runtime::{
@@ -11,7 +12,10 @@ use crate::{
             plain_text_component_result::PlainTextComponentResult,
         },
     },
-    parsers::{markdown::lists::ordered::ordered_list_item::OrderedListItem, parser_trait::ConundrumParser},
+    parsers::{
+        markdown::lists::ordered::ordered_list_item::ordered_list_item_model::OrderedListItem,
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare::typeshare]
@@ -40,7 +44,8 @@ impl HtmlJsComponentResult for OrderedListModel {
 
 impl ConundrumParser<OrderedListModel> for OrderedListModel {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<OrderedListModel> {
-        todo!()
+        let items = repeat(1.., OrderedListItem::parse_input_string).parse_next(input)?;
+        Ok(OrderedListModel { items })
     }
 
     fn matches_first_char(char: char) -> bool {

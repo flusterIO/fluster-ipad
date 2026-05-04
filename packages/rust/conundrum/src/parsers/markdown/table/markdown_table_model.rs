@@ -6,13 +6,21 @@ use crate::{
             html_js_component_result::HtmlJsComponentResult, plain_text_component_result::PlainTextComponentResult,
         },
     },
-    parsers::{markdown::table::markdown_table_row::MarkdownTableRow, parser_trait::ConundrumParser},
+    parsers::{
+        markdown::table::{
+            markdown_table_alignment_row::MarkdownTableAlignmentRow,
+            markdown_table_heading_row::MarkdownTableHeadingRow, markdown_table_row::MarkdownTableRow,
+        },
+        parser_trait::ConundrumParser,
+    },
 };
 use serde::Serialize;
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownTable {
+    pub heading: MarkdownTableHeadingRow,
+    pub alignment: MarkdownTableAlignmentRow,
     pub rows: Vec<MarkdownTableRow>,
 }
 
