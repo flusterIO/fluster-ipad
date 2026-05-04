@@ -1,11 +1,13 @@
-use std::fmt::Display;
+use std::{fmt::Display, sync::Arc};
 
+use parking_lot::RwLock;
 use serde::Serialize;
 use winnow::{
     Parser,
     ascii::{dec_int, float},
-    combinator::alt,
     error::ErrMode,
+    stream::{AsChar, Stream},
+    token::take_till,
 };
 
 use crate::{
@@ -15,6 +17,7 @@ use crate::{
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ParseState,
             },
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
@@ -22,6 +25,7 @@ use crate::{
             },
         },
     },
+    output::parsing_result::mdx_parsing_result::MdxParsingResult,
     parsers::conundrum::{
         conundrum_logic_parser::ConundrumLogicParser,
         logic::number::{conundrum_float::ConundrumFloat, conundrum_int::ConundrumInt},
@@ -36,19 +40,47 @@ pub enum ConundrumNumber {
     Float(ConundrumFloat),
 }
 
-pub fn javascript_int(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
+pub fn conundrum_int(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
     let n: i64 = dec_int.parse_next(input)?;
     Ok(ConundrumNumber::Int(ConundrumInt(n)))
 }
 
-pub fn javascript_float(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
+pub fn conundrum_float(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
     let x: f64 = float.parse_next(input)?;
     Ok(ConundrumNumber::Float(ConundrumFloat(x)))
 }
 
 impl ConundrumLogicParser for ConundrumNumber {
     fn parse_conundrum(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
-        alt((javascript_int, javascript_float)).parse_next(input)
+        let start = input.input.checkpoint();
+        let res = take_till(1.., |c| !AsChar::is_dec_digit(c) && c != '.').verify_map(|s| {
+                      println!("Here: {}", s);
+                      let mut nested_input = ConundrumInput {
+                input: s,
+                state: Arc::new(RwLock::new(ParseState {
+                    data: MdxParsingResult::from_initial_mdx_content(s),
+..Default::default()
+                }))
+            };
+                      let nested_checkpoint = nested_input.input.checkpoint();
+                      let n_int = conundrum_int.parse_next(&mut nested_input);
+                      if n_int.is_ok() && nested_input.input.is_empty() {
+                          return n_int.ok();
+                      } else {
+                          nested_input.input.reset(&nested_checkpoint);
+                      }
+                      let n_float = conundrum_float.parse_next(&mut nested_input);
+                      if nested_input.input.is_empty() {
+                          n_float.ok()
+                      } else {
+                          None
+                      }
+                  })
+                  .parse_next(input)
+                  .inspect_err(|_| {
+                      input.input.reset(&start);
+                  })?;
+        Ok(res)
     }
 }
 impl FromJsxPropsOptional for ConundrumNumber {
@@ -86,10 +118,48 @@ impl ConundrumNumber {
             ConundrumNumber::Float(n) => n.0,
         }
     }
+
+    pub fn is_float_and(&self, evaluate: impl Fn(&ConundrumFloat) -> bool) -> bool {
+        match self {
+            ConundrumNumber::Int(_) => false,
+            ConundrumNumber::Float(n) => evaluate(n),
+        }
+    }
+
+    pub fn is_int_and(&self, evaluate: impl Fn(&ConundrumInt) -> bool) -> bool {
+        match self {
+            ConundrumNumber::Float(_) => false,
+            ConundrumNumber::Int(n) => evaluate(n),
+        }
+    }
 }
 
 impl ConundrumComponentResult for ConundrumNumber {
     fn to_conundrum_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.to_string())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::testing::wrap_test_content::wrap_test_conundrum_content;
+
+    use super::*;
+
+    #[test]
+    fn parses_int() {
+        let mut input = wrap_test_conundrum_content("31415");
+        let res = ConundrumNumber::parse_conundrum(&mut input).expect("Parses a valid number");
+        assert!(matches!(res, ConundrumNumber::Int(_)), "Finds an int when one is present.");
+        assert!(res.is_int_and(|n| *n == 31415), "Finds the proper integer value");
+    }
+    #[test]
+    fn parses_floats() {
+        let mut input = wrap_test_conundrum_content("3.1415");
+        let res = ConundrumNumber::parse_conundrum(&mut input).expect("Parses a valid number");
+        println!("Res: {:#?}", res);
+        assert!(matches!(res, ConundrumNumber::Float(_)), "Finds a float when one is present.");
+        #[allow(clippy::approx_constant)]
+        assert!(res.is_float_and(|n| *n == 3.1415), "Finds the proper float value");
     }
 }

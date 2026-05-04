@@ -1,4 +1,3 @@
-use uniffi::TypeId;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -40,3 +39,9 @@ impl FromJsxPropsOptional for ConundrumFloat {
 }
 
 uniffi::custom_newtype!(ConundrumFloat, f64);
+
+impl PartialEq<f64> for ConundrumFloat {
+    fn eq(&self, other: &f64) -> bool {
+        self.0 == *other
+    }
+}

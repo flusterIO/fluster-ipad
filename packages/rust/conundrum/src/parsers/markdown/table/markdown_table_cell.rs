@@ -36,16 +36,13 @@ pub fn numeric_markdown_table_cell(input: &mut ConundrumInput) -> ConundrumModal
     consume_linear_space(0..).parse_next(input).inspect_err(|_| {
                                                     input.input.reset(&start);
                                                 })?;
+
     let n = ConundrumNumber::parse_conundrum.parse_next(input).inspect_err(|_| {
                                                                    input.input.reset(&start);
                                                                })?;
-    consume_linear_space(0..).parse_next(input).inspect_err(|_| {
-                                                    input.input.reset(&start);
-                                                })?;
-
-    '|'.parse_next(input).inspect_err(|_| {
-                              input.input.reset(&start);
-                          })?;
+    terminating_whitespace_and_table_separator.parse_next(input).inspect_err(|_| {
+                                                                     input.input.reset(&start);
+                                                                 })?;
     Ok(TableCellData::Numeric(n))
 }
 
