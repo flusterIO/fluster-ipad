@@ -505,7 +505,7 @@ export interface BlockQuoteResult {
  */
 export interface Card {
 	title: Children;
-	subtitle?: ConundrumString;
+	subtitle?: Children;
 	children: Children;
 	/**
 	 * The title depth between 1-6 for the markdown output. This will have no

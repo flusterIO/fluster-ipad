@@ -1,22 +1,30 @@
+use std::sync::Arc;
+
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::ui::ui_types::children::Children,
         runtime::{
-            parse_inline_elements::parse_inline_element, state::conundrum_error_variant::ConundrumModalResult,
-            traits::conundrum_input::ConundrumInput,
+            parse_inline_elements::parse_inline_element,
+            state::conundrum_error_variant::ConundrumModalResult,
+            traits::{
+                conundrum_input::{ArcState, ConundrumInput},
+                conundrum_template::{ConundrumTemplateRepresentable, ConundrumTemplateRepresentableWithParam},
+            },
         },
     },
     parsers::{
         conundrum::{conundrum_logic_parser::ConundrumLogicParser, logic::number::conundrum_number::ConundrumNumber},
         markdown::table::{
-            table_cell_data::TableCellData, table_utility_parsers::terminating_whitespace_and_table_separator,
+            html_templates::markdown_table_cell_template::MarkdownTableCellTemplate, table_cell_data::TableCellData,
+            table_types::TableCellAlignment, table_utility_parsers::terminating_whitespace_and_table_separator,
         },
         parser_components::consume_white_space::consume_linear_space,
         parser_trait::ConundrumParser,
     },
 };
 
+use askama::Template;
 use winnow::{
     Parser,
     combinator::{alt, repeat_till},
@@ -69,5 +77,22 @@ impl ConundrumParser<MarkdownTableCell> for MarkdownTableCell {
 
     fn matches_first_char(_: char) -> bool {
         true
+    }
+}
+
+impl ConundrumTemplateRepresentableWithParam<MarkdownTableCellTemplate, TableCellAlignment> for MarkdownTableCell {
+    fn to_template(&self,
+                   state: ArcState,
+                   param: TableCellAlignment)
+                   -> ConundrumModalResult<MarkdownTableCellTemplate> {
+        match &self.data {
+            TableCellData::Heading(c) => {
+                c.render(Arc::clone(&state)).map(|x| MarkdownTableCellTemplate::Heading(x, param.clone()))
+            }
+            TableCellData::Numeric(n) => Ok(MarkdownTableCellTemplate::Numeric(*n, param.clone())),
+            TableCellData::Conundrum(c) => {
+                c.render(Arc::clone(&state)).map(|x| MarkdownTableCellTemplate::Content(x, param.clone()))
+            }
+        }
     }
 }

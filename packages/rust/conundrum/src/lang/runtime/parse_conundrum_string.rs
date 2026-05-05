@@ -29,6 +29,7 @@ use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
 use crate::parsers::markdown::math::block_math::block_math_model::BlockMathResult;
 use crate::parsers::markdown::math::inline_math::inline_math_model::InlineMathResult;
 use crate::parsers::markdown::paragraph::paragraph_model::MarkdownParagraphResult;
+use crate::parsers::markdown::table::markdown_table_model::MarkdownTable;
 use crate::parsers::parser_trait::ConundrumParser;
 use crate::parsers::react::react_component_self_closing::ReactComponentSelfClosingResult;
 use crate::parsers::react::react_component_with_children::ReactComponentWithChildrenResult;
@@ -195,6 +196,17 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                     if at_line_start {
                         alt((
                                 UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
+                                MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
+                                any.map(|c: char| ParsedElement::Text(c.to_string()))
+                        )).parse_next(x)
+                    } else {
+                        any.map(|c: char| ParsedElement::Text(c.to_string())).parse_next(x)
+                    }
+                },
+                "|" => |x: &mut ConundrumInput<'a>| {
+                    if at_line_start {
+                        alt((
+                                MarkdownTable::parse_input_string.map(ParsedElement::Table),
                                 MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                                 any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)

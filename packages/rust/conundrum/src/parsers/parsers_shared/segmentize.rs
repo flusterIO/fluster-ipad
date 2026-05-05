@@ -20,11 +20,13 @@ use crate::{
             hr::MarkdownHorizontalRule,
             inline_code::InlineCodeResult,
             italic_text::MarkdownItalicTextResult,
-            markdown_extensions::emoji::emoji_model::EmojiResult,
-            markdown_extensions::footnote::footnote_anchor::FootnoteAnchor,
-            markdown_extensions::footnote::footnote_footer::FootnoteFooter,
+            markdown_extensions::{
+                emoji::emoji_model::EmojiResult,
+                footnote::{footnote_anchor::FootnoteAnchor, footnote_footer::FootnoteFooter},
+            },
             markdown_link::MarkdownLinkResult,
             math::{block_math::block_math_model::BlockMathResult, inline_math::inline_math_model::InlineMathResult},
+            table::markdown_table_model::MarkdownTable,
         },
         parser_trait::ConundrumParser,
         react::{
@@ -216,6 +218,9 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                    literal("\n\n").map(|_| {
                                                                                        ParsedElement::Text(String::from(""))
                                                                                    }).parse_next(x)
+                                                                               },
+                                                                               "|" => |x: &mut ConundrumInput<'a>| {
+                                                                                   MarkdownTable::parse_input_string.map(ParsedElement::Table).parse_next(x)
                                                                                },
                                                                                _ => |x: &mut ConundrumInput<'a>| {
                                                                                    if ls {

@@ -8,6 +8,7 @@ use crate::{
     },
     parsers::{
         markdown::table::{
+            html_templates::markdown_table_template::MarkdownTableTemplate,
             markdown_table_alignment_row::MarkdownTableAlignmentRow,
             markdown_table_heading_row::MarkdownTableHeadingRow, markdown_table_row::MarkdownTableRow,
         },
@@ -76,4 +77,8 @@ impl ConundrumParser<MarkdownTable> for MarkdownTable {
     fn matches_first_char(char: char) -> bool {
         char == '|'
     }
+}
+
+impl MarkdownTable {
+    pub fn to_template(&self) -> MarkdownTableTemplate {}
 }
