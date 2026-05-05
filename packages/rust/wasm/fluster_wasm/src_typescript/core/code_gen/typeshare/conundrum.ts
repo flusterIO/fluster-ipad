@@ -88,6 +88,12 @@ export interface MarkdownTableHeadingCell {
 
 export type MarkdownTableHeadingRow = MarkdownTableHeadingCell[];
 
+export interface MarkdownTableCell {
+	data: TableCellData;
+}
+
+export type MarkdownTableRow = MarkdownTableCell[];
+
 /**
  * A set of common styles that can be applied as a group to indicate common
  * scenarios. These will become customizable soon so you won't be limited to
@@ -900,17 +906,10 @@ export interface MarkdownParagraphResult {
 	terminator: ParsedElement;
 }
 
-export interface MarkdownTableRow {
-}
-
 export interface MarkdownTable {
 	heading: MarkdownTableHeadingRow;
 	alignment: MarkdownTableAlignmentRow;
 	rows: MarkdownTableRow[];
-}
-
-export interface MarkdownTableCell {
-	data: TableCellData;
 }
 
 /** The 'math' is embedded in `.jsx` as a child. */

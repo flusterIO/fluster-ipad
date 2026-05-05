@@ -6,7 +6,7 @@ use crate::{lang::lib::ui::ui_types::emphasis::Emphasis, parsers::conundrum::log
 ///
 /// ```askama
 /// <span class="underline [&_*]:text-inerhit {{emphasis.to_text_decodartion_classes()}}
-/// {{self.get_thickness_classes()}}">{{content}}</span>
+/// {{self.get_thickness_classes()}}">{{content | safe}}</span>
 /// ```
 #[derive(Template)]
 #[template(ext = "html", in_doc = true)]

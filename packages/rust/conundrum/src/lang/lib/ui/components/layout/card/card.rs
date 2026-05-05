@@ -63,7 +63,7 @@ fn default_markdown_title_depth() -> u8 {
 #[derive(Debug, Serialize, Clone)]
 pub struct Card {
     pub title: Children,
-    pub subtitle: Option<ConundrumString>,
+    pub subtitle: Option<Children>,
     pub children: Children,
     /// The title depth between 1-6 for the markdown output. This will have no
     /// effect on mdx, jsx, or plain text output. Defaults to 5
@@ -82,16 +82,22 @@ pub struct Card {
     pub center_body: Option<ConundrumBoolean>,
 }
 
+impl Card {
+    pub fn subtitle_string(&self, res: ArcState) -> Option<String> {
+        self.subtitle.as_ref().and_then(|c| c.render(res).ok())
+    }
+}
+
 impl HtmlJsComponentResult for Card {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let templ = CardHtmlTemplate { title: self.title.render(Arc::clone(&res))?,
-                                       desc: self.subtitle.as_ref().map(|x| x.0.clone()),
+                                       desc: self.subtitle_string(Arc::clone(&res)),
                                        body: self.children.render(Arc::clone(&res))?,
                                        sizable: self.sizable.clone().unwrap_or_default(),
                                        center_body: self.sizable
                                                         .clone()
                                                         .is_some_and(|c| c.center_content.is_some_and(|b| b.0)) };
-        templ.render().map_err(|e| {
+        templ.render().map_err(|_| {
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })
     }
@@ -101,18 +107,13 @@ impl JsxComponentResult for Card {
     fn to_jsx_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let title_string = self.children.render(Arc::clone(&res))?;
 
-        let subtitle_string = match &self.subtitle {
-            Some(s) => s.to_children(Arc::clone(&res))?.to_jsx_fragment_string(Arc::clone(&res))?,
-            None => "".to_string(),
-        };
-
         Ok(format!(
                    r#"<{} title={} subtitle={} >
 {}
 </{}>"#,
                    EmbeddableComponentName::Card,
                    title_string,
-                   subtitle_string,
+                   self.subtitle_string(Arc::clone(&res)).unwrap_or_else(|| String::from("{null}")),
                    self.children.render(Arc::clone(&res))?,
                    EmbeddableComponentName::Card,
         ))
@@ -141,14 +142,7 @@ impl PlainTextComponentResult for Card {
 impl MarkdownComponentResult for Card {
     fn to_markdown(&self, res: ArcState) -> ConundrumModalResult<String> {
         let title_string = self.title.render(Arc::clone(&res))?;
-
-        let subtitle_string = match &self.subtitle {
-            Some(s) => {
-                let subtitle_children_string = s.to_children(Arc::clone(&res))?.render(Arc::clone(&res))?;
-                format!("\n\n> {}", subtitle_children_string)
-            }
-            None => "".to_string(),
-        };
+        let subtitle_string = self.subtitle_string(Arc::clone(&res)).unwrap_or_default();
         let mut s = String::from("");
         let depth = self.markdown_title_depth.unwrap_or_default();
 
@@ -201,6 +195,8 @@ impl ConundrumComponent for Card {
 
         let subtitle = ConundrumString::from_jsx_props(&props, "desc").ok();
 
+        let subtitle_children = subtitle.and_then(|s: ConundrumString| s.to_children(Arc::clone(&state)).ok());
+
         let unwrapped_children = children.unwrap_or_default();
 
         let title = title_string.to_children(Arc::clone(&state))?;
@@ -212,6 +208,6 @@ impl ConundrumComponent for Card {
                   title,
                   sizable,
                   center_body,
-                  subtitle })
+                  subtitle: subtitle_children })
     }
 }
