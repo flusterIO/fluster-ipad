@@ -11,10 +11,11 @@ use crate::{
             markdown_table_alignment_row::MarkdownTableAlignmentRow,
             markdown_table_heading_row::MarkdownTableHeadingRow, markdown_table_row::MarkdownTableRow,
         },
-        parser_trait::ConundrumParser,
+        parser_trait::{ConundrumParser, ConundrumParserWithParam},
     },
 };
 use serde::Serialize;
+use winnow::{Parser, combinator::repeat, stream::Stream};
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
@@ -50,7 +51,26 @@ impl ConundrumComponentResult for MarkdownTable {
 
 impl ConundrumParser<MarkdownTable> for MarkdownTable {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<MarkdownTable> {
-        todo!()
+        let start = input.input.checkpoint();
+        let (heading, col_count): (MarkdownTableHeadingRow, usize) =
+            MarkdownTableHeadingRow::parse_input_string.parse_next(input).inspect_err(|_| {
+                                                                              input.input.reset(&start);
+                                                                          })?;
+
+        let alignment = MarkdownTableAlignmentRow::parse_input_string(input, col_count).inspect_err(|_| {
+                                                                                           input.input.reset(&start);
+                                                                                       })?;
+
+        let rows: Vec<MarkdownTableRow> = repeat(1.., |nested_input: &mut ConundrumInput| {
+                                              MarkdownTableRow::parse_input_string(nested_input, col_count)
+                                          }).parse_next(input)
+                                            .inspect_err(|_| {
+                                                input.input.reset(&start);
+                                            })?;
+
+        Ok(MarkdownTable { heading,
+                           alignment,
+                           rows })
     }
 
     fn matches_first_char(char: char) -> bool {

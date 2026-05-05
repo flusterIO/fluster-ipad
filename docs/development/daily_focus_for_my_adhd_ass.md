@@ -1,85 +1,144 @@
-## Daily Focus for My ADHD Assistant
+## Daily Focus for My ADHD Brain
 
-### Summary of To-Do List (Generated: Sunday, May 3rd, 2026 — 6:40 PM CST)
+### Summary of To-Do List (Generated: Monday, May 4th, 2026 — 6:40 PM CST)
 
-#### **High Priority Tasks (Critical for Release in 2-4 Weeks)**
+#### High Priority Tasks
 
-1. **Complete Table Parsing & Rendering**
-   - Implement GFM table parsing
-   - Ensure tables render correctly in markdown view
-   - Fix table heading row parsing
+1. **Resume work on Table Parsing**
+   - Complete the TDD setup for the markdown table parser.
+   - Run the test: `cargo nextest run parsers::markdown::table::markdown_table_heading_row::tests::parses_basic_table_heading_row --no-capture`
 
-2. **Fix Markdown View Page Rendering**
-   - Resolve tab rendering issues on load
+2. **Rewrite Paper**
+   - Focus on the new derivation and validate the Solar mass equivalence against Earth data.
 
-3. **Implement Missing Parsers**
-   - List Item with checkbox (various states)
-   - Numbered list items
-   - Full table support
-   - Footnote parser
-   - Plain line item parser
+3. **Fix Markdown View Page**
+   - Ensure tabs render properly on load.
 
-4. **Reimplement `window.setBibtexEditorContent`**
-   - Ensure buffer operations work correctly
+4. **Implement Missing Parsers**
+   - List Item with checkbox (various checked states)
+   - Numbered line item
+   - Full table
 
-5. **Ensure Summary UI Functionality**
-   - Allow users to accept or decline summaries
+5. **Reimplement `window.setBibtexEditorContent`**
+   - Ensure it works as a buffer operation.
 
-6. **Get Dictionary Entry Page Working**
-   - Implement HTML output parser
-   - Ensure React rendering from Swift DB
+6. **Handle Summary UI**
+   - Ensure summary can be accepted or declined from the UI.
 
-7. **Ensure All Documentation Pages Work**
-   - Tables, lists, footnotes, and other parsers
+#### Pre-Release Milestones
 
-8. **Move Remaining Components**
-   - `AINoteSummary` and other components
+- **Dictionary Entry Page**
+   - Render dictionary entries to HTML
+   - Handle rendering in React from the Swift DB
 
-9. **Integrate Typst Support**
+- **Documentation Pages**
+   - Parse & Render Tables
+   - Parse & Render Lists (Unordered, Ordered, Checkbox)
+   - Parse & Render Footnotes
+   - Emoji search and other doc components
+
+- **Components to Move**
+   - AINoteSummary
+   - Table of Contents (TOC)
+
+#### Up Next
+
+- **Integrate Typst Support**
    - Major value add for offline use
 
-10. **Setup Note Seeding for Desktop App**
-    - First app to be released
+- **Setup Seeding of Notes**
+   - For the desktop app release
 
-#### **Next Steps**
+- **Work on Remaining Parsers**
 
-- Work on remaining parsers
-- Move over rest of components
-- Handle scroll restoration on desktop app
-- Fix iPad initial load issue in portrait mode
+#### Missing or Incomplete Parsers
 
-#### **Bug Fixes**
+- CodeBlock (Check for meta string without `--`)
+- Footnote
+- Table (GFM if performance allows)
+- Strikethrough text
+- Escapable math blocks
+- Escapable strings
+- Line Item (various checked states)
+- Timestamp link syntax
 
-- Ensure bibliography entries are properly associated with notes
-- Fix 'paper' button creating duplicate pages
-- Resolve error state reset on iPad after manual save
+#### Bug Log
 
-#### **AI & Features**
+- Fix bibliography entries not being associated with notes
+- Fix 'paper' button creating 2 pages
 
-- Implement AI triggers (`auto`, `confirm`, `never`)
-- Create `FlusterAI.generateStudyGuide()` and `FlusterAI.createFlashCards()`
-- Handle light mode for `AISummaryContainer`
-- Allow force regeneration of summaries
+#### Embedded Components
 
-#### **Performance & Offline**
+- Flip-card for studying (useful with sharing)
+- AI triggers for generating study guides and flash cards
+- AI trigger modes: auto, confirm, never
+
+#### Documentation
+
+- Card component documentation
+
+#### Desktop
+
+- AI summarization
+- Scroll restoration in landscape mode
+- Sync method for creating notes from file system
+
+#### iPad
+
+- Ensure note loads in portrait view
+
+#### Webviews
+
+- Ensure all taggables have 'cursor-pointer' class
+
+#### Website
+
+- Update article to match app content
+- Fix admonition padding issue
+
+#### Conundrum
+
+- Download **Crafting Interpreters** for offline reading
+
+#### Performance
 
 - Move regex queries to `HashMap<String, bool>`
-- Fix syntax for italic fields in titles
-- Pipe errors to webview error display
-- Create `SiaString` class for string compression
 
-#### **Release Checklist**
+#### Release
 
 - Ensure all tests pass (Swift, Typescript, Rust)
 - Review Apple's nomination process for featured status
-- Handle AI availability states
-- Generate R3 vectors and note summaries in background
 
-#### **Additional Notes**
+#### AI Summary
 
-- Ensure note summary is applied to new summary class if present
-- Fix initial note refresh issues
+- Handle light mode for `AISummaryContainer`
+- Force regeneration of summaries
+- React property parsers for better AI input
+
+#### Offline
+
+- Fix italic field in title syntax
+- Relay detailed errors to webview
+- Create `subtle` property for `Tabs` component
+- Handle `Icon` component with dynamic loading
+- Update iPad app with `ErrorStateReset` event
+- Add `output_format` property for conditional rendering
+- Create `SiaString` class for string compression
+- Fix new note being set too late
+- Handle initial note refresh issues
+- Apply note's front matter summary to new summary class
 - Handle new line items not working on initial load
-- Work on global search page for Mac
+- Global search page on Mac
+- Fix note being marked as modified on view
+- Set AI availability states
+- Generate comment syntax parser
+- Generate R3 vector and summary for notes
 
-This summary prioritizes tasks that will directly impact the app's release and user experience. Focus on completing these in the next 2-4 weeks to ensure a successful launch.
+### Paper Additions
+
+- Derivation of $\frac{dx}{x} = \frac{dr}{R}$
+- Spatal tension giving rise to $\alpha$: $2 \frac{R_{\oplus}}{\left( 2 G M_{\oplus} \right)^{1/3}} = \frac{1}{\alpha}$
+
+---
+
+This summary prioritizes the most critical tasks to ensure the release within 2-4 weeks. Focus on the high-priority tasks first, then move to the pre-release milestones and other components. Break down larger tasks into smaller, manageable chunks to stay on track with your ADHD brain. Good luck!

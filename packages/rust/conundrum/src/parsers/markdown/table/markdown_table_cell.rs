@@ -12,9 +12,8 @@ use crate::{
         markdown::table::{
             table_cell_data::TableCellData, table_utility_parsers::terminating_whitespace_and_table_separator,
         },
-        parser_components::consume_white_space::{consume_linear_space, consume_white_space},
+        parser_components::consume_white_space::consume_linear_space,
         parser_trait::ConundrumParser,
-        parsers_shared::space_or_tab::space_or_tab,
     },
 };
 

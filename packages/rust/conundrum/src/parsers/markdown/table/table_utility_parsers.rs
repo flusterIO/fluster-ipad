@@ -19,6 +19,7 @@ use winnow::{
     Parser,
     combinator::{alt, delimited, not, repeat},
     error::{ContextError, ErrMode},
+    stream::Range,
 };
 
 pub fn table_separator_not_escaped(input: &mut ConundrumInput) -> ConundrumModalResult<()> {
@@ -38,10 +39,15 @@ pub fn terminating_whitespace_and_table_separator(input: &mut ConundrumInput) ->
 }
 
 pub fn table_row_parser_wrapper<'a, T: Debug>(
-    parser: impl Fn(&mut ConundrumInput<'a>) -> ConundrumModalResult<T> + Clone)
+    parser: impl Fn(&mut ConundrumInput<'a>) -> ConundrumModalResult<T> + Clone,
+    col_count: Option<usize>)
     -> impl FnMut(&mut ConundrumInput<'a>) -> ConundrumModalResult<Vec<T>> {
+    let r: Range = match col_count {
+        Some(s) => s.into(),
+        None => (0..).into(),
+    };
     move |input| {
-        let res: Vec<T> = delimited('|', repeat(1.., parser.clone()), white_space_to_newline).parse_next(input)?;
+        let res: Vec<T> = delimited('|', repeat(r, parser.clone()), white_space_to_newline).parse_next(input)?;
         Ok(res)
     }
 }

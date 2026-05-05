@@ -13,10 +13,11 @@ use winnow::Parser;
 #[derive(Debug, serde::Serialize, Clone)]
 pub struct MarkdownTableHeadingRow(Vec<MarkdownTableHeadingCell>);
 
-impl ConundrumParser<MarkdownTableHeadingRow> for MarkdownTableHeadingRow {
-    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownTableHeadingRow> {
-        let res = table_row_parser_wrapper(MarkdownTableHeadingCell::parse_input_string).parse_next(input)?;
-        Ok(MarkdownTableHeadingRow(res))
+impl ConundrumParser<(MarkdownTableHeadingRow, usize)> for MarkdownTableHeadingRow {
+    fn parse_input_string<'a>(input: &mut ConundrumInput<'a>)
+                              -> ConundrumModalResult<(MarkdownTableHeadingRow, usize)> {
+        let res = table_row_parser_wrapper(MarkdownTableHeadingCell::parse_input_string, None).parse_next(input)?;
+        Ok((MarkdownTableHeadingRow(res.clone()), res.len()))
     }
 
     fn matches_first_char(char: char) -> bool {
@@ -33,7 +34,7 @@ mod tests {
     #[test]
     fn parses_basic_table_heading_row() {
         let mut input = wrap_test_conundrum_content("| My heading here | Some other heading | here | here | here |");
-        let res =
+        let (res, _): (MarkdownTableHeadingRow, usize) =
             MarkdownTableHeadingRow::parse_input_string.parse_next(&mut input)
                                                        .expect("Parses table heading row without throwing an error.");
 
