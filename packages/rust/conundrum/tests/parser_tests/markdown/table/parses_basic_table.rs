@@ -24,8 +24,9 @@ async fn parses_simple_table() {
         println!("Error: {:#?}", e);
     }).expect("Returns a vald result when a valid input was provided.");
 
-    println!("Res: {:#?}", res);
     let t = TestResult(res);
+
+    t.log_html();
 
     let table_count = t.count_css_query("table");
     assert!(table_count == 1, "Finds one table element in the rendered html");

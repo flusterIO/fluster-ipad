@@ -7,7 +7,7 @@ use crate::parsers::markdown::table::html_templates::markdown_table_cell_templat
 /// ```askama
 /// <tr>
 /// {% for cell in self.cells %}
-/// {{cell.render()?}}
+/// {{cell.render()? | safe}}
 /// {% endfor %}
 /// </tr>
 /// ```

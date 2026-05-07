@@ -11,11 +11,11 @@ use crate::parsers::markdown::table::html_templates::{
 /// <table class="w-full h-fit">
 /// <tr>
 /// {% for heading_cell in self.heading_cells %}
-/// {{heading_cell.render()?}}
+/// {{heading_cell.render()? | safe}}
 /// {% endfor %}
 /// </tr>
 /// {% for row in self.rows %}
-/// {{row.render()?}}
+/// {{row.render()? | safe}}
 /// {% endfor %}
 /// </table>
 /// ```
