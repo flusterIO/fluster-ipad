@@ -42,6 +42,10 @@ impl Children {
         self.0.iter().all(|item| !item.is_block_level())
     }
 
+    pub fn is_all_empty(&self) -> bool {
+        self.0.iter().all(|item| item.is_empty())
+    }
+
     /// Outputs to the various conundrum outputs depending on the associated
     /// flags.
     pub fn render(&self, res: ArcState) -> ConundrumModalResult<String> {

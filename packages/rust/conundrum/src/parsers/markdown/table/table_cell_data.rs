@@ -1,5 +1,11 @@
+use std::sync::Arc;
+
 use crate::{
-    lang::lib::ui::ui_types::children::Children, parsers::conundrum::logic::number::conundrum_number::ConundrumNumber,
+    lang::{
+        lib::ui::ui_types::children::Children,
+        runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ArcState},
+    },
+    parsers::conundrum::logic::number::conundrum_number::ConundrumNumber,
 };
 
 #[typeshare::typeshare]
@@ -12,4 +18,14 @@ pub enum TableCellData {
     Heading(Children),
     Conundrum(Children),
     Numeric(ConundrumNumber),
+}
+
+impl TableCellData {
+    pub fn render(&self, state: ArcState) -> ConundrumModalResult<String> {
+        match self {
+            TableCellData::Numeric(n) => Ok(n.to_string()),
+            TableCellData::Conundrum(c) => c.render(Arc::clone(&state)),
+            TableCellData::Heading(h) => h.render(Arc::clone(&state)),
+        }
+    }
 }

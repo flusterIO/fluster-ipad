@@ -6,7 +6,7 @@ use winnow::{
 
 use crate::{
     lang::runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput},
-    parsers::parser_trait::ConundrumParser,
+    parsers::{markdown::table::table_types::TableCellAlignment, parser_trait::ConundrumParser},
 };
 
 #[typeshare::typeshare]
@@ -75,5 +75,16 @@ impl ConundrumParser<MarkdownTableAlignmentCell> for MarkdownTableAlignmentCell 
 
     fn matches_first_char(char: char) -> bool {
         char == ':' || char == '-'
+    }
+}
+
+impl MarkdownTableAlignmentCell {
+    pub fn to_cell_alignment_enum(&self) -> TableCellAlignment {
+        match self {
+            Self::Default => TableCellAlignment::Default,
+            Self::Right => TableCellAlignment::Right,
+            Self::Left => TableCellAlignment::Left,
+            Self::Center => TableCellAlignment::Center,
+        }
     }
 }

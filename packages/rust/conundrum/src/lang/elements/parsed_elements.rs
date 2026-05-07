@@ -1,3 +1,4 @@
+use rssn::prelude::argmin::seq::IndexedRandom;
 use serde::Serialize;
 use winnow::error::ErrMode;
 
@@ -319,6 +320,16 @@ impl ParsedElement {
             ParsedElement::Table(_) => true,
             ParsedElement::FootnoteAnchor(_) => false,
             ParsedElement::FootnoteFooter(_) => true,
+        }
+    }
+
+    /// This will return `true` for strings that are all whitespace.
+    pub fn is_empty(&self) -> bool {
+        match self {
+            ParsedElement::Children(c) => c.is_all_empty(),
+            ParsedElement::Text(t) => t.trim().is_empty(),
+            _ => false, /* TODO: Add a trait that queries the various components here. Apply the
+                         * trait to each component or element and call it here. */
         }
     }
 

@@ -7,7 +7,7 @@ use askama::Template;
 /// <div>
 /// {{heading | safe}}
 /// </div>
-/// <div>
+/// <div class="prose-sm [&>p]:mt-2">
 /// {{body | safe}}
 /// </div>
 /// </li>

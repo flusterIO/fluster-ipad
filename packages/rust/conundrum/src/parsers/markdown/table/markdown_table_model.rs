@@ -1,22 +1,35 @@
+use std::sync::Arc;
+
 use crate::{
     lang::runtime::{
-        state::conundrum_error_variant::ConundrumModalResult,
+        state::{
+            conundrum_error::ConundrumError,
+            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+        },
         traits::{
-            conundrum_input::ConundrumInput, fluster_component_result::ConundrumComponentResult,
-            html_js_component_result::HtmlJsComponentResult, plain_text_component_result::PlainTextComponentResult,
+            conundrum_input::{ArcState, ConundrumInput},
+            conundrum_template::{ConundrumTemplateRepresentable, ConundrumTemplateRepresentableWithParam},
+            fluster_component_result::ConundrumComponentResult,
+            html_js_component_result::HtmlJsComponentResult,
+            plain_text_component_result::PlainTextComponentResult,
         },
     },
     parsers::{
         markdown::table::{
-            html_templates::markdown_table_template::MarkdownTableTemplate,
+            html_templates::{
+                markdown_table_row_template::MarkdownTableRowTemplate, markdown_table_template::MarkdownTableTemplate,
+            },
             markdown_table_alignment_row::MarkdownTableAlignmentRow,
-            markdown_table_heading_row::MarkdownTableHeadingRow, markdown_table_row::MarkdownTableRow,
+            markdown_table_heading_row::MarkdownTableHeadingRow,
+            markdown_table_row::MarkdownTableRow,
         },
         parser_trait::{ConundrumParser, ConundrumParserWithParam},
+        parsers_shared::line_breaks::white_space_to_newline,
     },
 };
+use askama::Template;
 use serde::Serialize;
-use winnow::{Parser, combinator::repeat, stream::Stream};
+use winnow::{Parser, combinator::repeat, error::ErrMode, stream::Stream};
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone)]
@@ -38,7 +51,12 @@ impl HtmlJsComponentResult for MarkdownTable {
     fn to_html_js_component(&self,
                             res: crate::lang::runtime::traits::conundrum_input::ArcState)
                             -> ConundrumModalResult<String> {
-        todo!()
+        let templ = self.to_template(Arc::clone(&res))?;
+
+        templ.render().map_err(|e| {
+                    eprintln!("Error: {:#?}", e);
+                    ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+                })
     }
 }
 
@@ -53,14 +71,24 @@ impl ConundrumComponentResult for MarkdownTable {
 impl ConundrumParser<MarkdownTable> for MarkdownTable {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<MarkdownTable> {
         let start = input.input.checkpoint();
+
         let (heading, col_count): (MarkdownTableHeadingRow, usize) =
             MarkdownTableHeadingRow::parse_input_string.parse_next(input).inspect_err(|_| {
                                                                               input.input.reset(&start);
                                                                           })?;
 
+        // white_space_to_newline.void().parse_next(input).inspect_err(|_| {
+        //
+        // input.input.reset(&start);
+        // })?;
+
         let alignment = MarkdownTableAlignmentRow::parse_input_string(input, col_count).inspect_err(|_| {
                                                                                            input.input.reset(&start);
                                                                                        })?;
+
+        white_space_to_newline.void().parse_next(input).inspect_err(|_| {
+                                                            input.input.reset(&start);
+                                                        })?;
 
         let rows: Vec<MarkdownTableRow> = repeat(1.., |nested_input: &mut ConundrumInput| {
                                               MarkdownTableRow::parse_input_string(nested_input, col_count)
@@ -79,6 +107,15 @@ impl ConundrumParser<MarkdownTable> for MarkdownTable {
     }
 }
 
-impl MarkdownTable {
-    pub fn to_template(&self) -> MarkdownTableTemplate {}
+impl ConundrumTemplateRepresentable<MarkdownTableTemplate> for MarkdownTable {
+    fn to_template(&self, state: ArcState) -> ConundrumModalResult<MarkdownTableTemplate> {
+        let alignment_map = self.alignment.to_col_map();
+        let heading_cells = self.heading.to_heading_cell_templates(Arc::clone(&state), &alignment_map)?;
+        let rows = self.rows
+                       .iter()
+                       .map(|row| row.to_template(Arc::clone(&state), &alignment_map))
+                       .collect::<ConundrumModalResult<Vec<MarkdownTableRowTemplate>>>()?;
+        Ok(MarkdownTableTemplate { heading_cells,
+                                   rows })
+    }
 }

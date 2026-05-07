@@ -59,14 +59,23 @@ pub fn conundrum_content_markdown_table_cell(input: &mut ConundrumInput) -> Conu
     consume_linear_space(0..).parse_next(input).inspect_err(|_| {
                                                     input.input.reset(&start);
                                                 })?;
-    let (children, _): (Vec<ParsedElement>, ()) =
-        repeat_till(1.., parse_inline_element, terminating_whitespace_and_table_separator.void()).parse_next(input)
+    let children: Children =
+        repeat_till(1.., parse_inline_element, terminating_whitespace_and_table_separator.void())
+                                     .verify_map(|(v, _): (Vec<ParsedElement>, ())| {
+                                        let c = Children(v.clone()); 
+                                        if c.is_all_empty() {
+                                            None
+                                        } else {
+                                            Some(c)
+                                        }
+                                     })
+                                     .parse_next(input)
                                                                                                  .inspect_err(|_| {
                                                                                                      input.input
                                                                                                         .reset(&start);
                                                                                                  })?;
 
-    Ok(TableCellData::Conundrum(Children(children)))
+    Ok(TableCellData::Conundrum(children))
 }
 
 impl ConundrumParser<MarkdownTableCell> for MarkdownTableCell {
