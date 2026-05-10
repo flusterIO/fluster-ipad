@@ -37,6 +37,7 @@ use crate::{
             hr::MarkdownHorizontalRule,
             inline_code::InlineCodeResult,
             italic_text::MarkdownItalicTextResult,
+            links::markdown_link::MarkdownLinkResult,
             lists::{
                 ordered::ordered_list_model::OrderedListModel, unordered::unordered_list_model::UnorderedListModel,
             },
@@ -44,7 +45,6 @@ use crate::{
                 emoji::emoji_model::EmojiResult,
                 footnote::{footnote_anchor::FootnoteAnchor, footnote_footer::FootnoteFooter},
             },
-            markdown_link::MarkdownLinkResult,
             math::{block_math::block_math_model::BlockMathResult, inline_math::inline_math_model::InlineMathResult},
             paragraph::paragraph_model::MarkdownParagraphResult,
             table::markdown_table_model::MarkdownTable,

@@ -40,6 +40,7 @@ resolve_swift_packages:
 	cd {{justfile_directory()}}/packages/swift/FlusterMdx; swift package resolve
 	cd {{justfile_directory()}}/packages/swift/FlusterSwift; swift package resolve
 	cd {{justfile_directory()}}/packages/swift/FlusterAI; swift package resolve
+	cd {{justfile_directory()}}/packages/swift/ConundrumEditorSwift; swift package resolve
 
 compile_conundrum_scss:
 	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm run build

@@ -8,7 +8,7 @@ use crate::parsers::markdown::table::html_templates::{
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <table class="w-full h-fit">
+/// <table class="w-full h-fit mt-6 mb-8">
 /// <tr>
 /// {% for heading_cell in self.heading_cells %}
 /// {{heading_cell.render()? | safe}}

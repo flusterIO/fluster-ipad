@@ -12,9 +12,9 @@ use crate::parsers::markdown::bold_and_italic_text::MarkdownBoldAndItalicTextRes
 use crate::parsers::markdown::bold_text::MarkdownBoldTextResult;
 use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
+use crate::parsers::markdown::links::markdown_link::MarkdownLinkResult;
 use crate::parsers::markdown::markdown_extensions::emoji::emoji_model::EmojiResult;
 use crate::parsers::markdown::markdown_extensions::footnote::footnote_anchor::FootnoteAnchor;
-use crate::parsers::markdown::markdown_link::MarkdownLinkResult;
 use crate::parsers::markdown::math::inline_math::inline_math_model::InlineMathResult;
 use crate::parsers::parser_trait::ConundrumParser;
 use crate::parsers::react::react_component_self_closing::ReactComponentSelfClosingResult;

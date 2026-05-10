@@ -21,13 +21,12 @@ use crate::{
 ///    <div
 ///      data-cdrm-copy-for="{{id}}"
 ///      role="button"
-///      class="cdrm-codeblock-icon absolute z-1 top-2 right-2 transition-opacity duration-300
-///      font-lucide cursor-pointer"
+///      class="cdrm-codeblock-icon absolute z-1 top-2 right-2 opacity-60 hover:opactiy-100 transition-opacity duration-300 font-lucide cursor-pointer"
 ///      onclick="window.conundrum.onCopyCodeBlockClick(event)"
 ///    >
 ///    {{crate::output::html::icons::embedded_web_icons::EmbeddedIcon::Copy}}
 ///    </div>
-///    <div class="[&>pre]:p-2! [&>pre]:rounded-bl [&>pre]:rounded-br {% if self.title.is_some() %} [&>pre]:rounded-tl-none [&_pre]:rounded-tr-none {% else %} [&>pre]:rounded-tl [&>pre]:rounded-tr {% endif %} [&>pre]:my-0 [&>pre]:text-sm">
+///    <div class="[&>pre]:p-2! [&>pre]:px-3! [&>pre]:min-w-fit overflow-x-auto no-scrollbar [&>pre]:rounded-bl [&>pre]:rounded-br {% if self.title.is_some() %} [&>pre]:rounded-tl-none [&_pre]:rounded-tr-none {% else %} [&>pre]:rounded-tl [&>pre]:rounded-tr {% endif %} [&>pre]:my-0 [&>pre]:text-sm">
 ///    {{code | safe}}
 ///    </div>
 ///    </div>

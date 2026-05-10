@@ -1,6 +1,7 @@
 # To-Do
 
-- [ ] Work on derivation of Universal radius with reduced compton wavelength and model,
+- [ ] Write sample notebook derivation for the new found focal point!
+- [ ] Work towards release of application, starting with writing the paper. As you go you'll need to stop and fix things, but that's expected. That's a decent way to discover bugs and work on this model at the same time.
 - [ ] Resume work on Table!!! There's a decent TDD setup already going...
       `cargo nextest run parsers::markdown::table::markdown_table_heading_row::tests::parses_basic_table_heading_row --no-capture`
 - [ ] Fix independent markdown view page as that's not rendering tabs properly on load still.
@@ -11,7 +12,7 @@
   - [?] Plain list item
   - [ ] Numbered line item
   - [ ] Full table!
-
+- [ ] Fix issue with admonition originally 'folded' state. It's still being displayed as open.
 - [ ] Reimplement `window.setBibtexEditorContent`. It's a buffer operation that's currently MIA.
 - [ ] Handle rest of summary UI
 - [ ] Make sure summary can be accepted or declined from the UI appropriately.

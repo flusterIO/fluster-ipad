@@ -15,7 +15,7 @@ members = [
     "packages/rust/conundrum_docgen",
     "packages/rust/conundrum_logic",
     "packages/rust/conundrum_logic/codegen",
-    "packages/rust/conundrum_logic/codegen/tests/custom_root",
+    "packages/rust/conundrum_logic/codegen/tests/custom_root", "packages/rust/conundrum_db",
 ]
 
 

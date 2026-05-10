@@ -5,10 +5,11 @@ import { LoadingComponent } from "@/shared_components/loading_component";
 import { EditorScrollPersistor } from "#/mdx/hooks/use_persist_mdx_editor_scroll";
 import { useSelector } from "react-redux";
 import { type GlobalAppState } from "#/webview_global_state/store";
-import { WebviewImplementation, EditorView, SplitviewEditorWebviewActions, type EditorState } from "@/code_gen/typeshare/fluster_core_utilities";
+import { WebviewImplementation, EditorView, SplitviewEditorWebviewActions, type EditorState, WebviewEnvironment } from "@/code_gen/typeshare/fluster_core_utilities";
 import { sendToSwift } from "@/utils/bridge/send_to_swift";
 import { connect } from 'react-redux';
 import { setBibtexEditorWindowBridgeFunctions } from "#/editor/code_editor/types/swift_events/bibtex_editor_swift_events";
+import { CodeEditor } from "../../editor/code_editor/components/code_editor";
 
 
 setBibtexEditorWindowBridgeFunctions();
@@ -22,11 +23,12 @@ const MAX_TIME = 5000
  */
 const EditorBody = (): ReactNode => {
     const editorView = useSelector((state: GlobalAppState) => state.editor.editorView)
+    const preferEditorView = useSelector((state: GlobalAppState) => state.container.implementation == WebviewImplementation.MdxEditor && state.container.environment === WebviewEnvironment.MacOS);
     if (editorView === EditorView.Pending) {
         return null
     }
     return (
-        editorView === EditorView.Splitview ? <SplitViewEditorInner /> : <MdxEditorPreviewOnly implementation={WebviewImplementation.MdxEditor} />
+        editorView === EditorView.Splitview ? <SplitViewEditorInner /> : preferEditorView ? <CodeEditor /> : <MdxEditorPreviewOnly implementation={WebviewImplementation.MdxEditor} />
     )
 }
 

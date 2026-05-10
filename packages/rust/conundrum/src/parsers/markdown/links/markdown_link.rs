@@ -1,8 +1,13 @@
-use std::{fmt::Display, sync::Arc};
+use std::sync::Arc;
 
 use serde::Serialize;
 use typeshare::typeshare;
-use winnow::{Parser, combinator::delimited, token::take_while};
+use winnow::{
+    Parser,
+    combinator::{alt, delimited},
+    stream::Stream,
+    token::take_while,
+};
 
 use crate::{
     lang::{
@@ -22,7 +27,7 @@ use crate::{
         general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
         output_components::output_utils::javascript_null_prop,
     },
-    parsers::parser_trait::ConundrumParser,
+    parsers::{markdown::links::link_by_dom_id::LinkByDomId, parser_trait::ConundrumParser},
 };
 
 #[typeshare]
@@ -69,10 +74,15 @@ impl MdxComponentResult for MarkdownLinkResult {
 
 impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
     fn parse_input_string<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<MarkdownLinkResult> {
-        let (text, url) =
-            (delimited('[', take_while(1.., |c| c != ']' && c != '\n'), ']'),
-             delimited('(', take_while(5.., |c| c != ')' && c != '\n' && c != ' ' && c != '\t'), ')'))
-                                                                                         .parse_next(input)?;
+        let start = input.input.checkpoint();
+        let text = delimited('[', take_while(1.., |c| c != ']' && c != '\n'), ']').parse_next(input)
+                                                                                  .inspect_err(|_| {
+                                                                                      input.input.reset(&start);
+                                                                                  })?;
+
+        let url = alt((
+                LinkByDomId::parse_input_string
+        )).parse_next(input)?;
 
         let state = Arc::clone(&input.state);
 

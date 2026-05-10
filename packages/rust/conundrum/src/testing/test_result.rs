@@ -21,16 +21,13 @@ impl TestResult {
     pub fn log_html(&self) {
         let assets = syntect_assets::assets::HighlightingAssets::from_binary();
         let ss = assets.get_syntax_set().expect("Gets syntaxes.");
-        for s in ss.syntaxes() {
-            println!("S: {:?}", s.name);
-        }
         let s = ss.find_syntax_by_name("HTML").unwrap();
         let t = assets.get_theme("dracula");
         let mut x = syntect::easy::HighlightLines::new(s, t);
         for l in self.0.content.lines() {
             let z: Vec<(Style, &str)> = x.highlight(l, ss);
             let escaped = as_24_bit_terminal_escaped(&z, true);
-            print!("{}", escaped);
+            println!("{}", escaped);
         }
     }
 }

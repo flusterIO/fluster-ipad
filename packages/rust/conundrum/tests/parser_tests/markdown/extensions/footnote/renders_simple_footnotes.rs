@@ -1,8 +1,19 @@
 use conundrum::{
-    lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum},
-    parsers::conundrum::logic::number::conundrum_int::ConundrumInt,
-    testing::render_test::render_test,
+    lang::runtime::{
+        run_conundrum::{ParseConundrumOptions, run_conundrum},
+        state::{
+            parse_state::{ConundrumCompileTarget, ConundrumModifier},
+            ui_params::UIParams,
+        },
+    },
+    parsers::{
+        conundrum::logic::number::conundrum_int::ConundrumInt,
+        markdown::code_block::supported_themes::SupportedCodeBlockTheme,
+    },
+    testing::{render_test::render_test, test_result::TestResult},
 };
+
+use crate::render_tests;
 
 #[tokio::test]
 async fn parses_footnote_footer_with_trailing_empty_space() {
@@ -55,4 +66,49 @@ Consequat rutrum nam eu nisl quis, dignissim nunc in luctus. Dignissim nisl, lac
 
     let _ = render_test(test_content, "simple-footnotes").await;
     // insta::assert_snapshot!(res.content);
+}
+
+#[tokio::test]
+async fn parses_footnotes_from_paper() {
+    let test_content = r#"# The Lighthouse & The Clocktower
+> A sample note & a novel interpretation of relativity
+
+<Admonition title="Thank you" foldable folded>
+Thank you for taking the time to read this. My story is posted elsewhere, so to keep things short, this is the entire reason I built Fluster in the first place.[^1]
+
+Almost 5 years ago I realized Einstein made an assumption that made far more sense before the observations that give us the Big Bang, and after playing around with the math I realized I can derive an absolutely staggering amount of physics from a single, mathematically equivalent modification to Einstein's model. I quit my job, became homeless, and over the course of this pursuit built the original version of Fluster for my own personal use.
+
+I'll do my best to convince the math types among you by the end of this sample note that Einstein made a mistake, but regardless of your opinions on the model, I hope you enjoy Fluster and find it as useful as I have.
+
+</Admonition>
+
+Today in class we learned about relativistic simultaneity, but something just doesn't seem right.
+
+For starts, what happens if
+
+
+[^1]: The logical question here is well, why not just publish it in peer review? 
+       "#;
+
+    let test_input = ParseConundrumOptions { content: test_content.to_string(),
+                                             hide_components: Vec::new(),
+                                             modifiers: Vec::new(),
+                                             note_id: None,
+                                             target: ConundrumCompileTarget::Html,
+                                             trusted: true,
+                                             ui_params: UIParams { dark_mode: true,
+                                                                   font_scalar: 1.0,
+                                                                   math_font_scalar: 1.2,
+                                                                   syntax_theme:
+                                                                       Some(SupportedCodeBlockTheme::Darkneon) } };
+    let r = run_conundrum(test_input).inspect_err(|e| {
+                                         println!("Error: {:#?}", e);
+                                     })
+                                     .expect("Failed to parse the footnotes from paper test.");
+
+    let t = TestResult(r);
+
+    t.log_html();
+
+    assert!(t.count_css_query("div.cdrm-footnote-body") == 1, "Finds the proper number of rendered footnote elements");
 }

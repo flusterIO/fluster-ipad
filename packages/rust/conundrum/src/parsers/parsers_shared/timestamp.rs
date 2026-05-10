@@ -1,0 +1,50 @@
+use winnow::{Parser, ascii::dec_int, combinator::opt, stream::Stream};
+
+use crate::lang::runtime::{
+    state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput,
+};
+
+/// If only 2 components are passed, as in `[My link](video:myId@4:30)`, it is
+/// assumed to be minutes and seconds. If three components are passed, it will
+/// be applied as `minutes:seconds:hours`
+pub struct Timestamp {
+    pub min: i64,
+    pub hours: Option<i64>,
+    pub sec: i64,
+}
+
+pub fn timestamp<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<Timestamp> {
+    let start = input.input.checkpoint();
+
+    let hours = dec_int.parse_next(input).inspect_err(|_| {
+                                              input.input.reset(&start);
+                                          })?;
+
+    ':'.parse_next(input).inspect_err(|_| {
+                              input.input.reset(&start);
+                          })?;
+    let min: i64 = dec_int.parse_next(input).inspect_err(|_| {
+                                                 input.input.reset(&start);
+                                             })?;
+
+    if let Some(sec) = opt(|nested_input: &mut ConundrumInput<'a>| {
+                           let nested_start = nested_input.input.checkpoint();
+                           ':'.parse_next(nested_input).inspect_err(|_| {
+                                                            nested_input.input.reset(&nested_start);
+                                                        })?;
+                           dec_int.parse_next(nested_input).inspect_err(|_| {
+                                                               nested_input.input.reset(&nested_start);
+                                                           })
+                       }).parse_next(input)
+                         .ok()
+                         .flatten()
+    {
+        Ok(Timestamp { hours: Some(hours),
+                       min,
+                       sec })
+    } else {
+        Ok(Timestamp { min: hours,
+                       sec: min,
+                       hours: None })
+    }
+}

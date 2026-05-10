@@ -5,7 +5,7 @@ use crate::parsers::markdown::table::table_types::TableCellAlignment;
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <th>{{content | safe}}</th>
+/// <th class="{{self.alignment | safe}}">{{content | safe}}</th>
 /// ```
 #[derive(Template)]
 #[template(ext = "html", in_doc = true)]

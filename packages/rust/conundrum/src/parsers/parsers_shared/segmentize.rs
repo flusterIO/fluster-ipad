@@ -20,11 +20,11 @@ use crate::{
             hr::MarkdownHorizontalRule,
             inline_code::InlineCodeResult,
             italic_text::MarkdownItalicTextResult,
+            links::markdown_link::MarkdownLinkResult,
             markdown_extensions::{
                 emoji::emoji_model::EmojiResult,
                 footnote::{footnote_anchor::FootnoteAnchor, footnote_footer::FootnoteFooter},
             },
-            markdown_link::MarkdownLinkResult,
             math::{block_math::block_math_model::BlockMathResult, inline_math::inline_math_model::InlineMathResult},
             table::markdown_table_model::MarkdownTable,
         },
