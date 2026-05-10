@@ -87,3 +87,9 @@ html,
 body {
   overflow-y: unset;
 }
+
+.hide-math-labels {
+  mjx-labels {
+    display: none;
+  }
+}

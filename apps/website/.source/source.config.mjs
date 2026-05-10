@@ -21,7 +21,7 @@ var config = {
             processEnvironments: true
           },
           chtml: {
-            fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+            fontURL: process.env.NODE_ENV === "production" ? "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2" : "/assets/fonts/mathjax",
             adaptiveCSS: true
           }
         }
@@ -55,6 +55,10 @@ var legal = defineCollections({
   // mdxOptions: getDefaultMDXOptions(),
   // other options
 });
+var nestedContent = defineDocs({
+  // type: "doc",
+  dir: "content/nested_content/"
+});
 var myWork = defineDocs({
   dir: "content/my_work",
   docs: {
@@ -77,5 +81,6 @@ export {
   documentation,
   legal,
   metaFiles,
-  myWork
+  myWork,
+  nestedContent
 };

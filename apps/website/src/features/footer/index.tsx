@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import LinkGroup from "./link_group";
 import FooterBanners from "./footer_banner";
 import clsx from "clsx";
-import { FooterLinkKeys, footerLinks } from "./data";
+import { footerLinks, type FooterLinkKeys } from "./data";
 import { staticContent } from "#/core/static_content";
 import { GithubIcon } from "#/core/icons/github";
 import { PaypalIcon } from "#/core/icons/paypal";

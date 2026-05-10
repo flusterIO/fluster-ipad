@@ -1,8 +1,8 @@
 "use client";
 import { useViewportProportionalPosition } from "#/core/hooks/use_viewport_proportional_position";
 import { cn } from "#/core/utils/cn";
-import { HTMLMotionProps, motion } from "framer-motion";
-import React, { ReactNode, useRef } from "react";
+import { type HTMLMotionProps, motion } from "framer-motion";
+import React, { type ReactNode, type RefObject, useRef } from "react";
 
 const maxOpacity = 0.8;
 
@@ -23,10 +23,11 @@ export const BackgroundGradient = ({
     classes = {},
     className,
     border = false,
+    ref,
     ...props
 }: BackgroundGradientProps) => {
-    const ref = useRef<HTMLDivElement>(null!);
-    const bg = useRef<HTMLDivElement>(null!);
+    /* const ref = useRef<HTMLDivElement>(null); */
+    const bg = useRef<HTMLDivElement>(null);
     const sp = useRef<number>(0);
     const variants = {
         initial: {
@@ -37,20 +38,27 @@ export const BackgroundGradient = ({
         },
     };
 
-    useViewportProportionalPosition(ref, (_sp) => {
+    useViewportProportionalPosition(ref as RefObject<HTMLDivElement>, (_sp) => {
         if (!bg.current) return;
         sp.current = _sp;
         bg.current.style.opacity = `${maxOpacity * _sp}`;
     });
 
     const handleHover = (isHovered: boolean) => {
+        if (!bg.current) {
+            return;
+        }
         if (isHovered) {
             bg.current.style.transition = "opacity 0.5s ease-in";
             bg.current.style.opacity = "1";
         } else {
             bg.current.style.transition = "opacity 0.5s ease-in";
             bg.current.style.opacity = `${sp.current * sp.current}`;
-            bg.current.ontransitionend = () => (bg.current.style.transition = "");
+            bg.current.ontransitionend = () => {
+                if (bg.current) {
+                    bg.current.style.transition = "";
+                }
+            };
         }
     };
 
@@ -59,8 +67,12 @@ export const BackgroundGradient = ({
             {...props}
             className={cn("relative p-[4px] group", classes.container)}
             ref={ref}
-            onMouseEnter={() => handleHover(true)}
-            onMouseLeave={() => handleHover(false)}
+            onMouseEnter={() => {
+                handleHover(true);
+            }}
+            onMouseLeave={() => {
+                handleHover(false);
+            }}
         >
             <motion.div
                 ref={bg}
@@ -69,7 +81,7 @@ export const BackgroundGradient = ({
                 }}
                 className={cn(
                     "absolute inset-0 rounded-3xl z-[1] opacity-60 blur-xl will-change-transform",
-                    "bg-[radial-gradient(circle_farthest-side_at_0_100%,hsl(var(--brand)),transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]"
+                    "bg-[radial-gradient(circle_farthest-side_at_0_100%,hsl(var(--brand)),transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]",
                 )}
             />
             {border && (
@@ -91,7 +103,7 @@ export const BackgroundGradient = ({
                     }}
                     className={cn(
                         "absolute inset-0 rounded-3xl z-[1] will-change-transform",
-                        "bg-[radial-gradient(circle_farthest-side_at_0_100%,hsl(var(--primary)),transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]"
+                        "bg-[radial-gradient(circle_farthest-side_at_0_100%,hsl(var(--primary)),transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]",
                     )}
                 />
             )}

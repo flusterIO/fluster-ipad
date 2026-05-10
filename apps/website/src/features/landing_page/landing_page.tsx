@@ -1,19 +1,26 @@
-"use client";
 import React, { type ReactNode } from "react";
-import HeroSection from "./hero/hero";
-import { HighlightedFeaturesSection } from "./sections/feature_section";
-import EverythingYouNeedSection from "./sections/everything_you_need_section";
-import { MainSponsorSection } from "./sections/sponsors_section";
-import { IpadSection } from "./sections/ipad_section/ipad_section";
+import { LandingPageClientContent } from "./landing_page_client_content";
+import { nestedContentSource } from "#/core/mdx/sources/fumadocs_mdx/nested_mdx";
+import { notFound } from "next/navigation";
 
 const LandingPage = (): ReactNode => {
+    const content = nestedContentSource.getPageByHref(
+        "/equations/alpha_equivalence",
+    );
+    nestedContentSource.getPages().forEach((p) => {
+        console.log("p: ", p);
+    });
+    if (!content) {
+        return notFound();
+    }
+
+    const AlphaEquation = content.page.data.body;
+
     return (
         <div className="w-full min-h-screen pb-8 flex flex-col justify-start items-center overflow-x-hidden">
-            <HeroSection />
-            <EverythingYouNeedSection />
-            <IpadSection />
-            <HighlightedFeaturesSection />
-            <MainSponsorSection />
+            <LandingPageClientContent>
+                <AlphaEquation />
+            </LandingPageClientContent>
         </div>
     );
 };

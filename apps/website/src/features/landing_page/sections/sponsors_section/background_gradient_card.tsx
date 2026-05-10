@@ -1,10 +1,11 @@
 "use client";
-import React, { ComponentPropsWithoutRef, ReactNode } from "react";
+import React, { type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { BackgroundGradient } from "./background_gradient";
 import { cn } from "#/core/utils/cn";
 
-interface BackgroundGradientCardProps
-    extends ComponentPropsWithoutRef<typeof BackgroundGradient> {
+interface BackgroundGradientCardProps extends ComponentPropsWithoutRef<
+    typeof BackgroundGradient
+> {
     children: ReactNode;
 }
 

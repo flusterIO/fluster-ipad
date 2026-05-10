@@ -12,11 +12,12 @@ I'll do my best to convince the math types among you (this article does assume s
 
 #### Included Derivations
 
+
 | Derivation | Error Margin |
 | ---------- | ------------ |
 | Cosmological Velocity | Difficult to estimate due to large observational error margins. |
 | Kinematic Velocity <br /> (actually 2 separate derivations) | $0.43\%-0.92\%$ |
-| Fine Structure Constant $\alpha$ | $0.027\%$ |
+| Fine Structure Constant $\alpha$<br /> with both solar and Earthly parameters | $0.027\%$ (Earth), $0.00347\%$ (Solar) |
 | Tau/Proton Mass Ratio | $0.087\%$ |
 
 ### The Lighthouse & The Clocktower
@@ -243,7 +244,10 @@ That's almost precisely the value we were looking for when we add these values, 
   $0.025\%$
 </Hint>
 
-### Solar Parameters: $\text{spinor}=1$
+
+--- <Emoji name="sun" inline smedium/> ---
+
+####  Using our solar parameters, equivalent to $\text{spinor}=1$
 
 As is in quantum mechanics, the spinor function of the nucleaus should hover around 1. If we are to extrapolate this function beyond that of our own body :earth_americas: we should validate it against the bodies with which we have the most data.
 
@@ -261,11 +265,32 @@ $$
 $$
 
 <Hint label="Error" error>
-$1 \pm \alpha$ with an error of $0.00347\%$ and $0.003427\%$ error respectively.
+$1 \pm \alpha$ with an error of $0.00347\%$ and $0.003427\%$ respectively.
 </Hint> 
 
 
-If you're unfamiliar with physics, let me take a second to break down how profound this is. That's a electromagnetic constant, $\alpha$, defined in terms of gravitational properties in what certainly looks like a recursive function.
+If you're unfamiliar with physics, let me take a second to break down how profound this is. That's an electromagnetic constant, comprised of multiple electromagnetic constants defined in terms of gravitational properties in what certainly looks like a recursive function.
+
+This is what $\alpha$ looks like completely written out:
+
+$$
+\alpha = \frac{1}{4 \pi}\frac{e^2}{\hbar}\sqrt{\frac{\mu_0}{\epsilon_0}}
+$$
+
+That's basically the relationship of all of electromagnetism described in one function. It is my belief that _this_ is why the electromagnetic tensor is undefined at $t = 0$. The divergence of the magnetic field $\neq 0$, but rather the divergence of space that remains hidden due to the proportional dilation of $c$. It is this dilation that <Hl success>is</Hl> time, which we perceive as gravity but is electromagnetic at it's core. This keeps $c$ equivalent _in_ each reference frame, but not _between_ reference frames. 
+
+That's something else I never understood... If time dilates, and velocity is time dependent, how on Earth is $c$ supposed to be constant? The logic is self defeating and circular. Here, $c$ remains constant inversely proportional to the density of the local coordinate system. As sound responds to atmospheric pressure, so too does light respond to the underlying spatial density.
+
+| Quantity | What it does |
+| -------- | ------------ |
+| $1/4\pi$ | A consequence of the spherical geometry |
+| $\epsilon_0$ | The electric constant |
+| $\mu_0$ | The magnetic constant |
+| $e$ | The fundamental charge | 
+| $\hbar$ | The smallest length scale possible, or so some think, but still a physically consequential value. | 
+| $\frac{1}{\sqrt{\mu_0 \epsilon_0}}$ | The speed of light, and therefore the speed of causality. |
+
+Current models say that deriving $\alpha$ from gravitational parameters should be impossible, but we just did it! The problem? This concludes that the Earth is expanding _with_ the rest of the Universe... right underneath us. It's a tough conclusion to accept at first, but the path to this conclusion is rock solid.
 
 <Admonition title="Python Code" foldable highlight>
 

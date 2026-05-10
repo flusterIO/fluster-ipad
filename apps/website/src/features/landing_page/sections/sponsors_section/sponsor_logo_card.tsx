@@ -1,15 +1,14 @@
 "use client";
-import React, { ComponentPropsWithoutRef, ReactNode } from "react";
+import React, { type ComponentPropsWithoutRef, type ReactNode } from "react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { BackgroundGradientCard } from "./background_gradient_card";
 import { cn } from "#/core/utils/cn";
 
-interface SponsorLogoCardProps
-    extends Omit<
-        ComponentPropsWithoutRef<typeof BackgroundGradientCard>,
-        "children" | "classes" | "title"
-    > {
+interface SponsorLogoCardProps extends Omit<
+    ComponentPropsWithoutRef<typeof BackgroundGradientCard>,
+    "children" | "classes" | "title"
+> {
     logo: ReactNode;
     title: ReactNode;
     desc: ReactNode;
@@ -41,7 +40,7 @@ export const SponsorLogoCard = ({
             classes={classes}
             className={clsx(
                 "grid cursor-pointer grid-cols-[120px_1fr] gap-6 border place-items-center",
-                isPrimary && "col-span-2"
+                isPrimary && "col-span-2",
             )}
             role="button"
             onClick={() => (href ? router.push(href) : {})}
@@ -53,7 +52,7 @@ export const SponsorLogoCard = ({
             </div>
             <div className={"w-full flex flex-col justify-center items-start"}>
                 <h3 className={cn("text-lg font-semibold", classes.title)}>{title}</h3>
-                {(isPrimary || forceDescription) && (
+                {(isPrimary ?? forceDescription) && (
                     <div className={cn("text-sm text-muted-foreground", classes.desc)}>
                         {desc}
                     </div>

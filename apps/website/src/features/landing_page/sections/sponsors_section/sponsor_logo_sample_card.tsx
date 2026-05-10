@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import clsx from "clsx";
 import { SponsorLogoCard } from "./sponsor_logo_card";
 import { FlusterIcon } from "#/core/logo/fluster_logo";

@@ -23,7 +23,9 @@ const config: GlobalConfig = {
                     },
                     chtml: {
                         fontURL:
-                            "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+                            process.env.NODE_ENV === "production"
+                                ? "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2"
+                                : "/assets/fonts/mathjax",
                         adaptiveCSS: true,
                     },
                 },
@@ -68,6 +70,11 @@ export const legal = defineCollections({
     schema,
     // mdxOptions: getDefaultMDXOptions(),
     // other options
+});
+
+export const nestedContent = defineDocs({
+    // type: "doc",
+    dir: "content/nested_content/",
 });
 
 export const myWork = defineDocs({

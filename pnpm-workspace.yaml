@@ -22,3 +22,4 @@ packages:
   - packages/rust/conundrum_ts
   - packages/rust/conundrum_web_assets
   - packages/rust/conundrum_web_components
+  - packages/typescript/conundrum_editor_web
