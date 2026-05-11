@@ -18,6 +18,7 @@
         "declarationMap": true,
         "declaration": true,
         "noEmit": true,
+        "noEmitOnError": false,
         "allowJs": false,
         "skipLibCheck": true,
         "lib": [
