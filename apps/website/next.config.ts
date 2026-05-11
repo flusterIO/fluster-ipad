@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     typescript: {
         ignoreBuildErrors: true,
     },
+    serverExternalPackages: ["@fluster/webview_utils"],
     reactStrictMode: true,
     images: {
         remotePatterns: [
