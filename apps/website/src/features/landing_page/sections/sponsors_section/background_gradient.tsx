@@ -14,6 +14,7 @@ interface BackgroundGradientProps extends HTMLMotionProps<"div"> {
     classes?: {
         container?: string;
         card?: string;
+        cardContainer?: string;
     };
 }
 
@@ -107,8 +108,12 @@ export const BackgroundGradient = ({
                     )}
                 />
             )}
-            <div className={cn("relative z-10", classes.card, className)}>
-                {children}
+            <div className={cn("bg-background relative z-10", classes.cardContainer)}>
+                <div
+                    className={cn("bg-fd-card w-full h-full", classes.card, className)}
+                >
+                    {children}
+                </div>
             </div>
         </motion.div>
     );

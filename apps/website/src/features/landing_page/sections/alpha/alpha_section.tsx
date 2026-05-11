@@ -1,10 +1,5 @@
 "use client";
-import React, {
-    type RefObject,
-    useRef,
-    type ReactNode,
-    useEffect,
-} from "react";
+import React, { type RefObject, useRef, type ReactNode } from "react";
 import { BackgroundGradientCard as BackgroundGradientCardComponent } from "../sponsors_section/background_gradient_card";
 import { motion } from "framer-motion";
 
@@ -16,38 +11,31 @@ export const AlphaSection = ({
     children: ReactNode;
 }): ReactNode => {
     const ref = useRef<HTMLDivElement>(null);
-    const container = useRef<HTMLDivElement>(null);
-    const background = useRef<HTMLDivElement>(null);
-    const handleBackgroundSize = (): void => {
-        if (!background.current) {
-            return;
-        }
-        console.log("container: ", container);
-        const rect = container.current?.getBoundingClientRect();
-        console.log("rect: ", rect);
-        console.log("scrollTop: ", container.current?.clientTop);
-        if (rect) {
-            background.current.style.height = `${rect.height}px`;
+    /* const container = useRef<HTMLDivElement>(null); */
+    /* const background = useRef<HTMLDivElement>(null); */
+    /* const handleBackgroundSize = (): void => { */
+    /*     if (!background.current) { */
+    /*         return; */
+    /*     } */
+    /*     const rect = container.current?.getBoundingClientRect(); */
+    /*     if (rect) { */
+    /*         background.current.style.height = `${rect.height}px`; */
 
-            background.current.style.top = `${rect.top}px`;
-        }
-    };
+    /*         background.current.style.top = `${rect.top}px`; */
+    /*     } */
+    /* }; */
 
-    useEffect(() => {
-        window.addEventListener("resize", handleBackgroundSize);
-        window.addEventListener("scroll", handleBackgroundSize);
-        handleBackgroundSize();
-    }, []);
+    /* useEffect(() => { */
+    /*     window.addEventListener("resize", handleBackgroundSize); */
+    /*     window.addEventListener("scroll", handleBackgroundSize); */
+    /*     handleBackgroundSize(); */
+    /* }, []); */
 
     return (
-        <>
+        <div className="w-screen min-h-screen relative">
             <div
-                className="w-screen bg-linear-to-b from-background via-fd-card to-background overflow-visible fixed z-10 h-screen"
-                ref={background}
-            />
-            <div
-                className="w-full max-w-[min(90vw,1240px)] px-8 md:px-12 h-fit min-h-screen flex flex-col justify-center lg:grid lg:grid-cols-2 mx-auto gap-x-6"
-                ref={container}
+                className="w-full max-w-[min(90vw,1240px)] px-8 md:px-12 h-fit min-h-screen flex flex-col justify-center lg:grid lg:grid-cols-2 mx-auto gap-x-6 relative"
+            /* ref={container} */
             >
                 <motion.div className="h-full text-center lg:text-left min-h-fit flex flex-col justify-center items-start z-10">
                     <motion.div
@@ -94,7 +82,7 @@ export const AlphaSection = ({
                     >
                         I think I finally made the discovery that I set out after when I
                         originally created Fluster. Here, α is the 'most mysterious number
-                        in the world', the fine structure constant that describes the
+                        in the Universe', the fine structure constant that describes the
                         geometry of electromagnetism defined in terms of gravitational
                         parameters to within{" "}
                         <span className="text-white font-semibold">0.0034%</span>, and I can
@@ -133,29 +121,32 @@ export const AlphaSection = ({
                         </motion.span>
                     </motion.div>
                 </motion.div>
-                <div className="max-w-full w-fit min-h-[50vh] mx-auto mt-16 lg:mt-0 lg:w-[1/2] h-full flex flex-col justify-center items-center lg:absolute right-0 left-auto z-[20]">
-                    <motion.div
-                        className="w-full bg-fd-card grid place-items-center border max-w-full rounded-[24px]"
-                        initial={{
-                            scale: 0,
-                            origin: "center",
-                        }}
-                        whileInView={{
-                            scale: 1,
-                        }}
-                    >
-                        <BackgroundGradientCard
-                            className="text-3xl lg:text-4xl hide-math-labels p-4 hover:text-foreground/80 transition-colors duration-500"
-                            border
-                            animate
-                            backgroundRef={ref as RefObject<HTMLDivElement>}
-                        >
-                            {compiledMath}
-                        </BackgroundGradientCard>
-                    </motion.div>
-                </div>
             </div>
-        </>
+            <div className="w-screen bg-linear-to-b from-background via-fd-card to-background overflow-visible min-h-[50vh] md:min-h-auto lg:absolute z-10 h-full z-[1] top-0 bottom-0 right-0 left-0 grid grid-cols-1 lg:grid-cols-[1fr_1fr] place-items-center mb-16">
+                <div className="w-full hidden md:block" />
+                <BackgroundGradientCard
+                    className="hide-math-labels max-w-full p-4 [&>*]:text-[6vw]! lg:[&>*]:text-[3vw]! border opacity-100"
+                    initial={{
+                        scale: 0,
+                        origin: "center",
+                    }}
+                    whileInView={{
+                        scale: 1,
+                    }}
+                    border
+                    animate
+                    backgroundRef={ref as RefObject<HTMLDivElement>}
+                    classes={{
+                        container: "ml-[1/2] w-fit h-fit float-right",
+                        cardContainer: "rounded-[24px]",
+                        /* container: "max-w-full overflow-hidden bg-fd-card", */
+                        card: "bg-fd-card",
+                    }}
+                >
+                    {compiledMath}
+                </BackgroundGradientCard>
+            </div>
+        </div>
     );
 };
 
