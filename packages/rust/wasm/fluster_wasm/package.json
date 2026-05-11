@@ -4,11 +4,17 @@
   "type": "module",
   "scripts": {
     "build": "wireit",
+    "build:website": "wireit",
     "dev": "webpack serve"
   },
   "wireit": {
     "build": {
       "command": "RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory\" pnpm wasm-pack build --target web ./"
+    },
+    "build:website": {
+      "dependencies": [
+        "build"
+      ]
     }
   },
   "exports": {

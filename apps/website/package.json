@@ -41,7 +41,6 @@
     "@content-collections/next": "0.2.4",
     "@conundrum/ts": "workspace:*",
     "@conundrum/webAssets": "workspace:*",
-    "@fluster/wasm": "workspace:*",
     "@fluster/webview_utils": "workspace:*",
     "@fumadocs/content-collections": "1.2.1",
     "@hookform/resolvers": "5.2.2",

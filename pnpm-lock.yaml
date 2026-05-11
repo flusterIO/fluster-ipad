@@ -144,9 +144,6 @@ importers:
       '@conundrum/webAssets':
         specifier: workspace:*
         version: link:../../packages/rust/conundrum_web_assets
-      '@fluster/wasm':
-        specifier: workspace:*
-        version: link:../../packages/rust/wasm/fluster_wasm
       '@fluster/webview_utils':
         specifier: workspace:*
         version: link:../../packages/webview_utils
