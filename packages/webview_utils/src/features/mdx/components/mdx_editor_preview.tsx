@@ -1,5 +1,8 @@
 import { type ReactNode } from 'react'
 
+/* eslint-disable  --  */
+export type MdxEditorPreviewProps = any
+
 
 /* eslint-disable  --  */
 export const MdxEditorPreview = (props: any): ReactNode => {
