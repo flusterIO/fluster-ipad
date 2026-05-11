@@ -15,6 +15,7 @@ import { KatexFontLoader } from "#/math/katex_font_loader";
 import { LucideFontLoader } from "#/themeing/lucide_font_loader";
 import { type GlobalWebviewStateDeepNullable } from "#/webview_global_state/cross_language_state_types";
 import { ConundrumNotificationListener } from "#/webview_global_state/notification_state/conundrum_notification_listener";
+import { type ConundrumWebClient } from "node_modules/@conundrum/ts/dist/src/conundrum_web";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -26,6 +27,11 @@ const connector = connect((state: GlobalAppState) => ({
 }))
 
 
+declare global {
+    interface Window {
+        conundrum: ConundrumWebClient;
+    }
+}
 
 /**
  * For use _only_ in the primary mdx preview views, either the standalone-preview webview

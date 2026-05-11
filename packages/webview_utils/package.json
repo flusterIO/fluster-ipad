@@ -45,6 +45,13 @@
         "build:tailwind"
       ]
     },
+    "build:typescript_allow_errors": {
+      "command": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
+      "output": [
+        "dist"
+      ],
+      "clean": true
+    },
     "build:typescript": {
       "command": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
       "output": [
@@ -60,9 +67,10 @@
     },
     "build:website": {
       "dependencies": [
-        "build:lezer"
-      ],
-      "command": "pnpm build"
+        "build:lezer",
+        "build:typescript_allow_errors",
+        "build:tailwind"
+      ]
     }
   },
   "types": "./dist/index.d.ts",
