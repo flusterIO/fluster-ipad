@@ -138,6 +138,9 @@ importers:
       '@content-collections/next':
         specifier: 0.2.4
         version: 0.2.4(@content-collections/core@0.9.1(typescript@5.9.3))(next@16.0.7(@babel/core@7.29.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.89.0))
+      '@conundrum/generated':
+        specifier: workspace:*
+        version: link:../../packages/rust/conundrum
       '@conundrum/ts':
         specifier: workspace:*
         version: link:../../packages/rust/conundrum_ts
