@@ -38,7 +38,7 @@ var schema = z.object({
 });
 var docs = defineCollections({
   type: "doc",
-  dir: "./content/docs",
+  dir: "./docs",
   schema
   // mdxOptions: getDefaultMDXOptions(),
   // other options
@@ -66,7 +66,7 @@ var myWork = defineDocs({
   }
 });
 var documentation = defineDocs({
-  dir: "content/docs"
+  dir: "docs"
   // docs: {
   //     schema,
   // },

@@ -3254,11 +3254,18 @@ dependencies = [
 name = "conundrum_cli"
 version = "0.0.1"
 dependencies = [
+ "anyhow",
+ "clap",
+ "conundrum",
  "crossterm 0.29.0",
  "ratatui 0.30.0",
  "ratatui-textarea",
+ "rayon",
  "reedline 0.46.0",
  "reedline-repl-rs",
+ "serde",
+ "thiserror 2.0.18",
+ "tokio",
  "tree-sitter-highlight",
  "tui-big-text",
  "tui-checkbox",

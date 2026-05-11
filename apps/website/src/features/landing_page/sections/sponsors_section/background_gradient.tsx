@@ -1,8 +1,14 @@
 "use client";
 import { useViewportProportionalPosition } from "#/core/hooks/use_viewport_proportional_position";
 import { cn } from "#/core/utils/cn";
-import { type HTMLMotionProps, motion } from "framer-motion";
-import React, { type ReactNode, type RefObject, useRef } from "react";
+import { type HTMLMotionProps, motion, useInView } from "framer-motion";
+import React, {
+    type ReactNode,
+    type RefObject,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 
 const maxOpacity = 0.8;
 
@@ -28,6 +34,7 @@ export const BackgroundGradient = ({
     ...props
 }: BackgroundGradientProps) => {
     /* const ref = useRef<HTMLDivElement>(null); */
+    const [initialRender, setInitialRender] = useState<boolean>(true);
     const bg = useRef<HTMLDivElement>(null);
     const sp = useRef<number>(0);
     const variants = {
@@ -49,7 +56,7 @@ export const BackgroundGradient = ({
         if (!bg.current) {
             return;
         }
-        if (isHovered) {
+        if (!isHovered) {
             bg.current.style.transition = "opacity 0.5s ease-in";
             bg.current.style.opacity = "1";
         } else {
@@ -62,6 +69,14 @@ export const BackgroundGradient = ({
             };
         }
     };
+
+    const inView = useInView(bg);
+
+    useEffect(() => {
+        if (!inView && initialRender) {
+            setInitialRender(false);
+        }
+    }, [inView]);
 
     return (
         <motion.div
@@ -81,9 +96,19 @@ export const BackgroundGradient = ({
                     backgroundSize: animate ? "400% 400%" : undefined,
                 }}
                 className={cn(
-                    "absolute inset-0 rounded-3xl z-[1] opacity-60 blur-xl will-change-transform",
+                    "absolute inset-0 rounded-3xl z-[1] opacity-0 blur-xl will-change-transform",
                     "bg-[radial-gradient(circle_farthest-side_at_0_100%,hsl(var(--brand)),transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]",
                 )}
+                whileInView={{
+                    opacity: 100,
+                }}
+                transition={{
+                    delay: initialRender ? 1 : 0,
+                    duration: initialRender ? 3 : undefined,
+                }}
+                onTransitionEnd={() => {
+                    setInitialRender(false);
+                }}
             />
             {border && (
                 <motion.div

@@ -44,7 +44,7 @@ const schema = z.object({
 
 export const docs = defineCollections({
     type: "doc",
-    dir: "./content/docs",
+    dir: "./docs",
     schema,
     // mdxOptions: getDefaultMDXOptions(),
     // other options
@@ -85,7 +85,7 @@ export const myWork = defineDocs({
 });
 
 export const documentation = defineDocs({
-    dir: "content/docs",
+    dir: "docs",
     // docs: {
     //     schema,
     // },

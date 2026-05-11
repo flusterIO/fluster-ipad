@@ -32,7 +32,7 @@ pub fn write_combined_javascript_glue_code() {
     let output_path = std::path::Path::new(&root).join("packages")
                                                  .join("rust")
                                                  .join("conundrum_web_assets")
-                                                 .join("src")
+                                                 .join("dist")
                                                  .join("js")
                                                  .join("combined_component_glue.js");
     std::fs::write(output_path, content).expect("Writes component glue javascript without throwing an error.");
@@ -44,7 +44,7 @@ pub fn write_combined_css_glue_code() {
     let output_path = std::path::Path::new(&root).join("packages")
                                                  .join("rust")
                                                  .join("conundrum_web_assets")
-                                                 .join("src")
+                                                 .join("dist")
                                                  .join("css")
                                                  .join("combined_component_glue.css");
     std::fs::write(output_path, content).expect("Writes component glue javascript without throwing an error.");

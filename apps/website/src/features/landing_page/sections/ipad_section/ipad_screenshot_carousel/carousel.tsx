@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState, type ReactNode } from "react";
 import { animate, motion, useMotionValue } from "framer-motion";
 import image1 from "../../../../../../public/assets/images/mockups/ipad/mockups/welcome_splitview.png";
@@ -13,7 +13,6 @@ import image9 from "../../../../../../public/assets/images/mockups/mac/mockups/m
 import Image, { type StaticImageData } from "next/image";
 import { LiquidGlassCard } from "../liquid_glass_card";
 
-
 interface ImageData {
     image: StaticImageData;
     id: string;
@@ -22,7 +21,7 @@ interface ImageData {
 }
 interface CarouselProps {
     breakpoints?: Record<number, { slidesToShow: number }>;
-    images: ImageData[]
+    images: ImageData[];
 }
 
 export const IPadCarousel = ({
@@ -86,7 +85,7 @@ export const IPadCarousel = ({
             title: "MacOS Dashboard",
             alt: "Both the MacOS and iPad application have their own varient of a dashboard for the user to use as the home for all of their notes.",
         },
-    ]
+    ],
 }: CarouselProps): ReactNode => {
     const [index, setIndex] = useState(0);
     const [slidesToShow, setSlidesToShow] = useState(1);
@@ -112,7 +111,9 @@ export const IPadCarousel = ({
 
         updateSlidesToShow();
         window.addEventListener("resize", updateSlidesToShow);
-        return () => { window.removeEventListener("resize", updateSlidesToShow); };
+        return () => {
+            window.removeEventListener("resize", updateSlidesToShow);
+        };
     }, [breakpoints]);
 
     useEffect(() => {
@@ -154,6 +155,7 @@ export const IPadCarousel = ({
                                     alt={item.alt}
                                     className="w-fit h-full z-10 h-full select-none pointer-events-none object-contain"
                                     draggable={false}
+                                    fill
                                 />
                             </div>
                         ))}
@@ -162,7 +164,9 @@ export const IPadCarousel = ({
                     {/* Navigation Buttons */}
                     <motion.button
                         disabled={index === 0}
-                        onClick={() => { setIndex((i) => Math.max(0, i - 1)); }}
+                        onClick={() => {
+                            setIndex((i) => Math.max(0, i - 1));
+                        }}
                         className={`absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform z-10
               ${index === 0
                                 ? "bg-muted bg-gray-300"
@@ -193,7 +197,9 @@ export const IPadCarousel = ({
 
                     <motion.button
                         disabled={index === maxIndex}
-                        onClick={() => { setIndex((i) => Math.min(maxIndex, i + 1)); }}
+                        onClick={() => {
+                            setIndex((i) => Math.min(maxIndex, i + 1));
+                        }}
                         className={`absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform z-10
               ${index === maxIndex
                                 ? "bg-muted bg-gray-300"
@@ -230,7 +236,9 @@ export const IPadCarousel = ({
                                 blurIntensity="lg"
                                 draggable={false}
                                 key={`pos-indc-${i}`}
-                                onClick={() => { setIndex(i); }}
+                                onClick={() => {
+                                    setIndex(i);
+                                }}
                                 className={`h-2 rounded-full transition-all bg-muted  cursor-pointer ${i === index ? "w-8" : "w-2"}`}
                             />
                         ))}

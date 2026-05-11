@@ -1,0 +1,23 @@
+use std::fs;
+
+use conundrum::lang::runtime::{
+    run_conundrum::{ParseConundrumOptions, run_conundrum},
+    state::{parse_state::ConundrumCompileTarget, ui_params::UIParams},
+};
+
+/// Definitely moving this to the Conundrum cli, but need this for generating
+/// documentation for now.
+pub async fn parse_conundrum(file_path: &str, output: &str) -> std::io::Result<()> {
+    println!("Parsing conundrum file at {file_path}");
+    let content = fs::read_to_string(file_path)?;
+    let p = run_conundrum(ParseConundrumOptions { content,
+                                            note_id: None,
+                                            modifiers: Vec::new(),
+                                            ui_params: UIParams::default(),
+                                            target: ConundrumCompileTarget::Html,
+                                            hide_components: Vec::new(),
+                                            trusted: true
+    }).expect("Returns a vald result when a valid input was provided.");
+    fs::write(output, p.content)?;
+    Ok(())
+}

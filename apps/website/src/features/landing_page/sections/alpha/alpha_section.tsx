@@ -1,5 +1,5 @@
 "use client";
-import React, { type RefObject, useRef, type ReactNode } from "react";
+import { type RefObject, useRef, type ReactNode } from "react";
 import { BackgroundGradientCard as BackgroundGradientCardComponent } from "../sponsors_section/background_gradient_card";
 import { motion } from "framer-motion";
 
@@ -11,32 +11,9 @@ export const AlphaSection = ({
     children: ReactNode;
 }): ReactNode => {
     const ref = useRef<HTMLDivElement>(null);
-    /* const container = useRef<HTMLDivElement>(null); */
-    /* const background = useRef<HTMLDivElement>(null); */
-    /* const handleBackgroundSize = (): void => { */
-    /*     if (!background.current) { */
-    /*         return; */
-    /*     } */
-    /*     const rect = container.current?.getBoundingClientRect(); */
-    /*     if (rect) { */
-    /*         background.current.style.height = `${rect.height}px`; */
-
-    /*         background.current.style.top = `${rect.top}px`; */
-    /*     } */
-    /* }; */
-
-    /* useEffect(() => { */
-    /*     window.addEventListener("resize", handleBackgroundSize); */
-    /*     window.addEventListener("scroll", handleBackgroundSize); */
-    /*     handleBackgroundSize(); */
-    /* }, []); */
-
     return (
         <div className="w-screen min-h-screen relative">
-            <div
-                className="w-full max-w-[min(90vw,1240px)] px-8 md:px-12 h-fit min-h-screen flex flex-col justify-center lg:grid lg:grid-cols-2 mx-auto gap-x-6 relative"
-            /* ref={container} */
-            >
+            <div className="w-full max-w-[min(90vw,1240px)] px-8 md:px-12 h-fit min-h-screen flex flex-col justify-center lg:grid lg:grid-cols-2 mx-auto gap-x-6 relative">
                 <motion.div className="h-full text-center lg:text-left min-h-fit flex flex-col justify-center items-start z-10">
                     <motion.div
                         className="text-4xl font-bold w-full"
@@ -139,7 +116,6 @@ export const AlphaSection = ({
                     classes={{
                         container: "ml-[1/2] w-fit h-fit float-right",
                         cardContainer: "rounded-[24px]",
-                        /* container: "max-w-full overflow-hidden bg-fd-card", */
                         card: "bg-fd-card",
                     }}
                 >

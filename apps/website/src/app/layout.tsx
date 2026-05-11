@@ -1,3 +1,4 @@
+import "@conundrum/generated/conundrum.css";
 import "@fluster/webview_utils/styles.css";
 import "../core/styles/globals.scss";
 import localFont from "next/font/local";
@@ -51,7 +52,7 @@ const appFont = localFont({
 
 export const metadata: Metadata = {
     title: "Fluster",
-    description: "Free & open source academic note taking framework.",
+    description: "Academic note taking for the modern researcher.",
 };
 
 export default function RootLayout({
