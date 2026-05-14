@@ -81,6 +81,19 @@ pub enum ConundrumCompileTarget {
     Mdx,
 }
 
+impl ConundrumCompileTarget {
+    /// Returns the part _after_ the period, not including the period.
+    pub fn to_file_ext(&self) -> String {
+        match self {
+            Self::Jsx => "jsx".to_string(),
+            Self::Html => "html".to_string(),
+            Self::Markdown => "md".to_string(),
+            Self::PlainText => "txt".to_string(),
+            Self::Mdx => "mdx".to_string(),
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct ParseState {
     pub data: MdxParsingResult,

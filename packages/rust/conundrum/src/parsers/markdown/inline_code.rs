@@ -79,7 +79,6 @@ impl HtmlJsComponentResult for InlineCodeResult {
         let highlighted =
             self.get_highlighted_content(state.ui_params.syntax_theme.as_ref().cloned().unwrap_or_default(),
                                          Arc::clone(&state.highlight_assets))?;
-        println!("Highlighted: {}", highlighted);
         Ok(format!("<span class=\"cdrm-inline-code inline\">{}</span>", highlighted))
     }
 }

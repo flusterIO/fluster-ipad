@@ -77,6 +77,16 @@ impl ParseConundrumOptions {
                                 target,
                                 trusted }
     }
+
+    pub fn duplicate_with_new_content(&self, content: String) -> ParseConundrumOptions {
+        ParseConundrumOptions { note_id: self.note_id.clone(),
+                                content,
+                                modifiers: self.modifiers.clone(),
+                                hide_components: self.hide_components.clone(),
+                                ui_params: self.ui_params.clone(),
+                                target: self.target.clone(),
+                                trusted: self.trusted }
+    }
 }
 
 pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {

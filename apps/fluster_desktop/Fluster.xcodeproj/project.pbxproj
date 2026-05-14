@@ -301,6 +301,8 @@
 				79C6BD432F6A0B3C00916BE7 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterMdx" */,
 				792750792F8FE22C00357D75 /* XCRemoteSwiftPackageReference "starscream" */,
 				7934EDE72FA132BB005878D3 /* XCRemoteSwiftPackageReference "SwiftMath" */,
+				798F4B3C2FB4EA9300334EE7 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+				798F4B3F2FB4ED9000334EE7 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 798752EB2F1810B90055ABF1 /* Products */;
@@ -764,6 +766,22 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.7.3;
+			};
+		};
+		798F4B3C2FB4EA9300334EE7 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.72.0;
+			};
+		};
+		798F4B3F2FB4ED9000334EE7 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-async-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
