@@ -14,6 +14,7 @@ use crate::{
 
 #[typeshare]
 #[derive(Debug, Serialize, Clone)]
+#[serde(tag = "tag", content = "content")]
 pub enum MarkdownLinkTarget {
     /// Any generic url that is not handled internally by the conundrum
     /// framework.

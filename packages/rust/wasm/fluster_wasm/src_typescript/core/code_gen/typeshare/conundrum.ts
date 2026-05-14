@@ -891,14 +891,26 @@ export interface MarkdownItalicTextResult {
 	children: Children;
 }
 
+export type MarkdownLinkTarget = 
+	/**
+	 * Any generic url that is not handled internally by the conundrum
+	 * framework.
+	 */
+	| { tag: "Url", content: string }
+	/** This currently only supports linking to id's on the same page. */
+	| { tag: "DomId", content: DOMId }
+	| { tag: "NoteId", content: string }
+	| { tag: "AudioTimestamp", content: Timestamp }
+	| { tag: "VideoTimestamp", content: Timestamp };
+
 export interface MarkdownLinkResult {
 	text: Children;
-	url: string;
+	url: MarkdownLinkTarget;
 }
 
 export interface MarkdownLinkResultStringified {
 	text: string;
-	url: string;
+	url: MarkdownLinkTarget;
 }
 
 export interface MarkdownParagraphResult {
@@ -1000,6 +1012,21 @@ export interface MdxParsingResult {
 	 */
 	footnotes: Record<ConundrumInt, RenderedFootnoteResult>;
 	included_components: AnyComponentKey[];
+}
+
+export interface NextjsFileSummary {
+	html: string;
+	/**
+	 * ## TODO:
+	 * - [ ] Add a `keywords` field to the front-matter and access it here.
+	 */
+	keywords: string[];
+	relative_path: string;
+	front_matter?: FrontMatterResult;
+}
+
+export interface NextJsConundrumOutput {
+	files: NextjsFileSummary[];
 }
 
 export interface OrderedListItem {
@@ -1130,11 +1157,11 @@ export interface UIParams {
 }
 
 export enum ConundrumCompileTarget {
-	Jsx = "Jsx",
-	Html = "Html",
-	Markdown = "Markdown",
-	PlainText = "PlainText",
-	Mdx = "Mdx",
+	Jsx = "jsx",
+	Html = "html",
+	Markdown = "markdown",
+	PlainText = "text",
+	Mdx = "mdx",
 }
 
 /** This is the core 'input' for Conundrum. */
@@ -1343,6 +1370,17 @@ export interface TabsGroup {
 	sizable?: SizablePropsGroup;
 	children: Children;
 	id: DOMId;
+}
+
+/**
+ * If only 2 components are passed, as in `[My link](video:myId@4:30)`, it is
+ * assumed to be minutes and seconds. If three components are passed, it will
+ * be applied as `minutes:seconds:hours`
+ */
+export interface Timestamp {
+	min: number;
+	hours?: number;
+	sec: number;
 }
 
 export interface TitleGroup {

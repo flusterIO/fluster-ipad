@@ -183,6 +183,9 @@ export type GridColumnsMap = Map<SizableOption, number>;`,
     },
 };
 
+replacers["packages/rust/conundrum_ts/src/code_gen/typeshare/conundrum.ts"] =
+    replacers["packages/webview_utils/src/core/code_gen/typeshare/conundrum.ts"];
+
 export const replaceStuff = (replacers: Replacer[], filePath: string) => {
     const fp = path.resolve(path.resolve(__dirname, "../"), filePath);
     let content = fs.readFileSync(fp, {

@@ -16,9 +16,9 @@ use crate::lang::runtime::{
 #[typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct Timestamp {
-    pub min: i64,
-    pub hours: Option<i64>,
-    pub sec: i64,
+    pub min: i32,
+    pub hours: Option<i32>,
+    pub sec: i32,
 }
 
 pub fn timestamp<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<Timestamp> {
@@ -31,9 +31,9 @@ pub fn timestamp<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<Tim
     ':'.parse_next(input).inspect_err(|_| {
                               input.input.reset(&start);
                           })?;
-    let min: i64 = dec_int.parse_next(input).inspect_err(|_| {
-                                                 input.input.reset(&start);
-                                             })?;
+    let min = dec_int.parse_next(input).inspect_err(|_| {
+                                            input.input.reset(&start);
+                                        })?;
 
     if let Some(sec) = opt(|nested_input: &mut ConundrumInput<'a>| {
                            let nested_start = nested_input.input.checkpoint();

@@ -1,11 +1,11 @@
 use clap::{Parser, Subcommand};
-use reedline_repl_rs::yansi::Paint;
 
 use crate::{
     commands::{parse_conundrum::parse_conundrum, watch::watch_directory},
     models::config::CliConfig,
 };
 mod commands;
+mod environments;
 mod errors;
 mod models;
 mod utils;
@@ -39,7 +39,10 @@ async fn main() {
         }
         Some(Commands::WatchDirectory { config, }) => {
             if let Ok(config) = CliConfig::read(config) {
-                let _ = watch_directory(&config).await;
+                let err = watch_directory(&config).await;
+                if err.is_err() {
+                    eprintln!("Error: {:#?}", err.err());
+                }
             } else {
                 println!("There was an error parsing your config. Conundrum is still in it's very early stages, so this might be an issue on our end and there unfortunately isn't much documentation yet. If you're familiar with Rust, you can examine the `CliConfig` type, as that is exactly the structure of the json file.")
             }

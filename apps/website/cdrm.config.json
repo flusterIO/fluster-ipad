@@ -1,9 +1,10 @@
 {
-  "source": {
-    "input": "./cdrm",
-    "output": {
-      "path": "./public/cdrm",
-      "format": "html"
+    "build_target": "next",
+    "source": {
+        "input": "./cdrm",
+        "output": {
+            "path": "./src/features/cdrm/cdrm.json",
+            "format": "html"
+        }
     }
-  }
 }

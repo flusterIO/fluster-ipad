@@ -1,4 +1,7 @@
-use conundrum::lang::runtime::{run_conundrum::ParseConundrumOptions, state::parse_state::ConundrumCompileTarget};
+use conundrum::{
+    ecosystem::glue::conundrum_web_types::conundrum_web_builder::ConundrumWebProjectBuilder,
+    lang::runtime::{run_conundrum::ParseConundrumOptions, state::parse_state::ConundrumCompileTarget},
+};
 use serde::{Deserialize, Serialize};
 
 use crate::errors::{ConundrumCliError, ConundrumCliResult};
@@ -48,6 +51,7 @@ pub fn default_conundrum_opts() -> ParseConundrumOptions {
 pub struct CliConfig {
     #[serde(default = "default_conundrum_opts")]
     pub opts: ParseConundrumOptions,
+    pub build_target: ConundrumWebProjectBuilder,
     pub source: ConundrumSourceConfig,
 }
 
