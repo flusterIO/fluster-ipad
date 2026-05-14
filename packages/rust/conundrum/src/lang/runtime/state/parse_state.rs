@@ -71,13 +71,23 @@ pub enum ConundrumModifier {
 }
 
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Default, Clone, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Default, Clone, Eq, PartialEq, strum_macros::Display)]
 pub enum ConundrumCompileTarget {
+    #[serde(rename = "jsx")]
+    #[strum(to_string = "jsx", serialize = "react", serialize = "Jsx")]
     Jsx,
     #[default]
+    #[serde(rename = "html")]
+    #[strum(to_string = "html", serialize = "Html", serialize = "HTML")]
     Html,
+    #[strum(to_string = "markdown", serialize = "md", serialize = "Markdown")]
+    #[serde(rename = "markdown")]
     Markdown,
+    #[strum(to_string = "text", serialize = "plaintext", serialize = "txt", serialize = "plain", serialize = "text")]
+    #[serde(rename = "text")]
     PlainText,
+    #[strum(to_string = "mdx", serialize = "mdx", serialize = "Mdx")]
+    #[serde(rename = "mdx")]
     Mdx,
 }
 

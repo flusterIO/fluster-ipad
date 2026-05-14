@@ -8,7 +8,8 @@ pub enum ConundrumCliError {
     NotADirectory(String),
     #[error("A general file system error occcurred while parsing the `{0}` path.")]
     FsError(String),
-
+    #[error("There was an error with your project configuration. There should be further information printed to your console.")]
+    ProjectConfigError,
     #[error("The `{0}` path must be a child of the `{1}` path.")]
     FileNotChildOfDir(String, String),
     #[error("Conundrum encountered an error: {0}")]

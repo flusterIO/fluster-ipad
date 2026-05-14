@@ -31,6 +31,7 @@ serde.workspace = true
 thiserror.workspace = true
 rayon.workspace = true
 notify = "8.2.0"
+serde_json.workspace = true
 
 [lints]
 workspace = true

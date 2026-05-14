@@ -1,0 +1,9 @@
+{
+  "source": {
+    "input": "./cdrm",
+    "output": {
+      "path": "./public/cdrm",
+      "format": "html"
+    }
+  }
+}

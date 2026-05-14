@@ -20,16 +20,3 @@ pub async fn parse_directory_to_directory(input_dir: &str,
     }
     Ok(())
 }
-
-#[cfg(test)]
-mod tests {
-    use conundrum::lang::runtime::run_conundrum::ParseConundrumOptions;
-
-    use super::*;
-
-    #[tokio::test]
-    async fn parses_directory_to_directory() {
-        let res = parse_directory_to_directory("/Users/bigsexy/Desktop/swift/Fluster/apps/website/cdrm/",
-                                               "/Users/bigsexy/Desktop/swift/Fluster/apps/website/public/cdrm/", &CliConfig(ParseConundrumOptions::default())).await.expect("Parses directory without throwing an error.");
-    }
-}

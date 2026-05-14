@@ -23,7 +23,7 @@ impl ConundrumFile {
                                                                                          .unwrap_or_default();
                                                                              ConundrumCliError::FsError(s)
                                                                          })?;
-        let new_opts = opts.0.duplicate_with_new_content(content);
+        let new_opts = opts.opts.duplicate_with_new_content(content);
         let x = run_conundrum(new_opts).map_err(ConundrumCliError::ConundrumError)?;
         Ok(x)
     }
@@ -38,7 +38,7 @@ impl ConundrumFile {
             ConundrumCliError::FileNotChildOfDir(self.absolute_path.to_str().map(String::from).unwrap_or_default(), input_dir.to_string())
         })?;
         let mut output_path = Path::new(output_dir).join(p);
-        output_path.set_extension(opts.0.target.to_file_ext());
+        output_path.set_extension(opts.opts.target.to_file_ext());
         println!("Path: {:#?}", output_path);
         std::fs::write(output_path.clone(), output.content).map_err(|_| {
                                                                ConundrumCliError::FsError(output_path.to_str()

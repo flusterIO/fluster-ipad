@@ -25,8 +25,7 @@ enum Commands {
         output: String,
     },
     WatchDirectory {
-        input_dir: String,
-        output_dir: String,
+        config: Option<String>,
     },
 }
 
@@ -38,10 +37,12 @@ async fn main() {
                                         output, }) => {
             let _ = parse_conundrum(file_path.as_str(), output.as_str()).await;
         }
-        Some(Commands::WatchDirectory { input_dir,
-                                        output_dir, }) => {
-            let config = CliConfig::read();
-            let _ = watch_directory(input_dir, output_dir, &config).await;
+        Some(Commands::WatchDirectory { config, }) => {
+            if let Ok(config) = CliConfig::read(config) {
+                let _ = watch_directory(&config).await;
+            } else {
+                println!("There was an error parsing your config. Conundrum is still in it's very early stages, so this might be an issue on our end and there unfortunately isn't much documentation yet. If you're familiar with Rust, you can examine the `CliConfig` type, as that is exactly the structure of the json file.")
+            }
         }
         None => {
             println!("No command provided. Use --help for usage.");

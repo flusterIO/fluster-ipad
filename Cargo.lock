@@ -3265,6 +3265,7 @@ dependencies = [
  "reedline 0.46.0",
  "reedline-repl-rs",
  "serde",
+ "serde_json",
  "thiserror 2.0.18",
  "tokio",
  "tree-sitter-highlight",

@@ -1,13 +1,13 @@
 {
-    "name": "@conundrum/webAssets",
-    "files": [
-        "dist"
-    ],
-    "exports": {
-        "./styles.css": {
-            "import": "./dist/css/combined_component_glue.css",
-            "require": "./dist/css/combined_component_glue.css"
-        }
-    },
-    "packageManager": "pnpm@10.30.3"
+  "name": "@conundrum/webAssets",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./styles.css": {
+      "import": "./dist/css/combined_component_glue.css",
+      "require": "./dist/css/combined_component_glue.css"
+    }
+  },
+  "packageManager": "pnpm@10.30.3"
 }
