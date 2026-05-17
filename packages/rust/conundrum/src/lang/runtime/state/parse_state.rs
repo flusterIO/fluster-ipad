@@ -1,10 +1,10 @@
 use dashmap::DashMap;
 use parking_lot::Mutex;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, sync::Arc};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
-use uniffi::Enum;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -34,7 +34,7 @@ use crate::{
 /// collection of other modifiers, or at least that's how they're intended to
 /// work.
 #[typeshare::typeshare]
-#[derive(Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy)]
+#[derive(uniffi::Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy, JsonSchema)]
 pub enum ConundrumModifier {
     HideEmojis,
     /// The goal with this flag is to make **some** components collapsable to be
@@ -71,7 +71,16 @@ pub enum ConundrumModifier {
 }
 
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Default, Clone, Eq, PartialEq, strum_macros::Display)]
+#[derive(Serialize,
+           Deserialize,
+           Debug,
+           uniffi::Enum,
+           Default,
+           Clone,
+           Eq,
+           PartialEq,
+           strum_macros::Display,
+           JsonSchema)]
 pub enum ConundrumCompileTarget {
     #[serde(rename = "jsx")]
     #[strum(to_string = "jsx", serialize = "react", serialize = "Jsx")]

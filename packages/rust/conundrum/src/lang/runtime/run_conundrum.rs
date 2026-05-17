@@ -1,4 +1,5 @@
 use parking_lot::RwLock;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use typeshare::typeshare;
@@ -21,7 +22,7 @@ use winnow::Stateful;
 
 /// This is the core 'input' for Conundrum.
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema)]
 pub struct ParseConundrumOptions {
     /// The id of your note. This can be generic, unique to each application,
     /// but so-long as the note has the **concept** of an id the id can be

@@ -7,6 +7,10 @@ documentation.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[lib]
+name = "conundrum_cli"
+path = "src/lib.rs"
+
 [[bin]]
 name = "cdrm"
 path = "src/main.rs"
@@ -32,6 +36,9 @@ thiserror.workspace = true
 rayon.workspace = true
 notify = "8.2.0"
 serde_json.workspace = true
+schemars = { version = "1.2.1", features = ["either1"] }
+package_json_schema = "0.3.0"
+tempfile = "3.27.0"
 
 [lints]
 workspace = true

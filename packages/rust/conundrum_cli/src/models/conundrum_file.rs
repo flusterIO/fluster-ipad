@@ -9,6 +9,7 @@ use crate::{
     models::config::CliConfig,
 };
 
+#[derive(Debug)]
 pub struct ConundrumFile {
     pub absolute_path: PathBuf,
     pub results: MdxParsingResult,

@@ -1,7 +1,11 @@
 use clap::{Parser, Subcommand};
 
 use crate::{
-    commands::{parse_conundrum::parse_conundrum, watch::watch_directory},
+    commands::{
+        compile_directory_from_config::compile_directory, parse_conundrum::parse_conundrum,
+        parse_directory_to_directory::get_directory_conundrum_files, watch::watch_directory,
+    },
+    environments::web::next::write_next_output,
     models::config::CliConfig,
 };
 mod commands;
@@ -27,6 +31,9 @@ enum Commands {
     WatchDirectory {
         config: Option<String>,
     },
+    CompileDirectory {
+        config: Option<String>,
+    },
 }
 
 #[tokio::main]
@@ -36,6 +43,16 @@ async fn main() {
         Some(Commands::ParseConundrum { file_path,
                                         output, }) => {
             let _ = parse_conundrum(file_path.as_str(), output.as_str()).await;
+        }
+        Some(Commands::CompileDirectory { config, }) => {
+            if let Ok(config) = CliConfig::read(config) {
+                let err = compile_directory(&config).await;
+                if err.is_err() {
+                    eprintln!("Error: {:#?}", err.err());
+                }
+            } else {
+                println!("There was an error parsing your config. Conundrum is still in it's very early stages, so this might be an issue on our end and there unfortunately isn't much documentation yet. If you're familiar with Rust, you can examine the `CliConfig` type, as that is exactly the structure of the json file.");
+            }
         }
         Some(Commands::WatchDirectory { config, }) => {
             if let Ok(config) = CliConfig::read(config) {

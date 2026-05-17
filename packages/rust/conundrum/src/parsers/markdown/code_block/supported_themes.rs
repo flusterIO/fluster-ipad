@@ -1,8 +1,9 @@
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::EnumIter;
 use strum_macros::{Display, EnumString};
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, Display, EnumString, EnumIter, uniffi::Enum, Clone, Default, Debug)]
+#[derive(Serialize, Deserialize, Display, EnumString, EnumIter, uniffi::Enum, Clone, Default, Debug, JsonSchema)]
 #[allow(non_camel_case_types)]
 pub enum SupportedCodeBlockTheme {
     #[serde(rename = "1337")]

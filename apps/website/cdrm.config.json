@@ -1,10 +1,25 @@
 {
-    "build_target": "next",
-    "source": {
-        "input": "./cdrm",
-        "output": {
-            "path": "./src/features/cdrm/cdrm.json",
-            "format": "html"
-        }
+  "$schema": "file:///Users/bigsexy/Desktop/swift/Fluster/packages/rust/conundrum_ts/src/code_gen/schemas/cli_config.json",
+  "build_target": "next",
+  "opts": {
+    "note_id": null,
+    "content": "",
+    "modifiers": [],
+    "hide_components": [],
+    "ui_params": {
+      "dark_mode": true,
+      "font_scalar": 1,
+      "math_font_scalar": 1.2,
+      "syntax_theme": null
+    },
+    "target": "html",
+    "trusted": true
+  },
+  "source": {
+    "input": "./cdrm",
+    "output": {
+      "path": "./src/features/cdrm/cdrm.json",
+      "format": "html"
     }
+  }
 }

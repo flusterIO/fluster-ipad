@@ -9,9 +9,12 @@ export interface NextjsPageQuery extends GeneralPageQuery {
 }
 
 export const getNextJsPage = (
-    query: NextjsPageQuery,
+    query: NextjsPageQuery | undefined,
     output: Partial<NextJsConundrumOutput>,
 ): NextjsFileSummary[] | undefined => {
+    if (!query) {
+        return output.files;
+    }
     if (query.path) {
         return output.files?.filter((f) => {
             /* eslint-disable-next-line  --  */
@@ -41,4 +44,5 @@ export const getNextJsPage = (
             return false;
         });
     }
+    return output.files;
 };

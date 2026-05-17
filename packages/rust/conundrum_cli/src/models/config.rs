@@ -2,11 +2,12 @@ use conundrum::{
     ecosystem::glue::conundrum_web_types::conundrum_web_builder::ConundrumWebProjectBuilder,
     lang::runtime::{run_conundrum::ParseConundrumOptions, state::parse_state::ConundrumCompileTarget},
 };
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::errors::{ConundrumCliError, ConundrumCliResult};
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, JsonSchema)]
 pub struct SourceOutputConfig {
     pub path: String,
     pub format: ConundrumCompileTarget,
@@ -19,7 +20,7 @@ impl Default for SourceOutputConfig {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, JsonSchema)]
 pub struct ConundrumSourceConfig {
     pub input: String,
     pub output: SourceOutputConfig,
@@ -47,7 +48,7 @@ pub fn default_conundrum_opts() -> ParseConundrumOptions {
 ///   - [ ] Conundrum (a future goal, once the logic layer is in place)
 /// - [ ] Accept config file path as parameter.
 /// - [ ] Allow global and project specific configuration.
-#[derive(Default, Serialize, Deserialize, Clone)]
+#[derive(Default, Serialize, Deserialize, Clone, JsonSchema)]
 pub struct CliConfig {
     #[serde(default = "default_conundrum_opts")]
     pub opts: ParseConundrumOptions,
@@ -57,11 +58,11 @@ pub struct CliConfig {
 
 impl CliConfig {
     pub fn read(relative_path: &Option<String>) -> ConundrumCliResult<Self> {
-        let content =
-            std::fs::read_to_string(relative_path.clone().unwrap_or("./cdrm.config.json".to_string())).map_err(|e| {
-                println!("Error: {:#?}", e);
-                ConundrumCliError::ProjectConfigError
-            })?;
+        let _p = relative_path.clone().unwrap_or("./cdrm.config.json".to_string());
+        let content = std::fs::read_to_string(_p).map_err(|e| {
+                                                     println!("Error: {:#?}", e);
+                                                     ConundrumCliError::ProjectConfigError
+                                                 })?;
         let config: CliConfig = serde_json::from_str(content.as_str()).map_err(|e| {
                                                                           println!("Error: {:#?}", e);
                                                                           ConundrumCliError::ProjectConfigError

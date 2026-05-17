@@ -2,6 +2,7 @@
 resolver = "3"
 members = [
     "packages/rust/wasm/fluster_wasm",
+    "packages/rust/wasm/conundrum_wasm",
     "packages/rust/fluster_core_utilities",
     "packages/rust/fluster_database",
     "packages/rust/fluster_internal_cli",
@@ -29,7 +30,6 @@ edition = "2024"
 license = "Unlicense"
 
 [workspace.dependencies]
-async-trait = "0.1.81"
 thiserror = "2.0.17"
 uniffi = { version = "=0.29.5", features = ["tokio", "cli"] }
 serde = { version = "1.0.228", features = ["derive"] }

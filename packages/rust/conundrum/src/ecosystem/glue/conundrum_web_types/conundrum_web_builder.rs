@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// ## Plans
@@ -12,7 +13,7 @@ use serde::{Deserialize, Serialize};
 /// - [ ] Rust
 /// - [ ] Go
 /// - [ ] Python
-#[derive(Serialize, Default, Deserialize, strum_macros::Display, Clone, Eq, PartialEq)]
+#[derive(Serialize, Default, Deserialize, strum_macros::Display, Clone, Eq, PartialEq, JsonSchema)]
 pub enum ConundrumWebProjectBuilder {
     /// When using the **Next.js** provider, your output should point to a file.
     /// If it points to a directory, a single `cdrm_output.json` file will

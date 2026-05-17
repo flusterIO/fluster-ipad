@@ -3,6 +3,7 @@ import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 
+const isProd = process.env.FLUSTER_PROD_BUILD === "true";
 export default defineConfig({
     plugins: [
         tsconfigPaths(),
@@ -18,11 +19,14 @@ export default defineConfig({
         },
         sourcemap: true,
         emptyOutDir: false,
+        minify: isProd,
+        cssMinify: isProd ? "lightningcss" : undefined,
         lib: {
             entry: {
                 main: path.resolve(__dirname, "./src/initialize_conundrum_web.ts"),
                 methods: path.resolve(__dirname, "./src/methods.ts"),
                 providersNext: path.resolve(__dirname, "./src/providers/next/index.ts"),
+                uiBlog: path.resolve(__dirname, "./src/prebuilt_ui/blog/index.ts"),
             },
             fileName(format, entryName) {
                 return `${entryName}.${format}.js`;
@@ -36,6 +40,7 @@ export default defineConfig({
             "@": path.resolve(__dirname, "./src/core"),
             "#": path.resolve(__dirname, "./src/features"),
         },
+        external: ["react", "react-dom"],
     },
     test: {
         globals: true,

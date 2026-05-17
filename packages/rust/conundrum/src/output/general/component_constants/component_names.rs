@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter};
@@ -11,7 +12,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Display, uniffi::Enum, Debug, Clone, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Display, uniffi::Enum, Debug, Clone, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub enum EmbeddableComponentName {
     #[serde(rename = "Toc")]
     #[strum(to_string = "Toc")]
