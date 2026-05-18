@@ -18,7 +18,9 @@
             "require": "./pkg/fluster_wasm.js"
         }
     },
-    "dependencies": {},
+    "dependencies": {
+        "wasm-feature-detect": "^1.8.0"
+    },
     "devDependencies": {
         "@types/webpack": "5.28.5",
         "@types/webpack-dev-server": "4.7.2",

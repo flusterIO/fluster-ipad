@@ -1,11 +1,18 @@
 import { defineConfig, defaultExclude } from "vitest/config";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
+import react from "@vitejs/plugin-react";
 import path from "path";
 
 const isProd = process.env.FLUSTER_PROD_BUILD === "true";
+
 export default defineConfig({
     plugins: [
+        react({
+            babel: {
+                plugins: ["babel-plugin-react-compiler"],
+            },
+        }),
         tsconfigPaths(),
         dts({
             insertTypesEntry: true,
@@ -16,9 +23,10 @@ export default defineConfig({
         outDir: "dist",
         commonjsOptions: {
             transformMixedEsModules: true,
+            sourceMap: true,
         },
         sourcemap: true,
-        emptyOutDir: false,
+        emptyOutDir: true,
         minify: isProd,
         cssMinify: isProd ? "lightningcss" : undefined,
         lib: {
@@ -33,6 +41,16 @@ export default defineConfig({
             },
             name: "@conundrum/ts",
         },
+        rollupOptions: {
+            external: ["react", "react-dom", "react/jsx-runtime"],
+            output: {
+                globals: {
+                    react: "React",
+                    "react-dom": "ReactDOM",
+                    "react/jsx-runtime": "jsxRuntime",
+                },
+            },
+        },
     },
     resolve: {
         alias: {
@@ -40,7 +58,6 @@ export default defineConfig({
             "@": path.resolve(__dirname, "./src/core"),
             "#": path.resolve(__dirname, "./src/features"),
         },
-        external: ["react", "react-dom"],
     },
     test: {
         globals: true,

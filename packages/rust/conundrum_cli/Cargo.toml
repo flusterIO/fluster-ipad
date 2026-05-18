@@ -40,6 +40,8 @@ schemars = { version = "1.2.1", features = ["either1"] }
 package_json_schema = "0.3.0"
 tempfile = "3.27.0"
 config = { version = "0.15.23", features = ["json"] }
+figment = { version = "0.10.19", features = ["json", "toml", "yaml", "serde_json", "env", "parking_lot", "tempfile"] }
+just = "1.51.0"
 
 [lints]
 workspace = true
