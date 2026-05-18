@@ -39,14 +39,14 @@ pub fn write_next_output(written_files: Vec<ConundrumFile>, opts: &CliConfig) ->
                 Some(m) => match m.is_dir() {
                                true => p.join("cdrm_output.json").to_str().map(String::from),
                                false => p.to_str().map(String::from),
-                           }.ok_or_else(|| ConundrumCliError::ProjectConfigError),
+                           }.ok_or(ConundrumCliError::ProjectConfigError(None)),
                 None => {
                     if opts.build_target == ConundrumWebProjectBuilder::Next {
                         std::fs::write(p, "{{}}").map_err(|e| {
                                                      eprintln!("Error: {:#?}", e);
-                                                     ConundrumCliError::ProjectConfigError
+                                                     ConundrumCliError::ProjectConfigError(None)
                                                  })?;
-                        p.to_str().map(String::from).ok_or_else(|| ConundrumCliError::ProjectConfigError)
+                        p.to_str().map(String::from).ok_or(ConundrumCliError::ProjectConfigError(None))
                     } else {
                         Err(ConundrumCliError::NotImplemented)
                     }

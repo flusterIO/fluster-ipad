@@ -1,7 +1,7 @@
 use std::{str::FromStr, sync::Arc};
 
 use askama::Template;
-use parking_lot::Mutex;
+use parking_lot::{Mutex, RwLock};
 use serde::{Deserialize, Serialize};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
@@ -95,7 +95,8 @@ impl ConundrumStateModifier<GeneralCodeBlock> for GeneralCodeBlock {
 impl GeneralCodeBlock {
     pub fn get_meta_data(&self) -> Option<ConundrumObject> {
         if let Some(meta) = &self.meta_data {
-            let input = &mut get_conundrum_input(meta.as_str(), ParseState::default());
+            let input = &mut ConundrumInput { input: meta.as_str(),
+                                              state: Arc::new(RwLock::new(ParseState::default())) };
             ConundrumObject::from_single_line_property_string_parser(input).ok()
         } else {
             None

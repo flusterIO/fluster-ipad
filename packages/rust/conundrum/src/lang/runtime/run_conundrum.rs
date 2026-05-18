@@ -123,5 +123,6 @@ pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingR
     }
 
     let x = stateful_input.state.read_arc();
+    println!("XXX: {:#?}", x.data.front_matter);
     Ok(x.data.clone())
 }

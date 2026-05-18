@@ -14,7 +14,7 @@ docgen:
 	cargo run --bin conundrum_docgen
 
 compile_website_conundrum:
-	cd {{justfile_directory()}}./apps/website; cargo run --bin cdrm compile-directory
+	cd {{justfile_directory()}}/apps/website; cargo run --bin cdrm compile-directory
 
 build_conundrum_ts:
 	cd {{justfile_directory()}}/packages/rust/conundrum_ts; pnpm build

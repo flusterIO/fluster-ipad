@@ -1,6 +1,15 @@
+use std::{
+    error::Error,
+    path::{Path, PathBuf},
+};
+
+use config::{Config, Environment, File, FileStoredFormat, Format};
 use conundrum::{
     ecosystem::glue::conundrum_web_types::conundrum_web_builder::ConundrumWebProjectBuilder,
-    lang::runtime::{run_conundrum::ParseConundrumOptions, state::parse_state::ConundrumCompileTarget},
+    lang::runtime::{
+        run_conundrum::ParseConundrumOptions,
+        state::{conundrum_error::ConundrumError, parse_state::ConundrumCompileTarget},
+    },
 };
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -57,16 +66,24 @@ pub struct CliConfig {
 }
 
 impl CliConfig {
-    pub fn read(relative_path: &Option<String>) -> ConundrumCliResult<Self> {
-        let _p = relative_path.clone().unwrap_or("./cdrm.config.json".to_string());
-        let content = std::fs::read_to_string(_p).map_err(|e| {
-                                                     println!("Error: {:#?}", e);
-                                                     ConundrumCliError::ProjectConfigError
-                                                 })?;
-        let config: CliConfig = serde_json::from_str(content.as_str()).map_err(|e| {
-                                                                          println!("Error: {:#?}", e);
-                                                                          ConundrumCliError::ProjectConfigError
+    pub fn read(cfg_path: &Option<String>) -> ConundrumCliResult<Self> {
+        let config_path =
+            cfg_path.as_ref().cloned().map(|s| Ok(Path::new(&s).to_path_buf())).unwrap_or_else(|| {
+                                                                                    let cwd =
+                                                                      std::env::current_dir().map_err(|e| {
+                                                                          eprintln!("Error: {:#?}", e);
+                                                                          ConundrumCliError::FsError("cwd".to_string())
                                                                       })?;
+                                                                                    Ok(cwd.join("cdrm_config.json"))
+                                                                                })?;
+        let config_data = std::fs::read_to_string(&config_path).map_err(|e| {
+                              eprintln!("Error: {:#?}", e);
+                              ConundrumCliError::FsError(config_path.to_str().unwrap_or_default().to_string())
+                          })?;
+        let config: CliConfig = serde_json::from_str(&config_data).map_err(|e| {
+                                                                      eprintln!("Error: {:#?}", e);
+                                                                      ConundrumCliError::ProjectConfigError(None)
+                                                                  })?;
         Ok(config)
     }
 }

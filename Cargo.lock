@@ -3318,6 +3318,7 @@ version = "0.0.1"
 dependencies = [
  "anyhow",
  "clap",
+ "config",
  "conundrum",
  "crossterm 0.29.0",
  "notify",

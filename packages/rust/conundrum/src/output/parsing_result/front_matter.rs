@@ -42,22 +42,17 @@ pub struct FrontMatterResult {
 impl FrontMatterResult {
     fn get_optional_string_by_key(data: &mut Pod, k: FrontMatterKey) -> Option<String> {
         let fp = &data.remove(k.to_string());
-        if fp.is_empty() {
-            None
-        } else {
-            match fp.as_string() {
-                Ok(s) => Some(s),
-                Err(e) => {
-                    println!("Front Matter Error (user_defined_id): {}", e);
-                    None
-                }
-            }
+        match fp.as_string() {
+            Ok(s) => match s.is_empty() {
+                true => None,
+                false => Some(s),
+            },
+            Err(_) => None,
         }
     }
 
     fn get_string_vector(data: &mut Pod, k: FrontMatterKey) -> Vec<String> {
         let ignore_parsers = data.remove(k.to_string());
-
         if ignore_parsers.is_empty() {
             Vec::new()
         } else {
@@ -79,15 +74,21 @@ pub trait FrontMatterParser {
 impl FrontMatterParser for FrontMatterResult {
     fn from_gray_matter(data: Pod) -> FrontMatterResult {
         let mut p = data.clone();
-        FrontMatterResult { ignored_parsers: FrontMatterResult::get_string_vector(&mut p,
-                                                                                  FrontMatterKey::IgnoreParsers),
-                            subject: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Subject),
-                            topic: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Topic),
-                            file_path: FrontMatterResult::get_optional_string_by_key(&mut p,
-                                                                                     FrontMatterKey::FilePath),
-                            title: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Title),
-                            user_defined_id: FrontMatterResult::get_optional_string_by_key(&mut p,
-                                                                                           FrontMatterKey::Id),
-                            summary: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Summary) }
+        println!("Data: {:#?}", data);
+        let fm =
+            FrontMatterResult { ignored_parsers: FrontMatterResult::get_string_vector(&mut p,
+                                                                                      FrontMatterKey::IgnoreParsers),
+                                subject: FrontMatterResult::get_optional_string_by_key(&mut p,
+                                                                                       FrontMatterKey::Subject),
+                                topic: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Topic),
+                                file_path: FrontMatterResult::get_optional_string_by_key(&mut p,
+                                                                                         FrontMatterKey::FilePath),
+                                title: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Title),
+                                user_defined_id: FrontMatterResult::get_optional_string_by_key(&mut p,
+                                                                                               FrontMatterKey::Id),
+                                summary: FrontMatterResult::get_optional_string_by_key(&mut p,
+                                                                                       FrontMatterKey::Summary) };
+        println!("Frontmatter: {:#?}", fm);
+        fm
     }
 }
