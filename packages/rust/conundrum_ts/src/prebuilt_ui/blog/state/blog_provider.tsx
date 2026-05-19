@@ -1,5 +1,6 @@
 "use client";
 import { type ReactNode, createContext, useReducer, useContext } from "react";
+import { type BlogSearchParams } from "../types";
 
 export interface BlogProviderState {
     sidebar: {
@@ -7,6 +8,7 @@ export interface BlogProviderState {
     };
     query: {
         globalQuery: string;
+        searchParams?: BlogSearchParams;
     };
 }
 
@@ -16,6 +18,9 @@ const defaultInitialValues: BlogProviderState = {
     },
     query: {
         globalQuery: "",
+        searchParams: {
+            slug: [],
+        },
     },
 };
 
@@ -74,19 +79,20 @@ BlogProviderContextReducer.displayName = "BlogProviderContextReducer";
 
 interface BlogProviderProviderProps {
     children: ReactNode;
-    initialValues?: Partial<BlogProviderState>;
+    searchParams?: BlogSearchParams;
 }
 
 export const BlogProviderProvider = ({
     children,
-    initialValues,
+    searchParams,
 }: BlogProviderProviderProps) => {
-    const [state, dispatch] = useReducer(
-        BlogProviderContextReducer,
-        initialValues
-            ? { ...initialValues, ...defaultInitialValues }
-            : defaultInitialValues,
-    );
+    const [state, dispatch] = useReducer(BlogProviderContextReducer, {
+        ...defaultInitialValues,
+        query: {
+            ...defaultInitialValues.query,
+            searchParams,
+        },
+    });
 
     return (
         <BlogProviderContext.Provider value={state}>

@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
         ignoreBuildErrors: true,
     },
     reactStrictMode: true,
-    reactCompiler: true,
+    reactCompiler: false,
     images: {
         remotePatterns: [
             {

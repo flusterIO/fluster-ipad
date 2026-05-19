@@ -8,11 +8,7 @@ const isProd = process.env.FLUSTER_PROD_BUILD === "true";
 
 export default defineConfig({
     plugins: [
-        react({
-            babel: {
-                plugins: ["babel-plugin-react-compiler"],
-            },
-        }),
+        react(),
         tsconfigPaths(),
         dts({
             insertTypesEntry: true,
@@ -32,9 +28,15 @@ export default defineConfig({
         lib: {
             entry: {
                 main: path.resolve(__dirname, "./src/initialize_conundrum_web.ts"),
+                framework: path.resolve(__dirname, "./src/code_gen/index.ts"),
                 methods: path.resolve(__dirname, "./src/methods.ts"),
                 providersNext: path.resolve(__dirname, "./src/providers/next/index.ts"),
+                pathUtils: path.resolve(__dirname, "./src/path__utils/index.ts"),
                 uiBlog: path.resolve(__dirname, "./src/prebuilt_ui/blog/index.ts"),
+                uiBlogSSR: path.resolve(
+                    __dirname,
+                    "./src/prebuilt_ui/blog/index_ssr.ts",
+                ),
             },
             fileName(format, entryName) {
                 return `${entryName}.${format}.js`;

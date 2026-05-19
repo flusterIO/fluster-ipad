@@ -1,5 +1,6 @@
 import consola from "consola";
 
+
 export const onCopyCodeBlockClick = (e: Event) => {
     const target = e.currentTarget as HTMLDivElement;
     const targetId = target.getAttribute("data-cdrm-copy-for");

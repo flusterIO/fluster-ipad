@@ -3,6 +3,7 @@
 @source "../../../../../docs/legal/**/*.{mdx,tsx,jsx,ts,js}";
 @source "../../../content/**/*.mdx";
 @source "../../../src/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../../../../../packages/rust/conundrum_ts/src/prebuilt_ui/blog/";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/container-queries";
 @plugin "tailwindcss-animate";

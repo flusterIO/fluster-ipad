@@ -10,4 +10,4 @@ export type WithNullableOptionals<T> = {
 };
 
 export type AnyBuilderOutput = WithNullableOptionals<NextJsConundrumOutput>;
-export type AnyNoteOutput = NextjsFileSummary;
+export type AnyNoteOutput = WithNullableOptionals<NextjsFileSummary>;

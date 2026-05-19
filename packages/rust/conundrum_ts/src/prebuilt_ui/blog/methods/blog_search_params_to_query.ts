@@ -3,6 +3,7 @@ import { type BlogSearchParams } from "../types";
 
 export const blogSearchParamsToQuery = (
     searchParams: BlogSearchParams,
+    slug: string[],
 ): NextjsPageQuery | undefined => {
     /* eslint-disable-next-line  --  */
     if (!searchParams) {
@@ -13,6 +14,7 @@ export const blogSearchParamsToQuery = (
     }
     return {
         ...searchParams,
+        slug,
         keywords: {
             anyOf: searchParams.kwAnyOf,
             allOf: searchParams.kwAllOf,
