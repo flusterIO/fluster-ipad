@@ -1,27 +1,23 @@
 "use client";
-import { type BlogTemplateProps } from "@conundrum/ts/ui/blog";
-import dynamic from "next/dynamic";
-import React, { type ReactNode } from "react";
-import cdrmOutput from "../../../features/cdrm/cdrm.json";
-const BlogTemplate = dynamic(
-    () => import("@conundrum/ts/ui/blog").then((a) => a.BlogTemplate),
-    { ssr: false },
-);
+import React, { useEffect, type ReactNode } from "react";
+import { type AnyBuilderOutput } from "../../../../../../../packages/rust/conundrum_ts/dist/src/types/general";
+import { initializeConundrumWeb } from "@conundrum/ts";
 
-export const BlogTemplateClientWrapper = ({
-    searchParams,
-    sidebarItems,
-    banner,
-}: Omit<BlogTemplateProps, "data">): ReactNode => {
+interface ClientConundrumPageProps {
+    item: AnyBuilderOutput["files"][number];
+}
+
+export const ClientConundrumPage = ({
+    item,
+}: ClientConundrumPageProps): ReactNode => {
+    useEffect(() => {
+        initializeConundrumWeb();
+    }, []);
     return (
-        <BlogTemplate
-            sidebarItems={sidebarItems}
-            searchParams={searchParams}
-            /* @ts-expect-error -- 'I'll deal witht his later. It's just a type issue with null and undefined.*/
-            data={cdrmOutput}
-            banner={banner}
-        />
+        <div className="mx-auto max-w-[min(1080px,90vw)]">
+            <div dangerouslySetInnerHTML={{ __html: item.html }} />
+        </div>
     );
 };
 
-BlogTemplateClientWrapper.displayName = "BlogTemplateClientWrapper";
+ClientConundrumPage.displayName = "ClientConundrumPage";

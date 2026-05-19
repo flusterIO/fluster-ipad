@@ -4,14 +4,42 @@
         "dist"
     ],
     "scripts": {
-        "build": "vite build",
+        "build": "wireit",
         "typecheck": "tsc --noEmit"
+    },
+    "wireit": {
+        "copy:globalCss": {
+            "command": "cp ../conundrum/src/output/html/standalone/conundrum.css ./dist/styles.css",
+            "clean": false,
+            "env": {
+                "WIREIT_PARALLEL": "1"
+            }
+        },
+        "build:vite": {
+            "command": "vite build",
+            "clean": false,
+            "env": {
+                "WIREIT_PARALLEL": "1"
+            }
+        },
+        "build": {
+            "dependencies": [
+                "../conundrum:build:scss",
+                "build:vite",
+                "copy:globalCss"
+            ]
+        }
     },
     "exports": {
         ".": {
             "types": "./dist/main.d.ts",
             "import": "./dist/main.es.js",
             "require": "./dist/main.cjs.js"
+        },
+        "./styles.css": {
+            "types": "./dist/styles.css",
+            "import": "./dist/styles.css",
+            "require": "./dist/styles.css"
         },
         "./methods": {
             "types": "./dist/src/methods.d.ts",

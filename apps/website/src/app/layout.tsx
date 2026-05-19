@@ -1,5 +1,5 @@
-import "@conundrum/generated/conundrum.css";
 import "@fluster/webview_utils/styles.css";
+import "@conundrum/ts/styles.css";
 import "../core/styles/globals.scss";
 import localFont from "next/font/local";
 import FumaDocsProvider from "#/features/docs/fuma_docs_provider";
@@ -7,6 +7,26 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
 import { type Metadata } from "next";
+
+/* const lucideFont = localFont({ */
+/*     variable: "--lucide-font", */
+/*     src: [ */
+/*         { */
+/*             path: "../../public/fonts/lucide.ttf", */
+/*         }, */
+/*     ], */
+/* }); */
+
+/* const nerdFont = localFont({ */
+/*     variable: "--nerd-font", */
+/*     src: [ */
+/*         { */
+/*             path: "../../public/fonts/nerd.ttf", */
+/*         }, */
+/*     ], */
+/* }); */
+
+/* console.log("nerdFont: ", nerdFont); */
 
 const appFont = localFont({
     variable: "--ulld-app-font",
@@ -74,10 +94,6 @@ export default function RootLayout({
                     content="Fluster is your brain's free & open source presentation layer for modern academic note taking."
                 />
                 <meta name="twitter:card" content="summary_large_image" />
-                <script
-                    defer
-                    src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
-                />
             </Head>
             <Analytics />
             <body className={`antialiased background dark`}>
