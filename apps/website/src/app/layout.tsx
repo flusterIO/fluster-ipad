@@ -8,26 +8,6 @@ import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
 import { type Metadata } from "next";
 
-/* const lucideFont = localFont({ */
-/*     variable: "--lucide-font", */
-/*     src: [ */
-/*         { */
-/*             path: "../../public/fonts/lucide.ttf", */
-/*         }, */
-/*     ], */
-/* }); */
-
-/* const nerdFont = localFont({ */
-/*     variable: "--nerd-font", */
-/*     src: [ */
-/*         { */
-/*             path: "../../public/fonts/nerd.ttf", */
-/*         }, */
-/*     ], */
-/* }); */
-
-/* console.log("nerdFont: ", nerdFont); */
-
 const appFont = localFont({
     variable: "--ulld-app-font",
     src: [

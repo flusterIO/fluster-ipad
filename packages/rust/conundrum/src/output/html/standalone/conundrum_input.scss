@@ -225,6 +225,7 @@ p {
 
 .cdrm-math.with-id {
   span.katex-display {
-    padding-right: 2rem; 
+    // Make room for the equation label
+    padding-right: 2rem;
   }
 }

@@ -4,9 +4,6 @@ import data from "../../../../features/cdrm/cdrm.json";
 import { notFound } from "next/navigation";
 import { ClientConundrumPage } from "./client_cdrm";
 import { type AnyBuilderOutput } from "../../../../../../../packages/rust/conundrum_ts/dist/src/types/general";
-/* import "@conundrum/ts/styles.css"; */
-
-/* import "@conundrum/ts/styles.css"; */
 
 interface ByPagePageProps {
     params: Promise<{ slug: string[] }>;
