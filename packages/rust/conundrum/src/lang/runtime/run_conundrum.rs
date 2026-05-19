@@ -91,7 +91,8 @@ impl ParseConundrumOptions {
 }
 
 pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
-    let state = Arc::new(RwLock::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
+    let mut response_data = MdxParsingResult::from_initial_mdx_content(&opts.content);
+    let state = Arc::new(RwLock::new(ParseState { data: response_data.clone(),
                                                   bib: CitationList::default(),
                                                   modifiers: opts.modifiers.clone(),
                                                   eq_count: 0,
@@ -104,9 +105,10 @@ pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingR
                                                   slugger: Slugger::default(),
                                                   trusted: opts.trusted,
                                                   ..Default::default() }));
-    let b = opts.content.clone();
+    let content = &response_data.content.clone();
+    let b = content.as_str();
 
-    let mut stateful_input = Stateful { input: b.as_str(),
+    let mut stateful_input = Stateful { input: b,
                                         state };
 
     let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);
@@ -123,6 +125,5 @@ pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingR
     }
 
     let x = stateful_input.state.read_arc();
-    println!("XXX: {:#?}", x.data.front_matter);
     Ok(x.data.clone())
 }

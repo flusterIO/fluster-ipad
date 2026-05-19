@@ -103,29 +103,27 @@ impl MdxParsingResult {
                              ConundrumErrorVariant::FrontMatterError
                          })
                          .ok();
-        let r = MdxParsingResult { note_id: None,
-                                   content: match &data {
-                                       Some(d) => d.content.clone(),
-                                       None => "".to_string(),
-                                   },
-                                   tags: Vec::new(),
-                                   outgoing_links: Vec::new(),
-                                   toc: Vec::new(),
-                                   ordered_citation_keys: Vec::new(),
-                                   dictionary_entries: Vec::new(),
-                                   footnotes: HashMap::new(),
-                                   front_matter: match data {
-                                       Some(front_matter_data) => {
-                                           front_matter_data.data.map(FrontMatterResult::from_gray_matter)
-                                       }
-                                       None => None,
-                                   },
-                                   ignore_all_parsers: false,
-                                   eq_ref_map: HashMap::new(),
-                                   warnings: Vec::new(),
-                                   included_components: Vec::new(),
-                                   ai_secondary_parse_requests: Vec::new() };
-        println!("Response: {:#?}", r);
-        r
+        MdxParsingResult { note_id: None,
+                           content: match &data {
+                               Some(d) => d.content.clone(),
+                               None => "".to_string(),
+                           },
+                           tags: Vec::new(),
+                           outgoing_links: Vec::new(),
+                           toc: Vec::new(),
+                           ordered_citation_keys: Vec::new(),
+                           dictionary_entries: Vec::new(),
+                           footnotes: HashMap::new(),
+                           front_matter: match data {
+                               Some(front_matter_data) => {
+                                   front_matter_data.data.map(FrontMatterResult::from_gray_matter)
+                               }
+                               None => None,
+                           },
+                           ignore_all_parsers: false,
+                           eq_ref_map: HashMap::new(),
+                           warnings: Vec::new(),
+                           included_components: Vec::new(),
+                           ai_secondary_parse_requests: Vec::new() }
     }
 }
