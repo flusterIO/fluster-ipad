@@ -283,7 +283,7 @@ That's almost precisely the value we were looking for when we add these values, 
 
 Let's consider the fact that we have a set of unique properties for two known bodies, us, and the sun. First, we _know_ that all of our observational 'constants' are accurate _here_. Second, we _know_ that the Sun is the dominant gravitational object in the vicinity. Let's take advantage of this fact by presuming that the lower limit of this 'spinor' approximation is found at the Sun.
 
-Let's consider this function where the $\text{spinor}=\left( \frac{1}{2} \right)^{1/3}$.
+Let's consider this function where the $\text{spinor}=\left( \frac{1}{2} \right)^{1/3}$, or the same quantity before the torsion applied by $\alpha$ and the dilation applied by $ds$.
 
 Plugging this back into equation <EqRef id="eq_alphaReciprical" /> gives:
 
@@ -434,13 +434,13 @@ $$
 
 ### Earth's Orbital Velocity From $\alpha$
 
-Consider the radius-independent magnitude of our metric:
+Consider the radius-independent magnitude of our metric for the dominant body in our system, the Sun:
 
 $$
 v_{g} = \sqrt[3]{GM_\odot}
 $$
 
-Considering that _nothing_ in this model is proportional to time, we shoul consider this model as proportional to $dx$, or orbital velocity.
+Considering that _nothing_ in this model is proportional to time, we should consider this model as proportional to $dx$, or orbital velocity.
 
 $$
 \frac{v_{g}}{v_{\text{orbit}}} = 171.25209
@@ -527,6 +527,24 @@ That's an error of under 1% for an approximation, that's using approximations an
 - The lack of a magnetic monopole, or rather, the existince of an electric monopole. Where do you think that 'sink and faucet' model is funelling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
 - The Fermi paradox. There's an entirely other dimension that life might exist across that we have been so far unable to transcend.
 - Relative motion. Think about it. Do we currently calculate all motion as being truly relative, or do we not _already_ calculate motion as relative to the underlying gravitational acceleration and then lie to undergrads about it? The tensors of GR mask this fact to an extent, but reduce them to their calculus equivalents and we are doing _precisely_ this.
+
+
+--- <Emoji name="alien" smedium inline /> ---
+
+After all of this talk of divergence, it's important to understand the relationship between this geometry, the proposed spatial dilation, and the power 3 in our 3 dimensional coordinate system. If we recall in slight reworking of equation <EqRef id="eq_alphaReciprical" />:
+
+$$
+R \alpha = \Gamma \sqrt[3]{2GM_\oplus}
+$$
+
+Where 
+
+$$
+\Gamma = \frac{1}{2 - \alpha}
+$$
+
+Is it a coincidence that $R  \alpha^3$ gives the unit of measure, the **cubit** used by our most ancient civilizations? I'll leave that for you to ponder... With ongoing world events, maybe we'll soon know.
+
 
 
 [^1]: The logical question here is well, why not just publish it in peer review? The **only** possible mathematical solution indicates that the Earth is expanding _with_ the Universe. Einstein himself couldn't get a model like this past our current peer review culture.
