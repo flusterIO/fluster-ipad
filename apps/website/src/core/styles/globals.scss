@@ -6,8 +6,8 @@
 @source "../../../../../packages/rust/conundrum_ts/src/prebuilt_ui/blog/";
 @plugin "@tailwindcss/typography";
 @plugin "tailwindcss-animate";
-@import "fumadocs-ui/css/ocean.css";
 @import "fumadocs-ui/css/preset.css";
+@import "fumadocs-ui/css/ocean.css";
 
 @font-face {
   font-family: "KaTeX_AMS";
@@ -247,13 +247,13 @@
 
 @layer base {
   :root {
-    --radius: 0.5rem;
+    --border-radius: 0.5rem;
     --brand: 198.6 88.7% 48.4%;
     --web-background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-    --popover: hsl(222.2 84% 4.9%);
+    --popover: 222.2 84% 4.9%;
     --primary: 217.2 91.2% 59.8%;
     --primary-rgb: #0ba5e9;
     --primary-h: 198.6;
@@ -277,8 +277,8 @@
   }
 }
 
-@theme {
-  --radius: var(--radius);
+@theme inline {
+  --radius: 8px;
   --color-brand: hsl(var(--brand));
   --color-background: hsl(var(--web-background));
   --color-foreground: hsl(var(--foreground));

@@ -46,6 +46,9 @@ pub enum EmbeddableComponentId {
     #[strum(to_string = "util-container")]
     #[default]
     UtlityContainer,
+    #[serde(rename = "image")]
+    #[strum(to_string = "image")]
+    Image,
     #[serde(rename = "hr-with-children")]
     #[strum(to_string = "hr-with-children")]
     HrWithChildren,

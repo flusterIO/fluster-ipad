@@ -5,7 +5,7 @@ use tw_merge::*;
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <div class="{{tw_merge!(self.emphasis.as_ref().cloned().map(|emph| emph.to_background_color_classes()).unwrap_or_default(), self.sizable.as_class())}}">
+/// <div class="{{tw_merge!(self.emphasis.as_ref().cloned().map(|emph| emph.to_background_color_classes()).unwrap_or_default(), self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}">
 /// {{children | safe}}
 /// </div>
 /// ```

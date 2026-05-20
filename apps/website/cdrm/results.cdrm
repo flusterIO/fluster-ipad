@@ -1,0 +1,14 @@
+| derivation                                                | function                         | % error             |
+|:----------------------------------------------------------|:---------------------------------|:--------------------|
+| cosmological velocity from local gravitational parameters | `vbarCosmological`               | Difficult to assess |
+| kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | 0.442258391884371   |
+| Earth's roational velocity via α                          | `rotationVelocityFromDivergence` | 0.00677756400547747 |
+| Solar-Galactic Radius from visible mass                   | `galacticRadiusPolynomial`       | 0.0                 |
+| α (solar)                                                 | `alphaSolar`                     | 0.00342749503676447 |
+| α (Earth)                                                 | `omega`, `alphaFactor`           | 0.0253043303850287  |
+| α (orbital velocity)                                      | `solarMetricVelocity`, `vOrbit`  | 0.0544665494810030  |
+| α (from derived velocity)                                 | `vbarAlphaEquivalence`           | 0.0761820393770567  |
+| J ≈ Φ                                                     | `currentEquivalent`              | 0.213633171310522   |
+| h from α                                                  | `omega`, `alpha`                 | 0.0253887188634106  |
+| h/(2 - α) from ω                                          | `omega`, `alpha`                 | 0.00342749503676447 |
+| Φ mass density approximation                              | `massDensityEquivalence`         | 0.863214423082925   |

@@ -29,8 +29,8 @@ use crate::{
     },
     parsers::{
         markdown::links::{
-            audio_timestamp::audio_timestamp_link_target, link_by_dom_id::link_by_dom_id_target,
-            markdown_link_target::MarkdownLinkTarget,
+            audio_timestamp::audio_timestamp_link_target, general_link_target::general_link_target,
+            link_by_dom_id::link_by_dom_id_target, markdown_link_target::MarkdownLinkTarget,
         },
         parser_trait::ConundrumParser,
     },
@@ -88,7 +88,8 @@ impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
                                                                                       input.input.reset(&start);
                                                                                   })?;
 
-        let url: MarkdownLinkTarget = alt((link_by_dom_id_target, audio_timestamp_link_target)).parse_next(input)?;
+        let url: MarkdownLinkTarget =
+            alt((link_by_dom_id_target, audio_timestamp_link_target, general_link_target)).parse_next(input)?;
 
         let state = Arc::clone(&input.state);
 

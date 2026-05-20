@@ -9,23 +9,47 @@ summary: A sample note & a novel interpretation of relativity yielding multiple 
 
 
 <Admonition title="Thank you" foldable>
-Thank you for taking the time to read this. My story is posted elsewhere, so to keep things short, this is the entire reason I built Fluster in the first place.
+Thank you for taking the time to read this. My story is posted elsewhere, so to keep things short, this is the entire reason I built Fluster & Conundrum in the first place.
 
 Almost 5 years ago I realized Einstein made an assumption that made far more sense before the observations that give us the Big Bang, and after playing around with the math I realized I can derive an absolutely staggering amount of physics from a single, mathematically equivalent modification to Einstein's model. I quit my job, became homeless, and over the course of this pursuit built the original version of Fluster for my own personal use.
 
 I'll do my best to convince the math types among you (this article does assume some basic understanding of physics and relativity) by the end of this sample note that Einstein made a mistake[^1], but regardless of your opinions on the model, I hope you enjoy Fluster and find it as useful as I have. Thanks for checking it out!
 
+> Also, please keep in mind that while this may not be as responsive as the Fluster website, it was written in the very early stages of a markdown like syntax with the same transpiler that powers Fluster. The Conundrum transpiler will continue to improve daily, with blogging support being a major priority.
+
 </Admonition>
 
 #### Included Derivations
+> This table is generated directly from `Astropy` and `Scipy`. All functions reflect names in the `alpha_omega_gravity` python package, because after 5 years of being homeless I think I earned the right to be grandiose. (α comes from the fine-structure constant).
+
+| derivation                                                | function                         | % error             |
+|:----------------------------------------------------------|:---------------------------------|:--------------------|
+| cosmological velocity from local gravitational parameters | `vbarCosmological`               | Difficult to assess |
+| kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | 0.442258391884371   |
+| Earth's roational velocity via α                          | `rotationVelocityFromDivergence` | 0.00677756400547747 |
+| Solar-Galactic Radius from visible mass                   | `galacticRadiusPolynomial`       | 0.0                 |
+| α (solar)                                                 | `alphaSolar`                     | 0.00342749503676447 |
+| α (Earth)                                                 | `omega`, `alphaFactor`           | 0.0253043303850287  |
+| α (orbital velocity)                                      | `solarMetricVelocity`, `vOrbit`  | 0.0544665494810030  |
+| α (from derived velocity)                                 | `vbarAlphaEquivalence`           | 0.0761820393770567  |
+| J ≈ Φ                                                     | `currentEquivalent`              | 0.213633171310522   |
+| h from α                                                  | `omega`, `alpha`                 | 0.0253887188634106  |
+| h/(2 - α) from ω                                          | `omega`, `alpha`                 | 0.00342749503676447 |
+| Φ mass density approximation                              | `massDensityEquivalence`         | 0.863214423082925   |
 
 
-| Derivation | Error Margin |
-| ---------- | ------------ |
-| Cosmological Velocity | Difficult to estimate due to large observational error margins. |
-| Kinematic Velocity <br /> (actually 2 separate derivations) | $0.43\%-0.92\%$ |
-| Fine Structure Constant $\alpha$<br /> with both solar and Earthly parameters | $0.027\%$ (Earth), $0.00347\%$ (Solar) |
-| Tau/Proton Mass Ratio | $0.087\%$ |
+<Hint label="Error" info>
+    All error percentage calculations were done with the following function. See the [Fluster & Conunundrum repository](https://github.com/flusterIO) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
+</Hint>
+
+```python -- title="percent_diff.py"
+def percentDiff(observed, derived):
+    return (observed - derived) / observed * 100
+    
+```
+
+Also, keep in mind that if we wanted to be selective we can choose a radius here on Earth's surface that wll satisfy the above equations perfectly, giving an error of 0. The radii that were used were whichever was most fitting for the job... the mean radius for calculating volume, the polar radius when spin was involved to minimize centripital influence, and Astropy provided values (equatorial) for everything else.
+
 
 ### The Lighthouse & The Clocktower
 > An opening thought experiment
@@ -34,15 +58,16 @@ Consider two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should trave
 
 At $p_2$ place a time keeping device that remains visible from $p_1$. Allow that $A$ remains at rest relative to $p_1$, and very near $p_1$ while $B$ goes in motion (at an inertial pace) between $p_1$ and $p_2$. 
 
-At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while allowing $A$ to remain in an unchanged state is that $d \to d\gamma$ in the coordinate system of the observer in relative motion, while $v \to v/\gamma$ in the coordinate system of the observer at relative rest to accomodate the change in spatial density.
+At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while allowing the observer in an unchanged state to observe the kinetic effects of observer in motion is that the distance between $p_{1}$ and $p_{2}$ must elongate by a factor of $ \gamma$.
+
+Is this not inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further seperated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
 
 > **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
 
-### Time Gravity Equivalence
+### Time Gravity Equivalence <Emoji name="watch" inline smedium/>
 
-<Emoji name="watch" large right/>
 
-Let's stop for a second and recognize that this model coincides closely with the notion of cosmic inflation, the model that gives us the Big Bang. In fact, we can collapse gravitational acceleration and cosmic inflation into a single process as observed from different reference frames. By doing so, there is absolutely no need for a temporal dimension at all. This model can satisfy both of the primary properties associated with time:
+Let's recognize the two primary properties that time occupies:
 
 - A 4th displacement coordinate
 - A _driving_ rate of change
@@ -51,9 +76,15 @@ By attributing the 4th displacement coordinate to the density axis that arises f
 
 Of course we need to change the dimensionality of much of our physics, but as I will demonstrate here... the math remains remarkably consistent. 
 
+> Does this not make more sense? A Universe driven by _motion_ as a driving rate of change instead of an abstract quantity that we've never directly measured, time? 
+
+
 #### Our Cosmological Velocity
 
 Let's consider that this dilation of space might give rise to our gravitational acceleration, where $p_1$ becomes akin to the cosmological rest frame. If we allow that this velocity gives rise to spatial dilation, which then gives rise to the gravitational acceleration that we feel, we should examine the derivative of $g$ with respect to $R$.
+
+
+<Image width="smedium" maxHeight="medium" right contain src="/assets/diagrams/peculiarVelocity_probabilityCurve.png" />
 
 $$ {#eq_delta}
 \delta = \frac{d}{dR} - G \frac{M}{R^2} = 2 G \frac{M}{R^3}
@@ -81,9 +112,6 @@ $$ {#vGamma}
 v_\gamma = c \sqrt{1 - \frac{1}{\left(1 + \frac{g}{R}\right)^2}} = 526.6~ \text{km}~ \text{s}^{-1}
 $$
 
-<Container card width="full" height="medium" centerContent text="large" rounded="large">
- Velocity diagram goes here 
-</Container>
 
 This value coincides closely with direct observation, but due to the wide error margins inherent in these types of observations, we're going to have to do better. Don't worry... we can.
 
@@ -111,7 +139,7 @@ This gives us a dimensionless quantity that is distance/distance, of a magnitude
 
 </Admonition>
 
-If we then re-examine equation <EqRef id="vGamma"/> and it's derivation. Since $dx$ in equation <EqRef id="vGamma" /> is per unit time, we should then divide by $v_\gamma$ and multiply by our time equivalent quantity from equation <EqRef id="timeEquiv"/>
+Let's then re-examine equation <EqRef id="vGamma"/> and it's derivation. Since $dx$ in equation <EqRef id="vGamma" /> is per unit time, we should then divide by $v_\gamma$ and multiply by our time equivalent quantity from equation <EqRef id="timeEquiv"/>.
 
 This gives:
 
@@ -126,7 +154,7 @@ $$ {#eq_timeDependentDelta}
 $$
 
 <Hint label="Notation" primary>
-  Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically acccurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system.
+  Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically acccurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system only to remove it by multiplying by $t$.
 </Hint>
 
 If we substitute this result back into equation <EqRef id="vGamma" /> we find:
@@ -146,9 +174,6 @@ Observational ranges for this value that we can observe much more reliably is be
 
 Let's validate this model by testing this relationship one more time. 
 
-<Container card width="full" height="medium" centerContent text="large" rounded="large">
- Diagram goes here 
-</Container>
 
 Consider the above diagram. If this model is correct, we can improve the derivation of our orbital behavior. Instead of the following:
 
@@ -187,6 +212,11 @@ This value again coincides closely with our velocity observed relative to the CM
 
 #### In the relativistic frame
 
+<Container width="fit" height="xl" rounded="large" right >
+<Image src="/assets/diagrams/cmb_velocity_from_gravtational_params.png" />
+</Container>
+
+
 As we used the Newtonian derived orbital parameters in the previous section to derive a relativistic velocity correction in the form of an increase in elapsed 'time', we can now derive a relativistic equation for a body in stable orbit by setting $dt = 1$ and solving for $\dot{x}$. This gives a model in the coordinate system of the observer in motion, as he travels at the 'agreed upon velocity' (any velocity multiplied by a scalar of 1). 
 
 If we extend our lighthouse & clocktower example to an orbital frame of reference, where $B$ orbits $A$ at an agreed upon velocity $v_o$, then this velocity would be decreased by a factor of $dt$ in the coordinate system of $A$ due to the decreased spatial density of $\mathbf{S}_B$, while our relativistically corrected orbital velocity equation becomes as follows:
@@ -196,29 +226,22 @@ $$
 $$
 
 
+
+When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.13~ Kpc$, _perfectly_ on top of observatonal values, _without_ any additional unseen mass!
+
 ## Electromagnetism
 
 Consider the determinant of a 3-dimensional, diagonal matrix, representing the change in volume of the coordinate system.
 
 $$
 s = \left|\begin{matrix}
-  \varphi & 0 & 0 \\
-  0 & \varphi & 0 \\
-  0 & 0 & \varphi
-\end{matrix}\right| = \varphi^3
+  \omega & 0 & 0 \\
+  0 & \omega & 0 \\
+  0 & 0 &\omega\
+\end{matrix}\right| = \omega^3
 $$
 
-Where $\varphi$ is some unknown function. If we consider that the integral that gives us $\delta$ in equation <EqRef id="eq_delta" /> represents a component of this coordinate system so that $s$ becomes
-
-$$
-\mathbf{S} = \left( \begin{matrix}
-\gamma & 0 & 0 \\
-0 & \gamma & 0 \\
-0 & 0 & \gamma
-\end{matrix} \right)
-$$
-
-Not only does this accomodate existing experimental validations of SR & GR, it does so while accomodating the original relativistic experiment: Michelson & Morely. The only direction they didn't evaluate was along the radial vector, precisely the direction that this model predicts.
+Not only does this accomodate existing experimental validations of SR & GR, it does so while accomodating the original relativistic experiment: Michelson & Morely. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
 
 If we consider that the magnitude of $\delta$ _is_ this determinant, we should then take it's cube root:
 
@@ -251,30 +274,31 @@ That's almost precisely the value we were looking for when we add these values, 
   $0.025\%$
 </Hint>
 
+> Take a second to recogize the fact that in the exact function we predicted to find a unifying quantity, the single most unifying electromagnetic property arises. This is _not_ a dimensional coincidence.
+
 
 --- <Emoji name="sun" inline smedium/> ---
 
-####  Using our solar parameters, equivalent to $\text{spinor}=1$
+####  Using our solar parameters, equivalent to $\text{spinor}=\left( \frac{1}{2} \right)^{1/3}$
 
-As is in quantum mechanics, the spinor function of the nucleaus should hover around 1. If we are to extrapolate this function beyond that of our own body :earth_americas: we should validate it against the bodies with which we have the most data.
+Let's consider the fact that we have a set of unique properties for two known bodies, us, and the sun. First, we _know_ that all of our observational 'constants' are accurate _here_. Second, we _know_ that the Sun is the dominant gravitational object in the vicinity. Let's take advantage of this fact by presuming that the lower limit of this 'spinor' approximation is found at the Sun.
 
-Let's consider this function where the $\text{spinor} \approx 1$:
+Let's consider this function where the $\text{spinor}=\left( \frac{1}{2} \right)^{1/3}$.
 
-$$
-\frac{1}{2 - \alpha} \mapsto \frac{1}{2 - 1} = 1
-$$
-
-Now, since our original solution will no longer work due to the second application of $\alpha$ does not apply, we should plug this back into equation <EqRef id="eq_alphaReciprical" />.
-
+Plugging this back into equation <EqRef id="eq_alphaReciprical" /> gives:
 
 $$
-\alpha_{\odot} = 1 \pm \sqrt{1 - \left( 2 \frac{GM_\odot}{R_\odot^3} \right)^{1/3}} = 0.992668, 1.00733
+\left(\frac{1}{2 - \alpha}\right)^{1/3} \sqrt[3]{2 \frac{G M_\oplus}{R_\oplus^3}} = \sqrt[3]{\frac{GM_\odot}{R_\odot^3}} =  \alpha \pm 0.0034\%
 $$
+
+Demonstrating that this function is _more_ than just a coincidence.
 
 <Hint label="Error" error>
 $1 \pm \alpha$ with an error of $0.00347\%$ and $0.003427\%$ respectively.
 </Hint> 
 
+
+--- Significance of $\alpha$ ---
 
 If you're unfamiliar with physics, let me take a second to break down how profound this is. That's an electromagnetic constant, comprised of multiple electromagnetic constants defined in terms of gravitational properties in what certainly looks like a recursive function.
 
@@ -284,86 +308,226 @@ $$
 \alpha = \frac{1}{4 \pi}\frac{e^2}{\hbar}\sqrt{\frac{\mu_0}{\epsilon_0}}
 $$
 
-That's basically the relationship of all of electromagnetism described in one function. It is my belief that _this_ is why the electromagnetic tensor is undefined at $t = 0$. The divergence of the magnetic field $\neq 0$, but rather the divergence of space that remains hidden due to the proportional dilation of $c$. It is this dilation that <Hl success>is</Hl> time, which we perceive as gravity but is electromagnetic at it's core. This keeps $c$ equivalent _in_ each reference frame, but not _between_ reference frames. 
 
-That's something else I never understood... If time dilates, and velocity is time dependent, how on Earth is $c$ supposed to be constant? The logic is self defeating and circular. Here, $c$ remains constant inversely proportional to the density of the local coordinate system. As sound responds to atmospheric pressure, so too does light respond to the underlying spatial density.
-
-| Quantity | What it does |
+| Component | What it does |
 | -------- | ------------ |
 | $1/4\pi$ | A consequence of the spherical geometry |
 | $\epsilon_0$ | The electric constant |
 | $\mu_0$ | The magnetic constant |
 | $e$ | The fundamental charge | 
-| $\hbar$ | The smallest length scale possible, or so some think, but still a physically consequential value. | 
+| $\hbar$ | The momentum carrying quantity of a massless photon. | 
 | $\frac{1}{\sqrt{\mu_0 \epsilon_0}}$ | The speed of light, and therefore the speed of causality. |
 
-Current models say that deriving $\alpha$ from gravitational parameters should be impossible, but we just did it! The problem? This concludes that the Earth is expanding _with_ the rest of the Universe... right underneath us. It's a tough conclusion to accept at first, but the path to this conclusion is rock solid.
 
-<Admonition title="Python Code" foldable highlight>
 
-```python -- title="alpha.py"
-import astropy.constants.iau2015 as ac
-import scipy.constants as spc
-import numpy as np
+That's basically the relationship of all of electromagnetism described in one function. Don't worry though, we can keep going! Now that we've derived a relationship to $ \alpha$, we can take advantage of the electromagnetic equations. Let's take advantage of the fact that the electromagnetic tensor is undefined at $\Delta t = 0$. If electromagnetism can not exist without time, maybe time is masking a subset of electromagnetic properties. 
 
-def alpha():
-  return 1 - np.sqrt(1 - (2 * spc.G * ac.M_earth.value / ac.R_earth.value**3)**(1/3))
 
-def percentDiffAlpha():
-  return (spc.alpha - alpha()) / spc.alpha * 100
+### Electric Field Divergence Equivalent
 
-print(f"""
-α = {alpha()}
+Let's start by assuming the following identity:
 
-α/α = {alpha() / spc.alpha}
+$$
+\nabla \cdot E = c \left(\nabla \cdot B\right)
+$$
 
-Error: {percentDiffAlpha():.4f}% 
-""")
-```
 
+Since 
+
+$$
+\nabla \cdot \mathbf{S} = \delta
+$$
+
+then
+
+$$
+\nabla \cdot \mathbf{B} = \delta 
+$$
+
+and 
+
+$$ {#eq_electricDivergence1}
+\nabla \cdot \mathbf{E} = c \delta = 921.116 ~\text{meters}
+$$
+
+If we then multiply equation <EqRef id="eq_electricDivergence1" /> by our _spinor_ approximation, converting this linear spatial dilation to rotation, we find:
+
+$$
+\frac{1}{2 - \alpha} c  \delta = 462.244~ \text{meters}
+$$
+
+That's our rotational velocity on Earth's equator $\pm -0.006778\%$! Off by a total of 0.03 meters on a radius the size of Earth's!
+
+
+<Admonition title="Dimensionality" info foldable sidebar right>
+As in traditional models, 
+$$ 
+\dot{x} = v = \left[\frac{dx}{dt}\right] 
+$$
+This model uses a velocity that is 
+$$
+\dot{x} = v = \left[\frac{dx}{ds}\right] 
+$$
+
+When multiplied by our 'time' equivalent $ds = \delta$, this gives
+
+$$ 
+\dot{x}~ ds = \text{distance}
+$$
+
+In the same manner that $vt = \text{distance}$
 </Admonition>
 
---- Tau/Proton Mass Ratio ---
 
-But wait... The previous derivation included a time-independent variation. What happens if we do the same thing here?
+### Velocity as a function of $\alpha$
 
-Since the gravity model clearly seems to be related to divergence and the change in volume, let's take a quantity similar to the value we found in equation <EqRef id="eq_timeDependentDelta"/> and apply that as the scalar of a vector component.
-
-$$
-\mathbf{S} = \frac{\delta}{v_\gamma}\left( \begin{matrix}
-  1 & 0 & 0 \\
-  0 & 1 & 0 \\
-  0 & 0 & 1
-\end{matrix}\right)
-$$
-
-Taking the determinant of $\mathbf{S}$ gives
+Let's consider equation <EqRef id="eq_alphaReciprical"/> once again. If we re-arrange this equation such that $ds$ is isolatd on one side, we find:
 
 $$
-\left(2 \frac{G M_\oplus}{R_\oplus^3}\right)^3 \frac{1}{v_\gamma^3} = 1.9988 \times 10^{-34}
+ \alpha \left( 2 - \alpha \right)= ds = \delta^{1/3}
 $$
 
-as a dimensionless ratio of distances, but also yielding another distance. If we investigate this value further, we find that this is almost precisely:
+Cubing $\delta$ to bring the units of time back to a power of 1 gives:
 
 $$
-\boxed{
-\frac{\delta^3}{v_\gamma^3} \frac{1}{\hbar} = \text{tau-proton mass ratio}~ \pm 0.087\%
-}
+\left(\alpha \left( 2 - \alpha \right) \right)^3 = ds^3 = \delta
+$$
+
+If we consider that all velocities are proportional in magnitude to $c$, we should not look for $v$, but for $\beta^2$. This then gives:
+
+$$
+\left(\alpha \left( 2 - \alpha \right) \right)^3 = \frac{ds^3}{dx^{\prime}} = \frac{\delta}{c} \quad \Rightarrow \quad v = c \sqrt{\left(\alpha \left( 2 - \alpha \right) \right)^3} = 525,693 ~ \text{meters}
+$$
+
+This is our original velocity $\pm 0.0415\%$. One can very logically make an argument for the small-angle approximations being a cause for coincidence here, but as a function of $\alpha$? 
+
+
+### Displacement Current Equivalent
+
+
+Then, consider the electromagnetic displacement current $\mathbf{{J}}$ where
+
+$$
+\mathbf{{J}} = \rho_e v_0
+$$
+
+Since, in electromagnetism:
+
+$$
+\nabla \cdot E = \frac{{\rho_e}}{{\epsilon_0}}
+$$
+
+Then
+
+$$
+\mathbf{{J}} \propto \delta \cdot v_0
 $$
 
 Or
 
 $$
-\frac{2 \pi \cdot ~\text{radial component}}{h ~ \cdot \text{linear component}}
+\mathbf{{J}} \propto 2 \frac{GM_\oplus}{R_{\oplus}^3} c \sqrt{1 - \frac{1}{\left(1 + \frac{g}{R}\right)^2}} = 1.6145 ~\frac{\text{m}^2}{\text{s}}
 $$
 
-> Does this indicate some sort of buoyancy force? A similar phenomena is indicated by this model, but it's difficult to say for sure that this is the point where that happens, at least with what I have so far.
+> **Note:** There is a radius here on Earth's surface where this value is precisely $\Phi$, the **Golden Ratio**.
 
-<Hint label="Error:" error>
-  $0.087\%$
-</Hint>
 
+### Earth's Orbital Velocity From $\alpha$
+
+Consider the radius-independent magnitude of our metric:
+
+$$
+v_{g} = \sqrt[3]{GM_\odot}
+$$
+
+Considering that _nothing_ in this model is proportional to time, we shoul consider this model as proportional to $dx$, or orbital velocity.
+
+$$
+\frac{v_{g}}{v_{\text{orbit}}} = 171.25209
+$$
+
+As this relates the dilation of space to the velocity relative to the underlying coordinate system, we should then consider the relationship of _static_ space:
+
+$$
+\frac{v_{g}}{v_{\text{orbit}}} = \eta \frac{\mathbf{AU}}{R}
+$$
+
+Solving this for $\eta$ and plugging in our parameters gives: 
+
+$$
+\eta = \frac{\sqrt[3]{GM_\odot}}{2  \pi \mathbf{AU}^2} T_{\text{year}} R_{\oplus} = \alpha \pm 0.05443\%
+$$
+
+
+## Mass Density Approximation
+
+Finally, let's wrap this all up with one last approximation. Consider the following, that we've derived above:
+
+$$
+\beta_0^2 = 1 - \frac{1}{ \left(1 + \frac{g}{R}\right)^2 } \approx \left( \alpha \left( 2 - \alpha \right) \right)^3
+$$
+
+Then considering that
+
+$$
+\rho = \frac{M}{V} = \frac{M}{\frac{4}{3} \pi R^3} = \frac{3M}{4\pi R^3}
+$$
+
+and the fact that we defined
+
+$$
+\delta = 2 \frac{G M_\oplus}{R_{\oplus}^3}
+$$
+
+Then
+
+$$
+\frac{M}{R^3} = \frac{\delta}{2G}
+$$
+
+and
+
+$$
+\rho = \frac{3}{4\pi} \left(\frac{\delta}{2G}\right) = \frac{3 \delta}{8 \pi G}
+$$
+And given the relationship that
+
+$$
+\delta \approx \frac{\Phi}{v_0}
+$$
+
+and
+
+$$
+\beta^2 \approx \left(\alpha \left(2 - \alpha\right)\right)^3
+$$
+
+then finally
+
+$$
+\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{g}}{m^3}
+$$
+
+This is our observed mass density, $m_{0}$...
+
+$$
+\rho = \frac{M_{\oplus}}{\frac{4}{3} \pi R^3} \pm 0.85\%
+$$
+
+That's an error of under 1% for an approximation, that's using approximations and transcental quantities, demonstrating the wide application of this model.
+
+
+### Supportive Arguments 
+
+- No terminating geodesics, and no more blackholes. Singularities become nothing but a mirage in the distance that vanishes as you approach that gravitational field.
+- The Bullet Cluster observations are heavily indicative of a repulsive gravity model.
+- This notion of time paints an entirely different picture of chronology, where there is no limitation on backwards time travel, but a limitation on affecting one's own past. Go back to $t - n$ and try to kill your grandfather. He won't be there anymore as he's now at $t$, if he's still around. Don't get me started on the potentials around massless conciousness in this buoyant, 4-dimensional environment.
+- Machian inertia. This model concludes that the Universe is almost precisely as Mach had predicted, with inertia being comprised of the sum of this radiating force for all other bodies in the Universe.
+- The entire equivalence principle. We've all become used to it so we overlook just how profound it is, but it's literally assuming what I'm saying is true mathematically and then just pretending it's not in reality.
+- The lack of a magnetic monopole, or rather, the existince of an electric monopole. Where do you think that 'sink and faucet' model is funelling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
+- The Fermi paradox. There's an entirely other dimension that life might exist across that we have been so far unable to transcend.
+- Relative motion. Think about it. Do we currently calculate all motion as being truly relative, or do we not _already_ calculate motion as relative to the underlying gravitational acceleration and then lie to undergrads about it? The tensors of GR mask this fact to an extent, but reduce them to their calculus equivalents and we are doing _precisely_ this.
 
 
 [^1]: The logical question here is well, why not just publish it in peer review? The **only** possible mathematical solution indicates that the Earth is expanding _with_ the Universe. Einstein himself couldn't get a model like this past our current peer review culture.
-[^2]: Assuming a constant gravitational field across the path of travel.
+[^2]: Assuming a uniform gravitational field across the path of travel.

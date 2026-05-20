@@ -59,6 +59,9 @@ pub enum EmbeddableComponentName {
     #[serde(rename = "Tab")]
     #[strum(to_string = "Tab")]
     Tab,
+    #[serde(rename = "Image")]
+    #[strum(to_string = "Image")]
+    Image,
     #[serde(rename = "AINoteSummary")]
     #[strum(to_string = "AINoteSummary")]
     AINoteSummary,
@@ -93,6 +96,7 @@ impl EmbeddableComponentName {
             EmbeddableComponentName::EqRef => EmbeddableComponentId::EqRef,
             EmbeddableComponentName::Emoji => EmbeddableComponentId::Emoji,
             EmbeddableComponentName::Toc => EmbeddableComponentId::Toc,
+            EmbeddableComponentName::Image => EmbeddableComponentId::Image,
         }
     }
 }

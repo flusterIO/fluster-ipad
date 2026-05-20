@@ -54,7 +54,6 @@ impl ConundrumLogicParser for ConundrumNumber {
     fn parse_conundrum(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumNumber> {
         let start = input.input.checkpoint();
         let res = take_till(1.., |c| !AsChar::is_dec_digit(c) && c != '.').verify_map(|s| {
-                      println!("Here: {}", s);
                       let mut nested_input = ConundrumInput {
                 input: s,
                 state: Arc::new(RwLock::new(ParseState {

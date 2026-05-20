@@ -14,7 +14,7 @@ export const ClientConundrumPage = ({
         initializeConundrumWeb();
     }, []);
     return (
-        <div className="mx-auto max-w-[min(1080px,90vw)]">
+        <div className="mx-auto max-w-[min(1080px,90vw)] py-12">
             <div dangerouslySetInnerHTML={{ __html: item.html }} />
         </div>
     );

@@ -44,7 +44,7 @@ root {
 
 
 @theme inline {
-  --radius: var(--radius);
+  --radius: var(--border-radius);
   --color-brand: hsl(var(--brand));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
