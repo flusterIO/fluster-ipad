@@ -4,6 +4,7 @@ import data from "../../features/cdrm/cdrm.json";
 import { BlogSidebar } from "#/features/blog/sidebar/blog_sidebar";
 import { LockBodyScrollHack } from "./lock_body_scroll_hack";
 import { SidebarBanner } from "#/features/blog/sidebar/banner";
+import { BlogDevelopmentWarning } from "#/features/blog/under_development_warning/blog_development_warning";
 
 export default function Layout({ children }: { children: ReactNode }) {
     const subjects: string[] = [];
@@ -32,6 +33,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             className="w-full h-fit flex flex-col justify-center items-center h-scren max-h-screen overflow-hidden grid grid-cols-[auto_1fr]"
         >
             <LockBodyScrollHack />
+            <BlogDevelopmentWarning />
             <BlogSidebar
                 tags={tags}
                 subjects={subjects}

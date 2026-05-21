@@ -1,12 +1,13 @@
 @import "tailwindcss";
 @import "./conundrum_input_sizable.scss";
 @source "../../src/**/*.{jsx,mdx,js,ts,rs}";
+@source "../../../../../../../apps/website/src/**/*.{tsx,mdx,cdrm}";
 @source not "../glue/component_glue/**";
 @source not "../glue/component_glue_output/**";
 @plugin "@tailwindcss/typography";
 
 
-@source inline("bg-emphasis-primary bg-emphasis-info bg-emphasis-error bg-emphasis-warn bg-emphasis-success bg-emphasis-important bg-emphasis-research bg-emphasis-highlight");
+@source inline("bg-emphasis-primary bg-emphasis-info bg-emphasis-error bg-emphasis-warn bg-emphasis-success bg-emphasis-important bg-emphasis-research bg-emphasis-highlight text-emphasis-warn");
 
 @layer base {
   :root {
