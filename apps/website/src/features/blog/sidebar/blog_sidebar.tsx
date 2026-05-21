@@ -10,7 +10,7 @@ interface BlogSidebarProps {
 
 export const BlogSidebar = (props: BlogSidebarProps): ReactNode => {
     return (
-        <div className="max-w-[min(350px,90vw)] w-[350px] border-r fixed top-0 left-0 bottom-0">
+        <div className="max-w-[min(350px,90vw)] w-[350px] border-r">
             <BlogSidebarCategory
                 label="Topics"
                 items={props.topics.map((t) => {
