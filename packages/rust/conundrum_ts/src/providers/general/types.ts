@@ -2,7 +2,9 @@ export interface GeneralPageQuery {
     slug: string[];
     path?: string;
     id?: string;
-    keywords?: {
+    topic?: string;
+    subject?: string;
+    tags?: {
         anyOf?: string[];
         allOf?: string[];
     };

@@ -6,9 +6,9 @@ import {
 } from "@conundrum/ts/ui/blog-ssr";
 import { getNextJsPages } from "@conundrum/ts/providers/next";
 import { SidebarItemPanelClient } from "#/features/blog/sidebar/item_panel_client";
-import data from "../../../features/cdrm/cdrm.json";
+import data from "../../features/cdrm/cdrm.json";
 import { ConundrumContentList } from "#/features/blog/content_list/content_list";
-import { type AnyBuilderOutput } from "../../../../../../packages/rust/conundrum_ts/dist/src/types/general";
+import { type AnyBuilderOutput } from "../../../../../packages/rust/conundrum_ts/dist/src/types/general";
 
 interface BlogHomePageProps {
     searchParams: Promise<BlogSearchParams>;
@@ -21,8 +21,6 @@ const BlogHomePage = async ({
 }: BlogHomePageProps): Promise<ReactNode> => {
     const sp = await searchParams;
     const p = await params;
-    console.log("sp: ", sp);
-    console.log("p: ", p);
     const query = blogSearchParamsToQuery(sp, p.slug);
     const res = getNextJsPages(query, data as unknown as AnyBuilderOutput);
     return (

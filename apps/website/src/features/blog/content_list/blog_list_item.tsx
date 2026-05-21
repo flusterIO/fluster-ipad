@@ -1,6 +1,7 @@
 import React, { type ReactNode } from "react";
 import { cn } from "#/lib/cn";
 import { type FileSummary } from "@conundrum/ts/ui/blog";
+import { relativePathToBlogUrl } from "@conundrum/ts/pathUtils";
 
 interface BlogListItemProps {
     item: FileSummary;
@@ -28,11 +29,21 @@ export const BlogListItem = ({
         return null;
     }
     return (
-        <div className={cn("w-full", classes.container)}>
-            <a href={`/blog?id=${item.front_matter.user_defined_id}`}>
+        <div
+            className={cn(
+                "w-full border rounded px-4 py-3 bg-fd-card",
+                classes.container,
+            )}
+        >
+            <a
+                href={relativePathToBlogUrl(item.relative_path)}
+                className="text-lg font-semibold"
+            >
                 {item.front_matter.title}
             </a>
-            <div>{item.front_matter.summary}</div>
+            <div className="text-fd-card-foreground/80">
+                {item.front_matter.summary}
+            </div>
         </div>
     );
 };

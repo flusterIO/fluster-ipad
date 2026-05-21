@@ -16,10 +16,16 @@ pub fn write_next_output(written_files: Vec<ConundrumFile>, opts: &CliConfig) ->
         written_files.par_iter()
                      .map(|f| {
                          let relative_path = f.get_relative_nested_path(opts.source.input.clone())?;
+                         let mut tags = Vec::new();
+                         for t in &f.results.tags {
+                             if !tags.contains(&t.body) {
+                                 tags.push(t.body.clone());
+                             }
+                         }
                          Ok(NextjsFileSummary { html: f.results.content.clone(),
                                                 relative_path,
                                                 front_matter: f.results.front_matter.clone(),
-                                                keywords: Vec::new() })
+                                                tags })
                      })
                      .collect();
 

@@ -25,9 +25,9 @@ export interface BlogSearchParams extends Omit<GeneralPageQuery, "keywords"> {
     /**
      * Maps to keyword.anyOf
      */
-    kwAnyOf?: string[];
+    tagAnyOf?: string[];
     /**
      * Maps to keyword.allOf
      */
-    kwAllOf?: string[];
+    tagAllOf?: string[];
 }

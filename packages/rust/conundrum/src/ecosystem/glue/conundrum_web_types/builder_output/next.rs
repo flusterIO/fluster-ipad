@@ -8,7 +8,7 @@ pub struct NextjsFileSummary {
     pub html: String,
     /// ## TODO:
     /// - [ ] Add a `keywords` field to the front-matter and access it here.
-    pub keywords: Vec<String>,
+    pub tags: Vec<String>,
     pub relative_path: String,
     pub front_matter: Option<FrontMatterResult>,
 }
