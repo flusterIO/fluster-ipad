@@ -1,86 +1,85 @@
 import {
-  type NextJsConundrumOutput,
-  type NextjsFileSummary,
+    type NextJsConundrumOutput,
+    type NextjsFileSummary,
 } from "../../code_gen/typeshare/conundrum";
-import { FileSummary } from "../../prebuilt_ui/blog";
 import { type GeneralPageQuery } from "../general/types";
 
 export interface NextjsPageQuery extends GeneralPageQuery {
-  id?: string;
+    id?: string;
 }
 
 export const getNextJsPages = (
-  query: NextjsPageQuery | undefined,
-  output: Partial<NextJsConundrumOutput>,
+    query: NextjsPageQuery | undefined,
+    output: Partial<NextJsConundrumOutput>,
 ):
-  | { results: NextjsFileSummary[] | undefined; exactMatch: false }
-  | { results: NextjsFileSummary; exactMatch: true } => {
-  if (!query) {
-    return { results: output.files, exactMatch: false };
-  }
-  if (query.slug.length) {
-    const slugString = query.slug.join("/").toLowerCase();
-    console.log("slugString: ", slugString);
-    const res = output.files?.find((f) => slugString === f.relative_path);
-    if (res) {
-      return {
-        results: res,
-        exactMatch: true,
-      };
-    } else {
-      let matchingItems = output.files?.filter((f) =>
-        f.relative_path.startsWith(slugString),
-      );
-      return {
-        results: matchingItems,
-        exactMatch: false,
-      };
+    | { results: NextjsFileSummary[] | undefined; exactMatch: false }
+    | { results: NextjsFileSummary; exactMatch: true } => {
+    if (!query) {
+        return { results: output.files, exactMatch: false };
     }
-  }
-  if (query.path) {
-    return {
-      results: output.files?.filter((f) => {
-        return (
-          f.relative_path
-            .toLowerCase()
-            /* eslint-disable-next-line  -- It'll be ok... everything will be ok. */
-            .includes(query.path!.toLowerCase())
-        );
-      }),
-      exactMatch: false,
-    };
-  }
-  if (query.id) {
-    return {
-      results: output.files?.filter(
-        /* eslint-disable-next-line  --  */
-        (f) => f.front_matter?.user_defined_id == query.id!,
-      ),
-      exactMatch: false,
-    };
-  }
-  if (query.keywords?.allOf) {
-    return {
-      results: output.files?.filter((f) =>
-        /* eslint-disable-next-line  --  */
-        query.keywords?.allOf!.map((k) => f.keywords.includes(k)),
-      ),
-      exactMatch: false,
-    };
-  }
-  if (query.keywords?.anyOf) {
-    return {
-      results: output.files?.filter((f) => {
-        /* eslint-disable-next-line  --  */
-        for (const k of query.keywords!.anyOf!) {
-          if (f.keywords.includes(k)) {
-            return true;
-          }
+    if (query.slug?.length) {
+        const slugString = query.slug.join("/").toLowerCase();
+        console.log("slugString: ", slugString);
+        const res = output.files?.find((f) => slugString === f.relative_path);
+        if (res) {
+            return {
+                results: res,
+                exactMatch: true,
+            };
+        } else {
+            const matchingItems = output.files?.filter((f) =>
+                f.relative_path.startsWith(slugString),
+            );
+            return {
+                results: matchingItems,
+                exactMatch: false,
+            };
         }
-        return false;
-      }),
-      exactMatch: false,
-    };
-  }
-  return { results: output.files, exactMatch: false };
+    }
+    if (query.path) {
+        return {
+            results: output.files?.filter((f) => {
+                return (
+                    f.relative_path
+                        .toLowerCase()
+                        /* eslint-disable-next-line  -- It'll be ok... everything will be ok. */
+                        .includes(query.path!.toLowerCase())
+                );
+            }),
+            exactMatch: false,
+        };
+    }
+    if (query.id) {
+        return {
+            results: output.files?.filter(
+                /* eslint-disable-next-line  --  */
+                (f) => f.front_matter?.user_defined_id == query.id!,
+            ),
+            exactMatch: false,
+        };
+    }
+    if (query.tags?.allOf) {
+        return {
+            results: output.files?.filter((f) =>
+                /* eslint-disable-next-line  --  */
+                query.tags?.allOf!.map((k) => f.keywords.includes(k)),
+            ),
+            exactMatch: false,
+        };
+    }
+    if (query.tags?.anyOf) {
+        return {
+            results: output.files?.filter((f) => {
+                /* eslint-disable-next-line  --  */
+                for (const k of query.tags!.anyOf!) {
+                    if (f.keywords.includes(k)) {
+                        return true;
+                    }
+                }
+                return false;
+            }),
+            exactMatch: false,
+        };
+    }
+    return { results: output.files, exactMatch: false };
 };

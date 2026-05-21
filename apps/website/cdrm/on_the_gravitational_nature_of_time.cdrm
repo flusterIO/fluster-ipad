@@ -2,6 +2,7 @@
 title: On the gravitational nature of time
 id: on_the_gravitational_nature_of_time
 summary: A sample note & a novel interpretation of relativity yielding multiple directly observed quantities to well within measurement error
+subject: Examples
 ---
 
 # On The Gravitational Nature Of Time
@@ -84,7 +85,7 @@ Of course we need to change the dimensionality of much of our physics, but as I 
 Let's consider that this dilation of space might give rise to our gravitational acceleration, where $p_1$ becomes akin to the cosmological rest frame. If we allow that this velocity gives rise to spatial dilation, which then gives rise to the gravitational acceleration that we feel, we should examine the derivative of $g$ with respect to $R$.
 
 
-<Image width="smedium" maxHeight="medium" right contain src="/assets/diagrams/peculiarVelocity_probabilityCurve.png" />
+<Image maxHeight="medium" right contain sidebar src="/assets/diagrams/peculiarVelocity_probabilityCurve.png" />
 
 $$ {#eq_delta}
 \delta = \frac{d}{dR} - G \frac{M}{R^2} = 2 G \frac{M}{R^3}
@@ -212,9 +213,7 @@ This value again coincides closely with our velocity observed relative to the CM
 
 #### In the relativistic frame
 
-<Container width="fit" height="xl" rounded="large" right >
-<Image src="/assets/diagrams/cmb_velocity_from_gravtational_params.png" />
-</Container>
+<Image src="/assets/diagrams/cmb_velocity_from_gravtational_params.png" sidebar right/>
 
 
 As we used the Newtonian derived orbital parameters in the previous section to derive a relativistic velocity correction in the form of an increase in elapsed 'time', we can now derive a relativistic equation for a body in stable orbit by setting $dt = 1$ and solving for $\dot{x}$. This gives a model in the coordinate system of the observer in motion, as he travels at the 'agreed upon velocity' (any velocity multiplied by a scalar of 1). 
@@ -381,7 +380,7 @@ In the same manner that $vt = \text{distance}$
 
 ### Velocity as a function of $\alpha$
 
-Let's consider equation <EqRef id="eq_alphaReciprical"/> once again. If we re-arrange this equation such that $ds$ is isolatd on one side, we find:
+Let's consider equation <EqRef id="eq_alphaReciprical"/> once again. If we re-arrange this equation such that $ds$ is isolated on one side, we find:
 
 $$
  \alpha \left( 2 - \alpha \right)= ds = \delta^{1/3}
@@ -543,7 +542,11 @@ $$
 \Gamma = \frac{1}{2 - \alpha}
 $$
 
-Is it a coincidence that $R  \alpha^3$ gives the unit of measure, the **cubit** used by our most ancient civilizations? I'll leave that for you to ponder... With ongoing world events, maybe we'll soon know.
+Is it a coincidence that $R  \alpha^3$ gives the unit of measure, the **cubit** used by our most ancient civilizations? I'll leave that for you to ponder... With ongoing world events, maybe we'll soon know. At least we know how they got here.
+
+<Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
+If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.
+</Quote>
 
 
 

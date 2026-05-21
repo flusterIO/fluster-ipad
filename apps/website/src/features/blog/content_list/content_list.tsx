@@ -8,7 +8,7 @@ export const ConundrumContentList = ({
     items: (typeof data)["files"];
 }): ReactNode => {
     return (
-        <div className="flex flex-col justify-center items-center ml-[264px] w-auto py-6">
+        <div className="flex flex-col justify-start items-start px-8 py-6 w-full h-full">
             {items.map((item, i) => {
                 return (
                     <BlogListItem

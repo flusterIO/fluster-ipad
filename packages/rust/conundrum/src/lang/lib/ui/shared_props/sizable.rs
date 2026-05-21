@@ -266,7 +266,7 @@ impl SizablePropsGroup {
                                          "max-w-full @[450px]/mdx:w-[320px] h-auto max-h-[min(768px,90vh)]"
                                      }
                                      SizableOption::Smedium => {
-                                         "max-w-full @[550px]/mdx:w-[384px]] h-auto max-h-[min(768px,90vh)]"
+                                         "max-w-full @[550px]/mdx:w-[384px] h-auto max-h-[min(768px,90vh)]"
                                      }
                                      SizableOption::Medium => {
                                          "max-w-full @[650px]/mdx:w-[448px] h-auto max-h-[min(768px,90vh)]"
@@ -288,7 +288,7 @@ impl SizablePropsGroup {
                     classes.push(match width {
                                      SizableOption::None => "w-full @[768px]/mdx:hidden",
                                      SizableOption::Small => "w-full @[450px]/mdx:w-[320px]",
-                                     SizableOption::Smedium => "w-full @[550px]/mdx:w-[384px]]",
+                                     SizableOption::Smedium => "w-full @[550px]/mdx:w-[384px]",
                                      SizableOption::Medium => "w-full @[650px]/mdx:w-[448px]",
                                      SizableOption::Large => "w-full @[768px]/mdx:w-[576px]",
                                      SizableOption::Xl => "w-full @[1080px]/mdx:w-[672px]",
@@ -303,7 +303,7 @@ impl SizablePropsGroup {
             classes.push(match max_height {
                              SizableOption::None => "max-h-[min(32px,90vh,100%)]",
                              SizableOption::Small => "max-h-[min(320px,90vh,100%)]",
-                             SizableOption::Smedium => "max-h-[min(384px,90vh,100%)]]",
+                             SizableOption::Smedium => "max-h-[min(384px,90vh,100%)]",
                              SizableOption::Medium => "max-h-[min(448px,90vh,100%)]",
                              SizableOption::Large => "max-h-[min(576px,90vh,100%)]",
                              SizableOption::Xl => "max-h-[min(672px,90vh,100%)]",
@@ -316,7 +316,7 @@ impl SizablePropsGroup {
             classes.push(match max_width {
                              SizableOption::None => "max-w-[32px]",
                              SizableOption::Small => "max-w-[320px]",
-                             SizableOption::Smedium => "max-w-[384px]]",
+                             SizableOption::Smedium => "max-w-[384px]",
                              SizableOption::Medium => "max-w-[448px]",
                              SizableOption::Large => "max-w-[576px]",
                              SizableOption::Xl => "max-w-[672px]",

@@ -1,1 +1,1 @@
-const BLOGURL = "/blog";
+export const BLOGURL = "/blog";

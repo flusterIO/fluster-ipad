@@ -101,26 +101,28 @@ export const AlphaSection = ({
             </div>
             <div className="w-screen bg-linear-to-b from-background via-fd-card to-background overflow-visible min-h-[50vh] md:min-h-auto lg:absolute z-10 h-full z-[1] top-0 bottom-0 right-0 left-0 grid grid-cols-1 lg:grid-cols-[1fr_1fr] place-items-center mb-16">
                 <div className="w-full hidden md:block" />
-                <BackgroundGradientCard
-                    className="hide-math-labels max-w-full p-4 [&>*]:text-[6vw]! lg:[&>*]:text-[3vw]! border opacity-100"
-                    initial={{
-                        scale: 0,
-                        origin: "center",
-                    }}
-                    whileInView={{
-                        scale: 1,
-                    }}
-                    border
-                    animate
-                    backgroundRef={ref as RefObject<HTMLDivElement>}
-                    classes={{
-                        container: "ml-[1/2] w-fit h-fit float-right",
-                        cardContainer: "rounded-[24px]",
-                        card: "bg-fd-card",
-                    }}
-                >
-                    {compiledMath}
-                </BackgroundGradientCard>
+                <a href="/blog/by_path/on_the_gravitational_nature_of_time">
+                    <BackgroundGradientCard
+                        className="hide-math-labels max-w-full p-4 [&>*]:text-[6vw]! lg:[&>*]:text-[3vw]! border opacity-100"
+                        initial={{
+                            scale: 0,
+                            origin: "center",
+                        }}
+                        whileInView={{
+                            scale: 1,
+                        }}
+                        border
+                        animate
+                        backgroundRef={ref as RefObject<HTMLDivElement>}
+                        classes={{
+                            container: "ml-[1/2] w-fit h-fit float-right",
+                            cardContainer: "rounded-[24px]",
+                            card: "bg-fd-card",
+                        }}
+                    >
+                        {compiledMath}
+                    </BackgroundGradientCard>
+                </a>
             </div>
         </div>
     );

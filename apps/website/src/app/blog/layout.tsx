@@ -3,6 +3,7 @@ import "../../core/styles/docs.scss";
 import data from "../../features/cdrm/cdrm.json";
 import { BlogSidebar } from "#/features/blog/sidebar/blog_sidebar";
 import { LockBodyScrollHack } from "./lock_body_scroll_hack";
+import { SidebarBanner } from "#/features/blog/sidebar/banner";
 
 export default function Layout({ children }: { children: ReactNode }) {
     const subjects: string[] = [];
@@ -31,8 +32,13 @@ export default function Layout({ children }: { children: ReactNode }) {
             className="w-full h-fit flex flex-col justify-center items-center h-scren max-h-screen overflow-hidden grid grid-cols-[auto_1fr]"
         >
             <LockBodyScrollHack />
-            <BlogSidebar tags={tags} subjects={subjects} topics={topics} />
-            <div className="w-full overflow-x-hidden overflow-y-auto! max-h-screen">
+            <BlogSidebar
+                tags={tags}
+                subjects={subjects}
+                topics={topics}
+                banner={<SidebarBanner />}
+            />
+            <div className="@container/mdx mdx w-full overflow-x-hidden overflow-y-auto! max-h-screen min-h-screen px-6">
                 {children}
             </div>
         </div>

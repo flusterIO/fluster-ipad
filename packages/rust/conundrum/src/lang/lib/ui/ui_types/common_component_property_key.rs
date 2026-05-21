@@ -12,7 +12,11 @@ pub enum CommonComponentPropertyKey {
     #[serde(rename = "markdownHeading")]
     #[strum(to_string = "markdownHeading")]
     MarkdownHeading,
+    /// Deprecated in favor of a shared struct
     #[serde(rename = "markdown")]
     #[strum(to_string = "markdown")]
     InlineMarkdownOverride,
+    #[serde(rename = "md")]
+    #[strum(to_string = "md")]
+    ComponentMarkdownProps,
 }

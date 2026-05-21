@@ -5,7 +5,10 @@ use crate::{
     lang::{
         lib::ui::components::{
             academic::equation_reference::equation_reference_model::EquationReference,
-            attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
+            attention::{
+                admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, quote::quote_model::Quote,
+                ul::ul::Underline,
+            },
             documentation::emoji::emoji_docs_demo::EmojiDocsDemo,
             layout::{
                 card::card::Card,
@@ -49,6 +52,7 @@ pub enum ConundrumComponentType {
     Ul(Underline),
     Hl(Highlight),
     Emoji(EmojiResult),
+    Quote(Quote),
     // Academic
     EqRef(EquationReference),
     // Nested Documentation
@@ -66,6 +70,7 @@ impl ConundrumComponentType {
             ConundrumComponentType::Ul(_) => false,
             ConundrumComponentType::Hl(_) => false,
             ConundrumComponentType::Container(c) => !c.sizable.inline.is_some_and(|x| x.0),
+            ConundrumComponentType::Quote(q) => true,
             ConundrumComponentType::Tabs(_) => true,
             ConundrumComponentType::Tab(_) => true,
             ConundrumComponentType::EqRef(_) => false,
@@ -91,6 +96,7 @@ impl HtmlJsComponentResult for ConundrumComponentType {
             ConundrumComponentType::Hl(s) => s.to_html_js_component(res),
             ConundrumComponentType::Container(s) => s.to_html_js_component(res),
             ConundrumComponentType::Tabs(s) => s.to_html_js_component(res),
+            ConundrumComponentType::Quote(s) => s.to_html_js_component(res),
             // Tab doesn't need to be rendered to html as the Tabs component is rendering it's
             // children directly.
             ConundrumComponentType::Tab(_) => Ok(String::from("")),
@@ -116,6 +122,7 @@ impl PlainTextComponentResult for ConundrumComponentType {
             ConundrumComponentType::Container(s) => s.to_plain_text(res),
             ConundrumComponentType::Tabs(s) => s.to_plain_text(res),
             ConundrumComponentType::Tab(s) => s.to_plain_text(res),
+            ConundrumComponentType::Quote(s) => s.to_plain_text(res),
             ConundrumComponentType::EqRef(s) => s.to_plain_text(res),
             ConundrumComponentType::Grid(s) => s.to_plain_text(res),
             ConundrumComponentType::Emoji(s) => s.to_plain_text(res),
@@ -139,6 +146,7 @@ impl MarkdownComponentResult for ConundrumComponentType {
             ConundrumComponentType::Tabs(s) => s.to_markdown(res),
             ConundrumComponentType::Tab(s) => s.to_markdown(res),
             ConundrumComponentType::EqRef(s) => s.to_markdown(res),
+            ConundrumComponentType::Quote(s) => s.to_markdown(res),
             ConundrumComponentType::Grid(s) => s.to_markdown(res),
             ConundrumComponentType::Emoji(s) => s.to_markdown(res),
             ConundrumComponentType::Hr(s) => s.to_markdown(res),
@@ -162,6 +170,7 @@ impl ConundrumComponentResult for ConundrumComponentType {
             ConundrumComponentType::Tab(s) => s.to_conundrum_component(res),
             ConundrumComponentType::EqRef(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Grid(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Quote(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Emoji(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Hr(s) => s.to_conundrum_component(res),
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_conundrum_component(res),

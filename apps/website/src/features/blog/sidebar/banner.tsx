@@ -58,7 +58,11 @@ const FlusterLogoSvg = (props: HTMLProps<SVGSVGElement>): ReactNode => {
 };
 
 export const SidebarBanner = (): ReactNode => {
-    return <FlusterLogoSvg className="h-6 w-auto" />;
+    return (
+        <a href="/">
+            <FlusterLogoSvg className="h-6 w-auto px-4" />
+        </a>
+    );
 };
 
 SidebarBanner.displayName = "SidebarBanner";

@@ -36,6 +36,9 @@ pub enum EmbeddableComponentId {
     #[serde(rename = "underline")]
     #[strum(to_string = "underline")]
     Ul,
+    #[serde(rename = "quote")]
+    #[strum(to_string = "quote")]
+    Quote,
     #[serde(rename = "card")]
     #[strum(to_string = "card")]
     Card,

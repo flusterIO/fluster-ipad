@@ -7,7 +7,7 @@ import { ConundrumContentList } from "#/features/blog/content_list/content_list"
 import { type AnyBuilderOutput } from "../../../../../packages/rust/conundrum_ts/dist/src/types/general";
 
 interface BlogHomePageProps {
-    searchParams: Promise<BlogSearchParams>;
+    searchParams: Promise<BlogSearchParams | undefined>;
     params: Promise<{ slug: string[] }>;
 }
 
@@ -17,7 +17,7 @@ const BlogHomePage = async ({
 }: BlogHomePageProps): Promise<ReactNode> => {
     const sp = await searchParams;
     const p = await params;
-    const query = blogSearchParamsToQuery(sp, p.slug);
+    const query = blogSearchParamsToQuery(sp ?? {}, p.slug);
     const res = getNextJsPages(query, data as unknown as AnyBuilderOutput);
     return (
         <>

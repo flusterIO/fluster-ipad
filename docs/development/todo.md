@@ -1,7 +1,7 @@
 # To-Do
 
-- [ ] Handle image parser so you can implement images in the website.
-- [ ] Make markdown link parser is working. It's currently missing a link in the Hint component in the article.
+- [ ] Add `Quote` component and that Nag Hamadi quote to the end of the paper for a cool kind of final mic drop.
+  - [ ] Add the tabs component into the application somewhere to show it off.
 - [ ] Create various state comparison methods to compare the json data to url query strings, so that it can be done server side. Keep all of the blog state that isn't component local in the url.
   - [ ] Get the Conundrum content working on Next. That's crucial to sharing docs throughout the ecosystem.
 - [ ] Work towards release of application, starting with writing the paper. As you go you'll need to stop and fix things, but that's expected. That's a decent way to discover bugs and work on this model at the same time.

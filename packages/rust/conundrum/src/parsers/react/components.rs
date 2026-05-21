@@ -5,7 +5,7 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         lib::ui::components::{
             academic::equation_reference::equation_reference_model::EquationReference,
-            attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, ul::ul::Underline},
+            attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, quote::quote_model::Quote, ul::ul::Underline},
             component_trait::ConundrumComponent,
             documentation::emoji::emoji_docs_demo::EmojiDocsDemo,
             layout::{
@@ -108,6 +108,10 @@ lazy_static! {
                      TableOfContents::from_props(props, children, state).map(ConundrumComponentType::Toc)
                  }));
 
+        m.insert(EmbeddableComponentId::Quote.to_string(),
+                 Box::new(|props, children, state| {
+                     Quote::from_props(props, children, state).map(ConundrumComponentType::Quote)
+                 }));
         m.insert(EmbeddableComponentId::Image.to_string(),
                  Box::new(|props, children, state| {
                      Image::from_props(props, children, state).map(ConundrumComponentType::Image)
