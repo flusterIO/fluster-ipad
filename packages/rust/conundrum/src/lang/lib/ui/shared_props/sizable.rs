@@ -2,7 +2,6 @@ use std::fmt::Display;
 
 use askama::FastWritable;
 use serde::Serialize;
-use tw_merge::TwClass;
 
 use crate::{
     lang::{
@@ -14,6 +13,11 @@ use crate::{
     },
     parsers::conundrum::logic::{bool::boolean::ConundrumBoolean, object::object::ConundrumObject},
 };
+
+pub enum SizablePropsOutputTarget {
+    Image,
+    General,
+}
 
 /// This is applicable to pretty much any component where changing it's size
 /// makes sense. Not so much text, where you're changing the content of the text
@@ -63,6 +67,13 @@ pub struct SizablePropsGroup {
     pub width: Option<SizableOption>,
     /// Set some custom height properties to create responsive layouts.
     pub height: Option<SizableOption>,
+
+    /// The `max-width` and `max-height``properties are especially useful for
+    /// images and media.`
+    pub max_width: Option<SizableOption>,
+    /// The `max-width` and `max-height``properties are especially useful for
+    /// images and media.`
+    pub max_height: Option<SizableOption>,
     /// Add some padding around the **outside** of an object. If you are looking
     /// to create space on the _inside_ of an object you are looking for
     /// `padding`.
@@ -106,6 +117,8 @@ impl Default for SizablePropsGroup {
                text: None,
                width: None,
                height: None,
+               max_width: None,
+               max_height: None,
                margin: None,
                margin_left: None,
                margin_right: None,
@@ -142,6 +155,8 @@ impl SizablePropsGroup {
                                               self.text.as_ref().map(|x| x.to_jsx_prop("text")),
                                               self.width.as_ref().map(|x| x.to_jsx_prop("width")),
                                               self.height.as_ref().map(|x| x.to_jsx_prop("height")),
+                                              self.max_width.as_ref().map(|x| x.to_jsx_prop("maxWidth")),
+                                              self.max_height.as_ref().map(|x| x.to_jsx_prop("maxHeight")),
                                               self.margin.as_ref().map(|x| x.to_jsx_prop("margin")),
                                               self.margin_left.as_ref().map(|x| x.to_jsx_prop("marginLeft")),
                                               self.margin_right.as_ref().map(|x| x.to_jsx_prop("marginRight")),
@@ -163,7 +178,7 @@ impl SizablePropsGroup {
         items.iter().filter_map(|c| c.clone()).collect::<Vec<String>>().join(" ")
     }
 
-    pub fn to_css_classes(&self) -> Vec<&str> {
+    pub fn to_css_classes(&self, output: SizablePropsOutputTarget) -> Vec<&str> {
         let mut classes: Vec<&str> = Vec::new();
 
         if self.hide_math_labels.is_some_and(|x| x.0) {
@@ -243,30 +258,102 @@ impl SizablePropsGroup {
                          });
         }
         if let Some(width) = &self.width {
-            classes.push(match width {
-                             SizableOption::None => "w-full @[768px]/mdx:hidden",
-                             SizableOption::Small => "w-full @[450px]/mdx:w-[320px]",
-                             SizableOption::Smedium => "w-full @[550px]/mdx:w-[384px]]",
-                             SizableOption::Medium => "w-full @[650px]/mdx:w-[448px]",
-                             SizableOption::Large => "w-full @[768px]/mdx:w-[576px]",
-                             SizableOption::Xl => "w-full @[1080px]/mdx:w-[672px]",
-                             SizableOption::Xxl => "w-full @[1080px]/mdx:w-[896px]",
-                             SizableOption::Full => "w-full",
-                             SizableOption::Fit => "w-fit",
+            match output {
+                SizablePropsOutputTarget::Image => {
+                    classes.push(match width {
+                                     SizableOption::None => "w-full @[768px]/mdx:hidden h-auto max-h-[min(768px,90vh)]",
+                                     SizableOption::Small => {
+                                         "max-w-full @[450px]/mdx:w-[320px] h-auto max-h-[min(768px,90vh)]"
+                                     }
+                                     SizableOption::Smedium => {
+                                         "max-w-full @[550px]/mdx:w-[384px] h-auto max-h-[min(768px,90vh)]"
+                                     }
+                                     SizableOption::Medium => {
+                                         "max-w-full @[650px]/mdx:w-[448px] h-auto max-h-[min(768px,90vh)]"
+                                     }
+                                     SizableOption::Large => {
+                                         "max-w-full @[768px]/mdx:w-[576px] h-auto max-h-[min(768px,90vh)]"
+                                     }
+                                     SizableOption::Xl => {
+                                         "max-w-full @[1080px]/mdx:w-[672px] h-auto max-h-[min(768px,90vh)]"
+                                     }
+                                     SizableOption::Xxl => {
+                                         "max-w-full @[1080px]/mdx:w-[896px] h-auto max-h-[min(768px,90vh)]"
+                                     }
+                                     SizableOption::Full => "w-full",
+                                     SizableOption::Fit => "w-auto",
+                                 });
+                }
+                SizablePropsOutputTarget::General => {
+                    classes.push(match width {
+                                     SizableOption::None => "w-full @[768px]/mdx:hidden",
+                                     SizableOption::Small => "w-full @[450px]/mdx:w-[320px]",
+                                     SizableOption::Smedium => "w-full @[550px]/mdx:w-[384px]",
+                                     SizableOption::Medium => "w-full @[650px]/mdx:w-[448px]",
+                                     SizableOption::Large => "w-full @[768px]/mdx:w-[576px]",
+                                     SizableOption::Xl => "w-full @[1080px]/mdx:w-[672px]",
+                                     SizableOption::Xxl => "w-full @[1080px]/mdx:w-[896px]",
+                                     SizableOption::Full => "w-full",
+                                     SizableOption::Fit => "w-fit",
+                                 });
+                }
+            };
+        }
+        if let Some(max_height) = &self.max_height {
+            classes.push(match max_height {
+                             SizableOption::None => "max-h-[min(32px,90vh,100%)]",
+                             SizableOption::Small => "max-h-[min(320px,90vh,100%)]",
+                             SizableOption::Smedium => "max-h-[min(384px,90vh,100%)]",
+                             SizableOption::Medium => "max-h-[min(448px,90vh,100%)]",
+                             SizableOption::Large => "max-h-[min(576px,90vh,100%)]",
+                             SizableOption::Xl => "max-h-[min(672px,90vh,100%)]",
+                             SizableOption::Xxl => "max-h-[min(896px,90vh,100%)]",
+                             SizableOption::Full => "max-h-[min(100%,100vh)]",
+                             SizableOption::Fit => "max-h-fit",
+                         });
+        }
+        if let Some(max_width) = &self.max_width {
+            classes.push(match max_width {
+                             SizableOption::None => "max-w-[32px]",
+                             SizableOption::Small => "max-w-[320px]",
+                             SizableOption::Smedium => "max-w-[384px]",
+                             SizableOption::Medium => "max-w-[448px]",
+                             SizableOption::Large => "max-w-[576px]",
+                             SizableOption::Xl => "max-w-[672px]",
+                             SizableOption::Xxl => "max-w-[896px]",
+                             SizableOption::Full => "max-w-full",
+                             SizableOption::Fit => "max-w-fit",
                          });
         }
         if let Some(height) = &self.height {
-            classes.push(match height {
-                             SizableOption::None => "h-fit",
-                             SizableOption::Small => "h-24",
-                             SizableOption::Smedium => "h-32",
-                             SizableOption::Medium => "h-48",
-                             SizableOption::Large => "h-64",
-                             SizableOption::Xl => "h-96",
-                             SizableOption::Xxl => "h-screen",
-                             SizableOption::Full => "h-full",
-                             SizableOption::Fit => "h-fit",
-                         });
+            match output {
+                SizablePropsOutputTarget::Image => {
+                    classes.push(match height {
+                                     SizableOption::None => "h-it w-auto",
+                                     SizableOption::Small => "h-24 w-auto",
+                                     SizableOption::Smedium => "h-32 w-auto",
+                                     SizableOption::Medium => "h-48 w-auto",
+                                     SizableOption::Large => "h-64 w-auto",
+                                     SizableOption::Xl => "h-96 w-auto",
+                                     SizableOption::Xxl => "h-screen w-auto",
+                                     SizableOption::Full => "h-full w-auto",
+                                     SizableOption::Fit => "h-fit w-auto",
+                                 });
+                }
+                SizablePropsOutputTarget::General => {
+                    classes.push(match height {
+                                     SizableOption::None => "h-fit",
+                                     SizableOption::Small => "h-24",
+                                     SizableOption::Smedium => "h-32",
+                                     SizableOption::Medium => "h-48",
+                                     SizableOption::Large => "h-64",
+                                     SizableOption::Xl => "h-96",
+                                     SizableOption::Xxl => "h-screen",
+                                     SizableOption::Full => "h-full",
+                                     SizableOption::Fit => "h-fit",
+                                 });
+                }
+            };
         }
         if let Some(margin) = &self.margin {
             classes.push(match margin {
@@ -493,8 +580,8 @@ impl SizablePropsGroup {
         classes
     }
 
-    pub fn as_class(&self) -> String {
-        self.to_css_classes().join(" ")
+    pub fn as_class(&self, sizable_target: SizablePropsOutputTarget) -> String {
+        self.to_css_classes(sizable_target).join(" ")
     }
 }
 
@@ -517,6 +604,8 @@ impl FromJsxPropsOptional for SizablePropsGroup {
                                text: props.get_sizable_option_at_key("text").ok(),
                                width: props.get_sizable_option_at_key("width").ok(),
                                height: props.get_sizable_option_at_key("height").ok(),
+                               max_width: props.get_sizable_option_at_key("maxWidth").ok(),
+                               max_height: props.get_sizable_option_at_key("maxHeight").ok(),
                                margin: props.get_sizable_option_at_key("margin").ok(),
                                margin_left: props.get_sizable_option_at_key("marginLeft").ok(),
                                margin_right: props.get_sizable_option_at_key("marginRight").ok(),
@@ -539,7 +628,7 @@ impl FromJsxPropsOptional for SizablePropsGroup {
 
 impl Display for SizablePropsGroup {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.as_class())
+        write!(f, "{}", self.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))
     }
 }
 
@@ -548,6 +637,8 @@ impl FastWritable for SizablePropsGroup {
                                                 dest: &mut W,
                                                 values: &dyn askama::Values)
                                                 -> askama::Result<()> {
-        self.as_class().as_str().write_into(dest, values)
+        self.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General)
+            .as_str()
+            .write_into(dest, values)
     }
 }

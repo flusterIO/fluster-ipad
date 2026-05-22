@@ -6,7 +6,8 @@ use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
         lib::{
-            shared::traits::from_with_state::FromWithState, ui::ui_traits::jsx_prop_representable::FromJsxPropsOptional,
+            shared::traits::from_with_state::FromWithState,
+            ui::ui_traits::jsx_prop_representable::{FromJsxPropsOptional, FromJsxPropsOptionalWithState},
         },
         runtime::{
             compile_conundrum::compile_elements,
@@ -19,7 +20,7 @@ use crate::{
         },
     },
     output::output_components::output_utils::format_markdown_fragment_property,
-    parsers::conundrum::logic::object::object::ConundrumObject,
+    parsers::conundrum::logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
 };
 
 /// The representation of 'children', usually other markdown content. Unlike
@@ -80,7 +81,7 @@ impl Children {
     /// Inserts the prop not as a Fragment, but as a string.
     pub fn to_jsx_prop_as_string(&self, prop_name: &str, res: ArcState) -> ConundrumModalResult<String> {
         let children_string = self.render(res)?;
-        let x = serde_json::to_string(children_string.as_str()).map_err(|e| {
+        let x = serde_json::to_string(children_string.as_str()).map_err(|_| {
                     ErrMode::Backtrack(ConundrumErrorVariant::FailToGenerateString)
                 })?;
         // String is already quoted, no need to wrap it in quotes.
@@ -102,20 +103,44 @@ impl FromWithState<&str> for Children {
     }
 }
 
-impl FromJsxPropsOptional for Children {
-    fn from_jsx_props(props: &ConundrumObject, key: &str) -> ConundrumModalResult<Self>
+impl FromJsxPropsOptionalWithState for Children {
+    fn from_jsx_props_with_state(props: &ConundrumObject, key: &str, state: ArcState) -> ConundrumModalResult<Self>
         where Self: Sized {
         let res = props.data.get(key);
         match res {
             Some(r) => match &r.value() {
                 ParsedElement::Children(c) => Ok(c.clone()),
+                ParsedElement::Logic(l) => match l {
+                    ConundrumLogicToken::String(s) => s.to_children(Arc::clone(&state)),
+                    _ =>  {
+                        Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Mistaken identity", format!("Conundrum was looking for more Conundrum content at the `{}` key but found something else. Review the `Syntax??` docs for more assistance. The `Jsx??` docs may be of some help as well, but they're making their way over to the `Conundrum??` docs as the Conundrum transpiler takes over for mdx all together. The answer is in there somewhere...", key).as_str()))))
+                    }
+                },
                 _ => {
                     Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Mistaken identity", format!("Conundrum was looking for more Conundrum content at the `{}` key but found something else. Review the `Syntax??` docs for more assistance. The `Jsx??` docs may be of some help as well, but they're making their way over to the `Conundrum??` docs as the Conundrum transpiler takes over for mdx all together. The answer is in there somewhere...", key).as_str()))))
                 }
             },
             None => {
-                    Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Lost & Not Found", format!("Conundrum was looking for more Conundrum content at the `{}` key but couldn't find anything.", key).as_str()))))
+                Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Lost & Not Found", format!("Conundrum was looking for more Conundrum content at the `{}` key but couldn't find anything.", key).as_str()))))
             }
         }
+    }
+}
+
+impl FromJsxPropsOptional for Children {
+    fn from_jsx_props(props: &ConundrumObject, key: &str) -> ConundrumModalResult<Self>
+        where Self: Sized {
+        let res = props.data.get(key);
+        match res {
+                Some(r) => match &r.value() {
+                    ParsedElement::Children(c) => Ok(c.clone()),
+                    _ => {
+                        Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Mistaken identity", format!("Conundrum was looking for more Conundrum content at the `{}` key but found something else. Review the `Syntax??` docs for more assistance. The `Jsx??` docs may be of some help as well, but they're making their way over to the `Conundrum??` docs as the Conundrum transpiler takes over for mdx all together. The answer is in there somewhere...", key).as_str()))))
+                    }
+                },
+                None => {
+                    Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Lost & Not Found", format!("Conundrum was looking for more Conundrum content at the `{}` key but couldn't find anything.", key).as_str()))))
+                }
+            }
     }
 }

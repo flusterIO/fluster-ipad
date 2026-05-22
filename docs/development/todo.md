@@ -1,6 +1,10 @@
 # To-Do
 
-- [ ] Write sample notebook derivation for the new found focal point!
+- [ ] Add 'env-file-provider' to configuration if the user provides a 'env_file' key in their config.
+- [ ] Add 'col-span' property from 1-12 to the `Sizable` struct.
+  - [ ] Add the tabs component into the application somewhere to show it off.
+- [ ] Create various state comparison methods to compare the json data to url query strings, so that it can be done server side. Keep all of the blog state that isn't component local in the url.
+  - [ ] Get the Conundrum content working on Next. That's crucial to sharing docs throughout the ecosystem.
 - [ ] Work towards release of application, starting with writing the paper. As you go you'll need to stop and fix things, but that's expected. That's a decent way to discover bugs and work on this model at the same time.
 - [ ] Resume work on Table!!! There's a decent TDD setup already going...
       `cargo nextest run parsers::markdown::table::markdown_table_heading_row::tests::parses_basic_table_heading_row --no-capture`
@@ -213,10 +217,13 @@
 ## Add to paper
 
 - [ ] The derivation of the following, and the significance.
-  $$
-  \frac{dx}{x} = \frac{dr}{R}
-  $$
+
+$$
+\frac{dx}{x} = \frac{dr}{R}
+$$
+
 - [ ] The following as a form of spatal tension giving rise to $\alpha$
-  $$
-  2 \frac{R_{\oplus}}{\left( 2 G M_{\oplus} \right)^{1/3}} = \frac{1}{\alpha}
-  $$
+
+$$
+2 \frac{R_{\oplus}}{\left( 2 G M_{\oplus} \right)^{1/3}} = \frac{1}{\alpha}
+$$

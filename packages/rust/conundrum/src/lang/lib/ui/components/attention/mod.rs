@@ -3,4 +3,5 @@ pub mod emoji;
 pub mod hint;
 pub mod hl;
 pub mod icon;
+pub mod quote;
 pub mod ul;

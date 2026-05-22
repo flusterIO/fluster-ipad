@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter};
@@ -11,7 +12,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Display, uniffi::Enum, Debug, Clone, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Display, uniffi::Enum, Debug, Clone, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub enum EmbeddableComponentName {
     #[serde(rename = "Toc")]
     #[strum(to_string = "Toc")]
@@ -46,6 +47,9 @@ pub enum EmbeddableComponentName {
     #[serde(rename = "Hint")]
     #[strum(to_string = "Hint")]
     Hint,
+    #[serde(rename = "Quote")]
+    #[strum(to_string = "Quote")]
+    Quote,
     #[serde(rename = "Emoji")]
     #[strum(to_string = "Emoji")]
     Emoji,
@@ -58,6 +62,9 @@ pub enum EmbeddableComponentName {
     #[serde(rename = "Tab")]
     #[strum(to_string = "Tab")]
     Tab,
+    #[serde(rename = "Image")]
+    #[strum(to_string = "Image")]
+    Image,
     #[serde(rename = "AINoteSummary")]
     #[strum(to_string = "AINoteSummary")]
     AINoteSummary,
@@ -92,6 +99,8 @@ impl EmbeddableComponentName {
             EmbeddableComponentName::EqRef => EmbeddableComponentId::EqRef,
             EmbeddableComponentName::Emoji => EmbeddableComponentId::Emoji,
             EmbeddableComponentName::Toc => EmbeddableComponentId::Toc,
+            EmbeddableComponentName::Image => EmbeddableComponentId::Image,
+            EmbeddableComponentName::Quote => EmbeddableComponentId::Quote,
         }
     }
 }

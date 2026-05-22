@@ -5,11 +5,11 @@ use tw_merge::*;
 /// Template (HTML)
 ///
 /// ```askama
-/// <div class="{{tw_merge!("text-sm mt-2 mb-6", self.size.as_ref().cloned().map(|s| s.as_class()).unwrap_or_default())}}">
+/// <div class="{{tw_merge!("text-sm mt-2 mb-6", self.size.as_ref().cloned().map(|s| s.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General)).unwrap_or_default())}}">
 ///  <span class="{{tw_merge!("font-semibold pr-2", self.emphasis.to_foreground_css_classes())}}">
 ///  {{label | safe}}
 ///  </span>
-///  <span class="[&>*]:inline! text-foreground/80 [&>*]:text-foreground/80 [&>*]:text-sm [&>p]:leading-tight text-sm leading-tight">
+///  <span class="[&>*]:inline! text-foreground/80 [&>*]:text-foreground/80 [&>*]:text-sm [&>p]:leading-tight text-sm leading-tight [&>a]:text-foreground! [&>a]:font-semibold">
 ///  {{body | safe}}
 ///  </span>
 /// </div>

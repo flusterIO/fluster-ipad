@@ -185,6 +185,16 @@ export interface SizablePropsGroup {
 	/** Set some custom height properties to create responsive layouts. */
 	height?: SizableOption;
 	/**
+	 * The `max-width` and `max-height``properties are especially useful for
+	 * images and media.`
+	 */
+	max_width?: SizableOption;
+	/**
+	 * The `max-width` and `max-height``properties are especially useful for
+	 * images and media.`
+	 */
+	max_height?: SizableOption;
+	/**
 	 * Add some padding around the **outside** of an object. If you are looking
 	 * to create space on the _inside_ of an object you are looking for
 	 * `padding`.
@@ -804,6 +814,19 @@ export interface HrWithChildrenResult {
 	children: Children;
 }
 
+export interface Image {
+	sizable?: SizablePropsGroup;
+	src: ConundrumString;
+	caption?: Children;
+	caption_left?: ConundrumBoolean;
+	caption_right?: ConundrumBoolean;
+	contain?: ConundrumBoolean;
+	cover?: ConundrumBoolean;
+	alt?: ConundrumString;
+	/** An id is required to make sure all figures are counted. */
+	id: DOMId;
+}
+
 export interface InlineCodeResult {
 	content: string;
 	lang: SupportedCodeBlockSyntax;
@@ -891,14 +914,26 @@ export interface MarkdownItalicTextResult {
 	children: Children;
 }
 
+export type MarkdownLinkTarget = 
+	/**
+	 * Any generic url that is not handled internally by the conundrum
+	 * framework.
+	 */
+	| { tag: "Url", content: string }
+	/** This currently only supports linking to id's on the same page. */
+	| { tag: "DomId", content: DOMId }
+	| { tag: "NoteId", content: string }
+	| { tag: "AudioTimestamp", content: Timestamp }
+	| { tag: "VideoTimestamp", content: Timestamp };
+
 export interface MarkdownLinkResult {
 	text: Children;
-	url: string;
+	url: MarkdownLinkTarget;
 }
 
 export interface MarkdownLinkResultStringified {
 	text: string;
-	url: string;
+	url: MarkdownLinkTarget;
 }
 
 export interface MarkdownParagraphResult {
@@ -995,11 +1030,26 @@ export interface MdxParsingResult {
 	/**
 	 * A map of type `Map<The anchor index of the footnote, FootnoteResult>`.
 	 * This field isn't populated until the footnotes are rendered at the end,
-	 * so don't rely on this data during parsing *or* compilation. Use the field on `ParseState`
-	 * instead.
+	 * so don't rely on this data during parsing *or* compilation. Use the
+	 * field on `ParseState` instead.
 	 */
 	footnotes: Record<ConundrumInt, RenderedFootnoteResult>;
 	included_components: AnyComponentKey[];
+}
+
+export interface NextjsFileSummary {
+	html: string;
+	/**
+	 * ## TODO:
+	 * - [ ] Add a `keywords` field to the front-matter and access it here.
+	 */
+	tags: string[];
+	relative_path: string;
+	front_matter?: FrontMatterResult;
+}
+
+export interface NextJsConundrumOutput {
+	files: NextjsFileSummary[];
 }
 
 export interface OrderedListItem {
@@ -1091,6 +1141,7 @@ export enum EmbeddableComponentName {
 	EqRef = "EqRef",
 	Tabs = "Tabs",
 	Tab = "Tab",
+	Image = "Image",
 	AINoteSummary = "AINoteSummary",
 }
 
@@ -1130,11 +1181,11 @@ export interface UIParams {
 }
 
 export enum ConundrumCompileTarget {
-	Jsx = "Jsx",
-	Html = "Html",
-	Markdown = "Markdown",
-	PlainText = "PlainText",
-	Mdx = "Mdx",
+	Jsx = "jsx",
+	Html = "html",
+	Markdown = "markdown",
+	PlainText = "text",
+	Mdx = "mdx",
 }
 
 /** This is the core 'input' for Conundrum. */
@@ -1229,7 +1280,8 @@ export type ConundrumComponentType =
 	| { tag: "Hl", content: Highlight }
 	| { tag: "Emoji", content: EmojiResult }
 	| { tag: "EqRef", content: EquationReference }
-	| { tag: "EmojiDocsDemo", content: EmojiDocsDemo };
+	| { tag: "EmojiDocsDemo", content: EmojiDocsDemo }
+	| { tag: "Image", content: Image };
 
 export interface ReactComponentSelfClosingResult {
 	full_text: string;
@@ -1343,6 +1395,17 @@ export interface TabsGroup {
 	sizable?: SizablePropsGroup;
 	children: Children;
 	id: DOMId;
+}
+
+/**
+ * If only 2 components are passed, as in `[My link](video:myId@4:30)`, it is
+ * assumed to be minutes and seconds. If three components are passed, it will
+ * be applied as `minutes:seconds:hours`
+ */
+export interface Timestamp {
+	min: number;
+	hours?: number;
+	sec: number;
 }
 
 export interface TitleGroup {
@@ -1481,6 +1544,7 @@ export enum EmbeddableComponentId {
 	Card = "card",
 	Grid = "grid",
 	UtlityContainer = "util-container",
+	Image = "image",
 	HrWithChildren = "hr-with-children",
 	Hint = "embeddable-hint-component",
 	Emoji = "emoji-component",

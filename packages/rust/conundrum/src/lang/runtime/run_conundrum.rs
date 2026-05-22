@@ -1,4 +1,5 @@
 use parking_lot::RwLock;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use typeshare::typeshare;
@@ -21,7 +22,7 @@ use winnow::Stateful;
 
 /// This is the core 'input' for Conundrum.
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema)]
 pub struct ParseConundrumOptions {
     /// The id of your note. This can be generic, unique to each application,
     /// but so-long as the note has the **concept** of an id the id can be
@@ -77,10 +78,21 @@ impl ParseConundrumOptions {
                                 target,
                                 trusted }
     }
+
+    pub fn duplicate_with_new_content(&self, content: String) -> ParseConundrumOptions {
+        ParseConundrumOptions { note_id: self.note_id.clone(),
+                                content,
+                                modifiers: self.modifiers.clone(),
+                                hide_components: self.hide_components.clone(),
+                                ui_params: self.ui_params.clone(),
+                                target: self.target.clone(),
+                                trusted: self.trusted }
+    }
 }
 
 pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
-    let state = Arc::new(RwLock::new(ParseState { data: MdxParsingResult::from_initial_mdx_content(&opts.content),
+    let mut response_data = MdxParsingResult::from_initial_mdx_content(&opts.content);
+    let state = Arc::new(RwLock::new(ParseState { data: response_data.clone(),
                                                   bib: CitationList::default(),
                                                   modifiers: opts.modifiers.clone(),
                                                   eq_count: 0,
@@ -93,9 +105,10 @@ pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingR
                                                   slugger: Slugger::default(),
                                                   trusted: opts.trusted,
                                                   ..Default::default() }));
-    let b = opts.content.clone();
+    let content = &response_data.content.clone();
+    let b = content.as_str();
 
-    let mut stateful_input = Stateful { input: b.as_str(),
+    let mut stateful_input = Stateful { input: b,
                                         state };
 
     let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);

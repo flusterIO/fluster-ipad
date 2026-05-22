@@ -4,8 +4,42 @@
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "wireit",
     "typecheck": "tsc --noEmit"
+  },
+  "wireit": {
+    "clean": {
+      "command": "rm -r ./dist/*"
+    },
+    "copy:globalCss": {
+      "command": "cp ../conundrum/src/output/html/standalone/conundrum.css ./dist/styles.css",
+      "clean": false,
+      "dependencies": [
+        "build:vite"
+      ],
+      "env": {
+        "WIREIT_PARALLEL": "1"
+      }
+    },
+    "build:vite": {
+      "command": "vite build",
+      "clean": false,
+      "dependencies": [
+        "clean"
+      ],
+      "env": {
+        "WIREIT_PARALLEL": "1"
+      }
+    },
+    "build": {
+      "dependencies": [
+        "clean",
+        "../conundrum:build:scss",
+        "copy:globalCss",
+        "build:vite"
+      ],
+      "clean": false
+    }
   },
   "exports": {
     ".": {
@@ -13,10 +47,40 @@
       "import": "./dist/main.es.js",
       "require": "./dist/main.cjs.js"
     },
+    "./styles.css": {
+      "types": "./dist/styles.css",
+      "import": "./dist/styles.css",
+      "require": "./dist/styles.css"
+    },
     "./methods": {
       "types": "./dist/src/methods.d.ts",
       "import": "./dist/methods.es.js",
       "require": "./dist/methods.cjs.js"
+    },
+    "./framework": {
+      "types": "./dist/framework.d.ts",
+      "import": "./dist/framework.es.js",
+      "require": "./dist/framework.cjs.js"
+    },
+    "./providers/next": {
+      "types": "./dist/providersNext.d.ts",
+      "import": "./dist/providersNext.es.js",
+      "require": "./dist/providersNext.cjs.js"
+    },
+    "./ui/blog": {
+      "types": "./dist/uiBlog.d.ts",
+      "import": "./dist/uiBlog.es.js",
+      "require": "./dist/uiBlog.cjs.js"
+    },
+    "./ui/blog-ssr": {
+      "types": "./dist/uiBlogSSR.d.ts",
+      "import": "./dist/uiBlogSSR.es.js",
+      "require": "./dist/uiBlogSSR.cjs.js"
+    },
+    "./pathUtils": {
+      "types": "./dist/pathUtils.d.ts",
+      "import": "./dist/pathUtils.es.js",
+      "require": "./dist/pathUtils.cjs.js"
     }
   },
   "dependencies": {
@@ -24,15 +88,25 @@
     "@fluster/wasm": "workspace:*",
     "@reduxjs/toolkit": "2.8.2",
     "consola": "3.4.2",
+    "framer-motion": "12.23.25",
+    "lucide-react": "0.554.0",
+    "motion": "12.39.0",
     "react-redux": "9.2.0",
-    "stencil": "0.0.5"
+    "stencil": "0.0.5",
+    "wasm-feature-detect": "1.8.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.2.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "typescript": "latest",
     "vite-plugin-dts": "4.5.4",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "4.0.18"
+  },
+  "peerDependencies": {
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "packageManager": "pnpm@10.30.3"
 }

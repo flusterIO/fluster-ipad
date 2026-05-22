@@ -1,10 +1,14 @@
 import { defineConfig, defaultExclude } from "vitest/config";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
+import react from "@vitejs/plugin-react";
 import path from "path";
+
+const isProd = process.env.FLUSTER_PROD_BUILD === "true";
 
 export default defineConfig({
     plugins: [
+        react(),
         tsconfigPaths(),
         dts({
             insertTypesEntry: true,
@@ -15,18 +19,39 @@ export default defineConfig({
         outDir: "dist",
         commonjsOptions: {
             transformMixedEsModules: true,
+            sourceMap: true,
         },
         sourcemap: true,
-        emptyOutDir: false,
+        emptyOutDir: true,
+        minify: isProd,
+        cssMinify: isProd ? "lightningcss" : undefined,
         lib: {
             entry: {
                 main: path.resolve(__dirname, "./src/initialize_conundrum_web.ts"),
+                framework: path.resolve(__dirname, "./src/code_gen/index.ts"),
                 methods: path.resolve(__dirname, "./src/methods.ts"),
+                providersNext: path.resolve(__dirname, "./src/providers/next/index.ts"),
+                pathUtils: path.resolve(__dirname, "./src/path__utils/index.ts"),
+                uiBlog: path.resolve(__dirname, "./src/prebuilt_ui/blog/index.ts"),
+                uiBlogSSR: path.resolve(
+                    __dirname,
+                    "./src/prebuilt_ui/blog/index_ssr.ts",
+                ),
             },
             fileName(format, entryName) {
                 return `${entryName}.${format}.js`;
             },
             name: "@conundrum/ts",
+        },
+        rollupOptions: {
+            external: ["react", "react-dom", "react/jsx-runtime"],
+            output: {
+                globals: {
+                    react: "React",
+                    "react-dom": "ReactDOM",
+                    "react/jsx-runtime": "jsxRuntime",
+                },
+            },
         },
     },
     resolve: {

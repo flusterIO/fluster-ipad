@@ -1,0 +1,11 @@
+div[data-cdrm-sidebar="open"] {
+  .sidebar-item-panel {
+    width: min(200px, calc(100vh - 34px))
+  }
+}
+
+div[data-cdrm-sidebar="closed"] {
+  .sidebar-item-panel {
+    width: 0px;
+  }
+}

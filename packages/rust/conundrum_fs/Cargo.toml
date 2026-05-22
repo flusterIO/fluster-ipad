@@ -1,0 +1,31 @@
+[package]
+name = "conundrum_fs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["staticlib", "lib"]
+name = "conundrum_fs"
+
+[dependencies]
+anyhow = "1.0.102"
+filetime = "0.2.27"
+serde.workspace = true
+thiserror.workspace = true
+typeshare.workspace = true
+uniffi = "0.29"
+conundrum = { path = "../conundrum/" }
+conundrum_config = { path = "../conundrum_config/" }
+ignore = "0.4.25"
+tempfile = "3.27.0"
+package_json_schema = "0.3.0"
+parking_lot = { version = "0.12.5", features = ["serde", "arc_lock", "owning_ref", "deadlock_detection"] }
+
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1.0", features = ["full"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }

@@ -1,0 +1,28 @@
+[package]
+name = "conundrum_config"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+figment = { version = "0.10.19", features = ["json", "toml", "yaml", "serde_json", "env", "parking_lot", "tempfile"] }
+ignore = "0.4.25"
+schemars = "1.2.1"
+serde.workspace = true
+serde_json.workspace = true
+strum_macros.workspace = true
+conundrum = { path = "../conundrum/" }
+anyhow = "1.0.102"
+thiserror.workspace = true
+typeshare.workspace = true
+uniffi.workspace = true
+parking_lot = { version = "0.12.5", features = ["serde", "arc_lock", "owning_ref", "deadlock_detection"] }
+figment-directory = "0.2.0"
+figment_file_env_provider = "0.2.0"
+figment-json5 = "0.1.1"
+
+[lints]
+workspace = true

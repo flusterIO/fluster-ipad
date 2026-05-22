@@ -1,15 +1,18 @@
-use std::thread;
+use conundrum_config::ecosystem::project::project_config::ProjectConfig;
+use ignore::{WalkBuilder, WalkParallel};
 
-use crate::commands::parse_conundrum::parse_conundrum;
-use crate::errors::ConundrumCliError;
+use crate::{
+    errors::{ConundrumCliError, ConundrumCliResult},
+    models::conundrum_file::ConundrumFile,
+};
 
-pub async fn parse_directory_to_directory(input_dir: &str, output_dir: &str) -> Result<(), std::io::Error> {
-    let files = std::fs::read_dir(input_dir)?;
-    for f in files {
-        let x = f.map_err(|_| ConundrumCliError::FsError)?;
-        // let input_path =
-        // let handle  = thread::spawn(move || {
-        //        // parse_conundrum()
-        // });
-    }
+pub async fn parse_directory_to_directory(input_dir: &str,
+                                          output_dir: &str,
+                                          cfg: &ProjectConfig)
+                                          -> ConundrumCliResult<Vec<ConundrumFile>> {
+    let mut cdrm_files: Vec<ConundrumFile> = Vec::new();
+
+    // opts.on_green
+
+    Ok(cdrm_files)
 }

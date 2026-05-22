@@ -1,6 +1,7 @@
 import React, { type ReactNode } from 'react'
 import { type MarkdownLinkResultStringified } from "@/code_gen/typeshare/conundrum"
 import { useSendNotificationBanner } from '#/notifications/splitview_editor_notification_banner/send_splitview_notification_banner'
+import consola from 'consola'
 
 
 interface AutoInsertedMarkdownLinkProps {
@@ -9,9 +10,14 @@ interface AutoInsertedMarkdownLinkProps {
 
 export const AutoInsertedMarkdownLink = ({ data }: AutoInsertedMarkdownLinkProps): ReactNode => {
     const sendNotif = useSendNotificationBanner()
-    if (data.url.startsWith("#")) {
+    const _url = data.url as unknown as typeof data.url.content;
+    if (typeof _url !== "string") {
+        consola.warn("You seem to be using a feature that you're a bit early for. Conundrum will support special links in an upcoming release, and some of the code is already in place.")
+        return
+    }
+    if (_url.startsWith("#")) {
         return <a role="button" className="cursor-pointer" onClick={() => {
-            const domId = data.url.replace("#", "");
+            const domId = _url.replace("#", "");
             const heading = document.getElementById(`h-${domId}`);
             if (heading) {
                 heading.scrollIntoView({
@@ -34,7 +40,7 @@ export const AutoInsertedMarkdownLink = ({ data }: AutoInsertedMarkdownLinkProps
         }}>{data.text}</a>
     }
     return (
-        <a className="cursor-pointer" href={data.url}>{data.text}</a>
+        <a className="cursor-pointer" href={_url}>{data.text}</a>
     )
 }
 

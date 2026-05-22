@@ -36,6 +36,9 @@ pub enum EmbeddableComponentId {
     #[serde(rename = "underline")]
     #[strum(to_string = "underline")]
     Ul,
+    #[serde(rename = "quote")]
+    #[strum(to_string = "quote")]
+    Quote,
     #[serde(rename = "card")]
     #[strum(to_string = "card")]
     Card,
@@ -46,6 +49,9 @@ pub enum EmbeddableComponentId {
     #[strum(to_string = "util-container")]
     #[default]
     UtlityContainer,
+    #[serde(rename = "image")]
+    #[strum(to_string = "image")]
+    Image,
     #[serde(rename = "hr-with-children")]
     #[strum(to_string = "hr-with-children")]
     HrWithChildren,

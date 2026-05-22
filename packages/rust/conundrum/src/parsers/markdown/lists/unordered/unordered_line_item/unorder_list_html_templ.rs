@@ -3,7 +3,7 @@ use askama::Template;
 /// ## Template (HTML)
 /// ```askama
 /// {% if let Some(body) = self.body %}
-/// <li class="w-full">
+/// <li class="w-full [&>*]:inline">
 /// <div>
 /// {{heading | safe}}
 /// </div>
@@ -12,7 +12,7 @@ use askama::Template;
 /// </div>
 /// </li>
 /// {% else %}
-/// <li class="w-full">
+/// <li class="w-full [&>*]:inline">
 /// {{heading | safe}}
 /// </li>
 /// {% endif %}
@@ -27,7 +27,7 @@ pub struct UnorderedListItemHtmlTemplate {
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <ul class="w-full max-w-[1080px] list-disc">
+/// <ul class="w-full my-4 max-w-[1080px] list-disc list-inside">
 /// {% for item in items %}
 /// {{item.render()? | safe}}
 /// {% endfor %}

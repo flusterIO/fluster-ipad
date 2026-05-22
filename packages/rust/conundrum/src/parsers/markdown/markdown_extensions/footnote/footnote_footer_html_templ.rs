@@ -5,7 +5,7 @@ use askama::Template;
 ///
 /// ```askama
 /// {% if self.footnotes.len() > 0 %}
-/// <div class="cdrm-footnotes w-full max-w-[1080px] h-fit">
+/// <div class="cdrm-footnotes w-full max-w-[1080px] h-fit mt-6">
 /// <h4 class="text-xl font-semibold">Footnotes</h4>
 /// <div class="w-full grid grid-cols-[auto_1fr] gap-x-4">
 /// {% for footnote in self.footnotes %}

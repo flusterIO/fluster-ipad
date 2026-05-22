@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     },
     serverExternalPackages: ["@fluster/webview_utils"],
     reactStrictMode: true,
+    reactCompiler: false,
     images: {
         remotePatterns: [
             {

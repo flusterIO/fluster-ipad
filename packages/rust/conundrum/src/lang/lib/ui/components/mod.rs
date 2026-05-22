@@ -10,3 +10,4 @@ pub mod component_trait;
 pub mod documentation;
 pub mod layout;
 pub mod markdown;
+pub mod media;

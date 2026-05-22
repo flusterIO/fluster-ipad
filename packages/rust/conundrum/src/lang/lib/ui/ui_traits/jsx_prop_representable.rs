@@ -1,5 +1,8 @@
 use crate::{
-    lang::runtime::state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+    lang::runtime::{
+        state::conundrum_error_variant::{ConundrumModalResult, ConundrumResult},
+        traits::conundrum_input::ArcState,
+    },
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
 
@@ -16,5 +19,10 @@ pub trait CssStyleRepresentable {
 /// JavascriptObjectResult if it exists, and throws an error if it does not.
 pub trait FromJsxPropsOptional {
     fn from_jsx_props(props: &ConundrumObject, key: &str) -> ConundrumModalResult<Self>
+        where Self: Sized;
+}
+
+pub trait FromJsxPropsOptionalWithState {
+    fn from_jsx_props_with_state(props: &ConundrumObject, key: &str, state: ArcState) -> ConundrumModalResult<Self>
         where Self: Sized;
 }

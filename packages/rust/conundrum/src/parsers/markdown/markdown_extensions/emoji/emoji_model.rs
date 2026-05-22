@@ -37,7 +37,6 @@ use crate::{
     },
 };
 
-
 /// Use the built-in `:smile:` syntax to insert a text sized emoji, or use the
 /// `Emoji` component to create a scalable and resizable emoji as an image.
 #[typeshare::typeshare]
@@ -103,7 +102,7 @@ impl HtmlJsComponentResult for EmojiResult {
                                                 sizable_classes: self.sizable
                                                                      .as_ref()
                                                                      .cloned()
-                                                                     .map(|x| x.as_class())
+                                                                     .map(|x| x.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))
                                                                      .unwrap_or_default(),
                                                 tag: self.sizable
                                                          .as_ref()

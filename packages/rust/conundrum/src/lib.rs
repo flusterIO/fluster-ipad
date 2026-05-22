@@ -66,10 +66,11 @@
 //! I'm still kinda homeless, so if anyone's looking for a
 //! Rust/Typescript/Python/Go/Swift/Lua/Kinda-Dart developer, please let me
 //! know! I haven't had a regular paycheck in more than 5 years afteer quiting
-//! my job to work on a [modified model of relativity](https://flusterapp.com/docs/my_work/on_the_gravitational_nature_of_time).
+//! my job to work on a [modified model of relativity](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time).
 #![feature(string_replace_in_place)]
 uniffi::setup_scaffolding!();
 
+pub mod ecosystem;
 pub mod embedded;
 pub mod lang;
 pub mod output;

@@ -1,6 +1,8 @@
 {
-  "title": "Fluster",
-  "description": "A collection of documentation and blog posts for the Fluster & Conundrum ecosystem",
-  "root": "user",
-  "pages": ["user", "my_work"]
+    "title": "Fluster",
+    "description": "A collection of documentation and blog posts for the Fluster & Conundrum ecosystem",
+    "root": "user",
+    "pages": [
+        "user"
+    ]
 }

@@ -1,4 +1,3 @@
-use dashmap::DashMap;
 use gray_matter::{Matter, engine::YAML};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -46,8 +45,8 @@ pub struct MdxParsingResult {
     pub warnings: Vec<ConundrumError>,
     /// A map of type `Map<The anchor index of the footnote, FootnoteResult>`.
     /// This field isn't populated until the footnotes are rendered at the end,
-    /// so don't rely on this data during parsing *or* compilation. Use the field on `ParseState`
-    /// instead.
+    /// so don't rely on this data during parsing *or* compilation. Use the
+    /// field on `ParseState` instead.
     pub footnotes: HashMap<ConundrumInt, RenderedFootnoteResult>,
     included_components: Vec<AnyComponentKey>,
 }

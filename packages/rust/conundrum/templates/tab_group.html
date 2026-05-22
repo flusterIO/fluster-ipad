@@ -1,5 +1,5 @@
 <div data-cdrm-emphasis="{{emphasis.to_string()}}" data-cdrm-focused-idx="{{initial_idx}}" data-cdrm-group="{{tab_group_id}}" class="{{tw_merge!("cdrm-tab-group w-full max-w-[1080px]", match &self.sizable {
-    Some(s) => s.as_class(),
+    Some(s) => s.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General),
     None => "".to_string()
     })}}">
     <div class="w-full h-full flex flex-row justify-start items-start flex-nowrap overflow-x-auto overflow-y-none no-scrollbar">

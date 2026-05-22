@@ -7,6 +7,10 @@ documentation.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[lib]
+name = "conundrum_cli"
+path = "src/lib.rs"
+
 [[bin]]
 name = "cdrm"
 path = "src/main.rs"
@@ -30,6 +34,25 @@ anyhow = "1.0.102"
 serde.workspace = true
 thiserror.workspace = true
 rayon.workspace = true
+notify = "8.2.0"
+serde_json.workspace = true
+schemars = { version = "1.2.1", features = ["either1"] }
+package_json_schema = "0.3.0"
+tempfile = "3.27.0"
+config = { version = "0.15.23", features = ["json"] }
+figment = { version = "0.10.19", features = ["json", "toml", "yaml", "serde_json", "env", "parking_lot", "tempfile"] }
+just = "1.51.0"
+walkdir = "2.5.0"
+ignore = "0.4.25"
+conundrum_config = {path = "../conundrum_config/"}
+prettycli = "0.1.1"
+clap-cargo = { version = "0.18.3", features = ["cargo_metadata"] }
+clap-verbosity = "2.1.0"
+cargo_metadata = "0.23.1"
+resolve-path = "0.1.0"
+dirs = "6.0.0"
+relative-path = "2.0.1"
+path-absolutize = { version = "3.1.1", features = ["use_unix_paths_on_wasm"] }
 
 [lints]
 workspace = true

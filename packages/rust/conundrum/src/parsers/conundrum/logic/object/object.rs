@@ -6,12 +6,15 @@ use winnow::{
     Parser,
     ascii::space0,
     combinator::{delimited, repeat, separated},
+    error::ErrMode,
 };
 
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        lib::ui::shared_props::sizable_option::SizableOption,
+        lib::ui::{
+            shared_props::sizable_option::SizableOption, ui_traits::jsx_prop_representable::FromJsxPropsOptional,
+        },
         runtime::{
             mem::mem::MemoryArc,
             state::{
@@ -67,6 +70,27 @@ impl ConundrumComponentResult for ConundrumObject {
                               res: crate::lang::runtime::traits::conundrum_input::ArcState)
                               -> ConundrumModalResult<String> {
         Ok(String::from(""))
+    }
+}
+
+impl FromJsxPropsOptional for ConundrumObject {
+    fn from_jsx_props(props: &ConundrumObject, key: &str) -> ConundrumModalResult<Self>
+        where Self: Sized {
+        if let Some(s) = props.data.get(key) {
+            if let Some(r) = match s.value() {
+                ParsedElement::Logic(l) => match l {
+                    ConundrumLogicToken::Object(o) => Some(o),
+                    _ => None,
+                },
+                _ => None,
+            } {
+                return Ok(r.clone());
+            } else {
+                Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Not a valid conundrum object"))))
+            }
+        } else {
+            Err(ErrMode::Backtrack(ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Not a valid conundrum object"))))
+        }
     }
 }
 

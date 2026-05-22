@@ -27,21 +27,27 @@ use crate::{
         general::component_constants::auto_inserted_component_name::AutoInsertedComponentName,
         output_components::output_utils::javascript_null_prop,
     },
-    parsers::{markdown::links::link_by_dom_id::LinkByDomId, parser_trait::ConundrumParser},
+    parsers::{
+        markdown::links::{
+            audio_timestamp::audio_timestamp_link_target, general_link_target::general_link_target,
+            link_by_dom_id::link_by_dom_id_target, markdown_link_target::MarkdownLinkTarget,
+        },
+        parser_trait::ConundrumParser,
+    },
 };
 
 #[typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownLinkResultStringified {
     pub text: String,
-    pub url: String,
+    pub url: MarkdownLinkTarget,
 }
 
 #[typeshare]
 #[derive(Debug, Serialize, Clone)]
 pub struct MarkdownLinkResult {
     pub text: Children,
-    pub url: String,
+    pub url: MarkdownLinkTarget,
 }
 
 impl MarkdownLinkResult {
@@ -60,7 +66,9 @@ impl PlainTextComponentResult for MarkdownLinkResult {
 
 impl HtmlJsComponentResult for MarkdownLinkResult {
     fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
-        Ok(format!("<a href=\"{}\">{}</a>", self.url, self.text.render(res)?))
+        Ok(format!("<a href=\"{}\">{}</a>",
+                   self.url.to_html_js_component(Arc::clone(&res))?,
+                   self.text.render(Arc::clone(&res))?))
     }
 }
 
@@ -80,9 +88,8 @@ impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
                                                                                       input.input.reset(&start);
                                                                                   })?;
 
-        let url = alt((
-                LinkByDomId::parse_input_string
-        )).parse_next(input)?;
+        let url: MarkdownLinkTarget =
+            alt((link_by_dom_id_target, audio_timestamp_link_target, general_link_target)).parse_next(input)?;
 
         let state = Arc::clone(&input.state);
 
@@ -91,7 +98,7 @@ impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
         let res = parse_elements(&mut nested_state)?;
 
         Ok(MarkdownLinkResult { text: Children(res),
-                                url: url.to_string() })
+                                url })
     }
 
     fn matches_first_char(char: char) -> bool {

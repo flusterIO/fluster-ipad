@@ -13,6 +13,7 @@ use crate::{
 pub type ArcState = Arc<RwLock<ParseState>>;
 pub type ConundrumInput<'a> = Stateful<&'a str, ArcState>;
 
+// BUG: Deprecate this shit asap and implement the new safe approach everywhere.
 pub fn get_conundrum_input(val: &str, state: ParseState) -> ConundrumInput {
     ConundrumInput { input: val,
                      state: Arc::new(RwLock::new(ParseState { data:
