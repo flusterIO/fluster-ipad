@@ -52,6 +52,7 @@ cargo_metadata = "0.23.1"
 resolve-path = "0.1.0"
 dirs = "6.0.0"
 relative-path = "2.0.1"
+path-absolutize = { version = "3.1.1", features = ["use_unix_paths_on_wasm"] }
 
 [lints]
 workspace = true

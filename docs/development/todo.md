@@ -1,7 +1,7 @@
 # To-Do
 
+- [ ] Add 'env-file-provider' to configuration if the user provides a 'env_file' key in their config.
 - [ ] Add 'col-span' property from 1-12 to the `Sizable` struct.
-- [ ] Add `Quote` component and that Nag Hamadi quote to the end of the paper for a cool kind of final mic drop.
   - [ ] Add the tabs component into the application somewhere to show it off.
 - [ ] Create various state comparison methods to compare the json data to url query strings, so that it can be done server side. Keep all of the blog state that isn't component local in the url.
   - [ ] Get the Conundrum content working on Next. That's crucial to sharing docs throughout the ecosystem.

@@ -3410,6 +3410,7 @@ dependencies = [
  "just",
  "notify",
  "package_json_schema",
+ "path-absolutize",
  "prettycli",
  "ratatui 0.30.0",
  "ratatui-textarea",
@@ -3440,6 +3441,9 @@ dependencies = [
  "anyhow",
  "conundrum",
  "figment",
+ "figment-directory",
+ "figment-json5",
+ "figment_file_env_provider",
  "ignore",
  "parking_lot",
  "schemars 1.2.1",
@@ -3505,6 +3509,15 @@ dependencies = [
  "tower-lsp",
  "tree-sitter",
  "winnow 0.7.15",
+]
+
+[[package]]
+name = "conundrum_macros"
+version = "0.0.1"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.117",
 ]
 
 [[package]]
@@ -6269,6 +6282,35 @@ dependencies = [
  "toml 0.8.2",
  "uncased",
  "version_check",
+]
+
+[[package]]
+name = "figment-directory"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "13c6beb07bfd6645c6845f0ce4881accaf07c6ba0b3d632abbb6505e69d6e392"
+dependencies = [
+ "figment",
+]
+
+[[package]]
+name = "figment-json5"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "26f6982da09e166efe7dc3c5cf1fe01ef85419733eb188c0df0b571eda9e8a81"
+dependencies = [
+ "figment",
+ "json5",
+ "serde",
+]
+
+[[package]]
+name = "figment_file_env_provider"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5697e4c3f577031bec1c4b8faacf86d056d80251a85546cefed29f053e67c129"
+dependencies = [
+ "figment",
 ]
 
 [[package]]
@@ -11581,6 +11623,24 @@ name = "pastey"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35fb2e5f958ec131621fdd531e9fc186ed768cbe395337403ae56c17a74c68ec"
+
+[[package]]
+name = "path-absolutize"
+version = "3.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4af381fe79fa195b4909485d99f73a80792331df0625188e707854f0b3383f5"
+dependencies = [
+ "path-dedot",
+]
+
+[[package]]
+name = "path-dedot"
+version = "3.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07ba0ad7e047712414213ff67533e6dd477af0a4e1d14fb52343e53d30ea9397"
+dependencies = [
+ "once_cell",
+]
 
 [[package]]
 name = "path_abs"
