@@ -2,16 +2,17 @@ use conundrum::ecosystem::glue::conundrum_web_types::{
     builder_output::next::{NextJsConundrumOutput, NextjsFileSummary},
     conundrum_web_builder::ConundrumWebProjectBuilder,
 };
+use conundrum_config::ecosystem::project::project_config::ProjectConfig;
 use rayon::iter::IntoParallelRefIterator;
 use rayon::prelude::*;
 use std::path::Path;
 
 use crate::{
     errors::{ConundrumCliError, ConundrumCliResult},
-    models::{config::CliConfig, conundrum_file::ConundrumFile},
+    models::conundrum_file::ConundrumFile,
 };
 
-pub fn write_next_output(written_files: Vec<ConundrumFile>, opts: &CliConfig) -> ConundrumCliResult<()> {
+pub fn write_next_output(written_files: Vec<ConundrumFile>, opts: &ProjectConfig) -> ConundrumCliResult<()> {
     let files: ConundrumCliResult<Vec<NextjsFileSummary>> =
         written_files.par_iter()
                      .map(|f| {

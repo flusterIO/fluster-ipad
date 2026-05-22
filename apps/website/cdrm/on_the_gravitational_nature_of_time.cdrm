@@ -11,12 +11,11 @@ subject: Examples
 
 <Admonition title="Thank you" foldable>
 Thank you for taking the time to read this. My story is posted elsewhere, so to keep things short, this is the entire reason I built Fluster & Conundrum in the first place.
-
 Almost 5 years ago I realized Einstein made an assumption that made far more sense before the observations that give us the Big Bang, and after playing around with the math I realized I can derive an absolutely staggering amount of physics from a single, mathematically equivalent modification to Einstein's model. I quit my job, became homeless, and over the course of this pursuit built the original version of Fluster for my own personal use.
 
 I'll do my best to convince the math types among you (this article does assume some basic understanding of physics and relativity) by the end of this sample note that Einstein made a mistake[^1], but regardless of your opinions on the model, I hope you enjoy Fluster and find it as useful as I have. Thanks for checking it out!
 
-> Also, please keep in mind that while this may not be as responsive as the Fluster website, it was written in the very early stages of a markdown like syntax with the same transpiler that powers Fluster. The Conundrum transpiler will continue to improve daily, with blogging support being a major priority.
+> Also, please keep in mind that while this may not be as responsive as the Fluster website, it was written in the very early stages of a markdown like syntax with the same transpiler that powers Fluster. The Conundrum transpiler will continue to improve daily, with blogging support being a major priority. The source for this file is available [here](github.com/flusterIO/fluster-ipad/blog/main/apps/website/cdrm/on_the_gravitational_nature_of_time.cdrm).
 
 </Admonition>
 

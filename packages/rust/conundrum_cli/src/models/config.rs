@@ -1,18 +1,18 @@
-use std::{
-    error::Error,
-    path::{Path, PathBuf},
-};
-
-use config::{Config, Environment, File, FileStoredFormat, Format};
 use conundrum::{
     ecosystem::glue::conundrum_web_types::conundrum_web_builder::ConundrumWebProjectBuilder,
     lang::runtime::{
         run_conundrum::ParseConundrumOptions,
-        state::{conundrum_error::ConundrumError, parse_state::ConundrumCompileTarget},
+        state::{parse_state::ConundrumCompileTarget},
     },
 };
+use figment::{
+    Figment,
+    providers::{Format, Json, Toml, YamlExtended, Env},
+};
+use ignore::{DirEntry, Error, WalkBuilder, WalkState};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use std::path::{Path, PathBuf};
 
 use crate::errors::{ConundrumCliError, ConundrumCliResult};
 
@@ -46,17 +46,6 @@ pub fn default_conundrum_opts() -> ParseConundrumOptions {
     ParseConundrumOptions::default()
 }
 
-/// ## Plans
-/// Shocker... I've accomplished none of these yet. This is basically just
-/// a placeholder until I get [Fluster](https://flusterapp.com) released and I'm in a better living
-/// situation to where I can focus more time on the cli.
-///
-/// - [ ] Read from file
-///   - [ ] yaml
-///   - [ ] json
-///   - [ ] Conundrum (a future goal, once the logic layer is in place)
-/// - [ ] Accept config file path as parameter.
-/// - [ ] Allow global and project specific configuration.
 #[derive(Default, Serialize, Deserialize, Clone, JsonSchema)]
 pub struct CliConfig {
     #[serde(default = "default_conundrum_opts")]
@@ -66,6 +55,20 @@ pub struct CliConfig {
 }
 
 impl CliConfig {
+    fn figment() -> Figment {
+        Figment::new()
+            .merge(
+                Toml::file("cdrm_config.toml").nested()
+                )
+            .merge(
+                Json::file("cdrm_config.json").nested()
+                )
+            .merge(
+YamlExtended::file("cdrm_config.yaml")
+            )
+        
+    }
+
     pub fn read(cfg_path: &Option<String>) -> ConundrumCliResult<Self> {
         let config_path =
             cfg_path.as_ref().cloned().map(|s| Ok(Path::new(&s).to_path_buf())).unwrap_or_else(|| {
@@ -86,4 +89,10 @@ impl CliConfig {
                                                                   })?;
         Ok(config)
     }
+
+    // pub fn visit_files<'a, F>(visitor: F)
+    //     where F: FnMut() -> Box<dyn FnMut(Result<DirEntry, Error>) -> WalkState +
+    // Send + 'a> {     let r =
+    // WalkBuilder::new(path).add_custom_ignore_filename("cdrm_ignore").
+    // build_parallel().run(visitor); }
 }

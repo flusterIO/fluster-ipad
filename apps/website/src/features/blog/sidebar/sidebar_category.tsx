@@ -1,5 +1,8 @@
+"use client";
 import { cn } from "#/lib/cn";
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { BlogSidebarSectionHeader } from "./blog_sidebar_section_header";
+import { motion } from "framer-motion";
 
 export interface BlogSidebarItem {
     label: string;
@@ -18,13 +21,28 @@ export const BlogSidebarCategory = ({
     items,
     icon,
 }: BlogSidebarCategoryProps): ReactNode => {
+    const [open, setOpen] = useState(true);
     return (
-        <div className="pl-2 pr-4 mt-2">
-            <div className="font-semibold grid grid-cols-[auto_1fr] place-items-center gap-x-2">
-                {icon}
-                <div className="w-full text-left">{label}</div>
-            </div>
-            <div>
+        <div className="">
+            <BlogSidebarSectionHeader
+                label={label}
+                open={open}
+                setOpen={setOpen}
+                icon={icon}
+            />
+            <motion.div
+                className="overflow-hidden"
+                animate={open ? "open" : "close"}
+                initial={open ? "open" : "close"}
+                variants={{
+                    open: {
+                        height: "fit-content",
+                    },
+                    close: {
+                        height: "0px",
+                    },
+                }}
+            >
                 {items.length ? (
                     items.map((item) => {
                         return (
@@ -32,7 +50,7 @@ export const BlogSidebarCategory = ({
                                 key={`${item.href}-${item.label}`}
                                 href={item.href}
                                 className={cn(
-                                    "text-muted-foreground text-sm pl-6",
+                                    "text-muted-foreground text-sm pl-6 hover:text-foreground/90 transition-colors duration-300",
                                     item.active && "text-foreground/90",
                                 )}
                             >
@@ -41,9 +59,11 @@ export const BlogSidebarCategory = ({
                         );
                     })
                 ) : (
-                    <div className="text-muted-foreground text-sm pl-6">None</div>
+                    <div className="text-muted-foreground text-sm w-full text-center">
+                        Nothing Found
+                    </div>
                 )}
-            </div>
+            </motion.div>
         </div>
     );
 };

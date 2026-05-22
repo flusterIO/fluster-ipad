@@ -16,7 +16,7 @@ export const BlogDevelopmentWarning = (): ReactNode => {
         }
     }, []);
     const handleClose = (): void => {
-        /* window.localStorage.setItem(k, "true"); */
+        window.localStorage.setItem(k, "true");
         setOpen(false);
     };
     return (

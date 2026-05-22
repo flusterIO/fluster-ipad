@@ -3,6 +3,7 @@ use std::path::{Path, PathBuf};
 use conundrum::{
     lang::runtime::run_conundrum::run_conundrum, output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
+use conundrum_config::traits::file_visitor::FileVisitor;
 
 use crate::{
     errors::{ConundrumCliError, ConundrumCliResult},
@@ -14,6 +15,8 @@ pub struct ConundrumFile {
     pub absolute_path: PathBuf,
     pub results: MdxParsingResult,
 }
+
+impl FileVisitor for ConundrumFile {}
 
 impl ConundrumFile {
     /// This will throw an error if the path is not a child of the parent.

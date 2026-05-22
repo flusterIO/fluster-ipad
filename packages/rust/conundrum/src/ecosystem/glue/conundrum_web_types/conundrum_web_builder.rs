@@ -1,18 +1,8 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-/// ## Plans
-/// - [ ] Next
-/// - [ ] Vite
-///
-/// ### Planned server providers doing basically the same thing
-/// This probably seems like a lot for someone so far behind, but thanks to the
-/// amazing FFI libraries in Rust this will actually be really straight forward.
-///
-/// - [ ] Node
-/// - [ ] Rust
-/// - [ ] Go
-/// - [ ] Python
+/// ## Deprecated
+/// Moved to the config package.
 #[derive(Serialize, Default, Deserialize, strum_macros::Display, Clone, Eq, PartialEq, JsonSchema)]
 pub enum ConundrumWebProjectBuilder {
     /// When using the **Next.js** provider, your output should point to a file.

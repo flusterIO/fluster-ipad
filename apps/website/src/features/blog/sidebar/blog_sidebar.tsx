@@ -3,6 +3,7 @@ import { BlogSidebarCategory } from "./sidebar_category";
 import { subjectToUrl, topicToUrl } from "@conundrum/ts/pathUtils";
 import { BLOGURL } from "../constants";
 import { LucideFolderPen, LucidePaperclip } from "lucide-react";
+import { BlogTagSection } from "./blog_tag_section";
 
 interface BlogSidebarProps {
     topics: string[];
@@ -13,7 +14,7 @@ interface BlogSidebarProps {
 
 export const BlogSidebar = (props: BlogSidebarProps): ReactNode => {
     return (
-        <div className="max-w-[min(250px,90vw)] w-[250px] min-w-[250px] border-r h-screen  py-4">
+        <div className="max-w-[min(250px,90vw)] w-fit min-w-[150px] border-r h-screen  py-4">
             {props.banner ?? null}
             <BlogSidebarCategory
                 label="Topics"
@@ -35,6 +36,7 @@ export const BlogSidebar = (props: BlogSidebarProps): ReactNode => {
                     };
                 })}
             />
+            <BlogTagSection tags={props.tags} />
         </div>
     );
 };

@@ -1664,6 +1664,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "bindgen"
+version = "0.72.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "993776b509cfb49c750f11b8f07a46fa23e0a1386ffc01fb1e7d343efc387895"
+dependencies = [
+ "bitflags 2.10.0",
+ "cexpr",
+ "clang-sys",
+ "itertools 0.13.0",
+ "log",
+ "prettyplease",
+ "proc-macro2",
+ "quote",
+ "regex",
+ "rustc-hash 2.1.1",
+ "shlex",
+ "syn 2.0.117",
+]
+
+[[package]]
 name = "bit-set"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2134,7 +2154,7 @@ checksum = "ba469fba38357c8bb65458873ddfd82aa97534aec0b3bae93d4c44604fc63839"
 dependencies = [
  "csv",
  "derive-new",
- "dirs",
+ "dirs 6.0.0",
  "gix-tempfile",
  "image 0.25.10",
  "r2d2",
@@ -2894,6 +2914,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "clap-cargo"
+version = "0.18.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "936551935c8258754bb8216aec040957d261f977303754b9bf1a213518388006"
+dependencies = [
+ "anstyle",
+ "cargo_metadata 0.23.1",
+ "clap",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "clap-verbosity"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3d7bf75a8e0407a558bd7e8e7919baa352e21fb0c1c7702a63c853f2277c4c63"
+dependencies = [
+ "clap",
+ "log",
+ "serde",
+]
+
+[[package]]
 name = "clap_builder"
 version = "4.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3279,6 +3323,7 @@ dependencies = [
  "derive_typst_intoval",
  "devicons",
  "emoji",
+ "fitsio",
  "flatbuffers",
  "fluster_core_utilities",
  "fuzzy-matcher",
@@ -3351,19 +3396,28 @@ name = "conundrum_cli"
 version = "0.0.1"
 dependencies = [
  "anyhow",
+ "cargo_metadata 0.23.1",
  "clap",
+ "clap-cargo",
+ "clap-verbosity",
  "config",
  "conundrum",
+ "conundrum_config",
  "crossterm 0.29.0",
+ "dirs 6.0.0",
  "figment",
+ "ignore",
  "just",
  "notify",
  "package_json_schema",
+ "prettycli",
  "ratatui 0.30.0",
  "ratatui-textarea",
  "rayon",
  "reedline 0.46.0",
  "reedline-repl-rs",
+ "relative-path 2.0.1",
+ "resolve-path",
  "schemars 1.2.1",
  "serde",
  "serde_json",
@@ -3376,6 +3430,25 @@ dependencies = [
  "tui-nodes",
  "tui-piechart",
  "tui-scrollview",
+ "walkdir",
+]
+
+[[package]]
+name = "conundrum_config"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "conundrum",
+ "figment",
+ "ignore",
+ "parking_lot",
+ "schemars 1.2.1",
+ "serde",
+ "serde_json",
+ "strum_macros 0.27.2",
+ "thiserror 2.0.18",
+ "typeshare",
+ "uniffi",
 ]
 
 [[package]]
@@ -3399,6 +3472,25 @@ dependencies = [
  "strum_macros 0.27.2",
  "tabled",
  "tokio",
+]
+
+[[package]]
+name = "conundrum_fs"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "conundrum",
+ "conundrum_config",
+ "filetime",
+ "ignore",
+ "package_json_schema",
+ "parking_lot",
+ "serde",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tokio",
+ "typeshare",
+ "uniffi",
 ]
 
 [[package]]
@@ -4079,7 +4171,7 @@ dependencies = [
  "ciborium",
  "derive-new",
  "derive_more",
- "dirs",
+ "dirs 6.0.0",
  "embassy-futures",
  "embassy-time",
  "float4",
@@ -4308,7 +4400,7 @@ dependencies = [
  "cubecl-zspace",
  "derive-new",
  "derive_more",
- "dirs",
+ "dirs 6.0.0",
  "enumset",
  "hashbrown 0.16.1",
  "log",
@@ -5468,11 +5560,31 @@ dependencies = [
 
 [[package]]
 name = "dirs"
+version = "4.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ca3aa72a6f96ea37bbc5aa912f6788242832f75369bdfdadcb0e38423f100059"
+dependencies = [
+ "dirs-sys 0.3.7",
+]
+
+[[package]]
+name = "dirs"
 version = "6.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3e8aa94d75141228480295a7d0e7feb620b1a5ad9f12bc40be62411e38cce4e"
 dependencies = [
- "dirs-sys",
+ "dirs-sys 0.5.0",
+]
+
+[[package]]
+name = "dirs-sys"
+version = "0.3.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1b1d1d91c932ef41c0f2663aa8b0ca0342d444d842c06914aa0a7e352d0bada6"
+dependencies = [
+ "libc",
+ "redox_users 0.4.6",
+ "winapi",
 ]
 
 [[package]]
@@ -5483,7 +5595,7 @@ checksum = "e01a3366d27ee9890022452ee61b2b63a67e6f13f58900b651ff5665f0bb1fab"
 dependencies = [
  "libc",
  "option-ext",
- "redox_users",
+ "redox_users 0.5.2",
  "windows-sys 0.61.2",
 ]
 
@@ -6194,6 +6306,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9844ddc3a6e533d62bba727eb6c28b5d360921d5175e9ff0f1e621a5c590a4d5"
 
 [[package]]
+name = "fitsio"
+version = "0.21.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b2a7b7eee7f284a95437774d1152e04706f690d549687004ab7ae73cc776d08"
+dependencies = [
+ "fitsio-sys",
+ "libc",
+ "ndarray 0.17.2",
+]
+
+[[package]]
+name = "fitsio-sys"
+version = "0.5.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "14929d0b6fa44a87b374a138ea2256c02c1b5beae1dbc98f62a3e132f862fed1"
+dependencies = [
+ "bindgen 0.72.1",
+ "pkg-config",
+]
+
+[[package]]
 name = "fixed"
 version = "1.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6298,7 +6431,7 @@ dependencies = [
  "conundrum",
  "crossbeam",
  "crossbeam-channel",
- "dirs",
+ "dirs 6.0.0",
  "filetime",
  "flatbuffers",
  "futures",
@@ -6336,8 +6469,17 @@ dependencies = [
 name = "fluster_desktop_fs"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "conundrum",
+ "conundrum_config",
  "filetime",
+ "ignore",
+ "package_json_schema",
+ "serde",
+ "tempfile",
+ "thiserror 2.0.18",
  "tokio",
+ "typeshare",
  "uniffi",
 ]
 
@@ -6401,7 +6543,7 @@ dependencies = [
  "core-foundation 0.9.4",
  "core-graphics",
  "core-text",
- "dirs",
+ "dirs 6.0.0",
  "dwrote",
  "float-ord",
  "freetype-sys",
@@ -8769,7 +8911,7 @@ dependencies = [
  "clap_complete",
  "clap_mangen",
  "ctrlc",
- "dirs",
+ "dirs 6.0.0",
  "dotenvy",
  "heck 0.5.0",
  "is_executable",
@@ -9195,7 +9337,7 @@ dependencies = [
  "datafusion-physical-expr",
  "datafusion-sql",
  "deepsize",
- "dirs",
+ "dirs 6.0.0",
  "fst",
  "futures",
  "half",
@@ -13264,6 +13406,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e8cf8e6a8aa66ce33f63993ffc4ea4271eb5b0530a9002db8455ea6050c77bfa"
 
 [[package]]
+name = "prettycli"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1c473f9468f75c869dcab128d9acbafe12a0b1b5f11d9bcc990b219fd83f47d"
+
+[[package]]
 name = "prettyplease"
 version = "0.2.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -14275,6 +14423,17 @@ dependencies = [
 
 [[package]]
 name = "redox_users"
+version = "0.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ba009ff324d1fc1b900bd1fdb31564febe58a8ccc8a6fdbb93b543d33b13ca43"
+dependencies = [
+ "getrandom 0.2.16",
+ "libredox",
+ "thiserror 1.0.69",
+]
+
+[[package]]
+name = "redox_users"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4e608c6638b9c18977b00b475ac1f28d14e84b27d8d42f70e0bf1e3dec127ac"
@@ -14431,6 +14590,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba39f3699c378cd8970968dcbff9c43159ea4cfbd88d43c00b22f2ef10a435d2"
 
 [[package]]
+name = "relative-path"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bca40a312222d8ba74837cb474edef44b37f561da5f773981007a10bbaa992b0"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "rend"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -14531,6 +14699,15 @@ dependencies = [
  "wasm-streams",
  "web-sys",
  "webpki-roots 1.0.6",
+]
+
+[[package]]
+name = "resolve-path"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "321e5e41b3b192dab6f1e75b9deacb6688b4b8c5e68906a78e8f43e7c2887bb5"
+dependencies = [
+ "dirs 4.0.0",
 ]
 
 [[package]]
@@ -14865,7 +15042,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "regex",
- "relative-path",
+ "relative-path 1.9.3",
  "rustc_version",
  "syn 2.0.117",
  "unicode-ident",
@@ -15714,7 +15891,7 @@ version = "3.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "32824fab5e16e6c4d86dc1ba84489390419a39f97699852b66480bb87d297ed8"
 dependencies = [
- "dirs",
+ "dirs 6.0.0",
 ]
 
 [[package]]
@@ -17586,7 +17763,7 @@ dependencies = [
  "anyhow",
  "bytes",
  "constcat",
- "dirs",
+ "dirs 6.0.0",
  "liblzma",
  "regex",
  "reqwest",
@@ -17639,7 +17816,7 @@ version = "20.1.4-7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "00d2581070380418ccc33b500f3739e4d4869421fdb477fcea51ff97c6253a52"
 dependencies = [
- "bindgen",
+ "bindgen 0.71.1",
  "cc",
  "paste",
  "thiserror 2.0.18",
@@ -18089,7 +18266,7 @@ checksum = "c5d1310816d33fa3582dbb60bf0e5272af44d955a5fa13b148ddea62005088df"
 dependencies = [
  "chrono",
  "comemo",
- "dirs",
+ "dirs 6.0.0",
  "ecow",
  "thiserror 2.0.18",
  "typst",
