@@ -21,10 +21,11 @@ use crate::{
     ecosystem::{project::project_file_description::ProjectFileDescription, shared::ignore::IgnoreConfig}, errors::config_error::{ ConfigError, ConfigResult}, models::config_path::ConfigPath, traits::{
         config_file::ConfigFile,
         file_collection_producer::{FileCollectionRequest, FileCollectionVisitor},
-    }
+    }, utils::cwd::cwd
 };
 
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
+#[serde(default)]
 pub struct SourceOutputConfig {
     pub path: String,
     pub format: ConundrumCompileTarget,
@@ -37,6 +38,7 @@ impl Default for SourceOutputConfig {
 }
 
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
+#[serde(default)]
 pub struct ConundrumSourceConfig {
     pub input: ConfigPath,
     pub output: SourceOutputConfig,
@@ -46,10 +48,6 @@ impl Default for ConundrumSourceConfig {
     fn default() -> Self {
         Self { input: ConfigPath::from_str_or_panic("./cdrm"), output: Default::default() }
     }
-}
-
-pub fn default_conundrum_opts() -> ParseConundrumOptions {
-    ParseConundrumOptions::default()
 }
 
 /// ## Plans
@@ -69,6 +67,7 @@ pub fn default_conundrum_opts() -> ParseConundrumOptions {
 /// - [ ] Accept config file path as parameter.
 /// - [ ] Allow global and project specific configuration.
 #[derive(Serialize, Deserialize, JsonSchema, Clone)]
+#[serde(default)]
 pub struct ProjectConfig {
     pub name: String,
     /// The description, as conundrum content.
@@ -77,7 +76,6 @@ pub struct ProjectConfig {
     /// description. The parser will try to remove ridiculus things like
     /// images, but it might not catch everything.
     pub desc: String,
-    #[serde(default = "default_conundrum_opts")]
     pub opts: ParseConundrumOptions,
     pub build_target: ConundrumWebProjectBuilder,
     pub source: ConundrumSourceConfig,
@@ -118,6 +116,7 @@ impl ProjectConfig {
     pub fn get_files(&self) -> ConfigResult<Vec<ProjectFileDescription>> {
         let items: Arc<Mutex<Vec<ProjectFileDescription>>> = Arc::new(Mutex::new(Vec::new()));
         let root_path = self.root.clone();
+        println!("Root Path: {:#?}", root_path);
         let req = FileCollectionRequest { root: root_path.clone(),
                                           respect_gitignore: self.ignore.respect_gitignore,
                                           should_parse: match_any_conundrum_file,
@@ -126,9 +125,10 @@ impl ProjectConfig {
                                                   if let Ok(res) = entry {
                                                       let f = res.path().to_path_buf();
                                                       let file_extension = f.extension().map(|s| s.to_str()).flatten();
+                                                      println!("File Extension: {:#?}", file_extension);
                                                       if file_extension.is_some_and(ParsableFileType::extension_is_conundrum_file) {
 
-                                                      if let Ok(file_content) = std::fs::read_to_string(res.path()) {
+                                                      if let Ok(file_content) = std::fs::read_to_string(f.clone()) {
                                                           if let Ok(parse_response) = run_conundrum(self.opts.duplicate_with_new_content(file_content)) {
                                                                                                                         let mut locked_items = items.lock_arc();
                                                           locked_items.push(ProjectFileDescription { 
@@ -140,7 +140,7 @@ impl ProjectConfig {
                                                       }
                                                       WalkState::Continue
                                                   } else {
-                                                      WalkState::Skip
+                                                      WalkState::Continue
                                                   }
                                                       } else {
                                                       WalkState::Skip
@@ -179,28 +179,13 @@ impl ConfigFile for ProjectConfig {
 
     fn read(config_path_override: &Option<String>) -> crate::errors::config_error::ConfigResult<Self>
         where Self: Sized {
-        //     let config_path = match config_path_override {
-        //         Some(s) => {
-        //             let p = std::path::Path::new(s);
-        //             match p.is_dir() {
-        //                 true => {
-        //                     p.join(format!("{}.json", PROJECT_CONFIG_FILE_NAME)).to_path_buf()
-        //                 },
-        //                 false => {
-        //                     p.to_path_buf()
-        //                 }
-        //             }
-        //         },
-        //         None => {
-        //             if let Ok(res) = env::current_dir() {
-        //                 res
-        //             } else {
-        //                 panic!("Could not determine the projects root directory.")
-        //             }
-        //         }
-        // };
+        if let Some(cp) = config_path_override {
+            if let Err(err) = std::env::set_current_dir(cp) {
+                log::error!("Conundrum could not update the working directory. I hate myself for even implementing it this way anyways, so it's probably for the better. It looks like you'll have to 'cd' yourself. Here's the actual error: {}", err);
+            }
+        }
         let c = Config::builder()
-            .add_source(File::with_name(PROJECT_CONFIG_FILE_NAME))
+            .add_source(File::with_name(PROJECT_CONFIG_FILE_NAME).required(true))
             .add_source(Environment::with_prefix("CDRM"))
             .build()
             .map_err(|e| {
@@ -208,10 +193,12 @@ impl ConfigFile for ProjectConfig {
                 ConfigError::OhShit
             })?;
 
-        let s: Self = c.try_deserialize().map_err(|e| {
+        let mut s: Self = c.try_deserialize().map_err(|e| {
             log::error!("Config Error: {}", e);
             ConfigError::SerializationError
         })?;
+
+        s.root = cwd()?;
 
         Ok(s)
     }

@@ -91,7 +91,7 @@
     "framer-motion": "12.23.25",
     "lucide-react": "0.554.0",
     "motion": "12.39.0",
-    "react-device-detect": "^2.2.3",
+    "react-device-detect": "2.2.3",
     "react-redux": "9.2.0",
     "stencil": "0.0.5",
     "wasm-feature-detect": "1.8.0"
