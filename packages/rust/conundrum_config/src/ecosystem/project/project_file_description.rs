@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use conundrum::{
-    ecosystem::glue::conundrum_web_types::builder_output::next::NextjsFileSummary,
+    ecosystem::glue::conundrum_web_types::builder_output::next::BlogFileSummary,
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 
@@ -13,14 +13,20 @@ pub struct ProjectFileDescription {
 }
 
 impl ProjectFileDescription {
-    pub fn to_blog_summary(&self) -> NextjsFileSummary {
-        NextjsFileSummary { html: self.results.content.clone(),
-                            tags: self.results.tags.iter().map(|t| t.body.clone()).collect(),
-                            relative_path: self.input_path
-                                               .as_path()
-                                               .strip_prefix(&self.root_path)
-                                               .map(|p| String::from(p.to_str().unwrap_or_default()))
-                                               .unwrap_or_default(),
-                            front_matter: self.results.front_matter.clone() }
+    pub fn to_blog_summary(&self) -> BlogFileSummary {
+        let mut tags = Vec::new();
+        for t in &self.results.tags {
+            if !tags.contains(&t.body) {
+                tags.push(t.body.clone());
+            }
+        }
+        BlogFileSummary { html: self.results.content.clone(),
+                          tags: self.results.tags.iter().map(|t| t.body.clone()).collect(),
+                          relative_path: self.input_path
+                                             .as_path()
+                                             .strip_prefix(&self.root_path)
+                                             .map(|p| String::from(p.to_str().unwrap_or_default()))
+                                             .unwrap_or_default(),
+                          front_matter: self.results.front_matter.clone() }
     }
 }

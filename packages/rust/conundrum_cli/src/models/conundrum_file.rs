@@ -3,11 +3,9 @@ use std::path::{Path, PathBuf};
 use conundrum::{
     lang::runtime::run_conundrum::run_conundrum, output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
+use conundrum_config::ecosystem::project::project_config::ProjectConfig;
 
-use crate::{
-    errors::{ConundrumCliError, ConundrumCliResult},
-    models::config::CliConfig,
-};
+use crate::errors::{ConundrumCliError, ConundrumCliResult};
 
 #[derive(Debug)]
 pub struct ConundrumFile {
@@ -39,7 +37,7 @@ impl ConundrumFile {
     pub fn write_to_relative_directory(&self,
                                        input_dir: &str,
                                        output_dir: &str,
-                                       opts: &CliConfig)
+                                       opts: &ProjectConfig)
                                        -> ConundrumCliResult<()> {
         let p = self.absolute_path.strip_prefix(input_dir).map_err(|_| {
             ConundrumCliError::FileNotChildOfDir(self.absolute_path.to_str().map(String::from).unwrap_or_default(), input_dir.to_string())
@@ -53,7 +51,7 @@ impl ConundrumFile {
         Ok(())
     }
 
-    pub fn from_absolute_path(path: &str, opts: &CliConfig) -> ConundrumCliResult<ConundrumFile> {
+    pub fn from_absolute_path(path: &str, opts: &ProjectConfig) -> ConundrumCliResult<ConundrumFile> {
         let content = std::fs::read_to_string(path).map_err(|_| ConundrumCliError::FsError(path.to_string()))?;
         let new_opts = opts.opts.duplicate_with_new_content(content);
         let x = run_conundrum(new_opts).map_err(ConundrumCliError::ConundrumError)?;

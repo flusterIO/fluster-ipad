@@ -1,264 +1,454 @@
 {
-    "type": "object",
-    "properties": {
-        "opts": {
-            "$ref": "#/$defs/ParseConundrumOptions",
-            "default": {
-                "note_id": null,
-                "content": "",
-                "modifiers": [],
-                "hide_components": [],
-                "ui_params": {
-                    "dark_mode": true,
-                    "font_scalar": 1.0,
-                    "math_font_scalar": 1.2,
-                    "syntax_theme": null
-                },
-                "target": "html",
-                "trusted": false
-            }
-        },
-        "build_target": {
-            "$ref": "#/$defs/ConundrumWebProjectBuilder"
-        },
-        "source": {
-            "$ref": "#/$defs/ConundrumSourceConfig"
-        }
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
     },
-    "required": [
-        "build_target",
-        "source"
-    ],
-    "title": "Plans",
-    "description": "Shocker... I've accomplished none of these yet. This is basically just\na placeholder until I get [Fluster](https://flusterapp.com) released and I'm in a better living\nsituation to where I can focus more time on the cli.\n\n- [ ] Read from file\n  - [ ] yaml\n  - [ ] json\n  - [ ] Conundrum (a future goal, once the logic layer is in place)\n- [ ] Accept config file path as parameter.\n- [ ] Allow global and project specific configuration.",
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$defs": {
-        "ParseConundrumOptions": {
-            "type": "object",
-            "properties": {
-                "note_id": {
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "description": "The id of your note. This can be generic, unique to each application,\nbut so-long as the note has the **concept** of an id the id can be\ninserted into certain components to make it easier for the front-end\nto collect data without the need for complicated outside state."
-                },
-                "content": {
-                    "type": "string",
-                    "description": "Your conundrum content, obviously."
-                },
-                "modifiers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/$defs/ConundrumModifier"
-                    },
-                    "description": "Kind of the core piece of Conundrum, the ability to write in a superset\nof Markdown and to compile to a variety of targets, including just\nregular, traditional markdown (the goal is to comply with the Commonmark\nspec eventually, we're still missing some things that are being cleaned\nup by the runtime environment)."
-                },
-                "hide_components": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/$defs/EmbeddableComponentName"
-                    },
-                    "description": "Hide specific components that are incompatable with the target output\nenvironment. This is done automatically with the `.ForAiInput` flag\nfor all AI input components so not to confuse the AI, but there\nmaybe other use cases as well. Any component added here will render\n_nothing_, but it's state will still be applied to the result."
-                },
-                "ui_params": {
-                    "$ref": "#/$defs/UIParams"
-                },
-                "target": {
-                    "$ref": "#/$defs/ConundrumCompileTarget"
-                },
-                "trusted": {
-                    "type": "boolean"
-                }
+    "desc": {
+      "type": "string",
+      "description": "The description, as conundrum content.\nBe smart about what you use here though, because\nthis will be inserted into places like a generated website's\ndescription. The parser will try to remove ridiculus things like\nimages, but it might not catch everything."
+    },
+    "opts": {
+      "$ref": "#/$defs/ParseConundrumOptions",
+      "default": {
+        "note_id": null,
+        "content": "",
+        "modifiers": [],
+        "hide_components": [],
+        "ui_params": {
+          "dark_mode": true,
+          "font_scalar": 1.0,
+          "math_font_scalar": 1.2,
+          "syntax_theme": null
+        },
+        "target": "html",
+        "trusted": false
+      }
+    },
+    "build_target": {
+      "$ref": "#/$defs/ConundrumWebProjectBuilder"
+    },
+    "source": {
+      "$ref": "#/$defs/ConundrumSourceConfig"
+    },
+    "ignore": {
+      "$ref": "#/$defs/IgnoreConfig"
+    }
+  },
+  "required": ["name", "desc", "build_target", "source", "ignore"],
+  "title": "Plans",
+  "description": "Shocker... I've accomplished none of these yet. This is basically just\na placeholder until I get [Fluster](https://flusterapp.com) released and I'm in a better living\nsituation to where I can focus more time on the cli.\n\n- [ ] Allow relative paths being while being executable from anywhere... my\n  *%#@&* pet peeve.\n- [ ] Read from file\n  - [x] yaml\n  - [x] json\n  - [ ] Conundrum (a future goal, once the logic layer is in place)\n- [ ] Allow environment variable overrides (probably going to use figment\n  for this) for the\neasy relative path support.\n- [ ] Accept config file path as parameter.\n- [ ] Allow global and project specific configuration.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ParseConundrumOptions": {
+      "type": "object",
+      "properties": {
+        "note_id": {
+          "type": ["string", "null"],
+          "description": "The id of your note. This can be generic, unique to each application,\nbut so-long as the note has the **concept** of an id the id can be\ninserted into certain components to make it easier for the front-end\nto collect data without the need for complicated outside state."
+        },
+        "content": {
+          "type": "string",
+          "description": "Your conundrum content, obviously."
+        },
+        "modifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ConundrumModifier"
+          },
+          "description": "Kind of the core piece of Conundrum, the ability to write in a superset\nof Markdown and to compile to a variety of targets, including just\nregular, traditional markdown (the goal is to comply with the Commonmark\nspec eventually, we're still missing some things that are being cleaned\nup by the runtime environment)."
+        },
+        "hide_components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EmbeddableComponentName"
+          },
+          "description": "Hide specific components that are incompatable with the target output\nenvironment. This is done automatically with the `.ForAiInput` flag\nfor all AI input components so not to confuse the AI, but there\nmaybe other use cases as well. Any component added here will render\n_nothing_, but it's state will still be applied to the result."
+        },
+        "ui_params": {
+          "$ref": "#/$defs/UIParams"
+        },
+        "target": {
+          "$ref": "#/$defs/ConundrumCompileTarget"
+        },
+        "trusted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "content",
+        "modifiers",
+        "hide_components",
+        "ui_params",
+        "target",
+        "trusted"
+      ],
+      "description": "This is the core 'input' for Conundrum."
+    },
+    "ConundrumModifier": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["HideEmojis"]
+        },
+        {
+          "type": "string",
+          "const": "PreferInlineMarkdownSyntax",
+          "description": "The goal with this flag is to make **some** components collapsable to be\ninline, even when they traditionally are not. This will likely be\nbuggy, producing some good output in some cases but some\nquestionable output in others.\n\nAs the list of component properties grows, this output will become\ncustomizable directly in your note."
+        },
+        {
+          "type": "string",
+          "const": "DecoratedPlainText",
+          "description": "This is really only useful for when your environment can't support any\nother output format."
+        },
+        {
+          "type": "string",
+          "const": "ForAIInput",
+          "description": "Set this flag when the output is intended to be consumed by AI, probably\nwith the `.PreferMarkdownSyntax` flag."
+        },
+        {
+          "type": "string",
+          "const": "ForSearchInput",
+          "description": "When this component is to be used for search text input, all of the\ncomponent jsx and mdx syntax will be removed, leaving only\nsearchable text."
+        },
+        {
+          "type": "string",
+          "const": "CodeBlocksAsIs",
+          "description": "Don't touch the code blocks, just return them exactly as is."
+        },
+        {
+          "type": "string",
+          "const": "Standalone",
+          "description": "Output a standalone application capable of being viewed completely\noffline, with all fonts, javascript and rendered math embedded directly\ninto a single html file."
+        },
+        {
+          "type": "string",
+          "const": "EmbedJavascript",
+          "description": "This is currently required in React environments to work around the\nReact render cycle. Since almost everything is wrapepd in a series\nof iiife's, kind of working like React's useEffect hook, embedding\nthe javascript as a script tag will ensure that the components\nall have the proper listeners applied. So far it comes out to only about\n200 lines of javascript."
+        }
+      ],
+      "description": "The goal with these modifiers is to have a few different compile targets\n(markdown, mdx, jsx, eventually straight to html/js, and then to an AST that\ncan be handled by other UI ecosystems), and these modifiers is how we can\nachieve that.\n\nAll modifiers that start with `TargetXYZ` are applied as sort of a\ncollection of other modifiers, or at least that's how they're intended to\nwork."
+    },
+    "EmbeddableComponentName": {
+      "type": "string",
+      "enum": [
+        "Toc",
+        "Admonition",
+        "Hl",
+        "Highlight",
+        "Ul",
+        "Underline",
+        "Card",
+        "Grid",
+        "Container",
+        "Hr",
+        "Hint",
+        "Quote",
+        "Emoji",
+        "EqRef",
+        "Tabs",
+        "Tab",
+        "Image",
+        "AINoteSummary"
+      ]
+    },
+    "UIParams": {
+      "type": "object",
+      "properties": {
+        "dark_mode": {
+          "type": "boolean"
+        },
+        "font_scalar": {
+          "type": "number",
+          "format": "float",
+          "description": "A number 0-n, where n > 1 increases the fontsize."
+        },
+        "math_font_scalar": {
+          "type": "number",
+          "format": "float"
+        },
+        "syntax_theme": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SupportedCodeBlockTheme"
             },
-            "required": [
-                "content",
-                "modifiers",
-                "hide_components",
-                "ui_params",
-                "target",
-                "trusted"
-            ],
-            "description": "This is the core 'input' for Conundrum."
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": ["dark_mode", "font_scalar", "math_font_scalar"]
+    },
+    "SupportedCodeBlockTheme": {
+      "type": "string",
+      "enum": [
+        "1337",
+        "Coldark-Cold",
+        "Coldark-Dark",
+        "DarkNeon",
+        "Dracula",
+        "GitHub",
+        "Monokai Extended",
+        "Monokai Extended Bright",
+        "Monokai Extended Light",
+        "Monokai Extended Origin",
+        "Nord",
+        "OneHalfDark",
+        "OneHalfLight",
+        "Solarized (dark)",
+        "Solarized (light)",
+        "Sublime Snazzy",
+        "TwoDark",
+        "Visual Studio Dark+",
+        "ansi",
+        "base16",
+        "base16-256",
+        "gruvbox-dark",
+        "gruvbox-light",
+        "zenburn"
+      ]
+    },
+    "ConundrumCompileTarget": {
+      "type": "string",
+      "enum": ["jsx", "html", "markdown", "text", "mdx"]
+    },
+    "ConundrumWebProjectBuilder": {
+      "oneOf": [
+        {
+          "type": "string",
+          "const": "next",
+          "description": "When using the **Next.js** provider, your output should point to a file.\nIf it points to a directory, a single `cdrm_output.json` file will\nbe generated in that directory.\n\nUnfortunately, there currently isn't support for multiple files. I plan\nto get around to it, but my to-do list is _long_."
+        }
+      ],
+      "title": "Deprecated",
+      "description": "Moved to the config package."
+    },
+    "ConundrumSourceConfig": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/config-path"
+        },
+        "output": {
+          "$ref": "#/$defs/SourceOutputConfig"
+        }
+      },
+      "required": ["input", "output"]
+    },
+    "config-path": {
+      "type": "string",
+      "title": "string",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$defs": {
+        "ParseConundrumOptions": {
+          "type": "object",
+          "properties": {
+            "note_id": {
+              "type": ["string", "null"],
+              "description": "The id of your note. This can be generic, unique to each application,\nbut so-long as the note has the **concept** of an id the id can be\ninserted into certain components to make it easier for the front-end\nto collect data without the need for complicated outside state."
+            },
+            "content": {
+              "type": "string",
+              "description": "Your conundrum content, obviously."
+            },
+            "modifiers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ConundrumModifier"
+              },
+              "description": "Kind of the core piece of Conundrum, the ability to write in a superset\nof Markdown and to compile to a variety of targets, including just\nregular, traditional markdown (the goal is to comply with the Commonmark\nspec eventually, we're still missing some things that are being cleaned\nup by the runtime environment)."
+            },
+            "hide_components": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/EmbeddableComponentName"
+              },
+              "description": "Hide specific components that are incompatable with the target output\nenvironment. This is done automatically with the `.ForAiInput` flag\nfor all AI input components so not to confuse the AI, but there\nmaybe other use cases as well. Any component added here will render\n_nothing_, but it's state will still be applied to the result."
+            },
+            "ui_params": {
+              "$ref": "#/$defs/UIParams"
+            },
+            "target": {
+              "$ref": "#/$defs/ConundrumCompileTarget"
+            },
+            "trusted": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "content",
+            "modifiers",
+            "hide_components",
+            "ui_params",
+            "target",
+            "trusted"
+          ],
+          "description": "This is the core 'input' for Conundrum."
         },
         "ConundrumModifier": {
-            "oneOf": [
-                {
-                    "type": "string",
-                    "enum": [
-                        "HideEmojis"
-                    ]
-                },
-                {
-                    "type": "string",
-                    "const": "PreferInlineMarkdownSyntax",
-                    "description": "The goal with this flag is to make **some** components collapsable to be\ninline, even when they traditionally are not. This will likely be\nbuggy, producing some good output in some cases but some\nquestionable output in others.\n\nAs the list of component properties grows, this output will become\ncustomizable directly in your note."
-                },
-                {
-                    "type": "string",
-                    "const": "DecoratedPlainText",
-                    "description": "This is really only useful for when your environment can't support any\nother output format."
-                },
-                {
-                    "type": "string",
-                    "const": "ForAIInput",
-                    "description": "Set this flag when the output is intended to be consumed by AI, probably\nwith the `.PreferMarkdownSyntax` flag."
-                },
-                {
-                    "type": "string",
-                    "const": "ForSearchInput",
-                    "description": "When this component is to be used for search text input, all of the\ncomponent jsx and mdx syntax will be removed, leaving only\nsearchable text."
-                },
-                {
-                    "type": "string",
-                    "const": "CodeBlocksAsIs",
-                    "description": "Don't touch the code blocks, just return them exactly as is."
-                },
-                {
-                    "type": "string",
-                    "const": "Standalone",
-                    "description": "Output a standalone application capable of being viewed completely\noffline, with all fonts, javascript and rendered math embedded directly\ninto a single html file."
-                },
-                {
-                    "type": "string",
-                    "const": "EmbedJavascript",
-                    "description": "This is currently required in React environments to work around the\nReact render cycle. Since almost everything is wrapepd in a series\nof iiife's, kind of working like React's useEffect hook, embedding\nthe javascript as a script tag will ensure that the components\nall have the proper listeners applied. So far it comes out to only about\n200 lines of javascript."
-                }
-            ],
-            "description": "The goal with these modifiers is to have a few different compile targets\n(markdown, mdx, jsx, eventually straight to html/js, and then to an AST that\ncan be handled by other UI ecosystems), and these modifiers is how we can\nachieve that.\n\nAll modifiers that start with `TargetXYZ` are applied as sort of a\ncollection of other modifiers, or at least that's how they're intended to\nwork."
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["HideEmojis"]
+            },
+            {
+              "type": "string",
+              "const": "PreferInlineMarkdownSyntax",
+              "description": "The goal with this flag is to make **some** components collapsable to be\ninline, even when they traditionally are not. This will likely be\nbuggy, producing some good output in some cases but some\nquestionable output in others.\n\nAs the list of component properties grows, this output will become\ncustomizable directly in your note."
+            },
+            {
+              "type": "string",
+              "const": "DecoratedPlainText",
+              "description": "This is really only useful for when your environment can't support any\nother output format."
+            },
+            {
+              "type": "string",
+              "const": "ForAIInput",
+              "description": "Set this flag when the output is intended to be consumed by AI, probably\nwith the `.PreferMarkdownSyntax` flag."
+            },
+            {
+              "type": "string",
+              "const": "ForSearchInput",
+              "description": "When this component is to be used for search text input, all of the\ncomponent jsx and mdx syntax will be removed, leaving only\nsearchable text."
+            },
+            {
+              "type": "string",
+              "const": "CodeBlocksAsIs",
+              "description": "Don't touch the code blocks, just return them exactly as is."
+            },
+            {
+              "type": "string",
+              "const": "Standalone",
+              "description": "Output a standalone application capable of being viewed completely\noffline, with all fonts, javascript and rendered math embedded directly\ninto a single html file."
+            },
+            {
+              "type": "string",
+              "const": "EmbedJavascript",
+              "description": "This is currently required in React environments to work around the\nReact render cycle. Since almost everything is wrapepd in a series\nof iiife's, kind of working like React's useEffect hook, embedding\nthe javascript as a script tag will ensure that the components\nall have the proper listeners applied. So far it comes out to only about\n200 lines of javascript."
+            }
+          ],
+          "description": "The goal with these modifiers is to have a few different compile targets\n(markdown, mdx, jsx, eventually straight to html/js, and then to an AST that\ncan be handled by other UI ecosystems), and these modifiers is how we can\nachieve that.\n\nAll modifiers that start with `TargetXYZ` are applied as sort of a\ncollection of other modifiers, or at least that's how they're intended to\nwork."
         },
         "EmbeddableComponentName": {
-            "type": "string",
-            "enum": [
-                "Toc",
-                "Admonition",
-                "Hl",
-                "Highlight",
-                "Ul",
-                "Underline",
-                "Card",
-                "Grid",
-                "Container",
-                "Hr",
-                "Hint",
-                "Emoji",
-                "EqRef",
-                "Tabs",
-                "Tab",
-                "AINoteSummary"
-            ]
+          "type": "string",
+          "enum": [
+            "Toc",
+            "Admonition",
+            "Hl",
+            "Highlight",
+            "Ul",
+            "Underline",
+            "Card",
+            "Grid",
+            "Container",
+            "Hr",
+            "Hint",
+            "Quote",
+            "Emoji",
+            "EqRef",
+            "Tabs",
+            "Tab",
+            "Image",
+            "AINoteSummary"
+          ]
         },
         "UIParams": {
-            "type": "object",
-            "properties": {
-                "dark_mode": {
-                    "type": "boolean"
-                },
-                "font_scalar": {
-                    "type": "number",
-                    "format": "float",
-                    "description": "A number 0-n, where n > 1 increases the fontsize."
-                },
-                "math_font_scalar": {
-                    "type": "number",
-                    "format": "float"
-                },
-                "syntax_theme": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/$defs/SupportedCodeBlockTheme"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
-                }
+          "type": "object",
+          "properties": {
+            "dark_mode": {
+              "type": "boolean"
             },
-            "required": [
-                "dark_mode",
-                "font_scalar",
-                "math_font_scalar"
-            ]
+            "font_scalar": {
+              "type": "number",
+              "format": "float",
+              "description": "A number 0-n, where n > 1 increases the fontsize."
+            },
+            "math_font_scalar": {
+              "type": "number",
+              "format": "float"
+            },
+            "syntax_theme": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/SupportedCodeBlockTheme"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": ["dark_mode", "font_scalar", "math_font_scalar"]
         },
         "SupportedCodeBlockTheme": {
-            "type": "string",
-            "enum": [
-                "1337",
-                "Coldark-Cold",
-                "Coldark-Dark",
-                "DarkNeon",
-                "Dracula",
-                "GitHub",
-                "Monokai Extended",
-                "Monokai Extended Bright",
-                "Monokai Extended Light",
-                "Monokai Extended Origin",
-                "Nord",
-                "OneHalfDark",
-                "OneHalfLight",
-                "Solarized (dark)",
-                "Solarized (light)",
-                "Sublime Snazzy",
-                "TwoDark",
-                "Visual Studio Dark+",
-                "ansi",
-                "base16",
-                "base16-256",
-                "gruvbox-dark",
-                "gruvbox-light",
-                "zenburn"
-            ]
+          "type": "string",
+          "enum": [
+            "1337",
+            "Coldark-Cold",
+            "Coldark-Dark",
+            "DarkNeon",
+            "Dracula",
+            "GitHub",
+            "Monokai Extended",
+            "Monokai Extended Bright",
+            "Monokai Extended Light",
+            "Monokai Extended Origin",
+            "Nord",
+            "OneHalfDark",
+            "OneHalfLight",
+            "Solarized (dark)",
+            "Solarized (light)",
+            "Sublime Snazzy",
+            "TwoDark",
+            "Visual Studio Dark+",
+            "ansi",
+            "base16",
+            "base16-256",
+            "gruvbox-dark",
+            "gruvbox-light",
+            "zenburn"
+          ]
         },
         "ConundrumCompileTarget": {
-            "type": "string",
-            "enum": [
-                "jsx",
-                "html",
-                "markdown",
-                "text",
-                "mdx"
-            ]
+          "type": "string",
+          "enum": ["jsx", "html", "markdown", "text", "mdx"]
         },
         "ConundrumWebProjectBuilder": {
-            "oneOf": [
-                {
-                    "type": "string",
-                    "const": "next",
-                    "description": "When using the **Next.js** provider, your output should point to a file.\nIf it points to a directory, a single `cdrm_output.json` file will\nbe generated in that directory.\n\nUnfortunately, there currently isn't support for multiple files. I plan\nto get around to it, but my to-do list is _long_."
-                }
-            ],
-            "title": "Plans",
-            "description": "- [ ] Next\n- [ ] Vite\n\n### Planned server providers doing basically the same thing\nThis probably seems like a lot for someone so far behind, but thanks to the\namazing FFI libraries in Rust this will actually be really straight forward.\n\n- [ ] Node\n- [ ] Rust\n- [ ] Go\n- [ ] Python"
+          "oneOf": [
+            {
+              "type": "string",
+              "const": "next",
+              "description": "When using the **Next.js** provider, your output should point to a file.\nIf it points to a directory, a single `cdrm_output.json` file will\nbe generated in that directory.\n\nUnfortunately, there currently isn't support for multiple files. I plan\nto get around to it, but my to-do list is _long_."
+            }
+          ],
+          "title": "Deprecated",
+          "description": "Moved to the config package."
         },
-        "ConundrumSourceConfig": {
-            "type": "object",
-            "properties": {
-                "input": {
-                    "type": "string"
-                },
-                "output": {
-                    "$ref": "#/$defs/SourceOutputConfig"
-                }
-            },
-            "required": [
-                "input",
-                "output"
-            ]
+        "ConundrumSourceConfig": false,
+        "config-path": false
+      }
+    },
+    "SourceOutputConfig": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
         },
-        "SourceOutputConfig": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string"
-                },
-                "format": {
-                    "$ref": "#/$defs/ConundrumCompileTarget"
-                }
-            },
-            "required": [
-                "path",
-                "format"
-            ]
+        "format": {
+          "$ref": "#/$defs/ConundrumCompileTarget"
         }
+      },
+      "required": ["path", "format"]
+    },
+    "IgnoreConfig": {
+      "type": "object",
+      "properties": {
+        "respect_gitignore": {
+          "type": "boolean"
+        }
+      },
+      "required": ["respect_gitignore"]
     }
+  }
 }

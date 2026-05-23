@@ -77,12 +77,12 @@ export const nestedContent = defineDocs({
     dir: "content/nested_content/",
 });
 
-export const myWork = defineDocs({
-    dir: "content/my_work",
-    docs: {
-        // mdxOptions: config.mdxOptions,
-    },
-});
+// export const myWork = defineDocs({
+//     dir: "content/my_work",
+//     docs: {
+//         // mdxOptions: config.mdxOptions,
+//     },
+// });
 
 export const documentation = defineDocs({
     dir: "docs",

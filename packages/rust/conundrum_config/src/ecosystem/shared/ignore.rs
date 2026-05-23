@@ -5,3 +5,9 @@ use serde::{Deserialize, Serialize};
 pub struct IgnoreConfig {
     pub respect_gitignore: bool,
 }
+
+impl Default for IgnoreConfig {
+    fn default() -> Self {
+        Self { respect_gitignore: true }
+    }
+}

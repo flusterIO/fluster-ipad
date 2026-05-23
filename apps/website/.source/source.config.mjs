@@ -59,12 +59,6 @@ var nestedContent = defineDocs({
   // type: "doc",
   dir: "content/nested_content/"
 });
-var myWork = defineDocs({
-  dir: "content/my_work",
-  docs: {
-    // mdxOptions: config.mdxOptions,
-  }
-});
 var documentation = defineDocs({
   dir: "docs"
   // docs: {
@@ -81,6 +75,5 @@ export {
   documentation,
   legal,
   metaFiles,
-  myWork,
   nestedContent
 };

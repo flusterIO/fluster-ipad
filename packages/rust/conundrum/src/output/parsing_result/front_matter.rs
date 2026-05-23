@@ -74,21 +74,16 @@ pub trait FrontMatterParser {
 impl FrontMatterParser for FrontMatterResult {
     fn from_gray_matter(data: Pod) -> FrontMatterResult {
         let mut p = data.clone();
-        println!("Data: {:#?}", data);
-        let fm =
-            FrontMatterResult { ignored_parsers: FrontMatterResult::get_string_vector(&mut p,
-                                                                                      FrontMatterKey::IgnoreParsers),
-                                subject: FrontMatterResult::get_optional_string_by_key(&mut p,
-                                                                                       FrontMatterKey::Subject),
-                                topic: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Topic),
-                                file_path: FrontMatterResult::get_optional_string_by_key(&mut p,
-                                                                                         FrontMatterKey::FilePath),
-                                title: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Title),
-                                user_defined_id: FrontMatterResult::get_optional_string_by_key(&mut p,
-                                                                                               FrontMatterKey::Id),
-                                summary: FrontMatterResult::get_optional_string_by_key(&mut p,
-                                                                                       FrontMatterKey::Summary) };
-        println!("Frontmatter: {:#?}", fm);
-        fm
+
+        FrontMatterResult { ignored_parsers: FrontMatterResult::get_string_vector(&mut p,
+                                                                                  FrontMatterKey::IgnoreParsers),
+                            subject: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Subject),
+                            topic: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Topic),
+                            file_path: FrontMatterResult::get_optional_string_by_key(&mut p,
+                                                                                     FrontMatterKey::FilePath),
+                            title: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Title),
+                            user_defined_id: FrontMatterResult::get_optional_string_by_key(&mut p,
+                                                                                           FrontMatterKey::Id),
+                            summary: FrontMatterResult::get_optional_string_by_key(&mut p, FrontMatterKey::Summary) }
     }
 }

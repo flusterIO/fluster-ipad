@@ -88,6 +88,9 @@ impl ConundrumParser<MarkdownLinkResult> for MarkdownLinkResult {
                                                                                       input.input.reset(&start);
                                                                                   })?;
 
+        '('.parse_next(input).inspect_err(|_| {
+                                  input.input.reset(&start);
+                              })?;
         let url: MarkdownLinkTarget =
             alt((link_by_dom_id_target, audio_timestamp_link_target, general_link_target)).parse_next(input)?;
 

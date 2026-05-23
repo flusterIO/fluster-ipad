@@ -1,10 +1,10 @@
-use conundrum_cli::models::config::CliConfig;
+use conundrum_config::ecosystem::project::project_config::ProjectConfig;
 use schemars::schema_for;
 
 use crate::workspace_utils::get_workspace_root_duplicate::get_workspace_root;
 
 pub fn write_json_schemas() {
-    let schema = schema_for!(CliConfig);
+    let schema = schema_for!(ProjectConfig);
     let root = get_workspace_root();
     let schemas_output_dir = std::path::Path::new(&root).join("packages")
                                                         .join("rust")

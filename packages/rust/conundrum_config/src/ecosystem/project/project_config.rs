@@ -1,7 +1,8 @@
-use std::{env, path::PathBuf, sync::Arc};
+use std::{env, path::PathBuf, sync::Arc}; 
+use rayon::prelude::*;
 
 use conundrum::{
-    ecosystem::glue::conundrum_web_types::conundrum_web_builder::ConundrumWebProjectBuilder,
+    ecosystem::glue::conundrum_web_types::{builder_output::next::BlogFileSummary, conundrum_web_builder::ConundrumWebProjectBuilder},
     lang::{
         constants::{file_names::PROJECT_CONFIG_FILE_NAME, file_types::ParsableFileType},
         runtime::{
@@ -10,22 +11,17 @@ use conundrum::{
         },
     },
 };
-use figment::{
-    Figment,
-    providers::{Format, Toml},
-};
 use ignore::{DirEntry, Error, WalkState};
 use parking_lot::Mutex;
-use schemars::JsonSchema;
+use schemars::{JsonSchema};
 use serde::{Deserialize, Serialize};
+use config::{Config, Environment, File};
 
 use crate::{
-    ecosystem::{project::project_file_description::ProjectFileDescription, shared::ignore::IgnoreConfig},
-    errors::config_error::{ConfigError, ConfigResult},
-    traits::{
+    ecosystem::{project::project_file_description::ProjectFileDescription, shared::ignore::IgnoreConfig}, errors::config_error::{ ConfigError, ConfigResult}, models::config_path::ConfigPath, traits::{
         config_file::ConfigFile,
         file_collection_producer::{FileCollectionRequest, FileCollectionVisitor},
-    },
+    }
 };
 
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
@@ -34,10 +30,22 @@ pub struct SourceOutputConfig {
     pub format: ConundrumCompileTarget,
 }
 
+impl Default for SourceOutputConfig {
+    fn default() -> Self {
+        Self { path: "./cdrm_output".to_string(), format: Default::default() }
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
 pub struct ConundrumSourceConfig {
-    pub input: String,
+    pub input: ConfigPath,
     pub output: SourceOutputConfig,
+}
+
+impl Default for ConundrumSourceConfig {
+    fn default() -> Self {
+        Self { input: ConfigPath::from_str_or_panic("./cdrm"), output: Default::default() }
+    }
 }
 
 pub fn default_conundrum_opts() -> ParseConundrumOptions {
@@ -73,8 +81,23 @@ pub struct ProjectConfig {
     pub opts: ParseConundrumOptions,
     pub build_target: ConundrumWebProjectBuilder,
     pub source: ConundrumSourceConfig,
+    #[schemars(skip)]
+    #[serde(skip)]
     pub root: PathBuf,
     pub ignore: IgnoreConfig,
+}
+
+impl Default for ProjectConfig {
+    fn default() -> Self {
+        Self { name: "Conundrum".to_string(),
+        desc: "Built with the Conundrum compiler. See Flusterapp.com for more information.".to_string(),
+        opts: Default::default(),
+        build_target: Default::default(),
+        source: Default::default(),
+        root: Default::default(),
+        ignore: Default::default()
+        }
+    }
 }
 
 pub fn match_any_conundrum_file(p: DirEntry) -> bool {
@@ -86,15 +109,25 @@ pub fn match_any_conundrum_file(p: DirEntry) -> bool {
 }
 
 impl ProjectConfig {
+    pub fn get_blog_summaries(&self) -> ConfigResult<Vec<BlogFileSummary>>{
+        let r = self.get_files()?.par_iter().map(|item| {
+            item.to_blog_summary()
+        }).collect::<Vec<BlogFileSummary>>();
+        Ok(r)
+    }
     pub fn get_files(&self) -> ConfigResult<Vec<ProjectFileDescription>> {
-        let mut items: Arc<Mutex<Vec<ProjectFileDescription>>> = Arc::new(Mutex::new(Vec::new()));
-        let root_path = env::current_dir().unwrap_or_default();
-        let req = FileCollectionRequest { root: self.root.clone(),
+        let items: Arc<Mutex<Vec<ProjectFileDescription>>> = Arc::new(Mutex::new(Vec::new()));
+        let root_path = self.root.clone();
+        let req = FileCollectionRequest { root: root_path.clone(),
                                           respect_gitignore: self.ignore.respect_gitignore,
                                           should_parse: match_any_conundrum_file,
                                           callback: || {
                                               Box::new(|entry| {
                                                   if let Ok(res) = entry {
+                                                      let f = res.path().to_path_buf();
+                                                      let file_extension = f.extension().map(|s| s.to_str()).flatten();
+                                                      if file_extension.is_some_and(ParsableFileType::extension_is_conundrum_file) {
+
                                                       if let Ok(file_content) = std::fs::read_to_string(res.path()) {
                                                           if let Ok(parse_response) = run_conundrum(self.opts.duplicate_with_new_content(file_content)) {
                                                                                                                         let mut locked_items = items.lock_arc();
@@ -103,16 +136,20 @@ impl ProjectConfig {
                                                               root_path: root_path.clone(),
                                                           results: parse_response.clone()
                                                           });
-
                                                           }
                                                       }
-                                                  };
-                                                  WalkState::Continue
+                                                      WalkState::Continue
+                                                  } else {
+                                                      WalkState::Skip
+                                                  }
+                                                      } else {
+                                                      WalkState::Skip
+                                                      }
                                               })
                                           } };
 
         if let Err(visit_err) = self.visit_files(req) {
-            eprintln!("Error: {}", visit_err);
+            eprintln!("File Error: {}", visit_err);
         }
         let returned_items = items.lock();
         Ok(returned_items.to_vec())
@@ -139,19 +176,44 @@ impl ConfigFile for ProjectConfig {
         PROJECT_CONFIG_FILE_NAME
     }
 
-    fn figment() -> Figment {
-        let file_name = Self::filename();
-        Figment::new().merge(Toml::file(file_name))
-                      .merge(figment::providers::Json::file(file_name))
-                      .merge(figment::providers::YamlExtended::file(file_name))
+
+    fn read(config_path_override: &Option<String>) -> crate::errors::config_error::ConfigResult<Self>
+        where Self: Sized {
+        //     let config_path = match config_path_override {
+        //         Some(s) => {
+        //             let p = std::path::Path::new(s);
+        //             match p.is_dir() {
+        //                 true => {
+        //                     p.join(format!("{}.json", PROJECT_CONFIG_FILE_NAME)).to_path_buf()
+        //                 },
+        //                 false => {
+        //                     p.to_path_buf()
+        //                 }
+        //             }
+        //         },
+        //         None => {
+        //             if let Ok(res) = env::current_dir() {
+        //                 res
+        //             } else {
+        //                 panic!("Could not determine the projects root directory.")
+        //             }
+        //         }
+        // };
+        let c = Config::builder()
+            .add_source(File::with_name(PROJECT_CONFIG_FILE_NAME))
+            .add_source(Environment::with_prefix("CDRM"))
+            .build()
+            .map_err(|e| {
+                log::error!("Config Error: {}", e);
+                ConfigError::OhShit
+            })?;
+
+        let s: Self = c.try_deserialize().map_err(|e| {
+            log::error!("Config Error: {}", e);
+            ConfigError::SerializationError
+        })?;
+
+        Ok(s)
     }
 
-    fn read<'a>() -> crate::errors::config_error::ConfigResult<Self>
-        where Self: Sized + Deserialize<'a> {
-        let f: Self = Self::figment().extract().map_err(|e| {
-                                                    std::eprintln!("Error: {}", e);
-                                                    ConfigError::OhShit
-                                                })?;
-        Ok(f)
-    }
 }

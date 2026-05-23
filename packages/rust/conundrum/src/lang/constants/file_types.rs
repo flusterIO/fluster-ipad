@@ -8,3 +8,9 @@ pub enum ParsableFileType {
     #[strum(to_string = "cdrm")]
     Cdrm,
 }
+
+impl ParsableFileType {
+    pub fn extension_is_conundrum_file(ext: &str) -> bool {
+        [Self::Cdrm.to_string().as_str(), "mdx", "md"].contains(&ext)
+    }
+}

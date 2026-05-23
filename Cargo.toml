@@ -19,7 +19,7 @@ members = [
     "packages/rust/conundrum_logic/codegen/tests/custom_root",
     "packages/rust/conundrum_db",
     "packages/rust/conundrum_config",
-    "packages/rust/conundrum_fs", "packages/rust/conundrum_macros",
+    "packages/rust/conundrum_fs", "packages/rust/conundrum_macros", "packages/rust/conundrum_context", "packages/rust/conundrum_server_rs",
 ]
 
 
