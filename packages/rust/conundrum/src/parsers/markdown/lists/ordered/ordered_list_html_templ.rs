@@ -5,7 +5,7 @@ use crate::parsers::markdown::lists::ordered::ordered_list_item::ordered_list_it
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <ol class="w-full max-w-[1080px] list-decimal list-numeric list-dec">
+/// <ol class="w-full max-w-[1080px] list-decimal">
 /// {% for item in items %}
 /// {{item.render()? | safe}}
 /// {% endfor %}
