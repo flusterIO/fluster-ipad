@@ -34,8 +34,8 @@ enum Commands {
 
 #[tokio::main]
 async fn main() {
-    env_logger::init();
     let args = Args::parse();
+    pretty_env_logger::formatted_builder().filter_level(args.verbose.log_level_filter()).init();
     match &args.command {
         Some(Commands::ParseConundrum { file_path,
                                         output, }) => {

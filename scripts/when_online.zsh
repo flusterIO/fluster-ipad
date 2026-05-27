@@ -1,7 +1,7 @@
-cd /Users/bigsexy/Desktop/swift/Fluster/packages/rust/conundrum_cli/
+cd /Users/bigsexy/Desktop/swift/Fluster/packages/rust/conundrum/
 
-cargo add figment
+cargo add uniffi --features build
+cargo add mmdflux
+cargo add memchr
+
 cargo fetch
-
-cd /Users/bigsexy/Desktop/swift/Fluster/apps/website/
-cargo run --bin cdrm compile-directory

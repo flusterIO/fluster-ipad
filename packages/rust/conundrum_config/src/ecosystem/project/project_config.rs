@@ -1,13 +1,12 @@
-use std::{env, path::PathBuf, sync::Arc}; 
+use std::{path::PathBuf, sync::Arc}; 
+use log::{info};
 use rayon::prelude::*;
-
 use conundrum::{
-    ecosystem::glue::conundrum_web_types::{builder_output::next::BlogFileSummary, conundrum_web_builder::ConundrumWebProjectBuilder},
+    ecosystem::{glue::conundrum_web_types::{builder_output::next::BlogFileSummary, conundrum_web_builder::ConundrumWebProjectBuilder}},
     lang::{
         constants::{file_names::PROJECT_CONFIG_FILE_NAME, file_types::ParsableFileType},
         runtime::{
-            run_conundrum::{ParseConundrumOptions, run_conundrum},
-            state::{conundrum_error_variant::ConundrumResult, parse_state::ConundrumCompileTarget},
+            run_conundrum::{ParseConundrumOptions, run_conundrum}, state::{conundrum_error_variant::ConundrumResult, parse_state::ConundrumCompileTarget}
         },
     },
 };
@@ -18,8 +17,8 @@ use serde::{Deserialize, Serialize};
 use config::{Config, Environment, File};
 
 use crate::{
-    ecosystem::{project::project_file_description::ProjectFileDescription, shared::ignore::IgnoreConfig}, errors::config_error::{ ConfigError, ConfigResult}, models::config_path::ConfigPath, traits::{
-        config_file::ConfigFile,
+    ecosystem::{project::project_file_description::ProjectFileDescription, shared::{ignore::IgnoreConfig}}, errors::config_error::{ ConfigError, ConfigResult}, models::config_path::ConfigPath, traits::{
+        config_file::{ConfigFile},
         file_collection_producer::{FileCollectionRequest, FileCollectionVisitor},
     }, utils::cwd::cwd
 };
@@ -87,13 +86,17 @@ pub struct ProjectConfig {
 
 impl Default for ProjectConfig {
     fn default() -> Self {
+        // let log_level_string = CdrmEnvVariable::LogLevel.read().unwrap_or(String::from("INFO"));
+        // let log_filter = env_filter::Builder::new()
+        //     .parse(&log_level_string)
+        //     .build();
         Self { name: "Conundrum".to_string(),
         desc: "Built with the Conundrum compiler. See Flusterapp.com for more information.".to_string(),
         opts: Default::default(),
         build_target: Default::default(),
         source: Default::default(),
         root: Default::default(),
-        ignore: Default::default()
+        ignore: Default::default(),
         }
     }
 }
@@ -116,7 +119,7 @@ impl ProjectConfig {
     pub fn get_files(&self) -> ConfigResult<Vec<ProjectFileDescription>> {
         let items: Arc<Mutex<Vec<ProjectFileDescription>>> = Arc::new(Mutex::new(Vec::new()));
         let root_path = self.source.input.resolve();
-        println!("Root Path: {:#?}", root_path);
+        info!("Getting files from the root at {:?}", root_path);
         let req = FileCollectionRequest { root: root_path.clone(),
                                           respect_gitignore: self.ignore.respect_gitignore,
                                           should_parse: match_any_conundrum_file,
@@ -124,10 +127,9 @@ impl ProjectConfig {
                                               Box::new(|entry| {
                                                   if let Ok(res) = entry {
                                                       let f = res.path().to_path_buf();
+                                                      info!("Parsing file at {:?}", f);
                                                       let file_extension = f.extension().map(|s| s.to_str()).flatten();
-                                                      println!("File Extension: {:#?}", file_extension);
                                                       if file_extension.is_some_and(ParsableFileType::extension_is_conundrum_file) {
-
                                                       if let Ok(file_content) = std::fs::read_to_string(f.clone()) {
                                                           if let Ok(parse_response) = run_conundrum(self.opts.duplicate_with_new_content(file_content)) {
                                                                                                                         let mut locked_items = items.lock_arc();
@@ -199,7 +201,6 @@ impl ConfigFile for ProjectConfig {
         })?;
 
         s.root = cwd()?;
-
         Ok(s)
     }
 

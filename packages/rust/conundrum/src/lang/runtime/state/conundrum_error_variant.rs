@@ -6,7 +6,10 @@ use winnow::{
     error::{ErrMode, ParserError},
 };
 
-use crate::lang::runtime::{state::conundrum_error::ConundrumError, traits::conundrum_input::ConundrumInput};
+use crate::{
+    ecosystem::environment_variables::cdrm_env_variable::CdrmEnvVariable,
+    lang::runtime::{state::conundrum_error::ConundrumError, traits::conundrum_input::ConundrumInput},
+};
 
 #[typeshare::typeshare]
 #[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Clone)]
@@ -34,6 +37,8 @@ pub enum ConundrumErrorVariant {
     UserFacingMissingOrIncorrectProperty(ConundrumError),
     #[error("This is a general parser fail. We can do much better with these error messages.")]
     InternalParserError(ConundrumError),
+    #[error("Environment variable not found: `{0}`")]
+    EnvVarNotFound(CdrmEnvVariable),
 }
 
 impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {

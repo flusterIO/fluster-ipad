@@ -79,7 +79,6 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
-    --radius: var(--border-radius);
     --color-border: hsl(var(--border));
     --color-fd-background: var(--color-fd-background);
     --color-fd-foreground: var(--color-fd-foreground);
@@ -2124,6 +2123,9 @@
   }
   .gap-y-0 {
     row-gap: calc(var(--spacing) * 0);
+  }
+  .gap-y-1 {
+    row-gap: calc(var(--spacing) * 1);
   }
   .gap-y-2 {
     row-gap: calc(var(--spacing) * 2);
@@ -6200,6 +6202,11 @@
   .\[\&\>p\]\:my-2 {
     &>p {
       margin-block: calc(var(--spacing) * 2);
+    }
+  }
+  .\[\&\>p\]\:my-3 {
+    &>p {
+      margin-block: calc(var(--spacing) * 3);
     }
   }
   .\[\&\>p\]\:mt-2 {

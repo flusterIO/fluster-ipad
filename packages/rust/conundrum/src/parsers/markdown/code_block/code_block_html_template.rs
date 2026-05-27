@@ -49,7 +49,6 @@ impl CodeBlockHTMLTemplate {
                language: &SupportedCodeBlockSyntax,
                dark_mode: &bool)
                -> Self {
-        println!("Title: {:#?}", title);
         let file_icon = match &title {
             Some(n) => devicons::icon_for_file(n,
                                                &Some(match dark_mode {

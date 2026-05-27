@@ -1,5 +1,8 @@
 use crate::errors::config_error::ConfigResult;
+use clap_verbosity::{InfoLevel, LogLevel, Verbosity};
 use figment_json5::Json5;
+
+pub type Default_Verbosity = InfoLevel;
 
 /// Any 'config' that can be reperesented as an independent file.
 pub trait ConfigFile: Default {

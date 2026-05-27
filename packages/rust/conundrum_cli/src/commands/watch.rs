@@ -5,7 +5,6 @@ use crate::{
 use conundrum_config::ecosystem::project::project_config::ProjectConfig;
 use notify::{RecommendedWatcher, RecursiveMode, Watcher};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::path::Path;
 
 pub async fn watch_directory(config: &ProjectConfig) -> ConundrumCliResult<()> {
     let (tx, rx) = std::sync::mpsc::channel();
@@ -23,7 +22,6 @@ pub async fn watch_directory(config: &ProjectConfig) -> ConundrumCliResult<()> {
     for res in rx {
         match res {
             Ok(event) => {
-                println!("Event: {:#?}", event.source());
                 let files = config.get_files()?;
                 write_next_output(files.par_iter().map(|item| item.to_blog_summary()).collect(), config)?;
             }
