@@ -6,7 +6,7 @@ mod environments;
 mod errors;
 mod models;
 mod utils;
-use clap_verbosity::{InfoLevel, Verbosity};
+use clap_verbosity::{ErrorLevel, InfoLevel, Verbosity};
 
 /// A simple CLI application built with Clap.
 #[derive(Parser, Debug)]
@@ -15,7 +15,7 @@ struct Args {
     #[command(subcommand)]
     command: Option<Commands>,
     #[command(flatten)]
-    verbose: Verbosity<InfoLevel>,
+    verbose: Verbosity<ErrorLevel>,
 }
 
 #[derive(Subcommand, Debug)]

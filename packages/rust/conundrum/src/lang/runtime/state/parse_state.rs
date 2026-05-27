@@ -1,28 +1,19 @@
-use dashmap::DashMap;
 use parking_lot::Mutex;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use serde_with::SerializeDisplay;
 use std::{collections::HashMap, sync::Arc};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
-use winnow::error::ErrMode;
 
 use crate::{
     lang::runtime::state::{
-        citation_list::CitationList,
-        conundrum_error::ConundrumError,
-        conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-        dom_data::DomData,
-        footnote_manager::{FootnoteData, FootnoteManager},
-        ui_params::UIParams,
+        citation_list::CitationList, dom_data::DomData, footnote_manager::FootnoteManager, ui_params::UIParams,
     },
     output::{
         general::component_constants::parser_ids::ParserId, parsing_result::mdx_parsing_result::MdxParsingResult,
     },
-    parsers::markdown::{
-        heading_sluggger::Slugger,
-        markdown_extensions::footnote::footnote_result::{FootnoteResult, RenderedFootnoteResult},
-    },
+    parsers::markdown::heading_sluggger::Slugger,
 };
 
 /// The goal with these modifiers is to have a few different compile targets
@@ -113,7 +104,7 @@ impl ConundrumCompileTarget {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct ParseState {
     pub data: MdxParsingResult,
     pub bib: CitationList,
@@ -123,6 +114,7 @@ pub struct ParseState {
     pub modifiers: Vec<ConundrumModifier>,
     /// The equation count, for those sweet numbered equations..
     pub eq_count: u32,
+    #[serde(skip)]
     pub slugger: Slugger,
     pub last_heading_depth: u16,
     pub last_heading_tab_depth: u16,
@@ -135,6 +127,7 @@ pub struct ParseState {
     pub trusted: bool,
     /// A map of type `Map<The anchor index of the footnote, FootnoteResult>`.
     pub footnotes: FootnoteManager,
+    #[serde(skip)]
     pub highlight_assets: Arc<Mutex<HighlightingAssets>>,
 }
 
@@ -270,5 +263,10 @@ impl ParseState {
 
     pub fn should_ignore_parser(&self, id: &ParserId) -> bool {
         self.data.front_matter.as_ref().is_some_and(|fm| fm.ignored_parsers.iter().any(|x| x == &id.to_string()))
+    }
+
+    pub fn log_state(&self) {
+        let json_state = serde_json::to_string_pretty(&self);
+        println!("State: {}", json_state.expect("Compiles to json successfully."));
     }
 }

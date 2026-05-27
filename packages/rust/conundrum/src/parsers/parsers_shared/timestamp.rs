@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{Parser, ascii::dec_int, combinator::opt, error::ContextError, stream::Stream};
@@ -19,6 +21,16 @@ pub struct Timestamp {
     pub min: i32,
     pub hours: Option<i32>,
     pub sec: i32,
+}
+
+impl Display for Timestamp {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(hours) = self.hours {
+            write!(f, "{}-{}-{}", hours, self.min, self.sec)
+        } else {
+            write!(f, "{}-{}", self.min, self.sec)
+        }
+    }
 }
 
 pub fn timestamp<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResult<Timestamp> {

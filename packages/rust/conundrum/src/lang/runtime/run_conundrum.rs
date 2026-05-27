@@ -91,7 +91,7 @@ impl ParseConundrumOptions {
 }
 
 pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
-    let mut response_data = MdxParsingResult::from_initial_mdx_content(&opts.content);
+    let response_data = MdxParsingResult::from_initial_mdx_content(&opts.content);
     let state = Arc::new(RwLock::new(ParseState { data: response_data.clone(),
                                                   bib: CitationList::default(),
                                                   modifiers: opts.modifiers.clone(),

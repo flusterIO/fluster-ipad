@@ -1,3 +1,5 @@
+use dashmap::DashMap;
+use serde::Serialize;
 use std::collections::HashMap;
 use winnow::error::ErrMode;
 
@@ -18,7 +20,7 @@ use crate::{
     },
 };
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub enum FootnoteData {
     /// The state when the footnote anchor is reached but before the footer is
     /// found.
@@ -40,7 +42,7 @@ impl FootnoteData {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct FootnoteManager(pub HashMap<ConundrumInt, FootnoteData>);
 
 impl FootnoteManager {

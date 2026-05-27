@@ -9,7 +9,7 @@ use crate::{
 use askama::Template;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct PartialFootnote {
     /// The id of the anchor element associated with this footnote.
     pub anchor_id: DOMId,
@@ -19,7 +19,7 @@ pub struct PartialFootnote {
     pub idx: ConundrumInt,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct FootnoteResult {
     /// The rendered Conundrum content representing the body of the footnote.
     pub body: Children,

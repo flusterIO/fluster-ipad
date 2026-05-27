@@ -1,4 +1,6 @@
-#[derive(Default, Debug, Clone)]
+use serde::Serialize;
+
+#[derive(Default, Debug, Clone, Serialize)]
 pub struct CitationList {
     /// A vector of the citationKeys
     pub data: Vec<String>,

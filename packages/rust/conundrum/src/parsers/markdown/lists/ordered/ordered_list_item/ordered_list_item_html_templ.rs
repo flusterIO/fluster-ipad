@@ -26,18 +26,3 @@ pub struct OrderedListItemHtmlTemplate {
     pub heading: String,
     pub body: Option<String>,
 }
-
-/// ## Template (HTML)
-///
-/// ```askama
-/// <ol class="w-full max-w-[1080px] list-disc">
-/// {% for item in items %}
-/// {{item.render()? | safe}}
-/// {% endfor %}
-/// </ol>
-/// ```
-#[derive(Template)]
-#[template(ext = "html", in_doc = true)]
-pub struct OrderedListHtmlTemplate {
-    pub items: Vec<OrderedListHtmlTemplate>,
-}

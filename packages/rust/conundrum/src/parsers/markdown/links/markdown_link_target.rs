@@ -37,3 +37,15 @@ impl HtmlJsComponentResult for MarkdownLinkTarget {
         }
     }
 }
+
+impl PartialEq<&str> for MarkdownLinkTarget {
+    fn eq(&self, other: &&str) -> bool {
+        match self {
+            Self::Url(u) => u.as_str() == *other,
+            Self::DomId(i) => i.0.as_str() == *other,
+            Self::NoteId(i) => i.as_str() == *other,
+            Self::AudioTimestamp(a) => a.to_string().as_str() == *other,
+            Self::VideoTimestamp(v) => v.to_string().as_str() == *other,
+        }
+    }
+}

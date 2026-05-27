@@ -54,13 +54,13 @@ One of the primary motivations for Fluster was to build an application capable o
 With that being said, Fluster still offers searching and tagging features that are unique among the apps that I've used, and I've tried _a lot_. The primary features work like this:
 
 1. Tag
-    - Add as many tags to each note as you like using the `[[#myTag]]` syntax. These are automatically picked up by the Conundrum transpiler, linked to your note, and made searchable throughout your application.
+  - Add as many tags to each note as you like using the `[[#myTag]]` syntax. These are automatically picked up by the Conundrum transpiler, linked to your note, and made searchable throughout your application.
 2. Topics & Subjects
-    - A 'topic' and a 'subject' are basically identical in functionality to the tag, apart from that each note can have at most 1 topic and 1 subject. I'd recommend using these in a sort of hierarchic way, with one being more broad than the other. For a high school student this might look like a set of subjects of 'math', 'physics', 'personal' and a set of topics like 'complex-numbers', 'Newtonian-gravity', and 'finance'.
+  - A 'topic' and a 'subject' are basically identical in functionality to the tag, apart from that each note can have at most 1 topic and 1 subject. I'd recommend using these in a sort of hierarchic way, with one being more broad than the other. For a high school student this might look like a set of subjects of 'math', 'physics', 'personal' and a set of topics like 'complex-numbers', 'Newtonian-gravity', and 'finance'.
 3. Dictionary Entries
-    - Conundrum includes support for embedding dictionary entries directly in your notes and exposing them to a larger 'dictionary' page which can be used to link back to the note where the dictionary entry was created.
-4. Citations
-    - Even if you're not into academic note taking specifically, this tool is something that you should consider giving a try. By making notes searchable by citation, we can support _any_ link type that is supported by BibLatex. You can cite websites (even specific social media channels), books, movies... even events you attended & conversations you had! There are a set of built in snippets to help you complete these entries, and editor support for the Biblatex language to make inserting these citations more reliable.
+  - Conundrum includes support for embedding dictionary entries directly in your notes and exposing them to a larger 'dictionary' page which can be used to link back to the note where the dictionary entry was created.
+4. Citations 
+  - Even if you're not into academic note taking specifically, this tool is something that you should consider giving a try. By making notes searchable by citation, we can support _any_ link type that is supported by BibLatex. You can cite websites (even specific social media channels), books, movies... even events you attended & conversations you had! There are a set of built in snippets to help you complete these entries, and editor support for the Biblatex language to make inserting these citations more reliable.
     - Citations can be formatted by any of more than a dozen included citation formats, with support for arbitrary `.csl` files available in the coming months.[^1]
     - See the embedded `Syntax??` documentation for more information.
 
@@ -81,11 +81,12 @@ If you're worried about the learning curve, don't be! Fluster includes it's own 
     <Image
     src="/assets/images/mockups/mac/mockups/mac_docs_example-front.png"
    alt="An example of Fluster's built-in documentation, in this case for the Card component." 
+   centerSelf
    />
     <Image src="/assets/images/mockups/mac/mockups/emoji_docs-front.png"
-    alt="The included documentation is completely interactive, with a full emoji search panel with over 2,000 options!" />
+    alt="The included documentation is completely interactive, with a full emoji search panel with over 2,000 options!" centerSelf />
     <Image src="/assets/images/mockups/mac/mockups/mac_every_component-front.png"  
-    alt="Conundrum documents every component" />
+    alt="Conundrum documents every component" centerSelf />
 </Grid>
 
 Want to see this in action? The following input:
@@ -129,11 +130,10 @@ I became homeless after a few months of working on this model full time, and sin
 
 It wasn't until around 2 years into using this app that I even considered releasing it, but as the feature list grew I realized that there are no other applications like it, and as it served me so well, I hope this application will also help others learn and study to the best of their abilities.
 
-<Hr> Thank You </Hr>
+--- Thank You :person_raising_hand: ---
 
 I'll save you the boring technical details about the rewrites, but from there it's been a _long_, **long** journey to this current application (you can find the original open source application on Github still), and I just want to say thank you for checking it out. Even if you choose not to subscribe, sharing this application with others will do incredible things towards helping push this model into the physics debate, which is why Fluster was even created in the first place. 
 
 Overall I'm happy with the application so far, but it's not perfect. Please remember... I built this almost completely without internet and most of the time without a power outlet. I didn't even know the Swift or Rust languages when I started... that's 2/3 of the application. There were dozens of times where I had to make a less-than-ideal decision just based on the fact that I didn't have the internet required to install the things I needed to to implement the feature I was aiming for or some other financial limitation, and each of those features will be added to Fluster as soon as I can find a more reliable work environment with access to the internet. This app isn't even half of what it will be in a year, _if_ I can find my way into a better living situation.
-
 
 [^1]: If you really feel like I missed an obvious addition to the list of supported `.csl` files, send me a message! I'm trying to find a balance between the binary size and the scope of the project. Eventually we'll have support for downloadable assets, bringing the best of both worlds and making the entire collection of `.csl` files accessible, but for now that would blow things out of proportion on mobile devices.

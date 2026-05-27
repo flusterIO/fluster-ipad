@@ -66,6 +66,7 @@ use crate::{
 #[typeshare::typeshare]
 #[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct TabsGroup {
+
     /// The styles applied to the active tab. Default: `.card`
     pub emphasis: Option<Emphasis>,
     pub subtle: ConundrumBoolean,

@@ -1,6 +1,8 @@
+use serde::Serialize;
+
 use crate::output::html::dom::dom_id::DOMId;
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, Serialize)]
 pub struct DomData {
     pub id_count: u64,
 }

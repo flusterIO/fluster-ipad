@@ -1,4 +1,5 @@
 use askama::Template;
+use log::debug;
 use serde::Serialize;
 use winnow::{Parser, error::ErrMode, stream::Stream};
 
@@ -76,14 +77,12 @@ impl ConundrumParser<FootnoteAnchor> for FootnoteAnchor {
             }
         };
         let doc_idx = match &found_item {
-        Some(s) =>  match s {
-             FootnoteData::Completed(c) => Ok(c.idx),
-             FootnoteData::Rendered(r) => Ok(r.idx),
-             FootnoteData::Assigned(_) => Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx.to_string()).as_str())))),
-         },
-         None => {
-            Ok(ConundrumInt(mutable_state.footnotes.0.len() as i64))
-         }
+            Some(s) => match s {
+                FootnoteData::Completed(c) => Ok(c.idx),
+                FootnoteData::Rendered(r) => Ok(r.idx),
+                FootnoteData::Assigned(a) => Ok(a.idx),
+            },
+            None => Ok(ConundrumInt(mutable_state.footnotes.0.len() as i64)),
         }?;
         drop(mutable_state);
 

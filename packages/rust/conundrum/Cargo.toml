@@ -105,6 +105,14 @@ memchr = "2.8.1"
 indoc = "2.0.7"
 unicode-case-mapping = "1.0.0"
 palette = { version = "0.7.6", features = ["serde", "rand", "serializing", "random"] }
+smallvec = { version = "1.15.1", features = ["arbitrary", "serde", "const_new", "const_generics"] }
+lexical-parse-float = "1.0.6"
+dashu = { version = "0.4.2", features = ["num-traits", "rand", "serde", "zeroize"] }
+rand = "0.10.1"
+zeroize = "1.8.2"
+zeroize_derive = "1.4.3"
+lexical-parse-integer = "1.0.6"
+log = { version = "0.4.29", features = ["serde"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }
@@ -119,6 +127,7 @@ uniffi = { workspace = true, features = ["wasm-unstable-single-threaded"] }
 tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }
 katex-rs = {version = "0.2.4", features = ["wasm", "backtrace"]}
 rust_decimal = { version = "1.42.0", features = ["maths-nopanic", "rand", "serde-with-arbitrary-precision", "wasm", "ndarray"] }
+conundrum_macros = { path = "../conundrum_macros/" }
 
 # [target.'cfg(debug_assertions)'.dependencies]
 # winnow = { version = "0.7.15" }

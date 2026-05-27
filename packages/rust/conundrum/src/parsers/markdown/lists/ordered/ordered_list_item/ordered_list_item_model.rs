@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
@@ -9,11 +11,21 @@ use winnow::{
 use crate::{
     lang::{
         lib::ui::ui_types::children::Children,
-        runtime::{state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput},
+        runtime::{
+            state::conundrum_error_variant::ConundrumModalResult,
+            traits::{
+                conundrum_input::{ArcState, ConundrumInput},
+                conundrum_template::ConundrumTemplateRepresentableWithParam,
+            },
+        },
     },
     parsers::{
-        markdown::lists::unordered::unordered_line_item::unordered_line_item_model::parse_list_item_children,
-        parser_trait::ConundrumParser, parsers_shared::space_or_tab::spaces_only,
+        markdown::lists::{
+            ordered::ordered_list_item::ordered_list_item_html_templ::OrderedListItemHtmlTemplate,
+            unordered::unordered_line_item::unordered_line_item_model::parse_list_item_children,
+        },
+        parser_trait::ConundrumParser,
+        parsers_shared::space_or_tab::spaces_only,
     },
 };
 
@@ -30,9 +42,24 @@ pub fn markdown_ordered_list_terminator(input: &mut ConundrumInput) -> Conundrum
     alt(('.', ')')).parse_next(input)
 }
 
+impl ConundrumTemplateRepresentableWithParam<OrderedListItemHtmlTemplate, i32> for OrderedListItem {
+    fn to_template(&self, state: ArcState, idx: i32) -> ConundrumModalResult<OrderedListItemHtmlTemplate> {
+        Ok(OrderedListItemHtmlTemplate { idx,
+                                         heading: self.heading.render(Arc::clone(&state))?,
+                                         body: match &self.body {
+                                             Some(b) => b.render(Arc::clone(&state)).ok(),
+                                             None => None,
+                                         } })
+    }
+}
+
 impl ConundrumParser<OrderedListItem> for OrderedListItem {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<OrderedListItem> {
         let start = input.input.checkpoint();
+
+        spaces_only(0..=3).parse_next(input).inspect_err(|_| {
+                                                 input.input.reset(&start);
+                                             })?;
         let n = alt((dec_int.map(Some), 'n'.value(None))).parse_next(input).inspect_err(|_| {
                                                                                 input.input.reset(&start);
                                                                             })?;

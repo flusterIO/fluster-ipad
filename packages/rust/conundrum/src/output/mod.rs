@@ -1,3 +1,4 @@
+pub mod auxillary;
 pub mod general;
 pub mod html;
 pub mod output_components;

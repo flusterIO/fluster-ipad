@@ -3323,10 +3323,12 @@ dependencies = [
  "cli-table",
  "colorous",
  "config",
+ "conundrum_macros",
  "criterion",
  "crossbeam",
  "css-color",
  "dashmap 6.1.0",
+ "dashu",
  "derive_more",
  "derive_typst_intoval",
  "devicons",
@@ -3348,8 +3350,11 @@ dependencies = [
  "katex-rs",
  "konst",
  "lazy_static",
+ "lexical-parse-float",
+ "lexical-parse-integer",
  "lexopt",
  "lightningcss",
+ "log",
  "lsp-types 0.97.0",
  "lucide-icons",
  "maud",
@@ -3369,6 +3374,7 @@ dependencies = [
  "polars 0.39.2",
  "polars-lazy 0.53.0",
  "qrcode",
+ "rand 0.10.1",
  "ratatui 0.30.0",
  "rayon",
  "regex",
@@ -3384,6 +3390,7 @@ dependencies = [
  "serde_json",
  "serde_with",
  "shlex",
+ "smallvec",
  "strum 0.27.2",
  "strum_macros 0.27.2",
  "syntect",
@@ -3411,6 +3418,8 @@ dependencies = [
  "wildmatch",
  "winnow 0.7.15",
  "yewdux",
+ "zeroize",
+ "zeroize_derive",
 ]
 
 [[package]]
@@ -3557,6 +3566,7 @@ dependencies = [
 name = "conundrum_macros"
 version = "0.0.1"
 dependencies = [
+ "env_filter",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -4808,6 +4818,96 @@ dependencies = [
  "parking_lot_core",
  "rayon",
  "serde",
+]
+
+[[package]]
+name = "dashu"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "85b3e5ac1e23ff1995ef05b912e2b012a8784506987a2651552db2c73fb3d7e0"
+dependencies = [
+ "dashu-base",
+ "dashu-float",
+ "dashu-int",
+ "dashu-macros",
+ "dashu-ratio",
+ "rustversion",
+]
+
+[[package]]
+name = "dashu-base"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c0b80bf6b85aa68c58ffea2ddb040109943049ce3fbdf4385d0380aef08ef289"
+
+[[package]]
+name = "dashu-float"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "85078445a8dbd2e1bd21f04a816f352db8d333643f0c9b78ca7c3d1df71063e7"
+dependencies = [
+ "dashu-base",
+ "dashu-int",
+ "num-modular",
+ "num-order",
+ "num-traits",
+ "rand 0.8.5",
+ "rustversion",
+ "serde",
+ "static_assertions",
+ "zeroize",
+]
+
+[[package]]
+name = "dashu-int"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee99d08031ca34a4d044efbbb21dff9b8c54bb9d8c82a189187c0651ffdb9fbf"
+dependencies = [
+ "cfg-if",
+ "dashu-base",
+ "num-modular",
+ "num-order",
+ "num-traits",
+ "rand 0.8.5",
+ "rustversion",
+ "serde",
+ "static_assertions",
+ "zeroize",
+]
+
+[[package]]
+name = "dashu-macros"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93381c3ef6366766f6e9ed9cf09e4ef9dec69499baf04f0c60e70d653cf0ab10"
+dependencies = [
+ "dashu-base",
+ "dashu-float",
+ "dashu-int",
+ "dashu-ratio",
+ "paste",
+ "proc-macro2",
+ "quote",
+ "rustversion",
+]
+
+[[package]]
+name = "dashu-ratio"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "47e33b04dd7ce1ccf8a02a69d3419e354f2bbfdf4eb911a0b7465487248764c9"
+dependencies = [
+ "dashu-base",
+ "dashu-float",
+ "dashu-int",
+ "num-modular",
+ "num-order",
+ "num-traits",
+ "rand 0.8.5",
+ "rustversion",
+ "serde",
+ "zeroize",
 ]
 
 [[package]]
@@ -16655,6 +16755,7 @@ version = "1.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
 dependencies = [
+ "arbitrary",
  "serde",
 ]
 
@@ -21368,6 +21469,17 @@ name = "zeroize"
 version = "1.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b97154e67e32c85465826e8bcc1c59429aaaf107c1e4a9e53c8d8ccd5eff88d0"
+
+[[package]]
+name = "zeroize_derive"
+version = "1.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "85a5b4158499876c763cb03bc4e49185d3cccbabb15b33c627f7884f43db852e"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.117",
+]
 
 [[package]]
 name = "zerotrie"

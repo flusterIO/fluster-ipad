@@ -1,26 +1,33 @@
-use std::{path::PathBuf, sync::Arc}; 
-use log::{info};
-use rayon::prelude::*;
+use config::{Config, Environment, File};
 use conundrum::{
-    ecosystem::{glue::conundrum_web_types::{builder_output::next::BlogFileSummary, conundrum_web_builder::ConundrumWebProjectBuilder}},
+    ecosystem::glue::conundrum_web_types::{
+        builder_output::next::BlogFileSummary, conundrum_web_builder::ConundrumWebProjectBuilder,
+    },
     lang::{
         constants::{file_names::PROJECT_CONFIG_FILE_NAME, file_types::ParsableFileType},
         runtime::{
-            run_conundrum::{ParseConundrumOptions, run_conundrum}, state::{conundrum_error_variant::ConundrumResult, parse_state::ConundrumCompileTarget}
+            run_conundrum::{ParseConundrumOptions, run_conundrum},
+            state::{conundrum_error_variant::ConundrumResult, parse_state::ConundrumCompileTarget},
         },
     },
 };
 use ignore::{DirEntry, Error, WalkState};
+use log::{error, info};
 use parking_lot::Mutex;
-use schemars::{JsonSchema};
+use rayon::prelude::*;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use config::{Config, Environment, File};
+use std::{path::PathBuf, sync::Arc};
 
 use crate::{
-    ecosystem::{project::project_file_description::ProjectFileDescription, shared::{ignore::IgnoreConfig}}, errors::config_error::{ ConfigError, ConfigResult}, models::config_path::ConfigPath, traits::{
-        config_file::{ConfigFile},
+    ecosystem::{project::project_file_description::ProjectFileDescription, shared::ignore::IgnoreConfig},
+    errors::config_error::{ConfigError, ConfigResult},
+    models::config_path::ConfigPath,
+    traits::{
+        config_file::ConfigFile,
         file_collection_producer::{FileCollectionRequest, FileCollectionVisitor},
-    }, utils::cwd::cwd
+    },
+    utils::cwd::cwd,
 };
 
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
@@ -32,7 +39,8 @@ pub struct SourceOutputConfig {
 
 impl Default for SourceOutputConfig {
     fn default() -> Self {
-        Self { path: "./cdrm_output".to_string(), format: Default::default() }
+        Self { path: "./cdrm_output".to_string(),
+               format: Default::default() }
     }
 }
 
@@ -45,7 +53,8 @@ pub struct ConundrumSourceConfig {
 
 impl Default for ConundrumSourceConfig {
     fn default() -> Self {
-        Self { input: ConfigPath::from_str_or_panic("./cdrm"), output: Default::default() }
+        Self { input: ConfigPath::from_str_or_panic("./cdrm"),
+               output: Default::default() }
     }
 }
 
@@ -86,18 +95,17 @@ pub struct ProjectConfig {
 
 impl Default for ProjectConfig {
     fn default() -> Self {
-        // let log_level_string = CdrmEnvVariable::LogLevel.read().unwrap_or(String::from("INFO"));
-        // let log_filter = env_filter::Builder::new()
-        //     .parse(&log_level_string)
+        // let log_level_string =
+        // CdrmEnvVariable::LogLevel.read().unwrap_or(String::from("INFO")); let
+        // log_filter = env_filter::Builder::new()     .parse(&log_level_string)
         //     .build();
         Self { name: "Conundrum".to_string(),
-        desc: "Built with the Conundrum compiler. See Flusterapp.com for more information.".to_string(),
-        opts: Default::default(),
-        build_target: Default::default(),
-        source: Default::default(),
-        root: Default::default(),
-        ignore: Default::default(),
-        }
+               desc: "Built with the Conundrum compiler. See Flusterapp.com for more information.".to_string(),
+               opts: Default::default(),
+               build_target: Default::default(),
+               source: Default::default(),
+               root: Default::default(),
+               ignore: Default::default() }
     }
 }
 
@@ -110,12 +118,11 @@ pub fn match_any_conundrum_file(p: DirEntry) -> bool {
 }
 
 impl ProjectConfig {
-    pub fn get_blog_summaries(&self) -> ConfigResult<Vec<BlogFileSummary>>{
-        let r = self.get_files()?.par_iter().map(|item| {
-            item.to_blog_summary()
-        }).collect::<Vec<BlogFileSummary>>();
+    pub fn get_blog_summaries(&self) -> ConfigResult<Vec<BlogFileSummary>> {
+        let r = self.get_files()?.par_iter().map(|item| item.to_blog_summary()).collect::<Vec<BlogFileSummary>>();
         Ok(r)
     }
+
     pub fn get_files(&self) -> ConfigResult<Vec<ProjectFileDescription>> {
         let items: Arc<Mutex<Vec<ProjectFileDescription>>> = Arc::new(Mutex::new(Vec::new()));
         let root_path = self.source.input.resolve();
@@ -131,22 +138,27 @@ impl ProjectConfig {
                                                       let file_extension = f.extension().map(|s| s.to_str()).flatten();
                                                       if file_extension.is_some_and(ParsableFileType::extension_is_conundrum_file) {
                                                       if let Ok(file_content) = std::fs::read_to_string(f.clone()) {
-                                                          if let Ok(parse_response) = run_conundrum(self.opts.duplicate_with_new_content(file_content)) {
-                                                                                                                        let mut locked_items = items.lock_arc();
-                                                          locked_items.push(ProjectFileDescription { 
-                                                              input_path: res.path().to_path_buf(),
-                                                              root_path: root_path.clone(),
-                                                          results: parse_response.clone()
-                                                          });
+                                                          match run_conundrum(self.opts.duplicate_with_new_content(file_content)) {
+                                                              Ok(parse_response) => {
+                                                                  let mut locked_items = items.lock_arc();
+                                                                  locked_items.push(ProjectFileDescription { 
+                                                                      input_path: res.path().to_path_buf(),
+                                                                      root_path: root_path.clone(),
+                                                                      results: parse_response.clone()
+                                                                  });
+                                                              },
+                                                              Err(err) => {
+                                                                  error!("Conundrum failed to parse the file at {:?} because of the following error: {:?}", f, err);
+                                                              }
+                                                          };
                                                           }
-                                                      }
+                                                              WalkState::Continue
+                                                      } else {
                                                       WalkState::Continue
+                                                      }
                                                   } else {
                                                       WalkState::Continue
                                                   }
-                                                      } else {
-                                                      WalkState::Skip
-                                                      }
                                               })
                                           } };
 
@@ -178,30 +190,28 @@ impl ConfigFile for ProjectConfig {
         PROJECT_CONFIG_FILE_NAME
     }
 
-
     fn read(config_path_override: &Option<String>) -> crate::errors::config_error::ConfigResult<Self>
         where Self: Sized {
         if let Some(cp) = config_path_override {
             if let Err(err) = std::env::set_current_dir(cp) {
-                log::error!("Conundrum could not update the working directory. I hate myself for even implementing it this way anyways, so it's probably for the better. It looks like you'll have to 'cd' yourself. Here's the actual error: {}", err);
+                log::error!("Conundrum could not update the working directory. I hate myself for even implementing it this way anyways, so it's probably for the better. It looks like you'll have to 'cd' yourself. Here's the actual error: {}",
+                            err);
             }
         }
-        let c = Config::builder()
-            .add_source(File::with_name(PROJECT_CONFIG_FILE_NAME).required(true))
-            .add_source(Environment::with_prefix("CDRM"))
-            .build()
-            .map_err(|e| {
-                log::error!("Config Error: {}", e);
-                ConfigError::OhShit
-            })?;
+        let c = Config::builder().add_source(File::with_name(PROJECT_CONFIG_FILE_NAME).required(true))
+                                 .add_source(Environment::with_prefix("CDRM"))
+                                 .build()
+                                 .map_err(|e| {
+                                     log::error!("Config Error: {}", e);
+                                     ConfigError::OhShit
+                                 })?;
 
         let mut s: Self = c.try_deserialize().map_err(|e| {
-            log::error!("Config Error: {}", e);
-            ConfigError::SerializationError
-        })?;
+                                                  log::error!("Config Error: {}", e);
+                                                  ConfigError::SerializationError
+                                              })?;
 
         s.root = cwd()?;
         Ok(s)
     }
-
 }

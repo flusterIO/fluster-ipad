@@ -22,6 +22,7 @@ use crate::parsers::markdown::hr::MarkdownHorizontalRule;
 use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::markdown::links::markdown_link::MarkdownLinkResult;
+use crate::parsers::markdown::lists::ordered::ordered_list_model::OrderedListModel;
 use crate::parsers::markdown::lists::unordered::unordered_list_model::UnorderedListModel;
 use crate::parsers::markdown::markdown_extensions::emoji::emoji_model::EmojiResult;
 use crate::parsers::markdown::markdown_extensions::footnote::footnote_anchor::FootnoteAnchor;
@@ -225,6 +226,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                     if at_line_start {
                         alt((
                                 ParsedInspectionRequest::parse_input_string.map(ParsedElement::ParsedInspectionRequest),
+                                OrderedListModel::parse_input_string.map(ParsedElement::OrderedList),
                                 MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                                 any.map(|c: char| ParsedElement::Text(c.to_string()))
                         )).parse_next(x)

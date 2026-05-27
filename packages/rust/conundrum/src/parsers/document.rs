@@ -66,11 +66,6 @@ impl ConundrumDocument {
         get_glue_asset_data(state)
     }
 
-    pub fn get_rendered_footnote_content(&self, state: ArcState) -> ConundrumModalResult<String> {
-        let s = state.read_arc();
-        Ok(String::from(""))
-    }
-
     /// ### Requirements for a completely standalone html file
     /// - [x] Renders math straight to html and MML.
     /// - [x] Gathers katex css
@@ -97,7 +92,8 @@ impl ConundrumDocument {
     ///     portions of the runtime that are still single threaded that don't
     ///     need to be, like this function.
     ///   - [ ] Mutli-threaded parsing. I'm not sure if this is even doable, but
-    ///   I'm going to give it a shot...
+    ///
+    /// I'm going to give it a shot...
     pub fn render_standalone(&self, params: ArcState) -> ConundrumModalResult<String> {
         let footnotes = render_footnotes(Arc::clone(&params))?;
         let glue = self.get_glue(Arc::clone(&params));
@@ -121,6 +117,11 @@ impl ConundrumDocument {
     pub fn render_app_embedded(&self, params: ArcState) -> ConundrumModalResult<String> {
         let footnotes = render_footnotes(Arc::clone(&params))?;
         let state = params.read_arc();
+
+        // log::debug!("Final State: {}",
+        //             serde_json::to_string_pretty(&state.clone()).expect("Failed to
+        // compile the parse state to json"));
+
         if state.contains_modifier(&ConundrumModifier::EmbedJavascript) {
             let glue = self.get_glue(Arc::clone(&params));
             let content = self.compile_multithreaded(Arc::clone(&params))?;

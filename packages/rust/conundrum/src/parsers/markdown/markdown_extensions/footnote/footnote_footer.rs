@@ -69,9 +69,9 @@ impl ConundrumParser<FootnoteFooter> for FootnoteFooter {
         ':'.void().parse_next(input).inspect_err(|_| {
                                          input.input.reset(&start);
                                      })?;
-        spaces_only(1).parse_next(input).inspect_err(|_| {
-                                             input.input.reset(&start);
-                                         })?;
+        spaces_only(0..=1).parse_next(input).inspect_err(|_| {
+                                                 input.input.reset(&start);
+                                             })?;
 
         let (title_line_chars, _): (Vec<String>, LineTerminator) =
             until_line_terminator::<'_, String>(0.., |nested_input| {
