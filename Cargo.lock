@@ -3341,6 +3341,7 @@ dependencies = [
  "gray_matter",
  "humantime",
  "icu",
+ "indoc",
  "insta",
  "itertools 0.14.0",
  "itoa",
@@ -3352,8 +3353,10 @@ dependencies = [
  "lsp-types 0.97.0",
  "lucide-icons",
  "maud",
+ "memchr",
  "mermaid-text",
  "miette",
+ "mmdflux",
  "molc",
  "ndarray 0.17.2",
  "nshare",
@@ -3361,6 +3364,7 @@ dependencies = [
  "num-format",
  "num-traits",
  "once_cell",
+ "palette",
  "parking_lot",
  "polars 0.39.2",
  "polars-lazy 0.53.0",
@@ -3400,6 +3404,7 @@ dependencies = [
  "typst",
  "typst-as-lib",
  "typst-html",
+ "unicode-case-mapping",
  "unicode-segmentation",
  "uniffi",
  "wasm-bindgen",
@@ -3444,6 +3449,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tempfile",
+ "terminal_size",
  "thiserror 2.0.18",
  "tokio",
  "tree-sitter-highlight",
@@ -10712,9 +10718,9 @@ dependencies = [
 
 [[package]]
 name = "memchr"
-version = "2.8.0"
+version = "2.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
+checksum = "6b947ae49db0d222b1dbc6b113ce7248a3fc3a6ca21b696717bfc000ba4484d8"
 
 [[package]]
 name = "memmap2"
@@ -10844,6 +10850,26 @@ dependencies = [
  "log",
  "wasi 0.11.1+wasi-snapshot-preview1",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "mmdflux"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "13cc93a18eab6efeee21308e7ea8f2e01391ec0596ddf800d5cf2b102bf312b0"
+dependencies = [
+ "clap",
+ "libc",
+ "pest",
+ "pest_derive",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "tracing",
+ "tracing-subscriber",
+ "unicode-width 0.2.0",
+ "windows-sys 0.52.0",
+ "xterm-color",
 ]
 
 [[package]]
@@ -11957,6 +11983,9 @@ dependencies = [
  "fast-srgb8",
  "libm",
  "palette_derive",
+ "phf 0.11.3",
+ "rand 0.8.5",
+ "serde",
 ]
 
 [[package]]
@@ -17544,12 +17573,12 @@ dependencies = [
 
 [[package]]
 name = "terminal_size"
-version = "0.4.3"
+version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "60b8cb979cb11c32ce1603f8137b22262a9d131aaa5c37b5678025f22b8becd0"
+checksum = "230a1b821ccbd75b185820a1f1ff7b14d21da1e442e22c0863ea5f08771a8874"
 dependencies = [
  "rustix 1.1.4",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -18412,6 +18441,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "tracing-serde"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "704b1aeb7be0d0a84fc9828cae51dab5970fee5088f83d1dd7ee6f6246fc6ff1"
+dependencies = [
+ "serde",
+ "tracing-core",
+]
+
+[[package]]
 name = "tracing-subscriber"
 version = "0.3.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -18421,12 +18460,15 @@ dependencies = [
  "nu-ansi-term",
  "once_cell",
  "regex-automata",
+ "serde",
+ "serde_json",
  "sharded-slab",
  "smallvec",
  "thread_local",
  "tracing",
  "tracing-core",
  "tracing-log",
+ "tracing-serde",
 ]
 
 [[package]]
@@ -19148,6 +19190,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5dfa6e8c60bb66d49db113e0125ee8711b7647b5579dc7f5f19c42357ed039fe"
 
 [[package]]
+name = "unicode-case-mapping"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4e9026503b74f3207a4c04e6bf4ea735daa8edf6c0bbfa044cae597bb947a9db"
+
+[[package]]
 name = "unicode-ccc"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -19279,6 +19327,7 @@ dependencies = [
  "cargo_metadata 0.19.2",
  "clap",
  "uniffi_bindgen 0.29.5",
+ "uniffi_build",
  "uniffi_core",
  "uniffi_macros",
  "uniffi_pipeline",
@@ -19315,6 +19364,17 @@ dependencies = [
  "uniffi_meta",
  "uniffi_pipeline",
  "uniffi_udl",
+]
+
+[[package]]
+name = "uniffi_build"
+version = "0.29.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "025a05cba02ee22b6624ac3d257e59c7395319ea8fe1aae33a7cdb4e2a3016cc"
+dependencies = [
+ "anyhow",
+ "camino",
+ "uniffi_bindgen 0.29.5",
 ]
 
 [[package]]
@@ -21079,6 +21139,12 @@ name = "xmlwriter"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec7a2a501ed189703dba8b08142f057e887dfc4b2cc4db2d343ac6376ba3e0b9"
+
+[[package]]
+name = "xterm-color"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7008a9d8ba97a7e47d9b2df63fcdb8dade303010c5a7cd5bf2469d4da6eba673"
 
 [[package]]
 name = "xxhash-rust"

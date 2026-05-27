@@ -31,14 +31,16 @@ While Conundrum is a large part of what makes Fluster unique, it's not it's only
 
 
 
-<Grid large={2}>
+<Grid large={2} gapX="medium">
 <Image 
     src="/assets/images/mockups/ipad/mockups/paper.png"
     alt="Fluster supports hand drawn notes on both iPad and Mac"
+    centerSelf
     />
 <Image 
     src="/assets/images/mockups/mac/mockups/mac_hand_drawn-front.png"
     alt="Fluster supports hand-drawn notes on the Mac as well!"
+    centerSelf
     />
 </Grid>
 
@@ -65,9 +67,13 @@ With that being said, Fluster still offers searching and tagging features that a
 
 ## Why should I use Fluster?
 
-> Please consider supporting this application if you can by sharing it with others. I built this application while living in my car for almost 4 years while working on this modified model of relativity, and I'm now living in public housing without income. I'm not giving up on this model until it makes it's way into the physics debate, and since it reaches some rather controversial conclusions  peer review is off of the table. The model is rock solid, but in the modern group-think culture in physics, Avi Loeb (the guy you see on the news talking about aliens, publishes more often than I go to the store) couldn't get this past peer review, so I need _your_ help to push this model into the discussion.
 
 Well, because you need more from your note taking application. Fluster was built to support my own requirements as I pursued a [modified model of relativity](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time), helping me to derive what I believe is a demonstrable observation of a misconception made by Einstein, and I believe because of that the architecture of the application is unlike any other application available. Being a former developer, if there was a feature that I wanted, I just added it. More than 2 years later I finally decided to release it, and now 3 ***complete***, hair-pulling rewrites later we're finally ready to launch!
+
+> Please consider supporting this application if you can by sharing it with others. I built this application while living in my car for almost 4 years while working on this modified model of relativity, and I'm now living in public housing without income. I'm not giving up on this model until it makes it's way into the physics debate, and since it reaches some rather controversial conclusions  peer review is off of the table. The model is rock solid, but in the modern group-think culture in physics, Avi Loeb (the guy you see on the news talking about aliens, publishes more often than I go to the store) couldn't get this past peer review, so I need _your_ help to push this model into the discussion.
+
+### Learning Curve
+> You can be productive in 15 minutes, be confident in an hour, and have it mastered by your lunch break.
 
 If you're worried about the learning curve, don't be! Fluster includes it's own set of embedded documentation available directly in the application! Inspired by some of my best workflow setups that I had during my time pursuing this model, I wanted to bring that experience to the non-developer through Fluster, so all you have to do is type `Docs??` for a list of all documentation commands, or use the same syntax with **any** component! Below is an example of this syntax with the `Card` component.
 
@@ -82,6 +88,15 @@ If you're worried about the learning curve, don't be! Fluster includes it's own 
     alt="Conundrum documents every component" />
 </Grid>
 
+Want to see this in action? The following input:
+
+```tsx -- title="docs_example.cdrm"
+Docs?
+```
+
+Prints this card below, with a list of more documentation commands. Keeep in mind, this is the _short_ documentation. There's a more complete version of each documentation command made available by just adding another `?`!
+
+Docs?
 
 #### Helpful Features
 

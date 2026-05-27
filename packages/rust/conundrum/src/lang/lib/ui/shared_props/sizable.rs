@@ -194,7 +194,7 @@ impl SizablePropsGroup {
             classes.push("w-full min-w-full @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]");
         }
         if self.center_self.is_some_and(|x| x.0) {
-            classes.push("mx-auto block");
+            classes.push("mx-auto block place-self-center");
         }
         if self.center_content.is_some_and(|x| x.0) {
             classes.push("flex flex-col justify-center items-center text-center [&>p]:text-center");

@@ -99,6 +99,12 @@ itertools = "0.14.0"
 konst = "0.4.3"
 humantime = "2.3.0"
 icu = { version = "2.2.0", features = ["serde", "logging", "datagen", "compiled_data"] }
+uniffi = { workspace = true, features = ["build"] }
+mmdflux = "2.5.0"
+memchr = "2.8.1"
+indoc = "2.0.7"
+unicode-case-mapping = "1.0.0"
+palette = { version = "0.7.6", features = ["serde", "rand", "serializing", "random"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }
