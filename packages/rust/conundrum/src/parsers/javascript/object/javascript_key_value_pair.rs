@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::{Parser, stream::Stream};
 
 use crate::{
@@ -22,7 +22,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JavascriptObjectKeyValuePair {
     pub key: String,
     // Box required to break recursive loop thing, but not sure if this is the best approach.

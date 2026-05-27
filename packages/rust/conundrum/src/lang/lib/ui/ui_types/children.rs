@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use winnow::error::ErrMode;
 
@@ -31,7 +31,7 @@ use crate::{
 /// since they accept Conundrum content and are represented in the UI, while
 /// something like a `columns` property obviously is not.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Default, Clone)]
+#[derive(Debug, Serialize, Deserialize, Default, Clone)]
 pub struct Children(pub Vec<ParsedElement>);
 
 impl Children {

@@ -29,6 +29,7 @@ use crate::parsers::markdown::markdown_extensions::footnote::footnote_footer::Fo
 use crate::parsers::markdown::math::block_math::block_math_model::BlockMathResult;
 use crate::parsers::markdown::math::inline_math::inline_math_model::InlineMathResult;
 use crate::parsers::markdown::paragraph::paragraph_model::MarkdownParagraphResult;
+use crate::parsers::markdown::strikethrough_text::MarkdownStrikeThroughTextResult;
 use crate::parsers::markdown::table::markdown_table_model::MarkdownTable;
 use crate::parsers::parser_trait::ConundrumParser;
 use crate::parsers::react::react_component_self_closing::ReactComponentSelfClosingResult;
@@ -168,6 +169,12 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                     )).parse_next(x)
                     }
 
+                },
+                "~" => |x: &mut ConundrumInput<'a>| {
+                    alt((
+                            MarkdownStrikeThroughTextResult::parse_input_string.map(ParsedElement::StrikeThroughText),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
                 },
                 "_" => |x: &mut ConundrumInput<'a>| {
                     alt((

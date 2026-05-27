@@ -27,7 +27,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct ReactComponentSelfClosingResult {
     pub full_text: String,
     pub component: ConundrumComponentType,

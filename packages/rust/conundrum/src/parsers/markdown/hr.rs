@@ -9,7 +9,7 @@ use crate::lang::runtime::{
     state::conundrum_error_variant::ConundrumModalResult, traits::conundrum_input::ConundrumInput,
 };
 use crate::parsers::parser_trait::ConundrumParser;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::Parser;
 use winnow::combinator::alt;
 use winnow::error::{ContextError, ErrMode};
@@ -26,7 +26,7 @@ pub fn horizontal_rule(input: &mut ConundrumInput) -> ConundrumModalResult<()> {
 }
 
 #[typeshare::typeshare]
-#[derive(Serialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct MarkdownHorizontalRule {}
 
 impl HtmlJsComponentResult for MarkdownHorizontalRule {

@@ -1,5 +1,5 @@
 use askama::Template;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
     combinator::{opt, preceded},
@@ -41,7 +41,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct BlockMathResult {
     pub body: ConundrumString,
     pub id: Option<ConundrumString>,

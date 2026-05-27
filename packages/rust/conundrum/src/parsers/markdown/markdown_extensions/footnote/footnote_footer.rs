@@ -28,7 +28,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct FootnoteFooter {
     pub idx: ConundrumInt,
     pub content: Children,

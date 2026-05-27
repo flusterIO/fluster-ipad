@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::{Parser, ascii::till_line_ending, combinator::preceded, stream::Stream, token::literal};
 
 use crate::{
@@ -15,7 +15,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ConundrumCommentResult {
     pub content: String,
 }

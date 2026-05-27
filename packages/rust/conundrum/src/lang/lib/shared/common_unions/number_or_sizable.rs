@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::error::ErrMode;
 
 use crate::{
@@ -12,7 +12,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum NumberOrSizable {
     Sizable(SizableOption),

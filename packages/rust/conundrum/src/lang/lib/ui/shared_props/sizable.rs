@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
 use askama::FastWritable;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     lang::{
@@ -27,7 +27,7 @@ pub enum SizablePropsOutputTarget {
 /// properties than just those that can modify _size._ You can also modify
 /// color, padding, margin, borders, and more.
 #[typeshare::typeshare]
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SizablePropsGroup {
     /// Hides the MathJax labels in all child components.
     pub hide_math_labels: Option<ConundrumBoolean>,

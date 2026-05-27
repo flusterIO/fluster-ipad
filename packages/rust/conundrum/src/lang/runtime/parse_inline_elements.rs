@@ -8,6 +8,7 @@ use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::markdown::links::markdown_link::MarkdownLinkResult;
 use crate::parsers::markdown::markdown_extensions::emoji::emoji_model::EmojiResult;
 use crate::parsers::markdown::math::inline_math::inline_math_model::InlineMathResult;
+use crate::parsers::markdown::strikethrough_text::MarkdownStrikeThroughTextResult;
 use crate::parsers::parser_trait::ConundrumParser;
 use crate::parsers::parsers_shared::escape_handling::escaped_char;
 use crate::parsers::react::react_component_self_closing::ReactComponentSelfClosingResult;
@@ -57,6 +58,12 @@ pub fn parse_inline_element<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModa
                        MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
                        MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
                         any.map(|c: char| ParsedElement::Text(c.to_string()))
+                    )).parse_next(x)
+                },
+                "~" => |x: &mut ConundrumInput<'a>| {
+                    alt((
+                            MarkdownStrikeThroughTextResult::parse_input_string.map(ParsedElement::StrikeThroughText),
+                            any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                 },
                 "<" => |x: &mut ConundrumInput<'a>| {

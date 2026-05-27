@@ -17,7 +17,7 @@ use winnow::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, serde::Serialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct MarkdownTableAlignmentRow(Vec<MarkdownTableAlignmentCell>);
 
 impl ConundrumParserWithParam<usize, MarkdownTableAlignmentRow> for MarkdownTableAlignmentRow {

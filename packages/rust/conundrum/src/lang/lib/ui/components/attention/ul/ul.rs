@@ -1,5 +1,5 @@
 use askama::Template;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::error::ErrMode;
 
@@ -32,7 +32,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Underline {
     pub children: Children,
     /// Default: .highlight

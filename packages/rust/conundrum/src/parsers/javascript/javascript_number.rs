@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::ascii::{dec_int, float};
 use winnow::{Parser, combinator::alt};
 
@@ -14,7 +14,7 @@ use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
 /// runtime will execute mostly in Rust, and being able to parse some of the
 /// mdx, javascript inputs will be super useful.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JavascriptNumberResult {
     pub value: ConundrumNumber,
 }

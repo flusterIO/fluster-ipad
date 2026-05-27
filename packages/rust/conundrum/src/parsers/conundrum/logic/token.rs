@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     lang::runtime::{
@@ -15,7 +15,7 @@ use crate::{
 // All of the tokens that can appear in a Conundrum code block or .conundrum
 // file, if one of those ever exists.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumLogicToken {
     Number(ConundrumNumber),

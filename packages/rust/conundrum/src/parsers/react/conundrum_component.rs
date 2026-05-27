@@ -35,7 +35,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumComponentType {
     // Layout

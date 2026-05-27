@@ -32,7 +32,7 @@ use serde::Serialize;
 use winnow::{Parser, combinator::repeat, error::ErrMode, stream::Stream};
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct MarkdownTable {
     pub heading: MarkdownTableHeadingRow,
     pub alignment: MarkdownTableAlignmentRow,

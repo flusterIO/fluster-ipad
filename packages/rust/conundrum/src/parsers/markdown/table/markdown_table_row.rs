@@ -25,7 +25,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, serde::Serialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct MarkdownTableRow(Vec<MarkdownTableCell>);
 
 impl ConundrumParserWithParam<usize, MarkdownTableRow> for MarkdownTableRow {

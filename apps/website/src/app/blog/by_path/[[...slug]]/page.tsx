@@ -18,7 +18,7 @@ const ByPagePage = async (props: ByPagePageProps): Promise<ReactNode> => {
         return notFound();
     }
     return (
-        <div className="w-full min-h-screen mdx cdrm">
+        <div className="@container/mdx mdx w-full overflow-x-hidden overflow-y-auto! max-h-screen min-h-screen px-6">
             <ClientConundrumPage
                 item={item as unknown as AnyBuilderOutput["files"][number]}
             />

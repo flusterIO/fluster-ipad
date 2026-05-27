@@ -1,14 +1,5 @@
-use crate::{
-    lang::runtime::state::{
-        conundrum_error::ConundrumError,
-        conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-    },
-    parsers::markdown::markdown_extensions::footnote::{
-        footnote_footer_html_templ::FootnoteSectionTemplate, footnote_result::RenderedFootnoteResult,
-    },
-};
+use crate::parsers::markdown::markdown_extensions::footnote::footnote_footer_html_templ::FootnoteSectionTemplate;
 use askama::Template;
-use winnow::error::{ErrMode, Result};
 
 /// ## Template (HTML)
 ///
@@ -16,7 +7,7 @@ use winnow::error::{ErrMode, Result};
 /// {% if let Some(style) = self.css %}<style>
 /// {{style | safe}}
 /// </style>{% endif %}
-/// <div class="cdrm-body-container w-full h-fit">
+/// <div class="cdrm-body-container w-full h-fit [&>p]:my-3">
 /// {{content | safe}}
 /// {{self.footnotes.render()? | safe}}
 /// </div> {% if let Some(js) = self.js %}

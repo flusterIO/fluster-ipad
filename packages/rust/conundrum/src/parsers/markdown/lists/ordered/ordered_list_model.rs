@@ -19,7 +19,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct OrderedListModel {
     pub items: Vec<OrderedListItem>,
 }

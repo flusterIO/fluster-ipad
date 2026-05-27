@@ -32,7 +32,7 @@ use winnow::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, serde::Serialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct MarkdownTableCell {
     pub data: TableCellData,
 }

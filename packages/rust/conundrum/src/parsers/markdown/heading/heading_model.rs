@@ -46,7 +46,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct MarkdownHeadingResult {
     pub depth: u16,
     /// The indentation level to be used when displaying this in an inline table

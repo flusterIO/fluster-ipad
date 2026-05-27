@@ -1,0 +1,20 @@
+graph TD
+    conundrum_cli --> conundrum
+    conundrum_cli --> conundrum_config
+    conundrum_config --> conundrum
+    conundrum_docgen --> conundrum
+    conundrum_docgen --> conundrum_cli
+    conundrum_docgen --> conundrum_config
+    conundrum_fs --> conundrum
+    conundrum_fs --> conundrum_config
+    conundrum_lsp --> conundrum
+    conundrum_swift --> conundrum
+    conundrum_swift --> fluster_core_utilities
+    conundrum_wasm --> conundrum
+    conundrum_wasm --> conundrum_lsp
+    fluster_core_utilities --> conundrum
+    fluster_internal_cli --> conundrum
+    fluster_wasm --> conundrum
+    fluster_wasm --> conundrum_lsp
+    rhai --> rhai_codegen
+classDef red stroke:#ff0000,stroke-width:2px;

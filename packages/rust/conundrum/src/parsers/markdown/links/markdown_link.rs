@@ -44,7 +44,7 @@ pub struct MarkdownLinkResultStringified {
 }
 
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct MarkdownLinkResult {
     pub text: Children,
     pub url: MarkdownLinkTarget,

@@ -26,7 +26,7 @@ use crate::{
 /// <sup id="{{id}}" class="cdrm-footnote-anchor text-sm text-inherit opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">{{self.doc_idx}}</sup>
 /// ```
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone, Template)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone, Template)]
 #[template(ext = "html", in_doc = true)]
 pub struct FootnoteAnchor {
     /// The user provided idx.

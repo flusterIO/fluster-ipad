@@ -10,7 +10,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Default, serde::Serialize, Clone)]
+#[derive(Debug, Default, serde::Serialize, serde::Deserialize, Clone)]
 pub enum MarkdownTableAlignmentCell {
     #[default]
     Default,

@@ -87,6 +87,18 @@ config = { version = "0.15.23", features = ["json"] }
 textwrap = { version = "0.16.2", features = ["hyphenation"] }
 text_trees = "0.1.2"
 text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
+colorous = "1.0.16"
+euclid = { version = "0.22.14", features = ["serde", "arbitrary"] }
+arbitrary = { version = "1.4.2", features = ["derive"] }
+itoa = "1.0.18"
+dtoa = "1.0.11"
+num-traits = "0.2.19"
+ndarray = { version = "0.17.2", features = ["serde", "approx", "rayon"] }
+nshare = "0.10.0"
+itertools = "0.14.0"
+konst = "0.4.3"
+humantime = "2.3.0"
+icu = { version = "2.2.0", features = ["serde", "logging", "datagen", "compiled_data"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }

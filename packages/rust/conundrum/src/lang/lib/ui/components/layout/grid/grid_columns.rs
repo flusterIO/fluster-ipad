@@ -1,4 +1,5 @@
 use dashmap::DashMap;
+use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 use winnow::error::ErrMode;
 
@@ -23,7 +24,7 @@ use crate::{
 pub type GridColumnsMap = DashMap<SizableOption, ConundrumInt>;
 
 #[typeshare::typeshare]
-#[derive(serde::Serialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct GridColumnProps(GridColumnsMap);
 
 impl GridColumnProps {

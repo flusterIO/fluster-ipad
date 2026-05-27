@@ -12,5 +12,6 @@ pub mod lists;
 pub mod markdown_extensions;
 pub mod math;
 pub mod paragraph;
+pub mod strikethrough_text;
 pub mod subtypes;
 pub mod table;

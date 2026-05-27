@@ -1,5 +1,5 @@
 use askama::Template;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use typeshare::typeshare;
 use winnow::{
@@ -41,7 +41,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Serialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ParsedOutgoingNoteLink {
     /// The user-defined id of the note which is being linked to.
     pub note_id: String,

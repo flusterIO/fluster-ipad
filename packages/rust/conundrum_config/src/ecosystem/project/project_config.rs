@@ -115,7 +115,7 @@ impl ProjectConfig {
     }
     pub fn get_files(&self) -> ConfigResult<Vec<ProjectFileDescription>> {
         let items: Arc<Mutex<Vec<ProjectFileDescription>>> = Arc::new(Mutex::new(Vec::new()));
-        let root_path = self.root.clone();
+        let root_path = self.source.input.resolve();
         println!("Root Path: {:#?}", root_path);
         let req = FileCollectionRequest { root: root_path.clone(),
                                           respect_gitignore: self.ignore.respect_gitignore,

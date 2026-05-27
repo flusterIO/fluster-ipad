@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use askama::Template;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
     ascii::{line_ending, space0, till_line_ending},
@@ -43,7 +43,7 @@ use crate::{
 // ---------------------------------------------------------------------------
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct BlockQuoteResult {
     /// The inner content already fully parsed into `ParsedElement`s.
     /// Nesting is handled recursively: a `> > ...` line becomes a

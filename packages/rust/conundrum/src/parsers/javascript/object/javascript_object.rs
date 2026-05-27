@@ -1,5 +1,5 @@
 use dashmap::DashMap;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use winnow::{
     Parser,
@@ -29,7 +29,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JavascriptObjectResult {
     pub data: DashMap<String, ParsedElement>,
 }

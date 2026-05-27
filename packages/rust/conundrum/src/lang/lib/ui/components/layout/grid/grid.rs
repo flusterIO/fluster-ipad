@@ -60,7 +60,7 @@ use winnow::error::ErrMode;
 /// </Grid>
 /// ```
 #[typeshare::typeshare]
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, serde::Deserialize, Debug, Clone)]
 pub struct ResponsiveGrid {
     pub sizable: Option<SizablePropsGroup>,
     pub columns: GridColumnProps,

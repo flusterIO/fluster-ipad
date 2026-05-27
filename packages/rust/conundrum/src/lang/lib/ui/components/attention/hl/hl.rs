@@ -35,7 +35,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Highlight {
     pub children: Children,
     /// Default: .highlight

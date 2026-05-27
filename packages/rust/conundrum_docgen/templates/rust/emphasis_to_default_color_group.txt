@@ -1,0 +1,4 @@
+pub fn emphasis_to_default_complete_color(emphasis: crate::lang::lib::ui::ui_types::emphasis::Emphasis, theme_name: ) -> crate::parsers::conundrum::color::color_scheme_group::ConundrumCompleteColor {
+    match {for theme_name in self.theme_hames %}     
+    {% endfor %}
+}

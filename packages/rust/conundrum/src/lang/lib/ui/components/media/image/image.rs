@@ -45,7 +45,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct Image {
     pub sizable: Option<SizablePropsGroup>,
     pub src: ConundrumString,

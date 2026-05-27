@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             subjects.push(subject);
         }
 
-        const topic = f.front_matter?.topic as null | undefined | string;
+        const topic = f.front_matter?.topic;
         if (topic && !topics.includes(topic)) {
             topics.push(topic);
         }
@@ -40,9 +40,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 topics={topics}
                 banner={<SidebarBanner />}
             />
-            <div className="@container/mdx mdx w-full overflow-x-hidden overflow-y-auto! max-h-screen min-h-screen px-6">
-                {children}
-            </div>
+            {children}
         </div>
     );
 }

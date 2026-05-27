@@ -63,7 +63,7 @@ use crate::{
 /// <Hr> My section title </Hr>
 /// ```
 #[typeshare::typeshare]
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, serde::Deserialize, Debug, Clone)]
 pub struct HrWithChildrenResult {
     pub children: Children,
 }

@@ -3,13 +3,13 @@ use crate::lang::runtime::traits::conundrum_input::{ArcState, ConundrumInput};
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
 use crate::lang::runtime::traits::jsx_component_result::JsxComponentResult;
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::Parser;
 use winnow::combinator::{alt, delimited};
 use winnow::token::take_till;
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JavascriptStringResult {
     pub value: String,
     pub delimiter: char,

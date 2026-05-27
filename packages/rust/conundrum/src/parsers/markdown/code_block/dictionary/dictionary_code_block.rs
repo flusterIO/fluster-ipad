@@ -27,7 +27,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct DictionaryCodeBlock {
     pub leading_char: char,
     pub title: Children,

@@ -1,7 +1,7 @@
 use std::{fmt::Display, sync::Arc};
 
 use parking_lot::RwLock;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
     ascii::{dec_int, float},
@@ -33,7 +33,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone, Copy)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumNumber {
     Int(ConundrumInt),

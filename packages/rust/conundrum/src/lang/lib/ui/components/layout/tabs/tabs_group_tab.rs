@@ -26,7 +26,7 @@ use std::sync::Arc;
 use winnow::error::ErrMode;
 
 #[typeshare::typeshare]
-#[derive(Debug, serde::Serialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct Tab {
     /// The label of the button that toggles this tab.
     pub label: ConundrumString,

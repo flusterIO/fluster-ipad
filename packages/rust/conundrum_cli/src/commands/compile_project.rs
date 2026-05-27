@@ -4,7 +4,6 @@ use crate::{environments::web::next::write_next_output, errors::ConundrumCliResu
 
 pub async fn compile_directory(config: &ProjectConfig) -> ConundrumCliResult<()> {
     let files = config.get_blog_summaries()?;
-    println!("Files: {:#?}", files);
     write_next_output(files, config)?;
     Ok(())
 }

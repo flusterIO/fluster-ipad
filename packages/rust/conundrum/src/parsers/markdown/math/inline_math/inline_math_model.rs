@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{Parser, combinator::delimited, error::ErrMode, stream::AsChar, token::take_till};
 
@@ -25,7 +25,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct InlineMathResult {
     pub body: ConundrumString,
 }

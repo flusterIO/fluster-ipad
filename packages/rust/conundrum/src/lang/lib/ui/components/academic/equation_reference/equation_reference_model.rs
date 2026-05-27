@@ -60,7 +60,7 @@ use crate::{
 /// before being displayed (React, HTML, Swift, etc..) because 1 based indices
 /// suck.
 #[typeshare::typeshare]
-#[derive(Serialize, uniffi::Record, Debug, Clone)]
+#[derive(Serialize, serde::Deserialize, uniffi::Record, Debug, Clone)]
 pub struct EquationReference {
     /// The `id` field is a string that can be referenced later to use this
     /// equation's number.

@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     lang::runtime::{
@@ -15,7 +15,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum ParsedJavascriptElement {
     Boolean(JavascriptBooleanResult),

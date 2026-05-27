@@ -20,13 +20,9 @@ const BlogHomePage = async ({
     const query = blogSearchParamsToQuery(sp ?? {}, p.slug);
     const res = getNextJsPages(query, data as unknown as AnyBuilderOutput);
     return (
-        <>
-            {res.exactMatch ? (
-                <div>Note goes here</div>
-            ) : (
-                <ConundrumContentList items={res.results ?? []} />
-            )}
-        </>
+        <div className="min-h-screen max-h-screen h-screen overflow-y-auto overflow-x-hidden gap-y-4 flex flex-col justify-start items-center py-8">
+            <ConundrumContentList items={res.results ?? []} />
+        </div>
     );
 };
 

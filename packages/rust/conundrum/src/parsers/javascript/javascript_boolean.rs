@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::Parser;
 use winnow::combinator::alt;
 use winnow::token::literal;
@@ -9,7 +9,7 @@ use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentRe
 use crate::parsers::javascript::javascript_parser_trait::JavascriptParser;
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JavascriptBooleanResult {
     pub value: bool,
 }

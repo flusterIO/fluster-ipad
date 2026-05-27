@@ -9,7 +9,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, serde::Serialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum TableCellData {
     /// Headings are made unique to allow for customizablity when the

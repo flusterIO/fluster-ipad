@@ -1,6 +1,7 @@
 # To-Do
 
 - [ ] Get conundrum compiling again.
+- [ ] Re-fucking-implement strikethrough text parser.
 - [ ] Fix link parser. It's woring, but inserting the wrong text maing the link invalid.
 - [ ] Make blog mobile responsive. That should be the first priority once conundrum content is compiling again.
   - [ ] Add drawer in place of sidebar on mobile.

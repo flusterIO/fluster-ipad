@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::Parser;
 use winnow::combinator::alt;
 
@@ -18,7 +18,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JavascriptFunction {
     pub parameters: Vec<ParsedJavascriptElement>,
     pub javascript_body: String,

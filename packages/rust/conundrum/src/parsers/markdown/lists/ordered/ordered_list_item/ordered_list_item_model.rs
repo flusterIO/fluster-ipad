@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
     ascii::dec_int,
@@ -18,7 +18,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct OrderedListItem {
     pub heading: Children,
     pub body: Option<Children>,

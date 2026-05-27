@@ -1,5 +1,5 @@
 use askama::Template;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use winnow::combinator::opt;
 use winnow::error::ErrMode;
@@ -41,7 +41,7 @@ use crate::{
 ///    - This will be a nested item, indented 4 spaces.
 /// ```
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct UnorderedListItem {
     pub heading: Children,
     pub body: Option<Children>,

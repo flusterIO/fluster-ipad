@@ -27,7 +27,7 @@ use crate::{
 /// this directly. This is automatically embedded in the docs container when you
 /// use the `Emoji??` documentation flag.
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct EmojiDocsDemo {}
 
 impl EmojiDocsDemo {

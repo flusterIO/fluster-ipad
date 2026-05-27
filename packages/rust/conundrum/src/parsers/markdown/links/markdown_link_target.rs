@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
 use crate::{
@@ -13,7 +13,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum MarkdownLinkTarget {
     /// Any generic url that is not handled internally by the conundrum

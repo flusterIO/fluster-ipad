@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{
     Parser,
@@ -34,7 +34,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ReactComponentWithChildrenResult {
     pub full_text: String,
     pub component: ConundrumComponentType,

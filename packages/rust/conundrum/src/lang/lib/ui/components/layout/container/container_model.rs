@@ -42,7 +42,7 @@ use crate::{
 /// component is to provide a blank canvas to allow you to create some
 /// responsive & informative layouts that fit your own use case.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct UtilityContainer {
     pub sizable: SizablePropsGroup,
     pub emphasis: Option<Emphasis>,

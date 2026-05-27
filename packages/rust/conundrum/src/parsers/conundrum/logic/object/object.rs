@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use dashmap::DashMap;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::{
     Parser,
     ascii::space0,
@@ -16,7 +16,6 @@ use crate::{
             shared_props::sizable_option::SizableOption, ui_traits::jsx_prop_representable::FromJsxPropsOptional,
         },
         runtime::{
-            mem::mem::MemoryArc,
             state::{
                 conundrum_error::ConundrumError,
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult, ConundrumResult},
@@ -41,7 +40,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ConundrumObject {
     pub data: DashMap<String, ParsedElement>,
 }

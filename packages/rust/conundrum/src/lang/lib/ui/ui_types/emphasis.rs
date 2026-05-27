@@ -1,7 +1,7 @@
 use std::{ops::Deref, str::FromStr};
 
 use lucide_icons::Icon;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use strum::{EnumIter, IntoEnumIterator};
 use winnow::error::ErrMode;
 
@@ -25,7 +25,7 @@ use crate::{
 /// the default color values.
 /// The emphasis documentation can be viewed via the `Emphasis??` command.
 #[typeshare::typeshare]
-#[derive(Serialize, uniffi::Enum, EnumIter, PartialEq, Eq, Default, Debug, strum_macros::Display, Clone)]
+#[derive(Serialize, Deserialize, uniffi::Enum, EnumIter, PartialEq, Eq, Default, Debug, strum_macros::Display, Clone)]
 pub enum Emphasis {
     #[serde(rename = "info")]
     #[strum(to_string = "info")]

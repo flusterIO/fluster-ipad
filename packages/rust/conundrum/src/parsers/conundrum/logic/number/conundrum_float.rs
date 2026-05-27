@@ -1,3 +1,4 @@
+use serde::Deserialize;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -9,7 +10,7 @@ use crate::{
     parsers::conundrum::logic::{number::conundrum_number::ConundrumNumber, token::ConundrumLogicToken},
 };
 #[typeshare::typeshare]
-#[derive(Debug, serde::Serialize, Clone, Copy)]
+#[derive(Debug, serde::Serialize, Deserialize, Clone, Copy)]
 pub struct ConundrumFloat(pub f64);
 
 impl FromJsxPropsOptional for ConundrumFloat {

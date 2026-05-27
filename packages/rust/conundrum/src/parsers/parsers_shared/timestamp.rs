@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 use winnow::{Parser, ascii::dec_int, combinator::opt, error::ContextError, stream::Stream};
 
@@ -14,7 +14,7 @@ use crate::lang::runtime::{
 /// assumed to be minutes and seconds. If three components are passed, it will
 /// be applied as `minutes:seconds:hours`
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Timestamp {
     pub min: i32,
     pub hours: Option<i32>,

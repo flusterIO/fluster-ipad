@@ -1,5 +1,4 @@
-use rssn::prelude::argmin::seq::IndexedRandom;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::error::ErrMode;
 
 use crate::{
@@ -47,6 +46,7 @@ use crate::{
             },
             math::{block_math::block_math_model::BlockMathResult, inline_math::inline_math_model::InlineMathResult},
             paragraph::paragraph_model::MarkdownParagraphResult,
+            strikethrough_text::MarkdownStrikeThroughTextResult,
             table::markdown_table_model::MarkdownTable,
         },
         react::{
@@ -67,7 +67,7 @@ impl MdxComponentResult for String {
 // `Vec<ParsedElement>` or reference `ParsedElement` in any other way _and_
 // export it's type via typeshare.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum ParsedElement {
     // Markdown
@@ -80,6 +80,7 @@ pub enum ParsedElement {
     Hr(MarkdownHorizontalRule),
     BoldText(MarkdownBoldTextResult),
     ItalicText(MarkdownItalicTextResult),
+    StrikeThroughText(MarkdownStrikeThroughTextResult),
     BoldAndItalicText(MarkdownBoldAndItalicTextResult),
     ParsedCodeBlock(ParsedCodeBlockVariant),
     InlineCode(InlineCodeResult),
@@ -123,6 +124,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::BlockQuote(quote) => quote.to_html_js_component(res),
             ParsedElement::BoldText(t) => t.to_html_js_component(res),
             ParsedElement::ItalicText(t) => t.to_html_js_component(res),
+            ParsedElement::StrikeThroughText(t) => t.to_html_js_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_html_js_component(res),
             ParsedElement::MarkdownLink(l) => l.to_html_js_component(res),
             ParsedElement::MarkdownParagraph(p) => p.to_html_js_component(res),
@@ -167,6 +169,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::BlockQuote(quote) => quote.to_conundrum_component(res),
             ParsedElement::BoldText(t) => t.to_mdx_component(res),
             ParsedElement::ItalicText(t) => t.to_mdx_component(res),
+            ParsedElement::StrikeThroughText(t) => t.to_mdx_component(res),
             ParsedElement::BoldAndItalicText(t) => t.to_conundrum_component(res),
             ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
             ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
@@ -206,6 +209,7 @@ impl MarkdownComponentResult for ParsedElement {
             ParsedElement::BlockQuote(quote) => quote.to_mdx_component(res),
             ParsedElement::BoldText(t) => t.to_markdown(res),
             ParsedElement::ItalicText(t) => t.to_markdown(res),
+            ParsedElement::StrikeThroughText(t) => t.to_markdown(res),
             ParsedElement::BoldAndItalicText(t) => t.to_markdown(res),
             ParsedElement::MarkdownLink(l) => l.to_mdx_component(res),
             ParsedElement::MarkdownParagraph(p) => p.to_mdx_component(res),
@@ -244,6 +248,7 @@ impl PlainTextComponentResult for ParsedElement {
             ParsedElement::BlockQuote(quote) => quote.to_plain_text(res),
             ParsedElement::BoldText(t) => t.to_plain_text(res),
             ParsedElement::ItalicText(t) => t.to_plain_text(res),
+            ParsedElement::StrikeThroughText(t) => t.to_plain_text(res),
             ParsedElement::BoldAndItalicText(t) => t.to_plain_text(res),
             ParsedElement::MarkdownLink(l) => l.to_plain_text(res),
             ParsedElement::MarkdownParagraph(p) => p.to_plain_text(res),
@@ -302,6 +307,7 @@ impl ParsedElement {
             ParsedElement::BlockQuote(_) => true,
             ParsedElement::BoldText(_) => false,
             ParsedElement::ItalicText(_) => false,
+            ParsedElement::StrikeThroughText(_) => false,
             ParsedElement::BoldAndItalicText(_) => false,
             ParsedElement::MarkdownLink(_) => false,
             ParsedElement::MarkdownParagraph(_) => true,

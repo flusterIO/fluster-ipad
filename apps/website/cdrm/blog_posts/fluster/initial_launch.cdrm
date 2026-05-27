@@ -1,4 +1,3 @@
-
 ---
 title: Introducing Fluster
 id: introducingFluster
@@ -7,6 +6,8 @@ topic: Initial Launch
 subject: Blog Posts
 ---
 
+## Introducing Fluster
+> Markdown on :muscle: steroids side-by-side with your hand-drawn sketches.
 
 
 Hello, my name's Andrew and I'm the creator of Fluster. If you're new here, this app has quite a unique back-story that I hope to share with you here, but first I want to get into what exactly Fluster _is_.
@@ -16,6 +17,9 @@ First, Fluster is _not_ ~~just~~ a markdown based note taking application. Flust
 <Image 
    src="/assets/images/mockups/mac/mockups/mac_editor-front.png"
    alt="Fluster uses the Conundrum language, a superset of mdx"
+   maxHeight="medium"
+   centerSelf
+   paddingY="medium"
 />
 
 To accomplish this, Fluster gradually turned to what I'm calling _Conundrum_, a transpiler that is capable of converting your Conundrum notes (the format Fluster uses) to a variety of outputs defined by a list of flags that can customize the output of the content as a whole, while component properties allow you to customize the behavior of individual pieces of your note. If this all sounds too technical, just know that with this tool your notes can easily be converted back to regular markdown, to plain text, to an input intended to be consumed by AI (AI actually writes in markdown natively most often) and more.
@@ -98,6 +102,8 @@ If you're worried about the learning curve, don't be! Fluster includes it's own 
 <Image  
 alt="Fluster includes a modular dashboard to help you find your recent academic notes" 
 src="/assets/images/mockups/mac/mockups/mac_dashboard-front.png"
+maxHeight="large"
+centerSelf
 />
 
 Well, this is where things get interesting. I talk about it elsewhere, so to avoid the risk of repetition I'll just keep it short and say that almost 5 years ago I was up late one night, finally getting ready to put my work away for the night when I decided to make some toast, opened a book of Einstein's lectures (former PhD candidate in astrophysics) I had sitting on the side of my counter while I waited for my toast and after flipping to a random page an assumption stood out to me... an assumption that made far more sense before our observations that give us the Big Bang. 

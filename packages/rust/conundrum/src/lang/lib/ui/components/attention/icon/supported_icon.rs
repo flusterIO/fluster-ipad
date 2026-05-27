@@ -1,6 +1,5 @@
-use derive_more::derive;
 use lucide_icons::Icon;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::error::ErrMode;
 
 use crate::{
@@ -14,7 +13,7 @@ use crate::{
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
 
-#[derive(Serialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SupportedIcon(pub Icon);
 
 impl FromJsxPropsOptional for SupportedIcon {

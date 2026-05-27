@@ -21,7 +21,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, serde::Serialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct MarkdownTableHeadingCell {
     pub data: TableCellData,
 }

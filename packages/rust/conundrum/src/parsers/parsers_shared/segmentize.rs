@@ -26,6 +26,7 @@ use crate::{
                 footnote::{footnote_anchor::FootnoteAnchor, footnote_footer::FootnoteFooter},
             },
             math::{block_math::block_math_model::BlockMathResult, inline_math::inline_math_model::InlineMathResult},
+            strikethrough_text::MarkdownStrikeThroughTextResult,
             table::markdown_table_model::MarkdownTable,
         },
         parser_trait::ConundrumParser,
@@ -87,6 +88,12 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                        MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
                                                                                        MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
                                                                                        MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
+                                                                                       any.map(|c: char| ParsedElement::Text(c.to_string()))
+                                                                               )).parse_next(x)
+                                                                           },
+                                                                           "~" => |x: &mut ConundrumInput<'a>| {
+                                                                               alt((
+                                                                                       MarkdownStrikeThroughTextResult::parse_input_string.map(ParsedElement::StrikeThroughText),
                                                                                        any.map(|c: char| ParsedElement::Text(c.to_string()))
                                                                                )).parse_next(x)
                                                                            },

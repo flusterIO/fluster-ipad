@@ -34,6 +34,9 @@ export const BlogListItem = ({
                 "w-full border rounded px-4 py-3 bg-fd-card",
                 classes.container,
             )}
+            style={{
+                maxWidth: "min(1080px, calc(100% - 4rem))",
+            }}
         >
             <a
                 href={relativePathToBlogUrl(item.relative_path)}

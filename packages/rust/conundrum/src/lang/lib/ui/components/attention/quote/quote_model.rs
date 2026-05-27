@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use askama::Template;
-use emoji::people_and_body::person_role::PRINCESS_LIGHT_SKIN_TONE;
 use serde::Serialize;
 use typeshare::typeshare;
 use winnow::error::ErrMode;
@@ -41,7 +40,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct Quote {
     /// The primary content of the quote
     pub content: Children,

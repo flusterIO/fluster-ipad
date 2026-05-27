@@ -40,7 +40,7 @@ use crate::{
 /// Use the built-in `:smile:` syntax to insert a text sized emoji, or use the
 /// `Emoji` component to create a scalable and resizable emoji as an image.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct EmojiResult {
     pub name: ConundrumString,
     /// Because images are notoriously finicky to style, you should prefer the

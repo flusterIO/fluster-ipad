@@ -29,7 +29,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct MarkdownBoldAndItalicTextResult {
     pub children: Children,
 }

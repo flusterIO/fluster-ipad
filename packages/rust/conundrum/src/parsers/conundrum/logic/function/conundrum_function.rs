@@ -1,8 +1,7 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use winnow::Parser;
 use winnow::combinator::alt;
 
-use crate::lang::runtime::mem::mem::MemoryArc;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::lang::runtime::traits::conundrum_input::ArcState;
 use crate::lang::runtime::traits::fluster_component_result::ConundrumComponentResult;
@@ -16,7 +15,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ConundrumFunction {
     pub parameters: Vec<ParsedJavascriptElement>,
     pub javascript_body: String,

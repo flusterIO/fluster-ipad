@@ -20,7 +20,7 @@ use crate::{
 use winnow::Parser;
 
 #[typeshare::typeshare]
-#[derive(Debug, serde::Serialize, Clone)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct MarkdownTableHeadingRow(Vec<MarkdownTableHeadingCell>);
 
 impl ConundrumParser<(MarkdownTableHeadingRow, usize)> for MarkdownTableHeadingRow {

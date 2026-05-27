@@ -32,12 +32,13 @@ use crate::{
         any_component_id::AnyComponentName, component_names::EmbeddableComponentName,
     },
     parsers::conundrum::logic::{
-        bool::boolean::ConundrumBoolean, object::object::ConundrumObject, string::conundrum_string::ConundrumString,
+        bool::boolean::ConundrumBoolean, number::conundrum_int::ConundrumInt, object::object::ConundrumObject,
+        string::conundrum_string::ConundrumString,
     },
 };
 
-fn default_markdown_title_depth() -> u8 {
-    5
+fn default_markdown_title_depth() -> Option<HeadingDepth> {
+    Some(HeadingDepth(ConundrumInt(5)))
 }
 
 /// Just a simple card with a title, a body, and an optional description. It can
@@ -60,7 +61,7 @@ fn default_markdown_title_depth() -> u8 {
 /// </Card>
 /// ```
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, serde::Deserialize, Clone)]
 pub struct Card {
     pub title: Children,
     pub subtitle: Option<Children>,

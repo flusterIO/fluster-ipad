@@ -1,5 +1,5 @@
 use askama::Template;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use winnow::error::ErrMode;
 
@@ -34,7 +34,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Default, Clone)]
+#[derive(Debug, Serialize, Deserialize, Default, Clone)]
 pub struct Hint {
     /// Note that `label` is a String and note a vector of children. This means
     /// that the fragment syntax won't work and markdown may or may not work in

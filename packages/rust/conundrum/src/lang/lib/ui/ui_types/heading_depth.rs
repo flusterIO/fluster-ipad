@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     lang::{
@@ -22,7 +22,7 @@ use crate::{
 /// A simple utility around the heading depth, 1-6 just to add some convenience
 /// methods.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Clone, Copy)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub struct HeadingDepth(pub ConundrumInt);
 
 impl HeadingDepth {
