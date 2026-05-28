@@ -21,6 +21,9 @@ use crate::{
             inline_code::InlineCodeResult,
             italic_text::MarkdownItalicTextResult,
             links::markdown_link::MarkdownLinkResult,
+            lists::{
+                task_list::task_list_model::UnorderedTaskListModel, unordered::unordered_list_model::UnorderedListModel,
+            },
             markdown_extensions::{
                 emoji::emoji_model::EmojiResult,
                 footnote::{footnote_anchor::FootnoteAnchor, footnote_footer::FootnoteFooter},
@@ -156,6 +159,19 @@ pub fn until_paragraph_breaking_element<'a>(input: &mut ConundrumInput<'a>)
                                                                                        alt((
                                                                                                HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
                                                                                                MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
+                                                                                               UnorderedTaskListModel::parse_input_string.map(ParsedElement::TaskList),
+                                                                                               UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
+                                                                                       )).parse_next(x)
+                                                                                   } else {
+                                                                                       fail.parse_next(x)
+                                                                                   }
+                                                                               },
+                                                                               "+" | "*" => |x: &mut ConundrumInput<'a>| {
+                                                                                   if ls {
+                                                                                       alt((
+
+                                                                                               UnorderedTaskListModel::parse_input_string.map(ParsedElement::TaskList),
+                                                                                               UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
                                                                                        )).parse_next(x)
                                                                                    } else {
                                                                                        fail.parse_next(x)

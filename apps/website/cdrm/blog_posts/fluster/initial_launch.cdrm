@@ -75,7 +75,7 @@ Well, because you need more from your note taking application. Fluster was built
 ### Learning Curve
 > You can be productive in 15 minutes, be confident in an hour, and have it mastered by your lunch break.
 
-If you're worried about the learning curve, don't be! Fluster includes it's own set of embedded documentation available directly in the application! Inspired by some of my best workflow setups that I had during my time pursuing this model, I wanted to bring that experience to the non-developer through Fluster, so all you have to do is type `Docs??` for a list of all documentation commands, or use the same syntax with **any** component! Below is an example of this syntax with the `Card` component.
+If you're worried about the learning curve, don't be! Fluster includes it's own set of embedded documentation available directly in the application! Inspired by some of my best workflow setups that I had during my time pursuing this model, I wanted to bring that experience to the non-developer through Fluster, so all you have to do is type `Docs??` for a list of all documentation commands, or use the same syntax with **any** component! Below is an example of this syntax with the `Card` component, the Emoji documentation, and the component list, respectively.
 
 <Grid large={3}>
     <Image
@@ -95,7 +95,7 @@ Want to see this in action? The following input:
 Docs?
 ```
 
-Prints this card below, with a list of more documentation commands. Keeep in mind, this is the _short_ documentation. There's a more complete version of each documentation command made available by just adding another `?`!
+Prints this card below, with a list of more documentation commands. Keep in mind, this is the _short_ documentation. There's a more complete version of each documentation command made available by just adding another `?`!
 
 Docs?
 

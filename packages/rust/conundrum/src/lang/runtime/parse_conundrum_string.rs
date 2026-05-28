@@ -23,6 +23,7 @@ use crate::parsers::markdown::inline_code::InlineCodeResult;
 use crate::parsers::markdown::italic_text::MarkdownItalicTextResult;
 use crate::parsers::markdown::links::markdown_link::MarkdownLinkResult;
 use crate::parsers::markdown::lists::ordered::ordered_list_model::OrderedListModel;
+use crate::parsers::markdown::lists::task_list::task_list_model::UnorderedTaskListModel;
 use crate::parsers::markdown::lists::unordered::unordered_list_model::UnorderedListModel;
 use crate::parsers::markdown::markdown_extensions::emoji::emoji_model::EmojiResult;
 use crate::parsers::markdown::markdown_extensions::footnote::footnote_anchor::FootnoteAnchor;
@@ -53,6 +54,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                         alt((
                                 HrWithChildrenResult::parse_input_string.map(ParsedElement::HrWithChildren),
                                 MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
+                                UnorderedTaskListModel::parse_input_string.map(ParsedElement::TaskList),
                                 UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
                                 MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                                 any.map(|c: char| ParsedElement::Text(c.to_string()))
@@ -152,12 +154,13 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 "*" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                     alt((
+                            UnorderedTaskListModel::parse_input_string.map(ParsedElement::TaskList),
                             UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
-                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             MarkdownBoldAndItalicTextResult::parse_input_string.map(ParsedElement::BoldAndItalicText),
                             MarkdownHorizontalRule::parse_input_string.map(ParsedElement::Hr),
                             MarkdownBoldTextResult::parse_input_string.map(ParsedElement::BoldText),
                             MarkdownItalicTextResult::parse_input_string.map(ParsedElement::ItalicText),
+                            MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                             any.map(|c: char| ParsedElement::Text(c.to_string()))
                     )).parse_next(x)
                     } else {
@@ -203,6 +206,7 @@ pub fn parse_elements<'a>(input: &mut ConundrumInput<'a>) -> ConundrumModalResul
                 "+" => |x: &mut ConundrumInput<'a>| {
                     if at_line_start {
                         alt((
+                                UnorderedTaskListModel::parse_input_string.map(ParsedElement::TaskList),
                                 UnorderedListModel::parse_input_string.map(ParsedElement::UnorderedList),
                                 MarkdownParagraphResult::parse_input_string.map(ParsedElement::MarkdownParagraph),
                                 any.map(|c: char| ParsedElement::Text(c.to_string()))

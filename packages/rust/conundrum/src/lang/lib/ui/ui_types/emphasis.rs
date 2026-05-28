@@ -17,6 +17,7 @@ use crate::{
     parsers::{
         conundrum::logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
         javascript::parsed_javascript_elements::ParsedJavascriptElement,
+        markdown::lists::task_list::task_list_item::task_list_completion_indicator::TaskListCompletionToken,
     },
 };
 
@@ -55,6 +56,18 @@ pub enum Emphasis {
     #[serde(rename = "card")]
     #[strum(to_string = "card")]
     Card,
+}
+
+impl From<&TaskListCompletionToken> for Emphasis {
+    fn from(value: &TaskListCompletionToken) -> Self {
+        match value {
+            TaskListCompletionToken::Uncertain => Self::Warn,
+            TaskListCompletionToken::Complete => Self::Primary,
+            TaskListCompletionToken::Pending => Self::Highlight,
+            TaskListCompletionToken::Important => Self::Primary,
+            TaskListCompletionToken::Incomplete => Self::Card,
+        }
+    }
 }
 
 impl Emphasis {

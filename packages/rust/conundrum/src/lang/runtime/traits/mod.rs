@@ -13,3 +13,4 @@ pub mod markdown_component_result;
 pub mod mdx_component_result;
 pub mod plain_text_component_result;
 pub mod state_modifier;
+pub mod enum_variant_label;

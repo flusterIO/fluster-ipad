@@ -38,7 +38,8 @@ use crate::{
             italic_text::MarkdownItalicTextResult,
             links::markdown_link::MarkdownLinkResult,
             lists::{
-                ordered::ordered_list_model::OrderedListModel, unordered::unordered_list_model::UnorderedListModel,
+                ordered::ordered_list_model::OrderedListModel, task_list::task_list_model::UnorderedTaskListModel,
+                unordered::unordered_list_model::UnorderedListModel,
             },
             markdown_extensions::{
                 emoji::emoji_model::EmojiResult,
@@ -88,6 +89,7 @@ pub enum ParsedElement {
     MarkdownParagraph(MarkdownParagraphResult),
     UnorderedList(UnorderedListModel),
     OrderedList(OrderedListModel),
+    TaskList(UnorderedTaskListModel),
     Table(MarkdownTable),
     FootnoteAnchor(FootnoteAnchor),
     FootnoteFooter(FootnoteFooter),
@@ -139,6 +141,7 @@ impl HtmlJsComponentResult for ParsedElement {
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
             ParsedElement::UnorderedList(l) => l.to_html_js_component(res),
+            ParsedElement::TaskList(l) => l.to_html_js_component(res),
             ParsedElement::OrderedList(l) => l.to_html_js_component(res),
             ParsedElement::Table(t) => t.to_html_js_component(res),
             // This is
@@ -184,6 +187,7 @@ impl MdxComponentResult for ParsedElement {
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
             ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
+            ParsedElement::TaskList(l) => l.to_conundrum_component(res),
             ParsedElement::OrderedList(l) => l.to_conundrum_component(res),
             ParsedElement::Table(t) => t.to_conundrum_component(res),
             // For now people will have to implement their own footer.
@@ -224,6 +228,7 @@ impl MarkdownComponentResult for ParsedElement {
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
             ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
+            ParsedElement::TaskList(l) => l.to_conundrum_component(res),
             ParsedElement::OrderedList(l) => l.to_conundrum_component(res),
             ParsedElement::Table(t) => t.to_conundrum_component(res),
             ParsedElement::FootnoteFooter(f) => f.to_markdown(res),
@@ -263,6 +268,7 @@ impl PlainTextComponentResult for ParsedElement {
             ParsedElement::Javascript(js) => js.to_conundrum_component(res),
             ParsedElement::Logic(l) => l.to_conundrum_component(res),
             ParsedElement::UnorderedList(l) => l.to_conundrum_component(res),
+            ParsedElement::TaskList(l) => l.to_conundrum_component(res),
             ParsedElement::OrderedList(l) => l.to_plain_text(res),
             ParsedElement::Table(t) => t.to_plain_text(res),
             ParsedElement::FootnoteFooter(f) => f.to_plain_text(res),
@@ -322,6 +328,7 @@ impl ParsedElement {
             ParsedElement::Javascript(_s) => false,
             ParsedElement::Logic(_) => false,
             ParsedElement::UnorderedList(_) => true,
+            ParsedElement::TaskList(_) => true,
             ParsedElement::OrderedList(_) => true,
             ParsedElement::Table(_) => true,
             ParsedElement::FootnoteAnchor(_) => false,
