@@ -28,7 +28,7 @@ From here, if you're already familiar with markdown, you're 80% of the way there
 Markdown?
 ```
 
-Or if you're familiar with markdown, but now `.jsx`, try:
+Or if you're familiar with markdown, but not `.jsx`, try:
 
 ```tsx -- title="intro.cdrm"
 Jsx?
@@ -68,6 +68,11 @@ And then on top of this, each note integrates with a **global** dictionary and b
 My dictionary entry information...
 ```
 ````
+Which renders as:
+
+```dictionary -- My dictionary entry title
+My dictionary entry information...
+```
 
 we can automatically insert information from an individual note into our global dictionary (there's a dictionary tab on both mac and iPad that will take you to your dictionary).
 
@@ -83,5 +88,7 @@ That's really all there is to Fluster. If you understand the way the note's are 
 | `Syntax?` | A short summary of the syntax that's specific to Conundrum, that wouldn't be covered in other markdown applications. This doesn't necessarily cover jsx, however | 
 | `Jsx?` | Since `.jsx` is such a big topic on it's own, it get's it's own section. We're not technically writing `.jsx` anymore, but as the syntax still aligns so closely, I'm not even going to rename the help section yet. |
 | `Components?` | This will take you to a list of all available components, helping you implement the `.jsx` you just learned. Some of this documentation is generated directly from code, so while it will always reflect the current state of your application, it might become repetitive at times.|
+
+> Also, on Mac there is a command palette available by pressing cmd+P.
 
 But most importantly, `Docs??`<Emoji name="exclamation" inline size="smedium"/>
