@@ -1,11 +1,13 @@
 # To-Do
 
-- [ ] Get conundrum compiling again.
-- [ ] Re-fucking-implement strikethrough text parser.
-- [ ] Fix link parser. It's woring, but inserting the wrong text maing the link invalid.
+- [x] Get conundrum compiling again.
+- [x] Re-fucking-implement strikethrough text parser.
+- [x] Fix link parser. It's woring, but inserting the wrong text maing the link invalid.
 - [ ] Make blog mobile responsive. That should be the first priority once conundrum content is compiling again.
   - [ ] Add drawer in place of sidebar on mobile.
     - Installed `react-device-detect` for the switch
+- [ ] Get checkbox parser working
+- [ ] Get emoji search working again, then check and verify that all documentation compiles.
 - [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
   - [ ] Add the tabs component into the application somewhere to show it off.
 - [ ] Work on initial launch note conversion to `.cdrm`

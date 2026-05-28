@@ -1,0 +1,87 @@
+---
+title: Getting Started
+id: gettingStarted
+summary: Getting started with Fluster & Conundrum is simple, but if you need a litle help, this is where you'll find it!
+topic: Initial Launch
+subject: Blog Posts
+---
+
+# Getting Started
+
+Getting started with Fluster and Conundrum is simple, but if you need a little help, this note will walk you through the first steps.
+
+<Admonition title="What's the difference between Conundrum & Fluster?" sidebar right>
+Conundrum is the transpiler and _'language'_ that powers Fluster. When you're using Fluster, you're writing 'Conundrum' (at this point, basically a subset of mdx).
+</Admonition>
+
+On initial launch, the Mac app will preceed the iPad app by a week or two, so I'll focus mostly on the Mac app here. The principles remain the same for the iPad app, just with a different UI.
+
+### Creating your first note
+
+Fluster should launch with a couple notes pre-loaded for demonstration purposes, but feel free to delete these as they serve mostly as a demonstration of the application and as a shameless plug for the model that I've been working on.
+
+When you first create your note, you'll likely be taken to the editor screen. This can be configured in settings to take you to your preferred screen when a note is first opened.
+
+From here, if you're already familiar with markdown, you're 80% of the way there. If not, start with the markdown documentaiton by typing (make sure it's on it's own unique line, with no leading or trailing white space):
+
+```tsx -- title="intro.cdrm"
+Markdown?
+```
+
+Or if you're familiar with markdown, but now `.jsx`, try:
+
+```tsx -- title="intro.cdrm"
+Jsx?
+```
+
+Or if you're an experienced developer that already knows the details of `.jsx` and `.mdx`, then:
+
+
+```tsx -- title="intro.cdrm"
+Components?
+```
+
+You should see documentation pop-up in the preview panel, but if you don't, make sure that you haven't configured the editor to run 'on-save'. If you have, don't worry... just press cmd+s to save! 
+
+This setting can be quite useful, as shorter notes or notes without a lot of math of complicated figures can render quite nicely 'on-change', but for notes with a lot of foldable components or complex equations, the 'on-change' method can be distracting and jittery.
+
+> Keep in mind, you can see more documentation for _any_ documentation command by just adding another `?`, so `Docs?` $\to$ `Docs??`.
+
+### Welp, now what?
+
+So that was pretty straight forward, but there's a lot more the Fluster and Conundrum have to offer. Let's go over some of the details.
+
+First, every time you create a note it's actually creating a group of 'notes' of a unique format, bundling them together, and referring to the collection as a 'note'. This means that each note includes:
+
+- 1 infinitely long markdown page
+- 1 or more iPad-sized (aspect ratio really, you can zoom) sheets
+- A note bibliography, with 0 or more citations that are automatically populated from your `[[cite:myCitationHere]]` syntax.
+- 0 or 1 'topics'
+- 0 or 1 'subjects'
+- 0 or more 'tags', populated by the `[[#myTag]]` syntax.
+- And a 'note-details' sheet, which isn't a unique page of content on it's own, but rather a summary of your note's citations and other searchable properties.
+
+And then on top of this, each note integrates with a **global** dictionary and bibliography. The details of the dictionary entry can be found in the `Syntax??` docs, but with something similar to the following
+
+````md -- title="my_note.cdrm"
+```dictionary -- My dictionary entry title
+My dictionary entry information...
+```
+````
+
+we can automatically insert information from an individual note into our global dictionary (there's a dictionary tab on both mac and iPad that will take you to your dictionary).
+
+### The Wrap Up
+
+That's really all there is to Fluster. If you understand the way the note's are grouped, you're pretty much all set to take off. There are many documentation commands to explore, but if you're ever lost, just remember the 'home page' documentation at `Docs?`.
+
+--- Other useful commands ---
+
+| Command | Description |
+| ------- | ----------- |
+| `Markdown?` | A short review of markdown syntax for those that have never used a markdown based application before.| 
+| `Syntax?` | A short summary of the syntax that's specific to Conundrum, that wouldn't be covered in other markdown applications. This doesn't necessarily cover jsx, however | 
+| `Jsx?` | Since `.jsx` is such a big topic on it's own, it get's it's own section. We're not technically writing `.jsx` anymore, but as the syntax still aligns so closely, I'm not even going to rename the help section yet. |
+| `Components?` | This will take you to a list of all available components, helping you implement the `.jsx` you just learned. Some of this documentation is generated directly from code, so while it will always reflect the current state of your application, it might become repetitive at times.|
+
+But most importantly, `Docs??`<Emoji name="exclamation" inline size="smedium"/>

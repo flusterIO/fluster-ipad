@@ -1,5 +1,4 @@
 use askama::Template;
-use log::debug;
 use serde::Serialize;
 use winnow::{Parser, error::ErrMode, stream::Stream};
 
