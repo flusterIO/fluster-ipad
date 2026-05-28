@@ -5,7 +5,7 @@ use crate::parsers::markdown::lists::task_list::task_list_item::task_list_item_h
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <ul class="w-full my-4 max-w-[1080px] list-disc list-inside">
+/// <ul class="w-full my-4 max-w-[1080px] list-inside">
 /// {% for item in items %}
 /// {{item.render()? | safe}}
 /// {% endfor %}

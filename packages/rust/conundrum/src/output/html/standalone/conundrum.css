@@ -1295,6 +1295,9 @@
   .flex {
     display: flex;
   }
+  .flex\! {
+    display: flex !important;
+  }
   .grid {
     display: grid;
   }
@@ -2957,6 +2960,9 @@
   }
   .text-\[9vw\] {
     font-size: 9vw;
+  }
+  .text-\[10px\] {
+    font-size: 10px;
   }
   .leading-none {
     --tw-leading: 1;
@@ -6145,6 +6151,12 @@
       font-size: 6vw !important;
     }
   }
+  .\[\&\>\*\]\:leading-none {
+    &>* {
+      --tw-leading: 1;
+      line-height: 1;
+    }
+  }
   .\[\&\>\*\]\:text-foreground\/80 {
     &>* {
       color: hsl(var(--foreground));
@@ -6163,6 +6175,17 @@
       &>* {
         font-size: 3vw !important;
       }
+    }
+  }
+  .\[\&\>\.cdrm-task-list\]\:border-none {
+    &>.cdrm-task-list {
+      --tw-border-style: none;
+      border-style: none;
+    }
+  }
+  .\[\&\>\.cdrm-task-list\]\:bg-transparent\! {
+    &>.cdrm-task-list {
+      background-color: transparent !important;
     }
   }
   .\[\&\>\.katex-display\]\:w-full {

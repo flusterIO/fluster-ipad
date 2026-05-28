@@ -122,7 +122,6 @@ mod tests {
         let mut input = wrap_test_conundrum_content(test_content);
         let res = UnorderedTaskListItem::parse_input_string(&mut input).expect("Parses plain list item without throwing an error.");
         let templ = res.as_template(Arc::clone(&input.state)).expect("Outputs list item template as expected");
-        println!("Template: {:#?}", templ);
         assert!(templ.heading == "My test item here", "Finds the proper heading");
         assert!(templ.body.is_some_and(|b| b == "My body goes here!"), "Finds the proper body");
     }

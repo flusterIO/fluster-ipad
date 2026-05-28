@@ -3,7 +3,10 @@ use crate::{
         lib::ui::ui_types::emphasis::Emphasis,
         runtime::{
             state::conundrum_error_variant::ConundrumModalResult,
-            traits::{conundrum_input::ConundrumInput, enum_variant_label::EnumVariantLabel},
+            traits::{
+                conundrum_input::ConundrumInput, enum_variant_label::EnumVariantLabel,
+                icon_representable::IconRepresentable,
+            },
         },
     },
     output::html::{
@@ -14,6 +17,7 @@ use crate::{
     },
     parsers::parser_trait::ConundrumParser,
 };
+use lucide_icons::Icon;
 use serde::{Deserialize, Serialize};
 use winnow::{Parser, token::take};
 
@@ -37,10 +41,44 @@ pub enum TaskListCompletionToken {
     Incomplete,
 }
 
+impl TaskListCompletionToken {
+    pub fn is_checked(&self) -> bool {
+        !matches!(self, Self::Incomplete)
+    }
+
+    pub fn get_toggled_variant(&self) -> TaskListCompletionToken {
+        if self.is_checked() {
+            TaskListCompletionToken::Incomplete
+        } else {
+            TaskListCompletionToken::Complete
+        }
+    }
+}
+
+impl IconRepresentable for TaskListCompletionToken {
+    fn is_icon(&self) -> bool {
+        match self {
+            TaskListCompletionToken::Complete => true,
+            TaskListCompletionToken::Pending => true,
+            _ => false,
+        }
+    }
+
+    fn as_icon(&self) -> char {
+        match self {
+            TaskListCompletionToken::Uncertain => '?',
+            TaskListCompletionToken::Complete => Icon::Check.unicode(),
+            TaskListCompletionToken::Pending => Icon::Timer.unicode(),
+            TaskListCompletionToken::Important => '!',
+            TaskListCompletionToken::Incomplete => ' ',
+        }
+    }
+}
+
 impl TailwindClassRepresentable for TaskListCompletionToken {
     fn as_tailwind_class(&self) -> String {
         if matches!(self, TaskListCompletionToken::Incomplete) {
-            String::from("")
+            String::from("border bg-muted")
         } else {
             let emph: Emphasis = self.into();
             emph.to_background_color_classes()

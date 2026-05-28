@@ -64,7 +64,7 @@ impl From<&TaskListCompletionToken> for Emphasis {
             TaskListCompletionToken::Uncertain => Self::Warn,
             TaskListCompletionToken::Complete => Self::Primary,
             TaskListCompletionToken::Pending => Self::Highlight,
-            TaskListCompletionToken::Important => Self::Primary,
+            TaskListCompletionToken::Important => Self::Error,
             TaskListCompletionToken::Incomplete => Self::Card,
         }
     }
