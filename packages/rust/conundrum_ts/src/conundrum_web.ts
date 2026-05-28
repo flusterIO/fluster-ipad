@@ -4,6 +4,7 @@ import { type onCodeBlockContainerClick } from "./component_glue/code/on_codeblo
 import { type onAdmonitionHeadingClick } from "./component_glue/admonition/on_admonition_heading_click";
 import { type onLoad } from "./event_handlers/on_load";
 import { type onResize } from "./event_handlers/on_resize";
+import { type copyStringToClipboard } from "./utils/copy_string_to_clipboard";
 
 export interface ConundrumWebClient {
     handleConundrumTabClick: typeof handleConundrumTabClick;
@@ -12,4 +13,5 @@ export interface ConundrumWebClient {
     onCodeBlockContainerClick: typeof onCodeBlockContainerClick;
     onResize: typeof onResize;
     onLoad: typeof onLoad;
+    copyString: typeof copyStringToClipboard;
 }

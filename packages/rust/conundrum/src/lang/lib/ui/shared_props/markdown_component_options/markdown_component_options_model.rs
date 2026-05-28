@@ -25,6 +25,7 @@ pub struct MarkdownComponentOptionMap<T: IntoEnumIterator + Debug + Clone>(pub  
 
 #[typeshare]
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(tag = "tag", content = "content")]
 pub enum MarkdownComponentOptionData<T: IntoEnumIterator + Debug + Clone> {
     AsMap(MarkdownComponentOptionMap<T>),
     AsVariant(T),

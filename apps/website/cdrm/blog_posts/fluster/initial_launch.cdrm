@@ -109,7 +109,6 @@ Docs?
 - [-] LSP driven intellisense.
     - This feature might be new to those that aren't developers, but let me tell you... it's a _game changer_ for productivity and speed. LSP stands for 'language-server-protocol', and it's just an application that runs in the background that applications like Fluster can ask for different types of responses based on your current cursor position, and with those responses we can do everything from autocomplete component properties to grammar checking sentences. This feature is just now being undertaken, so it will be a few months, but when this LSP is complete it will take writing Conundrum to a whole other level.
 
-> Oh yea, did I mention... the checkboxes support multiple different checked states.
 
 --- 
 

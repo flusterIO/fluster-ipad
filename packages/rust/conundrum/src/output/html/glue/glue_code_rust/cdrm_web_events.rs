@@ -18,4 +18,7 @@ pub enum ConundrumWebEvents {
     #[serde(rename = "cdrm-note-id-link-click")]
     #[strum(to_string = "cdrm-note-id-link-click")]
     NoteLinkClick,
+    #[serde(rename = "cdrm-content-copied")]
+    #[strum(to_string = "cdrm-content-copied")]
+    CopyToClipboard,
 }

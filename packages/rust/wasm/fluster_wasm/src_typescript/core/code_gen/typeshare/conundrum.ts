@@ -13,6 +13,7 @@ export type ParsedElement =
 	| { tag: "Hr", content: MarkdownHorizontalRule }
 	| { tag: "BoldText", content: MarkdownBoldTextResult }
 	| { tag: "ItalicText", content: MarkdownItalicTextResult }
+	| { tag: "StrikeThroughText", content: MarkdownStrikeThroughTextResult }
 	| { tag: "BoldAndItalicText", content: MarkdownBoldAndItalicTextResult }
 	| { tag: "ParsedCodeBlock", content: ParsedCodeBlockVariant }
 	| { tag: "InlineCode", content: InlineCodeResult }
@@ -20,6 +21,7 @@ export type ParsedElement =
 	| { tag: "MarkdownParagraph", content: MarkdownParagraphResult }
 	| { tag: "UnorderedList", content: UnorderedListModel }
 	| { tag: "OrderedList", content: OrderedListModel }
+	| { tag: "TaskList", content: UnorderedTaskListModel }
 	| { tag: "Table", content: MarkdownTable }
 	| { tag: "FootnoteAnchor", content: FootnoteAnchor }
 	| { tag: "FootnoteFooter", content: FootnoteFooter }
@@ -62,6 +64,8 @@ export type GridColumnProps = GridColumnsMap;
  * methods.
  */
 export type HeadingDepth = ConundrumInt;
+
+export type MarkdownComponentOptionMap<T> = DashMap<MarkdownOutputVariantKey, T>;
 
 export enum MarkdownTableAlignmentCell {
 	Default = "Default",
@@ -492,6 +496,27 @@ export interface BlockQuoteResult {
 	full_match: string;
 }
 
+export interface FrontMatterResult {
+	ignored_parsers: string[];
+	title?: string;
+	user_defined_id?: string;
+	file_path?: string;
+	topic?: string;
+	subject?: string;
+	summary?: string;
+}
+
+export interface BlogFileSummary {
+	html: string;
+	/**
+	 * ## TODO:
+	 * - [ ] Add a `keywords` field to the front-matter and access it here.
+	 */
+	tags: string[];
+	relative_path: string;
+	front_matter?: FrontMatterResult;
+}
+
 /**
  * Just a simple card with a title, a body, and an optional description. It can
  * be used as a way to segment your notes without making anything stand out
@@ -621,6 +646,16 @@ export interface DictionaryEntryResultData {
 	note_id?: string;
 }
 
+/**
+ * ## Template (HTML)
+ * 
+ * ```askama
+ * <div class="w-full h-full grid grid-cols-1 grid-rows-[1fr_auto]">
+ * <div class="flex flex-col justify-center items-center w-full h-full [&>svg]:max-h-[120px] [&>svg]:w-auto">{{svg | safe}}</div>
+ * <div class="w-full text-center flex flex-col justify-center items-center">{{name | safe}}</div>
+ * </div>
+ * ```
+ */
 export interface EmojiData {
 	name: string;
 	svg: string;
@@ -740,16 +775,6 @@ export interface FootnoteAnchor {
 export interface FootnoteFooter {
 	idx: ConundrumInt;
 	content: Children;
-}
-
-export interface FrontMatterResult {
-	ignored_parsers: string[];
-	title?: string;
-	user_defined_id?: string;
-	file_path?: string;
-	topic?: string;
-	subject?: string;
-	summary?: string;
 }
 
 /**
@@ -883,6 +908,14 @@ export interface MarkdownBoldTextResult {
 	children: Children;
 }
 
+export type MarkdownComponentOptionData<T> = 
+	| { tag: "AsMap", content: MarkdownComponentOptionMap<T> }
+	| { tag: "AsVariant", content: T };
+
+export interface MarkdownComponentOptions<T> {
+	markdown: MarkdownComponentOptionData<T>;
+}
+
 export interface MarkdownHeadingResult {
 	depth: number;
 	/**
@@ -939,6 +972,10 @@ export interface MarkdownLinkResultStringified {
 export interface MarkdownParagraphResult {
 	children: Children;
 	terminator: ParsedElement;
+}
+
+export interface MarkdownStrikeThroughTextResult {
+	children: Children;
 }
 
 export interface MarkdownTable {
@@ -1037,19 +1074,8 @@ export interface MdxParsingResult {
 	included_components: AnyComponentKey[];
 }
 
-export interface NextjsFileSummary {
-	html: string;
-	/**
-	 * ## TODO:
-	 * - [ ] Add a `keywords` field to the front-matter and access it here.
-	 */
-	tags: string[];
-	relative_path: string;
-	front_matter?: FrontMatterResult;
-}
-
 export interface NextJsConundrumOutput {
-	files: NextjsFileSummary[];
+	files: BlogFileSummary[];
 }
 
 export interface OrderedListItem {
@@ -1137,6 +1163,7 @@ export enum EmbeddableComponentName {
 	UtlityContainer = "Container",
 	HrWithChildren = "Hr",
 	Hint = "Hint",
+	Quote = "Quote",
 	Emoji = "Emoji",
 	EqRef = "EqRef",
 	Tabs = "Tabs",
@@ -1266,6 +1293,26 @@ export interface ParsedTag {
 	markdown?: InlineMarkdownOverride;
 }
 
+export enum QuoteMarkdownVariants {
+	Hide = "hide",
+	BlockQuote = "blockquote",
+	BlockQuoteAndSource = "blockquote+source",
+}
+
+export interface Quote {
+	/** The primary content of the quote */
+	content: Children;
+	/** An optional source of the quote */
+	source?: Children;
+	/**
+	 * An optional `sourceId` that can be used to group quotes throughout
+	 * a user's collection of notes based on where they appear.
+	 */
+	source_id?: ConundrumString;
+	sizable: SizablePropsGroup;
+	markdown_options?: MarkdownComponentOptions<QuoteMarkdownVariants>;
+}
+
 export type ConundrumComponentType = 
 	| { tag: "Toc", content: TableOfContents }
 	| { tag: "Container", content: UtilityContainer }
@@ -1279,6 +1326,7 @@ export type ConundrumComponentType =
 	| { tag: "Ul", content: Underline }
 	| { tag: "Hl", content: Highlight }
 	| { tag: "Emoji", content: EmojiResult }
+	| { tag: "Quote", content: Quote }
 	| { tag: "EqRef", content: EquationReference }
 	| { tag: "EmojiDocsDemo", content: EmojiDocsDemo }
 	| { tag: "Image", content: Image };
@@ -1446,6 +1494,29 @@ export interface UnorderedListModel {
 }
 
 /**
+ * ## Example Usage
+ * 
+ * ```mdx
+ * - My normal list item
+ * - My cool item's heading
+ * My cool list item's body, indented either 2 spaces or 1 tab.
+ * Unlike other markdown based parsers, Conundrum seperates the list
+ * item's body from it's content in the AST, letting developers treat
+ * each piece of data accordingly.
+ * - This will be a nested item, indented 4 spaces.
+ * ```
+ */
+export interface UnorderedTaskListItem {
+	heading: Children;
+	body?: Children;
+	status: TaskListCompletionToken;
+}
+
+export interface UnorderedTaskListModel {
+	items: UnorderedTaskListItem[];
+}
+
+/**
  * The `Container` component is an intentionally almost entirely unstyled
  * component that accepts most of the _generic_ properties accepted elsewhere.
  * This means that it takes an optional `Emphasis` as a boolean, and all of the
@@ -1480,6 +1551,10 @@ export enum AutoInsertedComponentName {
 	AutoInsertedMarkdownParagraph = "AutoInsertedMarkdownParagraph",
 }
 
+export enum CdrmEnvVariable {
+	LogLevel = "CDRM_LOG_LEVEL",
+}
+
 export type CodeBlockLanguage = 
 	| { tag: "DefaultLanguage", content?: undefined }
 	| { tag: "UserProvided", content: string };
@@ -1492,7 +1567,9 @@ export type CodeBlockLanguage =
  */
 export enum CommonComponentPropertyKey {
 	MarkdownHeading = "markdownHeading",
+	/** Deprecated in favor of a shared struct */
 	InlineMarkdownOverride = "markdown",
+	ComponentMarkdownProps = "md",
 }
 
 export type ConundrumErrorVariant = 
@@ -1506,7 +1583,8 @@ export type ConundrumErrorVariant =
 	| { tag: "FrontMatterError", content?: undefined }
 	| { tag: "UserFacingGeneralParserError", content: ConundrumError }
 	| { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
-	| { tag: "InternalParserError", content: ConundrumError };
+	| { tag: "InternalParserError", content: ConundrumError }
+	| { tag: "EnvVarNotFound", content: CdrmEnvVariable };
 
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }
@@ -1525,6 +1603,11 @@ export enum ConundrumWebEvents {
 	CdrmContentLoaded = "cdrm-content-loaded",
 	CodeblockCopied = "cdrm-codeblock-copy",
 	NoteLinkClick = "cdrm-note-id-link-click",
+	CopyToClipboard = "cdrm-content-copied",
+}
+
+export enum CopyToClipboardSource {
+	EmojiName = "EmojiName",
 }
 
 export enum DocumentationComponentName {
@@ -1541,6 +1624,7 @@ export enum EmbeddableComponentId {
 	Admonition = "admonition",
 	Hl = "highlight",
 	Ul = "underline",
+	Quote = "quote",
 	Card = "card",
 	Grid = "grid",
 	UtlityContainer = "util-container",
@@ -1591,6 +1675,12 @@ export enum InContentDocumentationSource {
 
 export enum MarkdownElementGlueKey {
 	Footnotes = "footnotes.js",
+}
+
+export enum MarkdownOutputVariantKey {
+	Inline = "inline",
+	ForAI = "forAI",
+	General = "general",
 }
 
 export type ParsedCodeBlockVariant = 

@@ -1,21 +1,21 @@
-## Equation Reference
-
-Reference your equations by their index number without worrying about the structure of your notes changing. Just add the unique `{#myId}` syntax (same as with heading id's) and you'll be able to reference that equation by index anywhere within your note.
+## Quote
+> Note the blockquote
 
 ### Example
 
-````md
-This is my awesome equation
 
-$$ {#myEquationsId}
-e=mc^2
-$$
+```jsx
+<Quote source="Oscar Wilde" >
+There are two great trajedies in life. One is getting what you want, the other is not getting it.
+</Quote>
+```
 
-My awesome equation is numbered <EqRef id="myEquationsId" />!
-````
+Or because this component accepts `Sizable` props, we can do something like:
 
+```jsx
+<Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
+I have cast fire upon the world, and see, I am guarding it until it **blazes**
+</Quote>
+```
 
-### Properties
-
-This component's properties also extend the `Emphasis` struct so that the inserted equation tag can be styled with any of the app's current **Emphasis** colors, as well as two other properties, `super` and `sub` for super and subscript notation.
-
+There also exists a `sourceId` property that applications can take advantage of to group your quotes throughout your notes, so use that how you like.

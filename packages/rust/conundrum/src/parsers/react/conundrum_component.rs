@@ -104,7 +104,7 @@ impl HtmlJsComponentResult for ConundrumComponentType {
             ConundrumComponentType::Grid(s) => s.to_html_js_component(res),
             ConundrumComponentType::Emoji(s) => s.to_html_js_component(res),
             ConundrumComponentType::Hr(s) => s.to_html_js_component(res),
-            ConundrumComponentType::EmojiDocsDemo(s) => s.to_plain_text(res),
+            ConundrumComponentType::EmojiDocsDemo(s) => s.to_html_js_component(res),
             ConundrumComponentType::Toc(s) => s.to_html_js_component(res),
             ConundrumComponentType::Image(s) => s.to_html_js_component(res),
         }

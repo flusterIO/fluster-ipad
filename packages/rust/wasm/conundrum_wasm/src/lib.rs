@@ -15,8 +15,3 @@ pub fn search_conundrum_emojis(query: String, page: usize, per_page: usize) -> R
     Ok(serde_wasm_bindgen::to_value(&res)?)
 }
 
-// #[wasm_bindgen]
-// pub async fn pre_parse_mdx(opts: ParseMdxOptions) -> MdxParsingResult {
-//     fluster_pre_parser::parse::by_regex::parse_mdx_by_regex::parse_mdx_string_to_mdx_result(&opts)
-//         .await
-// }

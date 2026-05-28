@@ -1,18 +1,27 @@
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+use askama::Template;
+use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
 use serde::Serialize;
+use std::sync::Arc;
 use tabled::{Table, settings::Style};
 use typeshare::typeshare;
+use winnow::error::ErrMode;
 
 use crate::{
     lang::{
         lib::ui::components::{
             attention::emoji::currently_supported_emoji_names::CURRENTLY_SUPPORTED_EMOJI_NAMES,
-            component_trait::ConundrumComponent, documentation::emoji::emoji_data::EmojiData,
+            component_trait::ConundrumComponent,
+            documentation::emoji::{emoji_data::EmojiData, emoji_docs_html_templ::EmojiDocsHtmlTemplate},
         },
         runtime::{
-            state::parse_state::ConundrumCompileTarget,
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+                parse_state::ConundrumCompileTarget,
+            },
             traits::{
-                conundrum_input::ArcState, fluster_component_result::ConundrumComponentResult,
+                conundrum_input::ArcState, conundrum_template::ConundrumTemplateRepresentable,
+                fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
                 jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
@@ -72,6 +81,25 @@ impl PlainTextComponentResult for EmojiDocsDemo {
             s += format!("- \"{}\"\n", item).as_str();
         }
         Ok(s)
+    }
+}
+
+impl ConundrumTemplateRepresentable<EmojiDocsHtmlTemplate> for EmojiDocsDemo {
+    fn to_template(
+        &self,
+        state: ArcState)
+        -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<EmojiDocsHtmlTemplate> {
+        let items = self.get_emoji_data().iter().take(50).cloned().collect();
+        Ok(EmojiDocsHtmlTemplate { items })
+    }
+}
+
+impl HtmlJsComponentResult for EmojiDocsDemo {
+    fn to_html_js_component(&self, res: ArcState) -> ConundrumModalResult<String> {
+        self.to_template(Arc::clone(&res))?.render().map_err(|e| {
+                  eprintln!("Error: {:#?}", e);
+                  ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
+              })
     }
 }
 

@@ -5,6 +5,7 @@ import { onAdmonitionHeadingClick } from "./component_glue/admonition/on_admonit
 import { type ConundrumWebClient } from "./conundrum_web";
 import { onLoad } from "./event_handlers/on_load";
 import { onResize } from "./event_handlers/on_resize";
+import { copyStringToClipboard } from "./utils/copy_string_to_clipboard";
 
 declare global {
     interface Window {
@@ -40,6 +41,7 @@ export const initializeConundrumWeb = () => {
         onAdmonitionHeadingClick,
         onLoad,
         onResize,
+        copyString: copyStringToClipboard,
     };
     const mainObserver = new MutationObserver(handleMutations);
 
