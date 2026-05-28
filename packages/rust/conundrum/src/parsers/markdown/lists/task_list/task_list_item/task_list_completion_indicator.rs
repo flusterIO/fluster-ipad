@@ -57,11 +57,7 @@ impl TaskListCompletionToken {
 
 impl IconRepresentable for TaskListCompletionToken {
     fn is_icon(&self) -> bool {
-        match self {
-            TaskListCompletionToken::Complete => true,
-            TaskListCompletionToken::Pending => true,
-            _ => false,
-        }
+        matches!(self, TaskListCompletionToken::Complete | TaskListCompletionToken::Pending)
     }
 
     fn as_icon(&self) -> char {

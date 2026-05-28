@@ -110,3 +110,38 @@ Remember that you can create a link that scrolls to a specific section using the
 ````
 
 It is important to note though that there must be _no_ whitespace between the title and the block quote. That is what distingishes the behavior between a block quote and a subtitle.
+
+
+### Checkbox
+
+````long-docs
+As in regular markdown, checkboxes can be created with the following syntax:
+```md
+- [ ] My unchecked item
+- [x] My checked item
+```
+
+And as in most markdown implemenntations, we can continue our markdown item with additional lines. What's unique about Conundrum is that those line's are compiled into a unique `div`, giving them a seperation within the UI if the developer chooses to display them that way. This can be achieved by:
+
+```md
+- [ ] My unchecked item
+  My continued item lead by two spaces or 1 tab.
+  This line just keeps going until I don't indent 
+  or create another list item.
+- [x] My checked item
+  Of course the same applies here.
+```
+
+What's also unique about Conundrum, is that each checkbox can be represented as more than just checked and unchecked, depending on the character used to mark the box as checked.
+````
+
+| Character | Description |
+| --------- | ----------- |
+| `-` | Pending |
+| `?` | Uncertain |
+| `x` | Complete | 
+| `!` | Important or Error'd |
+
+````long-docs
+In a near future release these checkboxes will be completely programmable once the integration with Rhai is complete.
+````
