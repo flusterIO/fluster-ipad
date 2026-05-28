@@ -3,6 +3,7 @@
 - [x] Get conundrum compiling again.
 - [x] Re-fucking-implement strikethrough text parser.
 - [x] Fix link parser. It's woring, but inserting the wrong text maing the link invalid.
+- [ ] Get `wasm` loading in Next.js. That'll be perfect for enabling a web based editor, but it's also crucial for a decent development workflow now that we're rendering straight to html and a React based test page doesn't make as much sense.
 - [ ] Make blog mobile responsive. That should be the first priority once conundrum content is compiling again.
   - [ ] Add drawer in place of sidebar on mobile.
     - Installed `react-device-detect` for the switch

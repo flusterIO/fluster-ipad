@@ -69,6 +69,9 @@ lint:
 build_internal_cli:
 	cd {{justfile_directory()}}/packages/rust/fluster_internal_cli; cargo build 
 
+build_conundrum_wasm:
+	cd {{justfile_directory()}}/packages/rust/wasm/conundrum_wasm; pnpm build
+
 build_fluster_wasm:
 	cd {{justfile_directory()}}/packages/rust/wasm/fluster_wasm; pnpm build
 

@@ -1,5 +1,4 @@
 use askama::Template;
-use rssn::prelude::argmin::seq::IndexedRandom;
 
 use crate::{
     output::html::dom::dom_id::DOMId, parsers::markdown::heading::heading_model::MarkdownHeadingStringifiedResult,

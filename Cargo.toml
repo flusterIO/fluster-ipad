@@ -19,7 +19,10 @@ members = [
     "packages/rust/conundrum_logic/codegen/tests/custom_root",
     "packages/rust/conundrum_db",
     "packages/rust/conundrum_config",
-    "packages/rust/conundrum_fs", "packages/rust/conundrum_macros", "packages/rust/conundrum_context", "packages/rust/conundrum_server_rs",
+    "packages/rust/conundrum_fs",
+    "packages/rust/conundrum_macros",
+    "packages/rust/conundrum_context",
+    "packages/rust/conundrum_server_rs",
 ]
 
 
@@ -44,7 +47,7 @@ chrono = { version = "0.4", features = ["serde"] }
 strum_macros = "0.27.2"
 strum = { version = "0.27.2", features = ["derive"] }
 winnow = { version = "0.7.15" }
-
+polars = "0.39.2"
 
 [workspace.lints.rust]
 unused_crate_dependencies = "warn"

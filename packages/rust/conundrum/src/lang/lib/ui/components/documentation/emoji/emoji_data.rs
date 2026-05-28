@@ -7,7 +7,7 @@ use tabled::Tabled;
 /// ```askama
 /// <div class="w-full h-full grid grid-cols-1 grid-rows-[1fr_auto]" onclick="window.conundrum.copyString('{{name}}')">
 /// <div class="flex flex-col justify-center items-center w-full h-full [&>svg]:max-h-[120px] [&>svg]:w-auto">{{svg | safe}}</div>
-/// <div class="w-full text-center flex flex-col justify-center items-center">{{name | safe}}</div>
+/// <div class="w-full text-center flex flex-col justify-center items-center text-sm text-fd-card-foreground/80">{{name | safe}}</div>
 /// </div>
 /// ```
 #[typeshare::typeshare]
