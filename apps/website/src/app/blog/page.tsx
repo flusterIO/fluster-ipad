@@ -21,7 +21,15 @@ const BlogHomePage = async ({
     const res = getNextJsPages(query, data as unknown as AnyBuilderOutput);
     return (
         <div className="min-h-screen max-h-screen h-screen overflow-y-auto overflow-x-hidden gap-y-4 flex flex-col justify-start items-center py-8">
-            <ConundrumContentList items={res.results ?? []} />
+            <ConundrumContentList
+                items={
+                    res.results
+                        ? Array.isArray(res.results)
+                            ? res.results
+                            : [res.results]
+                        : []
+                }
+            />
         </div>
     );
 };
