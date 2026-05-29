@@ -1,13 +1,10 @@
 import { type FC } from "react";
 import { type GeneralPageQuery } from "../../providers/general/types";
 import { type WithNullableOptionals } from "../../types/general";
-import { type NextjsFileSummary } from "../../code_gen";
+import { type BlogFileSummary } from "../../code_gen";
 
-export type FileData = WithNullableOptionals<NextjsFileSummary>;
-export type FileSummary = Omit<
-    WithNullableOptionals<NextjsFileSummary>,
-    "html"
->;
+export type FileData = WithNullableOptionals<BlogFileSummary>;
+export type FileSummary = Omit<WithNullableOptionals<BlogFileSummary>, "html">;
 
 export interface BlogCategory {
     label: string;
