@@ -26,7 +26,7 @@ export const BlogSidebar = (props: BlogSidebarProps): ReactNode => {
         window.addEventListener("resize", handleIsMobileNav);
     }, [])
     if (preferMobileNav === null) {
-        return null
+        return <div />
     }
     if (preferMobileNav) {
         return (
