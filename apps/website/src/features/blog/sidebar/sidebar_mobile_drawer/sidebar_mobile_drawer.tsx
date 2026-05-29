@@ -31,9 +31,10 @@ export const SidebarMobileDrawer = (props: BlogSidebarProps): ReactNode => {
 
     return (
         <>
+            {/* This extra div is here to make the grid not break. */}
             <div />
             <motion.div
-                className="w-full absolute bottom-0 top-0 left-0 right-0 origin-bottom z-10 bg-card text-card-foreground"
+                className="w-full absolute bottom-0 top-0 left-0 right-0 origin-bottom z-10 bg-card text-card-foreground overflow-hidden"
                 initial={closed}
                 animate={open ? "open" : "closed"}
                 variants={{

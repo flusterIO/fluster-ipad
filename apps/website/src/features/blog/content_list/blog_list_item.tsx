@@ -29,7 +29,8 @@ export const BlogListItem = ({
         return null;
     }
     return (
-        <div
+        <a
+            href={relativePathToBlogUrl(item.relative_path)}
             className={cn(
                 "w-full border rounded px-4 py-3 bg-fd-card",
                 classes.container,
@@ -38,16 +39,15 @@ export const BlogListItem = ({
                 maxWidth: "min(1080px, calc(100% - 4rem))",
             }}
         >
-            <a
-                href={relativePathToBlogUrl(item.relative_path)}
+            <div
                 className="text-lg font-semibold"
             >
                 {item.front_matter.title}
-            </a>
+            </div>
             <div className="text-fd-card-foreground/80">
                 {item.front_matter.summary}
             </div>
-        </div>
+        </a>
     );
 };
 

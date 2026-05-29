@@ -212,7 +212,7 @@ This value again coincides closely with our velocity observed relative to the CM
 
 #### In the relativistic frame
 
-<Image src="/assets/diagrams/cmb_velocity_from_gravtational_params.png" sidebar right/>
+<Image src="/assets/diagrams/cmb_velocity_from_gravtational_params.png" sidebar right maxHeight="medium" paddingY="medium" />
 
 
 As we used the Newtonian derived orbital parameters in the previous section to derive a relativistic velocity correction in the form of an increase in elapsed 'time', we can now derive a relativistic equation for a body in stable orbit by setting $dt = 1$ and solving for $\dot{x}$. This gives a model in the coordinate system of the observer in motion, as he travels at the 'agreed upon velocity' (any velocity multiplied by a scalar of 1). 
