@@ -18,7 +18,7 @@ anyhow = "1.0.102"
 thiserror.workspace = true
 typeshare.workspace = true
 uniffi.workspace = true
-parking_lot = { version = "0.12.5", features = ["serde", "arc_lock", "owning_ref", "deadlock_detection"] }
+parking_lot = { version = "0.12.5", features = ["serde", "arc_lock", "owning_ref"] }
 figment-directory = "0.2.0"
 figment_file_env_provider = "0.2.0"
 figment-json5 = "0.1.1"

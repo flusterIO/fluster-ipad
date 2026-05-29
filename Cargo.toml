@@ -23,6 +23,21 @@ members = [
     "packages/rust/conundrum_macros",
     "packages/rust/conundrum_context",
     "packages/rust/conundrum_server_rs",
+    "packages/rust/conundrum_editor",
+    "packages/rust/conundrum_editor/helix_clone/helix-core",
+    "packages/rust/conundrum_editor/helix_clone/helix-view",
+    "packages/rust/conundrum_editor/helix_clone/helix-term",
+    "packages/rust/conundrum_editor/helix_clone/helix-tui",
+    "packages/rust/conundrum_editor/helix_clone/helix-lsp-types",
+    "packages/rust/conundrum_editor/helix_clone/helix-lsp",
+    "packages/rust/conundrum_editor/helix_clone/helix-event",
+    "packages/rust/conundrum_editor/helix_clone/helix-dap-types",
+    "packages/rust/conundrum_editor/helix_clone/helix-dap",
+    "packages/rust/conundrum_editor/helix_clone/helix-loader",
+    "packages/rust/conundrum_editor/helix_clone/helix-vcs",
+    "packages/rust/conundrum_editor/helix_clone/helix-parsec",
+    "packages/rust/conundrum_editor/helix_clone/helix-stdx",
+    "packages/rust/conundrum_editor/helix_clone/xtask"
 ]
 
 
@@ -30,9 +45,13 @@ members = [
 version = "0.0.1"
 authors = ["Andrew Iglinski"]
 description = "Be less dum."
-documentation = "https://flusterapp.com"
+categories = ["note-taking"]
+documentation = "https://flusterapp.com/blog"
+homepage = "https://flusterapp.com"
+repository = ""
 edition = "2024"
 license = "Unlicense"
+rust-version = "1.94"
 
 [workspace.dependencies]
 thiserror = "2.0.17"
@@ -48,9 +67,30 @@ strum_macros = "0.27.2"
 strum = { version = "0.27.2", features = ["derive"] }
 winnow = { version = "0.7.15" }
 polars = "0.39.2"
+# This is only for helix. This definitely needs to be cleaned up.
+tree-house = { version = "0.3.0", default-features = false }
+nucleo = "0.5.0"
+slotmap = "1.1.1"
+tempfile = "3.27.0"
+bitflags = "2.11"
+unicode-segmentation = "1.13"
+ropey = { version = "1.6.1", default-features = false, features = ["simd"] }
+foldhash = "0.2"
+parking_lot = "0.12"
+futures-executor = "0.3"
+futures-util = { version = "0.3", features = ["std", "async-await"], default-features = false }
+tokio-stream = "0.1.18"
+toml = "1.1"
+termina = "0.3"
+sonic-rs = "0.5"
+globset = "0.4"
+etcetera = "0.11"
+arc-swap = "1.9"
 
 [workspace.lints.rust]
 unused_crate_dependencies = "warn"
+
+
 
 
 [profile.release]

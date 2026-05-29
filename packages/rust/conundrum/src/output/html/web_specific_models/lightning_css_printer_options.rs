@@ -4,22 +4,36 @@ use lightningcss::{
     targets::{Browsers, Features, Targets},
 };
 
+use crate::macros::wasm_not_wasm;
+
 // TODO: Remove all references to these FLuster specific methods once there's
 // time to focus on other platforms. Right now, I need a paycheck *desperately*,
 // so I'm focusing on getting the app released.
 pub fn safari_specific_lightning_css_printer_options<'a>() -> PrinterOptions<'a> {
-    PrinterOptions { // I think this 'minify' will be faster? I imagine so, since we're
-                     // often going to be compiling on
-                     // change.
-                     minify: false,
-                     project_root: None,
-                     analyze_dependencies: None,
-                     // source_map: None,
-                     pseudo_classes: None,
-                     targets: Targets { browsers: Some(Browsers { safari: Some((13 << 16) | (2 << 8)),
-                                                                  ..Default::default() }),
-                                        include: Features::MediaQueries,
-                                        exclude: Features::empty() } }
+    wasm_not_wasm::wasm_not_wasm_macro::wasm_not_wasm! {
+        wasm {
+            return PrinterOptions {  minify: false,
+            project_root: None,
+            analyze_dependencies: None,
+            pseudo_classes: None,
+            targets: Targets { browsers: Some(Browsers { safari: Some((13 << 16) | (2 << 8)),
+            ..Default::default() }),
+            include: Features::MediaQueries,
+            exclude: Features::empty() } }
+        }
+        native {
+            return PrinterOptions {
+                minify: false,
+                project_root: None,
+                analyze_dependencies: None,
+                source_map: None,
+                pseudo_classes: None,
+                targets: Targets { browsers: Some(Browsers { safari: Some((13 << 16) | (2 << 8)),
+                ..Default::default() }),
+                include: Features::MediaQueries,
+                exclude: Features::empty() } }
+        }
+    }
 }
 
 pub fn fluster_specific_stylesheet_parser_opts<'i, 'o>() -> ParserOptions<'i, 'o> {

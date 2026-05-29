@@ -21,7 +21,7 @@ conundrum_config = { path = "../conundrum_config/" }
 ignore = "0.4.25"
 tempfile = "3.27.0"
 package_json_schema = "0.3.0"
-parking_lot = { version = "0.12.5", features = ["serde", "arc_lock", "owning_ref", "deadlock_detection"] }
+parking_lot = { version = "0.12.5", features = ["serde", "arc_lock", "owning_ref"] }
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
