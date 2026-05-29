@@ -24,7 +24,9 @@
       "require": "./pkg/conundrum_wasm.js"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "ghostty-web": "0.4.0"
+  },
   "devDependencies": {
     "@types/webpack": "5.28.5",
     "@types/webpack-dev-server": "4.7.2",

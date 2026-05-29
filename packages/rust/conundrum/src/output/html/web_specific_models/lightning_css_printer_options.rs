@@ -14,7 +14,7 @@ pub fn safari_specific_lightning_css_printer_options<'a>() -> PrinterOptions<'a>
                      minify: false,
                      project_root: None,
                      analyze_dependencies: None,
-                     source_map: None,
+                     // source_map: None,
                      pseudo_classes: None,
                      targets: Targets { browsers: Some(Browsers { safari: Some((13 << 16) | (2 << 8)),
                                                                   ..Default::default() }),
