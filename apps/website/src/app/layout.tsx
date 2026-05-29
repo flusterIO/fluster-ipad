@@ -77,9 +77,7 @@ export default function RootLayout({
             </Head>
             <Analytics />
             <body className={`antialiased background dark`}>
-                <FumaDocsProvider>
-                    <div>{children}</div>
-                </FumaDocsProvider>
+                <div>{children}</div>
             </body>
             <GoogleAnalytics gaId="G-Y02PEY1GJZ" />
         </html>
