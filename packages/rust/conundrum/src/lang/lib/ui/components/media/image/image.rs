@@ -64,6 +64,7 @@ impl ConundrumTemplateRepresentable<AnyImageHtmlTemplate> for Image {
         if let Some(caption) = &self.caption {
             Ok(AnyImageHtmlTemplate::WithCaption(ImageHtmlTemplateWithCaption { caption:
                 caption.render(Arc::clone(&state))?,
+                cover: self.cover.is_some_and(|b| b.0),
                 caption_left:
                     self.caption_left
                     .map(|x| x.0)
@@ -72,7 +73,7 @@ impl ConundrumTemplateRepresentable<AnyImageHtmlTemplate> for Image {
                         self.caption_right
                         .map(|x| x.0)
                         .unwrap_or_default(),
-                        sizable: self.sizable.clone(),
+                        sizable: self.sizable.as_ref().cloned().unwrap_or_default(),
                         img_templ:
                             ImageHtmlTemplate { id:
                                 self.id
@@ -174,7 +175,14 @@ impl ConundrumComponent for Image {
                 })?;
         let alt = ConundrumString::from_jsx_props(&props, "alt").ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
-        let caption = Children::from_jsx_props(&props, "caption").ok();
+        let caption = match Children::from_jsx_props(&props, "caption") {
+            Ok(r) => Some(r),
+            Err(_) => {
+                ConundrumString::from_jsx_props(&props, "caption").map(|s| s.to_children(Arc::clone(&state)).ok())
+                                                                  .ok()
+                                                                  .flatten()
+            }
+        };
         let caption_left = ConundrumBoolean::from_jsx_props(&props, "captionLeft").ok();
         let caption_right = ConundrumBoolean::from_jsx_props(&props, "captionRight").ok();
         let contain = ConundrumBoolean::from_jsx_props(&props, "contain").ok();

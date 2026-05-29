@@ -6,8 +6,6 @@ import { BLOGURL } from "../../constants";
 import { SidebarMobileDrawerSection } from "./sidebar_mobile_drawer_section";
 import { motion } from "framer-motion";
 
-
-
 declare global {
     interface WindowEventMap {
         "toggle-drawer": CustomEvent<null>;
@@ -16,7 +14,7 @@ declare global {
 
 export const SidebarMobileDrawer = (props: BlogSidebarProps): ReactNode => {
     const [open, setOpen] = useState(false);
-    const openRef = useRef(open);
+    const openRef = useRef(!open);
     const handleToggle = (): void => {
         openRef.current = !openRef.current;
         setOpen(!openRef.current);
@@ -27,7 +25,6 @@ export const SidebarMobileDrawer = (props: BlogSidebarProps): ReactNode => {
             window.removeEventListener("toggle-drawer", handleToggle);
         };
     }, []);
-
 
     return (
         <>
@@ -40,12 +37,12 @@ export const SidebarMobileDrawer = (props: BlogSidebarProps): ReactNode => {
                 variants={{
                     open: {
                         height: "100vh",
-                        opacity: 1
+                        opacity: 1,
                     },
                     closed: {
                         height: 0,
-                        opacity: 0
-                    }
+                        opacity: 0,
+                    },
                 }}
             >
                 <div className="w-full h-fit flex flex-col justify-center items-center pt-4">

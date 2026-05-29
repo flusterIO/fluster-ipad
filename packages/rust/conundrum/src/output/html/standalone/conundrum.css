@@ -5424,6 +5424,26 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
+  .\@\[768px\]\/mdx\:float-left {
+    @container mdx (width >= 768px) {
+      float: left;
+    }
+  }
+  .\@\[768px\]\/mdx\:float-right {
+    @container mdx (width >= 768px) {
+      float: right;
+    }
+  }
+  .\@\[768px\]\/mdx\:mr-4 {
+    @container mdx (width >= 768px) {
+      margin-right: calc(var(--spacing) * 4);
+    }
+  }
+  .\@\[768px\]\/mdx\:ml-4 {
+    @container mdx (width >= 768px) {
+      margin-left: calc(var(--spacing) * 4);
+    }
+  }
   .\@\[768px\]\/mdx\:hidden {
     @container mdx (width >= 768px) {
       display: none;

@@ -16,6 +16,9 @@ use crate::{
 
 pub enum SizablePropsOutputTarget {
     Image,
+    /// For images nested in another SizableProps container that is pulling
+    /// properties from the same component, like the captioned image.
+    ImageNested,
     General,
 }
 
@@ -178,130 +181,169 @@ impl SizablePropsGroup {
         items.iter().filter_map(|c| c.clone()).collect::<Vec<String>>().join(" ")
     }
 
-    pub fn to_css_classes(&self, output: SizablePropsOutputTarget) -> Vec<&str> {
-        let mut classes: Vec<&str> = Vec::new();
+    pub fn to_css_classes(&self, output: SizablePropsOutputTarget) -> Vec<String> {
+        let mut classes: Vec<String> = Vec::new();
+        let nested_image_classes = {
+            if self.max_width.is_some() {
+                String::from("w-fit max-w-full h-auto")
+            } else if self.max_height.is_some() {
+                String::from("h-fit max-h-full w-auto")
+            } else {
+                String::from("max-w-full max-h-full")
+            }
+        };
 
         if self.hide_math_labels.is_some_and(|x| x.0) {
-            classes.push("hide-math-labels");
+            classes.push("hide-math-labels".to_string());
         }
+        // TODO: Accept a Sizable property as the right and left key to move this
+        // `768px` breakpoint.
         if self.right.is_some_and(|x| x.0) {
-            classes.push("float-right ml-4 mr-0");
+            match output {
+                SizablePropsOutputTarget::Image => {
+                    classes.push("@[768px]/mdx:float-right @[768px]/mdx:ml-4 mr-0".to_string());
+                }
+                SizablePropsOutputTarget::ImageNested => {
+                    classes.push(nested_image_classes.clone());
+                }
+                SizablePropsOutputTarget::General => {
+                    classes.push("float-right ml-4 mr-0".to_string());
+                }
+            }
         }
         if self.left.is_some_and(|x| x.0) {
-            classes.push("float-left mr-4 ml-0");
+            match output {
+                SizablePropsOutputTarget::Image => {
+                    classes.push("@[768px]/mdx:float-left @[768px]/mdx:mr-4 ml-0".to_string());
+                }
+                SizablePropsOutputTarget::ImageNested => {
+                    classes.push(nested_image_classes.clone());
+                }
+                SizablePropsOutputTarget::General => {
+                    classes.push("float-left mr-4 ml-0".to_string());
+                }
+            }
         }
         if self.sidebar.is_some_and(|x| x.0) {
             match output {
                 SizablePropsOutputTarget::General => {
-                    classes.push("w-full min-w-full @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]");
+                    classes.push("w-full min-w-full @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]".to_string());
+                }
+                SizablePropsOutputTarget::ImageNested => {
+                    classes.push(nested_image_classes.clone());
                 }
                 SizablePropsOutputTarget::Image => {
-                    classes.push("w-full min-w-full object-contain @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]");
+                    classes.push("w-full min-w-full object-contain @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]".to_string());
                 }
             }
         }
         if self.center_self.is_some_and(|x| x.0) {
-            classes.push("mx-auto block place-self-center");
+            classes.push("mx-auto block place-self-center".to_string());
         }
         if self.center_content.is_some_and(|x| x.0) {
-            classes.push("flex flex-col justify-center items-center text-center [&>p]:text-center");
+            classes.push("flex flex-col justify-center items-center text-center [&>p]:text-center".to_string());
         }
         if self.border.is_some_and(|x| x.0) {
-            classes.push("border");
+            classes.push("border".to_string());
         }
         if self.inline.is_some_and(|x| x.0) {
-            classes.push("inline-block");
+            classes.push("inline-block".to_string());
         }
         if let Some(in_shadow) = &self.in_shadow {
             classes.push(match in_shadow {
-                             SizableOption::None => "inset-shadow-none",
-                             SizableOption::Small => "inset-shadow-xxs",
-                             SizableOption::Smedium => "inset-shadow-xxs",
-                             SizableOption::Medium => "inset-shadow-xs",
-                             SizableOption::Large => "inset-shadow-xs",
-                             SizableOption::Xl => "inset-shadow-xs",
-                             SizableOption::Xxl => "inset-shadow-sm",
-                             SizableOption::Full => "inset-shadow-sm",
-                             SizableOption::Fit => "inset-shadow-current",
+                             SizableOption::None => "inset-shadow-none".to_string(),
+                             SizableOption::Small => "inset-shadow-xxs".to_string(),
+                             SizableOption::Smedium => "inset-shadow-xxs".to_string(),
+                             SizableOption::Medium => "inset-shadow-xs".to_string(),
+                             SizableOption::Large => "inset-shadow-xs".to_string(),
+                             SizableOption::Xl => "inset-shadow-xs".to_string(),
+                             SizableOption::Xxl => "inset-shadow-sm".to_string(),
+                             SizableOption::Full => "inset-shadow-sm".to_string(),
+                             SizableOption::Fit => "inset-shadow-current".to_string(),
                          });
         }
         if let Some(shadow) = &self.shadow {
             classes.push(match shadow {
-                             SizableOption::None => "shadow-none",
-                             SizableOption::Small => "shadow-2xs",
-                             SizableOption::Smedium => "shadow-sm",
-                             SizableOption::Medium => "shadow-md",
-                             SizableOption::Large => "shadow-lg",
-                             SizableOption::Xl => "shadow-2xl",
-                             SizableOption::Xxl => "shadow-2xl",
-                             SizableOption::Full => "shadow-2xl",
-                             SizableOption::Fit => "shadow-md",
+                             SizableOption::None => "shadow-none".to_string(),
+                             SizableOption::Small => "shadow-2xs".to_string(),
+                             SizableOption::Smedium => "shadow-sm".to_string(),
+                             SizableOption::Medium => "shadow-md".to_string(),
+                             SizableOption::Large => "shadow-lg".to_string(),
+                             SizableOption::Xl => "shadow-2xl".to_string(),
+                             SizableOption::Xxl => "shadow-2xl".to_string(),
+                             SizableOption::Full => "shadow-2xl".to_string(),
+                             SizableOption::Fit => "shadow-md".to_string(),
                          });
         }
         if let Some(rounded) = &self.rounded {
             classes.push(match rounded {
-                             SizableOption::None => "rounded-none",
-                             SizableOption::Small => "rounded-sm",
-                             SizableOption::Smedium => "rounded-sm",
-                             SizableOption::Medium => "rounded-md",
-                             SizableOption::Large => "rounded-lg",
-                             SizableOption::Xl => "rounded-2xl",
-                             SizableOption::Xxl => "rounded-4xl",
-                             SizableOption::Full => "rounded-full",
-                             SizableOption::Fit => "rounded-[100%]",
+                             SizableOption::None => "rounded-none".to_string(),
+                             SizableOption::Small => "rounded-sm".to_string(),
+                             SizableOption::Smedium => "rounded-sm".to_string(),
+                             SizableOption::Medium => "rounded-md".to_string(),
+                             SizableOption::Large => "rounded-lg".to_string(),
+                             SizableOption::Xl => "rounded-2xl".to_string(),
+                             SizableOption::Xxl => "rounded-4xl".to_string(),
+                             SizableOption::Full => "rounded-full".to_string(),
+                             SizableOption::Fit => "rounded-[100%]".to_string(),
                          });
         }
         if let Some(text) = &self.text {
             classes.push(match text {
-                             SizableOption::None => "text-xs",
-                             SizableOption::Small => "text-sm",
-                             SizableOption::Smedium => "text-base",
-                             SizableOption::Medium => "text-lg",
-                             SizableOption::Large => "text-xl",
-                             SizableOption::Xl => "text-2xl",
-                             SizableOption::Xxl => "text-4xl",
-                             SizableOption::Full => "text-7xl",
-                             SizableOption::Fit => "w-full text-center",
+                             SizableOption::None => "text-xs".to_string(),
+                             SizableOption::Small => "text-sm".to_string(),
+                             SizableOption::Smedium => "text-base".to_string(),
+                             SizableOption::Medium => "text-lg".to_string(),
+                             SizableOption::Large => "text-xl".to_string(),
+                             SizableOption::Xl => "text-2xl".to_string(),
+                             SizableOption::Xxl => "text-4xl".to_string(),
+                             SizableOption::Full => "text-7xl".to_string(),
+                             SizableOption::Fit => "w-full text-center".to_string(),
                          });
         }
         if let Some(width) = &self.width {
             match output {
                 SizablePropsOutputTarget::Image => {
                     classes.push(match width {
-                                     SizableOption::None => "w-full @[768px]/mdx:hidden h-auto max-h-[min(768px,90vh)]",
+                                     SizableOption::None => {
+                                         "w-full @[768px]/mdx:hidden h-auto max-h-[min(768px,90vh)]".to_string()
+                                     }
                                      SizableOption::Small => {
-                                         "max-w-full @[450px]/mdx:w-[320px] h-auto max-h-[min(768px,90vh)]"
+                                         "max-w-full @[450px]/mdx:w-[320px] h-auto max-h-[min(768px,90vh)]".to_string()
                                      }
                                      SizableOption::Smedium => {
-                                         "max-w-full @[550px]/mdx:w-[384px] h-auto max-h-[min(768px,90vh)]"
+                                         "max-w-full @[550px]/mdx:w-[384px] h-auto max-h-[min(768px,90vh)]".to_string()
                                      }
                                      SizableOption::Medium => {
-                                         "max-w-full @[650px]/mdx:w-[448px] h-auto max-h-[min(768px,90vh)]"
+                                         "max-w-full @[650px]/mdx:w-[448px] h-auto max-h-[min(768px,90vh)]".to_string()
                                      }
                                      SizableOption::Large => {
-                                         "max-w-full @[768px]/mdx:w-[576px] h-auto max-h-[min(768px,90vh)]"
+                                         "max-w-full @[768px]/mdx:w-[576px] h-auto max-h-[min(768px,90vh)]".to_string()
                                      }
                                      SizableOption::Xl => {
-                                         "max-w-full @[1080px]/mdx:w-[672px] h-auto max-h-[min(768px,90vh)]"
+                                         "max-w-full @[1080px]/mdx:w-[672px] h-auto max-h-[min(768px,90vh)]".to_string()
                                      }
                                      SizableOption::Xxl => {
-                                         "max-w-full @[1080px]/mdx:w-[896px] h-auto max-h-[min(768px,90vh)]"
+                                         "max-w-full @[1080px]/mdx:w-[896px] h-auto max-h-[min(768px,90vh)]".to_string()
                                      }
-                                     SizableOption::Full => "w-full",
-                                     SizableOption::Fit => "w-auto",
+                                     SizableOption::Full => "w-full".to_string(),
+                                     SizableOption::Fit => "w-auto".to_string(),
                                  });
+                }
+                SizablePropsOutputTarget::ImageNested => {
+                    classes.push(nested_image_classes.clone());
                 }
                 SizablePropsOutputTarget::General => {
                     classes.push(match width {
-                                     SizableOption::None => "w-full @[768px]/mdx:hidden",
-                                     SizableOption::Small => "w-full @[450px]/mdx:w-[320px]",
-                                     SizableOption::Smedium => "w-full @[550px]/mdx:w-[384px]",
-                                     SizableOption::Medium => "w-full @[650px]/mdx:w-[448px]",
-                                     SizableOption::Large => "w-full @[768px]/mdx:w-[576px]",
-                                     SizableOption::Xl => "w-full @[1080px]/mdx:w-[672px]",
-                                     SizableOption::Xxl => "w-full @[1080px]/mdx:w-[896px]",
-                                     SizableOption::Full => "w-full",
-                                     SizableOption::Fit => "w-fit",
+                                     SizableOption::None => "w-full @[768px]/mdx:hidden".to_string(),
+                                     SizableOption::Small => "w-full @[450px]/mdx:w-[320px]".to_string(),
+                                     SizableOption::Smedium => "w-full @[550px]/mdx:w-[384px]".to_string(),
+                                     SizableOption::Medium => "w-full @[650px]/mdx:w-[448px]".to_string(),
+                                     SizableOption::Large => "w-full @[768px]/mdx:w-[576px]".to_string(),
+                                     SizableOption::Xl => "w-full @[1080px]/mdx:w-[672px]".to_string(),
+                                     SizableOption::Xxl => "w-full @[1080px]/mdx:w-[896px]".to_string(),
+                                     SizableOption::Full => "w-full".to_string(),
+                                     SizableOption::Fit => "w-fit".to_string(),
                                  });
                 }
             };
@@ -310,294 +352,300 @@ impl SizablePropsGroup {
             match output {
                 SizablePropsOutputTarget::Image => {
                     classes.push(match max_height {
-                                     SizableOption::None => "max-h-[min(32px,90vh,100%)] w-auto",
-                                     SizableOption::Small => "max-h-[min(320px,90vh,100%)] w-auto",
-                                     SizableOption::Smedium => "max-h-[min(384px,90vh,100%)] w-auto",
-                                     SizableOption::Medium => "max-h-[min(448px,90vh,100%)] w-auto",
-                                     SizableOption::Large => "max-h-[min(576px,90vh,100%)] w-auto",
-                                     SizableOption::Xl => "max-h-[min(672px,90vh,100%)] w-auto",
-                                     SizableOption::Xxl => "max-h-[min(896px,90vh,100%)] w-auto",
-                                     SizableOption::Full => "max-h-[min(100%,100vh)] w-auto",
-                                     SizableOption::Fit => "max-h-fit w-auto",
+                                     SizableOption::None => "max-h-[min(32px,90vh,100%)] w-auto".to_string(),
+                                     SizableOption::Small => "max-h-[min(320px,90vh,100%)] w-auto".to_string(),
+                                     SizableOption::Smedium => "max-h-[min(384px,90vh,100%)] w-auto".to_string(),
+                                     SizableOption::Medium => "max-h-[min(448px,90vh,100%)] w-auto".to_string(),
+                                     SizableOption::Large => "max-h-[min(576px,90vh,100%)] w-auto".to_string(),
+                                     SizableOption::Xl => "max-h-[min(672px,90vh,100%)] w-auto".to_string(),
+                                     SizableOption::Xxl => "max-h-[min(896px,90vh,100%)] w-auto".to_string(),
+                                     SizableOption::Full => "max-h-[min(100%,100vh)] w-auto".to_string(),
+                                     SizableOption::Fit => "max-h-fit w-auto".to_string(),
                                  });
+                }
+                SizablePropsOutputTarget::ImageNested => {
+                    classes.push(nested_image_classes.clone());
                 }
                 SizablePropsOutputTarget::General => {
                     classes.push(match max_height {
-                                     SizableOption::None => "max-h-[min(32px,90vh,100%)]",
-                                     SizableOption::Small => "max-h-[min(320px,90vh,100%)]",
-                                     SizableOption::Smedium => "max-h-[min(384px,90vh,100%)]",
-                                     SizableOption::Medium => "max-h-[min(448px,90vh,100%)]",
-                                     SizableOption::Large => "max-h-[min(576px,90vh,100%)]",
-                                     SizableOption::Xl => "max-h-[min(672px,90vh,100%)]",
-                                     SizableOption::Xxl => "max-h-[min(896px,90vh,100%)]",
-                                     SizableOption::Full => "max-h-[min(100%,100vh)]",
-                                     SizableOption::Fit => "max-h-fit",
+                                     SizableOption::None => "max-h-[min(32px,90vh,100%)]".to_string(),
+                                     SizableOption::Small => "max-h-[min(320px,90vh,100%)]".to_string(),
+                                     SizableOption::Smedium => "max-h-[min(384px,90vh,100%)]".to_string(),
+                                     SizableOption::Medium => "max-h-[min(448px,90vh,100%)]".to_string(),
+                                     SizableOption::Large => "max-h-[min(576px,90vh,100%)]".to_string(),
+                                     SizableOption::Xl => "max-h-[min(672px,90vh,100%)]".to_string(),
+                                     SizableOption::Xxl => "max-h-[min(896px,90vh,100%)]".to_string(),
+                                     SizableOption::Full => "max-h-[min(100%,100vh)]".to_string(),
+                                     SizableOption::Fit => "max-h-fit".to_string(),
                                  });
                 }
             }
         }
         if let Some(max_width) = &self.max_width {
             classes.push(match max_width {
-                             SizableOption::None => "max-w-[32px]",
-                             SizableOption::Small => "max-w-[320px]",
-                             SizableOption::Smedium => "max-w-[384px]",
-                             SizableOption::Medium => "max-w-[448px]",
-                             SizableOption::Large => "max-w-[576px]",
-                             SizableOption::Xl => "max-w-[672px]",
-                             SizableOption::Xxl => "max-w-[896px]",
-                             SizableOption::Full => "max-w-full",
-                             SizableOption::Fit => "max-w-fit",
+                             SizableOption::None => "max-w-[32px]".to_string(),
+                             SizableOption::Small => "max-w-[320px]".to_string(),
+                             SizableOption::Smedium => "max-w-[384px]".to_string(),
+                             SizableOption::Medium => "max-w-[448px]".to_string(),
+                             SizableOption::Large => "max-w-[576px]".to_string(),
+                             SizableOption::Xl => "max-w-[672px]".to_string(),
+                             SizableOption::Xxl => "max-w-[896px]".to_string(),
+                             SizableOption::Full => "max-w-full".to_string(),
+                             SizableOption::Fit => "max-w-fit".to_string(),
                          });
         }
         if let Some(height) = &self.height {
             match output {
                 SizablePropsOutputTarget::Image => {
                     classes.push(match height {
-                                     SizableOption::None => "h-fit w-auto",
-                                     SizableOption::Small => "h-24 w-auto",
-                                     SizableOption::Smedium => "h-32 w-auto",
-                                     SizableOption::Medium => "h-48 w-auto",
-                                     SizableOption::Large => "h-64 w-auto",
-                                     SizableOption::Xl => "h-96 w-auto",
-                                     SizableOption::Xxl => "h-screen w-auto",
-                                     SizableOption::Full => "h-full w-auto",
-                                     SizableOption::Fit => "h-fit w-auto",
+                                     SizableOption::None => "h-fit w-auto".to_string(),
+                                     SizableOption::Small => "h-24 w-auto".to_string(),
+                                     SizableOption::Smedium => "h-32 w-auto".to_string(),
+                                     SizableOption::Medium => "h-48 w-auto".to_string(),
+                                     SizableOption::Large => "h-64 w-auto".to_string(),
+                                     SizableOption::Xl => "h-96 w-auto".to_string(),
+                                     SizableOption::Xxl => "h-screen w-auto".to_string(),
+                                     SizableOption::Full => "h-full w-auto".to_string(),
+                                     SizableOption::Fit => "h-fit w-auto".to_string(),
                                  });
+                }
+                SizablePropsOutputTarget::ImageNested => {
+                    classes.push(nested_image_classes);
                 }
                 SizablePropsOutputTarget::General => {
                     classes.push(match height {
-                                     SizableOption::None => "h-fit",
-                                     SizableOption::Small => "h-24",
-                                     SizableOption::Smedium => "h-32",
-                                     SizableOption::Medium => "h-48",
-                                     SizableOption::Large => "h-64",
-                                     SizableOption::Xl => "h-96",
-                                     SizableOption::Xxl => "h-screen",
-                                     SizableOption::Full => "h-full",
-                                     SizableOption::Fit => "h-fit",
+                                     SizableOption::None => "h-fit".to_string(),
+                                     SizableOption::Small => "h-24".to_string(),
+                                     SizableOption::Smedium => "h-32".to_string(),
+                                     SizableOption::Medium => "h-48".to_string(),
+                                     SizableOption::Large => "h-64".to_string(),
+                                     SizableOption::Xl => "h-96".to_string(),
+                                     SizableOption::Xxl => "h-screen".to_string(),
+                                     SizableOption::Full => "h-full".to_string(),
+                                     SizableOption::Fit => "h-fit".to_string(),
                                  });
                 }
             };
         }
         if let Some(margin) = &self.margin {
             classes.push(match margin {
-                             SizableOption::None => "m-0",
-                             SizableOption::Small => "m-2",
-                             SizableOption::Smedium => "m-3",
-                             SizableOption::Medium => "m-4",
-                             SizableOption::Large => "m-6",
-                             SizableOption::Xl => "m-8",
-                             SizableOption::Xxl => "m-12",
-                             SizableOption::Full => "m-16",
-                             SizableOption::Fit => "m-0",
+                             SizableOption::None => "m-0".to_string(),
+                             SizableOption::Small => "m-2".to_string(),
+                             SizableOption::Smedium => "m-3".to_string(),
+                             SizableOption::Medium => "m-4".to_string(),
+                             SizableOption::Large => "m-6".to_string(),
+                             SizableOption::Xl => "m-8".to_string(),
+                             SizableOption::Xxl => "m-12".to_string(),
+                             SizableOption::Full => "m-16".to_string(),
+                             SizableOption::Fit => "m-0".to_string(),
                          });
         }
         if let Some(margin_left) = &self.margin_left {
             classes.push(match margin_left {
-                             SizableOption::None => "ml-0",
-                             SizableOption::Small => "ml-2",
-                             SizableOption::Smedium => "ml-3",
-                             SizableOption::Medium => "ml-4",
-                             SizableOption::Large => "ml-6",
-                             SizableOption::Xl => "ml-8",
-                             SizableOption::Xxl => "ml-12",
-                             SizableOption::Full => "ml-16",
-                             SizableOption::Fit => "ml-auto",
+                             SizableOption::None => "ml-0".to_string(),
+                             SizableOption::Small => "ml-2".to_string(),
+                             SizableOption::Smedium => "ml-3".to_string(),
+                             SizableOption::Medium => "ml-4".to_string(),
+                             SizableOption::Large => "ml-6".to_string(),
+                             SizableOption::Xl => "ml-8".to_string(),
+                             SizableOption::Xxl => "ml-12".to_string(),
+                             SizableOption::Full => "ml-16".to_string(),
+                             SizableOption::Fit => "ml-auto".to_string(),
                          });
         }
         if let Some(margin_right) = &self.margin_right {
             classes.push(match margin_right {
-                             SizableOption::None => "mr-0",
-                             SizableOption::Small => "mr-2",
-                             SizableOption::Smedium => "mr-3",
-                             SizableOption::Medium => "mr-4",
-                             SizableOption::Large => "mr-6",
-                             SizableOption::Xl => "mr-8",
-                             SizableOption::Xxl => "mr-12",
-                             SizableOption::Full => "mr-16",
-                             SizableOption::Fit => "mr-auto",
+                             SizableOption::None => "mr-0".to_string(),
+                             SizableOption::Small => "mr-2".to_string(),
+                             SizableOption::Smedium => "mr-3".to_string(),
+                             SizableOption::Medium => "mr-4".to_string(),
+                             SizableOption::Large => "mr-6".to_string(),
+                             SizableOption::Xl => "mr-8".to_string(),
+                             SizableOption::Xxl => "mr-12".to_string(),
+                             SizableOption::Full => "mr-16".to_string(),
+                             SizableOption::Fit => "mr-auto".to_string(),
                          });
         }
         if let Some(margin_top) = &self.margin_top {
             classes.push(match margin_top {
-                             SizableOption::None => "mt-0",
-                             SizableOption::Small => "mt-2",
-                             SizableOption::Smedium => "mt-3",
-                             SizableOption::Medium => "mt-4",
-                             SizableOption::Large => "mt-6",
-                             SizableOption::Xl => "mt-8",
-                             SizableOption::Xxl => "mt-12",
-                             SizableOption::Full => "mt-16",
-                             SizableOption::Fit => "mt-auto",
+                             SizableOption::None => "mt-0".to_string(),
+                             SizableOption::Small => "mt-2".to_string(),
+                             SizableOption::Smedium => "mt-3".to_string(),
+                             SizableOption::Medium => "mt-4".to_string(),
+                             SizableOption::Large => "mt-6".to_string(),
+                             SizableOption::Xl => "mt-8".to_string(),
+                             SizableOption::Xxl => "mt-12".to_string(),
+                             SizableOption::Full => "mt-16".to_string(),
+                             SizableOption::Fit => "mt-auto".to_string(),
                          });
         }
         if let Some(margin_bottom) = &self.margin_bottom {
             classes.push(match margin_bottom {
-                             SizableOption::None => "h-fit",
-                             SizableOption::Small => "h-24",
-                             SizableOption::Smedium => "h-32",
-                             SizableOption::Medium => "h-48",
-                             SizableOption::Large => "h-64",
-                             SizableOption::Xl => "h-96",
-                             SizableOption::Xxl => "h-screen",
-                             SizableOption::Full => "h-full",
-                             SizableOption::Fit => "h-fit",
+                             SizableOption::None => "h-fit".to_string(),
+                             SizableOption::Small => "h-24".to_string(),
+                             SizableOption::Smedium => "h-32".to_string(),
+                             SizableOption::Medium => "h-48".to_string(),
+                             SizableOption::Large => "h-64".to_string(),
+                             SizableOption::Xl => "h-96".to_string(),
+                             SizableOption::Xxl => "h-screen".to_string(),
+                             SizableOption::Full => "h-full".to_string(),
+                             SizableOption::Fit => "h-fit".to_string(),
                          });
         }
         if let Some(margin_y) = &self.margin_y {
             classes.push(match margin_y {
-                             SizableOption::None => "my-0",
-                             SizableOption::Small => "my-2",
-                             SizableOption::Smedium => "my-3",
-                             SizableOption::Medium => "my-4",
-                             SizableOption::Large => "my-6",
-                             SizableOption::Xl => "my-8",
-                             SizableOption::Xxl => "my-12",
-                             SizableOption::Full => "my-16",
-                             SizableOption::Fit => "my-auto",
+                             SizableOption::None => "my-0".to_string(),
+                             SizableOption::Small => "my-2".to_string(),
+                             SizableOption::Smedium => "my-3".to_string(),
+                             SizableOption::Medium => "my-4".to_string(),
+                             SizableOption::Large => "my-6".to_string(),
+                             SizableOption::Xl => "my-8".to_string(),
+                             SizableOption::Xxl => "my-12".to_string(),
+                             SizableOption::Full => "my-16".to_string(),
+                             SizableOption::Fit => "my-auto".to_string(),
                          });
         }
         if let Some(margin_x) = &self.margin_x {
             classes.push(match margin_x {
-                             SizableOption::None => "mx-0",
-                             SizableOption::Small => "mx-2",
-                             SizableOption::Smedium => "mx-3",
-                             SizableOption::Medium => "mx-4",
-                             SizableOption::Large => "mx-6",
-                             SizableOption::Xl => "mx-8",
-                             SizableOption::Xxl => "mx-12",
-                             SizableOption::Full => "mx-16",
-                             SizableOption::Fit => "mx-auto",
+                             SizableOption::None => "mx-0".to_string(),
+                             SizableOption::Small => "mx-2".to_string(),
+                             SizableOption::Smedium => "mx-3".to_string(),
+                             SizableOption::Medium => "mx-4".to_string(),
+                             SizableOption::Large => "mx-6".to_string(),
+                             SizableOption::Xl => "mx-8".to_string(),
+                             SizableOption::Xxl => "mx-12".to_string(),
+                             SizableOption::Full => "mx-16".to_string(),
+                             SizableOption::Fit => "mx-auto".to_string(),
                          });
         }
         if let Some(padding) = &self.padding {
             classes.push(match padding {
-                             SizableOption::None => "p-0",
-                             SizableOption::Small => "p-2",
-                             SizableOption::Smedium => "p-3",
-                             SizableOption::Medium => "p-4",
-                             SizableOption::Large => "p-6",
-                             SizableOption::Xl => "p-8",
-                             SizableOption::Xxl => "p-12",
-                             SizableOption::Full => "p-16",
-                             SizableOption::Fit => "p-0",
+                             SizableOption::None => "p-0".to_string(),
+                             SizableOption::Small => "p-2".to_string(),
+                             SizableOption::Smedium => "p-3".to_string(),
+                             SizableOption::Medium => "p-4".to_string(),
+                             SizableOption::Large => "p-6".to_string(),
+                             SizableOption::Xl => "p-8".to_string(),
+                             SizableOption::Xxl => "p-12".to_string(),
+                             SizableOption::Full => "p-16".to_string(),
+                             SizableOption::Fit => "p-0".to_string(),
                          });
         }
         if let Some(padding_left) = &self.padding_left {
             classes.push(match padding_left {
-                             SizableOption::None => "pl-0",
-                             SizableOption::Small => "pl-2",
-                             SizableOption::Smedium => "pl-3",
-                             SizableOption::Medium => "pl-4",
-                             SizableOption::Large => "pl-6",
-                             SizableOption::Xl => "pl-8",
-                             SizableOption::Xxl => "pl-12",
-                             SizableOption::Full => "pl-16",
-                             SizableOption::Fit => "pl-0",
+                             SizableOption::None => "pl-0".to_string(),
+                             SizableOption::Small => "pl-2".to_string(),
+                             SizableOption::Smedium => "pl-3".to_string(),
+                             SizableOption::Medium => "pl-4".to_string(),
+                             SizableOption::Large => "pl-6".to_string(),
+                             SizableOption::Xl => "pl-8".to_string(),
+                             SizableOption::Xxl => "pl-12".to_string(),
+                             SizableOption::Full => "pl-16".to_string(),
+                             SizableOption::Fit => "pl-0".to_string(),
                          });
         }
         if let Some(padding_right) = &self.padding_right {
             classes.push(match padding_right {
-                             SizableOption::None => "pr-0",
-                             SizableOption::Small => "pr-2",
-                             SizableOption::Smedium => "pr-3",
-                             SizableOption::Medium => "pr-4",
-                             SizableOption::Large => "pr-6",
-                             SizableOption::Xl => "pr-8",
-                             SizableOption::Xxl => "pr-12",
-                             SizableOption::Full => "pr-16",
-                             SizableOption::Fit => "pr-0",
+                             SizableOption::None => "pr-0".to_string(),
+                             SizableOption::Small => "pr-2".to_string(),
+                             SizableOption::Smedium => "pr-3".to_string(),
+                             SizableOption::Medium => "pr-4".to_string(),
+                             SizableOption::Large => "pr-6".to_string(),
+                             SizableOption::Xl => "pr-8".to_string(),
+                             SizableOption::Xxl => "pr-12".to_string(),
+                             SizableOption::Full => "pr-16".to_string(),
+                             SizableOption::Fit => "pr-0".to_string(),
                          });
         }
         if let Some(padding_top) = &self.padding_top {
             classes.push(match padding_top {
-                             SizableOption::None => "pt-0",
-                             SizableOption::Small => "pt-2",
-                             SizableOption::Smedium => "pt-3",
-                             SizableOption::Medium => "pt-4",
-                             SizableOption::Large => "pt-6",
-                             SizableOption::Xl => "pt-8",
-                             SizableOption::Xxl => "pt-12",
-                             SizableOption::Full => "pt-16",
-                             SizableOption::Fit => "pt-0",
+                             SizableOption::None => "pt-0".to_string(),
+                             SizableOption::Small => "pt-2".to_string(),
+                             SizableOption::Smedium => "pt-3".to_string(),
+                             SizableOption::Medium => "pt-4".to_string(),
+                             SizableOption::Large => "pt-6".to_string(),
+                             SizableOption::Xl => "pt-8".to_string(),
+                             SizableOption::Xxl => "pt-12".to_string(),
+                             SizableOption::Full => "pt-16".to_string(),
+                             SizableOption::Fit => "pt-0".to_string(),
                          });
         }
         if let Some(padding_bottom) = &self.padding_bottom {
             classes.push(match padding_bottom {
-                             SizableOption::None => "pb-0",
-                             SizableOption::Small => "pb-2",
-                             SizableOption::Smedium => "pb-3",
-                             SizableOption::Medium => "pb-4",
-                             SizableOption::Large => "pb-6",
-                             SizableOption::Xl => "pb-8",
-                             SizableOption::Xxl => "pb-12",
-                             SizableOption::Full => "pb-16",
-                             SizableOption::Fit => "pb-0",
+                             SizableOption::None => "pb-0".to_string(),
+                             SizableOption::Small => "pb-2".to_string(),
+                             SizableOption::Smedium => "pb-3".to_string(),
+                             SizableOption::Medium => "pb-4".to_string(),
+                             SizableOption::Large => "pb-6".to_string(),
+                             SizableOption::Xl => "pb-8".to_string(),
+                             SizableOption::Xxl => "pb-12".to_string(),
+                             SizableOption::Full => "pb-16".to_string(),
+                             SizableOption::Fit => "pb-0".to_string(),
                          });
         }
         if let Some(padding_y) = &self.padding_y {
             classes.push(match padding_y {
-                             SizableOption::None => "py-0",
-                             SizableOption::Small => "py-2",
-                             SizableOption::Smedium => "py-3",
-                             SizableOption::Medium => "py-4",
-                             SizableOption::Large => "py-6",
-                             SizableOption::Xl => "py-8",
-                             SizableOption::Xxl => "py-12",
-                             SizableOption::Full => "py-16",
-                             SizableOption::Fit => "py-0",
+                             SizableOption::None => "py-0".to_string(),
+                             SizableOption::Small => "py-2".to_string(),
+                             SizableOption::Smedium => "py-3".to_string(),
+                             SizableOption::Medium => "py-4".to_string(),
+                             SizableOption::Large => "py-6".to_string(),
+                             SizableOption::Xl => "py-8".to_string(),
+                             SizableOption::Xxl => "py-12".to_string(),
+                             SizableOption::Full => "py-16".to_string(),
+                             SizableOption::Fit => "py-0".to_string(),
                          });
         }
         if let Some(padding_x) = &self.padding_x {
             classes.push(match padding_x {
-                             SizableOption::None => "px-0",
-                             SizableOption::Small => "px-2",
-                             SizableOption::Smedium => "px-3",
-                             SizableOption::Medium => "px-4",
-                             SizableOption::Large => "px-6",
-                             SizableOption::Xl => "px-8",
-                             SizableOption::Xxl => "px-12",
-                             SizableOption::Full => "px-16",
-                             SizableOption::Fit => "px-0",
+                             SizableOption::None => "px-0".to_string(),
+                             SizableOption::Small => "px-2".to_string(),
+                             SizableOption::Smedium => "px-3".to_string(),
+                             SizableOption::Medium => "px-4".to_string(),
+                             SizableOption::Large => "px-6".to_string(),
+                             SizableOption::Xl => "px-8".to_string(),
+                             SizableOption::Xxl => "px-12".to_string(),
+                             SizableOption::Full => "px-16".to_string(),
+                             SizableOption::Fit => "px-0".to_string(),
                          });
         }
         if let Some(gap) = &self.gap {
             classes.push(match gap {
-                             SizableOption::None => "gap-0",
-                             SizableOption::Small => "gap-2",
-                             SizableOption::Smedium => "gap-3",
-                             SizableOption::Medium => "gap-4",
-                             SizableOption::Large => "gap-6",
-                             SizableOption::Xl => "gap-8",
-                             SizableOption::Xxl => "gap-12",
-                             SizableOption::Full => "gap-16",
-                             SizableOption::Fit => "gap-0",
+                             SizableOption::None => "gap-0".to_string(),
+                             SizableOption::Small => "gap-2".to_string(),
+                             SizableOption::Smedium => "gap-3".to_string(),
+                             SizableOption::Medium => "gap-4".to_string(),
+                             SizableOption::Large => "gap-6".to_string(),
+                             SizableOption::Xl => "gap-8".to_string(),
+                             SizableOption::Xxl => "gap-12".to_string(),
+                             SizableOption::Full => "gap-16".to_string(),
+                             SizableOption::Fit => "gap-0".to_string(),
                          });
         }
         if let Some(gap_y) = &self.gap_y {
             classes.push(match gap_y {
-                             SizableOption::None => "gap-y-0",
-                             SizableOption::Small => "gap-y-2",
-                             SizableOption::Smedium => "gap-y-3",
-                             SizableOption::Medium => "gap-y-4",
-                             SizableOption::Large => "gap-y-6",
-                             SizableOption::Xl => "gap-y-8",
-                             SizableOption::Xxl => "gap-y-12",
-                             SizableOption::Full => "gap-y-16",
-                             SizableOption::Fit => "gap-0",
+                             SizableOption::None => "gap-y-0".to_string(),
+                             SizableOption::Small => "gap-y-2".to_string(),
+                             SizableOption::Smedium => "gap-y-3".to_string(),
+                             SizableOption::Medium => "gap-y-4".to_string(),
+                             SizableOption::Large => "gap-y-6".to_string(),
+                             SizableOption::Xl => "gap-y-8".to_string(),
+                             SizableOption::Xxl => "gap-y-12".to_string(),
+                             SizableOption::Full => "gap-y-16".to_string(),
+                             SizableOption::Fit => "gap-0".to_string(),
                          });
         }
         if let Some(gap_x) = &self.gap_x {
             classes.push(match gap_x {
-                             SizableOption::None => "gap-x-0",
-                             SizableOption::Small => "gap-x-2",
-                             SizableOption::Smedium => "gap-x-3",
-                             SizableOption::Medium => "gap-x-4",
-                             SizableOption::Large => "gap-x-6",
-                             SizableOption::Xl => "gap-x-8",
-                             SizableOption::Xxl => "gap-x-12",
-                             SizableOption::Full => "gap-x-16",
-                             SizableOption::Fit => "gap-x-0",
+                             SizableOption::None => "gap-x-0".to_string(),
+                             SizableOption::Small => "gap-x-2".to_string(),
+                             SizableOption::Smedium => "gap-x-3".to_string(),
+                             SizableOption::Medium => "gap-x-4".to_string(),
+                             SizableOption::Large => "gap-x-6".to_string(),
+                             SizableOption::Xl => "gap-x-8".to_string(),
+                             SizableOption::Xxl => "gap-x-12".to_string(),
+                             SizableOption::Full => "gap-x-16".to_string(),
+                             SizableOption::Fit => "gap-x-0".to_string(),
                          });
         }
 
