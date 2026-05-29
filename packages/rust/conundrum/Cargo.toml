@@ -99,6 +99,18 @@ zeroize_derive = "1.4.3"
 lexical-parse-integer = "1.0.6"
 log = { version = "0.4.29", features = ["serde"] }
 syntect = { version = "5.3.0", default-features = false, features = ["default-fancy"] }
+syntect-assets = { version = "0.23.6", features = ["regex-fancy"] }
+num-traits = "0.2.19"
+ndarray = { version = "0.17.2", features = ["serde", "approx", "rayon"] }
+polars = { workspace = true }
+lightningcss = { version = "1.0.0-alpha.71", features = ["serde", "serde_json", "substitute_variables"] }
+tower-lsp = "0.20.0"
+text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
+palette = { version = "0.7.6", features = ["serde", "rand", "serializing", "random"] }
+dashu = { version = "0.4.2", features = ["num-traits", "rand", "serde", "zeroize"] }
+num-bigint = { version = "0.4.6", features = ["arbitrary", "quickcheck", "rand", "serde"] }
+rust_decimal = { version = "1.42.0", features = ["maths-nopanic", "rand", "serde-with-arbitrary-precision", "ndarray"] }
+conundrum_macros = { path = "../conundrum_macros/" }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { workspace = true }
@@ -106,30 +118,14 @@ tokio = { version = "1.0", features = ["full"] }
 rssn = { version = "0.2.7", features = ["full"] }
 ratatui = "0.30.0"
 katex-rs = { version = "0.2.4", features = ["backtrace"]}
-rust_decimal = { version = "1.42.0", features = ["maths-nopanic", "rand", "serde-with-arbitrary-precision", "ndarray"] }
-conundrum_macros = { path = "../conundrum_macros/" }
 polars-lazy = "0.53.0"
 rand = "0.10.1"
-palette = { version = "0.7.6", features = ["serde", "rand", "serializing", "random"] }
-dashu = { version = "0.4.2", features = ["num-traits", "rand", "serde", "zeroize"] }
-num-bigint = { version = "0.4.6", features = ["arbitrary", "quickcheck", "rand", "serde"] }
-lightningcss = { version = "1.0.0-alpha.71", features = ["serde", "serde_json", "substitute_variables"] }
-tower-lsp = "0.20.0"
-text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
-polars = { workspace = true }
-num-traits = "0.2.19"
-ndarray = { version = "0.17.2", features = ["serde", "approx", "rayon"] }
-syntect-assets = { version = "0.23.6", features = ["regex-fancy"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 uniffi = { workspace = true, features = ["wasm-unstable-single-threaded"] }
 tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }
 katex-rs = {version = "0.2.4", features = ["wasm", "backtrace"]}
 rust_decimal = { version = "1.42.0", features = ["maths-nopanic", "serde-with-arbitrary-precision", "wasm", "ndarray"] }
-# palette = { version = "0.7.6", features = ["serde", "serializing"] }
-# num-bigint = { version = "0.4.6", features = ["arbitrary", "quickcheck", "serde"] }
-lightningcss = { version = "1.0.0-alpha.71", default-features = false, features = ["serde", "serde_json"] }
-syntect-assets = { version = "0.23.6", default-features = false, features = ["regex-fancy"] }
 
 
 # [target.'cfg(debug_assertions)'.dependencies]

@@ -1,6 +1,6 @@
 import {
     type NextJsConundrumOutput,
-    type NextjsFileSummary,
+    type BlogFileSummary,
 } from "../../code_gen/typeshare/conundrum";
 import { type GeneralPageQuery } from "../general/types";
 
@@ -12,14 +12,13 @@ export const getNextJsPages = (
     query: NextjsPageQuery | undefined,
     output: Partial<NextJsConundrumOutput>,
 ):
-    | { results: NextjsFileSummary[] | undefined; exactMatch: false }
-    | { results: NextjsFileSummary; exactMatch: true } => {
+    | { results: BlogFileSummary[] | undefined; exactMatch: false }
+    | { results: BlogFileSummary; exactMatch: true } => {
     if (!query) {
         return { results: output.files, exactMatch: false };
     }
     if (query.slug?.length) {
         const slugString = query.slug.join("/").toLowerCase();
-        console.log("slugString: ", slugString);
         const res = output.files?.find((f) => slugString === f.relative_path);
         if (res) {
             return {
@@ -57,6 +56,18 @@ export const getNextJsPages = (
             ),
             exactMatch: false,
         };
+    }
+    if (query.subject) {
+        return {
+            results: output.files?.filter((f) => f.front_matter?.subject === query.subject),
+            exactMatch: false
+        }
+    }
+    if (query.topic) {
+        return {
+            results: output.files?.filter((f) => f.front_matter?.topic === query.topic),
+            exactMatch: false
+        }
     }
     if (query.tags?.allOf) {
         return {

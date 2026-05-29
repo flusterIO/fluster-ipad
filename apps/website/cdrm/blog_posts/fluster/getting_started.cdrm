@@ -43,13 +43,13 @@ Components?
 
 You should see documentation pop-up in the preview panel, but if you don't, make sure that you haven't configured the editor to run 'on-save'. If you have, don't worry... just press cmd+s to save! 
 
-This setting can be quite useful, as shorter notes or notes without a lot of math of complicated figures can render quite nicely 'on-change', but for notes with a lot of foldable components or complex equations, the 'on-change' method can be distracting and jittery.
+This setting can be quite useful, as shorter notes or notes without a lot of math or complicated figures can render quite nicely 'on-change', but for notes with a lot of foldable components or complex equations, the 'on-change' method can be distracting and jittery.
 
 > Keep in mind, you can see more documentation for _any_ documentation command by just adding another `?`, so `Docs?` $\to$ `Docs??`.
 
 ### Welp, now what?
 
-So that was pretty straight forward, but there's a lot more the Fluster and Conundrum have to offer. Let's go over some of the details.
+So that was pretty straight forward, but there's a lot more that Fluster and Conundrum have to offer. Let's go over some of the details.
 
 First, every time you create a note it's actually creating a group of 'notes' of a unique format, bundling them together, and referring to the collection as a 'note'. This means that each note includes:
 

@@ -175,7 +175,8 @@ Observational ranges for this value that we can observe much more reliably is be
 Let's validate this model by testing this relationship one more time. 
 
 
-Consider the above diagram. If this model is correct, we can improve the derivation of our orbital behavior. Instead of the following:
+Consider the diagram below. If this model is correct, we can improve the derivation of our orbital behavior. Instead of the following:
+
 
 $$
 F_{\text{centripital}} = F_{\text{gravity}}
