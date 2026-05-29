@@ -191,7 +191,14 @@ impl SizablePropsGroup {
             classes.push("float-left mr-4 ml-0");
         }
         if self.sidebar.is_some_and(|x| x.0) {
-            classes.push("w-full min-w-full @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]");
+            match output {
+                SizablePropsOutputTarget::General => {
+                    classes.push("w-full min-w-full @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]");
+                }
+                SizablePropsOutputTarget::Image => {
+                    classes.push("w-full min-w-full object-contain @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]");
+                }
+            }
         }
         if self.center_self.is_some_and(|x| x.0) {
             classes.push("mx-auto block place-self-center");
@@ -300,17 +307,34 @@ impl SizablePropsGroup {
             };
         }
         if let Some(max_height) = &self.max_height {
-            classes.push(match max_height {
-                             SizableOption::None => "max-h-[min(32px,90vh,100%)]",
-                             SizableOption::Small => "max-h-[min(320px,90vh,100%)]",
-                             SizableOption::Smedium => "max-h-[min(384px,90vh,100%)]",
-                             SizableOption::Medium => "max-h-[min(448px,90vh,100%)]",
-                             SizableOption::Large => "max-h-[min(576px,90vh,100%)]",
-                             SizableOption::Xl => "max-h-[min(672px,90vh,100%)]",
-                             SizableOption::Xxl => "max-h-[min(896px,90vh,100%)]",
-                             SizableOption::Full => "max-h-[min(100%,100vh)]",
-                             SizableOption::Fit => "max-h-fit",
-                         });
+            match output {
+                SizablePropsOutputTarget::Image => {
+                    classes.push(match max_height {
+                                     SizableOption::None => "max-h-[min(32px,90vh,100%)] w-auto",
+                                     SizableOption::Small => "max-h-[min(320px,90vh,100%)] w-auto",
+                                     SizableOption::Smedium => "max-h-[min(384px,90vh,100%)] w-auto",
+                                     SizableOption::Medium => "max-h-[min(448px,90vh,100%)] w-auto",
+                                     SizableOption::Large => "max-h-[min(576px,90vh,100%)] w-auto",
+                                     SizableOption::Xl => "max-h-[min(672px,90vh,100%)] w-auto",
+                                     SizableOption::Xxl => "max-h-[min(896px,90vh,100%)] w-auto",
+                                     SizableOption::Full => "max-h-[min(100%,100vh)] w-auto",
+                                     SizableOption::Fit => "max-h-fit w-auto",
+                                 });
+                }
+                SizablePropsOutputTarget::General => {
+                    classes.push(match max_height {
+                                     SizableOption::None => "max-h-[min(32px,90vh,100%)]",
+                                     SizableOption::Small => "max-h-[min(320px,90vh,100%)]",
+                                     SizableOption::Smedium => "max-h-[min(384px,90vh,100%)]",
+                                     SizableOption::Medium => "max-h-[min(448px,90vh,100%)]",
+                                     SizableOption::Large => "max-h-[min(576px,90vh,100%)]",
+                                     SizableOption::Xl => "max-h-[min(672px,90vh,100%)]",
+                                     SizableOption::Xxl => "max-h-[min(896px,90vh,100%)]",
+                                     SizableOption::Full => "max-h-[min(100%,100vh)]",
+                                     SizableOption::Fit => "max-h-fit",
+                                 });
+                }
+            }
         }
         if let Some(max_width) = &self.max_width {
             classes.push(match max_width {
@@ -329,7 +353,7 @@ impl SizablePropsGroup {
             match output {
                 SizablePropsOutputTarget::Image => {
                     classes.push(match height {
-                                     SizableOption::None => "h-it w-auto",
+                                     SizableOption::None => "h-fit w-auto",
                                      SizableOption::Small => "h-24 w-auto",
                                      SizableOption::Smedium => "h-32 w-auto",
                                      SizableOption::Medium => "h-48 w-auto",
