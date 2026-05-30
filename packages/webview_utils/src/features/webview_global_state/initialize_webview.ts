@@ -1,17 +1,18 @@
-// import consola from "consola";
-// import flusterWasm from "@fluster/wasm"
-// import { initializeConundrumWeb } from "@conundrum/ts";
-// declare global {
-//     interface WindowEventMap {
-//         "wasm-loaded": CustomEvent;
-//     }
-// }
+import consola from "consola";
+import cdrmWasm from "@conundrum/wasm"
+import { initializeConundrumWeb } from "@conundrum/ts";
+declare global {
+    interface WindowEventMap {
+        "wasm-loaded": CustomEvent;
+    }
+}
 
 export const initializeWebView = () => {
-// initializeConundrumWeb();
-
-// void flusterWasm().then(() => {
-//     consola.success("Wasm loaded.");
-//     window.dispatchEvent(new CustomEvent("wasm-loaded"))
-// });
+    initializeConundrumWeb();
+    cdrmWasm().then(() => {
+        consola.info("Conundrum WASM loaded")
+    })
+        .catch((err: unknown) => {
+            consola.error("Error: ", err)
+        })
 }

@@ -836,6 +836,9 @@ importers:
       '@conundrum/ts':
         specifier: workspace:*
         version: link:../rust/conundrum_ts
+      '@conundrum/wasm':
+        specifier: workspace:*
+        version: link:../rust/wasm/conundrum_wasm
       '@conundrum/webAssets':
         specifier: workspace:*
         version: link:../rust/conundrum_web_assets

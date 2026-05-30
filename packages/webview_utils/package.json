@@ -115,6 +115,7 @@
     "@codemirror/view": "6.38.7",
     "@conundrum/generated": "workspace:*",
     "@conundrum/ts": "workspace:*",
+    "@conundrum/wasm": "workspace:*",
     "@conundrum/webAssets": "workspace:*",
     "@ddietr/codemirror-themes": "1.5.2",
     "@emotion/is-prop-valid": "1.4.0",
