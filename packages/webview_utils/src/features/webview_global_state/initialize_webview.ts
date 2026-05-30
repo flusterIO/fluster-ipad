@@ -7,7 +7,7 @@
 //     }
 // }
 
-export const iniitializeWebView = () => {
+export const initializeWebView = () => {
 // initializeConundrumWeb();
 
 // void flusterWasm().then(() => {

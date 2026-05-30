@@ -33,6 +33,13 @@ const handleMutations = (): void => {
     }
 };
 
+// const handleEmojiSearch = (e: Event) => {
+// const target = e.currentTarget as HTMLInputElement;
+// if (window.conundrum.searchEmojis) {
+//     window.conundrum.searchEmojis(h)
+// }
+// }
+
 export const initializeConundrumWeb = () => {
     window.conundrum = {
         handleConundrumTabClick,

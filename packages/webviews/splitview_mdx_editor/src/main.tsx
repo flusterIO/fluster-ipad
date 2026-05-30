@@ -4,12 +4,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 /* import flusterWasm from "@fluster/wasm"; */
-import { iniitializeWebView } from "@fluster/webview_utils";
-iniitializeWebView();
+import { initializeWebView } from "@fluster/webview_utils";
+initializeWebView();
 
 /* eslint-disable-next-line  -- It'll be there... I promise. */
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <App />
-    </StrictMode>,
+  <StrictMode>
+    <App />
+  </StrictMode>,
 );

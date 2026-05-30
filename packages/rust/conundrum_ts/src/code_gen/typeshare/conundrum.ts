@@ -652,15 +652,16 @@ export interface DictionaryEntryResultData {
  * ## Template (HTML)
  * 
  * ```askama
- * <div class="w-full h-full grid grid-cols-1 grid-rows-[1fr_auto]">
- * <div class="flex flex-col justify-center items-center w-full h-full [&>svg]:max-h-[120px] [&>svg]:w-auto">{{svg | safe}}</div>
- * <div class="w-full text-center flex flex-col justify-center items-center">{{name | safe}}</div>
+ * <div class="w-full h-full grid grid-cols-1 grid-rows-[1fr_auto]" onclick="window.conundrum.copyString('{{name | safe}}')">
+ * <div class="flex flex-col justify-center items-center w-full h-full [&>svg]:max-h-[120px] [&>svg]:w-auto">{{html | safe}}</div>
+ * <div class="w-full text-center flex flex-col justify-center items-center text-sm text-fd-card-foreground/80">{{name | safe}}</div>
  * </div>
  * ```
  */
 export interface EmojiData {
 	name: string;
-	svg: string;
+	html: string;
+	wrapped: boolean;
 }
 
 /**
@@ -1495,6 +1496,14 @@ export interface UnorderedListModel {
 	items: UnorderedListItem[];
 }
 
+export enum TaskListCompletionToken {
+	Uncertain = "?",
+	Complete = "x",
+	Pending = "-",
+	Important = "!",
+	Incomplete = "",
+}
+
 /**
  * ## Example Usage
  * 
@@ -1586,7 +1595,8 @@ export type ConundrumErrorVariant =
 	| { tag: "UserFacingGeneralParserError", content: ConundrumError }
 	| { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
 	| { tag: "InternalParserError", content: ConundrumError }
-	| { tag: "EnvVarNotFound", content: CdrmEnvVariable };
+	| { tag: "EnvVarNotFound", content: CdrmEnvVariable }
+	| { tag: "EmojiRenderError", content: string };
 
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }

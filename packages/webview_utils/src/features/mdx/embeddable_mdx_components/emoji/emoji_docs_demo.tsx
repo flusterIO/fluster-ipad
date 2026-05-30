@@ -34,7 +34,7 @@ export const EmojiDocsDemo = ({ data }: EmojiDocsDemoProps): ReactNode => {
                 })
             }}
             className="w-full h-full rounded-lg border grid grid-cols-1 grid-rows-[1fr_auto] place-items-center gap-0 p-0 bg-background text-foreground cursor-pointer">
-            <div className="flex-grow-1 pt-4 px-4 w-16 h-16 flex flex-col justify-center items-center" dangerouslySetInnerHTML={{ __html: data.svg }} />
+            <div className="flex-grow-1 pt-4 px-4 w-16 h-16 flex flex-col justify-center items-center" dangerouslySetInnerHTML={{ __html: data.html }} />
             <div className={cn("text-center w-full max-w-full overflow-x-auto overflow-y-hidden px-4 py-2 transition-colors duration-300 text-sm", hovered ? "text-foreground" : "text-foreground/80")}>{data.name}</div>
         </div>
     )

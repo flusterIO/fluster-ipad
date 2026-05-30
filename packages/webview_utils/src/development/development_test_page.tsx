@@ -4,10 +4,10 @@ import { handleSwiftActionWrapper, handleSwiftBufferActionWrapper } from '#/webv
 import { MdxEditorGlobalProvider } from '#/webview_global_state/provider';
 import { WebViewContainer } from '#/webview_container/presentation/webview_container';
 import { WebviewEnvironment } from '@/code_gen/typeshare/fluster_core_utilities';
-import { iniitializeWebView } from '../features/webview_global_state/initialize_webview';
+import { initializeWebView } from '../features/webview_global_state/initialize_webview';
 import { TabGroupDevWrapper } from './development_wrapped_components/embeddable_components/tab_group_dev_wrapper';
 
-iniitializeWebView()
+initializeWebView()
 
 const storeData = createFlusterStore();
 

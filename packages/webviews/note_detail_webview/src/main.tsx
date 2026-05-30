@@ -5,24 +5,24 @@ import "@conundrum/generated/conundrum.css";
 import "./index.css";
 import App from "./App";
 import {
-    NoteDetailWebviewEvents,
-    webviewOnError,
+  NoteDetailWebviewEvents,
+  webviewOnError,
 } from "@fluster/webview_utils";
-import { iniitializeWebView } from "@fluster/webview_utils";
-iniitializeWebView();
+import { initializeWebView } from "@fluster/webview_utils";
+initializeWebView();
 
 declare global {
-    interface Window {
-        setNoteDetails: typeof setNoteDetails;
-    }
+  interface Window {
+    setNoteDetails: typeof setNoteDetails;
+  }
 }
 
 function setNoteDetails(data: number[]) {
-    window.dispatchEvent(
-        new CustomEvent(NoteDetailWebviewEvents.SetNoteDetails, {
-            detail: data,
-        }),
-    );
+  window.dispatchEvent(
+    new CustomEvent(NoteDetailWebviewEvents.SetNoteDetails, {
+      detail: data,
+    }),
+  );
 }
 
 window.onerror = webviewOnError;
@@ -30,7 +30,7 @@ window.onerror = webviewOnError;
 window.setNoteDetails = setNoteDetails;
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <App />
-    </StrictMode>,
+  <StrictMode>
+    <App />
+  </StrictMode>,
 );

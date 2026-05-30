@@ -1,7 +1,7 @@
 use askama::Template;
 
 /// ```askama
-/// <blockquote class="cdrm-block-quote border-primary! not-prose pl-2 border-l-[4px] w-full mt-4">
+/// <blockquote class="cdrm-block-quote border-primary! not-prose pl-2 border-l-[4px] w-full mt-4 [&>a]:font-semibold">
 /// {{self.children | safe}}
 /// </blockquote>
 /// ```

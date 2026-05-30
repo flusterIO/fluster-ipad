@@ -1,5 +1,5 @@
 use askama::Template;
-use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use serde::Serialize;
 use std::sync::Arc;
 use tabled::{Table, settings::Style};
@@ -44,7 +44,7 @@ impl EmojiDocsDemo {
         CURRENTLY_SUPPORTED_EMOJI_NAMES.par_iter()
                                        .filter_map(|name| {
                                            twemoji_assets::svg::SvgTwemojiAsset::from_name(name).map(|item| {
-                    EmojiData { name: name.to_string(), svg: item.data.0.to_string() }
+                    EmojiData { name: name.to_string(),wrapped: false,  html: item.data.0.to_string() }
                 })
                                        })
                                        .collect::<Vec<EmojiData>>()
@@ -59,7 +59,7 @@ impl MarkdownComponentResult for EmojiDocsDemo {
             CURRENTLY_SUPPORTED_EMOJI_NAMES.par_iter()
                                            .filter_map(|name| {
                                                twemoji_assets::svg::SvgTwemojiAsset::from_name(name).map(|item| {
-    EmojiData { name: name.to_string(), svg: item.data.0.to_string() }
+    EmojiData { name: name.to_string(), wrapped: false, html: item.data.0.to_string() }
 })
                                            })
                                            .collect::<Vec<EmojiData>>();

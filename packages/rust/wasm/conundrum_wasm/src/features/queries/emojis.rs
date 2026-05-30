@@ -1,5 +1,5 @@
 use conundrum::lang::{
-    lib::general::pagination::pagination_params::PaginationParams, runtime::queries::emojis::search_emojis,
+    lib::general::pagination::pagination_params::PaginationParams, runtime::queries::emojis::{search_emojis_to_docs_container, search_emojis},
 };
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 

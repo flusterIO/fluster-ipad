@@ -21,6 +21,7 @@ use lucide_icons::Icon;
 use serde::{Deserialize, Serialize};
 use winnow::{Parser, token::take};
 
+#[typeshare::typeshare]
 #[derive(Serialize, Deserialize, strum_macros::Display, strum_macros::EnumString, Debug, Clone)]
 #[strum(serialize_all = "kebab-case")]
 pub enum TaskListCompletionToken {

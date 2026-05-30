@@ -10,7 +10,7 @@ import { GlobalStateListeners } from './container/use_global_state_resize_listen
 import { SplitviewEditorNotificationBanner } from '#/notifications/splitview_editor_notification_banner/splitview_editor_notification_banner'
 import { copyStringToClipboard } from '@/utils/string_utils'
 import { useIsomorphicLayoutEffect } from '@/state/hooks/use_isomorphic_layout_effect'
-import { iniitializeWebView } from './initialize_webview'
+import { initializeWebView } from './initialize_webview'
 
 
 interface MdxEditorGlobalProviderProps {
@@ -39,7 +39,7 @@ export const MdxEditorGlobalProvider = ({ children, store, persistor }: MdxEdito
     }
 
     useIsomorphicLayoutEffect(() => {
-        iniitializeWebView()
+        initializeWebView()
     }, [])
 
     if (import.meta.env.DEV) {
