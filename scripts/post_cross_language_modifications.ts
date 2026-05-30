@@ -118,6 +118,11 @@ export type GridColumnsMap = Map<SizableOption, number>;`,
                 ],
                 replaceWith: "public struct RenderedFootnoteResult: Codable {",
             },
+            {
+                query: "public enum CdrmEnvVariable {",
+                dontPanicIfExists: ["public enum CdrmEnvVariable: Codable {"],
+                replaceWith: "public enum CdrmEnvVariable: Codable {",
+            },
         ],
     },
     "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":
