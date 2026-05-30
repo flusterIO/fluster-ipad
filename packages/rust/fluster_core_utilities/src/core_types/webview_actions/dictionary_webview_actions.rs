@@ -48,4 +48,7 @@ pub enum DictionaryWebviewIds {
     #[serde(rename = "dictionary-container")]
     #[strum(to_string = "dictionary-container")]
     DictionaryContainer,
+    #[serde(rename = "dictionary-data-container")]
+    #[strum(to_string = "dictionary-data-container")]
+    DictionaryDataContainer,
 }

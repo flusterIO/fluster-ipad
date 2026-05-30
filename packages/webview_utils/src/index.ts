@@ -93,10 +93,6 @@ export * from "./core/code_gen/flat_buffer/mdx-serialization/front-matter-result
 export * from "./core/code_gen/flat_buffer/mdx-serialization/note-details"
 
 
-// -- Dictionary --
-export * from "./features/dictionary/dictionary_page"
-export * from "./features/dictionary/hooks/use_dictionary_data"
-
 // -- Mdx --
 
 

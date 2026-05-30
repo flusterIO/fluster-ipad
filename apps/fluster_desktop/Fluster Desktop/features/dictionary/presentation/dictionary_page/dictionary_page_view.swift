@@ -12,6 +12,7 @@ import FlusterWebviewClients
 import SwiftData
 import SwiftUI
 import WebKit
+import ConundrumSwift
 
 struct DictionaryPageView: View {
   @State private var webview: WKWebView = WKWebView(
@@ -43,11 +44,19 @@ struct DictionaryPageView: View {
   }
 
   func setDictionaryContent(entries: [DictionaryEntryModel]) async throws {
-    try await DictionaryState.setDictionaryState(
-      payload: DictionaryState(
-        entries: entries.map { entry in
-          entry.toWebviewDictionaryEntry()
-        }), eval: self.webview.evaluateJavaScript)
+      let results = entries.map {entry in
+          entry.toCdrmDictionaryResult()
+      }
+      
+      let renderedResults = try await ConundrumSwift.renderDictionaryPageToHtml(entries: results)
+          
+      try await webview.evaluateJavaScript("""
+          const em = document.getElementById("\(DictionaryWebviewIds.dictionaryContainer)")
+          if (em) {
+          
+            em.innerHtml = \(renderedResults.())
+          }
+          """)
   }
 
   func onWebviewLoad() async {

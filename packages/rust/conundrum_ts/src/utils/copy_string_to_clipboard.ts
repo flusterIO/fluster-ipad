@@ -16,7 +16,6 @@ export const copyStringToClipboard = async (
     source: CopyToClipboardSource,
 ) => {
     await window.navigator.clipboard.writeText(content);
-
     window.dispatchEvent(
         new CustomEvent(ConundrumWebEvents.CopyToClipboard as string, {
             detail: {

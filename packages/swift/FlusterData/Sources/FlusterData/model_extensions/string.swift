@@ -6,6 +6,7 @@ import SwiftData
 
 extension String {
   /// Returns a string that's able to be sent through a javascript string that's *already* surrounded by quotes.
+///  Deprecated... A horrible idea from the beggining.
   public func toQuotedJavascriptString() -> String {
     func backupParseString(s: String) -> String {
       return

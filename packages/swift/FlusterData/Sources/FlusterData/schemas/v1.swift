@@ -653,6 +653,10 @@ extension AppSchemaV1 {
     public func toWebviewDictionaryEntry() -> WebviewDictionaryEntry {
       WebviewDictionaryEntry(label: self.label, body: self.body, origin_note_id: self.note?.id)
     }
+      public func toCdrmDictionaryResult() -> DictionaryEntryResult {
+          DictionaryEntryResult(label: self.label, body: self.body)
+      }
+      }
   }
 
   public enum CitationUsage {
