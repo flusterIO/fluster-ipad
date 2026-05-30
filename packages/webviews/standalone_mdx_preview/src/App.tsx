@@ -7,13 +7,16 @@ import {
     handleSwiftActionWrapper,
     handleSwiftBufferActionWrapper,
 } from "@fluster/webview_utils";
+import "@conundrum/ts/styles.css";
 import React from "react";
 
 const storeData = createFlusterStore();
 
 window.handleSwiftAction = handleSwiftActionWrapper(storeData.store);
 
-window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(storeData.store);
+window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
+    storeData.store,
+);
 
 function App() {
     return (

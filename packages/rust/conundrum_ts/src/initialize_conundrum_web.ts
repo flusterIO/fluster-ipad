@@ -6,6 +6,8 @@ import { type ConundrumWebClient } from "./conundrum_web";
 import { onLoad } from "./event_handlers/on_load";
 import { onResize } from "./event_handlers/on_resize";
 import { copyStringToClipboard } from "./utils/copy_string_to_clipboard";
+import { onEmojiDocsInputChange } from "./component_glue/emoji_docs/on_emoji_docs_input_change";
+export { attachConundrumWasm } from "./conundrum_web";
 
 declare global {
     interface Window {
@@ -33,13 +35,6 @@ const handleMutations = (): void => {
     }
 };
 
-// const handleEmojiSearch = (e: Event) => {
-// const target = e.currentTarget as HTMLInputElement;
-// if (window.conundrum.searchEmojis) {
-//     window.conundrum.searchEmojis(h)
-// }
-// }
-
 export const initializeConundrumWeb = () => {
     window.conundrum = {
         handleConundrumTabClick,
@@ -48,6 +43,7 @@ export const initializeConundrumWeb = () => {
         onAdmonitionHeadingClick,
         onLoad,
         onResize,
+        onEmojiDocsInputChange,
         copyString: copyStringToClipboard,
     };
     const mainObserver = new MutationObserver(handleMutations);

@@ -252,3 +252,4 @@ packages/rust/wasm/fluster_wasm/dist/
 packages/rust/fluster_desktop_fs/FlusterDesktopFs/
 development_database_output/
 packages/rust/conundrum_swift/ConundrumSwift/
+launch_checklist.md

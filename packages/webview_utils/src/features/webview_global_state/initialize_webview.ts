@@ -1,6 +1,4 @@
-import consola from "consola";
-import cdrmWasm from "@conundrum/wasm"
-import { initializeConundrumWeb } from "@conundrum/ts";
+import { initializeConundrumWeb, attachConundrumWasm } from "@conundrum/ts";
 declare global {
     interface WindowEventMap {
         "wasm-loaded": CustomEvent;
@@ -9,10 +7,5 @@ declare global {
 
 export const initializeWebView = () => {
     initializeConundrumWeb();
-    cdrmWasm().then(() => {
-        consola.info("Conundrum WASM loaded")
-    })
-        .catch((err: unknown) => {
-            consola.error("Error: ", err)
-        })
+    attachConundrumWasm();
 }

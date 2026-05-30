@@ -16,7 +16,7 @@ docgen:
 compile_website_conundrum:
 	cd {{justfile_directory()}}/apps/website; cargo run --bin cdrm compile-directory
 
-build_conundrum_ts:
+build_conundrum_ts: build_conundrum_wasm
 	cd {{justfile_directory()}}/packages/rust/conundrum_ts; WIREIT_PARALLEL=1 pnpm build
 
 build_glue_code: build_conundrum_ts

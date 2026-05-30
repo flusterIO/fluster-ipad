@@ -11,11 +11,11 @@ use crate::{
 /// ```askama
 /// <div class="{{tw_merge!("max-w-[90%] w-full h-fit my-6", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}">
 /// <div class="text-lg font-serif italic{% if self.center_content() %} text-center{% endif %}">
-/// {{content}}
+/// {{content | safe}}
 /// </div>
 /// {% if let Some(source) = self.source %}
 /// <div class="text-sm text-mute-foreground">
-/// {{source}}
+/// {{source | safe}}
 /// </div>
 /// {% endif %}
 /// </div>

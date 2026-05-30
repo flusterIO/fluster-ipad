@@ -12,7 +12,7 @@ I'll do my best to convince the math types among you (this article does assume s
 
 #### Included Derivations
 
-| derivation                                                | function                       | % error             |
+| Derivation                                                | Function                       | % Error             |
 | ----------                                                | --------                       | -------             |
 | cosmological velocity from local gravitational parameters | vbarCosmological               | Difficult to assess |
 | kinematic velocity from local gravitational parameters    | vbarKinematic                  | 0.442258391884371   |

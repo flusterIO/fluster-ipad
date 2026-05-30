@@ -21,7 +21,7 @@ This is my content in here.
 
 
 
-```tsx title="myNormalCodeBlock.tsx"
+```tsx -- title="myNormalCodeBlock.tsx"
 
 const x = y / z;
 

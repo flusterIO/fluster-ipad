@@ -5,16 +5,19 @@ import {
     WebViewContainer,
     createFlusterStore,
     handleSwiftActionWrapper,
-    handleSwiftBufferActionWrapper
+    handleSwiftBufferActionWrapper,
 } from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
+import "@conundrum/ts/styles.css";
 import "./index.css";
 
 const storeData = createFlusterStore();
 
 window.handleSwiftAction = handleSwiftActionWrapper(storeData.store);
 
-window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(storeData.store);
+window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
+    storeData.store,
+);
 
 function App() {
     return (

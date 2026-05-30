@@ -636,6 +636,7 @@ export interface DictionaryCodeBlock {
 	content: Children;
 }
 
+/** Both the label and body fields are ***un-compiled*** Conundrum content. */
 export interface DictionaryEntryResult {
 	label: string;
 	body: string;
@@ -1594,7 +1595,8 @@ export type ConundrumErrorVariant =
 	| { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
 	| { tag: "InternalParserError", content: ConundrumError }
 	| { tag: "EnvVarNotFound", content: CdrmEnvVariable }
-	| { tag: "EmojiRenderError", content: string };
+	| { tag: "EmojiRenderError", content: string }
+	| { tag: "WasmError", content: string };
 
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }

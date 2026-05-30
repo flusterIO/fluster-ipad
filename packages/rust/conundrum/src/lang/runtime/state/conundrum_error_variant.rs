@@ -42,6 +42,8 @@ pub enum ConundrumErrorVariant {
 
     #[error("Emoji render error: {0}")]
     EmojiRenderError(String),
+    #[error("WASM runtime error: {0}")]
+    WasmError(String)
 }
 
 impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {

@@ -5,7 +5,12 @@ import { type onAdmonitionHeadingClick } from "./component_glue/admonition/on_ad
 import { type onLoad } from "./event_handlers/on_load";
 import { type onResize } from "./event_handlers/on_resize";
 import { type copyStringToClipboard } from "./utils/copy_string_to_clipboard";
-import { type EmojiData } from "./code_gen";
+import { type onEmojiDocsInputChange } from "./component_glue/emoji_docs/on_emoji_docs_input_change";
+import conundrumWasm from "@conundrum/wasm";
+import {
+    searchConundrumEmojisAndAppendToContainer,
+    searchConundrumEmojis,
+} from "@conundrum/wasm/ts";
 
 export interface ConundrumWebClient {
     handleConundrumTabClick: typeof handleConundrumTabClick;
@@ -15,5 +20,26 @@ export interface ConundrumWebClient {
     onResize: typeof onResize;
     onLoad: typeof onLoad;
     copyString: typeof copyStringToClipboard;
-    searchEmojis?: (query: string, page: number, perPage: number) => EmojiData[]
+    onEmojiDocsInputChange: typeof onEmojiDocsInputChange;
+    searchEmojis?: typeof searchConundrumEmojis;
+    searchConundrumEmojisAndAppendToContainer?: typeof searchConundrumEmojisAndAppendToContainer;
 }
+
+/**
+ * Make sure to call `attachConundrumToWasm` _after_ calling `initializeConundrumWeb`.
+ */
+export const attachConundrumWasm = () => {
+    conundrumWasm()
+        .then(() => {
+            /* eslint-disable-next-line  -- It's not always falsy ya' dumb c--t. */
+            if (!window.conundrum) {
+                window.conundrum = {} as ConundrumWebClient;
+            }
+            window.conundrum.searchEmojis = searchConundrumEmojis;
+            window.conundrum.searchConundrumEmojisAndAppendToContainer =
+                searchConundrumEmojisAndAppendToContainer;
+        })
+        .catch((err: unknown) => {
+            console.error("Error initializing conundrum web-assembly: {}", err);
+        });
+};

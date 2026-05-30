@@ -536,6 +536,9 @@ importers:
       '@conundrum/generated':
         specifier: workspace:*
         version: link:../conundrum
+      '@conundrum/wasm':
+        specifier: workspace:*
+        version: link:../wasm/conundrum_wasm
       '@fluster/wasm':
         specifier: workspace:*
         version: link:../wasm/fluster_wasm
@@ -1343,6 +1346,9 @@ importers:
       '@conundrum/generated':
         specifier: workspace:*
         version: link:../../rust/conundrum
+      '@conundrum/ts':
+        specifier: workspace:*
+        version: link:../../rust/conundrum_ts
       '@fluster/webview_utils':
         specifier: workspace:*
         version: link:../../webview_utils
@@ -1492,6 +1498,9 @@ importers:
       '@conundrum/generated':
         specifier: workspace:*
         version: link:../../rust/conundrum
+      '@conundrum/ts':
+        specifier: workspace:*
+        version: link:../../rust/conundrum_ts
       '@fluster/wasm':
         specifier: workspace:*
         version: link:../../rust/wasm/fluster_wasm
@@ -1632,6 +1641,9 @@ importers:
       '@conundrum/generated':
         specifier: workspace:*
         version: link:../../rust/conundrum
+      '@conundrum/ts':
+        specifier: workspace:*
+        version: link:../../rust/conundrum_ts
       '@fluster/webview_utils':
         specifier: workspace:*
         version: link:../../webview_utils

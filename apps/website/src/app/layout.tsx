@@ -2,7 +2,6 @@ import "@fluster/webview_utils/styles.css";
 import "@conundrum/ts/styles.css";
 import "../core/styles/globals.scss";
 import localFont from "next/font/local";
-import FumaDocsProvider from "#/features/docs/fuma_docs_provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";

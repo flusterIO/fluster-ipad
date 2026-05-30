@@ -258,6 +258,10 @@
     container-type: inline-size;
     container-name: card-header;
   }
+  .\@container\/cdrm {
+    container-type: inline-size;
+    container-name: cdrm;
+  }
   .\@container\/codeblock {
     container-type: inline-size;
     container-name: codeblock;

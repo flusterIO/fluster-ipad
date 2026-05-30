@@ -8,6 +8,7 @@ import {
     handleSwiftBufferActionWrapper,
 } from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
+import "@conundrum/ts/styles.css";
 import "./index.css";
 
 const storeData = createFlusterStore();

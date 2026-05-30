@@ -7,7 +7,7 @@ use askama::Template;
 /// {% if let Some(style) = self.css %}<style>
 /// {{style | safe}}
 /// </style>{% endif %}
-/// <div class="cdrm-body-container w-full h-fit [&>p]:my-3">
+/// <div class="cdrm-body-container @container/mdx @container/cdrm w-full h-fit [&>p]:my-3">
 /// {{content | safe}}
 /// {{self.footnotes.render()? | safe}}
 /// </div> {% if let Some(js) = self.js %}
