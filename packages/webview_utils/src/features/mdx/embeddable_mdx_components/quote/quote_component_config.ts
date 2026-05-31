@@ -3,14 +3,14 @@ import { type EmbeddableComponentConfig, ComponentCategory } from "../embeddable
 import { quotePropsSchema } from "./quote_props_schema";
 
 
-export const quoteComponentNames = [EmbeddableComponentName.EqRef] as const
+export const quoteComponentNames = [EmbeddableComponentName.Quote] as const
 
 
 export const quoteComponentConfig: EmbeddableComponentConfig = {
     name: quoteComponentNames,
     categories: [ComponentCategory.searchAndLinkng],
     desc: "Insert a quote from a significant person, book, or another source.",
-    id: EmbeddableComponentId.EqRef,
+    id: EmbeddableComponentId.Quote,
     schema: quotePropsSchema,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/quote/quote_component_documentation.mdx",
     snippets: () => {
@@ -25,5 +25,5 @@ export const quoteComponentConfig: EmbeddableComponentConfig = {
     testProps: {
         quantityScalar: 0.2
     },
-    isInline: true
+    isInline: false
 }

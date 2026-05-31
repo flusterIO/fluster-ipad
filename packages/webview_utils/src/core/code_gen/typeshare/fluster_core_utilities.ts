@@ -722,6 +722,7 @@ export enum DictionaryWebviewEvents {
 
 export enum DictionaryWebviewIds {
 	DictionaryContainer = "dictionary-container",
+	DictionaryDataContainer = "dictionary-data-container",
 }
 
 export enum DictionaryWebviewStorageKeys {

@@ -6,12 +6,12 @@ use serde::{Deserialize, Serialize};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
 use winnow::{
-    Parser,
     ascii::{line_ending, space0, space1},
     combinator::{self},
     error::{ContextError, ErrMode},
     stream::{AsChar, Stream},
     token::{literal, take_till, take_until, take_while},
+    Parser,
 };
 
 use crate::{
@@ -26,7 +26,7 @@ use crate::{
                 parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
-                conundrum_input::{ArcState, ConundrumInput, get_conundrum_input},
+                conundrum_input::{get_conundrum_input, ArcState, ConundrumInput},
                 fluster_component_result::ConundrumComponentResult,
                 html_js_component_result::HtmlJsComponentResult,
                 markdown_component_result::MarkdownComponentResult,
@@ -41,7 +41,7 @@ use crate::{
         html::{dom::dom_id::DOMId, glue::component_glue_manager::AnyComponentKey},
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
-            dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
+            dictionary_entry::get_dictionary_entry_content::{get_dictionary_content},
         },
         parsing_result::{
             ai_serialization_request::AiSerializationRequestPhase1, dictionary_result::DictionaryEntryResult,
@@ -54,7 +54,7 @@ use crate::{
             dictionary::dictionary_code_block::DictionaryCodeBlock,
             general::{
                 general_codeblock::GeneralPresentationCodeBlock,
-                render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
+                render_codeblock::{render_general_codeblock_to_html, RenderCodeToHtmlReq},
             },
             parsed_codeblock::ParsedCodeBlockVariant,
             supported_languages::SupportedCodeBlockSyntax,
@@ -290,9 +290,25 @@ impl ConundrumParser<ParsedCodeBlockVariant> for GeneralCodeBlock {
               .parse_next(input)?;
 
         let meta_data = meta_opt.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
+        let _term = meta_opt.ok_or_else(|| {
+                        ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details(
+                            "Invalid dictionary entry",
+                            r#"Each dictionary entry requires a 'term', defined after two `--` characters:
+
+````txt 
+```dictionary -- Derivative
+A derivative is...
+```
+````"#,
+                        )))
+                    });
         let mut state = input.state.write_arc();
         let id = state.dom.new_id();
         state.data.append_embeddable_component(&AnyComponentKey::AutoInserted(AutoInsertedComponentName::AutoInsertedCodeBlock));
+        if &language == &SupportedCodeBlockSyntax::Dictionary && _term.clone().is_ok() {
+            state.data.dictionary_entries.push(DictionaryEntryResult { label: _term.clone().unwrap().to_string(),
+                                                                       body: raw_content.to_string() });
+        }
         drop(state);
         match &language {
             SupportedCodeBlockSyntax::ConundrumAi => {
@@ -308,19 +324,7 @@ impl ConundrumParser<ParsedCodeBlockVariant> for GeneralCodeBlock {
                                                         state: Arc::clone(&input.state) };
                 let child_ems = parse_elements(&mut nested_input)?;
 
-                let term =
-                    meta_opt.ok_or_else(|| {
-                        ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details(
-                            "Invalid dictionary entry",
-                            r#"Each dictionary entry requires a 'term', defined after two `--` characters:
-
-````txt 
-```dictionary -- Derivative
-A derivative is...
-```
-````"#,
-                        )))
-                    })?;
+                let term = _term?;
 
                 let mut title_input = ConundrumInput { input: term,
                                                        state: Arc::clone(&input.state) };

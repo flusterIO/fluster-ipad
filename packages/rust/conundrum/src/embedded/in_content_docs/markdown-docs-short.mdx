@@ -1,6 +1,5 @@
-Here is a straightforward, quick-glance cheat sheet you can keep handy while you learn. 
-
 ### The Quick-Glance Markdown Cheat Sheet
+> AI generated, but AI writes in markdown natively. Another reason to keep your mardown notes linked to your sketches.
 
 | Element | What you type | What it looks like |
 | :--- | :--- | :--- |
@@ -14,11 +13,24 @@ Here is a straightforward, quick-glance cheat sheet you can keep handy while you
 | **Blockquote** | `> Important quote` | Block indented text |
 | **Bullet List** | `- Item 1`<br/>`- Item 2` | • Item 1<br/>• Item 2 |
 | **Numbered List**| `1. First`<br/>`2. Second` | 1. First<br/>2. Second |
-| **Inline Code** | `` `print("Hi")` `` | `print("Hi")` |
-| **Code Block** | ` ```python `<br/>`print("Hi")`<br/>` ``` ` | Syntax-highlighted block |
 | **Divider** | `---` | A horizontal line |
 
-***
+**Inline Code** 
+
+````txt
+`def myCodeHere():`
+````
+
+
+**Code Block** 
+
+````markdown
+```python
+print("Hi")
+```
+````
+
+---
 
 **A quick note on math formatting:**
 If you need to drop in some inline math, wrap it in single dollar signs like `$E = mc^2$`. For block-level math, remember to put the double dollar signs on their own separate lines, like this:
@@ -28,3 +40,14 @@ $$
 a^2 + b^2 = c^2
 $$
 ```
+
+Unique to Conundrum, you can also add an id to the equation so you can reference it later with the `EqRef` component.
+
+
+````markdown
+$$ {#myEquationId}
+e=mc^2
+$$
+
+As you can see, in equation <EqRef id="myEquationId" />, Einstein...
+````

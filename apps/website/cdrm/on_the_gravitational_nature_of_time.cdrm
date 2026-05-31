@@ -240,7 +240,7 @@ s = \left|\begin{matrix}
 \end{matrix}\right| = \omega^3
 $$
 
-Not only does this accomodate existing experimental validations of SR & GR, it does so while accomodating the original relativistic experiment: Michelson & Morely. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
+Not only does this accomodate existing experimental validations of SR & GR, it does so while accomodating the original relativistic experiment: Michelson & Morely[^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
 
 If we consider that the magnitude of $\delta$ _is_ this determinant, we should then take it's cube root:
 
@@ -445,17 +445,18 @@ $$
 \frac{v_{g}}{v_{\text{orbit}}} = 171.25209
 $$
 
-As this relates the dilation of space to the velocity relative to the underlying coordinate system, we should then consider the relationship of _static_ space:
+As this relates the dilation of space to the velocity relative to the underlying coordinate system, we should then consider the relationship of _static_ space, and guess what...
 
 $$
-\frac{v_{g}}{v_{\text{orbit}}} = \eta \frac{\mathbf{AU}}{R}
+\frac{v_{g}}{v_{\text{orbit}}} = \alpha \frac{\mathbf{AU}}{R_\oplus}
 $$
 
-Solving this for $\eta$ and plugging in our parameters gives: 
+Or
 
 $$
-\eta = \frac{\sqrt[3]{GM_\odot}}{2  \pi \mathbf{AU}^2} T_{\text{year}} R_{\oplus} = \alpha \pm 0.05443\%
+\mathbf{AU}\alpha = \sqrt[3]{G M_\odot} \frac{T_{\text{year}}}{2 \pi \mathbf{AU}} R_\oplus \pm 0.014\%
 $$
+
 
 
 ## Mass Density Approximation
@@ -552,3 +553,4 @@ If they say to you, "Is it you?" say 'We are it's children'. If they ask of you,
 
 [^1]: The logical question here is well, why not just publish it in peer review? The **only** possible mathematical solution indicates that the Earth is expanding _with_ the Universe. Einstein himself couldn't get a model like this past our current peer review culture.
 [^2]: Assuming a uniform gravitational field across the path of travel.
+[^3]: Interestingly, Michelson & Morely actually used the very same instrument in the very same year to measure both the proposed dilation of space and $\alpha$! They just didn't find any dilation of space because they explicitly excluded the direction influenced by gravity.

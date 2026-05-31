@@ -1156,6 +1156,7 @@ public enum DictionaryWebviewEvents: String, Codable {
 
 public enum DictionaryWebviewIds: String, Codable {
 	case dictionaryContainer = "dictionary-container"
+	case dictionaryDataContainer = "dictionary-data-container"
 }
 
 public enum DictionaryWebviewStorageKeys: String, Codable {

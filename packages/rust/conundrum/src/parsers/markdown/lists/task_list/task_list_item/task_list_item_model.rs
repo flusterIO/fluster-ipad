@@ -2,8 +2,8 @@ use askama::Template;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use winnow::error::ErrMode;
-use winnow::{Parser, stream::Stream};
-
+use winnow::stream::Stream;
+use winnow::{Parser};
 use crate::lang::runtime::state::conundrum_error::ConundrumError;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
 use crate::lang::runtime::traits::as_template::AsTemplate;
@@ -135,7 +135,6 @@ mod tests {
         let mut input = wrap_test_conundrum_content(test_content);
         let res = UnorderedTaskListItem::parse_input_string(&mut input).expect("Parses plain list item without throwing an error.");
         let templ = res.as_template(Arc::clone(&input.state)).expect("Outputs list item template as expected");
-        println!("Template: {:#?}", templ);
         assert!(templ.heading == "My test item here", "Finds the proper heading");
         assert!(templ.body.is_some_and(|b| b == "<p>My body goes here!</p><p>My body continues here!</p>"),
                 "Finds the proper list item body");

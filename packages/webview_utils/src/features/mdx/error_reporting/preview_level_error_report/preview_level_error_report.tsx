@@ -52,7 +52,7 @@ export const PreviewLevelErrorReport = connector(({ resetErrorBoundary, conundru
                     opacity: 1
                 }}
             >
-                <div className="w-full flex @xs/preview-error:flex-row flex-col justify-start items-center gap-x-3 px-4">
+                <div className="w-full flex @[540px]/preview-error:flex-row flex-col justify-start items-center gap-x-3 px-4">
                     <div className="rounded-lg bg-destructive/20 p-3">
                         <TriangleAlert className="stroke-destructive" />
                     </div>
@@ -61,7 +61,7 @@ export const PreviewLevelErrorReport = connector(({ resetErrorBoundary, conundru
                         <div className="text-sm text-fd-card-foreground/70 my-0">{`Found ${totalErrors} error${totalErrors > 1 ? "s" : ""}`}</div>
                     </div>
                 </div>
-                <div className="w-full flex flex-col justify-center items-center @[540px]:inline-block pb-3">
+                <div className="w-full flex flex-col justify-center items-center @[540px]/preview-error:inline-block pb-3">
                     {conundrumErrors?.length ? (
                         <ConundrumErrorsReport errors={conundrumErrors} />
                     ) : (

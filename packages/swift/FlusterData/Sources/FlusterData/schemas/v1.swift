@@ -8,6 +8,9 @@ import PencilKit
 import SwiftData
 
 public let DEFAULT_NOTE_TITLE: String = "No title found"
+public let DEFAULT_TAG_COLOR: String = "placeholder"
+public let DEFAULT_SUBJECT_COLOR: String = "placeholder"
+public let DEFAULT_TOPIC_COLOR: String = "placeholder"
 
 public enum AppSchemaV1: VersionedSchema {
   public static var models: [any PersistentModel.Type] {
@@ -653,10 +656,10 @@ extension AppSchemaV1 {
     public func toWebviewDictionaryEntry() -> WebviewDictionaryEntry {
       WebviewDictionaryEntry(label: self.label, body: self.body, origin_note_id: self.note?.id)
     }
-      public func toCdrmDictionaryResult() -> DictionaryEntryResult {
-          DictionaryEntryResult(label: self.label, body: self.body)
-      }
-      }
+    public func toCdrmDictionaryTemplate(noteIdBackup: String?) -> DictionaryEntryHtmlTemplate {
+      DictionaryEntryHtmlTemplate(
+        label: self.label, body: self.body, noteId: self.note?.id ?? noteIdBackup)
+    }
   }
 
   public enum CitationUsage {
@@ -856,12 +859,14 @@ extension AppSchemaV1 {
     public var utime: Date
     /// lastAccess is (will be) updated each time a note is accessed that contains a given taggable to help with search ranking.
     public var lastAccess: Date
+    public var color: String
     public init(
       value: String,
       ctime: Date = .now,
       utime: Date = .now,
       lastAccess: Date = .now,
-      notes: [NoteModel] = []
+      notes: [NoteModel] = [],
+      color: String = DEFAULT_TAG_COLOR
     ) {
       self.value = value
       self.caseInsensitive = value.lowercased()
@@ -869,6 +874,7 @@ extension AppSchemaV1 {
       self.ctime = ctime
       self.utime = utime
       self.lastAccess = lastAccess
+      self.color = color
     }
     public static func fromRustTagResult(
       t: TagResult,
@@ -882,7 +888,8 @@ extension AppSchemaV1 {
         value: t.body,
         ctime: exists == nil ? .now : exists!.ctime,
         utime: .now,
-        lastAccess: exists == nil ? .now : exists!.lastAccess
+        lastAccess: exists == nil ? .now : exists!.lastAccess,
+        color: exists == nil ? DEFAULT_TAG_COLOR : exists!.color
       )
     }
   }
@@ -899,12 +906,14 @@ extension AppSchemaV1 {
     public var utime: Date
     /// lastAccess is (will be) updated each time a note is accessed that contains a given taggable to help with search ranking.
     public var lastAccess: Date
+    public var color: String
     public init(
       value: String,
       ctime: Date = .now,
       utime: Date = .now,
       lastAccess: Date = .now,
-      notes: [NoteModel] = []
+      notes: [NoteModel] = [],
+      color: String = DEFAULT_SUBJECT_COLOR
     ) {
       self.notes = notes
       self.value = value
@@ -912,6 +921,7 @@ extension AppSchemaV1 {
       self.ctime = ctime
       self.utime = utime
       self.lastAccess = lastAccess
+      self.color = color
     }
   }
 
@@ -928,12 +938,14 @@ extension AppSchemaV1 {
     public var utime: Date
     /// lastAccess is (will be) updated each time a note is accessed that contains a given taggable to help with search ranking.
     public var lastAccess: Date
+    public var color: String
     public init(
       value: String,
       ctime: Date = .now,
       utime: Date = .now,
       lastAccess: Date = .now,
-      notes: [NoteModel] = []
+      notes: [NoteModel] = [],
+      color: String = DEFAULT_TOPIC_COLOR
     ) {
       self.value = value
       self.caseInsensitive = value.lowercased()
@@ -941,6 +953,7 @@ extension AppSchemaV1 {
       self.ctime = ctime
       self.utime = utime
       self.lastAccess = lastAccess
+      self.color = color
     }
   }
 

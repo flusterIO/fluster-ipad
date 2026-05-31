@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState, type ReactNode } from "react";
 import { BlogSidebarCategory } from "./sidebar_category";
 import { subjectToUrl, topicToUrl } from "@conundrum/ts/pathUtils";
@@ -8,6 +8,7 @@ import { BlogTagSection } from "./blog_tag_section";
 import { isMobile } from "react-device-detect";
 import { SidebarMobileDrawer } from "./sidebar_mobile_drawer/sidebar_mobile_drawer";
 import { MobileSidebarToggleButton } from "./sidebar_mobile_drawer/sidebar_mobile_toggle_button";
+import { motion } from "framer-motion";
 
 export interface BlogSidebarProps {
     topics: string[];
@@ -19,14 +20,15 @@ export interface BlogSidebarProps {
 export const BlogSidebar = (props: BlogSidebarProps): ReactNode => {
     const [preferMobileNav, setPreferMobileNav] = useState<null | boolean>(null);
     const handleIsMobileNav = (): void => {
-        setPreferMobileNav(window.innerWidth < 768 || isMobile)
-    }
+        setPreferMobileNav(window.innerWidth < 768 || isMobile);
+    };
     useEffect(() => {
-        handleIsMobileNav()
+        handleIsMobileNav();
         window.addEventListener("resize", handleIsMobileNav);
-    }, [])
+    }, []);
+
     if (preferMobileNav === null) {
-        return <div />
+        return <div className="max-w-[min(250px,90vw)] w-fit min-w-[150px] border-r h-screen py-4" />;
     }
     if (preferMobileNav) {
         return (
@@ -34,10 +36,12 @@ export const BlogSidebar = (props: BlogSidebarProps): ReactNode => {
                 <SidebarMobileDrawer {...props} />
                 <MobileSidebarToggleButton />
             </>
-        )
+        );
     }
     return (
-        <div className="max-w-[min(250px,90vw)] w-fit min-w-[150px] border-r h-screen  py-4">
+        <div
+            className="max-w-[min(250px,90vw)] w-fit min-w-[150px] border-r h-screen py-4"
+        >
             {props.banner ?? null}
             <BlogSidebarCategory
                 label="Topics"

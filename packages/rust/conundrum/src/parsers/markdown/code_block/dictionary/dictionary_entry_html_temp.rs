@@ -1,10 +1,11 @@
 use askama::Template;
+use crate::output::html::glue::glue_code_rust::cdrm_web_events::ConundrumWebEvents;
 
 /// ## Template (HTML)
 ///
 /// ```askama
-/// <div class="w-full my-6 max-w-[1080px] font-serif">
-/// <div {% if let Some(note_id) = self.note_id  %} data-cdrm-noteid="{{note_id}}" {% endif %} class="[&_p]:text-xl font-medium tracking-tight text-foreground decoration-none underline-none {% if self.note_id.is_some() %} cursor-pointer{% endif %}">
+/// <div class="cdrm-dict-entry w-full my-3 max-w-[1080px] font-serif">
+/// <div {% if let Some(note_id) = self.note_id  %} data-cdrm-noteid="{{note_id}}" {% endif %} class="[&_p]:text-xl font-medium tracking-tight text-foreground decoration-none underline-none {% if self.note_id.is_some() %} cursor-pointer{% endif %}" onclick="window.dispatchEvent(new CustomEvent("{{ConundrumWebEvents::DictionaryEntryLabelClick}}"))">
 /// {{label | safe}}
 /// </div>
 /// <div class="w-full pl-4">
@@ -12,7 +13,7 @@ use askama::Template;
 /// </div>
 /// </div>
 /// ```
-#[derive(Template)]
+#[derive(Template, uniffi::Record)]
 #[template(ext = "html", in_doc = true)]
 pub struct DictionaryEntryHtmlTemplate {
     pub label: String,

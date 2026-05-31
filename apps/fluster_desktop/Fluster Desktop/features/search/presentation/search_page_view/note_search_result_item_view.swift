@@ -23,7 +23,7 @@ struct NoteSearchResultItemView: View {
       MarkdownTextView(item.getPreferedTitle(), .inlineOnly)
         .font(.title2)
       if let summary = item.frontMatter.summary?.body, !summary.isEmpty {
-        Text(summary)
+        MarkdownTextView(summary, .full)
           .font(.subheadline)
           .foregroundStyle(.secondary)
       }

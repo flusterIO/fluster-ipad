@@ -653,9 +653,9 @@ export interface DictionaryEntryResultData {
  * ## Template (HTML)
  * 
  * ```askama
- * <div class="w-full h-full grid grid-cols-1 grid-rows-[1fr_auto]" onclick="window.conundrum.copyString('{{name | safe}}')">
+ * <div class="w-full h-full grid grid-cols-1 grid-rows-[1fr_auto]" onclick="window.conundrum.copyString('{{name | safe}}', '{{CopyToClipboardSource::EmojiName}}')">
  * <div class="flex flex-col justify-center items-center w-full h-full [&>svg]:max-h-[120px] [&>svg]:w-auto">{{html | safe}}</div>
- * <div class="w-full text-center flex flex-col justify-center items-center text-sm text-fd-card-foreground/80">{{name | safe}}</div>
+ * <div class="w-full max-w-full overflow-y-hidden overflow-x-auto no-scrollbar text-center flex flex-col justify-center items-center text-sm text-fd-card-foreground/80">{{name | safe}}</div>
  * </div>
  * ```
  */
@@ -1618,10 +1618,11 @@ export enum ConundrumWebEvents {
 	CodeblockCopied = "cdrm-codeblock-copy",
 	NoteLinkClick = "cdrm-note-id-link-click",
 	CopyToClipboard = "cdrm-content-copied",
+	DictionaryEntryLabelClick = "dictionary-entry-click",
 }
 
 export enum CopyToClipboardSource {
-	EmojiName = "EmojiName",
+	EmojiName = "emoji-name",
 }
 
 export enum DocumentationComponentName {

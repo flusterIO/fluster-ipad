@@ -45,16 +45,18 @@ struct DictionaryPageView: View {
 
   func setDictionaryContent(entries: [DictionaryEntryModel]) async throws {
       let results = entries.map {entry in
-          entry.toCdrmDictionaryResult()
+          entry.toCdrmDictionaryTemplate(noteIdBackup: entry.note?.id, )
       }
+      
       
       let renderedResults = try await ConundrumSwift.renderDictionaryPageToHtml(entries: results)
           
+      print("Results: \(renderedResults.toQuotedJavascriptString())")
+      
       try await webview.evaluateJavaScript("""
-          const em = document.getElementById("\(DictionaryWebviewIds.dictionaryContainer)")
+          const em = document.getElementById("\(DictionaryWebviewIds.dictionaryDataContainer.rawValue)")
           if (em) {
-          
-            em.innerHtml = \(renderedResults.())
+            em.innerHTML = \(renderedResults.toQuotedJavascriptString())
           }
           """)
   }

@@ -1,7 +1,6 @@
 use parking_lot::Mutex;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use serde_with::SerializeDisplay;
 use std::{collections::HashMap, sync::Arc};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;

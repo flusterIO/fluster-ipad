@@ -257,7 +257,8 @@ struct WebViewContainerView: View {
     SupportedCodeBlockTheme = .solarizedLight
   @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
   @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
-    @AppStorage(AppStorageKeys.showEquationLabels.rawValue) var showEquationLabels: EquationNumberingStrategy = .all
+  @AppStorage(AppStorageKeys.showEquationLabels.rawValue) var showEquationLabels:
+    EquationNumberingStrategy = .all
 
   @Binding var webview: WKWebView
   public let url: URL
@@ -310,6 +311,9 @@ struct WebViewContainerView: View {
           }
         ))
     }
+    if mathjaxFontUrl == "/dictionary_webview_mac" {
+      self.show = true
+    }
   }
 
   var body: some View {
@@ -339,7 +343,8 @@ struct WebViewContainerView: View {
           try await en.markdown.parsePlainText(
             noteId: en.id,
             uiParams: UiParams(
-              darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+              darkMode: colorScheme == .dark,
+              fontScalar: Float(webviewFontScale),
               mathFontScalar: Float(webviewMathFontScale),
               syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
           )
@@ -392,25 +397,25 @@ struct WebViewContainerView: View {
       of: colorScheme,
       {
         Task {
-            if let en = self.editingNote {
-                do {
-                    try await en.preParse(modelContext: modelContext, uiParams: self.getUiParams())
-                } catch {
-                    print("Error: \(error.localizedDescription)")
-                }
+          if let en = self.editingNote {
+            do {
+              try await en.preParse(modelContext: modelContext, uiParams: self.getUiParams())
+            } catch {
+              print("Error: \(error.localizedDescription)")
             }
+          }
           await setColorScheme(colorScheme: colorScheme)
         }
       }
     )
     .scrollBounceBehavior(.basedOnSize, axes: [])
   }
-    func getUiParams() -> UiParams {
-        UiParams(
-              darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
-              mathFontScalar: Float(webviewMathFontScale),
-              syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
-    }
+  func getUiParams() -> UiParams {
+    UiParams(
+      darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+      mathFontScalar: Float(webviewMathFontScale),
+      syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
+  }
   public func handleInitialState() async {
     if let en = editingNote {
       Task {
@@ -441,7 +446,8 @@ struct WebViewContainerView: View {
               implementation: self.implementation,
               fluster_theme: flusterTheme
             ),
-            mathPayload: InitialMathState(mathjax_font_url: mathjaxFontUrl, hide_equation_labels: showEquationLabels),
+            mathPayload: InitialMathState(
+              mathjax_font_url: mathjaxFontUrl, hide_equation_labels: showEquationLabels),
             aiPayload: AiInitialStatePayload(
               foundation_model_access: llm.availability.toReduxRepresentation()
             ),

@@ -313,14 +313,6 @@ const items: ComponentMapItem[] = [
         }
     },
     {
-        query: [AutoInsertedComponentName.DictionaryEntry],
-        componentType: ComponentItemType.autoInserted,
-        importComponent: async () => {
-            const Comp = await import("../../dictionary/hooks/dictionary_entry").then((a) => a.DictionaryEntryComponent)
-            return (p) => <Comp {...p} InlineMdxContent={InlineMdxContent} />
-        }
-    },
-    {
         query: [AutoInsertedComponentName.FlusterAiParsePendingContainer],
         componentType: ComponentItemType.autoInserted,
         importComponent: async () => {

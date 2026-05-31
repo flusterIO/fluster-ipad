@@ -4,22 +4,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fluster Dictionary</title>
-    <script type="module" src="/src/load_css.js"></script>
-    <link rel="stylesheet" type="text/css" href="src/styles.css" />
+    <title>Dictionary Webview</title>
 </head>
 
 <body data-fluster-theme="fluster" class="loading dark fluster-ipad">
-    <div className="w-full h-fit min-h-screen" id="dictionary-container">
-        <div className="w-full max-w-[1080px] px-8 ml-auto mr-auto">
-            <h1 className="mb-8 hide-desktop">Dictionary</h1>
-            <div id="dictionary-data-container" className="w-full h-full flex flex-col justify-center items-center p-4">
-                <h3 className="text-foreground/80 w-fit text-center">
-                    No Dictionary Entries Found
-                </h3>
-            </div>
-        </div>
-    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
 </body>
 
 </html>

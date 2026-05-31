@@ -1,6 +1,6 @@
 # The Comprehensive Guide to Markdown
 
-> AI Generated... I'm homeless and in a hurry, but they _are_ correct. If you're unfamiliar, AI models often respond natively in markdown which is then rendered as the html or other UI that you see. This is another great reason to keep your AI friendly markdown notes linked to your more human friendly sketches.
+> This note was AI generated, but markdown is kind'of AI's _thing_. Also, while Fluster aims to be commonmark compatible at one point, it is not there yet. All of these features are available, but not necessarily with all syntax variations supported. If examples are more your thing, checkout the source files for all of Conundrum's documentation [here](https://github.com/flusterIO/fluster-ipad/blob/main/apps/website/cdrm) and [here](https://github.com/flusterIO/fluster-ipad/blob/main/packages/rust/conundrum/src/embedded/in_content_docs/).
 
 
 <Admonition 
@@ -92,6 +92,16 @@ You can create actionable to-do lists using brackets `[ ]` and `[x]`.
 - [ ] Publish to blog
 ```
 
+> Conundrum supports multiple 'checked' states here. Try any of the following characters: 
+
+| Character | Status |
+| --------- | ------ |
+| `x` | Complete |
+| `?` | 'Uncertain' |
+| `-` | Pending |
+| `!` | Important |
+| ` ` | Incomplete |
+
 ---
 
 ## 4. Links and Images
@@ -99,16 +109,24 @@ You can create actionable to-do lists using brackets `[ ]` and `[x]`.
 ### Links
 To create a link, enclose the link text in brackets `[ ]`, and then the URL in parentheses `( )`.
 
-**Syntax:** `[Fluster](https://www.flusterapp.com){:md}`
-**Example:** [Fluster](https://www.flusterapp.com)
+**Syntax:** `[Fluster](https://www.flusterapp.com){:md}`  
+
+**Result:** [Fluster](https://www.flusterapp.com)
 
 ### Images 
-> Prefer the included Image component for it's Sizable properties.
+> The standard markdown image syntax will be supported in the near future, but for now, prefer the included Image component. Using this component allows the passing of jsx properties, which allows the passing of information to customize the appearance of your image. This just isn't possible with the markdown syntax.
 
 Images are almost identical to links, but they start with an exclamation mark `!`.
 
-**Syntax:** `![Alt Text](Image URL)`
-**Example:** ![Markdown Logo](https://markdown-here.com/img/icon256.png)
+**Syntax:** `![Alt Text](Image URL)`  
+
+**Result:** ![Markdown Logo](https://markdown-here.com/img/icon256.png)
+
+Or using the Image component:
+
+````tsx -- title="my_note.cdrm"
+<Image src="https://markdown-here.com/img/icon256.png" />
+````
 
 ---
 
@@ -116,17 +134,19 @@ Images are almost identical to links, but they start with an exclamation mark `!
 
 To quote a block of text, use the greater-than sign `>`.
 
-```markdown
+```txt
 > "Simplicity is the ultimate sophistication."
 > — Leonardo da Vinci
 ```
 
 You can also nest blockquotes:
 
-```markdown
+```txt
 > This is the first level of quoting.
 >> This is nested blockquote.
 ```
+
+> This here is how Fluster styles a block quote. If you're looking for an actual 'quote' with a source and what-not, use the `Quote` component!
 
 ---
 
@@ -135,14 +155,43 @@ You can also nest blockquotes:
 You can format text as code to share programming snippets.
 
 ### Inline Code
-For a quick inline command, wrap the text in single backticks `` ` ``.
+For a quick inline command, wrap the text in single backticks '`'.
 
 **Example:** To install the package, run `npm install`.
 
-### Code Blocks
-For larger blocks of code, use three backticks ` ``` ` or indent with four spaces. You can also specify the programming language right after the opening backticks for syntax highlighting.
+Within Fluster & Conundrum, you can the following syntax to specify a language for your codeblock:
 
-```python
+
+````markdown
+`@dataclass{:python}`
+````
+
+### Code Blocks
+For larger blocks of code, use three or more backticks. Commonmark supports indenting 4 spaces to create code blocks, and while Fluster aims to be eventually be _close_ to commonmark compatible, indented codeblocks is almost surely a feature Fluster will never support. Have we learned nothing from Python? 
+
+Within Fluster & Conundrum you can also specify the programming language right after the opening backticks for syntax highlighting, and an optional title in jsx syntax following the codeblock.
+
+#### Input 
+
+````markdown
+```python -- title="my_file.py"
+def fibonacci(n):
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+    
+    sequence = [0, 1]
+    while len(sequence) < n:
+        sequence.append(sequence[-1] + sequence[-2])
+    return sequence
+
+print(fibonacci(10))
+```
+````
+#### Output
+
+```python -- title="my_file.py"
 def fibonacci(n):
     if n <= 0:
         return []
@@ -163,6 +212,8 @@ print(fibonacci(10))
 
 You can create tables by assembling a list of words and dividing them with hyphens `-` (for the first row), and separating each column with a pipe `|`.
 
+#### Input
+
 ```markdown
 | Syntax    | Description | Example     |
 | :-------- | :---------- | :---------- |
@@ -170,23 +221,37 @@ You can create tables by assembling a list of words and dividing them with hyphe
 | Paragraph | Text        | And more    |
 ```
 
+#### Output 
+
+| Syntax    | Description | Example     |
+| :-------- | :---------- | :---------- |
+| Header    | Title       | Here's this |
+| Paragraph | Text        | And more    |
+
 *Note: The colons `:` in the header separator row dictate alignment (left, center, or right).*
 
 ---
 
 ## 8. Mathematics
 
+<Hint>
+If you're just getting started writing math, keep a short, 2-3 page Latex reference near-by and by the end of the day you won't even need to look at it. Mathjax and Katex are just renderers for the math portion of Latex.
+</Hint>
+
 Many modern Markdown renderers (like GitHub, Obsidian, and standard MathJax setups) support LaTeX math rendering. 
 
 Inline math uses single dollar signs `$`. 
 **Example:** The equation for a line is $y = mx + b$.
 
-For block-level math, as requested by your preferences, ensure the double dollar signs `$$` are placed on a separate line.
+For block-level math, ensure the double dollar signs `$${:md}` are placed on a separate line.
 
 **Example:**
 $$
 f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi)\,e^{2 \pi i \xi x} \,d\xi
 $$
+
+
+> Fluster actually uses **KaTeX** for math rendering, which offers greater performance at the expense of not supporting some additional features that some advanced mathjax users might be familiar with. Pretty much everything is supported apart from some less-common 'environments' more suited for print output, but check the KaTeX docs if you're unsure.
 
 ---
 
@@ -197,3 +262,16 @@ To create a thematic break or horizontal line, use three or more asterisks `***`
 ```markdown
 ---
 ```
+
+Don't forget, Fluster includes a Horizontal Rule that allows you to embed 'children' within it. Simply use the following syntax:
+
+````txt
+--- And that's it! ---
+````
+
+Will produce:
+
+--- And that's it! ---
+
+
+That's all there is too it! Pretty simple right? From this syntax, you can generate an overwhelming majority of what goes into a modern website or application, directly in your notes.

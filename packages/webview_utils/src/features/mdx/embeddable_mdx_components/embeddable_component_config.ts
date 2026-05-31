@@ -16,7 +16,8 @@ export enum ComponentCategory {
     layout = "Layout",
     attention = "Attention",
     ai = "AI",
-    searchAndLinkng = "Search & Linking"
+    searchAndLinkng = "Search & Linking",
+    media = "Media"
 }
 
 // export enum EmbeddableComponentId {

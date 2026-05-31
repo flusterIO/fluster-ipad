@@ -1,5 +1,7 @@
 pub mod methods;
 pub mod workspace_utils;
+pub mod documentation;
+pub mod documentation_types;
 use askama::Template;
 use methods::write_supported_syntaxes;
 

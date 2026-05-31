@@ -8,6 +8,7 @@ import { embeddableGridComponentConfig } from "./grid/embeddable_responsive_grid
 import { embeddableHintComponentConfig } from "./hint/hint_component_config";
 import { hlComponentConfig } from "./hl/hl_component_config";
 import { hrComponentConfig } from "./hr/hr_component_config";
+import { imageComponentConfig } from "./image/image_component_config";
 import { eqRefComponentConfig } from "./math/equation_reference/equation_reference_config";
 import { quoteComponentConfig } from "./quote/quote_component_config";
 import { embeddableTabComponentConfig } from "./tabs/embeddable_tab_config";
@@ -30,5 +31,6 @@ export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
     aiNoteSummaryComponentConfig,
     emojiComponentConfig,
     tocComponentConfg,
-    quoteComponentConfig
+    quoteComponentConfig,
+    imageComponentConfig
 ]
