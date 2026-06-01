@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, type ReactNode } from "react";
-import { initializeConundrumWeb } from "@conundrum/ts";
+import { type ReactNode } from "react";
+/* import { initializeConundrumWeb } from "@conundrum/ts"; */
 
 export const ConundrumInitializer = (): ReactNode => {
-    useEffect(() => {
-        initializeConundrumWeb();
-    }, []);
+    /* useEffect(() => { */
+    /*     initializeConundrumWeb(); */
+    /* }, []); */
     return null;
 };
 
