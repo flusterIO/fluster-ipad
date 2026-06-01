@@ -30,7 +30,7 @@
         },
         "build": {
             "dependencies": [
-                "../../packages/rust/wasm/conundrum_wasm:build",
+                "../../packages/rust/wasm/conundrum_wasm:build:website",
                 "build:utils",
                 "../../packages/rust/conundrum_ts:build"
             ],
