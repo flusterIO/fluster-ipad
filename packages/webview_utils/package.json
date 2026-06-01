@@ -63,7 +63,7 @@
       "command": "../../node_modules/@tailwindcss/cli/dist/index.mjs -i ./src/core/styles/base.scss -o ./dist/styles.css -m"
     },
     "build:lezer": {
-      "command": "cd ../typescript/lezer && pnpm build"
+      "command": "../typescript/lezer:build:website"
     },
     "build:website": {
       "dependencies": [
