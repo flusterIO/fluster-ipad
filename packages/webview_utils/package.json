@@ -50,7 +50,10 @@
       "output": [
         "dist"
       ],
-      "clean": true
+      "clean": true,
+      "dependencies": [
+        "../typescript/lezer:build:website"
+      ]
     },
     "build:typescript": {
       "command": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
