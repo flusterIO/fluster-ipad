@@ -13,6 +13,8 @@ import SwiftData
 import SwiftUI
 import WebKit
 import ConundrumSwift
+import TipKit
+
 
 struct DictionaryPageView: View {
   @State private var webview: WKWebView = WKWebView(
@@ -44,6 +46,10 @@ struct DictionaryPageView: View {
   }
 
   func setDictionaryContent(entries: [DictionaryEntryModel]) async throws {
+      if entries.isEmpty {
+          // Return so the 'No entries to display" banner remains shown.
+          return
+      }
       let results = entries.map {entry in
           entry.toCdrmDictionaryTemplate(noteIdBackup: entry.note?.id, )
       }
@@ -51,7 +57,6 @@ struct DictionaryPageView: View {
       
       let renderedResults = try await ConundrumSwift.renderDictionaryPageToHtml(entries: results)
           
-      print("Results: \(renderedResults.toQuotedJavascriptString())")
       
       try await webview.evaluateJavaScript("""
           const em = document.getElementById("\(DictionaryWebviewIds.dictionaryDataContainer.rawValue)")

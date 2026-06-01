@@ -44,7 +44,7 @@ use crate::{
             dictionary_entry::get_dictionary_entry_content::{get_dictionary_content},
         },
         parsing_result::{
-            ai_serialization_request::AiSerializationRequestPhase1, dictionary_result::DictionaryEntryResult,
+            ai_serialization_request::AiSerializationRequestPhase1, dictionary_result::{DictionaryEntryResult, DictionaryEntryResultUnCompiled},
         },
     },
     parsers::{
@@ -77,18 +77,13 @@ pub struct GeneralCodeBlock {
 
 impl ConundrumStateModifier<GeneralCodeBlock> for GeneralCodeBlock {
     fn set_state(res: ArcState, data: Option<GeneralCodeBlock>) {
+        let mut state = res.write_arc();
         let cb = data.unwrap();
-        if cb.language == SupportedCodeBlockSyntax::Dictionary {
-            let mut state = res.write_arc();
-            let term = cb.meta_data.as_deref().unwrap_or("Untitled");
-            state.data.dictionary_entries.push(DictionaryEntryResult { label: term.to_string(),
-                                                                       body: cb.content.clone() });
-            drop(state);
-        } else if cb.language == SupportedCodeBlockSyntax::ConundrumAi {
+          if cb.language == SupportedCodeBlockSyntax::ConundrumAi {
             let mut state = res.write_arc();
             state.data.ai_secondary_parse_requests.push(AiSerializationRequestPhase1 { parsing_result: cb.clone() });
-            drop(state);
         }
+        drop(state);
     }
 }
 
@@ -305,10 +300,6 @@ A derivative is...
         let mut state = input.state.write_arc();
         let id = state.dom.new_id();
         state.data.append_embeddable_component(&AnyComponentKey::AutoInserted(AutoInsertedComponentName::AutoInsertedCodeBlock));
-        if &language == &SupportedCodeBlockSyntax::Dictionary && _term.clone().is_ok() {
-            state.data.dictionary_entries.push(DictionaryEntryResult { label: _term.clone().unwrap().to_string(),
-                                                                       body: raw_content.to_string() });
-        }
         drop(state);
         match &language {
             SupportedCodeBlockSyntax::ConundrumAi => {
@@ -331,7 +322,13 @@ A derivative is...
 
                 let title = parse_elements(&mut title_input)?;
 
-                // let mut nested_title_input =
+                let mut state = input.state.write_arc();
+                
+            state.append_uncompiled_dictionary_entry(DictionaryEntryResultUnCompiled { label: Children(title.clone()),
+            label_string: term.clone().to_string(),
+                                                                       body: Children(child_ems.clone()) });
+            drop(state);
+
                 Ok(
         ParsedCodeBlockVariant::Dictionary(
             DictionaryCodeBlock {

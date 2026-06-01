@@ -6,12 +6,12 @@ topic: Initial Launch
 subject: Blog Posts
 ---
 
-## Introducing Fluster
+## Coming June '26: Introducing Fluster
 > Markdown on :muscle: steroids side-by-side with your hand-drawn sketches.
 
 > See the full Conundrum source for this page on our [Github](https://github.com/flusterIO/fluster-ipad/blob/main/apps/website/cdrm/blog_posts/fluster/initial_launch.cdrm)
 
-Hello, my name's Andrew and I'm the creator of Fluster. If you're new here, this app has quite a unique back-story that I hope to share with you here, but first I want to get into what exactly Fluster _is_.
+Hello, my name's Andrew and I'm the creator of Fluster[^2]. If you're new here, this app has quite a unique back-story that I hope to share with you here, but first I want to get into what exactly Fluster _is_.
 
 First, Fluster is _not_ ~~just~~ a markdown based note taking application. Fluster originally used mdx, a combination of markdown and jsx which is itself a superset of javascript. To make a long story short, mdx is one of the favorite tools among developers, but it's complicated syntax left it largely inaccessible to every-day users that never plan to become developers. Every time you visit a documentation based website (pretty much any help section), there's a significant chance that the content is written in mdx by the team of developers behind that platform, but Fluster aims to make these tools accessible to everyone with the desire to learn (along with support for a simplified syntax).
 
@@ -139,3 +139,4 @@ I'll save you the boring technical details about the rewrites, but from there it
 Overall I'm happy with the application so far, but it's not perfect. Please remember... I built this almost completely without internet and most of the time without a power outlet. I didn't even know the Swift or Rust languages when I started... that's 2/3 of the application. There were dozens of times where I had to make a less-than-ideal decision just based on the fact that I didn't have the internet required to install the things I needed to to implement the feature I was aiming for or some other financial limitation, and each of those features will be added to Fluster as soon as I can find a more reliable work environment with access to the internet. This app isn't even half of what it will be in a year, _if_ I can find my way into a better living situation. Building an iPad app without an iPad is about how far I'm able to confidently work with the simulators.
 
 [^1]: If you really feel like I missed an obvious addition to the list of supported `.csl` files, send me a message! I'm trying to find a balance between the binary size and the scope of the project. Eventually we'll have support for downloadable assets, bringing the best of both worlds and making the entire collection of `.csl` files accessible, but for now that would blow things out of proportion on mobile devices.
+[^2]: Set to be submitted to the AppStore for approval in the first week of June!

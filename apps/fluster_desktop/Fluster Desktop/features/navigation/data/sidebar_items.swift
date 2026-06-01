@@ -7,6 +7,7 @@
 
 import FlusterData
 import Foundation
+import TipKit
 
 struct SidebarItem: Codable, Identifiable {
   let label: String

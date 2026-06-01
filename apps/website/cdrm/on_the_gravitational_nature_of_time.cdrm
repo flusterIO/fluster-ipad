@@ -22,7 +22,7 @@ I'll do my best to convince the math types among you (this article does assume s
 #### Included Derivations
 > This table is generated directly from `Astropy` and `Scipy`. All functions reflect names in the `alpha_omega_gravity` python package, because after 5 years of being homeless I think I earned the right to be grandiose. (α comes from the fine-structure constant).
 
-| derivation                                                | function                         | % error             |
+| Derivation                                                | Function                         | % Error             |
 |:----------------------------------------------------------|:---------------------------------|:--------------------|
 | cosmological velocity from local gravitational parameters | `vbarCosmological`               | Difficult to assess |
 | kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | 0.442258391884371   |
@@ -60,7 +60,7 @@ At $p_2$ place a time keeping device that remains visible from $p_1$. Allow that
 
 At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while allowing the observer in an unchanged state to observe the kinetic effects of observer in motion is that the distance between $p_{1}$ and $p_{2}$ must elongate by a factor of $ \gamma$.
 
-Is this not inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further seperated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
+Is this not inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further seperated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
 
 > **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
 
@@ -135,7 +135,7 @@ $$
 
 This notation is likely confusing, so let me clarify. To satisfy the properties time occupies, this quantity is integrated in a manner that is unique, keeping the denominator fixed at 1 unit of distance (the velocity in units of distance) while the integral $\int_p$ is meant to indicate a 'proportional' integral, or an integral that goes on indefinitely as 'time' progresses.
 
-This gives us a dimensionless quantity that is distance/distance, of a magnitude that is equivalent to $t$.
+This gives us a dimensionless quantity that is distance/distance, of a magnitude that is equivalent to $t$ in this form, and a magnitude equivalent to $\frac{1}{2}t^2$ when integrated.
 
 </Admonition>
 
@@ -355,7 +355,7 @@ $$
 \frac{1}{2 - \alpha} c  \delta = 462.244~ \text{meters}
 $$
 
-That's our rotational velocity on Earth's equator $\pm -0.006778\%$! Off by a total of 0.03 meters (1.18 inches) on a radius the size of Earth's!
+That's our rotational velocity on Earth's equator $\pm -0.006778\%$! Off by a total of 0.03 meters (1.18 inches) for a quantity that takes into account a radius the size of Earth's and a period as long as our day!
 
 
 <Admonition title="Dimensionality" info foldable sidebar right>
@@ -410,7 +410,7 @@ $$
 \mathbf{{J}} = \rho_e v_0
 $$
 
-Since, in electromagnetism:
+Since, in classical electromagnetism:
 
 $$
 \nabla \cdot E = \frac{{\rho_e}}{{\epsilon_0}}
@@ -425,7 +425,7 @@ $$
 Or
 
 $$
-\mathbf{{J}} \propto 2 \frac{GM_\oplus}{R_{\oplus}^3} c \sqrt{1 - \frac{1}{\left(1 + \frac{g}{R}\right)^2}} = 1.6145 ~\frac{\text{m}^2}{\text{s}}
+\mathbf{{J}} \propto 2 \frac{GM_\oplus}{R_{\oplus}^3} c \sqrt{1 - \frac{1}{\left(1 + G\frac{M_\oplus}{R_\oplus^3}\right)^2}} = 1.6145 ~\frac{\text{m}^2}{\text{s}}
 $$
 
 > **Note:** There is a radius here on Earth's surface where this value is precisely $\Phi$, the **Golden Ratio**.
@@ -448,10 +448,12 @@ $$
 As this relates the dilation of space to the velocity relative to the underlying coordinate system, we should then consider the relationship of _static_ space, and guess what...
 
 $$
+\boxed{
 \frac{v_{g}}{v_{\text{orbit}}} = \alpha \frac{\mathbf{AU}}{R_\oplus}
+}
 $$
 
-Or
+Or if approximating as a perfectly circular orbit:
 
 $$
 \mathbf{AU}\alpha = \sqrt[3]{G M_\odot} \frac{T_{\text{year}}}{2 \pi \mathbf{AU}} R_\oplus \pm 0.014\%
@@ -464,7 +466,7 @@ $$
 Finally, let's wrap this all up with one last approximation. Consider the following, that we've derived above:
 
 $$
-\beta_0^2 = 1 - \frac{1}{ \left(1 + \frac{g}{R}\right)^2 } \approx \left( \alpha \left( 2 - \alpha \right) \right)^3
+\beta_0^2 \approx 1 - \frac{1}{ \left(1 + \frac{g}{R}\right)^2 } \approx \left( \alpha \left( 2 - \alpha \right) \right)^3
 $$
 
 Then considering that

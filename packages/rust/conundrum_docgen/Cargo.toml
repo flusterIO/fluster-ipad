@@ -18,6 +18,9 @@ strum.workspace = true
 strum_macros.workspace = true
 tabled = "0.20.0"
 tokio = { version = "1.52.1", features = ["full"] }
+rustdoc-types = "0.57.3"
+rustdoc-json = "0.9.10"
+glob = "0.3.3"
 
 [lints]
 workspace = true

@@ -7,11 +7,13 @@
 
 import FlusterData
 import SwiftUI
+import TipKit
 
 struct CollapsableSidebarSection: View {
   @Binding var open: Bool
   let items: [SidebarItem]
   let title: LocalizedStringKey
+  let createNoteTip = CreateNoteTip()
   @EnvironmentObject private var appState: AppState
   @Environment(\.dismiss) private var dismiss
   @Environment(\.isPresented) private var isPresented
@@ -30,12 +32,22 @@ struct CollapsableSidebarSection: View {
                 }
               },
               label: {
-                HStack {
-                  Image(systemName: item.icon.toSfIcon())
-                  Text(item.label)
+                if item.id == .createNote {
+                  HStack {
+                    Image(systemName: item.icon.toSfIcon())
+                    Text(item.label)
+                  }
+                  .popoverTip(createNoteTip)
+                  .padding(.vertical, 4)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                  HStack {
+                    Image(systemName: item.icon.toSfIcon())
+                    Text(item.label)
+                  }
+                  .padding(.vertical, 4)
+                  .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .padding(.vertical, 4)
-                .frame(maxWidth: .infinity, alignment: .leading)
               }
             )
             .labelStyle(.titleAndIcon)

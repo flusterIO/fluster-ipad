@@ -9,8 +9,14 @@ use crate::{
     lang::runtime::state::{
         citation_list::CitationList, dom_data::DomData, footnote_manager::FootnoteManager, ui_params::UIParams,
     },
+    lang::runtime::{traits::conundrum_input::ConundrumInput},
+        lang::runtime::{state::conundrum_error_variant::ConundrumModalResult},
     output::{
-        general::component_constants::parser_ids::ParserId, parsing_result::mdx_parsing_result::MdxParsingResult,
+        general::component_constants::parser_ids::ParserId,
+        parsing_result::{
+            mdx_parsing_result::MdxParsingResult,
+            dictionary_result::{DictionaryEntryResultUnCompiled, DictionaryEntryResult}
+        }
     },
     parsers::markdown::heading_sluggger::Slugger,
 };
@@ -128,6 +134,7 @@ pub struct ParseState {
     pub footnotes: FootnoteManager,
     #[serde(skip)]
     pub highlight_assets: Arc<Mutex<HighlightingAssets>>,
+    pub uncompiled_dictionary_entries: Vec<DictionaryEntryResultUnCompiled>
 }
 
 impl Default for ParseState {
@@ -143,6 +150,7 @@ impl Default for ParseState {
                ui_params: Default::default(),
                dom: Default::default(),
                footnotes: FootnoteManager::new(HashMap::new()),
+               uncompiled_dictionary_entries: Vec::new(),
                compile_target: Default::default(),
                trusted: Default::default(),
                highlight_assets: Arc::new(Mutex::new(HighlightingAssets::from_binary())) }
@@ -258,6 +266,13 @@ impl ParseState {
             }
         }
         false
+    }
+
+    pub fn append_uncompiled_dictionary_entry(&mut self, entry: DictionaryEntryResultUnCompiled) {
+        let can_append = !self.uncompiled_dictionary_entries.iter().any(|x| x.label_string == entry.label_string);
+        if can_append {
+            self.uncompiled_dictionary_entries.push(entry);
+        }
     }
 
     pub fn should_ignore_parser(&self, id: &ParserId) -> bool {

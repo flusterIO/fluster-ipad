@@ -136,6 +136,9 @@ build_desktop_fs:
 build_fluster_bibliography:
 	cd {{justfile_directory()}}/packages/rust/fluster_bibliography; cargo swift package -y --xcframework-name FlusterBib
 
+gather_rustdoc_markdown:
+	cargo doc-md -p conundrum --no-deps -o {{justfile_directory()}}/docs/generated/rustdoc/conundrum
+
 clear_macos_database:
 	trash "/Users/bigsexy/Library/Containers/fluster.Fluster-Desktop/Data/Library/Application Support/default.store"
 

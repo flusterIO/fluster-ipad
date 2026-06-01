@@ -15,6 +15,7 @@ use crate::{
     output::{
         general::component_constants::component_names::EmbeddableComponentName,
         parsing_result::mdx_parsing_result::MdxParsingResult,
+        parsing_result::dictionary_result::{DictionaryEntryResultUnCompiled, DictionaryEntryResult}
     },
     parsers::{document::ConundrumDocument, markdown::heading_sluggger::Slugger},
 };
@@ -114,13 +115,31 @@ pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingR
     let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);
     let doc = ConundrumDocument::parse_input(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
 
+
     let rendered_string = match is_standalone {
         true => doc.render_standalone(Arc::clone(&stateful_input.state))?,
         false => doc.render_app_embedded(Arc::clone(&stateful_input.state))?,
     };
 
     {
+
+        let mut compiled_entries: Vec<DictionaryEntryResult> = Vec::new();
+
+        let read_state = stateful_input.state.read_arc();
+        for entry in &read_state.uncompiled_dictionary_entries {
+            if let Ok(label_res) = entry.label.render(Arc::clone(&stateful_input.state)) {
+            if let Ok(body_res) = entry.body.render(Arc::clone(&stateful_input.state)) {
+            compiled_entries.push(DictionaryEntryResult {
+                label: label_res,
+                body: body_res
+            });
+            }
+            }
+        }
+        drop(read_state);
         let mut state = stateful_input.state.write_arc();
+        state.data.dictionary_entries = compiled_entries;
+
         state.data.content = rendered_string;
     }
 

@@ -8,6 +8,7 @@
 import FlusterData
 import SwiftData
 import SwiftUI
+import TipKit
 import UniformTypeIdentifiers
 import WebKit
 
@@ -30,12 +31,13 @@ struct WindowAccessor: NSViewRepresentable {
 struct Fluster_DesktopApp: App {
   private var appData: AppDataContainer { AppDataContainer.shared }
   private var paletteController = CommandPaletteController()
-  var x: Int {
-    print("Stored: \(appData.sharedModelContainer.mainContext.sqliteCommand)")
-    return 1
-  }
   init() {
     SchemeRegistration.registerCustomScheme()
+    do {
+      try Tips.configure()
+    } catch {
+      print("Error initializing tips: \(error)")
+    }
   }
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {

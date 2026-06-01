@@ -11,9 +11,11 @@ import {
     searchConundrumEmojisAndAppendToContainer,
     searchConundrumEmojis,
 } from "@conundrum/wasm/ts";
+import { type handleNoteLinkClick } from "./markdown_glue/extensions/note_link/handle_note_link_click";
 
 export interface ConundrumWebClient {
     handleConundrumTabClick: typeof handleConundrumTabClick;
+    handleNoteLinkClick: typeof handleNoteLinkClick;
     onAdmonitionHeadingClick: typeof onAdmonitionHeadingClick;
     onCopyCodeBlockClick: typeof onCopyCodeBlockClick;
     onCodeBlockContainerClick: typeof onCodeBlockContainerClick;

@@ -3,6 +3,7 @@
 - [x] Get conundrum compiling again.
 - [x] Re-fucking-implement strikethrough text parser.
 - [x] Fix link parser. It's woring, but inserting the wrong text maing the link invalid.
+- [ ] Create color component and fix Emphasis docs that are no longer working.
 - [ ] Reset dictionary page... you're an idiot, of course it still needs to be wrapped in React... it needs to respond to UI state like darkmode.
 - [ ] Finish proper rendering of dictionary page.
 - [ ] Get bibliography editor working again.

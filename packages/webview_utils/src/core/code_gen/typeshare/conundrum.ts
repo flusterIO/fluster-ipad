@@ -649,6 +649,14 @@ export interface DictionaryEntryResultData {
 	note_id?: string;
 }
 
+/** Both the label and body fields are ***un-compiled*** Conundrum content. */
+export interface DictionaryEntryResultUnCompiled {
+	label: Children;
+	/** Used for unique-ness comparison. */
+	label_string: string;
+	body: Children;
+}
+
 /**
  * ## Template (HTML)
  * 
@@ -729,13 +737,14 @@ export interface EmojiSearchResults {
  * equations by index without worrying about the structure of your note
  * changing.
  * 
- * #### Indices
+ * #### Indices (implementation detail)
  * 
  * The equation reference component uses 1 based indices for plain text and
  * markdown since they are likely going to be displayed directly, and zero
  * based indices for everything where the output will be handled by a developer
  * before being displayed (React, HTML, Swift, etc..) because 1 based indices
- * suck.
+ * are dumb. True story: One time I told my step-dad he was number 0 to cheer
+ * him up. I was like 7.
  */
 export interface EquationReference {
 	/**

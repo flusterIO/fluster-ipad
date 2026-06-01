@@ -1,7 +1,7 @@
 use askama::Template;
 
 /// ```askama
-/// <a data-note-id-referencing="{{note_id}}" role="button" onclick="handleNoteLinkClick">{{children}}</a>
+/// <a data-note-id-referencing="{{note_id}}" role="button" onclick="window.conundrum.handleNoteLinkClick(event)" class="cursor-pointer">{{children}}</a>
 /// ```
 #[derive(Template)]
 #[template(ext = "html", in_doc = true)]
