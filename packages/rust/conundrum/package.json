@@ -30,6 +30,7 @@
     ],
     "scripts": {
         "build": "",
+        "build:rust": "cargo build --package conundrum",
         "build:scss": "../../../node_modules/@tailwindcss/cli/dist/index.mjs --input ./src/output/html/standalone/conundrum_input.scss --output ./src/output/html/standalone/conundrum.css",
         "build:ts": "wireit",
         "copy:katexcss": "cp ../../../node_modules/katex/dist/katex.min.css ./src/output/html/glue/component_glue/other/katex.min.css",

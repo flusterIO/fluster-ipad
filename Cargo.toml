@@ -23,21 +23,6 @@ members = [
     "packages/rust/conundrum_macros",
     "packages/rust/conundrum_context",
     "packages/rust/conundrum_server_rs",
-    "packages/rust/conundrum_editor",
-    "packages/rust/conundrum_editor/helix_clone/helix-core",
-    "packages/rust/conundrum_editor/helix_clone/helix-view",
-    "packages/rust/conundrum_editor/helix_clone/helix-term",
-    "packages/rust/conundrum_editor/helix_clone/helix-tui",
-    "packages/rust/conundrum_editor/helix_clone/helix-lsp-types",
-    "packages/rust/conundrum_editor/helix_clone/helix-lsp",
-    "packages/rust/conundrum_editor/helix_clone/helix-event",
-    "packages/rust/conundrum_editor/helix_clone/helix-dap-types",
-    "packages/rust/conundrum_editor/helix_clone/helix-dap",
-    "packages/rust/conundrum_editor/helix_clone/helix-loader",
-    "packages/rust/conundrum_editor/helix_clone/helix-vcs",
-    "packages/rust/conundrum_editor/helix_clone/helix-parsec",
-    "packages/rust/conundrum_editor/helix_clone/helix-stdx",
-    "packages/rust/conundrum_editor/helix_clone/xtask"
 ]
 
 
