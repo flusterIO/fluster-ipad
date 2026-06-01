@@ -1,0 +1,20 @@
+## Image
+
+> For now, Fluster only supports remote images via a URL. This is due entirely to my living and financial limitations, not having my own iPhone to test against. As soon as my financial situation allows I will add support for local images directly from your device.
+
+````tsx -- title="minimal_example.cdrm"
+<Image src="https://markdown-here.com/img/icon256.png" />
+````
+
+
+Or a more realistic, stylized example that slides off to the right on wide screens, and centers itself on narrow screens (taken from my article on [Flusterapp.com](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time)):
+
+```tsx
+<Image
+maxHeight="medium"
+contain // <- Do not let the image overgrow the container
+right // <- paired with sidebar
+sidebar // <- Slide off to the side on wide screens
+src="https://flusterapp.com/assets/diagrams/peculiarVelocity_probabilityCurve.png"
+caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
+```
