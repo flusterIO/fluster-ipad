@@ -28,10 +28,7 @@
         "build:utils": {
             "dependencies": [
                 "../../packages/webview_utils:build:website"
-            ],
-            "env": {
-                "WIREIT_PARALLEL": "1"
-            }
+            ]
         },
         "build": {
             "dependencies": [
