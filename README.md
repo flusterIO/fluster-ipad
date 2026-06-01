@@ -24,6 +24,6 @@ Where $1/\sqrt{2- \alpha}$ is a spinor function akin to that found quantum mecha
 
 That's a $\alpha$, the fine-structure constant that describes the interactions and geometry of the electromagnetic field defined in terms of gravitational parameters to undeniable accuracy. It'll be controversial, but the Earth is expanding _with_ the rest of the Universe, and _that_ is the source of gravitational acceleration. This follows logically from a single mathematically equivalent modification to Einstein's relativity that resolves a paradox that I believe is absolutely impossible in reality as we experience it: relativistic simultaneity... the idea that an instantaneous event can occur at multiple places in time based on a coordinate transformation.
 
-This is the problem Fluster was originaly created to help me resolve.
+This is the problem Fluster was originaly created to help me resolve. You can see a more complete derivation [here](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time), written in Conundrum and transpiled by the same tool that powers Fluster.
 
 **The world is about to change.**

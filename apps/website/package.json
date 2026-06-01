@@ -26,7 +26,12 @@
     },
     "wireit": {
         "build:utils": {
-            "command": "../../packages/webview_utils:build:website"
+            "dependencies": [
+                "../../packages/webview_utils:build:website"
+            ],
+            "env": {
+                "WIREIT_PARALLEL": "1"
+            }
         },
         "build": {
             "dependencies": [
