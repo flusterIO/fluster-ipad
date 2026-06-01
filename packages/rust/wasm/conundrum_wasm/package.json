@@ -10,20 +10,24 @@
     },
     "wireit": {
         "build:ts": {
-            "command": "tsc"
+            "command": "tsc",
+            "dependencies": [
+                "build"
+            ],
+            "env": {
+                "WIREIT_PARALLEL": "1"
+            },
+            "clean": false
         },
         "build": {
             "command": "RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory\" pnpm wasm-pack build --target web ./",
-            "dependencies": [
-                "build:ts"
-            ],
             "env": {
                 "WIREIT_PARALLEL": "1"
             }
         },
         "build:website": {
             "dependencies": [
-                "build"
+                "build:ts"
             ]
         }
     },
