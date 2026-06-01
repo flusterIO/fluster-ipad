@@ -34,7 +34,10 @@
                 "build:utils",
                 "../../packages/rust/conundrum_ts:build"
             ],
-            "command": "next build"
+            "command": "next build",
+            "env": {
+                "WIREIT_PARALLEL": "1"
+            }
         }
     },
     "dependencies": {
