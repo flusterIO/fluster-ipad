@@ -73,6 +73,7 @@
     "build:website": {
       "dependencies": [
         "build:lezer",
+        "../rust/conundrum_ts:build",
         "build:typescript_allow_errors",
         "build:tailwind"
       ]
