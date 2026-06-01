@@ -254,3 +254,6 @@ development_database_output/
 packages/rust/conundrum_swift/ConundrumSwift/
 launch_checklist.md
 docs/generated/rustdoc/conundrum/
+apps/*/.turbo/
+packages/*/.turbo/
+.turbo/

@@ -29,55 +29,13 @@
     "src/core/utils/themes.scss"
   ],
   "scripts": {
-    "build": "wireit",
-    "build:tailwind": "wireit",
-    "build:website": "wireit",
+    "build:tailwind": "../../node_modules/@tailwindcss/cli/dist/index.mjs -i ./src/core/styles/base.scss -o ./dist/styles.css -m",
+    "build:ts": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
     "dev": "vite -c ./vite_dev.config.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest -c ./vite_dev.config.ts",
     "typecheck": "tsc --noEmit"
-  },
-  "wireit": {
-    "build": {
-      "dependencies": [
-        "build:typescript",
-        "build:tailwind"
-      ]
-    },
-    "build:typescript_allow_errors": {
-      "command": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
-      "output": [
-        "dist"
-      ],
-      "clean": true,
-      "dependencies": [
-        "../typescript/lezer:build:website"
-      ]
-    },
-    "build:typescript": {
-      "command": "tsc && NODE_OPTIONS=--max-old-space-size=8192 vite build",
-      "output": [
-        "dist"
-      ],
-      "clean": true
-    },
-    "build:tailwind": {
-      "command": "../../node_modules/@tailwindcss/cli/dist/index.mjs -i ./src/core/styles/base.scss -o ./dist/styles.css -m"
-    },
-    "build:lezer": {
-      "dependencies": [
-        "../typescript/lezer:build:website"
-      ]
-    },
-    "build:website": {
-      "dependencies": [
-        "build:lezer",
-        "../rust/conundrum_ts:build",
-        "build:typescript_allow_errors",
-        "build:tailwind"
-      ]
-    }
   },
   "types": "./dist/index.d.ts",
   "main": "./dist/index.umd.js",

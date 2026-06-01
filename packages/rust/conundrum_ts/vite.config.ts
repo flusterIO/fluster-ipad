@@ -22,7 +22,7 @@ export default defineConfig({
             sourceMap: true,
         },
         sourcemap: true,
-        emptyOutDir: true,
+        emptyOutDir: false,
         minify: isProd,
         cssMinify: isProd ? "lightningcss" : undefined,
         lib: {

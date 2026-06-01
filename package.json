@@ -19,7 +19,8 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "shiki": "3.3.0"
+    "shiki": "3.3.0",
+    "turbo": "^2.9.16"
   },
   "devDependencies": {
     "@codspeed/vitest-plugin": "5.2.0",
