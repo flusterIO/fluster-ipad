@@ -39,11 +39,12 @@ pub enum ConundrumErrorVariant {
     InternalParserError(ConundrumError),
     #[error("Environment variable not found: `{0}`")]
     EnvVarNotFound(CdrmEnvVariable),
-
     #[error("Emoji render error: {0}")]
     EmojiRenderError(String),
     #[error("WASM runtime error: {0}")]
-    WasmError(String)
+    WasmError(String),
+    #[error("Invalid Color: {0}")]
+    InvalidColor(String),
 }
 
 impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {

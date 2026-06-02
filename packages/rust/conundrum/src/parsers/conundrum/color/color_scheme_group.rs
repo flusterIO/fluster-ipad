@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::parsers::conundrum::color::{color_model::ConundrumColor, color_pair::ColorPair};
+use crate::parsers::conundrum::color::{color_pair::ColorPair, conundrum_color::ConundrumColor};
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct ColorSchemeGroup<T> {
@@ -15,4 +15,4 @@ impl<T> ColorSchemeGroup<T> {
     }
 }
 
-pub type ConundrumCompleteColor = ColorPair<ColorSchemeGroup<ConundrumColor>>;
+pub type ConundrumCompleteColor = ColorSchemeGroup<ColorPair<ConundrumColor>>;

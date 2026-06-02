@@ -14,7 +14,7 @@ import { type BibtexEditorWebviewEvents, CodeEditorKeymap, type EditorState, Spl
 import { type AnyWebviewAction, type AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
-import { bracketMatching, foldGutter, indentOnInput, syntaxTree } from '@codemirror/language';
+import { bracketMatching, foldGutter, indentOnInput, syntaxTree, LanguageSupport } from '@codemirror/language';
 import { autocompletion, closeBrackets, completeFromList, type CompletionSource } from '@codemirror/autocomplete';
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
@@ -24,7 +24,8 @@ import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
-import { bibtex, bibtexLanguage } from "codemirror-lang-bib"
+import { bibtexLanguage, bibtexBracketMatching, bibtexLinter, bibtexHoverTooltip, bibtex } from "codemirror-lang-bib"
+import 'codemirror-lang-bib/dist/bib.css';
 import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
 import { connect } from "react-redux"
@@ -32,6 +33,7 @@ import { setBibtexEditorValue, setEditorValue } from "#/webview_global_state/mdx
 import { type GlobalAppState } from "#/webview_global_state/store";
 import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
 import { cn } from "../../../../core/utils/cn";
+import { linter } from "@codemirror/lint";
 
 const connector = connect((state: GlobalAppState) => ({
     baseKeymap: state.editor.baseKeymap,
@@ -160,15 +162,16 @@ export const CodeEditorInner = connector(({
                 })),
             ]
         } else {
-            const snippets = getBibtexSnippets()
             extensions = [
                 ...extensions,
-                bibtex(),
-                Prec.high(
-                    bibtexLanguage.data.of({
-                        autocomplete: completeFromList(snippets)
-                    })
-                )
+                bibtex({ enableAutocomplete: false }),
+                // Using the mardown language here to get around bib languge's shit snippets.
+                Prec.high(markdownLanguage.data.of({
+                    autocomplete: completeFromList(getBibtexSnippets())
+                })),
+                bibtexBracketMatching,
+                linter(bibtexLinter()),
+                bibtexHoverTooltip,
             ]
         }
         if (lockEditorScrollToPreview) {

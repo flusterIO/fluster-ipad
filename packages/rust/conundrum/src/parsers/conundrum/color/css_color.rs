@@ -16,7 +16,7 @@ use crate::{
     },
     output::html::{
         web_specific_models::lightning_css_printer_options::safari_specific_lightning_css_printer_options,
-        web_specific_traits::css_value_representable::{CssValuePossiblyRepresentable, CssValueRepresentable},
+        web_specific_traits::css_value_representable::{CSSValuePossiblyRepresentable, CSSValueRepresentable},
     },
 };
 
@@ -57,7 +57,7 @@ impl TryFrom<&str> for CssColor {
     }
 }
 
-impl CssValuePossiblyRepresentable for CssColor {
+impl CSSValuePossiblyRepresentable for CssColor {
     fn to_css_value(&self) -> ConundrumModalResult<String> {
         let opts = safari_specific_lightning_css_printer_options();
         self.0.to_css_string(opts).map_err(|e| {
@@ -68,7 +68,7 @@ impl CssValuePossiblyRepresentable for CssColor {
     }
 }
 
-impl CssValueRepresentable for CssColor {
+impl CSSValueRepresentable for CssColor {
     fn as_css_value(&self) -> String {
         self.0.to_css_string(safari_specific_lightning_css_printer_options()).unwrap_or_else(|_| {
                                                                                  self.0

@@ -26,7 +26,17 @@ use crate::{
 /// the default color values.
 /// The emphasis documentation can be viewed via the `Emphasis??` command.
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, uniffi::Enum, EnumIter, PartialEq, Eq, Default, Debug, strum_macros::Display, Clone)]
+#[derive(Serialize,
+           Deserialize,
+           uniffi::Enum,
+           EnumIter,
+           PartialEq,
+           Eq,
+           Default,
+           Debug,
+           strum_macros::Display,
+           strum_macros::EnumString,
+           Clone)]
 pub enum Emphasis {
     #[serde(rename = "info")]
     #[strum(to_string = "info")]
@@ -153,19 +163,19 @@ impl Emphasis {
     }
 }
 
-impl FromStr for Emphasis {
-    type Err = ConundrumErrorVariant;
+// impl FromStr for Emphasis {
+//     type Err = ConundrumErrorVariant;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        for item in Emphasis::iter() {
-            if item.to_string() == s {
-                return Ok(item);
-            }
-        }
-        Err(ConundrumErrorVariant::UserFacingMissingOrIncorrectProperty(ConundrumError::from_message(format!("An incorrect property was provided to 'emphasis'. We found \"{}\".",
-                                                                                        s).as_str())))
-    }
-}
+//     fn from_str(s: &str) -> Result<Self, Self::Err> {
+//         for item in Emphasis::iter() {
+//             if item.to_string() == s {
+//                 return Ok(item);
+//             }
+//         }
+//         Err(ConundrumErrorVariant::UserFacingMissingOrIncorrectProperty(ConundrumError::from_message(format!("An incorrect property was provided to 'emphasis'. We found \"{}\".",
+//
+// s).as_str())))     }
+// }
 
 impl FromJsxPropsOptional for Emphasis {
     /// The `key` property doesn't matter at all for the Emphasis component as

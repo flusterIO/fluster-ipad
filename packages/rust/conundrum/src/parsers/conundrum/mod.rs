@@ -1,3 +1,4 @@
+pub mod color;
 pub mod comment;
 pub mod conundrum_logic_parser;
 pub mod docs;

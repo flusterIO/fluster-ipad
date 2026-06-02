@@ -10,8 +10,8 @@ pub enum CssPropertyKey {
     #[serde(rename = "color")]
     #[strum(to_string = "color")]
     Color,
-    #[serde(rename = "background-color")]
-    #[strum(to_string = "background-color")]
+    #[serde(rename = "backgroundColor")]
+    #[strum(to_string = "backgroundColor")]
     BackgroundColor,
     #[serde(rename = "fill")]
     #[strum(to_string = "fill")]
