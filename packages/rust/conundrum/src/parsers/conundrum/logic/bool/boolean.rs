@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::{fmt::Display, ops::Deref};
 
 use askama::PrimitiveType;
 use serde::{Deserialize, Serialize};
@@ -39,10 +39,19 @@ impl Default for ConundrumBoolean {
     }
 }
 
+impl Deref for ConundrumBoolean {
+    type Target = bool;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
 impl ConundrumMacroProperty for ConundrumBoolean {
     fn as_cdrm_property(&self, property_key: &str) -> Option<String>
         where Self: Sized {
         if self.0 {
+            let x = true;
             Some(property_key.to_string())
         } else {
             None

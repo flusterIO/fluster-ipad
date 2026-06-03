@@ -5,7 +5,10 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         lib::ui::components::{
             academic::equation_reference::equation_reference_model::EquationReference,
-            attention::{admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, quote::quote_model::Quote, ul::ul::Underline},
+            attention::{
+                admonition::admonition::Admonition, hint::hint::Hint, hl::hl::Highlight, quote::quote_model::Quote,
+                ul::ul::Underline,
+            },
             component_trait::ConundrumComponent,
             documentation::emoji::emoji_docs_demo::EmojiDocsDemo,
             layout::{
@@ -15,7 +18,7 @@ use crate::{
                 tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
                 toc::table_of_contents::TableOfContents,
             },
-            media::image::image::Image,
+            media::{color::color_component_model::ColorComponent, image::image::Image},
         },
         runtime::{
             state::{
@@ -116,10 +119,10 @@ lazy_static! {
                  Box::new(|props, children, state| {
                      Image::from_props(props, children, state).map(ConundrumComponentType::Image)
                  }));
-        m.insert(EmbeddableComponentId::Emphasis.to_string(), 
-            Box::new(|props, children, state| {
-                     // Image::from_props(props, children, state).map(ConundrumComponentType::Image)
-            }));
+        m.insert(EmbeddableComponentId::Color.to_string(),
+                 Box::new(|props, children, state| {
+                     ColorComponent::from_props(props, children, state).map(ConundrumComponentType::Color)
+                 }));
         m
     };
 }

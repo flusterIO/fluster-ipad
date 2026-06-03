@@ -12,6 +12,6 @@ pub trait ConundrumMacroProperty {
         where Self: Sized;
 }
 
-pub trait ConundrumMacro<E> {
+pub trait ConundrumPropertyMap<E> {
     fn to_cdrm_property_stream(&self) -> Result<String, E>;
 }

@@ -3,7 +3,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Data, DeriveInput, Fields, parse_macro_input};
 
-#[proc_macro_derive(ConundrumMacro, attributes(cdrm_property))]
+#[proc_macro_derive(ConundrumPropertyMap, attributes(cdrm_property))]
 pub fn my_macro(input: TokenStream) -> TokenStream {
     // Parse the input tokens into a syntax tree
     let input = parse_macro_input!(input as DeriveInput);

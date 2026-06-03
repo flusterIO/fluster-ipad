@@ -14,7 +14,7 @@ use crate::{
     parsers::conundrum::logic::{bool::boolean::ConundrumBoolean, object::object::ConundrumObject},
 };
 use conundrum_macro_traits::conundrum_macro::ConundrumMacroProperty;
-use conundrum_macros::ConundrumMacro;
+use conundrum_macros::ConundrumPropertyMap;
 
 pub enum SizablePropsOutputTarget {
     Image,
@@ -32,7 +32,7 @@ pub enum SizablePropsOutputTarget {
 /// properties than just those that can modify _size._ You can also modify
 /// color, padding, margin, borders, and more.
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, Debug, Clone, ConundrumMacro)]
+#[derive(Serialize, Deserialize, Debug, Clone, ConundrumPropertyMap)]
 pub struct SizablePropsGroup {
     /// Hides the MathJax labels in all child components.
     pub hide_math_labels: Option<ConundrumBoolean>,

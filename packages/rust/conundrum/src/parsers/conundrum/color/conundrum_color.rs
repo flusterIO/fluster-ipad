@@ -32,7 +32,7 @@ pub enum ConundrumColor {
 }
 
 impl ConundrumColor {
-    fn describe(&self) -> String {
+    pub fn describe(&self) -> String {
         match self {
             Self::Emphasis(e) => e.to_string(),
             Self::Css(c) => {
