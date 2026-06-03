@@ -1,0 +1,11 @@
+{% if self.sizable.inline %}
+<span class="{{tw_merge!(" w-4 h-4 rounded", self.sizable.as_class())}}"
+    style="background-color: {{self.color.as_inline_style_value_group().background}};">
+</span>
+{% else %}
+<div class="w-fit h-fit grid grid-cols-1 grid-rows-[1fr_auto] bg-fd-card p-2">
+    <div class="h-fit min-h-32 w-32 max-w-full"
+        style="background-color: {{self.color.as_inline_style_value_group().background}};"></div>
+    <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.color.describe}}</div>
+</div>
+{% endif %}

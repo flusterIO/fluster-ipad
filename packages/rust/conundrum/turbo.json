@@ -1,0 +1,52 @@
+{
+    "$schema": "../../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build:scss": {
+            "inputs": [
+                "./src/output/html/standalone/conundrum_input.scss"
+            ],
+            "outputs": [
+                "./src/output/html/standalone/conundrum.css"
+            ],
+        },
+        "copy:katexcss": {
+            "inputs": [
+                "./src/output/html/glue/component_glue/other/katex.min.css"
+            ],
+            "outputs": [
+                "./src/output/html/glue/component_glue/other/katex.min.css"
+            ]
+        },
+        "build:ts": {
+            "inputs": [
+                "./src/lang/lib/ui/**",
+                "./src/output/html/glue/component_glue/**"
+            ],
+            "outputs": [
+                "../conundrum_web_assets/src/js/**"
+            ]
+        },
+        "copy:scss_input_to_web_assets": {
+            "inputs": [
+                "./src/output/html/standalone/conundrum_input.scss"
+            ],
+            "outputs": [
+                "../conundrum_web_assets/src/css/conundrum_input.scss"
+            ],
+        },
+        "build:rust": {
+            "inputs": [
+                "./src/**/*.rs"
+            ],
+        },
+        "build": {
+            "dependsOn": [
+                "copy:scss_input",
+                "build:ts"
+            ]
+        },
+    }
+}

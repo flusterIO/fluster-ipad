@@ -1,0 +1,42 @@
+{
+    "$schema": "../../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tags": [
+        "conundrum"
+    ],
+    "tasks": {
+        "copy:globalCSS": {
+            "inputs": [
+                "../conundrum/src/output/html/standalone/conundrum.css"
+            ],
+            "outputs": [
+                "dist/styles.css"
+            ],
+            "dependsOn": [
+                "@conundrum/generated#build:scss"
+            ]
+        },
+        "build:vite": {
+            "outputs": [
+                "dist/",
+                "!dist/styles.css"
+            ],
+            "inputs": [
+                "./src/"
+            ]
+        },
+        "build": {
+            "dependsOn": [
+                "copy:globalCSS",
+                "build:vite"
+            ]
+        },
+        "build:website": {
+            "dependsOn": [
+                "build"
+            ]
+        }
+    }
+}

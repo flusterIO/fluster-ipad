@@ -1,6 +1,3 @@
-use serde::Serialize;
-use typeshare::typeshare;
-
 use crate::{
     lang::{
         lib::ui::components::{
@@ -17,7 +14,7 @@ use crate::{
                 tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
                 toc::table_of_contents::TableOfContents,
             },
-            media::image::image::Image,
+            media::{color::color_component_model::ColorComponent, image::image::Image},
         },
         runtime::{
             state::conundrum_error_variant::ConundrumModalResult,
@@ -33,6 +30,9 @@ use crate::{
         markdown::markdown_extensions::emoji::emoji_model::EmojiResult,
     },
 };
+use serde::Serialize;
+use syn::{Data, DeriveInput, Fields, parse_macro_input};
+use typeshare::typeshare;
 
 #[typeshare]
 #[derive(Debug, Serialize, serde::Deserialize, Clone)]
@@ -59,6 +59,7 @@ pub enum ConundrumComponentType {
     EmojiDocsDemo(EmojiDocsDemo),
     // Media
     Image(Image),
+    Color(ColorComponent),
 }
 
 impl ConundrumComponentType {
@@ -70,7 +71,8 @@ impl ConundrumComponentType {
             ConundrumComponentType::Ul(_) => false,
             ConundrumComponentType::Hl(_) => false,
             ConundrumComponentType::Container(c) => !c.sizable.inline.is_some_and(|x| x.0),
-            ConundrumComponentType::Quote(q) => true,
+            ConundrumComponentType::Color(c) => !c.sizable.inline.is_some_and(|x| x.0),
+            ConundrumComponentType::Quote(_) => true,
             ConundrumComponentType::Tabs(_) => true,
             ConundrumComponentType::Tab(_) => true,
             ConundrumComponentType::EqRef(_) => false,
@@ -107,6 +109,7 @@ impl HtmlJsComponentResult for ConundrumComponentType {
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_html_js_component(res),
             ConundrumComponentType::Toc(s) => s.to_html_js_component(res),
             ConundrumComponentType::Image(s) => s.to_html_js_component(res),
+            ConundrumComponentType::Color(s) => s.to_html_js_component(res),
         }
     }
 }
@@ -130,6 +133,7 @@ impl PlainTextComponentResult for ConundrumComponentType {
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_plain_text(res),
             ConundrumComponentType::Toc(s) => s.to_plain_text(res),
             ConundrumComponentType::Image(s) => s.to_plain_text(res),
+            ConundrumComponentType::Color(s) => s.to_plain_text(res),
         }
     }
 }
@@ -153,6 +157,7 @@ impl MarkdownComponentResult for ConundrumComponentType {
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_markdown(res),
             ConundrumComponentType::Toc(s) => s.to_markdown(res),
             ConundrumComponentType::Image(s) => s.to_markdown(res),
+            ConundrumComponentType::Color(s) => s.to_markdown(res),
         }
     }
 }
@@ -176,6 +181,7 @@ impl ConundrumComponentResult for ConundrumComponentType {
             ConundrumComponentType::EmojiDocsDemo(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Toc(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Image(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Color(s) => s.to_conundrum_component(res),
         }
     }
 }

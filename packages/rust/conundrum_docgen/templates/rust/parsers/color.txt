@@ -1,0 +1,9 @@
+pub fn named_color(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumColor> {
+    alt((
+            {% for (k, (r, g, b)) in cssparser::color::all_named_colors() %}
+            literal("{{k}}").map(|_| {
+                ConundrumColor::from_rgba({{r / 255}}, {{g / 255}}, {{b / 255}}, 1)
+            }),
+            {% endfor %}
+    )).parse_next(input)
+}

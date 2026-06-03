@@ -1,0 +1,26 @@
+{
+    "$schema": "../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build:website": {
+            "dependsOn": [
+                "^build:website"
+            ],
+            "outputs": [
+                ".next/**",
+                "!.next/cache/**"
+            ]
+        },
+        "typecheck": {
+            "dependsOn": [
+                "^typecheck"
+            ]
+        },
+        "dev": {
+            "persistent": true,
+            "cache": false
+        }
+    }
+}

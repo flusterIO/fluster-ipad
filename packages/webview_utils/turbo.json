@@ -1,0 +1,43 @@
+{
+    "$schema": "../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build:tailwind": {
+            "inputs": [
+                "./src/core/styles/base.scss"
+            ],
+            "outputs": [
+                "./dist/styles.css"
+            ]
+        },
+        "build:ts": {
+            "outputs": [
+                "./dist/**"
+            ],
+            "inputs": [
+                "./src/"
+            ],
+        },
+        "build:website": {
+            "outputs": [
+                "./dist/",
+                "!./dist/styles.css"
+            ],
+            "description": "Builds in CI/CD for website deployment",
+            "with": [
+                "build:tailwind"
+            ],
+            "dependsOn": [
+                "@conundrum/ts#build",
+                "@fluster/lezer#build:website",
+            ]
+        },
+        "build": {
+            "dependsOn": [
+                "build:website"
+            ]
+        }
+    }
+}

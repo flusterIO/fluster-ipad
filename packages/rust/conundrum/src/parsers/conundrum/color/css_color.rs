@@ -8,6 +8,7 @@ use lightningcss::{
     values::color::{ColorFallbackKind, CssColor as CL, RGBA},
 };
 use serde::{Deserialize, Serialize};
+use typeshare::typeshare;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -29,7 +30,8 @@ use crate::{
 
 /// A simple wraper with some utility methods around the lightningcss struct of
 /// the same name.
-#[derive(Serialize, Deserialize, Clone)]
+#[typeshare]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct CssColor(pub CL);
 
 impl CssColor {

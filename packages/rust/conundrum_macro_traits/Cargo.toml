@@ -1,0 +1,17 @@
+[package]
+name = "conundrum_macro_traits"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+categories.workspace = true
+documentation.workspace = true
+homepage.workspace = true
+repository.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true

@@ -116,6 +116,10 @@ lazy_static! {
                  Box::new(|props, children, state| {
                      Image::from_props(props, children, state).map(ConundrumComponentType::Image)
                  }));
+        m.insert(EmbeddableComponentId::Emphasis.to_string(), 
+            Box::new(|props, children, state| {
+                     // Image::from_props(props, children, state).map(ConundrumComponentType::Image)
+            }));
         m
     };
 }

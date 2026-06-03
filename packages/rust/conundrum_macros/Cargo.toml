@@ -21,3 +21,5 @@ proc-macro2 = "1.0"
 env_filter = "1.0.1"
 conundrum_macro_traits = { path = "../conundrum_macro_traits"}
 convert_case = "0.11.0"
+prettyplease = "0.2.37"
+macrotest = "1.2.1"

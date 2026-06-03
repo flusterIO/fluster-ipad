@@ -1,0 +1,51 @@
+{
+    "$schema": "../../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build": {
+            "inputs": [
+                "./src/"
+            ],
+            "outputs": [
+                "bib_entry_details_webview_ipad/",
+                "bib_entry_details_webview_mac/"
+            ],
+            "passThroughEnv": [
+                "FLUSTER_PROD_BUILD"
+            ],
+            "dependsOn": [
+                "@fluster/webview_utils#build"
+            ]
+        },
+        "build:ipad": {
+            "inputs": [
+                "./src/"
+            ],
+            "outputs": [
+                "bib_entry_details_webview_ipad/"
+            ],
+            "passThroughEnv": [
+                "FLUSTER_PROD_BUILD"
+            ],
+            "dependsOn": [
+                "@fluster/webview_utils#build"
+            ]
+        },
+        "build:mac": {
+            "inputs": [
+                "./src/"
+            ],
+            "outputs": [
+                "bib_entry_details_webview_mac/"
+            ],
+            "passThroughEnv": [
+                "FLUSTER_PROD_BUILD"
+            ],
+            "dependsOn": [
+                "@fluster/webview_utils#build"
+            ]
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "$schema": "../../../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build": {
+            "description": "Build's the entire package."
+        },
+        "build:ts": {
+            "description": "Compiles typescript.",
+            "dependsOn": [
+                "build"
+            ]
+        },
+        "build:website": {
+            "description": "Builds the project for website release.",
+            "dependsOn": [
+                "build:ts",
+                "build"
+            ]
+        }
+    }
+}
