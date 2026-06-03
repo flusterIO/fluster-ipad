@@ -10,7 +10,10 @@ use crate::{
         elements::parsed_elements::ParsedElement,
         lib::ui::{
             shared_props::sizable::SizablePropsGroup,
-            ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
+            ui_traits::{
+                jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
+                to_text_representation::ToTextRepresentation,
+            },
             ui_types::emphasis::{
                 emphasis_cdrm_template::CDRMEmphasisTemplate, emphasis_demo_template::EmphasisDemoTemplate,
             },
@@ -31,7 +34,7 @@ use crate::{
     },
     parsers::{
         conundrum::{
-            color::{color_pair::ColorPair, conundrum_color::ConundrumColor},
+            color::{color_pair::ColorPair, conundrum_color::ConundrumColor, css_color_variable::CSSColorVariable},
             logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
         },
         javascript::parsed_javascript_elements::ParsedJavascriptElement,
@@ -236,6 +239,12 @@ impl CSSInlineHtmlValuePairRepresentable<ConundrumColor> for Emphasis {
         let group = self.to_css_variable_group();
         ColorPair { background: ConundrumColor::CSSVariable(group.background.try_into().unwrap_or_default()),
                     foreground: ConundrumColor::CSSVariable(group.foreground.try_into().unwrap_or_default()) }
+    }
+}
+
+impl ToTextRepresentation for Emphasis {
+    fn to_text_repr(&self) -> String {
+        self.to_string()
     }
 }
 

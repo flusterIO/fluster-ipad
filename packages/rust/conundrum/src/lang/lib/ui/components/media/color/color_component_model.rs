@@ -20,9 +20,8 @@ use crate::{
                 conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
             },
             traits::{
-                conundrum_template::{HTMLTemplatePossiblyRepresentable, HTMLTemplateRepresentable},
-                fluster_component_result::ConundrumComponentResult,
-                html_js_component_result::HtmlJsComponentResult,
+                conundrum_template::HTMLTemplatePossiblyRepresentable,
+                fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
                 markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
             },
@@ -30,9 +29,7 @@ use crate::{
     },
     output::{
         general::component_constants::{any_component_id::AnyComponentName, component_names::EmbeddableComponentName},
-        html::web_specific_traits::css_value_representable::{
-            CSSInlineHtmlValuePairRepresentable, CSSVariablePairRepresentable,
-        },
+        html::web_specific_traits::css_value_representable::CSSInlineHtmlValuePairRepresentable,
     },
     parsers::conundrum::{
         color::{color_scheme_group::ConundrumCompleteColor, conundrum_color::ConundrumColor},
@@ -54,7 +51,7 @@ pub struct ColorComponent {
 #[derive(Template)]
 #[template(ext = "html")]
 pub enum ColorComponentTemplateVariants {
-    #[template(path = "components/color/single_color.html", print = "code")]
+    #[template(path = "components/color/single_color.html")]
     SingleColor {
         color: ConundrumColor,
         sizable: SizablePropsGroup,
@@ -187,7 +184,6 @@ impl ConundrumComponent for ColorComponent {
         };
         let fg_light = props.get_string("foregroundLight", None).ok();
         let bg_light = props.get_string("backgroundLight", None).ok();
-        let template_inline = props.get_boolean("inline", None).ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").unwrap_or_default();
         Ok(ColorComponent { background_dark: bg_color.try_into()?,
                             foreground_dark: match fg_color {

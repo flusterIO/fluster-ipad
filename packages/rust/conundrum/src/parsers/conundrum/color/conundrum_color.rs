@@ -7,7 +7,9 @@ use winnow::{Parser, error::ErrMode};
 
 use crate::{
     lang::{
-        lib::ui::ui_types::emphasis::emphasis_model::Emphasis,
+        lib::ui::{
+            ui_traits::to_text_representation::ToTextRepresentation, ui_types::emphasis::emphasis_model::Emphasis,
+        },
         runtime::{
             state::conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
             traits::conundrum_input::ConundrumInput,
@@ -57,7 +59,7 @@ impl ConundrumColor {
             Self::Css(c) => {
                 c.0.to_css_string(safari_specific_lightning_css_printer_options()).unwrap_or_else(|_| "--".to_string())
             }
-            Self::CSSVariable(c) => c.to_string(),
+            Self::CSSVariable(c) => c.to_text_repr(),
         }
     }
 

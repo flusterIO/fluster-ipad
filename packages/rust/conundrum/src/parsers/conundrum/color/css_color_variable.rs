@@ -5,7 +5,13 @@ use typeshare::typeshare;
 use winnow::error::ErrMode;
 
 use crate::{
-    lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
+    lang::{
+        lib::ui::{
+            ui_traits::to_text_representation::ToTextRepresentation,
+            ui_types::emphasis::variable_to_emphasis::css_variable_to_emphasis,
+        },
+        runtime::state::conundrum_error_variant::ConundrumErrorVariant,
+    },
     output::html::web_specific_traits::css_value_representable::CSSValueRepresentable,
 };
 
@@ -14,6 +20,12 @@ use crate::{
 pub struct CSSColorVariable(pub String);
 
 impl HtmlSafe for CSSColorVariable {}
+
+impl ToTextRepresentation for CSSColorVariable {
+    fn to_text_repr(&self) -> String {
+        css_variable_to_emphasis(self.0.as_str()).map(|item| item.to_text_repr()).unwrap_or_else(|| self.0.clone())
+    }
+}
 
 impl Default for CSSColorVariable {
     fn default() -> Self {

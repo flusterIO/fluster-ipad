@@ -19,10 +19,12 @@
     --color-blue-700: oklch(48.8% 0.243 264.376);
     --color-violet-400: oklch(70.2% 0.183 293.541);
     --color-violet-500: oklch(60.6% 0.25 292.717);
+    --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-300: oklch(87.2% 0.01 258.338);
     --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-900: oklch(21% 0.034 264.665);
+    --color-gray-950: oklch(13% 0.028 261.692);
     --color-neutral-200: oklch(92.2% 0 0);
     --color-black: #000;
     --color-white: #fff;
@@ -1539,6 +1541,9 @@
   .min-h-0 {
     min-height: calc(var(--spacing) * 0);
   }
+  .min-h-24 {
+    min-height: calc(var(--spacing) * 24);
+  }
   .min-h-32 {
     min-height: calc(var(--spacing) * 32);
   }
@@ -1622,6 +1627,9 @@
   }
   .w-16 {
     width: calc(var(--spacing) * 16);
+  }
+  .w-24 {
+    width: calc(var(--spacing) * 24);
   }
   .w-32 {
     width: calc(var(--spacing) * 32);
@@ -1999,6 +2007,9 @@
   }
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-cols-\[1fr\] {
+    grid-template-columns: 1fr;
   }
   .grid-cols-\[1fr_8px_1fr\] {
     grid-template-columns: 1fr 8px 1fr;
@@ -2504,11 +2515,17 @@
   .bg-foreground {
     background-color: hsl(var(--foreground));
   }
+  .bg-gray-50 {
+    background-color: var(--color-gray-50);
+  }
   .bg-gray-300 {
     background-color: var(--color-gray-300);
   }
   .bg-gray-900 {
     background-color: var(--color-gray-900);
+  }
+  .bg-gray-950 {
+    background-color: var(--color-gray-950);
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
@@ -5300,6 +5317,11 @@
       grid-template-columns: repeat(11, minmax(0, 1fr));
     }
   }
+  .\@\[350px\]\/cdrm\:grid-cols-2 {
+    @container cdrm (width >= 350px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
   .\@\[350px\]\/mdx\:grid-cols-2 {
     @container mdx (width >= 350px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5313,6 +5335,11 @@
   .\@\[450px\]\/mdx\:w-\[320px\] {
     @container mdx (width >= 450px) {
       width: 320px;
+    }
+  }
+  .\@\[450px\]\/cdrm\:grid-cols-\[1fr_1fr\] {
+    @container cdrm (width >= 450px) {
+      grid-template-columns: 1fr 1fr;
     }
   }
   .\@\[450px\]\/mdx\:grid-cols-3 {
