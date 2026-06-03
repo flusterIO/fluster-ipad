@@ -53,6 +53,9 @@ pub enum ConundrumErrorVariant {
         /// the error verbiage.
         received: String,
     },
+
+    #[error("The value of `{0}` isn't a valid css variable. Valid variables must start with two leading `--` characters.")]
+    InvalidCSSVariableSyntax(String),
     #[error("This is a general parser fail. We can do much better with these error messages.")]
     InternalParserError(ConundrumError),
     #[error("Environment variable not found: `{0}`")]
@@ -70,7 +73,7 @@ impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {
         match value {
             ErrMode::Backtrack(b) => b,
             ErrMode::Cut(c) => c,
-            ErrMode::Incomplete(i) => {
+            ErrMode::Incomplete(_) => {
                 ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("General parsing error.",
                                                                                                 "To be honest I'm not sure when this error will be reached. I'm building this all without the internet so I can't look things up..."))
             }

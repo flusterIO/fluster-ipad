@@ -31,7 +31,7 @@ use crate::{
     },
     parsers::{
         conundrum::{
-            color::color_pair::ColorPair,
+            color::{color_pair::ColorPair, conundrum_color::ConundrumColor},
             logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
         },
         javascript::parsed_javascript_elements::ParsedJavascriptElement,
@@ -231,11 +231,11 @@ impl CSSVariablePairRepresentable for Emphasis {
     }
 }
 
-impl CSSInlineHtmlValuePairRepresentable for Emphasis {
-    fn as_inline_style_value_group(&self) -> ColorPair<String> {
+impl CSSInlineHtmlValuePairRepresentable<ConundrumColor> for Emphasis {
+    fn as_inline_style_value_group(&self) -> ColorPair<ConundrumColor> {
         let group = self.to_css_variable_group();
-        ColorPair { background: format!("var({})", group.background),
-                    foreground: format!("var({})", group.foreground) }
+        ColorPair { background: ConundrumColor::CSSVariable(group.background.try_into().unwrap_or_default()),
+                    foreground: ConundrumColor::CSSVariable(group.foreground.try_into().unwrap_or_default()) }
     }
 }
 

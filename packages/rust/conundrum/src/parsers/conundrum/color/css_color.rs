@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use cssparser::{
     Parser, ParserInput,
     color::{parse_hash_color, parse_named_color},
@@ -25,7 +27,10 @@ use crate::{
             CSSInlineHtmlValuePairRepresentable, CSSValuePossiblyRepresentable, CSSValueRepresentable,
         },
     },
-    parsers::{conundrum::color::color_pair::ColorPair, parser_trait::ConundrumParser},
+    parsers::{
+        conundrum::color::{color_pair::ColorPair, conundrum_color::ConundrumColor},
+        parser_trait::ConundrumParser,
+    },
 };
 
 /// A simple wraper with some utility methods around the lightningcss struct of
@@ -33,6 +38,27 @@ use crate::{
 #[typeshare]
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct CssColor(pub CL);
+
+impl Display for CssColor {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = self.0
+                    .to_css_string(safari_specific_lightning_css_printer_options())
+                    .or_else(|_| {
+                        let fallback = self.0.get_fallback(ColorFallbackKind::RGB);
+                        if let Ok((r, g, b, a)) = match fallback {
+                            CL::RGBA(r) => Ok((r.red, r.green, r.blue, r.alpha)),
+                            _ => Err(()),
+                        } {
+                            return Result::<String, ()>::Ok(format!("rgba({}, {}, {}, {})", r, g, b, a));
+                        } else {
+                            return Ok(fallback.to_css_string(safari_specific_lightning_css_printer_options())
+                                              .unwrap_or_default());
+                        }
+                    })
+                    .unwrap_or_default();
+        write!(f, "{}", s)
+    }
+}
 
 impl CssColor {
     pub fn from_rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Self {
@@ -65,16 +91,17 @@ impl<'a> DisplayWithParam<PrinterOptions<'a>> for CssColor {
     }
 }
 
-impl CSSInlineHtmlValuePairRepresentable for CssColor {
+impl CSSInlineHtmlValuePairRepresentable<ConundrumColor> for CssColor {
     /// This sets the primary color as the *background*, and calculates a text
     /// color.
-    fn as_inline_style_value_group(&self) -> super::color_pair::ColorPair<String> {
-        let x = self.0
-                    .to_css_string(safari_specific_lightning_css_printer_options())
-                    .inspect_err(|e| {
-                        println!("Error: {}", e);
-                    })
-                    .unwrap_or("rgba(255, 0, 0, 1)".to_string());
+    fn as_inline_style_value_group(&self) -> super::color_pair::ColorPair<ConundrumColor> {
+        // let x = self.0
+        //             .to_css_string(safari_specific_lightning_css_printer_options())
+        //             .inspect_err(|e| {
+        //                 println!("Error: {}", e);
+        //             })
+        //             .unwrap_or("rgba(255, 0, 0, 1)".to_string());
+        let x = ConundrumColor::Css(self.clone());
         ColorPair { background: x.clone(),
                     foreground: x }
     }

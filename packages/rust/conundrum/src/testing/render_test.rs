@@ -24,8 +24,9 @@ pub async fn render_test(content: &str, label: &str) -> TestResult {
                                                                        Some(SupportedCodeBlockTheme::Darkneon) } };
     let r = run_conundrum(test_input).inspect_err(|e| {
                                          println!("Error: {:#?}", e);
+                                         panic!("Failed to parse the `{}` test.", label);
                                      })
-                                     .expect(format!("Failed to parse the `{}` test.", label).as_str());
+                                     .expect("");
 
     // NOTE: Toggle this off for ui development but remember to turn it back on!
     // insta::assert_snapshot!(label, r.content);

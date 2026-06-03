@@ -19,12 +19,13 @@ pub trait CSSInlineHtmlValueRepresentable {
     fn as_inline_style_value(&self) -> String;
 }
 
-pub trait CSSInlineHtmlValuePairRepresentable {
+pub trait CSSInlineHtmlValuePairRepresentable<T>
+    where T: CSSValueRepresentable + Clone {
     /// This returns a value that can complete the following template:
     /// ```jinja
     /// style="color: {{value}};"
     /// ```
-    fn as_inline_style_value_group(&self) -> ColorPair<String>;
+    fn as_inline_style_value_group(&self) -> ColorPair<T>;
 }
 
 pub trait CSSVariableRepresentable {
@@ -32,5 +33,8 @@ pub trait CSSVariableRepresentable {
 }
 
 pub trait CSSVariablePairRepresentable {
+    /// Returns the variable alone, without the `var` keyword.
+    ///
+    /// **Example return:** `--emphasis-warning-foreground`
     fn to_css_variable_group(&self) -> ColorPair<String>;
 }

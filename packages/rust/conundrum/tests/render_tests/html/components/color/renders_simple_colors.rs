@@ -1,13 +1,16 @@
+use cli_table::format;
 use conundrum::testing::render_test::render_test;
+use indoc::indoc;
 
 #[tokio::test]
-async fn renders_admonitions_to_html() {
-    let test_content = r#"# My title
-
-<Color color="#f00" />
+async fn renders_colors_to_html() {
+    let test_content = indoc! {"
+<Color color=\"#f00\" />
 
 <Color error />
+        
+        ",
 
-    "#;
-    render_test(test_content, "Admonition").await;
+    };
+    render_test(test_content, "ColorComponent").await;
 }

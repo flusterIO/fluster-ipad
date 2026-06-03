@@ -51,7 +51,6 @@ impl ConundrumMacroProperty for ConundrumBoolean {
     fn as_cdrm_property(&self, property_key: &str) -> Option<String>
         where Self: Sized {
         if self.0 {
-            let x = true;
             Some(property_key.to_string())
         } else {
             None
