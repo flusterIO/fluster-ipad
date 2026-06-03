@@ -1,4 +1,4 @@
-/// ! I finally learned macros and now I can't find a usecase for them :(
+use convert_case::{self, Case, Casing};
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Data, DeriveInput, Fields, parse_macro_input};
@@ -14,7 +14,9 @@ pub fn my_macro(input: TokenStream) -> TokenStream {
         if let Fields::Named(fields) = data.fields {
             let field_actions =
                 fields.named.iter().map(|f| {
-                                       let field_name = &f.ident;
+                                       let field_name = &f.ident.as_ref().cloned().unwrap();
+
+                                       let camel_case_field_name = field_name.to_string().to_case(Case::Camel);
 
                                        match f.attrs.iter().find(|a| a.path().is_ident("cdrm_property")) {
                                            Some(attr) => {
@@ -27,7 +29,7 @@ pub fn my_macro(input: TokenStream) -> TokenStream {
                                            }
                                            None => {
                                                quote! {
-                                                   if let Some(res) = &self.#field_name.as_ref().cloned().map(|n| n.as_cdrm_property(stringify!(#field_name))).flatten() {
+                                                   if let Some(res) = &self.#field_name.as_ref().cloned().map(|n| n.as_cdrm_property(#camel_case_field_name)).flatten() {
                                                        properties.push(res.clone());
                                                    }
                                                }
