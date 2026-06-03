@@ -11,7 +11,7 @@ use crate::{
                 component_trait::ConundrumComponent,
             },
             ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable},
-            ui_types::emphasis::Emphasis,
+            ui_types::emphasis::emphasis_model::Emphasis,
         },
         runtime::{
             state::{

@@ -26,6 +26,9 @@ pub enum DocumentationComponentName {
     #[serde(rename = "AutoInsertedNestedEmojiDocumentation")]
     #[strum(to_string = "AutoInsertedNestedEmojiDocumentation")]
     EmojiDocumentationDemo,
+    #[serde(rename = "Emphasis")]
+    #[strum(to_string = "Emphasis")]
+    Emphasis,
 }
 
 impl FromStr for DocumentationComponentName {

@@ -12,7 +12,7 @@ use crate::{
             },
             shared_props::sizable::SizablePropsGroup,
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
-            ui_types::{children::Children, emphasis::Emphasis},
+            ui_types::{children::Children, emphasis::emphasis_model::Emphasis},
         },
         runtime::{
             state::{

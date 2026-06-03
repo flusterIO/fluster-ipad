@@ -1,4 +1,4 @@
-use crate::lang::lib::ui::{shared_props::sizable::SizablePropsGroup, ui_types::emphasis::Emphasis};
+use crate::lang::lib::ui::{shared_props::sizable::SizablePropsGroup, ui_types::emphasis::emphasis_model::Emphasis};
 use askama::Template;
 use tw_merge::*;
 

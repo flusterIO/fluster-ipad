@@ -1,5 +1,13 @@
 # To-Do
 
+## In Progress
+
+- [ ] Create separate **Component** in Rust.
+- [ ] Use docgen to output that component for each Emphasis variant.
+- [ ] Make this component applicable to any color group.
+
+---
+
 ### Pre-release bugs
 
 - [x] Get conundrum compiling again.

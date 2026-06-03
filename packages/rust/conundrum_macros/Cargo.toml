@@ -19,3 +19,5 @@ syn = { version = "2", features = ["full", "parsing"] }
 quote = "1.0"
 proc-macro2 = "1.0"
 env_filter = "1.0.1"
+conundrum_macro_traits = { path = "../conundrum_macro_traits"}
+convert_case = "0.11.0"

@@ -1,6 +1,6 @@
 use askama::Template;
 
-use crate::lang::lib::ui::ui_types::emphasis::Emphasis;
+use crate::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis;
 
 /// ## Template (HTML)
 /// ```askama

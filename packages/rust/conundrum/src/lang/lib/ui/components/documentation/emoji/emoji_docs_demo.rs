@@ -20,7 +20,7 @@ use crate::{
                 parse_state::ConundrumCompileTarget,
             },
             traits::{
-                conundrum_input::ArcState, conundrum_template::ConundrumTemplateRepresentable,
+                conundrum_input::ArcState, conundrum_template::HTMLTemplatePossiblyRepresentable,
                 fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
                 jsx_component_result::JsxComponentResult, markdown_component_result::MarkdownComponentResult,
                 plain_text_component_result::PlainTextComponentResult,
@@ -84,7 +84,7 @@ impl PlainTextComponentResult for EmojiDocsDemo {
     }
 }
 
-impl ConundrumTemplateRepresentable<EmojiDocsHtmlTemplate> for EmojiDocsDemo {
+impl HTMLTemplatePossiblyRepresentable<EmojiDocsHtmlTemplate> for EmojiDocsDemo {
     fn to_template(
         &self,
         state: ArcState)

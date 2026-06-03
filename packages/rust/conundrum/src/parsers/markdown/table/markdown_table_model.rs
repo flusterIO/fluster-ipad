@@ -8,7 +8,9 @@ use crate::{
         },
         traits::{
             conundrum_input::{ArcState, ConundrumInput},
-            conundrum_template::{ConundrumTemplateRepresentable, ConundrumTemplateRepresentableWithParam},
+            conundrum_template::{
+                HTMLTemplatePossiblyRepresentable, HTMLTemplatePossiblyRepresentableWithParam,
+            },
             fluster_component_result::ConundrumComponentResult,
             html_js_component_result::HtmlJsComponentResult,
             plain_text_component_result::PlainTextComponentResult,
@@ -107,7 +109,7 @@ impl ConundrumParser<MarkdownTable> for MarkdownTable {
     }
 }
 
-impl ConundrumTemplateRepresentable<MarkdownTableTemplate> for MarkdownTable {
+impl HTMLTemplatePossiblyRepresentable<MarkdownTableTemplate> for MarkdownTable {
     fn to_template(&self, state: ArcState) -> ConundrumModalResult<MarkdownTableTemplate> {
         let alignment_map = self.alignment.to_col_map();
         let heading_cells = self.heading.to_heading_cell_templates(Arc::clone(&state), &alignment_map)?;

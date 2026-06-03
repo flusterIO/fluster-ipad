@@ -32,6 +32,9 @@ pub enum EmbeddableComponentName {
     #[serde(rename = "Underline")]
     #[strum(to_string = "Underline")]
     Underline,
+    #[serde(rename = "Color")]
+    #[strum(to_string = "Color")]
+    Color,
     #[serde(rename = "Card")]
     #[strum(to_string = "Card")]
     Card,
@@ -101,6 +104,7 @@ impl EmbeddableComponentName {
             EmbeddableComponentName::Toc => EmbeddableComponentId::Toc,
             EmbeddableComponentName::Image => EmbeddableComponentId::Image,
             EmbeddableComponentName::Quote => EmbeddableComponentId::Quote,
+            EmbeddableComponentName::Color => EmbeddableComponentId::Color,
         }
     }
 }

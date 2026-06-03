@@ -27,7 +27,7 @@ use crate::{
                 parse_state::ConundrumModifier,
             },
             traits::{
-                conundrum_input::ArcState, conundrum_template::ConundrumTemplateRepresentable,
+                conundrum_input::ArcState, conundrum_template::HTMLTemplatePossiblyRepresentable,
                 fluster_component_result::ConundrumComponentResult, html_js_component_result::HtmlJsComponentResult,
                 inline_markdown_component_result::InlineMarkdownComponentResult,
                 markdown_component_result::MarkdownComponentResult,
@@ -59,7 +59,7 @@ pub struct Image {
     pub id: DOMId,
 }
 
-impl ConundrumTemplateRepresentable<AnyImageHtmlTemplate> for Image {
+impl HTMLTemplatePossiblyRepresentable<AnyImageHtmlTemplate> for Image {
     fn to_template(&self, state: ArcState) -> ConundrumModalResult<AnyImageHtmlTemplate> {
         if let Some(caption) = &self.caption {
             Ok(AnyImageHtmlTemplate::WithCaption(ImageHtmlTemplateWithCaption { caption:

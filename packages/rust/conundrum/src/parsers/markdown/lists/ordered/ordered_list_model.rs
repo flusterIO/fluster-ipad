@@ -9,7 +9,7 @@ use winnow::{Parser, stream::AsChar};
 use crate::lang::runtime::state::conundrum_error::ConundrumError;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
 use crate::lang::runtime::traits::conundrum_template::{
-    ConundrumTemplateRepresentable, ConundrumTemplateRepresentableWithParam,
+    HTMLTemplatePossiblyRepresentable, HTMLTemplatePossiblyRepresentableWithParam,
 };
 use crate::parsers::markdown::lists::ordered::ordered_list_html_templ::OrderedListHtmlTemplate;
 use crate::{
@@ -46,7 +46,7 @@ impl ConundrumComponentResult for OrderedListModel {
     }
 }
 
-impl ConundrumTemplateRepresentable<OrderedListHtmlTemplate> for OrderedListModel {
+impl HTMLTemplatePossiblyRepresentable<OrderedListHtmlTemplate> for OrderedListModel {
     fn to_template(&self, state: ArcState) -> ConundrumModalResult<OrderedListHtmlTemplate> {
         let mut items = Vec::new();
         for (idx, item) in self.items.iter().enumerate() {

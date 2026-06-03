@@ -1,6 +1,6 @@
 use crate::lang::lib::ui::{
     components::layout::tabs::tab_html_template::TabButtonHtmlTemplate, shared_props::sizable::SizablePropsGroup,
-    ui_types::emphasis::Emphasis,
+    ui_types::emphasis::emphasis_model::Emphasis,
 };
 use askama::Template;
 use tw_merge::*;

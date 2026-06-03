@@ -23,6 +23,7 @@ use crate::{
         logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
     },
 };
+use conundrum_macro_traits::conundrum_macro::ConundrumMacroProperty;
 use winnow::{Parser, combinator::alt};
 use winnow::{error::ErrMode, token::literal};
 
@@ -35,6 +36,17 @@ uniffi::custom_newtype!(ConundrumBoolean, bool);
 impl Default for ConundrumBoolean {
     fn default() -> Self {
         Self(false)
+    }
+}
+
+impl ConundrumMacroProperty for ConundrumBoolean {
+    fn as_cdrm_property(&self, property_key: &str) -> Option<String>
+        where Self: Sized {
+        if self.0 {
+            Some(property_key.to_string())
+        } else {
+            None
+        }
     }
 }
 

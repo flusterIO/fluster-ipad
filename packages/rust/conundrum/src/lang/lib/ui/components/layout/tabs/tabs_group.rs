@@ -14,7 +14,7 @@ use crate::{
             },
             shared_props::sizable::SizablePropsGroup,
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
-            ui_types::{children::Children, emphasis::Emphasis},
+            ui_types::{children::Children, emphasis::emphasis_model::Emphasis},
         },
         runtime::{
             state::{
@@ -66,7 +66,6 @@ use crate::{
 #[typeshare::typeshare]
 #[derive(Debug, serde::Serialize, serde::Deserialize, Clone)]
 pub struct TabsGroup {
-
     /// The styles applied to the active tab. Default: `.card`
     pub emphasis: Option<Emphasis>,
     pub subtle: ConundrumBoolean,

@@ -1,5 +1,5 @@
 use crate::{
-    lang::lib::ui::{shared_props::sizable::SizablePropsGroup, ui_types::emphasis::Emphasis},
+    lang::lib::ui::{shared_props::sizable::SizablePropsGroup, ui_types::emphasis::emphasis_model::Emphasis},
     output::html::dom::dom_id::DOMId,
     parsers::conundrum::logic::bool::boolean::ConundrumBoolean,
 };

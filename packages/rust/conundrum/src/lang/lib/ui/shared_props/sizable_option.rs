@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use conundrum_macro_traits::conundrum_macro::ConundrumMacroProperty;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter, IntoEnumIterator};
 use winnow::error::ErrMode;
@@ -114,6 +115,13 @@ impl SizableOption {
             Self::Full => 2,
             Self::Fit => 4,
         }
+    }
+}
+
+impl ConundrumMacroProperty for SizableOption {
+    fn as_cdrm_property(&self, property_key: &str) -> Option<String>
+        where Self: Sized {
+        Some(format!("{}=\"{}\"", property_key, self))
     }
 }
 

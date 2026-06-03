@@ -9,6 +9,7 @@ use winnow::{
 use crate::{
     ecosystem::environment_variables::cdrm_env_variable::CdrmEnvVariable,
     lang::runtime::{state::conundrum_error::ConundrumError, traits::conundrum_input::ConundrumInput},
+    output::general::component_constants::any_component_id::AnyComponentName,
 };
 
 #[typeshare::typeshare]
@@ -33,8 +34,25 @@ pub enum ConundrumErrorVariant {
     FrontMatterError,
     #[error("There was an error parsing this content")]
     UserFacingGeneralParserError(ConundrumError),
+    /// Deprecated in favor of MissingComponentProperty and
+    /// InvalidComponentProperty.
     #[error("A provided property seems to be missing or incorrectly applied.")]
     UserFacingMissingOrIncorrectProperty(ConundrumError),
+    #[error("The `{component}` component is expecting an `{expected}` type at the `{key}` key. Check the `{component}??` documentation for more information.")]
+    MissingRequiredComponentProperty {
+        component: AnyComponentName,
+        key: String,
+        expected: String,
+    },
+    #[error("The `{component}` component received an invalid property at the `{key}` key. Conundrum expected a `{expected}` but received `{received}`")]
+    InvalidComponentProperty {
+        component: AnyComponentName,
+        key: String,
+        expected: String,
+        /// If the type is not inferible, use `an unknown type` to align with
+        /// the error verbiage.
+        received: String,
+    },
     #[error("This is a general parser fail. We can do much better with these error messages.")]
     InternalParserError(ConundrumError),
     #[error("Environment variable not found: `{0}`")]
@@ -43,7 +61,7 @@ pub enum ConundrumErrorVariant {
     EmojiRenderError(String),
     #[error("WASM runtime error: {0}")]
     WasmError(String),
-    #[error("Invalid Color: {0}")]
+    #[error("The provided string of `{0}` could not be parsed successfully to a CSS supported color.")]
     InvalidColor(String),
 }
 

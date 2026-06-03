@@ -1,6 +1,9 @@
 use askama::Template;
 
-use crate::{lang::lib::ui::ui_types::emphasis::Emphasis, parsers::conundrum::logic::bool::boolean::ConundrumBoolean};
+use crate::{
+    lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis,
+    parsers::conundrum::logic::bool::boolean::ConundrumBoolean,
+};
 
 /// Template (HTML)
 ///

@@ -10,7 +10,7 @@ use crate::{
             components::{attention::hint::hint_html_templ::HintHtmlTemplate, component_trait::ConundrumComponent},
             shared_props::sizable::SizablePropsGroup,
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
-            ui_types::{children::Children, emphasis::Emphasis, heading_depth::HeadingDepth},
+            ui_types::{children::Children, emphasis::emphasis_model::Emphasis, heading_depth::HeadingDepth},
         },
         runtime::{
             state::{
@@ -36,7 +36,6 @@ use crate::{
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Deserialize, Default, Clone)]
 pub struct Hint {
-
     /// Note that `label` is a String and note a vector of children. This means
     /// that the fragment syntax won't work and markdown may or may not work in
     /// the label. Default: "hint".

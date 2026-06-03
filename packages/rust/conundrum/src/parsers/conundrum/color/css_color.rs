@@ -1,7 +1,11 @@
+use cssparser::{
+    Parser, ParserInput,
+    color::{parse_hash_color, parse_named_color},
+};
 use lightningcss::{
     printer::PrinterOptions,
     traits::{Parse, ToCss},
-    values::color::{ColorFallbackKind, CssColor as CL},
+    values::color::{ColorFallbackKind, CssColor as CL, RGBA},
 };
 use serde::{Deserialize, Serialize};
 use winnow::error::ErrMode;
@@ -16,14 +20,26 @@ use crate::{
     },
     output::html::{
         web_specific_models::lightning_css_printer_options::safari_specific_lightning_css_printer_options,
-        web_specific_traits::css_value_representable::{CSSValuePossiblyRepresentable, CSSValueRepresentable},
+        web_specific_traits::css_value_representable::{
+            CSSInlineHtmlValuePairRepresentable, CSSValuePossiblyRepresentable, CSSValueRepresentable,
+        },
     },
+    parsers::{conundrum::color::color_pair::ColorPair, parser_trait::ConundrumParser},
 };
 
 /// A simple wraper with some utility methods around the lightningcss struct of
 /// the same name.
 #[derive(Serialize, Deserialize, Clone)]
 pub struct CssColor(pub CL);
+
+impl CssColor {
+    pub fn from_rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Self {
+        Self(CL::RGBA(RGBA { red,
+                             green,
+                             blue,
+                             alpha }))
+    }
+}
 
 impl<'a> DisplayWithParam<PrinterOptions<'a>> for CssColor {
     fn display_with_param(&self, parser_opts: PrinterOptions<'a>) -> ConundrumModalResult<String> {
@@ -47,20 +63,48 @@ impl<'a> DisplayWithParam<PrinterOptions<'a>> for CssColor {
     }
 }
 
+impl CSSInlineHtmlValuePairRepresentable for CssColor {
+    /// This sets the primary color as the *background*, and calculates a text
+    /// color.
+    fn as_inline_style_value_group(&self) -> super::color_pair::ColorPair<String> {
+        let x = self.0
+                    .to_css_string(safari_specific_lightning_css_printer_options())
+                    .inspect_err(|e| {
+                        println!("Error: {}", e);
+                    })
+                    .unwrap_or("rgba(255, 0, 0, 1)".to_string());
+        ColorPair { background: x.clone(),
+                    foreground: x }
+    }
+}
+
 impl TryFrom<&str> for CssColor {
     type Error = ErrMode<ConundrumErrorVariant>;
 
     /// Should hopefully parse any valid css color as a string.
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        CL::parse_string(value).map_err(|e| ErrMode::Backtrack(ConundrumErrorVariant::InvalidColor(value.to_string())))
-                               .map(|res| Self(res))
+        CL::parse_string(value).map_err(|_| ErrMode::Backtrack(ConundrumErrorVariant::InvalidColor(value.to_string())))
+                               .map(Self)
+    }
+}
+
+impl ConundrumParser<CssColor> for CssColor {
+    fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
+                          -> ConundrumModalResult<CssColor> {
+        let mut nested_input = ParserInput::new(input.input);
+        let mut parser = Parser::new(&mut nested_input);
+        todo!()
+    }
+
+    fn matches_first_char(char: char) -> bool {
+        true
     }
 }
 
 impl CSSValuePossiblyRepresentable for CssColor {
     fn to_css_value(&self) -> ConundrumModalResult<String> {
         let opts = safari_specific_lightning_css_printer_options();
-        self.0.to_css_string(opts).map_err(|e| {
+        self.0.to_css_string(opts).map_err(|_| {
                                       ErrMode::Backtrack(
                     ConundrumErrorVariant::InvalidColor("unable to compile".to_string())
                 )

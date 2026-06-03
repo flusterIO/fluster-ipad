@@ -18,8 +18,8 @@ use crate::{
             shared_props::sizable::SizablePropsGroup,
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
             ui_types::{
-                children::Children, common_component_property_key::CommonComponentPropertyKey, emphasis::Emphasis,
-                heading_depth::HeadingDepth,
+                children::Children, common_component_property_key::CommonComponentPropertyKey,
+                emphasis::emphasis_model::Emphasis, heading_depth::HeadingDepth,
             },
         },
         runtime::{

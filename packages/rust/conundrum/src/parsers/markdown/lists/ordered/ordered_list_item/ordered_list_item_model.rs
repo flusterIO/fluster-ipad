@@ -15,7 +15,7 @@ use crate::{
             state::conundrum_error_variant::ConundrumModalResult,
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
-                conundrum_template::ConundrumTemplateRepresentableWithParam,
+                conundrum_template::HTMLTemplatePossiblyRepresentableWithParam,
             },
         },
     },
@@ -42,7 +42,7 @@ pub fn markdown_ordered_list_terminator(input: &mut ConundrumInput) -> Conundrum
     alt(('.', ')')).parse_next(input)
 }
 
-impl ConundrumTemplateRepresentableWithParam<OrderedListItemHtmlTemplate, i32> for OrderedListItem {
+impl HTMLTemplatePossiblyRepresentableWithParam<OrderedListItemHtmlTemplate, i32> for OrderedListItem {
     fn to_template(&self, state: ArcState, idx: i32) -> ConundrumModalResult<OrderedListItemHtmlTemplate> {
         Ok(OrderedListItemHtmlTemplate { idx,
                                          heading: self.heading.render(Arc::clone(&state))?,

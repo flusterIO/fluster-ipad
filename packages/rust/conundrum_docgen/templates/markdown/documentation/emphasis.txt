@@ -13,3 +13,8 @@ An _emphasis_ is applied as a boolean, and consists of a list of the following p
 ```long-docs 
 In the near future these colors will be customizable.
 ```
+<Grid small={2} medium={3} large={4}>
+{% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
+{{emphasis.as_cdrm_template().render()?}}
+{$ endfor %}
+</Grid>

@@ -9,7 +9,10 @@ use crate::{
         lib::ui::{
             components::{attention::ul::ul_html_template::UlHtmlTemplate, component_trait::ConundrumComponent},
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
-            ui_types::{children::Children, emphasis::Emphasis, inline_markdown_override::InlineMarkdownOverride},
+            ui_types::{
+                children::Children, emphasis::emphasis_model::Emphasis,
+                inline_markdown_override::InlineMarkdownOverride,
+            },
         },
         runtime::{
             state::{

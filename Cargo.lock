@@ -3335,10 +3335,12 @@ dependencies = [
  "cargo-doc-md",
  "cli-table",
  "colorous",
+ "conundrum_macro_traits",
  "conundrum_macros",
  "criterion",
  "crossbeam",
  "css-color",
+ "cssparser 0.36.0",
  "dashmap 6.2.1",
  "dashu",
  "derive_more",
@@ -3535,13 +3537,19 @@ dependencies = [
  "conundrum",
  "conundrum_cli",
  "conundrum_config",
+ "css-color",
+ "cssparser 0.36.0",
  "glob",
+ "palette",
  "rustdoc-json",
  "rustdoc-types 0.57.3",
  "schemars 1.2.1",
+ "serde",
+ "serde_json",
  "strum 0.27.2",
  "strum_macros 0.27.2",
  "tabled",
+ "thiserror 2.0.18",
  "tokio",
 ]
 
@@ -3579,9 +3587,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "conundrum_macro_traits"
+version = "0.0.1"
+
+[[package]]
 name = "conundrum_macros"
 version = "0.0.1"
 dependencies = [
+ "conundrum_macro_traits",
+ "convert_case 0.11.0",
  "env_filter",
  "proc-macro2",
  "quote",
@@ -3645,6 +3659,15 @@ name = "convert_case"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "633458d4ef8c78b72454de2d54fd6ab2e60f9e02be22f3c6104cdc8a4e0fceb9"
+dependencies = [
+ "unicode-segmentation",
+]
+
+[[package]]
+name = "convert_case"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "affbf0190ed2caf063e3def54ff444b449371d55c58e513a95ab98eca50adb49"
 dependencies = [
  "unicode-segmentation",
 ]

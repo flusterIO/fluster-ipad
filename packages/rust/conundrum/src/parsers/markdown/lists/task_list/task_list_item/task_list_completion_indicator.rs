@@ -1,6 +1,6 @@
 use crate::{
     lang::{
-        lib::ui::ui_types::emphasis::Emphasis,
+        lib::ui::ui_types::emphasis::emphasis_model::Emphasis,
         runtime::{
             state::conundrum_error_variant::ConundrumModalResult,
             traits::{

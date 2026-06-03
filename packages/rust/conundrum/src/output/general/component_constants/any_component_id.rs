@@ -1,5 +1,6 @@
 use std::{fmt::Display, str::FromStr};
 
+use serde::{Deserialize, Serialize};
 use winnow::error::ErrMode;
 
 use crate::{
@@ -16,6 +17,8 @@ use crate::{
     },
 };
 
+#[derive(Serialize, Deserialize, uniffi::Enum, Debug, Clone)]
+#[serde(tag = "tag", content = "content")]
 pub enum AnyComponentName {
     UserEmbedded(EmbeddableComponentName),
     Docs(DocumentationComponentName),

@@ -13,6 +13,8 @@ use crate::{
     },
     parsers::conundrum::logic::{bool::boolean::ConundrumBoolean, object::object::ConundrumObject},
 };
+use conundrum_macro_traits::conundrum_macro::ConundrumMacroProperty;
+use conundrum_macros::ConundrumMacro;
 
 pub enum SizablePropsOutputTarget {
     Image,
@@ -30,7 +32,7 @@ pub enum SizablePropsOutputTarget {
 /// properties than just those that can modify _size._ You can also modify
 /// color, padding, margin, borders, and more.
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, ConundrumMacro)]
 pub struct SizablePropsGroup {
     /// Hides the MathJax labels in all child components.
     pub hide_math_labels: Option<ConundrumBoolean>,
@@ -144,6 +146,11 @@ impl Default for SizablePropsGroup {
 
 impl SizablePropsGroup {
     pub fn to_jsx_prop(&self) -> String {
+        let mut properties = String::from("");
+        if let Some(res) = &self.hide_math_labels.as_ref().cloned().map(|n| n.as_cdrm_property("#field_name")).flatten()
+        {
+            properties += res;
+        }
         let items: Vec<Option<String>> = vec![self.hide_math_labels.map(|x| x.to_jsx_prop("hideMathLabels")),
                                               self.right.map(|x| x.to_jsx_prop("right")),
                                               self.left.map(|x| x.to_jsx_prop("left")),

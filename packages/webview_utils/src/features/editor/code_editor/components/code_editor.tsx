@@ -24,7 +24,7 @@ import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
-import { bibtexLanguage, bibtexBracketMatching, bibtexLinter, bibtexHoverTooltip, bibtex } from "codemirror-lang-bib"
+import { bibtexLanguage, bibtexBracketMatching, bibtexLinter, bibtexHoverTooltip, bibtex } from "@fluster/bib_lezer"
 import 'codemirror-lang-bib/dist/bib.css';
 import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';

@@ -6,12 +6,12 @@ use serde::{Deserialize, Serialize};
 use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
 use winnow::{
+    Parser,
     ascii::{line_ending, space0, space1},
     combinator::{self},
     error::{ContextError, ErrMode},
     stream::{AsChar, Stream},
     token::{literal, take_till, take_until, take_while},
-    Parser,
 };
 
 use crate::{
@@ -26,7 +26,7 @@ use crate::{
                 parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
             },
             traits::{
-                conundrum_input::{get_conundrum_input, ArcState, ConundrumInput},
+                conundrum_input::{ArcState, ConundrumInput},
                 fluster_component_result::ConundrumComponentResult,
                 html_js_component_result::HtmlJsComponentResult,
                 markdown_component_result::MarkdownComponentResult,
@@ -41,10 +41,10 @@ use crate::{
         html::{dom::dom_id::DOMId, glue::component_glue_manager::AnyComponentKey},
         output_components::{
             ai_parsing_request_phase_1::get_ai_parsing_request_phase_1_content::get_ai_parsing_request_phase_1_content,
-            dictionary_entry::get_dictionary_entry_content::{get_dictionary_content},
+            dictionary_entry::get_dictionary_entry_content::get_dictionary_content,
         },
         parsing_result::{
-            ai_serialization_request::AiSerializationRequestPhase1, dictionary_result::{DictionaryEntryResult, DictionaryEntryResultUnCompiled},
+            ai_serialization_request::AiSerializationRequestPhase1, dictionary_result::DictionaryEntryResultUnCompiled,
         },
     },
     parsers::{
@@ -54,7 +54,7 @@ use crate::{
             dictionary::dictionary_code_block::DictionaryCodeBlock,
             general::{
                 general_codeblock::GeneralPresentationCodeBlock,
-                render_codeblock::{render_general_codeblock_to_html, RenderCodeToHtmlReq},
+                render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
             },
             parsed_codeblock::ParsedCodeBlockVariant,
             supported_languages::SupportedCodeBlockSyntax,
@@ -77,9 +77,9 @@ pub struct GeneralCodeBlock {
 
 impl ConundrumStateModifier<GeneralCodeBlock> for GeneralCodeBlock {
     fn set_state(res: ArcState, data: Option<GeneralCodeBlock>) {
-        let mut state = res.write_arc();
+        let state = res.write_arc();
         let cb = data.unwrap();
-          if cb.language == SupportedCodeBlockSyntax::ConundrumAi {
+        if cb.language == SupportedCodeBlockSyntax::ConundrumAi {
             let mut state = res.write_arc();
             state.data.ai_secondary_parse_requests.push(AiSerializationRequestPhase1 { parsing_result: cb.clone() });
         }
@@ -287,15 +287,15 @@ impl ConundrumParser<ParsedCodeBlockVariant> for GeneralCodeBlock {
         let meta_data = meta_opt.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
         let _term = meta_opt.ok_or_else(|| {
                         ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details(
-                            "Invalid dictionary entry",
-                            r#"Each dictionary entry requires a 'term', defined after two `--` characters:
+                "Invalid dictionary entry",
+                r#"Each dictionary entry requires a 'term', defined after two `--` characters:
 
 ````txt 
 ```dictionary -- Derivative
 A derivative is...
 ```
 ````"#,
-                        )))
+            )))
                     });
         let mut state = input.state.write_arc();
         let id = state.dom.new_id();
@@ -323,11 +323,11 @@ A derivative is...
                 let title = parse_elements(&mut title_input)?;
 
                 let mut state = input.state.write_arc();
-                
-            state.append_uncompiled_dictionary_entry(DictionaryEntryResultUnCompiled { label: Children(title.clone()),
+
+                state.append_uncompiled_dictionary_entry(DictionaryEntryResultUnCompiled { label: Children(title.clone()),
             label_string: term.clone().to_string(),
                                                                        body: Children(child_ems.clone()) });
-            drop(state);
+                drop(state);
 
                 Ok(
         ParsedCodeBlockVariant::Dictionary(

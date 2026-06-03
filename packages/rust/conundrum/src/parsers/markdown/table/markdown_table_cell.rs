@@ -9,7 +9,7 @@ use crate::{
             state::conundrum_error_variant::ConundrumModalResult,
             traits::{
                 conundrum_input::{ArcState, ConundrumInput},
-                conundrum_template::{ConundrumTemplateRepresentable, ConundrumTemplateRepresentableWithParam},
+                conundrum_template::{HTMLTemplatePossiblyRepresentable, HTMLTemplatePossiblyRepresentableWithParam},
             },
         },
     },
@@ -89,7 +89,7 @@ impl ConundrumParser<MarkdownTableCell> for MarkdownTableCell {
     }
 }
 
-impl ConundrumTemplateRepresentableWithParam<MarkdownTableCellTemplate, TableCellAlignment> for MarkdownTableCell {
+impl HTMLTemplatePossiblyRepresentableWithParam<MarkdownTableCellTemplate, TableCellAlignment> for MarkdownTableCell {
     fn to_template(&self,
                    state: ArcState,
                    param: TableCellAlignment)

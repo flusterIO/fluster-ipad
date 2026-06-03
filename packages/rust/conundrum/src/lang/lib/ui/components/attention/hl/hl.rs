@@ -10,8 +10,8 @@ use crate::{
             components::{attention::hl::hl_html_templ::HlHtmlTemplate, component_trait::ConundrumComponent},
             ui_traits::jsx_prop_representable::FromJsxPropsOptional,
             ui_types::{
-                children::Children, common_component_property_key::CommonComponentPropertyKey, emphasis::Emphasis,
-                inline_markdown_override::InlineMarkdownOverride,
+                children::Children, common_component_property_key::CommonComponentPropertyKey,
+                emphasis::emphasis_model::Emphasis, inline_markdown_override::InlineMarkdownOverride,
             },
         },
         runtime::{
