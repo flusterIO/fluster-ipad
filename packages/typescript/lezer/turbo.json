@@ -17,6 +17,11 @@
                 "build"
             ]
         },
+        "build:websiteCI": {
+            "dependsOn": [
+                "build:website"
+            ]
+        },
         "typecheck": {
             "dependsOn": [
                 "^typecheck"

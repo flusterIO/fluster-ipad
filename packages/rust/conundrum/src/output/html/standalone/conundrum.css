@@ -81,7 +81,23 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
+    --color-primary: hsl(var(--primary));
+    --color-primary-foreground: hsl(var(--primary-foreground));
     --color-border: hsl(var(--border));
+    --color-emphasis-info: hsl(var(--emphasis-info));
+    --color-emphasis-info-foreground: hsl(var(--emphasis-info-foreground));
+    --color-emphasis-error: hsl(var(--emphasis-error));
+    --color-emphasis-error-foreground: hsl(var(--emphasis-error-foreground));
+    --color-emphasis-warn: hsl(var(--emphasis-warn));
+    --color-emphasis-warn-foreground: hsl(var(--emphasis-warn-foreground));
+    --color-emphasis-success: hsl(var(--emphasis-success));
+    --color-emphasis-success-foreground: hsl(var(--emphasis-success-foreground));
+    --color-emphasis-important: hsl(var(--emphasis-important));
+    --color-emphasis-important-foreground: hsl(var(--emphasis-important-foreground));
+    --color-emphasis-research: hsl(var(--emphasis-research));
+    --color-emphasis-research-foreground: hsl(var(--emphasis-research-foreground));
+    --color-emphasis-highlight: hsl(var(--emphasis-highlight));
+    --color-emphasis-highlight-foreground: hsl(var(--emphasis-highlight-foreground));
     --color-fd-background: var(--color-fd-background);
     --color-fd-foreground: var(--color-fd-foreground);
     --color-fd-muted: var(--color-fd-muted);
@@ -1523,6 +1539,9 @@
   .min-h-0 {
     min-height: calc(var(--spacing) * 0);
   }
+  .min-h-32 {
+    min-height: calc(var(--spacing) * 32);
+  }
   .min-h-\[40px\] {
     min-height: 40px;
   }
@@ -1786,6 +1805,9 @@
   }
   .min-w-10 {
     min-width: calc(var(--spacing) * 10);
+  }
+  .min-w-32 {
+    min-width: calc(var(--spacing) * 32);
   }
   .min-w-\[--cell-size\] {
     min-width: --cell-size;

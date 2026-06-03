@@ -37,6 +37,11 @@
             "dependsOn": [
                 "build"
             ]
+        },
+        "build:websiteCI": {
+            "dependsOn": [
+                "build:website"
+            ]
         }
     }
 }

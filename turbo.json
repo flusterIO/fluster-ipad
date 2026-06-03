@@ -34,6 +34,18 @@
                 "./packages/rust/wasm/conundrum_wasm/src/"
             ]
         },
+        "build:websiteCI": {
+            "description": "Build's the website for production.",
+            "outputs": [
+                "./apps/website/.next/"
+            ],
+            "inputs": [
+                "./apps/website/src/",
+                "./apps/website/cdrm/",
+                "./packages/webview_utils/src/",
+                "./packages/rust/wasm/conundrum_wasm/src/"
+            ]
+        },
         "build:mac": {
             "description": "Does not build the desktop app, because I haven't spent the time to figure out how to build for Apple from the command line.",
             "dependsOn": [
