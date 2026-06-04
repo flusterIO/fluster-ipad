@@ -123,6 +123,17 @@ export type GridColumnsMap = Map<SizableOption, number>;`,
                 dontPanicIfExists: ["public enum CdrmEnvVariable: Codable {"],
                 replaceWith: "public enum CdrmEnvVariable: Codable {",
             },
+            {
+                query: "public enum EmbeddableComponentName {",
+                dontPanicIfExists: ["public enum EmbeddableComponentName: Codable {"],
+                replaceWith: "public enum EmbeddableComponentName: Codable {",
+            },
+
+            {
+                query: "public enum AnyComponentName {",
+                dontPanicIfExists: ["public enum AnyComponentName: Codable {"],
+                replaceWith: "public enum AnyComponentName: Codable {",
+            },
         ],
     },
     "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":

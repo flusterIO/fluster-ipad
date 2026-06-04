@@ -1,1 +1,54 @@
-{"$schema": "../../../node_modules/turbo/schema.json", "extends": ["//"], "tasks": {"build": {"inputs": ["./src/"], "outputs": ["note_detail_webview_ipad/", "note_detail_webview_mac/"], "passThroughEnv": ["FLUSTER_PROD_BUILD"], "dependsOn": ["@fluster/webview_utils#build"]}, "build:ipad": {"inputs": ["./src/"], "outputs": ["note_detail_webview_ipad/"], "passThroughEnv": ["FLUSTER_PROD_BUILD"], "dependsOn": ["@fluster/webview_utils#build"]}, "build:mac": {"inputs": ["./src/"], "outputs": ["note_detail_webview_mac/"], "passThroughEnv": ["FLUSTER_PROD_BUILD"], "dependsOn": ["@fluster/webview_utils#build"]}}}
+{
+    "$schema": "../../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tags": [
+        "webview"
+    ],
+    "tasks": {
+        "build": {
+            "inputs": [
+                "./src/"
+            ],
+            "outputs": [
+                "note_detail_webview_ipad/",
+                "note_detail_webview_mac/"
+            ],
+            "passThroughEnv": [
+                "FLUSTER_PROD_BUILD"
+            ],
+            "dependsOn": [
+                "@fluster/webview_utils#build"
+            ]
+        },
+        "build:ipad": {
+            "inputs": [
+                "./src/"
+            ],
+            "outputs": [
+                "note_detail_webview_ipad/"
+            ],
+            "passThroughEnv": [
+                "FLUSTER_PROD_BUILD"
+            ],
+            "dependsOn": [
+                "@fluster/webview_utils#build"
+            ]
+        },
+        "build:mac": {
+            "inputs": [
+                "./src/"
+            ],
+            "outputs": [
+                "note_detail_webview_mac/"
+            ],
+            "passThroughEnv": [
+                "FLUSTER_PROD_BUILD"
+            ],
+            "dependsOn": [
+                "@fluster/webview_utils#build"
+            ]
+        }
+    }
+}

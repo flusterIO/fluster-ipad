@@ -3,6 +3,9 @@
     "extends": [
         "//"
     ],
+    "tags": [
+        "webview"
+    ],
     "tasks": {
         "build": {
             "inputs": [

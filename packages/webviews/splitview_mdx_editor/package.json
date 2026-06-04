@@ -24,29 +24,15 @@
   ],
   "private": true,
   "scripts": {
-    "build": "wireit",
-    "build:ipad": "wireit",
-    "build:mac": "wireit",
+    "build": "",
+    "build:ipad": "FLUSTER_BUILD_ENV=ipad tsc -b && vite build -c ./vite_ipad.config.ts",
+    "build:mac": "FLUSTER_BUILD_ENV=macos tsc -b && vite build -c ./vite_mac.config.ts",
     "dev": "vite dev",
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "wireit": {
-    "build:ipad": {
-      "command": "FLUSTER_BUILD_ENV=ipad tsc -b && vite build -c ./vite_ipad.config.ts"
-    },
-    "build:mac": {
-      "command": "FLUSTER_BUILD_ENV=macos tsc -b && vite build -c ./vite_mac.config.ts"
-    },
-    "build": {
-      "dependencies": [
-        "build:mac",
-        "build:ipad"
-      ]
-    }
-  },
   "dependencies": {
-    "@conundrum/generated": "workspace:*",
+    "@conundrum/main": "workspace:*",
     "@conundrum/ts": "workspace:*",
     "@fluster/wasm": "workspace:*",
     "@fluster/webview_utils": "workspace:*",

@@ -46,7 +46,7 @@
             "dependsOn": [
                 "copy:scss_input",
                 "build:ts"
-            ]
+            ],
         },
     }
 }

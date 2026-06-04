@@ -1,0 +1,96 @@
+{
+    "$schema": "../../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build:ipadSwift": {
+            "inputs": [
+                "../conundrum/src/**/*.rs"
+            ],
+            "outputs": [
+                "./ConundrumSwift/",
+                "!ConundrumSwift/Sources/ConundrumSwift/conundrum/",
+                "!ConundrumSwift/Sources/ConundrumSwift/extensions/",
+                "./generated/"
+            ]
+        },
+        "build:macSwift": {
+            "inputs": [
+                "../conundrum/src/**/*.rs"
+            ],
+            "outputs": [
+                "./ConundrumSwift/",
+                "!ConundrumSwift/Sources/ConundrumSwift/conundrum/",
+                "!ConundrumSwift/Sources/ConundrumSwift/extensions/",
+                "./generated/"
+            ]
+        },
+        "build:ipad": {
+            "description": "Builds the ConundrumSwift bindings for ios",
+            "inputs": [
+                "../conundrum/src/**/*.rs"
+            ],
+            "outputs": [
+                "./ConundrumSwift/",
+                "!ConundrumSwift/Sources/ConundrumSwift/conundrum/",
+                "!ConundrumSwift/Sources/ConundrumSwift/extensions/",
+                "./generated/"
+            ],
+            "with": [
+                "copy:extraSwift"
+            ],
+            "dependsOn": [
+                "^build:ipadSwift"
+            ]
+        },
+        "build:swift": {
+            "description": "Builds the ConundrumSwift bindings for both macos and ios.",
+            "inputs": [
+                "../conundrum/src/**/*.rs"
+            ],
+            "outputs": [
+                "./ConundrumSwift/",
+                "!ConundrumSwift/Sources/ConundrumSwift/conundrum/",
+                "!ConundrumSwift/Sources/ConundrumSwift/extensions/",
+                "./generated/"
+            ]
+        },
+        "copy:extraSwift": {
+            "inputs": [
+                "./extra_swift/"
+            ],
+            "outputs": [
+                "./ConundrumSwift/Sources/ConundrumSwift/conundrum/",
+                "./ConundrumSwift/Sources/ConundrumSwift/extensions/"
+            ]
+        },
+        "build:postCodegenCleanup": {
+            "description": "Runs after cross-language code has been generated, to make sure it aligns with the rest of the code base.",
+            "inputs": [
+                "../../../packages/**/code_gen/"
+            ],
+            "cache": false,
+            "dependsOn": []
+        },
+        "build:mac": {
+            "description": "Builds the ConundrumSwift bindings for macos.",
+            "inputs": [
+                "../conundrum/src/**/*.rs"
+            ],
+            "outputs": [
+                "./ConundrumSwift/",
+                "!ConundrumSwift/Sources/ConundrumSwift/conundrum/",
+                "!ConundrumSwift/Sources/ConundrumSwift/extensions/",
+                "./generated/"
+            ],
+            "with": [
+                "copy:extraSwift",
+                "build:postCodegenCleanup"
+            ],
+            "dependsOn": [
+                "build:macSwift"
+            ]
+        }
+    }
+}

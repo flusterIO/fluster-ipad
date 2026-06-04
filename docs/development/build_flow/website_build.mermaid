@@ -1,10 +1,10 @@
 graph TD
-	RPGS("@conundrum/generated#build:scss") --> ETQY("___ROOT___")
+	RPGS("@conundrum/main#build:scss") --> ETQY("___ROOT___")
 	KEFT("@conundrum/ts#build") --> PRBV("@conundrum/ts#build:vite")
 	KEFT("@conundrum/ts#build") --> CXPQ("@conundrum/ts#copy:globalCSS")
 	PRBV("@conundrum/ts#build:vite") --> ETQY("___ROOT___")
 	MLKN("@conundrum/ts#build:website") --> KEFT("@conundrum/ts#build")
-	CXPQ("@conundrum/ts#copy:globalCSS") --> RPGS("@conundrum/generated#build:scss")
+	CXPQ("@conundrum/ts#copy:globalCSS") --> RPGS("@conundrum/main#build:scss")
 	ZHXY("@conundrum/wasm#build") --> ETQY("___ROOT___")
 	OVTW("@conundrum/wasm#build:ts") --> ZHXY("@conundrum/wasm#build")
 	NDRI("@conundrum/wasm#build:website") --> ZHXY("@conundrum/wasm#build")

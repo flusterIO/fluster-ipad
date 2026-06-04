@@ -1,65 +1,77 @@
 {
-    "$schema": "./node_modules/turbo/schema.json",
-    "globalDependencies": [
-        "package.json",
-        "./apps/*/package.json",
-        "./packages/*/package.json"
-    ],
-    "globalEnv": [
-        "FLUSTER_PROD_BUILD"
-    ],
-    "globalPassThroughEnv": [
-        "FLUSTER_PROD_BUILD",
-        "RUST*",
-        "HOME",
-        "PWD",
-        "PATH",
-        "SHELL",
-        "CDRM_COMPONENT_NAME"
-    ],
-    "ui": "tui",
-    "noUpdateNotifier": true,
-    "cacheMaxSize": "10GB",
-    "envMode": "loose",
-    "tasks": {
-        "build:website": {
-            "description": "Build's the website for production.",
-            "outputs": [
-                "./apps/website/.next/"
-            ],
-            "inputs": [
-                "./apps/website/src/",
-                "./apps/website/cdrm/",
-                "./packages/webview_utils/src/",
-                "./packages/rust/wasm/conundrum_wasm/src/"
-            ]
-        },
-        "build:websiteCI": {
-            "description": "Build's the website for production.",
-            "outputs": [
-                "./apps/website/.next/"
-            ],
-            "inputs": [
-                "./apps/website/src/",
-                "./apps/website/cdrm/",
-                "./packages/webview_utils/src/",
-                "./packages/rust/wasm/conundrum_wasm/src/"
-            ]
-        },
-        "build:mac": {
-            "description": "Does not build the desktop app, because I haven't spent the time to figure out how to build for Apple from the command line.",
-            "dependsOn": [
-                "@conundrum/generated#build:rust",
-                "@fluster/webview_utils#build",
-                "@fluster/standalone_mdx_editor#build:mac",
-                "@fluster/editor_webview#build:mac",
-                "@fluster/note_detail_webview#build:mac",
-                "@fluster/bibtex_editor_webview#build:mac",
-                "^docgen"
-            ]
-        },
-        "docgen": {
-            "description": "Generate code and documentation using template strings throughout the monorepo"
-        }
+  "$schema": "./node_modules/turbo/schema.json",
+  "globalDependencies": [
+    "package.json",
+    "./apps/*/package.json",
+    "./packages/*/package.json",
+    "./apps/*/cargo.toml",
+    "./packages/*/cargo.toml"
+  ],
+  "globalEnv": ["FLUSTER_PROD_BUILD"],
+  "globalPassThroughEnv": [
+    "FLUSTER_PROD_BUILD",
+    "RUST*",
+    "HOME",
+    "PWD",
+    "PATH",
+    "SHELL",
+    "CDRM_COMPONENT_NAME"
+  ],
+  "ui": "tui",
+  "noUpdateNotifier": true,
+  "cacheMaxSize": "10GB",
+  "envMode": "loose",
+  "tasks": {
+    "build:postCodegenCleanup": {
+      "description": "After generating types through Typeshare and Uniffi, this applies some modifications to jive with the rest of the codebase",
+      "inputs": ["./packages/**/code_gen/"],
+      "cache": false
+    },
+    "build:website": {
+      "description": "Build's the website for production.",
+      "outputs": ["./apps/website/.next/"],
+      "inputs": [
+        "./apps/website/src/",
+        "./apps/website/cdrm/",
+        "./packages/webview_utils/src/",
+        "./packages/rust/wasm/conundrum_wasm/src/"
+      ]
+    },
+    "build:websiteCI": {
+      "description": "Build's the website for production.",
+      "outputs": ["./apps/website/.next/"],
+      "inputs": [
+        "./apps/website/src/",
+        "./apps/website/cdrm/",
+        "./packages/webview_utils/src/",
+        "./packages/rust/wasm/conundrum_wasm/src/"
+      ]
+    },
+    "build:mac": {
+      "description": "Does not build the desktop app, because I haven't spent the time to figure out how to build for Apple from the command line.",
+      "dependsOn": [
+        "@conundrum/swift#build:mac",
+        "@conundrum/ts#build:mac",
+        "@fluster/webview_utils#build",
+        "@fluster/standalone_mdx_editor#build:mac",
+        "@fluster/editor_webview#build:mac",
+        "@fluster/note_detail_webview#build:mac",
+        "@fluster/bibtex_editor_webview#build:mac",
+        "^docgen",
+        "^build:postCodegenCleanup"
+      ]
+    },
+    "@conundrum/ts#build:mac": {
+      "dependsOn": ["@conundrum/main#build:scss"]
+    },
+    "docgen": {
+      "description": "Generate code and documentation using template strings throughout the monorepo",
+      "dependsOn": ["@conundrum/docgen#docgen"],
+      "inputs": [
+        "./docs/initial_note_docs/**/*.{mdx,md,cdrm}",
+        "./docs/in_content_docs/**/*.{mdx,md,cdrm}",
+        "./packages/webview_utils/src/**/*.{mdx,md,cdrm}"
+      ]
     }
+  }
 }

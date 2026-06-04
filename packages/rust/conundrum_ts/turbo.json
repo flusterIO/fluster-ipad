@@ -12,10 +12,10 @@
                 "../conundrum/src/output/html/standalone/conundrum.css"
             ],
             "outputs": [
-                "dist/styles.css"
+                "./dist/styles.css"
             ],
             "dependsOn": [
-                "@conundrum/generated#build:scss"
+                "@conundrum/main#build:scss"
             ]
         },
         "build:vite": {
@@ -24,10 +24,17 @@
                 "!dist/styles.css"
             ],
             "inputs": [
-                "./src/"
+                "./src/",
+                "../conundrum/**/*.rs"
             ]
         },
         "build": {
+            "outputs": [
+                "./dist/"
+            ],
+            "inputs": [
+                "./src/"
+            ],
             "dependsOn": [
                 "copy:globalCSS",
                 "build:vite"

@@ -1,5 +1,5 @@
 import React, { StrictMode } from "react";
-import "@conundrum/generated/conundrum.css";
+import "@conundrum/main/conundrum.css";
 import { createRoot } from "react-dom/client";
 import "../../../webview_utils/dist/styles.css";
 import "./index.css";

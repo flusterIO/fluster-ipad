@@ -27,3 +27,4 @@ packages:
   - packages/rust/conundrum_editor/helix_clone
   - packages/typescript/codemirror-lang-bib
   - packages/rust/conundrum_docgen
+  - packages/rust/conundrum_swift

@@ -14,7 +14,8 @@
 - [x] Re-fucking-implement strikethrough text parser.
 - [x] Fix link parser. It's woring, but inserting the wrong text maing the link invalid.
 - [ ] Create color component and fix Emphasis docs that are no longer working.
-  - **On Layaway until AI creates JSON file**
+  - [ ] Document color component. Don't do all of this work and then not document the thing...
+  - [ ] FIgure out why it renders in the tests but fails without throwing an error in the Conundrum crate.
 - [ ] Fix issue with dictionary entry conundrum content parsing.
   - [ ] Finish proper rendering of dictionary page.
 - [ ] Get bibliography editor working again.

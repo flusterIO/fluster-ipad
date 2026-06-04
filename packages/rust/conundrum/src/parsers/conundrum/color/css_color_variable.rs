@@ -29,7 +29,7 @@ impl ToTextRepresentation for CSSColorVariable {
 
 impl Default for CSSColorVariable {
     fn default() -> Self {
-        Self(String::from("--color-primary"))
+        Self(String::from("--color-emphasis-primary"))
     }
 }
 

@@ -1691,7 +1691,6 @@ export enum DocumentationComponentName {
 	InContentDocsHighlightDemo = "InContentDocsHighlightDemo",
 	InContentDocsUnderlineDemo = "InContentDocsUnderlineDemo",
 	EmojiDocumentationDemo = "AutoInsertedNestedEmojiDocumentation",
-	Emphasis = "Emphasis",
 }
 
 /** From typescript to swift. */

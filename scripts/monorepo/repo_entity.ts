@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import { globSync } from "fs";
 
-interface PackageJsonType {
+export interface PackageJsonType {
     name: string;
     dependences?: Record<string, string>;
     devDependences?: Record<string, string>;
@@ -10,12 +10,38 @@ interface PackageJsonType {
     optionalDependences?: Record<string, string>;
 }
 
-interface RepoEntityData {
+export interface TurboTask {
+    description: string;
+    outputs: string[];
+    inputs: string[];
+    dependsOn: string[];
+    with: string[];
+    env: string[];
+    passThroughEnv: string[];
+    interactive: boolean;
+}
+
+export interface TurboJsonType {
+    ui: "tui" | "stream";
+    extends: string[];
+    tags: string[];
+    concurrency: number | `${number}%`;
+    cacheDir: string;
+    cacheMaxSize: string;
+    cacheMaxAge: `${number}d` | `${number}w` | `${number}h` | `${number}m` | `${number}s` | `${number}`;
+    boundaries: Record<string, string>;
+    tasks: Record<string, TurboTask | undefined>;
+}
+
+export interface RepoEntityData {
     /**
      * The absolute path
      */
     path: string;
     type: "app" | "package";
+    /**
+     * True based on the location within the `packages/webviews` directory.
+     */
     is_webview: boolean;
     languages: ("ts" | "rust" | "swift")[];
     /**
@@ -29,9 +55,9 @@ export class RepoEntity {
     constructor(data: Omit<RepoEntityData, "languages">) {
         this.data = {
             ...data,
-            languages: []
-        }
-        this.data.languages = this.getLanguages()
+            languages: [],
+        };
+        this.data.languages = this.getLanguages();
     }
     packageJsonPath(): string {
         return path.join(this.data.path, "package.json");
@@ -39,6 +65,24 @@ export class RepoEntity {
 
     cargoPath(): string {
         return path.join(this.data.path, "cargo.toml");
+    }
+    turboPath(): string {
+        return path.join(this.data.path, "turbo.json");
+    }
+
+    readTurbo(
+        createIfNotExists: Partial<TurboJsonType> | undefined = undefined,
+    ): Partial<TurboJsonType> {
+        const turboPath = this.turboPath();
+        const exists = fs.existsSync(turboPath);
+        if (exists) {
+            const turboData = fs.readFileSync(turboPath, { encoding: "utf-8" });
+            return JSON.parse(turboData) as Partial<TurboJsonType>;
+        } else if (createIfNotExists !== undefined) {
+            fs.writeFileSync(turboPath, JSON.stringify(createIfNotExists, null, 2), {
+                encoding: "utf-8",
+            });
+        }
     }
 
     publicDir(): string {
@@ -51,12 +95,11 @@ export class RepoEntity {
         });
     }
 
-
     copyToPublicDir(input_path: string, output_path: string) {
         const content = fs.readFileSync(input_path, {
-            encoding: "utf-8"
+            encoding: "utf-8",
         });
-        this.writePublicDir(content, output_path)
+        this.writePublicDir(content, output_path);
     }
 
     getLanguages(): RepoEntityData["languages"] {
@@ -96,7 +139,7 @@ export const getRepoEntities = () => {
         new RepoEntity({
             path: path.join(root, "packages/webview_utils"),
             type: "package",
-            is_webview: true,
+            is_webview: false,
             is_utils_package: true,
         }),
         ...globSync(`${root}${root.endsWith("/") ? "" : "/"}apps/*`).map((n) => {
@@ -121,9 +164,7 @@ export const getRepoEntities = () => {
         );
     }
     const packages = [
-        ...globSync(
-            `${root}${root.endsWith("/") ? "" : "/"}packages/*/`,
-        ),
+        ...globSync(`${root}${root.endsWith("/") ? "" : "/"}packages/*/`),
     ];
     console.log("packages: ", packages);
     return entities;

@@ -11,9 +11,6 @@ importers:
       shiki:
         specifier: 3.3.0
         version: 3.3.0
-      turbo:
-        specifier: 2.9.16
-        version: 2.9.16
     devDependencies:
       '@codspeed/vitest-plugin':
         specifier: 5.2.0
@@ -108,6 +105,9 @@ importers:
       tsx:
         specifier: 4.20.6
         version: 4.20.6
+      turbo:
+        specifier: 2.9.16
+        version: 2.9.16
       typescript:
         specifier: '*'
         version: 5.9.3
@@ -132,6 +132,9 @@ importers:
       vite-tsconfig-paths:
         specifier: 5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
+      zod:
+        specifier: 3.24.4
+        version: 3.24.4
 
   apps/website:
     dependencies:
@@ -506,6 +509,8 @@ importers:
         specifier: 4.2.1
         version: 4.2.1(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.89.0)(terser@5.46.0)(tsx@4.20.6)(yaml@2.8.2))
 
+  packages/rust/conundrum_docgen: {}
+
   packages/rust/conundrum_lsp/lezer:
     dependencies:
       '@lezer/generator':
@@ -536,7 +541,7 @@ importers:
 
   packages/rust/conundrum_ts:
     dependencies:
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../conundrum
       '@conundrum/wasm':
@@ -887,7 +892,7 @@ importers:
       '@codemirror/view':
         specifier: 6.41.0
         version: 6.41.0
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../rust/conundrum
       '@conundrum/ts':
@@ -1281,7 +1286,7 @@ importers:
 
   packages/webviews/bib_entry_details_webview:
     dependencies:
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../../rust/conundrum
       react:
@@ -1333,7 +1338,7 @@ importers:
 
   packages/webviews/bibtex_editor_webview:
     dependencies:
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../../rust/conundrum
       '@fluster/wasm':
@@ -1400,7 +1405,7 @@ importers:
 
   packages/webviews/dictionary_webview:
     dependencies:
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../../rust/conundrum
       '@fluster/webview_utils':
@@ -1464,7 +1469,7 @@ importers:
 
   packages/webviews/note_detail_webview:
     dependencies:
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../../rust/conundrum
       '@fluster/webview_utils':
@@ -1549,7 +1554,7 @@ importers:
 
   packages/webviews/splitview_mdx_editor:
     dependencies:
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../../rust/conundrum
       '@conundrum/ts':
@@ -1634,7 +1639,7 @@ importers:
 
   packages/webviews/standalone_mdx_editor:
     dependencies:
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../../rust/conundrum
       '@fluster/webview_utils':
@@ -1692,7 +1697,7 @@ importers:
 
   packages/webviews/standalone_mdx_preview:
     dependencies:
-      '@conundrum/generated':
+      '@conundrum/main':
         specifier: workspace:*
         version: link:../../rust/conundrum
       '@conundrum/ts':
@@ -18906,7 +18911,7 @@ snapshots:
       eslint: 9.39.1(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.39.1(jiti@2.6.1))
@@ -18936,22 +18941,21 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1)):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.1(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.1(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -18962,7 +18966,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.1(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.1(jiti@2.6.1))
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@9.39.1(jiti@2.6.1))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -18974,7 +18978,7 @@ snapshots:
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.55.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack

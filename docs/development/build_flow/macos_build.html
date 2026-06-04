@@ -1,0 +1,15 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Graph</title>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2-pre.1/viz.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2-pre.1/full.render.js"></script>
+  <script>
+const s = "\ndigraph {\n\tcompound = \"true\"\n\tnewrank = \"true\"\n\tsubgraph \"root\" {\n\t\t\"[root] @conundrum/docgen#build:mac\" -\u003E \"[root] @fluster/bibtex_editor_webview#build:mac\"\n\t\t\"[root] @conundrum/docgen#build:mac\" -\u003E \"[root] @fluster/editor_webview#build:mac\"\n\t\t\"[root] @conundrum/docgen#build:mac\" -\u003E \"[root] @fluster/note_detail_webview#build:mac\"\n\t\t\"[root] @conundrum/docgen#build:mac\" -\u003E \"[root] @fluster/standalone_mdx_editor#build:mac\"\n\t\t\"[root] @conundrum/docgen#build:mac\" -\u003E \"[root] @fluster/webview_utils#build\"\n\t\t\"[root] @conundrum/main#build:scss\" -\u003E \"[root] ___ROOT___\"\n\t\t\"[root] @conundrum/ts#build\" -\u003E \"[root] @conundrum/ts#build:vite\"\n\t\t\"[root] @conundrum/ts#build\" -\u003E \"[root] @conundrum/ts#copy:globalCSS\"\n\t\t\"[root] @conundrum/ts#build:vite\" -\u003E \"[root] ___ROOT___\"\n\t\t\"[root] @conundrum/ts#copy:globalCSS\" -\u003E \"[root] @conundrum/main#build:scss\"\n\t\t\"[root] @conundrum/ts#copy:globalCSS\" -\u003E \"[root] @conundrum/main#build:scss\"\n\t\t\"[root] @conundrum/ts#copy:globalCSS\" -\u003E \"[root] @conundrum/main#build:scss\"\n\t\t\"[root] @fluster/bibtex_editor_webview#build:mac\" -\u003E \"[root] @fluster/webview_utils#build\"\n\t\t\"[root] @fluster/editor_webview#build:mac\" -\u003E \"[root] @fluster/webview_utils#build\"\n\t\t\"[root] @fluster/lezer#build\" -\u003E \"[root] ___ROOT___\"\n\t\t\"[root] @fluster/lezer#build:website\" -\u003E \"[root] @fluster/lezer#build\"\n\t\t\"[root] @fluster/note_detail_webview#build:mac\" -\u003E \"[root] @fluster/webview_utils#build\"\n\t\t\"[root] @fluster/standalone_mdx_editor#build:mac\" -\u003E \"[root] @fluster/webview_utils#build\"\n\t\t\"[root] @fluster/webview_utils#build\" -\u003E \"[root] @fluster/webview_utils#build:website\"\n\t\t\"[root] @fluster/webview_utils#build:tailwind\" -\u003E \"[root] @conundrum/main#build:scss\"\n\t\t\"[root] @fluster/webview_utils#build:website\" -\u003E \"[root] @conundrum/ts#build\"\n\t\t\"[root] @fluster/webview_utils#build:website\" -\u003E \"[root] @fluster/lezer#build:website\"\n\t}\n}\n\n".replace(/\_\_\_ROOT\_\_\_/g, "Root").replace(/\[root\]/g, "");new Viz().renderSVGElement(s).then(el => document.body.appendChild(el)).catch(e => console.error(e));
+  </script>
+</body>
+</html>

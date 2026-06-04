@@ -6,10 +6,18 @@
     "tasks": {
         "docgen:writeComponentList": {
             "dependsOn": [
-                "docgen>gatherComponentDocs"
+                "docgen:gatherComponentDocs"
             ]
         },
-        "docgen": {
+        "docgen:copyDocumentationToRust": {
+            "dependsOn": [
+                "docgen:main"
+            ]
+        },
+        "docgen:internalDiagrams": {},
+        "docgen:gatherComponentDocs": {},
+        "docgen:buildCrossLanguage": {},
+        "docgen:main": {
             "inputs": [
                 "./src/*",
                 "./templates/*"
@@ -21,6 +29,18 @@
                 "docgen:buildCrossLanguage",
                 "docgen:gatherComponentDocs",
                 "docgen:writeComponentList"
+            ]
+        },
+        "docgen:cleanupGeneratedTypes": {
+            "dependsOn": [
+                "docgen:main"
+            ]
+        },
+        "docgen": {
+            "dependsOn": [
+                "docgen:main",
+                "docgen:copyDocumentationToRust",
+                "docgen:cleanupGeneratedTypes"
             ]
         }
     }

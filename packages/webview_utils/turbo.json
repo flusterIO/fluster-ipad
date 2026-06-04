@@ -10,6 +10,9 @@
             ],
             "outputs": [
                 "./dist/styles.css"
+            ],
+            "dependsOn": [
+                "@conundrum/main#build:scss"
             ]
         },
         "build:ts": {
@@ -18,7 +21,7 @@
             ],
             "inputs": [
                 "./src/"
-            ],
+            ]
         },
         "build:website": {
             "outputs": [
@@ -31,7 +34,7 @@
             ],
             "dependsOn": [
                 "@conundrum/ts#build",
-                "@fluster/lezer#build:website",
+                "@fluster/lezer#build:website"
             ]
         },
         "build:websiteCI": {
