@@ -54,8 +54,12 @@
                 "@fluster/standalone_mdx_editor#build:mac",
                 "@fluster/editor_webview#build:mac",
                 "@fluster/note_detail_webview#build:mac",
-                "@fluster/bibtex_editor_webview#build:mac"
+                "@fluster/bibtex_editor_webview#build:mac",
+                "^docgen"
             ]
+        },
+        "docgen": {
+            "description": "Generate code and documentation using template strings throughout the monorepo"
         }
     }
 }

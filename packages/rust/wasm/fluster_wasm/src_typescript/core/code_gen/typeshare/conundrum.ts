@@ -3,6 +3,8 @@
 */
 
 
+export type CSSColorVariable = string;
+
 export type ParsedElement = 
 	| { tag: "Heading", content: MarkdownHeadingResult }
 	| { tag: "BlockQuote", content: BlockQuoteResult }
@@ -54,6 +56,12 @@ export type ConundrumBoolean = boolean;
 export type ConundrumFloat = number;
 
 export type ConundrumString = string;
+
+/**
+ * A simple wraper with some utility methods around the lightningcss struct of
+ * the same name.
+ */
+export type CssColor = CL;
 
 export type DOMId = string;
 
@@ -570,6 +578,28 @@ export interface CitationResult {
 export interface CitationSummaryData {
 	citation_key: string;
 	body: string;
+}
+
+export type ConundrumColor = 
+	| { tag: "Emphasis", content: Emphasis }
+	| { tag: "Css", content: CssColor }
+	/**
+	 * Accepts a css variable string alone, not wrapped in the `var` syntax.
+	 * ## Exmample
+	 * 
+	 * ```rs
+	 * ConundrumColor::CSSVariable(String::from("--color-emphasis-warn"))
+	 * ```
+	 */
+	| { tag: "CSSVariable", content: CSSColorVariable };
+
+export interface ColorComponent {
+	background_dark: ConundrumColor;
+	foreground_dark?: ConundrumColor;
+	background_light?: ConundrumColor;
+	foreground_light?: ConundrumColor;
+	sizable: SizablePropsGroup;
+	foreground_text?: Children;
 }
 
 export interface ConundrumCommentResult {
@@ -1169,6 +1199,7 @@ export enum EmbeddableComponentName {
 	Highlight = "Highlight",
 	Ul = "Ul",
 	Underline = "Underline",
+	Color = "Color",
 	Card = "Card",
 	Grid = "Grid",
 	UtlityContainer = "Container",
@@ -1340,7 +1371,8 @@ export type ConundrumComponentType =
 	| { tag: "Quote", content: Quote }
 	| { tag: "EqRef", content: EquationReference }
 	| { tag: "EmojiDocsDemo", content: EmojiDocsDemo }
-	| { tag: "Image", content: Image };
+	| { tag: "Image", content: Image }
+	| { tag: "Color", content: ColorComponent };
 
 export interface ReactComponentSelfClosingResult {
 	full_text: string;
@@ -1601,11 +1633,32 @@ export type ConundrumErrorVariant =
 	| { tag: "FailToGenerateString", content?: undefined }
 	| { tag: "FrontMatterError", content?: undefined }
 	| { tag: "UserFacingGeneralParserError", content: ConundrumError }
+	/**
+	 * Deprecated in favor of MissingComponentProperty and
+	 * InvalidComponentProperty.
+	 */
 	| { tag: "UserFacingMissingOrIncorrectProperty", content: ConundrumError }
+	| { tag: "MissingRequiredComponentProperty", content: {
+	component: AnyComponentName;
+	key: string;
+	expected: string;
+}}
+	| { tag: "InvalidComponentProperty", content: {
+	component: AnyComponentName;
+	key: string;
+	expected: string;
+	/**
+	 * If the type is not inferible, use `an unknown type` to align with
+	 * the error verbiage.
+	 */
+	received: string;
+}}
+	| { tag: "InvalidCSSVariableSyntax", content: string }
 	| { tag: "InternalParserError", content: ConundrumError }
 	| { tag: "EnvVarNotFound", content: CdrmEnvVariable }
 	| { tag: "EmojiRenderError", content: string }
-	| { tag: "WasmError", content: string };
+	| { tag: "WasmError", content: string }
+	| { tag: "InvalidColor", content: string };
 
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }
@@ -1638,6 +1691,7 @@ export enum DocumentationComponentName {
 	InContentDocsHighlightDemo = "InContentDocsHighlightDemo",
 	InContentDocsUnderlineDemo = "InContentDocsUnderlineDemo",
 	EmojiDocumentationDemo = "AutoInsertedNestedEmojiDocumentation",
+	Emphasis = "Emphasis",
 }
 
 /** From typescript to swift. */
@@ -1646,6 +1700,7 @@ export enum EmbeddableComponentId {
 	Admonition = "admonition",
 	Hl = "highlight",
 	Ul = "underline",
+	Color = "color",
 	Quote = "quote",
 	Card = "card",
 	Grid = "grid",

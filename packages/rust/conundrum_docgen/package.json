@@ -1,0 +1,10 @@
+{
+    "name": "@conundrum/docgen",
+    "scripts": {
+        "docgen": "cargo run --bin conundrum_docgen",
+        "docgen:writeComponentList": "tsx ../../../scripts/documentation/write_embeddable_component_list_note.ts",
+        "docgen:gatherComponentDocs": "tsx ../../../scripts/gather_component_docs.ts",
+        "docgen:internalDiagrams": "",
+        "docgen:buildCrossLanguage": "sh ./scripts/generate_cross_language_types.sh"
+    }
+}

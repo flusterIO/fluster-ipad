@@ -1,0 +1,27 @@
+{
+    "$schema": "../../../node_modules/turbo/schema.json",
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "docgen:writeComponentList": {
+            "dependsOn": [
+                "docgen>gatherComponentDocs"
+            ]
+        },
+        "docgen": {
+            "inputs": [
+                "./src/*",
+                "./templates/*"
+            ],
+            "with": [
+                "docgen:internalDiagrams"
+            ],
+            "dependsOn": [
+                "docgen:buildCrossLanguage",
+                "docgen:gatherComponentDocs",
+                "docgen:writeComponentList"
+            ]
+        }
+    }
+}

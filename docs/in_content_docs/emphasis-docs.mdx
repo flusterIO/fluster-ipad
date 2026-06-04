@@ -14,10 +14,23 @@ An _emphasis_ is applied as a boolean, and consists of a list of the following p
 In the near future these colors will be customizable.
 ```
 <Grid small={2} large={3}>
-{% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
-{{emphasis.as_cdrm_template(conundrum::lang::lib::ui::shared_props::sizable::SizablePropsGroup {
-    width: Some(conundrum::lang::lib::ui::shared_props::sizable_option::SizableOption::Full),
-    ..Default::default()
-    }.clone()).render()?}}
-{% endfor %}
+
+<Emphasis info />
+
+<Emphasis error />
+
+<Emphasis warn />
+
+<Emphasis success />
+
+<Emphasis primary />
+
+<Emphasis important />
+
+<Emphasis research />
+
+<Emphasis highlight />
+
+<Emphasis card />
+
 </Grid>

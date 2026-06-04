@@ -30,6 +30,7 @@ use crate::{
 
 #[typeshare]
 #[derive(Debug, Serialize, serde::Deserialize, Clone)]
+#[serde(tag = "tag", content = "content")]
 pub enum ConundrumColor {
     Emphasis(Emphasis),
     Css(CssColor),

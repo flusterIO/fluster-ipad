@@ -10,6 +10,6 @@
     class="h-fit min-h-24 w-24 max-w-full rounded-md"
     style="background-color: {{self.color.as_inline_style_value_group().background}};"
     ></div>
-    <div class="w-full text-center text-fd-card-foreground/80 px-2 py-1">{{self.color.describe()}}</div>
+    <div class="w-full text-center text-fd-card-foreground/80 px-2 py-1">{{self.color.describe() | title}}</div>
 </div>
 {% endif %}

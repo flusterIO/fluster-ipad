@@ -2008,9 +2008,6 @@
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .grid-cols-\[1fr\] {
-    grid-template-columns: 1fr;
-  }
   .grid-cols-\[1fr_8px_1fr\] {
     grid-template-columns: 1fr 8px 1fr;
   }
@@ -2515,17 +2512,11 @@
   .bg-foreground {
     background-color: hsl(var(--foreground));
   }
-  .bg-gray-50 {
-    background-color: var(--color-gray-50);
-  }
   .bg-gray-300 {
     background-color: var(--color-gray-300);
   }
   .bg-gray-900 {
     background-color: var(--color-gray-900);
-  }
-  .bg-gray-950 {
-    background-color: var(--color-gray-950);
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
@@ -5335,11 +5326,6 @@
   .\@\[450px\]\/mdx\:w-\[320px\] {
     @container mdx (width >= 450px) {
       width: 320px;
-    }
-  }
-  .\@\[450px\]\/cdrm\:grid-cols-\[1fr_1fr\] {
-    @container cdrm (width >= 450px) {
-      grid-template-columns: 1fr 1fr;
     }
   }
   .\@\[450px\]\/mdx\:grid-cols-3 {

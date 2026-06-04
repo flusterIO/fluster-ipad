@@ -1,27 +1,21 @@
-<div class="{{tw_merge!("grid grid-cols-[1fr] @[450px]/cdrm:grid-cols-[1fr_1fr] my-4 rounded-md", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}">
-    <div class="w-fit flex flex-col justify-center items-center bg-gray-950"> <div class="w-fit h-fit grid grid-cols-1 grid-rows-[1fr_auto] bg-fd-card p-2">
-            <div class="h-fit min-h-32 w-32 max-w-full w-full grid place-items-center p-3 rounded-md"
+<div class="{{tw_merge!("flex flex-col justify-center items-center my-4 rounded-md border bg-fd-card text-fd-card-foreground w-fit", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}">
+    <div class="w-fit grid grid-cols-2 place-items-center gap-x-2 mx-2 mt-2">
+            <div class="h-fit w-full p-3 rounded-md grid place-items-center"
                 style="color: var({{self.foreground_dark.as_inline_style_value_group().foreground}}); background-color: var({{self.background_dark.as_inline_style_value_group().background}});">
                 {% if let Some(foreground_text) = self.foreground_text %}
                 {{foreground_text}}
                 {% else %}
-                {{self.foreground_dark.describe()}}
+                Primary
                 {% endif %}
             </div>
-            <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.background_dark.describe()}}</div>
-        </div>
-    </div>
-    <div class="w-fit flex flex-col justify-center items-center bg-gray-50">
-        <div class="w-fit h-fit grid grid-cols-1 grid-rows-[1fr_auto] bg-fd-card p-2">
-            <div class="h-fit min-h-32 w-32 max-w-full w-full grid place-items-center p-3 rounded-md"
-                style="background-color: {{self.foreground_light.as_inline_style_value_group().foreground}}; color: {{self.background_light.as_inline_style_value_group().background}};">
+            <div class="h-fit w-full p-3 rounded-md grid place-items-center"
+                style="background-color: var({{self.foreground_light.as_inline_style_value_group().foreground}}); color: var({{self.background_light.as_inline_style_value_group().background}});">
                 {% if let Some(foreground_text) = self.foreground_text %}
                 {{foreground_text}}
                 {% else %}
-                {{self.foreground_light.describe()}}
+                 Secondary
                 {% endif %}
             </div>
-            <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.background_light.describe()}}</div>
-        </div>
     </div>
+            <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.background_light.describe() | title}}</div>
 </div>
