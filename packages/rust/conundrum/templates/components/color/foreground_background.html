@@ -1,14 +1,14 @@
-<div class="w-fit grid grid-cols-1 @[350px]/cdrm:grid-cols-2">
-    <div class="{{tw_merge!(" w-fit h-fit grid grid-cols-1 grid-rows-[1fr_auto] bg-fd-card p-2",
-        self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}">
-        <div class="h-fit min-h-32 w-32 max-w-full"
-            style="color: {{self.foreground.as_inline_style_value_group().foreground}}; background-color: {{self.background.as_inline_style_value_group().background}};">
-            {% if let Some(foreground_text) = self.foreground_text %}
-            {{foreground_text}}
-            {% else %}
-            {{self.foreground.describe()}}
-            {% endif %}
-        </div>
-        <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.background.describe()}}</div>
+<div class="{{tw_merge!("w-fit h-fit grid grid-cols-1 grid-rows-[1fr_auto] bg-fd-card p-2 rounded-md hide-math-labels",
+     self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}">
+    <div 
+     style="color: {{self.foreground.as_inline_style_value_group().foreground}}; background-color: {{self.background.as_inline_style_value_group().background}};"
+     {% if let Some(foreground_text) = self.foreground_text %}
+     class="h-fit min-h-24 w-24 max-w-full rounded-md flex flex-col justify-center items-center gap-0 font-semibold text-sm" >
+     {{foreground_text | safe}}
+     {% else %}
+     class="h-fit min-h-24 w-24 max-w-full rounded-md flex flex-col justify-center items-center gap-0 font-semibold text-lg" >
+     {{self.foreground.describe() | safe}}
+     {% endif %}
     </div>
+        <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.background.describe()}}</div>
 </div>

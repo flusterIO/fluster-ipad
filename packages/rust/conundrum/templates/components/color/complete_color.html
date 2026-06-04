@@ -1,21 +1,29 @@
-<div class="{{tw_merge!("flex flex-col justify-center items-center my-4 rounded-md border bg-fd-card text-fd-card-foreground w-fit", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}">
+<div class="{{tw_merge!("flex flex-col justify-center items-center my-4 rounded-md border bg-fd-card text-fd-card-foreground w-fit hide-math-labels", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}">
     <div class="w-fit grid grid-cols-2 place-items-center gap-x-2 mx-2 mt-2">
-            <div class="h-fit w-full p-3 rounded-md grid place-items-center"
-                style="color: var({{self.foreground_dark.as_inline_style_value_group().foreground}}); background-color: var({{self.background_dark.as_inline_style_value_group().background}});">
+            <div
+                style="color: {{self.foreground_dark.as_inline_style_value_group().foreground}}; background-color: {{self.background_dark.as_inline_style_value_group().background}};"
                 {% if let Some(foreground_text) = self.foreground_text %}
-                {{foreground_text}}
+                class="h-fit w-full p-3 rounded-md grid place-items-center overflow-x-auto no-scrollbar"
+                >
+                {{foreground_text | safe}}
                 {% else %}
-                Primary
+                class="h-fit w-full p-3 rounded-md grid place-items-center"
+                >
+                Dark
                 {% endif %}
             </div>
-            <div class="h-fit w-full p-3 rounded-md grid place-items-center"
-                style="background-color: var({{self.foreground_light.as_inline_style_value_group().foreground}}); color: var({{self.background_light.as_inline_style_value_group().background}});">
+            <div
+                style="background-color: {{self.foreground_light.as_inline_style_value_group().foreground}}; color: {{self.background_light.as_inline_style_value_group().background}};"
                 {% if let Some(foreground_text) = self.foreground_text %}
-                {{foreground_text}}
+                class="h-fit w-full p-3 rounded-md grid place-items-center overflow-x-auto no-scrollbar"
+                >
+                {{foreground_text | safe}}
                 {% else %}
-                 Secondary
+                class="h-fit w-full p-3 rounded-md grid place-items-center"
+                >
+                 Light
                 {% endif %}
             </div>
     </div>
-            <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.background_light.describe() | title}}</div>
+        <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.background_light.describe() | title}}</div>
 </div>

@@ -4,7 +4,13 @@ use crate::{
 };
 
 pub trait CSSValueRepresentable {
-    fn as_css_value(&self) -> String;
+    fn as_css_value(&self) -> String {
+        todo!()
+    }
+
+    fn write_css_value(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.as_css_value())
+    }
 }
 
 pub trait CSSValuePossiblyRepresentable {

@@ -3,7 +3,7 @@ use std::ops::Deref;
 use lucide_icons::Icon;
 use serde::{Deserialize, Serialize};
 use strum::{EnumIter, IntoEnumIterator};
-use winnow::error::ErrMode;
+use winnow::{Parser, combinator::alt, error::ErrMode};
 
 use crate::{
     lang::{
@@ -15,7 +15,10 @@ use crate::{
                 to_text_representation::ToTextRepresentation,
             },
             ui_types::emphasis::{
-                emphasis_cdrm_template::CDRMEmphasisTemplate, emphasis_demo_template::EmphasisDemoTemplate,
+                emphasis_cdrm_template::CDRMEmphasisTemplate,
+                emphasis_demo_template::EmphasisDemoTemplate,
+                emphasis_parser::emphasis_string,
+                variable_to_emphasis::{self, css_variable_to_emphasis, emphasis_css_variable},
             },
         },
         runtime::{
@@ -35,7 +38,9 @@ use crate::{
     parsers::{
         conundrum::{
             color::{color_pair::ColorPair, conundrum_color::ConundrumColor, css_color_variable::CSSColorVariable},
-            logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
+            logic::{
+                object::object::ConundrumObject, string::conundrum_string::ConundrumString, token::ConundrumLogicToken,
+            },
         },
         javascript::parsed_javascript_elements::ParsedJavascriptElement,
         markdown::lists::task_list::task_list_item::task_list_completion_indicator::TaskListCompletionToken,
@@ -92,8 +97,7 @@ pub enum Emphasis {
 
 impl ConundrumParser<Emphasis> for Emphasis {
     fn parse_input_string(input: &mut ConundrumInput) -> ConundrumModalResult<Emphasis> {
-        // emphasis_string.parse_next(input)
-        todo!()
+        alt((emphasis_css_variable, emphasis_string)).parse_next(input)
     }
 
     fn matches_first_char(_: char) -> bool {
@@ -123,6 +127,23 @@ impl From<&TaskListCompletionToken> for Emphasis {
             TaskListCompletionToken::Important => Self::Error,
             TaskListCompletionToken::Incomplete => Self::Card,
         }
+    }
+}
+
+impl TryFrom<ConundrumString> for Emphasis {
+    type Error = ErrMode<ConundrumErrorVariant>;
+
+    fn try_from(value: ConundrumString) -> Result<Self, <Emphasis as TryFrom<ConundrumString>>::Error> {
+        for emph in Self::iter() {
+            if value == emph.to_string() {
+                return Ok(emph);
+            }
+        }
+        css_variable_to_emphasis(&value.0).ok_or_else(|| {
+                                              ErrMode::Backtrack(
+                ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("String is not an emphasis"))
+                )
+                                          })
     }
 }
 

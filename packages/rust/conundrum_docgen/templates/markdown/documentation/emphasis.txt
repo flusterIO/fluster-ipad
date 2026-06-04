@@ -5,16 +5,16 @@
 ```long-docs
 An _emphasis_ is a property that carries some styles, usually used to draw attention to content. Many components accept an 'emphasis', including the highlighter (`Hl`), the underline (`Ul`), the admonition, and more.
 
-There also exists a `color` property for overriding the foreground color that accepts any of the _emphasis_ colors as a string, or any valid [css](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color) color.
+There also exists a `color` property for overriding the foreground color that accepts any of the _emphasis_ colors as a string, or any valid  color.
 ```
 
-An _emphasis_ is applied as a boolean, and consists of a list of the following properties:
+An _emphasis_ is usually applied as a boolean, always in `camelCase` (just lowercase it there's no semantic break), and consists of a list of the following properties:
 
 ```long-docs 
 In the near future these colors will be customizable.
 ```
 
-<Grid smedium={2} large={3}>
+<Grid medium={2} large={3}>
 {% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
 {{emphasis.as_cdrm_template(conundrum::lang::lib::ui::shared_props::sizable::SizablePropsGroup {
     width: Some(conundrum::lang::lib::ui::shared_props::sizable_option::SizableOption::Full),
@@ -22,3 +22,13 @@ In the near future these colors will be customizable.
     }.clone()).render()?}}
 {% endfor %}
 </Grid>
+
+```long-docs
+And don't forget, the above component is available to you via the `Color` component. A future version of Fluster will include support for generating color gradients and all sorts of UI related workflows, as well as support for arbitrary emphasis colors.
+
+Currently, arbitrary color support is a work in progress. The parser and type are already available in the Color component, but they have not yet been implemented in other components where it makes sense. This will change with the upcoming addition of the `Colorable` property group, which may or may not make it into the initial release.
+
+<Hint>
+Learn more about arbitrary CSS colors [here](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color).
+</Hint>
+```

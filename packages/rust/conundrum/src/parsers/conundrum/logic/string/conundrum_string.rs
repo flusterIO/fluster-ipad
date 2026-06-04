@@ -67,6 +67,12 @@ impl Display for ConundrumString {
     }
 }
 
+impl PartialEq<String> for ConundrumString {
+    fn eq(&self, other: &String) -> bool {
+        self.0 == *other
+    }
+}
+
 impl PartialEq<&str> for ConundrumString {
     fn eq(&self, other: &&str) -> bool {
         self.0 == *other

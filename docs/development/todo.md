@@ -1,11 +1,5 @@
 # To-Do
 
-## In Progress
-
-- [ ] Create separate Emphasis **Component** in Rust.
-- [ ] Use docgen to output that component for each Emphasis variant.
-- [ ] Make this component applicable to any color group.
-
 ---
 
 ### Pre-release bugs

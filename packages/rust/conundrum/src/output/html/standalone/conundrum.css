@@ -81,6 +81,7 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
+    --color-primary: hsl(var(--primary));
     --color-border: hsl(var(--border));
     --color-emphasis-primary: hsl(var(--emphasis-primary));
     --color-emphasis-primary-foreground: hsl(var(--emphasis-primary-foreground));
@@ -5304,11 +5305,6 @@
   .\@\[320px\]\/mdx\:grid-cols-11 {
     @container mdx (width >= 320px) {
       grid-template-columns: repeat(11, minmax(0, 1fr));
-    }
-  }
-  .\@\[350px\]\/cdrm\:grid-cols-2 {
-    @container cdrm (width >= 350px) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   .\@\[350px\]\/mdx\:grid-cols-2 {

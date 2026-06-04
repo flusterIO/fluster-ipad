@@ -29,7 +29,7 @@ impl ToTextRepresentation for CSSColorVariable {
 
 impl Default for CSSColorVariable {
     fn default() -> Self {
-        Self(String::from("--color-emphasis-primary"))
+        Self(String::from("--color-primary"))
     }
 }
 
@@ -54,5 +54,9 @@ impl Display for CSSColorVariable {
 impl CSSValueRepresentable for CSSColorVariable {
     fn as_css_value(&self) -> String {
         format!("var({})", self.0)
+    }
+
+    fn write_css_value(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::write!(f, "var({})", self.0)
     }
 }

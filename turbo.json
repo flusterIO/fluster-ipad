@@ -64,6 +64,9 @@
     "@conundrum/ts#build:mac": {
       "dependsOn": ["@conundrum/main#build:scss"]
     },
+    "@fluster/webview_utils#build:mac": {
+      "dependsOn": ["@fluster/bib_lezer#build:mac"]
+    },
     "docgen": {
       "description": "Generate code and documentation using template strings throughout the monorepo",
       "dependsOn": ["@conundrum/docgen#docgen"],

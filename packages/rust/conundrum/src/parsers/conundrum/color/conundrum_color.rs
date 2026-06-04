@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+use anyhow::Result;
 use lightningcss::traits::ToCss;
 use serde::Serialize;
 use typeshare::typeshare;
@@ -47,7 +48,7 @@ impl Display for ConundrumColor {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             ConundrumColor::Emphasis(e) => e.fmt(f),
-            ConundrumColor::CSSVariable(c) => c.fmt(f),
+            ConundrumColor::CSSVariable(c) => c.write_css_value(f),
             ConundrumColor::Css(c) => c.fmt(f),
         }
     }
@@ -73,7 +74,11 @@ impl TryFrom<ConundrumString> for ConundrumColor {
     type Error = ErrMode<ConundrumErrorVariant>;
 
     fn try_from(value: ConundrumString) -> Result<Self, Self::Error> {
-        CssColor::try_from(value.0.as_str()).map(|c| ConundrumColor::Css(c))
+        if let Ok(emphasis) = value.clone().try_into() {
+            Ok(ConundrumColor::Emphasis(emphasis))
+        } else {
+            CssColor::try_from(value.0.as_str()).map(ConundrumColor::Css)
+        }
     }
 }
 

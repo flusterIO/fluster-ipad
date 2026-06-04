@@ -1,6 +1,7 @@
 import { aiNoteSummaryComponentConfig } from "../../ai/embeddable_components/ai_note_summary/ai_note_summary_component_config";
 import { admonitionComponentConfig } from "./admonition/admonition_component_config";
 import { embeddableCardComponentConfig } from "./card/embeddable_card_component_config";
+import { colorComponentConfig } from "./color/color_component_config";
 import { embeddableUtilityContainerComponentConfig } from "./container/embeddable_utility_container_component_config";
 import { type EmbeddableComponentConfig } from "./embeddable_component_config";
 import { emojiComponentConfig } from "./emoji/emoji_component_config";
@@ -15,6 +16,7 @@ import { embeddableTabComponentConfig } from "./tabs/embeddable_tab_config";
 import { tabGroupComponentConfig } from "./tabs/tab_group_component_config";
 import { tocComponentConfg } from "./toc/toc_config";
 import { ulComponentConfig } from "./ul/ul_component_config";
+
 
 export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
     admonitionComponentConfig,
@@ -32,5 +34,6 @@ export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
     emojiComponentConfig,
     tocComponentConfg,
     quoteComponentConfig,
-    imageComponentConfig
+    imageComponentConfig,
+    colorComponentConfig
 ]

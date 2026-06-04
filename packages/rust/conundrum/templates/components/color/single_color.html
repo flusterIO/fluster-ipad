@@ -1,15 +1,17 @@
 {% if let std::option::Option::Some(_) = self.sizable.inline %}
 <span
-    class="{{tw_merge!("w-4 h-4 rounded", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}"
+    class="{{tw_merge!("w-4 h-4 rounded hide-math-labels", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}"
     style="background-color: {{self.color.as_inline_style_value_group().background}};"
 >
 </span>
 {% else %}
-<div class="{{tw_merge!("w-fit h-fit grid grid-cols-1 grid-rows-[1fr_auto] bg-fd-card p-2 rounded-md", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}" >
+<div class="{{tw_merge!("w-fit h-fit grid grid-cols-1 grid-rows-[1fr_auto] bg-fd-card p-2 rounded-md hide-math-labels", self.sizable.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General))}}" >
     <div  
     class="h-fit min-h-24 w-24 max-w-full rounded-md"
     style="background-color: {{self.color.as_inline_style_value_group().background}};"
     ></div>
-    <div class="w-full text-center text-fd-card-foreground/80 px-2 py-1">{{self.color.describe() | title}}</div>
+    <div class="w-full text-center text-fd-card-foreground/80 px-2 py-1 flex flex-col justify-center items-center gap-0 font-semibold">
+        {{self.color.describe() | title}}
+    </div>
 </div>
 {% endif %}
