@@ -14,8 +14,8 @@ import { type BibtexEditorWebviewEvents, CodeEditorKeymap, type EditorState, Spl
 import { type AnyWebviewAction, type AnyWebviewStorageKey } from "@/utils/types/any_window_event";
 import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
-import { bracketMatching, foldGutter, indentOnInput, syntaxTree, LanguageSupport } from '@codemirror/language';
-import { autocompletion, closeBrackets, completeFromList, type CompletionSource } from '@codemirror/autocomplete';
+import { bracketMatching, foldGutter, indentOnInput, syntaxTree } from '@codemirror/language';
+import { autocompletion, closeBrackets, type CompletionSource } from '@codemirror/autocomplete';
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
 import { Prec } from "@codemirror/state";
@@ -23,8 +23,8 @@ import { type GetSnippetProps, SnippetStrategy } from "../data/snippets/snippet_
 import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
-import { getBibtexSnippets } from "../data/snippets/bibtex_snippets";
-import { bibtexLanguage, bibtexBracketMatching, bibtexLinter, bibtexHoverTooltip, bibtex } from "@fluster/bib_lezer"
+/* import { getBibtexSnippets } from "../data/snippets/bibtex_snippets"; */
+import { bibtexBracketMatching, bibtexLinter, bibtexHoverTooltip, bibtex } from "@fluster/bib_lezer"
 import 'codemirror-lang-bib/dist/bib.css';
 import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
@@ -164,11 +164,7 @@ export const CodeEditorInner = connector(({
         } else {
             extensions = [
                 ...extensions,
-                bibtex({ enableAutocomplete: false }),
-                // Using the mardown language here to get around bib languge's shit snippets.
-                Prec.high(markdownLanguage.data.of({
-                    autocomplete: completeFromList(getBibtexSnippets())
-                })),
+                bibtex({ enableAutocomplete: true }),
                 bibtexBracketMatching,
                 linter(bibtexLinter()),
                 bibtexHoverTooltip,

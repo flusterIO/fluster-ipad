@@ -25,6 +25,7 @@ lazy_static! {
         map.insert(EmbeddableComponentName::EqRef, EmbeddableComponentId::EqRef);
         map.insert(EmbeddableComponentName::Toc, EmbeddableComponentId::Toc);
         map.insert(EmbeddableComponentName::Emoji, EmbeddableComponentId::Emoji);
+        map.insert(EmbeddableComponentName::Color, EmbeddableComponentId::Color);
         map
     };
 }

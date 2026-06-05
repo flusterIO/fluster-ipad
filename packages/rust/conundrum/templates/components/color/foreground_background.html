@@ -10,5 +10,11 @@
      {{self.foreground.describe() | safe}}
      {% endif %}
     </div>
-        <div class="w-full text-center text-fd-card-foreground/80 p-2">{{self.background.describe()}}</div>
+        <div class="w-full text-center text-fd-card-foreground/80 p-2">
+            {% if let Some(title_text) = self.title %}
+            {{title_text}}
+            {% else %}
+            {{self.background.describe() | title}}
+            {% endif %}
+        </div>
 </div>

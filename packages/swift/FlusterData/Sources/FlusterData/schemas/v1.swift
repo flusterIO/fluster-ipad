@@ -7,6 +7,7 @@ import PaperKit
 import PencilKit
 import SwiftData
 
+
 public let DEFAULT_NOTE_TITLE: String = "No title found"
 public let DEFAULT_TAG_COLOR: String = "placeholder"
 public let DEFAULT_SUBJECT_COLOR: String = "placeholder"

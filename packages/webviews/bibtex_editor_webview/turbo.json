@@ -41,7 +41,7 @@
                 "./src/"
             ],
             "outputs": [
-                "bibtex_editor_webview_mac/"
+                "./bibtex_editor_webview_mac/"
             ],
             "passThroughEnv": [
                 "FLUSTER_PROD_BUILD"

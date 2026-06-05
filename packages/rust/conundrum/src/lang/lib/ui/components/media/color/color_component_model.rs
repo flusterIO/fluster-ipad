@@ -33,7 +33,7 @@ use crate::{
     },
     parsers::conundrum::{
         color::{color_scheme_group::ConundrumCompleteColor, conundrum_color::ConundrumColor},
-        logic::object::object::ConundrumObject,
+        logic::{object::object::ConundrumObject, string::conundrum_string::ConundrumString},
     },
 };
 
@@ -46,6 +46,7 @@ pub struct ColorComponent {
     pub foreground_light: Option<ConundrumColor>,
     pub sizable: SizablePropsGroup,
     pub foreground_text: Option<Children>,
+    pub title: Option<Children>,
 }
 
 #[derive(Template)]
@@ -55,6 +56,7 @@ pub enum ColorComponentTemplateVariants {
     SingleColor {
         color: ConundrumColor,
         sizable: SizablePropsGroup,
+        title: Option<String>,
     },
     #[template(path = "components/color/foreground_background.html")]
     ForegroundBackground {
@@ -62,6 +64,7 @@ pub enum ColorComponentTemplateVariants {
         background: ConundrumColor,
         sizable: SizablePropsGroup,
         foreground_text: Option<String>,
+        title: Option<String>,
     },
     #[template(path = "components/color/complete_color.html")]
     CompleteColor {
@@ -71,28 +74,27 @@ pub enum ColorComponentTemplateVariants {
         background_dark: ConundrumColor,
         sizable: SizablePropsGroup,
         foreground_text: Option<String>,
+        title: Option<String>,
     },
 }
 
 impl PlainTextComponentResult for ColorComponent {
     fn to_plain_text(&self,
-                     res: crate::lang::runtime::traits::conundrum_input::ArcState)
+                     _: crate::lang::runtime::traits::conundrum_input::ArcState)
                      -> ConundrumModalResult<String> {
         todo!()
     }
 }
 
 impl MarkdownComponentResult for ColorComponent {
-    fn to_markdown(&self,
-                   res: crate::lang::runtime::traits::conundrum_input::ArcState)
-                   -> ConundrumModalResult<String> {
+    fn to_markdown(&self, _: crate::lang::runtime::traits::conundrum_input::ArcState) -> ConundrumModalResult<String> {
         todo!()
     }
 }
 
 impl ConundrumComponentResult for ColorComponent {
     fn to_conundrum_component(&self,
-                              res: crate::lang::runtime::traits::conundrum_input::ArcState)
+                              _: crate::lang::runtime::traits::conundrum_input::ArcState)
                               -> ConundrumModalResult<String> {
         todo!()
     }
@@ -110,6 +112,10 @@ impl HTMLTemplatePossiblyRepresentable<ColorComponentTemplateVariants> for Color
                                                                    background_light: background_light.clone(),
                                                                    foreground_dark: foreground_dark.clone(),
                                                                    background_dark: self.background_dark.clone(),
+                                                                   title: match &self.title {
+                                                                       Some(s) => Some(s.render(Arc::clone(&state))?),
+                                                                       None => None,
+                                                                   },
                                                                    foreground_text: match &self.foreground_text {
                                                                        Some(s) => Some(s.render(Arc::clone(&state))?),
                                                                        None => None,
@@ -124,10 +130,20 @@ impl HTMLTemplatePossiblyRepresentable<ColorComponentTemplateVariants> for Color
                                                                               }
                                                                               None => None,
                                                                           },
+                                                                          title: match &self.title {
+                                                                              Some(s) => {
+                                                                                  Some(s.render(Arc::clone(&state))?)
+                                                                              }
+                                                                              None => None,
+                                                                          },
                                                                           sizable: self.sizable.clone() })
             }
         } else {
             Ok(ColorComponentTemplateVariants::SingleColor { color: self.background_dark.clone(),
+                                                             title: match &self.title {
+                                                                 Some(s) => Some(s.render(Arc::clone(&state))?),
+                                                                 None => None,
+                                                             },
                                                              sizable: self.sizable.clone() })
         }
     }
@@ -170,7 +186,7 @@ impl ConundrumComponent for ColorComponent {
             Ok(r) => (r, FirstColorSource::BackgroundDark),
             Err(e) => match props.get_string("background", None) {
                 Ok(s) => (s, FirstColorSource::Background),
-                Err(_) => (props.get_string("color", None).map_err(|e| {
+                Err(_) => (props.get_string("color", None).map_err(|_| {
                     ErrMode::Cut(
                         ConundrumErrorVariant::MissingRequiredComponentProperty { component: Self::get_component_id(), key: String::from("color | background | backgroundDark"), expected: "Color".to_string() }
                     )
@@ -185,7 +201,12 @@ impl ConundrumComponent for ColorComponent {
         let fg_light = props.get_string("foregroundLight", None).ok();
         let bg_light = props.get_string("backgroundLight", None).ok();
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").unwrap_or_default();
-        Ok(ColorComponent { background_dark: bg_color.try_into()?,
+        let title = match ConundrumString::from_jsx_props(&props, "title") {
+                        Ok(r) => r.to_children(Arc::clone(&state)),
+                        Err(e) => Err(e),
+                    }.ok();
+        Ok(ColorComponent { title,
+                            background_dark: bg_color.try_into()?,
                             foreground_dark: match fg_color {
                                 Some(s) => Some(s.try_into()?),
                                 None => None,
@@ -210,6 +231,7 @@ impl From<ConundrumCompleteColor> for ColorComponent {
                          background_light: Some(value.light.background),
                          foreground_light: Some(value.light.foreground),
                          sizable: SizablePropsGroup::default(),
-                         foreground_text: None }
+                         foreground_text: None,
+                         title: None }
     }
 }

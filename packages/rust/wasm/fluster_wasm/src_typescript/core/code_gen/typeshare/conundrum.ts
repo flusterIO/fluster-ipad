@@ -600,6 +600,7 @@ export interface ColorComponent {
 	foreground_light?: ConundrumColor;
 	sizable: SizablePropsGroup;
 	foreground_text?: Children;
+	title?: Children;
 }
 
 export interface ConundrumCommentResult {

@@ -8,13 +8,13 @@ An _emphasis_ is a property that carries some styles, usually used to draw atten
 There also exists a `color` property for overriding the foreground color that accepts any of the _emphasis_ colors as a string, or any valid  color.
 ```
 
-An _emphasis_ is usually applied as a boolean, always in `camelCase` (just lowercase it there's no semantic break), and consists of a list of the following properties:
+An _emphasis_ is usually applied as a boolean, always in `camelCase` (just lowercase if there's no semantic break), and consists of a list of the following properties:
 
 ```long-docs 
 In the near future these colors will be customizable.
 ```
 
-<Grid medium={2} large={3}>
+<Grid smedium={2} large={3}>
 {% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
 {{emphasis.as_cdrm_template(conundrum::lang::lib::ui::shared_props::sizable::SizablePropsGroup {
     width: Some(conundrum::lang::lib::ui::shared_props::sizable_option::SizableOption::Full),

@@ -1,0 +1,72 @@
+## Color
+
+The `Color` component is actually a set of components that will render independently depending on which properties are passed in.
+
+If you pass in a single `color` property, where `color` is any valid CSS color (in all lowercase if it's a named color), then we get:
+
+```tsx -- title="color.cdrm"
+<Color color="olive"/>
+```
+
+<Color color="olive" />
+
+Or if we include an `inline` property, we can see the <Color color="olive" inline /> directly in our text!
+
+
+We can also create groups of colors, for example, as a foreground and background pair:
+
+  
+```tsx -- title="color.cdrm"
+<Color
+  background="blue"
+  foreground="white"
+  />
+```
+
+<Color background="blue" foreground="white" />
+
+
+Or even if you have a light mode and dark mode variant, we can do:
+
+```tsx -- title="color.cdrm"
+<Color
+  backgroundLight="black"
+  backgroundDark="blue"
+  foregroundDark="white"
+  foregroundLight="skyblue"
+  />
+```
+
+
+<Color
+  backgroundLight="black"
+  backgroundDark="blue"
+  foregroundDark="white"
+  foregroundLight="skyblue"
+  />
+
+We can even use the component to wrap _children_ when the properties include a 'foreground' variant, and include a `title` property to change the bottom text:
+
+```tsx
+<Color
+  backgroundLight="black"
+  backgroundDark="blue"
+  foregroundDark="white"
+  foregroundLight="white"
+  title="My Color"
+  >
+  $e=mc^2$
+</Color>
+```
+  
+<Color
+  backgroundLight="black"
+  backgroundDark="blue"
+  foregroundDark="white"
+  foregroundLight="white"
+  title="My Color"
+  >
+  $e=mc^2$
+</Color>
+
+> Keep in mind that _any_ valid css color can be used. `rgb(255, 0, 0){:css}`, `#f00{:css}`, and `red` are all ways of saying the same thing.
