@@ -539,6 +539,8 @@ importers:
         specifier: 19.2.0
         version: 19.2.0(react@19.2.0)
 
+  packages/rust/conundrum_swift: {}
+
   packages/rust/conundrum_ts:
     dependencies:
       '@conundrum/main':

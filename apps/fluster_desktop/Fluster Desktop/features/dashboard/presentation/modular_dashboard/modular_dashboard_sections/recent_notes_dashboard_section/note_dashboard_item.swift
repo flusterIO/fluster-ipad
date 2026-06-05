@@ -28,6 +28,12 @@ struct NoteDashboardItem: View {
       VStack(alignment: .leading) {
         MarkdownTextView(item.getPreferedTitle(), .inlineOnly)
           .font(.headline)
+        if let summary = item.frontMatter.summary, !summary.body.isEmpty {
+          MarkdownTextView(summary.body, .inlineOnly)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
+        }
         NoteDashboardBottomRow(
           item: item,
           searchBySubject: $searchBySubject,
