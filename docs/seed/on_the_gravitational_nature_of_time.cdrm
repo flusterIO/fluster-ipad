@@ -1,8 +1,5 @@
 ---
-title: On the gravitational nature of time
-id: on_the_gravitational_nature_of_time
 summary: A sample note & a novel interpretation of relativity yielding multiple directly observed quantities to well within measurement error
-subject: Examples
 ---
 
 # On The Gravitational Nature Of Time
@@ -15,27 +12,25 @@ Almost 5 years ago I realized Einstein made an assumption that made far more sen
 
 I'll do my best to convince the math types among you (this article does assume some basic understanding of physics and relativity) by the end of this sample note that Einstein made a mistake[^1], but regardless of your opinions on the model, I hope you enjoy Fluster and find it as useful as I have. Thanks for checking it out!
 
-> Also, please keep in mind that while this may not be as responsive as the Fluster website, it was written in the very early stages of a markdown like syntax with the same transpiler that powers Fluster. The Conundrum transpiler will continue to improve daily, with blogging support being a major priority. The source for this file is available [here](https://github.com/flusterIO/fluster-ipad/blob/main/apps/website/cdrm/on_the_gravitational_nature_of_time.cdrm).
-
 </Admonition>
 
 #### Included Derivations
-> This table is generated directly from `Astropy` and `Scipy`. All functions reflect names in the `alpha_omega_gravity` python package, because after 5 years of being homeless I think I earned the right to be grandiose. (α comes from the fine-structure constant).
+> This table is generated directly from `Astropy` and `Scipy`. All functions reflect names in the `alpha_omega_gravity` python package, because after 5 years of being homeless I think I earned the right to be grandiose. ($\alpha$ comes from the fine-structure constant).
 
 | Derivation                                                | Function                         | % Error             |
 |:----------------------------------------------------------|:---------------------------------|:--------------------|
 | cosmological velocity from local gravitational parameters | `vbarCosmological`               | Difficult to assess |
-| kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | 0.442258391884371   |
-| Earth's roational velocity via α                          | `rotationVelocityFromDivergence` | 0.00677756400547747 |
-| Solar-Galactic Radius from visible mass                   | `galacticRadiusPolynomial`       | 0.0                 |
-| α (solar)                                                 | `alphaSolar`                     | 0.00342749503676447 |
-| α (Earth)                                                 | `omega`, `alphaFactor`           | 0.0253043303850287  |
-| α (orbital velocity)                                      | `solarMetricVelocity`, `vOrbit`  | 0.0544665494810030  |
-| α (from derived velocity)                                 | `vbarAlphaEquivalence`           | 0.0761820393770567  |
-| J ≈ Φ                                                     | `currentEquivalent`              | 0.213633171310522   |
-| h from α                                                  | `omega`, `alpha`                 | 0.0253887188634106  |
-| h/(2 - α) from ω                                          | `omega`, `alpha`                 | 0.00342749503676447 |
-| Φ mass density approximation                              | `massDensityEquivalence`         | 0.863214423082925   |
+| kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | $0.442258391884371\%$   |
+| Earth's roational velocity via $\alpha$                          | `rotationVelocityFromDivergence` | $0.00677756400547747\%$ |
+| Solar-Galactic Radius from visible mass                   | `galacticRadiusPolynomial`       | $0.0\%$                 |
+| $\alpha$ (solar)                                                 | `alphaSolar`                     | $0.00342749503676447\%$ |
+| $\alpha$ (Earth)                                                 | `omega`, `alphaFactor`           | $0.0253043303850287\%$  |
+| $\alpha$ (orbital velocity)                                      | `solarMetricVelocity`, `vOrbit`  | $0.0544665494810030\%$  |
+| $\alpha$ (from derived velocity)                                 | `vbarAlphaEquivalence`           | $0.0761820393770567\%$  |
+| $J \approx \Phi$                                                     | `currentEquivalent`              | $0.213633171310522\%$   |
+| $h$ from $\alpha$                                                  | `omega`, `alpha`                 | $0.0253887188634106\%$  |
+| $h / (2 - \alpha)$ from $\omega$                                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
+| $\Phi$ mass density approximation                              | `massDensityEquivalence`         | $0.863214423082925\%$   |
 
 
 <Hint label="Error" info>
@@ -64,7 +59,8 @@ Is this not inline with what we already believe? Do current models not describe 
 
 > **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
 
-### Time Gravity Equivalence <Emoji name="watch" inline smedium/>
+
+### Time Gravity Equivalence <Emoji name="alarm_clock" inline smedium/>
 
 
 Let's recognize the two primary properties that time occupies:
@@ -87,7 +83,7 @@ Let's consider that this dilation of space might give rise to our gravitational 
 <Image maxHeight="medium" right contain sidebar src="https://flusterapp.com/assets/diagrams/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
 
 $$ {#eq_delta}
-\delta = \frac{d}{dR} - G \frac{M}{R^2} = 2 G \frac{M}{R^3}
+\delta = \frac{d}{dR} g = 2 G \frac{M}{R^3}
 $$
 
 <Hint>
@@ -131,13 +127,13 @@ $$ {#timeEquiv}
 \Delta \tau = \frac{\int_p \dot{x}}{\int_0^v \dot{x}}
 $$
 
-<Admonition title="Notation" foldable card>
+<Card title="Notation" desc="Introducing the notion of 'proportionally bound' derivatives and integrals" >
 
 This notation is likely confusing, so let me clarify. To satisfy the properties time occupies, this quantity is integrated in a manner that is unique, keeping the denominator fixed at 1 unit of distance (the velocity in units of distance) while the integral $\int_p$ is meant to indicate a 'proportional' integral, or an integral that goes on indefinitely as 'time' progresses.
 
 This gives us a dimensionless quantity that is distance/distance, of a magnitude that is equivalent to $t$ in this form, and a magnitude equivalent to $\frac{1}{2}t^2$ when integrated.
 
-</Admonition>
+</Card>
 
 Let's then re-examine equation <EqRef id="vGamma"/> and it's derivation. Since $dx$ in equation <EqRef id="vGamma" /> is per unit time, we should then divide by $v_\gamma$ and multiply by our time equivalent quantity from equation <EqRef id="timeEquiv"/>.
 
@@ -185,7 +181,7 @@ $$
 We can solve this trigonometrically. 
 
 $$
-R_0^2 + \dot{x}^2 dt^2 = \left(\int_0^{R_0} -2 G \frac{M}{R^3}\right)^2 = \left(R_0 + g\right)^2
+R_0^2 + \dot{x}^2 dt^2 = \left(\int_0^{R_0} 2 G \frac{M}{R^3}\right)^2 = \left(R_0 + g\right)^2
 $$
 
 Solving this equality for $dt$ gives only one non-zero solution:

@@ -1680,6 +1680,7 @@ export enum ConundrumWebEvents {
 	NoteLinkClick = "cdrm-note-id-link-click",
 	CopyToClipboard = "cdrm-content-copied",
 	DictionaryEntryLabelClick = "dictionary-entry-click",
+	TocItemClick = "toc-item-click",
 }
 
 export enum CopyToClipboardSource {

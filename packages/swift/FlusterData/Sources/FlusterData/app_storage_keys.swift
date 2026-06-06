@@ -33,6 +33,7 @@ public enum AppStorageKeys: String {
     // -- UI State --
     noteSidebarSectionOpen,
     flusterSidebarSectionOpen,
+    globalSectionOpen,
     desktopWebviewTheme
   /// Store the plain text alongside the markdown text for full text search compatibility
   case storePlainText

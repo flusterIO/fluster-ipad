@@ -8,7 +8,7 @@
 - [ ] Write new bibliography snippets and include them for the obvious things for general users like a web page.
 - [ ] Make sure shit bib snippets are not shown.
 - [ ] Get dictionary entry page entries clickable again.
-- [ ] Get emoji search working again, then check and verify that all documentation compiles.
+- [ ] Get table of contents clickable again.
 - [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
   - [ ] Add the tabs component into the application somewhere to show it off.
 - [ ] Work on initial launch note conversion to `.cdrm`

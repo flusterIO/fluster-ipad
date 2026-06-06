@@ -13,6 +13,7 @@ import {
 } from "@conundrum/wasm/ts";
 import { type handleNoteLinkClick } from "./markdown_glue/extensions/note_link/handle_note_link_click";
 import { type onDictionaryEntryClick } from "./event_handlers/on_dictionary_entry_click";
+import { type onTocItemClick } from "./event_handlers/on_toc_item_click";
 
 export interface ConundrumWebClient {
     handleConundrumTabClick: typeof handleConundrumTabClick;
@@ -27,6 +28,7 @@ export interface ConundrumWebClient {
     searchEmojis?: typeof searchConundrumEmojis;
     searchConundrumEmojisAndAppendToContainer?: typeof searchConundrumEmojisAndAppendToContainer;
     onDictionaryEntryClick: typeof onDictionaryEntryClick
+    onTocItemClick: typeof onTocItemClick
 }
 
 /**

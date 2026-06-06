@@ -9,10 +9,6 @@ import FlusterSwift
 import SwiftUI
 
 struct SettingPageLogo: View {
-  init() {
-      // WARNING: This is a huge no-no. Make sure to remove this after seeding debugging is done.
-    UserDefaults.resetUserDefaultsDEVELOPMENTONLY()
-  }
   var body: some View {
     VStack(alignment: .leading, spacing: 24) {
       // Header

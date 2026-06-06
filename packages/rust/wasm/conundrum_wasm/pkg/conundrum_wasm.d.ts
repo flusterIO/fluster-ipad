@@ -172,10 +172,6 @@ export class Settings {
 
 export function search_conundrum_emojis(query: string, page: number, per_page: number): any;
 
-/**
- * Not working at the moment. It's currently unable to find the element despite it being in the
- * DOM.
- */
 export function search_conundrum_emojis_in_docs_container(query: string, container_id: string, page: number, per_page: number): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;

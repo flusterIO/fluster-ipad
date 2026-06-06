@@ -446,8 +446,6 @@ export function search_conundrum_emojis(query, page, per_page) {
 }
 
 /**
- * Not working at the moment. It's currently unable to find the element despite it being in the
- * DOM.
  * @param {string} query
  * @param {string} container_id
  * @param {number} page

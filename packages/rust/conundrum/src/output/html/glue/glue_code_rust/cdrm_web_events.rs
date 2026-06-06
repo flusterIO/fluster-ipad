@@ -23,5 +23,8 @@ pub enum ConundrumWebEvents {
     CopyToClipboard,
     #[serde(rename = "dictionary-entry-click")]
     #[strum(to_string = "dictionary-entry-click")]
-    DictionaryEntryLabelClick
+    DictionaryEntryLabelClick,
+    #[serde(rename = "toc-item-click")]
+    #[strum(to_string = "toc-item-click")]
+    TocItemClick,
 }

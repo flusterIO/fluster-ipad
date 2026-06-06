@@ -13,6 +13,8 @@ struct MainViewSidebar: View {
     var flusterSidebarSectionOpen = false
   @AppStorage(AppStorageKeys.noteSidebarSectionOpen.rawValue) private
     var noteSidebarSectionOpen = false
+    @AppStorage(AppStorageKeys.globalSectionOpen.rawValue) private
+      var globalSectionOpen = false
   var body: some View {
     ScrollView {
       Group {
@@ -27,7 +29,7 @@ struct MainViewSidebar: View {
           title: "Fluster"
         )
         CollapsableSidebarSection(
-          open: $flusterSidebarSectionOpen,
+          open: $globalSectionOpen,
           items: globalSearchSidebarItems,
           title: "Global Search"
         )

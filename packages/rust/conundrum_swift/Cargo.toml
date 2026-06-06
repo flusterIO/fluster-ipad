@@ -10,7 +10,7 @@ crate-type = ["staticlib", "lib"]
 name = "conundrum_swift"
 
 [dependencies]
-uniffi = { workspace = true }
+uniffi = { workspace = true, features = ["tokio", "cli"] }
 conundrum = { path = "../conundrum/" }
 fluster_core_utilities = { path = "../fluster_core_utilities" }
 
