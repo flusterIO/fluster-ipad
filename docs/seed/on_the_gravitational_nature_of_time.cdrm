@@ -80,7 +80,7 @@ Of course we need to change the dimensionality of much of our physics, but as I 
 Let's consider that this dilation of space might give rise to our gravitational acceleration, where $p_1$ becomes akin to the cosmological rest frame. If we allow that this velocity gives rise to spatial dilation, which then gives rise to the gravitational acceleration that we feel, we should examine the derivative of $g$ with respect to $R$.
 
 
-<Image maxHeight="medium" right contain sidebar src="https://flusterapp.com/assets/diagrams/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
+<Image maxHeight="medium" right contain sidebar src="https://fluster-blog-media.s3.us-east-2.amazonaws.com/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
 
 $$ {#eq_delta}
 \delta = \frac{d}{dR} g = 2 G \frac{M}{R^3}
@@ -209,7 +209,7 @@ This value again coincides closely with our velocity observed relative to the CM
 
 #### In the relativistic frame
 
-<Image src="https://flusterapp.com/assets/diagrams/cmb_velocity_from_gravtational_params.png" sidebar right maxHeight="medium" paddingY="medium" />
+<Image src="https://fluster-blog-media.s3.us-east-2.amazonaws.com/cmb_velocity_from_gravtational_params.png" sidebar right maxHeight="medium" paddingY="medium" />
 
 
 As we used the Newtonian derived orbital parameters in the previous section to derive a relativistic velocity correction in the form of an increase in elapsed 'time', we can now derive a relativistic equation for a body in stable orbit by setting $dt = 1$ and solving for $\dot{x}$. This gives a model in the coordinate system of the observer in motion, as he travels at the 'agreed upon velocity' (any velocity multiplied by a scalar of 1). 
