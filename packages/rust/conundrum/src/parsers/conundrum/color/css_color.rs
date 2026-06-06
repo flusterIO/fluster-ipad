@@ -1,25 +1,23 @@
-use std::fmt::Display;
-
-use cssparser::{
-    Parser, ParserInput,
-    color::{parse_hash_color, parse_named_color},
-};
 use lightningcss::{
     printer::PrinterOptions,
     traits::{Parse, ToCss},
     values::color::{ColorFallbackKind, CssColor as CL, RGBA},
 };
 use serde::{Deserialize, Serialize};
+use std::fmt::Display;
 use typeshare::typeshare;
-use winnow::error::ErrMode;
+use winnow::{Parser, error::ErrMode};
 
 use crate::{
-    lang::runtime::{
-        state::{
-            conundrum_error::ConundrumError,
-            conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+    lang::{
+        lib::ui::ui_types::emphasis::emphasis_model::Emphasis,
+        runtime::{
+            state::{
+                conundrum_error::ConundrumError,
+                conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
+            },
+            traits::rendering::display_with_params::DisplayWithParam,
         },
-        traits::rendering::display_with_params::DisplayWithParam,
     },
     output::html::{
         web_specific_models::lightning_css_printer_options::safari_specific_lightning_css_printer_options,
@@ -28,7 +26,7 @@ use crate::{
         },
     },
     parsers::{
-        conundrum::color::{color_pair::ColorPair, conundrum_color::ConundrumColor},
+        conundrum::color::{color_pair::ColorPair, color_parser::named_color, conundrum_color::ConundrumColor},
         parser_trait::ConundrumParser,
     },
 };
@@ -49,10 +47,10 @@ impl Display for CssColor {
                             CL::RGBA(r) => Ok((r.red, r.green, r.blue, r.alpha)),
                             _ => Err(()),
                         } {
-                            return Result::<String, ()>::Ok(format!("rgba({}, {}, {}, {})", r, g, b, a));
+                            Result::<String, ()>::Ok(format!("rgba({}, {}, {}, {})", r, g, b, a))
                         } else {
-                            return Ok(fallback.to_css_string(safari_specific_lightning_css_printer_options())
-                                              .unwrap_or_default());
+                            Ok(fallback.to_css_string(safari_specific_lightning_css_printer_options())
+                                       .unwrap_or_default())
                         }
                     })
                     .unwrap_or_default();
@@ -118,11 +116,20 @@ impl TryFrom<&str> for CssColor {
 }
 
 impl ConundrumParser<CssColor> for CssColor {
+    /// ## TO-DO
+    /// Currently this inline markdown parser will only parse named colors to
+    /// CSSColors. This might not be the worst, since most places where the
+    /// CssColor would occur are places where the string has already been
+    /// sliced, like in a table or a component property, but this will cause
+    /// problems when this is applie din regular conundrum text.
+    ///
+    /// - [ ] Parse hex colors
+    /// - [ ] Parse rgb/rgba colors
+    /// - [ ] Parse hsl colors, despite the fact that I still don't understand
+    ///   them.
     fn parse_input_string(input: &mut crate::lang::runtime::traits::conundrum_input::ConundrumInput)
                           -> ConundrumModalResult<CssColor> {
-        let mut nested_input = ParserInput::new(input.input);
-        let mut parser = Parser::new(&mut nested_input);
-        todo!()
+        named_color.parse_next(input)
     }
 
     fn matches_first_char(char: char) -> bool {

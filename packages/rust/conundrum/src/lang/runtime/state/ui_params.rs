@@ -13,7 +13,6 @@ pub struct UIParams {
     pub math_font_scalar: f32,
     pub syntax_theme: Option<SupportedCodeBlockTheme>,
 }
-
 impl Default for UIParams {
     fn default() -> Self {
         Self { dark_mode: true,

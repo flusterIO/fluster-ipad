@@ -391,6 +391,16 @@ export interface ManualSaveRequestEvent {
 	note_id: string;
 }
 
+export interface ParseConundrumContentRequest {
+	/** The cdrm content. */
+	content: string;
+	/**
+	 * The DOM id which the parsed content should be appended to. This will
+	 * replace that element's children.
+	 */
+	DOMId: string;
+}
+
 export interface ReduxStateLoadedEvent {
 	/** The currently focused note_id. */
 	note_id?: string;
@@ -454,6 +464,7 @@ export interface SetBaseKeymapAction {
 
 export enum ConundrumStateActions {
 	SetConundrumErrors = "set-conundrum-error",
+	ParseConundrumContent = "parse-cdrm-content",
 }
 
 export interface SetConundrumErrorsStateAction {
@@ -604,6 +615,7 @@ export enum NoteDetailActions {
 	InvalidateNoteDetails = "invalidate-note-details",
 	SetNoteSummary = "set-note-summary",
 	ResetNoteSummary = "reset-note-summary",
+	ParsedCdrmResponse = "parsed-cdrm-response",
 }
 
 export interface SetNoteDetailsAction {

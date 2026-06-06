@@ -2,7 +2,7 @@ import { cn } from "@/utils/cn";
 import React, { type ReactNode } from "react";
 import { MdxContent } from "./mdx_content";
 import { inlineMdxClasses } from "./inline_mdx_classes";
-import { MdxContentProps } from "./mdx_content_types";
+import { type MdxContentProps } from "./mdx_content_types";
 
 
 export const InlineMdxContent = (
@@ -34,6 +34,6 @@ export const InlineMdxContent = (
 InlineMdxContent.displayName = "InlineMdxContent";
 
 
-export type WithInlineMdx = {
+export interface WithInlineMdx {
     InlineMdxContent: typeof InlineMdxContent
 }

@@ -14,4 +14,3 @@ pub fn search_conundrum_emojis(query: String, page: usize, per_page: usize) -> R
                                                     page: page as u32 }));
     Ok(serde_wasm_bindgen::to_value(&res)?)
 }
-

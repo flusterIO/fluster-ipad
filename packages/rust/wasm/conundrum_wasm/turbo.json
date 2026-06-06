@@ -8,17 +8,15 @@
             "description": "Build's the entire package."
         },
         "build:ts": {
-            "description": "Compiles typescript.",
-            "dependsOn": [
-                "build"
-            ]
+            "description": "Compiles typescript."
         },
         "build:website": {
             "description": "Builds the project for website release.",
-            "dependsOn": [
-                "build:ts",
-                "build"
-            ]
+            "dependsOn": []
+        },
+        "build:mac": {
+            "description": "Lord I can't wait to move away from turborepo.",
+            "dependsOn": []
         }
     }
 }

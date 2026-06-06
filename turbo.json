@@ -60,6 +60,7 @@
             "dependsOn": [
                 "@conundrum/swift#build:mac",
                 "@conundrum/ts#build:mac",
+                "@conundrum/wasm#build:mac",
                 "@fluster/webview_utils#build",
                 "@fluster/standalone_mdx_editor#build:mac",
                 "@fluster/editor_webview#build:mac",

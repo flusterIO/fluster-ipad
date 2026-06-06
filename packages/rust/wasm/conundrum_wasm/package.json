@@ -1,36 +1,37 @@
 {
-  "name": "@conundrum/wasm",
-  "version": "0.0.1",
-  "type": "module",
-  "scripts": {
-    "build": "RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory\" pnpm wasm-pack build --target web ./",
-    "build:ts": "tsc",
-    "dev": "webpack serve"
-  },
-  "exports": {
-    ".": {
-      "types": "./pkg/conundrum_wasm.d.ts",
-      "import": "./pkg/conundrum_wasm.js",
-      "require": "./pkg/conundrum_wasm.js"
+    "name": "@conundrum/wasm",
+    "version": "0.0.1",
+    "type": "module",
+    "scripts": {
+        "build": "RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory\" pnpm wasm-pack build --target web ./",
+        "build:mac": "",
+        "build:ts": "tsc",
+        "dev": "webpack serve"
     },
-    "./ts": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    }
-  },
-  "dependencies": {
-    "ghostty-web": "0.4.0"
-  },
-  "devDependencies": {
-    "@types/webpack": "5.28.5",
-    "@types/webpack-dev-server": "4.7.2",
-    "@wasm-tool/wasm-pack-plugin": "1.7.0",
-    "html-webpack-plugin": "5.6.6",
-    "ts-node": "10.9.2",
-    "webpack": "5.105.4",
-    "webpack-cli": "6.0.1",
-    "webpack-dev-server": "5.2.3"
-  },
-  "packageManager": "pnpm@9.7.1"
+    "exports": {
+        ".": {
+            "types": "./pkg/conundrum_wasm.d.ts",
+            "import": "./pkg/conundrum_wasm.js",
+            "require": "./pkg/conundrum_wasm.js"
+        },
+        "./ts": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.js"
+        }
+    },
+    "dependencies": {
+        "ghostty-web": "0.4.0"
+    },
+    "devDependencies": {
+        "@types/webpack": "5.28.5",
+        "@types/webpack-dev-server": "4.7.2",
+        "@wasm-tool/wasm-pack-plugin": "1.7.0",
+        "html-webpack-plugin": "5.6.6",
+        "ts-node": "10.9.2",
+        "webpack": "5.105.4",
+        "webpack-cli": "6.0.1",
+        "webpack-dev-server": "5.2.3"
+    },
+    "packageManager": "pnpm@9.7.1"
 }

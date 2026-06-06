@@ -1,0 +1,7 @@
+// WARNING: This file is automatically genrated by the docgen script. Any changes made here will be lost.
+
+public func getInitialNotePaths() -> [String] {
+   return [ {% for p in self.paths %}
+    "{{p}}", {% endfor %} 
+   ]
+}

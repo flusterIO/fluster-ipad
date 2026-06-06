@@ -16,4 +16,7 @@ pub enum NoteDetailActions {
     #[serde(rename = "reset-note-summary")]
     #[strum(to_string = "reset-note-summary")]
     ResetNoteSummary,
+    #[serde(rename = "parsed-cdrm-response")]
+    #[strum(to_string = "parsed-cdrm-response")]
+    ParsedCdrmResponse,
 }

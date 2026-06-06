@@ -3628,6 +3628,7 @@ name = "conundrum_wasm"
 version = "0.0.1"
 dependencies = [
  "conundrum",
+ "getrandom 0.3.4",
  "gloo",
  "js-sys",
  "rayon",

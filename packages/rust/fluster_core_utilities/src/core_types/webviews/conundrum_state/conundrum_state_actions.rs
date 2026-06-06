@@ -8,4 +8,7 @@ pub enum ConundrumStateActions {
     #[serde(rename = "set-conundrum-error")]
     #[strum(to_string = "set-conundrum-error")]
     SetConundrumErrors,
+    #[serde(rename = "parse-cdrm-content")]
+    #[strum(to_string = "parse-cdrm-content")]
+    ParseConundrumContent,
 }

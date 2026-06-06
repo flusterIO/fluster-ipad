@@ -20,6 +20,7 @@
 		7947AB282F536420009CEA5E /* dictionary_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB272F536420009CEA5E /* dictionary_webview_mac */; };
 		7947AB2A2F5364B2009CEA5E /* note_detail_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB292F5364B2009CEA5E /* note_detail_webview_mac */; };
 		7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7970D3872F201A2F00A734F4 /* WebKit.framework */; };
+		799B8CE32FD3817400378B23 /* seed in Resources */ = {isa = PBXBuildFile; fileRef = 799B8CE22FD3817400378B23 /* seed */; };
 		79A1B99A2F4A60B200B451B2 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79A1B9992F4A60B200B451B2 /* bibliography_embedded */; };
 		79C6BD362F6A0ACC00916BE7 /* ConundrumSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD352F6A0ACC00916BE7 /* ConundrumSwift */; };
 		79C6BD392F6A0ADA00916BE7 /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD382F6A0ADA00916BE7 /* FlusterAI */; };
@@ -59,6 +60,7 @@
 		798752EA2F1810B90055ABF1 /* Fluster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fluster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		798752FA2F1810BA0055ABF1 /* FlusterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlusterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		798753042F1810BA0055ABF1 /* FlusterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlusterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		799B8CE22FD3817400378B23 /* seed */ = {isa = PBXFileReference; lastKnownFileType = folder; name = seed; path = ../../docs/seed; sourceTree = "<group>"; };
 		79A1B9972F4A608D00B451B2 /* embedded */ = {isa = PBXFileReference; lastKnownFileType = folder; name = embedded; path = ../../packages/rust/fluster_bibliography/embedded; sourceTree = "<group>"; };
 		79A1B9992F4A60B200B451B2 /* bibliography_embedded */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibliography_embedded; path = ../../packages/rust/fluster_bibliography/bibliography_embedded; sourceTree = "<group>"; };
 		79BC1C552F46627300E8A9AA /* bibtex_editor_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		798752E12F1810B90055ABF1 = {
 			isa = PBXGroup;
 			children = (
+				799B8CE22FD3817400378B23 /* seed */,
 				7947AB292F5364B2009CEA5E /* note_detail_webview_mac */,
 				7947AB272F536420009CEA5E /* dictionary_webview_mac */,
 				7947AB252F5363CB009CEA5E /* bibtex_editor_webview_mac */,
@@ -321,6 +324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				799B8CE32FD3817400378B23 /* seed in Resources */,
 				7947AB2A2F5364B2009CEA5E /* note_detail_webview_mac in Resources */,
 				7947AB282F536420009CEA5E /* dictionary_webview_mac in Resources */,
 				7947AB262F5363CB009CEA5E /* bibtex_editor_webview_mac in Resources */,

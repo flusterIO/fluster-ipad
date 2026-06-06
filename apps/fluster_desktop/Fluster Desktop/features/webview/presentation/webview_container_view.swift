@@ -24,6 +24,10 @@ func getWebViewConfig() -> WKWebViewConfiguration {
 
 struct WebViewContainer: NSViewRepresentable {
   let parent: WebViewContainerView
+  @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) private var codeBlockThemeDark:
+    SupportedCodeBlockTheme = .dracula
+  @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) private var codeBlockThemeLight:
+    SupportedCodeBlockTheme = .gruvboxLight
   @Binding var webView: WKWebView
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @AppStorage(AppStorageKeys.userPreferredName.rawValue) private var userPreferedName: String = ""
@@ -49,7 +53,8 @@ struct WebViewContainer: NSViewRepresentable {
     var all_keys = [
       WebviewContainerEvents.reduxStateLoaded.rawValue,
       AiStateEvents.sendGeneralAiRequestPhase2.rawValue,
-      NoteDetailEvents.sendGenerateSummaryRequest.rawValue
+      NoteDetailEvents.sendGenerateSummaryRequest.rawValue,
+      ConundrumStateActions.parseConundrumContent.rawValue
     ]
     for mk in messageHandlerKeys {
       all_keys.append(mk)
@@ -147,6 +152,27 @@ struct WebViewContainer: NSViewRepresentable {
       self.parent = parent
     }
 
+    func handleConundrumParse(req: ParseConundrumContentRequest) async throws {
+      let res = try await runConundrum(
+        options: ParseConundrumOptions(
+          noteId: self.parent.parent.editingNote?.id, content: req.content, modifiers: [],
+          hideComponents: [],
+          uiParams: UiParams(
+            darkMode: parent.colorScheme == .dark, fontScalar: 1, mathFontScalar: 1.2,
+            syntaxTheme: parent.colorScheme == .dark
+              ? parent.codeBlockThemeDark : parent.codeBlockThemeLight), target: .html,
+          trusted: true))
+      try await self.parent.webView.evaluateJavaScript(
+        """
+        const em = document.getElementById(\(req.DOMId.toQuotedJavascriptString()));
+        if (em) {
+           em.innerHTML = \(res.content.toQuotedJavascriptString())
+        } else {
+           console.error("Could not find the requested element. Cannot append Conundrum content.")
+        }
+        """)
+    }
+
     // 2. This function catches the JS "postMessage"
     func userContentController(
       _ userContentController: WKUserContentController, didReceive message: WKScriptMessage
@@ -158,24 +184,37 @@ struct WebViewContainer: NSViewRepresentable {
             await onLoad()
           }
         }
-      } else if message.name == NoteDetailEvents.sendGenerateSummaryRequest.rawValue {
-        self.parent.handleNoteSummaryCreation(msg: message.body as! String)
-      } else if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
+      } else if message.name == ConundrumStateActions.parseConundrumContent.rawValue {
         if let jsonData = (message.body as! String).data(using: .utf8) {
           do {
             let decoder = JSONDecoder()
-            let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
-            // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
-            // Task(priority: .high) {
-            //              let res = handleGeneralMdxAiRequest(
-            //                request: event, focusedNote: parent.parent.editingNote)
-            // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
-            // }
+            let data = try decoder.decode(ParseConundrumContentRequest.self, from: jsonData)
+            Task {
+              try await self.handleConundrumParse(req: data)
+            }
           } catch {
             print("Failed to decode editor update: \(error)")
           }
         }
+      } else if message.name == NoteDetailEvents.sendGenerateSummaryRequest.rawValue {
+        self.parent.handleNoteSummaryCreation(msg: message.body as! String)
       }
+//        else if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
+//        if let jsonData = (message.body as! String).data(using: .utf8) {
+//          do {
+//            let decoder = JSONDecoder()
+//            let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
+//            // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
+//            // Task(priority: .high) {
+//            //              let res = handleGeneralMdxAiRequest(
+//            //                request: event, focusedNote: parent.parent.editingNote)
+//            // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
+//            // }
+//          } catch {
+//            print("Failed to decode editor update: \(error)")
+//          }
+//        }
+//      }
       if let messageHandler = parent.messageHandler {
         for handler in parent.messageHandlerKeys {
           if message.name == handler {

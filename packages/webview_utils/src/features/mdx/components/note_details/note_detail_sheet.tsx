@@ -1,6 +1,6 @@
 import { type NoteDetailState, NoteDetailWebviewActions, type NoteDetailWebviewEvents } from '@/code_gen/typeshare/fluster_core_utilities';
 import { sendToSwift } from '@/utils/bridge/send_to_swift';
-import React, { useEffect, type ReactNode } from 'react'
+import React, { useEffect, useId, type ReactNode } from 'react'
 import { LoadingComponent } from '@/shared_components/loading_component';
 import { ErrorBoundary } from 'react-error-boundary';
 import { TaggableBadge } from '@/shared_components/shad/badge';
@@ -17,12 +17,14 @@ import { connect } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
 import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types';
 import { InlineMdxContent } from '../inline_mdx_content';
+import { UnparsedConundrumContent } from '#/cdrm/unparsed_conundrum_content';
 
 const connector = connect((state: GlobalAppState) => ({
     data: state.note_details
 }))
 
 export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptionals<NoteDetailState> | null }): ReactNode => {
+    const summaryId = useId();
     useEffect(() => {
         if (!data) {
             sendToSwift(NoteDetailWebviewActions.RequestNoteDetailData)
@@ -52,18 +54,23 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
             <div className="w-full h-full flex flex-col justify-start items-center px-8 py-12">
                 <div className="w-full h-screen loading-hide max-w-[768px]">
                     <Subtitle>Title</Subtitle>
-                    <InlineMdxContent
-                        mdx={`# ${data.title}`}
+                    <h1
                         className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-3 not-prose"
-                    />
+                    >
+                        <UnparsedConundrumContent
+                            content={`# ${data.title}`}
+                            DOMId={summaryId}
+                        />
+                    </h1>
                     <div className="text-muted-foreground text-light">{`Last modified ${data.last_modified_string}`}</div>
                     <div className="w-full h-[2px] bg-muted-foreground/60 mb-6 mt-3" />
                     {data.summary ? (
                         <div className="flex flex-row justify-start items-center gap-x-6">
                             <Subtitle>Summary</Subtitle>
-                            <div className="text-lg text-foreground/80">
-                                <InlineMdxContent
-                                    mdx={data.summary.content}
+                            <div id={summaryId} className="text-lg text-foreground/80">
+                                <UnparsedConundrumContent
+                                    content={data.summary.content}
+                                    DOMId={summaryId}
                                 />
                             </div>
                         </div>

@@ -601,6 +601,19 @@ public struct ManualSaveRequestEvent: Codable {
 	}
 }
 
+public struct ParseConundrumContentRequest: Codable {
+	/// The cdrm content.
+	public let content: String
+	/// The DOM id which the parsed content should be appended to. This will
+	/// replace that element's children.
+	public let DOMId: String
+
+	public init(content: String, DOMId: String) {
+		self.content = content
+		self.DOMId = DOMId
+	}
+}
+
 public struct ReduxStateLoadedEvent: Codable {
 	/// The currently focused note_id.
 	public let note_id: String?
@@ -719,6 +732,7 @@ public struct SetBaseKeymapAction: Codable {
 
 public enum ConundrumStateActions: String, Codable {
 	case setConundrumErrors = "set-conundrum-error"
+	case parseConundrumContent = "parse-cdrm-content"
 }
 
 public struct SetConundrumErrorsStateAction: Codable {
@@ -995,6 +1009,7 @@ public enum NoteDetailActions: String, Codable {
 	case invalidateNoteDetails = "invalidate-note-details"
 	case setNoteSummary = "set-note-summary"
 	case resetNoteSummary = "reset-note-summary"
+	case parsedCdrmResponse = "parsed-cdrm-response"
 }
 
 public struct SetNoteDetailsAction: Codable {
