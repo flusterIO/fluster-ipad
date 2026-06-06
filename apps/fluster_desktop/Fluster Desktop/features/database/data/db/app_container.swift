@@ -7,6 +7,7 @@
 
 import ConundrumSwift
 import FlusterData
+import FlusterSwift
 import Foundation
 import SwiftData
 
@@ -19,6 +20,7 @@ public final class AppDataContainer {
     let hasLaunchedPreviously = UserDefaults.standard.bool(
       forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
     )
+
     let schema = Schema(AppSchemaV1.models)
     let modelConfiguration = ModelConfiguration(
       schema: schema,
@@ -34,10 +36,8 @@ public final class AppDataContainer {
       let fetchDescriptor = FetchDescriptor<NoteModel>()
 
       let existingNotes = try container.mainContext.fetch(fetchDescriptor)
-        
-print("Here 1: \(hasLaunchedPreviously)")
+
       if !hasLaunchedPreviously && existingNotes.isEmpty {
-          print("Here?")
         let initialBibliographyEntries: [BibEntryModel] = [
           BibEntryModel(
             data: """
@@ -98,21 +98,18 @@ print("Here 1: \(hasLaunchedPreviously)")
           )!
           let noteData = try Data(contentsOf: url)
           if let s = String(data: noteData, encoding: .utf8) {
-              print("Note Content: \(s)")
             let noteModel = NoteModel.fromNoteBody(noteBody: s)
-            Task {
-              try await noteModel.preParse(
-                modelContext: container.mainContext,
-                uiParams: UiParams(
-                  darkMode: true, fontScalar: 1, mathFontScalar: 1.2, syntaxTheme: .dracula))
-              container.mainContext.insert(noteModel)
-            }
+            try noteModel.preParseSync(
+              modelContext: container.mainContext,
+              uiParams: UiParams(
+                darkMode: true, fontScalar: 1, mathFontScalar: 1.2, syntaxTheme: .dracula))
+            container.mainContext.insert(noteModel)
           } else {
             print("Could not decode initial note data")
           }
         }
         try container.mainContext.save()
-//          UserDefaults.standard.set(true, forKey: AppStorageKeys.hasLaunchedPreviously.rawValue)
+        UserDefaults.standard.set(true, forKey: AppStorageKeys.hasLaunchedPreviously.rawValue)
       }
       return container
     } catch {

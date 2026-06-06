@@ -24,9 +24,9 @@ struct NoteDetailWebview: View {
   @Environment(\.modelContext) private var modelContext: ModelContext
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
-    SupportedCodeBlockTheme = .solarizedDark
+    SupportedCodeBlockTheme = .dracula
   @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
-    SupportedCodeBlockTheme = .solarizedLight
+    SupportedCodeBlockTheme = .monokaiExtendedLight
   @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
   @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
   var editingNote: NoteModel? {

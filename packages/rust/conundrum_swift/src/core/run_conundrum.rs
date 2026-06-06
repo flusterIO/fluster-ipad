@@ -14,3 +14,8 @@ pub async fn run_conundrum(options: ParseConundrumOptions) -> ConundrumResult<Md
                                                                  ConundrumErrorVariant::MultiThreadingError
                                                              })?
 }
+
+#[uniffi::export()]
+pub fn run_conundrum_sync(options: ParseConundrumOptions) -> ConundrumResult<MdxParsingResult> {
+    run_conundrum_swift(options)
+}

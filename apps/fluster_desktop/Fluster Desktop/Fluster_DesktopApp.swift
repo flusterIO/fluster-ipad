@@ -11,6 +11,7 @@ import SwiftUI
 import TipKit
 import UniformTypeIdentifiers
 import WebKit
+import FlusterSwift
 
 struct WindowAccessor: NSViewRepresentable {
   var color: NSColor
@@ -32,6 +33,7 @@ struct Fluster_DesktopApp: App {
   private var appData: AppDataContainer { AppDataContainer.shared }
   private var paletteController = CommandPaletteController()
   init() {
+      print("Initializing...")
     SchemeRegistration.registerCustomScheme()
     do {
       try Tips.configure()

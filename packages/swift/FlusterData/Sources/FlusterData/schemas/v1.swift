@@ -7,7 +7,6 @@ import PaperKit
 import PencilKit
 import SwiftData
 
-
 public let DEFAULT_NOTE_TITLE: String = "No title found"
 public let DEFAULT_TAG_COLOR: String = "placeholder"
 public let DEFAULT_SUBJECT_COLOR: String = "placeholder"
@@ -492,6 +491,20 @@ extension AppSchemaV1 {
         print("Error fetching note: \(error.localizedDescription)")
         return nil
       }
+    }
+
+    @MainActor
+    public func preParseSync(modelContext: ModelContext, uiParams: UiParams) throws {
+      let parsedCdrm = try ConundrumSwift.runConundrumSync(
+        options: ParseConundrumOptions(
+          noteId: self.id, content: self.markdown.body, modifiers: [], hideComponents: [],
+          uiParams: uiParams,
+          target: .html, trusted: true))
+
+      self.applyMdxParsingResults(
+        results: parsedCdrm,
+        modelContext: modelContext
+      )
     }
 
     @MainActor

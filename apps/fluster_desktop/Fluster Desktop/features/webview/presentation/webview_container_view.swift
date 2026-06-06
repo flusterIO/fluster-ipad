@@ -291,9 +291,9 @@ struct WebViewContainerView: View {
     true
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
-    SupportedCodeBlockTheme = .solarizedDark
+    SupportedCodeBlockTheme = .dracula
   @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
-    SupportedCodeBlockTheme = .solarizedLight
+    SupportedCodeBlockTheme = .monokaiExtendedLight
   @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
   @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
   @AppStorage(AppStorageKeys.showEquationLabels.rawValue) var showEquationLabels:
