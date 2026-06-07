@@ -96,8 +96,18 @@ struct MdxContentWebview: View {
             )
           })
       }
-      .task {
-        await self.parseNote()
+      .onAppear {
+        if let en = editingNote {
+          en.setLastRead()
+          Task {
+            try? await en.preParse(
+              modelContext: modelContext,
+              uiParams: UiParams(
+                darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                mathFontScalar: Float(webviewMathFontScale),
+                syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight))
+          }
+        }
       }
     }
   }

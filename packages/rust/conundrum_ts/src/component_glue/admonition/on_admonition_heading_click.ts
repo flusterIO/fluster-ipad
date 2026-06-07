@@ -11,8 +11,8 @@ export function handleConundrumAdmonitionHeight(container: HTMLDivElement) {
     if (!body) {
         return;
     }
+    body.style.transition = "max-height 500ms ease-in-out, height 500ms ease-in-out";
     body.style.height = "auto";
-    body.style.transition = "max-height 500ms ease-in-out";
     const bodyHeight = body.getBoundingClientRect().height;
     bodyContainer.style.maxHeight = `${bodyHeight}px`;
 }

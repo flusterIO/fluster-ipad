@@ -589,20 +589,35 @@ function createConsola(options = {}) {
   return consola2;
 }
 const consola = createConsola();
+const getElementRecursively = (em) => {
+  const groupId = em.getAttribute("data-cdrm-group");
+  if (groupId) {
+    return [groupId, em];
+  }
+  const parent = em.parentElement;
+  if (parent) {
+    return getElementRecursively(parent);
+  }
+};
+const getTargetTabIndex = (em) => {
+  const n = em.getAttribute("data-cdrm-idx");
+  if (typeof n !== "undefined" && n !== null) {
+    return parseInt(n);
+  }
+};
 const handleConundrumTabClick = (e) => {
   const target = e.currentTarget;
-  const em = target.parentElement?.parentElement;
-  if (!em) {
-    console.error("Could not find proper parent element.");
-    return;
-  }
-  const ti = target.getAttribute("data-cdrm-idx");
-  if (typeof ti === "undefined") {
+  const clickedIndex = getTargetTabIndex(target);
+  if (typeof clickedIndex === "undefined") {
     console.error("Could not find tab index.");
     return;
   }
-  const clickedIndex = parseInt(ti);
-  const groupId = em.getAttribute("data-cdrm-group");
+  const _em = getElementRecursively(target);
+  if (!_em) {
+    console.error("Could not find proper parent element.");
+    return;
+  }
+  const [groupId, em] = _em;
   const focusedIdx = em.getAttribute("data-cdrm-focused-idx");
   if (typeof focusedIdx === "undefined") {
     console.error("Could not found TabGroup focused index.");
@@ -636,11 +651,13 @@ const handleConundrumTabClick = (e) => {
     }
   }
   em.setAttribute("data-cdrm-focused-idx", `${clickedIndex}`);
-  const allTabBodies = document.getElementsByClassName("cdrm-tab-group-item");
+  const allTabBodies = em.getElementsByClassName("cdrm-tab-group-item");
   for (let i = 0; i < allTabBodies.length; i++) {
     const tabBody = allTabBodies.item(i);
     if (tabBody.getAttribute("data-cdrm-group") === groupId) {
-      tabBody.style.transform = `translateX(${(i - clickedIndex) * 100}%)`;
+      tabBody.classList.remove("relative");
+      tabBody.classList.add("absolute");
+      tabBody.classList.remove("overflow-y-hidden");
       if (i === clickedIndex) {
         tabBody.style.opacity = "1";
       } else {
@@ -694,8 +711,8 @@ function handleConundrumAdmonitionHeight(container) {
   if (!body) {
     return;
   }
+  body.style.transition = "max-height 500ms ease-in-out, height 500ms ease-in-out";
   body.style.height = "auto";
-  body.style.transition = "max-height 500ms ease-in-out";
   const bodyHeight = body.getBoundingClientRect().height;
   bodyContainer.style.maxHeight = `${bodyHeight}px`;
 }
@@ -730,7 +747,7 @@ const onAdmonitionHeadingClick = (e) => {
     }
   }
 };
-function handleTabGroupHeight(container) {
+function handleTabGroupRowAndHeight(container) {
   const focusedIndex = parseInt(
     /* eslint-disable-next-line  -- It'll be there... I put it there. */
     container.getAttribute("data-cdrm-focused-idx")
@@ -739,6 +756,14 @@ function handleTabGroupHeight(container) {
   if (!groupId) {
     console.warn("Compiler Error: Found a tab group without a valid group id.");
     return;
+  }
+  const gridRow = container.getElementsByClassName("cdrm-tab-row");
+  if (!gridRow.length) {
+    console.error("Could not locate grid row in tabs component. Don't know how to continue with transition.");
+  } else {
+    const gridRowElement = gridRow.item(0);
+    gridRowElement.style.transition = "transition 0.3s ease-in-out";
+    gridRowElement.style.transform = `translateX(-${container.getBoundingClientRect().width * focusedIndex}px)`;
   }
   const focusedTabBody = container.querySelector(
     `#tab-${groupId}-${focusedIndex}`
@@ -764,7 +789,7 @@ const onTabResize = () => {
   for (let i = 0; i < containers.length; i++) {
     const tabGroup = containers.item(i);
     if (tabGroup) {
-      handleTabGroupHeight(tabGroup);
+      handleTabGroupRowAndHeight(tabGroup);
     }
   }
 };
@@ -772,9 +797,9 @@ const onTabLoad = () => {
   const containers = document.getElementsByClassName("cdrm-tab-group");
   for (let i = 0; i < containers.length; i++) {
     const tabGroup = containers.item(i);
-    handleTabGroupHeight(tabGroup);
+    handleTabGroupRowAndHeight(tabGroup);
     const observer = new MutationObserver(() => {
-      handleTabGroupHeight(tabGroup);
+      handleTabGroupRowAndHeight(tabGroup);
     });
     observer.observe(tabGroup, {
       attributes: true,

@@ -8,6 +8,9 @@ interface Replacer {
     dontPanicIfExists?: string[];
 }
 
+const HEADING_MARKER =
+    "// This note has been modified by the build script. All work done here will be lost.";
+
 const replacers: Record<
     string,
     {
@@ -16,8 +19,10 @@ const replacers: Record<
     }
 > = {
     "packages/webview_utils/src/core/code_gen/typeshare/conundrum.ts": {
-        header: `export type ConundrumInt = number;
-export type GridColumnsMap = Map<SizableOption, number>;`,
+        header: `${HEADING_MARKER}
+export type ConundrumInt = number;
+export type GridColumnsMap = Map<SizableOption, number>;
+export type CL = string;`,
         replacers: [
             // {
             //     query: '| { tag: "Int", content: i128 }',
@@ -138,13 +143,14 @@ export type GridColumnsMap = Map<SizableOption, number>;`,
     },
     "packages/webview_utils/src/core/code_gen/typeshare/fluster_core_utilities.ts":
     {
-        header:
-            'import { type SizableOption, type ConundrumError } from "./conundrum";',
+        header: `${HEADING_MARKER}
+import { type SizableOption, type ConundrumError } from "./conundrum";`,
         replacers: [],
     },
     "packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare/FlusterCoreUtilities.swift":
     {
-        header: "import ConundrumSwift",
+        header: `${HEADING_MARKER} 
+import ConundrumSwift`,
         replacers: [
             {
                 query: "public struct EditorChangeEvent {",
@@ -229,6 +235,11 @@ export const replaceStuff = (replacers: Replacer[], filePath: string) => {
 const writeHeader = (header: string, filePath: string): void => {
     const fp = path.resolve(path.resolve(__dirname, "../"), filePath);
     const content = fs.readFileSync(fp, { encoding: "utf-8" });
+    if (content.startsWith(HEADING_MARKER)) {
+        console.log("Already applied modifications. Returning...");
+        return;
+    }
+
     const new_content = `${header}
 ${content}`;
     fs.writeFileSync(fp, new_content, { encoding: "utf-8" });

@@ -1589,6 +1589,11 @@ export enum AiSerializationRequestType {
 	RecommendResearch = "RecommendResearch",
 }
 
+export type AnyComponentName = 
+	| { tag: "UserEmbedded", content: EmbeddableComponentName }
+	| { tag: "Docs", content: DocumentationComponentName }
+	| { tag: "AutoInserted", content: AutoInsertedComponentName };
+
 export enum AutoInsertedComponentName {
 	NoteLink = "NoteLink",
 	AutoInsertedTag = "AutoInsertedTag",

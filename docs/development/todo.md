@@ -4,11 +4,12 @@
 
 ### Pre-release bugs
 
-  - **On layaway until lezer package can be cloned**
+- [ ] Make sure tabs component is rendering as expected, especially on the regular markdown page (not the editor).
 - [ ] Write new bibliography snippets and include them for the obvious things for general users like a web page.
 - [ ] Make sure shit bib snippets are not shown.
-- [ ] Get dictionary entry page entries clickable again.
+- [x] Get dictionary entry page entries clickable again.
 - [ ] Get table of contents clickable again.
+- [ ] Make sure toast is shown when emoji text is copied. It is currently being copied successully without showing a toast.
 - [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
   - [ ] Add the tabs component into the application somewhere to show it off.
 - [ ] Work on initial launch note conversion to `.cdrm`
@@ -18,7 +19,6 @@
 - [ ] Onboarding pages for mac (if time allows and a design works well)
 - [ ] Add 'env-file-provider' to configuration if the user provides a 'env_file' key in their config.
 - [ ] Add 'col-span' property from 1-12 to the `Sizable` struct.
-
 
 ### After Release
 

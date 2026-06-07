@@ -70,7 +70,7 @@ export interface EmbeddableComponentConfig {
     docsPath: string;
     /**
      * The props schema used to parse this component's props. This is also used for documentation generation.
-     * @deprecated Moving all config stuff over to Rust, so Zod will have to be a downstream thing.
+     * Soon to be deprecated... Moving all config stuff over to Rust, so Zod will have to be a downstream thing.
      */
     schema?: AnyComponentSchema;
     /**

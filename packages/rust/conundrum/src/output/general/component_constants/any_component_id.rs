@@ -17,6 +17,7 @@ use crate::{
     },
 };
 
+#[typeshare::typeshare]
 #[derive(Serialize, Deserialize, uniffi::Enum, Debug, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum AnyComponentName {

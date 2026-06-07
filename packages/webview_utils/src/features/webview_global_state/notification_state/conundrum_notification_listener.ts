@@ -13,10 +13,10 @@ declare global {
 
 export const ConundrumListener = (): ReactNode => {
     const showNotif = useSendNotificationBanner();
-    useEventListener(ConundrumWebEvents.CodeblockCopied, (e) => {
+    useEventListener(ConundrumWebEvents.CodeblockCopied, () => {
         showNotif({
             title: "Success",
-            body: `Your ${e.detail.lang ?? ""} code has been copied to your clipboard`,
+            body: `Your code has been copied to your clipboard`,
             timeout: 3000
         })
     })

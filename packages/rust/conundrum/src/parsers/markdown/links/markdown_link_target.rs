@@ -33,7 +33,13 @@ impl HtmlJsComponentResult for MarkdownLinkTarget {
             Self::NoteId(n) => Ok(n.clone()),
             Self::VideoTimestamp(v) => v.to_html_js_component(Arc::clone(&res)),
             Self::AudioTimestamp(a) => a.to_html_js_component(Arc::clone(&res)),
-            Self::DomId(d) => Ok(d.0.clone()),
+            Self::DomId(d) => {
+                if d.0.starts_with("#") {
+                    Ok(d.0.clone())
+                } else {
+                    Ok(format!("#{}", d.0))
+                }
+            }
         }
     }
 }

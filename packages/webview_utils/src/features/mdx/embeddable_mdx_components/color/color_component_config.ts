@@ -8,7 +8,7 @@ export const colorComponentNames = [EmbeddableComponentName.Color] as const
 export const colorComponentConfig: EmbeddableComponentConfig = {
     name: colorComponentNames,
     categories: [ComponentCategory.media],
-    desc: "Almost identical to the normal markdown based horizontal rule (the `---` syntax), but this can accept a 'content' property can be used to insert a label into the divider.",
+    desc: "Great for UI & Design workflows, create and label colors or groups of colors either inline or block level.",
     id: EmbeddableComponentId.Color,
     docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/color/color_component_docs.mdx",
     snippets: () => {

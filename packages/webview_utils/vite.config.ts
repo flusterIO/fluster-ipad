@@ -44,7 +44,7 @@ export default defineConfig({
             // }
         },
         sourcemap: true,
-        emptyOutDir: false,
+        emptyOutDir: true,
         minify: isProd ? "esbuild" : undefined,
         cssMinify: isProd ? "lightningcss" : undefined
     },

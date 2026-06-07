@@ -1,19 +1,39 @@
+const getElementRecursively = (
+    em: HTMLDivElement,
+): [string, HTMLDivElement] | undefined => {
+    const groupId = em.getAttribute("data-cdrm-group");
+    if (groupId) {
+        return [groupId, em];
+    }
+    const parent = em.parentElement as HTMLDivElement | undefined;
+    if (parent) {
+        return getElementRecursively(parent);
+    }
+};
+
+const getTargetTabIndex = (em: HTMLDivElement): number | undefined => {
+    const n = em.getAttribute("data-cdrm-idx");
+    if (typeof n !== "undefined" && n !== null) {
+        return parseInt(n)
+    }
+}
+
 export const handleConundrumTabClick = (e: Event) => {
     const target = e.currentTarget as HTMLDivElement;
-    const em = target.parentElement?.parentElement as HTMLDivElement | undefined;
-    if (!em) {
-        console.error("Could not find proper parent element.");
-        return;
-    }
 
-    const ti = target.getAttribute("data-cdrm-idx");
-    if (typeof ti === "undefined") {
+    const clickedIndex = getTargetTabIndex(target);
+    if (typeof clickedIndex === "undefined") {
         console.error("Could not find tab index.");
         return;
     }
-    /* eslint-disable-next-line  -- I just checked... */
-    const clickedIndex = parseInt(ti!);
-    const groupId = em.getAttribute("data-cdrm-group");
+
+    const _em = getElementRecursively(target);
+    if (!_em) {
+        console.error("Could not find proper parent element.");
+        return;
+    }
+    const [groupId, em] = _em;
+
     const focusedIdx = em.getAttribute("data-cdrm-focused-idx");
     if (typeof focusedIdx === "undefined") {
         console.error("Could not found TabGroup focused index.");
@@ -57,12 +77,15 @@ export const handleConundrumTabClick = (e: Event) => {
     }
     em.setAttribute("data-cdrm-focused-idx", `${clickedIndex}`);
 
-    const allTabBodies = document.getElementsByClassName("cdrm-tab-group-item");
+    const allTabBodies = em.getElementsByClassName("cdrm-tab-group-item");
 
     for (let i = 0; i < allTabBodies.length; i++) {
         const tabBody = allTabBodies.item(i) as HTMLDivElement;
         if (tabBody.getAttribute("data-cdrm-group") === groupId) {
-            tabBody.style.transform = `translateX(${(i - clickedIndex) * 100}%)`;
+            tabBody.classList.remove("relative");
+            tabBody.classList.add("absolute");
+            tabBody.classList.remove("overflow-y-hidden");
+            // tabBody.style.transform = `translateX(${(i - clickedIndex) * 100}%)`;
             if (i === clickedIndex) {
                 tabBody.style.opacity = "1";
             } else {

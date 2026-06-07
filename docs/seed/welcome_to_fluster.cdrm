@@ -1,2 +1,171 @@
-# Welcome To Fluster
-> Get started with Fluster and Conundrum, a superset of markdown with mdx like syntax.
+# Welcome To Fluster! <Emoji name="rocket" inline smedium />
+> Learn how to get started with Fluster, how you can get the most from it, and why it even exists in the first place.
+
+
+### If you remember only one thing <Emoji name="double_exclamation" inline smedium/>
+
+```python -- title="docs_example.cdrm"
+Docs??
+```
+
+The above command, on a line all by itself will bring up a list of further, similar commands explaining the complete functionality of Fluster and the syntax of Conundrum, the superset of Markdown that powers Fluster.
+
+#### Great, Where do I go from here?
+
+<Tabs>
+<Tab label="I know nothing">
+That's Ok! Conundrum is meant for people just like you... those that never intend on becoming professional developers but still want access to all the _sweet_ tools we get to play with. 
+
+If I were you, I'd get started with the `Markdown??` documentation to learn the basics of markdown. From there, checkout the `Jsx??` docs **when you're ready** for more functionality.
+</Tab>
+<Tab label="I know Markdown">
+Great! You're 80% of the way there, really. The 'x' in mdx, the language that inspired Conundrum is pretty much synonymous with 'jsx', so get started with the `Jsx??` docs. It'll walk you through a quick run down of how you can provide various properties to the components in Fluster.
+</Tab>
+<Tab label="I'm an experienced developer">
+Do you even need me at this point? Checkout the `Components??` documentation and get started! If you're an experienced developer with some free-time, maybe consider building upon the newly established Conundrum ecosystem. 
+</Tab>
+</Tabs>
+
+<Admonition title="A fair warning" warn sidebar right>
+
+Conundrum will, in the near future be completely CommonMark compatible (the default standard for markdown compatibility), but it's not there yet. Please keep in mind that I built this in a language I was unfamiliar with, while homeless, without access to the internet and most of the time without a power outlet. 
+
+There were times when I had to make less-than-ideal decisions based on my internet access or extreme financial limitations, but as soon as those hurdles are removed Conundrum and Fluster will take off exponentially. While I'm happy with what Fluster & Conundrum currently are, they will be unrecognizable in a year.
+
+</Admonition>
+
+## What is Fluster? What's the deal with Conundrum?
+
+Fluster is the app you're looking at now. Conundrum is the language you can write inside of it. It's a superset of markdown with _mdx_ like syntax that can be transpiled to regular markdown, to plain text for AI and search inputs, and to the notes that you see here!
+
+Basically, if you write Conundrum, you can output your notes in the more expressive, stylized form for humans and transpile it seamlessly to the form that AI consumes best: Markdown.
+
+## What's the difference between Mdx and Markdown?
+
+<Hint label="Goal" primary>
+The goal of Conundrum is to allow everyone to write notes as expressive as the examples, without looking at the documentation by the end of their first day.
+</Hint>
+
+Markdown is a core piece of every developer's workflow, and it's actually what AI is trained on most often as it's such an easy compilation target for a variety of text-based inputs.
+
+Here, the 'markdown' is the titles, the code blocks, even the lists.
+
+So what is mdx? Any time you visit a help section or a content based website, there's a fair chance that the website was written in mdx by the team of developers behind the platform. It's perhaps the single most go-to tool for developers in terms of content generation, but the syntax is fairly complicated; it is an entire programming language after all.
+
+Conundrum is my attempt to bring this tool to the general user, and I'm encouraging other developers to use it for projects of their own (See the `Conundrum??` docs). It's still in it's very early stages, but the goals are to give you _almost_ all of the expressiveness found in these more complete UI frameworks in complexity that's manageable for someone that just want's to take notes for school, for their job, or as just a small piece of their lives... someone that didn't dedicate their career to learning these tools. You'll never have to know what a logical pixel is, you just have to remember common language terms like 'small' and 'smedium'[^3].
+
+This still leaves you with one thing that ever developer struggles with... remembering the names of things! Don't worry though, along with the global documentation, there is documentation available for every component that Conundrum supports, available via the same syntax: `MyComponentName??`. There are also snippets to help you as you type and a complete LSP[^2] on the way.
+
+
+### A Quick Run-Through
+
+Ok, here are the basics. I'll skip the Markdown bit (See `Markdown??` documentation) because that's documented in a million places, and just touch on the features that are unique to Conundrum and Fluster.
+
+- Add an id to an equation by changing `$$` $\to$ `$$ {#myEquationId}`, and then reference it in your note with `<EqRef id="myEquationId" />{:tsx}`.
+- Do the same thing with a heading, using the `{#myId}` syntax. You can then link to that heading in your note with `[My link to the heading](id:myId){:md}`
+- You can specify a title for code blocks using jsx syntax after two `--` characters, like:
+
+````md
+```python -- title="my_title.py"
+def gamma(v)
+    1 / np.sqrt(1 - v**2 / spc.c**2)
+```
+````
+
+- You can also set the language explicitly for inline codeblocks using a `{:myLanguage}{:shell}` syntax at the end of the inline code block.
+- The components are kind of Fluster's core functionality, at least on the markdown side of things. The `Components??` documentation is generated directly from code, meaning that it will always reflect the current state of your application and will continue to grow. Once I have a stable internet connection things like embedding videos, images,  3d models and other media will be among my first priorities. The original version of Fluster which relied on file system based storage did include these features.
+- Reference the documentation often. As the app is updated, so too will the documentation. As it's built into the binary it will always reflect the current state of _your_ application, and as the documentation is interactive (See the `Emoji??` docs), searchability will improve significantly as the app grows.
+
+
+
+### Components
+
+The list of components can be found via the `Components?` command (use 1 `?` for short documentation, two `??` for the complete version), so let's give that a try...
+
+Components?
+
+I encourage you to explore them all, but let's checkout a few examples to show how easy this really is. If we want to learn how to use the `Card` component for example, let's checkout that component's documentation by typing:
+
+```md -- title="card_docs.cdrm"
+Card?
+```
+
+Card?
+
+Here I use `?` to only see some short summary, but you can list _all_ available properties by adding another `??` mark! Let's just focus on the properties in the example, the `title` and the `desc` (description). The `Jsx??` docs go over how to create a property that is a 'string' (words, letters, even numbers sometimes), but it's as simple as you imagined... just wrap it in quotes (just don't add a new line or another quote of the same kind). If we use the example component exactly as is, we get:
+
+<Card 
+    title="This is my card's title with $\delta$ latex"
+    desc="This is an optional description"
+>
+
+This is just regular Conundrum content here.
+
+</Card>
+
+If we want to slide if off to the right on large screens, but keep it in the center on smaller screens, that's as simple as adding a `sidebar` and either `right` or `left`:
+
+```tsx
+<Card 
+    title="My card's title"
+    desc="My card can also optionally have a description"
+    sidebar
+    right
+>
+And even <Hl>more</Hl> components can go in here!
+Like this ^highlight^ component.
+</Card>
+```
+
+But some components are even simpler! The 'table of contents' for example doesn't take any properties, it calculates them directly from your note. Just add `<Toc />{:tsx}` anywhere in your note, and you'll have a list of all of your titles, nicely styled.
+
+
+--- Organization ---
+
+It's difficult to describe how organization inside of Fluster works without first touching on the origin story, and oh lord, does it have an origin story.
+
+So I have background in astrophysics, but was working in software when late one night I had a realization... Einstein's assumptions made far more sense _before_ the observations that we now use to derive the Big Bang model.[^1] For the next few weeks I began to play around with the math, to see what alternatives there were when I realized the obvious associations align _perfectly_ with observation. 
+
+From there I quit my job to work on this model full time, losing my apartment just a few months into the process. I was homeless for almost $3 \frac{1}{2}$ years, found myself in a shelter with my puppy thanks to some good people, and am now in publicly funded housing.
+
+Over the course of this pursuit I built the original (now open-sourced) version of Fluster for my own personal use, but as it grew and grew I decided to re-work it into the form it's in today. It took 3 **complete** rewrites to get it right, but Fluster is now in a place to grow into something that I hope can help everyone the way it helped me.
+
+### So what does this have to do with organization?
+
+Fluster includes a variety of ways to link notes, and they kind of all came to be as my notes became more and more scattered. If you can identify with such a problem, maybe these solutions will work for you.
+
+#### Tags
+
+Any note can have $0-\infty$ tags. Each _taggable_ (a topic, tag, or subject) is searchable within the application, bringing up all content sharing that same taggable.
+
+To insert a tag, simply use `[[#myTagHere]]` which will create a tag of **myTagHere**.
+
+
+#### Subject & Topic
+
+Every note can have 0 or 1 topics, and 0 or 1 subjects. These work almost identically to tags except for their limitation to 1 per note, but can offer a top-down solution when they are used in a nested fashion.
+
+What I mean by this, in an example STEM program, where a student is in **Electromagnetism 2**, **General Relativity**, and **Advanced Linear Algebra**, their subjects might look like `physics` & `math`, with topics like `electromagnetism`, `GR` & `linearAlgebra`. This sort of approach worked great for my own organization, allowing me to choose a `topic` or a `subject` based on how fine-tuned I wanted the search to be. Being able to 'zoom-out' and review related notes was great for when I was stuck. 
+
+#### Dictionary Entries
+
+Each note can include dictionary entries, which are automatically appended to your application's dictionary which are then globally searchable, and link back to the note where they were created.
+
+This is a great way to create quick-reference content for later in a way that's easy to lookup. I found this particularly useful for various equations that I knew I would need later, but I also knew I wouldn't remember the name of the dude it was named after.
+
+#### Equation based search (upcoming)
+
+This feature was present in the version of Fluster that I built for myself, and re-integrating it with Fluster on my to-do list. Once re-integrated, a panel will be available that will allow searching notes by equation, given that the equation is linked to an equation you provide an id to.
+
+#### Full-Text and Semantic Search
+
+Of course, Fluster includes the basics like full-text search, but it does so in an intelligent way, returning results based on the syntax of the note where results in titles appear ahead of results in other content, for example. Semantic search might not make it into the initial release of Fluster due to the limitations around my lack of internet connection and the development workflow it would require, but it will be available within a week of when that changes.
+
+--- What worked for me ---
+
+What worked best for me was using the `subject` and `topic` fields in a hierarchical way, where one is more general than the other, and then using tags to reference content _within_ the note. I feel this gets more from this architecture than using `subjects`, `topics` and `tags` directly on top of each other, and can allow for organizing even my messy workflow inside of Fluster.
+
+
+[^1]: Einstein famously pushed back against this model vehemently before ultimately coming around to the idea.
+[^2]: If you've never used an Language Server Protocol server (redundant, I know) before, it's a game changer. With this program running in the background, Fluster will be able to help complete sentences as you type, use AI to complete equations, and more!
+[^3]: Yes, smedium is really a variant, but more importantly, these variants are shared by dozens of properties. If you learn one, you can apply that same logic to _all_ properties of the same type.

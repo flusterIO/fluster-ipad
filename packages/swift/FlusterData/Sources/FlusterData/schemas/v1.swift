@@ -28,6 +28,10 @@ public enum AppSchemaV1: VersionedSchema {
 }
 
 extension AppSchemaV1 {
+  public struct AuthState {
+    public var level: AuthenticationLevel
+    public var expiresOn: Date?
+  }
   public enum NoteSummaryGenerationMethod: String, Codable {
     case frontMatter, localAi, localAiManualTrigger, subtitleSyntax
     public func toSummaryGenerationMethod() -> SummaryGenerationMethod {

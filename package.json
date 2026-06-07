@@ -19,6 +19,7 @@
     "build:ipad": "",
     "build:mac": "",
     "build:postCodegenCleanup": "tsx ./scripts/post_cross_language_modifications.ts",
+    "commit": "builtin command cat ./commit.md | aicommits -p",
     "prepare": "husky"
   },
   "dependencies": {

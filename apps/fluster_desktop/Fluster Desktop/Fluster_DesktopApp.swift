@@ -33,7 +33,6 @@ struct Fluster_DesktopApp: App {
   private var appData: AppDataContainer { AppDataContainer.shared }
   private var paletteController = CommandPaletteController()
   init() {
-      print("Initializing...")
     SchemeRegistration.registerCustomScheme()
     do {
       try Tips.configure()

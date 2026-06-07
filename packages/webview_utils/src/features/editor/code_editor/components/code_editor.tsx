@@ -24,8 +24,8 @@ import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 /* import { getBibtexSnippets } from "../data/snippets/bibtex_snippets"; */
-import { bibtexBracketMatching, bibtexLinter, bibtexHoverTooltip, bibtex } from "@fluster/bib_lezer"
-import 'codemirror-lang-bib/dist/bib.css';
+import { bibtexBracketMatching, bibtexHoverTooltip, bibtex } from "@fluster/bib_lezer"
+import '@fluster/bib_lezer/styles.css';
 import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
 import { connect } from "react-redux"
@@ -33,7 +33,6 @@ import { setBibtexEditorValue, setEditorValue } from "#/webview_global_state/mdx
 import { type GlobalAppState } from "#/webview_global_state/store";
 import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
 import { cn } from "../../../../core/utils/cn";
-import { linter } from "@codemirror/lint";
 
 const connector = connect((state: GlobalAppState) => ({
     baseKeymap: state.editor.baseKeymap,
@@ -166,7 +165,7 @@ export const CodeEditorInner = connector(({
                 ...extensions,
                 bibtex({ enableAutocomplete: true }),
                 bibtexBracketMatching,
-                linter(bibtexLinter()),
+                /* linter(bibtexLinter()), */
                 bibtexHoverTooltip,
             ]
         }
@@ -225,7 +224,8 @@ export const CodeEditorInner = connector(({
         });
 
         const _view = new EditorView({
-            state: startState,
+            /*eslint-disable-next-line  -- A versioning issue all of a sudden. Not super concerned about it as I'm moving to Ghostty asap.. */
+            state: startState as any,
             parent: em,
         });
         _view.focus();
