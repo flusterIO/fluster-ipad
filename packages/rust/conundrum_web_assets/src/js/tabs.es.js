@@ -578,26 +578,26 @@ function handleTabGroupRowAndHeight(container) {
     console.error("Could not locate tab group body container.");
     return;
   }
-  const tabRow = container.querySelector(".cdrm-tab-row");
-  if (!tabRow) {
-    console.error("Could not locate tab row for tab group.");
-    return;
+  const groupTabs = bodyContainer.getElementsByClassName("cdrm-tab-group-item");
+  for (let i = 0; i < groupTabs.length; i++) {
+    const tab = groupTabs.item(i);
+    tab.style.transition = "transform 0.3s ease-in-out";
+    tab.style.transform = `translateX(-${focusedIndex === 0 ? 0 : focusedIndex / groupTabs.length}%)`;
   }
-  const itemWidth = bodyContainer.getBoundingClientRect().width;
-  tabRow.style.transform = "transform 0.3s ease-in-out, height 0.3s ease-in-out";
-  tabRow.style.transform = `translateX(-${itemWidth * focusedIndex}px)`;
   const tabGroupId = container.getAttribute("data-cdrm-group");
   if (!tabGroupId) {
     console.error("Could not locate tab group id. Can't continue.");
     return;
   }
-  const focusedTab = tabRow.querySelector(`#tab-${tabGroupId}-${focusedIndexString}`);
+  const focusedTab = bodyContainer.querySelector(`#tab-${tabGroupId}-${focusedIndexString}`);
   if (!focusedTab) {
     console.error("Cold not locate focused tab. Cannot continue with transition.");
     return;
   }
   const targetHeight = Math.min(focusedTab.getBoundingClientRect().height, 450);
-  tabRow.style.height = `${targetHeight}px`;
+  bodyContainer.style.transition = "height 0.3s ease-in-out";
+  bodyContainer.style.overflowY = targetHeight === 450 ? "auto" : "hidden";
+  bodyContainer.style.height = `${targetHeight}px`;
 }
 const onTabLoad = () => {
   const containers = document.getElementsByClassName("cdrm-tab-group");

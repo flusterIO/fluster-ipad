@@ -166,7 +166,7 @@ export const CodeEditorInner = connector(({
         } else {
             extensions = [
                 ...extensions,
-                bibtex({ enableAutocomplete: false, enableLinting: false }),
+                bibtex({ enableAutocomplete: true, enableLinting: false }),
                 bibtexBracketMatching,
                 linter(bibtexLinter() as unknown as LintSource),
                 bibtexHoverTooltip,

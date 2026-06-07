@@ -22,16 +22,13 @@
         {% endfor %}
     </div>
     <div id="tab-body-wrapper-{{tab_group_id}}"
-        class="cdrm-tab-group-body-container w-full max-w-full h-fit overflow-x-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br no-scrollbar">
-        <div class="grid cdrm-tab-row"
-            style="grid-template-columns: repeat({{tab_length}}, 1fr); width: {{tab_length}}00%; transform: translateX(-{{(initial_idx / tab_length) * 100}}%);">
+        class="cdrm-tab-group-body-container w-full max-w-full h-fit overflow-x-hidden overflow-y-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br no-scrollbar">
             {% for tab in tabs %}
             <div data-cdrm-group="{{tab_group_id}}"
-                class="cdrm-tab-group-item w-full h-fit px-4 py-3 transition-transform duration-300"
+                class="cdrm-tab-group-item w-full h-fit px-4 py-3 transition-transform duration-300 [&>p]:mt-2"
                 id="tab-{{tab_group_id}}-{{tab.idx}}">
                 {{tab.tab_children | safe}}
             </div>
             {% endfor %}
-        </div>
     </div>
 </div>

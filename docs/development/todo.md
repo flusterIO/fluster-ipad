@@ -4,28 +4,28 @@
 
 ### Pre-release bugs
 
-- [ ] Make sure tabs component is rendering as expected, especially on the regular markdown page (not the editor).
+- [x] Make sure tabs component is rendering as expected, especially on the regular markdown page (not the editor).
 - [x] Write new bibliography snippets and include them for the obvious things for general users like a web page.
 - [ ] Make sure shit bib snippets are not shown.
 - [x] Get dictionary entry page entries clickable again.
-- [?] Get table of contents clickable again.
+- [x] Get table of contents clickable again.
 - [x] Make sure toast is shown when emoji text is copied. It is currently being copied successully without showing a toast.
   - [x] Add the tabs component into the application somewhere to show it off.
 - [ ] Work on initial launch note conversion to `.cdrm`
-- [ ] Create various state comparison methods to compare the json data to url query strings, so that it can be done server side. Keep all of the blog state that isn't component local in the url.
-- [ ] Initial note seeding
+- [x] Initial note seeding
 - [x] Onboarding toast things with ToastKit or whatever it's called.
 - [ ] Onboarding pages for mac (if time allows and a design works well)
 - [ ] Add 'env-file-provider' to configuration if the user provides a 'env_file' key in their config.
-- [ ] Add 'col-span' property from 1-12 to the `Sizable` struct.
 
 ### After Release
 
+- [ ] Add 'col-span' property from 1-12 to the `Sizable` struct.
 - [ ] Get `wasm` loading in Next.js. That'll be perfect for enabling a web based editor, but it's also crucial for a decent development workflow now that we're rendering straight to html and a React based test page doesn't make as much sense.
 - [x] Make blog mobile responsive. That should be the first priority once conundrum content is compiling again.
   - [x] Add drawer in place of sidebar on mobile.
     - Installed `react-device-detect` for the switch
 - [x] Get checkbox parser working
+- [ ] Create various state comparison methods to compare the json data to url query strings, so that it can be done server side. Keep all of the blog state that isn't component local in the url.
 
 ---
 

@@ -6,20 +6,21 @@ function handleTabGroupRowAndHeight(container: HTMLDivElement) {
     }
     const focusedIndex = parseInt(focusedIndexString);
 
-    const bodyContainer = container.querySelector(".cdrm-tab-group-body-container")
+    const bodyContainer = container.querySelector(".cdrm-tab-group-body-container") as HTMLDivElement | undefined;
     if (!bodyContainer) {
         console.error("Could not locate tab group body container.")
         return
     }
-    const tabRow = container.querySelector(".cdrm-tab-row") as HTMLDivElement | undefined;
-    if (!tabRow) {
-        console.error("Could not locate tab row for tab group.")
-        return
-    }
-    const itemWidth = bodyContainer.getBoundingClientRect().width;
 
-    tabRow.style.transform = "transform 0.3s ease-in-out, height 0.3s ease-in-out";
-    tabRow.style.transform = `translateX(-${itemWidth * focusedIndex}px)`;
+    const groupTabs = bodyContainer.getElementsByClassName("cdrm-tab-group-item");
+
+
+    for (let i = 0; i < groupTabs.length; i++) {
+        const tab = groupTabs.item(i) as HTMLDivElement;
+        tab.style.transition = "transform 0.3s ease-in-out";
+        tab.style.transform = `translateX(-${focusedIndex === 0 ? 0 : focusedIndex / groupTabs.length}%)`
+    }
+
 
     const tabGroupId = container.getAttribute("data-cdrm-group");
 
@@ -28,7 +29,7 @@ function handleTabGroupRowAndHeight(container: HTMLDivElement) {
         return
     }
 
-    const focusedTab = tabRow.querySelector(`#tab-${tabGroupId}-${focusedIndexString}`);
+    const focusedTab = bodyContainer.querySelector(`#tab-${tabGroupId}-${focusedIndexString}`);
 
     if (!focusedTab) {
         console.error("Cold not locate focused tab. Cannot continue with transition.")
@@ -37,7 +38,9 @@ function handleTabGroupRowAndHeight(container: HTMLDivElement) {
 
     const targetHeight = Math.min(focusedTab.getBoundingClientRect().height, 450);
 
-    tabRow.style.height = `${targetHeight}px`;
+    bodyContainer.style.transition = "height 0.3s ease-in-out";
+    bodyContainer.style.overflowY = targetHeight === 450 ? "auto" : "hidden";
+    bodyContainer.style.height = `${targetHeight}px`;
 
 }
 

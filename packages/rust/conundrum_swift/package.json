@@ -1,10 +1,10 @@
 {
-    "name": "@conundrum/swift",
-    "scripts": {
-        "build:ipadSwift": "cargo swift package -y --xcframework-name Conundrum -p ios  && tsx ../../../scripts/post_cross_language_modifications.ts && pnpm run copy:extraSwift",
-        "build:macSwift": "cargo swift package -y --xcframework-name Conundrum -p macos && tsx ../../../scripts/post_cross_language_modifications.ts && pnpm run copy:extraSwift",
-        "build:postCodegenCleanup": "tsx ../../../scripts/post_cross_language_modifications.ts",
-        "build:swift": "cargo swift package -y --xcframework-name Conundrum && && tsx ../../../scripts/post_cross_language_modifications.ts && pnpm run copy:extraSwift",
-        "copy:extraSwift": "cp -r ./extra_swift/  ./ConundrumSwift/Sources/ConundrumSwift/"
-    }
+  "name": "@conundrum/swift",
+  "scripts": {
+    "build:ipadSwift": "cargo swift package -y --xcframework-name Conundrum -p ios  && tsx ../../../scripts/post_cross_language_modifications.ts && pnpm run copy:extraSwift",
+    "build:macSwift": "cargo swift package -y --xcframework-name Conundrum -p macos && tsx ../../../scripts/post_cross_language_modifications.ts && pnpm run copy:extraSwift",
+    "build:postCodegenCleanup": "tsx ../../../scripts/post_cross_language_modifications.ts",
+    "build:swift": "cargo swift package -y --xcframework-name Conundrum && && tsx ../../../scripts/post_cross_language_modifications.ts && pnpm run copy:extraSwift",
+    "copy:extraSwift": "cp -r ./extra_swift/  ./ConundrumSwift/Sources/ConundrumSwift/"
+  }
 }

@@ -16,14 +16,11 @@
         }
     ],
     "scripts": {
-        "build:webviewsMac": "wireit",
         "build:macStep2": "wireit",
         "build:postCodegenCleanup": "tsx ./scripts/post_cross_language_modifications.ts",
+        "build:webviewsMac": "wireit",
         "commit": "builtin command cat ./commit.md | aicommits -p",
         "prepare": "husky"
-    },
-    "dependencies": {
-        "shiki": "3.3.0"
     },
     "wireit": {
         "build:webviewsMac": {
@@ -42,6 +39,9 @@
                 "./packages/typescript/codemirror-lang-bib:build:parser"
             ]
         }
+    },
+    "dependencies": {
+        "shiki": "3.3.0"
     },
     "devDependencies": {
         "@codspeed/vitest-plugin": "5.2.0",
