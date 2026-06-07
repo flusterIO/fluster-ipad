@@ -16,6 +16,7 @@ import { CodeEditorLanguage } from "../types/code_editor_types";
 import { languages } from '@codemirror/language-data';
 import { bracketMatching, foldGutter, indentOnInput, syntaxTree } from '@codemirror/language';
 import { autocompletion, closeBrackets, type CompletionSource } from '@codemirror/autocomplete';
+
 import { highlightActiveLine, dropCursor, rectangularSelection } from '@codemirror/view';
 import { getFlusterSnippets } from "../data/snippets/fluster_snippets";
 import { Prec } from "@codemirror/state";
@@ -24,7 +25,7 @@ import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
 /* import { getBibtexSnippets } from "../data/snippets/bibtex_snippets"; */
-import { bibtexBracketMatching, bibtexHoverTooltip, bibtex } from "@fluster/bib_lezer"
+import { bibtexLanguage } from "@fluster/bib_lezer"
 import '@fluster/bib_lezer/styles.css';
 import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
@@ -163,10 +164,7 @@ export const CodeEditorInner = connector(({
         } else {
             extensions = [
                 ...extensions,
-                bibtex({ enableAutocomplete: true }),
-                bibtexBracketMatching,
-                /* linter(bibtexLinter()), */
-                bibtexHoverTooltip,
+                bibtexLanguage,
             ]
         }
         if (lockEditorScrollToPreview) {
@@ -224,8 +222,7 @@ export const CodeEditorInner = connector(({
         });
 
         const _view = new EditorView({
-            /*eslint-disable-next-line  -- A versioning issue all of a sudden. Not super concerned about it as I'm moving to Ghostty asap.. */
-            state: startState as any,
+            state: startState,
             parent: em,
         });
         _view.focus();
