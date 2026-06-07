@@ -1,39 +1,44 @@
 function handleTabGroupRowAndHeight(container: HTMLDivElement) {
-    const focusedIndex = parseInt(
-        /* eslint-disable-next-line  -- It'll be there... I put it there. */
-        container.getAttribute("data-cdrm-focused-idx")!,
-    );
-    const groupId = container.getAttribute("data-cdrm-group");
-    if (!groupId) {
-        console.warn("Compiler Error: Found a tab group without a valid group id.");
-        return;
+    const focusedIndexString = container.getAttribute("data-cdrm-focused-idx");
+    if (typeof focusedIndexString === "undefined" || focusedIndexString === null) {
+        console.error("No focused index found for the specified tab group.")
+        return
     }
-    const gridRow = container.getElementsByClassName("cdrm-tab-row");
-    if (!gridRow.length) {
-        console.error("Could not locate grid row in tabs component. Don't know how to continue with transition.")
-    } else {
-        const gridRowElement = gridRow.item(0) as HTMLDivElement;
-        gridRowElement.style.transition = "transition 0.3s ease-in-out";
-        gridRowElement.style.transform = `translateX(-${container.getBoundingClientRect().width * focusedIndex}px)`;
+    const focusedIndex = parseInt(focusedIndexString);
+
+    const bodyContainer = container.querySelector(".cdrm-tab-group-body-container")
+    if (!bodyContainer) {
+        console.error("Could not locate tab group body container.")
+        return
     }
-    const focusedTabBody = container.querySelector(
-        `#tab-${groupId}-${focusedIndex}`,
-    ) as HTMLDivElement | undefined;
-    if (focusedTabBody) {
-        const h = focusedTabBody.getBoundingClientRect().height;
-        const bodyWrapper = container.querySelector(
-            `#tab-body-wrapper-${groupId}`,
-        ) as HTMLDivElement | undefined;
-        if (bodyWrapper) {
-            bodyWrapper.style.transition = "height 0.3s ease-in-out";
-            bodyWrapper.style.height = `${Math.min(h, 450)}px`;
-            bodyWrapper.style.overflowY = h > 450 ? "auto" : "hidden";
-        } else {
-            console.error("Could not find tab body wrapper.");
-        }
-    } else {
-        console.error("Could not find focused body");
+    const tabRow = container.querySelector(".cdrm-tab-row") as HTMLDivElement | undefined;
+    if (!tabRow) {
+        console.error("Could not locate tab row for tab group.")
+        return
     }
+    const itemWidth = bodyContainer.getBoundingClientRect().width;
+
+    tabRow.style.transform = "transform 0.3s ease-in-out, height 0.3s ease-in-out";
+    tabRow.style.transform = `translateX(-${itemWidth * focusedIndex}px)`;
+
+    const tabGroupId = container.getAttribute("data-cdrm-group");
+
+    if (!tabGroupId) {
+        console.error("Could not locate tab group id. Can't continue.")
+        return
+    }
+
+    const focusedTab = tabRow.querySelector(`#tab-${tabGroupId}-${focusedIndexString}`);
+
+    if (!focusedTab) {
+        console.error("Cold not locate focused tab. Cannot continue with transition.")
+        return
+    }
+
+    const targetHeight = Math.min(focusedTab.getBoundingClientRect().height, 450);
+
+    tabRow.style.height = `${targetHeight}px`;
+
 }
 
 export const onTabResize = () => {

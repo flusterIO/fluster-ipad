@@ -5,13 +5,12 @@
 ### Pre-release bugs
 
 - [ ] Make sure tabs component is rendering as expected, especially on the regular markdown page (not the editor).
-- [ ] Write new bibliography snippets and include them for the obvious things for general users like a web page.
+- [x] Write new bibliography snippets and include them for the obvious things for general users like a web page.
 - [ ] Make sure shit bib snippets are not shown.
 - [x] Get dictionary entry page entries clickable again.
-- [ ] Get table of contents clickable again.
-- [ ] Make sure toast is shown when emoji text is copied. It is currently being copied successully without showing a toast.
-- [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
-  - [ ] Add the tabs component into the application somewhere to show it off.
+- [?] Get table of contents clickable again.
+- [x] Make sure toast is shown when emoji text is copied. It is currently being copied successully without showing a toast.
+  - [x] Add the tabs component into the application somewhere to show it off.
 - [ ] Work on initial launch note conversion to `.cdrm`
 - [ ] Create various state comparison methods to compare the json data to url query strings, so that it can be done server side. Keep all of the blog state that isn't component local in the url.
 - [ ] Initial note seeding
@@ -43,6 +42,8 @@
     - [ ] Checkbox
   - [x] Parse & Render Footnotes (half complete)
   - [ ] Emoji search and other doc specific components working as expected.
+- [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
+
 
 ### Components that need to move over still
 
@@ -63,6 +64,7 @@
 - [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
 - [ ] Move over rest of components below:
 - [ ] Work on remaining parsers
+- [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
 
 ---
 

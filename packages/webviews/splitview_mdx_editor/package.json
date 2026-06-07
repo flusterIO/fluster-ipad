@@ -24,7 +24,6 @@
   ],
   "private": true,
   "scripts": {
-    "build": "",
     "build:ipad": "FLUSTER_BUILD_ENV=ipad tsc -b && vite build -c ./vite_ipad.config.ts",
     "build:mac": "FLUSTER_BUILD_ENV=macos tsc -b && vite build -c ./vite_mac.config.ts",
     "dev": "vite dev",

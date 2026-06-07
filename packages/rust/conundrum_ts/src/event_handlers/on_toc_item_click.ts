@@ -12,7 +12,7 @@ export const onTocItemClick = (e: Event) => {
     const target = e.currentTarget as HTMLDivElement;
     const headingId = target.getAttribute("data-cdrm-heading-id");
     if (headingId) {
-        const heading = document.getElementById(headingId);
+        const heading = document.getElementById(`h-${headingId}`);
         if (heading) {
             heading.scrollIntoView({
                 behavior: "smooth"
@@ -20,8 +20,8 @@ export const onTocItemClick = (e: Event) => {
         } else {
             console.warn(`Requested a heading with the id of ${headingId}. This does not exist.`)
         }
+    } else {
+        console.error("A toc item was clicked without a heading ID. What is this world coming to...")
     }
-
     window.dispatchEvent(new CustomEvent(ConundrumWebEvents.TocItemClick as string))
-
 }

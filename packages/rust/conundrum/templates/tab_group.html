@@ -1,6 +1,6 @@
 {% let tab_length = self.tabs.len() %}
 <div data-cdrm-emphasis="{{emphasis.to_string()}}" data-cdrm-focused-idx="{{initial_idx}}"
-    data-cdrm-group="{{tab_group_id}}" class="{{tw_merge!(" cdrm-tab-group w-full max-w-[1080px]", match &self.sizable {
+    data-cdrm-group="{{tab_group_id}}" class="{{tw_merge!("cdrm-tab-group w-full max-w-[1080px]", match &self.sizable {
     Some(s)=> s.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General),
     None => "".to_string()
     })}}">
@@ -22,7 +22,7 @@
         {% endfor %}
     </div>
     <div id="tab-body-wrapper-{{tab_group_id}}"
-        class="cdrm-tab-group-body-container w-full h-fit overflow-x-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br no-scrollbar grid">
+        class="cdrm-tab-group-body-container w-full max-w-full h-fit overflow-x-hidden relative bg-fd-card text-fd-card-foreground rounded-bl rounded-br no-scrollbar">
         <div class="grid cdrm-tab-row"
             style="grid-template-columns: repeat({{tab_length}}, 1fr); width: {{tab_length}}00%; transform: translateX(-{{(initial_idx / tab_length) * 100}}%);">
             {% for tab in tabs %}

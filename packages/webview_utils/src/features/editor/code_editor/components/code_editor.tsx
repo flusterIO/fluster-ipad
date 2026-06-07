@@ -24,8 +24,8 @@ import { type GetSnippetProps, SnippetStrategy } from "../data/snippets/snippet_
 import { getMathSnippets } from "../data/snippets/math_snippets";
 import { Tex } from "@fluster/lezer";
 import { scrollPlugin, sendEditorScrollDOMEvent } from "#/split_view_editor/state/hooks/use_editor_scroll_position";
-/* import { getBibtexSnippets } from "../data/snippets/bibtex_snippets"; */
-import { bibtexLanguage } from "@fluster/bib_lezer"
+/* import { getBibtexSnippets,  } from "../data/snippets/bibtex_snippets"; */
+import { bibtex, bibtexLinter, bibtexHoverTooltip, bibtexBracketMatching } from "@fluster/bib_lezer"
 import '@fluster/bib_lezer/styles.css';
 import { EditorClient } from "../data/editor_client";
 import { useDispatch } from 'react-redux';
@@ -34,6 +34,8 @@ import { setBibtexEditorValue, setEditorValue } from "#/webview_global_state/mdx
 import { type GlobalAppState } from "#/webview_global_state/store";
 import { type WithNullableOptionals } from "../../../../core/utils/types/utility_types";
 import { cn } from "../../../../core/utils/cn";
+/* import { getBibtexSnippets } from "../data/snippets/bibtex_snippets"; */
+import { linter, type LintSource } from "@codemirror/lint";
 
 const connector = connect((state: GlobalAppState) => ({
     baseKeymap: state.editor.baseKeymap,
@@ -164,7 +166,10 @@ export const CodeEditorInner = connector(({
         } else {
             extensions = [
                 ...extensions,
-                bibtexLanguage,
+                bibtex({ enableAutocomplete: false, enableLinting: false }),
+                bibtexBracketMatching,
+                linter(bibtexLinter() as unknown as LintSource),
+                bibtexHoverTooltip,
             ]
         }
         if (lockEditorScrollToPreview) {
