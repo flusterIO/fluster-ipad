@@ -440,9 +440,6 @@
   .z-\[1\] {
     z-index: 1;
   }
-  .col-span-2 {
-    grid-column: span 2 / span 2;
-  }
   .float-left {
     float: left;
   }
@@ -1264,9 +1261,6 @@
   .mb-8 {
     margin-bottom: calc(var(--spacing) * 8);
   }
-  .mb-12 {
-    margin-bottom: calc(var(--spacing) * 12);
-  }
   .mb-16 {
     margin-bottom: calc(var(--spacing) * 16);
   }
@@ -1437,9 +1431,6 @@
   }
   .h-\[50rem\] {
     height: 50rem;
-  }
-  .h-\[80px\] {
-    height: 80px;
   }
   .h-\[175px\] {
     height: 175px;
@@ -2019,9 +2010,6 @@
   .grid-cols-\[60px_1fr\] {
     grid-template-columns: 60px 1fr;
   }
-  .grid-cols-\[120px_1fr\] {
-    grid-template-columns: 120px 1fr;
-  }
   .grid-cols-\[auto_1fr\] {
     grid-template-columns: auto 1fr;
   }
@@ -2427,9 +2415,6 @@
   .bg-\[--color-bg\] {
     background-color: --color-bg;
   }
-  .bg-\[hsl\(var\(--card\)\)\] {
-    background-color: hsl(var(--card));
-  }
   .bg-accent {
     background-color: hsl(var(--accent));
   }
@@ -2569,10 +2554,6 @@
     }
     background-image: linear-gradient(var(--tw-gradient-stops));
   }
-  .bg-gradient-to-b {
-    --tw-gradient-position: to bottom in oklab;
-    background-image: linear-gradient(var(--tw-gradient-stops));
-  }
   .bg-gradient-to-r {
     --tw-gradient-position: to right in oklab;
     background-image: linear-gradient(var(--tw-gradient-stops));
@@ -2598,10 +2579,6 @@
     --tw-gradient-from: hsl(var(--foreground));
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
-  .from-neutral-200 {
-    --tw-gradient-from: var(--color-neutral-200);
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
-  }
   .from-primary {
     --tw-gradient-from: hsl(var(--primary));
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
@@ -2618,10 +2595,6 @@
   }
   .to-background {
     --tw-gradient-to: hsl(var(--background));
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
-  }
-  .to-brand {
-    --tw-gradient-to: hsl(var(--brand));
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .to-primary {
@@ -2953,9 +2926,6 @@
   .font-nerd {
     font-family: "FontNerd";
   }
-  .font-sans {
-    font-family: var(--font-sans);
-  }
   .font-serif {
     font-family: var(--font-serif);
   }
@@ -3004,9 +2974,6 @@
   }
   .text-\[7vw\] {
     font-size: 7vw;
-  }
-  .text-\[9vw\] {
-    font-size: 9vw;
   }
   .text-\[10px\] {
     font-size: 10px;
@@ -3473,10 +3440,6 @@
     --tw-duration: 300ms;
     transition-duration: 300ms;
   }
-  .duration-500 {
-    --tw-duration: 500ms;
-    transition-duration: 500ms;
-  }
   .duration-1000 {
     --tw-duration: 1000ms;
     transition-duration: 1000ms;
@@ -3550,13 +3513,6 @@
     &:is(:where(.group\/scrollIcon):hover *) {
       @media (hover: hover) {
         stroke: hsl(var(--foreground));
-      }
-    }
-  }
-  .group-hover\/sponsorContent\:text-foreground {
-    &:is(:where(.group\/sponsorContent):hover *) {
-      @media (hover: hover) {
-        color: hsl(var(--foreground));
       }
     }
   }
@@ -4936,16 +4892,6 @@
       width: auto;
     }
   }
-  .md\:w-full {
-    @media (width >= 48rem) {
-      width: 100%;
-    }
-  }
-  .md\:max-w-5\/6 {
-    @media (width >= 48rem) {
-      max-width: calc(5/6 * 100%);
-    }
-  }
   .md\:grid-cols-2 {
     @media (width >= 48rem) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5021,12 +4967,6 @@
     @media (width >= 48rem) {
       font-size: var(--text-6xl);
       line-height: var(--tw-leading, var(--text-6xl--line-height));
-    }
-  }
-  .md\:text-7xl {
-    @media (width >= 48rem) {
-      font-size: var(--text-7xl);
-      line-height: var(--tw-leading, var(--text-7xl--line-height));
     }
   }
   .md\:text-sm {
@@ -5134,11 +5074,6 @@
   .lg\:w-5\/6 {
     @media (width >= 64rem) {
       width: calc(5/6 * 100%);
-    }
-  }
-  .lg\:w-\[calc\(50\%-1rem\)\] {
-    @media (width >= 64rem) {
-      width: calc(50% - 1rem);
     }
   }
   .lg\:grid-cols-2 {

@@ -8,6 +8,7 @@
 import ConundrumSwift
 import FlusterData
 import FlusterMdx
+import FlusterSwift
 import SwiftData
 import SwiftUI
 
@@ -16,6 +17,7 @@ struct CreateNotePage: View {
   @State private var titleText: String = ""
   @State private var subjectText: String = ""
   @State private var topicText: String = ""
+  @EnvironmentObject private var auth: AuthManager
   @FocusState private var focusedInitialField: Bool
   @Query private var subjects: [SubjectModel]
   @Query private var topics: [TopicModel]
@@ -31,31 +33,69 @@ struct CreateNotePage: View {
   @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
 
   var body: some View {
-    GeometryReader { geo in
-      VStack {
-        VStack(alignment: .leading) {
-          Text("Create Note")
-            .font(.title2)
-            .padding(.top, 8)
-          Text(
-            "You can also create a note directly on your file system, and synchronize your notes."
-          )
-          .font(.caption)
-          .foregroundStyle(.secondary)
-          Text("Title")
-            .font(.headline)
-            .padding(.top, 8)
-          TextField(
-            text: $titleText,
-            prompt: Text("Title"),
-            label: {
-              Text("Title")
-            }
-          )
-          .focused($focusedInitialField)
-          if geo.size.width > 400 {
-            HStack {
-              VStack(alignment: .leading) {
+    if auth.hasActiveSubscriptions {
+      GeometryReader { geo in
+        VStack {
+          VStack(alignment: .leading) {
+            Text("Create Note")
+              .font(.title2)
+              .padding(.top, 8)
+            Text(
+              "You can also create a note directly on your file system, and synchronize your notes."
+            )
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            Text("Title")
+              .font(.headline)
+              .padding(.top, 8)
+            TextField(
+              text: $titleText,
+              prompt: Text("Title"),
+              label: {
+                Text("Title")
+              }
+            )
+            .focused($focusedInitialField)
+            if geo.size.width > 400 {
+              HStack {
+                VStack(alignment: .leading) {
+                  Text("Subject")
+                    .font(.headline)
+                    .padding(.top, 8)
+                  TextField(
+                    text: $subjectText, prompt: Text("Subject"),
+                    label: {
+                      Text("Subject")
+                    }
+                  )
+                  .textInputSuggestions {
+                    ForEach(subjects) { subject in
+                      Text(subject.value).textInputCompletion(subject.value)
+                    }
+                  }
+                }
+                VStack(alignment: .leading) {
+                  Text("Topic")
+                    .font(.headline)
+                    .padding(.top, 8)
+                  TextField(
+                    text: $topicText, prompt: Text("Topic"),
+                    label: {
+                      Text("Topic")
+                    }
+                  )
+                  .textInputSuggestions {
+                    ForEach(topics) { topic in
+                      Text(topic.value).textInputCompletion(topic.value)
+                    }
+                  }
+                }
+              }
+              .onAppear {
+                focusedInitialField = true
+              }
+            } else {
+              VStack {
                 Text("Subject")
                   .font(.headline)
                   .padding(.top, 8)
@@ -71,7 +111,7 @@ struct CreateNotePage: View {
                   }
                 }
               }
-              VStack(alignment: .leading) {
+              VStack {
                 Text("Topic")
                   .font(.headline)
                   .padding(.top, 8)
@@ -88,104 +128,70 @@ struct CreateNotePage: View {
                 }
               }
             }
-            .onAppear {
-              focusedInitialField = true
-            }
-          } else {
-            VStack {
-              Text("Subject")
-                .font(.headline)
-                .padding(.top, 8)
-              TextField(
-                text: $subjectText, prompt: Text("Subject"),
-                label: {
-                  Text("Subject")
-                }
-              )
-              .textInputSuggestions {
-                ForEach(subjects) { subject in
-                  Text(subject.value).textInputCompletion(subject.value)
-                }
-              }
-            }
-            VStack {
-              Text("Topic")
-                .font(.headline)
-                .padding(.top, 8)
-              TextField(
-                text: $topicText, prompt: Text("Topic"),
-                label: {
-                  Text("Topic")
-                }
-              )
-              .textInputSuggestions {
-                ForEach(topics) { topic in
-                  Text(topic.value).textInputCompletion(topic.value)
-                }
-              }
-            }
-          }
-          HStack {
-            Spacer()
-            Button(
-              action: {
-                // Handle create note here
-                if !titleText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                  let item = NoteModel.fromNoteBody(noteBody: "# \(titleText)")
-                  if !subjectText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    let sl = subjectText.lowercased()
-                    let existingSubject = subjects.first(where: { $0.value.lowercased() == sl })
-                    let subject = existingSubject ?? SubjectModel(value: subjectText)
-                    item.subject = subject
-                  }
-                  if !topicText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    let tl = topicText.lowercased()
-                    let existingTopic = topics.first(where: { $0.value.lowercased() == tl })
-                    let topic = existingTopic ?? TopicModel(value: topicText)
-                    item.topic = topic
-                  }
-                  Task {
-                    do {
-                      try await item.preParse(
-                        modelContext: modelContext,
-                        uiParams: UiParams(
-                          darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
-                          mathFontScalar: Float(webviewMathFontScale),
-                          syntaxTheme: colorScheme == .dark
-                            ? codeBlockThemeDark : codeBlockThemeLight)
-                      )
-                      modelContext.insert(item)
-                      try modelContext.save()
-                      titleText = ""
-                      subjectText = ""
-                      topicText = ""
-                      appState.setEditingNote(editingNote: item)
-                      appState.mainView = defaultNoteView.toMainKey()
-                    } catch {
-                      print("Error creating note: \(error.localizedDescription)")
+            HStack {
+              Spacer()
+              Button(
+                action: {
+                  // Handle create note here
+                  if !titleText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    let item = NoteModel.fromNoteBody(noteBody: "# \(titleText)")
+                    if !subjectText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                      let sl = subjectText.lowercased()
+                      let existingSubject = subjects.first(where: { $0.value.lowercased() == sl })
+                      let subject = existingSubject ?? SubjectModel(value: subjectText)
+                      item.subject = subject
+                    }
+                    if !topicText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                      let tl = topicText.lowercased()
+                      let existingTopic = topics.first(where: { $0.value.lowercased() == tl })
+                      let topic = existingTopic ?? TopicModel(value: topicText)
+                      item.topic = topic
+                    }
+                    Task {
+                      do {
+                        try await item.preParse(
+                          modelContext: modelContext,
+                          uiParams: UiParams(
+                            darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                            mathFontScalar: Float(webviewMathFontScale),
+                            syntaxTheme: colorScheme == .dark
+                              ? codeBlockThemeDark : codeBlockThemeLight)
+                        )
+                        modelContext.insert(item)
+                        try modelContext.save()
+                        titleText = ""
+                        subjectText = ""
+                        topicText = ""
+                        appState.setEditingNote(editingNote: item)
+                        appState.mainView = defaultNoteView.toMainKey()
+                      } catch {
+                        print("Error creating note: \(error.localizedDescription)")
+                      }
                     }
                   }
+                },
+                label: {
+                  Label(
+                    title: {
+                      Text("Create")
+                    },
+                    icon: {
+                      Image(systemName: "plus")
+                    })
                 }
-              },
-              label: {
-                Label(
-                  title: {
-                    Text("Create")
-                  },
-                  icon: {
-                    Image(systemName: "plus")
-                  })
-              }
-            )
-            .padding(.top)
-            .buttonStyle(.borderedProminent)
+              )
+              .padding(.top)
+              .buttonStyle(.borderedProminent)
+            }
           }
+          .padding()
+          .frame(maxWidth: 450)
+          .glassEffect(in: .rect(cornerRadius: 12))
         }
-        .padding()
-        .frame(maxWidth: 450)
-        .glassEffect(in: .rect(cornerRadius: 12))
+        .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
       }
-      .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+    } else {
+      PaywallView()
     }
   }
 }

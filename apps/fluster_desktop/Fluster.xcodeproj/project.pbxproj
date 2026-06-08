@@ -14,6 +14,7 @@
 		79274F682F8DA33700357D75 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4672F4A48AF00F8194A /* FlusterWebviewClients */; };
 		79274F692F8DA33700357D75 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD46A2F4A492100F8194A /* FlusterSwift */; };
 		7931B9F42F6F4C8E003B5C56 /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79DFBB632F58980100DA7C4E /* FlusterAI */; };
+		7931E3DB2FD72FE000DFC908 /* fluster_store_local.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 7931E3DA2FD72FE000DFC908 /* fluster_store_local.storekit */; };
 		7947AB222F5358C0009CEA5E /* standalone_mdx_preview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB212F5358C0009CEA5E /* standalone_mdx_preview_mac */; };
 		7947AB242F5363A2009CEA5E /* splitview_mdx_editor_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB232F5363A2009CEA5E /* splitview_mdx_editor_mac */; };
 		7947AB262F5363CB009CEA5E /* bibtex_editor_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB252F5363CB009CEA5E /* bibtex_editor_webview_mac */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		79196E372F44EBEE001AEFEB /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
+		7931E3DA2FD72FE000DFC908 /* fluster_store_local.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = fluster_store_local.storekit; sourceTree = "<group>"; };
 		7947AB212F5358C0009CEA5E /* standalone_mdx_preview_mac */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview_mac; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview_mac; sourceTree = "<group>"; };
 		7947AB232F5363A2009CEA5E /* splitview_mdx_editor_mac */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor_mac; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor_mac; sourceTree = "<group>"; };
 		7947AB252F5363CB009CEA5E /* bibtex_editor_webview_mac */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bibtex_editor_webview_mac; path = ../../packages/webviews/bibtex_editor_webview/bibtex_editor_webview_mac; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 		798752E12F1810B90055ABF1 = {
 			isa = PBXGroup;
 			children = (
+				7931E3DA2FD72FE000DFC908 /* fluster_store_local.storekit */,
 				799B8CE22FD3817400378B23 /* seed */,
 				7947AB292F5364B2009CEA5E /* note_detail_webview_mac */,
 				7947AB272F536420009CEA5E /* dictionary_webview_mac */,
@@ -329,6 +332,7 @@
 				7947AB282F536420009CEA5E /* dictionary_webview_mac in Resources */,
 				7947AB262F5363CB009CEA5E /* bibtex_editor_webview_mac in Resources */,
 				7947AB242F5363A2009CEA5E /* splitview_mdx_editor_mac in Resources */,
+				7931E3DB2FD72FE000DFC908 /* fluster_store_local.storekit in Resources */,
 				7947AB222F5358C0009CEA5E /* standalone_mdx_preview_mac in Resources */,
 				79A1B99A2F4A60B200B451B2 /* bibliography_embedded in Resources */,
 			);
