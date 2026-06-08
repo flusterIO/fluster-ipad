@@ -10,11 +10,11 @@ import FlusterData
 
 struct MainViewSidebar: View {
   @AppStorage(AppStorageKeys.flusterSidebarSectionOpen.rawValue) private
-    var flusterSidebarSectionOpen = false
+    var flusterSidebarSectionOpen = true
   @AppStorage(AppStorageKeys.noteSidebarSectionOpen.rawValue) private
-    var noteSidebarSectionOpen = false
+    var noteSidebarSectionOpen = true
     @AppStorage(AppStorageKeys.globalSectionOpen.rawValue) private
-      var globalSectionOpen = false
+      var globalSectionOpen = true
   var body: some View {
     ScrollView {
       Group {

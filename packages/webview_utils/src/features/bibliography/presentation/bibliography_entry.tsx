@@ -41,7 +41,7 @@ export const BibliographyEntryComponent = ({ entry, onClick, className }: Biblio
     return (
         <a
             role="button"
-            className={cn("w-full w-full px-3 pl-2 rounded-lg text-sm [&_*]:text-sm cursor-pointer")}
+            className={cn("w-full w-full px-3 pl-2 rounded-lg text-sm [&_*]:text-sm cursor-pointer block")}
             dangerouslySetInnerHTML={{ __html: entry.html }}
             onClick={(e) => {
                 e.preventDefault()

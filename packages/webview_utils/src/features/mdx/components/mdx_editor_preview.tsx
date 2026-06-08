@@ -9,12 +9,13 @@ import { connect, useSelector, useStore } from "react-redux";
 import consola from "consola";
 import { type WithNullableOptionals } from "../../../core/utils/types/utility_types";
 import { ConundrumErrorListener } from "./conundrum_error_listener";
-import { SummaryStreamContainer } from "#/ai/presentation/tasks/summary_stream/summary_stream_container";
 import { NerdFontLoader } from "#/code/nerd_font_loader";
 import { KatexFontLoader } from "#/math/katex_font_loader";
 import { LucideFontLoader } from "#/themeing/lucide_font_loader";
 import { type GlobalWebviewStateDeepNullable } from "#/webview_global_state/cross_language_state_types";
 import { ConundrumListener } from "#/webview_global_state/notification_state/conundrum_notification_listener";
+import { BibliographyEntryComponent } from "../../bibliography/presentation/bibliography_entry";
+import { H3 } from "../../../core/shared_components/typography/typography";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -22,7 +23,8 @@ export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id"
 const connector = connect((state: GlobalAppState) => ({
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview,
     isEditorView: state.editor.editorView === EditorView.Splitview,
-    hideEquationLabels: state.math.hide_equation_labels
+    hideEquationLabels: state.math.hide_equation_labels,
+    citations: state.editor.citations
 }))
 
 
@@ -37,8 +39,9 @@ export const MdxEditorPreview = connector(({
     hideEquationLabels,
     /* lockEditorScrollToPreview, */
     isEditorView,
+    citations,
     /* ...props */
-}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean, hideEquationLabels: EquationNumberingStrategy }): ReactNode => {
+}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean, hideEquationLabels: EquationNumberingStrategy, citations: GlobalAppState["editor"]["citations"] }): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
 
     const parsedValueIsEmpty = useSelector((state: GlobalWebviewStateDeepNullable) => {
@@ -126,16 +129,29 @@ export const MdxEditorPreview = connector(({
             <KatexFontLoader />
             <LucideFontLoader />
             <div
-                id={SplitviewEditorDomIds.MdxPreview}
-                className={cn(
+                className={cn("",
                     "max-w-[1080px]",
                     isEditorView ? "px-6 pt-4 pb-16 mx-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
-                    className,
-                    hideEquationLabels === EquationNumberingStrategy.None ? "hide-equation-labels" : hideEquationLabels === EquationNumberingStrategy.IdOnly ? "hide-no-id-eq-labels" : ""
                 )}
-                ref={ref}
-            />
-            <SummaryStreamContainer />
+            >
+
+                <div
+                    id={SplitviewEditorDomIds.MdxPreview}
+                    className={cn(
+                        className,
+                        hideEquationLabels === EquationNumberingStrategy.None ? "hide-equation-labels" : hideEquationLabels === EquationNumberingStrategy.IdOnly ? "hide-no-id-eq-labels" : ""
+                    )}
+                    ref={ref}
+                />
+                {citations.length ? (
+                    <div className="w-full max-w-full">
+                        <H3>Bibliography</H3>
+                        <div>
+                            {citations.map((cit) => <BibliographyEntryComponent key={cit.citation_key} entry={cit} />)}
+                        </div>
+                    </div>
+                ) : null}
+            </div>
         </ErrorBoundary>
     );
 });

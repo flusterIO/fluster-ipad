@@ -80,7 +80,7 @@ Of course we need to change the dimensionality of much of our physics, but as I 
 Let's consider that this dilation of space might give rise to our gravitational acceleration, where $p_1$ becomes akin to the cosmological rest frame. If we allow that this velocity gives rise to spatial dilation, which then gives rise to the gravitational acceleration that we feel, we should examine the derivative of $g$ with respect to $R$.
 
 
-<Image maxHeight="medium" right contain sidebar src="https://fluster-blog-media.s3.us-east-2.amazonaws.com/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
+<Image maxHeight="medium" right contain sidebar src="https://fluster-blog-media.s3.us-east-2.amazonaws.com/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al.[[cite:gordon_determining_2008]]" />
 
 $$ {#eq_delta}
 \delta = \frac{d}{dR} g = 2 G \frac{M}{R^3}
@@ -236,7 +236,7 @@ s = \left|\begin{matrix}
 \end{matrix}\right| = \omega^3
 $$
 
-Not only does this accomodate existing experimental validations of SR & GR, it does so while accomodating the original relativistic experiment: Michelson & Morely[^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
+Not only does this accomodate existing experimental validations of SR & GR[[cite:PoundRebka]], it does so while accomodating the original relativistic experiment: Michelson & Morely[[cite:Michelson_Morely]][^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
 
 If we consider that the magnitude of $\delta$ _is_ this determinant, we should then take it's cube root:
 
