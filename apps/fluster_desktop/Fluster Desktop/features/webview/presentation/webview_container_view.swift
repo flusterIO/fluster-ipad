@@ -199,22 +199,22 @@ struct WebViewContainer: NSViewRepresentable {
       } else if message.name == NoteDetailEvents.sendGenerateSummaryRequest.rawValue {
         self.parent.handleNoteSummaryCreation(msg: message.body as! String)
       }
-//        else if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
-//        if let jsonData = (message.body as! String).data(using: .utf8) {
-//          do {
-//            let decoder = JSONDecoder()
-//            let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
-//            // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
-//            // Task(priority: .high) {
-//            //              let res = handleGeneralMdxAiRequest(
-//            //                request: event, focusedNote: parent.parent.editingNote)
-//            // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
-//            // }
-//          } catch {
-//            print("Failed to decode editor update: \(error)")
-//          }
-//        }
-//      }
+      //        else if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
+      //        if let jsonData = (message.body as! String).data(using: .utf8) {
+      //          do {
+      //            let decoder = JSONDecoder()
+      //            let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
+      //            // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
+      //            // Task(priority: .high) {
+      //            //              let res = handleGeneralMdxAiRequest(
+      //            //                request: event, focusedNote: parent.parent.editingNote)
+      //            // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
+      //            // }
+      //          } catch {
+      //            print("Failed to decode editor update: \(error)")
+      //          }
+      //        }
+      //      }
       if let messageHandler = parent.messageHandler {
         for handler in parent.messageHandlerKeys {
           if message.name == handler {
@@ -529,11 +529,14 @@ struct WebViewContainerView: View {
             mathFontScalar: Float(webviewMathFontScale),
             syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
         )
+        var idx: UInt32 = 0
         let citations: [EditorCitation] = en.citations.compactMap { cit in
-          cit.toEditorCitation(activeCslFile: cslFile)
+          idx += 1
+          return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
         }
         try? await EditorState.setParsedMdxContent(
-          parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
+          parsedMdxContent: en.markdown.preParsedBody ?? "",
+          citations: citations,
           eval: webview.evaluateJavaScript)
       }
     }

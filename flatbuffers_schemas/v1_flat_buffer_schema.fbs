@@ -46,6 +46,7 @@ table EditorCitationBuffer {
     citation_key:string (required);
     html:string (required);
     url:string;
+    document_idx:uint;
 }
 
 table TagResultBuffer {

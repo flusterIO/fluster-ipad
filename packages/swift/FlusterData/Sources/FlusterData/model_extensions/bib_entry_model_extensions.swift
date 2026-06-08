@@ -26,11 +26,11 @@ extension [BibEntryModel] {
 }
 
 extension BibEntryModel {
-  public func toEditorCitation(activeCslFile: EmbeddedCslFileSwift) -> EditorCitation? {
+    public func toEditorCitation(activeCslFile: EmbeddedCslFileSwift, idx: UInt32) -> EditorCitation? {
     if let citationKey = self.citationKey {
       if let formatted = self.safelyGetFormatted(activeCslFormat: activeCslFile) {
         return EditorCitation(
-          citation_key: citationKey, html: formatted.formattedHtml, url: formatted.url)
+          citation_key: citationKey, html: formatted.formattedHtml, url: formatted.url,  document_idx: idx)
       }
     }
     return nil

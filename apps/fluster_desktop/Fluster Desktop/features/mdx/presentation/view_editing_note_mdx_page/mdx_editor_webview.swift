@@ -305,8 +305,10 @@ struct MdxEditorWebview: View {
                 mathFontScalar: Float(webviewMathFontScale),
                 syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
             )
-            let citations = en.citations.compactMap { cit in
-              cit.toEditorCitation(activeCslFile: cslFile)
+              var idx: UInt32 = 0
+              let citations = en.citations.compactMap { cit in
+                  idx += 1;
+                  return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
             }
             try await EditorState.setParsedMdxContent(
               parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,

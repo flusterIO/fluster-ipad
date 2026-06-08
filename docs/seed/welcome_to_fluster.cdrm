@@ -10,11 +10,15 @@ Docs??
 
 The above command, on a line all by itself will bring up a list of further, similar commands explaining the complete functionality of Fluster and the syntax of Conundrum, the superset of Markdown that powers Fluster.
 
+<Hint>
+Consider setting the save method to 'on-save' if the 'on-change' method is too jittery or distracting. Your content is still saved with every keystroke, it just doesn't re-rendered until you press cmd+s.
+</Hint>
+
 #### Great, Where do I go from here?
 
 <Tabs>
 <Tab label="I know nothing">
-That's Ok! Conundrum is meant for people just like you... those that never intend on becoming professional developers but still want access to all the _sweet_ tools we get to play with. 
+That's Ok! Conundrum is meant for people just like you... those that never intend on becoming professional developers but still want access to all the <Ul highlight>_sweet_</Ul> tools we get to play with. 
 
 If I were you, I'd get started with the `Markdown??` documentation to learn the basics of markdown. From there, checkout the `Jsx??` docs **when you're ready** for more functionality.
 </Tab>

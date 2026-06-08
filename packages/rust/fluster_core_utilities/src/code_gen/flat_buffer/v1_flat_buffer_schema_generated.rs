@@ -897,6 +897,7 @@ impl<'a> EditorCitationBuffer<'a> {
   pub const VT_CITATION_KEY: flatbuffers::VOffsetT = 4;
   pub const VT_HTML: flatbuffers::VOffsetT = 6;
   pub const VT_URL: flatbuffers::VOffsetT = 8;
+  pub const VT_DOCUMENT_IDX: flatbuffers::VOffsetT = 10;
 
   #[inline]
   pub unsafe fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
@@ -908,6 +909,7 @@ impl<'a> EditorCitationBuffer<'a> {
     args: &'args EditorCitationBufferArgs<'args>
   ) -> flatbuffers::WIPOffset<EditorCitationBuffer<'bldr>> {
     let mut builder = EditorCitationBufferBuilder::new(_fbb);
+    builder.add_document_idx(args.document_idx);
     if let Some(x) = args.url { builder.add_url(x); }
     if let Some(x) = args.html { builder.add_html(x); }
     if let Some(x) = args.citation_key { builder.add_citation_key(x); }
@@ -936,6 +938,13 @@ impl<'a> EditorCitationBuffer<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<flatbuffers::ForwardsUOffset<&str>>(EditorCitationBuffer::VT_URL, None)}
   }
+  #[inline]
+  pub fn document_idx(&self) -> u32 {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u32>(EditorCitationBuffer::VT_DOCUMENT_IDX, Some(0)).unwrap()}
+  }
 }
 
 impl flatbuffers::Verifiable for EditorCitationBuffer<'_> {
@@ -948,6 +957,7 @@ impl flatbuffers::Verifiable for EditorCitationBuffer<'_> {
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("citation_key", Self::VT_CITATION_KEY, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("html", Self::VT_HTML, true)?
      .visit_field::<flatbuffers::ForwardsUOffset<&str>>("url", Self::VT_URL, false)?
+     .visit_field::<u32>("document_idx", Self::VT_DOCUMENT_IDX, false)?
      .finish();
     Ok(())
   }
@@ -956,6 +966,7 @@ pub struct EditorCitationBufferArgs<'a> {
     pub citation_key: Option<flatbuffers::WIPOffset<&'a str>>,
     pub html: Option<flatbuffers::WIPOffset<&'a str>>,
     pub url: Option<flatbuffers::WIPOffset<&'a str>>,
+    pub document_idx: u32,
 }
 impl<'a> Default for EditorCitationBufferArgs<'a> {
   #[inline]
@@ -964,6 +975,7 @@ impl<'a> Default for EditorCitationBufferArgs<'a> {
       citation_key: None, // required field
       html: None, // required field
       url: None,
+      document_idx: 0,
     }
   }
 }
@@ -984,6 +996,10 @@ impl<'a: 'b, 'b, A: flatbuffers::Allocator + 'a> EditorCitationBufferBuilder<'a,
   #[inline]
   pub fn add_url(&mut self, url: flatbuffers::WIPOffset<&'b  str>) {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<_>>(EditorCitationBuffer::VT_URL, url);
+  }
+  #[inline]
+  pub fn add_document_idx(&mut self, document_idx: u32) {
+    self.fbb_.push_slot::<u32>(EditorCitationBuffer::VT_DOCUMENT_IDX, document_idx, 0);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a, A>) -> EditorCitationBufferBuilder<'a, 'b, A> {
@@ -1008,6 +1024,7 @@ impl core::fmt::Debug for EditorCitationBuffer<'_> {
       ds.field("citation_key", &self.citation_key());
       ds.field("html", &self.html());
       ds.field("url", &self.url());
+      ds.field("document_idx", &self.document_idx());
       ds.finish()
   }
 }

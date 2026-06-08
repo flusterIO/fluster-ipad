@@ -338,6 +338,7 @@ public struct MdxSerialization_EditorCitationBuffer: FlatBufferObject, Verifiabl
     case citationKey = 4
     case html = 6
     case url = 8
+    case documentIdx = 10
     var v: Int32 { Int32(self.rawValue) }
     var p: VOffset { self.rawValue }
   }
@@ -348,21 +349,25 @@ public struct MdxSerialization_EditorCitationBuffer: FlatBufferObject, Verifiabl
   public var htmlSegmentArray: [UInt8]! { return _accessor.getVector(at: VTOFFSET.html.v) }
   public var url: String? { let o = _accessor.offset(VTOFFSET.url.v); return o == 0 ? nil : _accessor.string(at: o) }
   public var urlSegmentArray: [UInt8]? { return _accessor.getVector(at: VTOFFSET.url.v) }
-  public static func startEditorCitationBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 3) }
+  public var documentIdx: UInt32 { let o = _accessor.offset(VTOFFSET.documentIdx.v); return o == 0 ? 0 : _accessor.readBuffer(of: UInt32.self, at: o) }
+  public static func startEditorCitationBuffer(_ fbb: inout FlatBufferBuilder) -> UOffset { fbb.startTable(with: 4) }
   public static func add(citationKey: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: citationKey, at: VTOFFSET.citationKey.p) }
   public static func add(html: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: html, at: VTOFFSET.html.p) }
   public static func add(url: Offset, _ fbb: inout FlatBufferBuilder) { fbb.add(offset: url, at: VTOFFSET.url.p) }
+  public static func add(documentIdx: UInt32, _ fbb: inout FlatBufferBuilder) { fbb.add(element: documentIdx, def: 0, at: VTOFFSET.documentIdx.p) }
   public static func endEditorCitationBuffer(_ fbb: inout FlatBufferBuilder, start: UOffset) -> Offset { let end = Offset(offset: fbb.endTable(at: start)); fbb.require(table: end, fields: [4, 6]); return end }
   public static func createEditorCitationBuffer(
     _ fbb: inout FlatBufferBuilder,
     citationKeyOffset citationKey: Offset,
     htmlOffset html: Offset,
-    urlOffset url: Offset = Offset()
+    urlOffset url: Offset = Offset(),
+    documentIdx: UInt32 = 0
   ) -> Offset {
     let __start = MdxSerialization_EditorCitationBuffer.startEditorCitationBuffer(&fbb)
     MdxSerialization_EditorCitationBuffer.add(citationKey: citationKey, &fbb)
     MdxSerialization_EditorCitationBuffer.add(html: html, &fbb)
     MdxSerialization_EditorCitationBuffer.add(url: url, &fbb)
+    MdxSerialization_EditorCitationBuffer.add(documentIdx: documentIdx, &fbb)
     return MdxSerialization_EditorCitationBuffer.endEditorCitationBuffer(&fbb, start: __start)
   }
 
@@ -371,6 +376,7 @@ public struct MdxSerialization_EditorCitationBuffer: FlatBufferObject, Verifiabl
     try _v.visit(field: VTOFFSET.citationKey.p, fieldName: "citationKey", required: true, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.html.p, fieldName: "html", required: true, type: ForwardOffset<String>.self)
     try _v.visit(field: VTOFFSET.url.p, fieldName: "url", required: false, type: ForwardOffset<String>.self)
+    try _v.visit(field: VTOFFSET.documentIdx.p, fieldName: "documentIdx", required: false, type: UInt32.self)
     _v.finish()
   }
 }

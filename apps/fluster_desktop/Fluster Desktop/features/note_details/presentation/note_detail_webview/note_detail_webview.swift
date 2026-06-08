@@ -173,8 +173,10 @@ struct NoteDetailWebview: View {
         for: en.lastRead,
         relativeTo: .now
       )
+        var idx: UInt32 = 0
       let citations = en.citations.compactMap { cit in
-        return cit.toEditorCitation(activeCslFile: cslFile)
+          idx += 1;
+          return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
       }
       let tags = en.tags.map { t in
         return EditorTag(body: t.value)

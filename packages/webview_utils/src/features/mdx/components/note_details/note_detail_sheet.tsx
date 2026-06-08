@@ -16,7 +16,6 @@ declare global {
 import { connect } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
 import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types';
-import { InlineMdxContent } from '../inline_mdx_content';
 import { UnparsedConundrumContent } from '#/cdrm/unparsed_conundrum_content';
 
 const connector = connect((state: GlobalAppState) => ({
@@ -29,6 +28,7 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
         if (!data) {
             sendToSwift(NoteDetailWebviewActions.RequestNoteDetailData)
         } else {
+            console.log("data: ", data)
             sendToSwift(NoteDetailWebviewActions.SetWebviewLoaded);
             document.body.classList.remove("loading");
         }
@@ -54,24 +54,20 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
             <div className="w-full h-full flex flex-col justify-start items-center px-8 py-12">
                 <div className="w-full h-screen loading-hide max-w-[768px]">
                     <Subtitle>Title</Subtitle>
-                    <h1
+                    <div
                         className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-3 not-prose"
+                        dangerouslySetInnerHTML={{ __html: data.title }}
+                    /* id={data.title} */
                     >
-                        <UnparsedConundrumContent
-                            content={`# ${data.title}`}
-                            DOMId={summaryId}
-                        />
-                    </h1>
+                    </div>
                     <div className="text-muted-foreground text-light">{`Last modified ${data.last_modified_string}`}</div>
                     <div className="w-full h-[2px] bg-muted-foreground/60 mb-6 mt-3" />
                     {data.summary ? (
                         <div className="flex flex-row justify-start items-center gap-x-6">
                             <Subtitle>Summary</Subtitle>
-                            <div id={summaryId} className="text-lg text-foreground/80">
-                                <UnparsedConundrumContent
-                                    content={data.summary.content}
-                                    DOMId={summaryId}
-                                />
+                            <div id={summaryId} className="text-lg text-foreground/80"
+                                dangerouslySetInnerHTML={{ __html: data.summary.content }}
+                            >
                             </div>
                         </div>
                     ) : null}

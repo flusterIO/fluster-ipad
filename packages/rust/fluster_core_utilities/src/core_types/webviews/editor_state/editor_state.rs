@@ -18,6 +18,7 @@ pub struct EditorCitation {
     pub citation_key: String,
     pub html: String,
     pub url: Option<String>,
+    pub document_idx: u32,
 }
 
 #[typeshare]

@@ -1,8 +1,13 @@
-## Intro to Jsx
+## Intro to Conundrum
 
 
 
 
+
+
+**Not Documented Yet**
+- Functions
+  - This is my main priority after the initial release of Fluster, integrating a complete scripting language that allows users to pass functions to plot components. This feature was present in the previous release of Fluster, but due to the migration away from Javascript it has not yet been reimplemented.
 
 
 ## Components
@@ -20,15 +25,11 @@ This is my card's body.
 </Card>
 ```
 
-This fictitious `Slider` component (there are no components that make sense to self close, _yet_) does not accept any children, so we don't need the closing tag and we can write it as:
+This `Toc` (table of contents) component does not accept any children, so we don't need the closing tag and we can write it as:
 
 ```tsx -- title="components.mdx"
-<Slider min={0} max={5} />
+<Toc />
 ```
-
-### Strings
-
-[See these docs](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Strings) for a much more thorough explanation
 
 
 
@@ -46,6 +47,10 @@ This fictitious `Slider` component (there are no components that make sense to s
 >
 ...
 ```
+
+
+#### _Experimental_ String escaping
+> This will be fully supported in a future update. It may or may not work currently...
 
 If we _really_ wanted to use single quotes inside of another pair of single quotes, or double quotes inside of double quotes, we can do that as:
 
@@ -122,7 +127,7 @@ If we _really_ wanted to use single quotes inside of another pair of single quot
 ```tsx
 <MyFakeComponent 
     // Notice that there are 2 `{{}}` here.
-    // 1 is required for jsx, the other for javascript.
+    // 1 is required for jsx, the other for the actual object.
     // Confusing... I know.
     myObjectProperty={{
         name: "My name",

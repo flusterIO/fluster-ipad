@@ -11,7 +11,7 @@ import SwiftUI
 
 @MainActor
 public class AuthManager: ObservableObject {
-    var products: [Product] = []
+    public var products: [Product] = []
     var purchasedProductIDs: Set<String> = []
     var isLoading = false
     var err: String? = nil
@@ -47,6 +47,7 @@ public class AuthManager: ObservableObject {
     private func updatePurchased() async {
         for await result in Transaction.currentEntitlements {
             guard let transaction = try? checkVerified(result) else { continue}
+            print(transaction)
             if transaction.revocationDate == nil {
                 purchasedProductIDs.insert(transaction.productID)
             } else {
@@ -66,7 +67,7 @@ public class AuthManager: ObservableObject {
         isLoading = false
     }
     
-    private func purchase(_ product: Product) async throws -> StoreKit.Transaction? {
+    public func purchase(_ product: Product) async throws -> StoreKit.Transaction? {
         let result = try await product.purchase()
         
         switch result {

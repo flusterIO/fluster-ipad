@@ -325,11 +325,13 @@ public struct EditorCitation: Codable {
 	public let citation_key: String
 	public let html: String
 	public let url: String?
+	public let document_idx: UInt32
 
-	public init(citation_key: String, html: String, url: String?) {
+	public init(citation_key: String, html: String, url: String?, document_idx: UInt32) {
 		self.citation_key = citation_key
 		self.html = html
 		self.url = url
+		self.document_idx = document_idx
 	}
 }
 
