@@ -21,7 +21,7 @@ interface ImageData {
 }
 interface CarouselProps {
     breakpoints?: Record<number, { slidesToShow: number }>;
-    images: ImageData[];
+    images?: ImageData[];
 }
 
 export const IPadCarousel = ({

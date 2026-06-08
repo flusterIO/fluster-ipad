@@ -13,7 +13,7 @@ const SponsorshipRequestForm = () => {
                 </p>
             </div>
             <Separator />
-            <BusinessInterestForm />
+            <div></div>
         </div>
     );
 };

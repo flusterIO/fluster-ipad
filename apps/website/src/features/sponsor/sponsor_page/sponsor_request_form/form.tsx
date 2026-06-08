@@ -1,13 +1,12 @@
 "use client";
-import React, { ReactNode, useState } from "react";
+import React, { type ReactNode, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     businessContactFormDefaultValues,
-    BusinessInterestData,
+    type BusinessInterestData,
     businessInterestFormSchema,
     contactPurposes,
     contactTypes,
-    ValidatedBusinessInterest,
 } from "./formSchema";
 import { useForm } from "react-hook-form";
 import { Form } from "#/core/shad/ui/form";
@@ -114,7 +113,12 @@ const BusinessInterestForm = () => {
 
     return (
         <>
-            <NoStorageModal open={open} close={() => setOpen(false)} />
+            <NoStorageModal
+                open={open}
+                close={() => {
+                    setOpen(false);
+                }}
+            />
             <Form {...form}>
                 <form
                     className={"w-full space-y-6"}

@@ -51,8 +51,8 @@ export const StoryOfFlusterSection = () => {
                     anyone running it on their own system, no sign up required, ever.
                 </p>
                 <p>
-                    You can visit the sponsor page <Link href={"/sponsor"}>here</Link>, or
-                    go directly to Fluster&apos;s paypal account by scanning the QR code
+                    You can visit the sponsor page <Link href={"/"}>here</Link>, or go
+                    directly to Fluster&apos;s paypal account by scanning the QR code
                     below.
                 </p>
             </div>

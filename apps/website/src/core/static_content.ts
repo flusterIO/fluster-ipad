@@ -3,7 +3,7 @@ const baseUrl = "https://flusterapp.com";
 export const staticContent = {
     links: {
         comingSoon: "/coming_soon",
-        sponsor: "/sponsor",
+        sponsor: "/",
         social: {
             github: "https://github.com/flusterIO/fluster",
             twitter: "https://x.com/fluster_app",
