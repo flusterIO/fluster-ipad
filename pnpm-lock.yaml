@@ -735,7 +735,7 @@ importers:
         specifier: 6.6.0
         version: 6.6.0
       '@codemirror/state':
-        specifier: 6.6.0
+        specifier: ^6.0.0
         version: 6.6.0
       '@codemirror/view':
         specifier: 6.41.0
@@ -831,7 +831,7 @@ importers:
         specifier: ^6.0.0
         version: 6.9.4
       '@codemirror/state':
-        specifier: 6.6.0
+        specifier: ^6.0.0
         version: 6.6.0
       '@lezer/go':
         specifier: ^1.0.0
@@ -886,7 +886,7 @@ importers:
         specifier: 6.6.0
         version: 6.6.0
       '@codemirror/state':
-        specifier: 6.6.0
+        specifier: ^6.0.0
         version: 6.6.0
       '@codemirror/theme-one-dark':
         specifier: 6.1.3
