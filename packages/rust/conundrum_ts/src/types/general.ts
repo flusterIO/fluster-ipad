@@ -1,6 +1,6 @@
 import {
     type NextJsConundrumOutput,
-    type NextjsFileSummary,
+    type BlogFileSummary,
 } from "../code_gen/typeshare/conundrum";
 
 export type WithNullableOptionals<T> = {
@@ -10,4 +10,4 @@ export type WithNullableOptionals<T> = {
 };
 
 export type AnyBuilderOutput = WithNullableOptionals<NextJsConundrumOutput>;
-export type AnyNoteOutput = WithNullableOptionals<NextjsFileSummary>;
+export type AnyNoteOutput = WithNullableOptionals<BlogFileSummary>;
