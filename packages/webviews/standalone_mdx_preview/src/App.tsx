@@ -27,7 +27,7 @@ function App() {
             <WebViewContainer>
                 <MdxEditorPreviewOnly
                     implementation={WebviewImplementation.MdxViewer}
-                    className={"px-6 pb-12 pt-8 max-h-screen"}
+                    className={"px-6 pb-12 pt-8"}
                 />
             </WebViewContainer>
         </MdxEditorGlobalProvider>

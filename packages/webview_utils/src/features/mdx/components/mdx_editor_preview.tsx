@@ -131,7 +131,7 @@ export const MdxEditorPreview = connector(({
             <div
                 className={cn("",
                     "max-w-[1080px]",
-                    isEditorView ? "px-6 pt-4 pb-16 mx-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
+                    isEditorView ? "px-6 pt-4 pb-16 mx-auto max-h-full overflow-y-auto" : "px-8 pt-6 max-h-screen overflow-y-auto pb-16",
                 )}
             >
 
@@ -139,6 +139,7 @@ export const MdxEditorPreview = connector(({
                     id={SplitviewEditorDomIds.MdxPreview}
                     className={cn(
                         className,
+                        isEditorView && "overflow-y-hidden",
                         hideEquationLabels === EquationNumberingStrategy.None ? "hide-equation-labels" : hideEquationLabels === EquationNumberingStrategy.IdOnly ? "hide-no-id-eq-labels" : ""
                     )}
                     ref={ref}

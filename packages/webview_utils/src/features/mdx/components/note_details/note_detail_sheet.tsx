@@ -16,7 +16,6 @@ declare global {
 import { connect } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
 import { type WithNullableOptionals } from '../../../../core/utils/types/utility_types';
-import { UnparsedConundrumContent } from '#/cdrm/unparsed_conundrum_content';
 
 const connector = connect((state: GlobalAppState) => ({
     data: state.note_details
@@ -57,7 +56,6 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
                     <div
                         className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-3 not-prose"
                         dangerouslySetInnerHTML={{ __html: data.title }}
-                    /* id={data.title} */
                     >
                     </div>
                     <div className="text-muted-foreground text-light">{`Last modified ${data.last_modified_string}`}</div>
