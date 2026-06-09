@@ -44,17 +44,18 @@ Fluster is the app you're looking at now. Conundrum is the language you can writ
 
 Basically, if you write Conundrum, you can output your notes in the more expressive, stylized form for humans and transpile it seamlessly to the form that AI consumes best: Markdown.
 
-## What's the difference between Mdx and Markdown?
-
-<Hint label="Goal" primary>
+<Hint label="Goal">
 The goal of Conundrum is to allow everyone to write notes as expressive as the examples, without looking at the documentation by the end of their first day.
 </Hint>
+
+## What's the difference between Mdx and Markdown?
+
 
 Markdown is a core piece of every developer's workflow, and it's actually what AI is trained on most often as it's such an easy compilation target for a variety of text-based inputs.
 
 Here, the 'markdown' is the titles, the code blocks, even the lists.
 
-So what is mdx? Any time you visit a help section or a content based website, there's a fair chance that the website was written in mdx by the team of developers behind the platform. It's perhaps the single most go-to tool for developers in terms of content generation, but the syntax is fairly complicated; it is an entire programming language after all.
+So what is mdx? Any time you visit a help section or a content based website, there's a fair chance that the website was written in mdx by the team of developers behind the platform. It's perhaps the single most go-to tool for developers in terms of content generation, but the syntax is fairly complicated; it is an entire programming language, embedded in a markup language after all!
 
 Conundrum is my attempt to bring this tool to the general user, and I'm encouraging other developers to use it for projects of their own (See the `Conundrum??` docs). It's still in it's very early stages, but the goals are to give you _almost_ all of the expressiveness found in these more complete UI frameworks in complexity that's manageable for someone that just want's to take notes for school, for their job, or as just a small piece of their lives... someone that didn't dedicate their career to learning these tools. You'll never have to know what a logical pixel is, you just have to remember common language terms like 'small' and 'smedium'[^3].
 
@@ -62,6 +63,7 @@ This still leaves you with one thing that ever developer struggles with... remem
 
 
 ### A Quick Run-Through
+> Also, don't forget... there's a command palette available on Mac via cmd+P!
 
 Ok, here are the basics. I'll skip the Markdown bit (See `Markdown??` documentation) because that's documented in a million places, and just touch on the features that are unique to Conundrum and Fluster.
 
@@ -81,6 +83,8 @@ def gamma(v)
 - Reference the documentation often. As the app is updated, so too will the documentation. As it's built into the binary it will always reflect the current state of _your_ application, and as the documentation is interactive (See the `Emoji??` docs), searchability will improve significantly as the app grows.
 
 
+
+## Getting Started
 
 ### Components
 
@@ -128,7 +132,7 @@ But some components are even simpler! The 'table of contents' for example doesn'
 
 It's difficult to describe how organization inside of Fluster works without first touching on the origin story, and oh lord, does it have an origin story.
 
-So I have background in astrophysics, but was working in software when late one night I had a realization... Einstein's assumptions made far more sense _before_ the observations that we now use to derive the Big Bang model.[^1] For the next few weeks I began to play around with the math, to see what alternatives there were when I realized the obvious associations align _perfectly_ with observation. 
+So I have background in astrophysics, but was working in software when late one night I had a realization... Einstein's assumptions made far more sense _before_ the observations that we now use to derive the Big Bang model.[^1] For the next few weeks I began to play around with the math to see what alternatives there were when I realized the obvious associations align _perfectly_ with observation. 
 
 From there I quit my job to work on this model full time, losing my apartment just a few months into the process. I was homeless for almost $3 \frac{1}{2}$ years, found myself in a shelter with my puppy thanks to some good people, and am now in publicly funded housing.
 
@@ -157,6 +161,10 @@ Each note can include dictionary entries, which are automatically appended to yo
 
 This is a great way to create quick-reference content for later in a way that's easy to lookup. I found this particularly useful for various equations that I knew I would need later, but I also knew I wouldn't remember the name of the dude it was named after.
 
+<Admonition title="One last thanks" sidebar right>
+Thank you for taking the time to checkout Fluster & Conundrum! This has been 5 years in the making, and while it's in it's very early stages, I'm happy to share it with you now! I have big plans for this app and this framework if I'm lucky enough to make it my full-time job, but as much as subscribing, using your social media to help push the model that this app was built to pursue into the physics debate would be a huge help.
+</Admonition>
+
 #### Equation based search (upcoming)
 
 This feature was present in the version of Fluster that I built for myself, and re-integrating it with Fluster on my to-do list. Once re-integrated, a panel will be available that will allow searching notes by equation, given that the equation is linked to an equation you provide an id to.
@@ -165,9 +173,7 @@ This feature was present in the version of Fluster that I built for myself, and 
 
 Of course, Fluster includes the basics like full-text search, but it does so in an intelligent way, returning results based on the syntax of the note where results in titles appear ahead of results in other content, for example. Semantic search might not make it into the initial release of Fluster due to the limitations around my lack of internet connection and the development workflow it would require, but it will be available within a week of when that changes.
 
---- What worked for me ---
 
-What worked best for me was using the `subject` and `topic` fields in a hierarchical way, where one is more general than the other, and then using tags to reference content _within_ the note. I feel this gets more from this architecture than using `subjects`, `topics` and `tags` directly on top of each other, and can allow for organizing even my messy workflow inside of Fluster.
 
 
 [^1]: Einstein famously pushed back against this model vehemently before ultimately coming around to the idea.

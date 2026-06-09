@@ -69,7 +69,7 @@ public final class AppDataContainer {
             data: """
               @article{einstein1905electrodynamics,
                   title = {On the electrodynamics of moving bodies},
-                  author = {Einstein, Albert and others},
+                  author = {Einstein, Albert},
                   journal = {Annalen der physik},
                   volume = {17},
                   number = {10},

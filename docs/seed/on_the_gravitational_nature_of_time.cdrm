@@ -21,20 +21,20 @@ I'll do my best to convince the math types among you (this article does assume s
 |:----------------------------------------------------------|:---------------------------------|:--------------------|
 | cosmological velocity from local gravitational parameters | `vbarCosmological`               | Difficult to assess |
 | kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | $0.442258391884371\%$   |
-| Earth's roational velocity via $\alpha$                          | `rotationVelocityFromDivergence` | $0.00677756400547747\%$ |
+| Earth's rotational velocity via $\alpha$                   | `rotationVelocityFromDivergence` | $0.00677756400547747\%$ |
 | Solar-Galactic Radius from visible mass                   | `galacticRadiusPolynomial`       | $0.0\%$                 |
-| $\alpha$ (solar)                                                 | `alphaSolar`                     | $0.00342749503676447\%$ |
-| $\alpha$ (Earth)                                                 | `omega`, `alphaFactor`           | $0.0253043303850287\%$  |
-| $\alpha$ (orbital velocity)                                      | `solarMetricVelocity`, `vOrbit`  | $0.0544665494810030\%$  |
-| $\alpha$ (from derived velocity)                                 | `vbarAlphaEquivalence`           | $0.0761820393770567\%$  |
-| $J \approx \Phi$                                                     | `currentEquivalent`              | $0.213633171310522\%$   |
-| $h$ from $\alpha$                                                  | `omega`, `alpha`                 | $0.0253887188634106\%$  |
-| $h / (2 - \alpha)$ from $\omega$                                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
-| $\Phi$ mass density approximation                              | `massDensityEquivalence`         | $0.863214423082925\%$   |
+| $\alpha$ (solar)                                          | `alphaSolar`                     | $0.00342749503676447\%$ |
+| $\alpha$ (Earth)                                          | `omega`, `alphaFactor`           | $0.0253043303850287\%$  |
+| $\alpha$ (orbital velocity)                               | `solarMetricVelocity`, `vOrbit`  | $0.0544665494810030\%$  |
+| $\alpha$ (from derived velocity)                          | `vbarAlphaEquivalence`           | $0.0761820393770567\%$  |
+| $J \approx \Phi$                                          | `currentEquivalent`              | $0.213633171310522\%$   |
+| $h$ from $\alpha$                                         | `omega`, `alpha`                 | $0.0253887188634106\%$  |
+| $h / (2 - \alpha)$ from $\omega$                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
+| $\Phi$ mass density approximation                         | `massDensityEquivalence`         | $0.863214423082925\%$   |
 
 
 <Hint label="Error" info>
-    All error percentage calculations were done with the following function. See the [Fluster & Conunundrum repository](https://github.com/flusterIO) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
+    All error percentage calculations were done with the following function. See the [Fluster & Conundrum repository](https://github.com/flusterIO) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
 </Hint>
 
 ```python -- title="percent_diff.py"
@@ -43,7 +43,7 @@ def percentDiff(observed, derived):
     
 ```
 
-Also, keep in mind that if we wanted to be selective we can choose a radius here on Earth's surface that wll satisfy the above equations perfectly, giving an error of 0. The radii that were used were whichever was most fitting for the job... the mean radius for calculating volume, the polar radius when spin was involved to minimize centripital influence, and Astropy provided values (equatorial) for everything else.
+Also, keep in mind that if we wanted to be selective we can choose a radius here on Earth's surface that will satisfy many of the above equations perfectly, giving an error of 0. The radii that were used were whichever was most fitting for the job... the mean radius for calculating volume, the polar radius when spin was involved to minimize centripetal influence, and Astropy provided values (equatorial) for everything else.
 
 
 ### The Lighthouse & The Clocktower
@@ -53,9 +53,15 @@ Consider two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should trave
 
 At $p_2$ place a time keeping device that remains visible from $p_1$. Allow that $A$ remains at rest relative to $p_1$, and very near $p_1$ while $B$ goes in motion (at an inertial pace) between $p_1$ and $p_2$. 
 
-At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while allowing the observer in an unchanged state to observe the kinetic effects of observer in motion is that the distance between $p_{1}$ and $p_{2}$ must elongate by a factor of $ \gamma$.
+At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while requiring that $v=v_\prime$ in the coordinate system of the observer who's kinetic state remains unchanged, and that both $A$ and $B$ agree upon the time at which the reach $p_2$ is that $d \to d\gamma$ in the coordinate system of $B$.
 
-Is this not inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further seperated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
+To summarize, we have 3 possibilities:
+
+1. Every single experimental validation of special and general relativity was flawed. This is statistically almost impossible.
+2. $B$ returns from $p_2$ with a photo of $B$ at $p_2$ that disagrees with the photo $A$ took of $B$ at $p_2$. There is nothing in physics that prohibits extending the time periods and distances to produce such absurdities as $B$ wearing a completely different shirt.
+3. $d$ elongates by a factor of $\gamma$. We might then presume that this dilation is the source of the equivalence principle, and watch how the physics just lines up.
+
+If you think about it, isn't this inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
 
 > **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
 
@@ -72,7 +78,7 @@ By attributing the 4th displacement coordinate to the density axis that arises f
 
 Of course we need to change the dimensionality of much of our physics, but as I will demonstrate here... the math remains remarkably consistent. 
 
-> Does this not make more sense? A Universe driven by _motion_ as a driving rate of change instead of an abstract quantity that we've never directly measured, time? 
+> Doesn't this make more sense? A Universe driven by _motion_ as a driving rate of change instead of an abstract quantity that we've never directly measured, time? 
 
 
 #### Our Cosmological Velocity
@@ -150,7 +156,7 @@ $$ {#eq_timeDependentDelta}
 $$
 
 <Hint label="Notation" primary>
-  Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically acccurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system only to remove it by multiplying by $t$.
+  Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically accurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system only to remove it by multiplying by $t$.
 </Hint>
 
 If we substitute this result back into equation <EqRef id="vGamma" /> we find:
@@ -199,7 +205,7 @@ $$
 
 As relativity predicts this value does not give 1, but a magnitude slightly higher as $\gamma \gt 1$.
 
-Pluging this value in to the equation we used to find $\delta$ gives:
+Plugging this value in to the equation we used to find $\delta$ gives:
 
 $$
 v = c \sqrt{1 - \frac{1}{dt^2}} = 373,453 ~ \text{km} ~ \text{s}^{-1}
@@ -222,7 +228,7 @@ $$
 
 
 
-When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.13~ Kpc$, _perfectly_ on top of observatonal values, _without_ any additional unseen mass!
+When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.13~ Kpc$, _perfectly_ on top of observational values, _without_ any additional unseen mass!
 
 ## Electromagnetism
 
@@ -236,7 +242,7 @@ s = \left|\begin{matrix}
 \end{matrix}\right| = \omega^3
 $$
 
-Not only does this accomodate existing experimental validations of SR & GR[[cite:PoundRebka]], it does so while accomodating the original relativistic experiment: Michelson & Morely[[cite:Michelson_Morely]][^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
+Not only does this accommodate existing experimental validations of SR & GR[[cite:PoundRebka]], it does so while accommodating the original relativistic experiment: Michelson & Morely[[cite:Michelson_Morely]][^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
 
 If we consider that the magnitude of $\delta$ _is_ this determinant, we should then take it's cube root:
 
@@ -263,13 +269,13 @@ $$
 \alpha = 1 \pm \sqrt{1 - \left(\frac{2 G M_\oplus}{R_\oplus^3}\right)^{1/3}} = 1.9927 \text{ or } 0.0072953
 $$
 
-That's almost precisely the value we were looking for when we add these values, and almost exactly $\alpha$ again when we subtract them, giving very Fibonnaci-like vibes.
+That's almost precisely the value we were looking for when we add these values, and almost exactly $\alpha$ again when we subtract them, giving very Fibonacci-like vibes.
 
 <Hint label="Final Error:" error>
   $0.025\%$
 </Hint>
 
-> Take a second to recogize the fact that in the exact function we predicted to find a unifying quantity, the single most unifying electromagnetic property arises. This is _not_ a dimensional coincidence.
+> Take a second to recognize the fact that in the exact function we predicted to find a unifying quantity, the single most unifying electromagnetic property arises. This is _not_ a dimensional coincidence.
 
 
 --- <Emoji name="sun" inline smedium/> ---
@@ -283,7 +289,13 @@ Let's consider this function where the $\text{spinor}=\left( \frac{1}{2} \right)
 Plugging this back into equation <EqRef id="eq_alphaReciprical" /> gives:
 
 $$
-\left(\frac{1}{2 - \alpha}\right)^{1/3} \sqrt[3]{2 \frac{G M_\oplus}{R_\oplus^3}} = \sqrt[3]{\frac{GM_\odot}{R_\odot^3}} =  \alpha \pm 0.0034\%
+\lim_{\Gamma \to \left(\frac{1}{2}\right)^{1/3}} \sqrt[3]{2 \frac{G M_\oplus}{R_\oplus^3}} = \sqrt[3]{\frac{GM_\odot}{R_\odot^3}} =  \alpha \pm 0.0034\%
+$$
+
+Where
+
+$$
+\Gamma = \frac{1}{2 - \alpha}
 $$
 
 Demonstrating that this function is _more_ than just a coincidence.
@@ -503,7 +515,7 @@ $$
 then finally
 
 $$
-\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{g}}{m^3}
+\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\Phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{g}}{m^3}
 $$
 
 This is our observed mass density, $m_{0}$...
@@ -512,7 +524,7 @@ $$
 \rho = \frac{M_{\oplus}}{\frac{4}{3} \pi R^3} \pm 0.85\%
 $$
 
-That's an error of under 1% for an approximation, that's using approximations and transcental quantities, demonstrating the wide application of this model.
+That's an error of under 1% for an approximation, that's using approximations and transcendental quantities, demonstrating the wide application of this model.
 
 
 ### Supportive Arguments 
@@ -522,26 +534,12 @@ That's an error of under 1% for an approximation, that's using approximations an
 - This notion of time paints an entirely different picture of chronology, where there is no limitation on backwards time travel, but a limitation on affecting one's own past. Go back to $t - n$ and try to kill your grandfather. He won't be there anymore as he's now at $t$, if he's still around. Don't get me started on the potentials around massless conciousness in this buoyant, 4-dimensional environment.
 - Machian inertia. This model concludes that the Universe is almost precisely as Mach had predicted, with inertia being comprised of the sum of this radiating force for all other bodies in the Universe.
 - The entire equivalence principle. We've all become used to it so we overlook just how profound it is, but it's literally assuming what I'm saying is true mathematically and then just pretending it's not in reality.
-- The lack of a magnetic monopole, or rather, the existince of an electric monopole. Where do you think that 'sink and faucet' model is funelling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
+- The lack of a magnetic monopole, or rather, the existence of an electric monopole. Where do you think that 'sink and faucet' model is funneling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
 - The Fermi paradox. There's an entirely other dimension that life might exist across that we have been so far unable to transcend.
 - Relative motion. Think about it. Do we currently calculate all motion as being truly relative, or do we not _already_ calculate motion as relative to the underlying gravitational acceleration and then lie to undergrads about it? The tensors of GR mask this fact to an extent, but reduce them to their calculus equivalents and we are doing _precisely_ this.
 
 
 --- <Emoji name="alien" smedium inline /> ---
-
-After all of this talk of divergence, it's important to understand the relationship between this geometry, the proposed spatial dilation, and the power 3 in our 3 dimensional coordinate system. If we recall in slight reworking of equation <EqRef id="eq_alphaReciprical" />:
-
-$$
-R \alpha = \Gamma \sqrt[3]{2GM_\oplus}
-$$
-
-Where 
-
-$$
-\Gamma = \frac{1}{2 - \alpha}
-$$
-
-Is it a coincidence that $R  \alpha^3$ gives the unit of measure, the **cubit** used by our most ancient civilizations? I'll leave that for you to ponder... With ongoing world events, maybe we'll soon know. At least we know how they got here.
 
 <Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
 If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.

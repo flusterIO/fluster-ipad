@@ -4,14 +4,9 @@
 
 ### Pre-release bugs
 
-- [x] Make sure tabs component is rendering as expected, especially on the regular markdown page (not the editor).
-- [x] Write new bibliography snippets and include them for the obvious things for general users like a web page.
-- [ ] Make sure shit bib snippets are not shown.
-- [x] Get dictionary entry page entries clickable again.
-- [x] Get table of contents clickable again.
-- [x] Make sure toast is shown when emoji text is copied. It is currently being copied successully without showing a toast.
-  - [x] Add the tabs component into the application somewhere to show it off.
-- [ ] Work on initial launch note conversion to `.cdrm`
+- [x] Make sure shit bib snippets are not shown.
+- [x] Remove section on both the website and the app about $R  \alpha^3 = \text{cubit}$. It's wrong you dumb cunt.
+- [x] Work on initial launch note conversion to `.cdrm`
 - [x] Initial note seeding
 - [x] Onboarding toast things with ToastKit or whatever it's called.
 - [ ] Onboarding pages for mac (if time allows and a design works well)
@@ -38,8 +33,8 @@
   - [ ] Parse & Render Table
   - [ ] Parse & Render Lists
     - [x] Unordered (half complete)
-    - [ ] Ordered
-    - [ ] Checkbox
+    - [x] Ordered
+    - [x] Checkbox
   - [x] Parse & Render Footnotes (half complete)
   - [ ] Emoji search and other doc specific components working as expected.
 - [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)

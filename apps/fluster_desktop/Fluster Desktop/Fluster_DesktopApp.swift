@@ -6,12 +6,12 @@
 //
 
 import FlusterData
+import FlusterSwift
 import SwiftData
 import SwiftUI
 import TipKit
 import UniformTypeIdentifiers
 import WebKit
-import FlusterSwift
 
 struct WindowAccessor: NSViewRepresentable {
   var color: NSColor
@@ -35,6 +35,8 @@ struct Fluster_DesktopApp: App {
   @StateObject private var authManager = AuthManager()
   init() {
     SchemeRegistration.registerCustomScheme()
+    // TODO: DEVELOPMENTONLY Remove this dumbass idea bfore the app is submitted
+    UserDefaults.resetUserDefaultsDEVELOPMENTONLY()
     do {
       try Tips.configure()
     } catch {
@@ -44,7 +46,7 @@ struct Fluster_DesktopApp: App {
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
       ContentView()
-            .environmentObject(authManager)
+        .environmentObject(authManager)
         .background(WindowAccessor(color: NSColor.windowBackground))
         .toolbarBackground(.hidden, for: .automatic)
     }

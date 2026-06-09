@@ -61,13 +61,13 @@ export const NoteDetailSheet = connector(({ data }: { data: WithNullableOptional
                     <div className="text-muted-foreground text-light">{`Last modified ${data.last_modified_string}`}</div>
                     <div className="w-full h-[2px] bg-muted-foreground/60 mb-6 mt-3" />
                     {data.summary ? (
-                        <div className="flex flex-row justify-start items-center gap-x-6">
+                        <>
                             <Subtitle>Summary</Subtitle>
-                            <div id={summaryId} className="text-lg text-foreground/80"
+                            <div id={summaryId} className="text-foreground/80"
                                 dangerouslySetInnerHTML={{ __html: data.summary.content }}
                             >
                             </div>
-                        </div>
+                        </>
                     ) : null}
                     {data.topic ? (
                         <div className="flex flex-row justify-start items-center gap-x-3 mt-6 mb-0">

@@ -27,23 +27,27 @@ struct PaywallView: View {
                     .frame(width: 48, height: 48, alignment: .center)
             Text("Fluster Pro")
                 .font(.largeTitle)
+                .fontWeight(.semibold)
             }
             Text("If you see the potential in Fluster and Conundrum, please consider subscribing. You'll get Unlimited notes, immediate access to the mobile app, and you'll be supporting the future growth of the Conundrum ecosystem.")
-                .frame(maxWidth: 350)
+                .frame(maxWidth: 450)
             ForEach(store.products, id: \.id) { product in
                 Button( action: {
                     Task {
                         do {
-                           let res = try await store.purchase(product)
+                           let _ = try await store.purchase(product)
                         } catch {
                             print("Purchase Error... and you haven't had a paycheck in 5 years. \(error.localizedDescription)")
                         }
                     }
                 }, label: {
                     Text("\(getButtonText(product.id)) \(product.displayPrice)")
+                        .foregroundStyle(.white)
                 })
+                .buttonStyle(.glassProminent)
             }
         }
+        .padding()
     }
     
     func getButtonText(_ id: String) -> String {

@@ -19,17 +19,12 @@ struct MainSettingsPageView: View {
   @State private var codeHighlighting = true
   @State private var textSize: Double = 16
   @State private var highContrast = false
-    init() {
-        UserDefaults.resetUserDefaultsDEVELOPMENTONLY()
-    }
 
   var body: some View {
     HStack(alignment: .center) {
       ScrollView {
         SettingPageLogo()
         UISettingSection()
-
-        AISettingSectionView()
 
         NotesDirSettingSection()
 

@@ -533,20 +533,6 @@ That's an error of under 1% for an approximation, that's using approximations an
 
 --- <Emoji name="alien" smedium inline /> ---
 
-After all of this talk of divergence, it's important to understand the relationship between this geometry, the proposed spatial dilation, and the power 3 in our 3 dimensional coordinate system. If we recall in slight reworking of equation <EqRef id="eq_alphaReciprical" />:
-
-$$
-R \alpha = \Gamma \sqrt[3]{2GM_\oplus}
-$$
-
-Where 
-
-$$
-\Gamma = \frac{1}{2 - \alpha}
-$$
-
-Is it a coincidence that $R  \alpha^3$ gives the unit of measure, the **cubit** used by our most ancient civilizations? I'll leave that for you to ponder... With ongoing world events, maybe we'll soon know. At least we know how they got here.
-
 <Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
 If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.
 </Quote>

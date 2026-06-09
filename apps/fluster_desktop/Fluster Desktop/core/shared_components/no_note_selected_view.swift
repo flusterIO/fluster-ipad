@@ -12,6 +12,7 @@ struct NoNoteSelectedView: View {
         VStack {
             Image(systemName: "plus.magnifyingglass")
                 .resizable()
+                .foregroundStyle(.white)
                 .frame(width: 32, height: 32)
                 .padding()
                 .background(Circle().fill(Color.accent))

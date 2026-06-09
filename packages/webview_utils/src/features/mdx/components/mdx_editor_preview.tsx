@@ -147,7 +147,7 @@ export const MdxEditorPreview = connector(({
                 {citations.length ? (
                     <div className="w-full max-w-full">
                         <H3>Bibliography</H3>
-                        <div>
+                        <div className="w-full">
                             {citations.map((cit) => <BibliographyEntryComponent key={cit.citation_key} entry={cit} />)}
                         </div>
                     </div>
