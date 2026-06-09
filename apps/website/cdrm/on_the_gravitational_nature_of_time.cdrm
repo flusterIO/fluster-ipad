@@ -48,7 +48,7 @@ def percentDiff(observed, derived):
     
 ```
 
-Also, keep in mind that if we wanted to be selective we can choose a radius here on Earth's surface that wll satisfy the above equations perfectly, giving an error of 0. The radii that were used were whichever was most fitting for the job... the mean radius for calculating volume, the polar radius when spin was involved to minimize centripital influence, and Astropy provided values (equatorial) for everything else.
+Also, keep in mind that if we wanted to be selective we can choose a radius here on Earth's surface that will satisfy many of the above equations perfectly, giving an error of 0. The radii that were used were whichever was most fitting for the job... the mean radius for calculating volume, the polar radius when spin was involved to minimize centripetal influence, and Astropy provided values (equatorial) for everything else.
 
 
 ### The Lighthouse & The Clocktower
@@ -60,7 +60,7 @@ At $p_2$ place a time keeping device that remains visible from $p_1$. Allow that
 
 At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while allowing the observer in an unchanged state to observe the kinetic effects of observer in motion is that the distance between $p_{1}$ and $p_{2}$ must elongate by a factor of $ \gamma$.
 
-Is this not inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further seperated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
+Is this not inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
 
 > **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
 
@@ -89,10 +89,6 @@ Let's consider that this dilation of space might give rise to our gravitational 
 $$ {#eq_delta}
 \delta = \frac{d}{dR} - G \frac{M}{R^2} = 2 G \frac{M}{R^3}
 $$
-
-<Hint>
-  The negative sign here is applied to $g$ since it is _space_ that is moving, not the observer. This gives the observe a negative net $\dot{x}$ despite the fact that $\Delta E_{\text{kinetic}} = 0$.
-</Hint>
 
 If we take the average of this integral, we find a scalar product that can be used in the same manner as $\gamma$:
 
@@ -154,7 +150,7 @@ $$ {#eq_timeDependentDelta}
 $$
 
 <Hint label="Notation" primary>
-  Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically acccurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system only to remove it by multiplying by $t$.
+  Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically accurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system only to remove it by multiplying by $t$.
 </Hint>
 
 If we substitute this result back into equation <EqRef id="vGamma" /> we find:
@@ -179,7 +175,7 @@ Consider the diagram below. If this model is correct, we can improve the derivat
 
 
 $$
-F_{\text{centripital}} = F_{\text{gravity}}
+F_{\text{centripetal}} = F_{\text{gravity}}
 $$
 
 We can solve this trigonometrically. 
@@ -203,7 +199,7 @@ $$
 
 As relativity predicts this value does not give 1, but a magnitude slightly higher as $\gamma \gt 1$.
 
-Pluging this value in to the equation we used to find $\delta$ gives:
+Plugging this value in to the equation we used to find $\delta$ gives:
 
 $$
 v = c \sqrt{1 - \frac{1}{dt^2}} = 373,453 ~ \text{km} ~ \text{s}^{-1}
@@ -226,7 +222,7 @@ $$
 
 
 
-When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.13~ Kpc$, _perfectly_ on top of observatonal values, _without_ any additional unseen mass!
+When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.13~ Kpc$, _perfectly_ on top of observational values, _without_ any additional unseen mass!
 
 ## Electromagnetism
 
@@ -240,7 +236,7 @@ s = \left|\begin{matrix}
 \end{matrix}\right| = \omega^3
 $$
 
-Not only does this accomodate existing experimental validations of SR & GR, it does so while accomodating the original relativistic experiment: Michelson & Morely[^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
+Not only does this accommodate existing experimental validations of SR & GR, it does so while accommodating the original relativistic experiment: Michelson & Morely[^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
 
 If we consider that the magnitude of $\delta$ _is_ this determinant, we should then take it's cube root:
 
@@ -273,7 +269,7 @@ That's almost precisely the value we were looking for when we add these values, 
   $0.025\%$
 </Hint>
 
-> Take a second to recogize the fact that in the exact function we predicted to find a unifying quantity, the single most unifying electromagnetic property arises. This is _not_ a dimensional coincidence.
+> Take a second to recognize the fact that in the exact function we predicted to find a unifying quantity, the single most unifying electromagnetic property arises. This is _not_ a dimensional coincidence.
 
 
 --- <Emoji name="sun" inline smedium/> ---
@@ -516,7 +512,7 @@ $$
 \rho = \frac{M_{\oplus}}{\frac{4}{3} \pi R^3} \pm 0.85\%
 $$
 
-That's an error of under 1% for an approximation, that's using approximations and transcental quantities, demonstrating the wide application of this model.
+That's an error of under 1% for an approximation, that's using approximations and transcendental quantities, demonstrating the wide application of this model.
 
 
 ### Supportive Arguments 
@@ -526,7 +522,7 @@ That's an error of under 1% for an approximation, that's using approximations an
 - This notion of time paints an entirely different picture of chronology, where there is no limitation on backwards time travel, but a limitation on affecting one's own past. Go back to $t - n$ and try to kill your grandfather. He won't be there anymore as he's now at $t$, if he's still around. Don't get me started on the potentials around massless conciousness in this buoyant, 4-dimensional environment.
 - Machian inertia. This model concludes that the Universe is almost precisely as Mach had predicted, with inertia being comprised of the sum of this radiating force for all other bodies in the Universe.
 - The entire equivalence principle. We've all become used to it so we overlook just how profound it is, but it's literally assuming what I'm saying is true mathematically and then just pretending it's not in reality.
-- The lack of a magnetic monopole, or rather, the existince of an electric monopole. Where do you think that 'sink and faucet' model is funelling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
+- The lack of a magnetic monopole, or rather, the existence of an electric monopole. Where do you think that 'sink and faucet' model is funneling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
 - The Fermi paradox. There's an entirely other dimension that life might exist across that we have been so far unable to transcend.
 - Relative motion. Think about it. Do we currently calculate all motion as being truly relative, or do we not _already_ calculate motion as relative to the underlying gravitational acceleration and then lie to undergrads about it? The tensors of GR mask this fact to an extent, but reduce them to their calculus equivalents and we are doing _precisely_ this.
 
@@ -536,7 +532,6 @@ That's an error of under 1% for an approximation, that's using approximations an
 <Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
 If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.
 </Quote>
-
 
 
 [^1]: The logical question here is well, why not just publish it in peer review? The **only** possible mathematical solution indicates that the Earth is expanding _with_ the Universe. Einstein himself couldn't get a model like this past our current peer review culture.

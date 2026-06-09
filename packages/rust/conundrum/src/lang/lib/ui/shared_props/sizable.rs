@@ -18,6 +18,9 @@ use conundrum_macros::ConundrumPropertyMap;
 
 pub enum SizablePropsOutputTarget {
     Image,
+    /// Paired with ImageNested for when the sizable applies to both the
+    /// container and the contained image.
+    ImageParent,
     /// For images nested in another SizableProps container that is pulling
     /// properties from the same component, like the captioned image.
     ImageNested,
@@ -213,7 +216,7 @@ impl SizablePropsGroup {
                 SizablePropsOutputTarget::ImageNested => {
                     classes.push(nested_image_classes.clone());
                 }
-                SizablePropsOutputTarget::General => {
+                _ => {
                     classes.push("float-right ml-4 mr-0".to_string());
                 }
             }
@@ -226,21 +229,21 @@ impl SizablePropsGroup {
                 SizablePropsOutputTarget::ImageNested => {
                     classes.push(nested_image_classes.clone());
                 }
-                SizablePropsOutputTarget::General => {
+                _ => {
                     classes.push("float-left mr-4 ml-0".to_string());
                 }
             }
         }
         if self.sidebar.is_some_and(|x| x.0) {
             match output {
-                SizablePropsOutputTarget::General => {
-                    classes.push("w-full min-w-full @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]".to_string());
-                }
                 SizablePropsOutputTarget::ImageNested => {
                     classes.push(nested_image_classes.clone());
                 }
                 SizablePropsOutputTarget::Image => {
                     classes.push("w-full min-w-full object-contain @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]".to_string());
+                }
+                _ => {
+                    classes.push("w-full min-w-full @[768px]/mdx:w-1/3 @[768px]:min-w-[450px]".to_string());
                 }
             }
         }
@@ -340,7 +343,7 @@ impl SizablePropsGroup {
                 SizablePropsOutputTarget::ImageNested => {
                     classes.push(nested_image_classes.clone());
                 }
-                SizablePropsOutputTarget::General => {
+                _ => {
                     classes.push(match width {
                                      SizableOption::None => "w-full @[768px]/mdx:hidden".to_string(),
                                      SizableOption::Small => "w-full @[450px]/mdx:w-[320px]".to_string(),
@@ -359,29 +362,52 @@ impl SizablePropsGroup {
             match output {
                 SizablePropsOutputTarget::Image => {
                     classes.push(match max_height {
-                                     SizableOption::None => "max-h-[min(32px,90vh,100%)] w-auto".to_string(),
-                                     SizableOption::Small => "max-h-[min(320px,90vh,100%)] w-auto".to_string(),
-                                     SizableOption::Smedium => "max-h-[min(384px,90vh,100%)] w-auto".to_string(),
-                                     SizableOption::Medium => "max-h-[min(448px,90vh,100%)] w-auto".to_string(),
-                                     SizableOption::Large => "max-h-[min(576px,90vh,100%)] w-auto".to_string(),
-                                     SizableOption::Xl => "max-h-[min(672px,90vh,100%)] w-auto".to_string(),
-                                     SizableOption::Xxl => "max-h-[min(896px,90vh,100%)] w-auto".to_string(),
+                                     SizableOption::None => "max-h-[min(32px,90vh)] w-auto".to_string(),
+                                     SizableOption::Small => "max-h-[min(320px,90vh)] w-auto".to_string(),
+                                     SizableOption::Smedium => "max-h-[min(384px,90vh)] w-auto".to_string(),
+                                     SizableOption::Medium => "max-h-[min(448px,90vh)] w-auto".to_string(),
+                                     SizableOption::Large => "max-h-[min(576px,90vh)] w-auto".to_string(),
+                                     SizableOption::Xl => "max-h-[min(672px,90vh)] w-auto".to_string(),
+                                     SizableOption::Xxl => "max-h-[min(896px,90vh)] w-auto".to_string(),
                                      SizableOption::Full => "max-h-[min(100%,100vh)] w-auto".to_string(),
                                      SizableOption::Fit => "max-h-fit w-auto".to_string(),
                                  });
                 }
+                SizablePropsOutputTarget::ImageParent => {
+                    classes.push(match max_height {
+                                     SizableOption::None => "h-fit w-auto".to_string(),
+                                     SizableOption::Small => "h-fit w-auto".to_string(),
+                                     SizableOption::Smedium => "h-fit w-auto".to_string(),
+                                     SizableOption::Medium => "h-fit w-auto".to_string(),
+                                     SizableOption::Large => "h-fit w-auto".to_string(),
+                                     SizableOption::Xl => "h-fit w-auto".to_string(),
+                                     SizableOption::Xxl => "h-fit w-auto".to_string(),
+                                     SizableOption::Full => "h-fit w-auto".to_string(),
+                                     SizableOption::Fit => "h-fit w-auto".to_string(),
+                                 });
+                }
                 SizablePropsOutputTarget::ImageNested => {
-                    classes.push(nested_image_classes.clone());
+                    classes.push(match max_height {
+                                     SizableOption::None => "max-h-[min(32px,90vh)] w-auto".to_string(),
+                                     SizableOption::Small => "max-h-[min(320px,90vh)] w-auto".to_string(),
+                                     SizableOption::Smedium => "max-h-[min(384px,90vh)] w-auto".to_string(),
+                                     SizableOption::Medium => "max-h-[min(448px,90vh)] w-auto".to_string(),
+                                     SizableOption::Large => "max-h-[min(576px,90vh)] w-auto".to_string(),
+                                     SizableOption::Xl => "max-h-[min(672px,90vh)] w-auto".to_string(),
+                                     SizableOption::Xxl => "max-h-[min(896px,90vh)] w-auto".to_string(),
+                                     SizableOption::Full => "max-h-[min(100%,100vh)] w-auto".to_string(),
+                                     SizableOption::Fit => "max-h-fit w-auto".to_string(),
+                                 });
                 }
                 SizablePropsOutputTarget::General => {
                     classes.push(match max_height {
-                                     SizableOption::None => "max-h-[min(32px,90vh,100%)]".to_string(),
-                                     SizableOption::Small => "max-h-[min(320px,90vh,100%)]".to_string(),
-                                     SizableOption::Smedium => "max-h-[min(384px,90vh,100%)]".to_string(),
-                                     SizableOption::Medium => "max-h-[min(448px,90vh,100%)]".to_string(),
-                                     SizableOption::Large => "max-h-[min(576px,90vh,100%)]".to_string(),
-                                     SizableOption::Xl => "max-h-[min(672px,90vh,100%)]".to_string(),
-                                     SizableOption::Xxl => "max-h-[min(896px,90vh,100%)]".to_string(),
+                                     SizableOption::None => "max-h-[min(32px,90vh)]".to_string(),
+                                     SizableOption::Small => "max-h-[min(320px,90vh)]".to_string(),
+                                     SizableOption::Smedium => "max-h-[min(384px,90vh)]".to_string(),
+                                     SizableOption::Medium => "max-h-[min(448px,90vh)]".to_string(),
+                                     SizableOption::Large => "max-h-[min(576px,90vh)]".to_string(),
+                                     SizableOption::Xl => "max-h-[min(672px,90vh)]".to_string(),
+                                     SizableOption::Xxl => "max-h-[min(896px,90vh)]".to_string(),
                                      SizableOption::Full => "max-h-[min(100%,100vh)]".to_string(),
                                      SizableOption::Fit => "max-h-fit".to_string(),
                                  });
@@ -419,7 +445,7 @@ impl SizablePropsGroup {
                 SizablePropsOutputTarget::ImageNested => {
                     classes.push(nested_image_classes);
                 }
-                SizablePropsOutputTarget::General => {
+                _ => {
                     classes.push(match height {
                                      SizableOption::None => "h-fit".to_string(),
                                      SizableOption::Small => "h-24".to_string(),

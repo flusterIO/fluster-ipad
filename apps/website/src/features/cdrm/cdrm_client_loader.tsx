@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect, type ReactNode } from "react";
 import initConundrumWeb, { search_conundrum_emojis } from "@conundrum/wasm";
+import { initializeConundrumWeb } from "@conundrum/ts";
 
 export const CdrmClientLoader = (): ReactNode => {
     useEffect(() => {
+        initializeConundrumWeb();
         initConundrumWeb()
             .then(() => {
                 if (!window.conundrum) {
@@ -14,7 +16,6 @@ export const CdrmClientLoader = (): ReactNode => {
             .catch((err: unknown) => {
                 console.error("Error initializing conundrum web: ", err);
             });
-        /* initializeConundrumWeb(); */
     }, []);
     return null;
 };
