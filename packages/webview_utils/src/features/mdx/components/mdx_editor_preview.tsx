@@ -14,8 +14,7 @@ import { KatexFontLoader } from "#/math/katex_font_loader";
 import { LucideFontLoader } from "#/themeing/lucide_font_loader";
 import { type GlobalWebviewStateDeepNullable } from "#/webview_global_state/cross_language_state_types";
 import { ConundrumListener } from "#/webview_global_state/notification_state/conundrum_notification_listener";
-import { BibliographyEntryComponent } from "../../bibliography/presentation/bibliography_entry";
-import { H3 } from "../../../core/shared_components/typography/typography";
+import { NoteBibliography } from "./note_bibliography";
 
 
 export type MdxEditorPreviewProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id" | "value">
@@ -24,7 +23,6 @@ const connector = connect((state: GlobalAppState) => ({
     lockEditorScrollToPreview: state.editor.lockEditorScrollToPreview,
     isEditorView: state.editor.editorView === EditorView.Splitview,
     hideEquationLabels: state.math.hide_equation_labels,
-    citations: state.editor.citations
 }))
 
 
@@ -39,9 +37,8 @@ export const MdxEditorPreview = connector(({
     hideEquationLabels,
     /* lockEditorScrollToPreview, */
     isEditorView,
-    citations,
     /* ...props */
-}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean, hideEquationLabels: EquationNumberingStrategy, citations: GlobalAppState["editor"]["citations"] }): ReactNode => {
+}: MdxEditorPreviewProps & Pick<WithNullableOptionals<EditorState>, "lockEditorScrollToPreview"> & { isEditorView: boolean, hideEquationLabels: EquationNumberingStrategy }): ReactNode => {
     const ref = useRef<null | HTMLDivElement>(null)
 
     const parsedValueIsEmpty = useSelector((state: GlobalWebviewStateDeepNullable) => {
@@ -144,14 +141,7 @@ export const MdxEditorPreview = connector(({
                     )}
                     ref={ref}
                 />
-                {citations.length ? (
-                    <div className="w-full max-w-full">
-                        <H3>Bibliography</H3>
-                        <div className="w-full">
-                            {citations.map((cit) => <BibliographyEntryComponent key={cit.citation_key} entry={cit} />)}
-                        </div>
-                    </div>
-                ) : null}
+                <NoteBibliography />
             </div>
         </ErrorBoundary>
     );

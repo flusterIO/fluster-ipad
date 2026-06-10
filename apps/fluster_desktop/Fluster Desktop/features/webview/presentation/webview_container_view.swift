@@ -85,7 +85,6 @@ struct WebViewContainer: NSViewRepresentable {
     )
     webView.configuration.userContentController.addUserScript(webviewEnvironmentScript)
 
-    //    webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
     let request = URLRequest(url: url)
     webView.load(request)
     return webView
@@ -463,6 +462,11 @@ struct WebViewContainerView: View {
           try await en.preParseIfEdited(
             modelContext: modelContext,
             uiParams: self.getUiParams())
+            var idx: UInt32 = 0
+          let citations = en.citations.compactMap { cit in
+              idx += 1;
+              return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
+          }
           try await EditorState.setInitialEditorState(
             editorPayload: EditorInitialStatePayload(
               note_id: en.id,
@@ -470,6 +474,7 @@ struct WebViewContainerView: View {
               theme_light: editorThemeLight,
               theme_dark: editorThemeDark,
               allCitationIds: bibEntries.compactMap(\.citationKey),
+              citations: citations,
               value: en.markdown.body,
               parsedValue: en.markdown.preParsedBody ?? "",
               haveSetInitialValue: true,

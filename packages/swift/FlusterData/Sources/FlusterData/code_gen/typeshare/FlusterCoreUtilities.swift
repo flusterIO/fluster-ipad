@@ -237,6 +237,22 @@ public enum CodeEditorTheme: String, Codable, CaseIterable {
 	case xcodeDark
 }
 
+/// Basically a Partial<BibEntryModel> that's cross language, to be sent to the
+/// editor.
+public struct EditorCitation: Codable {
+	public let citation_key: String
+	public let html: String
+	public let url: String?
+	public let document_idx: UInt32
+
+	public init(citation_key: String, html: String, url: String?, document_idx: UInt32) {
+		self.citation_key = citation_key
+		self.html = html
+		self.url = url
+		self.document_idx = document_idx
+	}
+}
+
 public struct SnippetState: Codable {
 	public let includeEmojiSnippets: Bool
 
@@ -256,6 +272,7 @@ public struct EditorInitialStatePayload: Codable {
 	public let theme_light: CodeEditorTheme
 	public let theme_dark: CodeEditorTheme
 	public let allCitationIds: [String]
+	public let citations: [EditorCitation]
 	public let value: String
 	public let parsedValue: String
 	public let haveSetInitialValue: Bool
@@ -263,12 +280,13 @@ public struct EditorInitialStatePayload: Codable {
 	public let lockEditorScrollToPreview: Bool
 	public let saveMethod: EditorSaveMethod
 
-	public init(note_id: String, keymap: CodeEditorKeymap, theme_light: CodeEditorTheme, theme_dark: CodeEditorTheme, allCitationIds: [String], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
+	public init(note_id: String, keymap: CodeEditorKeymap, theme_light: CodeEditorTheme, theme_dark: CodeEditorTheme, allCitationIds: [String], citations: [EditorCitation], value: String, parsedValue: String, haveSetInitialValue: Bool, snippetProps: SnippetState, lockEditorScrollToPreview: Bool, saveMethod: EditorSaveMethod) {
 		self.note_id = note_id
 		self.keymap = keymap
 		self.theme_light = theme_light
 		self.theme_dark = theme_dark
 		self.allCitationIds = allCitationIds
+		self.citations = citations
 		self.value = value
 		self.parsedValue = parsedValue
 		self.haveSetInitialValue = haveSetInitialValue
@@ -316,22 +334,6 @@ public struct EditorChangeEvent: Codable {
 	public init(note_id: String, content: String) {
 		self.note_id = note_id
 		self.content = content
-	}
-}
-
-/// Basically a Partial<BibEntryModel> that's cross language, to be sent to the
-/// editor.
-public struct EditorCitation: Codable {
-	public let citation_key: String
-	public let html: String
-	public let url: String?
-	public let document_idx: UInt32
-
-	public init(citation_key: String, html: String, url: String?, document_idx: UInt32) {
-		self.citation_key = citation_key
-		self.html = html
-		self.url = url
-		self.document_idx = document_idx
 	}
 }
 

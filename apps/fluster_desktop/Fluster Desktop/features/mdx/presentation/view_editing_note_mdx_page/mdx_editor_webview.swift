@@ -111,17 +111,6 @@ struct MdxEditorWebview: View {
         ToolbarItem(
           placement: .destructiveAction,
           content: {
-            GenerateAINoteSummaryButton(
-              editingNote: editingNote,
-              evalJavascript: { @MainActor script in
-                try await webView.evaluateJavaScript(script)
-              }
-            )
-          }
-        )
-        ToolbarItem(
-          placement: .destructiveAction,
-          content: {
             Button(
               role: .destructive,
               action: {
@@ -301,7 +290,8 @@ struct MdxEditorWebview: View {
             try await en.preParse(
               modelContext: modelContext,
               uiParams: UiParams(
-                darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                darkMode: colorScheme == .dark,
+                fontScalar: Float(webviewFontScale),
                 mathFontScalar: Float(webviewMathFontScale),
                 syntaxTheme: colorScheme == .dark ? codeBlockThemeDark : codeBlockThemeLight)
             )
@@ -311,7 +301,8 @@ struct MdxEditorWebview: View {
                   return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
             }
             try await EditorState.setParsedMdxContent(
-              parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
+              parsedMdxContent: en.markdown.preParsedBody ?? "",
+              citations: citations,
               eval: webView.evaluateJavaScript)
           } else {
             print("Broken state: Found mismatched note id's")

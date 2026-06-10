@@ -162,6 +162,17 @@ export enum CodeEditorTheme {
 	XcodeDark = "xcodeDark",
 }
 
+/**
+ * Basically a Partial<BibEntryModel> that's cross language, to be sent to the
+ * editor.
+ */
+export interface EditorCitation {
+	citation_key: string;
+	html: string;
+	url?: string;
+	document_idx: number;
+}
+
 export interface SnippetState {
 	includeEmojiSnippets: boolean;
 }
@@ -177,6 +188,7 @@ export interface EditorInitialStatePayload {
 	theme_light: CodeEditorTheme;
 	theme_dark: CodeEditorTheme;
 	allCitationIds: string[];
+	citations: EditorCitation[];
 	value: string;
 	parsedValue: string;
 	haveSetInitialValue: boolean;
@@ -207,16 +219,6 @@ export interface EditorChangeEvent {
 	note_id: string;
 	/** The _unparsed_ content. */
 	content: string;
-}
-
-/**
- * Basically a Partial<BibEntryModel> that's cross language, to be sent to the
- * editor.
- */
-export interface EditorCitation {
-	citation_key: string;
-	html: string;
-	url?: string;
 }
 
 export enum EditorLogSeverity {

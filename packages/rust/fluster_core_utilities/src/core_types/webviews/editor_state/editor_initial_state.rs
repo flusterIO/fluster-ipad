@@ -4,7 +4,7 @@ use typeshare::typeshare;
 use crate::core_types::webviews::{
     ai_state::ai_state_model::FoundationModelAccessStatus,
     editor_save_method::EditorSaveMethod,
-    editor_state::{editor_keymap::CodeEditorKeymap, editor_theme::CodeEditorTheme, snippet_state::SnippetState},
+    editor_state::{editor_keymap::CodeEditorKeymap, editor_state::EditorCitation, editor_theme::CodeEditorTheme, snippet_state::SnippetState},
     math_state::math_state_model::{InitialMathState, MathState},
     webview_container_state::actions::webview_container_initial_state::WebviewContainerSharedInitialState,
 };
@@ -18,6 +18,7 @@ pub struct EditorInitialStatePayload {
     pub theme_dark: CodeEditorTheme,
     #[serde(rename = "allCitationIds")]
     pub all_citation_ids: Vec<String>,
+    pub citations: Vec<EditorCitation>,
     pub value: String,
     #[serde(rename = "parsedValue")]
     pub parsed_value: String,
