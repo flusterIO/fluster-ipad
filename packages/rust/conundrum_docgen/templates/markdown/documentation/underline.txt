@@ -6,6 +6,8 @@ A simple underline component that accepts an emphasis property as an optional bo
 
 Don't forget about the properties `thick` and `thin` either to create underlines of varying thickness.
 
+````
+
 ### Example
 
 ```md
@@ -16,8 +18,11 @@ This is a <Ul success>green</Ul> underlined component.
 
 This is a <Ul success>green</Ul> underlined component.
 
-````
 
+````long-docs
 ### Demo 
 
-<InContentDocsUnderlineDemo />
+{% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
+- This is <Ul {{emphasis}}>{{emphasis}}<Ul> underlined text
+{% endfor %}
+````

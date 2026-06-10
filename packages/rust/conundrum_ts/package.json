@@ -7,6 +7,7 @@
     "build": "vite build && pnpm copy:globalCSS",
     "build:ipad": "vite build && pnpm copy:globalCSS",
     "build:mac": "vite build && pnpm copy:globalCSS",
+    "build:macProd": "FLUSTER_PROD_BUILD=true vite build && pnpm copy:globalCSS",
     "build:vite": "vite build && pnpm copy:globalCSS",
     "copy:globalCSS": "mkdir -p ./dist && cp ../conundrum/src/output/html/standalone/conundrum.css ./dist/styles.css",
     "typecheck": "tsc --noEmit"

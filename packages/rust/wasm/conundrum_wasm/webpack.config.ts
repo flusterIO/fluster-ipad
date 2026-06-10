@@ -9,6 +9,8 @@ interface Configuration extends WebpackConfiguration {
 
 const isProd = process.env.FLUSTER_PROD_BUILD === "true";
 
+console.log("isProd: ", isProd)
+
 const config: Configuration = {
     mode: isProd ? "production" : "development",
     entry: {

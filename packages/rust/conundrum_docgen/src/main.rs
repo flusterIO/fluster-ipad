@@ -11,7 +11,7 @@ use crate::{
         parsers::color_parser_template::ColorParserTemplate,
         templates::{emphasis_variable_match::EmphasisVariableMatch, initial_note_paths_swift::InitialNotePathsSwift},
     },
-    documentation::emphasis::EmphasisDocs,
+    documentation::{emphasis::EmphasisDocs, highlight::HighlightDocs, underline::UnderlineDocs},
     methods::{
         css::write_rust_emphasis_parser::RustEmphasisParserTemplate, write_sizable_css::SizableCssTemplate,
         write_supported_syntaxes::write_supported_syntaxes,
@@ -35,6 +35,10 @@ async fn main() {
     EmphasisVariableMatch::gather_data().generate("packages/rust/conundrum/src/lang/lib/ui/ui_types/emphasis/variable_to_emphasis.rs".to_string()).expect("Writes css variable to emphasis without throwing an error.");
     EmphasisDocs::gather_data().generate("docs/in_content_docs/emphasis-docs.mdx".to_string())
                                .expect("Writes emphasis docs without throwing an error.");
+    UnderlineDocs::gather_data().generate("docs/in_content_docs/components/underline.mdx".to_string())
+                                .expect("Writes underline docs without throwing an error.");
+    HighlightDocs::gather_data().generate("docs/in_content_docs/components/highlight.mdx".to_string())
+                                .expect("Writes highlight docs without throwing an error.");
     InitialNotePathsSwift::gather_data().generate("packages/swift/FlusterData/Sources/FlusterData/constants/initial_note_paths.swift".to_string())
                                         .expect("Writes initial note paths to Swift");
     // RustEmphasisToColorGroupTemplate::gather_data().generate().expect("Writes

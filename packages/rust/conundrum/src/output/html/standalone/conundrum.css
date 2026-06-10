@@ -1716,6 +1716,9 @@
   .max-w-\[448px\] {
     max-width: 448px;
   }
+  .max-w-\[450px\] {
+    max-width: 450px;
+  }
   .max-w-\[576px\] {
     max-width: 576px;
   }
@@ -6213,6 +6216,11 @@
   .\[\&\>\.cdrm-task-list\]\:bg-transparent\! {
     &>.cdrm-task-list {
       background-color: transparent !important;
+    }
+  }
+  .\[\&\>\.katex-display\]\:mr-8 {
+    &>.katex-display {
+      margin-right: calc(var(--spacing) * 8);
     }
   }
   .\[\&\>\.katex-display\]\:w-full {

@@ -1,4 +1,3 @@
-import { aiNoteSummaryComponentConfig } from "../../ai/embeddable_components/ai_note_summary/ai_note_summary_component_config";
 import { admonitionComponentConfig } from "./admonition/admonition_component_config";
 import { embeddableCardComponentConfig } from "./card/embeddable_card_component_config";
 import { colorComponentConfig } from "./color/color_component_config";
@@ -30,7 +29,6 @@ export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
     embeddableTabComponentConfig,
     tabGroupComponentConfig,
     eqRefComponentConfig,
-    aiNoteSummaryComponentConfig,
     emojiComponentConfig,
     tocComponentConfg,
     quoteComponentConfig,

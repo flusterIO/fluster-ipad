@@ -457,7 +457,6 @@ struct WebViewContainerView: View {
   public func handleInitialState() async {
     if let en = editingNote {
       Task {
-        let llm = SystemLanguageModel()
         do {
           try await en.preParseIfEdited(
             modelContext: modelContext,
@@ -493,7 +492,7 @@ struct WebViewContainerView: View {
             mathPayload: InitialMathState(
               mathjax_font_url: mathjaxFontUrl, hide_equation_labels: showEquationLabels),
             aiPayload: AiInitialStatePayload(
-              foundation_model_access: llm.availability.toReduxRepresentation()
+                foundation_model_access:  .unknownStatus
             ),
             eval: self.webview.evaluateJavaScript
           )

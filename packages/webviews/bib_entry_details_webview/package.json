@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "tsc -b && vite build",
+    "buildProd": "tsc -b && FLUSTER_PROD_BUILD=true vite build",
     "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview"

@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { staticContent } from "#/core/static_content";
-import { LinkProps } from "next/link";
+import { type LinkProps } from "next/link";
 
 export interface FooterBannerProps {
     content: ReactNode;
@@ -38,8 +38,8 @@ export const footerLinks: Record<FooterLinkKeys, LinkGroupItems> & {
     ],
     demos: [
         {
-            href: "/",
-            label: "Coming Soon",
+            href: "/blog/by_path/on_the_gravitational_nature_of_time",
+            label: "On the gravitational nature of time",
         },
     ],
     docs: [
@@ -52,8 +52,8 @@ export const footerLinks: Record<FooterLinkKeys, LinkGroupItems> & {
             label: "Developers",
         },
         {
-            href: staticContent.links.comingSoon,
-            label: "Teachers",
+            href: "/privacy",
+            label: "Privacy",
         },
     ],
     funding: [

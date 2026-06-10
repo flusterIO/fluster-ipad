@@ -1212,7 +1212,6 @@ export enum EmbeddableComponentName {
 	Tabs = "Tabs",
 	Tab = "Tab",
 	Image = "Image",
-	AINoteSummary = "AINoteSummary",
 }
 
 export enum SupportedCodeBlockTheme {
@@ -1325,7 +1324,7 @@ export interface ParsedOutgoingNoteLink {
  * # Template (HTML)
  * 
  * ```askama
- * <span class="bg-primary hover:bg-primary/80 transition-colors duration-300 cursor-pointer text-primary-foreground rounded p-1 py-0.5">#{{body}}</span>
+ * <span data-cdrm-tag-body="{{body}}" class="bg-primary hover:bg-primary/80 transition-colors duration-300 cursor-pointer text-primary-foreground rounded p-1 py-0.5" onclick="window.conundrum.handleTagClick(event)">#{{body}}</span>
  * ```
  */
 export interface ParsedTag {
@@ -1416,7 +1415,7 @@ export type NumberOrSizable =
  */
 export interface ResponsiveGrid {
 	sizable?: SizablePropsGroup;
-	columns: GridColumnProps;
+	columns?: GridColumnProps;
 	children: Children;
 	responsive?: NumberOrSizable;
 	fit?: ConundrumBoolean;
@@ -1686,6 +1685,7 @@ export enum ConundrumWebEvents {
 	CopyToClipboard = "cdrm-content-copied",
 	DictionaryEntryLabelClick = "dictionary-entry-click",
 	TocItemClick = "toc-item-click",
+	TagClick = "tag-click",
 }
 
 export enum CopyToClipboardSource {
@@ -1718,7 +1718,6 @@ export enum EmbeddableComponentId {
 	Tabs = "tab-group",
 	Tab = "tab-group-tab",
 	EqRef = "equation-reference",
-	AINoteSummary = "ai-note-summary",
 }
 
 /**

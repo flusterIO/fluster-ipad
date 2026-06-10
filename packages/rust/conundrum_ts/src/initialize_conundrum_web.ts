@@ -10,6 +10,7 @@ import { onEmojiDocsInputChange } from "./component_glue/emoji_docs/on_emoji_doc
 import { handleNoteLinkClick } from "./markdown_glue/extensions/note_link/handle_note_link_click";
 import { onDictionaryEntryClick } from "./event_handlers/on_dictionary_entry_click";
 import { onTocItemClick } from "./event_handlers/on_toc_item_click";
+import { handleTagClick } from "./event_handlers/on_tag_click";
 export { attachConundrumWasm } from "./conundrum_web";
 
 declare global {
@@ -50,7 +51,8 @@ export const initializeConundrumWeb = () => {
         onEmojiDocsInputChange,
         copyString: copyStringToClipboard,
         onDictionaryEntryClick,
-        onTocItemClick
+        onTocItemClick,
+        handleTagClick,
     };
     const mainObserver = new MutationObserver(handleMutations);
 

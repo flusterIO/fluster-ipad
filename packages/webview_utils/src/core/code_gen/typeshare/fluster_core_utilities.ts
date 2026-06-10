@@ -170,6 +170,7 @@ export interface EditorCitation {
 	citation_key: string;
 	html: string;
 	url?: string;
+	/** The `1` based index of the citation as it appears in the document. */
 	document_idx: number;
 }
 

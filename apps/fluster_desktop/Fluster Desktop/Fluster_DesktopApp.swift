@@ -35,8 +35,6 @@ struct Fluster_DesktopApp: App {
   @StateObject private var authManager = AuthManager()
   init() {
     SchemeRegistration.registerCustomScheme()
-    // TODO: DEVELOPMENTONLY Remove this dumbass idea bfore the app is submitted
-    UserDefaults.resetUserDefaultsDEVELOPMENTONLY()
     do {
       try Tips.configure()
     } catch {

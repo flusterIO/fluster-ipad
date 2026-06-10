@@ -25,17 +25,17 @@ I'll do my best to convince the math types among you (this article does assume s
 | Derivation                                                | Function                         | % Error             |
 |:----------------------------------------------------------|:---------------------------------|:--------------------|
 | cosmological velocity from local gravitational parameters | `vbarCosmological`               | Difficult to assess |
-| kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | 0.442258391884371   |
-| Earth's roational velocity via α                          | `rotationVelocityFromDivergence` | 0.00677756400547747 |
-| Solar-Galactic Radius from visible mass                   | `galacticRadiusPolynomial`       | 0.0                 |
-| α (solar)                                                 | `alphaSolar`                     | 0.00342749503676447 |
-| α (Earth)                                                 | `omega`, `alphaFactor`           | 0.0253043303850287  |
-| α (orbital velocity)                                      | `solarMetricVelocity`, `vOrbit`  | 0.0544665494810030  |
-| α (from derived velocity)                                 | `vbarAlphaEquivalence`           | 0.0761820393770567  |
-| J ≈ Φ                                                     | `currentEquivalent`              | 0.213633171310522   |
-| h from α                                                  | `omega`, `alpha`                 | 0.0253887188634106  |
-| h/(2 - α) from ω                                          | `omega`, `alpha`                 | 0.00342749503676447 |
-| Φ mass density approximation                              | `massDensityEquivalence`         | 0.863214423082925   |
+| kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | $0.442258391884371\%$   |
+| Earth's rotational velocity via $\alpha$                   | `rotationVelocityFromDivergence` | $0.00677756400547747\%$ |
+| Solar-Galactic Radius from visible mass                   | `galacticRadiusPolynomial`       | $0.0\%$                 |
+| $\alpha$ (solar)                                          | `alphaSolar`                     | $0.00342749503676447\%$ |
+| $\alpha$ (Earth)                                          | `omega`, `alphaFactor`           | $0.0253043303850287\%$  |
+| $\alpha$ (orbital velocity)                               | `solarMetricVelocity`, `vOrbit`  | $0.0544665494810030\%$  |
+| $\alpha$ (from derived velocity)                          | `vbarAlphaEquivalence`           | $0.0761820393770567\%$  |
+| $J \approx \Phi$                                          | `currentEquivalent`              | $0.213633171310522\%$   |
+| $h$ from $\alpha$                                         | `omega`, `alpha`                 | $0.0253887188634106\%$  |
+| $h / (2 - \alpha)$ from $\omega$                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
+| $\Phi$ mass density approximation                         | `massDensityEquivalence`         | $0.863214423082925\%$   |
 
 
 <Hint label="Error" info>
@@ -388,13 +388,13 @@ $$
 \left(\alpha \left( 2 - \alpha \right) \right)^3 = ds^3 = \delta
 $$
 
-If we consider that all velocities are proportional in magnitude to $c$, we should not look for $v$, but for $\beta^2$. This then gives:
+If we consider that all velocities are proportional in magnitude to $c$, we should not look for $v$, but for $\beta$. This then gives:
 
 $$
-\left(\alpha \left( 2 - \alpha \right) \right)^3 = \frac{ds^3}{dx^{\prime}} = \frac{\delta}{c} \quad \Rightarrow \quad v = c \sqrt{\left(\alpha \left( 2 - \alpha \right) \right)^3} = 525,693 ~ \text{meters}
+\left(\alpha \left( 2 - \alpha \right) \right)^3 = \beta_0^2 \pm 0.0415\%
 $$
 
-This is our original velocity $\pm 0.0415\%$. One can very logically make an argument for the small-angle approximations being a cause for coincidence here, but as a function of $\alpha$? 
+One can very logically make an argument for the small-angle approximations being a cause for coincidence here, but as a function of $\alpha$? 
 
 
 ### Displacement Current Equivalent

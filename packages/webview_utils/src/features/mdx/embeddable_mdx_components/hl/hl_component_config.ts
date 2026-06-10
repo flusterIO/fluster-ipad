@@ -13,7 +13,7 @@ export const hlComponentConfig: EmbeddableComponentConfig = {
     desc: "Highlight the background of text in a variety of colors.",
     id: EmbeddableComponentId.Hl,
     schema: hlPropsSchema,
-    docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/hl/hl_component_docs.mdx",
+    docsPath: "docs/in_content_docs/components/highlight.mdx",
     snippets: () => {
         return [
             snippetCompletion(`<Hl>#{content}</Hl>#{}`, {

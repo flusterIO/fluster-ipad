@@ -31,6 +31,7 @@ I'll do my best to convince the math types among you (this article does assume s
 | $h$ from $\alpha$                                         | `omega`, `alpha`                 | $0.0253887188634106\%$  |
 | $h / (2 - \alpha)$ from $\omega$                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
 | $\Phi$ mass density approximation                         | `massDensityEquivalence`         | $0.863214423082925\%$   |
+| $G$ as a function of $\alpha$ and $\rho$                  | --                               | $0.07618221222642045\%$ |
 
 
 <Hint label="Error" info>
@@ -44,6 +45,7 @@ def percentDiff(observed, derived):
 ```
 
 Also, keep in mind that if we wanted to be selective we can choose a radius here on Earth's surface that will satisfy many of the above equations perfectly, giving an error of 0. The radii that were used were whichever was most fitting for the job... the mean radius for calculating volume, the polar radius when spin was involved to minimize centripetal influence, and Astropy provided values (equatorial) for everything else.
+
 
 
 ### The Lighthouse & The Clocktower
@@ -403,11 +405,27 @@ $$
 If we consider that all velocities are proportional in magnitude to $c$, we should not look for $v$, but for $\beta^2$. This then gives:
 
 $$
-\left(\alpha \left( 2 - \alpha \right) \right)^3 = \frac{ds^3}{dx^{\prime}} = \frac{\delta}{c} \quad \Rightarrow \quad v = c \sqrt{\left(\alpha \left( 2 - \alpha \right) \right)^3} = 525,693 ~ \text{meters}
+\left(\alpha \left( 2 - \alpha \right) \right)^3 = \beta_0^2 \pm 0.08\%
 $$
 
-This is our original velocity $\pm 0.0415\%$. One can very logically make an argument for the small-angle approximations being a cause for coincidence here, but as a function of $\alpha$? 
+One can very logically make an argument for the small-angle approximations being a cause for coincidence here, but as a function of $\alpha$? 
 
+Expanding this using our earlier derivation of our cosmological velocity gives
+
+$$
+\left(\alpha \left( 2 - \alpha \right) \right)^3 = 1 - \frac{1}{\left(1 - G \frac{M_\oplus}{R_\oplus^3}\right)^2}
+$$
+
+And with some simple algebra, we find:
+
+$$
+\boxed{
+G = \frac{R^3_\oplus}{M_\oplus} \left(\sqrt{\frac{1}{1 - \left(\alpha \left(2 - \alpha\right)\right)^3}} - 1\right) \pm 0.076\%
+}
+$$
+
+
+Which explains why our flawed relativistic math works so well... the electromagnetic constants dilate according to $\alpha$, making $\alpha$ a relative constant in each reference frame.
 
 ### Displacement Current Equivalent
 
@@ -525,6 +543,11 @@ $$
 $$
 
 That's an error of under 1% for an approximation, that's using approximations and transcendental quantities, demonstrating the wide application of this model.
+
+
+### Results
+
+If we omit this last derivation of $\rho$, admitting that it is merely an approximation and the derivation of our cosmological velocity, as an accurate estimate is so difficult to obtain, we achieve an average error of $0.0842\%$, across more than a dozen functions. We've defined $G$ as a function of mass density and electromagnetic parameters, we've derived both our kinematic and cosmological velocities, and most importantly... we found $\alpha$ as a function of gravitational parameters in multiple, separately defined instances... all using the same principle: $d$ elongates by a factor of $\gamma$ in the reference frame of $B$, and this is the source of the equivalence principle.
 
 
 ### Supportive Arguments 

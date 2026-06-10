@@ -3,6 +3,8 @@
 ````long-docs
 A simple highlighter component that accepts an emphasis property as an optional boolean. If none is provided, the default is `highlight`.
 
+````
+
 ### Example
 
 ```md
@@ -13,9 +15,14 @@ This is a <Hl success>green</Hl> highlighted component.
 
 This is a <Hl success>green</Hl> highlighted component.
 
-````
 
 
 ### Demo
 
-<InContentDocsHighlightDemo />
+````long-docs
+### Demo 
+
+{% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
+- This is <Hl {{emphasis}}>{{emphasis}}<Hl> highlighted text
+{% endfor %}
+````

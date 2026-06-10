@@ -4,23 +4,25 @@
 
 ### Pre-release bugs
 
+- [ ] Verify privacy page on website so it's ready to deploy when you get to the library.
+- [ ] Onboarding pages for mac (if time allows and a design works well)
+- [ ] Make tags clickable again! Redirect to the tags search page.
 - [x] Make sure shit bib snippets are not shown.
 - [x] Remove section on both the website and the app about $R  \alpha^3 = \text{cubit}$. It's wrong you dumb cunt.
 - [x] Work on initial launch note conversion to `.cdrm`
 - [x] Initial note seeding
 - [x] Onboarding toast things with ToastKit or whatever it's called.
-- [ ] Onboarding pages for mac (if time allows and a design works well)
-- [ ] Add 'env-file-provider' to configuration if the user provides a 'env_file' key in their config.
 
 ### After Release
 
 - [ ] Add 'col-span' property from 1-12 to the `Sizable` struct.
-- [ ] Get `wasm` loading in Next.js. That'll be perfect for enabling a web based editor, but it's also crucial for a decent development workflow now that we're rendering straight to html and a React based test page doesn't make as much sense.
+- [x] Get `wasm` loading in Next.js. That'll be perfect for enabling a web based editor, but it's also crucial for a decent development workflow now that we're rendering straight to html and a React based test page doesn't make as much sense.
 - [x] Make blog mobile responsive. That should be the first priority once conundrum content is compiling again.
   - [x] Add drawer in place of sidebar on mobile.
     - Installed `react-device-detect` for the switch
 - [x] Get checkbox parser working
 - [ ] Create various state comparison methods to compare the json data to url query strings, so that it can be done server side. Keep all of the blog state that isn't component local in the url.
+- [ ] Add 'env-file-provider' to configuration if the user provides a 'env_file' key in their config.
 
 ---
 

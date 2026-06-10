@@ -27,4 +27,7 @@ pub enum ConundrumWebEvents {
     #[serde(rename = "toc-item-click")]
     #[strum(to_string = "toc-item-click")]
     TocItemClick,
+    #[serde(rename = "tag-click")]
+    #[strum(to_string = "tag-click")]
+    TagClick,
 }

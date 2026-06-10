@@ -14,6 +14,7 @@ import {
 import { type handleNoteLinkClick } from "./markdown_glue/extensions/note_link/handle_note_link_click";
 import { type onDictionaryEntryClick } from "./event_handlers/on_dictionary_entry_click";
 import { type onTocItemClick } from "./event_handlers/on_toc_item_click";
+import { type handleTagClick } from "./event_handlers/on_tag_click";
 
 export interface ConundrumWebClient {
     handleConundrumTabClick: typeof handleConundrumTabClick;
@@ -27,8 +28,9 @@ export interface ConundrumWebClient {
     onEmojiDocsInputChange: typeof onEmojiDocsInputChange;
     searchEmojis?: typeof searchConundrumEmojis;
     searchConundrumEmojisAndAppendToContainer?: typeof searchConundrumEmojisAndAppendToContainer;
-    onDictionaryEntryClick: typeof onDictionaryEntryClick
-    onTocItemClick: typeof onTocItemClick
+    onDictionaryEntryClick: typeof onDictionaryEntryClick;
+    onTocItemClick: typeof onTocItemClick;
+    handleTagClick: typeof handleTagClick;
 }
 
 /**

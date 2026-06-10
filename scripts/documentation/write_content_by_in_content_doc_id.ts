@@ -1,5 +1,6 @@
 import { markdownContentToDocumentationPair } from "./markdown_content_to_documentation_pair";
 import path from "path";
+import { globSync } from "glob";
 import fs from "fs";
 import {
     type InContentDocumentationId,
@@ -87,7 +88,11 @@ export const writeContentToDocumentationId = (
 };
 
 const getInputFiles = () => {
-    const d = fs.readdirSync(inputDir, { recursive: false });
+    // const d = fs.readdirSync(inputDir, { recursive: false });
+    const d = globSync(`${inputDir}/**`, {
+        nodir: true,
+        absolute: true,
+    });
     return d;
 };
 

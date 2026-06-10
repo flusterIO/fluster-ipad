@@ -6,6 +6,8 @@ import path from "path";
 
 const isProd = process.env.FLUSTER_PROD_BUILD === "true";
 
+console.log("isProd: ", isProd);
+
 export default defineConfig({
     plugins: [
         react(),

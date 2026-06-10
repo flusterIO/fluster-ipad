@@ -19,9 +19,14 @@ interface DictionaryLabelClickEventProps {
     noteId: string
 }
 
+interface TagClickEventProps {
+    tagBody: string
+}
+
 declare global {
     interface WindowEventMap {
         [ConundrumWebEvents.DictionaryEntryLabelClick]: CustomEvent<DictionaryLabelClickEventProps>;
+        [ConundrumWebEvents.TagClick]: CustomEvent<TagClickEventProps>;
     }
 }
 
@@ -80,7 +85,7 @@ export const WebViewContainer = connector(({
                 timeout: 3000
             }
         } satisfies Partial<Record<CopyToClipboardSource, X>>)[e.detail.source];
-        /* eslint-disable-next-line  -- It's **not** always truthy you dumb ****. */
+
         if (message) {
             showNotif(message)
         }
@@ -92,6 +97,11 @@ export const WebViewContainer = connector(({
         if (noteId) {
             sendToSwift(MdxPreviewWebviewActions.ViewNoteById, noteId)
         }
+    })
+
+
+    useEventListener(ConundrumWebEvents.TagClick, (e) => {
+        sendToSwift(MdxPreviewWebviewActions.OnTagClick, e.detail.tagBody)
     })
 
 

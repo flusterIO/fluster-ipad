@@ -10,7 +10,7 @@ import { InlineMdxContent } from "../components/inline_mdx_content";
 import { ErrorBoundary } from "react-error-boundary";
 import { InContentErrorReport } from "../error_reporting/in_content_error_component/in_content_error_report";
 import { AutoInsertedCodeBlock } from "../embeddable_mdx_components/auto_inserted/auto_inserted_code_block/auto_inserted_code_block";
-import { DocumentationComponentName, EmbeddableComponentName } from "../../../core/code_gen/typeshare/conundrum";
+import { DocumentationComponentName, type EmbeddableComponentName } from "../../../core/code_gen/typeshare/conundrum";
 import { admonitionComponentNames } from "../embeddable_mdx_components/admonition/admonition_component_config";
 import { cardComponentNames } from "../embeddable_mdx_components/card/embeddable_card_component_config";
 import { gridComponentNames } from "../embeddable_mdx_components/grid/embeddable_responsive_grid_component_config";
@@ -274,13 +274,13 @@ const items: ComponentMapItem[] = [
     /*     component: InlineCitation, */
     /* }, */
     // -- AI __
-    {
-        query: [EmbeddableComponentName.AINoteSummary],
-        componentType: ComponentItemType.ai,
-        importComponent: async () => {
-            return import("../../ai/embeddable_components/ai_note_summary/ai_note_summary").then((a) => a.AiNoteSummary)
-        }
-    },
+    /* { */
+    /*     query: [EmbeddableComponentName.AINoteSummary], */
+    /*     componentType: ComponentItemType.ai, */
+    /*     importComponent: async () => { */
+    /*         return import("../../ai/embeddable_components/ai_note_summary/ai_note_summary").then((a) => a.AiNoteSummary) */
+    /*     } */
+    /* }, */
     // --- AUTO-INSERTED ---
     {
         query: [AutoInsertedComponentName.AutoInsertedCodeBlock],

@@ -13,7 +13,7 @@ export const ulComponentConfig: EmbeddableComponentConfig = {
     desc: "Underline text in a variety of colors.",
     id: EmbeddableComponentId.Ul,
     schema: ulPropsSchema,
-    docsPath: "packages/webview_utils/src/features/mdx/embeddable_mdx_components/ul/underline_component_docs.mdx",
+    docsPath: "docs/in_content_docs/components/underline.mdx",
     snippets: () => {
         const items = [
             snippetCompletion(`<Ul>#{content}</Ul>`, {

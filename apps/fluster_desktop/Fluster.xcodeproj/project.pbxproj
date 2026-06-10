@@ -50,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		79196E372F44EBEE001AEFEB /* note_detail_webview */ = {isa = PBXFileReference; lastKnownFileType = folder; name = note_detail_webview; path = ../../packages/webviews/note_detail_webview/note_detail_webview; sourceTree = "<group>"; };
+		7924402A2FD9A7960093A8AF /* Fluster.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Fluster.entitlements; sourceTree = "<group>"; };
 		7931E3DA2FD72FE000DFC908 /* fluster_store_local.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = fluster_store_local.storekit; sourceTree = "<group>"; };
 		7947AB212F5358C0009CEA5E /* standalone_mdx_preview_mac */ = {isa = PBXFileReference; lastKnownFileType = folder; name = standalone_mdx_preview_mac; path = ../../packages/webviews/standalone_mdx_preview/standalone_mdx_preview_mac; sourceTree = "<group>"; };
 		7947AB232F5363A2009CEA5E /* splitview_mdx_editor_mac */ = {isa = PBXFileReference; lastKnownFileType = folder; name = splitview_mdx_editor_mac; path = ../../packages/webviews/splitview_mdx_editor/splitview_mdx_editor_mac; sourceTree = "<group>"; };
@@ -142,6 +143,7 @@
 		798752E12F1810B90055ABF1 = {
 			isa = PBXGroup;
 			children = (
+				7924402A2FD9A7960093A8AF /* Fluster.entitlements */,
 				7931E3DA2FD72FE000DFC908 /* fluster_store_local.storekit */,
 				799B8CE22FD3817400378B23 /* seed */,
 				7947AB292F5364B2009CEA5E /* note_detail_webview_mac */,
@@ -398,11 +400,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = Fluster.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H27PZFYGUZ;
+				DEVELOPMENT_TEAM = SKUW7QG727;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
@@ -428,7 +431,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "fluster.Fluster-Desktop";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fluster.flusterdesktop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -446,11 +449,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = Fluster.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H27PZFYGUZ;
+				DEVELOPMENT_TEAM = SKUW7QG727;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
@@ -476,7 +480,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "fluster.Fluster-Desktop";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fluster.flusterdesktop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

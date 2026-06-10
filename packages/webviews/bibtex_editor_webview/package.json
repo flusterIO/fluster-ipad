@@ -27,11 +27,18 @@
     "build": "wireit",
     "build:ipad": "wireit",
     "build:mac": "wireit",
+    "build:macProd": "wireit",
     "dev": "vite dev",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "wireit": {
+    "build:macProd": {
+      "command": "FLUSTER_BUILD_ENV=macos tsc -b && vite build -c ./vite_mac.config.ts",
+      "env": {
+        "FLUSTER_PROD_BUILD": "true"
+      }
+    },
     "build:mac": {
       "command": "FLUSTER_BUILD_ENV=macos tsc -b && vite build -c ./vite_mac.config.ts"
     },
