@@ -23,6 +23,5 @@ This is a <Ul success>green</Ul> underlined component.
 ### Demo 
 
 {% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
-- This is <Ul {{emphasis}}>{{emphasis}}<Ul> underlined text
-{% endfor %}
+- This is <Ul {{emphasis}}>{{emphasis}}</Ul> underlined text {% endfor %}
 ````

@@ -15,6 +15,11 @@ const outputDir = path.resolve(
     "packages/rust/conundrum/src/embedded/in_content_docs/",
 );
 
+const componentOutDir = path.resolve(
+    root,
+    "packages/rust/conundrum/src/embedded/component_docs/"
+)
+
 const formatText = async (
     inputPath: string,
     outputPath: string,
@@ -57,9 +62,14 @@ export const writeContentToDocumentationId = (
     /**
      * The path relative to the monorepo root where the *input* documentation is contained.
      */
-    inputFileName: string,
+    inputPath: string,
 ) => {
-    const inputPath = path.resolve(inputDir, inputFileName);
+
+    const inputFileName = path.basename(inputPath);
+
+
+    const inputComponentDir = path.resolve(__dirname, "../../docs/in_content_docs/components/")
+    const outDir = inputPath.includes(inputComponentDir) ? componentOutDir : outputDir;
     if (!fs.existsSync(inputPath)) {
         console.error(`Cannot continue... the ${inputFileName} file doesn't exist`);
         process.exit(1);
@@ -67,13 +77,15 @@ export const writeContentToDocumentationId = (
     const fileContent = fs.readFileSync(inputPath, { encoding: "utf-8" });
     const group = markdownContentToDocumentationPair(fileContent);
     const shortOutputPath = path.resolve(
-        outputDir,
+        outDir,
         inputFileName.replace(".mdx", "-short.mdx"),
     );
     const longOutputPath = path.resolve(
-        outputDir,
+        outDir,
         inputFileName.replace(".mdx", "-full.mdx"),
     );
+
+    console.log("longOutputPath: ", longOutputPath)
 
     fs.writeFileSync(shortOutputPath, group.short, { encoding: "utf-8" });
     // formatText(shortOutputPath, shortOutputPath).catch((err: unknown) => { // No more formatting docs ahead of time. This might break a LOT.

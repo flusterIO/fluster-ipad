@@ -1,3 +1,6 @@
+cd $FLUSTER_IOS_ROOT
+turbo docgen --force
+
 cd $FLUSTER_IOS_ROOT/packages/rust/conundrum/
 FLUSTER_PROD_BUILD=true pnpm build:tsProd
 pnpm build:scss
