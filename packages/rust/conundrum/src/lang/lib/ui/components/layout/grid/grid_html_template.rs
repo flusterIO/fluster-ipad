@@ -1,19 +1,19 @@
-use crate::{
-    lang::lib::{
-        shared::common_unions::number_or_sizable::NumberOrSizable,
-        ui::{
-            components::layout::grid::grid_columns::GridColumnProps, shared_props::{sizable::SizablePropsGroup, sizable_option::SizableOption}
-        },
-    },
-    parsers::conundrum::logic::{
+use crate::lang::lib::{
+    shared::common_unions::number_or_sizable::NumberOrSizable,
+    ui::{
+        components::layout::grid::grid_columns::GridColumnProps,
+        shared_props::{sizable::SizablePropsGroup, sizable_option::SizableOption},
     },
 };
+
 use askama::Template;
 use tw_merge::*;
 
 /// ## Template (HTML)
 /// ```askama
-/// <div class="{{tw_merge!("grid w-full p-4 my-6 grid-cols-1", self.sizable.as_ref().cloned().map(|c| c.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General)).unwrap_or_default(), self.emphasis_classes.clone(), self.columns.to_css_classes(), self.get_responsive_styles()) | safe}}">
+/// <div class="{{tw_merge!("grid w-full p-4 my-6 grid-cols-1", self.sizable.as_ref().cloned().map(|c| c.as_class(crate::lang::lib::ui::shared_props::sizable::SizablePropsOutputTarget::General)).unwrap_or_default(), self.emphasis_classes.clone(), self.columns.as_ref().cloned().map(|c| c.to_css_classes()).unwrap_or_default()) | safe}}"
+/// style="grid-template-columns: {{self.get_responsive_styles()}};"
+/// >
 /// {{children | safe}}
 /// </div>
 /// ```
@@ -29,7 +29,7 @@ pub struct GridHtmlTemplate {
     pub children: String,
     pub responsive: Option<NumberOrSizable>,
     pub fit: bool,
-    pub columns: GridColumnProps,
+    pub columns: Option<GridColumnProps>,
 }
 
 impl GridHtmlTemplate {

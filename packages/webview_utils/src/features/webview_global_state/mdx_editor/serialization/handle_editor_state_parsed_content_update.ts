@@ -17,7 +17,8 @@ export const handleEditorStateParsedContentUpdate = (payload: number[]): void =>
             if (html && citationKey) {
                 citations.push({
                     html,
-                    citation_key: citationKey
+                    citation_key: citationKey,
+                    document_idx: i + 1
                 })
             }
         }

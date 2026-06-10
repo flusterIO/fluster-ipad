@@ -18,7 +18,8 @@ export const swiftEditorBufferActionReducer = (state: WithNullableOptionals<Edit
             citations.push({
                 html,
                 url,
-                citation_key: citationKey
+                citation_key: citationKey,
+                document_idx: i + 1
             })
         }
     }

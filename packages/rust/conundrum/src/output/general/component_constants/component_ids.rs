@@ -73,9 +73,9 @@ pub enum EmbeddableComponentId {
     #[serde(rename = "equation-reference")]
     #[strum(to_string = "equation-reference")]
     EqRef,
-    #[serde(rename = "ai-note-summary")]
-    #[strum(to_string = "ai-note-summary")]
-    AINoteSummary,
+    // #[serde(rename = "ai-note-summary")]
+    // #[strum(to_string = "ai-note-summary")]
+    // AINoteSummary,
     // #[serde(rename = "ai-research-suggestions")]
     // #[strum(to_string = "ai-research-suggestions")]
     // AIResearchSuggestions,

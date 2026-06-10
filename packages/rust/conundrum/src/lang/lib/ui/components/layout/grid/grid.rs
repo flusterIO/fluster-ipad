@@ -63,7 +63,7 @@ use winnow::error::ErrMode;
 #[derive(Serialize, serde::Deserialize, Debug, Clone)]
 pub struct ResponsiveGrid {
     pub sizable: Option<SizablePropsGroup>,
-    pub columns: GridColumnProps,
+    pub columns: Option<GridColumnProps>,
     pub children: Children,
     pub responsive: Option<NumberOrSizable>,
     pub fit: Option<ConundrumBoolean>,
@@ -82,7 +82,7 @@ impl HtmlJsComponentResult for ResponsiveGrid {
                                                              .cloned()
                                                              .map(|e| e.to_background_color_classes())
                                                              .unwrap_or_default() };
-        templ.render().map_err(|e| {
+        templ.render().map_err(|_| {
                     ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::general_render_error()))
                 })
     }
@@ -158,12 +158,17 @@ impl ConundrumComponent for ResponsiveGrid {
         where Self: Sized {
         let sizable = SizablePropsGroup::from_jsx_props(&props, "").ok();
         let children = Children(children.unwrap_or_default());
-        let columns = GridColumnProps::from_jsx_props(&props, "")?;
         let responsive = NumberOrSizable::from_jsx_props(&props, "responsive").ok();
+        let columns = GridColumnProps::from_jsx_props(&props, "");
+        if let Err(columns_err) = &columns
+           && responsive.is_none()
+        {
+            return Err(columns_err.clone());
+        }
         let fit = ConundrumBoolean::from_jsx_props(&props, "fit").ok();
         let emphasis = Emphasis::from_jsx_props(&props, "").ok();
         Ok(ResponsiveGrid { sizable,
-                            columns,
+                            columns: columns.ok(),
                             responsive,
                             fit,
                             emphasis,

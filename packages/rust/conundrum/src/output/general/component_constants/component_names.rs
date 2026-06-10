@@ -68,9 +68,9 @@ pub enum EmbeddableComponentName {
     #[serde(rename = "Image")]
     #[strum(to_string = "Image")]
     Image,
-    #[serde(rename = "AINoteSummary")]
-    #[strum(to_string = "AINoteSummary")]
-    AINoteSummary,
+    // #[serde(rename = "AINoteSummary")]
+    // #[strum(to_string = "AINoteSummary")]
+    // AINoteSummary,
 }
 
 impl FromStr for EmbeddableComponentName {
@@ -96,7 +96,7 @@ impl EmbeddableComponentName {
             EmbeddableComponentName::Highlight => EmbeddableComponentId::Hl,
             EmbeddableComponentName::Admonition => EmbeddableComponentId::Admonition,
             EmbeddableComponentName::Card => EmbeddableComponentId::Card,
-            EmbeddableComponentName::AINoteSummary => EmbeddableComponentId::AINoteSummary,
+            // EmbeddableComponentName::AINoteSummary => EmbeddableComponentId::AINoteSummary,
             EmbeddableComponentName::Tabs => EmbeddableComponentId::Tabs,
             EmbeddableComponentName::Tab => EmbeddableComponentId::Tab,
             EmbeddableComponentName::EqRef => EmbeddableComponentId::EqRef,
