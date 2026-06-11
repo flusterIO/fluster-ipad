@@ -17,7 +17,7 @@ struct CreateNotePage: View {
   @State private var titleText: String = ""
   @State private var subjectText: String = ""
   @State private var topicText: String = ""
-  @EnvironmentObject private var auth: AuthManager
+  @StateObject private var auth = AuthManager()
   @FocusState private var focusedInitialField: Bool
   @Query private var subjects: [SubjectModel]
   @Query private var topics: [TopicModel]

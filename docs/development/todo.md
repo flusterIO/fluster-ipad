@@ -1,12 +1,17 @@
 # To-Do
 
+## Release, Step-by-Step
+
+- [ ] Push up website update so privacy page is available.
+- [ ] Begin upload of youtube videos so that they can parse and validate while you're doing everything else.
+- [ ] Begin submission process with Apple. Upload the build early to make sure that it's valid, incase you need to rebuild it again.
+
 ---
 
 ### Pre-release bugs
 
-- [ ] Verify privacy page on website so it's ready to deploy when you get to the library.
-- [ ] Onboarding pages for mac (if time allows and a design works well)
-- [ ] Make tags clickable again! Redirect to the tags search page.
+- [x] Verify privacy page on website so it's ready to deploy when you get to the library.
+- [x] Make tags clickable again! Redirect to the tags search page.
 - [x] Make sure shit bib snippets are not shown.
 - [x] Remove section on both the website and the app about $R  \alpha^3 = \text{cubit}$. It's wrong you dumb cunt.
 - [x] Work on initial launch note conversion to `.cdrm`
