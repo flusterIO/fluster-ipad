@@ -1,3 +1,5 @@
+set -e
+
 cd $FLUSTER_IOS_ROOT
 turbo docgen --force
 

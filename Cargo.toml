@@ -21,7 +21,6 @@ members = [
     "packages/rust/conundrum_config",
     "packages/rust/conundrum_fs",
     "packages/rust/conundrum_macros",
-    "packages/rust/conundrum_context",
     "packages/rust/conundrum_server_rs",
     "packages/rust/conundrum_macro_traits",
 ]

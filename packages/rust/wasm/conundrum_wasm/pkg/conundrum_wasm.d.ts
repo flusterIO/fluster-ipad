@@ -170,7 +170,7 @@ export class Settings {
     throw_on_error: boolean;
 }
 
-export function compile_cdrm(cdrm: string, ui_params: any, trusted: boolean): any;
+export function compile_cdrm(cdrm: string, ui_params: any, modifiers: any, trusted: boolean): any;
 
 export function search_conundrum_emojis(query: string, page: number, per_page: number): any;
 
@@ -180,7 +180,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
-    readonly compile_cdrm: (a: number, b: number, c: number, d: number, e: number) => void;
+    readonly compile_cdrm: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
     readonly search_conundrum_emojis: (a: number, b: number, c: number, d: number, e: number) => void;
     readonly search_conundrum_emojis_in_docs_container: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
     readonly ffi_conundrum_rust_future_cancel_f32: (a: bigint) => void;
@@ -287,8 +287,9 @@ export interface InitOutput {
     readonly ffi_conundrum_rust_future_poll_u64: (a: bigint, b: number, c: bigint) => void;
     readonly __wbindgen_export: (a: number, b: number) => number;
     readonly __wbindgen_export2: (a: number, b: number, c: number, d: number) => number;
+    readonly __wbindgen_export3: (a: number) => void;
     readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
-    readonly __wbindgen_export3: (a: number, b: number, c: number) => void;
+    readonly __wbindgen_export4: (a: number, b: number, c: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

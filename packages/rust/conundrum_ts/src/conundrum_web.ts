@@ -10,11 +10,17 @@ import conundrumWasm from "@conundrum/wasm";
 import {
     searchConundrumEmojisAndAppendToContainer,
     searchConundrumEmojis,
+    compileConundrum,
 } from "@conundrum/wasm/ts";
 import { type handleNoteLinkClick } from "./markdown_glue/extensions/note_link/handle_note_link_click";
 import { type onDictionaryEntryClick } from "./event_handlers/on_dictionary_entry_click";
 import { type onTocItemClick } from "./event_handlers/on_toc_item_click";
 import { type handleTagClick } from "./event_handlers/on_tag_click";
+import {
+    type ConundrumModifier,
+    type MdxParsingResult,
+    type UIParams,
+} from "./code_gen";
 
 export interface ConundrumWebClient {
     handleConundrumTabClick: typeof handleConundrumTabClick;
@@ -31,12 +37,17 @@ export interface ConundrumWebClient {
     onDictionaryEntryClick: typeof onDictionaryEntryClick;
     onTocItemClick: typeof onTocItemClick;
     handleTagClick: typeof handleTagClick;
+    compileConundrum?: typeof compileConundrum<
+        UIParams,
+        ConundrumModifier,
+        MdxParsingResult
+    >;
 }
 
 /**
  * Make sure to call `attachConundrumToWasm` _after_ calling `initializeConundrumWeb`.
  */
-export const attachConundrumWasm = () => {
+export const attachConundrumWasm = (onLoad?: () => void) => {
     conundrumWasm()
         .then(() => {
             /* eslint-disable-next-line  -- It's not always falsy ya' dumb c--t. */
@@ -44,8 +55,12 @@ export const attachConundrumWasm = () => {
                 window.conundrum = {} as ConundrumWebClient;
             }
             window.conundrum.searchEmojis = searchConundrumEmojis;
+            window.conundrum.compileConundrum = compileConundrum;
             window.conundrum.searchConundrumEmojisAndAppendToContainer =
                 searchConundrumEmojisAndAppendToContainer;
+            if (onLoad) {
+                onLoad();
+            }
         })
         .catch((err: unknown) => {
             console.error("Error initializing conundrum web-assembly: {}", err);

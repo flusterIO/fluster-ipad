@@ -41,6 +41,7 @@ const handleMutations = (): void => {
 
 export const initializeConundrumWeb = () => {
     window.conundrum = {
+        ...((window.conundrum as typeof window.conundrum | undefined) ?? {}),
         handleConundrumTabClick,
         onCodeBlockContainerClick,
         onCopyCodeBlockClick,

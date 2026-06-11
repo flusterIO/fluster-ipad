@@ -20,11 +20,11 @@ public let quickActions: [QuickAction] = [
     QuickAction(label: "Bookmarks", icon: FlusterCategoryIcon.bookmarks.toSfIcon(), color: Color.indigo, action: { appState in
         appState.mainView = .bookmarks
     }),
-    QuickAction(label: "Equations (β)", icon: "function", color: Color.orange, action: { appState in
-        appState.mainView = .dashboard
+    QuickAction(label: "Conundrum", icon: "text.document", color: Color.orange, action: { appState in
+        appState.mainView = .noteViewMdx
     }),
-    QuickAction(label: "Dictionary", icon: FlusterCategoryIcon.dictionary.toSfIcon(), color: Color.green, action: { appState in
-        appState.mainView = .globalDictionary
+    QuickAction(label: "Editor", icon: "pencil", color: Color.green, action: { appState in
+        appState.mainView = .noteEditingPage
     }),
     QuickAction(label: "Bibliography", icon: FlusterCategoryIcon.bibliography.toSfIcon(), color: Color.purple, action: { appState in
         appState.mainView = .globalBibliography

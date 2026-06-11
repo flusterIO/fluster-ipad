@@ -29,7 +29,6 @@ export const searchConundrumEmojisAndAppendToContainer = (
         names: { html: string; name: string; wrapped: boolean }[];
         total: number;
     };
-    console.log("Emoji response: ", res);
     const container = document.getElementById(containerId);
     /* eslint-disable-next-line  -- What the fuck are you talking about? Of course it's possibly falsy. */
     if (container) {

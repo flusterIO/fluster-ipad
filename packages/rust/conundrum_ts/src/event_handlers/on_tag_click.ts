@@ -14,7 +14,7 @@ export const handleTagClick = (e: Event): void => {
         "data-cdrm-tag-body",
     );
     if (!tagBody) {
-        console.error("COuld not locate tag body.");
+        console.error("Could not locate tag body.");
         return;
     }
     window.dispatchEvent(

@@ -136,4 +136,9 @@ export * from "./features/mdx/components/mdx_content_preview_only"
 export * from "./features/editor/code_editor/components/bibtex_editor";
 
 
+/// -- Dictionary ---
+export * from "./features/dictionary/dictionary_entry"
+export * from "./features/dictionary/dictionary_page"
+
+
 // -- DESKTOP --

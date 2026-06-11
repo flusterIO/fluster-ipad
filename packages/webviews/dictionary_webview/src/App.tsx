@@ -5,23 +5,20 @@ import {
     MdxEditorGlobalProvider,
     handleSwiftActionWrapper,
     handleSwiftBufferActionWrapper,
+    DictionaryPage,
 } from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
 import "./index.css";
-import { DictionaryPage } from "./dictionary_page";
-import initCdrmWasm from "@conundrum/wasm";
+import { initializeConundrumWeb } from "@conundrum/ts";
+
+initializeConundrumWeb();
 
 const storeData = createFlusterStore();
-
 window.handleSwiftAction = handleSwiftActionWrapper(storeData.store);
 
 window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
     storeData.store,
 );
-
-initCdrmWasm().catch((err: unknown) => {
-    console.log("err: ", err);
-});
 
 function App() {
     return (

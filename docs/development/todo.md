@@ -15,6 +15,8 @@
 
 ### After Release
 
+- [ ] Reintegrate Dictionary entry! That's a huge value add that's basically done already.
+- [ ] Add support for mermaid via mmdflux.
 - [ ] Add 'col-span' property from 1-12 to the `Sizable` struct.
 - [x] Get `wasm` loading in Next.js. That'll be perfect for enabling a web based editor, but it's also crucial for a decent development workflow now that we're rendering straight to html and a React based test page doesn't make as much sense.
 - [x] Make blog mobile responsive. That should be the first priority once conundrum content is compiling again.

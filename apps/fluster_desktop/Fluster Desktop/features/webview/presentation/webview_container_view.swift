@@ -8,6 +8,7 @@
 import ConundrumSwift
 import FlusterAI
 import FlusterData
+import FlusterSwift
 import FlusterWebviewClients
 import FoundationModels
 import SwiftData
@@ -31,6 +32,7 @@ struct WebViewContainer: NSViewRepresentable {
   @Binding var webView: WKWebView
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
   @AppStorage(AppStorageKeys.userPreferredName.rawValue) private var userPreferedName: String = ""
+  @Environment(\.modelContext) private var modelContext
   let url: URL
   var messageHandlerKeys: [String]
   var messageHandler: ((String, Any) -> Void)?
@@ -105,7 +107,6 @@ struct WebViewContainer: NSViewRepresentable {
   }
 
   func handleNoteSummaryCreation(msg: String) {
-    print("Creating summary...")
     do {
       if let en = self.parent.editingNote {
         if let jsonData = msg.data(using: .utf8) {
@@ -176,44 +177,52 @@ struct WebViewContainer: NSViewRepresentable {
     func userContentController(
       _ userContentController: WKUserContentController, didReceive message: WKScriptMessage
     ) {
-      if message.name == WebviewContainerEvents.reduxStateLoaded.rawValue {
-        Task(priority: .high) {
-          await self.parent.parent.handleInitialState()
-          if let onLoad = parent.onLoad {
-            await onLoad()
+      switch message.name {
+        case WebviewContainerEvents.reduxStateLoaded.rawValue:
+          Task(priority: .high) {
+            await self.parent.parent.handleInitialState()
+            if let onLoad = parent.onLoad {
+              await onLoad()
+            }
           }
-        }
-      } else if message.name == ConundrumStateActions.parseConundrumContent.rawValue {
-        if let jsonData = (message.body as! String).data(using: .utf8) {
+        case ConundrumStateActions.parseConundrumContent.rawValue:
+          if let jsonData = (message.body as! String).data(using: .utf8) {
+            do {
+              let decoder = JSONDecoder()
+              let data = try decoder.decode(ParseConundrumContentRequest.self, from: jsonData)
+              Task {
+                try await self.handleConundrumParse(req: data)
+              }
+            } catch {
+              print("Failed to decode editor update: \(error)")
+            }
+          }
+        case NoteDetailEvents.sendGenerateSummaryRequest.rawValue:
+          self.parent.handleNoteSummaryCreation(msg: message.body as! String)
+      case MdxPreviewWebviewActions.onTagClick.rawValue:
+          let fetchDescriptor = FetchDescriptor<TagModel>(
+            sortBy: [
+              SortDescriptor(\TagModel.lastAccess, order: .reverse)
+            ],
+          )
+
           do {
-            let decoder = JSONDecoder()
-            let data = try decoder.decode(ParseConundrumContentRequest.self, from: jsonData)
-            Task {
-              try await self.handleConundrumParse(req: data)
+            let allTags = try parent.modelContext.fetch(fetchDescriptor)
+            print("All Tags: \(allTags.count)")
+            let foundTag = allTags.first(where: { t in
+              t.value == message.body as! String
+            })
+            if foundTag != nil {
+              AppState.shared.commandPaletteNavigate(to: .searchByTag(foundTag!))
             }
           } catch {
-            print("Failed to decode editor update: \(error)")
+            print("Error: \(error.localizedDescription)")
           }
-        }
-      } else if message.name == NoteDetailEvents.sendGenerateSummaryRequest.rawValue {
-        self.parent.handleNoteSummaryCreation(msg: message.body as! String)
+
+        default:
+          print("Default reached", message.name)
       }
-      //        else if message.name == AiStateEvents.sendGeneralAiRequestPhase2.rawValue {
-      //        if let jsonData = (message.body as! String).data(using: .utf8) {
-      //          do {
-      //            let decoder = JSONDecoder()
-      //            let event = try decoder.decode(GeneralAiRequestPhase2Event.self, from: jsonData)
-      //            // WITH_WIFI: Figure out how to handle this error here. It works, but this should definitely be handled.
-      //            // Task(priority: .high) {
-      //            //              let res = handleGeneralMdxAiRequest(
-      //            //                request: event, focusedNote: parent.parent.editingNote)
-      //            // RESUME: Get the response here. If there is data to be replaced call a function in Rust to get the new content and replace it. If there is a user notification message, send a notification to the user.
-      //            // }
-      //          } catch {
-      //            print("Failed to decode editor update: \(error)")
-      //          }
-      //        }
-      //      }
+
       if let messageHandler = parent.messageHandler {
         for handler in parent.messageHandlerKeys {
           if message.name == handler {
@@ -461,10 +470,10 @@ struct WebViewContainerView: View {
           try await en.preParseIfEdited(
             modelContext: modelContext,
             uiParams: self.getUiParams())
-            var idx: UInt32 = 0
+          var idx: UInt32 = 0
           let citations = en.citations.compactMap { cit in
-              idx += 1;
-              return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
+            idx += 1
+            return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
           }
           try await EditorState.setInitialEditorState(
             editorPayload: EditorInitialStatePayload(
@@ -492,7 +501,7 @@ struct WebViewContainerView: View {
             mathPayload: InitialMathState(
               mathjax_font_url: mathjaxFontUrl, hide_equation_labels: showEquationLabels),
             aiPayload: AiInitialStatePayload(
-                foundation_model_access:  .unknownStatus
+              foundation_model_access: .unknownStatus
             ),
             eval: self.webview.evaluateJavaScript
           )
