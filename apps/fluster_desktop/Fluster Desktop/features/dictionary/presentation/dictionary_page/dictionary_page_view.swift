@@ -46,24 +46,11 @@ struct DictionaryPageView: View {
   }
 
   func setDictionaryContent(entries: [DictionaryEntryModel]) async throws {
-      if entries.isEmpty {
-          // Return so the 'No entries to display" banner remains shown.
-          return
-      }
-      let results = entries.map {entry in
-          entry.toCdrmDictionaryTemplate(noteIdBackup: entry.note?.id, )
+      let webviewEntries = entries.map { entry in
+          entry.toWebviewDictionaryEntry()
       }
       
-      
-      let renderedResults = try await ConundrumSwift.renderDictionaryPageToHtml(entries: results)
-          
-      
-      try await webview.evaluateJavaScript("""
-          const em = document.getElementById("\(DictionaryWebviewIds.dictionaryDataContainer.rawValue)")
-          if (em) {
-            em.innerHTML = \(renderedResults.toQuotedJavascriptString())
-          }
-          """)
+      try await DictionaryState.setDictionaryState(payload: DictionaryState(entries: webviewEntries), eval: self.webview.evaluateJavaScript)
   }
 
   func onWebviewLoad() async {

@@ -777,7 +777,7 @@ public struct SetDarkModeAction: Codable {
 }
 
 public enum DictionaryStateActions: String, Codable {
-	case setDictionaryEntries = "set-note-details"
+	case setDictionaryEntries = "set-dict-entriea"
 }
 
 public struct SetDictionaryEntriesAction: Codable {

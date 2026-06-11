@@ -5,10 +5,11 @@ import {
     MdxEditorGlobalProvider,
     handleSwiftActionWrapper,
     handleSwiftBufferActionWrapper,
-    DictionaryWebviewIds,
 } from "@fluster/webview_utils";
 import "../../../webview_utils/dist/styles.css";
 import "./index.css";
+import { DictionaryPage } from "./dictionary_page";
+import initCdrmWasm from "@conundrum/wasm";
 
 const storeData = createFlusterStore();
 
@@ -18,6 +19,10 @@ window.handleSwiftBufferAction = handleSwiftBufferActionWrapper(
     storeData.store,
 );
 
+initCdrmWasm().catch((err: unknown) => {
+    console.log("err: ", err);
+});
+
 function App() {
     return (
         <MdxEditorGlobalProvider
@@ -25,19 +30,7 @@ function App() {
             persistor={storeData.persistor}
         >
             <WebViewContainer contentContainerClasses="h-full">
-                <div className="w-full max-w-[1080px] px-8 ml-auto mr-auto">
-                    <h1 className="mb-8 text-xl @md/cdrm:text-2xl @lg:/cdrm:text-3xl hide-desktop">
-                        Dictionary
-                    </h1>
-                    <div
-                        id={DictionaryWebviewIds.DictionaryDataContainer}
-                        className="w-full h-full flex flex-col justify-center items-center p-4"
-                    >
-                        <h3 className="text-foreground/80 w-fit text-center">
-                            No Dictionary Entries Found
-                        </h3>
-                    </div>
-                </div>
+                <DictionaryPage />
             </WebViewContainer>
         </MdxEditorGlobalProvider>
     );

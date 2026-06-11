@@ -170,6 +170,8 @@ export class Settings {
     throw_on_error: boolean;
 }
 
+export function compile_cdrm(cdrm: string, ui_params: any, trusted: boolean): any;
+
 export function search_conundrum_emojis(query: string, page: number, per_page: number): any;
 
 export function search_conundrum_emojis_in_docs_container(query: string, container_id: string, page: number, per_page: number): any;
@@ -178,6 +180,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
+    readonly compile_cdrm: (a: number, b: number, c: number, d: number, e: number) => void;
     readonly search_conundrum_emojis: (a: number, b: number, c: number, d: number, e: number) => void;
     readonly search_conundrum_emojis_in_docs_container: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
     readonly ffi_conundrum_rust_future_cancel_f32: (a: bigint) => void;

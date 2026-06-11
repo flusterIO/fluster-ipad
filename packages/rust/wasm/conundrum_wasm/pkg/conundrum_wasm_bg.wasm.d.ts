@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
+export const compile_cdrm: (a: number, b: number, c: number, d: number, e: number) => void;
 export const search_conundrum_emojis: (a: number, b: number, c: number, d: number, e: number) => void;
 export const search_conundrum_emojis_in_docs_container: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => void;
 export const ffi_conundrum_rust_future_cancel_f32: (a: bigint) => void;

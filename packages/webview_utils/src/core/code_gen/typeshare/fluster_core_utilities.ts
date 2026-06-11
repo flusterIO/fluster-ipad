@@ -493,7 +493,7 @@ export interface SetDarkModeAction {
 }
 
 export enum DictionaryStateActions {
-	SetDictionaryEntries = "set-note-details",
+	SetDictionaryEntries = "set-dict-entriea",
 }
 
 export interface SetDictionaryEntriesAction {
