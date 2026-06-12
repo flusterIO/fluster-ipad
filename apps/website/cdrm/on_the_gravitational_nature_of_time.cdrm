@@ -146,7 +146,7 @@ $$
 And following the rules of integration defined above, we find:
 
 $$ {#eq_timeDependentDelta}
-\int_0^R \int_0^x \left[ \delta \frac{1}{v_\gamma} \tau \right]~ dR ~ d\tau = 1 + \frac{1}{2} \frac{G M_\oplus}{R^3_\oplus} \frac{\dot{x}}{\hat{x}}
+\int_0^R \int_0^x \left[ \delta \frac{1}{v_\gamma} \tau \right]~ dR ~ d\tau = 1 + \frac{1}{2} \frac{G M_\oplus}{R^3_\oplus}\frac{1}{\bar{v}} \frac{\dot{x}^2}{\hat{x}}
 $$
 
 <Hint label="Notation" primary>

@@ -1,6 +1,6 @@
 import FlusterData
-import SwiftData
 import FoundationModels
+import SwiftData
 import SwiftUI
 import WebKit
 
@@ -19,6 +19,7 @@ import WebKit
   public struct MdxEditorWebview: View {
     @State public var show: Bool = false
     let url: URL
+    let uiParamsProvider = UIParamsProvider()
     @Binding var editingNote: NoteModel
     @Environment(\.modelContext) private var modelContext: ModelContext
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
@@ -26,6 +27,7 @@ import WebKit
     @State private var showEditNoteTaggables: Bool = false
     @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
       .apa
+      @AppStorage(AppStorageKeys.showEquationLabels.rawValue) private var equationNumberingStrategy: EquationNumberingStrategy = .all
 
     @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
     @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
@@ -42,6 +44,7 @@ import WebKit
     @AppStorage(AppStorageKeys.includeEmojiSnippets.rawValue) private var includeEmojiSnippets:
       Bool =
         true
+    let srcUrl = "/splitview_mdx_editor_ipad"
 
     var onNavigateToNote: (NoteModel) -> Void
     @State private var webView: WKWebView = WKWebView(
@@ -77,7 +80,8 @@ import WebKit
             SplitviewEditorWebviewActions.manualSaveRequest.rawValue
           ],
           messageHandler: self.messageHandler,
-          onLoad: nil
+          onLoad: nil,
+          srcUrl: "/splitview_mdx_editor_ipad"
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .disableAnimations()
@@ -118,7 +122,8 @@ import WebKit
           // Doing things this way will make the task automatically cancellable
           // when the next change event is fired.
           do {
-            try await editingNote.preParse(modelContext: modelContext)
+            try await editingNote.preParse(
+              modelContext: modelContext, uiParams: uiParamsProvider.toParams())
           } catch {
             print("Error: \(error.localizedDescription)")
           }
@@ -169,9 +174,12 @@ import WebKit
           let event = try decoder.decode(ManualSaveRequestEvent.self, from: jsonData)
           if event.note_id == editingNote.id {
             editingNote.markdown.body = event.current_note_content
-            try await editingNote.preParse(modelContext: modelContext)
+            try await editingNote.preParse(
+              modelContext: modelContext, uiParams: uiParamsProvider.toParams())
+            var idx: UInt32 = 0
             let citations = editingNote.citations.compactMap { cit in
-              cit.toEditorCitation(activeCslFile: cslFile)
+              idx += 1
+              return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
             }
             try await EditorState.setParsedMdxContent(
               parsedMdxContent: editingNote.markdown.preParsedBody ?? "", citations: citations,
@@ -187,9 +195,16 @@ import WebKit
     public func handleInitialState() async {
       Task {
         do {
-          try await editingNote.preParse(modelContext: modelContext)
+          try await editingNote.preParse(
+            modelContext: modelContext, uiParams: uiParamsProvider.toParams())
 
           let llm = SystemLanguageModel()
+          var idx: UInt32 = 0
+          let citations = editingNote.citations.compactMap { cit in
+            idx += 1
+            return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
+          }
+
           try await EditorState.setInitialEditorState(
             editorPayload: EditorInitialStatePayload(
               note_id: editingNote.id,
@@ -197,6 +212,7 @@ import WebKit
               theme_light: editorThemeLight,
               theme_dark: editorThemeDark,
               allCitationIds: bibEntries.compactMap(\.citationKey),
+              citations: citations,
               value: editingNote.markdown.body,
               parsedValue: editingNote.markdown.preParsedBody ?? "",
               haveSetInitialValue: true,
@@ -212,7 +228,7 @@ import WebKit
               implementation: WebviewImplementation.mdxEditor,
               fluster_theme: flusterTheme
             ),
-            mathPayload: MathState(mathjax_font_url: mathjaxFontUrl),
+            mathPayload: InitialMathState(mathjax_font_url: srcUrl, hide_equation_labels: equationNumberingStrategy, ),
             aiPayload: AiInitialStatePayload(
               foundation_model_access: llm.availability.toReduxRepresentation()
             ),

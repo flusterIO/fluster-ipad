@@ -2,8 +2,8 @@
 
 ## Release, Step-by-Step
 
-- [ ] Push up website update so privacy page is available.
-- [ ] Begin upload of youtube videos so that they can parse and validate while you're doing everything else.
+- [x] Push up website update so privacy page is available.
+- [x] Begin upload of youtube videos so that they can parse and validate while you're doing everything else.
 - [ ] Figure out how to integrate Apple Pay with the debug build for production.
   - `I'm a pretty experienced developer that's new to the Apple ecosystem. I've already built a complete MacOS application that integrates ApplePay locally for auto-renewing subscriptions. Walk me through the steps required to publish this app today, ensuring that ApplePay will work.`
 - [ ] Convert screenshots to mockups

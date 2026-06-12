@@ -15,7 +15,6 @@
 		79C1227D2F536562000CDCFA /* dictionary_webview_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C122792F536562000CDCFA /* dictionary_webview_ipad */; };
 		79C1227E2F536562000CDCFA /* note_detail_webview_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C1227A2F536562000CDCFA /* note_detail_webview_ipad */; };
 		79C1227F2F536562000CDCFA /* splitview_mdx_editor_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C1227B2F536562000CDCFA /* splitview_mdx_editor_ipad */; };
-		79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 79C35B942EB8FA1B00806066 /* SwiftyBibtex */; };
 		79D7DD812F6764B8002C5066 /* ConundrumSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79D7DD802F6764B8002C5066 /* ConundrumSwift */; };
 		79D841D02F4150EA004E992B /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79D841CF2F4150EA004E992B /* FlusterWebviewClients */; };
 		79EF658C2F5133F10019E6E8 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79EF658B2F5133F10019E6E8 /* bibliography_embedded */; };
@@ -77,7 +76,6 @@
 				79D841D02F4150EA004E992B /* FlusterWebviewClients in Frameworks */,
 				79FA32B52F1822EA0066B8B4 /* FlusterData in Frameworks */,
 				79D7DD812F6764B8002C5066 /* ConundrumSwift in Frameworks */,
-				79C35B952EB8FA1B00806066 /* SwiftyBibtex in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,12 +132,10 @@
 			name = Fluster;
 			packageProductDependencies = (
 				796F71222EB185380012B500 /* SVGView */,
-				79C35B942EB8FA1B00806066 /* SwiftyBibtex */,
 				79FB1F542ED928FB0041E1E0 /* FlusterSwift */,
 				79513C742EF3AF3700FF4885 /* Testing */,
 				79513C762EF3AF3700FF4885 /* _TestDiscovery */,
 				79FA32B42F1822EA0066B8B4 /* FlusterData */,
-				79FE94F82F19C8B400B15144 /* FlusterSwiftMdxParser */,
 				79D841CF2F4150EA004E992B /* FlusterWebviewClients */,
 				792755702F4540E2004476E6 /* Redline */,
 				79D7DD802F6764B8002C5066 /* ConundrumSwift */,
@@ -174,7 +170,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */,
-				79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */,
 				79513C732EF3AF3700FF4885 /* XCRemoteSwiftPackageReference "swift-testing" */,
 				79FB1F532ED928FB0041E1E0 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
 				79FA32B32F1822EA0066B8B4 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */,
@@ -254,7 +249,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fluster/Fluster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H27PZFYGUZ;
+				DEVELOPMENT_TEAM = SKUW7QG727;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Fluster/Info.plist;
@@ -291,7 +286,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fluster/Fluster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H27PZFYGUZ;
+				DEVELOPMENT_TEAM = SKUW7QG727;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Fluster/Info.plist;
@@ -514,14 +509,6 @@
 				minimumVersion = 1.0.6;
 			};
 		};
-		79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/MaxHaertwig/SwiftyBibtex.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -545,11 +532,6 @@
 			package = 796F71212EB185380012B500 /* XCRemoteSwiftPackageReference "SVGView" */;
 			productName = SVGView;
 		};
-		79C35B942EB8FA1B00806066 /* SwiftyBibtex */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 79C35B932EB8FA1B00806066 /* XCRemoteSwiftPackageReference "SwiftyBibtex" */;
-			productName = SwiftyBibtex;
-		};
 		79D7DD802F6764B8002C5066 /* ConundrumSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ConundrumSwift;
@@ -565,10 +547,6 @@
 		79FB1F542ED928FB0041E1E0 /* FlusterSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlusterSwift;
-		};
-		79FE94F82F19C8B400B15144 /* FlusterSwiftMdxParser */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FlusterSwiftMdxParser;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

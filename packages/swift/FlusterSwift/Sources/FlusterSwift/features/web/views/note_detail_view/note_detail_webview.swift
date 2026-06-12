@@ -41,7 +41,8 @@ import WebKit
         messageHandlerKeys: [],
         messageHandler:
           self.messageHandler,
-        onLoad: onLoad
+        onLoad: onLoad,
+        srcUrl: "/note_detail_webview_ipad"
       )
     }
     func messageHandler(_ messageKey: String, _ messageBody: Any) {
@@ -58,9 +59,13 @@ import WebKit
         for: note.lastRead,
         relativeTo: .now
       )
-      let citations = note.citations.compactMap { cit in
-        return cit.toEditorCitation(activeCslFile: cslFile)
-      }
+    
+        var idx: UInt32 = 0
+        let citations = note.citations.compactMap { cit in
+          idx += 1
+          return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
+        }
+
       let tags = note.tags.map { t in
         return EditorTag(body: t.value)
       }
@@ -70,7 +75,7 @@ import WebKit
           payload: NoteDetailState(
             note_id: note.id,
             title: note.getPreferedTitle(),
-            summary: note.frontMatter.summary?.body,
+            summary: note.frontMatter.summary?.toSummaryState(),
             topic: note.topic?.value,
             subject: note.subject?.value,
             tags: tags,

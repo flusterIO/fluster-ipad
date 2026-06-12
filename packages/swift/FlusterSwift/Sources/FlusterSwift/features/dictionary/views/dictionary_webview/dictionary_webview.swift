@@ -47,7 +47,8 @@ import WebKit
         ],
         messageHandler: self.messageHandler,
         onLoad: {
-        }
+        },
+        srcUrl: "/dictionary_webview_ipad"
       )
     }
 

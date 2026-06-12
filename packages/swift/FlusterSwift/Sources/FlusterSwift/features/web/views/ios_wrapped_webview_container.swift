@@ -8,16 +8,20 @@
 import FlusterData
 import FoundationModels
 import FlusterAI
+import FlusterData
 import SwiftData
 import SwiftUI
 import WebKit
 
 #if os(iOS)
   public struct IosWebviewContainer: View {
+      let srcUrl: String
     let implementation: WebviewImplementation
+    let uiParamsProvider = UIParamsProvider()
     @Environment(\.modelContext) private var modelContext: ModelContext
 
     @Query(sort: \BibEntryModel.citationKey) private var bibEntries: [BibEntryModel]
+      @AppStorage(AppStorageKeys.showEquationLabels.rawValue) private var equationNumberingStrategy: EquationNumberingStrategy = .all
     @AppStorage(AppStorageKeys.editorKeymap.rawValue) private var editorKeymap: CodeEditorKeymap =
       .base
     @AppStorage(AppStorageKeys.editorThemeDark.rawValue) private var editorThemeDark:
@@ -52,7 +56,8 @@ import WebKit
       url: URL,
       messageHandlerKeys: [String],
       messageHandler: ((String, Any) -> Void)?,
-      onLoad: (@Sendable () async -> Void)?
+      onLoad: (@Sendable () async -> Void)?,
+      srcUrl: String
     ) {
       self.implementation = implementation
       self._editingNote = editingNote
@@ -62,6 +67,7 @@ import WebKit
       self.messageHandlerKeys = messageHandlerKeys
       self.messageHandler = messageHandler
       self.onLoad = onLoad
+        self.srcUrl = srcUrl
     }
 
     public var body: some View {
@@ -138,9 +144,11 @@ import WebKit
     func updateParsedEditorValue() {
       if let en = editingNote {
         Task(priority: .high) {
-          try? await en.preParseIfEdited(modelContext: modelContext)
+            try? await en.preParseIfEdited(modelContext: modelContext, uiParams: uiParamsProvider.toParams())
+            var idx: UInt32 = 0
           let citations: [EditorCitation] = en.citations.compactMap { cit in
-            cit.toEditorCitation(activeCslFile: cslFile)
+              idx += 1;
+              return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
           }
           try? await EditorState.setParsedMdxContent(
             parsedMdxContent: en.markdown.preParsedBody ?? "", citations: citations,
@@ -165,8 +173,14 @@ import WebKit
       if let en = editingNote {
         Task(priority: .high) {
           do {
-            try await en.preParse(modelContext: modelContext)
+              try await en.preParse(modelContext: modelContext, uiParams: uiParamsProvider.toParams())
               let llm = SystemLanguageModel()
+              var idx: UInt32 = 0
+              let citations = en.citations.compactMap { cit in
+                idx += 1
+                return cit.toEditorCitation(activeCslFile: cslFile, idx: idx)
+              }
+
             try await EditorState.setInitialEditorState(
               editorPayload: EditorInitialStatePayload(
                 note_id: en.id,
@@ -174,6 +188,7 @@ import WebKit
                 theme_light: editorThemeLight,
                 theme_dark: editorThemeDark,
                 allCitationIds: bibEntries.compactMap(\.citationKey),
+                citations: citations,
                 value: en.markdown.body,
                 parsedValue: en.markdown.preParsedBody ?? "",
                 haveSetInitialValue: true,
@@ -189,7 +204,7 @@ import WebKit
                 implementation: self.implementation,
                 fluster_theme: flusterTheme
               ),
-              mathPayload: MathState(mathjax_font_url: mathjaxFontUrl),
+              mathPayload: InitialMathState(mathjax_font_url: srcUrl, hide_equation_labels: equationNumberingStrategy),
               aiPayload: AiInitialStatePayload(
                 foundation_model_access: llm.availability.toReduxRepresentation()
               ),

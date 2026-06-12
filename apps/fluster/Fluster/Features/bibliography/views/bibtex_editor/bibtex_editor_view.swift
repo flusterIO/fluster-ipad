@@ -63,7 +63,8 @@ public struct BibtexEditorWebview: View {
         SplitviewEditorWebviewActions.onBibEditorChange.rawValue
       ],
       messageHandler: self.messageHandler,
-      onLoad: nil
+      onLoad: nil,
+      srcUrl: "/bibtex_editor_webview_ipad"
     )
     .alert(
       "Editor Error", isPresented: errorModalOpen,

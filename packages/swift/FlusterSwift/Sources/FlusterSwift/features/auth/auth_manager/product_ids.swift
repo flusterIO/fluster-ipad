@@ -8,5 +8,5 @@
 import Foundation
 
 
-public let MONTHLY_PRO = "com.flusterapp.initialMonthlyPro"
-public let YEARLY_PRO = "com.flusterapp.initialYearlyPro"
+public let MONTHLY_PRO = "product.fluster.flusterProMonthly"
+public let YEARLY_PRO = "product.fluster.flusterProYearly"
