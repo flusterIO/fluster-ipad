@@ -117,12 +117,8 @@ extension AppSchemaV1 {
     public func applyParsingResult(
       res: FrontMatterResult
     ) {
-      if res.title != nil, !res.title!.isEmpty {
         self.title = res.title
-      }
-      if res.userDefinedId != nil, !res.userDefinedId!.isEmpty {
         self.userDefinedId = res.userDefinedId
-      }
       self.ignoreParsers = res.ignoredParsers
       if let summary = res.summary {
         self.summary = NoteSummary(generationMethod: .frontMatter, body: summary, ctime: .now)
@@ -405,7 +401,9 @@ extension AppSchemaV1 {
       }
 
       self.dictionaryEntries = dictionaryEntries
+        if results.frontMatter?.title == nil || results.frontMatter?.title?.isEmpty == true {
       self.updateTitleGroup()
+        }
     }
     public func diassociateBibEntry(bibEntry: BibEntryModel) {
       self.citations.removeAll {

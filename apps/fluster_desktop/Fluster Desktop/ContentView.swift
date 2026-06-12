@@ -15,7 +15,7 @@ struct ContentView: View {
   @ObservedObject private var appState: AppState = AppState.shared
   @State private var columnVisibility: NavigationSplitViewVisibility = NavigationSplitViewVisibility
     .doubleColumn
-
+ 
   var body: some View {
     NavigationSplitView(columnVisibility: $columnVisibility) {
       MainViewSidebar()

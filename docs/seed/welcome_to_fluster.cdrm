@@ -55,15 +55,15 @@ Markdown is a core piece of every developer's workflow, and it's actually what A
 
 Here, the 'markdown' is the titles, the code blocks, even the lists.
 
-So what is mdx? Any time you visit a help section or a content based website, there's a fair chance that the website was written in mdx by the team of developers behind the platform. It's perhaps the single most go-to tool for developers in terms of content generation, but the syntax is fairly complicated; it is an entire programming language, embedded in a markup language after all!
+So what is mdx? Any time you visit a help section or a content based website, there's a fair chance that the website was written in mdx by the team of developers behind the platform. It's perhaps the single most go-to tool for developers in terms of content generation, but the syntax is fairly complicated; it is an entire programming language, embedded in an ironically named markup language after all!
 
 Conundrum is my attempt to bring this tool to the general user, and I'm encouraging other developers to use it for projects of their own (See the `Conundrum??` docs). It's still in it's very early stages, but the goals are to give you _almost_ all of the expressiveness found in these more complete UI frameworks in complexity that's manageable for someone that just want's to take notes for school, for their job, or as just a small piece of their lives... someone that didn't dedicate their career to learning these tools. You'll never have to know what a logical pixel is, you just have to remember common language terms like 'small' and 'smedium'[^3].
 
-This still leaves you with one thing that ever developer struggles with... remembering the names of things! Don't worry though, along with the global documentation, there is documentation available for every component that Conundrum supports, available via the same syntax: `MyComponentName??`. There are also snippets to help you as you type and a complete LSP[^2] on the way.
+This still leaves you with one thing that every developer struggles with... remembering the names of things! Don't worry though, along with the global documentation, there is documentation available for every component that Conundrum supports, available via the same syntax: `MyComponentName??`. There are also snippets to help you as you type and a complete LSP[^2] on the way.
 
 
 ### A Quick Run-Through
-> Also, don't forget... there's a command palette available on Mac via cmd+P!
+> Also, don't forget... there's a command palette available on Mac via cmd+shift+P!
 
 Ok, here are the basics. I'll skip the Markdown bit (See `Markdown??` documentation) because that's documented in a million places, and just touch on the features that are unique to Conundrum and Fluster.
 

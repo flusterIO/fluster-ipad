@@ -141,7 +141,7 @@ gather_rustdoc_markdown:
 	cargo doc-md -p conundrum --no-deps -o {{justfile_directory()}}/docs/generated/rustdoc/conundrum
 
 clear_macos_database:
-	trash "/Users/bigsexy/Library/Containers/fluster.Fluster-Desktop/Data/Library/Application Support/default.store"
+	trash "/Users/bigsexy/Library/Containers/com.fluster.flusterdesktop/Data/Library/Application Support/default.store"
 
 build_fluster_lezer:
 	cd {{justfile_directory()}}/packages/typescript/lezer; pnpm build

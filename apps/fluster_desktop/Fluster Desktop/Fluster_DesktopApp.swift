@@ -32,6 +32,7 @@ struct WindowAccessor: NSViewRepresentable {
 struct Fluster_DesktopApp: App {
   private var appData: AppDataContainer { AppDataContainer.shared }
   private var paletteController = CommandPaletteController()
+  @StateObject private var authManager = AuthManager()
   init() {
     SchemeRegistration.registerCustomScheme()
     do {
@@ -43,6 +44,7 @@ struct Fluster_DesktopApp: App {
   var body: some Scene {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
       ContentView()
+        .environmentObject(authManager)
         .background(WindowAccessor(color: NSColor.windowBackground))
         .toolbarBackground(.hidden, for: .automatic)
     }

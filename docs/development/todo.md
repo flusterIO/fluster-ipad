@@ -4,7 +4,12 @@
 
 - [ ] Push up website update so privacy page is available.
 - [ ] Begin upload of youtube videos so that they can parse and validate while you're doing everything else.
+- [ ] Figure out how to integrate Apple Pay with the debug build for production.
+  - `I'm a pretty experienced developer that's new to the Apple ecosystem. I've already built a complete MacOS application that integrates ApplePay locally for auto-renewing subscriptions. Walk me through the steps required to publish this app today, ensuring that ApplePay will work.`
+- [ ] Convert screenshots to mockups
 - [ ] Begin submission process with Apple. Upload the build early to make sure that it's valid, incase you need to rebuild it again.
+- [ ] Make sure iPad app at least attemps to build while stll on WIFI so everything that's required can be downloaded.
+- [ ] Figure out how to call out of loop on another thread in the new editor package so that can hopefully be used with the new apps!
 
 ---
 
@@ -17,6 +22,7 @@
 - [x] Work on initial launch note conversion to `.cdrm`
 - [x] Initial note seeding
 - [x] Onboarding toast things with ToastKit or whatever it's called.
+- [?] Front-matter titles cannot be unset! This is a huge problem if people actually decide to use them.
 
 ### After Release
 

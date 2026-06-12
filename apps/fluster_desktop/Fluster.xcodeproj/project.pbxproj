@@ -7,27 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		79274F642F8DA33700357D75 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEDD2F1992BC00A82F5A /* FlusterMdx */; };
-		79274F652F8DA33700357D75 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79E6BEE02F19930200A82F5A /* FlusterData */; };
-		79274F662F8DA33700357D75 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79CB00712F4000F700C7BDFB /* FlusterWebviewClients */; };
-		79274F672F8DA33700357D75 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4642F4A489100F8194A /* FlusterMdx */; };
-		79274F682F8DA33700357D75 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD4672F4A48AF00F8194A /* FlusterWebviewClients */; };
 		79274F692F8DA33700357D75 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 794FD46A2F4A492100F8194A /* FlusterSwift */; };
-		7931B9F42F6F4C8E003B5C56 /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79DFBB632F58980100DA7C4E /* FlusterAI */; };
 		7931E3DB2FD72FE000DFC908 /* fluster_store_local.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 7931E3DA2FD72FE000DFC908 /* fluster_store_local.storekit */; };
 		7947AB222F5358C0009CEA5E /* standalone_mdx_preview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB212F5358C0009CEA5E /* standalone_mdx_preview_mac */; };
 		7947AB242F5363A2009CEA5E /* splitview_mdx_editor_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB232F5363A2009CEA5E /* splitview_mdx_editor_mac */; };
 		7947AB262F5363CB009CEA5E /* bibtex_editor_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB252F5363CB009CEA5E /* bibtex_editor_webview_mac */; };
 		7947AB282F536420009CEA5E /* dictionary_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB272F536420009CEA5E /* dictionary_webview_mac */; };
 		7947AB2A2F5364B2009CEA5E /* note_detail_webview_mac in Resources */ = {isa = PBXBuildFile; fileRef = 7947AB292F5364B2009CEA5E /* note_detail_webview_mac */; };
-		7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7970D3872F201A2F00A734F4 /* WebKit.framework */; };
 		799B8CE32FD3817400378B23 /* seed in Resources */ = {isa = PBXBuildFile; fileRef = 799B8CE22FD3817400378B23 /* seed */; };
 		79A1B99A2F4A60B200B451B2 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79A1B9992F4A60B200B451B2 /* bibliography_embedded */; };
 		79C6BD362F6A0ACC00916BE7 /* ConundrumSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD352F6A0ACC00916BE7 /* ConundrumSwift */; };
 		79C6BD392F6A0ADA00916BE7 /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD382F6A0ADA00916BE7 /* FlusterAI */; };
 		79C6BD3C2F6A0AE500916BE7 /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD3B2F6A0AE500916BE7 /* FlusterWebviewClients */; };
 		79C6BD3F2F6A0B0400916BE7 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD3E2F6A0B0400916BE7 /* FlusterData */; };
-		79C6BD422F6A0B2600916BE7 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD412F6A0B2600916BE7 /* FlusterSwift */; };
 		79C6BD452F6A0B3C00916BE7 /* FlusterMdx in Frameworks */ = {isa = PBXBuildFile; productRef = 79C6BD442F6A0B3C00916BE7 /* FlusterMdx */; };
 /* End PBXBuildFile section */
 
@@ -107,18 +99,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				79274F692F8DA33700357D75 /* FlusterSwift in Frameworks */,
-				79274F682F8DA33700357D75 /* FlusterWebviewClients in Frameworks */,
-				79274F672F8DA33700357D75 /* FlusterMdx in Frameworks */,
-				79274F662F8DA33700357D75 /* FlusterWebviewClients in Frameworks */,
-				79274F652F8DA33700357D75 /* FlusterData in Frameworks */,
-				79274F642F8DA33700357D75 /* FlusterMdx in Frameworks */,
-				7931B9F42F6F4C8E003B5C56 /* FlusterAI in Frameworks */,
 				79C6BD362F6A0ACC00916BE7 /* ConundrumSwift in Frameworks */,
 				79C6BD3C2F6A0AE500916BE7 /* FlusterWebviewClients in Frameworks */,
-				79C6BD422F6A0B2600916BE7 /* FlusterSwift in Frameworks */,
 				79C6BD452F6A0B3C00916BE7 /* FlusterMdx in Frameworks */,
 				79C6BD392F6A0ADA00916BE7 /* FlusterAI in Frameworks */,
-				7970D3882F201A2F00A734F4 /* WebKit.framework in Frameworks */,
 				79C6BD3F2F6A0B0400916BE7 /* FlusterData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -400,6 +384,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				AUTOMATION_APPLE_EVENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = Fluster.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -417,6 +402,7 @@
 				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
 				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
 				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readwrite;
@@ -434,6 +420,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fluster.flusterdesktop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -449,6 +441,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				AUTOMATION_APPLE_EVENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = Fluster.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -466,6 +459,7 @@
 				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
 				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
 				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readwrite;
@@ -483,6 +477,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fluster.flusterdesktop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
