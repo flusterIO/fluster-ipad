@@ -1,0 +1,7 @@
+{% if let Some(docs) = self.item.docs %} 
+{{- docs -}}
+{% endif %}
+
+{% for f in self.get_fields(self.crate_docs.clone()) %}
+{{- f.render()? -}}
+{% endfor %}

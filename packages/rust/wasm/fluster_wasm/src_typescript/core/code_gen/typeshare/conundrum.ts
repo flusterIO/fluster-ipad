@@ -124,6 +124,13 @@ export enum Emphasis {
 	Card = "card",
 }
 
+/**
+ * The `SizableOption` is a high-level, easy to use size that is independent of
+ * units. Instead of relying on the units these properties typically depend on,
+ * these sizes respond to where they are applied, meaning that 'large' for the
+ * width of a border will be very different for 'large' for the width of an
+ * image.
+ */
 export enum SizableOption {
 	None = "none",
 	Small = "small",
@@ -137,6 +144,9 @@ export enum SizableOption {
 }
 
 /**
+ * ## SizableProps
+ * @userfacing
+ * 
  * This is applicable to pretty much any component where changing it's size
  * makes sense. Not so much text, where you're changing the content of the text
  * itself, but rather containers, where the size is changing irrespective of
@@ -472,6 +482,7 @@ export enum SupportedCodeBlockSyntax {
 	Varlink = "varlink",
 	ConundrumAi = "conundrum-ai",
 	Dictionary = "dictionary",
+	Mermaid = "mermaid",
 }
 
 export interface GeneralCodeBlock {
@@ -1114,6 +1125,34 @@ export interface MdxParsingResult {
 	 */
 	footnotes: Record<ConundrumInt, RenderedFootnoteResult>;
 	included_components: AnyComponentKey[];
+}
+
+export enum MermaidRouteStyle {
+	Orthogonal = "orthogonal",
+	Direct = "direct",
+	Polyline = "polyline",
+}
+
+export enum MermaidLayoutEngine {
+	FluxLayered = "flux-layered",
+	MermaidLayered = "mermaid-layered",
+	ElkLayered = "elk-layered",
+	ELkTree = "elk-mrtree",
+}
+
+export enum MermaidTheme {
+	Default = "default",
+}
+
+export interface MermaidCodeBlock {
+	content: string;
+	scale?: ConundrumFloat;
+	padding?: ConundrumFloat;
+	node_padding_y?: ConundrumFloat;
+	node_padding_x?: ConundrumFloat;
+	route_style?: MermaidRouteStyle;
+	layout?: MermaidLayoutEngine;
+	theme: MermaidTheme;
 }
 
 export interface NextJsConundrumOutput {

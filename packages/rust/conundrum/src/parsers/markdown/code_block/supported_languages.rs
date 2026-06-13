@@ -640,6 +640,9 @@ pub enum SupportedCodeBlockSyntax {
     #[serde(rename = "dictionary")]
     #[strum(to_string = "dictionary")]
     Dictionary,
+    #[serde(rename = "mermaid")]
+    #[strum(to_string = "mermaid", serialize = "mmd")]
+    Mermaid,
 }
 
 impl SupportedCodeBlockSyntax {
@@ -861,6 +864,7 @@ impl SupportedCodeBlockSyntax {
             // TODO: Actually create a Conundrum logo and add that guy here...
             Self::ConundrumAi => devicons::FileIcon::from("txt"),
             Self::Dictionary => devicons::FileIcon::from("txt"),
+            Self::Mermaid => devicons::FileIcon::from("mmd"),
             _ => devicons::FileIcon::from("txt"),
         }
     }

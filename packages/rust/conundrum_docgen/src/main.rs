@@ -13,12 +13,14 @@ use crate::{
     },
     documentation::{emphasis::EmphasisDocs, highlight::HighlightDocs, underline::UnderlineDocs},
     methods::{
-        css::write_rust_emphasis_parser::RustEmphasisParserTemplate, write_sizable_css::SizableCssTemplate,
-        write_supported_syntaxes::write_supported_syntaxes,
+        css::write_rust_emphasis_parser::RustEmphasisParserTemplate, json_docs::parse_json_docs::parse_json_docs,
+        write_sizable_css::SizableCssTemplate, write_supported_syntaxes::write_supported_syntaxes,
         write_supported_syntaxes_rust::write_supported_syntaxes_rust,
     },
     traits::DocGenTemplate,
+    workspace_utils::get_workspace_root_duplicate::get_workspace_root,
 };
+use rustdoc_json::Builder;
 
 #[tokio::main]
 async fn main() {
@@ -41,6 +43,13 @@ async fn main() {
                                 .expect("Writes highlight docs without throwing an error.");
     InitialNotePathsSwift::gather_data().generate("packages/swift/FlusterData/Sources/FlusterData/constants/initial_note_paths.swift".to_string())
                                         .expect("Writes initial note paths to Swift");
+    let root = get_workspace_root();
+    let cdrm_path = std::path::Path::new(&root).join("packages").join("rust").join("conundrum").join("Cargo.toml");
+    let output_path = Builder::default().manifest_path(cdrm_path).build().unwrap();
+    println!("Wrote conundrum docs as json to {:?}", output_path);
+    parse_json_docs(output_path.to_str().unwrap()).inspect_err(|e| {
+                                                      eprintln!("Error: {:#?}", e);
+                                                  });
     // RustEmphasisToColorGroupTemplate::gather_data().generate().expect("Writes
     // rust emphasis to css color group without throwing an error.");
 }

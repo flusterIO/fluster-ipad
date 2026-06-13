@@ -18,6 +18,11 @@ use crate::{
     parsers::conundrum::logic::object::object::ConundrumObject,
 };
 
+/// The `SizableOption` is a high-level, easy to use size that is independent of
+/// units. Instead of relying on the units these properties typically depend on,
+/// these sizes respond to where they are applied, meaning that 'large' for the
+/// width of a border will be very different for 'large' for the width of an
+/// image.
 #[typeshare::typeshare]
 #[derive(Serialize, uniffi::Enum, Deserialize, Debug, EnumIter, Display, Clone, PartialEq, Eq, Hash)]
 pub enum SizableOption {

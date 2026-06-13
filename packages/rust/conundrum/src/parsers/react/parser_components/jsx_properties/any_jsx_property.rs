@@ -1,11 +1,14 @@
 use winnow::Parser;
-use winnow::combinator::alt;
+use winnow::combinator::{alt, delimited, opt, repeat};
 
 use crate::lang::elements::parsed_elements::ParsedElement;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
 use crate::parsers::conundrum::logic::bool::boolean::ConundrumBoolean;
+use crate::parsers::conundrum::logic::object::object::ConundrumObject;
 use crate::parsers::conundrum::logic::token::ConundrumLogicToken;
 use crate::parsers::javascript::object::javascript_key_value_pair::JavascriptObjectKeyValuePair;
+use crate::parsers::parser_components::white_space_delimited::white_space_delimited;
+use crate::parsers::parsers_shared::space_or_new_line::space_or_newline0;
 use crate::parsers::react::parser_components::jsx_properties::jsx_curly_bracket_wrapped_property::any_curly_bracket_jsx_property;
 use crate::parsers::react::parser_components::jsx_properties::jsx_property_key::jsx_property_key;
 use crate::parsers::react::parser_components::jsx_properties::string_property::JsxStringPropertyResult;
@@ -25,6 +28,16 @@ pub fn any_jsx_property(input: &mut ConundrumInput) -> ConundrumModalResult<Java
                      )
              )) }
                          }))).parse_next(input)
+}
+
+pub fn jsx_properties_string(input: &mut ConundrumInput) -> ConundrumModalResult<Option<ConundrumObject>> {
+    let props_kv_pairs: Option<Vec<JavascriptObjectKeyValuePair>> = opt(delimited(space_or_newline0,
+                                       repeat(0.., white_space_delimited(any_jsx_property)),
+                                       space_or_newline0)).parse_next(input)?;
+    match props_kv_pairs {
+        Some(s) => Ok(Some(ConundrumObject::from_kv_pair_vec(s))),
+        None => Ok(None),
+    }
 }
 
 #[cfg(test)]

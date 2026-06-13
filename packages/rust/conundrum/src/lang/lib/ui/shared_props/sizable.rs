@@ -27,6 +27,9 @@ pub enum SizablePropsOutputTarget {
     General,
 }
 
+/// ## SizableProps
+/// @userfacing
+///
 /// This is applicable to pretty much any component where changing it's size
 /// makes sense. Not so much text, where you're changing the content of the text
 /// itself, but rather containers, where the size is changing irrespective of

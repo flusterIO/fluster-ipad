@@ -56,11 +56,13 @@ use crate::{
                 general_codeblock::GeneralPresentationCodeBlock,
                 render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
             },
+            mermaid::mermaid_code_block::MermaidCodeBlock,
             parsed_codeblock::ParsedCodeBlockVariant,
             supported_languages::SupportedCodeBlockSyntax,
             supported_themes::SupportedCodeBlockTheme,
         },
         parser_trait::ConundrumParser,
+        react::parser_components::jsx_properties::{self, any_jsx_property::jsx_properties_string},
     },
 };
 
@@ -189,6 +191,26 @@ impl ConundrumComponentResult for GeneralCodeBlock {
                 // Extract the metadata or provide a fallback
                 Ok(get_dictionary_content(self, Arc::clone(&res)))
             }
+            // SupportedCodeBlockSyntax::Mermaid => {
+            //     // TODO: Bubble errors up here if they are the 'cut' variant so they can be
+            //     // displayed to the user.
+            //     let mermaid_props = match self.meta_data {
+            //                             Some(s) => {
+            //                                 let new_conundrum_input =
+            //                                     ConundrumInput { input: s.as_str(),
+            //                                                      state: Arc::new(RwLock::new(ParseState::default()))
+            // };                                 jsx_properties_string.parse_next(&mut
+            // new_conundrum_input).ok().flatten()                             }
+            //                             None => None
+            //                         }.unwrap_or_default();
+            //     Ok(ParsedCodeBlockVariant::Mermaid(MermaidCodeBlock {
+            //         content: raw_content.to_string()
+            //             scale: mermaid_props.get_number("scale", None).ok(),
+            //             padding: mermaid_props.get_number("padding", None).ok(),
+            //             node_padding_y: mermaid_props.get_number("nodePaddingY", None).ok(),
+            //             node_padding_x: mermaid_props.get_number("nodePaddingX", None).ok(),
+            //     }))
+            // }
             SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self)),
             _ => {
                 if state.data.ignore_all_parsers {
@@ -382,6 +404,7 @@ mod tests {
                     ParsedCodeBlockVariant::Dictionary(d) => d.content.render(Arc::clone(&test_data.state)),
                     ParsedCodeBlockVariant::General(g) => Ok(g.content.clone()),
                     ParsedCodeBlockVariant::AI(a) => Ok(a.content.clone()),
+                    ParsedCodeBlockVariant::Mermaid(a) => Ok(a.content.clone()),
                 }.expect("Gets match content successfully.");
         assert_snapshot!(x);
 
@@ -389,6 +412,6 @@ mod tests {
                              .expect("Compiles code block to mdx without throwing an error.");
 
         assert_snapshot!(mdx_content);
-        // assert_eq!(result, 4);
+        // assert_eq!(result, 4)w
     }
 }

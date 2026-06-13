@@ -11,8 +11,10 @@ license.workspace = true
 [features]
 ## This is still a work in progress, as Fluster does not use wasm for parsing directly and instead routes the parsing through Swift.
 wasm = []
-## This is mostly used for documentation generation, but might be useful in some edge use cases.
+## This is mostly used for documentation generation, but might be useful in some edge use cases. To be honest, the component configs are still managed by typescript so this shouldn't even be here yet, but I'm kindof leaving it as a reminder to myself. 
 component_configs = []
+## This is mostly used for documentation generation, but might be useful in some edge use cases.
+docgen = []
 
 [dependencies]
 crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }
@@ -115,7 +117,7 @@ prettyplease = "0.2.37"
 uniffi = { version="=0.29.5", features = ["tokio", "cli"] }
 tokio = { version = "1.0", features = ["full"] }
 rssn = { version = "0.2.7", features = ["full"] }
-ratatui = "0.30.0"
+ratatui = "^0.29.0"
 katex-rs = { version = "0.2.4", features = ["backtrace"]}
 polars-lazy = "0.53.0"
 rand = "0.10.1"
@@ -123,7 +125,7 @@ polars = { workspace = true }
 text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
 lightningcss = { version = "1.0.0-alpha.71", features = ["serde", "serde_json", "substitute_variables"] }
 tower-lsp = "0.20.0"
-tui-math = "0.1.1"
+# tui-math = "^0.1.1"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 uniffi = { version = "=0.29.5", default-features = false, features = ["wasm-unstable-single-threaded"] }
