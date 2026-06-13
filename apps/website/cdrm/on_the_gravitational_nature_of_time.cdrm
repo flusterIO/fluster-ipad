@@ -15,12 +15,10 @@ Almost 5 years ago I realized Einstein made an assumption that made far more sen
 
 I'll do my best to convince the math types among you (this article does assume some basic understanding of physics and relativity) by the end of this sample note that Einstein made a mistake[^1], but regardless of your opinions on the model, I hope you enjoy Fluster and find it as useful as I have. Thanks for checking it out!
 
-> Also, please keep in mind that while this may not be as responsive as the Fluster website, it was written in the very early stages of a markdown like syntax with the same transpiler that powers Fluster. The Conundrum transpiler will continue to improve daily, with blogging support being a major priority. The source for this file is available [here](https://github.com/flusterIO/fluster-ipad/blob/main/apps/website/cdrm/on_the_gravitational_nature_of_time.cdrm).
-
 </Admonition>
 
 #### Included Derivations
-> This table is generated directly from `Astropy` and `Scipy`. All functions reflect names in the `alpha_omega_gravity` python package, because after 5 years of being homeless I think I earned the right to be grandiose. (α comes from the fine-structure constant).
+> This table is generated directly from `Astropy` and `Scipy`. All functions reflect names in the `alpha_omega_gravity` python package, because after 5 years of being homeless I think I earned the right to be grandiose. ($\alpha$ comes from the fine-structure constant).
 
 | Derivation                                                | Function                         | % Error             |
 |:----------------------------------------------------------|:---------------------------------|:--------------------|
@@ -36,10 +34,11 @@ I'll do my best to convince the math types among you (this article does assume s
 | $h$ from $\alpha$                                         | `omega`, `alpha`                 | $0.0253887188634106\%$  |
 | $h / (2 - \alpha)$ from $\omega$                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
 | $\Phi$ mass density approximation                         | `massDensityEquivalence`         | $0.863214423082925\%$   |
+| $G$ as a function of $\alpha$ and $\rho$                  | --                               | $0.07618221222642045\%$ |
 
 
 <Hint label="Error" info>
-    All error percentage calculations were done with the following function. See the [Fluster & Conunundrum repository](https://github.com/flusterIO) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
+    All error percentage calculations were done with the following function. See the [Fluster & Conundrum repository](https://github.com/flusterIO) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
 </Hint>
 
 ```python -- title="percent_diff.py"
@@ -51,6 +50,7 @@ def percentDiff(observed, derived):
 Also, keep in mind that if we wanted to be selective we can choose a radius here on Earth's surface that will satisfy many of the above equations perfectly, giving an error of 0. The radii that were used were whichever was most fitting for the job... the mean radius for calculating volume, the polar radius when spin was involved to minimize centripetal influence, and Astropy provided values (equatorial) for everything else.
 
 
+
 ### The Lighthouse & The Clocktower
 > An opening thought experiment
 
@@ -58,13 +58,20 @@ Consider two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should trave
 
 At $p_2$ place a time keeping device that remains visible from $p_1$. Allow that $A$ remains at rest relative to $p_1$, and very near $p_1$ while $B$ goes in motion (at an inertial pace) between $p_1$ and $p_2$. 
 
-At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while allowing the observer in an unchanged state to observe the kinetic effects of observer in motion is that the distance between $p_{1}$ and $p_{2}$ must elongate by a factor of $ \gamma$.
+At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while requiring that $v=v_\prime$ in the coordinate system of the observer who's kinetic state remains unchanged, and that both $A$ and $B$ agree upon the time at which $B$ reaches $p_2$ is that $d \to d\gamma$ in the coordinate system of $B$.
 
-Is this not inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
+To summarize, we have 3 possibilities:
+
+1. Every single experimental validation of special and general relativity was flawed. This is statistically almost impossible.
+2. $B$ returns from $p_2$ with a photo of $B$ at $p_2$ that disagrees with the photo $A$ took of $B$ at $p_2$. There is nothing in physics that prohibits extending the time periods and distances to produce such absurdities as $B$ wearing a completely different shirt.
+3. $d$ elongates by a factor of $\gamma$. We might then presume that this dilation is the source of the equivalence principle, and watch how the physics just lines up.
+
+If you think about it, isn't this inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
 
 > **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
 
-### Time Gravity Equivalence <Emoji name="watch" inline smedium/>
+
+### Time Gravity Equivalence <Emoji name="alarm_clock" inline smedium/>
 
 
 Let's recognize the two primary properties that time occupies:
@@ -76,7 +83,7 @@ By attributing the 4th displacement coordinate to the density axis that arises f
 
 Of course we need to change the dimensionality of much of our physics, but as I will demonstrate here... the math remains remarkably consistent. 
 
-> Does this not make more sense? A Universe driven by _motion_ as a driving rate of change instead of an abstract quantity that we've never directly measured, time? 
+> Doesn't this make more sense? A Universe driven by _motion_ as a driving rate of change instead of an abstract quantity that we've never directly measured, time? 
 
 
 #### Our Cosmological Velocity
@@ -86,8 +93,9 @@ Let's consider that this dilation of space might give rise to our gravitational 
 
 <Image maxHeight="medium" right contain sidebar src="/assets/diagrams/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
 
+
 $$ {#eq_delta}
-\delta = \frac{d}{dR} - G \frac{M}{R^2} = 2 G \frac{M}{R^3}
+\delta = \frac{d}{dR} g = 2 G \frac{M}{R^3}
 $$
 
 If we take the average of this integral, we find a scalar product that can be used in the same manner as $\gamma$:
@@ -127,13 +135,13 @@ $$ {#timeEquiv}
 \Delta \tau = \frac{\int_p \dot{x}}{\int_0^v \dot{x}}
 $$
 
-<Admonition title="Notation" foldable card>
+<Card title="Notation" desc="Introducing the notion of 'proportionally bound' derivatives and integrals" >
 
 This notation is likely confusing, so let me clarify. To satisfy the properties time occupies, this quantity is integrated in a manner that is unique, keeping the denominator fixed at 1 unit of distance (the velocity in units of distance) while the integral $\int_p$ is meant to indicate a 'proportional' integral, or an integral that goes on indefinitely as 'time' progresses.
 
 This gives us a dimensionless quantity that is distance/distance, of a magnitude that is equivalent to $t$ in this form, and a magnitude equivalent to $\frac{1}{2}t^2$ when integrated.
 
-</Admonition>
+</Card>
 
 Let's then re-examine equation <EqRef id="vGamma"/> and it's derivation. Since $dx$ in equation <EqRef id="vGamma" /> is per unit time, we should then divide by $v_\gamma$ and multiply by our time equivalent quantity from equation <EqRef id="timeEquiv"/>.
 
@@ -146,14 +154,14 @@ $$
 And following the rules of integration defined above, we find:
 
 $$ {#eq_timeDependentDelta}
-\int_0^R \int_0^x \left[ \delta \frac{1}{v_\gamma} \tau \right]~ dR ~ d\tau = 1 + \frac{1}{2} \frac{G M_\oplus}{R^3_\oplus}\frac{1}{\bar{v}} \frac{\dot{x}^2}{\hat{x}}
+\int_0^R \int_0^x \left[ \delta \frac{1}{v_\gamma} \tau \right]~ dR ~ d\tau = 1 + \frac{1}{2} \frac{G M_\oplus}{R^3_\oplus}\frac{1}{v_\gamma} \frac{\dot{x}^2}{\hat{x}}
 $$
 
 <Hint label="Notation" primary>
   Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically accurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system only to remove it by multiplying by $t$.
 </Hint>
 
-If we substitute this result back into equation <EqRef id="vGamma" /> we find:
+If we substitute this result back into equation <EqRef id="vGamma" /> and solve for $\Delta t = 1$ we find:
 
 
 $$
@@ -175,13 +183,13 @@ Consider the diagram below. If this model is correct, we can improve the derivat
 
 
 $$
-F_{\text{centripetal}} = F_{\text{gravity}}
+F_{\text{centripital}} = F_{\text{gravity}}
 $$
 
 We can solve this trigonometrically. 
 
 $$
-R_0^2 + \dot{x}^2 dt^2 = \left(\int_0^{R_0} -2 G \frac{M}{R^3}\right)^2 = \left(R_0 + g\right)^2
+R_0^2 + \dot{x}^2 dt^2 = \left(\int_0^{R_0} 2 G \frac{M}{R^3}\right)^2 = \left(R_0 + g\right)^2
 $$
 
 Solving this equality for $dt$ gives only one non-zero solution:
@@ -212,6 +220,7 @@ This value again coincides closely with our velocity observed relative to the CM
 <Image src="/assets/diagrams/cmb_velocity_from_gravtational_params.png" sidebar right maxHeight="medium" paddingY="medium" />
 
 
+
 As we used the Newtonian derived orbital parameters in the previous section to derive a relativistic velocity correction in the form of an increase in elapsed 'time', we can now derive a relativistic equation for a body in stable orbit by setting $dt = 1$ and solving for $\dot{x}$. This gives a model in the coordinate system of the observer in motion, as he travels at the 'agreed upon velocity' (any velocity multiplied by a scalar of 1). 
 
 If we extend our lighthouse & clocktower example to an orbital frame of reference, where $B$ orbits $A$ at an agreed upon velocity $v_o$, then this velocity would be decreased by a factor of $dt$ in the coordinate system of $A$ due to the decreased spatial density of $\mathbf{S}_B$, while our relativistically corrected orbital velocity equation becomes as follows:
@@ -236,7 +245,7 @@ s = \left|\begin{matrix}
 \end{matrix}\right| = \omega^3
 $$
 
-Not only does this accommodate existing experimental validations of SR & GR, it does so while accommodating the original relativistic experiment: Michelson & Morely[^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
+Not only does this accommodate existing experimental validations of SR & GR[[cite:PoundRebka]], it does so while accommodating the original relativistic experiment: Michelson & Morely[[cite:Michelson_Morely]][^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
 
 If we consider that the magnitude of $\delta$ _is_ this determinant, we should then take it's cube root:
 
@@ -263,7 +272,7 @@ $$
 \alpha = 1 \pm \sqrt{1 - \left(\frac{2 G M_\oplus}{R_\oplus^3}\right)^{1/3}} = 1.9927 \text{ or } 0.0072953
 $$
 
-That's almost precisely the value we were looking for when we add these values, and almost exactly $\alpha$ again when we subtract them, giving very Fibonnaci-like vibes.
+That's almost precisely the value we were looking for when we add these values, and almost exactly $\alpha$ again when we subtract them, giving very Fibonacci-like vibes.
 
 <Hint label="Final Error:" error>
   $0.025\%$
@@ -283,7 +292,13 @@ Let's consider this function where the $\text{spinor}=\left( \frac{1}{2} \right)
 Plugging this back into equation <EqRef id="eq_alphaReciprical" /> gives:
 
 $$
-\left(\frac{1}{2 - \alpha}\right)^{1/3} \sqrt[3]{2 \frac{G M_\oplus}{R_\oplus^3}} = \sqrt[3]{\frac{GM_\odot}{R_\odot^3}} =  \alpha \pm 0.0034\%
+\lim_{\Gamma \to \left(\frac{1}{2}\right)^{1/3}} \sqrt[3]{2 \frac{G M_\oplus}{R_\oplus^3}} = \sqrt[3]{\frac{GM_\odot}{R_\odot^3}} =  \alpha \pm 0.0034\%
+$$
+
+Where
+
+$$
+\Gamma = \frac{1}{2 - \alpha}
 $$
 
 Demonstrating that this function is _more_ than just a coincidence.
@@ -388,19 +403,35 @@ $$
 \left(\alpha \left( 2 - \alpha \right) \right)^3 = ds^3 = \delta
 $$
 
-If we consider that all velocities are proportional in magnitude to $c$, we should not look for $v$, but for $\beta$. This then gives:
+If we consider that all velocities are proportional in magnitude to $c$, we should not look for $v$, but for $\beta^2$. This then gives:
 
 $$
-\left(\alpha \left( 2 - \alpha \right) \right)^3 = \beta_0^2 \pm 0.0415\%
+\left(\alpha \left( 2 - \alpha \right) \right)^3 = \beta_0^2 \pm 0.08\%
 $$
 
 One can very logically make an argument for the small-angle approximations being a cause for coincidence here, but as a function of $\alpha$? 
 
+Expanding this using our earlier derivation of our cosmological velocity gives
+
+$$
+\left(\alpha \left( 2 - \alpha \right) \right)^3 = 1 - \frac{1}{\left(1 - G \frac{M_\oplus}{R_\oplus^3}\right)^2}
+$$
+
+And with some simple algebra, we find:
+
+$$
+\boxed{
+G = \frac{R^3_\oplus}{M_\oplus} \left(\sqrt{\frac{1}{1 - \left(\alpha \left(2 - \alpha\right)\right)^3}} - 1\right) \pm 0.076\%
+}
+$$
+
+
+Which explains why our flawed relativistic math works so well... the electromagnetic and gravitational 'constants' are bound according to the inverse of mass density and this function of $\alpha$. As space dilates, this relationship remains constant.
 
 ### Displacement Current Equivalent
 
 
-Then, consider the electromagnetic displacement current $\mathbf{{J}}$ where
+Let's now consider the electromagnetic displacement current $\mathbf{{J}}$ where
 
 $$
 \mathbf{{J}} = \rho_e v_0
@@ -503,7 +534,7 @@ $$
 then finally
 
 $$
-\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{g}}{m^3}
+\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\Phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{g}}{m^3}
 $$
 
 This is our observed mass density, $m_{0}$...
@@ -513,6 +544,11 @@ $$
 $$
 
 That's an error of under 1% for an approximation, that's using approximations and transcendental quantities, demonstrating the wide application of this model.
+
+
+### Results
+
+If we omit this last derivation of $\rho$, admitting that it is merely an approximation and the derivation of our cosmological velocity, as an accurate estimate is so difficult to obtain, we achieve an average error of $0.0842\%$, across more than a dozen functions. We've defined $G$ as a function of mass density and electromagnetic parameters, we've derived both our kinematic and cosmological velocities, and most importantly... we found $\alpha$ as a function of gravitational parameters in multiple, separately defined instances... all using the same principle: $d$ elongates by a factor of $\gamma$ in the reference frame of $B$, and this is the source of the equivalence principle.
 
 
 ### Supportive Arguments 
@@ -532,6 +568,7 @@ That's an error of under 1% for an approximation, that's using approximations an
 <Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
 If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.
 </Quote>
+
 
 
 [^1]: The logical question here is well, why not just publish it in peer review? The **only** possible mathematical solution indicates that the Earth is expanding _with_ the Universe. Einstein himself couldn't get a model like this past our current peer review culture.
