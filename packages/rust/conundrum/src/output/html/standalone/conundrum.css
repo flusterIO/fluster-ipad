@@ -1827,6 +1827,9 @@
   .min-w-\[var\(--radix-select-trigger-width\)\] {
     min-width: var(--radix-select-trigger-width);
   }
+  .min-w-fit {
+    min-width: fit-content;
+  }
   .min-w-full {
     min-width: 100%;
   }

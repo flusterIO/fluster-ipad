@@ -192,6 +192,7 @@
     "@types/react-dom": "19.2.2",
     "@vitejs/plugin-react": "5.1.1",
     "@welldone-software/why-did-you-render": "10.0.1",
+    "beautiful-mermaid": "1.1.3",
     "benchmark": "2.1.4",
     "consolemd": "0.3.0",
     "eslint": "9.39.1",

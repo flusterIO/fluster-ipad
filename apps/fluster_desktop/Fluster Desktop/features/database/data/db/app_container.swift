@@ -81,6 +81,39 @@ public final class AppDataContainer {
           ),
           BibEntryModel(
             data: """
+              @article{variableSpeedOfLightLi,
+                  author = {Li, Enbang},
+                  year = {2026},
+                  month = {3},
+                  date = {15},
+                  title = {Exploring the gravito-optic effect for gravity sensing applications
+                           },
+                  url = {https://www.mathematicsgroup.com/articles/AMP-8-254.php},
+                  doi = {https://doi.org/10.17352/amp.000154},
+                  pages = {2045-2322},
+                  abstract = {A cornerstone of Einstein’s special relativity is the
+                              postulation that light travels at a constant speed in a vacuum
+                              throughout spacetime, independent of the direction, location,
+                              time, and photon energy. The constancy and universality of the
+                              speed of light play an important role in modern physics for
+                              understanding the universe, and their validation has been
+                              demonstrated by various experiments and observations. Here we
+                              present a laboratory experiment to demonstrate that photons could
+                              interact with the Earth's gravitational field and consequently
+                              the speed of light would be affected by the Earth's gravity. The
+                              experimental results show that the speed of light increases with
+                              the gravitational field, and the variation fits with a test model
+                              proposed in this work. The findings of this study would open a
+                              new research direction on the interaction between photons and the
+                              gravitational field and could lead to exploring novel
+                              gravito-optic effects and photonics-based gravity detection
+                              technologies.},
+              }
+              """,
+            notes: articleWithCitations == nil ? [] : [articleWithCitations!]
+          ),
+          BibEntryModel(
+            data: """
               @article{Michelson_Morely,
                   author = {{Albert Abraham Michelson, Edward Morley}},
                   journal = {{American Journal of Science}},

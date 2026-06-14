@@ -18,11 +18,11 @@
 - [x] Verify privacy page on website so it's ready to deploy when you get to the library.
 - [x] Make tags clickable again! Redirect to the tags search page.
 - [x] Make sure shit bib snippets are not shown.
-- [x] Remove section on both the website and the app about $R  \alpha^3 = \text{cubit}$. It's wrong you dumb cunt.
 - [x] Work on initial launch note conversion to `.cdrm`
 - [x] Initial note seeding
 - [x] Onboarding toast things with ToastKit or whatever it's called.
 - [?] Front-matter titles cannot be unset! This is a huge problem if people actually decide to use them.
+- [ ] Add citation for variable speed of light article to paper for release!
 
 ### After Release
 
