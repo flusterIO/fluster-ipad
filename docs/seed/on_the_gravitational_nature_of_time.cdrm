@@ -481,47 +481,6 @@ $$
 \mathbf{AU}\alpha = \sqrt[3]{G M_\odot} \frac{T_{\text{year}}}{2 \pi \mathbf{AU}} R_\oplus \pm 0.014\%
 $$
 
-
-### Recent Observations
-
-> **Note:** Professor Li uses $\alpha$ in his paper to refer to an arbitrary value, **not** the fine structure constant. Here I am using $\alpha$ the same way, to align this section with his research.
-
-Next, let's touch on the recent observations carried out by Professor Enbang Li[[cite:variableSpeedOfLightLi]].  
-
-As Li defines:
-
-$$
-\frac{\Delta c}{c} = - \alpha \Delta g
-$$
-
-Yet the model we derived here concludes that $c_\prime = c_0 \gamma$, and $\gamma$ can be found by equation <EqRef id="onePlusgR" />, we then arrive at
-
-$$
-\frac{\cancel{c} \frac{1}{R} \left[ \int_0^{R}\frac{d}{dR}g \right]~ dR}{\cancel{c}} = 1 + GM \frac{M}{R^{3}} = 2 \alpha GM \frac{H}{R^{3}}
-$$
-
-Solving this for $\alpha$ gives 
-
-$$
-\alpha = \frac{1}{2} \left( R_{0} + G\frac{M}{R^{2}} \right) \left( \frac{R^{2}}{GMH} \right)
-$$
-
-If we plug this into the equation Li finds for $\Delta t$, we find:
-
-$$
-\Delta t = 2  \alpha G \frac{M}{R^{3}} H\Rightarrow dt = ds ~ \alpha H = 1.0000015362565864
-$$
-
-If we plug this $\Delta t$ into equation <EqRef id="vFromGamma" />, we find
-
-$$
-v_{0} = c \sqrt{1 - \frac{1}{dt^{2}}} = 525,493.174 ~ \text{m} ~ \text{s}^{-1}
-$$
-
-This is the velocity we derived in equation <EqRef id="vGamma"/> $\pm 0.0034\%$! To put this in perspective, that's a difference of $\approx 18.1 ~ \text{m} ~\text{s}^{-1}$, or about $65$ kilometers an hour. We're off by less than the highway speed limit on a quantity that takes into account the cummulative motion of the Earth relative to the cosmic rest frame.
-
-
-
 ## Mass Density Approximation
 
 Finally, let's wrap this all up with one last approximation. Consider the following, that we've derived above:

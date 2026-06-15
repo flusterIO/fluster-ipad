@@ -363,7 +363,7 @@ $$
 If we then multiply equation <EqRef id="eq_electricDivergence1" /> by our _spinor_ approximation, converting this linear spatial dilation to rotation, we find:
 
 $$
-\frac{1}{2 - \alpha} c  \delta = 462.244~ \text{meters}
+\frac{1}{2 - \alpha} c  \delta = 462.244~ \text{meters} = \frac{d \theta}{dt} R_\oplus T_{\text{day}} ~ \pm 0.006778\%
 $$
 
 That's our rotational velocity on Earth's equator $\pm -0.006778\%$! Off by a total of 0.03 meters (1.18 inches) for a quantity that takes into account a radius the size of Earth's and a period as long as our day!

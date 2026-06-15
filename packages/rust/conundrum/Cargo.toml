@@ -111,6 +111,10 @@ bigdecimal = { version = "0.4.10", features = ["serde", "serde_json"] }
 cssparser = "0.36.0"
 syn = { version = "2.0.117", features = ["full"] }
 prettyplease = "0.2.37"
+static_assertions = "1.1.0"
+test-case = "3.3.1"
+pretty_assertions = "1.4.1"
+trybuild = { version = "1.0.116", features = ["diff"] }
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
