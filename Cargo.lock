@@ -3069,6 +3069,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "codata"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f471b46359627decf0edc0704e8801f9947874993ea88d173bc3794e60509cee"
+
+[[package]]
 name = "codespan-reporting"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3386,6 +3392,7 @@ dependencies = [
  "bytemuck",
  "cargo-doc-md",
  "cli-table",
+ "codata",
  "colorous",
  "conundrum_macro_traits",
  "conundrum_macros",

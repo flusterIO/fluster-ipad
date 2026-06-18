@@ -115,6 +115,7 @@ static_assertions = "1.1.0"
 test-case = "3.3.1"
 pretty_assertions = "1.4.1"
 trybuild = { version = "1.0.116", features = ["diff"] }
+codata = "0.2.0"
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

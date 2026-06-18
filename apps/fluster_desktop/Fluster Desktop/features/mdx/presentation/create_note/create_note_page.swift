@@ -11,6 +11,7 @@ import FlusterMdx
 import FlusterSwift
 import SwiftData
 import SwiftUI
+import StoreKit
 
 struct CreateNotePage: View {
   @EnvironmentObject private var appState: AppState
@@ -191,7 +192,21 @@ struct CreateNotePage: View {
         .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
       }
     } else {
-      PaywallView()
+        SubscriptionStoreView(groupID: PRO_SUBSCRIPTION_GROUP, marketingContent: {
+            VStack {
+            Image("flusterIcon")
+              .resizable()
+              .frame(maxWidth: 120, maxHeight: 120)
+            Text("If you see the potential in Fluster and Conundrum, please consider subscribing. You'll get Unlimited notes, immediate access to the mobile app, and you'll be supporting the future growth of the Conundrum ecosystem.")
+                .frame(maxWidth: 450)
+                .multilineTextAlignment(.center)
+            }
+        })
+        .padding()
+        .subscriptionStorePolicyDestination(url: try! URL("https://flusterapp.com/tos", strategy: .url), for: .termsOfService)
+        .subscriptionStorePolicyDestination(url: try! URL("https://flusterapp.com/privacy", strategy: .url), for: .privacyPolicy)
+        .subscriptionStoreOptionGroupStyle(.links)
+        .storeButton(.visible, for: .policies)
     }
   }
 }

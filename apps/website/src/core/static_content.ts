@@ -14,6 +14,9 @@ export const staticContent = {
         github: {
             releases: "https://github.com/flusterIO/fluster/releases",
         },
+        appstore: {
+            desktopHomePage: "",
+        },
         fund: {
             paypalDonate: "https://www.paypal.com/ncp/payment/D6S6NP4AHJD6Y",
             patreon: "https://www.patreon.com/uhlittlelessdum/about",

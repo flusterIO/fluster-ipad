@@ -7,7 +7,7 @@ export interface FooterBannerProps {
     className?: string;
 }
 
-export type FooterLinkKeys = "docs" | "demos" | "funding";
+export type FooterLinkKeys = "legal" | "demos" | "funding";
 
 interface LinkGroupItem extends LinkProps {
     label: ReactNode;
@@ -42,14 +42,14 @@ export const footerLinks: Record<FooterLinkKeys, LinkGroupItems> & {
             label: "On the gravitational nature of time",
         },
     ],
-    docs: [
-        {
-            href: staticContent.links.docs.internal.userHome,
-            label: "Users",
-        },
+    legal: [
         {
             href: staticContent.links.docs.internal.developerHome,
-            label: "Developers",
+            label: "Old App",
+        },
+        {
+            href: "/tos",
+            label: "Terms Of Service",
         },
         {
             href: "/privacy",

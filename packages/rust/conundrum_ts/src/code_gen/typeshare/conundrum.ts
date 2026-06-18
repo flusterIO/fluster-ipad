@@ -1145,7 +1145,22 @@ export enum MermaidLayoutEngine {
 }
 
 export enum MermaidTheme {
-	Default = "default",
+	Auto = "auto",
+	ZincLight = "zinc-light",
+	ZincDark = "zinc-dark",
+	TokyoNight = "tokyo-night",
+	TokyoNightStorm = "tokyo-night-storm",
+	TokyoNightLight = "tokyo-night-light",
+	CatppuccinMocha = "catppuccin-mocha",
+	CatppuccinLatte = "catppuccin-latte",
+	Nord = "nord",
+	NordLight = "nord-light",
+	Dracula = "dracula",
+	GithubLight = "github-light",
+	GithubDark = "github-dark",
+	SolarizedLight = "solarized-light",
+	SolarizedDark = "solarized-dark",
+	OneDark = "one-dark",
 }
 
 export interface MermaidCodeBlock {

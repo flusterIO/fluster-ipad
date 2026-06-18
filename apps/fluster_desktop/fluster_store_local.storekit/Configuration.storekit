@@ -37,7 +37,11 @@
     {
       "id" : "233BD430",
       "localizations" : [
-
+        {
+          "description" : "Unlimited notes",
+          "displayName" : "Pro",
+          "locale" : "en_US"
+        }
       ],
       "name" : "Pro",
       "subscriptions" : [
@@ -48,7 +52,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "9.99",
+          "displayPrice" : "4.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "22CD66CB",
@@ -60,7 +64,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.flusterapp.initialMonthlyPro",
+          "productID" : "product.fluster.flusterProMonthly",
           "promotionalImageID" : "220F2B3C",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Monthly Pro",
@@ -77,15 +81,15 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "119.99",
+          "displayPrice" : "59.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "44B00BB8",
           "introductoryOffer" : {
-            "displayPrice" : "99.99",
+            "displayPrice" : "49.99",
             "internalID" : "2A0D30D2",
             "paymentMode" : "payUpFront",
-            "subscriptionPeriod" : "P1M"
+            "subscriptionPeriod" : "P1Y"
           },
           "localizations" : [
             {
@@ -94,7 +98,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.flusterapp.initialYearlyPro",
+          "productID" : "product.fluster.flusterProYearly",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Yearly Pro",
           "subscriptionGroupID" : "233BD430",

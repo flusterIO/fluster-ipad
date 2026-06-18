@@ -20,7 +20,7 @@ build_conundrum_ts: build_conundrum_wasm
 	cd {{justfile_directory()}}/packages/rust/conundrum_ts; WIREIT_PARALLEL=1 pnpm build
 
 build_glue_code: build_conundrum_ts
-	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm build
+	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm build:ts
 
 write_javascript_glue:
 	./target/debug/fluster_internal_cli write-glue-code
@@ -170,7 +170,7 @@ transpile_component_glue_web:
 
 # Add `build_fluster_wasm` back to the end in here once the fucking internet isnt stopping the build
 build_webview_utils: build_glue_code build_conundrum_ts build_cross_language_all build_fluster_lezer gather_component_docs
-	pnpm run -C packages/webview_utils build
+	pnpm run -C packages/webview_utils build:ts
 
 build_dictionary_webview: build_cross_language_all build_webview_utils
 	pnpm run -C packages/webviews/dictionary_webview build

@@ -55,7 +55,7 @@ Consider two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should trave
 
 At $p_2$ place a time keeping device that remains visible from $p_1$. Allow that $A$ remains at rest relative to $p_1$, and very near $p_1$ while $B$ goes in motion (at an inertial pace) between $p_1$ and $p_2$. 
 
-At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while requiring that $v=v_\prime$ in the coordinate system of the observer who's kinetic state remains unchanged, and that both $A$ and $B$ agree upon the time at which $B$ reaches $p_2$ is that $d \to d\gamma$ in the coordinate system of $B$.
+At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while requiring that $v=v_\prime$ in the coordinate system of the observer who's kinetic state remains unchanged, and that both $A$ and $B$ agree upon the time at which $B$ reaches $p_2$ is that $d \to d\gamma$ in the coordinate system of $B$. To reiterate, if $c$ is constant in each reference frame, $A$ can observe either the agreed upon velocity, or the experimentally demonstrated additional factor of $\gamma$. $A$ cannot possibly do both, _unless_ $d \mapsto d \gamma$.
 
 To summarize, we have 3 possibilities:
 
@@ -80,7 +80,6 @@ By attributing the 4th displacement coordinate to the density axis that arises f
 
 Of course we need to change the dimensionality of much of our physics, but as I will demonstrate here... the math remains remarkably consistent. 
 
-> Doesn't this make more sense? A Universe driven by _motion_ as a driving rate of change instead of an abstract quantity that we've never directly measured, time? 
 
 
 #### Our Cosmological Velocity
@@ -421,7 +420,7 @@ G = \frac{R^3_\oplus}{M_\oplus} \left(\sqrt{\frac{1}{1 - \left(\alpha \left(2 - 
 $$
 
 
-Which explains why our flawed relativistic math works so well... the electromagnetic and gravitational 'constants' are bound according to the inverse of mass density and this function of $\alpha$. As space dilates, this relationship remains constant.
+Which explains why our flawed relativistic math works so well... the electromagnetic and gravitational 'constants' are bound according to the inverse of mass density and this function of $\alpha$. As space dilates, this relationship remains constant, or at least approximated.
 
 ### Displacement Current Equivalent
 

@@ -1,5 +1,13 @@
 # To-Do
 
+- [ ] Document new found derivation of $\alpha$
+
+## Before Acceptance!!!
+
+- [x] Move 'Download Now' to footer and change the title to something like 'Download old app' or something. Link to the AppStore in the header then.
+  - [ ] Implement proper link in data file.
+- [ ] Handle sidebar on mobile devices for Blog. It looks like ass.
+
 ## Release, Step-by-Step
 
 - [x] Push up website update so privacy page is available.
