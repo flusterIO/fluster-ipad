@@ -209,10 +209,12 @@ do {
   n += 1;
 } while (n < R);
 
-// Prints 0.007354830889518064.
 console.log(`
 Total: ${total}
-AU / Fundamental Radius: ${ASTRONOMICAL_UNIT / total}
+AU / Fundamental Radius: ${
+    // Prints 0.007354830889518064
+    ASTRONOMICAL_UNIT / total
+    }
 `);
 ```
 
