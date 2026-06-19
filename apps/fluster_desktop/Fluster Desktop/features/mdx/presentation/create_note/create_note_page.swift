@@ -192,7 +192,8 @@ struct CreateNotePage: View {
         .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
       }
     } else {
-        SubscriptionStoreView(groupID: PRO_SUBSCRIPTION_GROUP, marketingContent: {
+        SubscriptionStoreView(groupID: PRO_SUBSCRIPTION_GROUP,
+                              marketingContent: {
             VStack {
             Image("flusterIcon")
               .resizable()
@@ -202,7 +203,8 @@ struct CreateNotePage: View {
                 .multilineTextAlignment(.center)
             }
             .frame(idealHeight: 300)
-        })
+        },
+        )
         .padding()
         .subscriptionStorePolicyDestination(url: try! URL("https://flusterapp.com/tos", strategy: .url), for: .termsOfService)
         .subscriptionStorePolicyDestination(url: try! URL("https://flusterapp.com/privacy", strategy: .url), for: .privacyPolicy)

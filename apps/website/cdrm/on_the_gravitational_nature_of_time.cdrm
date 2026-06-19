@@ -198,6 +198,25 @@ $$
 Then $\eta \approx 1.014 ~\mathbf{AU}$, approximating Earth's eccentricity.
 
 
+```typescript -- title="super_factorial.js"
+let total = 0;
+let n = 0;
+let R = 6378100;
+const ASTRONOMICAL_UNIT = 149597870700;
+
+do {
+  total += R - n;
+  n += 1;
+} while (n < R);
+
+// Prints 0.007354830889518064.
+console.log(`
+Total: ${total}
+AU / Fundamental Radius: ${ASTRONOMICAL_UNIT / total}
+`);
+```
+
+
 --- From Orbital Parameters ---
 
 Let's validate this model by testing this relationship one more time. 

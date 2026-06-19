@@ -75,7 +75,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../fluster_store_local.storekit">
+         identifier = "../../../../../../../Library/Developer/Xcode/DerivedData/Fluster-dwyhkhasgxmljpdciamihlxeazxf/SourcePackages/checkouts/purchases-ios-spm/Examples/rc-maestro/rc-maestro/Resources/StoreKit/app787ddb07e6.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

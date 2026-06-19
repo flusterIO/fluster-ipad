@@ -59,13 +59,12 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "",
-              "displayName" : "",
+              "description" : "Unlimited Notes",
+              "displayName" : "Pro",
               "locale" : "en_US"
             }
           ],
           "productID" : "product.fluster.flusterProMonthly",
-          "promotionalImageID" : "220F2B3C",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Monthly Pro",
           "subscriptionGroupID" : "233BD430",
@@ -93,8 +92,8 @@
           },
           "localizations" : [
             {
-              "description" : "",
-              "displayName" : "",
+              "description" : "Unlimited Notes",
+              "displayName" : "Pro",
               "locale" : "en_US"
             }
           ],
