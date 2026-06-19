@@ -196,17 +196,20 @@ struct CreateNotePage: View {
             VStack {
             Image("flusterIcon")
               .resizable()
-              .frame(maxWidth: 120, maxHeight: 120)
+              .frame(maxWidth: 80, maxHeight: 80)
             Text("If you see the potential in Fluster and Conundrum, please consider subscribing. You'll get Unlimited notes, immediate access to the mobile app, and you'll be supporting the future growth of the Conundrum ecosystem.")
                 .frame(maxWidth: 450)
                 .multilineTextAlignment(.center)
             }
+            .frame(idealHeight: 300)
         })
         .padding()
         .subscriptionStorePolicyDestination(url: try! URL("https://flusterapp.com/tos", strategy: .url), for: .termsOfService)
         .subscriptionStorePolicyDestination(url: try! URL("https://flusterapp.com/privacy", strategy: .url), for: .privacyPolicy)
-        .subscriptionStoreOptionGroupStyle(.links)
         .storeButton(.visible, for: .policies)
+        .subscriptionStatusTask(for: PRO_SUBSCRIPTION_GROUP, priority: .userInitiated, action: { _ in
+            await auth.updatePurchased()
+        })
     }
   }
 }

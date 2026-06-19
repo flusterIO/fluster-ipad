@@ -4,7 +4,7 @@ use askama::Template;
 /// ```askama
 /// {% if let Some(body) = self.body %}
 /// <li class="w-full [&>*]:inline">
-/// <div>
+/// <div class="prose-base">
 /// {{heading | safe}}
 /// </div>
 /// <div class="prose-sm [&>p]:mt-2">
@@ -12,7 +12,7 @@ use askama::Template;
 /// </div>
 /// </li>
 /// {% else %}
-/// <li class="w-full [&>*]:inline">
+/// <li class="w-full prose-base [&>*]:inline">
 /// {{heading | safe}}
 /// </li>
 /// {% endif %}

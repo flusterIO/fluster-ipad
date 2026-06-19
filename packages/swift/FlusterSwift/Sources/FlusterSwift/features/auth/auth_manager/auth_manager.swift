@@ -44,10 +44,11 @@ public class AuthManager: ObservableObject {
         }
     }
     
-    private func updatePurchased() async {
+    public func updatePurchased() async {
         for await result in Transaction.currentEntitlements {
-            guard let transaction = try? checkVerified(result) else { continue}
-            // TODO: Don't forget to flip this < back to > after you're done with the UI debugging.
+            guard let transaction = try? checkVerified(result) else {
+                continue
+            }
             let validExpireDate = transaction.expirationDate == nil ? true : transaction.expirationDate!.timeIntervalSince1970 >= Date.now.timeIntervalSince1970
             if transaction.revocationDate == nil && validExpireDate {
                 purchasedProductIDs.insert(transaction.productID)

@@ -174,6 +174,30 @@ Observational ranges for this value that we can observe much more reliably is be
   $0.43\%-0.92\%$
 </Hint>
 
+
+#### Curvature
+
+Note here, that as we integrate $\tau$, $R$ should be elongated by $dR$, or $R^\prime = R + g \Delta t$. However, this is obviously _not_ what we observe due to our co-motion along our temporal axis. In other words, this integral is applied as a density gradient, inducing a curvature of precisely $\frac{1}{R}$ in the coordinate system of the observer in co-motion.
+
+This means that a linear path in the coordinate system of the 'oven' may be an accelerated trajectory in the coordinate system of the 'dough' due to this intrinsic curvature, should that intrinsic curvature be uniform, continuous, and in our case... radial. This is what allows this steady rate of spatial dilation to produce the appearance of acceleration for a body with no known direct physical interaction. This axis acts as a spatial density gradient in the coordinate system of the observer in co-motion who is experiencing these dilatory effects of time, inducing this $\frac{1}{R}$ behavior, but is expressed as Euclidean distance in the coordinate system of the 'oven'.
+
+$$
+d_{\text{oven}} = \int_C \dot{x} \phi_{\left( x,y,z \right)}
+$$
+
+Where $\phi$ represents this spatial density. $\phi = 1$ at $R$ and scales according to $\uparrow \uparrow dr$ where $dr$ is the radial distance from Earth's surface radius.
+
+This in turn maps $\dot{x} \mapsto \ddot{x}$, remedying the asymmetry inherent in this model while resolving the issue of terminating geodesics in GR. Blackholes are now nothing more than a mirage in the distance that dissipates as an observer approaches that body's gravitational field.
+
+Interestingly, if we take Earth's radius super-factorial, we find:
+
+$$
+\alpha \eta \uparrow \uparrow R = \alpha \eta \left( 1 + 3 + 6 + 10 \dots R_{\oplus}\right)
+$$
+
+Then $\eta \approx 1.014 ~\mathbf{AU}$, approximating Earth's eccentricity.
+
+
 --- From Orbital Parameters ---
 
 Let's validate this model by testing this relationship one more time. 
@@ -559,6 +583,8 @@ If we omit this last derivation of $\rho$, admitting that it is merely an approx
 - Machian inertia. This model concludes that the Universe is almost precisely as Mach had predicted, with inertia being comprised of the sum of this radiating force for all other bodies in the Universe.
 - The entire equivalence principle. We've all become used to it so we overlook just how profound it is, but it's literally assuming what I'm saying is true mathematically and then just pretending it's not in reality.
 - The lack of a magnetic monopole, or rather, the existence of an electric monopole. Where do you think that 'sink and faucet' model is funneling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
+- Similarly, the induced $\frac{1}{R}$ curvature resolves the paradox produced by the equivalence principle, where a charged particle placed on the surface of a gravitating body does _not_ radiate as if it were in an accelerated frame. This happens because an 'accelerated' frame in the coordinate system of the 'dough' is a linear velocity in the coordinate system of the 'oven'. I intentionally won't use _inertial_ here to describe this path, as the Machian Universe produced by this model does not conserve energy and momentum across this density axis. This apparent violation of the conservation laws follows directly from purely Newtonian mechanics in a dilatory environment.
+  - This is not a fluke in the math or a mathematical bandaid, this is a core piece of this geometry: This 4th axis is described entire by spatial density.
 - The Fermi paradox. There's an entirely other dimension that life might exist across that we have been so far unable to transcend.
 - Relative motion. Think about it. Do we currently calculate all motion as being truly relative, or do we not _already_ calculate motion as relative to the underlying gravitational acceleration and then lie to undergrads about it? The tensors of GR mask this fact to an extent, but reduce them to their calculus equivalents and we are doing _precisely_ this.
 
