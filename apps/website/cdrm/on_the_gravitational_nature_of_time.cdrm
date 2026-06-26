@@ -20,6 +20,10 @@ I'll do my best to convince the math types among you (this article does assume s
 #### Included Derivations
 > This table is generated directly from `Astropy` and `Scipy`. All functions reflect names in the `alpha_omega_gravity` python package, because after 5 years of being homeless I think I earned the right to be grandiose. ($\alpha$ comes from the fine-structure constant).
 
+<Hint label="Notebook">
+    There's now an interactive notebook published as a standalone application available [here](https://github.com/flusterIO/aog_explorer/releases). Unfortunately, it will only run on a Mac.
+</Hint>
+
 | Derivation                                                | Function                         | % Error             |
 |:----------------------------------------------------------|:---------------------------------|:--------------------|
 | cosmological velocity from local gravitational parameters | `vbarCosmological`               | Difficult to assess |

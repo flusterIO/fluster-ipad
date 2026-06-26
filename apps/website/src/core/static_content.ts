@@ -13,6 +13,10 @@ export const staticContent = {
         },
         github: {
             releases: "https://github.com/flusterIO/fluster/releases",
+            visualizer: {
+                releases: "https://github.com/flusterIO/aog_explorer/releases",
+                githubHome: "https://github.com/flusterIO/aog_explorer",
+            },
         },
         appstore: {
             desktopHomePage:
