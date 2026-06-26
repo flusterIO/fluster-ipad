@@ -15,7 +15,8 @@ export const staticContent = {
             releases: "https://github.com/flusterIO/fluster/releases",
         },
         appstore: {
-            desktopHomePage: "",
+            desktopHomePage:
+                "https://apps.apple.com/us/app/fluster-academic-note-taking/id6782389505?mt=12",
         },
         fund: {
             paypalDonate: "https://www.paypal.com/ncp/payment/D6S6NP4AHJD6Y",

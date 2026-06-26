@@ -45,7 +45,7 @@
 //! perfect for the note taking environment.
 //!
 //! I don't want this language to be a toy, but a real tool that _researchers_
-//! from miiddle school to post-doc can reach to as their frst-choice when they
+//! from miiddle school to post-doc can reach to as their first-choice when they
 //! need something extremely easy to write, something expressive, and most
 //! importantly, something capable of handling the varied inputs a
 //! modern academc requires, because we all know markdown's not enough...

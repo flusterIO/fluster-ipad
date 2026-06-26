@@ -75,7 +75,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../fluster_store_local.storekit">
+         identifier = "../../fluster_prod_store.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

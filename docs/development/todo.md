@@ -2,11 +2,24 @@
 
 - [ ] Document new found derivation of $\alpha$
 
+## Plot App
+
+- [x] Create reset method on variable enum and create a 'reset all' button before you hang yourself.
+- [ ] Add all equations to landing page with results and error percentages printed in latex, directly from state.
+- [ ] Finish state table
+
 ## Before Acceptance!!!
 
 - [x] Move 'Download Now' to footer and change the title to something like 'Download old app' or something. Link to the AppStore in the header then.
-  - [ ] Implement proper link in data file.
+  - [ ] Implement proper link in website json data file that provides links to the website. Shit's broken.
 - [ ] Handle sidebar on mobile devices for Blog. It looks like ass.
+
+### Swift Model Explorer
+
+- [ ] Move Constants class to AppStorage and static constants.
+- [ ] Save videos on:
+  - [ ] SwiftCharts
+  - [ ] Mlx
 
 ## Release, Step-by-Step
 
@@ -14,7 +27,7 @@
 - [x] Begin upload of youtube videos so that they can parse and validate while you're doing everything else.
 - [ ] Figure out how to integrate Apple Pay with the debug build for production.
   - `I'm a pretty experienced developer that's new to the Apple ecosystem. I've already built a complete MacOS application that integrates ApplePay locally for auto-renewing subscriptions. Walk me through the steps required to publish this app today, ensuring that ApplePay will work.`
-- [ ] Convert screenshots to mockups
+- [x] Convert screenshots to mockups
 - [ ] Begin submission process with Apple. Upload the build early to make sure that it's valid, incase you need to rebuild it again.
 - [ ] Make sure iPad app at least attemps to build while stll on WIFI so everything that's required can be downloaded.
 - [ ] Figure out how to call out of loop on another thread in the new editor package so that can hopefully be used with the new apps!

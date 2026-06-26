@@ -39,7 +39,7 @@ pub fn parse_json_docs(json_path: &str) -> DocGenResult<()> {
         }
     }
     if docs_entry.is_none() {
-        panic!("Could dnot locate main documentnation entry point enum");
+        panic!("Could not locate main documentnation entry point enum");
     }
     Ok(())
 }

@@ -11,7 +11,8 @@ import Foundation
 #if DEBUG
 public let PRO_SUBSCRIPTION_GROUP = "233BD430"
 #else
-public let PRO_SUBSCRIPTION_GROUP = "22148016"
+public let PRO_SUBSCRIPTION_GROUP = "22171272"
 #endif
-public let MONTHLY_PRO = "product.fluster.flusterProMonthly"
-public let YEARLY_PRO = "product.fluster.flusterProYearly"
+
+public let MONTHLY_PRO = "product.flusterapp.initialProMonthly"
+public let YEARLY_PRO = "product.flusterapp.initialProYearly"

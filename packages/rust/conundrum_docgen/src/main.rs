@@ -47,9 +47,7 @@ async fn main() {
     let cdrm_path = std::path::Path::new(&root).join("packages").join("rust").join("conundrum").join("Cargo.toml");
     let output_path = Builder::default().manifest_path(cdrm_path).build().unwrap();
     println!("Wrote conundrum docs as json to {:?}", output_path);
-    parse_json_docs(output_path.to_str().unwrap()).inspect_err(|e| {
-                                                      eprintln!("Error: {:#?}", e);
-                                                  });
-    // RustEmphasisToColorGroupTemplate::gather_data().generate().expect("Writes
-    // rust emphasis to css color group without throwing an error.");
+    // parse_json_docs(output_path.to_str().unwrap()).inspect_err(|e| {
+    //                                                   eprintln!("Error:
+    // {:#?}", e);                                               });
 }

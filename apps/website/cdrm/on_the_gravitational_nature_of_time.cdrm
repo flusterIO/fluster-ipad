@@ -179,7 +179,7 @@ Observational ranges for this value that we can observe much more reliably is be
 
 Note here, that as we integrate $\tau$, $R$ should be elongated by $dR$, or $R^\prime = R + g \Delta t$. However, this is obviously _not_ what we observe due to our co-motion along our temporal axis. In other words, this integral is applied as a density gradient, inducing a curvature of precisely $\frac{1}{R}$ in the coordinate system of the observer in co-motion.
 
-This means that a linear path in the coordinate system of the 'oven' may be an accelerated trajectory in the coordinate system of the 'dough' due to this intrinsic curvature, should that intrinsic curvature be uniform, continuous, and in our case... radial. This is what allows this steady rate of spatial dilation to produce the appearance of acceleration for a body with no known direct physical interaction. This axis acts as a spatial density gradient in the coordinate system of the observer in co-motion who is experiencing these dilatory effects of time, inducing this $\frac{1}{R}$ behavior, but is expressed as Euclidean distance in the coordinate system of the 'oven'.
+This means that a linear path in the coordinate system of the 'oven' may be an accelerated trajectory in the coordinate system of the 'dough' due to this intrinsic curvature, should that intrinsic curvature be smooth, continuous, and in our case... radial. This is what allows this steady rate of spatial dilation to produce the appearance of acceleration for a body with no known direct physical interaction; as gravity converts space to time, so too it converts $\dot{x}$ to $\ddot{x}$. This axis acts as a spatial density gradient in the coordinate system of the observer in co-motion who is experiencing these dilatory effects of time, inducing this $\frac{1}{R}$ behavior, but is expressed as Euclidean distance in the coordinate system of the 'oven'.
 
 $$
 d_{\text{oven}} = \int_C \dot{x} \phi_{\left( x,y,z \right)}
@@ -192,10 +192,10 @@ This in turn maps $\dot{x} \mapsto \ddot{x}$, remedying the asymmetry inherent i
 Interestingly, if we take Earth's radius super-factorial, we find:
 
 $$
-\alpha \eta \uparrow \uparrow R = \alpha \eta \left( 1 + 3 + 6 + 10 \dots R_{\oplus}\right)
+\alpha \eta \uparrow \uparrow R = \alpha \eta \left( 1 + 3 + 6 + 10 \dots R_{\oplus}\right) = \mathbf{AU}
 $$
 
-Then $\eta \approx 1.014 ~\mathbf{AU}$, approximating Earth's eccentricity.
+Then $\eta \approx 1.014$, approximating Earth's eccentricity.
 
 
 ```typescript -- title="super_factorial.js"
@@ -217,6 +217,7 @@ AU / Fundamental Radius: ${
     }
 `);
 ```
+
 
 
 --- From Orbital Parameters ---
@@ -271,7 +272,7 @@ As we used the Newtonian derived orbital parameters in the previous section to d
 If we extend our lighthouse & clocktower example to an orbital frame of reference, where $B$ orbits $A$ at an agreed upon velocity $v_o$, then this velocity would be decreased by a factor of $dt$ in the coordinate system of $A$ due to the decreased spatial density of $\mathbf{S}_B$, while our relativistically corrected orbital velocity equation becomes as follows:
 
 $$
-\sqrt{\frac{2 GM}{R}} \quad \to \quad \frac{\sqrt{G M \left(G M + 2 R^{3}\right)}}{R^{2}}
+\sqrt{\frac{GM}{R}} \quad \to \quad \frac{\sqrt{G M \left(G M + 2 R^{3}\right)}}{R^{2}}
 $$
 
 

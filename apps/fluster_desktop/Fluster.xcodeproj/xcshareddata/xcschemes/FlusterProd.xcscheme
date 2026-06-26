@@ -74,9 +74,6 @@
             ReferencedContainer = "container:Fluster.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <StoreKitConfigurationFileReference
-         identifier = "../../../../../../../Library/Developer/Xcode/DerivedData/Fluster-dwyhkhasgxmljpdciamihlxeazxf/SourcePackages/checkouts/purchases-ios-spm/Examples/rc-maestro/rc-maestro/Resources/StoreKit/app787ddb07e6.storekit">
-      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
