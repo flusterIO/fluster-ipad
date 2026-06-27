@@ -1,14 +1,14 @@
 {
-    "name": "@conundrum/docgen",
-    "description": "Moving from Justfile to TurboRepo, so I need to write my scripts this way.",
-    "scripts": {
-        "docgen": "cargo run ",
-        "docgen:buildCrossLanguage": "sh ./scripts/generate_cross_language_types.sh",
-        "docgen:cleanupGeneratedTypes": "tsx ../../../scripts/post_cross_language_modifications.ts",
-        "docgen:copyDocumentationToRust": "tsx ../../../scripts/documentation/write_content_by_in_content_doc_id.ts",
-        "docgen:gatherComponentDocs": "tsx ../../../scripts/gather_component_docs.ts",
-        "docgen:internalDiagrams": "sh ./scripts/generate_internal_diagrams.sh",
-        "docgen:main": "cargo run --bin conundrum_docgen",
-        "docgen:writeComponentList": "tsx ../../../scripts/documentation/write_embeddable_component_list_note.ts"
-    }
+  "name": "@conundrum/docgen",
+  "description": "Moving from Justfile to TurboRepo, so I need to write my scripts this way.",
+  "scripts": {
+    "docgen": "cargo run ",
+    "docgen:buildCrossLanguage": "sh ./scripts/generate_cross_language_types.sh",
+    "docgen:cleanupGeneratedTypes": "tsx ../../../scripts/post_cross_language_modifications.ts",
+    "docgen:copyDocumentationToRust": "tsx ../../../scripts/documentation/write_content_by_in_content_doc_id.ts",
+    "docgen:gatherComponentDocs": "tsx ../../../scripts/gather_component_docs.ts",
+    "docgen:internalDiagrams": "sh ./scripts/generate_internal_diagrams.sh",
+    "docgen:main": "cargo run --bin conundrum_docgen",
+    "docgen:writeComponentList": "tsx ../../../scripts/documentation/write_embeddable_component_list_note.ts"
+  }
 }

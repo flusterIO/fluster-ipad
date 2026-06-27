@@ -1161,10 +1161,10 @@ export enum MermaidTheme {
 
 export interface MermaidCodeBlock {
 	content: string;
-	scale?: ConundrumFloat;
-	padding?: ConundrumFloat;
-	node_padding_y?: ConundrumFloat;
-	node_padding_x?: ConundrumFloat;
+	scale?: ConundrumNumber;
+	padding?: ConundrumNumber;
+	node_padding_y?: ConundrumNumber;
+	node_padding_x?: ConundrumNumber;
 	route_style?: MermaidRouteStyle;
 	layout?: MermaidLayoutEngine;
 	theme: MermaidTheme;
@@ -1684,6 +1684,11 @@ export enum CommonComponentPropertyKey {
 
 export type ConundrumErrorVariant = 
 	| { tag: "MultiThreadingError", content?: undefined }
+	| { tag: "TypeConversionError", content: {
+	from: string;
+	to: string;
+}}
+	| { tag: "CodeblockMetaDataNotExist", content?: undefined }
 	| { tag: "KeyNotFound", content?: undefined }
 	| { tag: "EmbeddedDataNotFound", content?: undefined }
 	| { tag: "TerminatorNotFound", content?: undefined }
@@ -1717,7 +1722,8 @@ export type ConundrumErrorVariant =
 	| { tag: "EnvVarNotFound", content: CdrmEnvVariable }
 	| { tag: "EmojiRenderError", content: string }
 	| { tag: "WasmError", content: string }
-	| { tag: "InvalidColor", content: string };
+	| { tag: "InvalidColor", content: string }
+	| { tag: "MermaidError", content: string };
 
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }
@@ -1802,6 +1808,7 @@ export enum InContentDocumentationId {
 	Components = "Components",
 	AI = "AI",
 	Conundrum = "Conundrum",
+	Mermaid = "Mermaid",
 }
 
 export enum InContentDocumentationSource {
@@ -1822,7 +1829,8 @@ export enum MarkdownOutputVariantKey {
 export type ParsedCodeBlockVariant = 
 	| { tag: "General", content: GeneralCodeBlock }
 	| { tag: "Dictionary", content: DictionaryCodeBlock }
-	| { tag: "AI", content: GeneralCodeBlock };
+	| { tag: "AI", content: GeneralCodeBlock }
+	| { tag: "Mermaid", content: MermaidCodeBlock };
 
 export enum ParserId {
 	Tags = "tags",
