@@ -1,3 +1,4 @@
+use mmdflux::SvgThemeConfig;
 use serde::{Deserialize, Serialize};
 
 #[typeshare::typeshare]
@@ -52,4 +53,22 @@ pub enum MermaidTheme {
     #[serde(rename = "one-dark")]
     #[strum(to_string = "one-dark")]
     OneDark,
+}
+
+impl MermaidTheme {
+    pub fn to_svg_theme_config(&self) -> SvgThemeConfig {
+        SvgThemeConfig { name: Some(self.to_string()),
+                         mode: mmdflux::SvgThemeMode::Dynamic,
+                         bg: None,
+                         fg: None,
+                         line: None,
+                         accent: None,
+                         muted: None,
+                         surface: None,
+                         border: None /* line: Some(String::from("hsl(var(--border))")),
+                                       * accent: Some(String::from("hsl(var(--primary))")),
+                                       * muted: Some(String::from("hsl(var(--muted-foreground))")),
+                                       * surface: Some(String::from("var(--fd-card)")),
+                                       * border: Some(String::from("hsl(var(--border))")) */ }
+    }
 }

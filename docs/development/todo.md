@@ -1,6 +1,6 @@
 # To-Do
 
-- [ ] Document new found derivation of $\alpha$
+- [ ] Review inserted alpha expansion equations. They're right now, but make sure you didn't fuck'em up.
 
 ## Plot App
 

@@ -45,6 +45,12 @@ pub struct ConundrumObject {
     pub data: DashMap<String, ParsedElement>,
 }
 
+impl Default for ConundrumObject {
+    fn default() -> Self {
+        Self { data: Default::default() }
+    }
+}
+
 impl ConundrumLogicParser for ConundrumObject {
     fn parse_conundrum(input: &mut ConundrumInput) -> ConundrumModalResult<ConundrumObject> {
         let entries: Vec<JavascriptObjectKeyValuePair> =

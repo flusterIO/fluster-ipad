@@ -66,6 +66,8 @@ pub enum ConundrumErrorVariant {
     WasmError(String),
     #[error("The provided string of `{0}` could not be parsed successfully to a CSS supported color.")]
     InvalidColor(String),
+    #[error("There seems to be an error in your mermaid syntax. This is the error from mermaid: {0}")]
+    MermaidError(String),
 }
 
 impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {

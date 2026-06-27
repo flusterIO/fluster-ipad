@@ -56,13 +56,16 @@ use crate::{
                 general_codeblock::GeneralPresentationCodeBlock,
                 render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
             },
-            mermaid::mermaid_code_block::MermaidCodeBlock,
+            mermaid::{
+                mermaid_code_block::MermaidCodeBlock, mermaid_route_style::MermaidRouteStyle,
+                mermaid_theme::MermaidTheme,
+            },
             parsed_codeblock::ParsedCodeBlockVariant,
             supported_languages::SupportedCodeBlockSyntax,
             supported_themes::SupportedCodeBlockTheme,
         },
         parser_trait::ConundrumParser,
-        react::parser_components::jsx_properties::{self, any_jsx_property::jsx_properties_string},
+        react::parser_components::jsx_properties::any_jsx_property::jsx_properties_string,
     },
 };
 
@@ -179,6 +182,12 @@ impl HtmlJsComponentResult for GeneralCodeBlock {
 }
 
 impl ConundrumComponentResult for GeneralCodeBlock {
+    /// ## TODO
+    ///
+    /// ### Mermaid
+    /// - [ ] Enable passing themes once enum support is enabled.
+    /// - [ ] Do the same for routing.
+    /// - [ ] Actually document this s--t.
     fn to_conundrum_component(&self, res: ArcState) -> ConundrumModalResult<String> {
         let state = res.read_arc();
         match self.language {
@@ -191,26 +200,30 @@ impl ConundrumComponentResult for GeneralCodeBlock {
                 // Extract the metadata or provide a fallback
                 Ok(get_dictionary_content(self, Arc::clone(&res)))
             }
-            // SupportedCodeBlockSyntax::Mermaid => {
-            //     // TODO: Bubble errors up here if they are the 'cut' variant so they can be
-            //     // displayed to the user.
-            //     let mermaid_props = match self.meta_data {
-            //                             Some(s) => {
-            //                                 let new_conundrum_input =
-            //                                     ConundrumInput { input: s.as_str(),
-            //                                                      state: Arc::new(RwLock::new(ParseState::default()))
-            // };                                 jsx_properties_string.parse_next(&mut
-            // new_conundrum_input).ok().flatten()                             }
-            //                             None => None
-            //                         }.unwrap_or_default();
-            //     Ok(ParsedCodeBlockVariant::Mermaid(MermaidCodeBlock {
-            //         content: raw_content.to_string()
-            //             scale: mermaid_props.get_number("scale", None).ok(),
-            //             padding: mermaid_props.get_number("padding", None).ok(),
-            //             node_padding_y: mermaid_props.get_number("nodePaddingY", None).ok(),
-            //             node_padding_x: mermaid_props.get_number("nodePaddingX", None).ok(),
-            //     }))
-            // }
+            SupportedCodeBlockSyntax::Mermaid => {
+                // TODO: Bubble errors up here if they are the 'cut' variant so they can be
+                // displayed to the user.
+                drop(state);
+                let mermaid_props = match self.meta_data.as_ref().cloned() {
+                                        Some(s) => {
+                                            let mut new_conundrum_input =
+                                                ConundrumInput { input: s.as_str(),
+                                                                 state: Arc::new(RwLock::new(ParseState::default())) };
+                                            jsx_properties_string.parse_next(&mut new_conundrum_input).ok().flatten()
+                                        }
+                                        None => None,
+                                    }.unwrap_or_default();
+                let route_style = MermaidRouteStyle::Orthogonal;
+                let r = MermaidCodeBlock { content: self.content.clone(),
+                                           scale: mermaid_props.get_number("scale", None).ok(),
+                                           padding: mermaid_props.get_number("padding", None).ok(),
+                                           node_padding_y: mermaid_props.get_number("nodePaddingY", None).ok(),
+                                           node_padding_x: mermaid_props.get_number("nodePaddingX", None).ok(),
+                                           route_style: Some(route_style),
+                                           layout: None,
+                                           theme: MermaidTheme::Dracula }.to_conundrum_component(Arc::clone(&res))?;
+                Ok(r)
+            }
             SupportedCodeBlockSyntax::ConundrumAi => Ok(get_ai_parsing_request_phase_1_content(self)),
             _ => {
                 if state.data.ignore_all_parsers {
@@ -367,6 +380,16 @@ A derivative is...
                 }
         )
     )
+            }
+            SupportedCodeBlockSyntax::Mermaid => {
+                Ok(ParsedCodeBlockVariant::Mermaid(MermaidCodeBlock { content: raw_content.to_string(),
+                                                                      scale: None,
+                                                                      padding: None,
+                                                                      node_padding_y: None,
+                                                                      node_padding_x: None,
+                                                                      route_style: None,
+                                                                      layout: None,
+                                                                      theme: MermaidTheme::Dracula }))
             }
             _ => Ok(ParsedCodeBlockVariant::General(GeneralCodeBlock { language,
                                                                        meta_data,
