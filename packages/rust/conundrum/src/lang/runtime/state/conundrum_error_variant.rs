@@ -18,7 +18,15 @@ use crate::{
 pub enum ConundrumErrorVariant {
     #[error("Conundrum runs on a background thread by default, and it ran into some issues in your environment.")]
     MultiThreadingError,
+    #[error("Conundrum could not convert the `{from}` type to a `{to}` type.")]
+    TypeConversionError {
+        from: String,
+        to: String,
+    },
+    #[error("Codeblock meta data does not exist.")]
+    CodeblockMetaDataNotExist,
     #[error("The specified key could not be found in the dictionary it was being used against.")]
+
     KeyNotFound,
     #[error("This should never happen, some embedded data can not be found.")]
     EmbeddedDataNotFound,

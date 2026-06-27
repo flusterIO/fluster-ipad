@@ -61,7 +61,7 @@ public class AuthManager: ObservableObject {
     private func fetchProductData() async {
         isLoading = true
         do {
-            products = try! await Product.products(for: productIds)
+            products = (try? await Product.products(for: productIds)) ?? []
             products.sort { $0.price < $1.price }
         } catch {
             self.err = error.localizedDescription

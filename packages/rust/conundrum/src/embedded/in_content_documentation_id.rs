@@ -69,6 +69,9 @@ pub enum InContentDocumentationId {
     #[serde(rename = "Conundrum")]
     #[strum(to_string = "Conundrum")]
     Conundrum,
+    #[serde(rename = "Mermaid")]
+    #[strum(to_string = "Mermaid")]
+    Mermaid,
 }
 
 impl InContentDocumentationId {
@@ -85,6 +88,7 @@ impl InContentDocumentationId {
             InContentDocumentationId::AI => "ai-docs",
             InContentDocumentationId::Conundrum => "conundrum",
             InContentDocumentationId::Code => "code-docs",
+            InContentDocumentationId::Mermaid => "mermaid",
         };
         format!("{}-{}.mdx", base_file_name, format)
     }

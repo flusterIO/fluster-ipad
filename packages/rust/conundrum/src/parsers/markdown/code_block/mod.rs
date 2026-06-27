@@ -1,9 +1,11 @@
 pub mod code_block_html_template;
 pub mod code_block_model;
+pub mod codeblock_meta_data;
 pub mod dictionary;
 pub mod general;
 pub mod mermaid;
 pub mod parsed_codeblock;
 pub mod supported_languages;
+pub mod supported_languages_extensions;
 pub mod supported_themes;
 pub mod typst;

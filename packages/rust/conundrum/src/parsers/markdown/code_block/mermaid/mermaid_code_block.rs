@@ -65,9 +65,10 @@ impl HtmlJsComponentResult for MermaidCodeBlock {
     fn to_html_js_component(&self,
                             _: crate::lang::runtime::traits::conundrum_input::ArcState)
                             -> crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult<String> {
-        render_diagram(self.content.as_str(), OutputFormat::Svg, &self.get_mmd_render_config()).map_err(|e| {
+        let s = render_diagram(self.content.as_str(), OutputFormat::Svg, &self.get_mmd_render_config()).map_err(|e| {
     ErrMode::Backtrack(ConundrumErrorVariant::MermaidError(e.message))
-})
+})?;
+        return Ok(format!("<div class=\"my-6 [&>svg]:mx-auto\">{}</div>", s));
     }
 }
 

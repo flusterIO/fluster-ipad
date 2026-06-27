@@ -6628,6 +6628,11 @@
       left: calc(var(--spacing) * 4);
     }
   }
+  .\[\&\>svg\]\:mx-auto {
+    &>svg {
+      margin-inline: auto;
+    }
+  }
   .\[\&\>svg\]\:size-3\.5 {
     &>svg {
       width: calc(var(--spacing) * 3.5);

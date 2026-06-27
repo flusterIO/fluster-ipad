@@ -1,6 +1,11 @@
 use mmdflux::SvgThemeConfig;
 use serde::{Deserialize, Serialize};
 
+use crate::{
+    lang::lib::shared::traits::from_with_state::FromWithParam,
+    parsers::markdown::code_block::supported_themes::SupportedCodeBlockTheme,
+};
+
 #[typeshare::typeshare]
 #[derive(Clone, Debug, Serialize, Default, Deserialize, strum_macros::Display)]
 pub enum MermaidTheme {
@@ -70,5 +75,11 @@ impl MermaidTheme {
                                        * muted: Some(String::from("hsl(var(--muted-foreground))")),
                                        * surface: Some(String::from("var(--fd-card)")),
                                        * border: Some(String::from("hsl(var(--border))")) */ }
+    }
+}
+
+impl FromWithParam<SupportedCodeBlockTheme, bool> for MermaidTheme {
+    fn from_with_param(value: SupportedCodeBlockTheme, dark_mode: bool) -> Self {
+        value.to_mermaid_theme(dark_mode)
     }
 }

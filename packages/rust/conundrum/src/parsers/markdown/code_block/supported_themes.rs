@@ -1,9 +1,20 @@
+use ratatui::text::ToSpan;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use strum::EnumIter;
+use strum::{EnumIter, IntoEnumIterator};
 use strum_macros::{Display, EnumString};
+use winnow::error::ErrMode;
 
-use crate::parsers::markdown::code_block::mermaid::mermaid_theme::MermaidTheme;
+use crate::{
+    lang::{
+        lib::shared::traits::from_with_state::TryFromWithParam,
+        runtime::state::conundrum_error_variant::ConundrumErrorVariant,
+    },
+    parsers::{
+        conundrum::logic::string::conundrum_string::ConundrumString,
+        markdown::code_block::mermaid::mermaid_theme::MermaidTheme,
+    },
+};
 #[typeshare::typeshare]
 #[derive(Serialize, Deserialize, Display, EnumString, EnumIter, uniffi::Enum, Clone, Default, Debug, JsonSchema)]
 #[allow(non_camel_case_types)]
@@ -114,5 +125,19 @@ impl SupportedCodeBlockTheme {
             Self::Onehalfdark => MermaidTheme::OneDark,
             _ => MermaidTheme::Auto,
         }
+    }
+}
+
+impl TryFrom<ConundrumString> for SupportedCodeBlockTheme {
+    type Error = ErrMode<ConundrumErrorVariant>;
+
+    fn try_from(value: ConundrumString) -> Result<Self, Self::Error> {
+        for f in SupportedCodeBlockTheme::iter() {
+            if f.to_string() == value.0 {
+                return Ok(f);
+            }
+        }
+        Err(ErrMode::Backtrack(ConundrumErrorVariant::TypeConversionError { from: String::from("string"),
+                                                                            to: String::from("SupportedCodeBlockTheme") }))
     }
 }

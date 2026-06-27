@@ -17,7 +17,7 @@ use winnow::{
 use crate::{
     lang::{
         elements::parsed_elements::ParsedElement,
-        lib::ui::ui_types::children::Children,
+        lib::{shared::traits::from_with_state::FromWithParam, ui::ui_types::children::Children},
         runtime::{
             parse_conundrum_string::parse_elements,
             state::{
@@ -51,6 +51,7 @@ use crate::{
         conundrum::logic::{object::object::ConundrumObject, token::ConundrumLogicToken},
         markdown::code_block::{
             code_block_html_template::CodeBlockHTMLTemplate,
+            codeblock_meta_data::CodeBlockMetaData,
             dictionary::dictionary_code_block::DictionaryCodeBlock,
             general::{
                 general_codeblock::GeneralPresentationCodeBlock,
@@ -360,7 +361,7 @@ A derivative is...
                 let mut state = input.state.write_arc();
 
                 state.append_uncompiled_dictionary_entry(DictionaryEntryResultUnCompiled { label: Children(title.clone()),
-            label_string: term.clone().to_string(),
+            label_string: term.to_string(),
                                                                        body: Children(child_ems.clone()) });
                 drop(state);
 
@@ -384,21 +385,117 @@ A derivative is...
             SupportedCodeBlockSyntax::Mermaid => {
                 let read_state = input.state.read_arc();
                 let dark_mode = read_state.ui_params.dark_mode;
-                let mermaid_theme =
+                let mut mermaid_theme =
                     read_state.ui_params.syntax_theme.as_ref().cloned().map(|theme| theme.to_mermaid_theme(dark_mode));
+                let meta_data = match meta_opt {
+                    Some(s) => CodeBlockMetaData::from_str(s).ok(),
+                    None => None,
+                };
+                let mermaid_theme_override_light = match meta_data.as_ref().cloned() {
+                    Some(md) => {
+                        if let Ok(r) = md.0.get_string("themeLight", None) {
+                            if let Ok(supported_theme) = TryInto::<SupportedCodeBlockTheme>::try_into(r) {
+                                Some(supported_theme)
+                            } else {
+                                None
+                            }
+                        } else {
+                            None
+                        }
+                    }
+                    None => None,
+                };
+                let mermaid_theme_override_dark = match meta_data.as_ref().cloned() {
+                    Some(md) => {
+                        if let Ok(r) = md.0.get_string("themeDark", None) {
+                            if let Ok(supported_theme) = TryInto::<SupportedCodeBlockTheme>::try_into(r) {
+                                Some(supported_theme)
+                            } else {
+                                None
+                            }
+                        } else {
+                            None
+                        }
+                    }
+                    None => None,
+                };
                 Ok(ParsedCodeBlockVariant::Mermaid(MermaidCodeBlock { content: raw_content.to_string(),
-                                                                      scale: None,
-                                                                      padding: None,
-                                                                      node_padding_y: None,
-                                                                      node_padding_x: None,
-                                                                      route_style: None,
+                                                                      scale: match &meta_data {
+                                                                          None => None,
+                                                                          Some(s) => {
+                                                                              s.0.get_number("scale", Some("Scale should be a number")).ok()
+                                                                          }
+                                                                      },
+                                                                      padding: match &meta_data {
+                                                                          None => None,
+                                                                          Some(s) => {
+                                                                              s.0.get_number("padding", Some("Padding should be a number")).ok()
+                                                                          }
+                                                                      },
+                                                                      node_padding_x: match &meta_data {
+                                                                          None => None,
+                                                                          Some(s) => {
+                                                                              s.0.get_number("nodePaddingX", Some("nodePaddingX should be a number")).ok()
+                                                                          }
+                                                                      },
+                                                                      node_padding_y: match &meta_data {
+                                                                          None => None,
+                                                                          Some(s) => {
+                                                                              s.0.get_number("nodePaddingY", Some("nodePaddingY should be a number")).ok()
+                        }
+                                                                      },
+                                                                      route_style: match &meta_data {
+                                                                          None => None,
+                                                                          Some(s) => {
+                                                                              if let Ok(y) = s.0.get_string("routing", Some("'Routing' should be a string that is 'ortho', 'direct' or 'poly'. ")) {
+                                                                                  if y.0 == "ortho" {
+                                                                                      Some(MermaidRouteStyle::Orthogonal)
+                                                                                  } else if y.0 == "poly" {
+                                                                                      Some(MermaidRouteStyle::Polyline)
+                                                                                  } else if y.0 == "direct" {
+                                                                                      Some(MermaidRouteStyle::Direct)
+                                                                                  } else {
+                                                                                      None
+                                                                                  }
+                                                                              } else {
+                                                                                  None
+                                                                              }
+                                                                          }
+                                                                      },
                                                                       layout: None,
-                                                                      theme: mermaid_theme.unwrap_or(
-                                                                                              match dark_mode {
+                                                                      theme: match dark_mode {
+                                                                          true => {
+                                                                              match mermaid_theme_override_dark {
+                                                                                  Some(s) => {
+                                                                                      MermaidTheme::from_with_param(s, dark_mode)
+                                                                                  },
+                                                                                  None => {
+                                                                                      mermaid_theme.unwrap_or(
+                                                                          match dark_mode {
                                                                               true => MermaidTheme::Dracula,
                                                                               false => MermaidTheme::GithubLight
                                                                           }
-                                                                                          ) }))
+                                                                      )
+                                                                                  }
+                                                                              }
+                                                                          }
+false => {
+                                                                              match mermaid_theme_override_light {
+                                                                                  Some(s) => {
+                                                                                      MermaidTheme::from_with_param(s, dark_mode)
+                                                                                  },
+                                                                                  None => {
+                                                                                      mermaid_theme.unwrap_or(
+                                                                          match dark_mode {
+                                                                              true => MermaidTheme::Dracula,
+                                                                              false => MermaidTheme::GithubLight
+                                                                          }
+                                                                      )
+                                                                                  }
+                                                                              }
+}
+                                                                      }
+                }))
             }
             _ => Ok(ParsedCodeBlockVariant::General(GeneralCodeBlock { language,
                                                                        meta_data,
