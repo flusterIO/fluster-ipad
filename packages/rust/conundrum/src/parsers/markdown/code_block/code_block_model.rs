@@ -382,6 +382,10 @@ A derivative is...
     )
             }
             SupportedCodeBlockSyntax::Mermaid => {
+                let read_state = input.state.read_arc();
+                let dark_mode = read_state.ui_params.dark_mode;
+                let mermaid_theme =
+                    read_state.ui_params.syntax_theme.as_ref().cloned().map(|theme| theme.to_mermaid_theme(dark_mode));
                 Ok(ParsedCodeBlockVariant::Mermaid(MermaidCodeBlock { content: raw_content.to_string(),
                                                                       scale: None,
                                                                       padding: None,
@@ -389,7 +393,12 @@ A derivative is...
                                                                       node_padding_x: None,
                                                                       route_style: None,
                                                                       layout: None,
-                                                                      theme: MermaidTheme::Dracula }))
+                                                                      theme: mermaid_theme.unwrap_or(
+                                                                                              match dark_mode {
+                                                                              true => MermaidTheme::Dracula,
+                                                                              false => MermaidTheme::GithubLight
+                                                                          }
+                                                                                          ) }))
             }
             _ => Ok(ParsedCodeBlockVariant::General(GeneralCodeBlock { language,
                                                                        meta_data,

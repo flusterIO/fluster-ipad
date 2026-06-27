@@ -2,6 +2,8 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::EnumIter;
 use strum_macros::{Display, EnumString};
+
+use crate::parsers::markdown::code_block::mermaid::mermaid_theme::MermaidTheme;
 #[typeshare::typeshare]
 #[derive(Serialize, Deserialize, Display, EnumString, EnumIter, uniffi::Enum, Clone, Default, Debug, JsonSchema)]
 #[allow(non_camel_case_types)]
@@ -79,4 +81,38 @@ pub enum SupportedCodeBlockTheme {
     #[serde(rename = "zenburn")]
     #[strum(to_string = "zenburn")]
     Zenburn,
+}
+
+impl SupportedCodeBlockTheme {
+    /// ## TODO:
+    /// - [ ] Actually test all hese f--king themes to make sure they make sense
+    ///   with the them that
+    /// they're paired with. Going off of names isn't enough, but I'm in a
+    /// hurry...
+    pub fn to_mermaid_theme(&self, dark_mode: bool) -> MermaidTheme {
+        match self {
+            Self::GruvboxLight => MermaidTheme::ZincLight,
+            Self::Base16_256 => MermaidTheme::ZincDark,
+            Self::Darkneon => MermaidTheme::TokyoNight,
+            Self::MonokaiExtendedBright => MermaidTheme::TokyoNightStorm,
+            Self::MonokaiExtended => MermaidTheme::TokyoNightLight,
+            Self::SublimeSnazzy => match dark_mode {
+                true => MermaidTheme::CatppuccinLatte,
+                false => MermaidTheme::CatppuccinMocha,
+            },
+            Self::Nord => match dark_mode {
+                true => MermaidTheme::Nord,
+                false => MermaidTheme::NordLight,
+            },
+            Self::Dracula => MermaidTheme::Dracula,
+            Self::Github => match dark_mode {
+                true => MermaidTheme::GithubDark,
+                false => MermaidTheme::GithubLight,
+            },
+            Self::SolarizedLight => MermaidTheme::SolarizedLight,
+            Self::SolarizedDark => MermaidTheme::SolarizedDark,
+            Self::Onehalfdark => MermaidTheme::OneDark,
+            _ => MermaidTheme::Auto,
+        }
+    }
 }
