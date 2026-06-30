@@ -75,7 +75,7 @@ import WebKit
       webView.uiDelegate = context.coordinator
       webView.isInspectable = true
       let source = """
-        document.body?.classList.add("\(WebviewEnvironment.macOS.rawValue)")
+        document.body?.classList.add("\(WebviewEnvironment.iPad.rawValue)")
         """
       let webviewEnvironmentScript = WKUserScript(
         source: source,

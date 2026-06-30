@@ -123,7 +123,7 @@ import WebKit
           // when the next change event is fired.
           do {
             try await editingNote.preParse(
-              modelContext: modelContext, uiParams: uiParamsProvider.toParams())
+              modelContext: modelContext, uiParams: uiParamsProvider.toParams(colorScheme: colorScheme))
           } catch {
             print("Error: \(error.localizedDescription)")
           }
@@ -175,7 +175,7 @@ import WebKit
           if event.note_id == editingNote.id {
             editingNote.markdown.body = event.current_note_content
             try await editingNote.preParse(
-              modelContext: modelContext, uiParams: uiParamsProvider.toParams())
+              modelContext: modelContext, uiParams: uiParamsProvider.toParams(colorScheme: colorScheme))
             var idx: UInt32 = 0
             let citations = editingNote.citations.compactMap { cit in
               idx += 1
@@ -196,7 +196,7 @@ import WebKit
       Task {
         do {
           try await editingNote.preParse(
-            modelContext: modelContext, uiParams: uiParamsProvider.toParams())
+            modelContext: modelContext, uiParams: uiParamsProvider.toParams(colorScheme: colorScheme))
 
           let llm = SystemLanguageModel()
           var idx: UInt32 = 0

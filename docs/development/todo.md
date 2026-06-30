@@ -3,6 +3,14 @@
 - [ ] Review inserted alpha expansion equations. They're right now, but make sure you didn't fuck'em up.
 - [ ] Add orbital velocity equation and derivation to notebook so that can be posted while at the library. Replace the old notebook repo with this updated notebook, and include the diagram if necessary.
 
+
+## iPad App
+
+- [ ] Update settings page
+  - [x] Codeblock theme input (light mode)
+  - [x] Codeblock theme input (dark mode)
+- [ ] Add keymap listener for manual save request. That should be a f--king journey offline...
+
 ## Plot App
 
 - [x] Create reset method on variable enum and create a 'reset all' button before you hang yourself.

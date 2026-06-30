@@ -35,12 +35,15 @@ export const GlobalStateListeners = connector(({ size }: {
             }
         }
     }
+
     useEventListener("main-panel-resize", () => {
         onResize()
     })
+
     useEventListener("redux-state-loaded", () => {
         onResize()
     })
+
     useEffect(() => {
         onResize()
         window.addEventListener('resize', onResize)
@@ -56,5 +59,6 @@ export const GlobalStateListeners = connector(({ size }: {
     useEffect(() => {
         dispatch(setEditorView(isLandscape ? EditorView.Splitview : EditorView.PreviewOnly))
     }, [isLandscape])
+
     return null
 })

@@ -144,7 +144,7 @@ import WebKit
     func updateParsedEditorValue() {
       if let en = editingNote {
         Task(priority: .high) {
-            try? await en.preParseIfEdited(modelContext: modelContext, uiParams: uiParamsProvider.toParams())
+            try? await en.preParseIfEdited(modelContext: modelContext, uiParams: uiParamsProvider.toParams(colorScheme: colorScheme))
             var idx: UInt32 = 0
           let citations: [EditorCitation] = en.citations.compactMap { cit in
               idx += 1;
@@ -173,7 +173,7 @@ import WebKit
       if let en = editingNote {
         Task(priority: .high) {
           do {
-              try await en.preParse(modelContext: modelContext, uiParams: uiParamsProvider.toParams())
+              try await en.preParse(modelContext: modelContext, uiParams: uiParamsProvider.toParams(colorScheme: colorScheme))
               let llm = SystemLanguageModel()
               var idx: UInt32 = 0
               let citations = en.citations.compactMap { cit in
