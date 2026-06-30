@@ -8,7 +8,6 @@
 import FlatBuffers
 import FlusterData
 import FlusterSwift
-import FlusterSwiftMdxParser
 import FlusterWebviewClients
 import PencilKit
 import SwiftData
