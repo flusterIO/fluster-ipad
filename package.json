@@ -18,12 +18,22 @@
   "scripts": {
     "build:macStep2": "wireit",
     "build:postCodegenCleanup": "tsx ./scripts/post_cross_language_modifications.ts",
+    "build:webviewsIpad": "wireit",
     "build:webviewsMac": "wireit",
     "build:webviewsMacProd": "wireit",
     "commit": "builtin command cat ./commit.md | aicommits -p",
     "prepare": "husky"
   },
   "wireit": {
+    "build:webviewsIpad": {
+      "dependencies": [
+        "./packages/webviews/splitview_mdx_editor:build:ipad",
+        "./packages/webviews/note_detail_webview:build:ipad",
+        "./packages/webviews/standalone_mdx_preview:build:ipad",
+        "./packages/webviews/bibtex_editor_webview:build:ipad",
+        "./packages/webviews/dictionary_webview:build:ipad"
+      ]
+    },
     "build:webviewsMac": {
       "dependencies": [
         "./packages/webviews/splitview_mdx_editor:build:mac",

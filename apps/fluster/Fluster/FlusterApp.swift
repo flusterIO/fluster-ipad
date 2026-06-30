@@ -27,12 +27,7 @@ struct FlusterApp: App {
 
   init() {
     SchemeRegistration.registerCustomScheme()
-    AppDataContainer.setup(
-      initialNotesUrl: Bundle.main.url(
-        forResource: "initial_note_docs/initial_notes_parsed_data",
-        withExtension: "json"
-      )!
-    )
+    AppDataContainer.setup()
     self.appData = AppDataContainer.shared
   }
 
