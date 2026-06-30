@@ -39,6 +39,9 @@ I'll do my best to convince the math types among you (this article does assume s
 | $h / (2 - \alpha)$ from $\omega$                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
 | $\Phi$ mass density approximation                         | `massDensityEquivalence`         | $0.863214423082925\%$   |
 | $G$ as a function of $\alpha$ and $\rho$                  | --                               | $0.07618221222642045\%$ |
+| Cummulative magnetic diverence at $R = \Phi$ | -- | $0.008051401415257025%$ |
+
+
 
 
 <Hint label="Error" info>
@@ -70,7 +73,7 @@ To summarize, we have 3 possibilities:
 2. $B$ returns from $p_2$ with a photo of $B$ at $p_2$ that disagrees with the photo $A$ took of $B$ at $p_2$. There is nothing in physics that prohibits extending the time periods and distances to produce such absurdities as $B$ wearing a completely different shirt.
 3. $d$ elongates by a factor of $\gamma$. We might then presume that this dilation is the source of the equivalence principle, and watch how the physics just lines up.
 
-If you think about it, isn't this inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
+If you think about it, isn't this inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, then we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
 
 > **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
 
@@ -87,7 +90,6 @@ By attributing the 4th displacement coordinate to the density axis that arises f
 
 Of course we need to change the dimensionality of much of our physics, but as I will demonstrate here... the math remains remarkably consistent. 
 
-> Doesn't this make more sense? A Universe driven by _motion_ as a driving rate of change instead of an abstract quantity that we've never directly measured, time? 
 
 
 #### Our Cosmological Velocity
@@ -275,13 +277,22 @@ As we used the Newtonian derived orbital parameters in the previous section to d
 
 If we extend our lighthouse & clocktower example to an orbital frame of reference, where $B$ orbits $A$ at an agreed upon velocity $v_o$, then this velocity would be decreased by a factor of $dt$ in the coordinate system of $A$ due to the decreased spatial density of $\mathbf{S}_B$, while our relativistically corrected orbital velocity equation becomes as follows:
 
-$$
+$$ {#orbitalVelocityMapping}
 \sqrt{\frac{GM}{R}} \quad \to \quad \frac{\sqrt{G M \left(G M + 2 R^{3}\right)}}{R^{2}}
 $$
 
 
 
 When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.13~ Kpc$, _perfectly_ on top of observational values, _without_ any additional unseen mass!
+
+<Image 
+   src="/assets/diagrams/orbital_radius_intersection.png"
+   maxHeight="large"
+    paddingY="medium"
+   inline={false}
+/>
+
+You tell me... does this look like a 'dimensional coincidence' to you? In the plot above, 'standard' is our standard orbital velocity equation $\left( G M / R \right)^{1/2}$, 'derived' is the equation we derived in equation <EqRef id="orbitalVelocityMapping" />, and 'local' points to our Sun. The 'observed' data was taken from _The Circular Velocity Curve of the Milky Way from 5 to 25 kpc_ A. Eilers et al.
 
 ## Electromagnetism
 
@@ -329,12 +340,6 @@ That's almost precisely the value we were looking for when we add these values, 
 </Hint>
 
 
-And if we cube this to bring up this expression to divergence once again while expanding $\alpha$, we find the magnetic field divergence of:
-
-$$
-\nabla \cdot \vec{B} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{8 h^{3}}
-$$
-
 
 
 --- <Emoji name="sun" inline smedium/> ---
@@ -363,6 +368,37 @@ Demonstrating that this function is _more_ than just a coincidence.
 $1 \pm \alpha$ with an error of $0.00347\%$ and $0.003427\%$ respectively.
 </Hint> 
 
+
+### Integrating Magnetic Divergence
+
+Let's now take a second to recognize that to find this quantity
+
+$$
+\alpha \left(2 - \alpha\right) = \sqrt[3]{\frac{d}{dR} g}
+$$
+
+We first took the inverse of divergence. Let's now cube it to bring it back up to scale.
+
+$$
+\left( \alpha \left( 2 - \alpha \right)  \right)^3 = \frac{d}{dR}g = 2 \frac{G M_{\oplus}}{R_{\oplus}^3}
+$$
+
+Or expanded, this gives
+$$
+\frac{d}{dR}g = 2 G \frac{M}{R^3} = \nabla \cdot \vec{B} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{8 h^{3}}
+$$
+
+If we then slide the $R_{\oplus}$ over to the over side to integrate magnetic divergence according to $R$, we find:
+
+$$
+\int_0^R \nabla \cdot \vec{B} = R^{4} \left(\frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{4 h^{3}} + \frac{3 \mu_{0} e^{10} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{64 \epsilon_{0} h^{5}} - \frac{3 \mu_{0}^{2} e^{8}}{16 \epsilon_{0}^{2} h^{4}} - \frac{\mu_{0}^{3} e^{12}}{256 \epsilon_{0}^{3} h^{6}}\right) = 1.272122073168672 \times 10^{21}
+$$
+
+That's 
+
+$$
+\sqrt{ \Phi \times 10^{42}} \pm 0.00805\%
+$$
 
 --- Significance of $\alpha$ ---
 
@@ -419,7 +455,7 @@ $$
 If we then multiply equation <EqRef id="eq_electricDivergence1" /> by our _spinor_ approximation, converting this linear spatial dilation to rotation, we find:
 
 $$
-\nabla \cdot \mathbf{E} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{ \left( \mu_0  \epsilon_0\right)^{\frac{1}{2}} 8 h^{3} \left(2 - \frac{1}{2} \frac{e^2}{h} \sqrt{\frac{\mu_0}{\epsilon_0}}\right)} = 462.244~ \text{meters} = \frac{d \theta}{dt} R_\oplus T_{\text{day}} ~ \pm 0.006778\%
+\nabla \cdot \mathbf{E} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{2}}{ \left( \mu_0  \epsilon_0\right)^{\frac{1}{2}} 8 h^{3}} = 462.244~ \text{meters} = \frac{d \theta}{dt} R_\oplus T_{\text{day}} ~ \pm 0.006778\%
 $$
 
 That's our rotational velocity on Earth's equator $\pm -0.006778\%$! Off by a total of 0.03 meters (1.18 inches) for a quantity that takes into account a radius the size of Earth's and a period as long as our day!
@@ -541,6 +577,7 @@ Or if approximating as a perfectly circular orbit:
 $$
 \mathbf{AU}\alpha = \sqrt[3]{G M_\odot} \frac{T_{\text{year}}}{2 \pi \mathbf{AU}} R_\oplus \pm 0.014\%
 $$
+
 
 
 

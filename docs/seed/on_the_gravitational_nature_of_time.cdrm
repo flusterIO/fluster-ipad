@@ -32,7 +32,7 @@ I'll do my best to convince the math types among you (this article does assume s
 | $h / (2 - \alpha)$ from $\omega$                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
 | $\Phi$ mass density approximation                         | `massDensityEquivalence`         | $0.863214423082925\%$   |
 | $G$ as a function of $\alpha$ and $\rho$                  | --                               | $0.07618221222642045\%$ |
-
+| Cummulative magnetic diverence at $R = \Phi$ | -- | $0.008051401415257025%$ |
 
 <Hint label="Error" info>
     All error percentage calculations were done with the following function. See the [Fluster & Conundrum repository](https://github.com/flusterIO) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
@@ -63,7 +63,7 @@ To summarize, we have 3 possibilities:
 2. $B$ returns from $p_2$ with a photo of $B$ at $p_2$ that disagrees with the photo $A$ took of $B$ at $p_2$. There is nothing in physics that prohibits extending the time periods and distances to produce such absurdities as $B$ wearing a completely different shirt.
 3. $d$ elongates by a factor of $\gamma$. We might then presume that this dilation is the source of the equivalence principle, and watch how the physics just lines up.
 
-If you think about it, isn't this inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, than we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
+If you think about it, isn't this inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, then we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
 
 > **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
 
@@ -300,6 +300,38 @@ Demonstrating that this function is _more_ than just a coincidence.
 <Hint label="Error" error>
 $1 \pm \alpha$ with an error of $0.00347\%$ and $0.003427\%$ respectively.
 </Hint> 
+
+
+### Integrating Magnetic Divergence
+
+Let's now take a second to recognize that to find this quantity
+
+$$
+\alpha \left(2 - \alpha\right) = \sqrt[3]{\frac{d}{dR} g}
+$$
+
+We first took the inverse of divergence. Let's now cube it to bring it back up to scale.
+
+$$
+\left( \alpha \left( 2 - \alpha \right)  \right)^3 = \frac{d}{dR}g = 2 \frac{G M_{\oplus}}{R_{\oplus}^3}
+$$
+
+Or expanded, this gives
+$$
+\frac{d}{dR}g = 2 G \frac{M}{R^3} = \nabla \cdot \vec{B} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{8 h^{3}}
+$$
+
+If we then slide the $R_{\oplus}$ over to the over side to integrate magnetic divergence according to $R$, we find:
+
+$$
+\int_0^R \nabla \cdot \vec{B} = R^{4} \left(\frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{4 h^{3}} + \frac{3 \mu_{0} e^{10} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{64 \epsilon_{0} h^{5}} - \frac{3 \mu_{0}^{2} e^{8}}{16 \epsilon_{0}^{2} h^{4}} - \frac{\mu_{0}^{3} e^{12}}{256 \epsilon_{0}^{3} h^{6}}\right) = 1.272122073168672 \times 10^{21}
+$$
+
+That's 
+
+$$
+\sqrt{ \Phi \times 10^{42}} \pm 0.00805\%
+$$
 
 
 --- Significance of $\alpha$ ---

@@ -1,12 +1,11 @@
 # To-Do
 
 - [ ] Review inserted alpha expansion equations. They're right now, but make sure you didn't fuck'em up.
+- [ ] Add orbital velocity equation and derivation to notebook so that can be posted while at the library. Replace the old notebook repo with this updated notebook, and include the diagram if necessary.
 
 ## Plot App
 
 - [x] Create reset method on variable enum and create a 'reset all' button before you hang yourself.
-- [ ] Add all equations to landing page with results and error percentages printed in latex, directly from state.
-- [ ] Finish state table
 
 ## Before Acceptance!!!
 
