@@ -1,4 +1,3 @@
-use ratatui::text::ToSpan;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::{EnumIter, IntoEnumIterator};
