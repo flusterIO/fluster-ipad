@@ -400,9 +400,23 @@ $$
 \sqrt{ \Phi \times 10^{42}} \pm 0.00805\%
 $$
 
+
+<Image 
+    src="/assets/diagrams/phaseshift_at_r.png"
+    maxHeight="medium"
+    paddingY="medium"
+    centerSelf
+/>
+
+Where the above plot illustrates the intersection of this function with 
+
+$$
+\left(R_{\oplus}, \sqrt{ \Phi \times 10^{42}}\right)
+$$
+
 --- Significance of $\alpha$ ---
 
-If you're unfamiliar with physics, let me take a second to break down how profound this is. That's an electromagnetic constant, comprised of multiple electromagnetic constants defined in terms of gravitational properties in what certainly looks like a recursive function.
+If you're unfamiliar with physics, let's take a second to break down what we're doing here.
 
 This is what $\alpha$ looks like completely written out:
 
@@ -422,7 +436,7 @@ $$
 
 
 
-That's basically the relationship of all of electromagnetism described in one function. Don't worry though, we can keep going! Now that we've derived a relationship to $ \alpha$, we can take advantage of the electromagnetic equations. Let's take advantage of the fact that the electromagnetic tensor is undefined at $\Delta t = 0$. If electromagnetism can not exist without time, maybe time is masking a subset of electromagnetic properties. 
+That's basically the relationship of all of electromagnetism described in one function, now defined in terms of gravitational parameters. Don't worry though, we can keep going! Now that we've derived a relationship to $ \alpha$, we can take advantage of the electromagnetic equations. Let's take advantage of the fact that the electromagnetic tensor is undefined at $\Delta t = 0$. If electromagnetism can not exist without time, maybe time is masking a subset of electromagnetic properties. 
 
 
 ### Electric Field Divergence Equivalent
@@ -518,7 +532,6 @@ G = \frac{R^3_\oplus}{M_\oplus} \left(\sqrt{\frac{1}{1 - \left(\alpha \left(2 - 
 $$
 
 
-Which explains why our flawed relativistic math works so well... the electromagnetic and gravitational 'constants' are bound according to the inverse of mass density and this function of $\alpha$. As space dilates, this relationship remains constant.
 
 ### Displacement Current Equivalent
 
