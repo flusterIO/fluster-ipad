@@ -35,7 +35,9 @@ root {
 }
 
 .fluster-ipad {
-  --background: 0 0% 0%;
+  &.dark {
+    --background: 0 0% 0%;
+  }
 
   .force-background {
     background-color: hsl(0, 0%, 0%) !important;
@@ -170,9 +172,9 @@ body {
   }
 
   &.fluster-ipad {
-    /* &.dark { */
-    /*   background-color: var(--color-background); */
-    /* } */
+    &.dark {
+      background-color: hsl(var(--background));
+    }
 
     .hide-ipad {
       display: none;

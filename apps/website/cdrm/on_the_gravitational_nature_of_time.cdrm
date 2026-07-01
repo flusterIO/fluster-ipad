@@ -283,7 +283,7 @@ $$
 
 
 
-When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.13~ Kpc$, _perfectly_ on top of observational values, _without_ any additional unseen mass!
+When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.12~ Kpc$, _perfectly_ on top of observational values, _without_ any additional unseen mass!
 
 <Image 
    src="/assets/diagrams/orbital_radius_intersection.png"
@@ -292,7 +292,7 @@ When we solve for $R$ and plugin our galactic parameters here on Earth, we find 
    inline={false}
 />
 
-You tell me... does this look like a 'dimensional coincidence' to you? In the plot above, 'standard' is our standard orbital velocity equation $\left( G M / R \right)^{1/2}$, 'derived' is the equation we derived in equation <EqRef id="orbitalVelocityMapping" />, and 'local' points to our Sun. The 'observed' data was taken from _The Circular Velocity Curve of the Milky Way from 5 to 25 kpc_ A. Eilers et al.
+In the plot above, 'standard' is our standard orbital velocity equation $\left( G M / R \right)^{1/2}$, 'derived' is the equation we derived in equation <EqRef id="orbitalVelocityMapping" />, and 'local' points to our Sun using $\left(R_{\oplus}, v_{\text{observed}}\right)$ where $v_{\text{observed}}$ is the velocity found by A. Eilers and colleagues, $229,000 ~ \text{m} ~ \text{s}^{-1}$ (_The Circular Velocity Curve of the Milky Way from 5 to 25 kpc_). The actual value we obtain is $230,145.52 ~ \text{m} ~ \text{s}^{-1}$, _without_ any unseen mass.
 
 ## Electromagnetism
 
@@ -666,17 +666,14 @@ If we omit this last derivation of $\rho$, admitting that it is merely an approx
 - The entire equivalence principle. We've all become used to it so we overlook just how profound it is, but it's literally assuming what I'm saying is true mathematically and then just pretending it's not in reality.
 - The lack of a magnetic monopole, or rather, the existence of an electric monopole. Where do you think that 'sink and faucet' model is funneling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
 - Similarly, the induced $\frac{1}{R}$ curvature resolves the paradox produced by the equivalence principle, where a charged particle placed on the surface of a gravitating body does _not_ radiate as if it were in an accelerated frame. This happens because an 'accelerated' frame in the coordinate system of the 'dough' is a linear velocity in the coordinate system of the 'oven'. I intentionally won't use _inertial_ here to describe this path, as the Machian Universe produced by this model does not conserve energy and momentum across this density axis. This apparent violation of the conservation laws follows directly from purely Newtonian mechanics in a dilatory environment.
-  - This is not a fluke in the math or a mathematical bandaid, this is a core piece of this geometry: This 4th axis is described entire by spatial density.
+  - This is not a fluke in the math or a mathematical bandaid, this is a core piece of this geometry: This 4th axis is described entirely by spatial density.
 - The Fermi paradox. There's an entirely other dimension that life might exist across that we have been so far unable to transcend.
 - Relative motion. Think about it. Do we currently calculate all motion as being truly relative, or do we not _already_ calculate motion as relative to the underlying gravitational acceleration and then lie to undergrads about it? The tensors of GR mask this fact to an extent, but reduce them to their calculus equivalents and we are doing _precisely_ this.
 
 
---- <Emoji name="alien" smedium inline /> ---
-
 <Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
 If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.
 </Quote>
-
 
 
 [^1]: The logical question here is well, why not just publish it in peer review? The **only** possible mathematical solution indicates that the Earth is expanding _with_ the Universe. Einstein himself couldn't get a model like this past our current peer review culture.

@@ -9,7 +9,12 @@
 - [ ] Update settings page
   - [x] Codeblock theme input (light mode)
   - [x] Codeblock theme input (dark mode)
-- [ ] Add keymap listener for manual save request. That should be a f--king journey offline...
+- [x] Add keymap listener for manual save request. That should be a f--king journey offline...
+- [ ] Make sure note re-renders on theme change, or basically any time the user navigates to the note again.
+- [ ] Remove reference to dictionary page
+- [ ] Add paywall to create-note page
+- [ ] Test the shit out of everything...
+
 
 ## Plot App
 

@@ -142,7 +142,6 @@ import WebKit
     }
 
     func messageHandler(_ messageKey: String, _ messageBody: Any) {
-      print("Message up here: \(messageKey)")
       switch messageKey {
         case SplitviewEditorWebviewActions.requestSplitviewEditorData.rawValue:
           Task(priority: .high) {

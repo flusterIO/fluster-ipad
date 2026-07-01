@@ -9,7 +9,7 @@ import { setSize } from "./webview_container_global_state/webview_container_slic
 
 import { connect, useDispatch } from 'react-redux';
 import { type GlobalAppState } from '#/webview_global_state/store';
-import { SizableOption } from "@/code_gen/typeshare/conundrum";
+import { ConundrumWebEvents, SizableOption } from "@/code_gen/typeshare/conundrum";
 
 const connector = connect((state: GlobalAppState) => ({
     size: state.container.size
@@ -58,6 +58,7 @@ export const GlobalStateListeners = connector(({ size }: {
 
     useEffect(() => {
         dispatch(setEditorView(isLandscape ? EditorView.Splitview : EditorView.PreviewOnly))
+        window.dispatchEvent(new CustomEvent(ConundrumWebEvents.ManualResize))
     }, [isLandscape])
 
     return null
