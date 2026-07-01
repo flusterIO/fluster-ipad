@@ -336,7 +336,7 @@ $$
 
 --- Significance of $\alpha$ ---
 
-If you're unfamiliar with physics, let me take a second to break down how profound this is. That's an electromagnetic constant, comprised of multiple electromagnetic constants defined in terms of gravitational properties in what certainly looks like a recursive function.
+If you're unfamiliar with physics, let's take a second to break down what we're doing here.
 
 This is what $\alpha$ looks like completely written out:
 
@@ -586,8 +586,6 @@ If we omit this last derivation of $\rho$, admitting that it is merely an approx
 - The Fermi paradox. There's an entirely other dimension that life might exist across that we have been so far unable to transcend.
 - Relative motion. Think about it. Do we currently calculate all motion as being truly relative, or do we not _already_ calculate motion as relative to the underlying gravitational acceleration and then lie to undergrads about it? The tensors of GR mask this fact to an extent, but reduce them to their calculus equivalents and we are doing _precisely_ this.
 
-
---- <Emoji name="alien" smedium inline /> ---
 
 <Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
 If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.

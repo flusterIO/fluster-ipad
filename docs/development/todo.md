@@ -11,7 +11,7 @@
   - [x] Codeblock theme input (dark mode)
 - [x] Add keymap listener for manual save request. That should be a f--king journey offline...
 - [ ] Make sure note re-renders on theme change, or basically any time the user navigates to the note again.
-- [ ] Remove reference to dictionary page
+- [x] Remove reference to dictionary page
 - [ ] Add paywall to create-note page
 - [ ] Test the shit out of everything...
 

@@ -17,6 +17,9 @@ export const staticContent = {
                 releases: "https://github.com/flusterIO/aog_explorer/releases",
                 githubHome: "https://github.com/flusterIO/aog_explorer",
             },
+            notebook: {
+                notebookPage: "https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb"
+            }
         },
         appstore: {
             desktopHomePage:

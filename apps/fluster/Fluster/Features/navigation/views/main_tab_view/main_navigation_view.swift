@@ -288,18 +288,6 @@ struct MainView: View {
           .customizationBehavior(.disabled, for: .tabBar)
           .defaultVisibility(.hidden, for: .tabBar)
           Tab(
-            "Dictionary",
-            systemImage: FlusterIcon.dictionary.rawValue,
-            value: IpadMainViewTab.dictionary
-          ) {
-            DictionaryTab(
-                editingNote: $editingNote
-            )
-          }
-          .tabPlacement(.sidebarOnly)
-          .customizationID(IpadMainViewTab.dictionary.rawValue)
-          .defaultVisibility(.hidden, for: .tabBar)
-          Tab(
             "Settings",
             systemImage: "gearshape.fill",
             value: IpadMainViewTab.settings

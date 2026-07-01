@@ -7,7 +7,7 @@ export interface FooterBannerProps {
     className?: string;
 }
 
-export type FooterLinkKeys = "legal" | "demos" | "funding";
+export type FooterLinkKeys = "legal" | "physics" | "funding";
 
 interface LinkGroupItem extends LinkProps {
     label: ReactNode;
@@ -36,11 +36,15 @@ export const footerLinks: Record<FooterLinkKeys, LinkGroupItems> & {
             ),
         },
     ],
-    demos: [
+    physics: [
         {
             href: "/blog/by_path/on_the_gravitational_nature_of_time",
             label: "On the gravitational nature of time",
         },
+        {
+            href: staticContent.links.github.notebook.notebookPage,
+            label: "α ω Gravity Jupyter Notebook"
+        }
     ],
     legal: [
         {
