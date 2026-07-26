@@ -1,24 +1,42 @@
-use std::sync::Arc;
-
-use arrow_array::{RecordBatch, StringArray};
+use conundrum::ecosystem::{db::tables::DatabaseTable, error_handling::db_error::DatabaseResult};
+use indoc::formatdoc;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::{
-    database::db_types::db_entity::DBEntity,
+    database::db_traits::{
+        database_field::DatabaseField, pure_model_instance::PureModelInstanceMethods,
+        pure_model_static::PureModelStaticMethods,
+    },
     models::{
         date_time::date_time::DateTime, primitives::case_insensitive_string::CaseInsensitiveString,
         taggables::tag_location::TagLocation,
     },
 };
 
-use conundrum::ecosystem::{
-    db::traits::database_field_representable::DatabaseFieldRepresentable,
-    error_handling::db_error::{DatabaseError, DatabaseResult},
-};
-
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Tag {
-    pub body: CaseInsensitiveString,
+    pub value: CaseInsensitiveString,
     pub location: TagLocation,
     pub ctime: DateTime,
+}
+
+impl PureModelStaticMethods for Tag {
+    fn schema() -> String {
+        let tbl = Self::table();
+        formatdoc! {"
+        {}
+        {}
+        {}
+        ", CaseInsensitiveString::field_definition("value", &tbl), TagLocation::field_definition("location", &tbl), DateTime::field_definition("ctime", &tbl)}
+    }
+
+    fn table() -> DatabaseTable {
+        DatabaseTable::Tag
+    }
+}
+
+impl PureModelInstanceMethods for Tag {
+    fn save_self(&self) -> DatabaseResult<()> {
+        todo!()
+    }
 }

@@ -3917,6 +3917,7 @@ dependencies = [
  "convert_case 0.11.0",
  "dirs 6.0.0",
  "either",
+ "indoc",
  "log",
  "once_cell",
  "phf 0.13.1",
@@ -3927,6 +3928,7 @@ dependencies = [
  "strum 0.27.2",
  "strum_macros 0.27.2",
  "surrealdb",
+ "syn 3.0.3",
  "thiserror 2.0.18",
  "tokio",
  "uuid",
@@ -20472,6 +20474,17 @@ name = "syn"
 version = "2.0.117"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e665b8803e7b1d2a727f4023456bbbbe74da67099c585258af0ad9c5013b9b99"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "unicode-ident",
+]
+
+[[package]]
+name = "syn"
+version = "3.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "53e9bae58849f64dfa4f5d5ae372c8341f7305f82a3868709269343628b659a3"
 dependencies = [
  "proc-macro2",
  "quote",

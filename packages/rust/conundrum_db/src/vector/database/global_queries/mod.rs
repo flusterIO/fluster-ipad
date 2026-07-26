@@ -1,1 +1,2 @@
 pub mod initialize_database_query;
+pub mod initialize_database_schema_string_macro;

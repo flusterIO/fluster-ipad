@@ -34,6 +34,8 @@ phf = { version = "0.13.1", features = ["std"] }
 quote = "1.0.47"
 chrono.workspace = true
 strum.workspace = true
+indoc = "2.0.7"
+syn = "3.0.3"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }
