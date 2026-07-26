@@ -6,5 +6,6 @@ pub mod parse_conundrum_string;
 pub mod parse_inline_elements;
 pub mod queries;
 pub mod run_conundrum;
+pub mod run_math_mode;
 pub mod state;
 pub mod traits;

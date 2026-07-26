@@ -70,6 +70,7 @@
 #![feature(string_replace_in_place)]
 uniffi::setup_scaffolding!();
 
+pub mod bibliography;
 pub mod ecosystem;
 pub mod embedded;
 pub mod lang;

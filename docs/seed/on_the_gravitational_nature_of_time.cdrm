@@ -227,6 +227,12 @@ $$
 
 When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.13~ Kpc$, _perfectly_ on top of observational values, _without_ any additional unseen mass!
 
+<Image 
+    src="https://fluster-blog-media.s3.us-east-2.amazonaws.com/orbital_radius_intersection.png"
+    maxHeight="medium"
+    centerSelf
+/>
+
 ## Electromagnetism
 
 Consider the determinant of a 3-dimensional, diagonal matrix, representing the change in volume of the coordinate system.
@@ -332,6 +338,12 @@ That's
 $$
 \sqrt{ \Phi \times 10^{42}} \pm 0.00805\%
 $$
+
+<Image 
+    src="https://fluster-blog-media.s3.us-east-2.amazonaws.com/phaseshift_at_r.png"
+    maxHeight="medium"
+    centerSelf
+/>
 
 
 --- Significance of $\alpha$ ---
@@ -558,7 +570,7 @@ $$
 then finally
 
 $$
-\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\Phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{g}}{m^3}
+\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\Phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{kg}}{m^3}
 $$
 
 This is our observed mass density, $m_{0}$...

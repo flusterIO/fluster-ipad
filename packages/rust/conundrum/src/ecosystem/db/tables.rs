@@ -1,0 +1,74 @@
+use std::hash::Hash;
+
+use convert_case::Casing;
+use serde::{Deserialize, Serialize};
+use strum::{EnumCount, IntoEnumIterator};
+use strum_macros::{Display, EnumIter};
+
+#[derive(Debug, Serialize, Deserialize, Display, EnumIter, EnumCount, PartialEq, Clone, Eq)]
+pub enum DatabaseTable {
+    // -- Taggables --
+    #[strum(to_string = "tag")]
+    #[serde(rename = "tag")]
+    Tag,
+    #[strum(to_string = "topic")]
+    #[serde(rename = "topic")]
+    Topic,
+    #[strum(to_string = "subject")]
+    #[serde(rename = "subject")]
+    Subject,
+    #[strum(to_string = "cdrm")]
+    #[serde(rename = "cdrm")]
+    Cdrm,
+    #[strum(to_string = "qa_pair")]
+    #[serde(rename = "qa_pair")]
+    QAPair,
+    #[strum(to_string = "cdrm_vec")]
+    #[serde(rename = "cdrm_vec")]
+    CdrmVector,
+}
+
+impl Hash for DatabaseTable {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        core::mem::discriminant(self).hash(state);
+    }
+}
+
+impl DatabaseTable {
+    pub fn all_temporary_tables() -> Vec<Self> {
+        vec![Self::CdrmVector]
+    }
+
+    pub fn is_schemafull(&self) -> bool {
+        true
+    }
+
+    /// TODO: Move this to a macro or to a build-time calculation
+    pub fn all_permanent_tables() -> Vec<Self> {
+        let mut items = Vec::new();
+        let temp_tables = Self::all_temporary_tables();
+        for table in DatabaseTable::iter() {
+            if !temp_tables.contains(&table) {
+                items.push(table.clone());
+            }
+        }
+        items
+    }
+
+    pub fn is_temporary_vector_table(&self) -> bool {
+        match self {
+            Self::CdrmVector => true,
+            _ => false,
+        }
+    }
+
+    /// Returns a name of the struct stored in the table for displaying user
+    /// facing information.
+    pub fn to_model_name(&self) -> String {
+        match self {
+            Self::Cdrm => String::from("Conundrum"),
+            Self::QAPair => String::from("FlashCard"),
+            _ => self.to_string().to_case(convert_case::Case::Title),
+        }
+    }
+}

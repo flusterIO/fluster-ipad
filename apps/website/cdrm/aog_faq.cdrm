@@ -1,0 +1,54 @@
+---
+title: αω Gravity
+id: on_the_gravitational_nature_of_time
+summary: Some frequently asked questions about the αω gravity model. Basically a place for me to answer people's questions outside of a comment section.
+subject: LinkOnly
+---
+
+# $ \alpha \omega$ Gravity Frequently Asked Questions
+
+<Card title="Definitions">
+- $T$: A time-invariant, 3-dimensional coordinate system. There's no reason to believe this is real in the physical sense, but it's a valid tool to accurately describe inflationary models.
+- $T_B$: The coordinate system of the observer in relative motion, 'B' in the lighthouse and the clock-tower thought experiment.
+</Card>
+
+
+## Auxillary Derivations
+
+### The constant speed of light as a universal velocity transformation
+
+It's important to note that in this model, _all_ velocities transform in the same manner as to make them equivalent in each reference frame.
+
+Consider a simplified one body system where we scale $T$ so that it's coordinate system matches $T_{B}$ at some instant in time. Let $B$ then go in motion some $\vec{u}$, which then gives $\vec{u}_{B} = \gamma ~ dt ~ \vec{u}_0$ in $T_{B}$. 
+
+Here, 'B' measures $dx = \left| \vec{u} \right|$ as he is measuring relative to $T_{B}$, where as 'A' measures the relativistic magnitude for 'B' in $T_A$.
+
+$$
+\vec{u}_{B} = \left\langle 
+u_{x,A}\hat{i} \gamma \frac{\left\vert u \right\vert}{ \hat{u}}, ~
+u_{y,A}\hat{j} \gamma \frac{\left\vert u \right\vert}{ \hat{u}}, ~ 
+u_{z,A}\hat{k} \gamma \frac{\left\vert u \right\vert}{ \hat{u}}
+\right\rangle
+$$
+
+Where $\vec{u}_{x,A}$ represents the $x$ component of the $\vec{u}$ vector in the coordinate system of 'A' in the lighthouse and the clock-tower thought experiment, and $\hat{u}$ represents the magnitude of velocity per unit 'time', giving the velocity in units of distance.
+
+In the coordinate system of $B$, where for a simplified one-body system we find:
+
+$$
+T_{B} = \gamma_{(r)} \left(\begin{array}{ccc}
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+    \end{array}\right) ~ dt
+$$
+
+Then $\vec{u}_B$ in $T_{B}$ at $t_{0} + dt$, as measured in $T_{B}$, is equivalent $\vec{u}_A$, this same vector as measured in the coordinate system of 'A'. This reproduces the Newtonian magnitude of $\vec{u}$ in $T_{B}$, as measured using the unit vector magnitude of $T_{B}$, but the relativistic magnitude when considering the magnitude of $u_{B}$ in the coordinate system $T_{A}$.
+
+This then gives that as $c_{B} = c_{A}$, where $c_{A}$ and $c_{B}$ represent the speed of light in the subscript's coordinate system, but we should then recognize that
+
+$$
+\left| \vec{u}_A \right|_A = \left| \vec{u}_B \right|_B
+$$
+
+Where $\left| \vec{z}_{\eta} \right|_\mu$ represents the magnitude of the $z$ vector, in the coordinate system of $\eta$ as measured proportional to the coordinate system of $\mu$. This demonstrates that an observer in relative motion will not only measure $c$ to be constant, he will measure all velocities to follow this pattern, dilating proportional to the underlying coordinate system.

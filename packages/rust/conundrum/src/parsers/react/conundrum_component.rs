@@ -14,7 +14,14 @@ use crate::{
                 tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
                 toc::table_of_contents::TableOfContents,
             },
-            media::{color::color_component_model::ColorComponent, image::image::Image},
+            media::{
+                color::color_component_model::ColorComponent,
+                image::image::Image,
+                video::{
+                    local_video::local_video_component::LocalVideoComponent,
+                    youtube::youtube_component::YoutubeComponent,
+                },
+            },
         },
         runtime::{
             state::conundrum_error_variant::ConundrumModalResult,
@@ -31,7 +38,6 @@ use crate::{
     },
 };
 use serde::Serialize;
-use syn::{Data, DeriveInput, Fields, parse_macro_input};
 use typeshare::typeshare;
 
 #[typeshare]
@@ -60,6 +66,8 @@ pub enum ConundrumComponentType {
     // Media
     Image(Image),
     Color(ColorComponent),
+    Youtube(YoutubeComponent),
+    LocalVideo(LocalVideoComponent),
 }
 
 impl ConundrumComponentType {
@@ -81,6 +89,8 @@ impl ConundrumComponentType {
             ConundrumComponentType::Hr(_) => true,
             ConundrumComponentType::EmojiDocsDemo(_) => true,
             ConundrumComponentType::Toc(_) => true,
+            ConundrumComponentType::Youtube(_) => true,
+            ConundrumComponentType::LocalVideo(_) => true,
             ConundrumComponentType::Image(i) => {
                 i.sizable.as_ref().cloned().is_some_and(|s| s.inline.is_some_and(|b| b.0))
             }
@@ -110,6 +120,8 @@ impl HtmlJsComponentResult for ConundrumComponentType {
             ConundrumComponentType::Toc(s) => s.to_html_js_component(res),
             ConundrumComponentType::Image(s) => s.to_html_js_component(res),
             ConundrumComponentType::Color(s) => s.to_html_js_component(res),
+            ConundrumComponentType::Youtube(s) => s.to_html_js_component(res),
+            ConundrumComponentType::LocalVideo(s) => s.to_html_js_component(res),
         }
     }
 }
@@ -134,6 +146,8 @@ impl PlainTextComponentResult for ConundrumComponentType {
             ConundrumComponentType::Toc(s) => s.to_plain_text(res),
             ConundrumComponentType::Image(s) => s.to_plain_text(res),
             ConundrumComponentType::Color(s) => s.to_plain_text(res),
+            ConundrumComponentType::Youtube(s) => s.to_plain_text(res),
+            ConundrumComponentType::LocalVideo(s) => s.to_plain_text(res),
         }
     }
 }
@@ -158,6 +172,8 @@ impl MarkdownComponentResult for ConundrumComponentType {
             ConundrumComponentType::Toc(s) => s.to_markdown(res),
             ConundrumComponentType::Image(s) => s.to_markdown(res),
             ConundrumComponentType::Color(s) => s.to_markdown(res),
+            ConundrumComponentType::Youtube(s) => s.to_markdown(res),
+            ConundrumComponentType::LocalVideo(s) => s.to_markdown(res),
         }
     }
 }
@@ -182,6 +198,8 @@ impl ConundrumComponentResult for ConundrumComponentType {
             ConundrumComponentType::Toc(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Image(s) => s.to_conundrum_component(res),
             ConundrumComponentType::Color(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::Youtube(s) => s.to_conundrum_component(res),
+            ConundrumComponentType::LocalVideo(s) => s.to_conundrum_component(res),
         }
     }
 }

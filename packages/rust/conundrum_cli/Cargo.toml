@@ -29,6 +29,7 @@ tui-nodes = "0.10.0"
 tui-piechart = "0.3.1"
 tui-scrollview = "0.6.2"
 conundrum = { path = "../conundrum/" }
+conundrum_db = { path = "../conundrum_db/" }
 anyhow = "1.0.102"
 serde.workspace = true
 thiserror.workspace = true

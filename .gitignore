@@ -257,3 +257,4 @@ docs/generated/rustdoc/conundrum/
 apps/*/.turbo/
 packages/*/.turbo/
 .turbo/
+packages/rust/conundrum_db/tests/seed_questions.json

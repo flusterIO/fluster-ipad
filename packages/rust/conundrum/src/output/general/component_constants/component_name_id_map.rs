@@ -26,6 +26,8 @@ lazy_static! {
         map.insert(EmbeddableComponentName::Toc, EmbeddableComponentId::Toc);
         map.insert(EmbeddableComponentName::Emoji, EmbeddableComponentId::Emoji);
         map.insert(EmbeddableComponentName::Color, EmbeddableComponentId::Color);
+        map.insert(EmbeddableComponentName::Youtube, EmbeddableComponentId::Youtube);
+        map.insert(EmbeddableComponentName::LocalVideo, EmbeddableComponentId::LocalVideo);
         map
     };
 }

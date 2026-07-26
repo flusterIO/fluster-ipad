@@ -1,14 +1,10 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+#![recursion_limit = "1024"]
+//! ## Package Layout
+//!
+//! - entites: All of the database logic for a given model.
+//! - models: The structure that is actually stored in the database but rejoined
+//! to a shape that will make sense for most applications, and
+//!   occasionally, some utility
+//! methods... usually around type conversion to turn it into something that's
+//! actually useful.
+pub mod vector;

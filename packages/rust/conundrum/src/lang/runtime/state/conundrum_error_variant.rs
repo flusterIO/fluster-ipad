@@ -16,6 +16,8 @@ use crate::{
 #[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumErrorVariant {
+    #[error("This feature has not yet been completely implemented.")]
+    NotImplemented,
     #[error("Conundrum runs on a background thread by default, and it ran into some issues in your environment.")]
     MultiThreadingError,
     #[error("Conundrum could not convert the `{from}` type to a `{to}` type.")]
@@ -26,7 +28,6 @@ pub enum ConundrumErrorVariant {
     #[error("Codeblock meta data does not exist.")]
     CodeblockMetaDataNotExist,
     #[error("The specified key could not be found in the dictionary it was being used against.")]
-
     KeyNotFound,
     #[error("This should never happen, some embedded data can not be found.")]
     EmbeddedDataNotFound,
@@ -76,6 +77,12 @@ pub enum ConundrumErrorVariant {
     InvalidColor(String),
     #[error("There seems to be an error in your mermaid syntax. This is the error from mermaid: {0}")]
     MermaidError(String),
+    #[error("The provided csl file appears to be invalid. Please try another or use one of the embedded files.")]
+    InvalidCSL,
+    #[error("An empty bibliography attempted to render.")]
+    EmptyBibliography,
+    #[error("The provided biblatex content appears to be invalid. Entry: \n ```bib\n{0}\n```")]
+    InvalidBiblatex(String),
 }
 
 impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {

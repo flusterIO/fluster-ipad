@@ -14,7 +14,7 @@ import {
 // import rehypeImgSize from "rehype-img-size";
 import { compileMDX as baseCompileMDX } from "@content-collections/mdx";
 import remarkEmoji from "remark-emoji";
-import { Document, Context } from "@content-collections/core";
+import { type Document, type Context } from "@content-collections/core";
 import remarkMath from "remark-math";
 import {
     remarkDocGen,
@@ -23,11 +23,11 @@ import {
     // typescriptGenerator,
 } from "fumadocs-docgen";
 import rehypeMathJaxCHtml from "rehype-mathjax/chtml";
-import * as F from "@fumadocs/content-collections/configuration";
+import type * as F from "@fumadocs/content-collections/configuration";
 
 export const transformMdx: typeof F.transformMDX = (
     document: Document,
-    context: Context
+    context: Context,
 ) => {
     return context.cache(
         {
@@ -104,13 +104,13 @@ export const transformMdx: typeof F.transformMDX = (
                         ],
                         // [rehypeImgSize, { dir: "./public" }],
                     ],
-                }
+                },
             );
             return {
                 ...document,
                 ...data,
                 body,
             };
-        }
+        },
     );
 };

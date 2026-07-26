@@ -45,7 +45,7 @@ I'll do my best to convince the math types among you (this article does assume s
 
 
 <Hint label="Error" info>
-    All error percentage calculations were done with the following function. See the [Fluster & Conundrum repository](https://github.com/flusterIO) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
+    All error percentage calculations were done with the following function. See the [Fluster & Conundrum repository](https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
 </Hint>
 
 ```python -- title="percent_diff.py"
@@ -640,7 +640,7 @@ $$
 then finally
 
 $$
-\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\Phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{g}}{m^3}
+\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\Phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{kg}}{m^3}
 $$
 
 This is our observed mass density, $m_{0}$...

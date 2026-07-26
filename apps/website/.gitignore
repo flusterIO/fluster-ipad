@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+src/app/api/convert_math/
 
 # next.js
 /.next/

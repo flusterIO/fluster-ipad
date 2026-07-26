@@ -10,6 +10,7 @@ import { hlComponentConfig } from "./hl/hl_component_config";
 import { hrComponentConfig } from "./hr/hr_component_config";
 import { imageComponentConfig } from "./image/image_component_config";
 import { eqRefComponentConfig } from "./math/equation_reference/equation_reference_config";
+import { youtubeComponentConfig } from "./media/youtube/youtube_component_config";
 import { quoteComponentConfig } from "./quote/quote_component_config";
 import { embeddableTabComponentConfig } from "./tabs/embeddable_tab_config";
 import { tabGroupComponentConfig } from "./tabs/tab_group_component_config";
@@ -33,5 +34,6 @@ export const embeddableComponentConfigs: EmbeddableComponentConfig[] = [
     tocComponentConfg,
     quoteComponentConfig,
     imageComponentConfig,
-    colorComponentConfig
+    colorComponentConfig,
+    youtubeComponentConfig
 ]

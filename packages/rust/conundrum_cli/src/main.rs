@@ -1,4 +1,8 @@
-use crate::commands::{compile_project::compile_directory, parse_conundrum::parse_conundrum, watch::watch_directory};
+use crate::commands::{
+    compile_project::compile_directory,
+    initialize_local_environment::initialize_local_environment::initialize_local_environment,
+    parse_conundrum::parse_conundrum, watch::watch_directory,
+};
 use clap::{Parser, Subcommand};
 use conundrum_config::{ecosystem::project::project_config::ProjectConfig, traits::config_file::ConfigFile};
 mod commands;
@@ -24,6 +28,7 @@ enum Commands {
         file_path: String,
         output: String,
     },
+    InitializeLocalEnvironment,
     WatchDirectory {
         config: Option<String>,
     },
@@ -40,6 +45,11 @@ async fn main() {
         Some(Commands::ParseConundrum { file_path,
                                         output, }) => {
             let _ = parse_conundrum(file_path.as_str(), output.as_str()).await;
+        }
+        Some(Commands::InitializeLocalEnvironment) => {
+            if let Err(err) = initialize_local_environment() {
+                log::error!("Environment Error: {:?}", err);
+            }
         }
         Some(Commands::CompileProject { config, }) => match ProjectConfig::read(config) {
             Ok(config) => {

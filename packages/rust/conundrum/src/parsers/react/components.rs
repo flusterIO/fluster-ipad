@@ -18,7 +18,14 @@ use crate::{
                 tabs::{tabs_group::TabsGroup, tabs_group_tab::Tab},
                 toc::table_of_contents::TableOfContents,
             },
-            media::{color::color_component_model::ColorComponent, image::image::Image},
+            media::{
+                color::color_component_model::ColorComponent,
+                image::image::Image,
+                video::{
+                    local_video::local_video_component::LocalVideoComponent,
+                    youtube::youtube_component::YoutubeComponent,
+                },
+            },
         },
         runtime::{
             state::{
@@ -122,6 +129,14 @@ lazy_static! {
         m.insert(EmbeddableComponentId::Color.to_string(),
                  Box::new(|props, children, state| {
                      ColorComponent::from_props(props, children, state).map(ConundrumComponentType::Color)
+                 }));
+        m.insert(EmbeddableComponentId::Youtube.to_string(),
+                 Box::new(|props, children, state| {
+                     YoutubeComponent::from_props(props, children, state).map(ConundrumComponentType::Youtube)
+                 }));
+        m.insert(EmbeddableComponentId::LocalVideo.to_string(),
+                 Box::new(|props, children, state| {
+                     LocalVideoComponent::from_props(props, children, state).map(ConundrumComponentType::LocalVideo)
                  }));
         m
     };

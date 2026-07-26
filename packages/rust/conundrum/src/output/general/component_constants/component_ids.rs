@@ -73,6 +73,12 @@ pub enum EmbeddableComponentId {
     #[serde(rename = "equation-reference")]
     #[strum(to_string = "equation-reference")]
     EqRef,
+    #[serde(rename = "youtube")]
+    #[strum(to_string = "youtube")]
+    Youtube,
+    #[serde(rename = "video")]
+    #[strum(to_string = "video")]
+    LocalVideo,
     // #[serde(rename = "ai-note-summary")]
     // #[strum(to_string = "ai-note-summary")]
     // AINoteSummary,

@@ -1,7 +1,15 @@
+// mod how_the_fuck_do_we_get_exported;
 use convert_case::{self, Case, Casing};
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Data, DeriveInput, Fields, parse_macro_input};
+
+// use crate::how_the_fuck_do_we_get_exported::db::database_entity::database_entity_macro_logic;
+
+// #[proc_macro_derive(DatabaseEntity, attributes(join_tables))]
+// pub fn database_entity_macro(input: TokenStream) -> TokenStream {
+//     database_entity_macro_logic(input)
+// }
 
 #[proc_macro_derive(ConundrumPropertyMap, attributes(cdrm_property))]
 pub fn my_macro(input: TokenStream) -> TokenStream {

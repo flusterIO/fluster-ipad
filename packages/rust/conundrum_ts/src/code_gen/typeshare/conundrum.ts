@@ -1216,6 +1216,8 @@ export enum ConundrumModifier {
 	 * customizable directly in your note.
 	 */
 	PreferInlineMarkdownSyntax = "PreferInlineMarkdownSyntax",
+	/** Use this alongside a math-mode target to output math in an inline style. */
+	MathModeInline = "MathModeInline",
 	/**
 	 * This is really only useful for when your environment can't support any
 	 * other output format.
@@ -1270,6 +1272,7 @@ export enum EmbeddableComponentName {
 	Tabs = "Tabs",
 	Tab = "Tab",
 	Image = "Image",
+	Youtube = "Youtube",
 }
 
 export enum SupportedCodeBlockTheme {
@@ -1313,6 +1316,7 @@ export enum ConundrumCompileTarget {
 	Markdown = "markdown",
 	PlainText = "text",
 	Mdx = "mdx",
+	MathModeSvg = "math_svg",
 }
 
 /** This is the core 'input' for Conundrum. */
@@ -1430,7 +1434,8 @@ export type ConundrumComponentType =
 	| { tag: "EqRef", content: EquationReference }
 	| { tag: "EmojiDocsDemo", content: EmojiDocsDemo }
 	| { tag: "Image", content: Image }
-	| { tag: "Color", content: ColorComponent };
+	| { tag: "Color", content: ColorComponent }
+	| { tag: "Youtube", content: YoutubeComponent };
 
 export interface ReactComponentSelfClosingResult {
 	full_text: string;
@@ -1640,6 +1645,31 @@ export interface UtilityContainer {
 	children: Children;
 }
 
+/**
+ * ## Youtube
+ * 
+ * For embedding youtube videos directly in your notes.
+ * 
+ * ### Example
+ * 
+ * ```tsx
+ * <Youtube
+ * url="https://youtube.com/someVideoUrl"
+ * id="myOptionalId"
+ * />
+ * ```
+ * 
+ * You can then use the id of the video to link to specific time stamps using
+ * the `[my link content](video:myOptionalId@4:32)` to jump to 4 minutes and 32
+ * seconds.
+ */
+export interface YoutubeComponent {
+	url: ConundrumString;
+	/** An optional user defined id used for video timestamp links. */
+	id?: ConundrumString;
+	sizable: SizablePropsGroup;
+}
+
 export enum AiSerializationRequestType {
 	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
 	SummarizeNote = "SummarizeNote",
@@ -1687,6 +1717,7 @@ export enum CommonComponentPropertyKey {
 }
 
 export type ConundrumErrorVariant = 
+	| { tag: "NotImplemented", content?: undefined }
 	| { tag: "MultiThreadingError", content?: undefined }
 	| { tag: "TypeConversionError", content: {
 	from: string;
@@ -1782,6 +1813,7 @@ export enum EmbeddableComponentId {
 	Tabs = "tab-group",
 	Tab = "tab-group-tab",
 	EqRef = "equation-reference",
+	Youtube = "youtube",
 }
 
 /**

@@ -7,8 +7,39 @@ documentation.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[[bin]]
+name = "cdrm_server"
+path = "src/main.rs"
+
 [dependencies]
-axum = { version = "0.8.9" }
+anyhow = "1.0.103"
+askama = "0.16.0"
+axum = { version = "0.8.9", features = ["query"] }
+bcrypt = "0.19.2"
+chrono.workspace = true
+crossbeam = "0.8.4"
+lazy_static = "1.5.0"
+once_cell = "1.21.4"
+ratex-layout = "0.1.13"
+ratex-parser = "0.1.13"
+ratex-svg = "0.1.13"
+serde.workspace = true
+serde_json.workspace = true
+strum_macros.workspace = true
+thiserror.workspace = true
+tokio = { version = "1.52.3", features = ["full"] }
+typeshare.workspace = true
+wildmatch = "2.6.1"
+prettycli = "0.1.1"
+filetime = "0.2.29"
+glob = "0.3.4"
+notify = "8.2.0"
+glob-match = "0.2.1"
+ollama-rs = "0.3.5"
+langchain-rust = { version = "4.6.0", features = ["uuid", "ollama", "ollama-rs", "pdf-extract", "opensearch", "git", "fastembed"] }
+ignore = "0.4.31"
+conundrum = {path = "../conundrum/"}
+pyo3 = { version = "0.29.0", features = ["anyhow", "auto-initialize", "bigdecimal", "chrono", "either", "uuid"] }
 
 [lints]
 workspace = true

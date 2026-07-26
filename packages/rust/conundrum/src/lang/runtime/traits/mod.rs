@@ -1,3 +1,4 @@
+pub mod ai;
 pub mod ai_input_component_result;
 pub mod as_template;
 pub mod component_glue;

@@ -6,17 +6,17 @@ use syntect_assets::assets::HighlightingAssets;
 use typeshare::typeshare;
 
 use crate::{
+    lang::runtime::state::conundrum_error_variant::ConundrumModalResult,
     lang::runtime::state::{
         citation_list::CitationList, dom_data::DomData, footnote_manager::FootnoteManager, ui_params::UIParams,
     },
-    lang::runtime::{traits::conundrum_input::ConundrumInput},
-        lang::runtime::{state::conundrum_error_variant::ConundrumModalResult},
+    lang::runtime::traits::conundrum_input::ConundrumInput,
     output::{
         general::component_constants::parser_ids::ParserId,
         parsing_result::{
+            dictionary_result::{DictionaryEntryResult, DictionaryEntryResultUnCompiled},
             mdx_parsing_result::MdxParsingResult,
-            dictionary_result::{DictionaryEntryResultUnCompiled, DictionaryEntryResult}
-        }
+        },
     },
     parsers::markdown::heading_sluggger::Slugger,
 };
@@ -41,6 +41,8 @@ pub enum ConundrumModifier {
     /// As the list of component properties grows, this output will become
     /// customizable directly in your note.
     PreferInlineMarkdownSyntax,
+    /// Use this alongside a math-mode target to output math in an inline style.
+    MathModeInline,
     /// This is really only useful for when your environment can't support any
     /// other output format.
     DecoratedPlainText,
@@ -94,6 +96,9 @@ pub enum ConundrumCompileTarget {
     #[strum(to_string = "mdx", serialize = "mdx", serialize = "Mdx")]
     #[serde(rename = "mdx")]
     Mdx,
+    #[strum(to_string = "math_svg", serialize = "math-svg", serialize = "math")]
+    #[serde(rename = "math_svg")]
+    MathModeSvg,
 }
 
 impl ConundrumCompileTarget {
@@ -105,6 +110,7 @@ impl ConundrumCompileTarget {
             Self::Markdown => "md".to_string(),
             Self::PlainText => "txt".to_string(),
             Self::Mdx => "mdx".to_string(),
+            Self::MathModeSvg => "svg".to_string(),
         }
     }
 }
@@ -134,7 +140,7 @@ pub struct ParseState {
     pub footnotes: FootnoteManager,
     #[serde(skip)]
     pub highlight_assets: Arc<Mutex<HighlightingAssets>>,
-    pub uncompiled_dictionary_entries: Vec<DictionaryEntryResultUnCompiled>
+    pub uncompiled_dictionary_entries: Vec<DictionaryEntryResultUnCompiled>,
 }
 
 impl Default for ParseState {

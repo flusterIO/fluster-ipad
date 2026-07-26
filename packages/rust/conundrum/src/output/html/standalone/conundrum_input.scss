@@ -2,6 +2,7 @@
 @import "./conundrum_input_sizable.scss";
 @source "../../src/**/*.{jsx,mdx,js,ts,rs}";
 @source "../../../../../../../apps/website/src/**/*.{tsx,mdx,cdrm}";
+@source "../../../../../../../packages/rust/conundrum_server_rs/templates/**/*.{html,mdx,cdrm}";
 @source not "../glue/component_glue/**";
 @source not "../glue/component_glue_output/**";
 @plugin "@tailwindcss/typography";

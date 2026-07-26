@@ -71,6 +71,12 @@ pub enum EmbeddableComponentName {
     // #[serde(rename = "AINoteSummary")]
     // #[strum(to_string = "AINoteSummary")]
     // AINoteSummary,
+    #[serde(rename = "Youtube")]
+    #[strum(to_string = "Youtube")]
+    Youtube,
+    #[serde(rename = "Video")]
+    #[strum(to_string = "Video")]
+    LocalVideo,
 }
 
 impl FromStr for EmbeddableComponentName {
@@ -105,6 +111,8 @@ impl EmbeddableComponentName {
             EmbeddableComponentName::Image => EmbeddableComponentId::Image,
             EmbeddableComponentName::Quote => EmbeddableComponentId::Quote,
             EmbeddableComponentName::Color => EmbeddableComponentId::Color,
+            EmbeddableComponentName::Youtube => EmbeddableComponentId::Youtube,
+            EmbeddableComponentName::LocalVideo => EmbeddableComponentId::LocalVideo,
         }
     }
 }
