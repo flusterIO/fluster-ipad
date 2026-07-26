@@ -1,1 +1,1 @@
-pub mod numeric_result;
+pub mod numeric;

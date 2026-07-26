@@ -1,22 +1,9 @@
-use std::sync::Arc;
-
-use arrow_array::{RecordBatch, StringArray};
-use conundrum::{
-    ecosystem::{
-        db::traits::database_field_representable::DatabaseFieldRepresentable,
-        error_handling::db_error::{DatabaseError, DatabaseResult},
-    },
-    parsers::conundrum::logic::{number::conundrum_number::ConundrumNumber, string::conundrum_string::ConundrumString},
-};
 use serde::{Deserialize, Serialize};
 
-use crate::vector::{
-    database::db_types::db_entity::DBEntity,
-    models::{
-        date_time::date_time::DateTime,
-        primitives::db_id::DatabaseId,
-        taggables::{subject::Subject, tag::Tag, topic::Topic},
-    },
+use crate::vector::models::{
+    date_time::date_time::DateTime,
+    primitives::db_id::DatabaseId,
+    taggables::{subject::Subject, tag::Tag, topic::Topic},
 };
 
 #[derive(Clone, Deserialize)]
@@ -54,7 +41,7 @@ pub struct FlashCardModel<T> {
 }
 
 impl<T> FlashCardModel<T> {
-    fn new(input_data: FlashCardModelInputData<T>) -> FlashCardModel<T> {
+    pub fn new(input_data: FlashCardModelInputData<T>) -> FlashCardModel<T> {
         FlashCardModel { id: DatabaseId::new(),
                          question: input_data.question,
                          answer: input_data.answer,

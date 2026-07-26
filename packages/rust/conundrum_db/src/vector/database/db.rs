@@ -1,9 +1,39 @@
-// use crate::vector::database::db_types::general_db_types::{CdrmDb,
-// CdrmDbGuard}; use conundrum::ecosystem::db::tables::DatabaseTable;
-// use conundrum::ecosystem::error_handling::db_error::{DatabaseError,
-// DatabaseResult}; use lancedb::Table;
-// use lancedb::{Connection, connect};
-// use std::path::PathBuf;
-// use std::sync::Arc;
-// use tokio::sync::Mutex;
-// use tokio::sync::OnceCell;
+use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
+use std::{
+    path::PathBuf,
+    sync::{Arc, Mutex},
+};
+use surrealdb::{
+    Surreal,
+    engine::local::{Db, Mem},
+};
+use tokio::sync::OnceCell;
+
+pub type CDRMSurrealDB = Surreal<Db>;
+pub type ArcMutexDB = Arc<Mutex<CDRMSurrealDB>>;
+
+pub fn get_app_data_dir() -> DatabaseResult<PathBuf> {
+    if let Some(d) = dirs::data_local_dir() {
+        Ok(d.join("conundrum"))
+    } else {
+        dirs::data_dir().map(|x| x.join("conundrum")).ok_or(DatabaseError::InvalidDataDirectory)
+    }
+}
+
+pub fn get_app_database_dir() -> DatabaseResult<PathBuf> {
+    Ok(get_app_data_dir()?.join("database"))
+}
+
+static DB: OnceCell<ArcMutexDB> = OnceCell::const_new();
+
+pub async fn get_database<'a>() -> DatabaseResult<&'a ArcMutexDB> {
+    DB.get_or_try_init::<DatabaseError, _, _>(|| async {
+          let database_dir = get_app_database_dir()?;
+          let c = Surreal::new::<Mem>(database_dir).await.map_err(|e| {
+                                                              log::error!("Database Connection Error: {}", e);
+                                                              DatabaseError::FailToConnect
+                                                          })?;
+          Ok(Arc::new(Mutex::new(c)))
+      })
+      .await
+}

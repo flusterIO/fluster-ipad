@@ -1,12 +1,9 @@
-use conundrum::ecosystem::{db::tables::DatabaseTable, error_handling::db_error::DatabaseResult};
+use conundrum::ecosystem::db::tables::DatabaseTable;
 use indoc::formatdoc;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::{
-    database::db_traits::{
-        database_field::DatabaseField, pure_model_instance::PureModelInstanceMethods,
-        pure_model_static::PureModelStaticMethods,
-    },
+    database::db_traits::{database_field::DatabaseField, pure_model_static::PureModelStaticMethods},
     models::{
         date_time::date_time::DateTime, primitives::case_insensitive_string::CaseInsensitiveString,
         taggables::tag_location::TagLocation,
@@ -35,8 +32,8 @@ impl PureModelStaticMethods for Tag {
     }
 }
 
-impl PureModelInstanceMethods for Tag {
-    fn save_self(&self) -> DatabaseResult<()> {
-        todo!()
-    }
-}
+// impl PureModelInstanceMethods for Tag {
+//     fn save_self(&self) -> DatabaseResult<()> {
+//         todo!()
+//     }
+// }

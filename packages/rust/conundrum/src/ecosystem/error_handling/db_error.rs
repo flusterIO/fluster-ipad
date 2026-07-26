@@ -8,6 +8,8 @@ use crate::ecosystem::db::tables::DatabaseTable;
 pub enum DatabaseError {
     #[error("Feature not yet implemented.")]
     NotImplemented,
+    #[error("The data directory for your operating system could not be found. We don't know where to put your data.")]
+    InvalidDataDirectory,
     #[error("Conundrum encountered an error serializing some of your configuration.")]
     SerializationError,
     #[error("Fluster could not locate your operating system's data directory. We don't know where to store your database.")]
@@ -20,7 +22,6 @@ pub enum DatabaseError {
     FailToDelete(DatabaseTable),
     #[error("Failed to serialize. Nested Error: {0}")]
     FailToSerialize(String),
-
     #[error("Failed to create table for the `{:?}` model.", .0.to_model_name())]
     FailToCreateTable(DatabaseTable),
 }

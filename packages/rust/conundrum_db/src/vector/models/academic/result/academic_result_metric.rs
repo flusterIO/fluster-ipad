@@ -1,3 +1,25 @@
+use conundrum::ecosystem::db::tables::DatabaseTable;
+use serde::{Deserialize, Serialize};
+
+use crate::vector::database::{
+    db_traits::enum_variant_db_models::EnumDBModelVariantMethods, db_types::db_entity::DBEntity,
+};
+
+#[derive(Serialize, strum_macros::Display)]
+pub enum AcademicResultMetricKey {
+    #[strum(to_string = "percent")]
+    Percent,
+    #[strum(to_string = "percent-error")]
+    PercentError,
+    #[strum(to_string = "rational-error")]
+    RationalScore,
+    #[strum(to_string = "standard-deviation")]
+    StandardDeviation,
+    #[strum(to_string = "custom")]
+    Custom,
+}
+
+#[derive(Serialize, Clone, Debug, Deserialize)]
 pub enum AcademicResultMetric {
     /// A 100 based percentage, similar to score on a test.
     Percent(f32),
@@ -16,4 +38,27 @@ pub enum AcademicResultMetric {
         value: f32,
         label: String,
     },
+}
+
+impl EnumDBModelVariantMethods for AcademicResultMetric {
+    fn schema(&self) -> String {
+        todo!()
+    }
+
+    fn table(&self) -> conundrum::ecosystem::db::tables::DatabaseTable {
+        match self {
+            Self::Percent(_) => DatabaseTable::NumericAcademicResultMetric,
+            Self::PercentError(_) => DatabaseTable::NumericAcademicResultMetric,
+            Self::RationalScore { numerator,
+                                  denominator, } => DatabaseTable::RationalScoreAcademicResultMetric,
+            Self::StandardDeviation(_) => DatabaseTable::NumericAcademicResultMetric,
+            Self::Custom { value,
+                           label, } => DatabaseTable::CustomAcademicResultMetric,
+        }
+    }
+}
+
+pub struct ComposedAcademicResultMetric {
+    pub key: AcademicResultMetricKey,
+    pub metric: AcademicResultMetric,
 }

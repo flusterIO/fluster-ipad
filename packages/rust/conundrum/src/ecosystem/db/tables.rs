@@ -7,7 +7,7 @@ use strum_macros::{Display, EnumIter};
 
 #[derive(Debug, Serialize, Deserialize, Display, EnumIter, EnumCount, PartialEq, Clone, Eq)]
 pub enum DatabaseTable {
-    // -- Taggables --
+    // -- Pure Models --
     #[strum(to_string = "tag")]
     #[serde(rename = "tag")]
     Tag,
@@ -23,6 +23,23 @@ pub enum DatabaseTable {
     #[strum(to_string = "qa_pair")]
     #[serde(rename = "qa_pair")]
     QAPair,
+    #[strum(to_string = "academic_res_metric")]
+    #[serde(rename = "academic_res_metric")]
+    AcademicResultMetric,
+    #[strum(to_string = "bib_entry")]
+    #[serde(rename = "bib_entry")]
+    BibEntry,
+    #[strum(to_string = "numeric_academic_res_metric")]
+    #[serde(rename = "numeric_academic_res_metric")]
+    /// Stores just the `AcademicResultMetricKey` and the value.
+    NumericAcademicResultMetric,
+    #[strum(to_string = "rational_academic_res_metric")]
+    #[serde(rename = "rational_academic_res_metric")]
+    RationalScoreAcademicResultMetric,
+    #[strum(to_string = "custom_academic_res_metric")]
+    #[serde(rename = "custom_academic_res_metric")]
+    CustomAcademicResultMetric,
+    /// ---- Vectors ----
     #[strum(to_string = "cdrm_vec")]
     #[serde(rename = "cdrm_vec")]
     CdrmVector,

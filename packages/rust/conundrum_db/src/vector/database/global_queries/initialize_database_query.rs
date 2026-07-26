@@ -5,7 +5,10 @@ use crate::{
     schemas_string,
     vector::{
         database::db_traits::pure_model_static::PureModelStaticMethods,
-        models::taggables::{tag::Tag, topic::Topic},
+        models::{
+            academic::question::flashcard::pure_flashcard::PureFlashcard,
+            taggables::{subject::Subject, tag::Tag, topic::Topic},
+        },
     },
 };
 
@@ -17,7 +20,7 @@ pub struct InitializeDatabaseQuery {
 
 impl Default for InitializeDatabaseQuery {
     fn default() -> Self {
-        let s = schemas_string!(Tag, Topic);
+        let s = schemas_string!(Tag, Topic, Subject, PureFlashcard<String>);
         Self { schema_string_from_macro: s }
     }
 }

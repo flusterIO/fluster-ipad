@@ -35,8 +35,8 @@ impl PureModelStaticMethods for Topic {
     }
 }
 
-impl PureModelInstanceMethods for Topic {
-    fn save_self(&self) -> DatabaseResult<()> {
-        todo!()
-    }
-}
+// impl PureModelInstanceMethods for Topic {
+//     fn save_self(&self) -> DatabaseResult<()> {
+//         todo!()
+//     }
+// }

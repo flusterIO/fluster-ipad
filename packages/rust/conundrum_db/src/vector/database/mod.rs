@@ -5,3 +5,4 @@ pub mod db_types;
 pub mod global_queries;
 pub mod inititialize_db;
 pub mod joins;
+pub mod primitive_field_schema_generators;
