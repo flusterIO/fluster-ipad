@@ -9,9 +9,9 @@ use crate::vector::models::{
 };
 
 #[derive(Clone, Deserialize, Debug)]
-pub struct FlashCardModelInputData {
+pub struct FlashCardModelStringAnswerInputData {
     pub question: String,
-    pub answer: FlashcardValue,
+    pub answer: String,
     /// This is not optional for AI. AI should always produce an explanation.
     pub explanation: Option<String>,
     pub tags: Vec<Tag>,
@@ -43,10 +43,10 @@ pub struct FlashCardModel {
 }
 
 impl FlashCardModel {
-    pub fn new(input_data: FlashCardModelInputData) -> FlashCardModel {
+    pub fn new_with_string_answer(input_data: FlashCardModelStringAnswerInputData) -> FlashCardModel {
         FlashCardModel { id: DatabaseId::new(),
                          question: input_data.question,
-                         answer: input_data.answer,
+                         answer: FlashcardValue::Text(input_data.answer),
                          explanation: input_data.explanation,
                          difficulty: input_data.difficulty,
                          correct_responses: 0,

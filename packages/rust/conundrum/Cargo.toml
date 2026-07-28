@@ -119,6 +119,8 @@ convert_case = "0.11.0"
 hayagriva = { version = "0.10.1", features = ["strum"] }
 chrono.workspace = true
 lancedb = "0.29.0"
+surrealdb = { workspace = true, features = ["kv-rocksdb"] }
+surrealdb-types = "3.2.3"
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
@@ -159,7 +161,7 @@ cargo-doc-md = "0.11.0"
 rustdoc-md = "0.2.0"
 burn = "0.21.0"
 tower-test = "0.4.0"
-fake = { version = "5.1.0", features = ["chrono", "chrono-tz", "random_color", "semver", "serde_json", "time"] }
+fake.workspace = true
 
 [lints]
 workspace = true

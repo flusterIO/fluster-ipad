@@ -1,6 +1,6 @@
 //! # Conundrum
 //!
-//! Well, it's me again... the creator of [Fluster](https://flusterapp.com). After my initial
+//! Hey everybody, I'm the creator of [Fluster](https://flusterapp.com). After my initial
 //! attempt to open-source the entire project left me just as homeless I decided
 //! to make Fluster proprietary, but I want everyone to have access to the
 //! transpiler. Compiler? I'm not even sure...
@@ -14,13 +14,13 @@
 //! documentation and just _collect_ the generated documentation for the
 //! language's built-in documentation feature. Because of that, you might notice
 //! that some of the documentation appears out of context on places like
-//! rustdoc, but it's intended to be written for a more general-public, in-app
+//! rustdoc... it's intended to be written for a more general-public, in-app
 //! experience.
 //!
 //! ## General Users
 //!
 //! As mentioned above, much (but not all) of the embedded documentation is
-//! generated directly from the code, and since so is the online documentation,
+//! generated directly from the code, and since the online documentation is too,
 //! there's a _ton_ of overlap with the online content.
 //!
 //! Still, take a look at the [component's
@@ -32,7 +32,8 @@
 //! Throughout the documentation, if you see a `Sizable` struct attached to a
 //! component, that means that that component can accept the `Sizable` struct's
 //! properties. Same thing with the `Emphasis` enum ([found
-//! here](crate::lang::lib::ui::ui_types::emphasis)).
+//! here](crate::lang::lib::ui::ui_types::emphasis)), or any of the growing list
+//! of 'property-groups', as well as any properties unique to that component.
 //!
 //! ## Future Plans
 //!
@@ -66,7 +67,7 @@
 //! I'm still kinda homeless, so if anyone's looking for a
 //! Rust/Typescript/Python/Go/Swift/Lua/Kinda-Dart developer, please let me
 //! know! I haven't had a regular paycheck in more than 5 years afteer quiting
-//! my job to work on a [modified model of relativity](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time).
+//! my job to work on a [modified model of relativity](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time)
 #![feature(string_replace_in_place)]
 uniffi::setup_scaffolding!();
 

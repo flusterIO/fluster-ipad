@@ -1,3 +1,3 @@
-pub mod cdrm_content;
-pub mod cdrm_content_format;
+pub mod cdrm;
+pub mod html;
 pub mod typst;

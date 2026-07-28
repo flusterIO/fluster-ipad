@@ -41,9 +41,14 @@ apalis-cron = "0.7.4"
 tokio-cron-scheduler = "0.15.1"
 serde_with = { version = "3.18.0", features = ["base64", "chrono", "json"] }
 surrealdb-types = "3.2.3"
+fake.workspace = true
+surrealdb-migrations = "2.4.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }
+
+[dev-dependencies]
+fake.workspace = true

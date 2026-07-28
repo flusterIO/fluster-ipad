@@ -1,6 +1,7 @@
 
 use std::{fmt::Display, hash::Hash, ops::Add};
 
+use surrealdb_types::SurrealValue;
 use winnow::{Parser, ascii::dec_int, error::{ContextError, ErrMode}};
 
 use crate::{
@@ -8,7 +9,7 @@ use crate::{
         elements::parsed_elements::ParsedElement, lib::ui::ui_traits::jsx_prop_representable::{FromJsxPropsOptional, JsxPropRepresentable}, runtime::{state::{
             conundrum_error::ConundrumError,
             conundrum_error_variant::{ConundrumErrorVariant, ConundrumModalResult},
-        }, traits::conundrum_input::ConundrumInput}
+        }, traits::{conundrum_input::ConundrumInput}}
     },
     parsers::{conundrum::logic::{number::conundrum_number::ConundrumNumber, object::object::ConundrumObject, token::ConundrumLogicToken}, parser_trait::ConundrumParser},
 };
@@ -18,6 +19,30 @@ pub struct ConundrumInt(pub i64);
 
 uniffi::custom_newtype!(ConundrumInt, i64);
 
+
+impl SurrealValue for ConundrumInt {
+    fn kind_of() -> surrealdb_types::Kind {
+        surrealdb_types::Kind::Int
+    }
+
+    fn into_value(self) -> surrealdb_types::Value {
+        surrealdb::types::Value::from_i64(self.0)
+    }
+
+    fn from_value(value: surrealdb_types::Value) -> Result<Self, surrealdb::Error>
+	    where
+		    Self: Sized {
+        if let Some(n) = value.as_int() {
+            Ok(
+                Self(*n)
+            )
+        } else {
+            Err(
+                surrealdb::Error::thrown("Invalid integer stored.".to_string())
+            )
+        }
+    }
+}
 
 impl Eq for ConundrumInt {
 

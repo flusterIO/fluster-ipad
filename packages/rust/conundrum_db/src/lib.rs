@@ -1,4 +1,5 @@
 #![recursion_limit = "1024"]
+#![allow(clippy::module_inception)]
 //! ## Package Layout
 //!
 //! - entites: All of the database logic for a given model.

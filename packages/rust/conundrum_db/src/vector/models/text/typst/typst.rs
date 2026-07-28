@@ -12,7 +12,7 @@ use crate::vector::models::{
 pub struct TypstContent {
     pub id: DatabaseId,
     pub title: Option<String>,
-    pub body: String,
+    pub content: String,
     pub ai_generated: AIGeneratedStatus,
     pub tags: Vec<Tag>,
     pub topic: Option<Topic>,

@@ -1,7 +1,7 @@
-use lexical_parse_integer::FromLexical;
 use parking_lot::RwLock;
 use serde::{Deserialize, Serialize};
 use std::{fmt::Display, sync::Arc};
+use surrealdb_types::SurrealValue;
 use winnow::{
     Parser,
     ascii::{dec_int, float},
@@ -139,6 +139,30 @@ impl ConundrumComponentResult for ConundrumNumber {
     }
 }
 
+impl SurrealValue for ConundrumNumber {
+    fn kind_of() -> surrealdb_types::Kind {
+        surrealdb_types::Kind::Number
+    }
+
+    fn into_value(self) -> surrealdb_types::Value {
+        match self {
+            Self::Int(n) => n.into_value(),
+            Self::Float(n) => n.into_value(),
+        }
+    }
+
+    fn from_value(value: surrealdb_types::Value) -> Result<Self, surrealdb::Error>
+        where Self: Sized {
+        if let Some(r) = value.as_int() {
+            Ok(Self::Int(ConundrumInt(*r)))
+        } else if let Some(r) = value.as_float() {
+            Ok(Self::Float(ConundrumFloat(*r)))
+        } else {
+            Err(surrealdb_types::Error::thrown("Invalid ConundrumNumber stored.".to_string()))
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::testing::wrap_test_content::wrap_test_conundrum_content;
@@ -159,6 +183,7 @@ mod tests {
         println!("Res: {:#?}", res);
         assert!(matches!(res, ConundrumNumber::Float(_)), "Finds a float when one is present.");
         #[allow(clippy::approx_constant)]
-        assert!(res.is_float_and(|n| *n == 3.1415), "Finds the proper float value");
+        let is_float_value = res.is_float_and(|n| *n == 3.1415);
+        assert!(is_float_value, "Finds the proper float value");
     }
 }

@@ -3,12 +3,13 @@ use std::fmt::Display;
 use conundrum::ecosystem::db::{
     tables::DatabaseTable, traits::database_field_representable::DatabaseFieldRepresentable,
 };
+use fake::{Dummy, Fake, Faker, faker};
 use serde::{Deserialize, Serialize};
 use surrealdb::types::{Kind, SurrealValue};
 
 use crate::vector::database::db_traits::database_field::DatabaseField;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
 pub struct CaseInsensitiveString(String);
 
 impl SurrealValue for CaseInsensitiveString {

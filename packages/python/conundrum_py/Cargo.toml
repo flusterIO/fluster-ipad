@@ -1,0 +1,15 @@
+[package]
+name = "conundrum_py"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "_core"
+# "cdylib" is necessary to produce a shared library for Python to import from.
+crate-type = ["cdylib"]
+
+[dependencies]
+conundrum = { path = "../../rust/conundrum/" }
+conundrum_server_rs = { path = "../../rust/conundrum_server_rs/" }
+conundrum_db = { path = "../../rust/conundrum_db/" }
+pyo3 = { workspace = true, features = ["full"] }

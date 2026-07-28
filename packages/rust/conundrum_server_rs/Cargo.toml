@@ -40,7 +40,8 @@ langchain-rust = { version = "4.6.0", features = ["uuid", "ollama", "ollama-rs",
 ignore = "0.4.31"
 conundrum = {path = "../conundrum/"}
 conundrum_db = {path = "../conundrum_db/"}
-pyo3 = { version = "0.29.0", features = ["anyhow", "auto-initialize", "bigdecimal", "chrono", "either", "uuid"] }
+# pyo3 = { version = "0.29.0", features = ["anyhow", "auto-initialize", "bigdecimal", "chrono", "either", "uuid"] }
+
 log = "0.4.33"
 
 [lints]

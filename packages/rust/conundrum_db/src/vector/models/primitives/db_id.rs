@@ -1,13 +1,12 @@
 use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
-pub use uuid::Uuid;
+use surrealdb::types::{SurrealValue, Uuid};
 
 use conundrum::ecosystem::db::traits::database_field_representable::DatabaseFieldRepresentable;
 
 #[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
-pub struct DatabaseId(String);
+pub struct DatabaseId(Uuid);
 
 impl Display for DatabaseId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -17,12 +16,12 @@ impl Display for DatabaseId {
 
 impl DatabaseId {
     pub fn new() -> DatabaseId {
-        DatabaseId(Uuid::new_v4().to_string())
+        DatabaseId(Uuid::new())
     }
 }
 
-impl DatabaseFieldRepresentable<String> for DatabaseId {
-    fn to_db_representation(&self) -> String {
+impl DatabaseFieldRepresentable<Uuid> for DatabaseId {
+    fn to_db_representation(&self) -> Uuid {
         self.0.clone()
     }
 }
