@@ -1,6 +1,7 @@
 use conundrum::ecosystem::db::tables::DatabaseTable;
 use indoc::formatdoc;
 use serde::{Deserialize, Serialize};
+use surrealdb::types::SurrealValue;
 
 use crate::vector::{
     database::{
@@ -12,7 +13,7 @@ use crate::vector::{
     models::date_time::date_time::DateTime,
 };
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, SurrealValue, Debug)]
 pub struct BibEntryModel {
     /// The key of the biblatex entry, used as an id in the database as well.
     pub key: String,

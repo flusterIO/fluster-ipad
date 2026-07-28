@@ -298,6 +298,35 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2a4385e2e34eb35d6b3efe798b9eb88096925d87726c0798709bf56d9ed84af3"
 
 [[package]]
+name = "apalis-core"
+version = "0.7.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3948d2051795c769e6a44a46549879af39d5e8e4fb113e0011cf99f7cd21b657"
+dependencies = [
+ "futures",
+ "futures-timer",
+ "pin-project-lite",
+ "serde",
+ "thiserror 2.0.18",
+ "tower 0.5.3",
+ "ulid",
+]
+
+[[package]]
+name = "apalis-cron"
+version = "0.7.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "82ce16ed2870e0226b02b242ef7b552f015ee9592bb797c20b32fb37bd796e2d"
+dependencies = [
+ "apalis-core",
+ "async-stream",
+ "chrono",
+ "cron",
+ "futures",
+ "tower 0.5.3",
+]
+
+[[package]]
 name = "approx"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3910,10 +3939,12 @@ dependencies = [
 name = "conundrum_db"
 version = "0.0.1"
 dependencies = [
+ "apalis-cron",
  "arrow-array 56.2.0",
  "askama 0.16.0",
  "chrono",
  "conundrum",
+ "conundrum_fs",
  "convert_case 0.11.0",
  "dirs 6.0.0",
  "either",
@@ -3925,12 +3956,15 @@ dependencies = [
  "schemars 1.2.1",
  "serde",
  "serde_json",
+ "serde_with",
  "strum 0.27.2",
  "strum_macros 0.27.2",
  "surrealdb",
+ "surrealdb-types",
  "syn 3.0.3",
  "thiserror 2.0.18",
  "tokio",
+ "tokio-cron-scheduler",
  "uuid",
 ]
 
@@ -3966,6 +4000,7 @@ dependencies = [
  "anyhow",
  "conundrum",
  "conundrum_config",
+ "dirs 6.0.0",
  "filetime",
  "ignore",
  "package_json_schema",
@@ -4020,6 +4055,7 @@ dependencies = [
  "bcrypt 0.19.2",
  "chrono",
  "conundrum",
+ "conundrum_db",
  "crossbeam",
  "filetime",
  "glob",
@@ -4027,6 +4063,7 @@ dependencies = [
  "ignore",
  "langchain-rust",
  "lazy_static",
+ "log",
  "notify",
  "ollama-rs 0.3.5",
  "once_cell",
@@ -4441,6 +4478,28 @@ name = "critical-section"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "790eea4361631c5e7d22598ecd5723ff611904e3344ce8720784c93e3d83d40b"
+
+[[package]]
+name = "cron"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5877d3fbf742507b66bc2a1945106bd30dd8504019d596901ddd012a4dd01740"
+dependencies = [
+ "chrono",
+ "once_cell",
+ "winnow 0.6.26",
+]
+
+[[package]]
+name = "croner"
+version = "3.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4aa42bcd3d846ebf66e15bd528d1087f75d1c6c1c66ebff626178a106353c576"
+dependencies = [
+ "chrono",
+ "derive_builder",
+ "strum 0.27.2",
+]
 
 [[package]]
 name = "crossbeam"
@@ -12592,6 +12651,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "libz-sys"
+version = "1.1.28"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fc3a226e576f50782b3305c5ccf458698f92798987f551c6a02efe8276721e22"
+dependencies = [
+ "cc",
+ "pkg-config",
+ "vcpkg",
+]
+
+[[package]]
 name = "lightningcss"
 version = "1.0.0-alpha.71"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -12840,9 +12910,9 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.32"
+version = "0.4.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "953f07c43838f8e6f9758cab68bf5bed85465e7587ebe0b823f1bcd81978ad3a"
+checksum = "0ceec5bc11778974d1bcb055b18002eba7f4b3518b6a0081b3af5f21666da9ad"
 dependencies = [
  "serde_core",
 ]
@@ -20324,6 +20394,7 @@ dependencies = [
  "subtle",
  "surrealdb-collections",
  "surrealdb-protocol",
+ "surrealdb-rocksdb",
  "surrealdb-strand",
  "surrealdb-types",
  "surrealmx",
@@ -20341,6 +20412,21 @@ dependencies = [
  "wasm-bindgen-futures",
  "wasmtimer",
  "web-time",
+]
+
+[[package]]
+name = "surrealdb-librocksdb-sys"
+version = "0.18.3+11.0.0-4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25b82a18c7fa4b57206784a1a31e7b942ae1d3e24493e0c733019a409b2b4bea"
+dependencies = [
+ "bindgen 0.72.1",
+ "bzip2-sys",
+ "cc",
+ "libc",
+ "libz-sys",
+ "lz4-sys",
+ "zstd-sys",
 ]
 
 [[package]]
@@ -20365,6 +20451,16 @@ dependencies = [
  "tonic",
  "tonic-prost",
  "uuid",
+]
+
+[[package]]
+name = "surrealdb-rocksdb"
+version = "0.24.0-surreal.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "02e8c3a004982458af159bcbf369e41663d538cd4a291a49c0d4a2fb373cbb7e"
+dependencies = [
+ "libc",
+ "surrealdb-librocksdb-sys",
 ]
 
 [[package]]
@@ -21285,6 +21381,22 @@ dependencies = [
  "tokio-macros",
  "tracing",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "tokio-cron-scheduler"
+version = "0.15.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1f50e41f200fd8ed426489bd356910ede4f053e30cebfbd59ef0f856f0d7432a"
+dependencies = [
+ "chrono",
+ "chrono-tz 0.10.4",
+ "croner",
+ "num-derive",
+ "num-traits",
+ "tokio",
+ "tracing",
+ "uuid",
 ]
 
 [[package]]

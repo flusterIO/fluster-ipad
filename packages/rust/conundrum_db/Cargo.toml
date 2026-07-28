@@ -25,10 +25,11 @@ thiserror.workspace = true
 uuid = { version = "1.23.2", features = ["v4"] }
 convert_case = "0.11.0"
 conundrum = { path = "../conundrum/" }
+conundrum_fs = { path = "../conundrum_fs/" }
 schemars = { version = "1.2.1", features = ["chrono04", "either1", "uuid1"] }
 either = "1.16.0"
 log = "0.4.32"
-surrealdb = { version = "3.2.3", features = ["scripting", "kv-mem"] }
+surrealdb.workspace = true
 askama = "0.16.0"
 phf = { version = "0.13.1", features = ["std"] }
 quote = "1.0.47"
@@ -36,6 +37,10 @@ chrono.workspace = true
 strum.workspace = true
 indoc = "2.0.7"
 syn = "3.0.3"
+apalis-cron = "0.7.4"
+tokio-cron-scheduler = "0.15.1"
+serde_with = { version = "3.18.0", features = ["base64", "chrono", "json"] }
+surrealdb-types = "3.2.3"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }

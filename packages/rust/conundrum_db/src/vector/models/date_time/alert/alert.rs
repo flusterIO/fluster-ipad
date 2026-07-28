@@ -1,15 +1,11 @@
 use serde::{Deserialize, Serialize};
+use surrealdb::types::SurrealValue;
 
 use crate::vector::models::date_time::alert::alert_severity::AlertSeverity;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub enum Alert {
-    TitleAndBody {
-        body: String,
-        title: String,
-        severity: AlertSeverity,
-    },
-    /// The `Assigment` variant must be used attached to an assigment. Any other
-    /// use will cause unexpected behavior. Who know's what'll happen...
-    Assigment,
+#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+pub struct Alert {
+    title: String,
+    body: String,
+    severity: AlertSeverity,
 }

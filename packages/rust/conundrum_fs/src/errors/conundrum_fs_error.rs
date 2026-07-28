@@ -9,6 +9,9 @@ pub enum ConundrumFSError {
     #[error("This error should never make it back to the user, but I'm in a hurry...")]
     GeneralFSError,
 
+    #[error("Conundrum could not locate the data directory for your operating system. We don't know where to put your data.")]
+    InvalidDataDirectory,
+
     #[error("The `{0}` path must be a child of the `{1}` path.")]
     FileNotChildOfDir(String, String),
 

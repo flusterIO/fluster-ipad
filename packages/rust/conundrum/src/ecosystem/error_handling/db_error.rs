@@ -8,6 +8,8 @@ use crate::ecosystem::db::tables::DatabaseTable;
 pub enum DatabaseError {
     #[error("Feature not yet implemented.")]
     NotImplemented,
+    #[error("The database encountered a thread related error.")]
+    ThreadError,
     #[error("The data directory for your operating system could not be found. We don't know where to put your data.")]
     InvalidDataDirectory,
     #[error("Conundrum encountered an error serializing some of your configuration.")]

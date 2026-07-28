@@ -52,10 +52,11 @@ strum_macros = "0.27.2"
 strum = { version = "0.27.2", features = ["derive"] }
 winnow = { version = "0.7.15" }
 polars = "0.39.2"
+surrealdb = { version = "3.2.3", features = ["scripting", "kv-mem", "kv-rocksdb"] }
 
 [workspace.lints.rust]
 unused_crate_dependencies = "warn"
-
+module_inception = "allow"
 
 [profile.dev.package.lancedb]
 opt-level = 1

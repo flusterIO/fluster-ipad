@@ -47,7 +47,7 @@ async fn main() {
             let _ = parse_conundrum(file_path.as_str(), output.as_str()).await;
         }
         Some(Commands::InitializeLocalEnvironment) => {
-            if let Err(err) = initialize_local_environment() {
+            if let Err(err) = initialize_local_environment().await {
                 log::error!("Environment Error: {:?}", err);
             }
         }

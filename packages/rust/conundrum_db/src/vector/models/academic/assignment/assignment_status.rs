@@ -1,4 +1,8 @@
+use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
+use std::{fmt::Display, str::FromStr};
+use surrealdb::types::SurrealValue;
 
 /// ## AssignmentStatus
 ///
@@ -6,34 +10,85 @@ use serde::{Deserialize, Serialize};
 /// setup in a kanban board. Feel free to build your UI either replicating that
 /// kanban board, or just ignore certain statuses and treat it as a boolean
 /// indicating 'in-progress' or not... you do you.
-#[derive(strum_macros::Display, Clone, Serialize, Deserialize)]
-#[serde(tag = "tag", content = "content")]
+#[derive(Clone, Serialize, Deserialize, Debug)]
+#[serde(tag = "tag", content = "content", try_from = "String")]
 pub enum AssignmentStatus {
     /// The initial status for a general task that's incomplete.
-    #[strum(to_string = "to_do")]
-    #[serde(rename = "to_do")]
     ToDo,
     /// When someone on the team, or yourself is handling the task.
-    #[strum(to_string = "in_progress")]
-    #[serde(rename = "in_progress")]
     InProgress,
     /// Building an app? This is for version two. Writing a big paper? This is
     /// for after the initial draft is done.
-    #[strum(to_string = "up_next")]
-    #[serde(rename = "up_next")]
     UpNext,
     /// The place for stuff with s--t in the way. Like if your friend Steve is
     /// slacking on something that Tracy needs to get her work done. Put
     /// Tracy's work here, and yell at Steve.
-    #[strum(to_string = "on_hold")]
-    #[serde(rename = "on_hold")]
     OnHold,
     /// The 'done' folder.
-    #[strum(to_string = "complete")]
-    #[serde(rename = "complete")]
     Complete,
     /// The trash bin basically.
-    #[strum(to_string = "archived")]
-    #[serde(rename = "archived")]
     Archived,
+    Custom(String),
+}
+
+impl SurrealValue for AssignmentStatus {
+    fn kind_of() -> surrealdb::types::Kind {
+        surrealdb::types::Kind::String
+    }
+
+    fn into_value(self) -> surrealdb::types::Value {
+        surrealdb::types::Value::String(self.to_string())
+    }
+
+    fn from_value(value: surrealdb::types::Value) -> Result<Self, surrealdb::Error>
+        where Self: Sized {
+        if let Some(s) = value.as_string() {
+            if let Ok(res) = Self::from_str(s) {
+                Ok(res)
+            } else {
+                Err(surrealdb::Error::thrown("Failed to serialize assignmentStatus".to_string()))
+            }
+        } else {
+            Err(surrealdb::Error::thrown("Failed to serialize assignmentStatus".to_string()))
+        }
+    }
+}
+
+impl Display for AssignmentStatus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Self::ToDo => "to_do",
+            Self::InProgress => "in_progress",
+            Self::UpNext => "up_next",
+            Self::OnHold => "on_hold",
+            Self::Complete => "complete",
+            Self::Archived => "archived",
+            Self::Custom(s) => s.as_str(),
+        };
+        write!(f, "{}", s)
+    }
+}
+
+impl FromStr for AssignmentStatus {
+    type Err = DatabaseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(match s {
+            "to_do" => Self::ToDo,
+            "in_progress" => Self::InProgress,
+            "up_next" => Self::UpNext,
+            "on_hold" => Self::OnHold,
+            "complete" => Self::Complete,
+            "archived" => Self::Archived,
+            _ => Self::Custom(s.to_string()),
+        })
+    }
+}
+
+impl TryFrom<String> for AssignmentStatus {
+    type Error = DatabaseError;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        Self::from_str(value.as_str())
+    }
 }

@@ -6,3 +6,5 @@ pub mod global_queries;
 pub mod inititialize_db;
 pub mod joins;
 pub mod primitive_field_schema_generators;
+pub mod schema_version;
+pub mod table_data;

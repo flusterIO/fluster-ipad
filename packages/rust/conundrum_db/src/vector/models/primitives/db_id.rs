@@ -1,11 +1,12 @@
 use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
+use surrealdb::types::SurrealValue;
 pub use uuid::Uuid;
 
 use conundrum::ecosystem::db::traits::database_field_representable::DatabaseFieldRepresentable;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
 pub struct DatabaseId(String);
 
 impl Display for DatabaseId {

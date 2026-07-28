@@ -6,8 +6,10 @@ use serde::{Deserialize, Serialize};
 use crate::vector::{
     database::db_types::db_entity::DBEntity,
     models::{
-        ai::ai_generated_status::AIGeneratedStatus, date_time::date_time::DateTime, primitives::db_id::DatabaseId,
-        taggables::taggables::Taggables,
+        ai::ai_generated_status::AIGeneratedStatus,
+        date_time::date_time::DateTime,
+        primitives::db_id::DatabaseId,
+        taggables::{subject::Subject, tag::Tag, taggables::Taggables, topic::Topic},
     },
 };
 
@@ -22,7 +24,9 @@ pub struct CdrmContent {
     pub title: Option<String>,
     pub body: String,
     pub ai_generated: AIGeneratedStatus,
-    pub taggables: Taggables,
+    pub tags: Vec<Tag>,
+    pub topic: Option<Topic>,
+    pub subject: Option<Subject>,
     pub fs_path: Option<String>,
     pub ctime: DateTime,
     pub utime: DateTime,

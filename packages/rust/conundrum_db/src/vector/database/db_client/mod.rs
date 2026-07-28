@@ -1,1 +1,2 @@
-pub mod vector_db_client;
+pub mod db_client;
+pub mod db_client_trait;

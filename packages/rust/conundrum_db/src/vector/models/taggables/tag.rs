@@ -1,6 +1,7 @@
 use conundrum::ecosystem::db::tables::DatabaseTable;
 use indoc::formatdoc;
 use serde::{Deserialize, Serialize};
+use surrealdb::types::SurrealValue;
 
 use crate::vector::{
     database::db_traits::{database_field::DatabaseField, pure_model_static::PureModelStaticMethods},
@@ -10,7 +11,7 @@ use crate::vector::{
     },
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
 pub struct Tag {
     pub value: CaseInsensitiveString,
     pub location: TagLocation,

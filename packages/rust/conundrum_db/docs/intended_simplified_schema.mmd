@@ -1,0 +1,140 @@
+classDiagram
+    
+    class Conundrum {
+        +List<BibEntry> bib_entries
+        +List<Tag> tags
+        +Option<Topic> topic
+        +Option<Subject> subject
+        +List<Typst> outgoing_typst_links
+        +List<Conundrum> outgoing_cdrm_links
+    }
+    
+    class Typst {
+        +List<BibEntry> bib_entries
+        +List<Tag> tags
+        +Option<Topic> topic
+        +Option<Subject> subject
+    }
+
+    class Class {
+        +List<StudyList> study_lists
+        +List<Conundrum> notes   
+        +List<Typst> notes   
+        +Option<Subject> subject
+        +Option<Topic> topic
+        +List<Tag> tags
+    }
+    
+    class Pdf {
+        +Bytes content   
+        +List<Tag> tags
+        +Option<Subject> subject
+        +Option<Topic> topic
+        +Option<Typst> typst_source
+    }
+
+    class Image {
+        +Bytes content   
+        +List<Tag> tags
+        +Option<Subject> subject
+        +Option<Topic> topic
+    }
+
+    class Tag {
+        +String value 
+    }
+
+    class Subject {
+        +String value 
+    }
+
+    class Topic {
+        +String value 
+    }
+
+    class Milestone {
+        +String label
+    }
+
+    class AcademicResultMetric {
+        +ComplicatedType value
+    }
+
+    class AcademicResult {
+        +AcademicResultMetric value 
+        +List<Conundrum> linked_notes
+        +List<Milestone> milestones
+    }
+
+    class StudyList {
+        +List<BibEntry> bib_entries
+        +List<Conundrum> cdrm
+        +List<Typst> typst
+        +List<Pdf> pdfs
+        +List<Flashcard> flashcards
+        +List<Image> images
+        +Subject subject
+        +Topic topic
+        +List<tags> tag
+        +List<AcademicResult> results
+    }
+
+    class BibEntry {
+        +String key
+        +Pdf pdf
+    }
+
+    class Flashcard { 
+        +List<Tag> tags
+        +Topic topic
+        +Subject subject
+        +List<Conundrum> further_reading
+    }
+
+    class Datetime {
+        +Number value
+    }
+
+    class Alert {
+        +Datetime value
+    }
+
+    class Task {
+        +String content
+        +List<Conundrum> linked_notes
+        +Datetime due_at
+        +Datetime ctime
+        +Datetime utime
+    }
+
+    Conundrum -- Tag 
+    Conundrum -- Topic
+    Conundrum  -- Subject 
+    Conundrum  -- BibEntry
+    Typst -- Tag 
+    Typst -- Topic
+    Typst  -- Subject 
+    Typst  -- BibEntry
+    Flashcard -- Tag 
+    Flashcard -- Topic
+    Flashcard  -- Subject 
+    StudyList  -- BibEntry
+    StudyList  -- Conundrum
+    StudyList  -- Typst
+    StudyList  -- Pdf
+    StudyList  -- Image
+    StudyList -- Flashcard
+    Task -- Alert
+    Alert -- Datetime
+    Task -- Conundrum
+    Conundrum -- Image: DB Image Support v2
+    BibEntry -- Pdf
+    Flashcard -- Conundrum
+    AcademicResult -- AcademicResultMetric
+    AcademicResult -- Milestone
+    AcademicResult -- Conundrum
+    Class -- Tag
+    Class -- Topic
+    Class -- Subject
+    Class -- StudyList
+

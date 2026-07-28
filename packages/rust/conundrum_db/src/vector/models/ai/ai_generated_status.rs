@@ -1,7 +1,8 @@
 use conundrum::ecosystem::db::traits::database_field_representable::DatabaseFieldRepresentable;
 use serde::{Deserialize, Serialize};
+use surrealdb::types::SurrealValue;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
 pub enum AIGeneratedStatus {
     /// This was completely written by humans.
     None = 0,
