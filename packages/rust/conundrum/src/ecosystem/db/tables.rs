@@ -4,6 +4,8 @@ use convert_case::Casing;
 use serde::{Deserialize, Serialize};
 use strum::{EnumCount, IntoEnumIterator};
 use strum_macros::{Display, EnumIter};
+use surrealdb::opt::Resource;
+use surrealdb_types::Table;
 
 #[derive(Debug, Serialize, Deserialize, Display, EnumIter, EnumCount, PartialEq, Clone, Eq)]
 pub enum DatabaseTable {
@@ -20,6 +22,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "cdrm")]
     #[serde(rename = "cdrm")]
     Cdrm,
+    #[strum(to_string = "typst")]
+    #[serde(rename = "typst")]
+    TypstContent,
     #[strum(to_string = "qa_pair")]
     #[serde(rename = "qa_pair")]
     QAPair,
@@ -43,6 +48,12 @@ pub enum DatabaseTable {
     #[strum(to_string = "cdrm_vec")]
     #[serde(rename = "cdrm_vec")]
     CdrmVector,
+    #[strum(to_string = "html_vec")]
+    #[serde(rename = "html_vec")]
+    HtmlVector,
+    #[strum(to_string = "typst_vec")]
+    #[serde(rename = "typst_vec")]
+    TypstVector,
 }
 
 impl Hash for DatabaseTable {
@@ -58,6 +69,10 @@ impl DatabaseTable {
 
     pub fn is_schemafull(&self) -> bool {
         true
+    }
+
+    pub fn to_surreal_resource(&self) -> Resource {
+        Resource::Table(Table::new(self.to_string()))
     }
 
     /// TODO: Move this to a macro or to a build-time calculation

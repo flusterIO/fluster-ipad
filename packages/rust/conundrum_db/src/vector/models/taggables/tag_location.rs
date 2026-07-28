@@ -25,7 +25,7 @@ pub enum TagLocation {
 
 impl DatabaseField for TagLocation {
     fn field_definition(field_key: &'static str, table: &DatabaseTable) -> String {
-        format!("DEFINE FIELD {} ON {} TYPE string;", field_key, table)
+        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE string;", field_key, table)
     }
 }
 

@@ -13,7 +13,7 @@ use crate::{
 };
 
 #[derive(Template)]
-#[template(ext = "jinja", escape = "none", path = "queries/create_tables.sql")]
+#[template(ext = "jinja", escape = "none", path = "schemas/pre_release.sql")]
 pub struct InitializeDatabaseQuery {
     schema_string_from_macro: String,
 }

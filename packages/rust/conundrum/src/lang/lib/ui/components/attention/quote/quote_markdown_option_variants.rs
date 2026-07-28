@@ -1,8 +1,6 @@
-use std::str::FromStr;
-
-use askama::Template;
 use dashmap::DashMap;
 use serde::{Deserialize, Serialize};
+use std::str::FromStr;
 use strum::{EnumString, IntoEnumIterator};
 use strum_macros::{Display, EnumIter};
 use typeshare::typeshare;

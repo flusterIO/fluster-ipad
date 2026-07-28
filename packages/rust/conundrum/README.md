@@ -2,6 +2,8 @@
 
 > A purpose driven DSL with mdx like syntax and a modular toolkit for all things academic.
 
+See the Conundrum readme [here](https://github.com/flusterIO/fluster-ipad/blob/main/packages/rust/conundrum/README.md)
+
 ## Packages
 
 Be aware... this is all still a work in progress. Conundrum powers [Fluster](https://flusterapp.com) and the Fluster blog, but these auxillary tools have so far been built with the goal of releasing Fluster in mind. Some of the additional features necessary to connect the dots are in various stages of completeness.

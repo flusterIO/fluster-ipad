@@ -26,6 +26,13 @@ pub enum DatabaseError {
     FailToSerialize(String),
     #[error("Failed to create table for the `{:?}` model.", .0.to_model_name())]
     FailToCreateTable(DatabaseTable),
+    #[error("Conundrum encountered an error with Surrealdb.")]
+    DatabaseError {
+        // TODO: Remove this serde skip.
+        #[serde(skip)]
+        #[source]
+        source: Option<surrealdb_types::Error>,
+    },
 }
 
 pub type DatabaseResult<T> = Result<T, DatabaseError>;

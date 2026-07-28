@@ -20,6 +20,9 @@ pub enum ConundrumFSError {
 
     #[error("General conundrum error: {0}")]
     ConundrumError(ConundrumErrorVariant),
+
+    #[error("Conundrum could not serialize a path.")]
+    PathSerializationError,
 }
 
 pub type ConundrumFSResult<T> where T: Sized

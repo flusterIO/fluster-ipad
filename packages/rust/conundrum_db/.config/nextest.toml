@@ -1,0 +1,5 @@
+
+# -- Initialize Database first
+[[profiles.default.overrides]]
+filter = "vector::database::initialize_db::initialize_db::initializes_db"
+priority = 100

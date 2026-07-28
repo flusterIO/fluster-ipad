@@ -44,7 +44,7 @@ pub struct FlashCardModel {
 
 impl FlashCardModel {
     pub fn new_with_string_answer(input_data: FlashCardModelStringAnswerInputData) -> FlashCardModel {
-        FlashCardModel { id: DatabaseId::new(),
+        FlashCardModel { id: DatabaseId::default(),
                          question: input_data.question,
                          answer: FlashcardValue::Text(input_data.answer),
                          explanation: input_data.explanation,

@@ -1,8 +1,10 @@
-use conundrum::ecosystem::db::traits::database_field_representable::DatabaseFieldRepresentable;
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use surrealdb::types::SurrealValue;
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+use crate::vector::database::db_traits::database_field::DatabaseField;
+
+#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue, Dummy)]
 pub enum AIGeneratedStatus {
     /// This was completely written by humans.
     None = 0,
@@ -14,13 +16,8 @@ pub enum AIGeneratedStatus {
     All = 3,
 }
 
-impl<'a> DatabaseFieldRepresentable<&'a str> for AIGeneratedStatus {
-    fn to_db_representation(&self) -> &'a str {
-        match self {
-            Self::None => "none",
-            Self::Some => "some",
-            Self::Most => "most",
-            Self::All => "all",
-        }
+impl DatabaseField for AIGeneratedStatus {
+    fn field_definition(field_key: &'static str, table: &conundrum::ecosystem::db::tables::DatabaseTable) -> String {
+        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE int;", field_key, table)
     }
 }

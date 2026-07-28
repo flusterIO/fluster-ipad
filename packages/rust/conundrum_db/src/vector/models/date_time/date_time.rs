@@ -1,23 +1,22 @@
 use crate::vector::database::db_traits::database_field::DatabaseField;
 use chrono::Utc;
-use conundrum::ecosystem::db::traits::database_field_representable::DatabaseFieldRepresentable;
-use fake::{Dummy, Fake, Faker};
+use fake::{Dummy, Fake, Faker, faker::chrono::en::DateTime as FakeChronoDateTime};
 use serde::{Deserialize, Serialize};
-use surrealdb::types::{Datetime, Error, Kind, SurrealValue, ToSql, Value};
+use surrealdb::types::{Datetime, Error, Kind, SurrealValue, Value};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct DateTime(chrono::DateTime<Utc>);
 
 impl Dummy<Faker> for DateTime {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
-        let dt: chrono::DateTime<Utc> = fake::Faker.fake();
+        let dt: chrono::DateTime<Utc> = FakeChronoDateTime().fake();
         Self(dt)
     }
 }
 
 impl DatabaseField for DateTime {
     fn field_definition(field_key: &'static str, table: &conundrum::ecosystem::db::tables::DatabaseTable) -> String {
-        format!("DEFINE FIELD {} ON {} TYPE datetime;", field_key, table)
+        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE datetime;", field_key, table)
     }
 }
 
@@ -25,12 +24,6 @@ impl DateTime {
     pub fn new_now() -> DateTime {
         let d = Utc::now();
         DateTime(d)
-    }
-}
-
-impl DatabaseFieldRepresentable<i64> for DateTime {
-    fn to_db_representation(&self) -> i64 {
-        self.0.timestamp_millis()
     }
 }
 
