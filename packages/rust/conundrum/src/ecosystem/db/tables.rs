@@ -7,6 +7,8 @@ use strum_macros::{Display, EnumIter};
 use surrealdb::opt::Resource;
 use surrealdb_types::Table;
 
+use crate::ecosystem::error_handling::db_error::DatabaseError;
+
 #[derive(Debug, Serialize, Deserialize, Display, EnumIter, EnumCount, PartialEq, Clone, Eq)]
 pub enum DatabaseTable {
     // -- Pure Models --
@@ -34,6 +36,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "bib_entry")]
     #[serde(rename = "bib_entry")]
     BibEntry,
+    #[strum(to_string = "auto_taggable")]
+    #[serde(rename = "auto_taggable")]
+    AutoTaggable,
     #[strum(to_string = "numeric_academic_res_metric")]
     #[serde(rename = "numeric_academic_res_metric")]
     /// Stores just the `AcademicResultMetricKey` and the value.
@@ -102,5 +107,18 @@ impl DatabaseTable {
             Self::QAPair => String::from("FlashCard"),
             _ => self.to_string().to_case(convert_case::Case::Title),
         }
+    }
+}
+
+impl TryFrom<String> for DatabaseTable {
+    type Error = DatabaseError;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        for s in Self::iter() {
+            if s.to_string() == value {
+                return Ok(s);
+            }
+        }
+        return Err(DatabaseError::SerializationError);
     }
 }

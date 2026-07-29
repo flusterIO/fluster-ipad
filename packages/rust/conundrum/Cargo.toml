@@ -121,6 +121,7 @@ chrono.workspace = true
 lancedb = "0.29.0"
 surrealdb = { workspace = true, features = ["kv-rocksdb"] }
 surrealdb-types = "3.2.3"
+text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

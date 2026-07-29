@@ -6,6 +6,10 @@ pub trait DatabaseField {
     fn field_definition(field_key: &'static str, table: &DatabaseTable) -> String;
 }
 
+pub trait OptionalDatabaseField {
+    fn optional_field_definition(field_key: &'static str, table: &DatabaseTable) -> String;
+}
+
 pub trait DatabaseRepresentable<T> {
     fn to_database_representation(&self) -> T;
 }

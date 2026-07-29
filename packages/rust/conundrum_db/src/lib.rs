@@ -9,3 +9,4 @@
 //! methods... usually around type conversion to turn it into something that's
 //! actually useful.
 pub mod vector;
+pub mod test_utils;

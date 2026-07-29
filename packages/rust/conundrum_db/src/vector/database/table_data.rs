@@ -15,7 +15,7 @@ use crate::vector::models::{
     date_time::{alarm::Alarm, alert::alert::Alert, schedule::time_block::TimeBlock},
     ecosystem_data::ecosystem_data::EcosystemData,
     meta::{front_matter::front_matter::FrontMatter, summary::summary::SummaryModel},
-    taggables::{subject::Subject, tag::Tag, topic::Topic},
+    taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
     text::{cdrm::cdrm_content::CdrmContent, html::html_content::HTMLContent, typst::typst::TypstContent},
 };
 
@@ -30,6 +30,7 @@ pub enum TableData {
     Tag(Tag),
     Topic(Topic),
     Subject(Subject),
+    AutoTaggable(AutoTaggable),
     // --- Media ---
     // --- Academic Tools ---
     Class(ClassModel),

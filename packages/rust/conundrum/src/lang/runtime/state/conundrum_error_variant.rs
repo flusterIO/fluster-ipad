@@ -98,8 +98,6 @@ impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {
     }
 }
 
-pub type ConundrumResult<T> = Result<T, ConundrumErrorVariant>;
-pub type ConundrumModalResult<T> = ModalResult<T, ConundrumErrorVariant>;
 
 // impl ConundrumErrorVariant {
 //     // Avoiding `From` so `winnow` types don't become part of our public API
@@ -155,3 +153,7 @@ impl ParserError<ConundrumInput<'_>> for ConundrumErrorVariant {
         Ok(self)
     }
 }
+
+
+pub type ConundrumResult<T> = Result<T, ConundrumErrorVariant>;
+pub type ConundrumModalResult<T> = ModalResult<T, ConundrumErrorVariant>;

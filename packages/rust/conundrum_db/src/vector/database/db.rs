@@ -2,7 +2,7 @@ use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResu
 use std::{path::PathBuf, sync::Arc};
 use surrealdb::{
     Surreal,
-    engine::local::{Db, Mem, RocksDb},
+    engine::local::{Db, RocksDb},
 };
 use tokio::sync::{Mutex, OnceCell};
 
@@ -17,6 +17,7 @@ pub fn get_app_data_dir() -> DatabaseResult<PathBuf> {
     }
 }
 
+/// Deprecated... use the one from the fs crate.
 pub fn get_app_database_dir() -> DatabaseResult<PathBuf> {
     Ok(get_app_data_dir()?.join("database"))
 }
@@ -31,6 +32,10 @@ pub async fn get_database<'a>() -> DatabaseResult<&'a ArcMutexDB> {
                                                                   log::error!("Database Connection Error: {}", e);
                                                                   DatabaseError::FailToConnect
                                                               })?;
+          c.use_ns("conundrum").use_db("main").await.map_err(|e| {
+                                                         log::error!("Error: {:?}", e);
+                                                         DatabaseError::FailToConnect
+                                                     })?;
           Ok(Arc::new(Mutex::new(c)))
       })
       .await

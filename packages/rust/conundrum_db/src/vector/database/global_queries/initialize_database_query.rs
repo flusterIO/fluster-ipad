@@ -8,6 +8,7 @@ use crate::{
         models::{
             academic::question::flashcard::pure_flashcard::PureFlashcard,
             taggables::{subject::Subject, tag::Tag, topic::Topic},
+            text::cdrm::pure_cdrm_content::PureCdrmContent,
         },
     },
 };
@@ -20,7 +21,7 @@ pub struct InitializeDatabaseQuery {
 
 impl Default for InitializeDatabaseQuery {
     fn default() -> Self {
-        let s = schemas_string!(Tag, Topic, Subject, PureFlashcard<String>);
+        let s = schemas_string!(Tag, Topic, Subject, PureFlashcard, PureCdrmContent);
         Self { schema_string_from_macro: s }
     }
 }

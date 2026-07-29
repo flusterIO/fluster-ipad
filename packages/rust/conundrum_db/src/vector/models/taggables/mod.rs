@@ -1,7 +1,10 @@
+pub mod auto_taggable;
 pub mod optional_taggable;
 pub mod subject;
 pub mod tag;
 pub mod tag_list;
 pub mod tag_location;
+pub mod taggable;
 pub mod taggables;
 pub mod topic;
+pub mod upsert_taggables_macro;

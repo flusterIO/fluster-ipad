@@ -1,4 +1,5 @@
 pub mod apply_parsed_conundrum_result;
+pub mod chunk_config;
 pub mod chunk_conundrum;
 pub mod compile_conundrum;
 pub mod mem;

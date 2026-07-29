@@ -14,8 +14,7 @@ use crate::{
 
 /// ## TODO:
 /// - [ ] Move this to dashu asap. Everything down to the database package is
-///   depeneding on that
-/// sweet arbitrary precision.
+///   depeneding on that sweet arbitrary precision.
 #[typeshare::typeshare]
 #[derive(Debug, serde::Serialize, Deserialize, Clone, Copy)]
 pub struct ConundrumFloat(pub f64);
@@ -66,6 +65,19 @@ impl FromJsxPropsOptional for ConundrumFloat {
         } else {
             Err(ErrMode::Backtrack(ConundrumErrorVariant::KeyNotFound))
         }
+    }
+}
+
+impl From<f64> for ConundrumFloat {
+    fn from(value: f64) -> Self {
+        ConundrumFloat(value)
+    }
+}
+
+impl From<f32> for ConundrumFloat {
+    fn from(value: f32) -> Self {
+        let n: f64 = value.into();
+        ConundrumFloat(n)
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::vector::database::db_traits::database_field::DatabaseField;
+use crate::vector::database::db_traits::database_field::{DatabaseField, OptionalDatabaseField};
 use chrono::Utc;
 use fake::{Dummy, Fake, Faker, faker::chrono::en::DateTime as FakeChronoDateTime};
 use serde::{Deserialize, Serialize};
@@ -17,6 +17,14 @@ impl Dummy<Faker> for DateTime {
 impl DatabaseField for DateTime {
     fn field_definition(field_key: &'static str, table: &conundrum::ecosystem::db::tables::DatabaseTable) -> String {
         format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE datetime;", field_key, table)
+    }
+}
+
+impl OptionalDatabaseField for DateTime {
+    fn optional_field_definition(field_key: &'static str,
+                                 table: &conundrum::ecosystem::db::tables::DatabaseTable)
+                                 -> String {
+        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE option<datetime>;", field_key, table)
     }
 }
 
