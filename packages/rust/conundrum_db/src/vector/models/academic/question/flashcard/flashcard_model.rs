@@ -8,7 +8,7 @@ use crate::vector::{
         academic::question::flashcard::{flashcard_value::FlashcardValue, pure_flashcard::PureFlashcard},
         date_time::date_time::DateTime,
         primitives::db_id::DatabaseId,
-        taggables::{subject::Subject, tag::Tag, topic::Topic},
+        taggables::{subject::Subject, tag::Tag, taggables::Taggables, topic::Topic},
     },
 };
 
@@ -63,16 +63,14 @@ impl FlashCardModel {
     }
 
     pub async fn upsert_self(&self, db: &ArcMutexDB) -> DatabaseResult<RecordId> {
-        for t in self.tags.iter() {
-            t.upsert_self(db).await?;
-        }
-        if let Some(subject) = &self.subject {
-            subject.upsert_self(db).await?;
-        }
-        if let Some(topic) = &self.topic {
-            topic.upsert_self(db).await?;
-        }
-        let r = PureFlashcard::from(self.clone());
+        let taggables = Taggables { tags: self.tags.clone(),
+                                    topic: self.topic.clone(),
+                                    subject: self.subject.clone() };
+        let (tag_records, topic_record, subject_record) = taggables.upsert_all(db).await?;
+        let mut r = PureFlashcard::from(self.clone());
+        r.tags = tag_records;
+        r.topic = topic_record;
+        r.subject = subject_record;
         let record_id: RecordId = r.upsert_self(db).await?;
         Ok(record_id)
     }

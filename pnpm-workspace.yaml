@@ -28,3 +28,4 @@ packages:
   - packages/typescript/codemirror-lang-bib
   - packages/rust/conundrum_docgen
   - packages/rust/conundrum_swift
+  - packages/rust/conundrum_frontend

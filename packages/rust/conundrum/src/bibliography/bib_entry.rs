@@ -29,6 +29,14 @@ pub struct RenderedBibEntry {
     pub utime: DateTime<Utc>,
 }
 
+impl From<String> for BibEntry {
+    fn from(value: String) -> Self {
+        BibEntry { body: value,
+                   ctime: Utc::now(),
+                   utime: Utc::now() }
+    }
+}
+
 impl BibEntry {
     pub async fn get_csl_file() -> String {
         if let Ok(csl_path) = CdrmEnvVariable::CSLFilePath.read() {

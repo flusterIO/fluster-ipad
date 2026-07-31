@@ -1,11 +1,15 @@
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use crate::ecosystem::db::tables::DatabaseTable;
+use crate::{
+    ecosystem::db::tables::DatabaseTable, lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
+};
 
 #[derive(Debug, Error, Serialize, Deserialize, Clone)]
 #[serde(tag = "tag", content = "content")]
 pub enum DatabaseError {
+    #[error("Conundrum Error: {:?}.", .0)]
+    ConundrumError(ConundrumErrorVariant),
     #[error("Feature not yet implemented.")]
     NotImplemented,
     #[error("The database encountered a thread related error.")]

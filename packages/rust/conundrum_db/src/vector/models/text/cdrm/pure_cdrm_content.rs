@@ -49,13 +49,13 @@ impl PureModelStaticMethods for PureCdrmContent {
     fn schema() -> String {
         let tbl = Self::table();
         formatdoc! {"
-        {}
-        {}
-        {}
-        {}
-        {}
-        {}
-        {}
+        {};
+        {};
+        {};
+        {};
+        {};
+        {};
+        {};
         ", 
             DatabaseId::field_definition("id", &tbl),
             optional_string_field_definition("title", &tbl),

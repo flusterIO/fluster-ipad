@@ -32,13 +32,13 @@ impl PureModelStaticMethods for PureTypstContent {
     fn schema() -> String {
         let tbl = Self::table();
         indoc::formatdoc! {"
-        {}
-        {}
-        {}
-        {}
-        {}
-        {}
-        {}
+        {};
+        {};
+        {};
+        {};
+        {};
+        {};
+        {};
             ", DatabaseId::field_definition("id", &tbl), 
                 optional_string_field_definition("title", &tbl),
                 string_field_definition("content", &tbl),

@@ -56,7 +56,7 @@ polars = "0.39.2"
 surrealdb = { version = "3.2.3", features = ["scripting", "kv-mem", "kv-rocksdb"] }
 fake = { version = "5", features = ["chrono", "random_color", "semver", "serde_json", "time", "derive"] }
 pyo3 = { version = "0.22.4", features = ["extension-module", "abi3-py39"] }
-
+specta = { version = "=2.0.0-rc.22" }
 
 [workspace.lints.rust]
 unused_crate_dependencies = "warn"

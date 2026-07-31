@@ -6,6 +6,7 @@ use conundrum::{
 };
 use fake::{Dummy, Faker};
 use serde::{Deserialize, Serialize};
+use specta::Type;
 use surrealdb::types::{Kind, SurrealValue};
 
 use crate::{
@@ -13,7 +14,7 @@ use crate::{
     vector::database::db_traits::database_field::DatabaseField,
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Type)]
 pub struct CaseInsensitiveString(String);
 
 impl Dummy<String> for CaseInsensitiveString {
@@ -65,7 +66,7 @@ impl From<String> for CaseInsensitiveString {
 
 impl DatabaseField for CaseInsensitiveString {
     fn field_definition(field_key: &'static str, table: &DatabaseTable) -> String {
-        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE string;", field_key, table)
+        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE string", field_key, table)
     }
 }
 

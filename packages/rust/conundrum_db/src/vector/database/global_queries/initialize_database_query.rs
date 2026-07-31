@@ -7,6 +7,7 @@ use crate::{
         database::db_traits::pure_model_static::PureModelStaticMethods,
         models::{
             academic::question::flashcard::pure_flashcard::PureFlashcard,
+            bib::bib_entry::BibEntryModel,
             taggables::{subject::Subject, tag::Tag, topic::Topic},
             text::cdrm::pure_cdrm_content::PureCdrmContent,
         },
@@ -21,7 +22,7 @@ pub struct InitializeDatabaseQuery {
 
 impl Default for InitializeDatabaseQuery {
     fn default() -> Self {
-        let s = schemas_string!(Tag, Topic, Subject, PureFlashcard, PureCdrmContent);
+        let s = schemas_string!(Tag, Topic, Subject, PureFlashcard, PureCdrmContent, BibEntryModel);
         Self { schema_string_from_macro: s }
     }
 }

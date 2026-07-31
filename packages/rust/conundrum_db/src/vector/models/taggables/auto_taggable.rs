@@ -43,12 +43,12 @@ impl PureModelStaticMethods for AutoTaggable {
         let tbl = Self::table();
         // TODO: Narrow down this string variant to an enum, not just a string.
         formatdoc! {"
-        {}
-        {}
-        {}
-        {}
-        {}
-        {}
+        {};
+        {};
+        {};
+        {};
+        {};
+        {};
         ", 
         DatabaseId::field_definition("id", &tbl),
         string_field_definition("value", &tbl),

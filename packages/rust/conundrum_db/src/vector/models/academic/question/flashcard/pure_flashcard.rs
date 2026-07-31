@@ -15,14 +15,11 @@ use crate::vector::{
         },
         primitive_field_schema_generators::string_field_def_generator::{
             optional_clamped_float_field_definition, optional_string_field_definition, string_field_definition,
-            unsigned_int_field_definition,
+            taggables_relationship_definitions, unsigned_int_field_definition,
         },
     },
     models::{
-        academic::question::flashcard::{
-            flashcard_model::{FlashCardModel, FlashCardModelStringAnswerInputData},
-            flashcard_value::FlashcardValue,
-        },
+        academic::question::flashcard::{flashcard_model::FlashCardModel, flashcard_value::FlashcardValue},
         date_time::date_time::DateTime,
         primitives::db_id::DatabaseId,
     },
@@ -50,6 +47,9 @@ pub struct PureFlashcard {
     pub difficulty: Option<ConundrumFloat>,
     pub correct_responses: u32,
     pub incorrect_responses: u32,
+    pub tags: Vec<RecordId>,
+    pub topic: Option<RecordId>,
+    pub subject: Option<RecordId>,
     pub ctime: DateTime,
     /// This field is updated each time the question is retrieved *alone*. This
     /// won't be a perfect counter, but it should indicate which questions
@@ -67,20 +67,9 @@ impl From<FlashCardModel> for PureFlashcard {
                         difficulty: value.difficulty.map(ConundrumFloat::from),
                         correct_responses: 0,
                         incorrect_responses: 0,
-                        ctime: DateTime::new_now(),
-                        last_access: None }
-    }
-}
-
-impl From<FlashCardModelStringAnswerInputData> for PureFlashcard {
-    fn from(value: FlashCardModelStringAnswerInputData) -> Self {
-        PureFlashcard { id: DatabaseId::new(DatabaseTable::QAPair),
-                        question: value.question.clone(),
-                        answer: FlashcardValue::Text(value.answer.clone()),
-                        explanation: value.explanation.clone(),
-                        difficulty: value.difficulty.map(ConundrumFloat::from),
-                        correct_responses: 0,
-                        incorrect_responses: 0,
+                        tags: value.tags.iter().map(|t| t.clone().into()).collect::<Vec<RecordId>>(),
+                        topic: value.topic.map(|t| t.into()),
+                        subject: value.subject.map(|t| t.into()),
                         ctime: DateTime::new_now(),
                         last_access: None }
     }
@@ -94,15 +83,20 @@ impl PureModelStaticMethods for PureFlashcard {
     fn schema() -> String {
         let tbl = Self::table();
         formatdoc! {"
-        {}
-        {}
-        {}
-        {}
-        {}
-        {}
-        {}
-        {}
+        {};
+        {};
+        {};
+        {};
+        {};
+        {};
+        {};
+        {};
             ", string_field_definition("question", &tbl), string_field_definition("answer", &tbl), optional_string_field_definition("explanation", &tbl), optional_clamped_float_field_definition("difficulty", &tbl, 0, 100), unsigned_int_field_definition("correct_responses", &tbl), unsigned_int_field_definition("incorrect_responses", &tbl), DateTime::field_definition("ctime", &tbl), DateTime::optional_field_definition("last_access", &tbl)}
+    }
+
+    fn relation_definitions() -> Option<String> {
+        let tbl = Self::table();
+        Some(taggables_relationship_definitions(tbl))
     }
 }
 
@@ -112,7 +106,7 @@ impl PureModelInstanceMethods for PureFlashcard {
         db: &crate::vector::database::db::ArcMutexDB)
         -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<surrealdb_types::RecordId> {
         let db = db.clone().lock_owned().await;
-        let value = db.create(self.id.0.clone())
+        let value = db.create(self.id.to_record_id())
                       .content(self.clone())
                       .await
                       .map_err(|e| DatabaseError::DatabaseError { source: Some(e) })?

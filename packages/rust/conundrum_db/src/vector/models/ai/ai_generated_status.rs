@@ -92,7 +92,7 @@ impl Dummy<Faker> for AIGeneratedStatus {
 impl DatabaseField for AIGeneratedStatus {
     fn field_definition(field_key: &'static str, table: &conundrum::ecosystem::db::tables::DatabaseTable) -> String {
         // TODO: Add assertion here to limit range.
-        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE int;", field_key, table)
+        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE int", field_key, table)
     }
 }
 
@@ -101,6 +101,6 @@ impl OptionalDatabaseField for AIGeneratedStatus {
                                  table: &conundrum::ecosystem::db::tables::DatabaseTable)
                                  -> String {
         // TODO: Add assertion here to limit range.
-        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE optional<int>;", field_key, table)
+        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE optional<int>", field_key, table)
     }
 }

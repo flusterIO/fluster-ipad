@@ -7,4 +7,4 @@ pub mod tag_location;
 pub mod taggable;
 pub mod taggables;
 pub mod topic;
-pub mod upsert_taggables_macro;
+pub mod upsert_taggables;

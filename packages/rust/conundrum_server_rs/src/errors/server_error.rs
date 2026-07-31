@@ -1,6 +1,7 @@
 use axum::{extract::Json, http::StatusCode};
+use specta::Type;
 
-#[derive(Debug, thiserror::Error, Clone)]
+#[derive(Debug, thiserror::Error, Clone, Type)]
 pub enum ServerError {
     #[error("Not Implemented")]
     NotImplemented,

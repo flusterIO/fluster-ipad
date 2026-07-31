@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import "@conundrum/main/conundrum_input.scss";
+@source "../index.html";
+
+/* @custom-variant dark (&:is(.dark *)); */
+
+body {
+    background-color: var(--color-background);
+
+    * {
+        color: hsl(var(--color-foreground));
+    }
+}
+
+html,
+body,
+#root,
+.app-container {
+    overscroll-behavior-y: none;
+    overscroll-behavior-block: none;
+}

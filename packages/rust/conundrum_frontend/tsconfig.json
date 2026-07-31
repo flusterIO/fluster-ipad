@@ -1,0 +1,26 @@
+{
+    "include": [
+        "src",
+        "vite.config.ts",
+        "vite-env.d.ts"
+    ],
+    "compilerOptions": {
+        "baseUrl": ".",
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "moduleResolution": "bundler",
+        "allowUmdGlobalAccess": true,
+        "module": "ESNext",
+        "target": "ESNext",
+        "jsx": "react",
+        "rootDir": "./src",
+        "paths": {
+            "@/*": [
+                "./src/core/*"
+            ],
+            "#/*": [
+                "./src/features/*"
+            ]
+        }
+    }
+}

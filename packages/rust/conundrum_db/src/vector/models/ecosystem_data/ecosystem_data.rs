@@ -1,7 +1,17 @@
 use serde::{Deserialize, Serialize};
+use specta::Type;
 use surrealdb::types::SurrealValue;
 
-use crate::vector::{database::schema_version::schema_version::SchemaVersion, models::date_time::date_time::DateTime};
+use crate::vector::{
+    database::schema_version::{schema_version::SchemaVersion, server_version::ServerVersion},
+    models::date_time::date_time::DateTime,
+};
+
+#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue, Type)]
+pub struct VersionData {
+    pub database: SchemaVersion,
+    pub server: ServerVersion,
+}
 
 #[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
 pub struct EcosystemData {

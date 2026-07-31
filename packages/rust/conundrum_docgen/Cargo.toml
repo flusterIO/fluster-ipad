@@ -27,6 +27,7 @@ thiserror.workspace = true
 palette = { version = "0.7.6", features = ["serializing", "random"] }
 css-color = "0.2.8"
 cssparser = "0.36.0"
+go-away = { version = "0.6.1", features = ["all"] }
 
 [lints]
 workspace = true
