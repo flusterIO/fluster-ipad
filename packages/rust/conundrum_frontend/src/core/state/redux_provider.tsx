@@ -11,7 +11,7 @@ const ReduxProvider = ({ children }: { children: ReactNode }) => {
     return (
         <Provider store={store}>
             <PersistGate
-                loading={<FullScreenLoading message="Loading saved data..." />}
+                loading={<FullScreenLoading message="Loading saved state..." />}
                 persistor={persistor}
             >
                 <>{children}</>

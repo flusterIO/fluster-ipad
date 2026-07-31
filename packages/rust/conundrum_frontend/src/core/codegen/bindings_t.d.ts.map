@@ -1,0 +1,1 @@
+{"version":3,"file":"bindings_t.d.ts","sources":["packages/rust/conundrum_server_rs/src/rpc/rspc_router.rs"],"names":["version"],"mappings":";;;CAUyCA;"}

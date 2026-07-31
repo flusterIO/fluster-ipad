@@ -30,7 +30,7 @@ const persistConfig: PersistConfig<AppState> = {
     key: "root",
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     storage: indexedDb("conundrum"),
-    blacklist: ["core.syncing"],
+    blacklist: [],
     stateReconciler: autoMergeLevel2,
 };
 

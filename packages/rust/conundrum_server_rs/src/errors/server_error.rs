@@ -1,4 +1,5 @@
 use axum::{extract::Json, http::StatusCode};
+use rspc::{Error, ResolverError};
 use specta::Type;
 
 #[derive(Debug, thiserror::Error, Clone, Type)]
@@ -11,6 +12,29 @@ pub enum ServerError {
     LatexConversionError,
     #[error("Conundrum could not render html properly.")]
     HtmlRenderError,
+    #[error("Not Found.")]
+    NotFound,
+}
+
+impl Error for ServerError {
+    fn into_procedure_error(self) -> rspc::ProcedureError {
+        match self {
+            Self::NotFound => rspc::ProcedureError::NotFound,
+            Self::NotImplemented => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Method not yet implemented", None))
+            }
+            Self::HtmlRenderError => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Failed attempting to render html.",
+                                                                                    None))
+            }
+            Self::GeneralError => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Method not yet implemented", None))
+            }
+            Self::LatexConversionError => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Latex conversion error.", None))
+            }
+        }
+    }
 }
 
 impl Into<StatusCode> for ServerError {
@@ -20,6 +44,7 @@ impl Into<StatusCode> for ServerError {
             Self::HtmlRenderError => StatusCode::INTERNAL_SERVER_ERROR,
             Self::LatexConversionError => StatusCode::INTERNAL_SERVER_ERROR,
             Self::GeneralError => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::NotFound => StatusCode::NOT_FOUND,
         }
     }
 }
