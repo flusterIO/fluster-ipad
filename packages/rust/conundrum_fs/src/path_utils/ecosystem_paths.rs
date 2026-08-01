@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use crate::errors::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
+use conundrum::ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
 
 pub fn get_app_data_dir() -> ConundrumFSResult<PathBuf> {
     if let Some(d) = dirs::data_local_dir() {
@@ -11,7 +11,5 @@ pub fn get_app_data_dir() -> ConundrumFSResult<PathBuf> {
 }
 
 pub fn get_app_database_dir() -> ConundrumFSResult<PathBuf> {
-    Ok(get_app_data_dir()?.join("database"))
+    Ok(get_app_data_dir()?.join("data").join("database"))
 }
-
-

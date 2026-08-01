@@ -13,3 +13,9 @@ impl EcosystemSettings {
         self.0.insert(key.clone(), value.clone());
     }
 }
+
+impl Default for EcosystemSettings {
+    fn default() -> Self {
+        Self(HashMap::new())
+    }
+}

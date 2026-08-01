@@ -5,6 +5,7 @@ pub mod auth;
 pub mod bib;
 pub mod date_time;
 pub mod ecosystem_data;
+pub mod joins;
 pub mod meta;
 pub mod primitives;
 pub mod taggables;

@@ -1,8 +1,7 @@
 use std::{fmt::Display, path::PathBuf};
 
+use conundrum::ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
 use serde::{Deserialize, Serialize};
-
-use crate::errors::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct CDRMPathBuf(PathBuf);

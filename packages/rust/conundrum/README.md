@@ -49,7 +49,7 @@ As Conundrum is just a superset of markdown with mdx like syntax, you can use yo
 
 ### Database
 
-Powered by SurrealDB, the database package acts as a unified tabular/vector store for everything a modern research or student might need. There's tables for things ranging from homework assignments to experimental results of recent research, and it's **structured**... designed for compsuption by both humans _and_ AI.
+Powered by LanceDB, the database package acts as a unified tabular/vector store for everything a modern research or student might need. There's tables for things ranging from homework assignments to experimental results of recent research, and it's **structured**... designed for compsuption by both humans _and_ AI.
 
 The goals with the database package is to create a shared academic datalayer for users of Conundrum, while making integration with other applications as seamless as possible.
 

@@ -2,7 +2,6 @@ use std::any::TypeId;
 
 use num_traits::ToPrimitive;
 use serde::Deserialize;
-use surrealdb_types::SurrealValue;
 use winnow::error::ErrMode;
 
 use crate::{
@@ -28,19 +27,20 @@ impl FromJsxPropsOptional for ConundrumFloat {
         where Self: Sized {
         if let Some(res) = props.data.get(key) {
             match res.value() {
-                    ParsedElement::Logic(l) => match l {
-                        ConundrumLogicToken::Number(n) => match n {
-                            ConundrumNumber::Float(f) => Some(f),
-                            _ => None
-                        },
-                        _ => None
+                ParsedElement::Logic(l) => match l {
+                    ConundrumLogicToken::Number(n) => match n {
+                        ConundrumNumber::Float(f) => Some(f),
+                        _ => None,
                     },
-                    _ => None
-                }.cloned().ok_or_else(|| {
-                    ErrMode::Backtrack(
+                    _ => None,
+                },
+                _ => None,
+            }.cloned()
+             .ok_or_else(|| {
+                 ErrMode::Backtrack(
                         ConundrumErrorVariant::InternalParserError(ConundrumError::from_message("Invalid float"))
                     )
-                })
+             })
         } else {
             Err(ErrMode::Backtrack(ConundrumErrorVariant::KeyNotFound))
         }

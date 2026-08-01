@@ -43,11 +43,20 @@ impl FromStr for FlashcardValue {
     }
 }
 
-impl DatabaseField for FlashcardValue {
+impl DatabaseField<String> for FlashcardValue {
     /// This will only work for strings for now until we can get online and
     /// handle the union schema. Just pretend like the union schema is already
     /// in place.
     fn field_definition(field_key: &'static str, nullable: bool) -> lancedb::arrow::arrow_schema::Field {
         Field::new(field_key, lancedb::arrow::arrow_schema::DataType::Utf8, nullable)
+    }
+
+    fn to_db_representation(&self) -> String {
+        match self {
+            Self::Text(s) => s.clone(),
+            _ => {
+                todo!()
+            }
+        }
     }
 }

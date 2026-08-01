@@ -10,10 +10,13 @@ use log::warn;
 
 use crate::vector::{
     database::{db::CdrmDb, db_traits::db_entity::DBEntity},
-    models::academic::question::flashcard::{flashcard_entity::FlashCardEntity, flashcard_model::FlashCardModel},
+    models::{
+        academic::question::flashcard::flashcard_entity::FlashCardEntity,
+        taggables::{subject::Subject, tag::Tag, topic::Topic},
+    },
 };
 
-pub type DatabaseIndexSetupFunction = fn(&CdrmDb) -> DatabaseResult<()>;
+pub type DatabaseIndexSetupFunction = fn(&Table) -> DatabaseResult<()>;
 
 struct TableInitData {
     pub table: DatabaseTable,
@@ -32,9 +35,18 @@ async fn create_table(db: &lancedb::Connection, schema: &Arc<Schema>, table: &Da
 }
 
 pub async fn initialize_local_database() -> DatabaseResult<()> {
-    let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::QAPair,
+    let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::Tag,
+                                                              schema: Tag::arrow_schema(),
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::Topic,
+                                                              schema: Topic::arrow_schema(),
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::Subject,
+                                                              schema: Subject::arrow_schema(),
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::QAPair,
                                                               schema: FlashCardEntity::arrow_schema(),
-                                                              set_indices: None }];
+                                                              set_indices: None },];
     if let Ok(db_path) = get_app_database_dir() {
         let db = connect(db_path.to_str().unwrap()).execute().await.map_err(|e| {
                                                                         println!("Error in initialize_database: {:?}",
@@ -43,17 +55,42 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
                                                                     })?;
 
         for td in table_data.iter() {
+            log::info!("Initializing the {} table for the {} model", td.table, td.table.to_model_name());
             if !td.table.is_temporary_vector_table() {
-                if let Ok(res) = create_table(&db, &td.schema, &td.table).await {
-                    if let Some(si) = td.set_indices {
-                        si(&db)?;
+                match create_table(&db, &td.schema, &td.table).await {
+                    Err(e) => {
+                        println!("Failed here.., {:?}", e);
+                        let s = td.table.to_model_name();
+                        warn!("Conundrum failed while attempting to generate a database table for the `{:?}` model.",
+                              s);
                     }
-                } else {
-                    let s = td.table.to_model_name();
-                    warn!("Conundrum failed while attempting to generate a database table for the `{:?}` model.", s);
+                    Ok(r) => {
+                        if let Some(si) = td.set_indices {
+                            si(&r)?;
+                        }
+                    }
                 }
+            } else {
+                log::info!("Ignoring initialization of temporary vector table {:?}", td.table.to_string());
             }
         }
+        Ok(())
+    } else {
+        log::error!("Failed to locate data directory. Cannot continue.");
+        Err(DatabaseError::FailToConnect)
     }
-    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn initializes_database() {
+        initialize_local_database().await
+                                   .inspect_err(|e| {
+                                       log::error!("Error: {:?}", e);
+                                   })
+                                   .expect("Initializes database.")
+    }
 }

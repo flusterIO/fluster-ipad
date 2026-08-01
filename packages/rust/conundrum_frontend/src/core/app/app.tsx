@@ -3,6 +3,8 @@ import ReduxProvider from "@/state/redux_provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { type ReactNode } from "react";
 import { client, rspc } from "./rspc_client";
+import { CommandPalette } from "#/command_palette/command_palette";
+import { GlobalKeyboardListener } from "#/command_palette/global_keyboard_listener";
 
 const queryClient = new QueryClient();
 
@@ -12,6 +14,8 @@ export const App = (): ReactNode => {
             <rspc.Provider client={client} queryClient={queryClient}>
                 <QueryClientProvider client={queryClient}>
                     <MainAppRouter />
+                    <GlobalKeyboardListener />
+                    <CommandPalette />
                 </QueryClientProvider>
             </rspc.Provider>
         </ReduxProvider>

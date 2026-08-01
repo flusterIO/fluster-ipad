@@ -119,8 +119,6 @@ convert_case = "0.11.0"
 hayagriva = { version = "0.10.1", features = ["strum"] }
 chrono.workspace = true
 lancedb = "0.29.0"
-surrealdb = { workspace = true, features = ["kv-rocksdb"] }
-surrealdb-types = "3.2.3"
 text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
 go-away = { version = "0.6.1", features = ["all"] }
 specta = { version = "=2.0.0-rc.22" }

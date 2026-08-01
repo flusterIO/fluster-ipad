@@ -1,4 +1,5 @@
 pub mod auto_taggable;
+pub mod get_taggable_recordbatch;
 pub mod subject;
 pub mod tag;
 pub mod tag_list;
@@ -6,4 +7,4 @@ pub mod tag_location;
 pub mod taggable;
 pub mod taggables;
 pub mod topic;
-pub mod upsert_taggables;
+pub mod taggable_arrow_schema;

@@ -1,6 +1,7 @@
 use std::path::{Path, PathBuf};
 
 use conundrum::{
+    ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult},
     lang::runtime::{
         run_conundrum::{run_conundrum, ParseConundrumOptions},
         state::conundrum_error_variant::ConundrumResult,
@@ -9,10 +10,7 @@ use conundrum::{
 };
 use conundrum_config::ecosystem::project::project_config::ProjectConfig;
 
-use crate::{
-    errors::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult},
-    traits::parsable_file::ParsableFile,
-};
+use crate::traits::parsable_file::ParsableFile;
 
 #[derive(Debug)]
 pub struct ConundrumFile {

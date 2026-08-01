@@ -1,8 +1,10 @@
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
+// use conundrum_fs
 
 use crate::{
-    ecosystem::db::tables::DatabaseTable, lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
+    ecosystem::{db::tables::DatabaseTable, error_handling::conundrum_fs_error::ConundrumFSError},
+    lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
 };
 
 #[derive(Debug, Error, Serialize, Deserialize, Clone)]
@@ -22,6 +24,8 @@ pub enum DatabaseError {
     FailToFindDataDirectory,
     #[error("Conundrum could not connect to the database.")]
     FailToConnect,
+    #[error("Conundrum could not create an `{0}` entity.")]
+    FailToCreateEntity(String),
     #[error("Conundrum could not save a {:?}.", .0.to_model_name())]
     FailToInsert(DatabaseTable),
     #[error("Conundrum could not delete a {:?} entity.", .0.to_model_name())]
@@ -30,6 +34,14 @@ pub enum DatabaseError {
     FailToSerialize(String),
     #[error("Failed to create table for the `{:?}` model.", .0.to_model_name())]
     FailToCreateTable(DatabaseTable),
+    #[error("File system error: {:?}", .0)]
+    FileSystemError(ConundrumFSError),
+}
+
+impl From<ConundrumFSError> for DatabaseError {
+    fn from(value: ConundrumFSError) -> Self {
+        Self::FileSystemError(value)
+    }
 }
 
 pub type DatabaseResult<T> = Result<T, DatabaseError>;

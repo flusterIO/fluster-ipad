@@ -18,8 +18,21 @@ pub struct EcosystemData {
     /// sort of ceritificate will be required in the future, but this will
     /// work while nobody's building for this anyways...
     pub application_white_list: Vec<String>,
+    /// Indicates whether the onboarding flow has been shown for the REST api.
+    pub have_shown_api_onboarding: bool,
     pub schema_version: SchemaVersion,
     pub initialized_on: DateTime,
-    pub last_sync: DateTime,
+    pub last_sync: Option<DateTime>,
     pub settings: EcosystemSettings,
+}
+
+impl Default for EcosystemData {
+    fn default() -> Self {
+        Self { application_white_list: Default::default(),
+               have_shown_api_onboarding: false,
+               schema_version: SchemaVersion::current_version(),
+               initialized_on: DateTime::new_now(),
+               last_sync: None,
+               settings: Default::default() }
+    }
 }

@@ -5,7 +5,7 @@ use crate::vector::models::{
     ai::ai_generated_status::AIGeneratedStatus,
     date_time::date_time::DateTime,
     primitives::db_id::DatabaseId,
-    taggables::{subject::Subject, tag_list::TagList, topic::Topic},
+    taggables::{subject::Subject, tag_list::TagList, taggables::Taggables, topic::Topic},
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -14,9 +14,7 @@ pub struct CdrmContent {
     pub title: Option<String>,
     pub content: String,
     pub ai_generated: AIGeneratedStatus,
-    pub tags: TagList,
-    pub topic: Option<Topic>,
-    pub subject: Option<Subject>,
+    pub taggables: Taggables,
     pub ws_path: Option<WorkspaceRelativePath>,
     pub ctime: DateTime,
     pub utime: DateTime,

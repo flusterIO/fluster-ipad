@@ -23,7 +23,7 @@ build_glue_code: build_conundrum_ts
 	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm build:ts
 
 clear_conundrum_database:
-	trash /Users/bigsexy/Library/Application\ Support/conundrum/database
+	trash /Users/bigsexy/Library/Application\ Support/conundrum/data/database
 
 write_javascript_glue:
 	./target/debug/fluster_internal_cli write-glue-code

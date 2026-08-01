@@ -39,7 +39,7 @@ impl DatabaseId {
         DatabaseId(uuid::Uuid::new_v4().to_string())
     }
 
-    pub fn new_from_input_id(table: DatabaseTable, value: String) -> Self {
+    pub fn new_from_input_id(value: String) -> Self {
         DatabaseId(value.clone())
     }
 }
@@ -50,8 +50,12 @@ impl Dummy<Faker> for DatabaseId {
     }
 }
 
-impl DatabaseField for DatabaseId {
+impl DatabaseField<String> for DatabaseId {
     fn field_definition(field_key: &'static str, nullable: bool) -> lancedb::arrow::arrow_schema::Field {
         Field::new(field_key, lancedb::arrow::arrow_schema::DataType::Utf8, nullable)
+    }
+
+    fn to_db_representation(&self) -> String {
+        self.0.clone()
     }
 }
