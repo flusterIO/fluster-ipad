@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
 
 use crate::vector::models::{
     bib::bib_entry::BibEntryModel,
@@ -15,7 +14,7 @@ use crate::vector::models::{
 /// - Using AI to generate a list of bibliography entries that were cited by a
 ///   specific article. This feature is a work in progress, as I'm without
 ///   internet, and unable to reliably work with AI.
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Bibliography {
     pub label: String,
     pub desc: Option<String>,

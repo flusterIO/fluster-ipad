@@ -1,7 +1,6 @@
 
 use std::{fmt::Display, hash::Hash, ops::Add};
 
-use surrealdb_types::SurrealValue;
 use winnow::{Parser, ascii::dec_int, error::{ContextError, ErrMode}};
 
 use crate::{
@@ -19,33 +18,15 @@ pub struct ConundrumInt(pub i64);
 
 uniffi::custom_newtype!(ConundrumInt, i64);
 
-
-impl SurrealValue for ConundrumInt {
-    fn kind_of() -> surrealdb_types::Kind {
-        surrealdb_types::Kind::Int
-    }
-
-    fn into_value(self) -> surrealdb_types::Value {
-        surrealdb::types::Value::from_i64(self.0)
-    }
-
-    fn from_value(value: surrealdb_types::Value) -> Result<Self, surrealdb::Error>
-	    where
-		    Self: Sized {
-        if let Some(n) = value.as_int() {
-            Ok(
-                Self(*n)
-            )
-        } else {
-            Err(
-                surrealdb::Error::thrown("Invalid integer stored.".to_string())
-            )
-        }
-    }
-}
-
 impl Eq for ConundrumInt {
 
+}
+
+
+impl From<i64> for ConundrumInt {
+    fn from(value: i64) -> Self {
+        Self(value)
+    }
 }
 
 impl Add<i64> for ConundrumInt {

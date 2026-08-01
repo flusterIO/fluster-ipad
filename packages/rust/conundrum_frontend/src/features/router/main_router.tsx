@@ -1,32 +1,19 @@
-import { ModularDataDashboard } from '#/dashboard/dashboards/modular_data/modular_data_dashboard'
-import { AppPaths } from '#/navigation/app_paths'
-import { MainSettingsPage } from '#/settings/main_settings_page'
-import React, { useMemo, type ReactNode } from 'react'
-import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router"
-
-
-const getMainRouter = (): RouteObject[] => {
-    return [
-        {
-            path: AppPaths.dashboard,
-            Component: ModularDataDashboard
-        },
-        {
-            path: AppPaths.settings,
-            Component: MainSettingsPage
-        }
-    ]
-}
-
+import React, { type ReactNode } from "react";
+import { BrowserRouter } from "react-router";
+import { MainAppRoutes } from "./routes";
+import { PermanentSidebar } from "#/navigation/sidebar/permanent_sidebar";
 
 export const MainAppRouter = (): ReactNode => {
-    const router = useMemo(() => {
-        return createBrowserRouter(getMainRouter())
-    }, [])
     return (
-        <RouterProvider router={router} />
-    )
-}
+        <BrowserRouter basename="/">
+            <div className="app-container w-full h-screen max-h-screen grid grid-cols-[auto_1fr]">
+                <PermanentSidebar />
+                <div className="@container/main w-full h-fit min-h-screen overflow-x-hidden overflow-y-auto min-scrollbar">
+                    <MainAppRoutes />
+                </div>
+            </div>
+        </BrowserRouter>
+    );
+};
 
-
-MainAppRouter.displayName = "MainAppRouter"
+MainAppRouter.displayName = "MainAppRouter";

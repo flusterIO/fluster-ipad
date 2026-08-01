@@ -1,12 +1,11 @@
 use serde::{Deserialize, Serialize};
-use surrealdb_types::SurrealValue;
 
 use crate::vector::models::{
     academic::result::academic_result_metric::AcademicResultMetric,
     taggables::{subject::Subject, tag::Tag, topic::Topic},
 };
 
-#[derive(Serialize, Deserialize, Clone, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct AcademicResult {
     pub result: AcademicResultMetric,
     pub tags: Vec<Tag>,

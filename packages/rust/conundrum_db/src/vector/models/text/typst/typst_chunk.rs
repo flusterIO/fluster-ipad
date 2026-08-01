@@ -1,9 +1,8 @@
 use serde::{Deserialize, Serialize};
-use surrealdb_types::SurrealValue;
 
 use crate::vector::models::primitives::db_id::DatabaseId;
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct TypstChunk {
     pub content: String,
     /// The id of the primary typst content that provided this chunk.

@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
 
 /// ## AlertSeverity
 ///
@@ -9,7 +8,7 @@ use surrealdb::types::SurrealValue;
 /// Important = 2,
 /// Urgent = 3,
 /// ```
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum AlertSeverity {
     Reminder = 0,
     Assigment = 1,

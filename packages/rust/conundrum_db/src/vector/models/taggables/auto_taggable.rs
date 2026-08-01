@@ -1,20 +1,10 @@
-use conundrum::ecosystem::db::tables::DatabaseTable;
-use indoc::formatdoc;
 use serde::{Deserialize, Serialize};
-use surrealdb_types::SurrealValue;
 
-use crate::vector::{
-    database::{
-        db_traits::{database_field::DatabaseField, pure_model_static::PureModelStaticMethods},
-        primitive_field_schema_generators::string_field_def_generator::{
-            optional_clamped_float_field_definition, optional_float_field_definition, optional_string_field_definition,
-            string_field_definition,
-        },
-    },
-    models::{date_time::date_time::DateTime, primitives::db_id::DatabaseId, taggables::taggable::TaggableVariant},
+use crate::vector::models::{
+    date_time::date_time::DateTime, primitives::db_id::DatabaseId, taggables::taggable::TaggableVariant,
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct AutoTaggable {
     pub id: DatabaseId,
     /// The value of the taggable that will be automatically applied.
@@ -32,30 +22,4 @@ pub struct AutoTaggable {
     pub glob: String,
     pub ctime: DateTime,
     pub utime: DateTime,
-}
-
-impl PureModelStaticMethods for AutoTaggable {
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::AutoTaggable
-    }
-
-    fn schema() -> String {
-        let tbl = Self::table();
-        // TODO: Narrow down this string variant to an enum, not just a string.
-        formatdoc! {"
-        {};
-        {};
-        {};
-        {};
-        {};
-        {};
-        ", 
-        DatabaseId::field_definition("id", &tbl),
-        string_field_definition("value", &tbl),
-        string_field_definition("variant", &tbl),
-        string_field_definition("glob", &tbl),
-        DateTime::field_definition("ctime", &tbl),
-        DateTime::field_definition("utime", &tbl),
-        }
-    }
 }

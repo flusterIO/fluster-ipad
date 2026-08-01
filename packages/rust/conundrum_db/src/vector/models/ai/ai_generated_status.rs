@@ -1,9 +1,6 @@
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use fake::{Dummy, Faker};
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
-
-use crate::vector::database::db_traits::database_field::{DatabaseField, OptionalDatabaseField};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum AIGeneratedStatus {
@@ -43,38 +40,6 @@ impl Into<i64> for AIGeneratedStatus {
     }
 }
 
-impl SurrealValue for AIGeneratedStatus {
-    fn kind_of() -> surrealdb_types::Kind {
-        surrealdb_types::Kind::Int
-    }
-
-    fn into_value(self) -> surrealdb_types::Value {
-        let n: i64 = self.into();
-        surrealdb_types::Value::Number(surrealdb_types::Number::Int(n))
-    }
-
-    fn from_value(value: surrealdb_types::Value) -> Result<Self, surrealdb::Error>
-        where Self: Sized {
-        if let Some(n) = value.as_int() {
-            let r = Self::try_from(*n).map_err(|e| {
-                                          log::error!("Error: {:?}", e);
-                                          surrealdb_types::Error::thrown(
-                                                                         "Fail to serialize
-AIGeneratedStatus."
-                                                                         .to_string(),
-                )
-                                      })?;
-            Ok(r)
-        } else {
-            Err(surrealdb_types::Error::thrown(
-                                               "Fail to deserialize
-AIGeneratedStatus."
-                                               .to_string(),
-            ))
-        }
-    }
-}
-
 impl Dummy<Faker> for AIGeneratedStatus {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
         if rng.random_ratio(1, 4) {
@@ -86,21 +51,5 @@ impl Dummy<Faker> for AIGeneratedStatus {
         } else {
             AIGeneratedStatus::All
         }
-    }
-}
-
-impl DatabaseField for AIGeneratedStatus {
-    fn field_definition(field_key: &'static str, table: &conundrum::ecosystem::db::tables::DatabaseTable) -> String {
-        // TODO: Add assertion here to limit range.
-        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE int", field_key, table)
-    }
-}
-
-impl OptionalDatabaseField for AIGeneratedStatus {
-    fn optional_field_definition(field_key: &'static str,
-                                 table: &conundrum::ecosystem::db::tables::DatabaseTable)
-                                 -> String {
-        // TODO: Add assertion here to limit range.
-        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE optional<int>", field_key, table)
     }
 }

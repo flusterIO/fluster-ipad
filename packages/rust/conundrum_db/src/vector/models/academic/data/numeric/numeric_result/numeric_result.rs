@@ -1,9 +1,8 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
 
 use crate::vector::models::academic::result::academic_result_metric::AcademicResultMetric;
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct NumericResult {
     pub label: String,
     pub desc: String,

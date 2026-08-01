@@ -1,9 +1,8 @@
 use serde::{Deserialize, Serialize};
-use surrealdb_types::SurrealValue;
 
 use crate::vector::models::taggables::{subject::Subject, tag::Tag, topic::Topic};
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct HTMLContent {
     pub content: String,
     pub source_url: Option<String>,

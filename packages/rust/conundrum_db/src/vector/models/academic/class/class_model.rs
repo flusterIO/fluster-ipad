@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
 
 use crate::vector::models::{
     date_time::alert::alert::Alert,
@@ -10,7 +9,7 @@ use crate::vector::models::{
 /// ## ClassModel
 ///
 /// A school class, not a Rust class. Oh do I wish we had a Rust class.
-#[derive(Serialize, Deserialize, Clone, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct ClassModel {
     /// Can be conundrum content, but should be parsed with the
     /// `perferInlineSyntax` flag.

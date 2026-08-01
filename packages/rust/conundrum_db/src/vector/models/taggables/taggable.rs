@@ -1,13 +1,11 @@
 use serde::{Deserialize, Serialize};
-use surrealdb_types::SurrealValue;
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
-#[surreal(untagged)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum TaggableVariant {
-    #[surreal(value = "tag")]
+    #[serde(rename = "tag")]
     Tag,
-    #[surreal(value = "topic")]
+    #[serde(rename = "topic")]
     Topic,
-    #[surreal(value = "subject")]
+    #[serde(rename = "subject")]
     Subject,
 }

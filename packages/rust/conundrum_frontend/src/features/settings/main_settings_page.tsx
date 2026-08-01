@@ -1,16 +1,12 @@
-import React, { type ReactNode } from 'react'
+import React, { type ReactNode } from "react";
+import { AISettingSection } from "./settings_sections/ai_settings/ai_settings_section";
 
-
-
-interface MainSettingsPageProps {
-
-}
-
-export const MainSettingsPage = (props: MainSettingsPageProps): ReactNode => {
+export const MainSettingsPage = (): ReactNode => {
     return (
-        <div>Settings</div>
-    )
-}
+        <div className="@container/settings w-full max-w-270 mx-auto px-6">
+            <AISettingSection />
+        </div>
+    );
+};
 
-
-MainSettingsPage.displayName = "MainSettingsPage"
+MainSettingsPage.displayName = "MainSettingsPage";

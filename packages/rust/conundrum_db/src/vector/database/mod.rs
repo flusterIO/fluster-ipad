@@ -1,9 +1,6 @@
 pub mod db;
 pub mod db_client;
 pub mod db_traits;
-pub mod db_types;
-pub mod embedded_schemas;
-pub mod global_queries;
 pub mod inititialize_db;
 pub mod joins;
 pub mod primitive_field_schema_generators;

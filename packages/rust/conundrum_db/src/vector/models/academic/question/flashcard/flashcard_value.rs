@@ -1,19 +1,37 @@
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum::{
+    ecosystem::error_handling::db_error::DatabaseError,
+    parsers::conundrum::logic::number::{conundrum_float::ConundrumFloat, conundrum_int::ConundrumInt},
+};
+use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
-use surrealdb::types::{Number, SurrealValue};
 
-use crate::vector::database::db_traits::database_field::DatabaseField;
+use crate::vector::database::db_traits::db_field::DatabaseField;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub enum FlashcardValue {
-    Numeric(Number),
+    Float(ConundrumFloat),
+    Int(ConundrumInt),
     Text(String),
+}
+
+impl From<i64> for FlashcardValue {
+    fn from(value: i64) -> Self {
+        let n: ConundrumInt = value.into();
+        Self::Int(n)
+    }
 }
 
 impl From<f64> for FlashcardValue {
     fn from(value: f64) -> Self {
-        Self::Numeric(Number::from_float(value))
+        let n: ConundrumFloat = value.into();
+        Self::Float(n)
+    }
+}
+
+impl From<String> for FlashcardValue {
+    fn from(value: String) -> Self {
+        Self::Text(value)
     }
 }
 
@@ -25,32 +43,11 @@ impl FromStr for FlashcardValue {
     }
 }
 
-impl SurrealValue for FlashcardValue {
-    fn kind_of() -> surrealdb_types::Kind {
-        surrealdb_types::Kind::Either(vec![surrealdb_types::Kind::Number, surrealdb_types::Kind::String,])
-    }
-
-    fn into_value(self) -> surrealdb_types::Value {
-        match self {
-            Self::Text(s) => surrealdb_types::Value::String(s),
-            Self::Numeric(n) => surrealdb_types::Value::Number(n),
-        }
-    }
-
-    fn from_value(value: surrealdb_types::Value) -> Result<Self, surrealdb::Error>
-        where Self: Sized {
-        if let Some(n) = value.as_number() {
-            Ok(FlashcardValue::Numeric(*n))
-        } else if let Some(s) = value.as_string() {
-            Ok(FlashcardValue::Text(s.clone()))
-        } else {
-            Err(surrealdb_types::Error::thrown("Invalid FlashcardValue type.".to_string()))
-        }
-    }
-}
-
 impl DatabaseField for FlashcardValue {
-    fn field_definition(field_key: &'static str, table: &conundrum::ecosystem::db::tables::DatabaseTable) -> String {
-        format!("DEFINE FIELD IF NOT EXISTS {} ON {} TYPE number|string;", field_key, table)
+    /// This will only work for strings for now until we can get online and
+    /// handle the union schema. Just pretend like the union schema is already
+    /// in place.
+    fn field_definition(field_key: &'static str, nullable: bool) -> lancedb::arrow::arrow_schema::Field {
+        Field::new(field_key, lancedb::arrow::arrow_schema::DataType::Utf8, nullable)
     }
 }

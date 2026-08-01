@@ -1,15 +1,11 @@
 use conundrum::ecosystem::{db::tables::DatabaseTable, error_handling::db_error::DatabaseResult};
 use serde::{Deserialize, Serialize};
-use surrealdb_types::RecordId;
 
-use crate::vector::{
-    database::{db::ArcMutexDB, db_traits::pure_model_instance::PureModelInstanceMethods},
-    models::{
-        academic::question::flashcard::{flashcard_value::FlashcardValue, pure_flashcard::PureFlashcard},
-        date_time::date_time::DateTime,
-        primitives::db_id::DatabaseId,
-        taggables::{subject::Subject, tag::Tag, taggables::Taggables, topic::Topic},
-    },
+use crate::vector::models::{
+    academic::question::flashcard::flashcard_value::FlashcardValue,
+    date_time::date_time::DateTime,
+    primitives::db_id::DatabaseId,
+    taggables::{subject::Subject, tag::Tag, tag_list::TagList, taggables::Taggables, topic::Topic},
 };
 
 #[derive(Clone, Deserialize, Debug)]
@@ -35,7 +31,7 @@ pub struct FlashCardModel {
     pub explanation: Option<String>,
     pub correct_responses: u32,
     pub incorrect_responses: u32,
-    pub tags: Vec<Tag>,
+    pub tags: TagList,
     pub subject: Option<Subject>,
     pub topic: Option<Topic>,
     /// A subjective difficulty score, probably coming from AI in most cases.
@@ -48,30 +44,17 @@ pub struct FlashCardModel {
 
 impl FlashCardModel {
     pub fn new_with_string_answer(input_data: FlashCardModelStringAnswerInputData) -> FlashCardModel {
-        FlashCardModel { id: DatabaseId::new(DatabaseTable::QAPair),
+        FlashCardModel { id: DatabaseId::new(),
                          question: input_data.question,
                          answer: FlashcardValue::Text(input_data.answer),
                          explanation: input_data.explanation,
                          difficulty: input_data.difficulty,
                          correct_responses: 0,
                          incorrect_responses: 0,
-                         tags: input_data.tags.iter().map(|t| Tag::from(t.clone())).collect::<Vec<Tag>>(),
+                         tags: TagList::from_strings(input_data.tags),
                          subject: input_data.subject.map(Subject::from),
                          topic: input_data.topic.map(Topic::from),
                          ctime: DateTime::new_now(),
                          last_access: DateTime::new_now() }
-    }
-
-    pub async fn upsert_self(&self, db: &ArcMutexDB) -> DatabaseResult<RecordId> {
-        let taggables = Taggables { tags: self.tags.clone(),
-                                    topic: self.topic.clone(),
-                                    subject: self.subject.clone() };
-        let (tag_records, topic_record, subject_record) = taggables.upsert_all(db).await?;
-        let mut r = PureFlashcard::from(self.clone());
-        r.tags = tag_records;
-        r.topic = topic_record;
-        r.subject = subject_record;
-        let record_id: RecordId = r.upsert_self(db).await?;
-        Ok(record_id)
     }
 }

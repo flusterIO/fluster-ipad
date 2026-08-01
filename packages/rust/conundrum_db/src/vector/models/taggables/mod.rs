@@ -1,5 +1,4 @@
 pub mod auto_taggable;
-pub mod optional_taggable;
 pub mod subject;
 pub mod tag;
 pub mod tag_list;

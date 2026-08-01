@@ -2,7 +2,6 @@ use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 use std::{fmt::Display, str::FromStr};
-use surrealdb::types::SurrealValue;
 
 /// ## AssignmentStatus
 ///
@@ -29,29 +28,6 @@ pub enum AssignmentStatus {
     /// The trash bin basically.
     Archived,
     Custom(String),
-}
-
-impl SurrealValue for AssignmentStatus {
-    fn kind_of() -> surrealdb::types::Kind {
-        surrealdb::types::Kind::String
-    }
-
-    fn into_value(self) -> surrealdb::types::Value {
-        surrealdb::types::Value::String(self.to_string())
-    }
-
-    fn from_value(value: surrealdb::types::Value) -> Result<Self, surrealdb::Error>
-        where Self: Sized {
-        if let Some(s) = value.as_string() {
-            if let Ok(res) = Self::from_str(s) {
-                Ok(res)
-            } else {
-                Err(surrealdb::Error::thrown("Failed to serialize assignmentStatus".to_string()))
-            }
-        } else {
-            Err(surrealdb::Error::thrown("Failed to serialize assignmentStatus".to_string()))
-        }
-    }
 }
 
 impl Display for AssignmentStatus {

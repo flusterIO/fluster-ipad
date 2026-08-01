@@ -1,33 +1,59 @@
-use askama::Template;
-use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
+use std::sync::Arc;
 
-use crate::vector::database::{db::get_database, global_queries::initialize_database_query::InitializeDatabaseQuery};
+use conundrum::ecosystem::{
+    db::tables::DatabaseTable,
+    error_handling::db_error::{DatabaseError, DatabaseResult},
+};
+use conundrum_fs::path_utils::ecosystem_paths::get_app_database_dir;
+use lancedb::{Table, arrow::arrow_schema::Schema, connect};
+use log::warn;
 
-pub async fn initialize_local_database() -> DatabaseResult<()> {
-    let query = InitializeDatabaseQuery::default();
-    let schema = query.render().map_err(|_| DatabaseError::FailToSerialize("Conundrum Schema error".to_string()))?;
-    println!("Schema: {}", schema);
-    let db = get_database().await?;
-    let locked_db = db.clone().lock_owned().await;
-    locked_db.query(schema).await.map_err(|e| DatabaseError::DatabaseError { source: Some(e) })?;
-    drop(locked_db);
-    Ok(())
+use crate::vector::{
+    database::{db::CdrmDb, db_traits::db_entity::DBEntity},
+    models::academic::question::flashcard::{flashcard_entity::FlashCardEntity, flashcard_model::FlashCardModel},
+};
+
+pub type DatabaseIndexSetupFunction = fn(&CdrmDb) -> DatabaseResult<()>;
+
+struct TableInitData {
+    pub table: DatabaseTable,
+    pub schema: Arc<Schema>,
+    /// An optional function called after the table is created so indices can be
+    /// applied.
+    pub set_indices: Option<DatabaseIndexSetupFunction>,
 }
 
-#[cfg(test)]
-mod tests {
+async fn create_table(db: &lancedb::Connection, schema: &Arc<Schema>, table: &DatabaseTable) -> DatabaseResult<Table> {
+    db.create_empty_table(table.to_string(), schema.clone())
+      .mode(lancedb::database::CreateTableMode::Create)
+      .execute()
+      .await
+      .map_err(|_| DatabaseError::FailToCreateTable(table.clone()))
+}
 
-    use conundrum_fs::path_utils::ecosystem_paths::get_app_database_dir;
+pub async fn initialize_local_database() -> DatabaseResult<()> {
+    let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::QAPair,
+                                                              schema: FlashCardEntity::arrow_schema(),
+                                                              set_indices: None }];
+    if let Ok(db_path) = get_app_database_dir() {
+        let db = connect(db_path.to_str().unwrap()).execute().await.map_err(|e| {
+                                                                        println!("Error in initialize_database: {:?}",
+                                                                                 e);
+                                                                        DatabaseError::FailToConnect
+                                                                    })?;
 
-    use super::*;
-
-    #[test]
-    fn print_database_path() {
-        println!("{:?}", get_app_database_dir().expect("Mother-er you better print"));
+        for td in table_data.iter() {
+            if !td.table.is_temporary_vector_table() {
+                if let Ok(res) = create_table(&db, &td.schema, &td.table).await {
+                    if let Some(si) = td.set_indices {
+                        si(&db)?;
+                    }
+                } else {
+                    let s = td.table.to_model_name();
+                    warn!("Conundrum failed while attempting to generate a database table for the `{:?}` model.", s);
+                }
+            }
+        }
     }
-
-    #[tokio::test]
-    async fn initializes_local_database() {
-        initialize_local_database().await.expect("Initializes local database without throwing an error.");
-    }
+    Ok(())
 }

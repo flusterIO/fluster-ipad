@@ -1,7 +1,6 @@
 use parking_lot::RwLock;
 use serde::{Deserialize, Serialize};
 use std::{fmt::Display, sync::Arc};
-use surrealdb_types::SurrealValue;
 use winnow::{
     Parser,
     ascii::{dec_int, float},
@@ -136,30 +135,6 @@ impl ConundrumNumber {
 impl ConundrumComponentResult for ConundrumNumber {
     fn to_conundrum_component(&self, _: ArcState) -> ConundrumModalResult<String> {
         Ok(self.to_string())
-    }
-}
-
-impl SurrealValue for ConundrumNumber {
-    fn kind_of() -> surrealdb_types::Kind {
-        surrealdb_types::Kind::Number
-    }
-
-    fn into_value(self) -> surrealdb_types::Value {
-        match self {
-            Self::Int(n) => n.into_value(),
-            Self::Float(n) => n.into_value(),
-        }
-    }
-
-    fn from_value(value: surrealdb_types::Value) -> Result<Self, surrealdb::Error>
-        where Self: Sized {
-        if let Some(r) = value.as_int() {
-            Ok(Self::Int(ConundrumInt(*r)))
-        } else if let Some(r) = value.as_float() {
-            Ok(Self::Float(ConundrumFloat(*r)))
-        } else {
-            Err(surrealdb_types::Error::thrown("Invalid ConundrumNumber stored.".to_string()))
-        }
     }
 }
 

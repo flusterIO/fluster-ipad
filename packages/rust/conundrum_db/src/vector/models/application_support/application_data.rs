@@ -1,11 +1,10 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
 
 use crate::vector::models::{
     application_support::application_permission::ApplicationPermission, date_time::date_time::DateTime,
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ApplicationData {
     /// A user-facing string used as a title for the application
     pub label: String,

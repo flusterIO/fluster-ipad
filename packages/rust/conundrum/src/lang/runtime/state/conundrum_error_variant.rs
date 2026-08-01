@@ -83,6 +83,8 @@ pub enum ConundrumErrorVariant {
     EmptyBibliography,
     #[error("The provided biblatex content appears to be invalid. Entry: \n ```bib\n{0}\n```")]
     InvalidBiblatex(String),
+    #[error("Conundrum uses a set of structured keys to manage settings and it encountered a key it doesn't recognize: {0}")]
+    InvalidSettingKey(String),
 }
 
 impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {
@@ -97,7 +99,6 @@ impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {
         }
     }
 }
-
 
 // impl ConundrumErrorVariant {
 //     // Avoiding `From` so `winnow` types don't become part of our public API
@@ -153,7 +154,6 @@ impl ParserError<ConundrumInput<'_>> for ConundrumErrorVariant {
         Ok(self)
     }
 }
-
 
 pub type ConundrumResult<T> = Result<T, ConundrumErrorVariant>;
 pub type ConundrumModalResult<T> = ModalResult<T, ConundrumErrorVariant>;

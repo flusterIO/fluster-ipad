@@ -28,7 +28,7 @@ pub async fn main() {
             n.unwrap_or(*DEFAULT_CDRM_SERVER_PORT)
         }
         Err(err) => {
-            println!("Error: {}", err);
+            log::warn!("Error: {}", err);
             *DEFAULT_CDRM_SERVER_PORT
         }
     };

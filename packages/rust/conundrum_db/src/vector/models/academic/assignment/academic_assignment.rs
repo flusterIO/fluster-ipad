@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
 
 use crate::vector::models::{
     academic::assignment::milestone::Milestone,
@@ -8,7 +7,7 @@ use crate::vector::models::{
     taggables::{subject::Subject, tag::Tag, topic::Topic},
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Assignment {
     pub id: DatabaseId,
     pub label: String,

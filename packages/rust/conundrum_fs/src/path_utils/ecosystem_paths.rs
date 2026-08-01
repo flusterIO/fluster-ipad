@@ -13,3 +13,5 @@ pub fn get_app_data_dir() -> ConundrumFSResult<PathBuf> {
 pub fn get_app_database_dir() -> ConundrumFSResult<PathBuf> {
     Ok(get_app_data_dir()?.join("database"))
 }
+
+

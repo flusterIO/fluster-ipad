@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
 
 /// ## Warning
 /// Right now this is all very insecure, and you should always assume that
@@ -8,7 +7,7 @@ use surrealdb::types::SurrealValue;
 /// the API and the ability to write to the db is almost completely
 /// unprotected. If someone's on your system tha that has the ability to
 /// manipulate things, you have bigger problems anyways.
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum ApplicationPermission {
     /// The ability to write to the file system, **through** the Conundrum
     /// api's.

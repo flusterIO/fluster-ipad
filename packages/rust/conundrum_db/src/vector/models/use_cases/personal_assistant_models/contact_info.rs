@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::types::SurrealValue;
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PhysicalAddress {
     /// The street address.
     ///
@@ -14,7 +13,7 @@ pub struct PhysicalAddress {
     pub zip: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, SurrealValue)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ContactInfo {
     pub first_name: Option<String>,
     pub last_name: Option<String>,
