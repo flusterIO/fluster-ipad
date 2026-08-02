@@ -1,7 +1,8 @@
 export enum CommandGroupId {
-    Sync,
-    Clean,
-    Backup,
+    Sync = "sync",
+    Clean = "clean",
+    Backup = "backup",
+    Search = "search",
 }
 
 export const commandGroupIdToGroupLabel = (id: CommandGroupId): string => {
@@ -12,5 +13,7 @@ export const commandGroupIdToGroupLabel = (id: CommandGroupId): string => {
             return "Clean";
         case CommandGroupId.Backup:
             return "Backup";
+        case CommandGroupId.Search:
+            return "Search";
     }
 };

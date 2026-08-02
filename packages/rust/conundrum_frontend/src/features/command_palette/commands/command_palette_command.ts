@@ -7,6 +7,7 @@ interface CommandPaletteCommandProps {
     key: string;
     hasChildren: boolean;
     groupId?: CommandGroupId;
+    keywords?: string[];
 }
 
 export abstract class CommandPaletteCommand implements CommandPaletteCommandProps {
@@ -14,11 +15,13 @@ export abstract class CommandPaletteCommand implements CommandPaletteCommandProp
     key: string;
     hasChildren: boolean;
     groupId?: CommandGroupId;
+    keywords?: string[];
     constructor(props: CommandPaletteCommandProps) {
         this.label = props.label;
         this.key = props.key;
         this.hasChildren = props.hasChildren;
         this.groupId = props.groupId;
+        this.keywords = props.keywords;
     }
 
     async act(): Promise<void> {

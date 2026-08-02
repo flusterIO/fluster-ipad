@@ -1,4 +1,7 @@
 import { CommandPaletteCommand } from "./command_palette_command";
+import { SearchSubjectsCommand } from "./search/search_subjects_command";
+import { SearchTagsCommand } from "./search/search_tags_command";
+import { SearchTopicsCommand } from "./search/search_topics_command";
 import {
     SyncFileSystemWithAICommand,
     SyncFileSystemWithoutAICommand,
@@ -12,10 +15,14 @@ export class HomeCOmmandPaletteCommand extends CommandPaletteCommand {
             hasChildren: true,
         });
     }
+    // eslint-disable-next-line @typescript-eslint/require-await
     async children(): Promise<CommandPaletteCommand[]> {
         return [
             new SyncFileSystemWithoutAICommand(),
             new SyncFileSystemWithAICommand(),
+            new SearchTagsCommand(),
+            new SearchTopicsCommand(),
+            new SearchSubjectsCommand(),
         ];
     }
 }
