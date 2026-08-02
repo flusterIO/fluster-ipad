@@ -18,17 +18,29 @@ use crate::vector::{
 static USER_WORKSPACE_PRIMARY_KEY: &str = "value_lc";
 static USER_WORKSPACE_MERGE_KEYS: &[&str] = &[USER_WORKSPACE_PRIMARY_KEY];
 
+fn default_bib_path() -> String {
+    String::from("/citations.bib")
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 pub struct UserWorkspace {
     /// The path to the root of the workspace and the primary key for the
     /// workspace.
     pub root: String,
     pub label: Option<String>,
+    #[serde(default = "default_bib_path")]
+    pub bib_path: String,
 }
 
 impl UserWorkspace {
     pub async fn exists(&self) -> bool {
         tokio::fs::try_exists(self.root.clone()).await.is_ok_and(|x| x)
+    }
+
+    pub fn from_root_and_label(root: String, label: Option<String>) -> Self {
+        Self { root,
+               label,
+               bib_path: default_bib_path() }
     }
 }
 
@@ -45,7 +57,8 @@ impl ValidateSelf for UserWorkspace {
 impl From<String> for UserWorkspace {
     fn from(value: String) -> Self {
         Self { root: value,
-               label: None }
+               label: None,
+               bib_path: default_bib_path() }
     }
 }
 

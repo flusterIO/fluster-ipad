@@ -1,9 +1,22 @@
 use serde::{Deserialize, Serialize};
+use specta::Type;
 use strum::EnumIter;
+
+use crate::ecosystem::error_handling::conundrum_fs_error::ConundrumFSError;
 
 /// All string representations must match the file type, without the leading
 /// period.
-#[derive(Serialize, Deserialize, strum_macros::Display, strum_macros::EnumString, Clone, PartialEq, Eq, EnumIter)]
+#[derive(Serialize,
+           Deserialize,
+           strum_macros::Display,
+           strum_macros::EnumString,
+           Clone,
+           PartialEq,
+           Eq,
+           EnumIter,
+           Hash,
+           Debug,
+           Type)]
 pub enum ParsableFileType {
     #[serde(rename = "cdrm")]
     #[strum(to_string = "cdrm")]
@@ -17,6 +30,20 @@ pub enum ParsableFileType {
     #[serde(rename = "typst")]
     #[strum(to_string = "typst")]
     Typst,
+}
+
+impl TryFrom<String> for ParsableFileType {
+    type Error = ConundrumFSError;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        match value.to_lowercase().as_str() {
+            "cdrm" => Ok(Self::Cdrm),
+            "md" => Ok(Self::Markdown),
+            "mdx" => Ok(Self::Mdx),
+            "typst" => Ok(Self::Typst),
+            _ => Err(ConundrumFSError::UnsupportedFileExtension(value.clone())),
+        }
+    }
 }
 
 impl ParsableFileType {

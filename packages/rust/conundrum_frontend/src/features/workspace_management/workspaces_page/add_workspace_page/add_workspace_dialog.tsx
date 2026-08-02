@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/shad/form";
+/* import {} from "@/codegen/bindings" */
 
 export const AddWorkspaceDialog = ({
     open,

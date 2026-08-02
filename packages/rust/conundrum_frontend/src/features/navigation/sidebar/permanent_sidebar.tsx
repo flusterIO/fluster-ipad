@@ -3,7 +3,12 @@ import {
     PermanentSidebarButton,
     type PermanentSidebarButtonProps,
 } from "./sidebar_button";
-import { HomeIcon, SettingsIcon, BoxesIcon } from "lucide-react";
+import {
+    HomeIcon,
+    SettingsIcon,
+    BoxesIcon,
+    FileSpreadsheet,
+} from "lucide-react";
 import { AppPaths } from "../app_paths";
 
 const buttons: PermanentSidebarButtonProps[] = [
@@ -14,6 +19,10 @@ const buttons: PermanentSidebarButtonProps[] = [
     {
         href: AppPaths.workspaces,
         icon: BoxesIcon,
+    },
+    {
+        href: AppPaths.flashcards,
+        icon: FileSpreadsheet,
     },
 ];
 

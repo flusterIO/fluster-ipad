@@ -24,6 +24,9 @@ pub enum ConundrumFSError {
 
     #[error("Conundrum could not serialize a path.")]
     PathSerializationError,
+
+    #[error("Unsupported file extension: {0}.")]
+    UnsupportedFileExtension(String),
 }
 
 pub type ConundrumFSResult<T> where T: Sized

@@ -19,3 +19,4 @@ pub mod plain_text_component_result;
 pub mod rendering;
 pub mod state_modifier;
 pub mod tree_walking;
+pub mod async_traits;

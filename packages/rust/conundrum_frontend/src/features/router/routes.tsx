@@ -5,6 +5,7 @@ import { AppPaths } from "#/navigation/app_paths";
 import { ModularDataDashboard } from "#/dashboard/dashboards/modular_data/modular_data_dashboard";
 import { MainSettingsPage } from "#/settings/main_settings_page";
 import { WorkspacesPage } from "#/workspace_management/workspaces_page/workspaces_page";
+import { MainFlashcardsPage } from "#/study/flashcards_page/main_flashcards_page";
 
 export const MainAppRoutes = (): ReactNode => {
     const location = useLocation();
@@ -14,6 +15,7 @@ export const MainAppRoutes = (): ReactNode => {
                 <Route path={AppPaths.dashboard} Component={ModularDataDashboard} />
                 <Route path={AppPaths.settings} Component={MainSettingsPage} />
                 <Route path={AppPaths.workspaces} Component={WorkspacesPage} />
+                <Route path={AppPaths.flashcards} Component={MainFlashcardsPage} />
             </Routes>
         </AnimatePresence>
     );
