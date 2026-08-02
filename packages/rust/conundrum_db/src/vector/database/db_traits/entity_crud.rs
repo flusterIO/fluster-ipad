@@ -1,15 +1,11 @@
-use std::{clone::CloneToUninit, fmt::Display};
+use std::fmt::Display;
 
 use arrow_array::RecordBatchIterator;
 use conundrum::ecosystem::{
     db::tables::DatabaseTable,
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
-use lancedb::{
-    arrow::IntoArrowStream,
-    data::scannable::Scannable,
-    query::{ExecutableQuery, QueryBase},
-};
+use lancedb::query::{ExecutableQuery, QueryBase};
 
 use crate::vector::database::{
     db::ArcMutexDB, db_traits::db_entity::DBEntity, open_table::open_table, pagination::PaginationParams,
@@ -20,7 +16,7 @@ pub trait EntityCRUD<IDType: Display>: DBEntity {
         where Self: Sized {
         let schema = Self::arrow_schema();
         let _db = db.clone().lock_owned().await;
-        let tbl = open_table(_db, Self::table()).await?;
+        let tbl = open_table(_db, &Self::table()).await?;
         let batches = Self::get_record_batch(items)?;
         let stream = Box::new(RecordBatchIterator::new(vec![batches].into_iter().map(Ok), schema.clone()));
         let primary_key: &[&str] = Self::merge_keys();
@@ -46,9 +42,10 @@ pub trait EntityCRUD<IDType: Display>: DBEntity {
                               -> DatabaseResult<Vec<Self>>
         where Self: Sized {
         let _db = db.clone().lock_owned().await;
-        let tbl = open_table(_db, Self::table()).await?;
+        let self_table = Self::table();
+        let tbl = open_table(_db, &self_table).await?;
         let mut query_builder = tbl.query();
-        if let Some(_predicate) = predicate {
+        if let Some(_predicate) = predicate.clone() {
             query_builder = query_builder.only_if(_predicate);
         }
         if let Some(_pagination) = pagination {
@@ -57,7 +54,9 @@ pub trait EntityCRUD<IDType: Display>: DBEntity {
         }
         let mut res = query_builder.execute().await.map_err(|e| {
                                                         log::error!("Error: {:?}", e);
-                                                        DatabaseError::FailToQueryEntity(predicate)
+                                                        DatabaseError::FailToQueryEntity { predicate:
+                                                                                               predicate.clone(),
+                                                                                           table: self_table.clone() }
                                                     })?;
 
         let mut items: Vec<Self> = Vec::new();

@@ -1,1 +1,1 @@
-{"version":3,"file":"bindings_t.d.ts","sources":["packages/rust/conundrum_server_rs/src/rpc/rspc_router.rs"],"names":["version"],"mappings":";;;CAUyCA;"}
+{"version":3,"file":"bindings_t.d.ts","sources":["packages/rust/conundrum_server_rs/src/rpc/routers/fs_router/fs_router.rs","packages/rust/conundrum_server_rs/src/rpc/rspc_router.rs"],"names":["path_exists","version"],"mappings":";;;;CAQ6CA;;CCQMC;"}

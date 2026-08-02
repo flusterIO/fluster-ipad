@@ -28,7 +28,7 @@ export const PathInput = <Schema extends FieldValues>({
     console.log("mustExist, isDirPath: ", mustExist, isDirPath);
     const value = form.watch(name);
     return (
-        <div className="flex flex-col justify-start items-center">
+        <div className="flex flex-col justify-center items-start gap-y-2">
             <Label>{label}</Label>
             <Input
                 value={value}

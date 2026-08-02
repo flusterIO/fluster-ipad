@@ -6,7 +6,7 @@ use rspc::Procedure;
 
 use crate::{
     errors::server_error::ServerError,
-    rpc::{route_context::RouteContext, routers::fs_router::get_fs_router},
+    rpc::{route_context::RouteContext, routers::fs_router::fs_router::get_fs_router},
 };
 
 pub fn get_rspc_router() -> (rspc::Procedures<RouteContext>, rspc::Types) {

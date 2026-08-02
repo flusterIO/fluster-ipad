@@ -1,5 +1,5 @@
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
 
 pub trait ValidateSelf {
-    fn validate(&self) -> DatabaseError<()>;
+    async fn validate(&self) -> DatabaseResult<()>;
 }

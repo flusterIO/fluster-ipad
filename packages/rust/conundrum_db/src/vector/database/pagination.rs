@@ -1,4 +1,5 @@
 use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PaginationParams {

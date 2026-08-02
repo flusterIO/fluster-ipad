@@ -8,12 +8,15 @@ use tower_http::cors::{Any, CorsLayer};
 use axum::Router;
 use conundrum::ecosystem::environment_variables::cdrm_env_variable::{CdrmEnvVariable, DEFAULT_CDRM_SERVER_PORT};
 
-use crate::routes::{
-    route_enum::RouteEnum,
-    study::{
-        quiz_me::quiz_me_route::quiz_me_route, random_question::get_random_question,
-        save_flashcard::save_flashcard_route,
+use crate::{
+    routes::{
+        route_enum::RouteEnum,
+        study::{
+            quiz_me::quiz_me_route::quiz_me_route, random_question::get_random_question,
+            save_flashcard::save_flashcard_route,
+        },
     },
+    rpc::route_context::RouteContext,
 };
 
 #[tokio::main]
@@ -21,7 +24,12 @@ pub async fn main() {
     let cors = CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any);
     let (rpc_router, _) = get_rspc_router();
 
-    let app = Router::new().nest_service("/rpc", rspc_axum::endpoint::<(), _, _, _>(rpc_router, || ())).layer(cors);
+    // TODO: Move the context up to a shared context and add a database connection.
+
+    let app = Router::new().nest_service("/rpc",
+                                         rspc_axum::endpoint::<RouteContext, _, _, _>(rpc_router, || {
+                                             RouteContext::default()
+                                         }).layer(cors));
     let port = match CdrmEnvVariable::ServerPort.read() {
         Ok(c) => {
             let n: Result<u32, _> = c.parse();

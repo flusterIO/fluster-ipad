@@ -1,8 +1,8 @@
 use std::{path::PathBuf, sync::Arc};
 
-use arrow_schema::DataType;
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
-use fake::vec;
+use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
+use lancedb::arrow::arrow_schema::DataType;
 use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -15,6 +15,9 @@ use crate::vector::{
     models::{joins::one_to_many::OneToMany, text::cdrm::cdrm_content::CdrmContent},
 };
 
+static USER_WORKSPACE_PRIMARY_KEY: &str = "value_lc";
+static USER_WORKSPACE_MERGE_KEYS: &[&str] = &[USER_WORKSPACE_PRIMARY_KEY];
+
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 pub struct UserWorkspace {
     /// The path to the root of the workspace and the primary key for the
@@ -25,13 +28,13 @@ pub struct UserWorkspace {
 
 impl UserWorkspace {
     pub async fn exists(&self) -> bool {
-        tokio::fs::try_exists(self.root).await.is_ok_and(|x| x)
+        tokio::fs::try_exists(self.root.clone()).await.is_ok_and(|x| x)
     }
 }
 
 impl ValidateSelf for UserWorkspace {
-    async fn validate(&self) -> conundrum::ecosystem::error_handling::db_error::DatabaseError<()> {
-        if self.exists() {
+    async fn validate(&self) -> DatabaseResult<()> {
+        if self.exists().await {
             Ok(())
         } else {
             Err(DatabaseError::InvalidWorkspacePath(self.root.clone()))
@@ -78,10 +81,10 @@ impl DBEntity for UserWorkspace {
     }
 
     fn merge_keys() -> &'static [&'static str] {
-        &[Self::primary_key()]
+        USER_WORKSPACE_MERGE_KEYS
     }
 
     fn primary_key() -> &'static str {
-        "root"
+        USER_WORKSPACE_PRIMARY_KEY
     }
 }

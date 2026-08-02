@@ -82,12 +82,12 @@ pub struct FlashCardEntity {
 // })     }
 // }
 
-impl DBEntity for FlashCardEntity {
-    fn arrow_schema() -> Arc<lancedb::arrow::arrow_schema::Schema> {
-        Arc::new(Schema::new(vec![DatabaseId::field_definition("id", false)]))
-    }
+// impl DBEntity for FlashCardEntity {
+//     fn arrow_schema() -> Arc<lancedb::arrow::arrow_schema::Schema> {
+//         Arc::new(Schema::new(vec![DatabaseId::field_definition("id",
+// false)]))     }
 
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        todo!()
-    }
-}
+//     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
+//         todo!()
+//     }
+// }

@@ -44,9 +44,9 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
                                               TableInitData { table: DatabaseTable::Subject,
                                                               schema: Subject::arrow_schema(),
                                                               set_indices: None },
-                                              TableInitData { table: DatabaseTable::QAPair,
-                                                              schema: FlashCardEntity::arrow_schema(),
-                                                              set_indices: None },];
+                                              /* TableInitData { table: DatabaseTable::QAPair,
+                                               *                 schema: FlashCardEntity::arrow_schema(),
+                                               *                 set_indices: None }, */];
     if let Ok(db_path) = get_app_database_dir() {
         let db = connect(db_path.to_str().unwrap()).execute().await.map_err(|e| {
                                                                         println!("Error in initialize_database: {:?}",

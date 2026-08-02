@@ -1,14 +1,14 @@
-use crate::vector::{database::db_traits::db_entity::DBEntity, models::primitives::db_id::DatabaseId};
+use crate::vector::models::primitives::db_id::DatabaseId;
 
-pub struct OneToMany<L, R, IDType = DatabaseId>(Vec<IDType>);
+pub struct OneToMany<IDType = DatabaseId>(Vec<IDType>);
 
-impl<L: DBEntity, R: DBEntity, IDType> From<Vec<IDType>> for OneToMany<L, R, IDType> {
+impl<IDType> From<Vec<IDType>> for OneToMany<IDType> {
     fn from(value: Vec<IDType>) -> Self {
         Self(value)
     }
 }
 
-impl Default for OneToMany {
+impl<T> Default for OneToMany<T> {
     fn default() -> Self {
         Self(Vec::new())
     }
