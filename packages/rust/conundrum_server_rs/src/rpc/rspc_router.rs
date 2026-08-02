@@ -4,18 +4,24 @@ use conundrum_db::vector::{
 };
 use rspc::Procedure;
 
-use crate::errors::server_error::ServerError;
+use crate::{
+    errors::server_error::ServerError,
+    rpc::{route_context::RouteContext, routers::fs_router::get_fs_router},
+};
 
-pub fn get_rspc_router() -> (rspc::Procedures<()>, rspc::Types) {
-    rspc::Router::<()>::new().procedure("version",
-                                        Procedure::builder::<ServerError>().query(|_, _: ()| async {
-                                                                               Ok(VersionData { server:
+pub fn get_rspc_router() -> (rspc::Procedures<RouteContext>, rspc::Types) {
+    let mut fs_router = get_fs_router();
+    rspc::Router::<RouteContext>::new()
+        .nest("fs", fs_router)
+                                       .procedure("version",
+                                                  Procedure::builder::<ServerError>().query(|_, _: ()| async {
+                                                                                         Ok(VersionData { server:
                                                                                      ServerVersion::current_version(),
                                                                                  database:
                                                                                      SchemaVersion::current_version() })
-                                                                           }))
-                             .build()
-                             .expect("Must always build server without throwing an error.")
+                                                                                     }))
+                                       .build()
+                                       .expect("Must always build server without throwing an error.")
 }
 
 #[cfg(test)]

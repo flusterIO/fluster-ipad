@@ -45,7 +45,7 @@ conundrum_db = {path = "../conundrum_db/"}
 log = "0.4.33"
 tower-http = { version = "0.7.0", features = ["fs", "cors"] }
 rust-embed = { version = "8.12.0", features = ["axum", "tokio"] }
-specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url"] }
+specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url", "derive"] }
 rspc = { version = "0.4.1", features = ["typescript"] }
 rspc-axum = { version = "0.3.0", features = ["ws"] }
 

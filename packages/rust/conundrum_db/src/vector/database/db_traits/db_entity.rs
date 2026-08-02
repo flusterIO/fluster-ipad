@@ -13,14 +13,8 @@ pub trait DBEntity {
     fn arrow_schema() -> Arc<Schema>;
     fn table() -> DatabaseTable;
     fn get_record_batch(data: Vec<Self>) -> DatabaseResult<RecordBatch>
-        where Self: Sized {
-        todo!()
-    }
-    fn merge_keys() -> &'static [&'static str] {
-        todo!()
-    }
-    fn primary_key() -> &'static str {
-        todo!()
-    }
+        where Self: Sized;
+    fn merge_keys() -> &'static [&'static str];
+    fn primary_key() -> &'static str;
     // fn save_self(&self, db: &ArcMutexDB) -> DatabaseResult<()>;
 }

@@ -121,7 +121,8 @@ chrono.workspace = true
 lancedb = "0.29.0"
 text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
 go-away = { version = "0.6.1", features = ["all"] }
-specta = { version = "=2.0.0-rc.22" }
+specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url", "derive"] }
+ignore = "0.4.31"
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

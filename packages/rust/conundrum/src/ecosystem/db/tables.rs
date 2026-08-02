@@ -24,6 +24,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "typst")]
     #[serde(rename = "typst")]
     TypstContent,
+    #[strum(to_string = "user_workspace")]
+    #[serde(rename = "user_workspace")]
+    UserWorkspace,
     #[strum(to_string = "workspace_path")]
     #[serde(rename = "workspace_path")]
     WorkspacePath,

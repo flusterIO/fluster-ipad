@@ -1,0 +1,50 @@
+import { PageContainer } from "@/components/general/page_container";
+import { PageTitleGroup } from "@/components/general/page_title_group";
+import React, { useState, type ReactNode } from "react";
+import { WorkspaceListItem } from "./workspace_item";
+import { PlusSquareIcon } from "lucide-react";
+import { AddWorkspaceDialog } from "./add_workspace_page/add_workspace_dialog";
+
+export const WorkspacesPage = (): ReactNode => {
+    const [workspaces, setWorkspaces] = useState([]);
+    const [showWorkspaceDialog, setShowWorkspaceDialog] = useState(false);
+    return (
+        <PageContainer
+            title="Workspace Management"
+            subtitle={
+                <>
+                    Each <span className="italic">workspace</span> is a directory that
+                    contains your notes and all resources that your notes depend on.
+                </>
+            }
+            center={!workspaces.length}
+        >
+            {workspaces.length ? (
+                workspaces.map((item) => {
+                    return <WorkspaceListItem item={item} />;
+                })
+            ) : (
+                <div className="w-full h-fit flex flex-col justify-center items-center">
+                    <div className="mb-3">No workspaces to show</div>
+                    <a
+                        role="button"
+                        className="bg-secondary rounded"
+                        onClick={() => {
+                            setShowWorkspaceDialog(true);
+                        }}
+                    >
+                        <PlusSquareIcon className="w-10 h-10 rounded-xl text-secondary-foreground/60! hover:text-secondary-foreground! transition-colors duration-300 cursor-pointer" />
+                    </a>
+                </div>
+            )}
+            <AddWorkspaceDialog
+                open={showWorkspaceDialog}
+                close={() => {
+                    setShowWorkspaceDialog(false);
+                }}
+            />
+        </PageContainer>
+    );
+};
+
+WorkspacesPage.displayName = "WorkspacesPage";

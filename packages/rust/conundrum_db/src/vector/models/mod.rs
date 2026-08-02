@@ -11,3 +11,4 @@ pub mod primitives;
 pub mod taggables;
 pub mod text;
 pub mod use_cases;
+pub mod workspace;

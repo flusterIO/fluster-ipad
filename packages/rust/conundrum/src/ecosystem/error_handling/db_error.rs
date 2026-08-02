@@ -36,6 +36,15 @@ pub enum DatabaseError {
     FailToCreateTable(DatabaseTable),
     #[error("File system error: {:?}", .0)]
     FileSystemError(ConundrumFSError),
+    #[error("Failed to query the `{:?}` entity using the following predicate: `{}`", .table.to_model_name(), .predicate.as_ref().cloned().unwrap_or_default())]
+    FailToQueryEntity {
+        predicate: Option<String>,
+        table: DatabaseTable,
+    },
+    #[error("Invalid pagination parameters.")]
+    InvalidPagination,
+    #[error("The root to one of your workspaces could not be found. We attempted to look in `{0}`.")]
+    InvalidWorkspacePath(String),
 }
 
 impl From<ConundrumFSError> for DatabaseError {

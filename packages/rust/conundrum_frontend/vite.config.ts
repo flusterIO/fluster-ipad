@@ -18,6 +18,10 @@ export default defineConfig({
                 __dirname,
                 "../../../node_modules/@rspc/query-core/dist/index.js",
             ),
+            ["zod/v4/core"]: path.resolve(
+                __dirname,
+                "../../../node_modules/zod/lib/index.js",
+            ),
         },
     },
 });
