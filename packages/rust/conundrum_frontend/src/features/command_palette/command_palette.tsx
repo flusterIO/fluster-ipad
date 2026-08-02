@@ -24,21 +24,28 @@ import {
 import {
     type CommandGroupId,
     commandGroupIdToGroupLabel,
+    commandPaletteGroupIdToKeywords,
 } from "./commands/command_group_id";
 import { type CommandPaletteCommand } from "./commands/command_palette_command";
 
-const CI = ({ item }: { item: CommandPaletteCommand }): ReactNode => {
+const CI = ({
+    item,
+    clearInput,
+}: {
+    item: CommandPaletteCommand;
+    clearInput: () => void;
+}): ReactNode => {
     const dispatch = useCommandPaletteDispatch();
     return (
         <CommandItem
-            keywords={item.keywords}
+            keywords={commandPaletteGroupIdToKeywords(item.groupId, item.keywords)}
             onSelect={() => {
-                console.log("item: ", item);
                 if (item.hasChildren) {
                     dispatch({
                         type: "appendCommand",
                         payload: item,
                     });
+                    clearInput();
                 } else {
                     (async () => {
                         await item.act();
@@ -147,7 +154,15 @@ export const CommandPalette = (): ReactNode => {
                                             <div className="bg-muted h-0.5 grow" />
                                         </div>
                                         {items.map((kk) => {
-                                            return <CI item={kk} key={kk.key} />;
+                                            return (
+                                                <CI
+                                                    clearInput={() => {
+                                                        setInputValue("");
+                                                    }}
+                                                    item={kk}
+                                                    key={kk.key}
+                                                />
+                                            );
                                         })}
                                     </CommandGroup>
                                 );
@@ -155,7 +170,15 @@ export const CommandPalette = (): ReactNode => {
                                 return (
                                     <>
                                         {items.map((kk) => {
-                                            return <CI item={kk} key={kk.key} />;
+                                            return (
+                                                <CI
+                                                    clearInput={() => {
+                                                        setInputValue("");
+                                                    }}
+                                                    item={kk}
+                                                    key={kk.key}
+                                                />
+                                            );
                                         })}
                                     </>
                                 );

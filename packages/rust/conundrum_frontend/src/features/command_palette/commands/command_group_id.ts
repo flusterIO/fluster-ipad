@@ -17,3 +17,21 @@ export const commandGroupIdToGroupLabel = (id: CommandGroupId): string => {
             return "Search";
     }
 };
+
+export const commandPaletteGroupIdToKeywords = (
+    id?: CommandGroupId,
+    additionalKeywords: string[] = [],
+) => {
+    if (!id) {
+        return additionalKeywords;
+    }
+    return [
+        ...{
+            [CommandGroupId.Search]: ["search"],
+            [CommandGroupId.Clean]: ["clean"],
+            [CommandGroupId.Backup]: ["backup", "restore"],
+            [CommandGroupId.Sync]: ["sync"],
+        }[id],
+        ...additionalKeywords,
+    ];
+};
