@@ -6,7 +6,7 @@ use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-use crate::vector::database::db_traits::db_field::DatabaseField;
+use crate::vector::database::db_traits::{db_field::DatabaseField, db_identifiable::DatabaseIdentifiable};
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 /// The developers of Surreal should be punched in the fucking eye. Make up your
@@ -21,6 +21,12 @@ use crate::vector::database::db_traits::db_field::DatabaseField;
 /// serializing to sql strings and json objects. No wonder it's slow as shit.
 /// It's the DB that does everything but nothing well.
 pub struct DatabaseId(String);
+
+impl DatabaseIdentifiable for DatabaseId {
+    fn to_predicate(&self, field_key: &str) -> String {
+        format!("{} = {}", field_key, self.0)
+    }
+}
 
 impl Default for DatabaseId {
     fn default() -> Self {

@@ -5,6 +5,7 @@ pub mod tag;
 pub mod tag_list;
 pub mod tag_location;
 pub mod taggable;
+pub mod taggable_arrow_schema;
+pub mod taggable_update_partial;
 pub mod taggables;
 pub mod topic;
-pub mod taggable_arrow_schema;

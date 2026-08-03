@@ -5,31 +5,20 @@ pub use crate::rpc::rspc_router::get_rspc_router;
 pub use rspc_axum;
 use tower_http::cors::{Any, CorsLayer};
 
-use axum::Router;
+use axum::{Router, extract::State};
 use conundrum::ecosystem::environment_variables::cdrm_env_variable::{CdrmEnvVariable, DEFAULT_CDRM_SERVER_PORT};
 
-use crate::{
-    routes::{
-        route_enum::RouteEnum,
-        study::{
-            quiz_me::quiz_me_route::quiz_me_route, random_question::get_random_question,
-            save_flashcard::save_flashcard_route,
-        },
-    },
-    rpc::route_context::RouteContext,
-};
+use crate::rpc::route_context::RouteContext;
 
 #[tokio::main]
 pub async fn main() {
     let cors = CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any);
-    let (rpc_router, _) = get_rspc_router();
+    let (rpc_router, _) = get_rspc_router().await.expect("");
 
+    let state = RouteContext::try_new().await.expect("We cannot establish a connection to the database, which is odd, because it's embedded. Have you ran the initialize command? Try running `cdrm initialize-database` if you have the cdrm cli installed.");
     // TODO: Move the context up to a shared context and add a database connection.
 
-    let app = Router::new().nest_service("/rpc",
-                                         rspc_axum::endpoint::<RouteContext, _, _, _>(rpc_router, || {
-                                             RouteContext::default()
-                                         }).layer(cors));
+    let app = Router::new().nest_service("/rpc", rspc_axum::endpoint(rpc_router, move || state.clone()).layer(cors));
     let port = match CdrmEnvVariable::ServerPort.read() {
         Ok(c) => {
             let n: Result<u32, _> = c.parse();

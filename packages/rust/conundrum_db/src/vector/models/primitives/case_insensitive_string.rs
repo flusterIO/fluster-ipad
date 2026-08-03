@@ -54,12 +54,9 @@ impl CaseInsensitiveString {
     }
 }
 
-impl DatabaseField<(String, String), (Field, Field)> for CaseInsensitiveString {
-    fn field_definition(field_key: &'static str,
-                        nullable: bool)
-                        -> (lancedb::arrow::arrow_schema::Field, lancedb::arrow::arrow_schema::Field) {
-        (Field::new(field_key, lancedb::arrow::arrow_schema::DataType::Utf8, nullable),
-         Field::new(format!("{}_lc", field_key), lancedb::arrow::arrow_schema::DataType::Utf8, nullable))
+impl DatabaseField<(String, String), Field> for CaseInsensitiveString {
+    fn field_definition(field_key: &'static str, nullable: bool) -> lancedb::arrow::arrow_schema::Field {
+        Field::new(field_key, lancedb::arrow::arrow_schema::DataType::Utf8, nullable)
     }
 
     /// Returns the value, and the case-insensitive value in that order.

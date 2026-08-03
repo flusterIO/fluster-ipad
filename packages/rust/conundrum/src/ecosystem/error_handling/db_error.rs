@@ -7,7 +7,7 @@ use crate::{
     lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
 };
 
-#[derive(Debug, Error, Serialize, Deserialize, Clone)]
+#[derive(Debug, Error, Serialize, Deserialize, Clone, specta::Type)]
 #[serde(tag = "tag", content = "content")]
 pub enum DatabaseError {
     #[error("Conundrum Error: {:?}.", .0)]
@@ -36,11 +36,15 @@ pub enum DatabaseError {
     FailToCreateTable(DatabaseTable),
     #[error("File system error: {:?}", .0)]
     FileSystemError(ConundrumFSError),
+    #[error("Database Error: Duplicate identifiers")]
+    DuplicateEntities,
     #[error("Failed to query the `{:?}` entity using the following predicate: `{}`", .table.to_model_name(), .predicate.as_ref().cloned().unwrap_or_default())]
     FailToQueryEntity {
         predicate: Option<String>,
         table: DatabaseTable,
     },
+    #[error("The search parameters provided were empty. We don't know what to look for.")]
+    EmptySearchParams,
     #[error("Invalid pagination parameters.")]
     InvalidPagination,
     #[error("The root to one of your workspaces could not be found. We attempted to look in `{0}`.")]

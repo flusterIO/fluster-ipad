@@ -1,4 +1,5 @@
 use axum::{extract::Json, http::StatusCode};
+use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use rspc::{Error, ResolverError};
 use specta::Type;
 
@@ -14,6 +15,10 @@ pub enum ServerError {
     HtmlRenderError,
     #[error("Not Found.")]
     NotFound,
+    #[error("Database Error: {:?}", .0)]
+    DatabaseError(DatabaseError),
+    #[error("The server encounterd an error that it cannot recover from: {:?}", .0)]
+    CoreFailure(String),
 }
 
 impl Error for ServerError {
@@ -33,6 +38,13 @@ impl Error for ServerError {
             Self::LatexConversionError => {
                 rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Latex conversion error.", None))
             }
+            Self::DatabaseError(e) => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("Database Error: {:?}", e),
+                                                                                    None))
+            }
+            Self::CoreFailure(e) => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("{:?}", e), None))
+            }
         }
     }
 }
@@ -45,6 +57,8 @@ impl Into<StatusCode> for ServerError {
             Self::LatexConversionError => StatusCode::INTERNAL_SERVER_ERROR,
             Self::GeneralError => StatusCode::INTERNAL_SERVER_ERROR,
             Self::NotFound => StatusCode::NOT_FOUND,
+            Self::DatabaseError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::CoreFailure(_) => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }

@@ -8,6 +8,9 @@ import {
     SettingsIcon,
     BoxesIcon,
     FileSpreadsheet,
+    Flame,
+    CardSim,
+    WalletCards,
 } from "lucide-react";
 import { AppPaths } from "../app_paths";
 
@@ -22,6 +25,10 @@ const buttons: PermanentSidebarButtonProps[] = [
     },
     {
         href: AppPaths.flashcards,
+        icon: CardSim,
+    },
+    {
+        href: AppPaths.database,
         icon: FileSpreadsheet,
     },
 ];

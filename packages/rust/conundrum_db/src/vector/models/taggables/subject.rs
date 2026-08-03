@@ -8,13 +8,17 @@ use serde::{Deserialize, Serialize};
 use crate::{
     get_taggable_recordbatch, taggable_arrow_schema,
     vector::{
-        database::db_traits::{db_entity::DBEntity, db_field::DatabaseField},
+        database::db_traits::{
+            db_entity::{ArrowSchemaRepresentable, DBEntity},
+            db_field::DatabaseField,
+        },
         models::{
             date_time::date_time::DateTime,
             primitives::{case_insensitive_string::CaseInsensitiveString, db_id::DatabaseId},
             taggables::{
                 tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY},
                 tag_location::TagLocation,
+                taggable_update_partial::TaggablePartial,
             },
         },
     },
@@ -37,10 +41,14 @@ impl From<String> for Subject {
     }
 }
 
-impl DBEntity for Subject {
+impl ArrowSchemaRepresentable for Subject {
     fn arrow_schema() -> std::sync::Arc<lancedb::arrow::arrow_schema::Schema> {
         taggable_arrow_schema!()
     }
+}
+
+impl DBEntity for Subject {
+    type PartialUpdateType = TaggablePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         conundrum::ecosystem::db::tables::DatabaseTable::Subject
@@ -57,5 +65,9 @@ impl DBEntity for Subject {
 
     fn primary_key() -> &'static str {
         TAGGABLE_PRIMARY_KEY
+    }
+
+    fn primary_value(&self) -> String {
+        self.value.to_comparison_string()
     }
 }

@@ -40,7 +40,7 @@ impl From<String> for BibEntry {
 impl BibEntry {
     pub async fn get_csl_file() -> String {
         if let Ok(csl_path) = CdrmEnvVariable::CSLFilePath.read() {
-            if let Ok(content) = tokio::fs::read_to_string(csl_path).await {
+            if let Ok(content) = std::fs::read_to_string(csl_path) {
                 return content;
             }
         }

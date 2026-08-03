@@ -9,10 +9,14 @@ use lancedb::{Table, arrow::arrow_schema::Schema, connect};
 use log::warn;
 
 use crate::vector::{
-    database::{db::CdrmDb, db_traits::db_entity::DBEntity},
+    database::{
+        db::CdrmDb,
+        db_traits::db_entity::{ArrowSchemaRepresentable, DBEntity},
+    },
     models::{
         academic::question::flashcard::flashcard_entity::FlashCardEntity,
         taggables::{subject::Subject, tag::Tag, topic::Topic},
+        workspace::user_workspace::UserWorkspace,
     },
 };
 
@@ -43,6 +47,9 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::Subject,
                                                               schema: Subject::arrow_schema(),
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::UserWorkspace,
+                                                              schema: UserWorkspace::arrow_schema(),
                                                               set_indices: None },
                                               /* TableInitData { table: DatabaseTable::QAPair,
                                                *                 schema: FlashCardEntity::arrow_schema(),

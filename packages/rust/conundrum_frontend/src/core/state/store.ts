@@ -6,6 +6,7 @@ import {
 import { type AppState } from "./initial_state";
 import NavigationReducer from "../../features/navigation/state/navigation_slice";
 import SearchReducer from "../../features/search/state/search_slice";
+import DatabaseReducer from "../../features/database/state/database_slice";
 import {
     persistReducer,
     type PersistConfig,
@@ -22,6 +23,7 @@ import indexedDb from "redux-persist-indexeddb-storage";
 const reducers: Record<keyof AppState, Reducer> = {
     search: SearchReducer,
     navigation: NavigationReducer,
+    database: DatabaseReducer,
 };
 
 const rootReducer = combineReducers(reducers);

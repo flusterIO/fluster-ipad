@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use winnow::error::{ContextError, ErrMode, ParseError};
 
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, specta::Type)]
 pub struct DocumentSpan {
     pub start: u32,
     pub end: u32,
@@ -20,7 +20,7 @@ impl From<Range<usize>> for DocumentSpan {
 }
 
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Clone, strum_macros::Display)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Enum, Clone, strum_macros::Display, specta::Type)]
 pub enum ConundrumErrorPurpose {
     #[serde(rename = "info")]
     #[strum(to_string = "info")]
@@ -40,7 +40,7 @@ pub enum ConundrumErrorPurpose {
 }
 
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, specta::Type)]
 pub struct ConundrumError {
     /// A required message displayed in a toast or card header. Can contain
     /// regular, swift-inline compatible markdown only.

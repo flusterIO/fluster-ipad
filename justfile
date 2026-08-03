@@ -35,6 +35,9 @@ format_package_jsons:
 	pnpm syncpack fix-mismatches
 	pnpm syncpack format
 
+write_database_types:
+	cd {{justfile_directory()}}./packages/rust/conundrum_server_rs; cargo nextest run rpc::rspc_router::tests::write_rspc_route_types --no-capture
+
 
 format_swift:
 	swift-format format --configuration={{justfile_directory()}}/.swift-format -ipr {{justfile_directory()}}/apps/fluster

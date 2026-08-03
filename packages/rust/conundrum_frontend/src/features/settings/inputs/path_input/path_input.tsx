@@ -2,9 +2,10 @@ import React, { useEffect, useEffectEvent, type ReactNode } from "react";
 import { type LabeledImportProps } from "../general_input_props";
 import { Input } from "@/components/shad/input";
 import { Label } from "@/components/shad/label";
-import { type Path, type FieldValues, type ErrorOption } from "react-hook-form";
+import { type FieldValues, type ErrorOption } from "react-hook-form";
 import { FormMessage } from "@/components/shad/form";
 import { pathExists } from "#/file_system/path_utils/path_exists";
+import { cn } from "@/utils/shad_utils";
 
 interface PathInputProps<
     Schema extends FieldValues,
@@ -17,14 +18,18 @@ interface PathInputProps<
      * Defaults to true
      */
     mustExist?: boolean;
+    classes?: {
+        container?: string;
+        input?: string;
+    };
 }
 
 export const PathInput = <Schema extends FieldValues>({
-    isDirPath,
     label,
     form,
     name,
     desc,
+    classes = {},
 }: PathInputProps<Schema>): ReactNode => {
     const value = form.watch(name);
     const setPathNotExistError = (): void => {
@@ -48,9 +53,15 @@ export const PathInput = <Schema extends FieldValues>({
         }
     }, [value]);
     return (
-        <div className="flex flex-col justify-center items-start gap-y-2">
+        <div
+            className={cn(
+                "flex flex-col justify-center items-start gap-y-2",
+                classes.container,
+            )}
+        >
             <Label>{label}</Label>
             <Input
+                className={cn("text-sm font-mono", classes.input)}
                 value={value}
                 onChange={(e) => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument

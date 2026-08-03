@@ -6,7 +6,7 @@ use crate::lang::runtime::state::conundrum_error_variant::{ConundrumErrorVariant
 pub static DEFAULT_CDRM_SERVER_PORT: &u32 = &3005;
 
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, uniffi::Enum, strum_macros::Display, Clone, Debug)]
+#[derive(Serialize, Deserialize, uniffi::Enum, strum_macros::Display, Clone, Debug, specta::Type)]
 pub enum CdrmEnvVariable {
     #[serde(rename = "CDRM_LOG_LEVEL")]
     #[strum(to_string = "CDRM_LOG_LEVEL")]

@@ -11,12 +11,17 @@ use crate::{
     test_utils::faker_generators::fake_words_as_string::fake_words_as_string,
     vector::{
         database::{
-            db_traits::{db_entity::DBEntity, db_field::DatabaseField, entity_crud::EntityCRUD},
+            db_traits::{
+                db_entity::{ArrowSchemaRepresentable, DBEntity},
+                db_field::DatabaseField,
+                entity_crud::EntityCRUD,
+            },
             open_table::open_table,
         },
         models::{
-            date_time::date_time::DateTime, primitives::case_insensitive_string::CaseInsensitiveString,
-            taggables::tag_location::TagLocation,
+            date_time::date_time::DateTime,
+            primitives::case_insensitive_string::CaseInsensitiveString,
+            taggables::{tag_location::TagLocation, taggable_update_partial::TaggablePartial},
         },
     },
 };
@@ -43,10 +48,14 @@ impl From<String> for Tag {
     }
 }
 
-impl DBEntity for Tag {
+impl ArrowSchemaRepresentable for Tag {
     fn arrow_schema() -> std::sync::Arc<lancedb::arrow::arrow_schema::Schema> {
         taggable_arrow_schema!()
     }
+}
+
+impl DBEntity for Tag {
+    type PartialUpdateType = TaggablePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         conundrum::ecosystem::db::tables::DatabaseTable::Tag
@@ -64,16 +73,13 @@ impl DBEntity for Tag {
     fn primary_key() -> &'static str {
         TAGGABLE_PRIMARY_KEY
     }
-}
 
-impl EntityCRUD<String> for Tag {
-    async fn delete_by_primary_key(value: String,
-                                   table: conundrum::ecosystem::db::tables::DatabaseTable,
-                                   db: &crate::vector::database::db::ArcMutexDB)
-                                   -> DatabaseResult<()> {
-        todo!()
+    fn primary_value(&self) -> String {
+        self.value.to_comparison_string()
     }
 }
+
+impl EntityCRUD<String, TaggablePartial> for Tag {}
 
 #[cfg(test)]
 mod tests {

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/shad/form";
+import { Button } from "@/components/shad/button";
 /* import {} from "@/codegen/bindings" */
 
 export const AddWorkspaceDialog = ({
@@ -36,7 +37,15 @@ export const AddWorkspaceDialog = ({
             }}
         >
             <Form {...form}>
-                <PathInput form={form} name={"path"} label={"Path"} />
+                <PathInput
+                    className="text-sm"
+                    form={form}
+                    name={"path"}
+                    label={"Path"}
+                />
+                <div className="w-full flex flex-row justify-end items-center mt-4">
+                    <Button>Create</Button>
+                </div>
             </Form>
         </ComposedDialog>
     );

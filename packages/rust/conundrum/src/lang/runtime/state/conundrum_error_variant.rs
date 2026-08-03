@@ -13,7 +13,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Clone)]
+#[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Clone, specta::Type)]
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumErrorVariant {
     #[error("This feature has not yet been completely implemented.")]

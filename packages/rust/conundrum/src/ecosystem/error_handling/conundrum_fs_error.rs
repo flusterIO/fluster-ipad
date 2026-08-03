@@ -4,7 +4,7 @@ use thiserror::Error;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
 
 #[typeshare::typeshare]
-#[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Clone)]
+#[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Clone, specta::Type)]
 #[serde(tag = "tag", content = "content")]
 pub enum ConundrumFSError {
     #[error("This error should never make it back to the user, but I'm in a hurry...")]

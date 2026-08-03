@@ -5,4 +5,5 @@ export enum AppPaths {
     flashcards = "/flashcards",
     flashcardsQuiz = "/flashcardsQuiz",
     database = "/database",
+    viewConundrum = "/conundrum",
 }

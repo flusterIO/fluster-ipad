@@ -18,7 +18,7 @@ use crate::{
 };
 
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, uniffi::Enum, Debug, Clone)]
+#[derive(Serialize, Deserialize, uniffi::Enum, Debug, Clone, specta::Type)]
 #[serde(tag = "tag", content = "content")]
 pub enum AnyComponentName {
     UserEmbedded(EmbeddableComponentName),

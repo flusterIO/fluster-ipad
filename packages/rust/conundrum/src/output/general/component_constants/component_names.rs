@@ -12,7 +12,18 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(Display, uniffi::Enum, Debug, Clone, EnumIter, Hash, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[derive(Display,
+           uniffi::Enum,
+           Debug,
+           Clone,
+           EnumIter,
+           Hash,
+           PartialEq,
+           Eq,
+           Serialize,
+           Deserialize,
+           JsonSchema,
+           specta::Type)]
 pub enum EmbeddableComponentName {
     #[serde(rename = "Toc")]
     #[strum(to_string = "Toc")]

@@ -7,13 +7,17 @@ use specta::Type;
 use crate::{
     get_taggable_recordbatch, taggable_arrow_schema,
     vector::{
-        database::db_traits::{db_entity::DBEntity, db_field::DatabaseField},
+        database::db_traits::{
+            db_entity::{ArrowSchemaRepresentable, DBEntity},
+            db_field::DatabaseField,
+        },
         models::{
             date_time::date_time::DateTime,
             primitives::case_insensitive_string::CaseInsensitiveString,
             taggables::{
                 tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY},
                 tag_location::TagLocation,
+                taggable_update_partial::TaggablePartial,
             },
         },
     },
@@ -36,10 +40,14 @@ impl From<String> for Topic {
     }
 }
 
-impl DBEntity for Topic {
-    fn arrow_schema() -> std::sync::Arc<lancedb::arrow::arrow_schema::Schema> {
+impl ArrowSchemaRepresentable for Topic {
+    fn arrow_schema() -> Arc<arrow_schema::Schema> {
         taggable_arrow_schema!()
     }
+}
+
+impl DBEntity for Topic {
+    type PartialUpdateType = TaggablePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         conundrum::ecosystem::db::tables::DatabaseTable::Topic
@@ -57,5 +65,9 @@ impl DBEntity for Topic {
 
     fn primary_key() -> &'static str {
         TAGGABLE_PRIMARY_KEY
+    }
+
+    fn primary_value(&self) -> String {
+        self.value.to_comparison_string()
     }
 }

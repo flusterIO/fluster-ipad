@@ -30,6 +30,9 @@ pub enum ParsableFileType {
     #[serde(rename = "typst")]
     #[strum(to_string = "typst")]
     Typst,
+    #[serde(rename = "npy")]
+    #[strum(to_string = "npy")]
+    Numpy,
 }
 
 impl TryFrom<String> for ParsableFileType {
@@ -58,6 +61,7 @@ impl ParsableFileType {
             Self::Mdx => ("mdx", "*.mdx"),
             Self::Markdown => ("markdown", "*.md"),
             Self::Typst => ("typst", "*.typst"),
+            Self::Numpy => ("numpy", "*.npy"),
         }
     }
 }

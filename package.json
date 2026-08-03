@@ -52,6 +52,13 @@
         "./packages/webviews/dictionary_webview:build:macProd"
       ]
     },
+    "build:ipadStep2": {
+      "dependencies": [
+        "./packages/rust/conundrum_ts:build:ipad",
+        "./packages/rust/wasm/conundrum_wasm:build",
+        "./packages/typescript/codemirror-lang-bib:build:parser"
+      ]
+    },
     "build:macStep2": {
       "dependencies": [
         "./packages/rust/conundrum_ts:build:mac",

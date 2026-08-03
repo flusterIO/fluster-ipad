@@ -1927,6 +1927,9 @@
   .max-w-\[672px\] {
     max-width: 672px;
   }
+  .max-w-\[768px\] {
+    max-width: 768px;
+  }
   .max-w-\[896px\] {
     max-width: 896px;
   }
@@ -3389,6 +3392,10 @@
   }
   .italic {
     font-style: italic;
+  }
+  .ordinal {
+    --tw-ordinal: ordinal;
+    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
   }
   .tabular-nums {
     --tw-numeric-spacing: tabular-nums;
@@ -6450,6 +6457,11 @@
   .\[\&\>button\]\:hidden {
     &>button {
       display: none;
+    }
+  }
+  .\[\&\>iframe\]\:aspect-video {
+    &>iframe {
+      aspect-ratio: var(--aspect-video);
     }
   }
   .\[\&\>img\]\:h-auto {
