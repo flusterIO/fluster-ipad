@@ -9,3 +9,13 @@ pub struct PaginationParams {
     pub per_page: u32,
     pub page: u32,
 }
+
+impl PaginationParams {
+    pub fn page_minus_one(&self) -> u32 {
+        if self.page <= 1 {
+            0
+        } else {
+            self.page - 1
+        }
+    }
+}

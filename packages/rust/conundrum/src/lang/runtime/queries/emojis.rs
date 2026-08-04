@@ -53,7 +53,8 @@ pub fn search_emojis(query: String, pagination: Option<PaginationParams>) -> Emo
     }
 
     if let Some(pag) = pagination {
-        let start = (((pag.page - 1) * pag.per_page) as usize).max(0);
+        let p = pag.page_minus_one();
+        let start = ((p * pag.per_page) as usize).max(0);
         let end = (start + pag.per_page as usize).min(items.len());
         let x = &items[start..end];
         EmojiSearchResults { names: x.to_vec(),

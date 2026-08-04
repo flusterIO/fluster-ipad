@@ -17,17 +17,19 @@ use crate::rpc::route_context::RouteContext;
 
 #[tokio::main]
 pub async fn main() {
-    let cors = CorsLayer::new()
-        .allow_origin(Any).allow_methods(Any).allow_headers(Any)
-        ;
-    let (rpc_router, types) = get_rspc_router().await.expect("");
+    let cors = CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any);
+    let (rpc_router, types) =
+        get_rspc_router().await
+                         .expect("Failed to generate rspc router. This is a major issue that can't be recovered from.");
 
     #[cfg(debug_assertions)] // Only export in development builds
-    Typescript::default().enable_source_maps()
+    {
+        Typescript::default()
         .export_to(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../conundrum_frontend/src/core/codegen/bindings.ts"), &types)
         .inspect_err(|e| {
-            println!("Error: {:?}", e);
+            println!("Codegen Error: {:?}", e);
         }).expect("Failed to compile rpc types");
+    }
 
     let state = RouteContext::try_new().await.expect("We cannot establish a connection to the database, which is odd, because it's embedded. Have you ran the initialize command? Try running `cdrm initialize-database` if you have the cdrm cli installed.");
     // TODO: Move the context up to a shared context and add a database connection.
