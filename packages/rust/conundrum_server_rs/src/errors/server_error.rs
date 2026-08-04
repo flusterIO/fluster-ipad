@@ -21,6 +21,12 @@ pub enum ServerError {
     CoreFailure(String),
 }
 
+impl From<DatabaseError> for ServerError {
+    fn from(value: DatabaseError) -> Self {
+        Self::DatabaseError(value)
+    }
+}
+
 impl Error for ServerError {
     fn into_procedure_error(self) -> rspc::ProcedureError {
         match self {

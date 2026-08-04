@@ -55,7 +55,7 @@ use crate::{
             dictionary::dictionary_code_block::DictionaryCodeBlock,
             general::{
                 general_codeblock::GeneralPresentationCodeBlock,
-                render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
+                render_codeblock_to_html::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
             },
             mermaid::{
                 mermaid_code_block::MermaidCodeBlock, mermaid_route_style::MermaidRouteStyle,

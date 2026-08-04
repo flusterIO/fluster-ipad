@@ -1,3 +1,3 @@
 pub mod general_codeblock;
 pub mod get_comments;
-pub mod render_codeblock;
+pub mod render_codeblock_to_html;

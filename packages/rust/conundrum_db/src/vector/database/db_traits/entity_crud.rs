@@ -61,8 +61,8 @@ pub trait EntityCRUD<IDType: DatabaseIdentifiable, UpdatePartial: ArrowSchemaRep
             query_builder = query_builder.only_if(_predicate);
         }
         if let Some(_pagination) = pagination {
-            query_builder =
-                query_builder.limit(_pagination.per_page).offset(_pagination.per_page * (_pagination.page - 1));
+            let (limit, offset) = _pagination.to_limit_and_offset();
+            query_builder = query_builder.limit(limit).offset(offset);
         }
         let res = query_builder.execute()
                                .await

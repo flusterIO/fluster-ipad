@@ -4,15 +4,19 @@ import { initialNavigationState } from "#/navigation/state/initial_navigation_st
 import { type NavigationState } from "#/navigation/state/navigation_state";
 import { initialSearchState } from "#/search/state/initial_search_state";
 import { type SearchState } from "#/search/state/search_state";
+import { type UIState } from "#/ui/state/ui_state";
+import { initialUIState } from "#/ui/state/initial_ui_state";
 
 export interface AppState {
     search: SearchState;
     navigation: NavigationState;
     database: DatabaseState;
+    ui: UIState;
 }
 
 export const initialState: AppState = {
     search: initialSearchState,
     navigation: initialNavigationState,
     database: initialDatabaseState,
+    ui: initialUIState
 };

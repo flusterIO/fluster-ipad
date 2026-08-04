@@ -19,3 +19,18 @@ pub struct GeneralPresentationCodeBlock {
     pub inline: bool,
     pub assets: Arc<Mutex<HighlightingAssets>>,
 }
+
+impl GeneralPresentationCodeBlock {
+    pub fn new_with_new_assets(content: String,
+                               lang: SupportedCodeBlockSyntax,
+                               theme: Option<SupportedCodeBlockTheme>,
+                               inline: bool)
+                               -> Self {
+        let assets = Arc::new(Mutex::new(HighlightingAssets::from_binary()));
+        GeneralPresentationCodeBlock { content,
+                                       lang,
+                                       theme,
+                                       inline,
+                                       assets }
+    }
+}

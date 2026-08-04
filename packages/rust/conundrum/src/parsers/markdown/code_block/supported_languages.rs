@@ -35,7 +35,8 @@ use crate::lang::{
            Clone,
            Debug,
            Eq,
-           PartialEq)]
+           PartialEq,
+           specta::Type)]
 pub enum SupportedCodeBlockSyntax { 
     #[serde(rename = "Plain Text")]
     #[strum(to_string = "Plain Text", serialize = "txt", serialize = "plain-text")]

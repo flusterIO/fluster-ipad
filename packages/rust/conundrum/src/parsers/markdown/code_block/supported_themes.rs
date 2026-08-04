@@ -1,3 +1,4 @@
+use ratatui::text::ToSpan;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::{EnumIter, IntoEnumIterator};
@@ -15,7 +16,17 @@ use crate::{
     },
 };
 #[typeshare::typeshare]
-#[derive(Serialize, Deserialize, Display, EnumString, EnumIter, uniffi::Enum, Clone, Default, Debug, JsonSchema)]
+#[derive(Serialize,
+           Deserialize,
+           Display,
+           EnumString,
+           EnumIter,
+           uniffi::Enum,
+           Clone,
+           Default,
+           Debug,
+           JsonSchema,
+           specta::Type)]
 #[allow(non_camel_case_types)]
 pub enum SupportedCodeBlockTheme {
     #[serde(rename = "1337")]

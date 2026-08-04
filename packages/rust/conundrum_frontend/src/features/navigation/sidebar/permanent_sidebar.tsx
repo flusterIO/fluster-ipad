@@ -8,13 +8,12 @@ import {
     SettingsIcon,
     BoxesIcon,
     FileSpreadsheet,
-    Flame,
-    CardSim,
     WalletCards,
 } from "lucide-react";
 import { AppPaths } from "../app_paths";
+import { useLocation } from "react-router";
 
-const buttons: PermanentSidebarButtonProps[] = [
+const buttons: Omit<PermanentSidebarButtonProps, "active">[] = [
     {
         href: AppPaths.dashboard,
         icon: HomeIcon,
@@ -25,7 +24,7 @@ const buttons: PermanentSidebarButtonProps[] = [
     },
     {
         href: AppPaths.flashcards,
-        icon: CardSim,
+        icon: WalletCards,
     },
     {
         href: AppPaths.database,
@@ -34,14 +33,31 @@ const buttons: PermanentSidebarButtonProps[] = [
 ];
 
 export const PermanentSidebar = (): ReactNode => {
+    const location = useLocation();
     return (
         <div className="w-16 h-screen bg-background border-r flex flex-col justify-between items-center py-6 gap-y-4">
             <div className="flex flex-col justify-start items-center gap-y-4">
                 {buttons.map((b) => {
-                    return <PermanentSidebarButton key={b.href ?? b.id} {...b} />;
+                    return (
+                        <PermanentSidebarButton
+                            active={
+                                b.href
+                                    ? b.href === "/"
+                                        ? location.pathname === "/"
+                                        : location.pathname.startsWith(b.href)
+                                    : false
+                            }
+                            key={b.href ?? b.id}
+                            {...b}
+                        />
+                    );
                 })}
             </div>
-            <PermanentSidebarButton icon={SettingsIcon} href={AppPaths.settings} />
+            <PermanentSidebarButton
+                active={location.pathname.startsWith(AppPaths.settings)}
+                icon={SettingsIcon}
+                href={AppPaths.settings}
+            />
         </div>
     );
 };

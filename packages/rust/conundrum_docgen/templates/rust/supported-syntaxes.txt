@@ -35,7 +35,8 @@ use crate::lang::{
            Clone,
            Debug,
            Eq,
-           PartialEq)]
+           PartialEq,
+           specta::Type)]
 pub enum SupportedCodeBlockSyntax { 
     {% for item in items %}#[serde(rename = "{{item.lang}}")]
     #[strum(to_string = "{{item.lang}}"{% for ext in item.extensions %}, serialize = "{{ext}}"{% endfor %})]{% if item.lang == "Python" %}

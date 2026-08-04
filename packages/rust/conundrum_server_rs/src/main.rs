@@ -1,7 +1,12 @@
 pub mod errors;
 pub mod routes;
 pub mod rpc;
+#[cfg(debug_assertions)]
+use std::path::PathBuf;
+
 pub use crate::rpc::rspc_router::get_rspc_router;
+#[cfg(debug_assertions)]
+use rspc::Typescript;
 pub use rspc_axum;
 use tower_http::cors::{Any, CorsLayer};
 
@@ -12,8 +17,17 @@ use crate::rpc::route_context::RouteContext;
 
 #[tokio::main]
 pub async fn main() {
-    let cors = CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any);
-    let (rpc_router, _) = get_rspc_router().await.expect("");
+    let cors = CorsLayer::new()
+        .allow_origin(Any).allow_methods(Any).allow_headers(Any)
+        ;
+    let (rpc_router, types) = get_rspc_router().await.expect("");
+
+    #[cfg(debug_assertions)] // Only export in development builds
+    Typescript::default().enable_source_maps()
+        .export_to(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../conundrum_frontend/src/core/codegen/bindings.ts"), &types)
+        .inspect_err(|e| {
+            println!("Error: {:?}", e);
+        }).expect("Failed to compile rpc types");
 
     let state = RouteContext::try_new().await.expect("We cannot establish a connection to the database, which is odd, because it's embedded. Have you ran the initialize command? Try running `cdrm initialize-database` if you have the cdrm cli installed.");
     // TODO: Move the context up to a shared context and add a database connection.

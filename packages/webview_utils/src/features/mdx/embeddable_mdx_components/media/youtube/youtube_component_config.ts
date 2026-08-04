@@ -21,7 +21,7 @@ export const youtubeComponentConfig: EmbeddableComponentConfig = {
         ]
     },
     /* eslint-disable-next-line  -- I know there's no await, but it needs to match the interface. */
-    generateTestContent: async (faker, utils) => {
+    generateTestContent: async () => {
         return `<Youtube url="https://youtu.be/-7DvvDhyyNA" />`
     },
 

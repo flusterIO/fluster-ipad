@@ -4,7 +4,7 @@ use conundrum::{
 };
 use ignore::{WalkBuilder, WalkState};
 use parking_lot::Mutex;
-use std::{collections::HashMap, ops::Deref, path::Path, str::FromStr, sync::Arc};
+use std::{collections::HashMap, str::FromStr, sync::Arc};
 use strum::IntoEnumIterator;
 
 use crate::workspace_management::{
@@ -25,12 +25,12 @@ pub fn consume_arc_mutex<T: Clone>(arc_mutex: Arc<Mutex<T>>) -> ConundrumFSResul
     }
 }
 
-pub async fn get_workspace_count(params: FileCountConfig) -> ConundrumFSResult<HashMap<ParsableFileType, u64>> {
-    let mut hm: HashMap<ParsableFileType, u64> = HashMap::new();
+pub async fn get_workspace_count(params: FileCountConfig) -> ConundrumFSResult<HashMap<ParsableFileType, u32>> {
+    let mut hm: HashMap<ParsableFileType, u32> = HashMap::new();
     for pf in ParsableFileType::iter() {
         hm.insert(pf, 0);
     }
-    let data: Arc<Mutex<HashMap<ParsableFileType, u64>>> = Arc::new(Mutex::new(hm));
+    let data: Arc<Mutex<HashMap<ParsableFileType, u32>>> = Arc::new(Mutex::new(hm));
     let types = get_all_parsable_ignore_types()?;
     WalkBuilder::new(params.root.clone()).git_ignore(params.respect_gitignore)
                                          .hidden(params.ignore_hidden)
@@ -74,7 +74,7 @@ mod tests {
     async fn gets_workspace_count() {
         let res =
             get_workspace_count(FileCountConfig { root: "/Users/bigsexy/Desktop/notes/content/".to_string(),
-                                                  respect_git_ignore: true,
+                                                  respect_gitignore: true,
                                                   ignore_hidden: true }).await
                                                                         .inspect_err(|e| {
                                                                             println!("Error: {:?}", e);

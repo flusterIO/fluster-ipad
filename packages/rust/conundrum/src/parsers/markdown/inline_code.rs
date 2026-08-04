@@ -5,11 +5,11 @@ use parking_lot::Mutex;
 use serde::Serialize;
 use syntect_assets::assets::HighlightingAssets;
 use winnow::{
-    Parser,
     ascii::alphanumeric1,
     combinator::{delimited, opt, repeat_till},
     stream::AsChar,
     token::{any, literal, take_till},
+    Parser,
 };
 
 use crate::{
@@ -26,7 +26,7 @@ use crate::{
         markdown::code_block::{
             general::{
                 general_codeblock::GeneralPresentationCodeBlock,
-                render_codeblock::{RenderCodeToHtmlReq, render_general_codeblock_to_html},
+                render_codeblock_to_html::{render_general_codeblock_to_html, RenderCodeToHtmlReq},
             },
             supported_languages::SupportedCodeBlockSyntax,
             supported_themes::SupportedCodeBlockTheme,

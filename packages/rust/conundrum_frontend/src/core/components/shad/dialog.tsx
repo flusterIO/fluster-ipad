@@ -149,6 +149,11 @@ export interface ComposedDialogProps {
     children: React.ReactNode;
     footer?: React.ReactNode;
     dialogProps?: DialogPrimitive.Root.Props;
+    classes?: {
+        content?: string
+        title?: string
+        footer?: string
+    }
 }
 
 const ComposedDialog = ({
@@ -157,16 +162,17 @@ const ComposedDialog = ({
     children,
     footer,
     dialogProps,
+    classes = {}
 }: ComposedDialogProps): React.ReactNode => {
     return (
         <Dialog {...dialogProps}>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>{title}</DialogTitle>
+            <DialogContent className={classes.content}>
+                <DialogHeader >
+                    <DialogTitle className={classes.title}>{title}</DialogTitle>
                     {desc ? <DialogDescription>{desc}</DialogDescription> : desc}
                 </DialogHeader>
                 <div>{children}</div>
-                {footer ? <DialogFooter>{footer}</DialogFooter> : null}
+                {footer ? <DialogFooter className={classes.footer}>{footer}</DialogFooter> : null}
             </DialogContent>
         </Dialog>
     );

@@ -201,6 +201,8 @@ export interface InitOutput {
     readonly ffi_conundrum_rustbuffer_from_bytes: (a: number, b: number, c: number) => void;
     readonly ffi_conundrum_rustbuffer_reserve: (a: number, b: number, c: bigint, d: number) => void;
     readonly ffi_conundrum_uniffi_contract_version: () => number;
+    readonly uniffi_conundrum_checksum_func_split_biblatex_to_raw_strings: () => number;
+    readonly uniffi_conundrum_fn_func_split_biblatex_to_raw_strings: (a: number, b: number, c: number) => void;
     readonly __wbg_get_settings_color: (a: number, b: number) => void;
     readonly __wbg_get_settings_color_is_text_color: (a: number) => number;
     readonly __wbg_get_settings_display_mode: (a: number) => number;

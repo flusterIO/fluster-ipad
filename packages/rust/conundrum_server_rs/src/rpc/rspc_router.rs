@@ -26,7 +26,7 @@ use crate::{
     rpc::{
         route_context::RouteContext,
         routers::{
-            fs_router::fs_router::get_fs_router,
+            code::code_router::get_code_router, fs_router::fs_router::get_fs_router,
             workspace_management::workspace_management_router::get_workspace_management_router,
         },
     },
@@ -36,6 +36,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
     let fs_router = get_fs_router();
     // let mut study_router = get_study_router();
     let workspace_router = get_workspace_management_router();
+    let code_router = get_code_router();
 
     let user_workspace_crud_router = rspc::Router::<crate::rpc::route_context::RouteContext>::new()
     .procedure("get_by_predicate", Procedure::<crate::rpc::route_context::RouteContext, PredicateQueryParams, Vec<UserWorkspace>>::builder::<crate::errors::server_error::ServerError>().query(|state: RouteContext , params: PredicateQueryParams | async move {
@@ -45,21 +46,21 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
         })?;
         Ok(r)
         }))
-    .procedure("save_many", Procedure::<crate::rpc::route_context::RouteContext, Vec<UserWorkspace>, ()>::builder::<crate::errors::server_error::ServerError>().query(|state: RouteContext, params: Vec<UserWorkspace> | async move {
+    .procedure("save_many", Procedure::<crate::rpc::route_context::RouteContext, Vec<UserWorkspace>, ()>::builder::<crate::errors::server_error::ServerError>().mutation(|state: RouteContext, params: Vec<UserWorkspace> | async move {
         UserWorkspace::save_many(params, &state.db).await.map_err(|e| {
             log::error!("Error: {:?}", e);
             ServerError::DatabaseError(e)
         })?;
         Ok(())
         }))
-    .procedure("update_many", Procedure::<crate::rpc::route_context::RouteContext, Vec<UserWorkspacePartial>, ()>::builder::<crate::errors::server_error::ServerError>().query(|state: RouteContext, params: Vec<UserWorkspacePartial> | async move {
+    .procedure("update_many", Procedure::<crate::rpc::route_context::RouteContext, Vec<UserWorkspacePartial>, ()>::builder::<crate::errors::server_error::ServerError>().mutation(|state: RouteContext, params: Vec<UserWorkspacePartial> | async move {
         UserWorkspace::merge_by_primary_key(params, &state.db).await.map_err(|e| {
             log::error!("Error: {:?}", e);
             ServerError::DatabaseError(e)
         })?;
         Ok(())
         }))
-    .procedure("delete_by_predicate", Procedure::<crate::rpc::route_context::RouteContext, String, ()>::builder::<crate::errors::server_error::ServerError>().query(|state: RouteContext, params: String | async move {
+    .procedure("delete_by_predicate", Procedure::<crate::rpc::route_context::RouteContext, String, ()>::builder::<crate::errors::server_error::ServerError>().mutation(|state: RouteContext, params: String | async move {
         UserWorkspace::delete_by_predicate(params.as_str(), &state.db).await.map_err(|e| {
             log::error!("Error: {:?}", e);
             ServerError::DatabaseError(e)
@@ -68,6 +69,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
         }));
     let r = rspc::Router::<RouteContext>::new().nest("fs", fs_router)
                                                .nest("workspace", workspace_router)
+                                               .nest("code", code_router)
                                                // .nest("study", study_router)
                                                .nest("user_workspace_crud", user_workspace_crud_router)
                                                .procedure("version",
@@ -96,8 +98,10 @@ mod tests {
     #[tokio::test]
     async fn write_rspc_route_types() {
         let (_, types) = get_rspc_router().await.expect("Compiles rspc router.");
-        Typescript::default()
-        .enable_source_maps()
-        .export_to(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../conundrum_frontend/src/core/codegen/bindings.ts"), &types);
+        Typescript::default().enable_source_maps()
+        .export_to(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../conundrum_frontend/src/core/codegen/bindings.ts"), &types)
+        .inspect_err(|e| {
+            println!("Error: {:?}", e);
+        }).expect("Failed to compile rpc types");
     }
 }

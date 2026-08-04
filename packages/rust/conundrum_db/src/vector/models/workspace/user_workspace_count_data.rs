@@ -12,7 +12,7 @@ use crate::vector::{
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 pub struct UserWorkspaceCountData {
     pub workspace: UserWorkspace,
-    pub count: HashMap<ParsableFileType, u64>,
+    pub count: HashMap<ParsableFileType, u32>,
     /// Returns a map of all bib paths provided by the user, and the default bib
     /// path and a boolean indicating whether they exist or not.
     pub bib_path_exists: HashMap<String, bool>,
