@@ -8,7 +8,20 @@ export type PaginationParams = { per_page: number; page: number }
  */
 export type ParsableFileType = "cdrm" | "md" | "mdx" | "typst" | "npy"
 
-export type ProceduresLegacy = { queries: { key: "fs.path_exists"; input: string; result: boolean } | { key: "user_workspace_crud.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
+export type PathSourceType = "file" | "directory" | "any"
+
+export type ProceduresLegacy = { queries: { key: "fs.validate_path"; input: { path: string; 
+/**
+ * This only makes sense with an empty permitted_types array. Otherwise the
+ * source_type is obviously a file. This will however validate 'any' paths
+ * as being either a file or directory as expected.
+ */
+source_type: PathSourceType; 
+/**
+ * An empty array will default to any file type. Not just any parsable file
+ * type.
+ */
+permitted_types: ParsableFileType[] }; result: boolean } | { key: "user_workspace_crud.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
@@ -62,7 +75,7 @@ export type Procedures = {
 	highlight_code: { kind: "mutation", input: { code: string; lang: SupportedCodeBlockSyntax; theme: SupportedCodeBlockTheme; inline: boolean }, output: string, error: unknown },
 },
 	fs: {
-	path_exists: { kind: "query", input: string, output: boolean, error: unknown },
+	validate_path: { kind: "query", input: { path: string; source_type: PathSourceType; permitted_types: ParsableFileType[] }, output: boolean, error: unknown },
 },
 	user_workspace_crud: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },

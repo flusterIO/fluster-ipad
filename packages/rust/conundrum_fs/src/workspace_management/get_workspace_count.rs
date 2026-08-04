@@ -44,8 +44,7 @@ pub async fn get_workspace_count(params: FileCountConfig) -> ConundrumFSResult<H
                                                      if entry.file_type().map_or(false, |f| f.is_file()) {
                                                          if let Some(file_extension) = entry.path().extension() {
                                                              if let Some(file_ext_str) = file_extension.to_str() {
-                                                             println!("File Extension: {:?}", file_ext_str.clone());
-                                                             if let Ok(pf) = ParsableFileType::from_str(file_ext_str.clone()).map_err(|e| {
+                                                             if let Ok(pf) = ParsableFileType::from_str(file_ext_str).map_err(|e| {
                                                                          println!("Error: {:?}", e);
                                                                          log::error!("Error: {:?}", e);
                                                                          ConundrumFSError::UnsupportedFileExtension(format!("{:?}", file_extension))

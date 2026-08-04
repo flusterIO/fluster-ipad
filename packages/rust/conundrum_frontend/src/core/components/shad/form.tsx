@@ -4,6 +4,12 @@ import * as React from "react";
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import {
+    motion,
+    AnimatePresence,
+    MotionProps,
+    HTMLMotionProps,
+} from "framer-motion";
+import {
     Controller,
     FormProvider,
     useFormContext,
@@ -133,29 +139,86 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
     );
 }
 
-function FormMessage({
+function FormMessageInner({
     className,
     children = null,
     ...props
-}: React.ComponentProps<"p">) {
+}: HTMLMotionProps<"p">) {
     const { error, formMessageId } = useFormField();
-    const body = error ? String(error?.message ?? "") : props.children;
+    const body = error ? (error?.message ?? "") : children;
 
-    if (!body) {
-        return children;
+    if (children) {
+        return (
+            <motion.div
+                className={cn("relative h-fit w-full ", className)}
+                animate={body ? "error" : "desc"}
+                initial={body ? "error" : "desc"}
+            >
+                <motion.div
+                    className="relative text-sm text-foreground/80!"
+                    variants={{
+                        error: {
+                            y: -100,
+                            opacity: 0,
+                        },
+                        desc: {
+                            y: 0,
+                            opacity: 1,
+                        },
+                    }}
+                >
+                    {children}
+                </motion.div>
+                <motion.div
+                    className="absolute text-sm h-full max-h-full left-0 right-0 bottom-0 top-0 text-destructive!"
+                    variants={{
+                        error: {
+                            opacity: 1,
+                            y: 0,
+                        },
+                        desc: {
+                            opacity: 0,
+                            y: 100,
+                        },
+                    }}
+                >
+                    {body ?? null}
+                </motion.div>
+            </motion.div>
+        );
     }
 
     return (
-        <p
+        <motion.p
             data-slot="form-message"
             id={formMessageId}
-            className={cn("text-destructive text-sm", className)}
+            key={formMessageId}
+            className={cn("text-destructive! text-sm", className)}
             {...props}
+            initial={{
+                height: 0,
+            }}
+            animate={{
+                height: "auto",
+            }}
+            exit={{
+                height: 0,
+            }}
         >
             {body}
-        </p>
+        </motion.p>
     );
 }
+
+const FormMessage = (
+    props: React.ComponentProps<typeof FormMessageInner>,
+): React.ReactNode => {
+    return (
+        <AnimatePresence>
+            <FormMessageInner {...props} />
+        </AnimatePresence>
+    );
+};
 
 export {
     useFormField,

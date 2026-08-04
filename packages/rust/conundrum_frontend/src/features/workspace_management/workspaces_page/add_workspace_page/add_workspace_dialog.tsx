@@ -8,7 +8,7 @@ import { Form } from "@/components/shad/form";
 import { Button } from "@/components/shad/button";
 import { rspc } from "@/app/rspc_client";
 import { SimpleLabeledCheckbox } from "#/settings/inputs/boolean_inputs/simple_labeled_checkbox";
-import { InlineCode } from "#/ui/typography/inline_code";
+import { InlineCode, PlainInlineCode } from "#/ui/typography/inline_code";
 /* import {} from "@/codegen/bindings" */
 
 export const AddWorkspaceDialog = ({
@@ -71,28 +71,26 @@ export const AddWorkspaceDialog = ({
     >
       <Form {...form}>
         <div className="@container/modalContent grid grid-cols-1 gap-y-4">
-          <PathInput form={form} name={"path"} label={"Path"} />
-          <div className="w-full flex flex-col justify-start items-start @[640px]/modalContent:grid @[640px]/modalContent:grid-cols-2">
+          <PathInput form={form} name={"path"} label={"Path"} desc="Any valid directory will work, but workspaces should not be nested."/>
+          <div className="w-full flex flex-col justify-start items-start @[640px]/modalContent:grid @[640px]/modalContent:grid-cols-2 @[640px]/modalContent:gap-x-4">
             <SimpleLabeledCheckbox<typeof form>
               name={"respect_gitignore"}
               desc={
                 <>
-                  Ignore files using any <InlineCode code=".gitignore" /> files
-                  found.
+                  Ignore files using any <PlainInlineCode code=".gitignore" />{" "}
+                  files found.
                 </>
               }
               label={
                 <>
-                  Respect <InlineCode code=".gitignore" />
+                  Respect <PlainInlineCode code=".gitignore" />
                 </>
               }
-              /* classes={{ container: "my-0" }} */
             />
             <SimpleLabeledCheckbox<typeof form>
               name="ignore_hidden"
               label="Ignore Hidden"
               desc="Ignore files that are hidden by your file system."
-              /* classes={{ container: "my-0" }} */
             />
           </div>
           <div className="w-full flex flex-row justify-end items-center">

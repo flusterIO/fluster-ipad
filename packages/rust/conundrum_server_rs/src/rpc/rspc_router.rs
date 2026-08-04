@@ -26,7 +26,7 @@ use crate::{
     rpc::{
         route_context::RouteContext,
         routers::{
-            code::code_router::get_code_router, fs_router::fs_router::get_fs_router,
+            code::code_router::get_code_router, fs::fs_router::get_fs_router,
             workspace_management::workspace_management_router::get_workspace_management_router,
         },
     },

@@ -4,7 +4,6 @@ import { useCommandPaletteDispatch } from "./command_palette_provider";
 export const GlobalKeyboardListener = (): ReactNode => {
     const commandPaletteDispatch = useCommandPaletteDispatch();
     const handleGlobalKeyDown = (e: KeyboardEvent): void => {
-        console.log("e: ", e);
         if (e.shiftKey && e.metaKey && e.key === "p") {
             commandPaletteDispatch({
                 type: "openCommandPalette",

@@ -10,6 +10,10 @@ interface SimpleLabeledCheckboxProps<T extends FieldValues> {
   desc?: ReactNode;
   name: Path<T>;
   withBorder?: boolean;
+  /**
+   * Add a subtle border around the unchecked checkbox
+   */
+  borderPrimary?: boolean;
   classes?: {
     container?: string;
     checkbox?: string;
@@ -24,6 +28,7 @@ export const SimpleLabeledCheckbox = <T extends FieldValues>({
   label,
   desc,
   withBorder,
+  borderPrimary = true,
   classes = {},
 }: SimpleLabeledCheckboxProps<T>): ReactNode => {
   return (
@@ -41,7 +46,8 @@ export const SimpleLabeledCheckbox = <T extends FieldValues>({
             <Checkbox
               uncheckedSecondary
               className={cn(
-                "place-self-center border-primary/50!",
+                "place-self-center",
+                borderPrimary && "border-primary/50!",
                 classes.checkbox,
               )}
             />

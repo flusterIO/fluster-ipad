@@ -27,6 +27,23 @@ pub enum ConundrumFSError {
 
     #[error("Unsupported file extension: {0}.")]
     UnsupportedFileExtension(String),
+
+    #[error("The provided path can't be found on your system: {0}.")]
+    PathDoesntExist(String),
+
+    #[error("Conundrum couldn't parse the file extension of the file at `{target_file}`.")]
+    NoFileExtensionFound {
+        target_file: String,
+    },
+    #[error("The extension of the file at `{target_file}` doesn't match the extensions required for the task.")]
+    InvalidExtension {
+        target_file: String,
+    },
+
+    #[error("Conundrum was unable to parse the file metadata at `{target_file}`.")]
+    InvalidFileMeta {
+        target_file: String,
+    },
 }
 
 pub type ConundrumFSResult<T> where T: Sized
