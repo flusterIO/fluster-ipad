@@ -12,7 +12,7 @@ pub enum AiSerializationRequestType {
 }
 
 #[typeshare]
-#[derive(uniffi::Record, Debug, Serialize, Deserialize, Clone)]
+#[derive(uniffi::Record, Debug, Serialize, Deserialize, Clone, specta::Type)]
 pub struct AiSerializationRequestPhase1 {
     pub parsing_result: GeneralCodeBlock,
 }

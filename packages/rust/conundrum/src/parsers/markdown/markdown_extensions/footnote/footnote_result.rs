@@ -42,7 +42,7 @@ pub struct FootnoteResult {
 /// </div>
 /// ```
 #[typeshare::typeshare]
-#[derive(Debug, uniffi::Record, Serialize, Deserialize, Clone, Template)]
+#[derive(Debug, uniffi::Record, Serialize, Deserialize, Clone, Template, specta::Type)]
 #[template(ext = "html", in_doc = true)]
 pub struct RenderedFootnoteResult {
     /// The rendered Conundrum content representing the body of the footnote.

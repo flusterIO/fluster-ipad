@@ -23,7 +23,7 @@ use winnow::Stateful;
 
 /// This is the core 'input' for Conundrum.
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema, specta::Type)]
 pub struct ParseConundrumOptions {
     /// The id of your note. This can be generic, unique to each application,
     /// but so-long as the note has the **concept** of an id the id can be

@@ -21,6 +21,7 @@ use strum::{EnumDiscriminants, EnumIter, IntoEnumIterator};
            PartialEq,
            Eq,
            Hash,
+           specta::Type,
            Default)]
 pub enum MarkdownElementGlueKey {
     #[default]
@@ -32,7 +33,7 @@ pub enum MarkdownElementGlueKey {
 /// Just like the `AnyComponentName`, except this is unique where the
 /// AnyComponentName allows for component aliases.
 #[typeshare::typeshare]
-#[derive(Clone, Serialize, EnumIter, Deserialize, uniffi::Enum, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Serialize, EnumIter, Deserialize, uniffi::Enum, Debug, PartialEq, Eq, Hash, specta::Type)]
 #[serde(tag = "tag", content = "content")]
 pub enum AnyComponentKey {
     AutoInserted(AutoInsertedComponentName),

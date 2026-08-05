@@ -27,8 +27,10 @@ pub enum FrontMatterKey {
     Summary,
 }
 
+/// ## TODO
+/// - [ ] Add a meta field that can collect arbitrary front-matter.
 #[typeshare]
-#[derive(uniffi::Record, Debug, Clone, Serialize, Deserialize)]
+#[derive(uniffi::Record, Debug, Clone, Serialize, Deserialize, specta::Type)]
 pub struct FrontMatterResult {
     pub ignored_parsers: Vec<String>,
     pub title: Option<String>,

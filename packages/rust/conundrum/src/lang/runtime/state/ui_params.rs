@@ -5,7 +5,7 @@ use typeshare::typeshare;
 use crate::parsers::markdown::code_block::supported_themes::SupportedCodeBlockTheme;
 
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema, specta::Type)]
 pub struct UIParams {
     pub dark_mode: bool,
     /// A number 0-n, where n > 1 increases the fontsize.

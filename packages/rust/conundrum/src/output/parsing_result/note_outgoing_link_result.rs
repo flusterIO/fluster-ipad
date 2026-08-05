@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, Clone, uniffi::Record)]
+#[derive(Serialize, Deserialize, Debug, Clone, uniffi::Record, specta::Type)]
 pub struct NoteOutgoingLinkResult {
     /// The user defined id on the target note.
     pub link_to_note_id: String,

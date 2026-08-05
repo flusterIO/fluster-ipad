@@ -30,9 +30,11 @@ export const WorkspacesPage = (): ReactNode => {
             center={!workspaces?.length}
         >
             {workspaces?.length ? (
-                workspaces.map((item) => {
-                    return <WorkspaceListItem item={item} />;
-                })
+                <div className="w-full flex flex-col justify-start items-center gap-y-4 py-4">
+                    {workspaces.map((item) => {
+                    return <WorkspaceListItem key={item.root} workspace={item} />;
+                })}
+                </div>
             ) : (
                 <div className="w-full h-fit flex flex-col justify-center items-center">
                     <div className="mb-3">No workspaces to show</div>

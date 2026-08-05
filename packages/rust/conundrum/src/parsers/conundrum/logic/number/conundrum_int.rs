@@ -13,7 +13,7 @@ use crate::{
     parsers::{conundrum::logic::{number::conundrum_number::ConundrumNumber, object::object::ConundrumObject, token::ConundrumLogicToken}, parser_trait::ConundrumParser},
 };
 
-#[derive(Debug, serde::Serialize, serde::Deserialize, Clone, Copy)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone, Copy, specta::Type)]
 pub struct ConundrumInt(pub i64);
 
 uniffi::custom_newtype!(ConundrumInt, i64);

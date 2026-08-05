@@ -7,7 +7,7 @@ use crate::{
 };
 /// Both the label and body fields are ***un-compiled*** Conundrum content.
 #[typeshare]
-#[derive(Serialize, Deserialize, Clone, Debug, uniffi::Record)]
+#[derive(Serialize, Deserialize, Clone, Debug, uniffi::Record, specta::Type)]
 pub struct DictionaryEntryResult {
     pub label: String,
     pub body: String,

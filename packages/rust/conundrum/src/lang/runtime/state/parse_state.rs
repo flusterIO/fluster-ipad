@@ -30,7 +30,7 @@ use crate::{
 /// collection of other modifiers, or at least that's how they're intended to
 /// work.
 #[typeshare::typeshare]
-#[derive(uniffi::Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy, JsonSchema)]
+#[derive(uniffi::Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy, JsonSchema, specta::Type)]
 pub enum ConundrumModifier {
     HideEmojis,
     /// The goal with this flag is to make **some** components collapsable to be
@@ -78,6 +78,7 @@ pub enum ConundrumModifier {
            Eq,
            PartialEq,
            strum_macros::Display,
+           specta::Type,
            JsonSchema)]
 pub enum ConundrumCompileTarget {
     #[serde(rename = "jsx")]

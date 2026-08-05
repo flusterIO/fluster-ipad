@@ -61,7 +61,7 @@ pub struct MarkdownHeadingResult {
 /// The same as the `MarkdownHeadingResult` struct but wth the children
 /// rendered.
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Deserialize, Clone, uniffi::Record)]
+#[derive(Debug, Serialize, Deserialize, Clone, uniffi::Record, specta::Type)]
 pub struct MarkdownHeadingStringifiedResult {
     pub depth: u16,
     pub tab_depth: u16,

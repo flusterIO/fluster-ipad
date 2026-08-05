@@ -1,3 +1,4 @@
+pub mod cdrm;
 pub mod code;
 pub mod crud;
 pub mod fs;

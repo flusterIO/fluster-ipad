@@ -12,6 +12,7 @@ use strum::EnumIter;
            PartialEq,
            Eq,
            Hash,
+           specta::Type,
            uniffi::Enum)]
 pub enum WebGlueCodeGeneralFiles {
     #[serde(rename = "styles.css")]

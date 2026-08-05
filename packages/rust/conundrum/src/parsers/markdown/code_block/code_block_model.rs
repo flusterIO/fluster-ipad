@@ -71,7 +71,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug)]
+#[derive(uniffi::Record, Serialize, Deserialize, Clone, Debug, specta::Type)]
 pub struct GeneralCodeBlock {
     pub language: SupportedCodeBlockSyntax,
     pub meta_data: Option<String>,

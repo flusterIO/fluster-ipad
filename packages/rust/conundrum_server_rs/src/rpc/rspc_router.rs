@@ -27,6 +27,7 @@ use crate::{
         route_context::RouteContext,
         routers::{
             code::code_router::get_code_router, fs::fs_router::get_fs_router,
+            cdrm::cdrm_router::get_cdrm_router,
             workspace_management::workspace_management_router::get_workspace_management_router,
         },
     },
@@ -37,6 +38,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
     // let mut study_router = get_study_router();
     let workspace_router = get_workspace_management_router();
     let code_router = get_code_router();
+    let cdrm_router = get_cdrm_router();
 
     let user_workspace_crud_router = rspc::Router::<crate::rpc::route_context::RouteContext>::new()
     .procedure("get_by_predicate", Procedure::<crate::rpc::route_context::RouteContext, PredicateQueryParams, Vec<UserWorkspace>>::builder::<crate::errors::server_error::ServerError>().query(|state: RouteContext , params: PredicateQueryParams | async move {
@@ -70,6 +72,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
     let r = rspc::Router::<RouteContext>::new().nest("fs", fs_router)
                                                .nest("workspace", workspace_router)
                                                .nest("code", code_router)
+                                               .nest("cdrm", cdrm_router)
                                                // .nest("study", study_router)
                                                .nest("user_workspace_crud", user_workspace_crud_router)
                                                .procedure("version",

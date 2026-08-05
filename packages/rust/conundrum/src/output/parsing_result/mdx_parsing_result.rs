@@ -25,7 +25,7 @@ use crate::{
 };
 
 #[typeshare]
-#[derive(uniffi::Record, Debug, Serialize, Deserialize, Clone)]
+#[derive(uniffi::Record, Debug, Serialize, Deserialize, Clone, specta::Type)]
 pub struct MdxParsingResult {
     pub note_id: Option<String>,
     pub content: String,

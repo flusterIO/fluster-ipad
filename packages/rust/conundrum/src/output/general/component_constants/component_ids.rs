@@ -22,6 +22,7 @@ use crate::{
            Serialize,
            Default,
            Deserialize,
+           specta::Type,
            uniffi::Enum)]
 pub enum EmbeddableComponentId {
     #[serde(rename = "toc")]
