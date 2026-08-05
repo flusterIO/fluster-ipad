@@ -3975,6 +3975,7 @@ dependencies = [
  "notify",
  "ollama-rs 0.3.5",
  "once_cell",
+ "pretty_env_logger",
  "prettycli",
  "ratex-layout",
  "ratex-parser",

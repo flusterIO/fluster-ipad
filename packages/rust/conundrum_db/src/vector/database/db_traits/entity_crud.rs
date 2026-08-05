@@ -27,8 +27,12 @@ pub trait EntityCRUD<IDType: DatabaseIdentifiable, UpdatePartial: ArrowSchemaRep
         where Self: Sized {
         let schema = Self::arrow_schema();
         let _db = db.clone().lock_owned().await;
-        let tbl = open_table(_db, &Self::table()).await?;
-        let batches = Self::get_record_batch(items)?;
+        let tbl = open_table(_db, &Self::table()).await.inspect_err(|e| {
+                                                       log::error!("Table Error: {:?}", e);
+                                                   })?;
+        let batches = Self::get_record_batch(items).inspect_err(|e| {
+                                                       log::error!("get_record_batch Error: {:?}", e);
+                                                   })?;
         let stream = Box::new(RecordBatchIterator::new(vec![batches].into_iter().map(Ok), schema.clone()));
         let primary_key: &[&str] = Self::merge_keys();
         tbl.merge_insert(primary_key)

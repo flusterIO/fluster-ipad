@@ -7,6 +7,7 @@ pub mod date_time;
 pub mod ecosystem_data;
 pub mod joins;
 pub mod meta;
+pub mod notebook;
 pub mod primitives;
 pub mod taggables;
 pub mod text;

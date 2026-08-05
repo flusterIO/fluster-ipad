@@ -27,6 +27,7 @@ interface PathInputProps<Schema extends FieldValues>
      * Defaults to true
      */
     mustExist?: boolean;
+    onPathExistsChange?: (exists: boolean) => void;
     classes?: {
         container?: string;
         input?: string;
@@ -41,17 +42,26 @@ const PI = <Schema extends FieldValues>({
      * An empty array of permitted types will allow *any* file type, not just any parsable filetype.
      */
     permitted_types = [],
-}: Pick<PathInputProps<Schema>, "name" | "source_type" | "permitted_types"> & {
+    onPathExistsChange,
+}: Pick<
+    PathInputProps<Schema>,
+    "name" | "source_type" | "permitted_types" | "onPathExistsChange"
+> & {
     className?: string;
 }): ReactNode => {
     const form = useFormContext<Schema>();
     const value = form.watch(name);
-    usePathExists({
+    const { exists } = usePathExists({
         pathValue: value ?? "/",
         name,
         source_type,
         permitted_types,
     });
+    useEffect(() => {
+        if (typeof exists === "boolean") {
+            onPathExistsChange(exists);
+        }
+    }, [onPathExistsChange]);
     return (
         <Input
             className={cn("text-sm font-mono", className)}
@@ -70,6 +80,7 @@ export const PathInput = <Schema extends FieldValues>({
     name,
     desc,
     classes = {},
+    onPathExistsChange,
     ...props
 }: PathInputProps<Schema>): ReactNode => {
     return (

@@ -17,6 +17,7 @@ use crate::rpc::route_context::RouteContext;
 
 #[tokio::main]
 pub async fn main() {
+    pretty_env_logger::init_custom_env(CdrmEnvVariable::LogLevel.to_string().as_str());
     let cors = CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any);
     let (rpc_router, types) =
         get_rspc_router().await

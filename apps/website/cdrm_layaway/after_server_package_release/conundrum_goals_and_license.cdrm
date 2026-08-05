@@ -1,0 +1,137 @@
+---
+title: Conundrum Goals & License
+id: cdrm_goals_and_license
+summary: The goals for Conundrum aren't just technical. 
+topic: Legal
+subject: Blog Posts
+---
+
+# Conundrum Goals & License
+> The goals for Conundrum aren't just technical.
+
+ So what calls for a post describing the goals and the license of Conundrum, side-by-side? Well, in some ways, the license _is_ the goal. I've been homeless for almost 5 years, I **really** need a paycheck, but getting rich is for people that don't know what they want.
+
+### The goals for Conundrum & Fluster
+
+The goals with Conundrum is to be a modular academic toolkit that can be used by students and academics from middle school through their post-doc, while creating a sustainable stream of free or nearly free academic tools through a rather unique licensing agreement. While it's ridiculous to claim that a single application can do all of this, much less suite people of such varied capabilities, we're not building a single application, but rather a shared data layer and a _default_ front-end. It is entirely feasible to build a _structured_ data layer that a user can carry with them throughout their academic career, while the front-end morphs to match the user's capabilities over time, powered by Conundrum and a few AI prompts.
+
+<Admonition title="Taggability and Graph RAG" sidebar right>
+The Conundrum framework was built from a graph-like architecture from the beginning, even more so than most other note taking applications as the inclusion of tags, topics, subjects and bibliography entries allows users to connect their notes in a manner that would allow AI to reasonably connect to a note 10+ years prior, without requiring excessive context windows. 
+
+This is why this architecture works: It's server-scale where it needs to be (your LLM of choice), and completely local and cost efficient for everything else, usable even with local models.
+</Admonition>
+
+#### Ecosystem
+
+With Conundrum you get a few pieces that come together to form a complete second brain. Take them all as one framework, or choose what you need and vibe-code away the rest.
+
+
+- **Database:** A complete vector store powered by LanceDB, entirely local.  If you're not technical, this shared, structured data layer that AI can get to know well is one of the primary reasons to use a framework like Conundrum. As the Conundrum ecosystem grows, your personal front-end can take advantage of the training AI has done on Conundrum code, documentation and eventually on real-world databases. The more popular this framework becomes, the more likely bots are to crawl the documentation, and the more familiar AI will become with the ecosystem. That is, until I can actually afford to work with AI properly.
+- **CLI:** Compile projects, single files, and initialize the database with many, _many_ more functionalities planned. Conundrum actually renders to a specific TUI target, and the `compile-project` functionality powers the blog you're reading. The `lua{:tsx}` api really only exists to support vim and terminal interfaces.
+- **Server:** This acts as the 'glue', connecting your Conundrum powered data layer to the front-end of your choice. Powered by axum and rspc, it embeds everything one needs to manage all of their notes from a single command and a clean web interface, with a clean API for your front-end to connect to. You as a user never need to think about the database,  just run `cdrm`... your cli starts your server, and <Emoji name="boom" inline small relative/>, your notes are ready in your browser.
+- **Fluster:** So far the only paid Conundrum service, and the thing I hope will make me less homeless. Use it if you want to support the development of Conundrum, but Conundrum as a framework can be used with any front-end.
+
+With each of these tools being replaced on an as-needed basis. The goal is to provide all of the pieces, and to let you build around them.
+
+You want a different front-end? Tell your favorite AI tool to build a front-end that connects to the Conundrum server[^3]. It's your app, the way you and your AI envision it, with a stable and **structured** data layer so your data remains consistent over time, while your UI grows with you.
+
+Once the server package is released (end of August 2026), I'll put together some starter templates that should allow AI to just 'connect the dots', taking you from an empty template to an app of your own design with just a few prompts.
+
+While the documentation is still coming together, many of the database models are intended to be flexible, yet descriptive, allowing you a variety of use-cases without losing any of the vital information that AI depends on. Basically, if a model allows for more than one use-case, AI should _always_ be able to tell the difference.
+
+##### Models
+
+With a local Conundrum back-end you get everything your vibe-coded front-end needs, all stored in one place on your own device. While the list of models will continue to grow prior to the release of version 1, this list is just some of the models your front-end will have access to.
+
+- Notes, of course, in the following format:
+  - Conundrum (Markdown of course as well)
+  - ~~Latex~~ Typst
+  - HTML
+  - Notebooks (`.ipynb` files)
+- Images
+- Pdfs
+- Bibliography Entries
+- Reading Lists for literature review and exam prep.
+- Events
+- Assignments
+- Tasks in an optional kanban like format
+- `QAPair`. I'm just hesitant to call it a flashcard to encourage a wider use-case, but unless you're a philosophy major, that's probably what it'll be used for.
+- "Academic Results" in an intentionally loosely but well-defined manner, allowing for things like test scores and experimental results; structured in a way where AI can tell the difference.
+- "Structured JSON". Basically any json that needs a description for AI. If you have some data you want your AI to be aware of or if your AI needs to know the _shape_ of some data, this will be a flexible tool for whatever front-end you build.
+- And of course, your LLM history, making your notes truly yours as Conundrum itself gets to know you over time.
+
+And all stored with the tags, topics and subjects logic that Fluster uses.
+
+The structure of this data is intended to be flexible, but still descriptive so that AI can tell the difference between the result of a test for a class, and the result of a long-awaited experiment, without losing the numerical accuracy of storing results in various forms (percent error, absolute value, etc).
+
+<Admonition title="Developer API's" foldable>
+
+For developers, there are API's in the following languages in various stages of completeness.
+
+**FFI based:**
+- [x] Rust
+- [-] Python
+- [-] Swift
+- [ ] Go
+- [ ] Kotlin
+
+**Network based:**
+- [x] Typescript
+
+
+Unfortunately, Conundrum is still locked in the Fluster monorepo as I'm building all of this without internet, and I don't want to risk installation issues when I'm offline. As soon as my internet issue's resolved, I'll move Conundrum to it's own repository.
+
+</Admonition>
+
+
+### So why not MIT?
+
+The problem with truly open-source, do-whatever-you-want licenses is that they cater to people that already have money and the resources to launch platforms capable of truly taking advantage of these open source licenses, while the developers are reliant on charitable sponsorships that may or may not come in. This of course in-turn creates a further resource gap, worsening the margin with each new technology.
+
+To combat this, to whatever extent this little project can, I am launching Conundrum under a rather unique license. Basically it's free once everyone that contributed to the project has been compensated according to their contribution[^1], at which point all additional revenue goes to charity.
+
+Being an academic tool, I want this to be a project that is as close to free as it can be while still being maintainable so that we can develop the best free or nearly free academic tools possible. It'll be hard to pull off, but the goal is to make Conundrum and even Fluster free to whoever's struggling financially like I am[^2], and for an insignificant fee that goes to good causes for those that can afford to pay.
+
+For this reason, I'm setting this up under a unique license.
+
+<Card title="License">
+<Container paddingX="small">
+
+Fluster, being proprietary, is free to be cloned, forked, and modified in any legal way that one chooses, for their own personal use. Modified or cloned repositories must not be publicly accessible, and sharing cloned, forked or modified versions is not permitted.
+
+
+Conundrum on the other hand, is intended to be open-source, but with a non-profit agenda. Like Fluster, Conundrum can be cloned, forked or modified in any way that one chooses. However, unlike Fluster, sharing of these modified versions is permitted if the following rules are satisfied
+
+
+1. The core functionality of Conundrum is not modified. This is limited only to the parser and component properties, as it's intended to keep a single source of truth for a shared set of components, making notes transferable between applications. If your application needs a feature, let's add it to the core package, maybe behind a rust feature, and make it accessible to everyone. The idea of an mdx based note-taking DSL (domain-specific language) only works for non-developers if we all share the same components and component properties.
+2. Both of the following requirements are met, simultaneously:
+  1. The modified versions are not associated with a paid service. Any paid service hosting Conundrum content must get written permission from myself, until a more formal process is in place.
+  2. I'm not broke, where 'broke' is defined as making less than the median software developer salary with the equivalent years of experience. Once I am no longer 'broke', Conundrum is free to be hosted anywhere, by anyone, but the stipulations around distributing versions that modify core functionality are still in place. Beware that this may change, depending upon the support that this project receives to include the same salary based stipulation for developers[^1] that contribute to this project through open-source contributions. Basically, once everyone involved is not homeless like myself, all income goes to charitable sources and the project becomes temporarily free for anyone that chooses not to contribute to the project further.
+
+</Container>
+</Card>
+
+And in turn, I will make all revenue public and pass along every penny in excess of the median developer salary to those that contribute to the project through open-source, and maybe... one day be able to contribute something to charity. I know this is all meaningless to say when the project has had so little success, but if you see a project you contributed to in a meaningful way on the list of dependencies for either Fluster or Conundrum, feel free to get in touch. This is a lofty goal, but I think together we can build an academic note-taking DSL that becomes the first exposure to code for many in a way that's financially sustainable.
+
+
+### So is Conundrum Free?
+
+Yes, but with some catches. It's free to do whatever you want with, so long as you're not making money from it. If you do make money, work out a written agreement with myself until there's something more formal in place, and share that wealth with the people that make these projects possible.
+
+
+#### First on my list
+
+I'll leave out the major projects like Jupyter, LanceDB & Plotly, because let's be real... it'll be a while before this project grows to that scale, but some of the projects that come to mind first are:
+
+- **Jupynium**: My personal workflow involved a lot of this Jupyter/Vim plugin, and it heavily inspired the design of Fluster. I think this is a perfect example of a great academic tool that would otherwise go largely unrecognized, financially.
+- **rssn**: I actually haven't integrated it into Conundrum yet because of a wasm issue that I'd need internet to resolve, but the potential for an embedded rust powered sympy would truly make Conundrum the perfect templating language.
+- **Mmdflux**: I know there are a lot of mermaid clones, but rendering to almost all of the outputs Conundrum supports made integration across a variety of outputs seamless and your notes accessible in more places.
+- **Winnow**: The parser that powers Conundrum. I imagine it already has a few sponsors, but it deserves more.
+- **hayagriva**: This package and it's parent package _completely_ powers both the Fluster and Conundrum bibliography manager.
+- **katex.rs**: Porting Katex to Rust made embedding math possible.
+
+
+
+[^1]: Proportional to their contribution. We'll use an objective-ish LLM to determine each developer's contribution by an estimated total hours spent on the features used, subtract the developers full-time salary if open-source is only their side thing, sum them, and make the project free after this target is met. A **heavy** preference will be given to those tools with an academic slant, telling the LLM to `heavily favor academic libraries and tools{:txt}`, 
+[^2]: True story: The server's getting a front-end before the iPad app get's released because I can't afford to use my own application.
+[^3]: Let me write the API docs first. For those that are unfamiliar with the technical side of things, Conundrum intentionally exposes a network API instead of an FFI interface alone to make these integrations as seamless as possible. Once the API is fully documented, any decent AI should be able to digest that information and output a complete front-end in just a handful of commands.

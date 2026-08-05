@@ -260,7 +260,7 @@ impl SizablePropsGroup {
             classes.push("border".to_string());
         }
         if self.inline.is_some_and(|x| x.0) {
-            classes.push("inline-block".to_string());
+            classes.push("inline-block!".to_string());
         }
         if let Some(in_shadow) = &self.in_shadow {
             classes.push(match in_shadow {
@@ -402,7 +402,7 @@ impl SizablePropsGroup {
                                      SizableOption::Fit => "max-h-fit w-auto".to_string(),
                                  });
                 }
-                SizablePropsOutputTarget::General => {
+                _ => {
                     classes.push(match max_height {
                                      SizableOption::None => "max-h-[min(32px,90vh)]".to_string(),
                                      SizableOption::Small => "max-h-[min(320px,90vh)]".to_string(),

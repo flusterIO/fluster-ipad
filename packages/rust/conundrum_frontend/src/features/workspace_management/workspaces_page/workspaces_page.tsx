@@ -4,9 +4,19 @@ import React, { useState, type ReactNode } from "react";
 import { WorkspaceListItem } from "./workspace_item";
 import { PlusSquareIcon } from "lucide-react";
 import { AddWorkspaceDialog } from "./add_workspace_page/add_workspace_dialog";
+import { rspc } from "@/app/rspc_client";
 
 export const WorkspacesPage = (): ReactNode => {
-    const [workspaces, setWorkspaces] = useState([]);
+    const { data: workspaces, error } = rspc.useQuery([
+        "user_workspace_crud.get_by_predicate",
+        {
+            predicate: null,
+            pagination: {
+                page: 1,
+                per_page: 10,
+            },
+        },
+    ]);
     const [showWorkspaceDialog, setShowWorkspaceDialog] = useState(false);
     return (
         <PageContainer
@@ -17,9 +27,9 @@ export const WorkspacesPage = (): ReactNode => {
                     contains your notes and all resources that your notes depend on.
                 </>
             }
-            center={!workspaces.length}
+            center={!workspaces?.length}
         >
-            {workspaces.length ? (
+            {workspaces?.length ? (
                 workspaces.map((item) => {
                     return <WorkspaceListItem item={item} />;
                 })

@@ -31,7 +31,7 @@ pub fn render_footnotes(state: ArcState) -> ConundrumModalResult<Vec<RenderedFoo
             FootnoteData::Completed(x) => x.to_rendered_footnote(Arc::clone(&state)),
             FootnoteData::Assigned(x) => {
                 Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Forgot something...",
-                                                                                                                 "Conundrum found a footnote anchor without an associated footer. For every `[^1]` anchor, there must also be a matching `[^1]: My footnote...` footer."))))
+                                                                                                                 format!("Conundrum found a footnote anchor ({}) without an associated footer. For every `[^1]` anchor, there must also be a matching `[^1]: My footnote...` footer.", key).as_str()))))
             }
         }?;
         items.push(r.clone());

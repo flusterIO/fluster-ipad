@@ -27,7 +27,7 @@ use crate::{
 };
 
 /// The `_lc` suffix is appended by the `CaseInsensitiveString` struct.
-pub static TAGGABLE_PRIMARY_KEY: &str = "value_lc";
+pub static TAGGABLE_PRIMARY_KEY: &str = "value";
 pub static TAGGABLE_MERGE_KEYS: &[&str] = &[TAGGABLE_PRIMARY_KEY];
 
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, Type)]

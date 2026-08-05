@@ -2,7 +2,7 @@
 
 ![Fluster screenshot](shared_assets/logo/fluster_banner_with_name.png)
 
-> Checkout our website [here](https://flusterapp.com).
+> Checkout our website [here](https://flusterapp.com) or the Conundrum readme [here](https://github.com/flusterIO/fluster-ipad/blob/main/packages/rust/conundrum/README.md)
 
 After building a cross platform desktop version of [Fluster](https://github.com/flusterIO/fluster/releases) I've decided to focus solely on the Apple ecosystem for now by rebuilding the core of the application yet again, this time in Swift to integrate all of Apple's native features with the application. This deep integration with Apple's incredible library of tools and API's given to developers just wasn't possible with cross platform libraries, as amazing as [Tauri](https://v2.tauri.app/) is.
 

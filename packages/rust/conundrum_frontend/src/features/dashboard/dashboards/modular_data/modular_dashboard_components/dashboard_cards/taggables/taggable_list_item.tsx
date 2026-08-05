@@ -14,7 +14,6 @@ export const TaggableListItem = ({
     href,
     children,
 }: TaggableListItemProps): ReactNode => {
-    console.log("children: ", children);
     return (
         <Link
             to={href}

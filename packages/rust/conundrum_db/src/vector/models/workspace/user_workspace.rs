@@ -17,7 +17,7 @@ use crate::vector::database::db_traits::entity_crud::EntityCRUD;
 use crate::vector::database::db_traits::{db_entity::DBEntity, validate::ValidateSelf};
 use crate::vector::models::workspace::user_workspace_partial::UserWorkspacePartial;
 
-static USER_WORKSPACE_PRIMARY_KEY: &str = "value_lc";
+static USER_WORKSPACE_PRIMARY_KEY: &str = "root";
 static USER_WORKSPACE_MERGE_KEYS: &[&str] = &[USER_WORKSPACE_PRIMARY_KEY];
 
 fn default_bib_path() -> Vec<String> {
@@ -106,7 +106,7 @@ impl ArrowSchemaRepresentable for UserWorkspace {
                                                            true),
                                                 Field::new("respect_gitignore", DataType::Boolean, false),
                                                 Field::new("ignore_hidden", DataType::Boolean, false),
-                                                Field::new("resource_dir", DataType::Utf8, false),]))
+                                                Field::new("resource_dir", DataType::Utf8, true),]))
     }
 }
 
