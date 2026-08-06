@@ -47,7 +47,7 @@ pub struct MdxParsingResult {
     /// This field isn't populated until the footnotes are rendered at the end,
     /// so don't rely on this data during parsing *or* compilation. Use the
     /// field on `ParseState` instead.
-    pub footnotes: HashMap<ConundrumInt, RenderedFootnoteResult>,
+    pub footnotes: HashMap<i32, RenderedFootnoteResult>,
     included_components: Vec<AnyComponentKey>,
 }
 

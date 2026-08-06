@@ -52,13 +52,14 @@ pub struct RenderedFootnoteResult {
     /// The 0 based index of the anchor, the way it appears in the document...
     /// Not necessarily the user provided index that is used as the key of
     /// the footnote results map.
-    pub idx: ConundrumInt,
+    pub idx: i32,
 }
 
 impl FootnoteResult {
     pub fn to_rendered_footnote(&self, state: ArcState) -> ConundrumModalResult<RenderedFootnoteResult> {
+        let idx: i32 = (self.idx.0 + 1) as i32;
         Ok(RenderedFootnoteResult { body: self.body.render(state)?,
                                     anchor_id: self.anchor_id.clone(),
-                                    idx: self.idx + 1 })
+                                    idx })
     }
 }

@@ -52,6 +52,13 @@ pub enum DatabaseTable {
     #[strum(to_string = "custom_academic_res_metric")]
     #[serde(rename = "custom_academic_res_metric")]
     CustomAcademicResultMetric,
+    #[strum(to_string = "git_repository")]
+    #[serde(rename = "git_repository")]
+    GitRepository,
+    /// --- 'Joining' tables ---
+    #[strum(to_string = "workspace_repository")]
+    #[serde(rename = "workspace_repository")]
+    WorkspaceRepository,
     /// ---- Vectors ----
     #[strum(to_string = "cdrm_vec")]
     #[serde(rename = "cdrm_vec")]

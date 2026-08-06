@@ -78,7 +78,10 @@ impl ConundrumParser<FootnoteAnchor> for FootnoteAnchor {
         let doc_idx = match &found_item {
             Some(s) => match s {
                 FootnoteData::Completed(c) => Ok(c.idx),
-                FootnoteData::Rendered(r) => Ok(r.idx),
+                FootnoteData::Rendered(r) => {
+                    let x: ConundrumInt = ConundrumInt::from(r.idx);
+                    Ok(x)
+                }
                 FootnoteData::Assigned(a) => Ok(a.idx + 1),
             },
             None => Ok(ConundrumInt(mutable_state.footnotes.0.len() as i64)),

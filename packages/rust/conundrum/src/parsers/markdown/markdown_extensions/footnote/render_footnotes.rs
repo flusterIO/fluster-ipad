@@ -24,7 +24,7 @@ pub fn render_footnotes(state: ArcState) -> ConundrumModalResult<Vec<RenderedFoo
     let read_state = state.read_arc();
     let footnotes = read_state.footnotes.clone();
     drop(read_state);
-    let mut footnote_map: HashMap<ConundrumInt, RenderedFootnoteResult> = HashMap::new();
+    let mut footnote_map: HashMap<i32, RenderedFootnoteResult> = HashMap::new();
     for (key, value) in footnotes.0.iter() {
         let r = match value {
             FootnoteData::Rendered(r) => Ok(r.clone()),
@@ -35,7 +35,8 @@ pub fn render_footnotes(state: ArcState) -> ConundrumModalResult<Vec<RenderedFoo
             }
         }?;
         items.push(r.clone());
-        footnote_map.insert(*key, r.clone());
+        let k: i32 = key.into();
+        footnote_map.insert(k, r.clone());
     }
 
     let mut write_state = state.write_arc();

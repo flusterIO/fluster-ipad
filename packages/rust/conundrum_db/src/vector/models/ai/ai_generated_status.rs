@@ -2,6 +2,11 @@ use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use fake::{Dummy, Faker};
 use serde::{Deserialize, Serialize};
 
+// ## AIGeneratedStatus
+//
+// This is the status that represents the amount of input AI had on the creation
+// on a given instance of a database model. AI should always update this field
+// accordingly when updating other parts of a model.
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum AIGeneratedStatus {
     /// This was completely written by humans.

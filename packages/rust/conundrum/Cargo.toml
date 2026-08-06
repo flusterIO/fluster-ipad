@@ -128,7 +128,7 @@ specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url", "deri
 uniffi = { version="=0.29.5", features = ["tokio", "cli"] }
 tokio = { version = "1.0", features = ["full"] }
 rssn = { version = "0.2.7", features = ["full"] }
-ratatui = "^0.29.0"
+ratatui = "*"
 katex-rs = { version = "0.2.4", features = ["backtrace"]}
 rand = "0.10.1"
 polars = { workspace = true }
@@ -136,6 +136,10 @@ text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
 lightningcss = { version = "1.0.0-alpha.71", features = ["serde", "serde_json", "substitute_variables"] }
 tower-lsp = "0.20.0"
 ignore = "0.4.31"
+rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "rmcp", "memory"] }
+rig-lancedb = "0.41.0"
+rig-memory = "0.41.0"
+gix = "0.86.0"
 # tui-math = "^0.1.1"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
@@ -161,7 +165,6 @@ insta = "1.46.3"
 fluster_core_utilities = { path = "../fluster_core_utilities/" }
 cargo-doc-md = "0.11.0"
 rustdoc-md = "0.2.0"
-burn = "0.21.0"
 tower-test = "0.4.0"
 fake.workspace = true
 

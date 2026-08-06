@@ -24,7 +24,7 @@ use crate::{
     },
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy, specta::Type)]
 pub struct Subject {
     pub value: CaseInsensitiveString,
     pub location: TagLocation,

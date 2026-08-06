@@ -19,7 +19,6 @@ pub struct BibEntryModel {
     pub read: bool,
     pub ctime: DateTime,
     pub utime: DateTime,
-}
 
 impl BibEntryModel {
     /// Takes a biblatex string and returns a vec of all the items contained

@@ -5,7 +5,7 @@ use crate::vector::models::taggables::tag::Tag;
 /// ## TagList
 ///
 /// You guessed it... just a list of tags and some utility methods.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type)]
 pub struct TagList(Vec<Tag>);
 
 impl TagList {

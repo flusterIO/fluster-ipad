@@ -13,7 +13,7 @@ use crate::{
     parsers::{conundrum::logic::{number::conundrum_number::ConundrumNumber, object::object::ConundrumObject, token::ConundrumLogicToken}, parser_trait::ConundrumParser},
 };
 
-#[derive(Debug, serde::Serialize, serde::Deserialize, Clone, Copy, specta::Type)]
+#[derive(Debug, serde::Serialize, serde::Deserialize, Clone, Copy)]
 pub struct ConundrumInt(pub i64);
 
 uniffi::custom_newtype!(ConundrumInt, i64);
@@ -22,6 +22,19 @@ impl Eq for ConundrumInt {
 
 }
 
+
+impl From<i32> for ConundrumInt {
+    fn from(value: i32) -> Self {
+        Self(value.into())
+    }
+}
+
+impl Into<i32> for ConundrumInt {
+    fn into(self) -> i32 {
+        let n: i32 = self.0 as i32;
+        n
+    }
+}
 
 impl From<i64> for ConundrumInt {
     fn from(value: i64) -> Self {

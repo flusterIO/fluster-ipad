@@ -1,7 +1,6 @@
 use std::collections::HashMap;
-use std::path::Path;
-use std::{path::PathBuf, sync::Arc};
-
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
 use conundrum::ecosystem::error_handling::conundrum_fs_error::ConundrumFSResult;
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
@@ -35,7 +34,7 @@ pub struct UserWorkspace {
     #[serde(default = "default_bib_path")]
     pub bib_paths: Vec<String>,
     #[serde(default = "Default::default")]
-    pub resource_dir: String,
+      pub resource_dir: String
 }
 
 impl UserWorkspace {

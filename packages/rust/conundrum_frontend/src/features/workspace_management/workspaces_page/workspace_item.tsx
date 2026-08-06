@@ -1,6 +1,7 @@
 import { DisabledLabeledText } from "#/settings/inputs/string_inputs/disabled_labeled_text";
-import { Procedures } from "@/codegen/bindings_t";
+import  type { Procedures } from "@/codegen/bindings_t";
 import React, { type ReactNode } from "react";
+import {motion} from "framer-motion";
 
 interface WorkspaceListItemProps {
     workspace: Procedures["user_workspace_crud"]["get_by_predicate"]["output"][number];
@@ -10,7 +11,21 @@ export const WorkspaceListItem = ({
     workspace,
 }: WorkspaceListItemProps): ReactNode => {
     return (
-        <div className="@container/workspaceItem w-full flex flex-col justify-start items-start p-4 border rounded-xl">
+        <motion.div
+            className="@container/workspaceItem w-full flex flex-col justify-start items-start p-4 border rounded-xl bg-fd-card text-fd-card-foreground!j"
+            initial={{
+                scale: 0,
+                opacity: 0
+            }}
+            animate={{
+                scale: 1,
+                opacity: 1
+            }}
+            exit={{
+                scale: 0,
+                opacity: 0
+            }}
+        >
             <div className="w-full grid grid-cols-1 @[640px]/workspaceItem:grid-cols-2">
                 <DisabledLabeledText
                     label="Label"
@@ -31,7 +46,7 @@ export const WorkspaceListItem = ({
                     }}
                 />
             </div>
-        </div>
+        </motion.div>
     );
 };
 

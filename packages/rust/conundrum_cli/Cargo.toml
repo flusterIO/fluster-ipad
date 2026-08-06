@@ -17,7 +17,7 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.6.0", features = ["derive"] }
-ratatui = { version = "^0.29.0", features = ["all-widgets", "serde"] }
+ratatui = { version = "*", features = ["all-widgets", "serde"] }
 ratatui-textarea = { version = "0.8.0", features = ["search", "serde"] }
 reedline = "0.46.0"
 reedline-repl-rs = { version = "1.3.0", features = ["async", "async_derive", "derive", "scripts", "shlex", "macro"] }
@@ -61,6 +61,8 @@ terminal_size = "0.4.4"
 color-eyre = "0.6.5"
 better-panic = "0.3.0"
 directories = "6.0.0"
+inquire = { version = "0.9.4", features = ["editor"] }
+inquire-derive = "0.9.4"
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
