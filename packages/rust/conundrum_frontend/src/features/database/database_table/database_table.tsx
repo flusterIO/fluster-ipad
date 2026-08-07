@@ -6,9 +6,9 @@ import React, {
     type ReactNode,
 } from "react";
 import { type DatabasePanelKey } from "../database_panel_key";
-
 import { connect } from "react-redux";
 import { type AppState } from "@/state/initial_state";
+import { DatabaseTable as DBTable } from "@conundrum/ts/codegen-typeshare";
 import {
     TableHeader,
     TableRow,
@@ -37,108 +37,127 @@ import { logMaybeObject } from "#/error_handling/utils/log_maybe_object";
 import { DatabaseTablePagination } from "./database_table_pagination";
 import { type DatabaseTableManager } from "./table_managers/table_manager";
 import { DatabaseTableCombobox } from "#/settings/inputs/combobox/database_table_combobox";
+import { useSearchParams } from "react-router";
 
 const connector = connect((state: AppState) => ({
     panel_key: state.database.selected_panel_key,
 }));
 
-interface DatabaseTableProps {
-    panel_key: DatabasePanelKey;
-}
+export const DatabaseTable = connector(<TData extends RowData>(): ReactNode => {
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const { selectedTable, tableManager, visibility } =
+        useDatabaseTableContext<TData>();
+    const tableDispatch = useDatabaseTableDispatch();
+    const [data, setData] = useState<TData[]>([]);
+    const [sp, setSp] = useSearchParams();
+    const searchParamTable = sp.get("db_table");
 
-export const DatabaseTable = connector(
-    <TData extends RowData>({ panel_key }: DatabaseTableProps): ReactNode => {
-        const [sorting, setSorting] = useState<SortingState>([]);
-        const { selectedTable, tableManager, visibility, loading } =
-            useDatabaseTableContext<TData>();
-        const tableDispatch = useDatabaseTableDispatch();
-        const [data, setData] = useState<TData[]>([]);
-
-        const gatherData = useEffectEvent(
-            async (tm: DatabaseTableManager<TData>) => {
-                if (tableManager) {
-                    try {
-                        tableDispatch({
-                            type: "set-loading",
-                            payload: true,
-                        });
-                        const res = await tm.getData();
-                        setData(res);
-                        tableDispatch({
-                            type: "set-loading",
-                            payload: false,
-                        });
-                    } catch (err: unknown) {
-                        logMaybeObject("Error: ", err);
-                        tableDispatch({
-                            type: "set-loading",
-                            payload: false,
-                        });
-                    }
-                }
-            },
-        );
-
-        useEffect(() => {
-            if (tableManager) {
-                gatherData(tableManager).catch((err: unknown) => {
-                    logMaybeObject("Error: ", err);
+    const gatherData = useEffectEvent(async (tm: DatabaseTableManager<TData>) => {
+        if (tableManager) {
+            try {
+                tableDispatch({
+                    type: "set-loading",
+                    payload: true,
+                });
+                const res = await tm.getData();
+                setData(res);
+                tableDispatch({
+                    type: "set-loading",
+                    payload: false,
+                });
+            } catch (err: unknown) {
+                logMaybeObject("Error: ", err);
+                tableDispatch({
+                    type: "set-loading",
+                    payload: false,
                 });
             }
-        }, [tableManager]);
+        }
+    });
 
-        const [pagination, setPagination] = useState<PaginationState>({
-            pageIndex: 0,
-            pageSize: 10,
-        });
-        const columns = useMemo(() => {
-            return tableManager?.getColumns();
-        }, [tableManager]);
+    useEffect(() => {
+        if (tableManager) {
+            gatherData(tableManager).catch((err: unknown) => {
+                logMaybeObject("Error: ", err);
+            });
+        }
+    }, [tableManager]);
 
-        const [globalFilter, setGlobalFilter] = useState<string>("");
-        const table = useReactTable({
-            autoResetPageIndex: true,
-            columns: columns ?? [],
-            data,
-            manualPagination: false,
-            getCoreRowModel: getCoreRowModel(),
-            rowCount: data.length,
-            onSortingChange: setSorting,
-            getSortedRowModel: getSortedRowModel(),
-            getPaginationRowModel: getPaginationRowModel(),
-            getFilteredRowModel: getFilteredRowModel(),
-            onPaginationChange: setPagination,
-            globalFilterFn: fuzzyFilter,
-            onGlobalFilterChange: setGlobalFilter,
-            onColumnVisibilityChange: (newVisiblity) => {
-                tableDispatch({
-                    type: "set-visibility",
-                    payload:
-                        typeof newVisiblity === "function"
-                            ? newVisiblity(visibility ?? {})
-                            : newVisiblity,
-                });
-            },
-            state: {
-                columnVisibility: visibility ?? undefined,
-                sorting,
-                globalFilter,
-                pagination,
-            },
-        });
-        return (
-            <>
-                <div>
-                    <DatabaseTableCombobox
-                        value={selectedTable}
-                        onValueChange={(val) => {
-                            tableDispatch({
-                                type: "set-selected-table",
-                                payload: val,
-                            });
-                        }}
-                    />
-                </div>
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+        if (searchParamTable && searchParamTable !== selectedTable) {
+            tableDispatch({
+                type: "set-selected-table",
+                payload: searchParamTable as DBTable,
+            });
+        }
+    }, [searchParamTable]);
+
+    useEffect(() => {
+        if (selectedTable) {
+            sp.set("db_table", selectedTable);
+            setSp(sp);
+        }
+    }, [selectedTable]);
+
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+    const columns = useMemo(() => {
+        return tableManager?.getColumns();
+    }, [tableManager]);
+
+    const [globalFilter, setGlobalFilter] = useState<string>("");
+    const table = useReactTable({
+        autoResetPageIndex: true,
+        columns: columns ?? [],
+        data,
+        manualPagination: false,
+        getCoreRowModel: getCoreRowModel(),
+        rowCount: data.length,
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        onPaginationChange: setPagination,
+        globalFilterFn: fuzzyFilter,
+        onGlobalFilterChange: setGlobalFilter,
+        onColumnVisibilityChange: (newVisiblity) => {
+            tableDispatch({
+                type: "set-visibility",
+                payload:
+                    typeof newVisiblity === "function"
+                        ? newVisiblity(visibility ?? {})
+                        : newVisiblity,
+            });
+        },
+        state: {
+            columnVisibility: visibility ?? undefined,
+            sorting,
+            globalFilter,
+            pagination,
+        },
+    });
+    return (
+        <div className="@container/tableContainer flex flex-col min-h-[calc(100vh-4rem)]">
+            <div className="w-full flex flex-row justify-center items-center @[640px]/tableContainer:justify-end">
+                <DatabaseTableCombobox
+                    value={selectedTable ?? DBTable.Cdrm}
+                    className="w-full @[640px]/tableContainer:w-[min(450px,90%)]"
+                    onValueChange={(val) => {
+                        tableDispatch({
+                            type: "set-selected-table",
+                            payload: val,
+                        });
+                    }}
+                    inputProps={{
+                        className: "w-full",
+                        placeholder: "Search Tables...",
+                    }}
+                />
+            </div>
+            <div className="grow flex flex-col justify-center items-center">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -191,9 +210,9 @@ export const DatabaseTable = connector(
                     </TableBody>
                 </Table>
                 <DatabaseTablePagination table={table} />
-            </>
-        );
-    },
-);
+            </div>
+        </div>
+    );
+});
 
 DatabaseTable.displayName = "DatabaseTable";

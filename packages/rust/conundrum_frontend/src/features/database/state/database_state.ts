@@ -1,5 +1,10 @@
-import { type DatabasePanelKey } from "../database_panel_key";
+export interface DBAuth {
+    /**
+     *  This is completely just a useless placeholder right now to get the DB state in place. It does nothing.
+     */
+    user_name: string;
+}
 
 export interface DatabaseState {
-    selected_panel_key: DatabasePanelKey;
+    auth: DBAuth;
 }
