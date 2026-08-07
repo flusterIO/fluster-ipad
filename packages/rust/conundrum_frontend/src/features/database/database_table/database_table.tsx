@@ -1,4 +1,4 @@
-import React, { useEffectEvent, useMemo, useState, type ReactNode } from "react";
+import React, { useEffect, useEffectEvent, useMemo, useState, type ReactNode } from "react";
 import { type DatabasePanelKey } from "../database_panel_key";
 
 import { connect } from "react-redux";
@@ -21,12 +21,13 @@ import {
     type RowData,
     type SortingState,
     useReactTable,
-    type VisibilityState,
 } from "@tanstack/react-table";
 import { useDatabaseTableContext, useDatabaseTableDispatch } from "./database_table_context/database_table_context";
 import { fuzzyFilter } from "./table_utils/fuzzy_filter";
 import { logMaybeObject } from "#/error_handling/utils/log_maybe_object";
 import { DatabaseTablePagination } from "./database_table_pagination";
+import { type DatabaseTableManager } from "./table_managers/table_manager";
+import { DatabaseTableSelectInput } from "#/settings/inputs/select/database_table_select";
 
 const connector = connect((state: AppState) => ({
     panel_key: state.database.selected_panel_key,
@@ -43,14 +44,14 @@ export const DatabaseTable = connector(
         const tableDispatch = useDatabaseTableDispatch();
         const [data, setData] = useState<TData[]>([])
 
-        useEffectEvent(async () => {
+        const gatherData = useEffectEvent(async (tm: DatabaseTableManager<TData>) => {
             if (tableManager) {
                 try {
                     tableDispatch({
                         type: "set-loading",
                         payload: true
                     })
-                    const res = await tableManager.getData();
+                    const res = await tm.getData();
                     setData(res)
                     tableDispatch({
                         type: "set-loading",
@@ -66,6 +67,14 @@ export const DatabaseTable = connector(
 
             }
         })
+
+        useEffect(() => {
+            if (tableManager) {
+                gatherData(tableManager).catch((err: unknown) => {
+                    logMaybeObject("Error: ", err)
+                })
+            }
+        }, [tableManager])
 
         const [pagination, setPagination] = useState<PaginationState>({
             pageIndex: 0,
@@ -105,6 +114,14 @@ export const DatabaseTable = connector(
         });
         return (
             <>
+                <div>
+                    <DatabaseTableSelectInput value={selectedTable} onValueChange={(val) => {
+                        tableDispatch({
+                            type: "set-selected-table",
+                            payload: val
+                        })
+                    }} />
+                </div>
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -142,7 +159,7 @@ export const DatabaseTable = connector(
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns?.length ?? 1} className="h-24 text-center">
-                                    No results.
+                                    {tableManager ? `No ${tableManager.entityName()} entities found` : "No entities found"}
                                 </TableCell>
                             </TableRow>
                         )}

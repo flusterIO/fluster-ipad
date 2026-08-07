@@ -59,11 +59,13 @@ impl ConundrumFile {
                                        opts: &ProjectConfig)
                                        -> ConundrumFSResult<()> {
         let p = self.absolute_path.strip_prefix(input_dir).map_err(|_| {
-                                                               ConundrumFSError::FileNotChildOfDir(self.absolute_path
+                                                               ConundrumFSError::FileNotChildOfDir {
+                                                                   child: self.absolute_path
                                                                                                    .to_str()
                                                                                                    .map(String::from)
                                                                                                    .unwrap_or_default(),
-                                                                                               input_dir.to_string())
+                                                                                               parent: input_dir.to_string()
+                                                               }
                                                            })?;
         let mut output_path = Path::new(output_dir).join(p);
         output_path.set_extension(opts.opts.target.to_file_ext());

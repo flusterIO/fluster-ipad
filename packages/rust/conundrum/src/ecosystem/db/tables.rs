@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use strum::{EnumCount, IntoEnumIterator};
 use strum_macros::{Display, EnumIter};
 
+#[typeshare::typeshare]
 #[derive(Debug, Serialize, Deserialize, Display, EnumIter, EnumCount, PartialEq, Clone, Eq, specta::Type)]
 pub enum DatabaseTable {
     // -- Pure Models --
@@ -62,13 +63,7 @@ pub enum DatabaseTable {
     /// ---- Vectors ----
     #[strum(to_string = "cdrm_vec")]
     #[serde(rename = "cdrm_vec")]
-    CdrmVector,
-    #[strum(to_string = "html_vec")]
-    #[serde(rename = "html_vec")]
-    HtmlVector,
-    #[strum(to_string = "typst_vec")]
-    #[serde(rename = "typst_vec")]
-    TypstVector,
+    MarkdownChunk,
 }
 
 impl Hash for DatabaseTable {
@@ -79,9 +74,10 @@ impl Hash for DatabaseTable {
 
 impl DatabaseTable {
     pub fn all_temporary_tables() -> Vec<Self> {
-        vec![Self::CdrmVector]
+        vec![Self::MarkdownChunk]
     }
 
+    /// Deprecated. Surreal was a hugeeee mistake.
     pub fn is_schemafull(&self) -> bool {
         true
     }
@@ -100,7 +96,7 @@ impl DatabaseTable {
 
     pub fn is_temporary_vector_table(&self) -> bool {
         match self {
-            Self::CdrmVector => true,
+            Self::MarkdownChunk => true,
             _ => false,
         }
     }

@@ -114,7 +114,10 @@ generate_initial_note_paths: build_internal_cli gather_component_docs
 generate_initial_note_data: generate_initial_note_paths write_in_content_docs_by_id write_zod_schema_docs
 	./target/debug/fluster_internal_cli parse-initial-notes
 
-build_cross_language_schemas: generate_initial_note_data
+write_typescript_types:
+	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/conundrum_ts/src/code_gen/typeshare
+
+build_cross_language_schemas: generate_initial_note_data write_typescript_types
 	$FLAT_BUFFER_PATH -o ./packages/swift/FlusterData/Sources/FlusterData/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift
 	$FLAT_BUFFER_PATH -o ./packages/rust/fluster_core_utilities/src/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --rust
 	$FLAT_BUFFER_PATH -o ./packages/webview_utils/src/core/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --ts
@@ -124,7 +127,7 @@ build_cross_language_schemas: generate_initial_note_data
 	typeshare {{justfile_directory()}}/packages/rust/conundrum/src/output/html/glue/glue_code_rust/cdrm_web_events.rs --lang=swift --swift-prefix=CDRM --output-folder={{justfile_directory()}}/packages/swift/FlusterData/Sources/FlusterData/code_gen/typeshare_conundrum
 	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/webview_utils/src/core/code_gen/typeshare
 	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/wasm/fluster_wasm/src_typescript/core/code_gen/typeshare
-	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/conundrum_ts/src/code_gen/typeshare
+
 
 build_conundrum_rust: build_conundrum_ts
 	cargo build -p conundrum
