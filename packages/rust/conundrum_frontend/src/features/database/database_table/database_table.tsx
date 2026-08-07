@@ -5,9 +5,6 @@ import React, {
     useState,
     type ReactNode,
 } from "react";
-import { type DatabasePanelKey } from "../database_panel_key";
-import { connect } from "react-redux";
-import { type AppState } from "@/state/initial_state";
 import { DatabaseTable as DBTable } from "@conundrum/ts/codegen-typeshare";
 import {
     TableHeader,
@@ -38,13 +35,21 @@ import { DatabaseTablePagination } from "./database_table_pagination";
 import { type DatabaseTableManager } from "./table_managers/table_manager";
 import { DatabaseTableCombobox } from "#/settings/inputs/combobox/database_table_combobox";
 import { useSearchParams } from "react-router";
+/* import { DatabaseTableColumnVisibility } from "./database_table_visibility_settings"; */
 
-const connector = connect((state: AppState) => ({
-    panel_key: state.database.selected_panel_key,
-}));
+interface Props {
+    defaultVisibility?: Record<string, boolean>;
+}
 
-export const DatabaseTable = connector(<TData extends RowData>(): ReactNode => {
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+export const DatabaseTable = <TData extends RowData>({
+    defaultVisibility,
+}: Props): ReactNode => {
     const [sorting, setSorting] = useState<SortingState>([]);
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10,
+    });
     const { selectedTable, tableManager, visibility } =
         useDatabaseTableContext<TData>();
     const tableDispatch = useDatabaseTableDispatch();
@@ -59,7 +64,10 @@ export const DatabaseTable = connector(<TData extends RowData>(): ReactNode => {
                     type: "set-loading",
                     payload: true,
                 });
-                const res = await tm.getData();
+                const res = await tm.getData(
+                    pagination.pageSize,
+                    pagination.pageIndex + 1,
+                );
                 setData(res);
                 tableDispatch({
                     type: "set-loading",
@@ -93,20 +101,37 @@ export const DatabaseTable = connector(<TData extends RowData>(): ReactNode => {
         }
     }, [searchParamTable]);
 
+    const columns = useMemo(() => {
+        const cols = tableManager?.getColumns();
+        return cols;
+    }, [tableManager]);
+
+    useEffect(() => {
+        if (columns) {
+            const opts: Record<string, boolean> = {};
+            for (const c of columns) {
+                const id = c.id ?? "no-id";
+                if (visibility && id in visibility) {
+                    opts[id] = visibility[id];
+                } else if (defaultVisibility && id in defaultVisibility) {
+                    opts[id] = defaultVisibility[id];
+                } else if (!(id in opts)) {
+                    opts[id] = true;
+                }
+            }
+            tableDispatch({
+                type: "set-visibility",
+                payload: opts,
+            });
+        }
+    }, [columns]);
+
     useEffect(() => {
         if (selectedTable) {
             sp.set("db_table", selectedTable);
             setSp(sp);
         }
     }, [selectedTable]);
-
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: 10,
-    });
-    const columns = useMemo(() => {
-        return tableManager?.getColumns();
-    }, [tableManager]);
 
     const [globalFilter, setGlobalFilter] = useState<string>("");
     const table = useReactTable({
@@ -213,6 +238,6 @@ export const DatabaseTable = connector(<TData extends RowData>(): ReactNode => {
             </div>
         </div>
     );
-});
+};
 
 DatabaseTable.displayName = "DatabaseTable";
