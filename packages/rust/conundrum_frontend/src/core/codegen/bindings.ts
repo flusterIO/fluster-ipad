@@ -99,6 +99,20 @@ export type ConundrumModifier = "HideEmojis" |
 
 export type DOMId = string
 
+export type DatabaseTable = "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | 
+/**
+ * Stores just the `AcademicResultMetricKey` and the value.
+ */
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | 
+/**
+ * --- 'Joining' tables ---
+ */
+"workspace_repository" | 
+/**
+ * ---- Vectors ----
+ */
+"cdrm_vec"
+
 /**
  * Both the label and body fields are ***un-compiled*** Conundrum content.
  */
@@ -179,7 +193,29 @@ hide_components: EmbeddableComponentName[]; ui_params: UIParams; target: Conundr
 
 export type PathSourceType = "file" | "directory" | "any"
 
-export type ProceduresLegacy = { queries: { key: "fs.validate_path"; input: { path: string; 
+export type ProceduresLegacy = { queries: { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
+/**
+ * A user facing name for this entity. Example: 'workspace' for the
+ * `user_workspace` table.
+ */
+entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | 
+/**
+ * Stores just the `AcademicResultMetricKey` and the value.
+ */
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | 
+/**
+ * --- 'Joining' tables ---
+ */
+"workspace_repository" | 
+/**
+ * ---- Vectors ----
+ */
+"cdrm_vec"; result: { table: DatabaseTable; 
+/**
+ * A user facing name for this entity. Example: 'workspace' for the
+ * `user_workspace` table.
+ */
+entity_name: string; is_joining_table: boolean; description: string } } | { key: "fs.validate_path"; input: { path: string; 
 /**
  * This only makes sense with an empty permitted_types array. Otherwise the
  * source_type is obviously a file. This will however validate 'any' paths
@@ -300,6 +336,10 @@ export type Procedures = {
 },
 	code: {
 	highlight_code: { kind: "mutation", input: { code: string; lang: SupportedCodeBlockSyntax; theme: SupportedCodeBlockTheme; inline: boolean }, output: string, error: unknown },
+},
+	describe: {
+	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
+	table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "cdrm_vec", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	validate_path: { kind: "query", input: { path: string; source_type: PathSourceType; permitted_types: ParsableFileType[] }, output: boolean, error: unknown },

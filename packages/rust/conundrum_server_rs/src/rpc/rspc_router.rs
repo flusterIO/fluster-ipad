@@ -22,12 +22,15 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 use crate::{
+    crud_router,
     errors::server_error::{ServerError, ServerResult},
     rpc::{
         route_context::RouteContext,
         routers::{
-            code::code_router::get_code_router, fs::fs_router::get_fs_router,
             cdrm::cdrm_router::get_cdrm_router,
+            code::code_router::get_code_router,
+            describe::describe_router::{self, get_describe_router},
+            fs::fs_router::get_fs_router,
             workspace_management::workspace_management_router::get_workspace_management_router,
         },
     },
@@ -39,40 +42,15 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
     let workspace_router = get_workspace_management_router();
     let code_router = get_code_router();
     let cdrm_router = get_cdrm_router();
+    let describe_router = get_describe_router();
 
-    let user_workspace_crud_router = rspc::Router::<crate::rpc::route_context::RouteContext>::new()
-    .procedure("get_by_predicate", Procedure::<crate::rpc::route_context::RouteContext, PredicateQueryParams, Vec<UserWorkspace>>::builder::<crate::errors::server_error::ServerError>().query(|state: RouteContext , params: PredicateQueryParams | async move {
-        let r = UserWorkspace::get_by_predicate(params.predicate, params.pagination, &state.db).await.map_err(|e| {
-            log::error!("Error: {:?}", e);
-            ServerError::DatabaseError(e)
-        })?;
-        Ok(r)
-        }))
-    .procedure("save_many", Procedure::<crate::rpc::route_context::RouteContext, Vec<UserWorkspace>, ()>::builder::<crate::errors::server_error::ServerError>().mutation(|state: RouteContext, params: Vec<UserWorkspace> | async move {
-        UserWorkspace::save_many(params, &state.db).await.map_err(|e| {
-            log::error!("Error: {:?}", e);
-            ServerError::DatabaseError(e)
-        })?;
-        Ok(())
-        }))
-    .procedure("update_many", Procedure::<crate::rpc::route_context::RouteContext, Vec<UserWorkspacePartial>, ()>::builder::<crate::errors::server_error::ServerError>().mutation(|state: RouteContext, params: Vec<UserWorkspacePartial> | async move {
-        UserWorkspace::merge_by_primary_key(params, &state.db).await.map_err(|e| {
-            log::error!("Error: {:?}", e);
-            ServerError::DatabaseError(e)
-        })?;
-        Ok(())
-        }))
-    .procedure("delete_by_predicate", Procedure::<crate::rpc::route_context::RouteContext, String, ()>::builder::<crate::errors::server_error::ServerError>().mutation(|state: RouteContext, params: String | async move {
-        UserWorkspace::delete_by_predicate(params.as_str(), &state.db).await.map_err(|e| {
-            log::error!("Error: {:?}", e);
-            ServerError::DatabaseError(e)
-        })?;
-        Ok(())
-        }));
+    let user_workspace_crud_router = crud_router!(UserWorkspace, UserWorkspacePartial);
+
     let r = rspc::Router::<RouteContext>::new().nest("fs", fs_router)
                                                .nest("workspace", workspace_router)
                                                .nest("code", code_router)
                                                .nest("cdrm", cdrm_router)
+                                               .nest("describe", describe_router)
                                                // .nest("study", study_router)
                                                .nest("user_workspace_crud", user_workspace_crud_router)
                                                .procedure("version",

@@ -85,6 +85,10 @@ pub enum ConundrumErrorVariant {
     InvalidBiblatex(String),
     #[error("Conundrum uses a set of structured keys to manage settings and it encountered a key it doesn't recognize: {0}")]
     InvalidSettingKey(String),
+    #[error("Conundrum failed to serialize an `{entity_name}` entity.")]
+    SerializationError {
+        entity_name: String,
+    },
 }
 
 impl From<ErrMode<ConundrumErrorVariant>> for ConundrumErrorVariant {

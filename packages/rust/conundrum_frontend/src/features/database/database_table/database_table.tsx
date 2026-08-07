@@ -1,4 +1,10 @@
-import React, { useEffect, useEffectEvent, useMemo, useState, type ReactNode } from "react";
+import React, {
+    useEffect,
+    useEffectEvent,
+    useMemo,
+    useState,
+    type ReactNode,
+} from "react";
 import { type DatabasePanelKey } from "../database_panel_key";
 
 import { connect } from "react-redux";
@@ -22,12 +28,15 @@ import {
     type SortingState,
     useReactTable,
 } from "@tanstack/react-table";
-import { useDatabaseTableContext, useDatabaseTableDispatch } from "./database_table_context/database_table_context";
+import {
+    useDatabaseTableContext,
+    useDatabaseTableDispatch,
+} from "./database_table_context/database_table_context";
 import { fuzzyFilter } from "./table_utils/fuzzy_filter";
 import { logMaybeObject } from "#/error_handling/utils/log_maybe_object";
 import { DatabaseTablePagination } from "./database_table_pagination";
 import { type DatabaseTableManager } from "./table_managers/table_manager";
-import { DatabaseTableSelectInput } from "#/settings/inputs/select/database_table_select";
+import { DatabaseTableCombobox } from "#/settings/inputs/combobox/database_table_combobox";
 
 const connector = connect((state: AppState) => ({
     panel_key: state.database.selected_panel_key,
@@ -40,49 +49,51 @@ interface DatabaseTableProps {
 export const DatabaseTable = connector(
     <TData extends RowData>({ panel_key }: DatabaseTableProps): ReactNode => {
         const [sorting, setSorting] = useState<SortingState>([]);
-        const { selectedTable, tableManager, visibility, loading } = useDatabaseTableContext<TData>()
+        const { selectedTable, tableManager, visibility, loading } =
+            useDatabaseTableContext<TData>();
         const tableDispatch = useDatabaseTableDispatch();
-        const [data, setData] = useState<TData[]>([])
+        const [data, setData] = useState<TData[]>([]);
 
-        const gatherData = useEffectEvent(async (tm: DatabaseTableManager<TData>) => {
-            if (tableManager) {
-                try {
-                    tableDispatch({
-                        type: "set-loading",
-                        payload: true
-                    })
-                    const res = await tm.getData();
-                    setData(res)
-                    tableDispatch({
-                        type: "set-loading",
-                        payload: false
-                    })
-                } catch (err: unknown) {
-                    logMaybeObject("Error: ", err)
-                    tableDispatch({
-                        type: "set-loading",
-                        payload: false
-                    })
+        const gatherData = useEffectEvent(
+            async (tm: DatabaseTableManager<TData>) => {
+                if (tableManager) {
+                    try {
+                        tableDispatch({
+                            type: "set-loading",
+                            payload: true,
+                        });
+                        const res = await tm.getData();
+                        setData(res);
+                        tableDispatch({
+                            type: "set-loading",
+                            payload: false,
+                        });
+                    } catch (err: unknown) {
+                        logMaybeObject("Error: ", err);
+                        tableDispatch({
+                            type: "set-loading",
+                            payload: false,
+                        });
+                    }
                 }
-
-            }
-        })
+            },
+        );
 
         useEffect(() => {
             if (tableManager) {
                 gatherData(tableManager).catch((err: unknown) => {
-                    logMaybeObject("Error: ", err)
-                })
+                    logMaybeObject("Error: ", err);
+                });
             }
-        }, [tableManager])
+        }, [tableManager]);
 
         const [pagination, setPagination] = useState<PaginationState>({
             pageIndex: 0,
             pageSize: 10,
         });
         const columns = useMemo(() => {
-            return tableManager?.getColumns()
-        }, [tableManager])
+            return tableManager?.getColumns();
+        }, [tableManager]);
 
         const [globalFilter, setGlobalFilter] = useState<string>("");
         const table = useReactTable({
@@ -102,8 +113,11 @@ export const DatabaseTable = connector(
             onColumnVisibilityChange: (newVisiblity) => {
                 tableDispatch({
                     type: "set-visibility",
-                    payload: typeof newVisiblity === "function" ? newVisiblity(visibility ?? {}) : newVisiblity
-                })
+                    payload:
+                        typeof newVisiblity === "function"
+                            ? newVisiblity(visibility ?? {})
+                            : newVisiblity,
+                });
             },
             state: {
                 columnVisibility: visibility ?? undefined,
@@ -115,12 +129,15 @@ export const DatabaseTable = connector(
         return (
             <>
                 <div>
-                    <DatabaseTableSelectInput value={selectedTable} onValueChange={(val) => {
-                        tableDispatch({
-                            type: "set-selected-table",
-                            payload: val
-                        })
-                    }} />
+                    <DatabaseTableCombobox
+                        value={selectedTable}
+                        onValueChange={(val) => {
+                            tableDispatch({
+                                type: "set-selected-table",
+                                payload: val,
+                            });
+                        }}
+                    />
                 </div>
                 <Table>
                     <TableHeader>
@@ -151,15 +168,23 @@ export const DatabaseTable = connector(
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext(),
+                                            )}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns?.length ?? 1} className="h-24 text-center">
-                                    {tableManager ? `No ${tableManager.entityName()} entities found` : "No entities found"}
+                                <TableCell
+                                    colSpan={columns?.length ?? 1}
+                                    className="h-24 text-center"
+                                >
+                                    {tableManager
+                                        ? `No ${tableManager.entityName()} entities found`
+                                        : "No entities found"}
                                 </TableCell>
                             </TableRow>
                         )}

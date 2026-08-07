@@ -6,6 +6,7 @@
 
 pub mod academic;
 pub mod attention;
+pub mod component_config;
 pub mod component_trait;
 pub mod documentation;
 pub mod layout;

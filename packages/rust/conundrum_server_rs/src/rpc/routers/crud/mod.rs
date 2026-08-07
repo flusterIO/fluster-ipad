@@ -1,1 +1,1 @@
-// pub mod generate_crud_router;
+pub mod generate_crud_router;
