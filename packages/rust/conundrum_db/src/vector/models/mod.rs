@@ -1,3 +1,41 @@
+//! # Models
+//!
+//! ### Users
+//!
+//! For user's of varying technical backgrounds, this is likely where you'll
+//! want to start if you're vibe-coding your front-end. These modules contain
+//! all of the models you have access to in your database, from which your
+//! front-end can pull and store information. Everything from academic results,
+//! to your personal pet have a structured, graph-centered data model that
+//! allows AI to take advantage of several approaches to information retrieval
+//! simultaneously.
+//!
+//! Where applications like openclaw take advantage of file-system based agent
+//! descriptions, Conundrum provides a sort of 'notepad' for AI attached to many
+//! of the models in your database. This should hopefully lead to the retrieval
+//! of not only relevant information, but relevant agent memory at the right
+//! times as orchestrated by the graph architecture, allowing much smaller
+//! context windows than other approaches.
+//!
+//! Think about the way humans retrieve information: When you recall an event,
+//! say 'a party with Steve', and somebody asks what time Steve left, you might
+//! recall a dozen small, seemingly insignificant facts about the party before
+//! you reach a recollection of what time Steve left. In that same way, we can
+//! provide a notepad attached to many of the significant people, places and
+//! things in a user's life that AI can use to write down these small details,
+//! stored and retrieved right alongside the information that it's referencing.
+//! As you, the user are much more likely to rememeber the large facts in the
+//! long-term, even local AI should have no problem ballparking an approximation
+//! to get within a single graph query away from the model containing as close
+//! to an exact answer as exists within the user's knowledge base.
+//!
+//! While this is obviously useful in a general, life management context, the
+//! academic potential is significant as well as these 'notepads' are context
+//! aware in the sense that a model is not given the same instructions for all
+//! notepads. A model should know to treat the notepad on a `MajorLifeEvent`
+//! similary to the 'party with Steve', as it should know to treat the notepad
+//! on a notebook file more academically, perhaps keeping a log of correlations
+//! found with other data.
 pub mod academic;
 pub mod ai;
 pub mod application_support;

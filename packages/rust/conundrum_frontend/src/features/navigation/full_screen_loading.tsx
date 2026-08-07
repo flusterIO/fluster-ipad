@@ -15,3 +15,11 @@ export const FullScreenLoading = ({
 };
 
 FullScreenLoading.displayName = "FullScreenLoading";
+
+export const CenteredExpandedLoadingIndicator = (): ReactNode => {
+    return (
+        <div className="w-full h-full min-h-fit flex flex-col justify-center items-center">
+            <LoadingIndicator />
+        </div>
+    );
+};

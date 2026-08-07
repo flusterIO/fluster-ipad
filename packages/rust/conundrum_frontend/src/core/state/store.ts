@@ -8,6 +8,7 @@ import NavigationReducer from "../../features/navigation/state/navigation_slice"
 import SearchReducer from "../../features/search/state/search_slice";
 import DatabaseReducer from "../../features/database/state/database_slice";
 import UIReducer from "../../features/ui/state/ui_state_slice";
+import NotificationReducer from "../../features/notifications/state/notification_state_slice";
 import {
     persistReducer,
     type PersistConfig,
@@ -25,7 +26,8 @@ const reducers: Record<keyof AppState, Reducer> = {
     search: SearchReducer,
     navigation: NavigationReducer,
     database: DatabaseReducer,
-    ui: UIReducer
+    ui: UIReducer,
+    notifcation: NotificationReducer,
 };
 
 const rootReducer = combineReducers(reducers);
