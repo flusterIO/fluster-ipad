@@ -25,7 +25,7 @@ export const TagsDashboardCard = (): ReactNode => {
                         const sp = new URLSearchParams();
                         sp.set("byTag", t.value);
                         return (
-                            <TaggableListItem href={`${AppPaths.search}?${sp.toString()}`}>
+                            <TaggableListItem key={t.value} href={`${AppPaths.search}?${sp.toString()}`}>
                                 {t.value}
                             </TaggableListItem>
                         );

@@ -52,13 +52,13 @@ export const AddWorkspaceDialog = ({
     await mutateAsync([data]);
   };
 
-  const onSubmit = ({
+  const onSubmit = async ({
     path,
     label,
     respect_gitignore,
     ignore_hidden,
   }: typeof formSchema): void => {
-    addWorkspace({
+    await addWorkspace({
       root: path,
       label: label.trim() === "" ? null : label,
       respect_gitignore,
@@ -66,6 +66,8 @@ export const AddWorkspaceDialog = ({
       bib_paths: [],
       resource_dir: undefined,
     });
+    form.reset();
+    close();
   };
 
   return (
@@ -84,7 +86,12 @@ export const AddWorkspaceDialog = ({
       }}
     >
       <Form {...form}>
-        <div className="@container/modalContent grid grid-cols-1 gap-y-4">
+        <form
+          className="@container/modalContent grid grid-cols-1 gap-y-4"
+          onSubmit={form.handleSubmit(onSubmit, (err) => {
+            consola.error(`An error occurred while creating this workspace.`);
+          })}
+        >
           <PathInput
             form={form}
             name={"path"}
@@ -116,7 +123,7 @@ export const AddWorkspaceDialog = ({
           <div className="w-full flex flex-row justify-end items-center">
             <Button type="submit">Create</Button>
           </div>
-        </div>
+        </form>
       </Form>
     </ComposedDialog>
   );

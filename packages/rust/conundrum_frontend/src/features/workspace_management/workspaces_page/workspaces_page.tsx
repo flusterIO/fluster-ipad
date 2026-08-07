@@ -1,5 +1,4 @@
 import { PageContainer } from "@/components/general/page_container";
-import { PageTitleGroup } from "@/components/general/page_title_group";
 import React, { useState, type ReactNode } from "react";
 import { WorkspaceListItem } from "./workspace_item";
 import { PlusSquareIcon } from "lucide-react";
@@ -32,8 +31,8 @@ export const WorkspacesPage = (): ReactNode => {
             {workspaces?.length ? (
                 <div className="w-full flex flex-col justify-start items-center gap-y-4 py-4">
                     {workspaces.map((item) => {
-                    return <WorkspaceListItem key={item.root} workspace={item} />;
-                })}
+                        return <WorkspaceListItem key={item.root} workspace={item} />;
+                    })}
                 </div>
             ) : (
                 <div className="w-full h-fit flex flex-col justify-center items-center">

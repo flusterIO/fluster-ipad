@@ -6,7 +6,6 @@ import { Slot } from "@radix-ui/react-slot";
 import {
     motion,
     AnimatePresence,
-    MotionProps,
     HTMLMotionProps,
 } from "framer-motion";
 import {
