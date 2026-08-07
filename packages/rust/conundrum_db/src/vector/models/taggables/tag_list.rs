@@ -4,7 +4,9 @@ use crate::vector::models::taggables::tag::Tag;
 
 /// ## TagList
 ///
-/// You guessed it... just a list of tags and some utility methods.
+/// This is a list of tags that can be applied to a number of resources in the
+/// user's directory. Use these as the most generic way to link content within
+/// the user's database.
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type)]
 pub struct TagList(Vec<Tag>);
 

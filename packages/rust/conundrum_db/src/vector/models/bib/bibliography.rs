@@ -13,7 +13,8 @@ use crate::vector::models::{
 ///   you need them.
 /// - Using AI to generate a list of bibliography entries that were cited by a
 ///   specific article. This feature is a work in progress, as I'm without
-///   internet, and unable to reliably work with AI.
+///   internet, and unable to reliably work with AI, despite ironically building
+///   an AI focused framework.
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Bibliography {
     pub label: String,

@@ -1,4 +1,3 @@
-use dashmap::DashMap;
 use serde::Serialize;
 use std::collections::HashMap;
 use winnow::error::ErrMode;
@@ -56,8 +55,14 @@ impl FootnoteManager {
              ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx).as_str())))
          })?;
         match item {
-             FootnoteData::Completed(c) => Ok(c.idx),
-             FootnoteData::Rendered(r) => Ok(r.idx),
+             FootnoteData::Completed(c) => {
+                 let n: ConundrumInt = c.idx.into();
+                 Ok(n)
+             },
+             FootnoteData::Rendered(r) => {
+                 let n: ConundrumInt = r.idx.into();
+                 Ok(n)
+             },
              FootnoteData::Assigned(_) => Err(ErrMode::Cut(ConundrumErrorVariant::InternalParserError(ConundrumError::from_msg_and_details("Footnote error", format!("Conundrum can't find a complete footnote associated with the `{}` index. ", idx.to_string()).as_str())))),
          }
     }
@@ -67,7 +72,10 @@ impl FootnoteManager {
             match data {
                 FootnoteData::Assigned(x) => x.idx,
                 FootnoteData::Completed(c) => c.idx,
-                FootnoteData::Rendered(r) => r.idx,
+                FootnoteData::Rendered(r) => {
+                    let n: ConundrumInt = r.idx.into();
+                    n
+                }
             }
         } else {
             let n = self.0.len();
@@ -92,7 +100,10 @@ impl FootnoteManager {
     /// user provided index.
     pub fn apply_footnote_footer(&mut self, key: &ConundrumInt, body: Children) -> ConundrumModalResult<()> {
         if let Some((anchor_id, idx)) = self.0.get(key).map(|item| match item {
-                                                           FootnoteData::Rendered(r) => (r.anchor_id.clone(), r.idx),
+                                                           FootnoteData::Rendered(r) => {
+                                                               let n: ConundrumInt = r.idx.into();
+                                                               (r.anchor_id.clone(), n)
+                                                           }
                                                            FootnoteData::Completed(c) => (c.anchor_id.clone(), c.idx),
                                                            FootnoteData::Assigned(c) => (c.anchor_id.clone(), c.idx),
                                                        })

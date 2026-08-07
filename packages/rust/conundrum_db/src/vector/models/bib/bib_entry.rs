@@ -10,15 +10,19 @@ use crate::vector::models::{date_time::date_time::DateTime, primitives::db_id::D
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct BibEntryModel {
     pub id: DatabaseId,
-    /// The key of the biblatex entry, used as an id in the database as well.
+    /// The key of the biblatex entry, used as an id for this entry in the
+    /// user's notes.
     pub key: String,
     /// The raw biblatex string for a single entry.
     pub biblatex: String,
     /// A boolean indicating if this literature was already reviewed by the
     /// user.
     pub read: bool,
+    /// The time this bibliography entry was created by the user.
     pub ctime: DateTime,
+    /// The time the biblatex content was last updated by the user.
     pub utime: DateTime,
+}
 
 impl BibEntryModel {
     /// Takes a biblatex string and returns a vec of all the items contained

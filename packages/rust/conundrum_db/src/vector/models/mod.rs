@@ -3,6 +3,7 @@ pub mod ai;
 pub mod application_support;
 pub mod auth;
 pub mod bib;
+pub mod code;
 pub mod date_time;
 pub mod ecosystem_data;
 pub mod git;

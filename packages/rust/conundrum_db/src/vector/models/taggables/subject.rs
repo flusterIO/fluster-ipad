@@ -24,6 +24,13 @@ use crate::{
     },
 };
 
+/// # Subject
+/// A `Subject` is very much like a `Topic`, but in most use cases a `Topic`
+/// is more specific than a `Subject`. A user might have a set of subjects like
+/// 'physics' and 'math', where they may have a set of topics like
+/// 'newtonian-gravity' and 'covariant-derivatives'. However, this is
+/// **not** a rule that is set in stone and you should follow whatever pattern
+/// the user is using with their tags, topics and subjects.
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, specta::Type)]
 pub struct Subject {
     pub value: CaseInsensitiveString,
