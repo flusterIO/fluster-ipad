@@ -39,14 +39,15 @@ export const WorkspaceListItem = ({
                             : workspace.label
                     }
                     classes={{
-                        content: "overflow-x-auto overflow-y-hidden text-sm",
+                        content: "overflow-x-auto overflow-y-hidden text-sm bg-fd-card",
                     }}
                 />
                 <DisabledLabeledText
                     label="Path"
                     content={workspace.root}
                     classes={{
-                        content: "overflow-x-auto overflow-y-hidden font-mono text-sm",
+                        content:
+                            "overflow-x-auto overflow-y-hidden font-mono text-sm bg-fd-card",
                     }}
                 />
             </div>
@@ -55,6 +56,9 @@ export const WorkspaceListItem = ({
                     to={{
                         pathname: AppPaths.singleWorkspaceManagement,
                         search: workspaceSp.toString(),
+                    }}
+                    onClick={(e) => {
+                        e.stopPropagation();
                     }}
                     className={cn(
                         buttonVariants({ variant: "outline" }),

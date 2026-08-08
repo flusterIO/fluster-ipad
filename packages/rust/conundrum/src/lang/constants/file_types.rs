@@ -33,6 +33,18 @@ pub enum ParsableFileType {
     #[serde(rename = "npy")]
     #[strum(to_string = "npy")]
     Numpy,
+    #[serde(rename = "ipynb")]
+    #[strum(to_string = "ipynb")]
+    Notebook,
+    #[serde(rename = "json")]
+    #[strum(to_string = "json")]
+    Json,
+    #[serde(rename = "pdf")]
+    #[strum(to_string = "pdf")]
+    Pdf,
+    #[serde(rename = "html")]
+    #[strum(to_string = "html")]
+    Html,
 }
 
 impl TryFrom<String> for ParsableFileType {
@@ -44,6 +56,10 @@ impl TryFrom<String> for ParsableFileType {
             "md" => Ok(Self::Markdown),
             "mdx" => Ok(Self::Mdx),
             "typst" => Ok(Self::Typst),
+            "ipynb" => Ok(Self::Notebook),
+            "json" => Ok(Self::Json),
+            "pdf" => Ok(Self::Pdf),
+            "html" => Ok(Self::Html),
             _ => Err(ConundrumFSError::UnsupportedFileExtension(value.clone())),
         }
     }
@@ -62,6 +78,10 @@ impl ParsableFileType {
             Self::Markdown => ("markdown", "*.md"),
             Self::Typst => ("typst", "*.typst"),
             Self::Numpy => ("numpy", "*.npy"),
+            Self::Notebook => ("ipynb", "*.ipynb"),
+            Self::Json => ("json", "*.json"),
+            Self::Pdf => ("pdf", "*.pdf"),
+            Self::Html => ("html", "*.html"),
         }
     }
 }

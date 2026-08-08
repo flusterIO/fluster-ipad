@@ -22,14 +22,14 @@ use crate::vector::database::{
 };
 
 pub trait EntityCRUD<IDType: DatabaseIdentifiable, UpdatePartial: ArrowSchemaRepresentable + Clone + Serialize>:
-    DBEntity + Clone + Serialize {
+    DBEntity<IDType> + Clone + Serialize {
     async fn save_many(items: Vec<Self>, db: &ArcMutexDB) -> DatabaseResult<()>
         where Self: Sized {
         let schema = Self::arrow_schema();
         let _db = db.clone().lock_owned().await;
         let tbl = open_table(_db, &Self::table()).await.inspect_err(|e| {
-                                                       log::error!("Table Error: {:?}", e);
-                                                   })?;
+                                                            log::error!("Table Error: {:?}", e);
+                                                        })?;
         let batches = Self::get_record_batch(items).inspect_err(|e| {
                                                        log::error!("get_record_batch Error: {:?}", e);
                                                    })?;

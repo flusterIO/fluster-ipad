@@ -82,6 +82,16 @@ impl TryFrom<ConundrumString> for ConundrumColor {
     }
 }
 
+impl TryFrom<String> for ConundrumColor {
+    type Error = ErrMode<ConundrumErrorVariant>;
+
+    fn try_from(value: String) -> std::prelude::v1::Result<Self, Self::Error> {
+        let s = ConundrumString(value);
+        let c: ConundrumColor = ConundrumColor::try_from(s)?;
+        Ok(c)
+    }
+}
+
 impl CSSValueRepresentable for ConundrumColor {
     fn as_css_value(&self) -> String {
         match self {

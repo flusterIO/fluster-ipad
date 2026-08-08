@@ -1,86 +1,126 @@
 # Daily Focus for My ADHD-Ass
 
-## Summary of To-Do List (Generated on Thursday, August 6th, 2026 — 11:41 AM CST)
+## Summary of To-Do List (Generated on Friday, August 7th, 2026 — 8:55 PM CST)
 
-### 📌 Prioritized Tasks
+### High Priority Tasks
 
-#### ✅ Critical Release Readiness
+1. **Review and Validate Equations**
+   - Check the inserted alpha expansion equations for correctness.
+   - Ensure the orbital velocity equation and its derivation are correctly included in the notebook.
 
-- [x] Push up website update so privacy page is available.
-- [x] Begin upload of youtube videos so that they can parse and validate while you're doing everything else.
-- [x] Convert screenshots to mockups
-- [x] Make blog mobile responsive. That should be the first priority once conundrum content is compiling again.
-  - [x] Add drawer in place of sidebar on mobile.
-- [x] Get `wasm` loading in Next.js. That'll be perfect for enabling a web based editor, but it's also crucial for a decent development workflow now that we're rendering straight to html and a React based test page doesn't make as much sense.
-- [x] Get checkbox parser working
-- [x] Make sure iPad app at least attemps to build while still on WIFI so everything that's required can be downloaded.
-- [x] Figure out how to call out of loop on another thread in the new editor package so that can hopefully be used with the new apps!
-- [x] Reintegrate Dictionary entry! That's a huge value add that's basically done already.
-- [x] Add support for mermaid via mmdflux.
-- [x] Add 'col-span' property from 1-12 to the `Sizable` struct.
-- [x] Add 'env-file-provider' to configuration if the user provides a 'env_file' key in their config.
+2. **iPad App Enhancements**
+   - Update the settings page to include light and dark mode codeblock themes.
+   - Implement a keymap listener for manual save requests.
+   - Ensure notes re-render on theme changes and when users navigate back to them.
+   - Remove references to the dictionary page.
+   - Add a paywall to the create-note page.
+   - Test all features thoroughly.
 
-#### 🚀 Apple App Store Submission
+3. **Plot App Improvements**
+   - Create a reset method for the variable enum and a 'reset all' button.
 
-- [x] Begin submission process with Apple. Upload the build early to make sure that it's valid, in case you need to rebuild it again.
-- [ ] Figure out how to integrate Apple Pay with the debug build for production.
-  - `I'm a pretty experienced developer that's new to the Apple ecosystem. I've already built a complete MacOS application that integrates ApplePay locally for auto-renewing subscriptions. Walk me through the steps required to publish this app today, ensuring that ApplePay will work.`
-- [ ] Make sure iPad app at least attemps to build while still on WIFI so everything that's required can be downloaded.
+4. **Pre-Release Checklist**
+   - Move the 'Download Now' button to the footer and update the title to 'Download old app' or similar.
+   - Implement proper links in the website JSON data file.
+   - Address the mobile sidebar issue for the blog.
 
-#### 📚 Documentation & Parsing
+5. **Swift Model Explorer**
+   - Move the Constants class to AppStorage and make it static.
+   - Save videos on SwiftCharts and Mlx.
 
-- [x] Parse & Render Table
-- [x] Parse & Render Lists
-  - [x] Unordered (half complete)
-  - [x] Ordered
-  - [x] Checkbox
-- [x] Parse & Render Footnotes (half complete)
-- [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
-- [ ] Work on remaining parsers
-- [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
+6. **Release Preparation**
+   - Push the website update to make the privacy page available.
+   - Begin uploading YouTube videos for parsing and validation.
+   - Integrate Apple Pay with the debug build for production.
+   - Convert screenshots to mockups.
+   - Start the Apple submission process and upload the build early.
+   - Ensure the iPad app can build while on Wi-Fi.
+   - Figure out how to call out of loops on another thread in the new editor package.
 
-### 🧠 Additional Notes
+### Pre-Release Bugs
 
-- [ ] Work on integrating typst support! That's a **major** value add that can actually be handled offline, and in time to release!
-- [ ] Setup seeding of notes on desktop app since that will be the first app that's released most likely.
-- [ ] Move over rest of components below:
-- [ ] Work on remaining parsers
-- [ ] Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conundrum)
+- Verify the privacy page is ready for deployment.
+- Make tags clickable again and redirect to the tags search page.
+- Ensure bib snippets are not shown.
+- Work on initial launch note conversion to `.cdrm`.
+- Seed initial notes.
+- Implement onboarding toasts with ToastKit.
+- Fix the issue where front-matter titles cannot be unset.
+- Add citation for the variable speed of light article to the paper.
 
-### 📚 Missing or Incomplete Parsers
+### Post-Release Tasks
 
-- [x] CodeBlock
-  - [x] Check for meta string without `--` and alert user.
-- [x] Footnote
-- [?] Table (GFM if it's not a performance hit)
-- [ ] Strikethrough text
-- [ ] Escapable math blocks.
-- [ ] Escapable strings
-- [x] Paragraphs (reimplemented)
-- [ ] List Item
-  - [ ] With various checked states: `[?]`, `[x]`, `[-]`, `[ ]`, `[$stateVariable]`, etc...
-  - [ ] Add interactive List component that allows the user to create interactive lists, but outputs the content to markdown when rendered.
-    - [ ] This would require the start of a `conundrum_context` crate.
-- [ ] `[My link](myId@10:30:00)` timestamp link syntax.
+- Reintegrate the dictionary entry feature.
+- Add support for mermaid via mmdflux.
+- Add the 'col-span' property to the `Sizable` struct.
+- Get `wasm` loading in Next.js for a web-based editor.
+- Make the blog mobile responsive with a drawer in place of the sidebar.
+- Get the checkbox parser working.
+- Create state comparison methods to sync JSON data with URL query strings.
+- Add an 'env-file-provider' to the configuration if an `env_file` is provided.
 
-### 📖 Paper Additions
+### Pre-Release Milestones
 
-- [ ] The derivation of the following, and the significance.
+- Ensure the dictionary entry page is working with the HTML parser and React rendering.
+- Restore all documentation pages with proper table, list, and footnote parsing.
+- Add proper citations to the blogging platform using the citations fluster crate.
+
+### Components to Move
+
+- Container
+- HrWithChildren (in JSX form)
+- Grid
+- AINoteSummary
+- Table of Contents (TOC)
+
+### Up Next
+
+- Work on integrating typst support for offline use.
+- Set up note seeding for the desktop app.
+- Move remaining components and work on parsers.
+- Add proper citations to the blogging platform.
+
+### Missing or Incomplete Parsers
+
+- CodeBlock (check for meta strings without `--` and alert user)
+- Footnote
+- Table (GFM if not a performance hit)
+- Strikethrough text
+- Escapable math blocks
+- Escapable strings
+- List Items (with various checked states)
+- Interactive List component
+- Timestamp link syntax `[My link](myId@10:30:00)`
+
+### Long-Term Goals
+
+- Implement template strings for all Rust properties and move documentation to the docgen crate.
+- Checkbox checked states
+- Emphasis with default previews
+
+## Paper Additions
+
+- Derive and explain the following equation and its significance:
 
 $$
 \frac{dx}{x} = \frac{dr}{R}
 $$
 
-- [ ] The following as a form of spatal tension giving rise to $\alpha$
+- Derive and explain the following as a form of spatial tension giving rise to $\alpha$:
 
 $$
 2 \frac{R_{\oplus}}{\left( 2 G M_{\oplus} \right)^{1/3}} = \frac{1}{\alpha}
 $$
 
-## 📌 Next Steps
+## Notes
 
-- Work on integrating typst support! That's a **major** value add that can actually be handled offline, and in time to release!
-- Setup seeding of notes on desktop app since that will be the first app that's released most likely.
-- Move over rest of components below:
-- Work on remaining parsers
-- Add proper citations to blogging platform, with formatted output using the citations fluster crate (Just rename the thing and move it to conund >>
+- Prioritize tasks that are critical for release within the next 2-4 weeks.
+- Ensure all major features are tested and functioning as expected.
+- Keep the focus on completing the most impactful tasks first.
+- Regularly review and update the to-do list to reflect progress and new priorities.
+
+---
+
+**Generated on:** Friday, August 7th, 2026 — 8:55 PM CST
+**Author:** Andrew
+**Project:** Fluster

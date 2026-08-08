@@ -9,6 +9,8 @@ interface PageContainerProps {
     title?: ReactNode;
     subtitle?: ReactNode;
     center?: boolean;
+    toolbar?: ReactNode;
+    toolbarClasses?: string;
 }
 
 export const PageContainer = ({
@@ -17,6 +19,8 @@ export const PageContainer = ({
     title,
     subtitle,
     center,
+    toolbar,
+    toolbarClasses,
 }: PageContainerProps): ReactNode => {
     return (
         <div
@@ -27,6 +31,16 @@ export const PageContainer = ({
             )}
         >
             {title ? <PageTitleGroup title={title} subtitle={subtitle} /> : null}
+            {toolbar ? (
+                <div
+                    className={cn(
+                        "w-full flex flex-row justify-start items-center",
+                        toolbarClasses,
+                    )}
+                >
+                    {toolbar}
+                </div>
+            ) : null}
             <motion.div
                 initial={{
                     opacity: 0,

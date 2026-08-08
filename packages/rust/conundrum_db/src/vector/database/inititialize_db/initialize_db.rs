@@ -15,6 +15,7 @@ use crate::vector::{
     },
     models::{
         academic::question::flashcard::flashcard_entity::FlashCardEntity,
+        git::git_repository::GitRepository,
         taggables::{subject::Subject, tag::Tag, topic::Topic},
         workspace::user_workspace::UserWorkspace,
     },
@@ -51,6 +52,9 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
                                               TableInitData { table: DatabaseTable::UserWorkspace,
                                                               schema: UserWorkspace::arrow_schema(),
                                                               set_indices: None },
+                                              TableInitData { table: DatabaseTable::GitRepository,
+                                                              schema: GitRepository::arrow_schema(),
+                                                              set_indices: None },
                                               /* TableInitData { table: DatabaseTable::QAPair,
                                                *                 schema: FlashCardEntity::arrow_schema(),
                                                *                 set_indices: None }, */];
@@ -66,7 +70,6 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
             if !td.table.is_temporary_vector_table() {
                 match create_table(&db, &td.schema, &td.table).await {
                     Err(e) => {
-                        println!("Failed here.., {:?}", e);
                         let s = td.table.to_model_name();
                         warn!("Conundrum failed while attempting to generate a database table for the `{:?}` model.",
                               s);

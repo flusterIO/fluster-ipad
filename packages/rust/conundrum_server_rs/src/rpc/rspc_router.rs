@@ -1,6 +1,5 @@
 use std::ops::Index;
 
-use axum::extract::State;
 use conundrum_db::vector::{
     database::{
         db::get_database,
@@ -18,8 +17,6 @@ use conundrum_db::vector::{
     parameters::predicate_query_params::PredicateQueryParams,
 };
 use rspc::Procedure;
-use serde::{Deserialize, Serialize};
-use specta::Type;
 
 use crate::{
     crud_router,
@@ -27,9 +24,8 @@ use crate::{
     rpc::{
         route_context::RouteContext,
         routers::{
-            cdrm::cdrm_router::get_cdrm_router,
-            code::code_router::get_code_router,
-            describe::describe_router::{self, get_describe_router},
+            cdrm::cdrm_router::get_cdrm_router, code::code_router::get_code_router,
+            crud::nested_crud_router::get_nested_crud_router, describe::describe_router::get_describe_router,
             fs::fs_router::get_fs_router,
             workspace_management::workspace_management_router::get_workspace_management_router,
         },
@@ -43,16 +39,14 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
     let code_router = get_code_router();
     let cdrm_router = get_cdrm_router();
     let describe_router = get_describe_router();
-
-    let user_workspace_crud_router = crud_router!(UserWorkspace, UserWorkspacePartial);
+    let crud_router = get_nested_crud_router();
 
     let r = rspc::Router::<RouteContext>::new().nest("fs", fs_router)
-                                               .nest("workspace", workspace_router)
+                                               .nest("workspace_management", workspace_router)
                                                .nest("code", code_router)
                                                .nest("cdrm", cdrm_router)
                                                .nest("describe", describe_router)
-                                               // .nest("study", study_router)
-                                               .nest("user_workspace_crud", user_workspace_crud_router)
+                                               .nest("crud", crud_router)
                                                .procedure("version",
                                                           Procedure::builder::<ServerError>().query(|_, _: ()| async {
                                                               Ok(VersionData { server:

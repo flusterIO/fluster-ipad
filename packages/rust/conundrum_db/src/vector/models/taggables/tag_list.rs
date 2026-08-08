@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::taggables::tag::Tag;
+use crate::vector::{database::db_traits::db_field::DatabaseField, models::taggables::tag::Tag};
 
 /// ## TagList
 ///

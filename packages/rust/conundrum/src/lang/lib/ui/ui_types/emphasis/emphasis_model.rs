@@ -59,6 +59,7 @@ use crate::{
            EnumIter,
            PartialEq,
            Eq,
+           Hash,
            Default,
            Debug,
            strum_macros::Display,

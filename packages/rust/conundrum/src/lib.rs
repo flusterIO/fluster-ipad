@@ -1,76 +1,103 @@
 //! # Conundrum
 //!
-//! Hey everybody, I'm the creator of [Fluster](https://flusterapp.com). After my initial
-//! attempt to open-source the entire project left me just as homeless I decided
-//! to make Fluster proprietary, but I want everyone to have access to the
-//! transpiler. Compiler? I'm not even sure...
-//!
-//! This documentation is intended both for developers and for the general
-//! user. Currently the app is undergoing a migration where all of the logic
-//! pertaining to the language itself is
-//! lifted up to this Conundrum crate, including all of the components and
-//! likewise the component documentation. Instead of my half-axxed markdown
-//! tables, we can now rely on the various Cargo crates for generatng markdown
-//! documentation and just _collect_ the generated documentation for the
-//! language's built-in documentation feature. Because of that, you might notice
-//! that some of the documentation appears out of context on places like
-//! rustdoc... it's intended to be written for a more general-public, in-app
-//! experience.
-//!
-//! ## General Users
-//!
-//! As mentioned above, much (but not all) of the embedded documentation is
-//! generated directly from the code, and since the online documentation is too,
-//! there's a _ton_ of overlap with the online content.
-//!
-//! Still, take a look at the [component's
-//! documentation](crate::lang::lib::ui::components), as they will have links to
-//! all of the recurring properties like the [Sizable
-//! struct](crate::lang::lib::ui::shared_props::sizable) that you'll use over
-//! and over again while writing Conundrum.
-//!
-//! Throughout the documentation, if you see a `Sizable` struct attached to a
-//! component, that means that that component can accept the `Sizable` struct's
-//! properties. Same thing with the `Emphasis` enum ([found
-//! here](crate::lang::lib::ui::ui_types::emphasis)), or any of the growing list
-//! of 'property-groups', as well as any properties unique to that component.
-//!
-//! ## Future Plans
-//!
-//! The future of Conundrum is coming together **quickly**, with a memory layer
-//! right around the corner. At first this will just look like basic math and
-//! the ability to assign variables directly to your note content (think
-//! inserting the output of a Slider component into your text content or
-//! something similar), but within a year I hope to have a language that is
-//! fully capable of acting as a first-step, exploratory language that is
-//! perfect for the note taking environment.
-//!
-//! I don't want this language to be a toy, but a real tool that _researchers_
-//! from miiddle school to post-doc can reach to as their first-choice when they
-//! need something extremely easy to write, something expressive, and most
-//! importantly, something capable of handling the varied inputs a
-//! modern academc requires, because we all know markdown's not enough...
-//!
-//! Longer term plans are a little more ambitious. The goal is to create a
-//! high-level API in this parent language, Conundrum, that exposes it's memory
-//! layer to the nested code blocks through the Conundrum compiler, a sandboxed
-//! build environment, and the amazing work people have done around FFI and
-//! other cross-language technologies. It will take some time, but we should
-//! have an environment where a user can generate a complex array of numbers in
-//! C or Rust in 1 code block, and then use that array of numbers in Python in
-//! the next code-block to generate a plot, without ever saving anything to
-//! disk.
+//! > Conundrum is a modular academic tool-kit that was built in the pursuit of
+//! quantized gravity, rebuilt for the vibe-coding era. [See it in action in our
+//! blog](https://flusterapp.com).
 //!
 //!
-//! ## Shameless Plug
+//! ## Conundrum, the language
 //!
-//! I'm still kinda homeless, so if anyone's looking for a
-//! Rust/Typescript/Python/Go/Swift/Lua/Kinda-Dart developer, please let me
-//! know! I haven't had a regular paycheck in more than 5 years afteer quiting
-//! my job to work on a [modified model of relativity](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time)
+//! Conundrum is a language with syntax built on top of mdx. In fact, most mdx
+//! notes with components of the same name and properties would compile just
+//! fine, but it uses no javascript at all and offers additional syntax
+//! features like equation ids, special link syntaxes and more. The language is
+//! compiled completely by Rust, supports wasm targets, and of course integrates
+//! with the rest of the Conundrum ecosystem flawlessly.
+//!
+//! In fact, you can compile your notes to a number of targets, with each
+//! supported component offering both global and instance specific properties
+//! that can customize the output to specific targets. In short, you can add a
+//! field like:
+//!
+//! ```tsx
+//! <Hl md="italic">My highlighted text</Hl>
+//! ```
+//!
+//! To make the output of the markdown target italic. That's actually how
+//! Fluster render's user's markdown content to Swift when it needs to display a
+//! title, despite Swift's extremely limited markdown support.
+//!
+//! Passing these component properties down to these secondary ouptuts keeps the
+//! vital information stored in the 'mdx' components that Conundrum supports
+//! across output targets that may or may not support complex UIs like the web.
+//!
+//! In the age of AI when everything is about the amount of information per
+//! token, a language that is more descriptive than markdown yet more deliberate
+//! than html may be a more ideal form of communication. Where markdown excels
+//! in it's simplicity, it sacrifices in it's expressiveness which is a hurdle
+//! to both human and AI. HTML on the other hand can be incredibly expressive
+//! with css applied, but much of this information is lost during the parsing
+//! process, and even if it were to survive parsing, the incredible variety of
+//! the web would produce less specific data.
+//!
+//! Conundrum aims to walk this middle ground by providing a very deliberate set
+//! of components with the _high-level_ properties required for users to
+//! document almost anything, in a style that agrees with them, while not
+//! providing so many low level properties that it conflates AI.
+//!
+//! Conundrum will never offer more than 1 of anything, and that's for a reason.
+//! An `<Admonition ... />` component conveys information to AI that would be
+//! lost if there were a hundred ways to create the same component... even ore
+//! so if you add an `emphasis` property like `error`, `warn` or `research`.
+//! These properties not only style your notes to match accordingly, but pass
+//! along important information to AI.
+//!
+//! #### Supported Outputs
+//!
+//! - [x] HTML
+//! - [x] Jsx
+//! - [ ] Commonmark compatible Markdown (90% there. A couple components are
+//!   missing their
+//! templates)
+//! - [ ] Json, for rendering from the AST in languages like Swift and Kotlin.
+//!
+//! On top of these output targets, Conundrum offers a number of customization
+//! flags that can be used to do everything from hidding emojis, to embedding
+//! javascript in a single file output. As I built this while homeless and
+//! offline, not even the math needs to be loaded from a CDN.
+//!
+//! ---
+//!
+//! ## Conundrum, the ecosystem
+//!
+//! Conundrum came to be out of [Fluster](https://flusterapp.com), which itself came to be after I quit my
+//! job almost 5 years ago to focus on astrophysics full-time. I've since
+//! rewritten it to the point that it's unrecognizable, and now I'm re-working
+//! things once again for the vibe-coding era.
+//!
+//! Conundrum has a few pieces that all come together to make one cohesive,
+//! local second brain that only reaches out to an outside service when it's
+//! necessary to contact AI. Your database remains on your machine, with models
+//! to _completely_ describe your life.
+//!
+//! While the Conundrum ecosystem is heavily focused on academic note-taking, a
+//! natural extension of learning a note-taking DSL for any new programmer is to
+//! extend it's capabilities to the rest of their life. For this reason, the
+//! Conundrum database includes database models for everything from the results
+//! of a scientific experiment to your family pet, all structured in a **very**
+//! graph oriented design.
+//!
+//! This approach let's AI get as close to a perfect answer as exists within
+//! your knowledge base with smaller context requirements by using both vector
+//! similarity methods and this graph architecture.
+//!
+//! Further, Conundrum adds a sort of 'notepad' to many of these models,
+//! allowing AI to keep track of information associated with specific instances
+//! of that model over time.
 #![feature(string_replace_in_place)]
 uniffi::setup_scaffolding!();
 
+pub mod ai;
 pub mod bibliography;
 pub mod ecosystem;
 pub mod embedded;

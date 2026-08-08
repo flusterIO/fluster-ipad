@@ -187,9 +187,12 @@ export const DatabaseTable = <TData extends RowData>({
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
+                                {headerGroup.headers.map((header, i) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead
+                                            key={header.id}
+                                            className={i === 0 ? "pl-2" : ""}
+                                        >
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -234,7 +237,10 @@ export const DatabaseTable = <TData extends RowData>({
                         )}
                     </TableBody>
                 </Table>
-                <DatabaseTablePagination table={table} />
+                <DatabaseTablePagination
+                    classes={{ container: "mt-4" }}
+                    table={table}
+                />
             </div>
         </div>
     );

@@ -38,10 +38,13 @@ format_package_jsons:
 write_database_types:
 	cd {{justfile_directory()}}./packages/rust/conundrum_server_rs; cargo nextest run rpc::rspc_router::tests::write_rspc_route_types --no-capture
 
-
 format_swift:
 	swift-format format --configuration={{justfile_directory()}}/.swift-format -ipr {{justfile_directory()}}/apps/fluster
 	swift-format format --configuration={{justfile_directory()}}/.swift-format -ipr {{justfile_directory()}}/packages/swift
+
+initialize_db_and_build_server: clear_conundrum_database
+	cd {{justfile_directory()}}/packages/rust/conundrum_db; cargo nextest run vector::database::initialize_db::initialize_db::testsinitializes_database --no-capture -v
+	cd {{justfile_directory()}}/packages/rust/conundrum_server_rs; cargo build
 
 resolve_swift_packages:
 	cd {{justfile_directory()}}/packages/swift/FlusterData; swift package resolve

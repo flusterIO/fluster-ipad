@@ -14,13 +14,16 @@ use crate::{errors::server_error::ServerError, rpc::route_context::RouteContext}
 
 pub fn get_workspace_management_router() -> Router<RouteContext> {
     Router::<RouteContext>::new()
-    .procedure("get_workspace_count", Procedure::<RouteContext, String, UserWorkspaceCountData>::builder::<ServerError>().query(|state: RouteContext, params: String | async move {
-        let predicate = format!("root = {}", params);
+    .procedure("parsable_file_count", Procedure::<RouteContext, String, UserWorkspaceCountData>::builder::<ServerError>().query(|state: RouteContext, params: String | async move {
+        let predicate = format!("root=\"{}\"", params);
         let wp = UserWorkspace::get_by_predicate(Some(predicate.clone()), Some(PaginationParams::single()), &state.db).await.map_err(|e| {
                         ServerError::DatabaseError(e)
                     })?;
         match wp.len() {
-           0 => Err(ServerError::DatabaseError(DatabaseError::FailToQueryEntity { predicate: Some(predicate), table: DatabaseTable::UserWorkspace })),
+           0 => {
+               log::error!("Failed querying UserWorkspace");
+Err(ServerError::DatabaseError(DatabaseError::FailToQueryEntity { predicate: Some(predicate), table: DatabaseTable::UserWorkspace }))
+           },
            1 => {
                     let workspace = wp.index(0);
                     let count_data: UserWorkspaceCountData = UserWorkspaceCountData::try_from_async(workspace.clone()).await.map_err(|e| {
@@ -29,6 +32,7 @@ pub fn get_workspace_management_router() -> Router<RouteContext> {
                     Ok(count_data)
            },
            _ => {
+               log::error!("Duplicate workspaces found");
                Err(
                     ServerError::DatabaseError(DatabaseError::DuplicateEntities)
                )
