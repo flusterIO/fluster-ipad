@@ -12,7 +12,7 @@ export const PlainInlineCode = ({
 }: {
     code: string;
     color?: "inherit" | "code";
-    background: boolean;
+    background?: boolean;
 }) => {
     return (
         <span

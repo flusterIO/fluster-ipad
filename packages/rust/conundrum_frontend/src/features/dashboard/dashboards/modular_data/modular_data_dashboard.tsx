@@ -7,7 +7,7 @@ import { RecentBibEntriesDashboardCard } from "./modular_dashboard_components/da
 
 export const ModularDataDashboard = (): ReactNode => {
     return (
-        <div className="w-full h-full min-h-screen px-4 py-4 overflow-x-hidden overflow-y-auto min-scrollbar max-h-screen">
+        <div className="w-full h-full min-h-screen px-4 py-4">
             <div className="w-full flex flex-col justify-start items-start @[768px]/main:grid! @[768px]/main:grid-cols-[2fr_1fr] gap-x-4">
                 <div className="w-full h-fit mb-4 @[768px]/main:h-full @[768px]/main:mb-0 grid grid-cols-1 grid-rows-[2fr_1fr] gap-y-4">
                     <RecentNotesCard />

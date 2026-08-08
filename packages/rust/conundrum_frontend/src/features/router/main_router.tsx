@@ -6,9 +6,9 @@ import { PermanentSidebar } from "#/navigation/sidebar/permanent_sidebar";
 export const MainAppRouter = (): ReactNode => {
     return (
         <BrowserRouter basename="/">
-            <div className="app-container w-full h-screen max-h-screen grid grid-cols-[auto_1fr]">
+            <div className="app-container w-full h-screen max-h-screen flex flex-row justify-center items-center">
                 <PermanentSidebar />
-                <div className="@container/main w-full h-fit min-h-screen overflow-x-hidden overflow-y-auto min-scrollbar">
+                <div className="@container/main bg-background w-[calc(100%-4rem)] max-h-screen min-h-screen overflow-x-hidden overflow-y-auto no-scrollbar">
                     <MainAppRoutes />
                 </div>
             </div>

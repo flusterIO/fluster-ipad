@@ -9,7 +9,13 @@ function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
 }
 
 function DropdownMenuPortal({ ...props }: MenuPrimitive.Portal.Props) {
-    return <MenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />;
+    return (
+        <MenuPrimitive.Portal
+            container={document.getElementById("root")}
+            data-slot="dropdown-menu-portal"
+            {...props}
+        />
+    );
 }
 
 function DropdownMenuTrigger({ ...props }: MenuPrimitive.Trigger.Props) {
@@ -29,7 +35,7 @@ function DropdownMenuContent({
         "align" | "alignOffset" | "side" | "sideOffset"
     >) {
     return (
-        <MenuPrimitive.Portal>
+        <MenuPrimitive.Portal container={document.getElementById("root")}>
             <MenuPrimitive.Positioner
                 className="isolate z-50 outline-none"
                 align={align}
@@ -163,7 +169,7 @@ function DropdownMenuCheckboxItem({
             data-slot="dropdown-menu-checkbox-item"
             data-inset={inset}
             className={cn(
-                "relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-7 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+                "relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-7 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:text-foreground!",
                 className,
             )}
             checked={checked}

@@ -1,16 +1,12 @@
-import React, { useEffect, useEffectEvent, type ReactNode } from "react";
+import React, { useEffect, type ReactNode } from "react";
 import { type LabeledImportProps } from "../general_input_props";
 import { Input } from "@/components/shad/input";
 import { Label } from "@/components/shad/label";
-import {
-    type FieldValues,
-    type ErrorOption,
-    useFormState,
-    useFormContext,
-} from "react-hook-form";
-import { FormField, FormMessage, useFormField } from "@/components/shad/form";
+import { type FieldValues, useFormContext } from "react-hook-form";
+import { FormField, FormMessage } from "@/components/shad/form";
 import { cn } from "@/utils/shad_utils";
 import { usePathExists } from "#/file_system/state/hooks/path_utils/use_path_exists";
+import { capitalize } from "@/utils/string_utilts";
 
 interface PathInputProps<Schema extends FieldValues>
     extends
@@ -76,11 +72,9 @@ const PI = <Schema extends FieldValues>({
 
 export const PathInput = <Schema extends FieldValues>({
     label,
-    form,
     name,
     desc,
     classes = {},
-    onPathExistsChange,
     ...props
 }: PathInputProps<Schema>): ReactNode => {
     return (
@@ -94,7 +88,7 @@ export const PathInput = <Schema extends FieldValues>({
                             classes.container,
                         )}
                     >
-                        <Label>{label}</Label>
+                        <Label>{label ?? capitalize(name)}</Label>
                         <PI {...props} name={name} />
                         <FormMessage>
                             {desc ? (

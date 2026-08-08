@@ -35,7 +35,7 @@ const buttons: Omit<PermanentSidebarButtonProps, "active">[] = [
 export const PermanentSidebar = (): ReactNode => {
     const location = useLocation();
     return (
-        <div className="w-16 h-screen bg-background border-r flex flex-col justify-between items-center py-6 gap-y-4">
+        <div className="left-0 top-0 bottom-0 h-screen w-16 bg-background border-r flex flex-col justify-between items-center py-6 gap-y-4">
             <div className="flex flex-col justify-start items-center gap-y-4">
                 {buttons.map((b) => {
                     return (

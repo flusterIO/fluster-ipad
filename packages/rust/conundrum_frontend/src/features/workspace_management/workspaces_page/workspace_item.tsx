@@ -51,7 +51,7 @@ export const WorkspaceListItem = ({
                     }}
                 />
             </div>
-            <div className="w-full flex flex-row justify-end items-center">
+            <div className="w-full flex flex-row justify-end items-center mt-3">
                 <Link
                     to={{
                         pathname: AppPaths.singleWorkspaceManagement,
