@@ -46,6 +46,18 @@
     --color-fd-accent: hsla(0, 0%, 82%, 50%);
     --color-fd-accent-foreground: hsl(0, 0%, 9%);
     --color-fd-ring: hsl(0, 0%, 63.9%);
+    --chart-1: #1a5f8e;
+    --chart-2: #c16a26;
+    --chart-3: #2f4f4f;
+    --chart-4: #4b2e83;
+    --chart-5: #d35400;
+    --chart-6: #001f3f;
+    --chart-7: #3e8e41;
+    --chart-8: #8e2430;
+    --chart-9: #c19a6b;
+    --chart-10: #4b4b4b;
+    --chart-11: #004d99;
+    --chart-12: #a0522d;
   }
 
   body.dark {
@@ -82,6 +94,18 @@
     --color-fd-article: hsl(0, 0%, 7.04%);
     --color-fd-background: hsl(0, 0%, 5.04%);
     --desktop-background-match: hsl(213, 39%, 9%);
+    --chart-1: #a0c4da;
+    --chart-2: #ffd580;
+    --chart-3: #a3d6a7;
+    --chart-4: #b5a4e2;
+    --chart-5: #ffb6c1;
+    --chart-6: #6a8d9d;
+    --chart-7: #a4e3a4;
+    --chart-8: #e67e80;
+    --chart-9: #f5f5dc;
+    --chart-10: #d3d3d3;
+    --chart-11: #87ceeb;
+    --chart-12: #e99675;
   }
 
 
@@ -144,7 +168,18 @@
     --color-fd-ring: var(--color-fd-ring);
     --color-fd-primary: var(--color-fd-primary);
     --color-fd-article: var(--color-fd-article);
-
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-chart-6: var(--chart-6);
+    --color-chart-7: var(--chart-7);
+    --color-chart-8: var(--chart-8);
+    --color-chart-9: var(--chart-9);
+    --color-chart-10: var(--chart-10);
+    --color-chart-11: var(--chart-11);
+    --color-chart-12: var(--chart-12);
   }
 
 
@@ -175,6 +210,7 @@
     --border-radius: 0.5rem;
     --general-link-color: #2563eb;
     --brand: 198.6 88.7% 48.4%;
+
 
     .dark:not(.light *),
     &.dark,

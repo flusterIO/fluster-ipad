@@ -7,23 +7,22 @@
 @source not "../glue/component_glue_output/**";
 @plugin "@tailwindcss/typography";
 
-
 @source inline("bg-emphasis-primary bg-emphasis-info bg-emphasis-error bg-emphasis-warn bg-emphasis-success bg-emphasis-important bg-emphasis-research bg-emphasis-highlight text-emphasis-warn");
 
 @layer base {
   :root {
     --border-radius: 0.5rem;
-    --emphasis-info: 221.0 100.0% 65.0%;
+    --emphasis-info: 221 100% 65%;
     --emphasis-info-foreground: 0 0% 100%;
-    --emphasis-error: 0.0 100.0% 50.0%;
+    --emphasis-error: 0 100% 50%;
     --emphasis-error-foreground: 0 0% 100%;
-    --emphasis-warn: 20.0 100.0% 55.0%;
+    --emphasis-warn: 20 100% 55%;
     --emphasis-warn-foreground: 222.2 84% 4.9%;
     --emphasis-success: 142 100% 40%;
     --emphasis-success-foreground: 0 0% 100%;
-    --emphasis-important: 270.0 100.0% 55.0%;
+    --emphasis-important: 270 100% 55%;
     --emphasis-important-foreground: 0 0% 100%;
-    --emphasis-research: 185.0 100.0% 40.0%;
+    --emphasis-research: 185 100% 40%;
     --emphasis-research-foreground: 0 0% 100%;
     --emphasis-highlight: 60 100% 48%;
     --emphasis-highlight-foreground: 222.2 84% 4.9%;
@@ -46,20 +45,32 @@
     --color-fd-accent: hsla(0, 0%, 82%, 50%);
     --color-fd-accent-foreground: hsl(0, 0%, 9%);
     --color-fd-ring: hsl(0, 0%, 63.9%);
+    --chart-1: #1a5f8e;
+    --chart-2: #c16a26;
+    --chart-3: #2f4f4f;
+    --chart-4: #4b2e83;
+    --chart-5: #d35400;
+    --chart-6: #001f3f;
+    --chart-7: #3e8e41;
+    --chart-8: #8e2430;
+    --chart-9: #c19a6b;
+    --chart-10: #4b4b4b;
+    --chart-11: #004d99;
+    --chart-12: #a0522d;
   }
 
   body.dark {
-    --emphasis-info: 221.0 100.0% 65.0%;
+    --emphasis-info: 221 100% 65%;
     --emphasis-info-foreground: 0 0% 100%;
-    --emphasis-error: 0.0 100.0% 65.0%;
+    --emphasis-error: 0 100% 65%;
     --emphasis-error-foreground: 0 0% 100%;
-    --emphasis-warn: 20.0 100.0% 55.0%;
+    --emphasis-warn: 20 100% 55%;
     --emphasis-warn-foreground: 222.2 84% 4.9%;
     --emphasis-success: 142 100% 50%;
     --emphasis-success-foreground: 222.2 84% 4.9%;
-    --emphasis-important: 270.0 100.0% 70.0%;
+    --emphasis-important: 270 100% 70%;
     --emphasis-important-foreground: 0 0% 100%;
-    --emphasis-research: 185.0 100.0% 50.0%;
+    --emphasis-research: 185 100% 50%;
     --emphasis-research-foreground: 222.2 84% 4.9%;
     --emphasis-primary: 217.2 91.2% 59.8%;
     --emphasis-primary-foreground: 210 40% 98%;
@@ -82,8 +93,19 @@
     --color-fd-article: hsl(0, 0%, 7.04%);
     --color-fd-background: hsl(0, 0%, 5.04%);
     --desktop-background-match: hsl(213, 39%, 9%);
+    --chart-1: #a0c4da;
+    --chart-2: #ffd580;
+    --chart-3: #a3d6a7;
+    --chart-4: #b5a4e2;
+    --chart-5: #ffb6c1;
+    --chart-6: #6a8d9d;
+    --chart-7: #a4e3a4;
+    --chart-8: #e67e80;
+    --chart-9: #f5f5dc;
+    --chart-10: #d3d3d3;
+    --chart-11: #87ceeb;
+    --chart-12: #e99675;
   }
-
 
   @theme inline {
     --radius: var(--border-radius);
@@ -144,9 +166,19 @@
     --color-fd-ring: var(--color-fd-ring);
     --color-fd-primary: var(--color-fd-primary);
     --color-fd-article: var(--color-fd-article);
-
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-chart-6: var(--chart-6);
+    --color-chart-7: var(--chart-7);
+    --color-chart-8: var(--chart-8);
+    --color-chart-9: var(--chart-9);
+    --color-chart-10: var(--chart-10);
+    --color-chart-11: var(--chart-11);
+    --color-chart-12: var(--chart-12);
   }
-
 
   body[data-cdrm-theme="cdrm"] {
     --background: 0 0% 100%;
@@ -204,7 +236,6 @@
       --general-link-color: #1e90ff;
     }
   }
-
 }
 
 body {

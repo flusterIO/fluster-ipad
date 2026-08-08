@@ -53,5 +53,6 @@ pub mod notebook;
 pub mod primitives;
 pub mod taggables;
 pub mod text;
+pub mod themeing;
 pub mod vector;
 pub mod workspace;
