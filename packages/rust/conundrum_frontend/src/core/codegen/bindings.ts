@@ -31,6 +31,8 @@ export type AnyComponentKey = { tag: "AutoInserted"; content: AutoInsertedCompon
 
 export type AutoInsertedComponentName = "NoteLink" | "AutoInsertedTag" | "FlusterCitation" | "DictionaryEntry" | "FlusterAiParsePendingContainer" | "AutoInsertedHeading" | "AutoInsertedCodeBlock" | "AutoInsertedBlockQuote" | "AutoInsertedMathBlock" | "AutoInsertedMarkdownLink" | "AutoInsertedMarkdownParagraph"
 
+export type CaseInsensitiveString = string
+
 export type ConundrumCompileTarget = "jsx" | "html" | "markdown" | "text" | "mdx" | "math_svg"
 
 export type ConundrumError = { 
@@ -151,6 +153,8 @@ export type DatabaseTable = "tag" | "topic" | "subject" | "cdrm" | "typst" | "us
  */
 "cdrm_vec"
 
+export type DateTime = string
+
 /**
  * Both the label and body fields are ***un-compiled*** Conundrum content.
  */
@@ -265,12 +269,36 @@ is_workspace?: boolean;
  * Permissions regarding access to the file system can be found
  * on the settings page of the Conundrum dashboard.
  */
-allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
+allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
  */
-root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
+root: string; 
+/**
+ * A short, descriptive label for this workspace.
+ */
+label: string | null; 
+/**
+ * Many Conundrum search methods will ignore files based on any
+ * `.gitignore` files found within the user's workspace.
+ */
+respect_gitignore: boolean; 
+/**
+ * Ignore files hidden by the user's operating system.
+ */
+ignore_hidden: boolean; 
+/**
+ * A directory that can be used as a shortcut within url strings when
+ * loading media, making paths relative to this directory valid.
+ * ### Example
+ * ```
+ * <Image src="physics/images/recent_plot.png" />
+ * ```
+ * Where `physics/iamges/recent_plot.png` is a path nested within the
+ * `resource_dir` directory.
+ */
+resource_dir?: string; ai: AIInteractions })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -369,12 +397,48 @@ fs_path: string | null; url: string | null; id: DatabaseId;
  * A descriptive label used for both the UI and as further information for
  * AI.
  */
-label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.user_workspace.delete_by_predicate"; input: string; result: null } | { key: "crud.user_workspace.save_many"; input: ({ 
+label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.subject.delete_by_predicate"; input: string; result: null } | { key: "crud.subject.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.subject.update_many"; input: ({ 
+/**
+ * The value will never be updated, only used for comparison.
+ */
+value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.tag.delete_by_predicate"; input: string; result: null } | { key: "crud.tag.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.tag.update_many"; input: ({ 
+/**
+ * The value will never be updated, only used for comparison.
+ */
+value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.topic.delete_by_predicate"; input: string; result: null } | { key: "crud.topic.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.topic.update_many"; input: ({ 
+/**
+ * The value will never be updated, only used for comparison.
+ */
+value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.user_workspace.delete_by_predicate"; input: string; result: null } | { key: "crud.user_workspace.save_many"; input: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
  */
-root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
+root: string; 
+/**
+ * A short, descriptive label for this workspace.
+ */
+label: string | null; 
+/**
+ * Many Conundrum search methods will ignore files based on any
+ * `.gitignore` files found within the user's workspace.
+ */
+respect_gitignore: boolean; 
+/**
+ * Ignore files hidden by the user's operating system.
+ */
+ignore_hidden: boolean; 
+/**
+ * A directory that can be used as a shortcut within url strings when
+ * loading media, making paths relative to this directory valid.
+ * ### Example
+ * ```
+ * <Image src="physics/images/recent_plot.png" />
+ * ```
+ * Where `physics/iamges/recent_plot.png` is a path nested within the
+ * `resource_dir` directory.
+ */
+resource_dir?: string; ai: AIInteractions })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
@@ -429,6 +493,21 @@ export type SupportedCodeBlockSyntax = "Plain Text" | "ASP" | "HTML (ASP)" | "Ac
 
 export type SupportedCodeBlockTheme = "1337" | "Coldark-Cold" | "Coldark-Dark" | "DarkNeon" | "Dracula" | "GitHub" | "Monokai Extended" | "Monokai Extended Bright" | "Monokai Extended Light" | "Monokai Extended Origin" | "Nord" | "OneHalfDark" | "OneHalfLight" | "Solarized (dark)" | "Solarized (light)" | "Sublime Snazzy" | "TwoDark" | "Visual Studio Dark+" | "ansi" | "base16" | "base16-256" | "gruvbox-dark" | "gruvbox-light" | "zenburn"
 
+export type TagLocation = "FrontMatter" | "Body" | 
+/**
+ * For apps using Conundrum content, this might come from a panel, a modal
+ * or what-not, but not from the note itself. If it comes from the note or
+ * front-matter, use those fields so they can be removed strategically.
+ */
+"AppInserted" | "AutoTaggable" | 
+/**
+ * Straggling when a tag is inserted through the REST api or another means
+ * where it is user-defined, but not necessarily associated with a
+ * note. These will never be automatically cleaned up as part of the
+ * syncing process.
+ */
+"Straggling"
+
 export type TagResult = { body: string }
 
 export type UIParams = { dark_mode: boolean; 
@@ -442,7 +521,31 @@ export type UserWorkspace = {
  * The path to the root of the workspace and the primary key for the
  * workspace.
  */
-root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string }
+root: string; 
+/**
+ * A short, descriptive label for this workspace.
+ */
+label: string | null; 
+/**
+ * Many Conundrum search methods will ignore files based on any
+ * `.gitignore` files found within the user's workspace.
+ */
+respect_gitignore: boolean; 
+/**
+ * Ignore files hidden by the user's operating system.
+ */
+ignore_hidden: boolean; 
+/**
+ * A directory that can be used as a shortcut within url strings when
+ * loading media, making paths relative to this directory valid.
+ * ### Example
+ * ```
+ * <Image src="physics/images/recent_plot.png" />
+ * ```
+ * Where `physics/iamges/recent_plot.png` is a path nested within the
+ * `resource_dir` directory.
+ */
+resource_dir?: string; ai: AIInteractions }
 
 export type WebGlueCodeGeneralFiles = "styles.css" | "katex.min.css" | "katex_ams_regular.woff2" | "katex_caligraphic_bold.woff2" | "katex_caligraphic_regular.woff2" | "katex_fraktur_bold.woff2" | "katex_fraktur_regular.woff2" | "katex_main_bold.woff2" | "katex_main_bolditalic.woff2" | "katex_main_italic.woff2" | "katex_main_regular.woff2" | "katex_math_bolditalic.woff2" | "katex_math_italic.woff2" | "katex_sansserif_bold.woff2" | "katex_sansserif_italic.woff2" | "katex_sansserif_regular.woff2" | "katex_script_regular.woff2" | "katex_size1_regular.woff2" | "katex_size2_regular.woff2" | "katex_size3_regular.woff2" | "katex_size4_regular.woff2" | "katex_typewriter_regular.woff2" | "Fira_Code_Regular.ttf"
 
@@ -460,10 +563,28 @@ export type Procedures = {
 	save_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id?: DatabaseId; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id: DatabaseId; label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[], output: null, error: unknown },
 },
+	subject: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], error: unknown },
+	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
+},
+	tag: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], error: unknown },
+	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
+},
+	topic: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], error: unknown },
+	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
+},
 	user_workspace: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string })[], error: unknown },
-	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ root: string; label: string | null; bib_paths: string[] | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null })[], output: null, error: unknown },
 },
 },

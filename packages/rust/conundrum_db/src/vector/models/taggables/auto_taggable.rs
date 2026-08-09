@@ -1,10 +1,23 @@
+use conundrum::ecosystem::db::{
+    tables::DatabaseTable,
+    traits::db_entity::{DBEntity, DBSchema},
+};
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::{
-    date_time::date_time::DateTime, primitives::db_id::DatabaseId, taggables::taggable::TaggableVariant,
+use crate::{
+    impl_default_crud,
+    vector::models::{
+        date_time::date_time::DateTime,
+        primitives::db_id::DatabaseId,
+        taggables::{
+            auto_taggable_partial::AutoTaggablePartial, taggable::TaggableVariant,
+            taggable_update_partial::TaggablePartial,
+        },
+    },
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct AutoTaggable {
     pub id: DatabaseId,
     /// The value of the taggable that will be automatically applied.
@@ -22,4 +35,27 @@ pub struct AutoTaggable {
     pub glob: String,
     pub ctime: DateTime,
     pub utime: DateTime,
+}
+
+impl_default_crud!(AutoTaggable, AutoTaggablePartial, DatabaseId);
+impl<'a> DBSchema<'a> for AutoTaggable {}
+
+impl<'a> DBEntity<'a, DatabaseId> for AutoTaggable {
+    type PartialUpdateType = AutoTaggablePartial;
+
+    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
+        DatabaseTable::AutoTaggable
+    }
+
+    fn merge_keys() -> &'static [&'static str] {
+        &["id"]
+    }
+
+    fn primary_key() -> &'static str {
+        "id"
+    }
+
+    fn primary_value(&self) -> DatabaseId {
+        self.id.clone()
+    }
 }

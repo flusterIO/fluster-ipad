@@ -49,6 +49,8 @@ pub enum DatabaseError {
     InvalidPagination,
     #[error("The root to one of your workspaces could not be found. We attempted to look in `{0}`.")]
     InvalidWorkspacePath(String),
+    #[error("Conundrum encountered an invalid date-time.")]
+    InvalidDateTime,
 }
 
 impl From<ConundrumFSError> for DatabaseError {

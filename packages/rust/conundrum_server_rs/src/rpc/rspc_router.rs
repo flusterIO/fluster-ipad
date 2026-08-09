@@ -7,7 +7,6 @@ use conundrum_db::vector::{
 use rspc::Procedure;
 
 use crate::{
-    crud_router,
     errors::server_error::{ServerError, ServerResult},
     rpc::{
         route_context::RouteContext,

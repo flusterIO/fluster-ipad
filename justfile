@@ -23,7 +23,7 @@ build_glue_code: build_conundrum_ts
 	cd {{justfile_directory()}}/packages/rust/conundrum; pnpm build:ts
 
 clear_conundrum_database:
-	trash /Users/bigsexy/Library/Application\ Support/conundrum/data/database
+	rm -rf /Users/bigsexy/Library/Application\ Support/conundrum/data/database
 
 write_javascript_glue:
 	./target/debug/fluster_internal_cli write-glue-code
@@ -43,7 +43,7 @@ format_swift:
 	swift-format format --configuration={{justfile_directory()}}/.swift-format -ipr {{justfile_directory()}}/packages/swift
 
 initialize_db_and_build_server: clear_conundrum_database
-	cd {{justfile_directory()}}/packages/rust/conundrum_db; cargo nextest run vector::database::initialize_db::initialize_db::testsinitializes_database --no-capture -v
+	cd {{justfile_directory()}}/packages/rust/conundrum_db; cargo nextest run vector::database::initialize_db::initialize_db::tests::initializes_database --no-capture -v
 	cd {{justfile_directory()}}/packages/rust/conundrum_server_rs; cargo build
 
 resolve_swift_packages:

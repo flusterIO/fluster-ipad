@@ -7,10 +7,11 @@ use conundrum::ecosystem::{
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
+use serde_arrow::schema::SchemaLike;
 use specta::Type;
 
 use crate::{
-    get_by_predicate, get_taggable_recordbatch, impl_default_crud, taggable_arrow_schema,
+    get_by_predicate, get_taggable_recordbatch, impl_default_crud,
     test_utils::faker_generators::fake_words_as_string::fake_words_as_string,
     vector::{
         database::{
@@ -18,6 +19,7 @@ use crate::{
             open_table::open_table,
         },
         models::{
+            ai::ai_interactions::AIInteractions,
             date_time::date_time::DateTime,
             primitives::case_insensitive_string::CaseInsensitiveString,
             taggables::{tag_location::TagLocation, taggable_update_partial::TaggablePartial},
@@ -36,6 +38,7 @@ pub struct Tag {
     pub location: TagLocation,
     pub ctime: DateTime,
     pub last_access: DateTime,
+    pub ai: AIInteractions,
 }
 
 impl From<String> for Tag {
@@ -43,24 +46,20 @@ impl From<String> for Tag {
         Tag { value: CaseInsensitiveString::from(value),
               location: TagLocation::Straggling,
               ctime: DateTime::new_now(),
-              last_access: DateTime::new_now() }
+              last_access: DateTime::new_now(),
+              ai: AIInteractions::default() }
     }
 }
 
 impl<'a> DBSchema<'a> for Tag {}
 
-impl_default_crud!(Tag, TaggablePartial);
+impl_default_crud!(Tag, TaggablePartial, String);
 
 impl<'a> DBEntity<'a> for Tag {
     type PartialUpdateType = TaggablePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         conundrum::ecosystem::db::tables::DatabaseTable::Tag
-    }
-
-    fn get_record_batch(data: Vec<Self>) -> DatabaseResult<arrow_array::RecordBatch>
-        where Self: Sized {
-        get_taggable_recordbatch!(data)
     }
 
     fn merge_keys() -> &'static [&'static str] {

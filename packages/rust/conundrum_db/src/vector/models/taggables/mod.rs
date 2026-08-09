@@ -1,4 +1,5 @@
 pub mod auto_taggable;
+pub mod auto_taggable_partial;
 pub mod get_taggable_recordbatch;
 pub mod subject;
 pub mod tag;

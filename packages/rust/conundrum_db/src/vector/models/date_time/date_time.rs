@@ -1,4 +1,5 @@
 use chrono::Utc;
+use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
 use fake::{Dummy, Fake, Faker, faker::chrono::en::DateTime as FakeChronoDateTime};
 use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
@@ -7,19 +8,23 @@ use specta::Type;
 use crate::vector::database::db_traits::db_field::DatabaseField;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
-pub struct DateTime(chrono::DateTime<Utc>);
+pub struct DateTime(i64);
 
 impl Dummy<Faker> for DateTime {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
         let dt: chrono::DateTime<Utc> = FakeChronoDateTime().fake();
-        Self(dt)
+        Self(dt.timestamp_millis())
     }
 }
 
 impl DateTime {
     pub fn new_now() -> DateTime {
         let d = Utc::now();
-        DateTime(d)
+        DateTime(d.timestamp_millis())
+    }
+
+    pub fn to_chrono(&self) -> DatabaseResult<chrono::DateTime<Utc>> {
+        chrono::DateTime::from_timestamp_millis(self.0).ok_or_else(|| DatabaseError::InvalidDateTime)
     }
 }
 
@@ -29,6 +34,6 @@ impl DatabaseField<i64> for DateTime {
     }
 
     fn to_db_representation(&self) -> i64 {
-        self.0.timestamp_millis()
+        self.0
     }
 }

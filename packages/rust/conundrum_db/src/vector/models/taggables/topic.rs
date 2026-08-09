@@ -10,6 +10,7 @@ use crate::{
     vector::{
         database::db_traits::{db_field::DatabaseField, entity_crud::EntityCRUD},
         models::{
+            ai::ai_interactions::AIInteractions,
             date_time::date_time::DateTime,
             primitives::case_insensitive_string::CaseInsensitiveString,
             taggables::{
@@ -35,6 +36,7 @@ pub struct Topic {
     pub location: TagLocation,
     pub ctime: DateTime,
     pub last_access: DateTime,
+    pub ai: AIInteractions,
 }
 
 impl From<String> for Topic {
@@ -42,13 +44,14 @@ impl From<String> for Topic {
         Topic { value: value.into(),
                 location: TagLocation::Straggling,
                 ctime: DateTime::new_now(),
-                last_access: DateTime::new_now() }
+                last_access: DateTime::new_now(),
+                ai: AIInteractions::default() }
     }
 }
 
 impl<'a> DBSchema<'a> for Topic {}
 
-impl_default_crud!(Topic, TaggablePartial);
+impl_default_crud!(Topic, TaggablePartial, String);
 
 impl<'a> DBEntity<'a> for Topic {
     type PartialUpdateType = TaggablePartial;

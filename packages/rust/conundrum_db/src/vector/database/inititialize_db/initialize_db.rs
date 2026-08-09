@@ -10,7 +10,7 @@ use log::warn;
 
 use crate::vector::models::{
     git::git_repository::GitRepository,
-    taggables::{subject::Subject, tag::Tag, topic::Topic},
+    taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
     workspace::user_workspace::UserWorkspace,
 };
 
@@ -36,18 +36,21 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
     let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::Tag,
                                                               schema: Tag::schema()?,
                                                               set_indices: None },
-                                              TableInitData { table: DatabaseTable::Topic,
-                                                              schema: Topic::schema()?,
-                                                              set_indices: None },
-                                              TableInitData { table: DatabaseTable::Subject,
-                                                              schema: Subject::schema()?,
-                                                              set_indices: None },
-                                              TableInitData { table: DatabaseTable::UserWorkspace,
-                                                              schema: UserWorkspace::schema()?,
-                                                              set_indices: None },
-                                              TableInitData { table: DatabaseTable::GitRepository,
-                                                              schema: GitRepository::schema()?,
-                                                              set_indices: None },
+                                              /* TableInitData { table: DatabaseTable::Topic,
+                                               *                 schema: Topic::schema()?,
+                                               *                 set_indices: None },
+                                               * TableInitData { table: DatabaseTable::Subject,
+                                               *                 schema: Subject::schema()?,
+                                               *                 set_indices: None },
+                                               * TableInitData { table: DatabaseTable::AutoTaggable,
+                                               *                 schema: AutoTaggable::schema()?,
+                                               *                 set_indices: None },
+                                               * TableInitData { table: DatabaseTable::UserWorkspace,
+                                               *                 schema: UserWorkspace::schema()?,
+                                               *                 set_indices: None },
+                                               * TableInitData { table: DatabaseTable::GitRepository,
+                                               *                 schema: GitRepository::schema()?,
+                                               *                 set_indices: None }, */
                                               /* TableInitData { table: DatabaseTable::QAPair,
                                                *                 schema: FlashCardEntity::arrow_schema(),
                                                *                 set_indices: None }, */];

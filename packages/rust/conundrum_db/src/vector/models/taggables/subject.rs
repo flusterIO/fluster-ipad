@@ -1,23 +1,17 @@
-use conundrum::ecosystem::{
-    db::traits::db_entity::{DBEntity, DBSchema},
-    error_handling::db_error::DatabaseResult,
-};
+use conundrum::ecosystem::db::traits::db_entity::{DBEntity, DBSchema};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
 
 use crate::{
-    get_taggable_recordbatch, impl_default_crud, taggable_arrow_schema,
-    vector::{
-        database::db_traits::db_field::DatabaseField,
-        models::{
-            date_time::date_time::DateTime,
-            primitives::{case_insensitive_string::CaseInsensitiveString, db_id::DatabaseId},
-            taggables::{
-                tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY},
-                tag_location::TagLocation,
-                taggable_update_partial::TaggablePartial,
-            },
+    impl_default_crud,
+    vector::models::{
+        ai::ai_interactions::AIInteractions,
+        date_time::date_time::DateTime,
+        primitives::{case_insensitive_string::CaseInsensitiveString, db_id::DatabaseId},
+        taggables::{
+            tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY},
+            tag_location::TagLocation,
+            taggable_update_partial::TaggablePartial,
         },
     },
 };
@@ -35,31 +29,27 @@ pub struct Subject {
     pub location: TagLocation,
     pub ctime: DateTime,
     pub last_access: DateTime,
+    pub ai: AIInteractions,
 }
 
-impl_default_crud!(Subject, TaggablePartial);
+impl_default_crud!(Subject, TaggablePartial, String);
+impl<'a> DBSchema<'a> for Subject {}
 
 impl From<String> for Subject {
     fn from(value: String) -> Self {
         Subject { value: CaseInsensitiveString::from(value),
                   location: TagLocation::Body,
                   ctime: DateTime::new_now(),
-                  last_access: DateTime::new_now() }
+                  last_access: DateTime::new_now(),
+                  ai: AIInteractions::default() }
     }
 }
-
-impl<'a> DBSchema<'a> for Subject {}
 
 impl<'a> DBEntity<'a> for Subject {
     type PartialUpdateType = TaggablePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         conundrum::ecosystem::db::tables::DatabaseTable::Subject
-    }
-
-    fn get_record_batch(data: Vec<Self>) -> DatabaseResult<arrow_array::RecordBatch>
-        where Self: Sized {
-        get_taggable_recordbatch!(data)
     }
 
     fn merge_keys() -> &'static [&'static str] {
