@@ -1,15 +1,13 @@
-use std::sync::Arc;
-
-use arrow_array::{Date64Array, RecordBatch, StringArray};
 use conundrum::ecosystem::{
     db::traits::db_entity::{DBEntity, DBSchema},
     error_handling::db_error::DatabaseResult,
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 
 use crate::{
-    get_taggable_recordbatch, taggable_arrow_schema,
+    get_taggable_recordbatch, impl_default_crud, taggable_arrow_schema,
     vector::{
         database::db_traits::db_field::DatabaseField,
         models::{
@@ -38,6 +36,8 @@ pub struct Subject {
     pub ctime: DateTime,
     pub last_access: DateTime,
 }
+
+impl_default_crud!(Subject, TaggablePartial);
 
 impl From<String> for Subject {
     fn from(value: String) -> Self {

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 use crate::{
-    get_taggable_recordbatch, taggable_arrow_schema,
+    get_by_predicate, get_taggable_recordbatch, impl_default_crud, taggable_arrow_schema,
     test_utils::faker_generators::fake_words_as_string::fake_words_as_string,
     vector::{
         database::{
@@ -49,6 +49,8 @@ impl From<String> for Tag {
 
 impl<'a> DBSchema<'a> for Tag {}
 
+impl_default_crud!(Tag, TaggablePartial);
+
 impl<'a> DBEntity<'a> for Tag {
     type PartialUpdateType = TaggablePartial;
 
@@ -73,8 +75,6 @@ impl<'a> DBEntity<'a> for Tag {
         self.value.to_comparison_string()
     }
 }
-
-impl<'a> EntityCRUD<'a, String, TaggablePartial> for Tag {}
 
 #[cfg(test)]
 mod tests {

@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 use crate::{
-    get_taggable_recordbatch, taggable_arrow_schema,
+    get_taggable_recordbatch, impl_default_crud, taggable_arrow_schema,
     vector::{
-        database::db_traits::db_field::DatabaseField,
+        database::db_traits::{db_field::DatabaseField, entity_crud::EntityCRUD},
         models::{
             date_time::date_time::DateTime,
             primitives::case_insensitive_string::CaseInsensitiveString,
@@ -17,6 +17,7 @@ use crate::{
                 tag_location::TagLocation,
                 taggable_update_partial::TaggablePartial,
             },
+            workspace::{user_workspace::UserWorkspace, user_workspace_partial::UserWorkspacePartial},
         },
     },
 };
@@ -46,6 +47,8 @@ impl From<String> for Topic {
 }
 
 impl<'a> DBSchema<'a> for Topic {}
+
+impl_default_crud!(Topic, TaggablePartial);
 
 impl<'a> DBEntity<'a> for Topic {
     type PartialUpdateType = TaggablePartial;
