@@ -61,7 +61,9 @@ function ComboboxInput({
     return (
         <InputGroup className={cn("w-auto", className)}>
             <ComboboxPrimitive.Input
-                render={<InputGroupInput disabled={disabled} />}
+                render={
+                    <InputGroupInput className="text-foreground" disabled={disabled} />
+                }
                 {...props}
             />
             <InputGroupAddon align="inline-end">
@@ -71,7 +73,7 @@ function ComboboxInput({
                         variant="ghost"
                         render={<ComboboxTrigger />}
                         data-slot="input-group-button"
-                        className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
+                        className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent *:text-foreground"
                         disabled={disabled}
                     />
                 )}
@@ -141,7 +143,7 @@ function ComboboxItem({
         <ComboboxPrimitive.Item
             data-slot="combobox-item"
             className={cn(
-                "relative flex w-full cursor-default items-center gap-2 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground not-data-[variant=destructive]:data-highlighted:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 text-foreground/80",
+                "relative flex w-full cursor-default items-center gap-2 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground not-data-[variant=destructive]:data-highlighted:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:text-foreground/80 text-foreground/80",
                 className,
             )}
             {...props}

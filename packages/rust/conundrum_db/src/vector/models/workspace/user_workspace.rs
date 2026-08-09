@@ -1,40 +1,55 @@
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
-use std::sync::Arc;
-use conundrum::ecosystem::error_handling::conundrum_fs_error::ConundrumFSResult;
+use arrow_schema::FieldRef;
+use conundrum::ecosystem::db::traits::db_entity::DBEntity;
+use conundrum::ecosystem::db::traits::db_entity::DBSchema;
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
+use conundrum::lang::constants::file_types::ParsableFileType;
+use conundrum_fs::workspace_management::file_walk_config::FileWalkConfig;
+use conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively;
 use fake::Dummy;
 use lancedb::arrow::arrow_schema::DataType;
 use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
+use serde_arrow::schema::SchemaLike;
+use serde_arrow::schema::TracingOptions;
 use serde_arrow::to_record_batch;
 use specta::Type;
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
-use crate::vector::database::db_traits::db_entity::ArrowSchemaRepresentable;
+use crate::vector::database::db_traits::db_field::RepeatedDatabaseField;
 use crate::vector::database::db_traits::entity_crud::EntityCRUD;
-use crate::vector::database::db_traits::{db_entity::DBEntity, validate::ValidateSelf};
+use crate::vector::database::db_traits::validate::ValidateSelf;
+use crate::vector::models::ai::ai_interactions::AIInteractions;
 use crate::vector::models::workspace::user_workspace_partial::UserWorkspacePartial;
 
 static USER_WORKSPACE_PRIMARY_KEY: &str = "root";
 static USER_WORKSPACE_MERGE_KEYS: &[&str] = &[USER_WORKSPACE_PRIMARY_KEY];
-
-fn default_bib_path() -> Vec<String> {
-    vec![String::from("/citations.bib")]
-}
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy)]
 pub struct UserWorkspace {
     /// The path to the root of the workspace and the primary key for the
     /// workspace.
     pub root: String,
+    /// A short, descriptive label for this workspace.
     pub label: Option<String>,
+    /// Many Conundrum search methods will ignore files based on any
+    /// `.gitignore` files found within the user's workspace.
     pub respect_gitignore: bool,
+    /// Ignore files hidden by the user's operating system.
     pub ignore_hidden: bool,
-    #[serde(default = "default_bib_path")]
-    pub bib_paths: Vec<String>,
+    /// A directory that can be used as a shortcut within url strings when
+    /// loading media, making paths relative to this directory valid.
+    /// ### Example
+    /// ```
+    /// <Image src="physics/images/recent_plot.png" />
+    /// ```
+    /// Where `physics/iamges/recent_plot.png` is a path nested within the
+    /// `resource_dir` directory.
     #[serde(default = "Default::default")]
-      pub resource_dir: String
+    pub resource_dir: String,
+    pub ai: AIInteractions,
 }
 
 impl UserWorkspace {
@@ -46,32 +61,35 @@ impl UserWorkspace {
         Path::new(&self.root).join(fp)
     }
 
-    pub async fn valid_bib_paths(&self) -> ConundrumFSResult<HashMap<String, bool>> {
-        if self.bib_paths.is_empty() {
-            let hm: HashMap<String, bool> = HashMap::new();
-            Ok(hm)
+    pub async fn parsable_files_of_type(&self, parsable_file_type: ParsableFileType) -> DatabaseResult<Vec<String>> {
+        let c = self.into_file_walk_config(parsable_file_type);
+        let mutex = get_filetype_in_workspace_recursively(c).await.map_err(DatabaseError::FileSystemError)?;
+        if let Ok(items) = Arc::try_unwrap(mutex) {
+            let x = items.into_inner();
+            Ok(x)
         } else {
-            let mut exists_data: HashMap<String, bool> = HashMap::new();
-            for bp in self.bib_paths.clone() {
-                let abs_path = self.join_path(&bp);
-                let exists = tokio::fs::try_exists(abs_path).await.is_ok_and(|x| x);
-                exists_data.insert(bp.to_string(), exists);
-            }
-            Ok(exists_data)
+            Err(DatabaseError::ThreadError)
         }
     }
 
     pub fn from_root_and_label(root: String, label: Option<String>) -> Self {
         Self { root,
                label,
-               bib_paths: default_bib_path(),
                ignore_hidden: true,
                respect_gitignore: true,
-               resource_dir: "/resources".to_string() }
+               resource_dir: "/resources".to_string(),
+               ai: AIInteractions::default() }
     }
 
     pub fn item_field_def() -> Field {
         Field::new("item", DataType::Utf8, true)
+    }
+
+    fn into_file_walk_config(&self, file_type: ParsableFileType) -> FileWalkConfig {
+        FileWalkConfig { ignore_hidden: self.ignore_hidden,
+                         respect_git_ignore: self.respect_gitignore,
+                         root: self.root.clone(),
+                         file_type }
     }
 }
 
@@ -89,40 +107,21 @@ impl From<String> for UserWorkspace {
     fn from(value: String) -> Self {
         Self { root: value,
                label: None,
-               bib_paths: default_bib_path(),
                respect_gitignore: true,
                ignore_hidden: true,
-               resource_dir: "/resources".to_string() }
+               resource_dir: "/resources".to_string(),
+               ai: AIInteractions::default() }
     }
 }
 
-impl ArrowSchemaRepresentable for UserWorkspace {
-    fn arrow_schema() -> std::sync::Arc<arrow_schema::Schema> {
-        Arc::new(arrow_schema::Schema::new(vec![Field::new("root", DataType::Utf8, false),
-                                                Field::new("label", DataType::Utf8, true),
-                                                Field::new("bib_paths",
-                                                           DataType::List(Arc::new(Self::item_field_def())),
-                                                           true),
-                                                Field::new("respect_gitignore", DataType::Boolean, false),
-                                                Field::new("ignore_hidden", DataType::Boolean, false),
-                                                Field::new("resource_dir", DataType::Utf8, true),]))
-    }
-}
+impl<'a> DBSchema<'a> for UserWorkspace {}
+impl<'a> EntityCRUD<'a, String, UserWorkspacePartial> for UserWorkspace {}
 
-impl DBEntity for UserWorkspace {
+impl<'a> DBEntity<'a> for UserWorkspace {
     type PartialUpdateType = UserWorkspacePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         conundrum::ecosystem::db::tables::DatabaseTable::UserWorkspace
-    }
-
-    fn get_record_batch(data: Vec<Self>)
-                        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<arrow_array::RecordBatch>
-        where Self: Sized {
-        to_record_batch(&Self::arrow_schema().fields, &data.clone()).map_err(|e| {
-                                                                        log::error!("Error: {:?}", e);
-                                                                        DatabaseError::SerializationError
-                                                                    })
     }
 
     fn merge_keys() -> &'static [&'static str] {
@@ -137,8 +136,6 @@ impl DBEntity for UserWorkspace {
         self.root.clone()
     }
 }
-
-impl EntityCRUD<String, UserWorkspacePartial> for UserWorkspace {}
 
 #[cfg(test)]
 mod tests {

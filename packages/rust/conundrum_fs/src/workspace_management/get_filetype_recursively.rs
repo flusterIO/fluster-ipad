@@ -50,9 +50,7 @@ pub async fn get_filetype_in_workspace_recursively(params: FileWalkConfig)
                                                  if let Ok(entry) = res {
                                                      if entry.file_type().map_or(false, |f| f.is_file()) {
                                                          let f = entry.path();
-                                                         println!("F: {:?}", f);
                                                          if let Some(p) = diff_paths(f, *root) {
-                                                             println!("Path: {:?}", p);
                                                              if let Some(substring) = p.to_str() {
                                                                  let mut _file_paths = fp.clone().lock_arc();
                                                                  _file_paths.push(substring.to_string());

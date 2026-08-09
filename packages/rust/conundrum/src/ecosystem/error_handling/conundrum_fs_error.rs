@@ -47,6 +47,9 @@ pub enum ConundrumFSError {
     InvalidFileMeta {
         target_file: String,
     },
+
+    #[error("The directory provided to Conundrum is invalid.")]
+    InvalidDirectory,
 }
 
 pub type ConundrumFSResult<T> where T: Sized

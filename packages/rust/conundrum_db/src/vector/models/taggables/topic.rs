@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use conundrum::ecosystem::db::traits::db_entity::{DBEntity, DBSchema};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -7,10 +8,7 @@ use specta::Type;
 use crate::{
     get_taggable_recordbatch, taggable_arrow_schema,
     vector::{
-        database::db_traits::{
-            db_entity::{ArrowSchemaRepresentable, DBEntity},
-            db_field::DatabaseField,
-        },
+        database::db_traits::db_field::DatabaseField,
         models::{
             date_time::date_time::DateTime,
             primitives::case_insensitive_string::CaseInsensitiveString,
@@ -47,13 +45,9 @@ impl From<String> for Topic {
     }
 }
 
-impl ArrowSchemaRepresentable for Topic {
-    fn arrow_schema() -> Arc<arrow_schema::Schema> {
-        taggable_arrow_schema!()
-    }
-}
+impl<'a> DBSchema<'a> for Topic {}
 
-impl DBEntity for Topic {
+impl<'a> DBEntity<'a> for Topic {
     type PartialUpdateType = TaggablePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {

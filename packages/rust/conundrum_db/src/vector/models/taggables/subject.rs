@@ -1,17 +1,17 @@
 use std::sync::Arc;
 
 use arrow_array::{Date64Array, RecordBatch, StringArray};
-use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
+use conundrum::ecosystem::{
+    db::traits::db_entity::{DBEntity, DBSchema},
+    error_handling::db_error::DatabaseResult,
+};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::{
     get_taggable_recordbatch, taggable_arrow_schema,
     vector::{
-        database::db_traits::{
-            db_entity::{ArrowSchemaRepresentable, DBEntity},
-            db_field::DatabaseField,
-        },
+        database::db_traits::db_field::DatabaseField,
         models::{
             date_time::date_time::DateTime,
             primitives::{case_insensitive_string::CaseInsensitiveString, db_id::DatabaseId},
@@ -48,13 +48,9 @@ impl From<String> for Subject {
     }
 }
 
-impl ArrowSchemaRepresentable for Subject {
-    fn arrow_schema() -> std::sync::Arc<lancedb::arrow::arrow_schema::Schema> {
-        taggable_arrow_schema!()
-    }
-}
+impl<'a> DBSchema<'a> for Subject {}
 
-impl DBEntity for Subject {
+impl<'a> DBEntity<'a> for Subject {
     type PartialUpdateType = TaggablePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {

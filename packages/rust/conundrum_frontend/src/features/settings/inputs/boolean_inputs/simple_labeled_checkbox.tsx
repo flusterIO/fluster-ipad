@@ -57,7 +57,7 @@ export const SimpleLabeledCheckbox = <T extends FieldValues>({
                 classes.textContainer,
               )}
             >
-              <div className={cn("", classes.title)}>{label}</div>
+              <div className={cn("text-foreground", classes.title)}>{label}</div>
               <FormFieldDescOrMessage desc={desc} />
             </div>
           </div>

@@ -1,31 +1,29 @@
-use std::fmt::Display;
+use std::{fmt::Display, sync::Arc};
 
 use arrow_array::{RecordBatch, RecordBatchIterator};
 use arrow_schema::ArrowError;
 use conundrum::ecosystem::{
-    db::tables::DatabaseTable,
+    db::{
+        tables::DatabaseTable,
+        traits::db_entity::{DBEntity, DBSchema},
+    },
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
 use futures_util::TryStreamExt;
 use lancedb::query::{ExecutableQuery, QueryBase};
-use serde::{Serialize, de::DeserializeOwned};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_arrow::{from_record_batch, to_record_batch};
 
 use crate::vector::database::{
-    db::ArcMutexDB,
-    db_traits::{
-        db_entity::{ArrowSchemaRepresentable, DBEntity},
-        db_identifiable::DatabaseIdentifiable,
-    },
-    open_table::open_table,
+    db::ArcMutexDB, db_traits::db_identifiable::DatabaseIdentifiable, open_table::open_table,
     pagination::PaginationParams,
 };
 
-pub trait EntityCRUD<IDType: DatabaseIdentifiable, UpdatePartial: ArrowSchemaRepresentable + Clone + Serialize>:
-    DBEntity<IDType> + Clone + Serialize {
+pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
+    DBEntity<'a, IDType> + Clone + Serialize {
     async fn save_many(items: Vec<Self>, db: &ArcMutexDB) -> DatabaseResult<()>
         where Self: Sized {
-        let schema = Self::arrow_schema();
+        let schema = Self::schema().map(Arc::new)?;
         let _db = db.clone().lock_owned().await;
         let tbl = open_table(_db, &Self::table()).await.inspect_err(|e| {
                                                             log::error!("Table Error: {:?}", e);
@@ -52,50 +50,16 @@ pub trait EntityCRUD<IDType: DatabaseIdentifiable, UpdatePartial: ArrowSchemaRep
         Self::save_many(vec![item], db).await
     }
 
-    async fn get_by_predicate<'a>(predicate: Option<String>,
-                                  pagination: Option<PaginationParams>,
-                                  db: &ArcMutexDB)
-                                  -> DatabaseResult<Vec<Self>>
-        where Self: Sized + DeserializeOwned {
-        let _db = db.clone().lock_owned().await;
-        let self_table = Self::table();
-        let tbl = open_table(_db, &self_table).await?;
-        let mut query_builder = tbl.query();
-        if let Some(_predicate) = predicate.clone() {
-            query_builder = query_builder.only_if(_predicate);
-        }
-        if let Some(_pagination) = pagination {
-            let (limit, offset) = _pagination.to_limit_and_offset();
-            query_builder = query_builder.limit(limit).offset(offset);
-        }
-        let res = query_builder.execute()
-                               .await
-                               .map_err(|e| {
-                                   log::error!("Error: {:?}", e);
-                                   DatabaseError::FailToQueryEntity { predicate: predicate.clone(),
-                                                                      table: self_table.clone() }
-                               })?
-                               .try_collect::<Vec<_>>()
-                               .await
-                               .map_err(|e| {
-                                   log::error!("Error: {:?}", e);
-                                   DatabaseError::SerializationError
-                               })?;
-
-        let mut items: Vec<Self> = Vec::new();
-
-        for record_batch in res {
-            let r: Vec<Self> = from_record_batch(&record_batch).map_err(|e| {
-                                                                   log::error!("Error: {:?}", e);
-                                                                   DatabaseError::SerializationError
-                                                               })?;
-            items.extend(r);
-        }
-
-        Ok(items)
+    async fn get_by_predicate(predicate: Option<String>,
+                              pagination: Option<PaginationParams>,
+                              db: &ArcMutexDB)
+                              -> DatabaseResult<Vec<Self>>
+        where Self: Sized {
+        // crate::get_by_predicate
+        todo!()
     }
 
-    async fn delete_by_predicate<'a>(predicate: &'a str, db: &ArcMutexDB) -> DatabaseResult<()> {
+    async fn delete_by_predicate<'b>(predicate: &'b str, db: &ArcMutexDB) -> DatabaseResult<()> {
         let tbl = Self::table();
         let _db = db.clone().lock_owned().await;
         let db_tbl = open_table(_db, &tbl).await?;
@@ -115,12 +79,13 @@ pub trait EntityCRUD<IDType: DatabaseIdentifiable, UpdatePartial: ArrowSchemaRep
         let db_tbl = open_table(_db, &tbl).await?;
         let merge_keys = Self::merge_keys();
 
-        let record_batch = to_record_batch(&UpdatePartial::arrow_schema().fields, &items.clone()).map_err(|e| {
-                               log::error!("Error: {:?}", e);
-                               DatabaseError::SerializationError
-                           })?;
+        let partial_fields = UpdatePartial::arrow_fields()?;
+        let record_batch = to_record_batch(&partial_fields, &items.clone()).map_err(|e| {
+                                                                               log::error!("Error: {:?}", e);
+                                                                               DatabaseError::SerializationError
+                                                                           })?;
 
-        let schema = Self::arrow_schema();
+        let schema = Self::schema().map(Arc::new)?;
         let stream = Box::new(RecordBatchIterator::new(vec![Ok(record_batch)].into_iter(), schema.clone()));
         db_tbl.merge_insert(merge_keys)
               .when_matched_update_all(None)

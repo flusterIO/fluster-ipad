@@ -1,7 +1,10 @@
 use std::sync::Arc;
 
 use arrow_array::{RecordBatchIterator, TimestampMillisecondArray};
-use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
+use conundrum::ecosystem::{
+    db::traits::db_entity::{DBEntity, DBSchema},
+    error_handling::db_error::{DatabaseError, DatabaseResult},
+};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -11,11 +14,7 @@ use crate::{
     test_utils::faker_generators::fake_words_as_string::fake_words_as_string,
     vector::{
         database::{
-            db_traits::{
-                db_entity::{ArrowSchemaRepresentable, DBEntity},
-                db_field::DatabaseField,
-                entity_crud::EntityCRUD,
-            },
+            db_traits::{db_field::DatabaseField, entity_crud::EntityCRUD},
             open_table::open_table,
         },
         models::{
@@ -48,13 +47,9 @@ impl From<String> for Tag {
     }
 }
 
-impl ArrowSchemaRepresentable for Tag {
-    fn arrow_schema() -> std::sync::Arc<lancedb::arrow::arrow_schema::Schema> {
-        taggable_arrow_schema!()
-    }
-}
+impl<'a> DBSchema<'a> for Tag {}
 
-impl DBEntity for Tag {
+impl<'a> DBEntity<'a> for Tag {
     type PartialUpdateType = TaggablePartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
@@ -79,7 +74,7 @@ impl DBEntity for Tag {
     }
 }
 
-impl EntityCRUD<String, TaggablePartial> for Tag {}
+impl<'a> EntityCRUD<'a, String, TaggablePartial> for Tag {}
 
 #[cfg(test)]
 mod tests {

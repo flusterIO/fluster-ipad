@@ -22,9 +22,11 @@ macro_rules! get_taggable_recordbatch {
         let ctimes_array = arrow_array::TimestampMillisecondArray::from(ctimes).with_timezone("UTC");
         let last_access_array = arrow_array::TimestampMillisecondArray::from(last_accesss).with_timezone("UTC");
 
-        let schema = Self::arrow_schema();
+        let schema = Self::schema()?;
 
-        arrow_array::RecordBatch::try_new(schema,
+        let arc_schema = std::sync::Arc::new(schema);
+
+        arrow_array::RecordBatch::try_new(arc_schema,
                                           vec![Arc::new(values_array),
                                                Arc::new(values_lc_array),
                                                Arc::new(locations_array),

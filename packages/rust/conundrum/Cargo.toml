@@ -18,6 +18,9 @@ component_configs = []
 docgen = []
 
 [dependencies]
+serde_arrow = { version = "0.14.2", features = ["arrow-58"] }
+arrow-array = "58"
+arrow-schema = "58"
 crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }
 miette = { version = "7.6.0", features = ["fancy"] }
 serde = { workspace = true, features = ["alloc", "rc"] }

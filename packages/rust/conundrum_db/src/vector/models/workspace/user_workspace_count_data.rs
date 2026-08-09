@@ -12,20 +12,16 @@ use crate::vector::{
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 pub struct UserWorkspaceCountData {
     pub workspace: UserWorkspace,
+    /// The total number of each parsable file found.
     pub count: HashMap<ParsableFileType, u32>,
-    /// Returns a map of all bib paths provided by the user, and the default bib
-    /// path and a boolean indicating whether they exist or not.
-    pub bib_path_exists: HashMap<String, bool>,
 }
 
 impl TryFromAsync<UserWorkspace> for UserWorkspaceCountData {
     async fn try_from_async(input: UserWorkspace) -> DatabaseResult<UserWorkspaceCountData> {
-        let bib_path_exists = input.valid_bib_paths().await?;
         let count = get_workspace_count(FileCountConfig { root: input.root.clone(),
                                                           respect_gitignore: input.respect_gitignore,
                                                           ignore_hidden: input.ignore_hidden }).await?;
         Ok(UserWorkspaceCountData { workspace: input.clone(),
-                                    count,
-                                    bib_path_exists })
+                                    count })
     }
 }

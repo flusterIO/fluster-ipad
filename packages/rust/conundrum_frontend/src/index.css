@@ -9,13 +9,13 @@
 
 body {
     background-color: var(--color-background);
-    color: hsl(var(--color-foreground));
 }
 
 html,
 body,
 #root,
 .app-container {
+    color: hsl(var(--color-foreground));
     overscroll-behavior-y: none;
     overscroll-behavior-block: none;
     scrollbar-width: none;

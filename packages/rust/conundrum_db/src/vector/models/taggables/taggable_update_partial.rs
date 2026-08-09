@@ -1,9 +1,10 @@
 use std::sync::Arc;
 
+use conundrum::ecosystem::db::traits::db_entity::DBSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::{
-    database::db_traits::{db_entity::ArrowSchemaRepresentable, db_field::DatabaseField},
+    database::db_traits::db_field::DatabaseField,
     models::{
         date_time::date_time::DateTime, primitives::case_insensitive_string::CaseInsensitiveString,
         taggables::tag_location::TagLocation,
@@ -18,11 +19,4 @@ pub struct TaggablePartial {
     pub last_access: Option<DateTime>,
 }
 
-impl ArrowSchemaRepresentable for TaggablePartial {
-    fn arrow_schema() -> std::sync::Arc<arrow_schema::Schema> {
-        let val = CaseInsensitiveString::field_definition("value", false);
-        Arc::new(lancedb::arrow::arrow_schema::Schema::new(vec![val,
-                                                                TagLocation::field_definition("location", true),
-                                                                DateTime::field_definition("last_access", true),]))
-    }
-}
+impl<'a> DBSchema<'a> for TaggablePartial {}

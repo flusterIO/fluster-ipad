@@ -3066,6 +3066,8 @@ version = "0.0.1"
 dependencies = [
  "anyhow",
  "arbitrary",
+ "arrow-array",
+ "arrow-schema",
  "askama 0.15.6",
  "askama-enum",
  "askama-markdown-cmark",
@@ -3154,6 +3156,7 @@ dependencies = [
  "scraper 0.26.0",
  "serde",
  "serde-wasm-bindgen",
+ "serde_arrow",
  "serde_json",
  "serde_with",
  "shlex",

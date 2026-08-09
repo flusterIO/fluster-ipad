@@ -37,7 +37,7 @@ export const AddWorkspaceDialog = ({
         },
     });
     const [pathExists, setPathExists] = useState(true);
-    const { mutateAsync } = rspc.useMutation("crud.workspace.save_many", {
+    const { mutateAsync } = rspc.useMutation("crud.user_workspace.save_many", {
         onError: (err) => {
             logMaybeObject(
                 "An error occurred while attempting to save this entry: ",

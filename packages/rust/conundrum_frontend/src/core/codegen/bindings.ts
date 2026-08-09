@@ -231,6 +231,8 @@ hide_components: EmbeddableComponentName[]; ui_params: UIParams; target: Conundr
 
 export type PathSourceType = "file" | "directory" | "any"
 
+export type PathVariant = "File" | "Dir"
+
 export type ProceduresLegacy = { queries: { key: "crud.git_repository.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
 /**
  * Will match the root of the workspace if this is a workspace repository.
@@ -263,12 +265,12 @@ is_workspace?: boolean;
  * Permissions regarding access to the file system can be found
  * on the settings page of the Conundrum dashboard.
  */
-allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
+allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
  */
-root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; bib_paths?: string[]; resource_dir?: string })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
+root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -290,7 +292,11 @@ entity_name: string; is_joining_table: boolean; description: string }[] } | { ke
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
  */
-entity_name: string; is_joining_table: boolean; description: string } } | { key: "fs.validate_path"; input: { path: string; 
+entity_name: string; is_joining_table: boolean; description: string } } | { key: "fs.explore_directory"; input: string; result: ({ 
+/**
+ * The _relative_ path
+ */
+path: string; variant: PathVariant; parsable: ParsableFileType | null })[] } | { key: "fs.validate_path"; input: { path: string; 
 /**
  * This only makes sense with an empty permitted_types array. Otherwise the
  * source_type is obviously a file. This will however validate 'any' paths
@@ -301,12 +307,11 @@ source_type: PathSourceType;
  * An empty array will default to any file type. Not just any parsable file
  * type.
  */
-permitted_types: ParsableFileType[] }; result: boolean } | { key: "version"; input: null; result: { database: SchemaVersion; server: ServerVersion } } | { key: "workspace_management.parsable_file_count"; input: string; result: { workspace: UserWorkspace; count: Partial<{ [key in ParsableFileType]: number }>; 
+permitted_types: ParsableFileType[] }; result: boolean } | { key: "version"; input: null; result: { database: SchemaVersion; server: ServerVersion } } | { key: "workspace_management.parsable_file_count"; input: string; result: { workspace: UserWorkspace; 
 /**
- * Returns a map of all bib paths provided by the user, and the default bib
- * path and a boolean indicating whether they exist or not.
+ * The total number of each parsable file found.
  */
-bib_path_exists: Partial<{ [key in string]: boolean }> } }; mutations: { key: "cdrm.compile_cdrm"; input: { opts: ParseConundrumOptions }; result: { note_id: string | null; content: string; tags: TagResult[]; front_matter: FrontMatterResult | null; ordered_citation_keys: string[]; dictionary_entries: DictionaryEntryResult[]; outgoing_links: NoteOutgoingLinkResult[]; toc: MarkdownHeadingStringifiedResult[]; 
+count: Partial<{ [key in ParsableFileType]: number }> } }; mutations: { key: "cdrm.compile_cdrm"; input: { opts: ParseConundrumOptions }; result: { note_id: string | null; content: string; tags: TagResult[]; front_matter: FrontMatterResult | null; ordered_citation_keys: string[]; dictionary_entries: DictionaryEntryResult[]; outgoing_links: NoteOutgoingLinkResult[]; toc: MarkdownHeadingStringifiedResult[]; 
 /**
  * Always set to false initially, but can be set to true by certain parsers
  * to avoid further parsing.
@@ -364,12 +369,12 @@ fs_path: string | null; url: string | null; id: DatabaseId;
  * A descriptive label used for both the UI and as further information for
  * AI.
  */
-label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.workspace.delete_by_predicate"; input: string; result: null } | { key: "crud.workspace.save_many"; input: ({ 
+label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.user_workspace.delete_by_predicate"; input: string; result: null } | { key: "crud.user_workspace.save_many"; input: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
  */
-root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; bib_paths?: string[]; resource_dir?: string })[]; result: null } | { key: "crud.workspace.update_many"; input: ({ 
+root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
@@ -437,7 +442,7 @@ export type UserWorkspace = {
  * The path to the root of the workspace and the primary key for the
  * workspace.
  */
-root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; bib_paths?: string[]; resource_dir?: string }
+root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string }
 
 export type WebGlueCodeGeneralFiles = "styles.css" | "katex.min.css" | "katex_ams_regular.woff2" | "katex_caligraphic_bold.woff2" | "katex_caligraphic_regular.woff2" | "katex_fraktur_bold.woff2" | "katex_fraktur_regular.woff2" | "katex_main_bold.woff2" | "katex_main_bolditalic.woff2" | "katex_main_italic.woff2" | "katex_main_regular.woff2" | "katex_math_bolditalic.woff2" | "katex_math_italic.woff2" | "katex_sansserif_bold.woff2" | "katex_sansserif_italic.woff2" | "katex_sansserif_regular.woff2" | "katex_script_regular.woff2" | "katex_size1_regular.woff2" | "katex_size2_regular.woff2" | "katex_size3_regular.woff2" | "katex_size4_regular.woff2" | "katex_typewriter_regular.woff2" | "Fira_Code_Regular.ttf"
 
@@ -455,10 +460,10 @@ export type Procedures = {
 	save_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id?: DatabaseId; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id: DatabaseId; label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[], output: null, error: unknown },
 },
-	workspace: {
+	user_workspace: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; bib_paths?: string[]; resource_dir?: string })[], error: unknown },
-	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; bib_paths?: string[]; resource_dir?: string })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ root: string; label: string | null; bib_paths: string[] | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null })[], output: null, error: unknown },
 },
 },
@@ -467,10 +472,11 @@ export type Procedures = {
 	table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "cdrm_vec", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
+	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
 	validate_path: { kind: "query", input: { path: string; source_type: PathSourceType; permitted_types: ParsableFileType[] }, output: boolean, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {
-	parsable_file_count: { kind: "query", input: string, output: { workspace: UserWorkspace; count: Partial<{ [key in ParsableFileType]: number }>; bib_path_exists: Partial<{ [key in string]: boolean }> }, error: unknown },
+	parsable_file_count: { kind: "query", input: string, output: { workspace: UserWorkspace; count: Partial<{ [key in ParsableFileType]: number }> }, error: unknown },
 },
 }

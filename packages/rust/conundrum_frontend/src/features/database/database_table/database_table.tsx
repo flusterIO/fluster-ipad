@@ -35,7 +35,6 @@ import { DatabaseTablePagination } from "./database_table_pagination";
 import { type DatabaseTableManager } from "./table_managers/table_manager";
 import { DatabaseTableCombobox } from "#/settings/inputs/combobox/database_table_combobox";
 import { useSearchParams } from "react-router";
-/* import { DatabaseTableColumnVisibility } from "./database_table_visibility_settings"; */
 
 interface Props {
     defaultVisibility?: Record<string, boolean>;
@@ -227,7 +226,7 @@ export const DatabaseTable = <TData extends RowData>({
                             <TableRow>
                                 <TableCell
                                     colSpan={columns?.length ?? 1}
-                                    className="h-24 text-center"
+                                    className="h-24 text-center text-foreground"
                                 >
                                     {tableManager
                                         ? `No ${tableManager.entityName()} entities found`
@@ -238,7 +237,7 @@ export const DatabaseTable = <TData extends RowData>({
                     </TableBody>
                 </Table>
                 <DatabaseTablePagination
-                    classes={{ container: "mt-4" }}
+                    classes={{ container: "mt-4 *:text-foreground" }}
                     table={table}
                 />
             </div>

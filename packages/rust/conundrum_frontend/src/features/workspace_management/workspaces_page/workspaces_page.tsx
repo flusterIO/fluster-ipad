@@ -8,7 +8,7 @@ import { Button } from "@/components/shad/button";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+
     interface WindowEventMap {
         "workspace-add": CustomEvent<undefined>;
     }
@@ -21,7 +21,7 @@ export const WorkspacesPage = (): ReactNode => {
         error,
     } = rspc.useQuery(
         [
-            "crud.workspace.get_by_predicate",
+            "crud.user_workspace.get_by_predicate",
             {
                 predicate: null,
                 pagination: {
