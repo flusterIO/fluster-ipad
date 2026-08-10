@@ -1,4 +1,6 @@
 pub mod errors;
+// pub mod mcp;
+// pub mod rig;
 pub mod routes;
 pub mod rpc;
 #[cfg(debug_assertions)]

@@ -64,6 +64,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "cdrm_vec")]
     #[serde(rename = "cdrm_vec")]
     MarkdownChunk,
+    #[strum(to_string = "mcp_tool")]
+    #[serde(rename = "mcp_tool")]
+    MCPToolRecord,
 }
 
 impl Hash for DatabaseTable {
@@ -107,6 +110,7 @@ impl DatabaseTable {
         match self {
             Self::Cdrm => String::from("Conundrum"),
             Self::QAPair => String::from("FlashCard"),
+            Self::MCPToolRecord => String::from("MCP Tool"),
             _ => self.to_string().to_case(convert_case::Case::Title),
         }
     }

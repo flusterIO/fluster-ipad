@@ -11,6 +11,7 @@ import { ViewConundrumPage } from "#/cdrm/view_conundrum_page";
 import { ViewWorkspaceDetailsPage } from "#/workspace_management/view_workspace_details_page/view_workspace_details_page";
 import { RouteErrorBoundary } from "#/error_handling/components/route_error_boundary";
 import { DatabaseTablePage } from "#/database/database_table/database_table_page";
+import { HealthPage } from "#/health/health_page";
 
 export const MainAppRoutes = (): ReactNode => {
     const location = useLocation();
@@ -44,6 +45,7 @@ export const MainAppRoutes = (): ReactNode => {
                     ErrorBoundary={RouteErrorBoundary}
                 />
                 <Route path={AppPaths.workspaces} Component={WorkspacesPage} index />
+                <Route path={AppPaths.health} Component={HealthPage} />
             </Routes>
         </AnimatePresence>
     );

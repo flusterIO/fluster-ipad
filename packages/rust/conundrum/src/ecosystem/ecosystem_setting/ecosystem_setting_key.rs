@@ -12,6 +12,9 @@ pub enum EcosystemSettingKey {
     #[serde(rename = "last_name")]
     #[strum(to_string = "last_name")]
     LastName,
+    #[serde(rename = "embedding_model")]
+    #[strum(to_string = "embedding_model")]
+    EmbeddingModel,
 }
 
 impl TryFrom<String> for EcosystemSettingKey {

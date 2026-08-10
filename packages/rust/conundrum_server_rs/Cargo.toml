@@ -56,6 +56,16 @@ rfd = "0.17.2"
 notify-rust = "4.18.0"
 mime-type = "0.2.0"
 strum.workspace = true
+rust-mcp-sdk = { version = "1.0.1", features = ["rust-mcp-macros"] }
+rust-mcp-axum = "1.0.1"
+rust-mcp-extra = "1.0.1"
+async-trait = "0.1.89"
+schemars = { version = "1.2.2", features = ["chrono04", "either1"] }
+indoc = "2.0.7"
+rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "rmcp", "memory"] }
+rig-lancedb = "0.41.0"
+rig-memory = "0.41.0"
+lancedb = "0.30.0"
 
 [lints]
 workspace = true

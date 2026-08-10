@@ -29,6 +29,7 @@ log = "0.4.33"
 strum.workspace = true
 pathdiff = "0.2.3"
 specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url"] }
+same-file = "1.0.6"
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

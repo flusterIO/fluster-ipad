@@ -46,11 +46,20 @@ async-trait = "0.1.89"
 rayon.workspace = true
 go-away = { version = "0.6.1", features = ["all"] }
 specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url", "derive"] }
-lancedb = "0.29.0"
+lancedb = "0.30.0"
 typeid = "1.0.3"
 serde_arrow = { version = "0.14.2", features = ["arrow-58"] }
 futures-util = "0.3.33"
 pdf-inspector = "0.1.7"
+pdf_oxide = { version = "0.3.77", features = ["ml", "ocr-tract", "rendering", "system-fonts"] }
+phonenumber = "0.3.10"
+test-log = "0.2.21"
+chrono-humanize = "0.2.3"
+calamine = { version = "0.36.1", features = ["chrono"] }
+docx-rs = "0.4.22"
+whisper-rs = "0.16.0"
+leptess = "0.14.0"
+rust-mcp-sdk = { version = "1.0.1", features = ["rust-mcp-macros"] }
 # serde_arrow = { version = "0.14.2", features = ["arrow-58"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

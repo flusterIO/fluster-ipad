@@ -7,6 +7,8 @@ use specta::Type;
 pub enum ServerError {
     #[error("Not Implemented")]
     NotImplemented,
+    #[error("A `{0}` entity could not be properly serialized.")]
+    SerializationError(String),
     #[error("I'll fill this out later... it's just docgen stuff.")]
     GeneralError,
     #[error("Latex conversion error.")]
@@ -19,6 +21,10 @@ pub enum ServerError {
     DatabaseError(DatabaseError),
     #[error("The server encounterd an error that it cannot recover from: {:?}", .0)]
     CoreFailure(String),
+    #[error("Conundrum failed while attempting to initialize a model.")]
+    ModelInitializationFailure,
+    #[error("Conundrum failed to generate a vector embedding.")]
+    EmbeddingError,
 }
 
 impl From<DatabaseError> for ServerError {
@@ -38,11 +44,24 @@ impl Error for ServerError {
                 rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Failed attempting to render html.",
                                                                                     None))
             }
+            Self::SerializationError(s) => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("Failed to initialize the `{}` model",
+                                                                                            s),
+                                                                                    None))
+            }
             Self::GeneralError => {
                 rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Method not yet implemented", None))
             }
             Self::LatexConversionError => {
                 rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Latex conversion error.", None))
+            }
+            Self::EmbeddingError => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(Self::EmbeddingError.to_string(),
+                                                                                    None))
+            }
+            Self::ModelInitializationFailure => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Model failed to initialize.",
+                                                                                    None))
             }
             Self::DatabaseError(e) => {
                 rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("Database Error: {:?}", e),
@@ -58,13 +77,9 @@ impl Error for ServerError {
 impl Into<StatusCode> for ServerError {
     fn into(self) -> StatusCode {
         match self {
-            Self::NotImplemented => StatusCode::NOT_IMPLEMENTED,
-            Self::HtmlRenderError => StatusCode::INTERNAL_SERVER_ERROR,
-            Self::LatexConversionError => StatusCode::INTERNAL_SERVER_ERROR,
-            Self::GeneralError => StatusCode::INTERNAL_SERVER_ERROR,
             Self::NotFound => StatusCode::NOT_FOUND,
-            Self::DatabaseError(_) => StatusCode::INTERNAL_SERVER_ERROR,
-            Self::CoreFailure(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::NotImplemented => StatusCode::NOT_IMPLEMENTED,
+            _ => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }

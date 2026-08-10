@@ -5,7 +5,7 @@ use crate::vector::{
     database::schema_version::{schema_version::SchemaVersion, server_version::ServerVersion},
     models::{
         date_time::date_time::DateTime,
-        ecosystem_data::{ecosystem_settings::EcosystemSettings, onboarding_dialogs::OnboardingDialogs},
+        ecosystem_data::{ecosystem_setting::EcosystemSettings, onboarding_dialogs::OnboardingDialogs},
     },
 };
 

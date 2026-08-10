@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{default, sync::Arc};
 
 use arrow_array::{RecordBatchIterator, TimestampMillisecondArray};
 use conundrum::ecosystem::{
@@ -36,22 +36,40 @@ pub struct Tag {
     #[dummy(faker = "fake_words_as_string(0..10)")]
     pub value: CaseInsensitiveString,
     pub location: TagLocation,
-    pub ctime: DateTime,
-    pub last_access: DateTime,
     pub ai: AIInteractions,
+    #[serde(default = "DateTime::new_now")]
+    pub ctime: DateTime,
+    #[serde(default = "DateTime::new_now")]
+    pub last_access: DateTime,
 }
 
 impl From<String> for Tag {
     fn from(value: String) -> Self {
         Tag { value: CaseInsensitiveString::from(value),
               location: TagLocation::Straggling,
+              ai: AIInteractions::default(),
               ctime: DateTime::new_now(),
-              last_access: DateTime::new_now(),
-              ai: AIInteractions::default() }
+              last_access: DateTime::new_now() }
     }
 }
 
-impl<'a> DBSchema<'a> for Tag {}
+impl<'a> DBSchema<'a> for Tag {
+    fn schema_options() -> DatabaseResult<serde_arrow::schema::TracingOptions> {
+        serde_arrow::schema::TracingOptions::default().enums_without_data_as_strings(true)
+                                                      .overwrite("ctime", DateTime::new_now())
+                                                      .map_err(|e| {
+                                                          println!("Here?");
+                                                          log::error!("Error: {:?}", e);
+                                                          DatabaseError::SerializationError
+                                                      })?
+                                                      .overwrite("last_access", DateTime::new_now())
+                                                      .map_err(|e| {
+                                                          println!("Here?");
+                                                          log::error!("Error: {:?}", e);
+                                                          DatabaseError::SerializationError
+                                                      })
+    }
+}
 
 impl_default_crud!(Tag, TaggablePartial, String);
 

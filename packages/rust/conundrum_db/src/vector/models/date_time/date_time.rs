@@ -1,19 +1,44 @@
+use std::{fmt::Display, str::FromStr};
+
 use chrono::Utc;
 use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
 use fake::{Dummy, Fake, Faker, faker::chrono::en::DateTime as FakeChronoDateTime};
 use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
+use serde_with::{DisplayFromStr, serde_as};
 use specta::Type;
 
 use crate::vector::database::db_traits::db_field::DatabaseField;
 
+#[serde_as]
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
-pub struct DateTime(i64);
+pub struct DateTime(#[serde_as(as = "DisplayFromStr")]
+                    #[specta(type = String)]
+                    i64);
 
 impl Dummy<Faker> for DateTime {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
         let dt: chrono::DateTime<Utc> = FakeChronoDateTime().fake();
-        Self(dt.timestamp_millis())
+        let s = dt.timestamp_millis();
+        Self(s)
+    }
+}
+
+impl Display for DateTime {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl FromStr for DateTime {
+    type Err = DatabaseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let n: i64 = s.parse().map_err(|e| {
+                                   log::error!("Error: {:?}", e);
+                                   DatabaseError::SerializationError
+                               })?;
+        Ok(Self(n))
     }
 }
 
@@ -24,7 +49,7 @@ impl DateTime {
     }
 
     pub fn to_chrono(&self) -> DatabaseResult<chrono::DateTime<Utc>> {
-        chrono::DateTime::from_timestamp_millis(self.0).ok_or_else(|| DatabaseError::InvalidDateTime)
+        chrono::DateTime::from_timestamp_millis(self.0).ok_or(DatabaseError::InvalidDateTime)
     }
 }
 

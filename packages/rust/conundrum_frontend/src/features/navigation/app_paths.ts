@@ -9,4 +9,5 @@ export enum AppPaths {
     database = "/database",
     search = "/search",
     viewConundrum = "/conundrum",
+    health = "/health",
 }
