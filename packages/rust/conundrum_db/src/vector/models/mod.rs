@@ -44,7 +44,7 @@
 //! A 'model' is more of a composed instance, an 'entity' of the same name is
 //! that model in the form as close to how it appears in the database as
 //! possible. In general, 'models' are more usable, but 'entities' are what
-//! your dashboard will display (if you're using the defaut Conundrum
+//! your dashboard will display (if you're using the default Conundrum
 //! dashboard).
 //!
 //! If you're vibe-coding your front-end, it's important to note this
@@ -54,6 +54,13 @@
 //! context-specific notes. Eventually tools will be available to handle this
 //! via a prompt, but this direct access will always be available as part of the
 //! default Conundrum dashboard.
+//!
+//! #### File Primitives
+//!
+//! These kind of wrap typical shapes like binary or text based files, as the
+//! fields appear repeatedly. The `XYWVectorModel` is the same as `XYZModel`,
+//! apart from the vector field. This is just because some items, like an image,
+//! don't make sense to chunk the same way the text extracted from a pdf does.
 pub mod academic;
 pub mod ai;
 pub mod application_support;
