@@ -36,6 +36,24 @@
 //! similary to the 'party with Steve', as it should know to treat the notepad
 //! on a notebook file more academically, perhaps keeping a log of correlations
 //! found with other data.
+//!
+//! ### Patterns
+//!
+//! #### Entities & Models
+//!
+//! A 'model' is more of a composed instance, an 'entity' of the same name is
+//! that model in the form as close to how it appears in the database as
+//! possible. In general, 'models' are more usable, but 'entities' are what
+//! your dashboard will display (if you're using the defaut Conundrum
+//! dashboard).
+//!
+//! If you're vibe-coding your front-end, it's important to note this
+//! distinction as what AI will "see" will be a combination of these `entities`,
+//! and a big part of what makes Conundrum capable is your ability to annotate
+//! these entities directly within the dashboard, providing AI with
+//! context-specific notes. Eventually tools will be available to handle this
+//! via a prompt, but this direct access will always be available as part of the
+//! default Conundrum dashboard.
 pub mod academic;
 pub mod ai;
 pub mod application_support;
