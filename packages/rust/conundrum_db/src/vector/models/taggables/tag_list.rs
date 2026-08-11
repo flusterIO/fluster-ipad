@@ -1,3 +1,4 @@
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::{database::db_traits::db_field::DatabaseField, models::taggables::tag::Tag};
@@ -7,7 +8,7 @@ use crate::vector::{database::db_traits::db_field::DatabaseField, models::taggab
 /// This is a list of tags that can be applied to a number of resources in the
 /// user's directory. Use these as the most generic way to link content within
 /// the user's database.
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct TagList(Vec<Tag>);
 
 impl TagList {

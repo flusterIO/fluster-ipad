@@ -1,7 +1,10 @@
+use arrow_schema::Field;
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
 use std::{fmt::Display, str::FromStr};
+
+use crate::vector::database::db_traits::db_field::DatabaseField;
 
 /// ## AssignmentStatus
 ///
@@ -9,7 +12,7 @@ use std::{fmt::Display, str::FromStr};
 /// setup in a kanban board. Feel free to build your UI either replicating that
 /// kanban board, or just ignore certain statuses and treat it as a boolean
 /// indicating 'in-progress' or not... you do you.
-#[derive(Clone, Serialize, Deserialize, Debug)]
+#[derive(Clone, Serialize, Deserialize, Debug, specta::Type, Dummy)]
 #[serde(tag = "tag", content = "content", try_from = "String")]
 pub enum AssignmentStatus {
     /// The initial status for a general task that's incomplete.
@@ -66,5 +69,11 @@ impl TryFrom<String> for AssignmentStatus {
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
         Self::from_str(value.as_str())
+    }
+}
+
+impl DatabaseField for AssignmentStatus {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        Field::new(field_key.to_string(), arrow_schema::DataType::Utf8, nullable)
     }
 }

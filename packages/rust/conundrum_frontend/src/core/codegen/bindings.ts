@@ -151,7 +151,7 @@ export type DatabaseTable = "tag" | "topic" | "subject" | "cdrm" | "typst" | "us
 /**
  * ---- Vectors ----
  */
-"cdrm_vec"
+"cdrm_vec" | "mcp_tool"
 
 export type DateTime = string
 
@@ -269,7 +269,7 @@ is_workspace?: boolean;
  * Permissions regarding access to the file system can be found
  * on the settings page of the Conundrum dashboard.
  */
-allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
+allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime?: DateTime; last_access?: DateTime }[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
@@ -315,7 +315,7 @@ entity_name: string; is_joining_table: boolean; description: string }[] } | { ke
 /**
  * ---- Vectors ----
  */
-"cdrm_vec"; result: { table: DatabaseTable; 
+"cdrm_vec" | "mcp_tool"; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -397,15 +397,15 @@ fs_path: string | null; url: string | null; id: DatabaseId;
  * A descriptive label used for both the UI and as further information for
  * AI.
  */
-label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.subject.delete_by_predicate"; input: string; result: null } | { key: "crud.subject.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.subject.update_many"; input: ({ 
+label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.subject.delete_by_predicate"; input: string; result: null } | { key: "crud.subject.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[]; result: null } | { key: "crud.subject.update_many"; input: ({ 
 /**
  * The value will never be updated, only used for comparison.
  */
-value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.tag.delete_by_predicate"; input: string; result: null } | { key: "crud.tag.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.tag.update_many"; input: ({ 
+value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.tag.delete_by_predicate"; input: string; result: null } | { key: "crud.tag.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime?: DateTime; last_access?: DateTime }[]; result: null } | { key: "crud.tag.update_many"; input: ({ 
 /**
  * The value will never be updated, only used for comparison.
  */
-value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.topic.delete_by_predicate"; input: string; result: null } | { key: "crud.topic.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.topic.update_many"; input: ({ 
+value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.topic.delete_by_predicate"; input: string; result: null } | { key: "crud.topic.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[]; result: null } | { key: "crud.topic.update_many"; input: ({ 
 /**
  * The value will never be updated, only used for comparison.
  */
@@ -493,20 +493,20 @@ export type SupportedCodeBlockSyntax = "Plain Text" | "ASP" | "HTML (ASP)" | "Ac
 
 export type SupportedCodeBlockTheme = "1337" | "Coldark-Cold" | "Coldark-Dark" | "DarkNeon" | "Dracula" | "GitHub" | "Monokai Extended" | "Monokai Extended Bright" | "Monokai Extended Light" | "Monokai Extended Origin" | "Nord" | "OneHalfDark" | "OneHalfLight" | "Solarized (dark)" | "Solarized (light)" | "Sublime Snazzy" | "TwoDark" | "Visual Studio Dark+" | "ansi" | "base16" | "base16-256" | "gruvbox-dark" | "gruvbox-light" | "zenburn"
 
-export type TagLocation = "FrontMatter" | "Body" | 
+export type TagLocation = "front_matter" | "body" | 
 /**
  * For apps using Conundrum content, this might come from a panel, a modal
  * or what-not, but not from the note itself. If it comes from the note or
  * front-matter, use those fields so they can be removed strategically.
  */
-"AppInserted" | "AutoTaggable" | 
+"app_inserted" | "auto_taggable" | 
 /**
  * Straggling when a tag is inserted through the REST api or another means
  * where it is user-defined, but not necessarily associated with a
  * note. These will never be automatically cleaned up as part of the
  * syncing process.
  */
-"Straggling"
+"straggling"
 
 export type TagResult = { body: string }
 
@@ -565,20 +565,20 @@ export type Procedures = {
 },
 	subject: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], error: unknown },
-	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], error: unknown },
+	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	tag: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], error: unknown },
-	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime?: DateTime; last_access?: DateTime }[], error: unknown },
+	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime?: DateTime; last_access?: DateTime }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	topic: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], error: unknown },
-	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], error: unknown },
+	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	user_workspace: {
@@ -590,7 +590,7 @@ export type Procedures = {
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "cdrm_vec", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },

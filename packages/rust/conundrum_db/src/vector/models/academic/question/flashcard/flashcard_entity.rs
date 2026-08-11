@@ -1,8 +1,3 @@
-use std::sync::Arc;
-
-use lancedb::arrow::arrow_schema::Schema;
-use serde::{Deserialize, Serialize};
-
 use crate::vector::{
     database::db_traits::db_field::DatabaseField,
     models::{
@@ -10,12 +5,17 @@ use crate::vector::{
         primitives::db_id::DatabaseId,
     },
 };
+use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use fake::Dummy;
+use serde::{Deserialize, Serialize};
+use serde_arrow::schema::SchemaLike;
+use std::sync::Arc;
 
 pub fn default_empty() -> u32 {
     0
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Dummy)]
 pub struct FlashCardEntity {
     #[serde(default = "DatabaseId::default")]
     pub id: DatabaseId,
@@ -33,5 +33,26 @@ pub struct FlashCardEntity {
     pub difficulty: Option<f32>,
     #[serde(default = "DateTime::new_now")]
     pub ctime: DateTime,
+    #[serde(default = "DateTime::new_now")]
+    pub utime: DateTime,
+    #[serde(default = "DateTime::new_now")]
     pub last_access: DateTime,
+}
+
+impl<'a> DBSchema<'a> for FlashCardEntity {
+    fn arrow_fields(
+        )
+        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
+    {
+        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
+                Arc::new(String::field_definition("question", false)),
+                FlashcardValue::field_definition("answer", true),
+                Arc::new(String::field_definition("explanation", true)),
+                Arc::new(u32::field_definition("correct_responses", false)),
+                Arc::new(u32::field_definition("incorrect_responses", false)),
+                Arc::new(f32::field_definition("difficulty", true)),
+                Arc::new(DateTime::field_definition("ctime", false)),
+                Arc::new(DateTime::field_definition("utime", false)),
+                Arc::new(DateTime::field_definition("last_access", false)),])
+    }
 }

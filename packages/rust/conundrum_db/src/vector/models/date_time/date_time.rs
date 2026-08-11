@@ -1,4 +1,4 @@
-use std::{fmt::Display, str::FromStr};
+use std::{fmt::Display, str::FromStr, sync::Arc};
 
 use chrono::Utc;
 use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::{DisplayFromStr, serde_as};
 use specta::Type;
 
-use crate::vector::database::db_traits::db_field::DatabaseField;
+use crate::vector::database::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation};
 
 #[serde_as]
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
@@ -35,7 +35,7 @@ impl FromStr for DateTime {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let n: i64 = s.parse().map_err(|e| {
-                                   log::error!("Error: {:?}", e);
+                                   log::error!("DateTime Serialization Error: {:?}", e);
                                    DatabaseError::SerializationError
                                })?;
         Ok(Self(n))
@@ -53,11 +53,13 @@ impl DateTime {
     }
 }
 
-impl DatabaseField<i64> for DateTime {
+impl DatabaseField for DateTime {
     fn field_definition(field_key: &'static str, nullable: bool) -> lancedb::arrow::arrow_schema::Field {
         Field::new(field_key, lancedb::arrow::arrow_schema::DataType::Timestamp(lancedb::arrow::arrow_schema::TimeUnit::Millisecond, Some("UTC".to_string().into()) ), nullable)
     }
+}
 
+impl DatabaseFieldRepresentation<i64> for DateTime {
     fn to_db_representation(&self) -> i64 {
         self.0
     }

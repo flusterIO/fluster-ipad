@@ -4,3 +4,4 @@ pub mod ai_generated_status;
 pub mod ai_interactions;
 pub mod ai_notes;
 pub mod tool;
+pub mod ai_interactions_partial;

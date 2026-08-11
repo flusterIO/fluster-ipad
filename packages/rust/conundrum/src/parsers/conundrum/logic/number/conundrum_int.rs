@@ -29,6 +29,13 @@ impl From<i32> for ConundrumInt {
     }
 }
 
+
+impl From<ConundrumInt> for i64 {
+    fn from(value: ConundrumInt) -> Self {
+        value.0
+    }
+}
+
 impl Into<i32> for ConundrumInt {
     fn into(self) -> i32 {
         let n: i32 = self.0 as i32;

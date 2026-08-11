@@ -14,7 +14,11 @@ export const SettingsSection = ({
 }: SettingsSectionProps): ReactNode => {
     return (
         <div className="w-full max-w-270 mx-auto my-6">
-            <h3 className={cn("text-xl font-semibold", !desc && "mb-4")}>{label}</h3>
+            <h3
+                className={cn("text-xl font-semibold text-foreground", !desc && "mb-4")}
+            >
+                {label}
+            </h3>
             {desc ? (
                 <div className="text-sm text-muted-foreground mb-4">{desc}</div>
             ) : null}

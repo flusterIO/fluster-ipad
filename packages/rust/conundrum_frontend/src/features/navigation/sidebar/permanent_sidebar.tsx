@@ -9,6 +9,7 @@ import {
     BoxesIcon,
     FileSpreadsheet,
     WalletCards,
+    HeartPulseIcon,
 } from "lucide-react";
 import { AppPaths } from "../app_paths";
 import { useLocation } from "react-router";
@@ -29,6 +30,10 @@ const buttons: Omit<PermanentSidebarButtonProps, "active">[] = [
     {
         href: AppPaths.database,
         icon: FileSpreadsheet,
+    },
+    {
+        href: AppPaths.health,
+        icon: HeartPulseIcon,
     },
 ];
 

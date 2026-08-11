@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use conundrum::ecosystem::db::{
     tables::DatabaseTable,
     traits::db_entity::{DBEntity, DBSchema},
@@ -7,17 +9,21 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     impl_default_crud,
-    vector::models::{
-        date_time::date_time::DateTime,
-        primitives::db_id::DatabaseId,
-        taggables::{
-            auto_taggable_partial::AutoTaggablePartial, taggable::TaggableVariant,
-            taggable_update_partial::TaggablePartial,
+    vector::{
+        database::db_traits::db_field::DatabaseField,
+        models::{
+            date_time::date_time::DateTime,
+            primitives::db_id::DatabaseId,
+            taggables::{
+                auto_taggable_partial::AutoTaggablePartial, taggable::TaggableVariant,
+                taggable_update_partial::TaggablePartial,
+            },
         },
     },
 };
+use specta::Type;
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy)]
 pub struct AutoTaggable {
     pub id: DatabaseId,
     /// The value of the taggable that will be automatically applied.
@@ -38,7 +44,20 @@ pub struct AutoTaggable {
 }
 
 impl_default_crud!(AutoTaggable, AutoTaggablePartial, DatabaseId);
-impl<'a> DBSchema<'a> for AutoTaggable {}
+impl<'a> DBSchema<'a> for AutoTaggable {
+    fn arrow_fields(
+        )
+        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
+    {
+        let r = vec![DatabaseId::field_definition("id", false),
+                     String::field_definition("value", false),
+                     TaggableVariant::field_definition("variant", false),
+                     String::field_definition("glob", false),
+                     DateTime::field_definition("ctime", false),
+                     DateTime::field_definition("utime", false),];
+        Ok(vec![])
+    }
+}
 
 impl<'a> DBEntity<'a, DatabaseId> for AutoTaggable {
     type PartialUpdateType = AutoTaggablePartial;

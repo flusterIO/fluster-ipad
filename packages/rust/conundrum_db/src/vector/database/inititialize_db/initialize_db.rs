@@ -9,9 +9,7 @@ use lancedb::{Table, arrow::arrow_schema::Schema, connect};
 use log::warn;
 
 use crate::vector::models::{
-    git::git_repository::GitRepository,
-    taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
-    workspace::user_workspace::UserWorkspace,
+    academic::{assignment::{academic_assignment::Assignment, academic_assignment_entity::AssignmentEntity, assignment_subject::AssignmentSubject, assignment_tag::AssignmentTag, assignment_topic::AssignmentTopic, milestone::{milestone::Milestone, milestone_alarm::MilestoneAlarm, milestone_entity::MilestoneEntity}}, question::flashcard::flashcard_entity::FlashCardEntity}, git::git_repository::GitRepository, taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic}, text::cdrm::cdrm_content::CdrmContent, workspace::user_workspace::UserWorkspace
 };
 
 pub type DatabaseIndexSetupFunction = fn(&Table) -> DatabaseResult<()>;
@@ -29,32 +27,74 @@ async fn create_table(db: &lancedb::Connection, schema: &Arc<Schema>, table: &Da
       .mode(lancedb::database::CreateTableMode::Create)
       .execute()
       .await
-      .map_err(|_| DatabaseError::FailToCreateTable(table.clone()))
+      .map_err(|e| {
+          log::error!("Create Table Error: {:?}", e);
+          DatabaseError::FailToCreateTable(table.clone())
+      })
 }
 
 pub async fn initialize_local_database() -> DatabaseResult<()> {
     let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::Tag,
                                                               schema: Tag::schema()?,
                                                               set_indices: None },
-                                              /* TableInitData { table: DatabaseTable::Topic,
-                                               *                 schema: Topic::schema()?,
-                                               *                 set_indices: None },
-                                               * TableInitData { table: DatabaseTable::Subject,
-                                               *                 schema: Subject::schema()?,
-                                               *                 set_indices: None },
-                                               * TableInitData { table: DatabaseTable::AutoTaggable,
-                                               *                 schema: AutoTaggable::schema()?,
-                                               *                 set_indices: None },
-                                               * TableInitData { table: DatabaseTable::UserWorkspace,
-                                               *                 schema: UserWorkspace::schema()?,
-                                               *                 set_indices: None },
-                                               * TableInitData { table: DatabaseTable::GitRepository,
+                                               TableInitData { table: DatabaseTable::Topic,
+                                                                schema: Topic::schema()?,
+                                                                set_indices: None },
+                                                TableInitData { table: DatabaseTable::Subject,
+                                                                schema: Subject::schema()?,
+                                                                set_indices: None },
+                                                TableInitData { table: DatabaseTable::AutoTaggable,
+                                                                schema: AutoTaggable::schema()?,
+                                                                set_indices: None },
+                                                TableInitData { table: DatabaseTable::UserWorkspace,
+                                                                schema: UserWorkspace::schema()?,
+                                                                set_indices: None },
+                                                TableInitData { 
+                                                    table: DatabaseTable::Cdrm,
+                                                    schema: CdrmContent::schema()?,
+                                                    set_indices: None
+                                                },
+                                                TableInitData { 
+                                                    table: DatabaseTable::Milestone,
+                                                    schema: MilestoneEntity::schema()?,
+                                                    set_indices: None
+                                                },
+                                                TableInitData { 
+                                                    table: DatabaseTable::MilestoneAlarm,
+                                                    schema: MilestoneAlarm::schema()?,
+                                                    set_indices: None
+                                                },
+                                                TableInitData { 
+                                                    table: DatabaseTable::Assignment,
+                                                    schema: AssignmentEntity::schema()?,
+                                                    set_indices: None
+                                                },
+                                                TableInitData { 
+                                                    table: DatabaseTable::AssignmentTopic,
+                                                    schema: AssignmentTopic::schema()?,
+                                                    set_indices: None
+                                                },
+                                                TableInitData { 
+                                                    table: DatabaseTable::AssignmentSubject,
+                                                    schema: AssignmentSubject::schema()?,
+                                                    set_indices: None
+                                                },
+                                                TableInitData { 
+                                                    table: DatabaseTable::AssignmentTag,
+                                                    schema: AssignmentTag::schema()?,
+                                                    set_indices: None
+                                                },
+                                                TableInitData { 
+                                                    table: DatabaseTable::QAPair,
+                                                    schema: FlashCardEntity::schema()?,
+                                                    set_indices: None
+                                                },
+                                               /* TableInitData { table: DatabaseTable::GitRepository,
                                                *                 schema: GitRepository::schema()?,
                                                *                 set_indices: None }, */
                                               /* TableInitData { table: DatabaseTable::QAPair,
                                                *                 schema: FlashCardEntity::arrow_schema(),
                                                *                 set_indices: None }, */];
-    println!("Here you lonely loser.");
     if let Ok(db_path) = get_app_database_dir() {
         let db = connect(db_path.to_str().unwrap()).execute().await.map_err(|e| {
                                                                         println!("Error in initialize_database: {:?}",
@@ -93,7 +133,7 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
 mod tests {
     use super::*;
 
-    #[tokio::test]
+    #[test_log::test(tokio::test)]
     async fn initializes_database() {
         initialize_local_database().await
                                    .inspect_err(|e| {

@@ -43,6 +43,21 @@ pub enum DatabaseTable {
     #[strum(to_string = "auto_taggable")]
     #[serde(rename = "auto_taggable")]
     AutoTaggable,
+    #[strum(to_string = "milestone")]
+    #[serde(rename = "milestone")]
+    Milestone,
+    #[strum(to_string = "assignment")]
+    #[serde(rename = "assignment")]
+    Assignment,
+    #[strum(to_string = "assignment_tag")]
+    #[serde(rename = "assignment_tag")]
+    AssignmentTag,
+    #[strum(to_string = "assignment_topic")]
+    #[serde(rename = "assignment_topic")]
+    AssignmentTopic,
+    #[strum(to_string = "assignment_subject")]
+    #[serde(rename = "assignment_subject")]
+    AssignmentSubject,
     #[strum(to_string = "numeric_academic_res_metric")]
     #[serde(rename = "numeric_academic_res_metric")]
     /// Stores just the `AcademicResultMetricKey` and the value.
@@ -60,6 +75,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "workspace_repository")]
     #[serde(rename = "workspace_repository")]
     WorkspaceRepository,
+    #[strum(to_string = "milestone_alarm")]
+    #[serde(rename = "milestone_alarm")]
+    MilestoneAlarm,
     /// ---- Vectors ----
     #[strum(to_string = "cdrm_vec")]
     #[serde(rename = "cdrm_vec")]

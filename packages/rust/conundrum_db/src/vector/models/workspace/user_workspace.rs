@@ -1,4 +1,8 @@
-use arrow_schema::FieldRef;
+use crate::vector::database::db_traits::db_field::DatabaseField;
+use crate::vector::database::db_traits::entity_crud::EntityCRUD;
+use crate::vector::database::db_traits::validate::ValidateSelf;
+use crate::vector::models::ai::ai_interactions::AIInteractions;
+use crate::vector::models::workspace::user_workspace_partial::UserWorkspacePartial;
 use conundrum::ecosystem::db::traits::db_entity::DBEntity;
 use conundrum::ecosystem::db::traits::db_entity::DBSchema;
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
@@ -14,21 +18,9 @@ use lancedb::query::ExecutableQuery;
 use lancedb::query::QueryBase;
 use serde::{Deserialize, Serialize};
 use serde_arrow::from_record_batch;
-use serde_arrow::schema::SchemaLike;
-use serde_arrow::schema::TracingOptions;
-use serde_arrow::to_record_batch;
 use specta::Type;
-use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
-
-use crate::get_by_predicate;
-use crate::vector::database::db_traits::db_field::RepeatedDatabaseField;
-use crate::vector::database::db_traits::entity_crud::EntityCRUD;
-use crate::vector::database::db_traits::validate::ValidateSelf;
-use crate::vector::database::open_table::open_table;
-use crate::vector::models::ai::ai_interactions::AIInteractions;
-use crate::vector::models::workspace::user_workspace_partial::UserWorkspacePartial;
 
 static USER_WORKSPACE_PRIMARY_KEY: &str = "root";
 static USER_WORKSPACE_MERGE_KEYS: &[&str] = &[USER_WORKSPACE_PRIMARY_KEY];
@@ -56,6 +48,17 @@ pub struct UserWorkspace {
     #[serde(default = "Default::default")]
     pub resource_dir: String,
     pub ai: AIInteractions,
+}
+
+impl<'a> DBSchema<'a> for UserWorkspace {
+    fn arrow_fields() -> DatabaseResult<Vec<Arc<Field>>> {
+        Ok(vec![Arc::new(String::field_definition("root", false)),
+                Arc::new(String::field_definition("label", true)),
+                Arc::new(bool::field_definition("respect_gitignore", false)),
+                Arc::new(bool::field_definition("ignore_hidden", false)),
+                Arc::new(String::field_definition("resource_dir", false)),
+                Arc::new(AIInteractions::field_definition("ai", false))])
+    }
 }
 
 impl UserWorkspace {
@@ -119,8 +122,6 @@ impl From<String> for UserWorkspace {
                ai: AIInteractions::default() }
     }
 }
-
-impl<'a> DBSchema<'a> for UserWorkspace {}
 
 impl<'a> EntityCRUD<'a, String, UserWorkspacePartial> for UserWorkspace {
     async fn get_by_predicate(predicate: Option<String>,

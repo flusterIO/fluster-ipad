@@ -67,3 +67,9 @@ impl PartialEq<f64> for ConundrumFloat {
         self.0 == *other
     }
 }
+
+impl Into<f64> for ConundrumFloat {
+    fn into(self) -> f64 {
+        self.0
+    }
+}

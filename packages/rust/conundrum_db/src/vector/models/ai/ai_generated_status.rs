@@ -2,12 +2,14 @@ use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use fake::{Dummy, Faker};
 use serde::{Deserialize, Serialize};
 
+use crate::vector::database::db_traits::db_field::DatabaseField;
+
 // ## AIGeneratedStatus
 //
 // This is the status that represents the amount of input AI had on the creation
 // on a given instance of a database model. AI should always update this field
 // accordingly when updating other parts of a model.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type)]
 pub enum AIGeneratedStatus {
     /// This was completely written by humans.
     None = 0,
@@ -56,5 +58,11 @@ impl Dummy<Faker> for AIGeneratedStatus {
         } else {
             AIGeneratedStatus::All
         }
+    }
+}
+
+impl DatabaseField for AIGeneratedStatus {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        String::field_definition(field_key, nullable)
     }
 }

@@ -1,5 +1,9 @@
-use crate::vector::{database::db_traits::db_field::DatabaseField, models::taggables::{subject::Subject, tag_list::TagList, topic::Topic}};
+use crate::vector::{
+    database::db_traits::db_field::DatabaseField,
+    models::taggables::{subject::Subject, tag_list::TagList, topic::Topic},
+};
 use arrow_schema::Field;
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 /// # Taggables
@@ -7,7 +11,7 @@ use serde::{Deserialize, Serialize};
 /// graph style search throughout the user's notes. Use these fields to find
 /// related content in their database as frequently as you need to, to help them
 /// grow their knowledge base and accomplish their short and long term goals.
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct Taggables {
     pub tags: TagList,
     pub topic: Option<Topic>,

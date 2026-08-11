@@ -9,7 +9,7 @@ use crate::{
         date_time::date_time::DateTime,
         primitives::{case_insensitive_string::CaseInsensitiveString, db_id::DatabaseId},
         taggables::{
-            tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY},
+            tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY, taggable_fields},
             tag_location::TagLocation,
             taggable_update_partial::TaggablePartial,
         },
@@ -33,7 +33,14 @@ pub struct Subject {
 }
 
 impl_default_crud!(Subject, TaggablePartial, String);
-impl<'a> DBSchema<'a> for Subject {}
+impl<'a> DBSchema<'a> for Subject {
+    fn arrow_fields(
+        )
+        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
+    {
+        Ok(taggable_fields())
+    }
+}
 
 impl From<String> for Subject {
     fn from(value: String) -> Self {

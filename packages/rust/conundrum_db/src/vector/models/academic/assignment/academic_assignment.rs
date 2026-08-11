@@ -1,13 +1,14 @@
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{
-    academic::assignment::milestone::Milestone,
-    date_time::{alarm::Alarm, date_time::DateTime},
+    academic::assignment::milestone::milestone::Milestone,
+    date_time::{alarm::alarm::Alarm, date_time::DateTime},
     primitives::db_id::DatabaseId,
     taggables::{subject::Subject, tag::Tag, topic::Topic},
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct Assignment {
     pub id: DatabaseId,
     pub label: String,

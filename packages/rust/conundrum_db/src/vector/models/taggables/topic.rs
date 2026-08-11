@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 use crate::{
-    get_taggable_recordbatch, impl_default_crud, taggable_arrow_schema,
+    impl_default_crud, taggable_arrow_schema,
     vector::{
         database::db_traits::{db_field::DatabaseField, entity_crud::EntityCRUD},
         models::{
@@ -14,7 +14,7 @@ use crate::{
             date_time::date_time::DateTime,
             primitives::case_insensitive_string::CaseInsensitiveString,
             taggables::{
-                tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY},
+                tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY, taggable_fields},
                 tag_location::TagLocation,
                 taggable_update_partial::TaggablePartial,
             },
@@ -49,7 +49,14 @@ impl From<String> for Topic {
     }
 }
 
-impl<'a> DBSchema<'a> for Topic {}
+impl<'a> DBSchema<'a> for Topic {
+    fn arrow_fields(
+        )
+        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
+    {
+        Ok(taggable_fields())
+    }
+}
 
 impl_default_crud!(Topic, TaggablePartial, String);
 
@@ -58,12 +65,6 @@ impl<'a> DBEntity<'a> for Topic {
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         conundrum::ecosystem::db::tables::DatabaseTable::Topic
-    }
-
-    fn get_record_batch(data: Vec<Self>)
-                        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<arrow_array::RecordBatch>
-        where Self: Sized {
-        get_taggable_recordbatch!(data)
     }
 
     fn merge_keys() -> &'static [&'static str] {

@@ -1,23 +1,20 @@
 use std::{default, sync::Arc};
 
-use arrow_array::{RecordBatchIterator, TimestampMillisecondArray};
+use arrow_schema::Field;
 use conundrum::ecosystem::{
     db::traits::db_entity::{DBEntity, DBSchema},
-    error_handling::db_error::{DatabaseError, DatabaseResult},
+    error_handling::db_error::DatabaseResult,
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
-use serde_arrow::schema::SchemaLike;
+use serde_with::serde_as;
 use specta::Type;
 
 use crate::{
-    get_by_predicate, get_taggable_recordbatch, impl_default_crud,
+    impl_default_crud,
     test_utils::faker_generators::fake_words_as_string::fake_words_as_string,
     vector::{
-        database::{
-            db_traits::{db_field::DatabaseField, entity_crud::EntityCRUD},
-            open_table::open_table,
-        },
+        database::db_traits::db_field::DatabaseField,
         models::{
             ai::ai_interactions::AIInteractions,
             date_time::date_time::DateTime,
@@ -31,16 +28,23 @@ use crate::{
 pub static TAGGABLE_PRIMARY_KEY: &str = "value";
 pub static TAGGABLE_MERGE_KEYS: &[&str] = &[TAGGABLE_PRIMARY_KEY];
 
+#[serde_as]
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, Type)]
 pub struct Tag {
     #[dummy(faker = "fake_words_as_string(0..10)")]
     pub value: CaseInsensitiveString,
     pub location: TagLocation,
     pub ai: AIInteractions,
-    #[serde(default = "DateTime::new_now")]
     pub ctime: DateTime,
-    #[serde(default = "DateTime::new_now")]
     pub last_access: DateTime,
+}
+
+pub fn taggable_fields() -> Vec<Arc<Field>> {
+    vec![Arc::new(CaseInsensitiveString::field_definition("value", false)),
+         Arc::new(TagLocation::field_definition("location", false)),
+         Arc::new(AIInteractions::field_definition("ai", false)),
+         Arc::new(DateTime::field_definition("ctime", false)),
+         Arc::new(DateTime::field_definition("last_access", false)),]
 }
 
 impl From<String> for Tag {
@@ -54,20 +58,8 @@ impl From<String> for Tag {
 }
 
 impl<'a> DBSchema<'a> for Tag {
-    fn schema_options() -> DatabaseResult<serde_arrow::schema::TracingOptions> {
-        serde_arrow::schema::TracingOptions::default().enums_without_data_as_strings(true)
-                                                      .overwrite("ctime", DateTime::new_now())
-                                                      .map_err(|e| {
-                                                          println!("Here?");
-                                                          log::error!("Error: {:?}", e);
-                                                          DatabaseError::SerializationError
-                                                      })?
-                                                      .overwrite("last_access", DateTime::new_now())
-                                                      .map_err(|e| {
-                                                          println!("Here?");
-                                                          log::error!("Error: {:?}", e);
-                                                          DatabaseError::SerializationError
-                                                      })
+    fn arrow_fields() -> DatabaseResult<Vec<Arc<arrow_schema::Field>>> {
+        Ok(taggable_fields())
     }
 }
 
@@ -97,7 +89,7 @@ impl<'a> DBEntity<'a> for Tag {
 mod tests {
     use fake::{Fake, Faker};
 
-    use crate::test_utils::get_test_db::get_test_database;
+    use crate::{test_utils::get_test_db::get_test_database, vector::database::db_traits::entity_crud::EntityCRUD};
 
     use super::*;
 

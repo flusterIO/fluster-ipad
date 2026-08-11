@@ -1,3 +1,4 @@
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 /// ## AlertSeverity
@@ -8,7 +9,7 @@ use serde::{Deserialize, Serialize};
 /// Important = 2,
 /// Urgent = 3,
 /// ```
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub enum AlertSeverity {
     Reminder = 0,
     Assigment = 1,

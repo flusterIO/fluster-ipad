@@ -4,7 +4,7 @@ use conundrum::{
 
 use crate::vector::models::{
     academic::{
-        assignment::{academic_assignment::Assignment, milestone::Milestone},
+        assignment::{academic_assignment::Assignment, milestone::milestone::Milestone},
         class::class_model::ClassModel,
         data::numeric::{numeric_data::NumericData, numeric_result::numeric_result::NumericResult},
         question::flashcard::flashcard_model::FlashCardModel,
@@ -12,7 +12,7 @@ use crate::vector::models::{
     },
     application_support::application_data::ApplicationData,
     bib::bibliography::Bibliography,
-    date_time::{alarm::Alarm, alert::alert::Alert, schedule::time_block::TimeBlock},
+    date_time::{alarm::alarm::Alarm, alert::alert::Alert, schedule::time_block::TimeBlock},
     ecosystem_data::ecosystem_data::EcosystemData,
     meta::{front_matter::front_matter::FrontMatter, summary::summary::SummaryModel},
     taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use specta::Type;
 
-use crate::vector::database::db_traits::db_field::DatabaseField;
+use crate::vector::database::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation};
 
 #[derive(strum_macros::Display, Serialize, Deserialize, Clone, Debug, Dummy, Type)]
 pub enum TagLocation {
@@ -32,11 +32,13 @@ pub enum TagLocation {
     Straggling,
 }
 
-impl DatabaseField<String> for TagLocation {
+impl DatabaseField for TagLocation {
     fn field_definition(field_key: &'static str, nullable: bool) -> lancedb::arrow::arrow_schema::Field {
         Field::new(field_key, lancedb::arrow::arrow_schema::DataType::Utf8, nullable)
     }
+}
 
+impl DatabaseFieldRepresentation<String> for TagLocation {
     fn to_db_representation(&self) -> String {
         self.to_string()
     }

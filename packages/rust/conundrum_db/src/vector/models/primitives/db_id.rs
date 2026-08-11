@@ -6,7 +6,13 @@ use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-use crate::vector::database::db_traits::{db_field::DatabaseField, db_identifiable::DatabaseIdentifiable};
+use crate::vector::database::{
+    db_traits::{
+        db_field::{DatabaseField, DatabaseFieldRepresentation},
+        db_identifiable::DatabaseIdentifiable,
+    },
+    inititialize_db::initialize_db::DatabaseIndexSetupFunction,
+};
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 /// The developers of Surreal should be punched in the fucking eye. Make up your
@@ -56,11 +62,13 @@ impl Dummy<Faker> for DatabaseId {
     }
 }
 
-impl DatabaseField<String> for DatabaseId {
+impl DatabaseField for DatabaseId {
     fn field_definition(field_key: &'static str, nullable: bool) -> lancedb::arrow::arrow_schema::Field {
         Field::new(field_key, lancedb::arrow::arrow_schema::DataType::Utf8, nullable)
     }
+}
 
+impl DatabaseFieldRepresentation<String> for DatabaseId {
     fn to_db_representation(&self) -> String {
         self.0.clone()
     }
