@@ -12,6 +12,7 @@ import { ViewWorkspaceDetailsPage } from "#/workspace_management/view_workspace_
 import { RouteErrorBoundary } from "#/error_handling/components/route_error_boundary";
 import { DatabaseTablePage } from "#/database/database_table/database_table_page";
 import { HealthPage } from "#/health/health_page";
+import { GenerateFlashcardPage } from "#/study/generate_flashcard_page/generate_flashcard_page";
 
 export const MainAppRoutes = (): ReactNode => {
     const location = useLocation();
@@ -37,15 +38,11 @@ export const MainAppRoutes = (): ReactNode => {
                     Component={ViewWorkspaceDetailsPage}
                     index={false}
                     id={AppPaths.singleWorkspaceView}
-                    /* loader={async ({ params }) => { */
-                    /*     console.log("params: ", params); */
-                    /*     const fsPath = params.fs_path; */
-                    /*     console.log("fsPath: ", fsPath); */
-                    /* }} */
                     ErrorBoundary={RouteErrorBoundary}
                 />
                 <Route path={AppPaths.workspaces} Component={WorkspacesPage} index />
                 <Route path={AppPaths.health} Component={HealthPage} />
+                <Route path={AppPaths.aiGenerateFlashcard} Component={GenerateFlashcardPage} />
             </Routes>
         </AnimatePresence>
     );

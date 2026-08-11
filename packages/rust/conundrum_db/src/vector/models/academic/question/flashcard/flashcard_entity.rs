@@ -1,21 +1,29 @@
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::{
-        academic::question::flashcard::flashcard_value::FlashcardValue, date_time::date_time::DateTime,
-        primitives::db_id::DatabaseId,
+use crate::{
+    impl_default_crud,
+    vector::{
+        database::db_traits::db_field::DatabaseField,
+        models::{
+            academic::question::flashcard::{
+                flashcard_entity_partial::FlashCardEntityPartial, flashcard_value::FlashcardValue,
+            },
+            date_time::date_time::DateTime,
+            primitives::db_id::DatabaseId,
+        },
     },
 };
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::{
+    tables::DatabaseTable,
+    traits::db_entity::{DBEntity, DBSchema},
+};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
-use serde_arrow::schema::SchemaLike;
 use std::sync::Arc;
 
 pub fn default_empty() -> u32 {
     0
 }
 
-#[derive(Clone, Serialize, Deserialize, Dummy)]
+#[derive(Clone, Serialize, Deserialize, Dummy, specta::Type)]
 pub struct FlashCardEntity {
     #[serde(default = "DatabaseId::default")]
     pub id: DatabaseId,
@@ -56,3 +64,25 @@ impl<'a> DBSchema<'a> for FlashCardEntity {
                 Arc::new(DateTime::field_definition("last_access", false)),])
     }
 }
+
+impl<'a> DBEntity<'a, DatabaseId> for FlashCardEntity {
+    type PartialUpdateType = FlashCardEntityPartial;
+
+    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
+        DatabaseTable::QAPair
+    }
+
+    fn merge_keys() -> &'static [&'static str] {
+        &["id"]
+    }
+
+    fn primary_key() -> &'static str {
+        "id"
+    }
+
+    fn primary_value(&self) -> DatabaseId {
+        self.id.clone()
+    }
+}
+
+impl_default_crud!(FlashCardEntity, FlashCardEntityPartial, DatabaseId);
