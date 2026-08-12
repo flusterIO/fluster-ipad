@@ -2,7 +2,6 @@
 
 Conundrum is not just a language, it's a modular ecosystem of tools built to help user's utilize their computer as the academic powerhouse that it is. For user's that never intend to become full-time developers or dedicate years to learning their first programming language well, Conundrum aims to be the middle ground by providing a set of _high-level_ properties that are domain specific to note-taking, and now a _protocol_ that will allow the user to take their notes to other applications should they choose.
 
-
 ### Motivation
 
 #### Technical Motivation
@@ -11,14 +10,13 @@ While html and css are far more flexible than markdown, their extensive property
 
 Markdown on the other hand is very simple, providing only a handful of _non-verbal_ pieces of information to models trained on markdown (ie: is the text in a header?), but this limits the expressiveness of the user's content and limits the potential information that can be passed both to AI, and visually to other humans.
 
-Conundrum aims to take a different approach: Make the language the user writes ***simple*** but descriptive, build everything manually, document it, and let AI build on top of the pieces built by the community of developers, while distributing any potential earnings back to the developers that contributed to the project in a manner that is objective and fair. 
+Conundrum aims to take a different approach: Make the language the user writes **_simple_** but descriptive, build everything manually, document it, and let AI build on top of the pieces built by the community of developers, while distributing any potential earnings back to the developers that contributed to the project in a manner that is objective and fair.
 
 ##### Financial Motivation
 
-Should the project ever be so lucky as to exceed this amount, any excess funds will go to charity, as no individual person should ever make more than the median annual developer salary proportional to the amount of time that they've contributed to the project and the 'seniority' of the task, as determined by AI. 
+Should the project ever be so lucky as to exceed this amount, any excess funds will go to charity, as no individual person should ever make more than the median annual developer salary proportional to the amount of time that they've contributed to the project and the 'seniority' of the task, as determined by AI.
 
 Once the project is properly established, AI will be asked to review each _merged_ pull request with the following prompt and pseudo-code:
-
 
 ```
 let {
@@ -39,8 +37,15 @@ If the task falls somewhere in the middle, mark it as "staff".
 })
 ```
 
-This approach of course will need to scale with the scope of the project. It's illogical for somebody that's borderline homeless to establish accounts for a project that is yet to receive any attention, but if this project ever receives any repetitive income, a server will be setup with this functionality within 60 days.
+At the end of a financial year, whenever that is determined to be, Conundrum will calculate all income and distribute it proportionally according to the 3 pay tiers: "junior", "staff" and "senior" which maps to the median salary for the equivalent engineering position. Of course, if the income of the project is less than this sum, than each developer will be effected proportionally.
 
+<Admonition title="The state of the industry" sidebar right>
+
+The goal here is partly to encourage cooperation amongst developers in the face of a struggling industry. The reason I'm not releasing this under an MIT license is to encourage the growth of _open-source_ platforms, not just low level libraries. If we as developers can come together to build the tools to make Conundrum content and the Conundrum ecosystem a meaningful part of an academic's workflow while offering a significant return on investment and ease of deployment for things like blogs and vibe-coded front-ends, we can create a sustainable, ever growing suite of nearly free academic tools that rewards those that build them.
+
+</Admonition>
+
+This approach of course will need to scale with the scope of the project. It's illogical for somebody that's borderline homeless to establish accounts for a project that is yet to receive any attention, but if this project ever receives any repetitive income, a server will be setup with this functionality within 60 days.
 
 ## Goals
 
@@ -50,12 +55,27 @@ The primary goal of Conundrum and the Conundrum ecosystem is to be a drop-in, fi
 
 Once the `Rhai` integration is complete, Conundrum may grow to support other **high-level** functionalities like renaming files with AI, or eventually to become something of a scripting language with a native ai module, but it will always first and foremost be a note taking DSL with an academic bias.
 
-### Programmability 
+### Programmability
 
 Conundrum's primary goal is to be the middle ground between the simplicity of Markdown and the complexity but expressiveness of HTML/JS or other full-scale programming languages. The xml style `.jsx` syntax was an obvious pick for this, as the 'children' property is a natural fit for many note taking tasks.
 
 While Conundrum, as of now does not support typical 'programming', an integration with **Rhai** is planned as an embedded language, but the goals don't end there. Once integration with Rhai is enabled, it should be within reach to create a shared memory block that can be utilized by _all_ code-blocks within the note, should those languages be available for compilation at compile time.
 
+### Templating
+
+Conundrum should have first class support for templating, as after all, it's a note taking language. While not currently functional, eventually the `Fragment` syntax familiar to React developers will allow executing and embedding Rhai code, or a domain specific fork of Rhai. This means something like
+
+````md
+```rust
+fn my_calculation() {
+    return do_stuff();
+}
+```
+
+As you can see, the result of calculation <>my_calculation()</> is...
+````
+
+Where `my_calculation` is embedded in a code block within the same note.
 
 ## Appendix
 
@@ -63,6 +83,6 @@ While Conundrum, as of now does not support typical 'programming', an integratio
 
 - [ ] Tauri (work has been started)
 - [ ] A blog via vite
+- [ ] A blog via Next
 
-
-[^1]: The 'code' has not yet been implemented, as I don't even have internet let alone income, but the prompts will not change in the interest of fairness.
+[^1]: The 'code' has not yet been implemented, as I don't even have internet let alone income to access a server scale model, but the prompts will not change in the interest of fairness and honesty.

@@ -16,7 +16,7 @@ impl Default for DBVector {
 
 impl DBVector {
     pub fn field_definition(nullable: bool) -> arrow_schema::Field {
-        Field::new("vec",
+        Field::new("vector",
                    arrow_schema::DataType::FixedSizeList(Arc::new(Field::new("item",
                                                                              arrow_schema::DataType::Float32,
                                                                              true)),

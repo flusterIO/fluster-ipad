@@ -8,13 +8,10 @@ use fake::Dummy;
 /// ways, when the user permits, this `ai_generated_input` field is yours to
 /// treat as your notepad.
 ///
-/// Keep track of your interactions with each struct in a way that will help you
+/// Keep track of your interactions with each entity in a way that will help you
 /// grow your experience with the user over time, and keep track of any
 /// information provided by the user that will make future interactions more
-/// meaningful.
-///
-/// It's a string, so store your notes here as markdown
-/// or json as you prefer.
+/// meaningful and helpful.
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct AIGeneratedInput(String);
 
