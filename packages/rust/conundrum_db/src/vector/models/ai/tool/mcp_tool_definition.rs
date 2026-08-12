@@ -1,9 +1,11 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+
+use crate::vector::models::ai::tool::mcp_tool_name::MCPToolName;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct MCPToolDefinition {
-    pub name: String,
+    pub name: MCPToolName,
     pub description: String,
-    pub input_schema: Value,
+    pub human_description: Option<String>,
+    pub input_schema: String,
 }

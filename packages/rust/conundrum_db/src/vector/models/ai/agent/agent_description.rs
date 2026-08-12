@@ -1,17 +1,23 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::{
+    tables::DatabaseTable,
+    traits::db_entity::{DBEntity, DBSchema},
+};
 use fake::Dummy;
 
-use crate::vector::{
-    database::db_traits::{db_field::DatabaseField, db_identifiable::DatabaseIdentifiable},
-    models::{
-        ai::{
-            agent::agent_primary_task::AgentPrimaryTask,
-            tool::{mcp_tool_name::MCPToolName, mcp_tool_name_list::MCPToolNameList},
+use crate::{
+    impl_default_crud,
+    vector::{
+        database::db_traits::db_field::DatabaseField,
+        models::{
+            ai::{
+                agent::{agent_description_partial::AgentDescriptionPartial, agent_primary_task::AgentPrimaryTask},
+                tool::mcp_tool_name_list::MCPToolNameList,
+            },
+            date_time::date_time::DateTime,
+            primitives::db_id::DatabaseId,
         },
-        date_time::date_time::DateTime,
-        primitives::db_id::DatabaseId,
     },
 };
 
@@ -48,3 +54,25 @@ impl<'a> DBSchema<'a> for AgentDescription {
                 Arc::new(DateTime::field_definition("utime", false)),])
     }
 }
+
+impl<'a> DBEntity<'a, DatabaseId> for AgentDescription {
+    type PartialUpdateType = AgentDescriptionPartial;
+
+    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
+        DatabaseTable::AgentDescription
+    }
+
+    fn merge_keys() -> &'static [&'static str] {
+        &["id"]
+    }
+
+    fn primary_key() -> &'static str {
+        "id"
+    }
+
+    fn primary_value(&self) -> DatabaseId {
+        self.id.clone()
+    }
+}
+
+impl_default_crud!(AgentDescription, AgentDescriptionPartial, DatabaseId);

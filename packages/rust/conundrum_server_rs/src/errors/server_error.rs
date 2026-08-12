@@ -25,6 +25,8 @@ pub enum ServerError {
     ModelInitializationFailure,
     #[error("Conundrum failed to generate a vector embedding.")]
     EmbeddingError,
+    #[error("Conundrum encountered a transport error: {0}")]
+    TransportError(String),
 }
 
 impl From<DatabaseError> for ServerError {
@@ -63,6 +65,7 @@ impl Error for ServerError {
                 rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Model failed to initialize.",
                                                                                     None))
             }
+            Self::TransportError(s) => rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(s, None)),
             Self::DatabaseError(e) => {
                 rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("Database Error: {:?}", e),
                                                                                     None))

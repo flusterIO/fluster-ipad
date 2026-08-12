@@ -1,4 +1,4 @@
-use rig::providers::ollama::Client as OllamaClient;
+use rig::providers::ollama::{Client as OllamaClient, OllamaApiKey};
 
 use crate::errors::server_error::{ServerError, ServerResult};
 
@@ -10,10 +10,10 @@ pub struct RigClient(pub OllamaClient);
 
 impl RigClient {
     pub fn initialize() -> ServerResult<Self> {
-        let client = OllamaClient::new(None).map_err(|e| {
-                                                log::error!("Failed to initialize model with the error: {:?}", e);
-                                                ServerError::ModelInitializationFailure
-                                            })?;
+        let client = OllamaClient::new(OllamaApiKey::default()).map_err(|e| {
+                         log::error!("Failed to initialize model with the error: {:?}", e);
+                         ServerError::ModelInitializationFailure
+                     })?;
         Ok(RigClient(client))
     }
 }

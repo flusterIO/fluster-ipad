@@ -1,22 +1,28 @@
-use conundrum::ecosystem::{db::tables::DatabaseTable, error_handling::db_error::DatabaseError};
+use arrow_array::{RecordBatch, RecordBatchIterator};
+use conundrum::ecosystem::{
+    db::{tables::DatabaseTable, traits::db_entity::DBSchema},
+    error_handling::db_error::DatabaseError,
+};
 use conundrum_db::vector::{
     database::db::ArcMutexDB,
-    models::{ai::tool::mcp_tool_record::MCPToolRecord, vector::vector::DB_VECTOR_DIMENSIONS},
+    models::{
+        ai::tool::{mcp_tool_record::MCPToolRecord, tool_definition_list::ToolDefinitionList},
+        vector::vector::DB_VECTOR_DIMENSIONS,
+    },
 };
 use indoc::formatdoc;
-use lancedb::Table;
-use lancedb::table::WriteOptions;
 use rig::{client::EmbeddingsClient, embeddings::EmbeddingModel};
 use rig_lancedb::{LanceDbVectorIndex, SearchParams};
+use serde_arrow::to_record_batch;
+use std::sync::Arc;
 
 use crate::{
     errors::server_error::{ServerError, ServerResult},
-    mcp::tools::tool_list::tool_list::ToolList,
     rig::rig_client::RigClient,
 };
 
 pub async fn create_tool_index(db: &ArcMutexDB) -> ServerResult<()> {
-    let tool_list = ToolList::all_tools();
+    let tool_list = ToolDefinitionList::new_all_tools();
     let client = RigClient::initialize()?;
     // TODO: Get the user's settings from the DB here if they exist and select the
     // proper model.
@@ -35,7 +41,7 @@ pub async fn create_tool_index(db: &ArcMutexDB) -> ServerResult<()> {
         Tool Name: {}
         Description: {}
         Parameters: {}
-        ", tool.name, desc, schema_json};
+        ", tool.name, desc.unwrap_or_default(), schema_json};
         let embedding = embedding_model.embed_text(&embedding_text).await.map_err(|e| {
                                                                               log::error!("Embedding Error: {:?}", e);
                                                                               ServerError::EmbeddingError
@@ -47,7 +53,9 @@ pub async fn create_tool_index(db: &ArcMutexDB) -> ServerResult<()> {
 
     let table_name = DatabaseTable::MCPToolRecord.to_string();
     let _db = db.clone().lock_owned().await;
-    let _table = _db.create_table(table_name, tool_records)
+    let tool_record_schema = MCPToolRecord::schema()?;
+    let arc_schema = Arc::new(tool_record_schema);
+    let _table = _db.create_empty_table(table_name, arc_schema.clone())
                     .mode(lancedb::database::CreateTableMode::Overwrite)
                     .execute()
                     .await
@@ -55,11 +63,28 @@ pub async fn create_tool_index(db: &ArcMutexDB) -> ServerResult<()> {
                         log::error!("Table Generation Error: {:?}", e);
                         ServerError::DatabaseError(DatabaseError::FailToCreateTable(DatabaseTable::MCPToolRecord))
                     })?;
-    let vector_index = LanceDbVectorIndex::new(_table, embedding_model, "vector", SearchParams::default()).await
+    let tool_fields = MCPToolRecord::arrow_fields()?;
+    let record_batch = to_record_batch(&tool_fields, &tool_records).map_err(|e| {
+                                                                       log::error!("Error: {:?}", e);
+                                                                       DatabaseError::SerializationError
+                                                                   })?;
+    let stream = Box::new(RecordBatchIterator::new(vec![Ok(record_batch)].into_iter(), arc_schema.clone()));
+    _table.merge_insert(&["name"])
+          .when_matched_update_all(None)
+          .when_not_matched_insert_all()
+          .clone()
+          .execute(stream)
+          .await
+          .map_err(|e| {
+              log::error!("Error: {:?}", e);
+              DatabaseError::SerializationError
+          })?;
+    LanceDbVectorIndex::new(_table, embedding_model, "vector", SearchParams::default()).await
         .map_err(|e| {
             log::error!("Failed to generate vector index: {:?}", e);
             ServerError::EmbeddingError
         })?;
 
-    log::info!("Successfully created MCP tool index vector store. AI now has access to a growing list of tools that it can query and access dynamically.");
+    log::info!("Successfully created an MCP tool index vector store. AI now has access to a growing list of tools that it can query and access dynamically.");
+    Ok(())
 }

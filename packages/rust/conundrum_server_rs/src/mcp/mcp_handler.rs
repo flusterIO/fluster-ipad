@@ -1,19 +1,41 @@
-use rust_mcp_sdk::{mcp_server::ServerHandler, schema::ListToolsResult};
+use async_trait::async_trait;
+use rust_mcp_sdk::{
+    McpServer,
+    macros::{JsonSchema, mcp_tool},
+    mcp_server::ServerHandler,
+    schema::{CallToolError, CallToolRequestParams, CallToolResult, ListToolsResult, PaginatedRequestParams, RpcError},
+};
+use serde::{Deserialize, Serialize};
 
 #[derive(Default)]
-pub struct ConundumMCP;
+pub struct ConundrumMCP;
+
+#[mcp_tool(name = "hello_world", description = "Say hello to the user.")]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
+pub struct HelloWorld {}
+
+#[derive(Default)]
+pub struct HelloWorldHandler;
 
 #[async_trait]
 impl ServerHandler for ConundrumMCP {
-    fn handle_list_tools_request<'life0,'async_trait>(&'life0 self,params: Option<rust_mcp_sdk::schema::PaginatedRequestParams> ,runtime: std::sync::Arc<dyn rust_mcp_sdk::McpServer> ,) ->  ::core::pin::Pin<Box<dyn ::core::future::Future<Output = std::result::Result<rust_mcp_sdk::schema::ListToolsResult,rust_mcp_sdk::schema::RpcError> > + ::core::marker::Send+'async_trait> >where 'life0: 'async_trait,Self: 'async_trait {
-        Ok(
-            ListToolsResult{
-                tools: vec![
+    async fn handle_list_tools_request(&self,
+                                       _request: Option<PaginatedRequestParams>,
+                                       _runtime: std::sync::Arc<dyn McpServer>)
+                                       -> Result<ListToolsResult, RpcError> {
+        Ok(ListToolsResult { meta: None,
+                             next_cursor: None,
+                             tools: vec![HelloWorld::tool()] })
+    }
 
-                ],
-                meta: None,
-                next_cursor: None
-            }
-        )
+    async fn handle_call_tool_request(&self,
+                                      params: CallToolRequestParams,
+                                      _runtime: std::sync::Arc<dyn McpServer>)
+                                      -> Result<CallToolResult, CallToolError> {
+        if params.name == "hello_world" {
+            Ok(CallToolResult::text_content(vec!["Tudalu mothafuckaaaaaaa".into()]))
+        } else {
+            Err(CallToolError::unknown_tool(params.name))
+        }
     }
 }

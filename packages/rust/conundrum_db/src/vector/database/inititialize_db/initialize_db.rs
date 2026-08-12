@@ -19,7 +19,7 @@ use crate::vector::models::{
         },
         question::flashcard::flashcard_entity::FlashCardEntity,
     },
-    ai::tool::mcp_tool_record::MCPToolRecord,
+    ai::{agent::agent_description::AgentDescription, tool::mcp_tool_record::MCPToolRecord},
     git::git_repository_entity::GitRepositoryEntity,
     taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
     text::cdrm::cdrm_content::CdrmContent,
@@ -50,6 +50,9 @@ async fn create_table(db: &lancedb::Connection, schema: &Arc<Schema>, table: &Da
 pub async fn initialize_local_database() -> DatabaseResult<()> {
     let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::MCPToolRecord,
                                                               schema: MCPToolRecord::schema()?,
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::AgentDescription,
+                                                              schema: AgentDescription::schema()?,
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::Tag,
                                                               schema: Tag::schema()?,

@@ -58,6 +58,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "assignment_subject")]
     #[serde(rename = "assignment_subject")]
     AssignmentSubject,
+    #[strum(to_string = "agent_description")]
+    #[serde(rename = "agent_description")]
+    AgentDescription,
     #[strum(to_string = "numeric_academic_res_metric")]
     #[serde(rename = "numeric_academic_res_metric")]
     /// Stores just the `AcademicResultMetricKey` and the value.

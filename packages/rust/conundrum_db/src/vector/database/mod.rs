@@ -2,6 +2,7 @@ pub mod db;
 pub mod db_client;
 pub mod db_macros;
 pub mod db_traits;
+pub mod health;
 pub mod inititialize_db;
 pub mod open_table;
 pub mod pagination;

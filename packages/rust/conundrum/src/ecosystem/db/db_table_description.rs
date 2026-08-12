@@ -167,9 +167,14 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                         This is a joining table connecting `assignments` to `subjects`.
                         "}.to_string() },
+            DatabaseTable::AgentDescription => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
+                This tool describes your 'colleagues', or other agents that you may request access to if your tools permit.
+                "}.to_string(),
+            },
             DatabaseTable::MCPToolRecord => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
                     This is the vector index that contains all of the tools you will need to help the user reach their goals. Query it frequently, and take notes as needed to help you recall the tools that most frequently help this specific user.
-                "}.to_string() }
+                "}.to_string()
+            }
         }
     }
 }

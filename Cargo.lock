@@ -3593,6 +3593,8 @@ name = "conundrum_server_rs"
 version = "0.0.1"
 dependencies = [
  "anyhow",
+ "arrow-array",
+ "arrow-schema",
  "askama 0.16.0",
  "async-trait",
  "axum 0.8.9",
@@ -3635,6 +3637,7 @@ dependencies = [
  "rust-mcp-sdk",
  "schemars 1.2.2",
  "serde",
+ "serde_arrow",
  "serde_json",
  "specta",
  "strum 0.27.2",
