@@ -7,6 +7,11 @@ documentation.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[lib]
+# crate-type = ["staticlib", "lib"]
+name = "cdrm_server_lib"
+path = "src/lib.rs"
+
 [[bin]]
 name = "cdrm_server"
 path = "src/main.rs"

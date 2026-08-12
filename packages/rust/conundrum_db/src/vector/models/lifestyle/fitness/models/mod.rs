@@ -1,0 +1,12 @@
+pub mod biological_gender;
+pub mod bodypart_list;
+pub mod diet;
+pub mod exercise;
+pub mod exercise_goal;
+pub mod exercise_metric;
+pub mod exercise_set;
+pub mod fitness_goal;
+pub mod general_bodypart;
+pub mod injury;
+pub mod user_physical_stats;
+pub mod workout;
