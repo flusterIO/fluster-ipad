@@ -13,7 +13,7 @@ use crate::{
         routers::{
             cdrm::cdrm_router::get_cdrm_router, code::code_router::get_code_router,
             crud::nested_crud_router::get_nested_crud_router, describe::describe_router::get_describe_router,
-            fs::fs_router::get_fs_router, table::table_router::get_table_router,
+            fs::fs_router::get_fs_router, log::logger_router::get_logger_router, table::table_router::get_table_router,
             workspace_management::workspace_management_router::get_workspace_management_router,
         },
     },
@@ -21,6 +21,7 @@ use crate::{
 
 pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, rspc::Types)> {
     let fs_router = get_fs_router();
+    let logger_router = get_logger_router();
     let table_router = get_table_router();
     // let mut study_router = get_study_router();
     let workspace_router = get_workspace_management_router();
@@ -32,6 +33,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
     let r = rspc::Router::<RouteContext>::new().nest("fs", fs_router)
                                                .nest("workspace_management", workspace_router)
                                                .nest("code", code_router)
+                                               .nest("log", logger_router)
                                                .nest("tables", table_router)
                                                .nest("cdrm", cdrm_router)
                                                .nest("describe", describe_router)

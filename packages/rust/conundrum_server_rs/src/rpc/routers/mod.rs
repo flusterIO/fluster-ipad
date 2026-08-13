@@ -3,6 +3,7 @@ pub mod code;
 pub mod crud;
 pub mod describe;
 pub mod fs;
+pub mod log;
 pub mod study;
 pub mod table;
 pub mod workspace_management;

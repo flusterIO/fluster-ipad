@@ -1,7 +1,8 @@
 use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct PaginationParams {
     pub per_page: u32,
     pub page: u32,

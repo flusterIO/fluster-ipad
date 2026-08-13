@@ -16,13 +16,14 @@ import { AINotepadSettings } from "#/settings/model_setting_sections/ai_notepad_
 import { Button } from "@/components/shad/button";
 import { defaultAINotepadSchema } from "@conundrum/ts/schemas";
 import { rspc } from "@/app/rspc_client";
+import consola from "consola";
 
 export const WorkspaceForm = (): ReactNode => {
     const { data } = useGenericRemoteDataContext<{
         workspace?: WorkspaceByPredicate;
     }>();
     const { mutateAsync } = rspc.useMutation("crud.user_workspace.update_many");
-    const form = useForm<WorkspaceByPredicate>({
+    const form = useForm<WorkspaceUpdateRequest[number]>({
         resolver: zodResolver(userWorkspaceSchema),
         defaultValues: data?.workspace ?? {
             resource_dir: "",
@@ -37,12 +38,13 @@ export const WorkspaceForm = (): ReactNode => {
     useEffect(() => {
         if (data?.workspace) {
             const ws = data.workspace;
-            form.setValue("resource_dir", ws.resource_dir);
+            form.setValue("resource_dir", ws.resource_dir ?? null);
             form.setValue("label", ws.label);
             form.setValue("ignore_hidden", ws.ignore_hidden);
             form.setValue("respect_gitignore", ws.respect_gitignore);
             form.setValue("root", ws.root);
-            // TODO: Add AI field once they've been added to the schema.
+            form.setValue("ai.notes", ws.ai.notes);
+            form.setValue("ai.ai_generated_input", ws.ai.ai_generated_input);
         }
     }, [data]);
     const handleSubmit = async ({
@@ -65,7 +67,11 @@ export const WorkspaceForm = (): ReactNode => {
                 respect_gitignore: data.respect_gitignore ?? null,
             },
         ];
-        const res = await mutateAsync(workspaceUpdate);
+        try {
+            await mutateAsync(workspaceUpdate);
+        } catch (err: unknown) {
+            consola.error("Error: ", err);
+        }
     };
     return (
         <div className="@container/form">

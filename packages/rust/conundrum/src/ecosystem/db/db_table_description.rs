@@ -22,6 +22,12 @@ pub struct DBTableDescription {
 impl From<DatabaseTable> for DBTableDescription {
     fn from(value: DatabaseTable) -> Self {
         match value {
+            DatabaseTable::EcosystemLog => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        These are system logs that describe the user's recent interactions with the Conundrum ecosystem. Query them to discover a user's recent activity so that you can help them continue on their current trajectory, growing academically.
+                        "}.to_string() },
             DatabaseTable::UserWorkspace => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,

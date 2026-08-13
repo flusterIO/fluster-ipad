@@ -14,9 +14,12 @@ use lancedb::query::{ExecutableQuery, QueryBase};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use serde_arrow::{from_record_batch, to_record_batch};
 
-use crate::vector::database::{
-    db::ArcMutexDB, db_traits::db_identifiable::DatabaseIdentifiable, open_table::open_table,
-    pagination::PaginationParams,
+use crate::vector::{
+    database::{
+        db::ArcMutexDB, db_traits::db_identifiable::DatabaseIdentifiable, open_table::open_table,
+        pagination::PaginationParams,
+    },
+    parameters::general::sort_query::SortQuery,
 };
 
 pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
@@ -25,12 +28,13 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
         where Self: Sized {
         let schema = Self::schema().map(Arc::new)?;
         let _db = db.clone().lock_owned().await;
-        let tbl = open_table(_db, &Self::table()).await.inspect_err(|e| {
-                                                            log::error!("Table Error: {:?}", e);
-                                                        })?;
-        let batches = Self::get_record_batch(items).inspect_err(|e| {
-                                                       log::error!("get_record_batch Error: {:?}", e);
-                                                   })?;
+        let table = Self::table();
+        let tbl = open_table(_db, &table).await.inspect_err(|e| {
+                                                    log::error!("Table Error: {:?}", e);
+                                                })?;
+        let batches = Self::get_record_batch(items.clone()).inspect_err(|e| {
+                                                               log::error!("get_record_batch Error: {:?}", e);
+                                                           })?;
         let stream = Box::new(RecordBatchIterator::new(vec![batches].into_iter().map(Ok), schema.clone()));
         let primary_key: &[&str] = Self::merge_keys();
         tbl.merge_insert(primary_key)
@@ -43,6 +47,7 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
                log::error!("Database Error: {:?}", e);
                DatabaseError::FailToCreateEntity(Self::table().to_model_name())
            })?;
+        log::info!("Successfully saved {} `{}` models", items.len(), table.to_model_name());
         Ok(())
     }
     async fn save_one(item: Self, db: &ArcMutexDB) -> DatabaseResult<()>
@@ -52,6 +57,7 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
 
     async fn get_by_predicate(predicate: Option<String>,
                               pagination: Option<PaginationParams>,
+                              sort: Option<Vec<SortQuery>>,
                               db: &ArcMutexDB)
                               -> DatabaseResult<Vec<Self>>
         where Self: Sized {
@@ -68,6 +74,7 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
                                            log::error!("Error: {:?}", e);
                                            DatabaseError::FailToDelete(tbl.clone())
                                        })?;
+        log::info!("Successfully delete `{}` models by the predicate `{}`.", tbl.to_model_name(), predicate);
         Ok(())
     }
     async fn delete_by_primary_key(id: IDType, db: &ArcMutexDB) -> DatabaseResult<()> {
@@ -97,6 +104,7 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
                   println!("Error: {:?}", e);
                   DatabaseError::SerializationError
               })?;
+        log::info!("Successfully merged `{}` models.", tbl.to_model_name());
         Ok(())
     }
 }

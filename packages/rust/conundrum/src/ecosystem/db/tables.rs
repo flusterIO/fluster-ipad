@@ -9,7 +9,9 @@ use strum_macros::{Display, EnumIter};
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Deserialize, Display, EnumIter, EnumCount, PartialEq, Clone, Eq, specta::Type)]
 pub enum DatabaseTable {
-    // -- Pure Models --
+    #[strum(to_string = "ecosystem_log")]
+    #[serde(rename = "ecosystem_log")]
+    EcosystemLog,
     #[strum(to_string = "tag")]
     #[serde(rename = "tag")]
     Tag,

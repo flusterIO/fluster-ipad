@@ -1,7 +1,7 @@
 [workspace]
 resolver = "3"
 members = [
-    "apps/conundrum_dashboard/src-tauri",
+    # "apps/conundrum_dashboard/src-tauri",
     "packages/python/conundrum_py",
     "packages/rust/wasm/fluster_wasm",
     "packages/rust/wasm/conundrum_wasm",

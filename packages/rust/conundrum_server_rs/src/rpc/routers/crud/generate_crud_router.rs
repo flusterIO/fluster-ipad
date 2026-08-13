@@ -3,8 +3,8 @@ macro_rules! crud_router {
     ( $full:ty, $partial:ty ) => {
         {
     rspc::Router::<$crate::rpc::route_context::RouteContext>::new()
-    .procedure("get_by_predicate", Procedure::<$crate::rpc::route_context::RouteContext, PredicateQueryParams, Vec<$full>>::builder::<$crate::errors::server_error::ServerError>().query(|state: RouteContext , params: PredicateQueryParams | async move {
-        let r = <$full>::get_by_predicate(params.predicate, params.pagination, &state.db).await.map_err(|e| {
+    .procedure("get_by_predicate", Procedure::<$crate::rpc::route_context::RouteContext, conundrum_db::vector::parameters::general::general_query::GeneralQuery, Vec<$full>>::builder::<$crate::errors::server_error::ServerError>().query(|state: RouteContext , params: conundrum_db::vector::parameters::general::general_query::GeneralQuery | async move {
+        let r = <$full>::get_by_predicate(params.predicate, Some(params.pagination), params.sort, &state.db).await.map_err(|e| {
             log::error!("Error: {:?}", e);
             ServerError::DatabaseError(e)
         })?;

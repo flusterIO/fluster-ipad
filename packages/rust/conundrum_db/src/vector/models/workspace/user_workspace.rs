@@ -1,3 +1,4 @@
+use crate::impl_default_crud;
 use crate::vector::database::db_traits::db_field::DatabaseField;
 use crate::vector::database::db_traits::entity_crud::EntityCRUD;
 use crate::vector::database::db_traits::validate::ValidateSelf;
@@ -43,7 +44,7 @@ pub struct UserWorkspace {
     /// ```
     /// <Image src="physics/images/recent_plot.png" />
     /// ```
-    /// Where `physics/iamges/recent_plot.png` is a path nested within the
+    /// Where `physics/images/recent_plot.png` is a path nested within the
     /// `resource_dir` directory.
     #[serde(default = "Default::default")]
     pub resource_dir: String,
@@ -123,52 +124,7 @@ impl From<String> for UserWorkspace {
     }
 }
 
-impl<'a> EntityCRUD<'a, String, UserWorkspacePartial> for UserWorkspace {
-    async fn get_by_predicate(predicate: Option<String>,
-                              pagination: Option<crate::vector::database::pagination::PaginationParams>,
-                              db: &crate::vector::database::db::ArcMutexDB)
-                              -> DatabaseResult<Vec<Self>>
-        where Self: Sized {
-        {
-            let _db = db.clone().lock_owned().await;
-            let self_table = Self::table();
-            let tbl = crate::vector::database::open_table::open_table(_db, &self_table).await?;
-            let mut query_builder = tbl.query();
-            if let Some(_predicate) = predicate.clone() {
-                query_builder = query_builder.only_if(_predicate);
-            }
-            if let Some(_pagination) = pagination {
-                let (limit, offset) = _pagination.to_limit_and_offset();
-                query_builder = query_builder.limit(limit).offset(offset);
-            }
-            let res = query_builder.execute()
-                                   .await
-                                   .map_err(|e| {
-                                       log::error!("Error: {:?}", e);
-                                       DatabaseError::FailToQueryEntity { predicate: predicate.clone(),
-                                                                          table: self_table.clone() }
-                                   })?
-                                   .try_collect::<Vec<_>>()
-                                   .await
-                                   .map_err(|e| {
-                                       log::error!("Error: {:?}", e);
-                                       DatabaseError::SerializationError
-                                   })?;
-            if res.is_empty() {
-                return Ok(Vec::new());
-            }
-            let mut items: Vec<UserWorkspace> = Vec::new();
-            for record_batch in res.iter() {
-                let r: Vec<UserWorkspace> = from_record_batch(record_batch).map_err(|e| {
-                                                                               log::error!("Error: {:?}", e);
-                                                                               DatabaseError::SerializationError
-                                                                           })?;
-                items.extend(r);
-            }
-            Ok(items)
-        }
-    }
-}
+impl_default_crud!(UserWorkspace, UserWorkspacePartial, String);
 
 impl<'a> DBEntity<'a> for UserWorkspace {
     type PartialUpdateType = UserWorkspacePartial;

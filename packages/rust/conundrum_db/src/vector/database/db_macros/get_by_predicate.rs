@@ -1,6 +1,6 @@
 #[macro_export]
 macro_rules! get_by_predicate {
-    ( $self:ty, $db:ident, $predicate:ident, $pagination:ident ) => {{
+    ( $self:ty, $db:ident, $predicate:ident, $pagination:ident, $sort:ident ) => {{
         use futures_util::TryStreamExt;
         use lancedb::query::ExecutableQuery;
         use lancedb::query::QueryBase;
@@ -14,6 +14,10 @@ macro_rules! get_by_predicate {
         if let Some(_pagination) = $pagination {
             let (limit, offset) = _pagination.to_limit_and_offset();
             query_builder = query_builder.limit(limit).offset(offset);
+        }
+        if let Some(sort) = $sort {
+            let x = $crate::vector::parameters::general::sort_query::SortQueryList(sort);
+            query_builder = query_builder.order_by(Some(x.to_column_orderings()));
         }
         let res = query_builder.execute()
                                .await
