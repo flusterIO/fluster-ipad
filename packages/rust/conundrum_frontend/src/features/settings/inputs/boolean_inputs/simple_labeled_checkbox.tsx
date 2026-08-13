@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { type FieldValues, type Path } from "react-hook-form";
+import { useFormContext, type FieldValues, type Path } from "react-hook-form";
 import { FormField } from "@/components/shad/form";
 import { Checkbox } from "@/components/shad/checkbox";
 import { cn } from "@/utils/shad_utils";
@@ -31,10 +31,12 @@ export const SimpleLabeledCheckbox = <T extends FieldValues>({
     borderPrimary = true,
     classes = {},
 }: SimpleLabeledCheckboxProps<T>): ReactNode => {
+    const form = useFormContext<T>();
     return (
         <FormField
             name={name}
-            render={() => {
+            render={({ field }) => {
+                const value = Boolean(field.value);
                 return (
                     <div
                         className={cn(
@@ -50,6 +52,10 @@ export const SimpleLabeledCheckbox = <T extends FieldValues>({
                                 borderPrimary && "border-primary/50!",
                                 classes.checkbox,
                             )}
+                            checked={value}
+                            onCheckedChange={(val) => {
+                                form.setValue(name, val as T[typeof name]);
+                            }}
                         />
                         <div
                             className={cn(

@@ -12,6 +12,7 @@ import { SimpleLabeledCheckbox } from "#/settings/inputs/boolean_inputs/simple_l
 import { InlineCode, PlainInlineCode } from "#/ui/typography/inline_code";
 import { Procedures } from "@/codegen/bindings";
 import { logMaybeObject } from "#/error_handling/utils/log_maybe_object";
+import { useLogger } from "#/logging/state/hooks/use_logger";
 
 export const AddWorkspaceDialog = ({
     open,
@@ -20,6 +21,7 @@ export const AddWorkspaceDialog = ({
     open: boolean;
     close: () => void;
 }): ReactNode => {
+    const logger = useLogger();
     const formSchema = z.object({
         path: z.string(),
         respect_gitignore: z.boolean(),
@@ -57,12 +59,23 @@ export const AddWorkspaceDialog = ({
     const addWorkspace = async (
         data: Procedures["user_workspace_crud"]["save_many"]["input"][0],
     ): Promise<void> => {
-        await mutateAsync([data]);
-        window.dispatchEvent(
-            new CustomEvent("workspace-add", {
-                detail: undefined,
-            }),
-        );
+        try {
+            await mutateAsync([data]);
+            logger({
+                title: "Success",
+                message: "This workspace has been created successfully.",
+                ai_description: `The user has created a new workspace at \`${data.root}\`.`,
+                severity: "Success",
+                purpose: "entity-created",
+            });
+            window.dispatchEvent(
+                new CustomEvent("workspace-add", {
+                    detail: undefined,
+                }),
+            );
+        } catch (err: unknown) {
+            console.log("Error: ", err);
+        }
     };
 
     const onSubmit = async ({

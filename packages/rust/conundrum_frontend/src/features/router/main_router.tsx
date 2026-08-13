@@ -4,6 +4,8 @@ import { MainAppRoutes } from "./routes";
 import { PermanentSidebar } from "#/navigation/sidebar/permanent_sidebar";
 import { cn } from "@/utils/shad_utils";
 import { AppPaths } from "#/navigation/app_paths";
+import { SecondaryPanel } from "#/navigation/secondary_panel/secondary_panel";
+import { NotificationsList } from "#/notifications/components/notification_list";
 
 const MainRoutes = (): ReactNode => {
     const location = useLocation();
@@ -25,6 +27,8 @@ export const MainAppRouter = (): ReactNode => {
             <div className="app-container w-full h-screen max-h-screen flex flex-row justify-center items-center">
                 <PermanentSidebar />
                 <MainRoutes />
+                <NotificationsList />
+                <SecondaryPanel />
             </div>
         </BrowserRouter>
     );

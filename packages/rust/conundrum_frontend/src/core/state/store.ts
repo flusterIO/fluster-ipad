@@ -27,7 +27,7 @@ const reducers: Record<keyof AppState, Reducer> = {
     navigation: NavigationReducer,
     database: DatabaseReducer,
     ui: UIReducer,
-    notifcation: NotificationReducer,
+    notification: NotificationReducer,
 };
 
 const rootReducer = combineReducers(reducers);

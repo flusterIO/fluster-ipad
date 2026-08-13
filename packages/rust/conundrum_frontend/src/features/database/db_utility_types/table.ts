@@ -1,4 +1,4 @@
-import { Procedures } from "@/codegen/bindings";
+// import { Procedures } from "@/codegen/bindings";
 
 // export type TableDescription =
 //     Procedures[""]

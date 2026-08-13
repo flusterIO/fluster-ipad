@@ -136,7 +136,7 @@ export type DOMId = string
  */
 export type DatabaseId = string
 
-export type DatabaseTable = "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -160,6 +160,10 @@ export type DictionaryEntryResult = { label: string; body: string }
 export type DocumentSpan = { start: number; end: number }
 
 export type DocumentationComponentName = "InContentDocumentationContainer" | "InContentDocsEmphasisTypeList" | "InContentDocsHighlightDemo" | "InContentDocsUnderlineDemo" | "AutoInsertedNestedEmojiDocumentation"
+
+export type EcosystemLogIntention = "git-status-change" | "process-complete" | "entity-created" | "entity-updated" | "entity-deleted"
+
+export type EcosystemLogSeverity = "Success" | "Information" | "Warning" | "Error"
 
 /**
  * From typescript to swift.
@@ -236,7 +240,7 @@ export type PathSourceType = "file" | "directory" | "any"
 
 export type PathVariant = "File" | "Dir"
 
-export type ProceduresLegacy = { queries: { key: "crud.assignment.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[] } | { key: "crud.auto_taggable.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { id: DatabaseId; 
+export type ProceduresLegacy = { queries: { key: "crud.assignment.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[] } | { key: "crud.auto_taggable.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; 
 /**
  * The value of the taggable that will be automatically applied.
  */
@@ -252,7 +256,7 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.git_repository.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ id?: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.git_repository.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; 
 /**
  * Will match the root of the workspace if this is a workspace repository,
  * otherwise user's can optionally set this to a local path to allow AI
@@ -286,14 +290,14 @@ is_workspace?: boolean;
  * Permissions regarding access to the file system can be found
  * on the settings page of the Conundrum dashboard.
  */
-allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.qa_pair.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
+allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.qa_pair.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
 /**
  * The difficulty field is not optional for AI. AI should always provide an
  * estimated difficulty score using a scale where Ph.D. level physics
  * and M.D. level biology is a 100, and elementary math like 2 + 2 is
  * 0.
  */
-difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
+difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
@@ -319,7 +323,7 @@ ignore_hidden: boolean;
  * ```
  * <Image src="physics/images/recent_plot.png" />
  * ```
- * Where `physics/iamges/recent_plot.png` is a path nested within the
+ * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
 resource_dir?: string; ai: AIInteractions })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
@@ -327,7 +331,7 @@ resource_dir?: string; ai: AIInteractions })[] } | { key: "describe.all_tables";
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
  */
-entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -359,7 +363,15 @@ source_type: PathSourceType;
  * An empty array will default to any file type. Not just any parsable file
  * type.
  */
-permitted_types: ParsableFileType[] }; result: boolean } | { key: "tables.current_tables"; input: null; result: ("tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+permitted_types: ParsableFileType[] }; result: boolean } | { key: "log.get_many"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; title: string; 
+/**
+ * An optional user facing message.
+ */
+message: string | null; 
+/**
+ * A description of the event logged written directly to AI.
+ */
+ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[] } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -371,7 +383,7 @@ permitted_types: ParsableFileType[] }; result: boolean } | { key: "tables.curren
 /**
  * ---- Vectors ----
  */
-"cdrm_vec" | "mcp_tool")[] } | { key: "tables.describe_table"; input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+"cdrm_vec" | "mcp_tool")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -513,7 +525,7 @@ ignore_hidden: boolean;
  * ```
  * <Image src="physics/images/recent_plot.png" />
  * ```
- * Where `physics/iamges/recent_plot.png` is a path nested within the
+ * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
 resource_dir?: string; ai: AIInteractions })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
@@ -521,7 +533,7 @@ resource_dir?: string; ai: AIInteractions })[]; result: null } | { key: "crud.us
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
  */
-root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null }; subscriptions: never }
+root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null }; subscriptions: never }
 
 /**
  * ## Template (HTML)
@@ -554,6 +566,10 @@ idx: number }
 export type SchemaVersion = "0.0.0"
 
 export type ServerVersion = "0.0.0"
+
+export type SortOrder = "AscNullLast" | "DescNullLast" | "AscNullFirst" | "DescNullFirst"
+
+export type SortQuery = { column: string; order: SortOrder }
 
 /**
  * All keys must be cast to lowercase and all `_` replaced with `-`.
@@ -622,7 +638,7 @@ ignore_hidden: boolean;
  * ```
  * <Image src="physics/images/recent_plot.png" />
  * ```
- * Where `physics/iamges/recent_plot.png` is a path nested within the
+ * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
 resource_dir?: string; ai: AIInteractions }
@@ -639,64 +655,68 @@ export type Procedures = {
 	crud: {
 	assignment: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[], error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null })[], output: null, error: unknown },
 },
 	auto_taggable: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], error: unknown },
 	save_many: { kind: "mutation", input: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[], output: null, error: unknown },
 },
 	git_repository: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id: DatabaseId; label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[], output: null, error: unknown },
 },
 	qa_pair: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[], error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ id: DatabaseId; question: string | null; answer: FlashcardValue | null; explanation: string | null; correct_responses: number | null; incorrect_responses: number | null; difficulty: number | null })[], output: null, error: unknown },
 },
 	subject: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], error: unknown },
 	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	tag: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[], error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[], error: unknown },
 	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	topic: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], error: unknown },
 	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	user_workspace: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
 },
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
 	validate_path: { kind: "query", input: { path: string; source_type: PathSourceType; permitted_types: ParsableFileType[] }, output: boolean, error: unknown },
 },
+	log: {
+	create: { kind: "mutation", input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }, output: null, error: unknown },
+	get_many: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[], error: unknown },
+},
 	tables: {
-	current_tables: { kind: "query", input: null, output: ("tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool")[], error: unknown },
-	describe_table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool")[], error: unknown },
+	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {

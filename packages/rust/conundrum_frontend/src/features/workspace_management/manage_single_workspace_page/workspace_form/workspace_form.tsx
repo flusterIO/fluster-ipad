@@ -17,12 +17,14 @@ import { Button } from "@/components/shad/button";
 import { defaultAINotepadSchema } from "@conundrum/ts/schemas";
 import { rspc } from "@/app/rspc_client";
 import consola from "consola";
+import { useLogger } from "#/logging/state/hooks/use_logger";
 
 export const WorkspaceForm = (): ReactNode => {
     const { data } = useGenericRemoteDataContext<{
         workspace?: WorkspaceByPredicate;
     }>();
     const { mutateAsync } = rspc.useMutation("crud.user_workspace.update_many");
+    const logger = useLogger();
     const form = useForm<WorkspaceUpdateRequest[number]>({
         resolver: zodResolver(userWorkspaceSchema),
         defaultValues: data?.workspace ?? {
@@ -62,13 +64,20 @@ export const WorkspaceForm = (): ReactNode => {
                     notes: "",
                 },
                 ignore_hidden: data.ignore_hidden,
+                respect_gitignore: data.respect_gitignore,
                 label: data.label ?? null,
                 resource_dir: data.resource_dir ?? null,
-                respect_gitignore: data.respect_gitignore ?? null,
             },
         ];
         try {
             await mutateAsync(workspaceUpdate);
+            logger({
+                title: "Success",
+                severity: "Success",
+                message: "Workspace updated successfully",
+                purpose: "entity-updated",
+                ai_description: `The user just updated their workspace at \`${root}\`.`,
+            });
         } catch (err: unknown) {
             consola.error("Error: ", err);
         }
@@ -128,14 +137,7 @@ export const WorkspaceForm = (): ReactNode => {
                     />
                     <AINotepadSettings />
                     <div className="w-full flex flex-row justify-end items-center">
-                        <Button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                            }}
-                            type="submit"
-                        >
-                            Save
-                        </Button>
+                        <Button type="submit">Save</Button>
                     </div>
                 </form>
             </Form>

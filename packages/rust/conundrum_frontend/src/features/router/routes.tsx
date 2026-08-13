@@ -15,6 +15,7 @@ import { HealthPage } from "#/health/health_page";
 import { GenerateFlashcardPage } from "#/study/generate_flashcard_page/generate_flashcard_page";
 import { OnboardingPage } from "#/onboarding/onboarding_screen/onboarding_page";
 import { GeneralAIChatPage } from "#/ai/pages/ai_chat_page/ai_chat_page";
+import { LogPage } from "#/logging/log_page";
 
 export const MainAppRoutes = (): ReactNode => {
     const location = useLocation();
@@ -50,6 +51,7 @@ export const MainAppRoutes = (): ReactNode => {
                     path={AppPaths.aiGenerateFlashcard}
                     Component={GenerateFlashcardPage}
                 />
+                <Route path={AppPaths.logs} Component={LogPage} />
             </Routes>
         </AnimatePresence>
     );

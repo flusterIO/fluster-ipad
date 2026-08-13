@@ -18,7 +18,7 @@ pub enum DatabaseError {
     ThreadError,
     #[error("The data directory for your operating system could not be found. We don't know where to put your data.")]
     InvalidDataDirectory,
-    #[error("Conundrum encountered an error serializing some of your configuration.")]
+    #[error("Conundrum encountered a serialization error.")]
     SerializationError,
     #[error("Fluster could not locate your operating system's data directory. We don't know where to store your database.")]
     FailToFindDataDirectory,
