@@ -7,13 +7,10 @@
  * ways, when the user permits, this `ai_generated_input` field is yours to
  * treat as your notepad.
  * 
- * Keep track of your interactions with each struct in a way that will help you
+ * Keep track of your interactions with each entity in a way that will help you
  * grow your experience with the user over time, and keep track of any
  * information provided by the user that will make future interactions more
- * meaningful.
- * 
- * It's a string, so store your notes here as markdown
- * or json as you prefer.
+ * meaningful and helpful.
  */
 export type AIGeneratedInput = string
 
@@ -139,7 +136,7 @@ export type DOMId = string
  */
 export type DatabaseId = string
 
-export type DatabaseTable = "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | 
+export type DatabaseTable = "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -147,7 +144,7 @@ export type DatabaseTable = "tag" | "topic" | "subject" | "cdrm" | "typst" | "us
 /**
  * --- 'Joining' tables ---
  */
-"workspace_repository" | 
+"workspace_repository" | "milestone_alarm" | 
 /**
  * ---- Vectors ----
  */
@@ -170,6 +167,8 @@ export type DocumentationComponentName = "InContentDocumentationContainer" | "In
 export type EmbeddableComponentId = "toc" | "admonition" | "highlight" | "underline" | "color" | "quote" | "card" | "grid" | "util-container" | "image" | "hr-with-children" | "embeddable-hint-component" | "emoji-component" | "tab-group" | "tab-group-tab" | "equation-reference" | "youtube" | "video"
 
 export type EmbeddableComponentName = "Toc" | "Admonition" | "Hl" | "Highlight" | "Ul" | "Underline" | "Color" | "Card" | "Grid" | "Container" | "Hr" | "Hint" | "Quote" | "Emoji" | "EqRef" | "Tabs" | "Tab" | "Image" | "Youtube" | "Video"
+
+export type FlashcardValue = { Float: number } | { Int: number } | { Text: string }
 
 /**
  * ## TODO
@@ -237,11 +236,29 @@ export type PathSourceType = "file" | "directory" | "any"
 
 export type PathVariant = "File" | "Dir"
 
-export type ProceduresLegacy = { queries: { key: "crud.git_repository.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
+export type ProceduresLegacy = { queries: { key: "crud.assignment.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[] } | { key: "crud.auto_taggable.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { id: DatabaseId; 
 /**
- * Will match the root of the workspace if this is a workspace repository.
+ * The value of the taggable that will be automatically applied.
  */
-fs_path: string | null; url: string | null; id?: DatabaseId; 
+value: string; variant: TaggableVariant; 
+/**
+ * A glob to be tested against when saving files. If this glob matches the
+ * ***substring*** within the user's workspace, this tag, topic or
+ * subject will be automatically applied.
+ * 
+ * This means that if your path
+ * is at `/Users/bigsexy/notes/physics/Laws_And_Theorems/Keppler'
+ * s_Law_of_Planetary_Motion.md` but your 'workspace' is set to
+ * `/Users/bigsexy/notes/`, then a valid glob to match files in this
+ * directory might look like `physics/*.{mdx,cdrm,md}`.
+ */
+glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.git_repository.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ id?: DatabaseId; 
+/**
+ * Will match the root of the workspace if this is a workspace repository,
+ * otherwise user's can optionally set this to a local path to allow AI
+ * to explore the file-system locally.
+ */
+fs_path: string | null; url: string | null; 
 /**
  * A descriptive label used for both the UI and as further information for
  * AI.
@@ -259,7 +276,7 @@ ai: AIInteractions;
 /**
  * True if the git repository represents a user's workspace. If this is the
  * case, AI should **not** lookup the repository remotely and instead
- * should prefer to query the user's local database.
+ * should prefer to query the user's local database and file system.
  */
 is_workspace?: boolean; 
 /**
@@ -269,7 +286,14 @@ is_workspace?: boolean;
  * Permissions regarding access to the file system can be found
  * on the settings page of the Conundrum dashboard.
  */
-allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime?: DateTime; last_access?: DateTime }[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
+allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.qa_pair.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
+/**
+ * The difficulty field is not optional for AI. AI should always provide an
+ * estimated difficulty score using a scale where Ph.D. level physics
+ * and M.D. level biology is a 100, and elementary math like 2 + 2 is
+ * 0.
+ */
+difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.user_workspace.get_by_predicate"; input: { predicate: string | null; pagination: PaginationParams | null }; result: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
@@ -303,7 +327,7 @@ resource_dir?: string; ai: AIInteractions })[] } | { key: "describe.all_tables";
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
  */
-entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | 
+entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -311,7 +335,7 @@ entity_name: string; is_joining_table: boolean; description: string }[] } | { ke
 /**
  * --- 'Joining' tables ---
  */
-"workspace_repository" | 
+"workspace_repository" | "milestone_alarm" | 
 /**
  * ---- Vectors ----
  */
@@ -335,7 +359,36 @@ source_type: PathSourceType;
  * An empty array will default to any file type. Not just any parsable file
  * type.
  */
-permitted_types: ParsableFileType[] }; result: boolean } | { key: "version"; input: null; result: { database: SchemaVersion; server: ServerVersion } } | { key: "workspace_management.parsable_file_count"; input: string; result: { workspace: UserWorkspace; 
+permitted_types: ParsableFileType[] }; result: boolean } | { key: "tables.current_tables"; input: null; result: ("tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+/**
+ * Stores just the `AcademicResultMetricKey` and the value.
+ */
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | 
+/**
+ * --- 'Joining' tables ---
+ */
+"workspace_repository" | "milestone_alarm" | 
+/**
+ * ---- Vectors ----
+ */
+"cdrm_vec" | "mcp_tool")[] } | { key: "tables.describe_table"; input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+/**
+ * Stores just the `AcademicResultMetricKey` and the value.
+ */
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | 
+/**
+ * --- 'Joining' tables ---
+ */
+"workspace_repository" | "milestone_alarm" | 
+/**
+ * ---- Vectors ----
+ */
+"cdrm_vec" | "mcp_tool"; result: { table: DatabaseTable; 
+/**
+ * A user facing name for this entity. Example: 'workspace' for the
+ * `user_workspace` table.
+ */
+entity_name: string; is_joining_table: boolean; description: string } } | { key: "version"; input: null; result: { database: SchemaVersion; server: ServerVersion } } | { key: "workspace_management.parsable_file_count"; input: string; result: { workspace: UserWorkspace; 
 /**
  * The total number of each parsable file found.
  */
@@ -356,11 +409,29 @@ eq_ref_map: Partial<{ [key in string]: number }>; warnings: ConundrumError[];
  * so don't rely on this data during parsing *or* compilation. Use the
  * field on `ParseState` instead.
  */
-footnotes: Partial<{ [key in number]: RenderedFootnoteResult }>; included_components: AnyComponentKey[] } } | { key: "code.highlight_code"; input: { code: string; lang: SupportedCodeBlockSyntax; theme: SupportedCodeBlockTheme; inline: boolean }; result: string } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ 
+footnotes: Partial<{ [key in number]: RenderedFootnoteResult }>; included_components: AnyComponentKey[] } } | { key: "code.highlight_code"; input: { code: string; lang: SupportedCodeBlockSyntax; theme: SupportedCodeBlockTheme; inline: boolean }; result: string } | { key: "crud.assignment.delete_by_predicate"; input: string; result: null } | { key: "crud.assignment.save_many"; input: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[]; result: null } | { key: "crud.assignment.update_many"; input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null })[]; result: null } | { key: "crud.auto_taggable.delete_by_predicate"; input: string; result: null } | { key: "crud.auto_taggable.save_many"; input: { id: DatabaseId; 
 /**
- * Will match the root of the workspace if this is a workspace repository.
+ * The value of the taggable that will be automatically applied.
  */
-fs_path: string | null; url: string | null; id?: DatabaseId; 
+value: string; variant: TaggableVariant; 
+/**
+ * A glob to be tested against when saving files. If this glob matches the
+ * ***substring*** within the user's workspace, this tag, topic or
+ * subject will be automatically applied.
+ * 
+ * This means that if your path
+ * is at `/Users/bigsexy/notes/physics/Laws_And_Theorems/Keppler'
+ * s_Law_of_Planetary_Motion.md` but your 'workspace' is set to
+ * `/Users/bigsexy/notes/`, then a valid glob to match files in this
+ * directory might look like `physics/*.{mdx,cdrm,md}`.
+ */
+glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
+/**
+ * Will match the root of the workspace if this is a workspace repository,
+ * otherwise user's can optionally set this to a local path to allow AI
+ * to explore the file-system locally.
+ */
+fs_path: string | null; url: string | null; 
 /**
  * A descriptive label used for both the UI and as further information for
  * AI.
@@ -378,7 +449,7 @@ ai: AIInteractions;
 /**
  * True if the git repository represents a user's workspace. If this is the
  * case, AI should **not** lookup the repository remotely and instead
- * should prefer to query the user's local database.
+ * should prefer to query the user's local database and file system.
  */
 is_workspace?: boolean; 
 /**
@@ -397,11 +468,18 @@ fs_path: string | null; url: string | null; id: DatabaseId;
  * A descriptive label used for both the UI and as further information for
  * AI.
  */
-label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.subject.delete_by_predicate"; input: string; result: null } | { key: "crud.subject.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[]; result: null } | { key: "crud.subject.update_many"; input: ({ 
+label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.qa_pair.delete_by_predicate"; input: string; result: null } | { key: "crud.qa_pair.save_many"; input: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
+/**
+ * The difficulty field is not optional for AI. AI should always provide an
+ * estimated difficulty score using a scale where Ph.D. level physics
+ * and M.D. level biology is a 100, and elementary math like 2 + 2 is
+ * 0.
+ */
+difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[]; result: null } | { key: "crud.qa_pair.update_many"; input: ({ id: DatabaseId; question: string | null; answer: FlashcardValue | null; explanation: string | null; correct_responses: number | null; incorrect_responses: number | null; difficulty: number | null })[]; result: null } | { key: "crud.subject.delete_by_predicate"; input: string; result: null } | { key: "crud.subject.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[]; result: null } | { key: "crud.subject.update_many"; input: ({ 
 /**
  * The value will never be updated, only used for comparison.
  */
-value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.tag.delete_by_predicate"; input: string; result: null } | { key: "crud.tag.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime?: DateTime; last_access?: DateTime }[]; result: null } | { key: "crud.tag.update_many"; input: ({ 
+value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.tag.delete_by_predicate"; input: string; result: null } | { key: "crud.tag.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.tag.update_many"; input: ({ 
 /**
  * The value will never be updated, only used for comparison.
  */
@@ -443,7 +521,7 @@ resource_dir?: string; ai: AIInteractions })[]; result: null } | { key: "crud.us
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
  */
-root: string; label: string | null; bib_paths: string[] | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null })[]; result: null }; subscriptions: never }
+root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null }; subscriptions: never }
 
 /**
  * ## Template (HTML)
@@ -510,6 +588,8 @@ export type TagLocation = "front_matter" | "body" |
 
 export type TagResult = { body: string }
 
+export type TaggableVariant = "tag" | "topic" | "subject"
+
 export type UIParams = { dark_mode: boolean; 
 /**
  * A number 0-n, where n > 1 increases the fontsize.
@@ -557,11 +637,29 @@ export type Procedures = {
 	highlight_code: { kind: "mutation", input: { code: string; lang: SupportedCodeBlockSyntax; theme: SupportedCodeBlockTheme; inline: boolean }, output: string, error: unknown },
 },
 	crud: {
+	assignment: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null })[], output: null, error: unknown },
+},
+	auto_taggable: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], error: unknown },
+	save_many: { kind: "mutation", input: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[], output: null, error: unknown },
+},
 	git_repository: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ fs_path: string | null; url: string | null; id?: DatabaseId; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], error: unknown },
-	save_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id?: DatabaseId; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id: DatabaseId; label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[], output: null, error: unknown },
+},
+	qa_pair: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; question: string | null; answer: FlashcardValue | null; explanation: string | null; correct_responses: number | null; incorrect_responses: number | null; difficulty: number | null })[], output: null, error: unknown },
 },
 	subject: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
@@ -571,8 +669,8 @@ export type Procedures = {
 },
 	tag: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime?: DateTime; last_access?: DateTime }[], error: unknown },
-	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime?: DateTime; last_access?: DateTime }[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[], error: unknown },
+	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	topic: {
@@ -585,16 +683,20 @@ export type Procedures = {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: string | null; pagination: PaginationParams | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ root: string; label: string | null; bib_paths: string[] | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
 },
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
 	validate_path: { kind: "query", input: { path: string; source_type: PathSourceType; permitted_types: ParsableFileType[] }, output: boolean, error: unknown },
+},
+	tables: {
+	current_tables: { kind: "query", input: null, output: ("tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool")[], error: unknown },
+	describe_table: { kind: "query", input: "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {

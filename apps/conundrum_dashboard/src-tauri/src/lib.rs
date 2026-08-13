@@ -15,7 +15,7 @@ fn greet(name: &str) -> String {
 pub fn run() {
     tauri::Builder::default().setup(|app| {
         tokio::async_runtime::spawn(async move {
-conundrum_server_rs::run_server::run_server().await
+            conundrum_server_rs::run_server::run_server().await;
         })
     })
                              .plugin(tauri_plugin_opener::init())

@@ -63,7 +63,7 @@ function DialogContent({
                         render={
                             <Button
                                 variant="ghost"
-                                className="absolute top-2 right-2"
+                                className="absolute top-2 right-2 text-foreground"
                                 size="icon-sm"
                             />
                         }
@@ -150,10 +150,10 @@ export interface ComposedDialogProps {
     footer?: React.ReactNode;
     dialogProps?: DialogPrimitive.Root.Props;
     classes?: {
-        content?: string
-        title?: string
-        footer?: string
-    }
+        content?: string;
+        title?: string;
+        footer?: string;
+    };
 }
 
 const ComposedDialog = ({
@@ -162,17 +162,19 @@ const ComposedDialog = ({
     children,
     footer,
     dialogProps,
-    classes = {}
+    classes = {},
 }: ComposedDialogProps): React.ReactNode => {
     return (
         <Dialog {...dialogProps}>
             <DialogContent className={classes.content}>
-                <DialogHeader >
+                <DialogHeader>
                     <DialogTitle className={classes.title}>{title}</DialogTitle>
                     {desc ? <DialogDescription>{desc}</DialogDescription> : desc}
                 </DialogHeader>
                 <div>{children}</div>
-                {footer ? <DialogFooter className={classes.footer}>{footer}</DialogFooter> : null}
+                {footer ? (
+                    <DialogFooter className={classes.footer}>{footer}</DialogFooter>
+                ) : null}
             </DialogContent>
         </Dialog>
     );

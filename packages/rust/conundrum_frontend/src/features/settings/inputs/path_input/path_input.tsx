@@ -60,7 +60,7 @@ const PI = <Schema extends FieldValues>({
     }, [onPathExistsChange]);
     return (
         <Input
-            className={cn("text-sm font-mono", className)}
+            className={cn("text-sm font-mono text-foreground", className)}
             value={value}
             onChange={(e) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument

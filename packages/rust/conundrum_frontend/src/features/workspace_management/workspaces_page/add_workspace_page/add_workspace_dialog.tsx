@@ -26,6 +26,10 @@ export const AddWorkspaceDialog = ({
         ignore_hidden: z.boolean(),
         label: z.string(),
         resourceDir: z.string().optional(),
+        ai: z.object({
+            notes: z.string(),
+            ai_generated_input: z.string(),
+        }),
     });
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -34,6 +38,10 @@ export const AddWorkspaceDialog = ({
             label: "",
             respect_gitignore: true,
             ignore_hidden: true,
+            ai: {
+                notes: "",
+                ai_generated_input: "",
+            },
         },
     });
     const [pathExists, setPathExists] = useState(true);
@@ -62,6 +70,7 @@ export const AddWorkspaceDialog = ({
         label,
         respect_gitignore,
         ignore_hidden,
+        ai,
     }: typeof formSchema): void => {
         await addWorkspace({
             root: path,
@@ -70,6 +79,7 @@ export const AddWorkspaceDialog = ({
             ignore_hidden,
             bib_paths: [],
             resource_dir: undefined,
+            ai: ai,
         });
         form.reset();
         close();

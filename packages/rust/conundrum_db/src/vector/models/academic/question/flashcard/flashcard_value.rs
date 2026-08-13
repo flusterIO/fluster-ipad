@@ -11,8 +11,8 @@ use crate::vector::{
 
 #[derive(Clone, Serialize, Deserialize, Debug, specta::Type)]
 pub enum FlashcardValue {
-    Float(f64),
-    Int(i64),
+    Float(f32),
+    Int(i32),
     Text(String),
 }
 
@@ -24,15 +24,27 @@ impl Dummy<Faker> for FlashcardValue {
     }
 }
 
+impl From<i32> for FlashcardValue {
+    fn from(value: i32) -> Self {
+        Self::Int(value)
+    }
+}
+
+impl From<f32> for FlashcardValue {
+    fn from(value: f32) -> Self {
+        Self::Float(value)
+    }
+}
+
 impl From<i64> for FlashcardValue {
     fn from(value: i64) -> Self {
-        Self::Int(value)
+        Self::Int(value as i32)
     }
 }
 
 impl From<f64> for FlashcardValue {
     fn from(value: f64) -> Self {
-        Self::Float(value)
+        Self::Float(value as f32)
     }
 }
 
@@ -48,9 +60,9 @@ impl FromStr for FlashcardValue {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if let Ok(j) = serde_json::from_str::<GenericValue<String>>(s) {
             Ok(Self::Text(j.value))
-        } else if let Ok(k) = serde_json::from_str::<GenericValue<f64>>(s) {
+        } else if let Ok(k) = serde_json::from_str::<GenericValue<f32>>(s) {
             Ok(Self::Float(k.value))
-        } else if let Ok(l) = serde_json::from_str::<GenericValue<i64>>(s) {
+        } else if let Ok(l) = serde_json::from_str::<GenericValue<i32>>(s) {
             Ok(Self::Int(l.value))
         } else {
             Ok(Self::Text(s.to_string()))

@@ -10,6 +10,7 @@ import {
     FileSpreadsheet,
     WalletCards,
     HeartPulseIcon,
+    BubblesIcon,
 } from "lucide-react";
 import { AppPaths } from "../app_paths";
 import { useLocation } from "react-router";
@@ -18,6 +19,10 @@ const buttons: Omit<PermanentSidebarButtonProps, "active">[] = [
     {
         href: AppPaths.dashboard,
         icon: HomeIcon,
+    },
+    {
+        href: AppPaths.aiChat,
+        icon: BubblesIcon,
     },
     {
         href: AppPaths.workspaces,
@@ -39,6 +44,9 @@ const buttons: Omit<PermanentSidebarButtonProps, "active">[] = [
 
 export const PermanentSidebar = (): ReactNode => {
     const location = useLocation();
+    if (location.pathname.startsWith(AppPaths.onboarding)) {
+        return null;
+    }
     return (
         <div className="left-0 top-0 bottom-0 h-screen w-16 bg-background border-r flex flex-col justify-between items-center py-6 gap-y-4">
             <div className="flex flex-col justify-start items-center gap-y-4">

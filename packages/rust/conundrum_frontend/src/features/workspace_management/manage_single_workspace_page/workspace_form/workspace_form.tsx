@@ -1,4 +1,7 @@
-import { type WorkspaceByPredicate } from "#/database/db_utility_types/workspace";
+import {
+    type WorkspaceUpdateRequest,
+    type WorkspaceByPredicate,
+} from "#/database/db_utility_types/workspace";
 import { useGenericRemoteDataContext } from "#/database/state/generic_data_loading_context/generic_data_loading_context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, type ReactNode } from "react";
@@ -12,11 +15,13 @@ import { PlainInlineCode } from "#/ui/typography/inline_code";
 import { AINotepadSettings } from "#/settings/model_setting_sections/ai_notepad_settings";
 import { Button } from "@/components/shad/button";
 import { defaultAINotepadSchema } from "@conundrum/ts/schemas";
+import { rspc } from "@/app/rspc_client";
 
 export const WorkspaceForm = (): ReactNode => {
     const { data } = useGenericRemoteDataContext<{
         workspace?: WorkspaceByPredicate;
     }>();
+    const { mutateAsync } = rspc.useMutation("crud.user_workspace.update_many");
     const form = useForm<WorkspaceByPredicate>({
         resolver: zodResolver(userWorkspaceSchema),
         defaultValues: data?.workspace ?? {
@@ -40,10 +45,41 @@ export const WorkspaceForm = (): ReactNode => {
             // TODO: Add AI field once they've been added to the schema.
         }
     }, [data]);
+    const handleSubmit = async ({
+        root,
+        ...data
+    }: WorkspaceUpdateRequest[number]) => {
+        if (!root) {
+            return undefined;
+        }
+        const workspaceUpdate: WorkspaceUpdateRequest = [
+            {
+                root,
+                ai: data.ai ?? {
+                    ai_generated_input: "",
+                    notes: "",
+                },
+                ignore_hidden: data.ignore_hidden,
+                label: data.label ?? null,
+                resource_dir: data.resource_dir ?? null,
+                respect_gitignore: data.respect_gitignore ?? null,
+            },
+        ];
+        const res = await mutateAsync(workspaceUpdate);
+    };
     return (
         <div className="@container/form">
             <Form {...form}>
-                <form className="my-6 space-y-6">
+                <form
+                    className="my-6 space-y-6"
+                    onSubmit={(e) => {
+                        form
+                            .handleSubmit(handleSubmit)(e)
+                            .catch((err: unknown) => {
+                                console.error("Error: ", err);
+                            });
+                    }}
+                >
                     <h2 className="text-3xl font-bold text-foreground">
                         Workspace Settings
                     </h2>
@@ -86,7 +122,14 @@ export const WorkspaceForm = (): ReactNode => {
                     />
                     <AINotepadSettings />
                     <div className="w-full flex flex-row justify-end items-center">
-                        <Button type="submit">Save</Button>
+                        <Button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                            type="submit"
+                        >
+                            Save
+                        </Button>
                     </div>
                 </form>
             </Form>

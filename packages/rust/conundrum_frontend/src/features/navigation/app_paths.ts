@@ -1,5 +1,7 @@
 export enum AppPaths {
     dashboard = "/",
+    onboarding = "/onboarding",
+    aiChat = "/ai-chat",
     settings = "/settings",
     workspaces = "/workspaces",
     singleWorkspaceManagement = "/workspaces/manage",
