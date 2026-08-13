@@ -140,7 +140,7 @@ export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdr
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -160,6 +160,8 @@ export type DictionaryEntryResult = { label: string; body: string }
 export type DocumentSpan = { start: number; end: number }
 
 export type DocumentationComponentName = "InContentDocumentationContainer" | "InContentDocsEmphasisTypeList" | "InContentDocsHighlightDemo" | "InContentDocsUnderlineDemo" | "AutoInsertedNestedEmojiDocumentation"
+
+export type EcosystemApplicationAction = "toggle-command-palette" | "toggle-side-panel"
 
 export type EcosystemLogIntention = "git-status-change" | "process-complete" | "entity-created" | "entity-updated" | "entity-deleted"
 
@@ -290,7 +292,19 @@ is_workspace?: boolean;
  * Permissions regarding access to the file system can be found
  * on the settings page of the Conundrum dashboard.
  */
-allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.qa_pair.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
+allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.keyboard_shortcut.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { action: EcosystemApplicationAction; key: string; 
+/**
+ * The meta key was pressed.
+ */
+meta: boolean; 
+/**
+ * The 'alt' ey was pressed.
+ */
+alt: boolean; 
+/**
+ * The 'crl' key was pressed.
+ */
+ctrl: boolean }[] } | { key: "crud.qa_pair.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
 /**
  * The difficulty field is not optional for AI. AI should always provide an
  * estimated difficulty score using a scale where Ph.D. level physics
@@ -335,7 +349,7 @@ entity_name: string; is_joining_table: boolean; description: string }[] } | { ke
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -375,7 +389,7 @@ ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[] } |
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -387,7 +401,7 @@ ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[] } |
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -480,7 +494,31 @@ fs_path: string | null; url: string | null; id: DatabaseId;
  * A descriptive label used for both the UI and as further information for
  * AI.
  */
-label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.qa_pair.delete_by_predicate"; input: string; result: null } | { key: "crud.qa_pair.save_many"; input: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
+label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.keyboard_shortcut.delete_by_predicate"; input: string; result: null } | { key: "crud.keyboard_shortcut.save_many"; input: { action: EcosystemApplicationAction; key: string; 
+/**
+ * The meta key was pressed.
+ */
+meta: boolean; 
+/**
+ * The 'alt' ey was pressed.
+ */
+alt: boolean; 
+/**
+ * The 'crl' key was pressed.
+ */
+ctrl: boolean }[]; result: null } | { key: "crud.keyboard_shortcut.update_many"; input: ({ action: EcosystemApplicationAction; key: string | null; 
+/**
+ * The meta key was pressed.
+ */
+meta: boolean | null; 
+/**
+ * The 'alt' ey was pressed.
+ */
+alt: boolean | null; 
+/**
+ * The 'option' key was pressed.
+ */
+ctrl: boolean | null })[]; result: null } | { key: "crud.qa_pair.delete_by_predicate"; input: string; result: null } | { key: "crud.qa_pair.save_many"; input: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
 /**
  * The difficulty field is not optional for AI. AI should always provide an
  * estimated difficulty score using a scale where Ph.D. level physics
@@ -533,7 +571,7 @@ resource_dir?: string; ai: AIInteractions })[]; result: null } | { key: "crud.us
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
  */
-root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null }; subscriptions: never }
+root: string; label?: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null }; subscriptions: never }
 
 /**
  * ## Template (HTML)
@@ -567,7 +605,7 @@ export type SchemaVersion = "0.0.0"
 
 export type ServerVersion = "0.0.0"
 
-export type SortOrder = "AscNullLast" | "DescNullLast" | "AscNullFirst" | "DescNullFirst"
+export type SortOrder = "asc-null-last" | "desc-null-last" | "asc-null-first" | "desc-null-first"
 
 export type SortQuery = { column: string; order: SortOrder }
 
@@ -671,6 +709,12 @@ export type Procedures = {
 	save_many: { kind: "mutation", input: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id: DatabaseId; label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[], output: null, error: unknown },
 },
+	keyboard_shortcut: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { action: EcosystemApplicationAction; key: string; meta: boolean; alt: boolean; ctrl: boolean }[], error: unknown },
+	save_many: { kind: "mutation", input: { action: EcosystemApplicationAction; key: string; meta: boolean; alt: boolean; ctrl: boolean }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ action: EcosystemApplicationAction; key: string | null; meta: boolean | null; alt: boolean | null; ctrl: boolean | null })[], output: null, error: unknown },
+},
 	qa_pair: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[], error: unknown },
@@ -699,12 +743,12 @@ export type Procedures = {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ root: string; label?: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
 },
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
@@ -715,8 +759,8 @@ export type Procedures = {
 	get_many: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[], error: unknown },
 },
 	tables: {
-	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool")[], error: unknown },
-	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool")[], error: unknown },
+	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {

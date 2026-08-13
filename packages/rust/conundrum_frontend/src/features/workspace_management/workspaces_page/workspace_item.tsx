@@ -24,9 +24,9 @@ export const WorkspaceListItem = ({
             onClick={async () => {
                 navigate({
                     pathname: AppPaths.singleWorkspaceView,
-                    search: workspaceSp.toString(),
+                    search: workspaceSp.toString() ?? "",
                 }).catch((err: unknown) => {
-                    logMaybeObject("Error: ", err);
+                    logMaybeObject("Error: ", err ?? {});
                 });
             }}
         >

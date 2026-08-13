@@ -39,11 +39,13 @@ const PI = <Schema extends FieldValues>({
      */
     permitted_types = [],
     onPathExistsChange,
+    disabled,
 }: Pick<
     PathInputProps<Schema>,
     "name" | "source_type" | "permitted_types" | "onPathExistsChange"
 > & {
     className?: string;
+    disabled?: boolean;
 }): ReactNode => {
     const form = useFormContext<Schema>();
     const value = form.watch(name);
@@ -61,7 +63,8 @@ const PI = <Schema extends FieldValues>({
     return (
         <Input
             className={cn("text-sm font-mono text-foreground", className)}
-            value={value}
+            value={value ?? ""}
+            disabled={disabled}
             onChange={(e) => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
                 form.setValue(name, e.target.value as any);

@@ -27,14 +27,19 @@ export const WorkspaceForm = (): ReactNode => {
     const logger = useLogger();
     const form = useForm<WorkspaceUpdateRequest[number]>({
         resolver: zodResolver(userWorkspaceSchema),
-        defaultValues: data?.workspace ?? {
-            resource_dir: "",
-            label: "",
-            ignore_hidden: false,
-            respect_gitignore: false,
-            root: "",
-            ...defaultAINotepadSchema,
-        },
+        defaultValues: (data?.workspace
+            ? {
+                ...data.workspace,
+                resource_dir: data.workspace.resource_dir ?? null,
+            }
+            : {
+                resource_dir: "",
+                label: "",
+                ignore_hidden: false,
+                respect_gitignore: false,
+                root: "",
+                ...defaultAINotepadSchema,
+            }) satisfies WorkspaceUpdateRequest[number],
     });
 
     useEffect(() => {
@@ -56,6 +61,7 @@ export const WorkspaceForm = (): ReactNode => {
         if (!root) {
             return undefined;
         }
+        console.log("data: ", data);
         const workspaceUpdate: WorkspaceUpdateRequest = [
             {
                 root,
@@ -106,6 +112,7 @@ export const WorkspaceForm = (): ReactNode => {
                             input: "w-full",
                             container: "w-full",
                         }}
+                        disabled
                     />
                     <LabeledStringInput
                         name="label"

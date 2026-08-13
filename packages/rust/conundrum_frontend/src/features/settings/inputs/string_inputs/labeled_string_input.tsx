@@ -33,7 +33,7 @@ export const LabeledStringInput = <T extends FieldValues>({
         >
             <Label>{label ?? capitalize(name)}</Label>
             <Input
-                value={val}
+                value={val ?? ""}
                 onChange={(e) => {
                     form.setValue(name, e.target.value as T[typeof name]);
                 }}

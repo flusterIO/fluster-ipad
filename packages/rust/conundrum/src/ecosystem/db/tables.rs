@@ -36,6 +36,12 @@ pub enum DatabaseTable {
     #[strum(to_string = "qa_pair")]
     #[serde(rename = "qa_pair")]
     QAPair,
+    #[strum(to_string = "chat_conversation")]
+    #[serde(rename = "chat_conversation")]
+    ChatConversation,
+    #[strum(to_string = "chat_message")]
+    #[serde(rename = "chat_message")]
+    ChatMessage,
     #[strum(to_string = "academic_res_metric")]
     #[serde(rename = "academic_res_metric")]
     AcademicResultMetric,
@@ -76,6 +82,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "git_repository")]
     #[serde(rename = "git_repository")]
     GitRepository,
+    #[strum(to_string = "keyboard_shortcut")]
+    #[serde(rename = "keyboard_shortcut")]
+    KeyboardShortcut,
     /// --- 'Joining' tables ---
     #[strum(to_string = "workspace_repository")]
     #[serde(rename = "workspace_repository")]

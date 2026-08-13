@@ -6,9 +6,11 @@ import { cn } from "@/utils/shad_utils";
 import { AppPaths } from "#/navigation/app_paths";
 import { SecondaryPanel } from "#/navigation/secondary_panel/secondary_panel";
 import { NotificationsList } from "#/notifications/components/notification_list";
+import { useGlobalKeyboardListener } from "#/keyboard/use_global_keyboard_listener";
 
 const MainRoutes = (): ReactNode => {
     const location = useLocation();
+    useGlobalKeyboardListener();
     return (
         <div
             className={cn(

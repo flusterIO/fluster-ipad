@@ -3,10 +3,7 @@ use specta::Type;
 
 use crate::vector::{
     database::schema_version::{schema_version::SchemaVersion, server_version::ServerVersion},
-    models::{
-        date_time::date_time::DateTime,
-        ecosystem_data::{ecosystem_setting::EcosystemSettings, onboarding_dialogs::OnboardingDialogs},
-    },
+    models::{date_time::date_time::DateTime, ecosystem_data::onboarding_dialogs::OnboardingDialogs},
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
@@ -20,7 +17,6 @@ pub struct EcosystemData {
     pub schema_version: SchemaVersion,
     pub initialized_on: DateTime,
     pub last_sync: Option<DateTime>,
-    pub settings: EcosystemSettings,
     pub onboarding_dialogs: OnboardingDialogs,
 }
 
@@ -29,7 +25,6 @@ impl Default for EcosystemData {
         Self { schema_version: SchemaVersion::current_version(),
                initialized_on: DateTime::new_now(),
                last_sync: None,
-               settings: EcosystemSettings::default(),
                onboarding_dialogs: OnboardingDialogs::default() }
     }
 }

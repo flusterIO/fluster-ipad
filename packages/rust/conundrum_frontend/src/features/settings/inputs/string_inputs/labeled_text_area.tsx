@@ -39,7 +39,7 @@ export const LabeledTextAreaInput = <T extends FieldValues>({
             <Label>{label ?? capitalize(name)}</Label>
             <Textarea
                 {...taProps}
-                value={val}
+                value={val ?? ""}
                 onChange={(e) => {
                     form.setValue(name, e.target.value as T[typeof name]);
                 }}
