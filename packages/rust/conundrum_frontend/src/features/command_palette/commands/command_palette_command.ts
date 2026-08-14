@@ -1,3 +1,4 @@
+import { type NavigateFunction } from "react-router";
 import { type CommandGroupId } from "./command_group_id";
 
 /* eslint-disable @typescript-eslint/require-await */
@@ -24,7 +25,7 @@ export abstract class CommandPaletteCommand implements CommandPaletteCommandProp
         this.keywords = props.keywords;
     }
 
-    async act(): Promise<void> {
+    async act(nav: NavigateFunction): Promise<void> {
         throw new Error("Method not yet implemented");
     }
 

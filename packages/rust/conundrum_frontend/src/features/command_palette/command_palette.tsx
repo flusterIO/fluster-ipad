@@ -27,6 +27,7 @@ import {
     commandPaletteGroupIdToKeywords,
 } from "./commands/command_group_id";
 import { type CommandPaletteCommand } from "./commands/command_palette_command";
+import { useNavigate } from "react-router";
 
 const CI = ({
     item,
@@ -36,6 +37,7 @@ const CI = ({
     clearInput: () => void;
 }): ReactNode => {
     const dispatch = useCommandPaletteDispatch();
+    const navigate = useNavigate()
     return (
         <CommandItem
             keywords={commandPaletteGroupIdToKeywords(item.groupId, item.keywords)}
@@ -48,7 +50,7 @@ const CI = ({
                     clearInput();
                 } else {
                     (async () => {
-                        await item.act();
+                        await item.act(navigate);
                         dispatch({
                             type: "closeCommandPalette",
                             payload: undefined,
@@ -89,7 +91,6 @@ export const CommandPalette = (): ReactNode => {
                 items.unknown.push(k);
             }
         }
-        console.log("items: ", items);
         dispatch({
             type: "setChildCommands",
             payload: items,
@@ -101,7 +102,7 @@ export const CommandPalette = (): ReactNode => {
             return;
         } else {
             handleChildCommands().catch((err: unknown) => {
-                consola.error(`Error: ${err}`);
+                consola.error(`Error: `, err);
             });
         }
     }, [commands]);

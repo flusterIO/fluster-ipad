@@ -7,6 +7,9 @@ import { AppPaths } from "#/navigation/app_paths";
 import { SecondaryPanel } from "#/navigation/secondary_panel/secondary_panel";
 import { NotificationsList } from "#/notifications/components/notification_list";
 import { useGlobalKeyboardListener } from "#/keyboard/use_global_keyboard_listener";
+import { CommandPalette } from "#/command_palette/command_palette";
+import { CommandPaletteProvider } from "#/command_palette/command_palette_provider";
+import { GlobalKeyboardListener } from "#/command_palette/global_keyboard_listener";
 
 const MainRoutes = (): ReactNode => {
     const location = useLocation();
@@ -29,6 +32,10 @@ export const MainAppRouter = (): ReactNode => {
             <div className="app-container w-full h-screen max-h-screen flex flex-row justify-center items-center">
                 <PermanentSidebar />
                 <MainRoutes />
+                <CommandPaletteProvider>
+                    <GlobalKeyboardListener />
+                    <CommandPalette />
+                </CommandPaletteProvider>
                 <NotificationsList />
                 <SecondaryPanel />
             </div>

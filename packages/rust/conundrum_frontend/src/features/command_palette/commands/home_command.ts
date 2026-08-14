@@ -1,4 +1,5 @@
 import { CommandPaletteCommand } from "./command_palette_command";
+import { NavigationCommands } from "./navigation/navigation_commands";
 import { SearchSubjectsCommand } from "./search/search_subjects_command";
 import { SearchTagsCommand } from "./search/search_tags_command";
 import { SearchTopicsCommand } from "./search/search_topics_command";
@@ -23,6 +24,7 @@ export class HomeCOmmandPaletteCommand extends CommandPaletteCommand {
             new SearchTagsCommand(),
             new SearchTopicsCommand(),
             new SearchSubjectsCommand(),
+            new NavigationCommands()
         ];
     }
 }

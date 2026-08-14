@@ -3,6 +3,7 @@ export enum CommandGroupId {
     Clean = "clean",
     Backup = "backup",
     Search = "search",
+    Navigation = "navigation"
 }
 
 export const commandGroupIdToGroupLabel = (id: CommandGroupId): string => {
@@ -15,6 +16,8 @@ export const commandGroupIdToGroupLabel = (id: CommandGroupId): string => {
             return "Backup";
         case CommandGroupId.Search:
             return "Search";
+        case CommandGroupId.Navigation:
+            return "Navigation";
     }
 };
 
@@ -31,6 +34,7 @@ export const commandPaletteGroupIdToKeywords = (
             [CommandGroupId.Clean]: ["clean"],
             [CommandGroupId.Backup]: ["backup", "restore"],
             [CommandGroupId.Sync]: ["sync"],
+            [CommandGroupId.Navigation]: ["navigation", "jump", "to"],
         }[id],
         ...additionalKeywords,
     ];

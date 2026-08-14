@@ -5,6 +5,9 @@ use conundrum::ecosystem::environment_variables::cdrm_env_variable::CdrmEnvVaria
 
 #[tokio::main]
 pub async fn main() {
-    pretty_env_logger::init_custom_env(CdrmEnvVariable::LogLevel.to_string().as_str());
+    let env_level = CdrmEnvVariable::LogLevel.read().map(|x| x.to_lowercase()).unwrap_or("warn".to_string());
+    let filters = format!("warn,conundrum_server_rs={},conundrum={},conundrum_db={},conundrum_fs={}",
+                          &env_level, &env_level, &env_level, &env_level);
+    pretty_env_logger::formatted_builder().parse_filters(filters.as_str()).init();
     run_server(Some(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../conundrum_frontend/src/core/codegen/bindings.ts"))).await;
 }

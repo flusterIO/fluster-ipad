@@ -11,7 +11,7 @@ interface PageContainerProps {
     center?: boolean;
     toolbar?: ReactNode;
     toolbarClasses?: string;
-    itemClasses?: string
+    itemClasses?: string;
 }
 
 export const PageContainer = ({
@@ -22,7 +22,7 @@ export const PageContainer = ({
     center,
     toolbar,
     toolbarClasses,
-    itemClasses
+    itemClasses,
 }: PageContainerProps): ReactNode => {
     return (
         <div
@@ -54,7 +54,9 @@ export const PageContainer = ({
                     delay: title && subtitle ? 0.2 : title ? 0.1 : 0,
                 }}
                 className={
-                    center ? "grow flex flex-col justify-center items-center" : itemClasses
+                    center
+                        ? "grow flex flex-col justify-center items-center"
+                        : cn("py-6", itemClasses)
                 }
             >
                 {children}

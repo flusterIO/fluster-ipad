@@ -12,9 +12,8 @@ use crate::vector::database::db_traits::db_field::{DatabaseField, DatabaseFieldR
 
 #[serde_as]
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
-pub struct DateTime(#[serde_as(as = "DisplayFromStr")]
-                    #[specta(type = String)]
-                    i64);
+#[serde(transparent)]
+pub struct DateTime(#[specta(type = String)] i64);
 
 impl Dummy<Faker> for DateTime {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
@@ -39,6 +38,12 @@ impl FromStr for DateTime {
                                    DatabaseError::SerializationError
                                })?;
         Ok(Self(n))
+    }
+}
+
+impl From<i64> for DateTime {
+    fn from(value: i64) -> Self {
+        Self(value)
     }
 }
 

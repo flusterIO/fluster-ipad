@@ -180,7 +180,7 @@ export type EcosystemApplicationAction = "toggle-command-palette" | "toggle-side
 
 export type EcosystemLogIntention = "git-status-change" | "process-complete" | "entity-created" | "entity-updated" | "entity-deleted"
 
-export type EcosystemLogSeverity = "Success" | "Information" | "Warning" | "Error"
+export type EcosystemLogSeverity = "success" | "information" | "warning" | "error"
 
 /**
  * From typescript to swift.
@@ -311,6 +311,10 @@ allow_ai_access: boolean; vec: DBVector })[] } | { key: "crud.keyboard_shortcut.
 /**
  * The meta key was pressed.
  */
+shift: boolean; 
+/**
+ * The meta key was pressed.
+ */
 meta: boolean; 
 /**
  * The 'alt' ey was pressed.
@@ -400,7 +404,7 @@ message: string | null;
 /**
  * A description of the event logged written directly to AI.
  */
-ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -513,6 +517,10 @@ label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | n
 /**
  * The meta key was pressed.
  */
+shift: boolean; 
+/**
+ * The meta key was pressed.
+ */
 meta: boolean; 
 /**
  * The 'alt' ey was pressed.
@@ -522,6 +530,10 @@ alt: boolean;
  * The 'crl' key was pressed.
  */
 ctrl: boolean }[]; result: null } | { key: "crud.keyboard_shortcut.update_many"; input: ({ action: EcosystemApplicationAction; key: string | null; 
+/**
+ * The shift key was pressed.
+ */
+shift: boolean | null; 
 /**
  * The meta key was pressed.
  */
@@ -739,9 +751,9 @@ export type Procedures = {
 },
 	keyboard_shortcut: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { action: EcosystemApplicationAction; key: string; meta: boolean; alt: boolean; ctrl: boolean }[], error: unknown },
-	save_many: { kind: "mutation", input: { action: EcosystemApplicationAction; key: string; meta: boolean; alt: boolean; ctrl: boolean }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ action: EcosystemApplicationAction; key: string | null; meta: boolean | null; alt: boolean | null; ctrl: boolean | null })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { action: EcosystemApplicationAction; key: string; shift: boolean; meta: boolean; alt: boolean; ctrl: boolean }[], error: unknown },
+	save_many: { kind: "mutation", input: { action: EcosystemApplicationAction; key: string; shift: boolean; meta: boolean; alt: boolean; ctrl: boolean }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ action: EcosystemApplicationAction; key: string | null; shift: boolean | null; meta: boolean | null; alt: boolean | null; ctrl: boolean | null })[], output: null, error: unknown },
 },
 	qa_pair: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
@@ -784,7 +796,7 @@ export type Procedures = {
 },
 	log: {
 	create: { kind: "mutation", input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }, output: null, error: unknown },
-	get_many: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[], error: unknown },
+	get_many: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[], error: unknown },
 },
 	rpc_health: { kind: "query", input: null, output: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean }, error: unknown },
 	tables: {

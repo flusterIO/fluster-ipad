@@ -61,7 +61,6 @@ export const WorkspaceForm = (): ReactNode => {
         if (!root) {
             return undefined;
         }
-        console.log("data: ", data);
         const workspaceUpdate: WorkspaceUpdateRequest = [
             {
                 root,
@@ -77,9 +76,9 @@ export const WorkspaceForm = (): ReactNode => {
         ];
         try {
             await mutateAsync(workspaceUpdate);
-            logger({
+            await logger({
                 title: "Success",
-                severity: "Success",
+                severity: "success",
                 message: "Workspace updated successfully",
                 purpose: "entity-updated",
                 ai_description: `The user just updated their workspace at \`${root}\`.`,
