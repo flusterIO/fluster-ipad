@@ -9,9 +9,20 @@ import {
 } from "@/components/ai_elements/prompt_input";
 import { randomFromArray } from "@/utils/array_utils";
 import { MicIcon, PaperclipIcon } from "lucide-react";
-import React, { type ReactNode } from "react";
+import React, { useMemo, type ReactNode } from "react";
 
 export const GeneralAIChatPage = (): ReactNode => {
+    const placeholder = useMemo(() => {
+        return randomFromArray([
+            "How can I help?",
+            "What are we working on today?",
+            "What would you like to know?",
+            "Anything I can help with?",
+            "I'm here for whatever you need",
+            "Let's get to work...",
+            "Let's change the world...",
+        ])
+    }, [])
     return (
         <div className="w-full h-screen flex flex-col justify-between items-center">
             <div className="grow w-full overflow-x-hidden overflow-y-auto min-scrollbar"></div>
@@ -23,15 +34,7 @@ export const GeneralAIChatPage = (): ReactNode => {
             >
                 <PromptInputBody>
                     <PromptInputTextarea
-                        placeholder={randomFromArray([
-                            "How can I help?",
-                            "What are we working on today?",
-                            "What would you like to know?",
-                            "Anything I can help with?",
-                            "I'm here for whatever you need",
-                            "Let's get to work...",
-                            "Let's change the world...",
-                        ])}
+                        placeholder={placeholder}
                     />
                 </PromptInputBody>
                 <PromptInputFooter>

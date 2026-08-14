@@ -60,7 +60,7 @@ docx-rs = "0.4.22"
 whisper-rs = "0.16.0"
 leptess = "0.14.0"
 rust-mcp-sdk = { version = "1.0.1", features = ["rust-mcp-macros"] }
-# serde_arrow = { version = "0.14.2", features = ["arrow-58"] }
+html-to-markdown-rs = "3.11.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }
@@ -74,3 +74,4 @@ tokio = { version = "1.50.0", features = ["io-util", "macros", "rt", "sync"] }
 
 [dev-dependencies]
 fake.workspace = true
+docify = "0.4.1"

@@ -32,7 +32,7 @@ pub async fn run_server(write_types_to: Option<impl AsRef<std::path::Path>>) {
         if let Some(fp) = write_types_to {
             Typescript::default().export_to(fp, &types)
                                  .inspect_err(|e| {
-                                     println!("Codegen Error: {:?}", e);
+                                     log::error!("Codegen Error: {:?}", e);
                                  })
                                  .expect("Failed to compile rpc types");
         }

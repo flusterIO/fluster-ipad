@@ -74,6 +74,7 @@ rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "rmcp", "memo
 rig-lancedb = "0.41.0"
 rig-memory = "0.41.0"
 lancedb = "0.30.0"
+fake.workspace = true
 
 [lints]
 workspace = true

@@ -2,12 +2,13 @@ use std::hash::Hash;
 
 use crate::ecosystem::error_handling::db_error::DatabaseError;
 use convert_case::Casing;
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use strum::{EnumCount, IntoEnumIterator};
 use strum_macros::{Display, EnumIter};
 
 #[typeshare::typeshare]
-#[derive(Debug, Serialize, Deserialize, Display, EnumIter, EnumCount, PartialEq, Clone, Eq, specta::Type)]
+#[derive(Debug, Serialize, Deserialize, Display, EnumIter, EnumCount, PartialEq, Clone, Eq, specta::Type, Dummy)]
 pub enum DatabaseTable {
     #[strum(to_string = "ecosystem_log")]
     #[serde(rename = "ecosystem_log")]

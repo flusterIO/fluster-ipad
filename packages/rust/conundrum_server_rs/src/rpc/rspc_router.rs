@@ -16,6 +16,7 @@ use crate::{
             fs::fs_router::get_fs_router, log::logger_router::get_logger_router, table::table_router::get_table_router,
             workspace_management::workspace_management_router::get_workspace_management_router,
         },
+        server_health::server_health::ServerHealthReport,
     },
 };
 
@@ -38,6 +39,12 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
                                                .nest("cdrm", cdrm_router)
                                                .nest("describe", describe_router)
                                                .nest("crud", crud_router)
+                                               .procedure("rpc_health",
+                                                          Procedure::builder::<ServerError>().query(|ctx: RouteContext, _: ()| async move {
+                                                              let db = ctx.db.clone();
+                                                              let health = ServerHealthReport::new(&db).await?;
+                                                              Ok(health)
+                                                          }))
                                                .procedure("version",
                                                           Procedure::builder::<ServerError>().query(|_, _: ()| async {
                                                               Ok(VersionData { server:

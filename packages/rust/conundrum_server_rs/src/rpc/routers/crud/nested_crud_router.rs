@@ -38,7 +38,7 @@ pub fn get_nested_crud_router() -> Router<RouteContext> {
     let assignment_crud = crud_router!(AssignmentEntity, AssignmentEntityPartial);
     let flashcard_crud = crud_router!(FlashCardEntity, FlashCardEntityPartial);
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
-    let chat_conversation = crud_router!(ChatConversation, IDAndOptionalLabel);
+    let chat_conversation_crud = crud_router!(ChatConversation, IDAndOptionalLabel);
     Router::<RouteContext>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
                                  .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)
                                  .nest(DatabaseTable::Topic.to_string(), topic_crud)
@@ -48,4 +48,5 @@ pub fn get_nested_crud_router() -> Router<RouteContext> {
                                  .nest(DatabaseTable::Assignment.to_string(), assignment_crud)
                                  .nest(DatabaseTable::KeyboardShortcut.to_string(), keyboard_shortcut_crud)
                                  .nest(DatabaseTable::QAPair.to_string(), flashcard_crud)
+                                 .nest(DatabaseTable::ChatConversation.to_string(), chat_conversation_crud)
 }

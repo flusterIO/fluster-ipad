@@ -117,6 +117,21 @@ export type ConundrumModifier = "HideEmojis" |
  */
 "EmbedJavascript"
 
+/**
+ * # DBTableDescription
+ * 
+ * AI, this is your chance to explore the database further. Each database table exposes a
+ * description that you can query at any time to more deeply understand the Conundrum architecture
+ * that you're running within. Understanding the tools and data you have access to is critical to
+ * helping the user reach their short and long term goals.
+ */
+export type DBTableDescription = { table: DatabaseTable; 
+/**
+ * A user facing name for this entity. Example: 'workspace' for the
+ * `user_workspace` table.
+ */
+entity_name: string; is_joining_table: boolean; description: string }
+
 export type DBVector = number[]
 
 export type DOMId = string
@@ -136,7 +151,7 @@ export type DOMId = string
  */
 export type DatabaseId = string
 
-export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -258,7 +273,7 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.git_repository.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.chat_conversation.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; label: string; ctime: DateTime; utime?: DateTime }[] } | { key: "crud.git_repository.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; 
 /**
  * Will match the root of the workspace if this is a workspace repository,
  * otherwise user's can optionally set this to a local path to allow AI
@@ -345,7 +360,7 @@ resource_dir?: string; ai: AIInteractions })[] } | { key: "describe.all_tables";
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
  */
-entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -385,7 +400,7 @@ message: string | null;
 /**
  * A description of the event logged written directly to AI.
  */
-ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[] } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -397,7 +412,7 @@ ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[] } |
 /**
  * ---- Vectors ----
  */
-"cdrm_vec" | "mcp_tool")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+"cdrm_vec" | "mcp_tool")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -451,7 +466,7 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: { id: DatabaseId; label: string; ctime: DateTime; utime?: DateTime }[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string | null })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
 /**
  * Will match the root of the workspace if this is a workspace repository,
  * otherwise user's can optionally set this to a local path to allow AI
@@ -625,6 +640,13 @@ export type SupportedCodeBlockSyntax = "Plain Text" | "ASP" | "HTML (ASP)" | "Ac
 
 export type SupportedCodeBlockTheme = "1337" | "Coldark-Cold" | "Coldark-Dark" | "DarkNeon" | "Dracula" | "GitHub" | "Monokai Extended" | "Monokai Extended Bright" | "Monokai Extended Light" | "Monokai Extended Origin" | "Nord" | "OneHalfDark" | "OneHalfLight" | "Solarized (dark)" | "Solarized (light)" | "Sublime Snazzy" | "TwoDark" | "Visual Studio Dark+" | "ansi" | "base16" | "base16-256" | "gruvbox-dark" | "gruvbox-light" | "zenburn"
 
+export type TableHealthReport = { exists: boolean; 
+/**
+ * True if the table is a _temporary_ vector table. These tables might be
+ * missing while the app is still in a valid state.
+ */
+is_temporary_table: boolean; description: DBTableDescription }
+
 export type TagLocation = "front_matter" | "body" | 
 /**
  * For apps using Conundrum content, this might come from a panel, a modal
@@ -703,6 +725,12 @@ export type Procedures = {
 	save_many: { kind: "mutation", input: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[], output: null, error: unknown },
 },
+	chat_conversation: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { id: DatabaseId; label: string; ctime: DateTime; utime?: DateTime }[], error: unknown },
+	save_many: { kind: "mutation", input: { id: DatabaseId; label: string; ctime: DateTime; utime?: DateTime }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string | null })[], output: null, error: unknown },
+},
 	git_repository: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; vec: DBVector })[], error: unknown },
@@ -748,7 +776,7 @@ export type Procedures = {
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
@@ -758,9 +786,10 @@ export type Procedures = {
 	create: { kind: "mutation", input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }, output: null, error: unknown },
 	get_many: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; ctime: DateTime })[], error: unknown },
 },
+	rpc_health: { kind: "query", input: null, output: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean }, error: unknown },
 	tables: {
-	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool")[], error: unknown },
-	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool")[], error: unknown },
+	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {

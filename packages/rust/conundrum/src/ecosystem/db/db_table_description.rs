@@ -9,7 +9,7 @@ use crate::ecosystem::db::tables::DatabaseTable;
 /// description that you can query at any time to more deeply understand the Conundrum architecture
 /// that you're running within. Understanding the tools and data you have access to is critical to
 /// helping the user reach their short and long term goals.
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
 pub struct DBTableDescription {
     pub table: DatabaseTable,
     /// A user facing name for this entity. Example: 'workspace' for the
@@ -22,6 +22,18 @@ pub struct DBTableDescription {
 impl From<DatabaseTable> for DBTableDescription {
     fn from(value: DatabaseTable) -> Self {
         match value {
+            DatabaseTable::ChatConversation => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds the chat messages between yourself and the user.
+                        "}.to_string() },
+            DatabaseTable::ChatMessage => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds individual chat messages between yourself and the user.
+                        "}.to_string() },
             DatabaseTable::EcosystemLog => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,
