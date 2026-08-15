@@ -1,4 +1,4 @@
-use std::ops::Index;
+use std::{ops::Index, sync::Arc};
 
 use conundrum::ecosystem::{db::tables::DatabaseTable, error_handling::db_error::DatabaseError};
 use conundrum_db::vector::{
@@ -10,11 +10,12 @@ use conundrum_db::vector::{
 };
 use rspc::{Procedure, Router};
 
-use crate::{errors::server_error::ServerError, rpc::route_context::RouteContext};
+use crate::errors::server_error::ServerError;
+use crate::server_state::ServerState;
 
-pub fn get_workspace_management_router() -> Router<RouteContext> {
-    Router::<RouteContext>::new()
-    .procedure("parsable_file_count", Procedure::<RouteContext, String, UserWorkspaceCountData>::builder::<ServerError>().query(|state: RouteContext, params: String | async move {
+pub fn get_workspace_management_router() -> Router<Arc<ServerState>> {
+    Router::<Arc<ServerState>>::new()
+    .procedure("parsable_file_count", Procedure::<Arc<ServerState>, String, UserWorkspaceCountData>::builder::<ServerError>().query(|state: Arc<ServerState>, params: String | async move {
         let predicate = format!("root=\"{}\"", params);
         let wp = UserWorkspace::get_by_predicate(Some(predicate.clone()), Some(PaginationParams::single()), None, &state.db).await.map_err(|e| {
                         ServerError::DatabaseError(e)

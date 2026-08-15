@@ -9,6 +9,12 @@ use crate::vector::{database::db_traits::db_field::DatabaseField, models::ai::to
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct MCPToolNameList(pub Vec<MCPToolName>);
 
+impl MCPToolNameList {
+    pub fn new_empty() -> Self {
+        Self(Vec::new())
+    }
+}
+
 impl DatabaseField for MCPToolNameList {
     fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
         Field::new(field_key.to_string(),

@@ -1,10 +1,10 @@
+use std::sync::Arc;
+
+use crate::server_state::ServerState;
 use crate::{
     errors::server_error::{ServerError, ServerResult},
     routes::fs::route_exists::path_exists,
-    rpc::{
-        route_context::RouteContext,
-        routers::fs::fs_path_simple_result::{FSPathSimpleResult, PathVariant},
-    },
+    rpc::routers::fs::fs_path_simple_result::{FSPathSimpleResult, PathVariant},
 };
 use conundrum::{
     ecosystem::{
@@ -19,10 +19,10 @@ use conundrum_db::vector::{
 };
 use rspc::{Procedure, Router};
 
-pub fn get_table_router() -> Router<RouteContext> {
-    Router::<RouteContext>::new()
+pub fn get_table_router() -> Router<Arc<ServerState>> {
+    Router::<Arc<ServerState>>::new()
         .procedure("current_tables",
-                                            Procedure::<RouteContext, (), Vec<DatabaseTable>>::builder::<ServerError>().query(|context: RouteContext, _: ()| async move {
+                                            Procedure::<Arc<ServerState>, (), Vec<DatabaseTable>>::builder::<ServerError>().query(|context: Arc<ServerState>, _: ()| async move {
                                                 let db = context.db.clone().lock_owned().await;
                                                 let r = db.table_names()
                                                     .execute()
@@ -41,7 +41,7 @@ pub fn get_table_router() -> Router<RouteContext> {
                                                 Ok(database_tables)
                                                                                }))
         .procedure("describe_table",
-                                            Procedure::<RouteContext, DatabaseTable, DBTableDescription>::builder::<ServerError>().query(|context: RouteContext, req: DatabaseTable| async move {
+                                            Procedure::<Arc<ServerState>, DatabaseTable, DBTableDescription>::builder::<ServerError>().query(|context: Arc<ServerState>, req: DatabaseTable| async move {
                                                 let desc = DBTableDescription::from(req);
                                                 Ok(desc)
                                                                                }))

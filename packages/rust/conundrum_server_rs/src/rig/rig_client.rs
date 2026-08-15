@@ -1,19 +1,8 @@
 use rig::providers::ollama::{Client as OllamaClient, OllamaApiKey};
 
-use crate::errors::server_error::{ServerError, ServerResult};
+use crate::rig::{rig_client_local::RigClientLocal, rig_client_remote::RigClientRemote};
 
-/// # RigProvider
-///
-/// A general purpose wrapper around whichever Rig provider makes it into the
-/// initial release, because I can't afford internet, much less provider tokens.
-pub struct RigClient(pub OllamaClient);
-
-impl RigClient {
-    pub fn initialize() -> ServerResult<Self> {
-        let client = OllamaClient::new(OllamaApiKey::default()).map_err(|e| {
-                         log::error!("Failed to initialize model with the error: {:?}", e);
-                         ServerError::ModelInitializationFailure
-                     })?;
-        Ok(RigClient(client))
-    }
+pub enum RigClient {
+    Local(RigClientLocal),
+    Remote(RigClientRemote),
 }

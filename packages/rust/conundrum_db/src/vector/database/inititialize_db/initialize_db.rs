@@ -20,7 +20,8 @@ use crate::vector::models::{
         question::flashcard::flashcard_entity::FlashCardEntity,
     },
     ai::{
-        agent::agent_description::AgentDescription, chat::chat_conversation::chat_conversation::ChatConversation,
+        agent::agent_description::AgentDescription,
+        chat::{chat_conversation::chat_conversation::ChatConversation, chat_message::chat_message::ChatMessage},
         tool::mcp_tool_record::MCPToolRecord,
     },
     ecosystem_data::{
@@ -62,6 +63,9 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::ChatConversation,
                                                               schema: ChatConversation::schema()?,
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::ChatMessage,
+                                                              schema: ChatMessage::schema()?,
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::EcosystemLog,
                                                               schema: EcosystemLog::schema()?,

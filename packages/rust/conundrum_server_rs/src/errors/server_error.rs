@@ -27,6 +27,10 @@ pub enum ServerError {
     EmbeddingError,
     #[error("Conundrum encountered a transport error: {0}")]
     TransportError(String),
+    #[error("Conundrum could not connect to the *local* agent.")]
+    LocalAgentFailToConnect,
+    #[error("Conundrum doesn't need this output so we're skipping it...")]
+    SkippingIrrelevantAIOutput,
 }
 
 impl From<DatabaseError> for ServerError {
@@ -73,6 +77,7 @@ impl Error for ServerError {
             Self::CoreFailure(e) => {
                 rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("{:?}", e), None))
             }
+            _ => rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(self.to_string(), None)),
         }
     }
 }

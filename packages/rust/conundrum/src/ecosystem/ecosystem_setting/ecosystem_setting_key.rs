@@ -1,3 +1,4 @@
+use arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use strum::{EnumIter, IntoEnumIterator};
@@ -15,6 +16,17 @@ pub enum EcosystemSettingKey {
     #[serde(rename = "embedding_model")]
     #[strum(to_string = "embedding_model")]
     EmbeddingModel,
+    #[strum(to_string = "notification-storage-method")]
+    #[serde(rename = "notification-storage-method")]
+    NotificationStorageMethod,
+    #[strum(to_string = "store-logs-duration")]
+    #[serde(rename = "store-logs-duration")]
+    /// ## StoreLogsDuration
+    ///
+    /// Conundrum will periodically clean the log history to keep storage from
+    /// growing indefinitely. This should be an integer representing the
+    /// number of days to store logs.
+    StoreLogsDuration,
 }
 
 impl TryFrom<String> for EcosystemSettingKey {
@@ -27,5 +39,11 @@ impl TryFrom<String> for EcosystemSettingKey {
             }
         }
         Err(ConundrumErrorVariant::InvalidSettingKey(value.clone()))
+    }
+}
+
+impl EcosystemSettingKey {
+    fn field_definition(field_key: &'static str, nullable: bool) -> Field {
+        Field::new(field_key.to_string(), arrow_schema::DataType::Utf8, nullable)
     }
 }

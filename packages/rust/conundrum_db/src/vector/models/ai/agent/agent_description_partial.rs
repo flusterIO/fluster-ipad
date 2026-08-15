@@ -19,10 +19,11 @@ pub struct AgentDescriptionPartial {
     pub name: Option<String>,
     /// The model to use
     pub model: Option<String>,
+    pub is_local: Option<bool>,
     /// System level instructions
     pub instructions: Option<String>,
     pub always_include_tools: Option<MCPToolNameList>,
-    pub temperature: Option<f32>,
+    pub temperature_scalar: Option<f32>,
     pub primary_task: Option<AgentPrimaryTask>,
 }
 
@@ -34,9 +35,10 @@ impl<'a> DBSchema<'a> for AgentDescriptionPartial {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
                 Arc::new(String::field_definition("name", true)),
                 Arc::new(String::field_definition("model", true)),
+                Arc::new(bool::field_definition("is_local", true)),
                 Arc::new(String::field_definition("instructions", true)),
                 Arc::new(MCPToolNameList::field_definition("always_include_tools", true)),
-                Arc::new(f32::field_definition("temperature", true)),
+                Arc::new(f32::field_definition("temperature_scalar", true)),
                 Arc::new(AgentPrimaryTask::field_definition("primary_task", true)),])
     }
 }

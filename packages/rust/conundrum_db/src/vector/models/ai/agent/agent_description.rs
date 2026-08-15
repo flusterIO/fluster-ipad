@@ -29,10 +29,13 @@ pub struct AgentDescription {
     pub name: Option<String>,
     /// The model to use
     pub model: String,
+    pub is_local: bool,
     /// System level instructions
     pub instructions: Option<String>,
     pub always_include_tools: MCPToolNameList,
-    pub temperature: f32,
+    /// A scalar that will be applied to the temperature assigned to each task.
+    /// Defaults to 1, the same as being null.
+    pub temperature_scalar: f32,
     pub primary_task: Option<AgentPrimaryTask>,
     pub ctime: DateTime,
     pub utime: DateTime,
@@ -46,9 +49,10 @@ impl<'a> DBSchema<'a> for AgentDescription {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
                 Arc::new(String::field_definition("name", true)),
                 Arc::new(String::field_definition("model", false)),
+                Arc::new(bool::field_definition("is_local", false)),
                 Arc::new(String::field_definition("instructions", true)),
                 Arc::new(MCPToolNameList::field_definition("always_include_tools", false)),
-                Arc::new(f32::field_definition("temperature", false)),
+                Arc::new(f32::field_definition("temperature_scalar", false)),
                 Arc::new(AgentPrimaryTask::field_definition("primary_task", true)),
                 Arc::new(DateTime::field_definition("ctime", false)),
                 Arc::new(DateTime::field_definition("utime", false)),])

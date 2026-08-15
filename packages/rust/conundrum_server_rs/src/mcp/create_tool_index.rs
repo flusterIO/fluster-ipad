@@ -18,12 +18,12 @@ use std::sync::Arc;
 
 use crate::{
     errors::server_error::{ServerError, ServerResult},
-    rig::rig_client::RigClient,
+    rig::{rig_client::RigClient, rig_client_remote::RigClientRemote},
 };
 
 pub async fn create_tool_index(db: &ArcMutexDB) -> ServerResult<()> {
     let tool_list = ToolDefinitionList::new_all_tools();
-    let client = RigClient::initialize()?;
+    let client = RigClientRemote::initialize()?;
     // TODO: Get the user's settings from the DB here if they exist and select the
     // proper model.
     let embedding_model = client.0.embedding_model_with_ndims("qwen3-embedding:4b", DB_VECTOR_DIMENSIONS as usize);

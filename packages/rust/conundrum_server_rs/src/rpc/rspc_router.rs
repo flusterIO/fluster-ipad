@@ -1,4 +1,4 @@
-use std::ops::Index;
+use std::{ops::Index, sync::Arc};
 
 use conundrum_db::vector::{
     database::schema_version::{schema_version::SchemaVersion, server_version::ServerVersion},
@@ -6,10 +6,10 @@ use conundrum_db::vector::{
 };
 use rspc::Procedure;
 
+use crate::server_state::ServerState;
 use crate::{
     errors::server_error::{ServerError, ServerResult},
     rpc::{
-        route_context::RouteContext,
         routers::{
             cdrm::cdrm_router::get_cdrm_router, code::code_router::get_code_router,
             crud::nested_crud_router::get_nested_crud_router, describe::describe_router::get_describe_router,
@@ -20,7 +20,7 @@ use crate::{
     },
 };
 
-pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, rspc::Types)> {
+pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState>>, rspc::Types)> {
     let fs_router = get_fs_router();
     let logger_router = get_logger_router();
     let table_router = get_table_router();
@@ -31,7 +31,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
     let describe_router = get_describe_router();
     let crud_router = get_nested_crud_router();
 
-    let r = rspc::Router::<RouteContext>::new().nest("fs", fs_router)
+    let r = rspc::Router::<Arc<ServerState>>::new().nest("fs", fs_router)
                                                .nest("workspace_management", workspace_router)
                                                .nest("code", code_router)
                                                .nest("log", logger_router)
@@ -40,7 +40,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<RouteContext>, 
                                                .nest("describe", describe_router)
                                                .nest("crud", crud_router)
                                                .procedure("rpc_health",
-                                                          Procedure::builder::<ServerError>().query(|ctx: RouteContext, _: ()| async move {
+                                                          Procedure::builder::<ServerError>().query(|ctx: Arc<ServerState>, _: ()| async move {
                                                               let db = ctx.db.clone();
                                                               let health = ServerHealthReport::new(&db).await?;
                                                               Ok(health)

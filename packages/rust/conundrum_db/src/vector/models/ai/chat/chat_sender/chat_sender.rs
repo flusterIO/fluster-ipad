@@ -1,5 +1,8 @@
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use fake::Dummy;
 use strum::IntoEnumIterator;
+
+use crate::vector::database::db_traits::db_field::DatabaseField;
 
 #[derive(serde::Serialize,
            serde::Deserialize,
@@ -7,6 +10,7 @@ use strum::IntoEnumIterator;
            Debug,
            strum_macros::Display,
            strum_macros::EnumIter,
+           Dummy,
            specta::Type)]
 #[serde(rename_all = "snake_case", try_from = "String", into = "String")]
 pub enum ChatParticipant {
@@ -31,5 +35,11 @@ impl TryFrom<String> for ChatParticipant {
             }
         }
         Err(DatabaseError::SerializationError)
+    }
+}
+
+impl DatabaseField for ChatParticipant {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        String::field_definition(field_key, nullable)
     }
 }

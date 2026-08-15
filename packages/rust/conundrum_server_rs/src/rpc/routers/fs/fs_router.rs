@@ -1,10 +1,10 @@
+use std::sync::Arc;
+
+use crate::server_state::ServerState;
 use crate::{
     errors::server_error::{ServerError, ServerResult},
     routes::fs::route_exists::path_exists,
-    rpc::{
-        route_context::RouteContext,
-        routers::fs::fs_path_simple_result::{FSPathSimpleResult, PathVariant},
-    },
+    rpc::routers::fs::fs_path_simple_result::{FSPathSimpleResult, PathVariant},
 };
 use conundrum::{
     ecosystem::error_handling::{conundrum_fs_error::ConundrumFSError, db_error::DatabaseError},
@@ -16,15 +16,15 @@ use conundrum_db::vector::{
 };
 use rspc::{Procedure, Router};
 
-pub fn get_fs_router() -> Router<RouteContext> {
-    Router::<RouteContext>::new()
+pub fn get_fs_router() -> Router<Arc<ServerState>> {
+    Router::<Arc<ServerState>>::new()
         .procedure("validate_path",
-                                            Procedure::<RouteContext, PathValidationRequest, bool>::builder::<ServerError>().query(|_, req: PathValidationRequest| async move {
+                                            Procedure::<Arc<ServerState>, PathValidationRequest, bool>::builder::<ServerError>().query(|_, req: PathValidationRequest| async move {
                                                 let x = req.execute_request().await?;
                                                                                    Ok(x)
                                                                                }))
         .procedure("explore_directory",
-                                            Procedure::<RouteContext, String, Vec<FSPathSimpleResult>>::builder::<ServerError>().query(|_, req: String| async move {
+                                            Procedure::<Arc<ServerState>, String, Vec<FSPathSimpleResult>>::builder::<ServerError>().query(|_, req: String| async move {
                                                 let f = std::fs::read_dir(
                                                     req
                                                 )

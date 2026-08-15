@@ -1,5 +1,7 @@
-use crate::{crud_router, errors::server_error::ServerError, rpc::route_context::RouteContext};
+use std::sync::Arc;
 
+use crate::server_state::ServerState;
+use crate::{crud_router, errors::server_error::ServerError};
 use conundrum::ecosystem::db::tables::DatabaseTable;
 use conundrum_db::vector::{
     database::db_traits::entity_crud::EntityCRUD,
@@ -28,7 +30,7 @@ use conundrum_db::vector::{
 };
 use rspc::{Procedure, Router};
 
-pub fn get_nested_crud_router() -> Router<RouteContext> {
+pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let workspace_crud = crud_router!(UserWorkspace, UserWorkspacePartial);
     let tag_crud = crud_router!(Tag, TaggablePartial);
     let topic_crud = crud_router!(Topic, TaggablePartial);
@@ -39,14 +41,14 @@ pub fn get_nested_crud_router() -> Router<RouteContext> {
     let flashcard_crud = crud_router!(FlashCardEntity, FlashCardEntityPartial);
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
     let chat_conversation_crud = crud_router!(ChatConversation, IDAndOptionalLabel);
-    Router::<RouteContext>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
-                                 .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)
-                                 .nest(DatabaseTable::Topic.to_string(), topic_crud)
-                                 .nest(DatabaseTable::Subject.to_string(), subject_crud)
-                                 .nest(DatabaseTable::Tag.to_string(), tag_crud)
-                                 .nest(DatabaseTable::AutoTaggable.to_string(), auto_taggable_crud)
-                                 .nest(DatabaseTable::Assignment.to_string(), assignment_crud)
-                                 .nest(DatabaseTable::KeyboardShortcut.to_string(), keyboard_shortcut_crud)
-                                 .nest(DatabaseTable::QAPair.to_string(), flashcard_crud)
-                                 .nest(DatabaseTable::ChatConversation.to_string(), chat_conversation_crud)
+    Router::<Arc<ServerState>>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
+                                     .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)
+                                     .nest(DatabaseTable::Topic.to_string(), topic_crud)
+                                     .nest(DatabaseTable::Subject.to_string(), subject_crud)
+                                     .nest(DatabaseTable::Tag.to_string(), tag_crud)
+                                     .nest(DatabaseTable::AutoTaggable.to_string(), auto_taggable_crud)
+                                     .nest(DatabaseTable::Assignment.to_string(), assignment_crud)
+                                     .nest(DatabaseTable::KeyboardShortcut.to_string(), keyboard_shortcut_crud)
+                                     .nest(DatabaseTable::QAPair.to_string(), flashcard_crud)
+                                     .nest(DatabaseTable::ChatConversation.to_string(), chat_conversation_crud)
 }

@@ -9,5 +9,5 @@ pub async fn main() {
     let filters = format!("warn,conundrum_server_rs={},conundrum={},conundrum_db={},conundrum_fs={}",
                           &env_level, &env_level, &env_level, &env_level);
     pretty_env_logger::formatted_builder().parse_filters(filters.as_str()).init();
-    run_server(Some(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../conundrum_frontend/src/core/codegen/bindings.ts"))).await;
+    let _ = run_server(Some(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../conundrum_frontend/src/core/codegen/bindings.ts"))).await;
 }
