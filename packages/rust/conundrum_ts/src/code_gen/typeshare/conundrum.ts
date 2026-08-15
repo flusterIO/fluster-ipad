@@ -1800,7 +1800,10 @@ export type ConundrumErrorVariant =
 	| { tag: "InvalidCSL", content?: undefined }
 	| { tag: "EmptyBibliography", content?: undefined }
 	| { tag: "InvalidBiblatex", content: string }
-	| { tag: "InvalidSettingKey", content: string };
+	| { tag: "InvalidSettingKey", content: string }
+	| { tag: "SerializationError", content: {
+	entity_name: string;
+}};
 
 export type ConundrumFSError = 
 	| { tag: "GeneralFSError", content?: undefined }
@@ -1822,7 +1825,8 @@ export type ConundrumFSError =
 }}
 	| { tag: "InvalidFileMeta", content: {
 	target_file: string;
-}};
+}}
+	| { tag: "InvalidDirectory", content?: undefined };
 
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }
@@ -1852,6 +1856,7 @@ export enum CopyToClipboardSource {
 }
 
 export enum DatabaseTable {
+	EcosystemLog = "ecosystem_log",
 	Tag = "tag",
 	Topic = "topic",
 	Subject = "subject",
@@ -1860,20 +1865,29 @@ export enum DatabaseTable {
 	UserWorkspace = "user_workspace",
 	WorkspacePath = "workspace_path",
 	QAPair = "qa_pair",
+	ChatConversation = "chat_conversation",
+	ChatMessage = "chat_message",
 	AcademicResultMetric = "academic_res_metric",
 	BibEntry = "bib_entry",
 	AutoTaggable = "auto_taggable",
+	Milestone = "milestone",
+	Assignment = "assignment",
+	AssignmentTag = "assignment_tag",
+	AssignmentTopic = "assignment_topic",
+	AssignmentSubject = "assignment_subject",
+	AgentDescription = "agent_description",
 	/** Stores just the `AcademicResultMetricKey` and the value. */
 	NumericAcademicResultMetric = "numeric_academic_res_metric",
 	RationalScoreAcademicResultMetric = "rational_academic_res_metric",
 	CustomAcademicResultMetric = "custom_academic_res_metric",
 	GitRepository = "git_repository",
+	KeyboardShortcut = "keyboard_shortcut",
 	/** --- 'Joining' tables --- */
 	WorkspaceRepository = "workspace_repository",
+	MilestoneAlarm = "milestone_alarm",
 	/** ---- Vectors ---- */
-	CdrmVector = "cdrm_vec",
-	HtmlVector = "html_vec",
-	TypstVector = "typst_vec",
+	MarkdownChunk = "cdrm_vec",
+	MCPToolRecord = "mcp_tool",
 }
 
 export enum DocumentationComponentName {

@@ -36,7 +36,7 @@ pub async fn run_server(write_types_to: Option<impl AsRef<std::path::Path>>) -> 
         get_rspc_router().await
                          .expect("Failed to generate rspc router. This is a major issue that can't be recovered from.");
 
-    #[cfg(debug_assertions)] // Only export in development builds
+    #[cfg(debug_assertions)]
     {
         if let Some(fp) = write_types_to {
             Typescript::default().export_to(fp, &types)

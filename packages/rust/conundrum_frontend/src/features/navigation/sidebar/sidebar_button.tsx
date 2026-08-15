@@ -29,7 +29,6 @@ export const PermanentSidebarButton = ({
     const props: HTMLProps<HTMLAnchorElement> = {
         ...(href ? { href } : { role: "button", onClick }),
     };
-    console.log("active: ", active);
     if (href && !isNonLocal) {
         if (active) {
             return (

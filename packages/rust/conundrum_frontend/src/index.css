@@ -4,6 +4,7 @@
 @import "@fontsource-variable/geist";
 @import "@conundrum/main/conundrum_input.scss";
 @source "../index.html";
+@source "../../../../node_modules/streamdown/dist/*.js";
 
 /* @custom-variant dark (&:is(.dark *)); */
 

@@ -1,89 +1,101 @@
-# Conundrum
 
-> A purpose driven DSL with mdx like syntax and a modular toolkit for all things academic and note-taking related.
+## Conundrum
+
+> Conundrum is a modular academic tool-kit that was built in the pursuit of
+quantized gravity, rebuilt for the vibe-coding era. [See it in action in our
+blog](https://flusterapp.com).
 
 
-## Packages
+### Conundrum, the language
 
-Be aware... this is all still a work in progress. Conundrum powers [Fluster](https://flusterapp.com) and the Fluster blog, but these auxillary tools have so far been built with the goal of releasing Fluster in mind. Some of the additional features necessary to connect the dots are in various stages of completeness, but if you think the project and the goals are something you'd like to be a [part of](https://flusterapp.com/blog/by_path/conundrum_goals_and_license), I welcome all the help I can get ;).
+Conundrum is a language with syntax built on top of mdx. In fact, most mdx
+notes with components of the same name and properties would compile just
+fine, but it uses no javascript at all and offers additional syntax
+features like equation ids, special link syntaxes and more. The language is
+compiled completely by Rust, supports wasm targets, and of course integrates
+with the rest of the Conundrum ecosystem flawlessly.
 
-### Conundrum
+In fact, you can compile your notes to a number of targets, with each
+supported component offering both global and instance specific properties
+that can customize the output to specific targets. In short, you can add a
+field like:
 
-This is the language that powers [Fluster](https://flusterapp.com), and the primary input type that Conundrum uses. With Conundrum, you can take advantage of the more complex components supported by mdx (embedded videos, 3d-images, etc..) when the application rendering the content supports it, and then render to a simplified markdown or plain-text format when the application doesn't support rendering the complete AST.
+```tsx
+<Hl md="italic">My highlighted text</Hl>
+```
 
-The goal with Conundrum is to support every component a student or academic needs, and nothing more. While CSS and Javascript collectively manipulate hundreds of properties to build the modern web, Conundrum will offer _just_ what is needed to customize the input, and everything else will be handled by default with the ability to override these defaults through a set of _high-level_ properties accessible to those that never plan on becoming full-time software developers. With the included embedded documentation baked right into the language parser, each component should be discoverable and usable to anyone, **without** any previous coding background of any kind.
+To make the output of the markdown target italic. That's actually how
+Fluster render's user's markdown content to Swift when it needs to display a
+title, despite Swift's extremely limited markdown support.
 
-These are the components I'm planning for version 1:
+Passing these component properties down to these secondary ouptuts keeps the
+vital information stored in the 'mdx' components that Conundrum supports
+across output targets that may or may not support complex UIs like the web.
 
-- [x] Image
-- [x] Tabs component
-- [x] Card
-- [x] Grid
-- [x] Hr
-  - There's actually an additional horizontal rule that accepts children for labeling sections and what-not that can be embedded using the `--- My children text ---` syntax.
-- [x] Admonition
-  - I honestly don't even know what an admonition is. The name comes from Jupyter, but it's the colored card that makes the content stand out. See the fluster website blog for an example.
-- [x] Hint
-  - A subtle text label that, you know... indicates a hint, although the text and color can be changed to something completely arbitrary.
-- [x] Underline (Ul)
-- [x] Highlight (Hl)
-- [x] Emoji
-  - Embed emojis at text scale using the `:smile:` syntax, or at any scale using the `<Emoji name="smile" large />` syntax.
-- [x] Quote
-  - Embed a styled quote. Not the block quote, but something that's styled to indicate a quote in a book or something similar.
-- [x] EqRef
-  - Reference equations by id (the `$$ {#myIdHere} ...$$` syntax), so you don't have to count the equation number.
-- [x] Image
-  - Embed an image that's completely customizable as a regular component, instead of using the very limited markdown syntax.
-- [x] Color
-  - Embed a single color, a color pair, a light/dark pair, or a pair of these pairs in a component for use in UI related workflows.
-- [x] Container
-  - An unstyled container that can be customized to fit the user's needs.
-- [ ] Video
-  - Play local videos or videos via a html src string.
-- [ ] Youtube
-  - Play videos directly from youtube.
+In the age of AI when everything is about the amount of information per
+token, a language that is more descriptive than markdown yet more deliberate
+than html may be a more ideal form of communication. Where markdown excels
+in it's simplicity, it sacrifices in it's expressiveness which is a hurdle
+to both human and AI. HTML on the other hand can be incredibly expressive
+with css applied, but much of this information is lost during the parsing
+process, and even if it were to survive parsing, the incredible variety of
+the web would produce less specific data.
 
-As Conundrum is just a superset of markdown with mdx like syntax, you can use your markdown notes as is, and when it's time to export your notes to another application, Conundrum compiles the components away into customizable markdown blocks. That's actually how Fluster renders content in Swift, with Swift's very limited markdown support.
+Conundrum aims to walk this middle ground by providing a very deliberate set
+of components with the _high-level_ properties required for users to
+document almost anything, in a style that agrees with them, while not
+providing so many low level properties that it conflates AI.
 
-### Database
+Conundrum will never offer more than 1 of anything, and that's for a reason.
+An `<Admonition ... />` component conveys information to AI that would be
+lost if there were a hundred ways to create the same component... even ore
+so if you add an `emphasis` property like `error`, `warn` or `research`.
+These properties not only style your notes to match accordingly, but pass
+along important information to AI.
 
-Powered by LanceDB, the database package acts as a unified tabular/vector store for everything a modern research or student might need. There's tables for things ranging from homework assignments to experimental results of recent research, and it's **structured**... designed for consumption by both humans _and_ AI.
+##### Supported Outputs
 
-The goals with the database package is to create a shared academic datalayer for users of Conundrum, while making integration with other applications as seamless as possible. I can imagine many users having a use case only for the CLI or the Rust library if they plan to use this for documentation or a blog, but the database is really the core component for user's that intend to use Conundrum as a sort of pseudo-framework; as something to build a knowledge base around.
+- [x] HTML
+- [x] Jsx
+- [ ] Commonmark compatible Markdown (90% there. A couple components are
+  missing their
+templates)
+- [ ] Json, for rendering from the AST in languages like Swift and Kotlin.
 
-#### On My Love/Hate Relationship With Vibe-Coding
+On top of these output targets, Conundrum offers a number of customization
+flags that can be used to do everything from hidding emojis, to embedding
+javascript in a single file output. As I built this while homeless and
+offline, not even the math needs to be loaded from a CDN.
 
-As much as I hate vibe-coding as a fanciful profession, this platform would be the perfect ecosystem to vibe code upon. Let developers handled the data layer, and vibe-code away your own front-end. As the documentation comes together this will be increasingly straight-forward as AI becomes familiar with the architecture. As soon as I can afford an internet connection I'll move the Conundrum ecosystem to it's own monorepo, and begin to focus on this documentation.
+---
 
-### CLI
+### Conundrum, the ecosystem
 
-So far, this is very much a work in progress, but the goals are:
+Conundrum came to be out of [Fluster](https://flusterapp.com), which itself came to be after I quit my
+job almost 5 years ago to focus on astrophysics full-time. I've since
+rewritten it to the point that it's unrecognizable, and now I'm re-working
+things once again for the vibe-coding era.
 
-- [x] Render project
-  - Renders a project based on the provided configuration. This powers the Fluster blog using Next.js, but pretty much any other framework that can consume json will work.
-- [x] Watch project
-  - [ ] Render project incrementally
-- [ ] TUI with:
-  - [ ] Search through your notes via:
-    - [ ] Full-Text Search
-    - [ ] Vector Search
-    - [ ] Tag
-    - [ ] Topic
-    - [ ] Subject
-    - [ ] Citation
-- [ ] Render to stdout as markdown
+Conundrum has a few pieces that all come together to make one cohesive,
+local second brain that only reaches out to an outside service when it's
+necessary to contact AI. Your database remains on your machine, with models
+to _completely_ describe your life.
 
-### API's
+While the Conundrum ecosystem is heavily focused on academic note-taking, a
+natural extension of learning a note-taking DSL for any new programmer is to
+extend it's capabilities to the rest of their life. For this reason, the
+Conundrum database includes database models for everything from the results
+of a scientific experiment to your family pet, all structured in a **very**
+graph oriented design.
 
-Thanks to the awesome Rust FFI ecosystem, creating type-safe libraries in a variety of languages is very little additional work. So far, these libraries are in the works:
+This approach let's AI get as close to a perfect answer as exists within
+your knowledge base with smaller context requirements by using both vector
+similarity methods and this graph architecture.
 
-- [x] Rust, obviously
-- [x] Typescript (Powers Fluster's webviews)
-- [ ] Python (coming together with the database package)
-- [ ] Go
-- [ ] Lua, for those sweet vim plugins.
+Further, Conundrum adds a sort of 'notepad' to many of these models,
+allowing AI to keep track of information associated with specific instances
+of that model over time.
 
-And planned for the future, aka langauges I can't write:
-- [ ] Kotlin
-- [ ] C#
+Current version: 0.0.1
+
+License: [Open-Source, but with a purpose](https://flusterapp.com/license)

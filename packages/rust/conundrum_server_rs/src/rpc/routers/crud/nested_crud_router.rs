@@ -16,6 +16,7 @@ use conundrum_db::vector::{
             },
         },
         ai::chat::chat_conversation::chat_conversation::ChatConversation,
+        ai::chat::chat_message::chat_message::ChatMessage,
         ecosystem_data::ecosystem_application_settings::{
             keyboard_shortcut::KeyboardShortcut, keyboard_shortcut_partial::KeyboardShortcutPartial,
         },
@@ -41,6 +42,7 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let flashcard_crud = crud_router!(FlashCardEntity, FlashCardEntityPartial);
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
     let chat_conversation_crud = crud_router!(ChatConversation, IDAndOptionalLabel);
+    let chat_message_crud = crud_router!(ChatMessage, ChatMessage);
     Router::<Arc<ServerState>>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
                                      .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)
                                      .nest(DatabaseTable::Topic.to_string(), topic_crud)
@@ -51,4 +53,5 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
                                      .nest(DatabaseTable::KeyboardShortcut.to_string(), keyboard_shortcut_crud)
                                      .nest(DatabaseTable::QAPair.to_string(), flashcard_crud)
                                      .nest(DatabaseTable::ChatConversation.to_string(), chat_conversation_crud)
+                                     .nest(DatabaseTable::ChatMessage.to_string(), chat_message_crud)
 }

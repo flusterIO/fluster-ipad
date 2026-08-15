@@ -1,13 +1,14 @@
+import { type ChatMessageResultItem } from "#/database/db_utility_types/chat";
 import React, { type ReactNode } from "react";
 
 interface ChatMessageFromUserProps {
-    content: string;
+    item: ChatMessageResultItem;
 }
 
 export const ChatMessageFromUser = ({
-    content,
+    item,
 }: ChatMessageFromUserProps): ReactNode => {
-    return <div>{content}</div>;
+    return <div>{item.body}</div>;
 };
 
 ChatMessageFromUser.displayName = "ChatMessageFromUser";

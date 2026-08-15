@@ -24,7 +24,7 @@ members = [
     "packages/rust/conundrum_fs",
     "packages/rust/conundrum_macros",
     "packages/rust/conundrum_server_rs",
-    "packages/rust/conundrum_macro_traits",
+    "packages/rust/conundrum_macro_traits", "packages/rust/conundrum_workspace",
 ]
 
 

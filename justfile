@@ -10,7 +10,25 @@ set dotenv-path := ".env.local"
 set dotenv-load := true
 
 
-docgen:
+
+generate_readmes:
+	cd {{justfile_directory()}}/apps/conundrum_dashboard/src-tauri; cargo readme -o ../README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_macro_traits; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_logic; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_macros; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_workspace; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_docgen; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_fs; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_db; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_lsp; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_cli; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_swift; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_server_rs; cargo readme -o README.md
+	cd {{justfile_directory()}}/packages/rust/conundrum_config; cargo readme -o README.md
+
+docgen: generate_readmes
 	cargo run --bin conundrum_docgen
 
 compile_website_conundrum:
@@ -119,6 +137,7 @@ generate_initial_note_data: generate_initial_note_paths write_in_content_docs_by
 
 write_typescript_types:
 	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/conundrum_ts/src/code_gen/typeshare
+	typeshare {{justfile_directory()}}/packages/rust/conundrum_server_rs --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/conundrum_ts/src/code_gen/typeshare_server
 
 build_cross_language_schemas: generate_initial_note_data write_typescript_types
 	$FLAT_BUFFER_PATH -o ./packages/swift/FlusterData/Sources/FlusterData/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift
