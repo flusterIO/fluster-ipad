@@ -6,9 +6,12 @@ import type { ProceduresLegacy } from "../codegen/bindings.ts";
 // Export typed hooks for React
 export const rspc = createReactQueryHooks<ProceduresLegacy>();
 
-// TODO: FIx this type issue. It works, but it's definitely broken.
+export const getServerPort = (): string | number => {
+    return import.meta.env.CDRM_SERVER_PORT ?? "3005"
+}
+
 export const client = createClient<ProceduresLegacy>({
     transport: new FetchTransport(
-        `http://localhost:${import.meta.env.CDRM_SERVER_PORT ?? "3005"}/rpc`,
+        `http://localhost:${getServerPort()}/api/rpc`,
     ),
 });

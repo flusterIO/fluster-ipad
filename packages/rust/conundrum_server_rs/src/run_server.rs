@@ -53,13 +53,13 @@ pub async fn run_server(write_types_to: Option<impl AsRef<std::path::Path>>) -> 
     let cloned_state = Arc::clone(&state);
 
     let mcp_router = get_mcp_server().expect("Failed to generate the MCP server. Cannot continue.");
-    let app = Router::<Arc<ServerState>>::new().route("/ws", get(ws_handler))
-                                               .nest_service("/rpc",
+    let app = Router::<Arc<ServerState>>::new().route("/api/ws", get(ws_handler))
+                                               .nest_service("/api/rpc",
                                                              rspc_axum::endpoint(rpc_router, move || {
                                                                  let y = Arc::clone(&cloned_state);
                                                                  y
                                                              }).layer(cors))
-                                               .nest_service("/mpc", mcp_router)
+                                               .nest_service("/api/mpc", mcp_router)
                                                .with_state(Arc::clone(&state));
     let port = get_server_port();
     let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{}", port)).await.unwrap();

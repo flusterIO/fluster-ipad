@@ -6,7 +6,7 @@ interface ViteTypeOptions {
 }
 
 interface ImportMetaEnv {
-    readonly CDRM_SERVER_PORT: string | number
+    readonly CDRM_SERVER_PORT?: string | number
 }
 
 // interface ImportMeta {
