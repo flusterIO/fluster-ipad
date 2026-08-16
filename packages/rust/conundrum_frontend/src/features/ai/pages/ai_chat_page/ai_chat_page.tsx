@@ -18,6 +18,8 @@ import { CurrentlyStreamingMessage } from "./currently_streaming_message/current
 import { ChatSelectionSheet } from "./chat_selection_sheet/chat_selection_sheet";
 import { Button } from "@/components/shad/button";
 
+const MotionInput = motion.create(PromptInput);
+
 export const GeneralAIChatPage = (): ReactNode => {
     const [sheetOpen, setSheetOpen] = useState(false);
     const placeholder = useMemo(() => {
@@ -68,11 +70,19 @@ export const GeneralAIChatPage = (): ReactNode => {
                         activelyStreaming={activelyStreaming}
                     />
                 </motion.div>
-                <PromptInput
+                <MotionInput
                     onSubmit={(val) => {
                         sendMessage(val.text);
                     }}
                     className="mb-4 mx-4 w-full"
+                    initial={{
+                        y: "100%",
+                        opacity: 0,
+                    }}
+                    animate={{
+                        y: 0,
+                        opacity: 1,
+                    }}
                 >
                     <PromptInputBody>
                         <PromptInputTextarea placeholder={placeholder} />
@@ -88,7 +98,7 @@ export const GeneralAIChatPage = (): ReactNode => {
                         </PromptInputTools>
                         <PromptInputSubmit />
                     </PromptInputFooter>
-                </PromptInput>
+                </MotionInput>
             </div>
             <ChatSelectionSheet
                 open={sheetOpen}

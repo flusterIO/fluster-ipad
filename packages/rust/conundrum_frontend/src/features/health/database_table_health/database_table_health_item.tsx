@@ -2,6 +2,7 @@ import { type TableHealthReport } from "@/codegen/bindings";
 import { CheckIcon, XIcon, XSquareIcon } from "lucide-react";
 import React, { useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
+import { CdrmContent } from "#/cdrm/cdrm_content";
 
 export const DatabaseTableHealthItem = ({
     item,
@@ -47,9 +48,10 @@ export const DatabaseTableHealthItem = ({
                 className="overflow-hidden"
             >
                 <h6 className="font-bold">AI Instructions</h6>
-                <div className="text-fd-card-foreground/80">
-                    {item.description.description}
-                </div>
+                <CdrmContent
+                    className="text-fd-card-foreground/80"
+                    content={item.description.description}
+                />
             </motion.div>
         </div>
     );

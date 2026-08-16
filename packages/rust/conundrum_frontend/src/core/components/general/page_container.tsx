@@ -55,8 +55,8 @@ export const PageContainer = ({
                 }}
                 className={
                     center
-                        ? "grow flex flex-col justify-center items-center"
-                        : cn("py-6", itemClasses)
+                        ? "grow flex flex-col justify-center items-center text-foreground"
+                        : cn("py-6 text-foreground", itemClasses)
                 }
             >
                 {children}

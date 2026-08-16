@@ -16,11 +16,13 @@ import { GenerateFlashcardPage } from "#/study/generate_flashcard_page/generate_
 import { OnboardingPage } from "#/onboarding/onboarding_screen/onboarding_page";
 import { GeneralAIChatPage } from "#/ai/pages/ai_chat_page/ai_chat_page";
 import { LogPage } from "#/logging/log_page/log_page";
+import { AgentDescriptionPage } from "#/ai/pages/agent_description/agent_description_page";
+import { AgentsPage } from "#/ai/pages/agents/agents_page";
 
 export const MainAppRoutes = (): ReactNode => {
     const location = useLocation();
     return (
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
                 <Route
                     path={AppPaths.dashboard}
@@ -28,6 +30,8 @@ export const MainAppRoutes = (): ReactNode => {
                     index
                 />
                 <Route path={AppPaths.aiChat} Component={GeneralAIChatPage} />
+                <Route path={AppPaths.agents} Component={AgentsPage} />
+                <Route path={AppPaths.agent} Component={AgentDescriptionPage} />
                 <Route path={AppPaths.onboarding} Component={OnboardingPage} />
                 <Route path={AppPaths.settings} Component={MainSettingsPage} />
                 <Route path={AppPaths.flashcards} Component={MainFlashcardsPage} />

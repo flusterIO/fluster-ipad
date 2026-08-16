@@ -31,7 +31,7 @@ pub struct EcosystemSettings {
     ///
     /// This breaks down however when using the primary chat, as agent routing
     /// does not integrate across the local/remote barrier. This will however
-    /// save significant token cost for tasks like FlashCard generation that
+    /// save significant token cost for tasks like FlashCard generation where
     /// a specifically trained local model may be sufficient.
     pub local_ai_preference: f32,
     /// This struct describes a map of `VectorGenerationMethods that can reduce
