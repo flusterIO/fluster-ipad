@@ -2,7 +2,7 @@
 //!
 //! ### Users
 //!
-//! For user's of varying technical backgrounds, this is likely where you'll
+//! For users of varying technical backgrounds, this is likely where you'll
 //! want to start if you're vibe-coding your front-end. These modules contain
 //! all of the models you have access to in your database, from which your
 //! front-end can pull and store information. Everything from academic results,

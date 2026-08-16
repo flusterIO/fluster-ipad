@@ -10,7 +10,7 @@ license.workspace = true
 [dependencies]
 askama = "0.15.6"
 clap = { version = "4.6.1", features = ["derive"] }
-conundrum = {path = "../conundrum/", features = ["docgen"]}
+conundrum = {path = "../conundrum/", features = ["docgen", "db"]}
 conundrum_config = {path = "../conundrum_config/"}
 conundrum_cli = {path = "../conundrum_cli/"}
 schemars = "1.2.1"
@@ -28,6 +28,8 @@ palette = { version = "0.7.6", features = ["serializing", "random"] }
 css-color = "0.2.8"
 cssparser = "0.36.0"
 go-away = { version = "0.6.1", features = ["all"] }
+log = "0.4.33"
+pretty_env_logger = "0.5.0"
 
 [lints]
 workspace = true

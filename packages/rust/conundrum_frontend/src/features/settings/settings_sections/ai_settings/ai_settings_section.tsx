@@ -1,19 +1,20 @@
 import React, { type ReactNode } from "react";
 import { SettingsSection } from "../settings_section";
-import { StringSetting } from "#/settings/inputs/string_setting";
 import { GridOnLarge } from "../grid_on_large";
-import { SettingsFieldDescription } from "../settings_field_description";
+import { LabeledStringInput } from "#/settings/inputs/string_inputs/labeled_string_input";
 
 export const AISettingSection = (): ReactNode => {
     return (
-        <SettingsSection label="Artificial Intelligence">
+        <SettingsSection
+            label="Artificial Intelligence"
+            desc="This section is only for personalization through AI."
+            className="space-y-6"
+        >
             <GridOnLarge>
-                <StringSetting label="First Name" settingKey="first_name" />
-                <StringSetting label="Last Name" settingKey="last_name" />
+                <LabeledStringInput label="First Name" name="name.first" />
+                <LabeledStringInput label="Last Name" name="name.last" />
             </GridOnLarge>
-            <SettingsFieldDescription>
-                Your name is used only for AI customization.
-            </SettingsFieldDescription>
+            <LabeledStringInput label="Profession" name="profession" />
         </SettingsSection>
     );
 };

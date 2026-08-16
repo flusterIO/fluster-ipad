@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { LoadingIndicator } from "./loading_indicator";
+import { cn } from "@/utils/shad_utils";
 
 export const FullScreenLoading = ({
     message,
@@ -16,9 +17,18 @@ export const FullScreenLoading = ({
 
 FullScreenLoading.displayName = "FullScreenLoading";
 
-export const CenteredExpandedLoadingIndicator = (): ReactNode => {
+export const CenteredExpandedLoadingIndicator = ({
+    className,
+}: {
+    className?: string;
+}): ReactNode => {
     return (
-        <div className="w-full h-full min-h-fit flex flex-col justify-center items-center">
+        <div
+            className={cn(
+                "w-full h-full min-h-fit flex flex-col justify-center items-center",
+                className,
+            )}
+        >
             <LoadingIndicator />
         </div>
     );

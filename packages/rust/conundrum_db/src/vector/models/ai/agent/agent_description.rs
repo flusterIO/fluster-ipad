@@ -29,6 +29,7 @@ pub struct AgentDescription {
     pub name: Option<String>,
     /// The model to use
     pub model: String,
+    pub reasoning: bool,
     pub is_local: bool,
     /// System level instructions
     pub instructions: Option<String>,
@@ -49,6 +50,7 @@ impl<'a> DBSchema<'a> for AgentDescription {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
                 Arc::new(String::field_definition("name", true)),
                 Arc::new(String::field_definition("model", false)),
+                Arc::new(bool::field_definition("reasoning", false)),
                 Arc::new(bool::field_definition("is_local", false)),
                 Arc::new(String::field_definition("instructions", true)),
                 Arc::new(MCPToolNameList::field_definition("always_include_tools", false)),

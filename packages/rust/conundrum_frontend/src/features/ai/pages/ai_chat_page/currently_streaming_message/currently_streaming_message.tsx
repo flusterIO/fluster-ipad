@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { type ChatData } from "../use_chat";
+import { isEmptyChatResponse, type ChatData } from "../use_chat";
 import { StreamingMarkdown } from "#/streaming/markdown/streaming_markdown";
 import { motion } from "framer-motion";
 
@@ -7,15 +7,13 @@ interface CurrentlyStreamingMessageProps extends ChatData {
     activelyStreaming: boolean;
 }
 
-export const CurrentlyStreamingMessage = ({
-    reasoning,
-    response,
-    toolCalls,
-    activelyStreaming,
-}: CurrentlyStreamingMessageProps): ReactNode => {
-    if (!reasoning.length && !response.length && !toolCalls.length) {
+export const CurrentlyStreamingMessage = (
+    props: CurrentlyStreamingMessageProps,
+): ReactNode => {
+    if (isEmptyChatResponse(props)) {
         return null;
     }
+    const { reasoning, response, toolCalls, activelyStreaming } = props;
     return (
         <motion.div
             className="w-full flex flex-col justify-start items-start rounded p-4 border origin-bottom"
@@ -38,7 +36,10 @@ export const CurrentlyStreamingMessage = ({
                     </StreamingMarkdown>
                 );
             })}
-            <StreamingMarkdown activelyStreaming={activelyStreaming}>
+            <StreamingMarkdown
+                className="max-w-full"
+                activelyStreaming={activelyStreaming}
+            >
                 {response}
             </StreamingMarkdown>
         </motion.div>

@@ -28,16 +28,6 @@ pub struct ChatMessage {
     pub ctime: DateTime,
 }
 
-// impl From<ChatMessage> for Message {
-//     fn from(value: ChatMessage) -> Self {
-//         if let Ok(s) = serde_json::to_string(&value) {
-//             Message::Text(s.into())
-//         } else {
-//             Message::Text("{}".into())
-//         }
-//     }
-// }
-
 impl Into<Message> for ChatMessage {
     fn into(self) -> Message {
         if let Ok(s) = serde_json::to_string(&self) {

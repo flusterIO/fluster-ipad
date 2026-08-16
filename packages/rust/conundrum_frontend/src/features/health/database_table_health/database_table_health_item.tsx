@@ -1,5 +1,5 @@
 import { type TableHealthReport } from "@/codegen/bindings";
-import { CheckIcon, XIcon, XSquareIcon } from "lucide-react";
+import { CheckIcon, XIcon } from "lucide-react";
 import React, { useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { CdrmContent } from "#/cdrm/cdrm_content";

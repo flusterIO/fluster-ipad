@@ -2,6 +2,8 @@
 pub mod codegen;
 pub mod documentation;
 pub mod errors;
+mod generated_generators;
+mod generator_context;
 pub mod methods;
 pub mod traits;
 pub mod workspace_utils;
@@ -12,6 +14,8 @@ use crate::{
         templates::{emphasis_variable_match::EmphasisVariableMatch, initial_note_paths_swift::InitialNotePathsSwift},
     },
     documentation::{emphasis::EmphasisDocs, highlight::HighlightDocs, underline::UnderlineDocs},
+    errors::DocGenError,
+    generated_generators::docgen_generators::run_generated_generators,
     methods::{
         css::write_rust_emphasis_parser::RustEmphasisParserTemplate, json_docs::parse_json_docs::parse_json_docs,
         write_sizable_css::SizableCssTemplate, write_supported_syntaxes::write_supported_syntaxes,
@@ -20,10 +24,15 @@ use crate::{
     traits::DocGenTemplate,
     workspace_utils::get_workspace_root_duplicate::get_workspace_root,
 };
+use conundrum::ecosystem::environment_variables::cdrm_env_variable::CdrmEnvVariable;
 use rustdoc_json::Builder;
 
 #[tokio::main]
 async fn main() {
+    let env_level = CdrmEnvVariable::LogLevel.read().map(|x| x.to_lowercase()).unwrap_or("warn".to_string());
+    let filters = format!("warn,conundrum_server_rs={},conundrum={},conundrum_db={},conundrum_fs={}",
+                          &env_level, &env_level, &env_level, &env_level);
+    pretty_env_logger::formatted_builder().parse_filters(filters.as_str()).init();
     if let Err(err) = write_supported_syntaxes() {
         eprintln!("Error: {:#?}", err);
     }
@@ -47,6 +56,12 @@ async fn main() {
     let cdrm_path = std::path::Path::new(&root).join("packages").join("rust").join("conundrum").join("Cargo.toml");
     let output_path = Builder::default().manifest_path(cdrm_path).build().unwrap();
     println!("Wrote conundrum docs as json to {:?}", output_path);
+    run_generated_generators().map_err(|e| {
+                                  log::error!("Error: {}", e);
+                                  DocGenError::GeneralError
+                              })
+                              .expect("Failed to run generated generators");
+    log::info!("Wrote generated generator content.");
     // parse_json_docs(output_path.to_str().unwrap()).inspect_err(|e| {
     //                                                   eprintln!("Error:
     // {:#?}", e);                                               });

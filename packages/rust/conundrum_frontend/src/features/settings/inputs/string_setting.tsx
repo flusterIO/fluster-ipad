@@ -10,7 +10,6 @@ interface StringSettingProps {
 
 export const StringSetting = ({
     label,
-    settingKey,
     desc,
 }: StringSettingProps): ReactNode => {
     const [value, setValue] = useState("");

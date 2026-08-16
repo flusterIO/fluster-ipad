@@ -8,6 +8,7 @@ import NavigationReducer from "../../features/navigation/state/navigation_slice"
 import SearchReducer from "../../features/search/state/search_slice";
 import DatabaseReducer from "../../features/database/state/database_slice";
 import UIReducer from "../../features/ui/state/ui_state_slice";
+import AIReducer from "../../features/ai/state/ai_state_slice";
 import NotificationReducer from "../../features/notifications/state/notification_state_slice";
 import {
     persistReducer,
@@ -28,6 +29,7 @@ const reducers: Record<keyof AppState, Reducer> = {
     database: DatabaseReducer,
     ui: UIReducer,
     notification: NotificationReducer,
+    ai: AIReducer,
 };
 
 const rootReducer = combineReducers(reducers);

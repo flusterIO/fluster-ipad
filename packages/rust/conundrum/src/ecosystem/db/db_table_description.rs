@@ -88,7 +88,7 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: true,
                                                                  description: formatdoc! {"
-                    This is a joining table, joining the `{}` table to the `{}` table so user's can manage their workspace through git. Since the application you are supporting works with user's of varying technical backgrounds, you should offer to help less technical users manage git. The Conundrum git interface requires only that the repo is a standard git repo, not a bare repository. You should be able to commit, branch, merge and otherwise modify the git status without breaking the interface with Conundrum.
+                    This is a joining table, joining the `{}` table to the `{}` table so user's can manage their workspace through git. Since the application you are supporting works with users of varying technical backgrounds, you should offer to help less technical users manage git. The Conundrum git interface requires only that the repo is a standard git repo, not a bare repository. You should be able to commit, branch, merge and otherwise modify the git status without breaking the interface with Conundrum.
                         ", DatabaseTable::UserWorkspace, DatabaseTable::GitRepository} },
             DatabaseTable::CustomAcademicResultMetric => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),

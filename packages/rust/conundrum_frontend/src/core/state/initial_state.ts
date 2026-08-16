@@ -8,16 +8,20 @@ import { type UIState } from "#/ui/state/ui_state";
 import { initialUIState } from "#/ui/state/initial_ui_state";
 import { type NotificationState } from "#/notifications/state/notification_state";
 import { initialNotificationState } from "#/notifications/state/initial_notification_state";
+import { type AIState } from "#/ai/state/ai_state";
+import { initialAIState } from "#/ai/state/initial_ai_state";
 
 export interface AppState {
     search: SearchState;
     navigation: NavigationState;
     database: DatabaseState;
     ui: UIState;
+    ai: AIState;
     notification: NotificationState;
 }
 
 export const initialState: AppState = {
+    ai: initialAIState,
     search: initialSearchState,
     navigation: initialNavigationState,
     database: initialDatabaseState,

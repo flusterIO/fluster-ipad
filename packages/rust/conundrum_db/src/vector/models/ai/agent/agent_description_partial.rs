@@ -19,6 +19,7 @@ pub struct AgentDescriptionPartial {
     pub name: Option<String>,
     /// The model to use
     pub model: Option<String>,
+    pub reasoning: Option<bool>,
     pub is_local: Option<bool>,
     /// System level instructions
     pub instructions: Option<String>,
@@ -35,6 +36,7 @@ impl<'a> DBSchema<'a> for AgentDescriptionPartial {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
                 Arc::new(String::field_definition("name", true)),
                 Arc::new(String::field_definition("model", true)),
+                Arc::new(bool::field_definition("reasoning", true)),
                 Arc::new(bool::field_definition("is_local", true)),
                 Arc::new(String::field_definition("instructions", true)),
                 Arc::new(MCPToolNameList::field_definition("always_include_tools", true)),
