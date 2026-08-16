@@ -1,8 +1,9 @@
+use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::primitives::db_id::DatabaseId;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
 pub struct CdrmChunk {
     pub content: String,
     pub note_id: DatabaseId,

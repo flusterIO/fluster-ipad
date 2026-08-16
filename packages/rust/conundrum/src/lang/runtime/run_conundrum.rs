@@ -1,3 +1,4 @@
+use fake::Dummy;
 use parking_lot::RwLock;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -14,8 +15,8 @@ use crate::{
     },
     output::{
         general::component_constants::component_names::EmbeddableComponentName,
+        parsing_result::dictionary_result::{DictionaryEntryResult, DictionaryEntryResultUnCompiled},
         parsing_result::mdx_parsing_result::MdxParsingResult,
-        parsing_result::dictionary_result::{DictionaryEntryResultUnCompiled, DictionaryEntryResult}
     },
     parsers::{document::ConundrumDocument, markdown::heading_sluggger::Slugger},
 };
@@ -23,7 +24,7 @@ use winnow::Stateful;
 
 /// This is the core 'input' for Conundrum.
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema, specta::Type)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema, specta::Type, Dummy)]
 pub struct ParseConundrumOptions {
     /// The id of your note. This can be generic, unique to each application,
     /// but so-long as the note has the **concept** of an id the id can be
@@ -115,25 +116,21 @@ pub fn run_conundrum(opts: ParseConundrumOptions) -> ConundrumResult<MdxParsingR
     let is_standalone = opts.modifiers.contains(&ConundrumModifier::Standalone);
     let doc = ConundrumDocument::parse_input(&mut stateful_input).map_err(ConundrumErrorVariant::from)?;
 
-
     let rendered_string = match is_standalone {
         true => doc.render_standalone(Arc::clone(&stateful_input.state))?,
         false => doc.render_app_embedded(Arc::clone(&stateful_input.state))?,
     };
 
     {
-
         let mut compiled_entries: Vec<DictionaryEntryResult> = Vec::new();
 
         let read_state = stateful_input.state.read_arc();
         for entry in &read_state.uncompiled_dictionary_entries {
             if let Ok(label_res) = entry.label.render(Arc::clone(&stateful_input.state)) {
-            if let Ok(body_res) = entry.body.render(Arc::clone(&stateful_input.state)) {
-            compiled_entries.push(DictionaryEntryResult {
-                label: label_res,
-                body: body_res
-            });
-            }
+                if let Ok(body_res) = entry.body.render(Arc::clone(&stateful_input.state)) {
+                    compiled_entries.push(DictionaryEntryResult { label: label_res,
+                                                                  body: body_res });
+                }
             }
         }
         drop(read_state);

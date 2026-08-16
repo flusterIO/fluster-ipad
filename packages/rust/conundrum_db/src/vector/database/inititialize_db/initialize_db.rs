@@ -29,7 +29,7 @@ use crate::vector::models::{
     },
     git::git_repository_entity::GitRepositoryEntity,
     taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
-    text::cdrm::cdrm_content::CdrmContent,
+    text::cdrm::{cdrm_content::CdrmContent, cdrm_model::CdrmModel},
     workspace::user_workspace::UserWorkspace,
 };
 
@@ -89,7 +89,7 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
                                                               schema: UserWorkspace::schema()?,
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::Cdrm,
-                                                              schema: CdrmContent::schema()?,
+                                                              schema: CdrmModel::schema()?,
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::Milestone,
                                                               schema: MilestoneEntity::schema()?,

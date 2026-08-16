@@ -1,3 +1,4 @@
+use fake::Dummy;
 use ratatui::text::ToSpan;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -26,6 +27,7 @@ use crate::{
            Default,
            Debug,
            JsonSchema,
+           Dummy,
            specta::Type)]
 #[allow(non_camel_case_types)]
 pub enum SupportedCodeBlockTheme {

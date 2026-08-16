@@ -1,3 +1,4 @@
+use fake::Dummy;
 use parking_lot::Mutex;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -30,7 +31,7 @@ use crate::{
 /// collection of other modifiers, or at least that's how they're intended to
 /// work.
 #[typeshare::typeshare]
-#[derive(uniffi::Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy, JsonSchema, specta::Type)]
+#[derive(uniffi::Enum, Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy, JsonSchema, specta::Type, Dummy)]
 pub enum ConundrumModifier {
     HideEmojis,
     /// The goal with this flag is to make **some** components collapsable to be
@@ -79,6 +80,7 @@ pub enum ConundrumModifier {
            PartialEq,
            strum_macros::Display,
            specta::Type,
+           Dummy,
            JsonSchema)]
 pub enum ConundrumCompileTarget {
     #[serde(rename = "jsx")]

@@ -1,3 +1,4 @@
+use fake::Dummy;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
@@ -5,7 +6,7 @@ use typeshare::typeshare;
 use crate::parsers::markdown::code_block::supported_themes::SupportedCodeBlockTheme;
 
 #[typeshare]
-#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema, specta::Type)]
+#[derive(Serialize, Deserialize, Debug, uniffi::Record, Clone, JsonSchema, specta::Type, Dummy)]
 pub struct UIParams {
     pub dark_mode: bool,
     /// A number 0-n, where n > 1 increases the fontsize.

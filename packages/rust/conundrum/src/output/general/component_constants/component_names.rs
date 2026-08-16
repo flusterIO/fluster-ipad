@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use fake::Dummy;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
@@ -23,6 +24,7 @@ use crate::{
            Serialize,
            Deserialize,
            JsonSchema,
+           Dummy,
            specta::Type)]
 pub enum EmbeddableComponentName {
     #[serde(rename = "Toc")]
