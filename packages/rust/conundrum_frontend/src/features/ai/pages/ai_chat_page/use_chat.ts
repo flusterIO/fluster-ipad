@@ -17,13 +17,17 @@ export interface ChatData {
     };
 }
 
-export const useChat = () => {
-    const container = useRef<HTMLDivElement>(null);
-    const [initialized, setInitialized] = useState(false);
-    const [sp, setSp] = useSearchParams();
-    const [messages, setMessages] = useState<ChatMessageResult>([]);
-    const [activelyStreaming, setActivelyStreaming] = useState(false);
-    const [response, setResponse] = useState<ChatData>({
+export const isEmptyChatResponse = (cd: ChatData): boolean => {
+    return (
+        !cd.reasoning.length &&
+        !cd.response.length &&
+        !cd.toolCalls.length &&
+        !cd.reasoningSummary?.length
+    );
+};
+
+export const getEmptyChatData = (): ChatData => {
+    return {
         reasoning: [],
         response: "",
         toolCalls: [],
@@ -32,7 +36,16 @@ export const useChat = () => {
             incoming: undefined,
             outgoing: undefined,
         },
-    });
+    };
+};
+
+export const useChat = () => {
+    const container = useRef<HTMLDivElement>(null);
+    const [initialized, setInitialized] = useState(false);
+    const [sp, setSp] = useSearchParams();
+    const [messages, setMessages] = useState<ChatMessageResult>([]);
+    const [activelyStreaming, setActivelyStreaming] = useState(false);
+    const [response, setResponse] = useState<ChatData>(getEmptyChatData());
     const [connected, setConnected] = useState(false);
 
     const chatId = sp.get("convo");
@@ -66,7 +79,7 @@ export const useChat = () => {
                         return;
                     }
                     if (req.type === "text_delta") {
-                        setResponse((current) => {
+                        setResponse((current): ChatData => {
                             if (req.content.is_reasoning) {
                                 return {
                                     ...current,

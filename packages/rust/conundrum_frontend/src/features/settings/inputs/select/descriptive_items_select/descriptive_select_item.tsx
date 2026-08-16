@@ -12,10 +12,9 @@ export const DescriptiveSelectItem = <T extends FieldValues>({
     item,
     formName,
 }: DescriptiveSelectItemProps<T>): ReactNode => {
-    /* const form = useFormContext<T>(); */
-    /* const value = form.getValues(formName); */
-    /* const isActive = value === item.value; */
-    const isActive = false;
+    const form = useFormContext<T>();
+    const value = form.getValues(formName);
+    const isActive = value === item.value;
     return (
         <div className="w-full h-fit rounded border bg-fd-card px-3 py-2 grid grid-cols-[auto_1fr] gap-x-3">
             <div className="flex flex-col justify-center items-center">
@@ -25,16 +24,14 @@ export const DescriptiveSelectItem = <T extends FieldValues>({
                     checked={isActive}
                     onCheckedChange={(v) => {
                         if (v) {
-                            /* form.setValue(formName, item.value as T[typeof formName]); */
+                            form.setValue(formName, item.value as T[typeof formName]);
                         }
                     }}
                 />
             </div>
             <div className="flex flex-col justify-center items-start">
-                <div className="text-lg font-semibold text-foreground">
-                    {item.label}
-                </div>
-                <div className="text-foreground/60">{item.desc}</div>
+                <div className="font-semibold text-foreground">{item.label}</div>
+                <div className="text-foreground/60 text-sm">{item.desc}</div>
             </div>
         </div>
     );

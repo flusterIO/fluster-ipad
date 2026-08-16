@@ -10,7 +10,7 @@ import {
     FileSpreadsheet,
     WalletCards,
     HeartPulseIcon,
-    BubblesIcon,
+    MessageSquare,
 } from "lucide-react";
 import { AppPaths } from "../app_paths";
 import { useLocation } from "react-router";
@@ -22,7 +22,7 @@ const buttons: Omit<PermanentSidebarButtonProps, "active">[] = [
     },
     {
         href: AppPaths.aiChat,
-        icon: BubblesIcon,
+        icon: MessageSquare,
     },
     {
         href: AppPaths.workspaces,

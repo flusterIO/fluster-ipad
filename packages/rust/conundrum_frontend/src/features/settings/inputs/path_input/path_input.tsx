@@ -79,7 +79,7 @@ export const PathInput = <Schema extends FieldValues>({
     desc,
     classes = {},
     ...props
-}: PathInputProps<Schema>): ReactNode => {
+}: PathInputProps<Schema> & { disabled?: boolean }): ReactNode => {
     return (
         <FormField
             name={name}

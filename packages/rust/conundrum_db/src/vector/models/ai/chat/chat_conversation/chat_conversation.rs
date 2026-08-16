@@ -5,6 +5,7 @@ use crate::{
     vector::{
         database::db_traits::db_field::DatabaseField,
         models::{
+            ai::chat::chat_conversation::chat_conversation_partial::ChatConversationPartial,
             date_time::date_time::DateTime,
             primitives::{db_id::DatabaseId, helper_models::label_and_id::IDAndOptionalLabel},
         },
@@ -20,12 +21,14 @@ use serde::{Deserialize, Serialize};
 pub struct ChatConversation {
     pub id: DatabaseId,
     pub label: String,
+    pub desc: Option<String>,
+    pub requires_label_update: bool,
     pub ctime: DateTime,
     #[serde(default = "DateTime::new_now")]
     pub utime: DateTime,
 }
 
-impl_default_crud!(ChatConversation, IDAndOptionalLabel, DatabaseId);
+impl_default_crud!(ChatConversation, ChatConversationPartial, DatabaseId);
 
 impl<'a> DBSchema<'a> for ChatConversation {
     fn arrow_fields(
@@ -34,6 +37,8 @@ impl<'a> DBSchema<'a> for ChatConversation {
     {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
                 Arc::new(String::field_definition("label", false)),
+                Arc::new(String::field_definition("desc", true)),
+                Arc::new(bool::field_definition("requires_label_update", true)),
                 Arc::new(DateTime::field_definition("ctime", false)),
                 Arc::new(DateTime::field_definition("utime", false))])
     }
