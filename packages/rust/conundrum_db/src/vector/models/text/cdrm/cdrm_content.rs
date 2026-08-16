@@ -6,10 +6,10 @@ use conundrum::{
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
+use text_splitter::ChunkConfig;
 
 use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::text::text_based_content::{text_based_chunk::TextBasedChunk, text_based_content_trait::TextBasedContent},
+    ai_utils::ai_traits::chunk_temporary::ChunkTemporary, database::db_traits::db_field::DatabaseField, models::{primitives::db_id::DatabaseId, text::text_based_content::{text_based_chunk::TextBasedChunk, text_based_content_trait::TextBasedContent}}
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
@@ -21,10 +21,16 @@ impl DatabaseField for CdrmContent {
     }
 }
 
+impl From<String> for CdrmContent {
+    fn from(value: String) -> Self {
+        Self(value)
+    }
+}
+
 impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
-    fn get_parsed_content(&self,
-                          opts: ParseConundrumOptions)
-                          -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<String> {
+    async fn get_parsed_content(&self,
+                                opts: ParseConundrumOptions)
+                                -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<String> {
         let x = run_conundrum(opts).map_err(|e| {
                                        log::error!("Fail to parse Conundrum content: {:#?}", e);
                                        DatabaseError::ConundrumError(e)
@@ -32,10 +38,10 @@ impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
         Ok(x.content)
     }
 
-    fn get_title(&self,
-                 modifiers: Vec<conundrum::lang::runtime::state::parse_state::ConundrumModifier>,
-                 target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget)
-                 -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Option<String>> {
+    async fn get_title(&self,
+                       modifiers: Vec<conundrum::lang::runtime::state::parse_state::ConundrumModifier>,
+                       target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget)
+                       -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Option<String>> {
         let r = get_title_group(self.0.clone(), modifiers, target).map_err(|e| {
                     log::error!("Failed to get Conundrum title: {:#?}", e);
                     DatabaseError::ConundrumError(e)
@@ -46,8 +52,23 @@ impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
             Ok(Some(r.title))
         }
     }
+}
 
-    fn try_chunk(&self) -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<TextBasedChunk>> {
-        todo!()
+impl ChunkTemporary<ParseConundrumOptions> for CdrmContent {
+    async fn try_chunk_temporary(&self, opts: ParseConundrumOptions) -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<TextBasedChunk>> {
+        if let Some(note_id) = &opts.note_id && !note_id.is_empty() {
+        let opts = run_conundrum(ParseConundrumOptions { 
+            target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget::Markdown,
+            ..opts.clone()
+        }).map_err(DatabaseError::ConundrumError)?;
+        let x = text_splitter::MarkdownSplitter::new(512);
+        let mut chunks: Vec<TextBasedChunk> = Vec::new();
+        for (i, k) in x.chunks(&opts.content).enumerate() {
+            chunks.push(TextBasedChunk { document_id: DatabaseId::new_from_input_id(note_id.clone()), content: k.to_string(), chunk_idx: i as u32 });
+        }
+        Ok(chunks)
+        } else {
+            return Err(DatabaseError::FailToSerialize("a `note_id` field is required when chunking Conundrum content.".to_string()));
+        }
     }
 }

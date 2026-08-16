@@ -191,6 +191,10 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                         This table describes keyboard shortcuts for the user throughout the Conundrum ecosystem.
                         "}.to_string() },
+            DatabaseTable::DocumentationChunk => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
+                This table holds the content that describes the documentation for the Conundrum ecosystem of tools, and the Conundrum language itself. Query it as needed to help user's get the most from these tools so that they can reach their academic goals.
+                "}.to_string(),
+            },
             DatabaseTable::AgentDescription => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
                 This tool describes your 'colleagues', or other agents that you may request access to if your tools permit.
                 "}.to_string(),

@@ -2,7 +2,9 @@
 
 - Provide a general user friendly markup language capable of displaying more complex components usable in a note taking context (video/image components, embedded 3d models, interactive tables, etc.)
 - Create a **simple** programming layer, exposing Conundrum specific functionality in Conundrum code blocks. Things like a first-party AI module with structured generation support for new developers and some simple **high level** file utilities.
-
+- Auto-closing tags and a 'streamable' syntax that's baked into the language itself.
+- Chunking capabilities as part of the core parser, without relying on a markdown target alone.
+- A thorough spec written to document the language not as it is, but where it's going. The language is only about half complete.
 
 
 ### Missing Syntaxes

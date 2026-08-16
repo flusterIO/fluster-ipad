@@ -8,29 +8,35 @@ use conundrum_fs::path_utils::ecosystem_paths::get_app_database_dir;
 use lancedb::{Table, arrow::arrow_schema::Schema, connect};
 use log::warn;
 
-use crate::vector::models::{
-    academic::{
-        assignment::{
-            academic_assignment_entity::AssignmentEntity,
-            assignment_subject::AssignmentSubject,
-            assignment_tag::AssignmentTag,
-            assignment_topic::AssignmentTopic,
-            milestone::{milestone_alarm::MilestoneAlarm, milestone_entity::MilestoneEntity},
+use crate::vector::{
+    database::{db::get_database, inititialize_db::seed_db::seed_db},
+    models::{
+        academic::{
+            assignment::{
+                academic_assignment_entity::AssignmentEntity,
+                assignment_subject::AssignmentSubject,
+                assignment_tag::AssignmentTag,
+                assignment_topic::AssignmentTopic,
+                milestone::{milestone_alarm::MilestoneAlarm, milestone_entity::MilestoneEntity},
+            },
+            question::flashcard::flashcard_entity::FlashCardEntity,
         },
-        question::flashcard::flashcard_entity::FlashCardEntity,
+        ai::{
+            agent::agent_description::AgentDescription,
+            chat::{chat_conversation::chat_conversation::ChatConversation, chat_message::chat_message::ChatMessage},
+            tool::mcp_tool_record::MCPToolRecord,
+        },
+        ecosystem_data::{
+            ecosystem_application_settings::keyboard_shortcut::KeyboardShortcut, log::ecosystem_log::EcosystemLog,
+        },
+        git::git_repository_entity::GitRepositoryEntity,
+        taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
+        text::{
+            cdrm::{cdrm_content::CdrmContent, cdrm_model::CdrmModel},
+            text_based_content::text_based_chunk::TextBasedChunk,
+        },
+        workspace::user_workspace::UserWorkspace,
     },
-    ai::{
-        agent::agent_description::AgentDescription,
-        chat::{chat_conversation::chat_conversation::ChatConversation, chat_message::chat_message::ChatMessage},
-        tool::mcp_tool_record::MCPToolRecord,
-    },
-    ecosystem_data::{
-        ecosystem_application_settings::keyboard_shortcut::KeyboardShortcut, log::ecosystem_log::EcosystemLog,
-    },
-    git::git_repository_entity::GitRepositoryEntity,
-    taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
-    text::cdrm::{cdrm_content::CdrmContent, cdrm_model::CdrmModel},
-    workspace::user_workspace::UserWorkspace,
 };
 
 pub type DatabaseIndexSetupFunction = fn(&Table) -> DatabaseResult<()>;
@@ -57,6 +63,9 @@ async fn create_table(db: &lancedb::Connection, schema: &Arc<Schema>, table: &Da
 pub async fn initialize_local_database() -> DatabaseResult<()> {
     let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::MCPToolRecord,
                                                               schema: MCPToolRecord::schema()?,
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::DocumentationChunk,
+                                                              schema: TextBasedChunk::schema()?,
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::AgentDescription,
                                                               schema: AgentDescription::schema()?,
@@ -115,13 +124,10 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
                                               TableInitData { table: DatabaseTable::GitRepository,
                                                               schema: GitRepositoryEntity::schema()?,
                                                               set_indices: None },];
-    if let Ok(db_path) = get_app_database_dir() {
-        let db = connect(db_path.to_str().unwrap()).execute().await.map_err(|e| {
-                                                                        println!("Error in initialize_database: {:?}",
-                                                                                 e);
-                                                                        DatabaseError::FailToConnect
-                                                                    })?;
+    let db_arc = get_database().await?;
+    let db = db_arc.clone().lock_owned().await;
 
+    if let Ok(db_path) = get_app_database_dir() {
         for td in table_data.iter() {
             log::info!("Initializing the {} table for the {} model", td.table, td.table.to_model_name());
             if !td.table.is_temporary_vector_table() {
@@ -142,6 +148,8 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
                 log::info!("Ignoring initialization of temporary vector table {:?}", td.table.to_string());
             }
         }
+        drop(db);
+        seed_db(&db_arc);
         Ok(())
     } else {
         log::error!("Failed to locate data directory. Cannot continue.");

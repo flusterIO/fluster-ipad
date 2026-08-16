@@ -100,6 +100,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "mcp_tool")]
     #[serde(rename = "mcp_tool")]
     MCPToolRecord,
+    #[strum(to_string = "documentation_chunk")]
+    #[serde(rename = "documentation_chunk")]
+    DocumentationChunk,
 }
 
 impl Hash for DatabaseTable {
@@ -110,7 +113,7 @@ impl Hash for DatabaseTable {
 
 impl DatabaseTable {
     pub fn all_temporary_tables() -> Vec<Self> {
-        vec![Self::MarkdownChunk]
+        vec![Self::MarkdownChunk, Self::DocumentationChunk]
     }
 
     /// Deprecated. Surreal was a hugeeee mistake.
