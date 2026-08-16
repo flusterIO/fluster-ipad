@@ -4,3 +4,4 @@ pub mod log;
 pub mod onboarding_dialog_key;
 pub mod onboarding_dialogs;
 pub mod ecosystem_settings;
+pub mod documentation;

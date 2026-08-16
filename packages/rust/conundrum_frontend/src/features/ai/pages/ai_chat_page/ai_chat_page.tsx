@@ -8,13 +8,14 @@ import {
     PromptInputTools,
 } from "@/components/ai_elements/prompt_input";
 import { randomFromArray } from "@/utils/array_utils";
-import consola from "consola";
 import { MicIcon, PaperclipIcon } from "lucide-react";
-import React, { useMemo, type ReactNode } from "react";
+import { motion } from "framer-motion";
+import React, { useMemo, useRef, useState, type ReactNode } from "react";
 import { useChat } from "./use_chat";
 import { ChatMessageFromUser } from "./chat_message_from_user/chat-message_from_user";
 import { ChatMessageFromAI } from "./chat_message_from_ai/chat_message_from_ai";
 import { CurrentlyStreamingMessage } from "./currently_streaming_message/currently_streaming_message";
+import { cn } from "@/utils/shad_utils";
 
 export const GeneralAIChatPage = (): ReactNode => {
     const placeholder = useMemo(() => {
@@ -28,12 +29,15 @@ export const GeneralAIChatPage = (): ReactNode => {
             "Let's change the world...",
         ]);
     }, []);
-    const { sendMessage, value, setValue, messages, ref, response } = useChat();
+    const { sendMessage, messages, ref, response, activelyStreaming } = useChat();
+    console.log("response: ", response);
     return (
-        <div className="w-full h-screen flex flex-col justify-between items-center">
-            <div
+        <div className="w-full h-screen flex flex-col justify-between items-center px-4">
+            <motion.div
                 ref={ref}
-                className="grow w-full overflow-x-hidden overflow-y-auto min-scrollbar"
+                className={cn(
+                    "grow w-full overflow-x-hidden overflow-y-auto max-w-270",
+                )}
             >
                 {messages.map((m) => {
                     switch (m.sender) {
@@ -45,24 +49,19 @@ export const GeneralAIChatPage = (): ReactNode => {
                             return null;
                     }
                 })}
-                <CurrentlyStreamingMessage {...response} />
-            </div>
+                <CurrentlyStreamingMessage
+                    {...response}
+                    activelyStreaming={activelyStreaming}
+                />
+            </motion.div>
             <PromptInput
                 onSubmit={(val) => {
-                    sendMessage().catch((err: unknown) => {
-                        consola.error("Error: ", err);
-                    });
+                    sendMessage(val.text);
                 }}
                 className="mb-4 mx-4 w-270 max-w-[calc(100%-4rem)]"
             >
                 <PromptInputBody>
-                    <PromptInputTextarea
-                        placeholder={placeholder}
-                        value={value}
-                        onChange={(e) => {
-                            setValue(e.target.value);
-                        }}
-                    />
+                    <PromptInputTextarea placeholder={placeholder} />
                 </PromptInputBody>
                 <PromptInputFooter>
                     <PromptInputTools>

@@ -8,7 +8,7 @@ interface ChatMessageFromAIProps {
 export const ChatMessageFromAI = ({
     item,
 }: ChatMessageFromAIProps): ReactNode => {
-    return <div>{item.body}</div>;
+    return <div className="text-foreground">{item.body}</div>;
 };
 
 ChatMessageFromAI.displayName = "ChatMessageFromAI";

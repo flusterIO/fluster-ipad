@@ -8,7 +8,7 @@ interface ChatMessageFromUserProps {
 export const ChatMessageFromUser = ({
     item,
 }: ChatMessageFromUserProps): ReactNode => {
-    return <div>{item.body}</div>;
+    return <div className="text-foreground">{item.body}</div>;
 };
 
 ChatMessageFromUser.displayName = "ChatMessageFromUser";
