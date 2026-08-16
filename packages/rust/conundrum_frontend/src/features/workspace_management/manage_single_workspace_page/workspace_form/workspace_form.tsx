@@ -91,7 +91,7 @@ export const WorkspaceForm = (): ReactNode => {
         <div className="@container/form">
             <Form {...form}>
                 <form
-                    className="my-6 space-y-6"
+                    className="my-6 space-y-6 @[540px]/form:px-4"
                     onSubmit={(e) => {
                         form
                             .handleSubmit(handleSubmit)(e)
