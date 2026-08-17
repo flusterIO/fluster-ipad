@@ -1,7 +1,8 @@
+use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::{date_time::alert::alert_severity::AlertSeverity, primitives::db_id::DatabaseId};
+use crate::vector::models::date_time::alert::alert_severity::AlertSeverity;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct Alert {

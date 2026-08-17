@@ -1,4 +1,4 @@
-use crate::vector::models::primitives::db_id::DatabaseId;
+use conundrum::lifted_models::primitives::db_id::DatabaseId;
 
 /// # TextifiableBinary
 ///

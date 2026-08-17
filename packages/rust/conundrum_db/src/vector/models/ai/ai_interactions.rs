@@ -1,11 +1,8 @@
 use arrow_schema::{DataType, Field, Fields};
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
 use fake::Dummy;
 
-use crate::vector::{
-    database::db_traits::db_field::{DatabaseField, RepeatedDatabaseField},
-    models::ai::{ai_generated_input::AIGeneratedInput, ai_notes::AINotes},
-};
+use crate::vector::models::ai::{ai_generated_input::AIGeneratedInput, ai_notes::AINotes};
 
 // # AI Interactions
 //
@@ -18,9 +15,9 @@ use crate::vector::{
 //
 //  Make sure to keep track of all information necessary to provide a more
 // in-depth experience for  the user in the `ai_generated_input` field, but
-// **never** edit the `notes` field. Your goal is to grow your understanding of the user with each
-// experience, and record your memory as markdown in the `ai_generated_input` field of each
-// relevant model.
+// **never** edit the `notes` field. Your goal is to grow your understanding of
+// the user with each experience, and record your memory as markdown in the
+// `ai_generated_input` field of each relevant model.
 #[derive(serde::Serialize, serde::Deserialize, Default, Clone, Debug, specta::Type, Dummy)]
 pub struct AIInteractions {
     pub notes: AINotes,

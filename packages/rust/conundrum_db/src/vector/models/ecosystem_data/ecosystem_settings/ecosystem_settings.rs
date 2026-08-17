@@ -1,10 +1,8 @@
+use conundrum::lifted_models::primitives::db_id_single_instance::DBIDSingleInstance;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::{
-    ecosystem_data::ecosystem_settings::setting_sub_types::vector_generation_methods::VectorGenerationMethods,
-    primitives::db_id_single_instance::DBIDSingleInstance,
-};
+use crate::vector::models::ecosystem_data::ecosystem_settings::setting_sub_types::vector_generation_methods::VectorGenerationMethods;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct EcosystemSettings {

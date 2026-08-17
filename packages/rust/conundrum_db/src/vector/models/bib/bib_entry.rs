@@ -1,11 +1,10 @@
 use conundrum::{
     bibliography::{bib_entry::BibEntry, split_bibtex_by_entries::split_biblatex_to_raw_strings},
     ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult},
+    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use serde::{Deserialize, Serialize};
-
-use crate::vector::models::{date_time::date_time::DateTime, primitives::db_id::DatabaseId};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct BibEntryModel {

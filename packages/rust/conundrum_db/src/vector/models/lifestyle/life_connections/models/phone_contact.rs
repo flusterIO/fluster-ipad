@@ -1,13 +1,10 @@
 use std::sync::Arc;
 
 use arrow_schema::{DataType, Field, Fields};
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
 use fake::Dummy;
 
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::lifestyle::life_connections::models::phone_number_type::PhoneNumberType,
-};
+use crate::vector::models::lifestyle::life_connections::models::phone_number_type::PhoneNumberType;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct PhoneContact {

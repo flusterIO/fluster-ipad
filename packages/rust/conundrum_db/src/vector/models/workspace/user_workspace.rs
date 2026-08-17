@@ -1,13 +1,12 @@
-use crate::impl_default_crud;
-use crate::vector::database::db_traits::db_field::DatabaseField;
-use crate::vector::database::db_traits::entity_crud::EntityCRUD;
-use crate::vector::database::db_traits::validate::ValidateSelf;
 use crate::vector::models::ai::ai_interactions::AIInteractions;
 use crate::vector::models::workspace::user_workspace_partial::UserWorkspacePartial;
-use conundrum::ecosystem::db::traits::db_entity::DBEntity;
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::db_traits::db_entity::DBEntity;
+use conundrum::ecosystem::db::db_traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum::ecosystem::db::db_traits::validate::ValidateSelf;
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
+use conundrum::impl_default_crud;
 use conundrum::lang::constants::file_types::ParsableFileType;
 use conundrum_fs::workspace_management::file_walk_config::FileWalkConfig;
 use conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively;
@@ -148,6 +147,7 @@ impl<'a> DBEntity<'a> for UserWorkspace {
 
 #[cfg(test)]
 mod tests {
+    use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
     use fake::Fake;
 
     use crate::test_crud_functionality;

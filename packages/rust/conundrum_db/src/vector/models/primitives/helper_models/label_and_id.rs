@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
-
-use crate::vector::{database::db_traits::db_field::DatabaseField, models::primitives::db_id::DatabaseId};
+use conundrum::{
+    ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField},
+    lifted_models::primitives::db_id::DatabaseId,
+};
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
 pub struct IDAndOptionalLabel {

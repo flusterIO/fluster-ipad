@@ -11,7 +11,7 @@ license.workspace = true
 [features]
 wasm = []
 ## For inclusion of the database schemas. This will break wasm builds.
-db = ["dep:lancedb"]
+db = ["dep:lancedb", "dep:axum"]
 ## This is mostly used for documentation generation, but might be useful in some edge use cases. To be honest, the component configs are still managed by typescript so this shouldn't even be here yet, but I'm kindof leaving it as a reminder to myself. 
 component_configs = []
 ## This is mostly used for documentation generation, but might be useful in some edge use cases.
@@ -127,6 +127,8 @@ go-away = { version = "0.6.1", features = ["all"] }
 specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url", "derive"] }
 fake = { workspace = true, features = ["derive"] }
 cfg-if = "1.0.4"
+dirs = "6.0.0"
+uuid = { version = "1.23.2", features = ["v4"] }
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
@@ -145,6 +147,8 @@ rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "rmcp", "memo
 rig-lancedb = "0.41.0"
 rig-memory = "0.41.0"
 gix = "0.86.0"
+futures-util = "0.3.33"
+axum = { version = "0.8.9", features = ["query", "ws"], optional = true }
 # tui-math = "^0.1.1"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]

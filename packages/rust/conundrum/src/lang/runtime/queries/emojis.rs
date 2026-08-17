@@ -3,15 +3,15 @@ use rayon::prelude::*;
 use serde::Serialize;
 use winnow::stream::AsChar;
 
-use crate::lang::{
-    lib::{
-        general::pagination::pagination_params::PaginationParams,
-        ui::components::{
+use crate::{
+    ecosystem::db::parameters::general::pagination::PaginationParams,
+    lang::{
+        lib::ui::components::{
             attention::emoji::currently_supported_emoji_names::CURRENTLY_SUPPORTED_EMOJI_NAMES,
             documentation::emoji::emoji_data::EmojiData,
         },
+        runtime::state::conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
     },
-    runtime::state::conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},
 };
 
 pub fn format_emoji_name(name: &str) -> String {

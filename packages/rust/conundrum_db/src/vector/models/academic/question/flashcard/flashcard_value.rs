@@ -1,13 +1,13 @@
-use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
+use conundrum::ecosystem::{
+    db::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation},
+    error_handling::db_error::{DatabaseError, DatabaseResult},
+};
 use fake::{Dummy, Fake, Faker};
 use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 use std::{str::FromStr, sync::Arc};
 
-use crate::vector::{
-    database::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation},
-    models::utility::generic_value::GenericValue,
-};
+use crate::vector::models::utility::generic_value::GenericValue;
 
 #[derive(Clone, Serialize, Deserialize, Debug, specta::Type)]
 pub enum FlashcardValue {

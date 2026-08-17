@@ -5,5 +5,6 @@ pub mod describe;
 pub mod fs;
 pub mod log;
 pub mod study;
+pub mod sync;
 pub mod table;
 pub mod workspace_management;

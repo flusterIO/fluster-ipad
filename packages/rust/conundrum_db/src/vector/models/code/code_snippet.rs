@@ -1,6 +1,9 @@
-use conundrum::parsers::markdown::code_block::supported_languages::SupportedCodeBlockSyntax;
+use conundrum::{
+    lifted_models::primitives::db_id::DatabaseId,
+    parsers::markdown::code_block::supported_languages::SupportedCodeBlockSyntax,
+};
 
-use crate::vector::models::{primitives::db_id::DatabaseId, taggables::taggables::Taggables};
+use crate::vector::models::taggables::taggables::Taggables;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
 pub struct CodeSnippet {

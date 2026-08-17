@@ -1,12 +1,9 @@
 use std::sync::Arc;
 
 use arrow_schema::Field;
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::{ecosystem::db::db_traits::db_entity::DBSchema, lifted_models::primitives::db_id::DatabaseId};
 
-use crate::vector::{
-    database::primitive_field_schema_generators::dual_id_fields::two_required_id_fields,
-    models::primitives::db_id::DatabaseId,
-};
+use crate::vector::database::primitive_field_schema_generators::dual_id_fields::two_required_id_fields;
 
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, fake::Dummy)]
 pub struct MilestoneAlarm {

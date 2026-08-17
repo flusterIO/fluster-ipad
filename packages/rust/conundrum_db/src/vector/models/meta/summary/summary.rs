@@ -1,6 +1,5 @@
+use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
 use serde::{Deserialize, Serialize};
-
-use crate::vector::models::{date_time::date_time::DateTime, primitives::db_id::DatabaseId};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum SummarySource {

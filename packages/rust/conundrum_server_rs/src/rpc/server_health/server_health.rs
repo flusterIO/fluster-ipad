@@ -2,7 +2,6 @@ use conundrum::ecosystem::{
     db::{db_table_description::DBTableDescription, tables::DatabaseTable},
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
-use conundrum_db::vector::database::db::ArcMutexDB;
 use strum::IntoEnumIterator;
 
 use crate::rpc::server_health::table_health_report::TableHealthReport;

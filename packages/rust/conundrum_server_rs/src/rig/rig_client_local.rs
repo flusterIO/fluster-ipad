@@ -3,9 +3,7 @@ use rig::providers::ollama::{Client as OllamaClient, OllamaApiKey};
 use crate::errors::server_error::{ServerError, ServerResult};
 
 /// # RigProvider
-///
-/// A general purpose wrapper around whichever Rig provider makes it into the
-/// initial release, because I can't afford internet, much less provider tokens.
+/// Deprecated... moved to the Conundrum crate.
 pub struct RigClientLocal(pub OllamaClient);
 
 impl RigClientLocal {

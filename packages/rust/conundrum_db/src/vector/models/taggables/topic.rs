@@ -1,25 +1,18 @@
-use std::sync::Arc;
-
-use conundrum::ecosystem::db::traits::db_entity::{DBEntity, DBSchema};
+use conundrum::{
+    ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema},
+    impl_default_crud,
+    lifted_models::primitives::{case_insensitive_string::CaseInsensitiveString, date_time::DateTime},
+};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-use crate::{
-    impl_default_crud, taggable_arrow_schema,
-    vector::{
-        database::db_traits::{db_field::DatabaseField, entity_crud::EntityCRUD},
-        models::{
-            ai::ai_interactions::AIInteractions,
-            date_time::date_time::DateTime,
-            primitives::case_insensitive_string::CaseInsensitiveString,
-            taggables::{
-                tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY, taggable_fields},
-                tag_location::TagLocation,
-                taggable_update_partial::TaggablePartial,
-            },
-            workspace::{user_workspace::UserWorkspace, user_workspace_partial::UserWorkspacePartial},
-        },
+use crate::vector::models::{
+    ai::ai_interactions::AIInteractions,
+    taggables::{
+        tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY, taggable_fields},
+        tag_location::TagLocation,
+        taggable_update_partial::TaggablePartial,
     },
 };
 

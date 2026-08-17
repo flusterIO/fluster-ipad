@@ -2,6 +2,13 @@
 //!
 //! ### Users
 //!
+//! **Note:** Some of the database models, particularily those around AI and any
+//! models associated with them had to be lifted up to the main Conundrum
+//! package. It hurts my soul deep down to leave logic distributed like this,
+//! but the only alternative was to lift up the entire database package, which
+//! may have been the best approach from the beginning, but there's no way I'm
+//! doing that without AI to rewrite all the imports.
+//!
 //! For users of varying technical backgrounds, this is likely where you'll
 //! want to start if you're vibe-coding your front-end. These modules contain
 //! all of the models you have access to in your database, from which your

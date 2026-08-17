@@ -1,4 +1,6 @@
-use crate::vector::models::{primitives::db_id::DatabaseId, vector::vector::DBVector};
+use conundrum::lifted_models::primitives::db_id::DatabaseId;
+
+use crate::vector::models::vector::vector::DBVector;
 
 pub struct PdfChunk {
     pub pdf_id: DatabaseId,

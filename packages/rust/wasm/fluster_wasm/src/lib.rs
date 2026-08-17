@@ -1,5 +1,5 @@
-use conundrum::lang::{
-    lib::general::pagination::pagination_params::PaginationParams, runtime::queries::emojis::search_emojis,
+use conundrum::{
+    ecosystem::db::parameters::general::pagination::PaginationParams, lang::runtime::queries::emojis::search_emojis,
 };
 use wasm_bindgen::prelude::*;
 // pub use wasm_bindgen_rayon::init_thread_pool;

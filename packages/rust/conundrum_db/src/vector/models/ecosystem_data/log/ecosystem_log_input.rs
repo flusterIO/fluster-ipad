@@ -1,13 +1,10 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
 use fake::Dummy;
 
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::ecosystem_data::log::{
-        ecosystem_log_intention::EcosystemLogIntention, ecosystem_log_severity::EcosystemLogSeverity,
-    },
+use crate::vector::models::ecosystem_data::log::{
+    ecosystem_log_intention::EcosystemLogIntention, ecosystem_log_severity::EcosystemLogSeverity,
 };
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]

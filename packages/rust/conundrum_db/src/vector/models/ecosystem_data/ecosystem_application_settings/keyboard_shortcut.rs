@@ -1,18 +1,17 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::traits::db_entity::{DBEntity, DBSchema};
+use conundrum::{
+    ecosystem::db::db_traits::{
+        db_entity::{DBEntity, DBSchema},
+        db_field::DatabaseField,
+    },
+    impl_default_crud,
+};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    impl_default_crud,
-    vector::{
-        database::db_traits::db_field::DatabaseField,
-        models::ecosystem_data::ecosystem_application_settings::{
-            ecosystem_application_action::EcosystemApplicationAction,
-            keyboard_shortcut_partial::KeyboardShortcutPartial,
-        },
-    },
+use crate::vector::models::ecosystem_data::ecosystem_application_settings::{
+    ecosystem_application_action::EcosystemApplicationAction, keyboard_shortcut_partial::KeyboardShortcutPartial,
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]

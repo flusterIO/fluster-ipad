@@ -1,7 +1,6 @@
 use arrow_schema::{Field, Fields};
+use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
 use serde::{Deserialize, Serialize};
-
-use crate::vector::database::db_traits::db_field::DatabaseField;
 
 // Because Lance refuses to serialize to all of arrow. If it
 // wouldn't complicate the installation process for the end user or if I had

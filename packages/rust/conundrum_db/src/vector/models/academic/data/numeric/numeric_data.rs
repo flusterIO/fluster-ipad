@@ -1,6 +1,5 @@
+use conundrum::lifted_models::primitives::date_time::DateTime;
 use serde::{Deserialize, Serialize};
-
-use crate::vector::models::date_time::date_time::DateTime;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct NumericData<T> {

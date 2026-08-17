@@ -1,20 +1,17 @@
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::{
+    ecosystem::db::db_traits::{
+        db_entity::DBSchema,
+        db_field::{DatabaseField, DatabaseFieldLarge},
+        impls::workspace_relative_path_field::workspace_relative_path_field,
+    },
+    lifted_models::primitives::{bytes::Bytes, date_time::DateTime, db_id::DatabaseId},
+};
 use conundrum_fs::models::user_workspace::workspace_relative_path_strings::WorkspaceRelativeStringPath;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
-use crate::vector::{
-    database::db_traits::{
-        db_field::{DatabaseField, DatabaseFieldLarge},
-        impls::workspace_relative_path_field::workspace_relative_path_field,
-    },
-    models::{
-        ai::ai_interactions::AIInteractions,
-        date_time::date_time::DateTime,
-        primitives::{bytes::Bytes, db_id::DatabaseId},
-    },
-};
+use crate::vector::models::ai::ai_interactions::AIInteractions;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct BinaryFileModel {

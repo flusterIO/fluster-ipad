@@ -1,16 +1,16 @@
 use std::sync::Arc;
 
 use axum::extract::ws::{Message, WebSocket};
+use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use futures_util::{SinkExt, StreamExt};
 use rig::completion::CompletionModel;
 use rig::streaming::StreamingPrompt;
 
 use crate::rig::features::chat::chat_event::ChatEvent;
-use crate::server_state::ServerState;
 
 pub async fn handle_socket<M>(socket: WebSocket, state: Arc<ServerState>)
     where M: CompletionModel {
-    if let Some(agent) = &state.clone().local_agent {
+    if let Some(client) = &state.clone().local_client {
         let (mut tx, mut rx) = socket.split();
 
         while let Some(result) = rx.next().await {
@@ -23,7 +23,10 @@ pub async fn handle_socket<M>(socket: WebSocket, state: Arc<ServerState>)
             };
 
             let prompt = prompt.to_string();
-            let mut stream = agent.0.stream_prompt(prompt).await;
+            let locked_client = client.clone().lock_owned().await;
+            let c = locked_client
+            let mut stream = locked_client.0.stream_chat_response(prompt).await;
+            drop(locked_client);
 
             while let Some(item) = stream.next().await {
                 match item {

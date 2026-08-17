@@ -1,3 +1,4 @@
+pub mod faker_generators;
 pub mod get_test_content;
 pub mod get_workspace_root;
 pub mod get_workspace_root_duplicate;

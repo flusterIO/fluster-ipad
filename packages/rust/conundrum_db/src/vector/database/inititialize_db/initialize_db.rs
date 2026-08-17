@@ -1,15 +1,24 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::{
-    db::{tables::DatabaseTable, traits::db_entity::DBSchema},
-    error_handling::db_error::{DatabaseError, DatabaseResult},
+use conundrum::{
+    ai::{
+        models::{
+            agent::agent_description::AgentDescription,
+            chat::{chat_conversation::chat_conversation::ChatConversation, chat_message::chat_message::ChatMessage},
+        },
+        rig::ai_traits::ai_client_container::AIClientEmbedder,
+    },
+    ecosystem::{
+        db::{db::get_database, db_traits::db_entity::DBSchema, tables::DatabaseTable},
+        error_handling::db_error::{DatabaseError, DatabaseResult},
+    },
+    lang::lib::shared::utility_types::ArcTokioMutex,
 };
-use conundrum_fs::path_utils::ecosystem_paths::get_app_database_dir;
-use lancedb::{Table, arrow::arrow_schema::Schema, connect};
+use lancedb::{Table, arrow::arrow_schema::Schema};
 use log::warn;
 
 use crate::vector::{
-    database::{db::get_database, inititialize_db::seed_db::seed_db},
+    database::inititialize_db::seed_db::seed_db,
     models::{
         academic::{
             assignment::{
@@ -21,20 +30,13 @@ use crate::vector::{
             },
             question::flashcard::flashcard_entity::FlashCardEntity,
         },
-        ai::{
-            agent::agent_description::AgentDescription,
-            chat::{chat_conversation::chat_conversation::ChatConversation, chat_message::chat_message::ChatMessage},
-            tool::mcp_tool_record::MCPToolRecord,
-        },
+        ai::tool::mcp_tool_record::MCPToolRecord,
         ecosystem_data::{
             ecosystem_application_settings::keyboard_shortcut::KeyboardShortcut, log::ecosystem_log::EcosystemLog,
         },
         git::git_repository_entity::GitRepositoryEntity,
         taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
-        text::{
-            cdrm::{cdrm_content::CdrmContent, cdrm_model::CdrmModel},
-            text_based_content::text_based_chunk::TextBasedChunk,
-        },
+        text::{cdrm::cdrm_model::CdrmModel, text_based_content::text_based_chunk::TextBasedChunk},
         workspace::user_workspace::UserWorkspace,
     },
 };
@@ -60,7 +62,8 @@ async fn create_table(db: &lancedb::Connection, schema: &Arc<Schema>, table: &Da
       })
 }
 
-pub async fn initialize_local_database() -> DatabaseResult<()> {
+pub async fn initialize_local_database<T>(handler: &ArcTokioMutex<T>) -> DatabaseResult<()>
+    where T: AIClientEmbedder<String> {
     let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::MCPToolRecord,
                                                               schema: MCPToolRecord::schema()?,
                                                               set_indices: None },
@@ -127,46 +130,28 @@ pub async fn initialize_local_database() -> DatabaseResult<()> {
     let db_arc = get_database().await?;
     let db = db_arc.clone().lock_owned().await;
 
-    if let Ok(db_path) = get_app_database_dir() {
-        for td in table_data.iter() {
-            log::info!("Initializing the {} table for the {} model", td.table, td.table.to_model_name());
-            if !td.table.is_temporary_vector_table() {
-                let arc_schema = Arc::new(td.schema.clone());
-                match create_table(&db, &arc_schema, &td.table).await {
-                    Err(e) => {
-                        let s = td.table.to_model_name();
-                        warn!("Conundrum failed while attempting to generate a database table for the `{:?}` model.",
-                              s);
-                    }
-                    Ok(r) => {
-                        if let Some(si) = td.set_indices {
-                            si(&r)?;
-                        }
+    for td in table_data.iter() {
+        log::info!("Initializing the {} table for the {} model", td.table, td.table.to_model_name());
+        if !td.table.is_temporary_vector_table() {
+            let arc_schema = Arc::new(td.schema.clone());
+            match create_table(&db, &arc_schema, &td.table).await {
+                Err(e) => {
+                    let s = td.table.to_model_name();
+                    warn!("Conundrum failed while attempting to generate a database table for the `{:?}` model.", s);
+                }
+                Ok(r) => {
+                    if let Some(si) = td.set_indices {
+                        si(&r)?;
                     }
                 }
-            } else {
-                log::info!("Ignoring initialization of temporary vector table {:?}", td.table.to_string());
             }
+        } else {
+            log::info!("Ignoring initialization of temporary vector table {:?}", td.table.to_string());
         }
-        drop(db);
-        seed_db(&db_arc);
-        Ok(())
-    } else {
-        log::error!("Failed to locate data directory. Cannot continue.");
-        Err(DatabaseError::FailToConnect)
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test_log::test(tokio::test)]
-    async fn initializes_database() {
-        initialize_local_database().await
-                                   .inspect_err(|e| {
-                                       log::error!("Error: {:?}", e);
-                                   })
-                                   .expect("Initializes database.")
-    }
+    drop(db);
+    let _ = seed_db(&db_arc, handler).await.inspect_err(|e| {
+                                               log::error!("Error: {:#?}", e);
+                                           });
+    Ok(())
 }

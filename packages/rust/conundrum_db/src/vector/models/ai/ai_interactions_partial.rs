@@ -1,10 +1,8 @@
 use arrow_schema::{DataType, Field, Fields};
+use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
 use fake::Dummy;
 
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::ai::{ai_generated_input::AIGeneratedInput, ai_notes::AINotes},
-};
+use crate::vector::models::ai::{ai_generated_input::AIGeneratedInput, ai_notes::AINotes};
 
 /// # AI Interactions
 /// Just like [AIInteractions](crate::vector::models::ai::ai_interactions::AIInteractions), but

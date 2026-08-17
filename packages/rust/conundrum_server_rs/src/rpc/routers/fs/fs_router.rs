@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use crate::server_state::ServerState;
 use crate::{
     errors::server_error::{ServerError, ServerResult},
     routes::fs::route_exists::path_exists,
@@ -12,6 +11,7 @@ use conundrum::{
 };
 use conundrum_db::vector::{
     database::db_traits::async_traits::actionable_request::ActionableRequest,
+    models::ecosystem_data::server_state::server_state::ServerState,
     parameters::fs::path_validity_check::PathValidationRequest,
 };
 use rspc::{Procedure, Router};

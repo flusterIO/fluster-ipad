@@ -1,25 +1,21 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::{
-    tables::DatabaseTable,
-    traits::db_entity::{DBEntity, DBSchema},
+use conundrum::{
+    ecosystem::db::{
+        db_traits::{
+            db_entity::{DBEntity, DBSchema},
+            db_field::DatabaseField,
+        },
+        tables::DatabaseTable,
+    },
+    impl_default_crud,
+    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    impl_default_crud,
-    vector::{
-        database::db_traits::db_field::DatabaseField,
-        models::{
-            date_time::date_time::DateTime,
-            primitives::db_id::DatabaseId,
-            taggables::{
-                auto_taggable_partial::AutoTaggablePartial, taggable::TaggableVariant,
-                taggable_update_partial::TaggablePartial,
-            },
-        },
-    },
+use crate::vector::models::taggables::{
+    auto_taggable_partial::AutoTaggablePartial, taggable::TaggableVariant, taggable_update_partial::TaggablePartial,
 };
 use specta::Type;
 

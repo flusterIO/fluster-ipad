@@ -1,10 +1,9 @@
+use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
 use conundrum_fs::models::user_workspace::workspace_relative_path::WorkspaceRelativePath;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{
     ai::ai_generated_status::AIGeneratedStatus,
-    date_time::date_time::DateTime,
-    primitives::db_id::DatabaseId,
     taggables::{subject::Subject, tag_list::TagList, topic::Topic},
 };
 
@@ -21,4 +20,3 @@ pub struct TypstContent {
     pub ctime: DateTime,
     pub utime: DateTime,
 }
-

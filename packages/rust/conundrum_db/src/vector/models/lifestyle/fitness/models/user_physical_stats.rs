@@ -1,7 +1,6 @@
-use crate::vector::models::{
-    date_time::date_time::DateTime, lifestyle::fitness::models::biological_gender::BiologicalGender,
-    primitives::db_id::DatabaseId,
-};
+use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
+
+use crate::vector::models::lifestyle::fitness::models::biological_gender::BiologicalGender;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
 pub struct UserPhysicalStats {

@@ -10,7 +10,7 @@ use rust_mcp_sdk::{
     session_store::InMemorySessionStore,
 };
 
-use crate::{errors::server_error::ServerResult, mcp::mcp_handler::ConundrumMCP, server_state::ServerState};
+use crate::{errors::server_error::ServerResult, mcp::mcp_handler::ConundrumMCP};
 
 pub fn get_mcp_server() -> ServerResult<Router<()>> {
     let server_info =

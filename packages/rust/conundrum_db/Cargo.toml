@@ -7,9 +7,9 @@ documentation.workspace = true
 edition.workspace = true
 license.workspace = true
 
-# [dependencies]
-# polars = { workspace = true }
-
+[features]
+open_ai = []
+gemini = []
 
 [lints]
 workspace = true
@@ -67,6 +67,7 @@ filetime = "0.2.29"
 which = "8.0.5"
 open = "5.4.1"
 text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
+cfg-if = "1.0.4"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }

@@ -1,4 +1,4 @@
-use crate::vector::models::{date_time::date_time::DateTime, primitives::db_id::DatabaseId};
+use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
 pub struct ExerciseSet {

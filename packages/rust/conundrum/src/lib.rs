@@ -102,6 +102,7 @@ pub mod bibliography;
 pub mod ecosystem;
 pub mod embedded;
 pub mod lang;
+pub mod lifted_models;
 pub mod macros;
 pub mod output;
 pub mod parsers;

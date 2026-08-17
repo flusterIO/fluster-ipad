@@ -1,8 +1,8 @@
+use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{
     academic::result::academic_result_metric::AcademicResultMetric,
-    primitives::db_id::DatabaseId,
     taggables::{subject::Subject, tag::Tag, topic::Topic},
 };
 

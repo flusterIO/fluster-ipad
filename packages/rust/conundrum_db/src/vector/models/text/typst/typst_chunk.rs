@@ -1,6 +1,5 @@
+use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use serde::{Deserialize, Serialize};
-
-use crate::vector::models::primitives::db_id::DatabaseId;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct TypstChunk {

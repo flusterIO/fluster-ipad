@@ -1,27 +1,26 @@
-use std::{default, sync::Arc};
+use std::sync::Arc;
 
 use arrow_schema::Field;
-use conundrum::ecosystem::{
-    db::traits::db_entity::{DBEntity, DBSchema},
-    error_handling::db_error::DatabaseResult,
+use conundrum::{
+    ecosystem::{
+        db::db_traits::{
+            db_entity::{DBEntity, DBSchema},
+            db_field::DatabaseField,
+        },
+        error_handling::db_error::DatabaseResult,
+    },
+    impl_default_crud,
+    lifted_models::primitives::{case_insensitive_string::CaseInsensitiveString, date_time::DateTime},
+    testing::faker_generators::fake_words_as_string::fake_words_as_string,
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 use specta::Type;
 
-use crate::{
-    impl_default_crud,
-    test_utils::faker_generators::fake_words_as_string::fake_words_as_string,
-    vector::{
-        database::db_traits::db_field::DatabaseField,
-        models::{
-            ai::ai_interactions::AIInteractions,
-            date_time::date_time::DateTime,
-            primitives::case_insensitive_string::CaseInsensitiveString,
-            taggables::{tag_location::TagLocation, taggable_update_partial::TaggablePartial},
-        },
-    },
+use crate::vector::models::{
+    ai::ai_interactions::AIInteractions,
+    taggables::{tag_location::TagLocation, taggable_update_partial::TaggablePartial},
 };
 
 /// The `_lc` suffix is appended by the `CaseInsensitiveString` struct.
@@ -87,9 +86,10 @@ impl<'a> DBEntity<'a> for Tag {
 
 #[cfg(test)]
 mod tests {
+    use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
     use fake::{Fake, Faker};
 
-    use crate::{test_utils::get_test_db::get_test_database, vector::database::db_traits::entity_crud::EntityCRUD};
+    use crate::test_utils::get_test_db::get_test_database;
 
     use super::*;
 

@@ -2,11 +2,9 @@ use std::{fmt::Debug, sync::Arc};
 
 use arrow_array::RecordBatchIterator;
 use conundrum::ecosystem::{
-    db::traits::db_entity::DBEntity,
+    db::{db::ArcMutexDB, db_traits::db_entity::DBEntity, helpers::open_table::open_table},
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
-
-use crate::vector::database::{db::ArcMutexDB, open_table::open_table};
 
 pub async fn save_entities<'a, T, IDType>(items: Vec<T>, db: ArcMutexDB) -> DatabaseResult<()>
     where T: DBEntity<'a, IDType> + Clone + Debug {

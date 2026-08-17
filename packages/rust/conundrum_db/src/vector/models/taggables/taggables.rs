@@ -1,7 +1,4 @@
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::taggables::{subject::Subject, tag_list::TagList, topic::Topic},
-};
+use crate::vector::models::taggables::{subject::Subject, tag_list::TagList, topic::Topic};
 use arrow_schema::Field;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};

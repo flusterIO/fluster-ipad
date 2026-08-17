@@ -1,5 +1,6 @@
 pub mod db;
 pub mod docgen;
+pub mod ecosystem_paths;
 pub mod ecosystem_setting;
 pub mod environment_variables;
 pub mod error_handling;

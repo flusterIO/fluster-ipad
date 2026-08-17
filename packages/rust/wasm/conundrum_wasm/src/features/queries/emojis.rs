@@ -1,7 +1,5 @@
-use conundrum::lang::{
-    lib::general::pagination::pagination_params::PaginationParams,
-    runtime::queries::emojis::search_emojis_to_docs_container,
-};
+use conundrum::ecosystem::db::parameters::general::pagination::PaginationParams;
+use conundrum::lang::runtime::queries::emojis::search_emojis_to_docs_container;
 use wasm_bindgen::JsValue;
 use wasm_bindgen::prelude::*;
 

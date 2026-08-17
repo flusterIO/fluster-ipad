@@ -1,13 +1,13 @@
 use std::{collections::HashMap, ops::Index, str::FromStr};
 
-use conundrum::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
+use conundrum::ecosystem::{
+    db::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation},
+    error_handling::db_error::{DatabaseError, DatabaseResult},
+};
 use fake::rand::seq::IndexedRandom;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::{
-    database::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation},
-    models::utility::{generic_value::GenericValue, generic_value_and_key::GenericValueAndKey},
-};
+use crate::vector::models::utility::{generic_value::GenericValue, generic_value_and_key::GenericValueAndKey};
 
 #[derive(Serialize, Deserialize, Clone, Debug, strum_macros::Display, PartialEq, Eq)]
 pub enum AcademicResultMetricKey {

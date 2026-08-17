@@ -1,13 +1,10 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::ecosystem_data::ecosystem_application_settings::ecosystem_application_action::EcosystemApplicationAction,
-};
+use crate::vector::models::ecosystem_data::ecosystem_application_settings::ecosystem_application_action::EcosystemApplicationAction;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct KeyboardShortcutPartial {

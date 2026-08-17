@@ -1,8 +1,6 @@
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum::ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::db_error::DatabaseError};
 use fake::{Dummy, Faker};
 use serde::{Deserialize, Serialize};
-
-use crate::vector::database::db_traits::db_field::DatabaseField;
 
 // ## AIGeneratedStatus
 //

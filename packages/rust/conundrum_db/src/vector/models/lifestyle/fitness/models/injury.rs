@@ -1,6 +1,7 @@
+use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
+
 use crate::vector::models::{
-    ai::ai_interactions::AIInteractions, date_time::date_time::DateTime,
-    lifestyle::fitness::models::general_bodypart::BodyPart, primitives::db_id::DatabaseId,
+    ai::ai_interactions::AIInteractions, lifestyle::fitness::models::general_bodypart::BodyPart,
 };
 
 /// # PersonalInjury

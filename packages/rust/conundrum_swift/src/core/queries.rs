@@ -1,6 +1,6 @@
-use conundrum::lang::{
-    lib::general::pagination::pagination_params::PaginationParams,
-    runtime::{
+use conundrum::{
+    ecosystem::db::parameters::general::pagination::PaginationParams,
+    lang::runtime::{
         queries::{
             emojis::{search_emojis as search_emojis_func, EmojiSearchResults},
             get_title::{get_title_group, TitleGroup},

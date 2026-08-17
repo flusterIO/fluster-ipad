@@ -3,7 +3,10 @@ use thiserror::Error;
 // use conundrum_fs
 
 use crate::{
-    ecosystem::{db::tables::DatabaseTable, error_handling::conundrum_fs_error::ConundrumFSError},
+    ecosystem::{
+        db::tables::DatabaseTable,
+        error_handling::{ai_error::AIError, conundrum_fs_error::ConundrumFSError},
+    },
     lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
 };
 
@@ -51,6 +54,8 @@ pub enum DatabaseError {
     InvalidWorkspacePath(String),
     #[error("Conundrum encountered an invalid date-time.")]
     InvalidDateTime,
+    #[error("AI Error: {:#?}", .0)]
+    AIError(#[from] AIError),
 }
 
 impl From<ConundrumFSError> for DatabaseError {

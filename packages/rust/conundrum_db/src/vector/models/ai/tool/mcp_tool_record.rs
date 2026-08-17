@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::{primitives::db_id::DatabaseId, vector::vector::DBVector},
+use crate::vector::models::vector::vector::DBVector;
+use conundrum::ecosystem::db::db_traits::{
+    db_entity::{DBEntity, DBSchema},
+    db_field::DatabaseField,
 };
-use conundrum::ecosystem::db::traits::db_entity::{DBEntity, DBSchema};
 use fake::Dummy;
 use rust_mcp_sdk::schema::Tool;
 use serde::{Deserialize, Serialize};

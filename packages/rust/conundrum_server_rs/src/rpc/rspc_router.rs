@@ -2,11 +2,10 @@ use std::{ops::Index, sync::Arc};
 
 use conundrum_db::vector::{
     database::schema_version::{schema_version::SchemaVersion, server_version::ServerVersion},
-    models::ecosystem_data::ecosystem_data::VersionData,
+    models::ecosystem_data::{ecosystem_data::VersionData, server_state::server_state::ServerState},
 };
 use rspc::Procedure;
 
-use crate::server_state::ServerState;
 use crate::{
     errors::server_error::{ServerError, ServerResult},
     rpc::{

@@ -1,10 +1,10 @@
+use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{
     academic::assignment::milestone::milestone::Milestone,
-    date_time::{alarm::alarm::Alarm, date_time::DateTime},
-    primitives::db_id::DatabaseId,
+    date_time::alarm::alarm::Alarm,
     taggables::{subject::Subject, tag::Tag, topic::Topic},
 };
 

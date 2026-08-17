@@ -1,18 +1,22 @@
 use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
-use conundrum::ecosystem::db::{
-    tables::DatabaseTable,
-    traits::db_entity::{DBEntity, DBSchema},
+use conundrum::{
+    ecosystem::db::{
+        db_traits::{
+            db_entity::{DBEntity, DBSchema},
+            db_field::DatabaseField,
+            entity_crud::EntityCRUD,
+        },
+        tables::DatabaseTable,
+    },
+    lifted_models::primitives::db_id::DatabaseId,
 };
 use fake::Dummy;
 
-use crate::vector::{
-    database::db_traits::{db_field::DatabaseField, entity_crud::EntityCRUD},
-    models::{
-        ai::ai_interactions::AIInteractions, git::git_repository_partial::GitRepositoryPartial,
-        primitives::db_id::DatabaseId, taggables::taggables::Taggables, vector::vector::DBVector,
-    },
+use crate::vector::models::{
+    ai::ai_interactions::AIInteractions, git::git_repository_partial::GitRepositoryPartial,
+    taggables::taggables::Taggables, vector::vector::DBVector,
 };
 
 /// # Git

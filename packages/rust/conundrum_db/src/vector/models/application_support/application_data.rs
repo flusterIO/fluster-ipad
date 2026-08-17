@@ -1,8 +1,7 @@
+use conundrum::lifted_models::primitives::date_time::DateTime;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::{
-    application_support::application_permission::ApplicationPermission, date_time::date_time::DateTime,
-};
+use crate::vector::models::application_support::application_permission::ApplicationPermission;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ApplicationData {

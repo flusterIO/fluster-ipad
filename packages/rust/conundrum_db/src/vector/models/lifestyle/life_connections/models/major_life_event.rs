@@ -1,6 +1,7 @@
+use conundrum::lifted_models::primitives::date_time::DateTime;
+
 use crate::vector::models::{
     ai::ai_interactions::AIInteractions,
-    date_time::date_time::DateTime,
     lifestyle::life_connections::models::{geographic_location::GeographicLocation, participants::Participants},
 };
 

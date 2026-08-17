@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use crate::errors::server_error::ServerError;
-use crate::server_state::ServerState;
 use conundrum::ecosystem::db::{db_table_description::DBTableDescription, tables::DatabaseTable};
+use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use rspc::{Procedure, Router};
 use strum::IntoEnumIterator;
 

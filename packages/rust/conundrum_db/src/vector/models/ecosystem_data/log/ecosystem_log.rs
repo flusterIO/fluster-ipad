@@ -1,13 +1,14 @@
 use std::sync::Arc;
 
-use crate::impl_default_crud;
-use crate::vector::database::db_traits::db_field::DatabaseField;
 use crate::vector::models::ecosystem_data::log::ecosystem_log_input::EcosystemLogInput;
 use crate::vector::models::ecosystem_data::log::ecosystem_log_intention::EcosystemLogIntention;
 use crate::vector::models::ecosystem_data::log::ecosystem_log_severity::EcosystemLogSeverity;
-use crate::vector::models::{date_time::date_time::DateTime, primitives::db_id::DatabaseId};
+use conundrum::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
+use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
 use conundrum::ecosystem::db::tables::DatabaseTable;
-use conundrum::ecosystem::db::traits::db_entity::{DBEntity, DBSchema};
+use conundrum::impl_default_crud;
+use conundrum::lifted_models::primitives::date_time::DateTime;
+use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use fake::Dummy;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]

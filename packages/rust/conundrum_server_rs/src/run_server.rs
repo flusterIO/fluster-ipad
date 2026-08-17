@@ -3,10 +3,11 @@ use std::sync::Arc;
 pub use crate::rpc::rspc_router::get_rspc_router;
 use crate::{
     errors::server_error::{ServerError, ServerResult},
+    mcp::mcp_handler::ConundrumMCP,
     rig::ai_types::ai_types::LocalCompletionModel,
-    server_state::ServerState,
 };
 use axum::extract::State;
+use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 #[cfg(debug_assertions)]
 use rspc::Typescript;
 pub use rspc_axum;
@@ -47,9 +48,8 @@ pub async fn run_server(write_types_to: Option<impl AsRef<std::path::Path>>) -> 
         }
     }
 
-    let state = ServerState::try_new().await.map(Arc::new).expect("We cannot establish a connection to the database, which is odd, because it's embedded. Have you ran the initialize command? Try running `cdrm initialize-database` if you have the cdrm cli installed.");
-    // TODO: Move the context up to a shared context and add a database connection.
-    //
+    let mcp_handler = ConundrumMCP::default();
+    let state = ServerState::try_new(mcp_handler).await.map(Arc::new).expect("We cannot establish a connection to the database, which is odd, because it's embedded. Have you ran the initialize command? Try running `cdrm initialize-database` if you have the cdrm cli installed.");
     let cloned_state = Arc::clone(&state);
 
     let mcp_router = get_mcp_server().expect("Failed to generate the MCP server. Cannot continue.");

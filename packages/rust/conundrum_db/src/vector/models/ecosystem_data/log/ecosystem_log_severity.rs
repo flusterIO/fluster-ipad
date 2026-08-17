@@ -1,8 +1,6 @@
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum::ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::db_error::DatabaseError};
 use fake::Dummy;
 use strum::IntoEnumIterator;
-
-use crate::vector::database::db_traits::db_field::DatabaseField;
 
 #[derive(serde::Serialize,
            serde::Deserialize,

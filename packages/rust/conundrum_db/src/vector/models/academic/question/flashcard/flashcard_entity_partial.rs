@@ -1,16 +1,13 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::{
+    ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField},
+    lifted_models::primitives::db_id::DatabaseId,
+};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    impl_default_crud,
-    vector::{
-        database::db_traits::db_field::DatabaseField,
-        models::{academic::question::flashcard::flashcard_value::FlashcardValue, primitives::db_id::DatabaseId},
-    },
-};
+use crate::vector::models::academic::question::flashcard::flashcard_value::FlashcardValue;
 
 #[derive(Clone, Serialize, Deserialize, Dummy, specta::Type)]
 pub struct FlashCardEntityPartial {

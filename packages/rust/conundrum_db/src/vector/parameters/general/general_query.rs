@@ -1,8 +1,7 @@
+use conundrum::ecosystem::db::parameters::general::{pagination::PaginationParams, sort_query::SortQuery};
 use fake::Dummy;
 use lancedb::query::ColumnOrdering;
 use serde::{Deserialize, Serialize};
-
-use crate::vector::{database::pagination::PaginationParams, parameters::general::sort_query::SortQuery};
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct GeneralQuery<PredicateType = Option<String>> {

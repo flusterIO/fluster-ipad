@@ -1,8 +1,7 @@
+use conundrum::lifted_models::primitives::db_id_single_instance::DBIDSingleInstance;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use serde_with::DeserializeFromStr;
-
-use crate::vector::models::primitives::db_id_single_instance::DBIDSingleInstance;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct EcosystemSettingsPartial {

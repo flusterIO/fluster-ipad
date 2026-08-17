@@ -1,6 +1,5 @@
+use conundrum::ai::models::tool::mcp_tool_name::MCPToolName;
 use serde::{Deserialize, Serialize};
-
-use crate::vector::models::ai::tool::mcp_tool_name::MCPToolName;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct MCPToolDefinition {

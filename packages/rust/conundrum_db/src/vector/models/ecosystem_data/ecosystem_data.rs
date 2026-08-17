@@ -1,9 +1,10 @@
+use conundrum::lifted_models::primitives::date_time::DateTime;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
 use crate::vector::{
     database::schema_version::{schema_version::SchemaVersion, server_version::ServerVersion},
-    models::{date_time::date_time::DateTime, ecosystem_data::onboarding_dialogs::OnboardingDialogs},
+    models::ecosystem_data::onboarding_dialogs::OnboardingDialogs,
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]

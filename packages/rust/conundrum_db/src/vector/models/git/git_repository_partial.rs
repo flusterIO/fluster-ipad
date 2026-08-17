@@ -1,13 +1,10 @@
 use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::{ecosystem::db::db_traits::db_entity::DBSchema, lifted_models::primitives::db_id::DatabaseId};
 use fake::Dummy;
 
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::{primitives::db_id::DatabaseId, vector::vector::DBVector},
-};
+use crate::vector::models::vector::vector::DBVector;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct GitRepositoryPartial {

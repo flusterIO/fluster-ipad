@@ -1,8 +1,9 @@
-use crate::vector::models::primitives::db_id::DatabaseId;
-
-use crate::vector::database::db_traits::db_field::DatabaseField;
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
 use std::sync::Arc;
+
+use conundrum::{
+    ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField, db_identifiable::DatabaseIdentifiable},
+    lifted_models::primitives::db_id::DatabaseId,
+};
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
 pub struct AssignmentSubject {

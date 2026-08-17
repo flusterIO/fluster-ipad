@@ -1,14 +1,14 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
-
-use crate::vector::{
-    database::db_traits::db_field::{DatabaseField, DatabaseFieldLarge},
-    models::{
-        ai::ai_interactions::AIInteractions,
-        primitives::{bytes::Bytes, db_id::DatabaseId},
+use conundrum::{
+    ecosystem::db::db_traits::{
+        db_entity::DBSchema,
+        db_field::{DatabaseField, DatabaseFieldLarge},
     },
+    lifted_models::primitives::{bytes::Bytes, db_id::DatabaseId},
 };
+
+use crate::vector::models::ai::ai_interactions::AIInteractions;
 
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, fake::Dummy)]
 pub struct PdfEntity {

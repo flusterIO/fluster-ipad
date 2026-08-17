@@ -1,10 +1,11 @@
-use conundrum::ecosystem::{db::tables::DatabaseTable, error_handling::db_error::DatabaseResult};
+use conundrum::{
+    ecosystem::{db::tables::DatabaseTable, error_handling::db_error::DatabaseResult},
+    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
+};
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{
     academic::question::flashcard::flashcard_value::FlashcardValue,
-    date_time::date_time::DateTime,
-    primitives::db_id::DatabaseId,
     taggables::{subject::Subject, tag::Tag, tag_list::TagList, taggables::Taggables, topic::Topic},
 };
 

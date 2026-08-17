@@ -1,10 +1,11 @@
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::{
+    ecosystem::db::db_traits::db_entity::DBSchema,
+    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
+};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::{
-    date_time::date_time::DateTime, primitives::db_id::DatabaseId, taggables::taggable::TaggableVariant,
-};
+use crate::vector::models::taggables::taggable::TaggableVariant;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct AutoTaggablePartial {

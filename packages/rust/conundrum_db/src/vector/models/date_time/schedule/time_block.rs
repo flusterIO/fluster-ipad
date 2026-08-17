@@ -1,4 +1,4 @@
-use crate::vector::models::date_time::date_time::DateTime;
+use conundrum::lifted_models::primitives::date_time::DateTime;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
 pub struct TimeBlock {

@@ -1,7 +1,9 @@
-use crate::{topic_join, vector::models::primitives::db_id::DatabaseId};
+use conundrum::{
+    ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField},
+    lifted_models::primitives::db_id::DatabaseId,
+};
 
-use crate::vector::database::db_traits::db_field::DatabaseField;
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use crate::topic_join;
 use std::sync::Arc;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, fake::Dummy)]

@@ -1,7 +1,6 @@
+use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
-
-use crate::vector::database::db_traits::db_field::DatabaseField;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, strum_macros::Display, Dummy)]
 pub enum TaggableVariant {

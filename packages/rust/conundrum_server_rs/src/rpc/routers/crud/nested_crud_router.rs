@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use crate::server_state::ServerState;
 use crate::{crud_router, errors::server_error::ServerError};
 use conundrum::ecosystem::db::tables::DatabaseTable;
 use conundrum_db::vector::{
@@ -15,10 +14,17 @@ use conundrum_db::vector::{
                 flashcard_entity::FlashCardEntity, flashcard_entity_partial::FlashCardEntityPartial,
             },
         },
-        ai::chat::chat_conversation::chat_conversation::ChatConversation,
-        ai::chat::chat_message::chat_message::ChatMessage,
-        ecosystem_data::ecosystem_application_settings::{
-            keyboard_shortcut::KeyboardShortcut, keyboard_shortcut_partial::KeyboardShortcutPartial,
+        ai::chat::{
+            chat_conversation::{
+                chat_conversation::ChatConversation, chat_conversation_partial::ChatConversationPartial,
+            },
+            chat_message::chat_message::ChatMessage,
+        },
+        ecosystem_data::{
+            ecosystem_application_settings::{
+                keyboard_shortcut::KeyboardShortcut, keyboard_shortcut_partial::KeyboardShortcutPartial,
+            },
+            server_state::server_state::ServerState,
         },
         git::{git_repository_entity::GitRepositoryEntity, git_repository_partial::GitRepositoryPartial},
         primitives::helper_models::label_and_id::IDAndOptionalLabel,
@@ -41,7 +47,7 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let assignment_crud = crud_router!(AssignmentEntity, AssignmentEntityPartial);
     let flashcard_crud = crud_router!(FlashCardEntity, FlashCardEntityPartial);
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
-    let chat_conversation_crud = crud_router!(ChatConversation, IDAndOptionalLabel);
+    let chat_conversation_crud = crud_router!(ChatConversation, ChatConversationPartial);
     let chat_message_crud = crud_router!(ChatMessage, ChatMessage);
     Router::<Arc<ServerState>>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
                                      .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)

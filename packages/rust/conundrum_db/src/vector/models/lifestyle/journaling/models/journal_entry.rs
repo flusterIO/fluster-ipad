@@ -1,6 +1,6 @@
-use crate::vector::models::{
-    lifestyle::journaling::models::journal_entry_sentiment::JournalEntrySentiment, primitives::db_id::DatabaseId,
-};
+use conundrum::lifted_models::primitives::db_id::DatabaseId;
+
+use crate::vector::models::lifestyle::journaling::models::journal_entry_sentiment::JournalEntrySentiment;
 
 pub struct JournalEntry {
     /// The id of the conundrum note in the database.

@@ -1,15 +1,14 @@
+use std::ops::{Index, IndexMut};
+
 use arrow_schema::Field;
 use conundrum::{
-    ecosystem::error_handling::db_error::DatabaseError,
-    lang::runtime::queries::get_title::get_title_group,
-    lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum},
+    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk_temporary::ChunkTemporary}, ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::{ai_error::{AIError, AIResult}, db_error::DatabaseError}}, lang::runtime::{queries::get_title::get_title_group, run_conundrum::{ParseConundrumOptions, run_conundrum}}
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
-use text_splitter::ChunkConfig;
 
 use crate::vector::{
-    ai_utils::ai_traits::chunk_temporary::ChunkTemporary, database::db_traits::db_field::DatabaseField, models::{primitives::db_id::DatabaseId, text::text_based_content::{text_based_chunk::TextBasedChunk, text_based_content_trait::TextBasedContent}}
+models::{text::text_based_content::{text_based_chunk::TextBasedChunk, text_based_content_trait::TextBasedContent}, vector::vector::DBVector}
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
@@ -54,21 +53,32 @@ impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
     }
 }
 
-impl ChunkTemporary<ParseConundrumOptions> for CdrmContent {
-    async fn try_chunk_temporary(&self, opts: ParseConundrumOptions) -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<TextBasedChunk>> {
+impl<ClientType> ChunkTemporary<ParseConundrumOptions, TextBasedChunk, ClientType> for CdrmContent where ClientType: AIClientEmbedder<String> {
+
+    async fn try_chunk_temporary(&self, opts: ParseConundrumOptions, client: &std::sync::Arc<tokio::sync::Mutex<ClientType>>) -> AIResult<Vec<TextBasedChunk>> {
         if let Some(note_id) = &opts.note_id && !note_id.is_empty() {
         let opts = run_conundrum(ParseConundrumOptions { 
             target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget::Markdown,
             ..opts.clone()
-        }).map_err(DatabaseError::ConundrumError)?;
+        }).map_err(AIError::ConundrumError)?;
+        let locked_client = client.clone().lock_owned().await;
         let x = text_splitter::MarkdownSplitter::new(512);
         let mut chunks: Vec<TextBasedChunk> = Vec::new();
-        for (i, k) in x.chunks(&opts.content).enumerate() {
-            chunks.push(TextBasedChunk { document_id: DatabaseId::new_from_input_id(note_id.clone()), content: k.to_string(), chunk_idx: i as u32 });
-        }
+        let chunk_strings = x.chunks(&opts.content).map(|v| {
+               v.to_string()     
+        }).collect::<Vec<String>>();
+            let vectors = locked_client.embed_models(None, chunk_strings, None).await?;
+            for (i, embedding) in vectors.iter().enumerate() {
+                 let chunk_i = chunks.index_mut(i);
+                 if chunk_i.content == embedding.document {
+                     chunk_i.vector = DBVector(embedding.vec.clone());
+                 } else {
+                     log::error!("Found an unmatched vector! Something went haywire.");
+                 }
+            }
         Ok(chunks)
         } else {
-            return Err(DatabaseError::FailToSerialize("a `note_id` field is required when chunking Conundrum content.".to_string()));
+            return Err(AIError::InvalidProps("a `note_id` field is required when chunking Conundrum content.".to_string()));
         }
     }
 }

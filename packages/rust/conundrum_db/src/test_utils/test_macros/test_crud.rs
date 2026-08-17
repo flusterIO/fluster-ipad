@@ -4,6 +4,7 @@ use fake::Fake;
 macro_rules! test_crud_functionality {
     ( $entity:ty, $label:expr ) => {
         {
+        use conundrum::ecosystem::db::db_traits::db_entity::DBEntity;
         let test_db = $crate::test_utils::get_test_db::get_test_database().await;
         let mut test_data: Vec<$entity> = Vec::new();
         for _ in 0..10 {

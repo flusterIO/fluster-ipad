@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use crate::server_state::ServerState;
 use crate::{
     errors::server_error::ServerError,
     rpc::routers::fs::fs_path_simple_result::{FSPathSimpleResult, PathVariant},
@@ -8,7 +7,10 @@ use crate::{
 use conundrum_db::vector::{
     database::{db_traits::entity_crud::EntityCRUD, helper_crud_functions::save_entity::save_entities},
     models::{
-        ecosystem_data::log::{ecosystem_log::EcosystemLog, ecosystem_log_input::EcosystemLogInput},
+        ecosystem_data::{
+            log::{ecosystem_log::EcosystemLog, ecosystem_log_input::EcosystemLogInput},
+            server_state::server_state::ServerState,
+        },
         primitives::db_id::DatabaseId,
     },
     parameters::general::general_query::GeneralQuery,

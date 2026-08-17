@@ -1,15 +1,12 @@
 use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::{ai::ai_interactions::AIInteractions, workspace::user_workspace::UserWorkspace},
-};
+use crate::vector::models::{ai::ai_interactions::AIInteractions, workspace::user_workspace::UserWorkspace};
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy)]
 pub struct UserWorkspacePartial {

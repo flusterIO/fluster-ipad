@@ -1,16 +1,11 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::{
-    database::db_traits::db_field::DatabaseField,
-    models::{
-        academic::assignment::assignment_status::AssignmentStatus,
-        date_time::{alarm::alarm_entity::AlarmEntity, date_time::DateTime},
-        primitives::db_id::DatabaseId,
-    },
+use crate::vector::models::{
+    academic::assignment::assignment_status::AssignmentStatus, date_time::alarm::alarm_entity::AlarmEntity,
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]

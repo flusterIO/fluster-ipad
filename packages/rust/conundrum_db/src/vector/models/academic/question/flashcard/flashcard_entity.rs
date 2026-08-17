@@ -1,19 +1,16 @@
-use crate::{
-    impl_default_crud,
-    vector::{
-        database::db_traits::db_field::DatabaseField,
-        models::{
-            academic::question::flashcard::{
-                flashcard_entity_partial::FlashCardEntityPartial, flashcard_value::FlashcardValue,
-            },
-            date_time::date_time::DateTime,
-            primitives::db_id::DatabaseId,
-        },
-    },
+use crate::vector::models::academic::question::flashcard::{
+    flashcard_entity_partial::FlashCardEntityPartial, flashcard_value::FlashcardValue,
 };
-use conundrum::ecosystem::db::{
-    tables::DatabaseTable,
-    traits::db_entity::{DBEntity, DBSchema},
+use conundrum::{
+    ecosystem::db::{
+        db_traits::{
+            db_entity::{DBEntity, DBSchema},
+            db_field::DatabaseField,
+        },
+        tables::DatabaseTable,
+    },
+    impl_default_crud,
+    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};

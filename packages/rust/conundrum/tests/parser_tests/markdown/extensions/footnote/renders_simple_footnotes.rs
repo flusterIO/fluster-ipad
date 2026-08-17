@@ -34,7 +34,7 @@ My content here[^1].
     }).expect("Returns a vald result when a valid input was provided.");
 
     println!("Res: {:#?}", res);
-    assert!(res.footnotes.contains_key(1), "Found the footnote as expected.");
+    assert!(res.footnotes.contains_key(&1), "Found the footnote as expected.");
 }
 
 #[tokio::test]

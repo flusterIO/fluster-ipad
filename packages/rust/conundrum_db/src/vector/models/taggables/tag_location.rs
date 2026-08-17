@@ -1,10 +1,9 @@
+use conundrum::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation};
 use fake::Dummy;
 use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 
 use specta::Type;
-
-use crate::vector::database::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation};
 
 #[derive(strum_macros::Display, Serialize, Deserialize, Clone, Debug, Dummy, Type)]
 pub enum TagLocation {

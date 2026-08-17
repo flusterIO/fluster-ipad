@@ -1,18 +1,17 @@
-use conundrum::ecosystem::db::traits::db_entity::{DBEntity, DBSchema};
+use conundrum::{
+    ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema},
+    impl_default_crud,
+    lifted_models::primitives::{case_insensitive_string::CaseInsensitiveString, date_time::DateTime},
+};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    impl_default_crud,
-    vector::models::{
-        ai::ai_interactions::AIInteractions,
-        date_time::date_time::DateTime,
-        primitives::{case_insensitive_string::CaseInsensitiveString, db_id::DatabaseId},
-        taggables::{
-            tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY, taggable_fields},
-            tag_location::TagLocation,
-            taggable_update_partial::TaggablePartial,
-        },
+use crate::vector::models::{
+    ai::ai_interactions::AIInteractions,
+    taggables::{
+        tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY, taggable_fields},
+        tag_location::TagLocation,
+        taggable_update_partial::TaggablePartial,
     },
 };
 

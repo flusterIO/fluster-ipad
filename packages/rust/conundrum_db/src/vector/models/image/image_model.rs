@@ -1,8 +1,9 @@
+use conundrum::lifted_models::primitives::bytes::Bytes;
 use conundrum_fs::models::user_workspace::{
     workspace_relative_path::WorkspaceRelativePath, workspace_relative_path_strings::WorkspaceRelativeStringPath,
 };
 
-use crate::vector::models::{primitives::bytes::Bytes, taggables::taggables::Taggables};
+use crate::vector::models::taggables::taggables::Taggables;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
 pub struct ImageModel {
