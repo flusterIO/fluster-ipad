@@ -77,6 +77,7 @@ lancedb = "0.30.0"
 fake.workspace = true
 futures-util = "0.3.33"
 async-stream = "0.3.6"
+test-log = "0.2.21"
 
 [lints]
 workspace = true

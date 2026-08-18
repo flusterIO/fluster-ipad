@@ -3789,6 +3789,7 @@ dependencies = [
  "specta",
  "strum 0.27.2",
  "strum_macros 0.27.2",
+ "test-log",
  "thiserror 2.0.18",
  "tokio",
  "tower-http 0.7.0",

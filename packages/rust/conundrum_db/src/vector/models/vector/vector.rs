@@ -5,7 +5,7 @@ use fake::Dummy;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rig::embeddings::Embedding;
 
-pub const DB_VECTOR_DIMENSIONS: i32 = 768;
+pub const DB_VECTOR_DIMENSIONS: i32 = 2560;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct DBVector(pub Vec<f64>);
