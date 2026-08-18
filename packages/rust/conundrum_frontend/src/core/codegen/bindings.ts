@@ -270,7 +270,7 @@ export type PathSourceType = "file" | "directory" | "any"
 
 export type PathVariant = "File" | "Dir"
 
-export type ProceduresLegacy = { queries: { key: "crud.agent_description.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; 
+export type ProceduresLegacy = { queries: { key: "backend_status"; input: null; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean } } | { key: "crud.agent_description.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; 
 /**
  * The name that the AI should be referred to as. AI should reference this
  * field when a user asks for another agent by name.
@@ -795,6 +795,7 @@ resource_dir?: string; ai: AIInteractions; ctime: DateTime }
 export type WebGlueCodeGeneralFiles = "styles.css" | "katex.min.css" | "katex_ams_regular.woff2" | "katex_caligraphic_bold.woff2" | "katex_caligraphic_regular.woff2" | "katex_fraktur_bold.woff2" | "katex_fraktur_regular.woff2" | "katex_main_bold.woff2" | "katex_main_bolditalic.woff2" | "katex_main_italic.woff2" | "katex_main_regular.woff2" | "katex_math_bolditalic.woff2" | "katex_math_italic.woff2" | "katex_sansserif_bold.woff2" | "katex_sansserif_italic.woff2" | "katex_sansserif_regular.woff2" | "katex_script_regular.woff2" | "katex_size1_regular.woff2" | "katex_size2_regular.woff2" | "katex_size3_regular.woff2" | "katex_size4_regular.woff2" | "katex_typewriter_regular.woff2" | "Fira_Code_Regular.ttf"
 
 export type Procedures = {
+	backend_status: { kind: "query", input: null, output: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean }, error: unknown },
 	cdrm: {
 	compile_cdrm: { kind: "mutation", input: { opts: ParseConundrumOptions }, output: { note_id: string | null; content: string; tags: TagResult[]; front_matter: FrontMatterResult | null; ordered_citation_keys: string[]; dictionary_entries: DictionaryEntryResult[]; outgoing_links: NoteOutgoingLinkResult[]; toc: MarkdownHeadingStringifiedResult[]; ignore_all_parsers: boolean; ai_secondary_parse_requests: AiSerializationRequestPhase1[]; eq_ref_map: Partial<{ [key in string]: number }>; warnings: ConundrumError[]; footnotes: Partial<{ [key in number]: RenderedFootnoteResult }>; included_components: AnyComponentKey[] }, error: unknown },
 },

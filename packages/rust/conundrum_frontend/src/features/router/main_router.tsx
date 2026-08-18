@@ -1,5 +1,5 @@
-import React, { type ReactNode } from "react";
-import { BrowserRouter, useLocation } from "react-router";
+import React, { useEffect, type ReactNode } from "react";
+import { BrowserRouter, useLocation, useNavigate } from "react-router";
 import { MainAppRoutes } from "./routes";
 import { PermanentSidebar } from "#/navigation/sidebar/permanent_sidebar";
 import { cn } from "@/utils/shad_utils";
@@ -10,10 +10,12 @@ import { useGlobalKeyboardListener } from "#/keyboard/use_global_keyboard_listen
 import { CommandPalette } from "#/command_palette/command_palette";
 import { CommandPaletteProvider } from "#/command_palette/command_palette_provider";
 import { GlobalKeyboardListener } from "#/command_palette/global_keyboard_listener";
+import { useBackendPinger } from "#/database/backend_pinger";
 
 const MainRoutes = (): ReactNode => {
     const location = useLocation();
     useGlobalKeyboardListener();
+    useBackendPinger();
     return (
         <div
             className={cn(

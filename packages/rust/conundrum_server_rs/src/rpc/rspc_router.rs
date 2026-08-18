@@ -1,9 +1,14 @@
 use std::{ops::Index, sync::Arc};
 
-use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
+use conundrum::ecosystem::{
+    db::db_traits::async_traits::try_from_async::FromAsync,
+    error_handling::server_error::{ServerError, ServerResult},
+};
 use conundrum_db::vector::{
     database::schema_version::{schema_version::SchemaVersion, server_version::ServerVersion},
-    models::ecosystem_data::{ecosystem_data::VersionData, server_state::server_state::ServerState},
+    models::ecosystem_data::{
+        backend_status::BackendStatus, ecosystem_data::VersionData, server_state::server_state::ServerState,
+    },
 };
 use rspc::Procedure;
 
@@ -36,6 +41,10 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
                                                .nest("cdrm", cdrm_router)
                                                .nest("describe", describe_router)
                                                .nest("crud", crud_router)
+                                               .procedure("backend_status", Procedure::builder::<ServerError>().query(|ctx: Arc<ServerState>, _: ()| async move {
+                                                              let status = BackendStatus::from_async(ctx.clone()).await;
+                                                              Ok(status)
+                                                          }))
                                                .procedure("rpc_health",
                                                           Procedure::builder::<ServerError>().query(|ctx: Arc<ServerState>, _: ()| async move {
                                                               let db = ctx.db.clone();

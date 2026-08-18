@@ -1,3 +1,4 @@
+pub mod backend_status;
 pub mod documentation;
 pub mod ecosystem_application_settings;
 pub mod ecosystem_data;

@@ -11,15 +11,12 @@ export const CreateToolIndexOnboardingSection = ({
     return (
         <motion.div
             initial={{
-                scale: 0,
                 opacity: 0,
             }}
             animate={{
-                scale: 1,
                 opacity: 1,
             }}
             exit={{
-                x: 200,
                 opacity: 0,
             }}
             className="max-w-[min(90%,640px)] flex flex-col justify-center items-start bg-fd-card text-fd-card-foreground rounded-xl border p-4 gap-y-3"
@@ -51,7 +48,7 @@ export const CreateToolIndexOnboardingSection = ({
                         opacity: 0,
                         x: 100,
                     }}
-                    className="font-bold text-4xl lg:text-5xl"
+                    className="font-bold text-2xl lg:text-3xl"
                 >
                     Dynamic Tool Index
                 </motion.h2>

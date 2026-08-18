@@ -14,65 +14,38 @@ export interface OnboardingSectionProps {
 export const WelcomeToConundrum = ({
     next,
 }: Omit<OnboardingSectionProps, "back">): ReactNode => {
-    const [showSubtitle, setShowSubtitle] = useState(false);
-    const [haveSetSubtitle, setHaveSetSubtitle] = useState(false);
-
-    useEffect(() => {
-        if (!haveSetSubtitle && !showSubtitle) {
-            setHaveSetSubtitle(true);
-            setTimeout(() => {
-                setShowSubtitle(true);
-            }, 2000);
-        }
-    }, [haveSetSubtitle, showSubtitle]);
-
-    useEffect(() => {
-        console.log("showSubtitle: ", showSubtitle);
-    }, [showSubtitle]);
 
     return (
-        <>
-            <WelcomeTitle />
-            <motion.div
-                key={"subtitle"}
-                initial={"hide"}
-                animate={showSubtitle ? "show" : "hide"}
-                variants={{
-                    hide: {
-                        x: -100,
-                        opacity: 0,
-                    },
-                    show: {
-                        x: 0,
-                        opacity: 1,
-                    },
-                }}
-                exit={{
-                    x: 100,
-                    opacity: 0,
-                }}
-                className="text-foreground/60"
-            >
-                You're missing a few things, so let's set them up...
-            </motion.div>
-            <div className="w-full flex flex-row justify-end items-center mt-3">
+        <motion.div className="max-w-3xl flex flex-col justify-start items-start gap-y-3 gap-x-4 @lg/onboarding:grid @lg/onboarding:grid-cols-[auto_200px] border rounded p-4 bg-fd-card place-items-center"
+            initial={{
+                opacity: 0,
+            }}
+            animate={{
+                opacity: 1,
+            }}
+            exit={{
+                opacity: 0,
+            }}
+        >
+            <div className="w-full h-fit flex flex-col justify-start items-start">
+                <h1 className="text-4xl font-semibold">
+                    Welcome to <span className="font-bold">Conundrum</span>
+                </h1>
+                <div
+                    key={"subtitle"}
+                    className="text-foreground/60 max-w-[min(350px,90%)] text-left mb-4"
+                >
+                    Your database is missing, which probably means we're just setting
+                    things up.
+                </div>
+                <div
+                    className="text-sm"
+                >
+                    We have to build your local database, but in the end, you'll have a fully working modular toolkit powered by <span className="font-bold">LanceDB</span> and <a href="https://flusterapp.com" className="font-bold">Conundrum</a>, ready to tackle of your academic goals.
+                </div>
+            </div>
+            <div className="flex flex-col justify-center items-center @lg/onboarding:h-full">
                 <MotionButton
-                    animate={showSubtitle ? "show" : "hide"}
-                    initial={"hide"}
-                    variants={{
-                        hide: {
-                            scale: 0,
-                            opacity: 0,
-                        },
-                        show: {
-                            scale: 1,
-                            opacity: 1,
-                        },
-                    }}
-                    exit={{
-                        scale: 0,
-                        opacity: 0,
-                    }}
                     onClick={next}
                     size="lg"
                     className="text-xl"
@@ -81,7 +54,7 @@ export const WelcomeToConundrum = ({
                     <span>Set me up</span>
                 </MotionButton>
             </div>
-        </>
+        </motion.div>
     );
 };
 

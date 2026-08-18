@@ -39,7 +39,7 @@ impl ServerState {
                                                              version: "0.0.1".into(),
                                                              title: Some("Conundrum MCP Server".into()),
                                                              description:
-                                                                 Some("An all-in-one academic toolkit.".into()),
+                                                                 Some("A modular academic toolkit.".into()),
                                                              icons: vec![],
                                                              website_url: Some("https://flusterapp.com".into()) },
                                capabilities: ServerCapabilities { tools:
@@ -70,7 +70,7 @@ impl ServerState {
 
         let remote_client = RigClientRemote::initialize()
             .inspect_err(|_| {
-                log::warn!("Failed to load a valid Ollama environment. Cannot continue with certain local AI actions.")
+                log::warn!("Failed to load a valid remote AI environment. Cannot continue with certain server scale AI actions.")
             }).ok().map(|x| {
                 Arc::new(Mutex::new(x))
             });
@@ -81,12 +81,6 @@ impl ServerState {
                   remote_client })
     }
 }
-
-// impl FromRef<ServerState> for Arc<McpAppState> {
-//     fn from_ref(input: &ServerState) -> Self {
-//         input.mcp.clone()
-//     }
-// }
 
 impl FromRef<ServerState> for McpAppState {
     fn from_ref(input: &ServerState) -> Self {
