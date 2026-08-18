@@ -8,7 +8,7 @@ export const TaggablesListWrapper = (
     props: TaggablesListWrapperProps,
 ): ReactNode => {
     return (
-        <div className="flex flex-col justify-center items-center w-full max-h-62.5 overflow-x-hidden overflow-y-auto no-scrollbar pt-2">
+        <div className="flex flex-col justify-start items-center w-full max-h-62.5 overflow-x-hidden overflow-y-auto no-scrollbar pt-2">
             {props.children}
         </div>
     );

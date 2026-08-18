@@ -11,10 +11,12 @@ export const RouteError404 = ({ expand }: { expand?: boolean }): ReactNode => {
             )}
         >
             <div className="w-fit max-w-3xl h-fit flex flex-col justify-center items-center">
-                <div className="w-fit h-fit p-3 rounded-2xl bg-muted">
+                <div className="w-fit h-fit p-3 rounded-2xl bg-muted text-orange-500">
                     <TriangleAlert />
                 </div>
-                <div>The requested resource could not be found</div>
+                <div className="text-foreground">
+                    The requested resource could not be found
+                </div>
             </div>
         </div>
     );
