@@ -1,0 +1,108 @@
+use crate::ecosystem::error_handling::db_error::DatabaseError;
+use axum::{extract::Json, http::StatusCode};
+use rspc::{Error, ResolverError};
+use specta::Type;
+
+use crate::ecosystem::error_handling::ai_error::AIError;
+
+#[derive(Debug, thiserror::Error, Clone, Type)]
+pub enum ServerError {
+    #[error("Not Implemented")]
+    NotImplemented,
+    #[error("A `{0}` entity could not be properly serialized.")]
+    SerializationError(String),
+    #[error("I'll fill this out later... it's just docgen stuff.")]
+    GeneralError,
+    #[error("Latex conversion error.")]
+    LatexConversionError,
+    #[error("Conundrum could not render html properly.")]
+    HtmlRenderError,
+    #[error("Not Found.")]
+    NotFound,
+    #[error("Database Error: {:?}", .0)]
+    DatabaseError(DatabaseError),
+    #[error("The server encounterd an error that it cannot recover from: {:?}", .0)]
+    CoreFailure(String),
+    #[error("Conundrum failed while attempting to initialize a model.")]
+    ModelInitializationFailure,
+    #[error("Conundrum failed to generate a vector embedding.")]
+    EmbeddingError,
+    #[error("Conundrum encountered a transport error: {0}")]
+    TransportError(String),
+    #[error("Conundrum could not connect to the *local* agent.")]
+    LocalAgentFailToConnect,
+    #[error("Conundrum doesn't need this output so we're skipping it...")]
+    SkippingIrrelevantAIOutput,
+    #[error("AI Error: {:#?}", .0)]
+    AIError(AIError),
+}
+
+impl From<AIError> for ServerError {
+    fn from(value: AIError) -> Self {
+        Self::AIError(value)
+    }
+}
+
+impl From<DatabaseError> for ServerError {
+    fn from(value: DatabaseError) -> Self {
+        Self::DatabaseError(value)
+    }
+}
+
+impl Error for ServerError {
+    fn into_procedure_error(self) -> rspc::ProcedureError {
+        match self {
+            Self::NotFound => rspc::ProcedureError::NotFound,
+            Self::NotImplemented => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Method not yet implemented", None))
+            }
+            Self::HtmlRenderError => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Failed attempting to render html.",
+                                                                                    None))
+            }
+            Self::SerializationError(s) => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("Failed to initialize the `{}` model",
+                                                                                            s),
+                                                                                    None))
+            }
+            Self::GeneralError => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Method not yet implemented", None))
+            }
+            Self::LatexConversionError => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Latex conversion error.", None))
+            }
+            Self::EmbeddingError => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(Self::EmbeddingError.to_string(),
+                                                                                    None))
+            }
+            Self::ModelInitializationFailure => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>("Model failed to initialize.",
+                                                                                    None))
+            }
+            Self::TransportError(s) => rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(s, None)),
+            Self::DatabaseError(e) => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("Database Error: {:?}", e),
+                                                                                    None))
+            }
+            Self::CoreFailure(e) => {
+                rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(format!("{:?}", e), None))
+            }
+            _ => rspc::ProcedureError::Resolver(ResolverError::new::<_, ServerError>(self.to_string(), None)),
+        }
+    }
+}
+
+impl Into<StatusCode> for ServerError {
+    fn into(self) -> StatusCode {
+        match self {
+            Self::NotFound => StatusCode::NOT_FOUND,
+            Self::NotImplemented => StatusCode::NOT_IMPLEMENTED,
+            _ => StatusCode::INTERNAL_SERVER_ERROR,
+        }
+    }
+}
+
+pub type ServerResult<T> = Result<T, ServerError>;
+pub type ServerResultResponseEmpty = Result<(), StatusCode>;
+pub type ServerResultResponseHtml = Result<String, StatusCode>;
+pub type ServerResultResponseJson<T> = Result<Json<T>, StatusCode>;

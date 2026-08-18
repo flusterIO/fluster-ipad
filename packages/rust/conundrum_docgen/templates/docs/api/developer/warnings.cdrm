@@ -1,0 +1,16 @@
+# Warnings
+
+Since Conundrum came to be as I was homeless, I had to make a lot of less-than-ideal decisions during the development process that left things kind of a mess. I'm going to do my best to keep track of the bullet points here so that whenever Conundrum moves away from Fluster, we can move Conundrum to a community driven effort as smoothly as possible.
+
+
+## Database
+
+Currently, because Conundrum supports both chunking and complete document vectors to some degree, I took a slightly different approach to the way vectors are stored. 
+
+When a model is permanent and unchanging, like documentation, 
+
+```rs
+pub struct SomeVectorBody {
+    pub 
+}
+```

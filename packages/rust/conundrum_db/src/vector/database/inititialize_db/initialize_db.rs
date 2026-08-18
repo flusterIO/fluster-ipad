@@ -33,6 +33,7 @@ use crate::vector::{
         ai::tool::mcp_tool_record::MCPToolRecord,
         ecosystem_data::{
             ecosystem_application_settings::keyboard_shortcut::KeyboardShortcut, log::ecosystem_log::EcosystemLog,
+            server_state::server_state::ServerState,
         },
         git::git_repository_entity::GitRepositoryEntity,
         taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
@@ -62,8 +63,7 @@ async fn create_table(db: &lancedb::Connection, schema: &Arc<Schema>, table: &Da
       })
 }
 
-pub async fn initialize_local_database<T>(handler: &ArcTokioMutex<T>) -> DatabaseResult<()>
-    where T: AIClientEmbedder<String> {
+pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResult<()> {
     let table_data: Vec<TableInitData> = vec![TableInitData { table: DatabaseTable::MCPToolRecord,
                                                               schema: MCPToolRecord::schema()?,
                                                               set_indices: None },
@@ -150,8 +150,8 @@ pub async fn initialize_local_database<T>(handler: &ArcTokioMutex<T>) -> Databas
         }
     }
     drop(db);
-    let _ = seed_db(&db_arc, handler).await.inspect_err(|e| {
-                                               log::error!("Error: {:#?}", e);
-                                           });
+    let _ = seed_db(&db_arc, state).await.inspect_err(|e| {
+                                             log::error!("Error: {:#?}", e);
+                                         });
     Ok(())
 }
