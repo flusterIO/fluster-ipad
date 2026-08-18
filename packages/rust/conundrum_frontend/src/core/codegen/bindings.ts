@@ -18,6 +18,8 @@ export type AIInteractions = { notes: AINotes; ai_generated_input: AIGeneratedIn
 
 export type AINotes = string
 
+export type AgentPrimaryTask = "general-chat" | "note-creation" | "note-summarization" | "flash-card-creation" | "fact-verification" | "bibliography-extraction" | "vector-generation-from-text"
+
 export type AiSerializationRequestPhase1 = { parsing_result: GeneralCodeBlock }
 
 /**
@@ -206,6 +208,10 @@ export type FrontMatterResult = { ignored_parsers: string[]; title: string | nul
 
 export type GeneralCodeBlock = { language: SupportedCodeBlockSyntax; meta_data: string | null; depth: number; content: string; full_match: string; id: DOMId }
 
+export type MCPToolName = "hello_world" | "query_workspaces"
+
+export type MCPToolNameList = MCPToolName[]
+
 export type MarkdownElementGlueKey = "footnotes.js"
 
 /**
@@ -264,7 +270,25 @@ export type PathSourceType = "file" | "directory" | "any"
 
 export type PathVariant = "File" | "Dir"
 
-export type ProceduresLegacy = { queries: { key: "crud.assignment.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[] } | { key: "crud.auto_taggable.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; 
+export type ProceduresLegacy = { queries: { key: "crud.agent_description.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; 
+/**
+ * The name that the AI should be referred to as. AI should reference this
+ * field when a user asks for another agent by name.
+ */
+name: string | null; 
+/**
+ * The model to use
+ */
+model: string; reasoning: boolean; is_local: boolean; 
+/**
+ * System level instructions
+ */
+instructions: string | null; always_include_tools: MCPToolNameList; 
+/**
+ * A scalar that will be applied to the temperature assigned to each task.
+ * Defaults to 1, the same as being null.
+ */
+temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[] } | { key: "crud.assignment.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[] } | { key: "crud.auto_taggable.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; 
 /**
  * The value of the taggable that will be automatically applied.
  */
@@ -371,7 +395,7 @@ ignore_hidden: boolean;
  * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
-resource_dir?: string; ai: AIInteractions })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
+resource_dir?: string; ai: AIInteractions; ctime: DateTime })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -466,7 +490,38 @@ eq_ref_map: Partial<{ [key in string]: number }>; warnings: ConundrumError[];
  * so don't rely on this data during parsing *or* compilation. Use the
  * field on `ParseState` instead.
  */
-footnotes: Partial<{ [key in number]: RenderedFootnoteResult }>; included_components: AnyComponentKey[] } } | { key: "code.highlight_code"; input: { code: string; lang: SupportedCodeBlockSyntax; theme: SupportedCodeBlockTheme; inline: boolean }; result: string } | { key: "crud.assignment.delete_by_predicate"; input: string; result: null } | { key: "crud.assignment.save_many"; input: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[]; result: null } | { key: "crud.assignment.update_many"; input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null })[]; result: null } | { key: "crud.auto_taggable.delete_by_predicate"; input: string; result: null } | { key: "crud.auto_taggable.save_many"; input: { id: DatabaseId; 
+footnotes: Partial<{ [key in number]: RenderedFootnoteResult }>; included_components: AnyComponentKey[] } } | { key: "code.highlight_code"; input: { code: string; lang: SupportedCodeBlockSyntax; theme: SupportedCodeBlockTheme; inline: boolean }; result: string } | { key: "crud.agent_description.delete_by_predicate"; input: string; result: null } | { key: "crud.agent_description.save_many"; input: ({ id: DatabaseId; 
+/**
+ * The name that the AI should be referred to as. AI should reference this
+ * field when a user asks for another agent by name.
+ */
+name: string | null; 
+/**
+ * The model to use
+ */
+model: string; reasoning: boolean; is_local: boolean; 
+/**
+ * System level instructions
+ */
+instructions: string | null; always_include_tools: MCPToolNameList; 
+/**
+ * A scalar that will be applied to the temperature assigned to each task.
+ * Defaults to 1, the same as being null.
+ */
+temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[]; result: null } | { key: "crud.agent_description.update_many"; input: ({ id: DatabaseId; 
+/**
+ * The name that the AI should be referred to as. AI should reference this
+ * field when a user asks for another agent by name.
+ */
+name: string | null; 
+/**
+ * The model to use
+ */
+model: string | null; reasoning: boolean | null; is_local: boolean | null; 
+/**
+ * System level instructions
+ */
+instructions: string | null; always_include_tools: MCPToolNameList | null; temperature_scalar: number | null; primary_task: AgentPrimaryTask | null })[]; result: null } | { key: "crud.assignment.delete_by_predicate"; input: string; result: null } | { key: "crud.assignment.save_many"; input: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[]; result: null } | { key: "crud.assignment.update_many"; input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null })[]; result: null } | { key: "crud.auto_taggable.delete_by_predicate"; input: string; result: null } | { key: "crud.auto_taggable.save_many"; input: { id: DatabaseId; 
 /**
  * The value of the taggable that will be automatically applied.
  */
@@ -615,7 +670,7 @@ ignore_hidden: boolean;
  * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
-resource_dir?: string; ai: AIInteractions })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
+resource_dir?: string; ai: AIInteractions; ctime: DateTime })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
@@ -735,7 +790,7 @@ ignore_hidden: boolean;
  * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
-resource_dir?: string; ai: AIInteractions }
+resource_dir?: string; ai: AIInteractions; ctime: DateTime }
 
 export type WebGlueCodeGeneralFiles = "styles.css" | "katex.min.css" | "katex_ams_regular.woff2" | "katex_caligraphic_bold.woff2" | "katex_caligraphic_regular.woff2" | "katex_fraktur_bold.woff2" | "katex_fraktur_regular.woff2" | "katex_main_bold.woff2" | "katex_main_bolditalic.woff2" | "katex_main_italic.woff2" | "katex_main_regular.woff2" | "katex_math_bolditalic.woff2" | "katex_math_italic.woff2" | "katex_sansserif_bold.woff2" | "katex_sansserif_italic.woff2" | "katex_sansserif_regular.woff2" | "katex_script_regular.woff2" | "katex_size1_regular.woff2" | "katex_size2_regular.woff2" | "katex_size3_regular.woff2" | "katex_size4_regular.woff2" | "katex_typewriter_regular.woff2" | "Fira_Code_Regular.ttf"
 
@@ -747,6 +802,12 @@ export type Procedures = {
 	highlight_code: { kind: "mutation", input: { code: string; lang: SupportedCodeBlockSyntax; theme: SupportedCodeBlockTheme; inline: boolean }, output: string, error: unknown },
 },
 	crud: {
+	agent_description: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; name: string | null; model: string; reasoning: boolean; is_local: boolean; instructions: string | null; always_include_tools: MCPToolNameList; temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ id: DatabaseId; name: string | null; model: string; reasoning: boolean; is_local: boolean; instructions: string | null; always_include_tools: MCPToolNameList; temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; name: string | null; model: string | null; reasoning: boolean | null; is_local: boolean | null; instructions: string | null; always_include_tools: MCPToolNameList | null; temperature_scalar: number | null; primary_task: AgentPrimaryTask | null })[], output: null, error: unknown },
+},
 	assignment: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[], error: unknown },
@@ -809,8 +870,8 @@ export type Procedures = {
 },
 	user_workspace: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], error: unknown },
-	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime: DateTime })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ root: string; label?: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
 },
 },

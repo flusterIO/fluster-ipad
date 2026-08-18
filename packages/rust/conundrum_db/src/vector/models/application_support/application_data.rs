@@ -1,7 +1,9 @@
 use conundrum::lifted_models::primitives::date_time::DateTime;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::application_support::application_permission::ApplicationPermission;
+use crate::vector::models::application_support::{
+    application_permission::ApplicationPermission, greeting_generation_strategy::GreetingGenerationStrategy,
+};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ApplicationData {
@@ -12,4 +14,5 @@ pub struct ApplicationData {
     pub desc: Option<String>,
     pub last_sync: DateTime,
     pub permissions: Vec<ApplicationPermission>,
+    pub dynamic_greeting: GreetingGenerationStrategy,
 }

@@ -11,7 +11,10 @@ pub mod workspace_utils;
 use crate::{
     codegen::{
         parsers::color_parser_template::ColorParserTemplate,
-        templates::{emphasis_variable_match::EmphasisVariableMatch, initial_note_paths_swift::InitialNotePathsSwift},
+        templates::{
+            emphasis_variable_match::EmphasisVariableMatch, initial_note_paths_swift::InitialNotePathsSwift,
+            mcp_tool_names::MCPToolNameList,
+        },
     },
     documentation::{emphasis::EmphasisDocs, highlight::HighlightDocs, underline::UnderlineDocs},
     errors::DocGenError,
@@ -50,6 +53,8 @@ async fn main() {
                                 .expect("Writes underline docs without throwing an error.");
     HighlightDocs::gather_data().generate("docs/in_content_docs/components/highlight.mdx".to_string())
                                 .expect("Writes highlight docs without throwing an error.");
+    MCPToolNameList::gather_data().generate("packages/rust/conundrum_ts/src/code_gen/docgen/mcp_tool_names.ts".to_string())
+        .expect("Failed to generated the MCPToolNameList typescript output.");
     InitialNotePathsSwift::gather_data().generate("packages/swift/FlusterData/Sources/FlusterData/constants/initial_note_paths.swift".to_string())
                                         .expect("Writes initial note paths to Swift");
     let root = get_workspace_root();

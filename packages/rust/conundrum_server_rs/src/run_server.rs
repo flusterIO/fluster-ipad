@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 pub use crate::rpc::rspc_router::get_rspc_router;
 use crate::{mcp::mcp_handler::ConundrumMCP, rig::ai_types::ai_types::LocalCompletionModel};
 use axum::extract::State;
@@ -8,6 +6,7 @@ use conundrum_db::vector::models::ecosystem_data::server_state::server_state::Se
 #[cfg(debug_assertions)]
 use rspc::Typescript;
 pub use rspc_axum;
+use std::sync::Arc;
 use tower_http::cors::{Any, CorsLayer};
 
 use crate::mcp::mcp_server::get_mcp_server;
@@ -21,8 +20,9 @@ pub fn get_server_port() -> u32 {
             let n: Result<u32, _> = c.parse();
             n.unwrap_or(*DEFAULT_CDRM_SERVER_PORT)
         }
-        Err(err) => {
-            log::warn!("Error: {}", err);
+        Err(_) => {
+            log::warn!("Failed to load the `CDRM_SERVER_PORT` environment variable. Falling back to the default: {}",
+                       DEFAULT_CDRM_SERVER_PORT);
             *DEFAULT_CDRM_SERVER_PORT
         }
     }

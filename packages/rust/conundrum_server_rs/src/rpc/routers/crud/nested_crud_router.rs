@@ -1,6 +1,8 @@
 use std::sync::Arc;
 
 use crate::crud_router;
+use conundrum::ai::models::agent::agent_description::AgentDescription;
+use conundrum::ai::models::agent::agent_description_partial::AgentDescriptionPartial;
 use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 use conundrum::{
     ai::models::chat::{
@@ -44,6 +46,7 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
     let chat_conversation_crud = crud_router!(ChatConversation, ChatConversationPartial);
     let chat_message_crud = crud_router!(ChatMessage, ChatMessage);
+    let agent_description_crud = crud_router!(AgentDescription, AgentDescriptionPartial);
     Router::<Arc<ServerState>>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
                                      .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)
                                      .nest(DatabaseTable::Topic.to_string(), topic_crud)
@@ -53,6 +56,7 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
                                      .nest(DatabaseTable::Assignment.to_string(), assignment_crud)
                                      .nest(DatabaseTable::KeyboardShortcut.to_string(), keyboard_shortcut_crud)
                                      .nest(DatabaseTable::QAPair.to_string(), flashcard_crud)
+                                     .nest(DatabaseTable::AgentDescription.to_string(), agent_description_crud)
                                      .nest(DatabaseTable::ChatConversation.to_string(), chat_conversation_crud)
                                      .nest(DatabaseTable::ChatMessage.to_string(), chat_message_crud)
 }

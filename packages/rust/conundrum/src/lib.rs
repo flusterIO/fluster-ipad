@@ -97,6 +97,7 @@
 #![feature(string_replace_in_place)]
 uniffi::setup_scaffolding!();
 
+#[cfg(feature = "db")]
 pub mod ai;
 pub mod bibliography;
 pub mod ecosystem;

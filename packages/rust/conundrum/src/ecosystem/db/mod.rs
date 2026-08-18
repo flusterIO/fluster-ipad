@@ -1,7 +1,13 @@
+#[cfg(feature = "db")]
 pub mod db;
+#[cfg(feature = "db")]
 pub mod db_table_description;
+#[cfg(feature = "db")]
 pub mod db_traits;
+#[cfg(feature = "db")]
 pub mod helpers;
+#[cfg(feature = "db")]
 pub mod macros;
 pub mod parameters;
+#[cfg(feature = "db")]
 pub mod tables;

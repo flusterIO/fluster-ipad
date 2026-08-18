@@ -8,6 +8,7 @@ use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
 use conundrum::impl_default_crud;
 use conundrum::lang::constants::file_types::ParsableFileType;
+use conundrum::lifted_models::primitives::date_time::DateTime;
 use conundrum_fs::workspace_management::file_walk_config::FileWalkConfig;
 use conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively;
 use fake::Dummy;
@@ -48,6 +49,7 @@ pub struct UserWorkspace {
     #[serde(default = "Default::default")]
     pub resource_dir: String,
     pub ai: AIInteractions,
+    pub ctime: DateTime,
 }
 
 impl<'a> DBSchema<'a> for UserWorkspace {
@@ -57,7 +59,8 @@ impl<'a> DBSchema<'a> for UserWorkspace {
                 Arc::new(bool::field_definition("respect_gitignore", false)),
                 Arc::new(bool::field_definition("ignore_hidden", false)),
                 Arc::new(String::field_definition("resource_dir", false)),
-                Arc::new(AIInteractions::field_definition("ai", false))])
+                Arc::new(AIInteractions::field_definition("ai", false)),
+                Arc::new(DateTime::field_definition("ctime", false))])
     }
 }
 
@@ -87,7 +90,8 @@ impl UserWorkspace {
                ignore_hidden: true,
                respect_gitignore: true,
                resource_dir: "/resources".to_string(),
-               ai: AIInteractions::default() }
+               ai: AIInteractions::default(),
+               ctime: DateTime::new_now() }
     }
 
     pub fn item_field_def() -> Field {
@@ -119,7 +123,8 @@ impl From<String> for UserWorkspace {
                respect_gitignore: true,
                ignore_hidden: true,
                resource_dir: "/resources".to_string(),
-               ai: AIInteractions::default() }
+               ai: AIInteractions::default(),
+               ctime: DateTime::new_now() }
     }
 }
 

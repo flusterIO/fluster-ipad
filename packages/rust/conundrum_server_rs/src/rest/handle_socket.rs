@@ -38,11 +38,11 @@ pub async fn handle_socket<M>(socket: WebSocket, state: Arc<ServerState>)
                 // model will always receive a message from the user, so we
                 // won't even have to worry about the AIMessage or the
                 // SystemPrompt here.
-                let mut stream = client_result.stream_chat_response(msg, vec![]).await;
+                let mut stream = client_result.stream_chat_response(user_message, vec![]).await;
                 while let Some(item) = stream.next().await {
                     match item {
                         Ok(data) => {
-                            if let Some(event) = ChatEvent::try_from(data).ok() {
+                            if let Ok(event) = ChatEvent::try_from(data) {
                                 match serde_json::to_string(&event) {
                                     Ok(s) => {
                                         if let Err(err) = tx.send(Message::text(s)).await {

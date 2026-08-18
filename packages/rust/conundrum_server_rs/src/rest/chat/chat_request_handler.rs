@@ -1,12 +1,14 @@
 use axum::{Json, extract::State};
 use conundrum::ai::{
     ai_constants::BASE_TEMPERATURE_CHAT,
-    models::{agent::agent_description::AgentDescription, chat::chat_message::chat_message::ChatMessage},
+    models::{
+        agent::agent_description::AgentDescription,
+        chat::chat_message::user::{user_message::UserMessage, user_message_input::UserMessageInput},
+    },
     rig::ai_traits::{ai_client_container::AIClientContainer, conundrum_agent::ConundrumAgent},
 };
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use futures_util::stream::{Stream, StreamExt};
-use rig::streaming::StreamingChat;
 use std::sync::Arc;
 
 use crate::rig::features::chat::chat_event::ChatEvent;
@@ -18,7 +20,7 @@ use crate::rig::features::chat::chat_event::ChatEvent;
 ///   inserting into history
 /// with the proper fields.
 pub async fn chat_request_handler(State(state): State<Arc<ServerState>>,
-                                  Json(payload): Json<ChatMessage>)
+                                  Json(payload): Json<UserMessageInput>)
                                   -> impl Stream<Item = ChatEvent> {
     if let Some(local_client) = state.clone().local_client.clone() {
         async_stream::stream! {
@@ -27,7 +29,8 @@ pub async fn chat_request_handler(State(state): State<Arc<ServerState>>,
         let agent = locked_client
             .get_agent(AgentDescription::default_local_chat(), BASE_TEMPERATURE_CHAT as f64);
         drop(locked_client);
-        let mut stream = agent.stream_chat_response(payload, vec![]).await;
+        let user_message = UserMessage::from(payload);
+        let mut stream = agent.stream_chat_response(user_message, vec![]).await;
         while let Some(item) = stream.next().await {
             match item {
                 Ok(data) => {
@@ -36,7 +39,7 @@ pub async fn chat_request_handler(State(state): State<Arc<ServerState>>,
                     }
                 },
                 Err(err) => {
-                    log::error!("Rig error: {}", err);
+                    log::error!("AI error: {}", err);
                     break;
                 },
             }

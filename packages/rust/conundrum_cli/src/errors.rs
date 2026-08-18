@@ -1,5 +1,8 @@
 use anyhow::Result;
-use conundrum::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
+use conundrum::{
+    ecosystem::error_handling::{ai_error::AIError, db_error::DatabaseError},
+    lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
+};
 use conundrum_config::errors::config_error::ConfigError;
 use thiserror::Error;
 
@@ -21,9 +24,25 @@ pub enum ConundrumCliError {
     NotImplemented,
     #[error("Config Error: {0}")]
     ConfigError(ConfigError),
+    #[error("AI Error: {0}")]
+    AIError(AIError),
+    #[error("{0}")]
+    DatabaseError(DatabaseError),
 }
 
 pub type ConundrumCliResult<T> = Result<T, ConundrumCliError>;
+
+impl From<AIError> for ConundrumCliError {
+    fn from(value: AIError) -> Self {
+        Self::AIError(value)
+    }
+}
+
+impl From<DatabaseError> for ConundrumCliError {
+    fn from(value: DatabaseError) -> Self {
+        Self::DatabaseError(value)
+    }
+}
 
 impl From<ConfigError> for ConundrumCliError {
     fn from(value: ConfigError) -> Self {

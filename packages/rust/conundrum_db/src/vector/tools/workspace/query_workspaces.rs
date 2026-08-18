@@ -1,5 +1,5 @@
-use conundrum::ai::rig::{
-    ai_traits::tool_implementation::ToolImplementation, features::tools::mcp_tool_name::MCPToolName,
+use conundrum::ai::{
+    models::tool::mcp_tool_name::MCPToolName, rig::ai_traits::tool_implementation::ToolImplementation,
 };
 use fake::Dummy;
 use rust_mcp_sdk::macros::{JsonSchema, mcp_tool};
