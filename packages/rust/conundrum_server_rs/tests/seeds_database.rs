@@ -11,10 +11,10 @@ async fn initializes_database() {
     let handler = ConundrumMCP {};
     // let arc_handler = Arc::new(tokio::sync::Mutex::new(handler));
     let server_state = ServerState::try_new(handler).await.expect("Gets server state.");
-    let client = server_state.local_client.expect("Must have local client.");
-    initialize_local_database(&client).await
-                                      .inspect_err(|e| {
-                                          log::error!("Error: {:?}", e);
-                                      })
-                                      .expect("Initializes database.")
+    let arc_state = Arc::new(server_state);
+    initialize_local_database(&arc_state).await
+                                         .inspect_err(|e| {
+                                             log::error!("Error: {:?}", e);
+                                         })
+                                         .expect("Initializes database.")
 }

@@ -1,6 +1,6 @@
 use anyhow::Result;
 use conundrum::{
-    ecosystem::error_handling::{ai_error::AIError, db_error::DatabaseError},
+    ecosystem::error_handling::{ai_error::AIError, db_error::DatabaseError, server_error::ServerError},
     lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
 };
 use conundrum_config::errors::config_error::ConfigError;
@@ -28,6 +28,8 @@ pub enum ConundrumCliError {
     AIError(AIError),
     #[error("{0}")]
     DatabaseError(DatabaseError),
+    #[error("{0}")]
+    ServerError(ServerError),
 }
 
 pub type ConundrumCliResult<T> = Result<T, ConundrumCliError>;
@@ -41,6 +43,12 @@ impl From<AIError> for ConundrumCliError {
 impl From<DatabaseError> for ConundrumCliError {
     fn from(value: DatabaseError) -> Self {
         Self::DatabaseError(value)
+    }
+}
+
+impl From<ServerError> for ConundrumCliError {
+    fn from(value: ServerError) -> Self {
+        Self::ServerError(value)
     }
 }
 

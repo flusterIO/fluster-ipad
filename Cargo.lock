@@ -3489,6 +3489,7 @@ dependencies = [
  "conundrum",
  "conundrum_config",
  "conundrum_db",
+ "conundrum_server_rs",
  "directories",
  "dirs 6.0.0",
  "env_filter",
