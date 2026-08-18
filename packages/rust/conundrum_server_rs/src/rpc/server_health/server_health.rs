@@ -1,5 +1,5 @@
 use conundrum::ecosystem::{
-    db::{db_table_description::DBTableDescription, tables::DatabaseTable},
+    db::{db::ArcMutexDB, db_table_description::DBTableDescription, tables::DatabaseTable},
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
 use strum::IntoEnumIterator;

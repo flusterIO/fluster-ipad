@@ -4,7 +4,6 @@
 //! dots, providing your server scale LLM with all of the tools it needs to help
 //! you reach your academic goals, while giving you local scale fallbacks when
 //! working offline or just trying to reduce your token expenditure.
-pub mod errors;
 pub mod mcp;
 mod rest;
 mod rig;

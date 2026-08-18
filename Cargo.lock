@@ -3422,6 +3422,7 @@ dependencies = [
  "rig",
  "rig-lancedb",
  "rig-memory",
+ "rspc",
  "rssn",
  "rust-embed",
  "rust-fuzzy-search",

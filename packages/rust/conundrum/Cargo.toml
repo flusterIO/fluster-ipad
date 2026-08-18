@@ -11,7 +11,7 @@ license.workspace = true
 [features]
 wasm = []
 ## For inclusion of the database schemas. This will break wasm builds.
-db = ["dep:lancedb", "dep:axum"]
+db = ["dep:lancedb", "dep:axum", "dep:rspc"]
 ## This is mostly used for documentation generation, but might be useful in some edge use cases. To be honest, the component configs are still managed by typescript so this shouldn't even be here yet, but I'm kindof leaving it as a reminder to myself. 
 component_configs = []
 ## This is mostly used for documentation generation, but might be useful in some edge use cases.
@@ -149,6 +149,7 @@ rig-memory = "0.41.0"
 gix = "0.86.0"
 futures-util = "0.3.33"
 axum = { version = "0.8.9", features = ["query", "ws"], optional = true }
+rspc = { version = "0.4.1", features = ["typescript"], optional = true }
 # tui-math = "^0.1.1"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]

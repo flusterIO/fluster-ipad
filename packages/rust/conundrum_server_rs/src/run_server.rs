@@ -1,12 +1,9 @@
 use std::sync::Arc;
 
 pub use crate::rpc::rspc_router::get_rspc_router;
-use crate::{
-    errors::server_error::{ServerError, ServerResult},
-    mcp::mcp_handler::ConundrumMCP,
-    rig::ai_types::ai_types::LocalCompletionModel,
-};
+use crate::{mcp::mcp_handler::ConundrumMCP, rig::ai_types::ai_types::LocalCompletionModel};
 use axum::extract::State;
+use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 #[cfg(debug_assertions)]
 use rspc::Typescript;

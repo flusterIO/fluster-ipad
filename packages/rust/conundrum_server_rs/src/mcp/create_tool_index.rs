@@ -1,14 +1,17 @@
 use arrow_array::{RecordBatch, RecordBatchIterator};
-use conundrum::ecosystem::{
-    db::{tables::DatabaseTable, traits::db_entity::DBSchema},
-    error_handling::db_error::DatabaseError,
-};
-use conundrum_db::vector::{
-    database::db::ArcMutexDB,
-    models::{
-        ai::tool::{mcp_tool_record::MCPToolRecord, tool_definition_list::ToolDefinitionList},
-        vector::vector::DB_VECTOR_DIMENSIONS,
+use conundrum::{
+    ai::rig::rig_client_remote::RigClientRemote,
+    ecosystem::{
+        db::{db::ArcMutexDB, db_traits::db_entity::DBSchema, tables::DatabaseTable},
+        error_handling::{
+            db_error::DatabaseError,
+            server_error::{ServerError, ServerResult},
+        },
     },
+};
+use conundrum_db::vector::models::{
+    ai::tool::{mcp_tool_record::MCPToolRecord, tool_definition_list::ToolDefinitionList},
+    vector::vector::DB_VECTOR_DIMENSIONS,
 };
 use indoc::formatdoc;
 use rig::{client::EmbeddingsClient, embeddings::EmbeddingModel};
@@ -16,14 +19,12 @@ use rig_lancedb::{LanceDbVectorIndex, SearchParams};
 use serde_arrow::to_record_batch;
 use std::sync::Arc;
 
-use crate::{
-    errors::server_error::{ServerError, ServerResult},
-    rig::{rig_client::RigClient, rig_client_remote::RigClientRemote},
-};
-
 pub async fn create_tool_index(db: &ArcMutexDB) -> ServerResult<()> {
     let tool_list = ToolDefinitionList::new_all_tools();
-    let client = RigClientRemote::initialize()?;
+    let client = RigClientRemote::initialize().map_err(|e| {
+                                                  let e: DatabaseError = e.into();
+                                                  e
+                                              })?;
     // TODO: Get the user's settings from the DB here if they exist and select the
     // proper model.
     let embedding_model = client.0.embedding_model_with_ndims("qwen3-embedding:4b", DB_VECTOR_DIMENSIONS as usize);

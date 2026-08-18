@@ -1,39 +1,34 @@
 use std::sync::Arc;
 
-use crate::{crud_router, errors::server_error::ServerError};
-use conundrum::ecosystem::db::tables::DatabaseTable;
-use conundrum_db::vector::{
-    database::db_traits::entity_crud::EntityCRUD,
-    models::{
-        academic::{
-            assignment::{
-                academic_assignment_entity::AssignmentEntity,
-                academic_assignment_entity_partial::AssignmentEntityPartial,
-            },
-            question::flashcard::{
-                flashcard_entity::FlashCardEntity, flashcard_entity_partial::FlashCardEntityPartial,
-            },
-        },
-        ai::chat::{
-            chat_conversation::{
-                chat_conversation::ChatConversation, chat_conversation_partial::ChatConversationPartial,
-            },
-            chat_message::chat_message::ChatMessage,
-        },
-        ecosystem_data::{
-            ecosystem_application_settings::{
-                keyboard_shortcut::KeyboardShortcut, keyboard_shortcut_partial::KeyboardShortcutPartial,
-            },
-            server_state::server_state::ServerState,
-        },
-        git::{git_repository_entity::GitRepositoryEntity, git_repository_partial::GitRepositoryPartial},
-        primitives::helper_models::label_and_id::IDAndOptionalLabel,
-        taggables::{
-            auto_taggable::AutoTaggable, auto_taggable_partial::AutoTaggablePartial, subject::Subject, tag::Tag,
-            taggable_update_partial::TaggablePartial, topic::Topic,
-        },
-        workspace::{user_workspace::UserWorkspace, user_workspace_partial::UserWorkspacePartial},
+use crate::crud_router;
+use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
+use conundrum::{
+    ai::models::chat::{
+        chat_conversation::{chat_conversation::ChatConversation, chat_conversation_partial::ChatConversationPartial},
+        chat_message::chat_message::ChatMessage,
     },
+    ecosystem::db::{db_traits::entity_crud::EntityCRUD, tables::DatabaseTable},
+};
+use conundrum_db::vector::models::{
+    academic::{
+        assignment::{
+            academic_assignment_entity::AssignmentEntity, academic_assignment_entity_partial::AssignmentEntityPartial,
+        },
+        question::flashcard::{flashcard_entity::FlashCardEntity, flashcard_entity_partial::FlashCardEntityPartial},
+    },
+    ecosystem_data::{
+        ecosystem_application_settings::{
+            keyboard_shortcut::KeyboardShortcut, keyboard_shortcut_partial::KeyboardShortcutPartial,
+        },
+        server_state::server_state::ServerState,
+    },
+    git::{git_repository_entity::GitRepositoryEntity, git_repository_partial::GitRepositoryPartial},
+    primitives::helper_models::label_and_id::IDAndOptionalLabel,
+    taggables::{
+        auto_taggable::AutoTaggable, auto_taggable_partial::AutoTaggablePartial, subject::Subject, tag::Tag,
+        taggable_update_partial::TaggablePartial, topic::Topic,
+    },
+    workspace::{user_workspace::UserWorkspace, user_workspace_partial::UserWorkspacePartial},
 };
 use rspc::{Procedure, Router};
 

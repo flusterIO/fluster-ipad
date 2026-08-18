@@ -1,6 +1,7 @@
 use std::{sync::Arc, time::Duration};
 
 use axum::Router;
+use conundrum::ecosystem::error_handling::server_error::ServerResult;
 use rust_mcp_axum::{McpMountOptions, mcp_routes};
 use rust_mcp_sdk::{
     ToMcpServerHandler, TransportOptions,
@@ -10,7 +11,7 @@ use rust_mcp_sdk::{
     session_store::InMemorySessionStore,
 };
 
-use crate::{errors::server_error::ServerResult, mcp::mcp_handler::ConundrumMCP};
+use crate::mcp::mcp_handler::ConundrumMCP;
 
 pub fn get_mcp_server() -> ServerResult<Router<()>> {
     let server_info =

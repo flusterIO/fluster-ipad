@@ -6,7 +6,8 @@ use rig::{
 use serde::Serialize;
 use typeshare::typeshare;
 
-use crate::{errors::server_error::ServerError, rig::ai_types::ai_types::LocalMultiTurnStreamItem};
+use crate::rig::ai_types::ai_types::LocalMultiTurnStreamItem;
+use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone, specta::Type, Dummy)]
