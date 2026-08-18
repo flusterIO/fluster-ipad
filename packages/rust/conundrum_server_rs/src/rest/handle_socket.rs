@@ -1,8 +1,11 @@
 use std::sync::Arc;
 
 use axum::extract::ws::{Message, WebSocket};
-use conundrum::ai::models::agent::agent_primary_task::AgentPrimaryTask;
 use conundrum::ai::models::chat::chat_message::chat_message::ChatMessage;
+use conundrum::ai::models::chat::chat_message::user::user_message::UserMessage;
+use conundrum::ai::models::{
+    agent::agent_primary_task::AgentPrimaryTask, chat::chat_message::user::user_message_input::UserMessageInput,
+};
 use conundrum::ai::rig::ai_traits::ai_client_container::AIClientContainer;
 use conundrum::ai::rig::ai_traits::conundrum_agent::ConundrumAgent;
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
@@ -29,7 +32,12 @@ pub async fn handle_socket<M>(socket: WebSocket, state: Arc<ServerState>)
             let locked_client = client.clone().lock_owned().await;
             let client_result = locked_client.get_default_agent(AgentPrimaryTask::GeneralChat);
             drop(locked_client);
-            if let Ok(msg) = serde_json::from_str::<ChatMessage>(prompt.as_str()) {
+            if let Ok(msg) = serde_json::from_str::<UserMessageInput>(prompt.as_str()) {
+                let user_message: UserMessage = UserMessage::from(msg);
+                // RESUME: Pick back up here. We won't have to make this generic because the
+                // model will always receive a message from the user, so we
+                // won't even have to worry about the AIMessage or the
+                // SystemPrompt here.
                 let mut stream = client_result.stream_chat_response(msg, vec![]).await;
                 while let Some(item) = stream.next().await {
                     match item {

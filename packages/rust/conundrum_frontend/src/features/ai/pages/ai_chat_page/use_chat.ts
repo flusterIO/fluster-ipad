@@ -1,9 +1,24 @@
-import { type ChatMessageResult } from "#/database/db_utility_types/chat";
+import {
+    type ChatMessageResultItem,
+    type ChatMessageResult,
+} from "#/database/db_utility_types/chat";
 import { getServerPort } from "@/app/rspc_client";
 import consola from "consola";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { type ChatEvent } from "@conundrum/ts/codegen-typeshare-server";
+
+export interface ChatSearchParams {
+    agent: string;
+    /**
+     * If undefined, a new conversation will be created.
+     */
+    convo?: string;
+    /**
+     * Set internally by the Conundrum useChat hoook when a user scrolls to the top.
+     */
+    page?: number;
+}
 
 export interface ChatData {
     reasoning: string[];
@@ -50,6 +65,8 @@ export const useChat = () => {
 
     const chatId = sp.get("convo");
     const page = sp.get("page") ?? "1";
+    const agent_id = sp.get("agent");
+    const conversation_id = sp.get("convo");
 
     const socket = useRef<WebSocket | null>(null);
 
@@ -167,7 +184,17 @@ export const useChat = () => {
             tokens: {},
         });
 
-        socket.current.send(input);
+        const data: Pick<
+            ChatMessageResultItem,
+            "conversation_id" | "agent_id" | "body"
+        > = {
+            // TODO: Swap this out with the real testid
+            conversation_id,
+            agent_id,
+            body: input,
+        };
+
+        socket.current.send(JSON.stringify(data));
     }
 
     return {

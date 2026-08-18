@@ -165,8 +165,13 @@ export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdr
 /**
  * ---- Vectors ----
  */
-"cdrm_vec" | "mcp_tool"
+"cdrm_vec" | "mcp_tool" | "documentation_chunk"
 
+/**
+ * # DateTime
+ * 
+ * A simple wrapper around a UTC timestamp in milliseconds.
+ */
 export type DateTime = string
 
 /**
@@ -275,9 +280,9 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.chat_conversation.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; label: string; ctime: DateTime; utime?: DateTime }[] } | { key: "crud.chat_message.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; conversation_id: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.chat_conversation.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[] } | { key: "crud.chat_message.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; reasoning_content: string | null; conversation_id: DatabaseId; 
 /**
- * If the sender is the user, this is the agent reqeusted. If the sender is
+ * If the sender is the user, this is the agent requested. If the sender is
  * AI, this is the AI sending the response.
  */
 agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[] } | { key: "crud.git_repository.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; 
@@ -383,7 +388,7 @@ entity_name: string; is_joining_table: boolean; description: string }[] } | { ke
 /**
  * ---- Vectors ----
  */
-"cdrm_vec" | "mcp_tool"; result: { table: DatabaseTable; 
+"cdrm_vec" | "mcp_tool" | "documentation_chunk"; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -423,7 +428,7 @@ ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSe
 /**
  * ---- Vectors ----
  */
-"cdrm_vec" | "mcp_tool")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+"cdrm_vec" | "mcp_tool" | "documentation_chunk")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -435,7 +440,7 @@ ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSe
 /**
  * ---- Vectors ----
  */
-"cdrm_vec" | "mcp_tool"; result: { table: DatabaseTable; 
+"cdrm_vec" | "mcp_tool" | "documentation_chunk"; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -477,14 +482,14 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: { id: DatabaseId; label: string; ctime: DateTime; utime?: DateTime }[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string | null })[]; result: null } | { key: "crud.chat_message.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_message.save_many"; input: ({ id: DatabaseId; conversation_id: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string | null; requires_label_update: boolean | null; desc: string | null })[]; result: null } | { key: "crud.chat_message.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_message.save_many"; input: ({ id: DatabaseId; reasoning_content: string | null; conversation_id: DatabaseId; 
 /**
- * If the sender is the user, this is the agent reqeusted. If the sender is
+ * If the sender is the user, this is the agent requested. If the sender is
  * AI, this is the AI sending the response.
  */
-agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[]; result: null } | { key: "crud.chat_message.update_many"; input: ({ id: DatabaseId; conversation_id: DatabaseId; 
+agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[]; result: null } | { key: "crud.chat_message.update_many"; input: ({ id: DatabaseId; reasoning_content: string | null; conversation_id: DatabaseId; 
 /**
- * If the sender is the user, this is the agent reqeusted. If the sender is
+ * If the sender is the user, this is the agent requested. If the sender is
  * AI, this is the AI sending the response.
  */
 agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
@@ -756,15 +761,15 @@ export type Procedures = {
 },
 	chat_conversation: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { id: DatabaseId; label: string; ctime: DateTime; utime?: DateTime }[], error: unknown },
-	save_many: { kind: "mutation", input: { id: DatabaseId; label: string; ctime: DateTime; utime?: DateTime }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string | null })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string | null; requires_label_update: boolean | null; desc: string | null })[], output: null, error: unknown },
 },
 	chat_message: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; conversation_id: DatabaseId; agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[], error: unknown },
-	save_many: { kind: "mutation", input: ({ id: DatabaseId; conversation_id: DatabaseId; agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ id: DatabaseId; conversation_id: DatabaseId; agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; reasoning_content: string | null; conversation_id: DatabaseId; agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ id: DatabaseId; reasoning_content: string | null; conversation_id: DatabaseId; agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; reasoning_content: string | null; conversation_id: DatabaseId; agent_id: DatabaseId | null; sender: ChatParticipant; body: string; ctime: DateTime })[], output: null, error: unknown },
 },
 	git_repository: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
@@ -811,7 +816,7 @@ export type Procedures = {
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
@@ -823,8 +828,8 @@ export type Procedures = {
 },
 	rpc_health: { kind: "query", input: null, output: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean }, error: unknown },
 	tables: {
-	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool")[], error: unknown },
-	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk")[], error: unknown },
+	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {
