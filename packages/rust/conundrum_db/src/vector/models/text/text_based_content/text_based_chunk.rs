@@ -17,6 +17,7 @@ use crate::vector::{models::vector::vector::DBVector, parameters};
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, fake::Dummy)]
 pub struct TextBasedChunk {
+    pub id: DatabaseId,
     /// The id pointing back to the primary document. There's no point in having
     /// an actual id on a struct that will always retrieved by vector
     /// similarity.
@@ -32,7 +33,8 @@ impl<'a> DBSchema<'a> for TextBasedChunk {
         )
         -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<arrow_schema::Field>>>
     {
-        Ok(vec![Arc::new(DatabaseId::field_definition("document_id", false)),
+        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
+                Arc::new(DatabaseId::field_definition("document_id", false)),
                 Arc::new(String::field_definition("content", false)),
                 Arc::new(u32::field_definition("chunk_idx", false)),
                 Arc::new(DBVector::field_definition(false)),])
@@ -47,7 +49,7 @@ impl<'a> DBEntity<'a, DatabaseId> for TextBasedChunk {
     }
 
     fn merge_keys() -> &'static [&'static str] {
-        &["document_id", "chunk_idx"]
+        &["id"]
     }
 
     fn primary_key() -> &'static str {

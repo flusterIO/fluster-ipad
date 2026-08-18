@@ -56,7 +56,6 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for CdrmContent {
         opts: ParseConundrumOptions,
         locked_state: &Arc<ServerState>)
         -> AIResult<(AIResult<Vec<TextBasedChunk>>, AIResult<Vec<TextBasedChunk>>)> {
-            if let Some(note_id) = &opts.note_id && !note_id.is_empty() {
                 let opts = run_conundrum(ParseConundrumOptions { 
                     target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget::Markdown,
                     ..opts.clone()
@@ -72,7 +71,8 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for CdrmContent {
                         let r = client.embed_models(None, chunk_strings.clone(), None).await?;
                         Ok(r.iter().enumerate().map(|(i, x)| {
                             TextBasedChunk { 
-                                document_id: DatabaseId::new_from_input_id(note_id.clone()),
+                                id: DatabaseId::default(),
+                                document_id: DatabaseId::new_from_input_id("Conundrum Documentation".to_string()),
                                 content: chunk_strings.index(i).clone(),
                                 chunk_idx: i as u32,
                                 vector: DBVector(x.vec.clone())
@@ -89,7 +89,8 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for CdrmContent {
                         let r = client.embed_models(None, chunk_strings.clone(), None).await?;
                         Ok(r.iter().enumerate().map(|(i, x)| {
                             TextBasedChunk { 
-                                document_id: DatabaseId::new_from_input_id(note_id.clone()),
+                                id: DatabaseId::default(),
+                                document_id: DatabaseId::new_from_input_id("Conundrum Documentation".to_string()),
                                 content: chunk_strings.index(i).clone(),
                                 chunk_idx: i as u32,
                                 vector: DBVector(x.vec.clone())
@@ -101,8 +102,5 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for CdrmContent {
                     )
                 };
                 Ok((local_vectors, remote_vectors))
-            } else {
-                return Err(AIError::InvalidProps("a `note_id` field is required when chunking Conundrum content.".to_string()));
-            }
         }
 }

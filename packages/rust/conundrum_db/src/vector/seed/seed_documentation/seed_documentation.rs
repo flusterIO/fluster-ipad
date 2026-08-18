@@ -87,7 +87,7 @@ impl<'a> SeedContent<'a, TextBasedChunk, TextBasedChunk, ParseConundrumOptions, 
                                                         log::error!("Failed to save seed content: {:#?}", e);
                                                     })?;
         } else {
-            log::warn!("Failed to save local documentation chunks");
+            log::warn!("Failed to save remotely generated documentation chunks. You won't be able to query Conundrum documentation via AI until this is resolved.");
         }
         Ok(())
     }

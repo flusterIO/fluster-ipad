@@ -139,11 +139,11 @@ for (const k in outputPaths) {
     q += `
     #[strum(to_string = "${p}.cdrm")]
     #[serde(rename = "${p}.cdrm")]
-    ${name},
-`;
+    ${name},`;
 }
 
-q += `}
+q += `
+}
 
 impl Into<String> for DocumentationKey {
      fn into(self) -> String {

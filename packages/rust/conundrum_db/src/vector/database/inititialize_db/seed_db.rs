@@ -9,11 +9,6 @@ use crate::vector::{
 };
 
 pub async fn seed_db(db: &ArcMutexDB, client: &std::sync::Arc<ServerState>) -> DatabaseResult<()> {
-    SeedDocumentation::default().try_seed(db,
-                                          ParseConundrumOptions { note_id:
-                                                                      Some("Conundrum Documentation".to_string()),
-                                                                  ..Default::default() },
-                                          client)
-                                .await?;
+    SeedDocumentation::default().try_seed(db, ParseConundrumOptions::default(), client).await?;
     Ok(())
 }
