@@ -51,7 +51,8 @@ impl AIClientContainer for RigClientLocal {
         // TODO: Actually implement a match against some models for the various
         // tasks when you're on internet for good.
         let client = self.0.clone();
-        LocalAgent::from_agent_description(client, AgentDescription::default_local_chat(), task.to_base_temperature())
+        let desc: AgentDescription = task.clone().into();
+        LocalAgent::from_agent_description(client, desc, task.to_base_temperature())
     }
 
     fn get_agent(&self, desc: AgentDescription, task_base_temperature: f64) -> Self::AgentContainer {

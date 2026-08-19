@@ -1,18 +1,14 @@
 use std::sync::Arc;
 
 use conundrum::{
-    ai::{
-        models::{
-            agent::agent_description::AgentDescription,
-            chat::{chat_conversation::chat_conversation::ChatConversation, chat_message::chat_message::ChatMessage},
-        },
-        rig::ai_traits::ai_client_container::AIClientEmbedder,
+    ai::models::{
+        agent::agent_description::AgentDescription,
+        chat::{chat_conversation::chat_conversation::ChatConversation, chat_message::chat_message::ChatMessage},
     },
     ecosystem::{
         db::{db::get_database, db_traits::db_entity::DBSchema, tables::DatabaseTable},
         error_handling::db_error::{DatabaseError, DatabaseResult},
     },
-    lang::lib::shared::utility_types::ArcTokioMutex,
 };
 use lancedb::{Table, arrow::arrow_schema::Schema};
 use log::warn;

@@ -5,6 +5,8 @@ import { CreateTablesOnboardingPage } from "./onboarding_sections/create_tables/
 import { CreateToolIndexOnboardingSection } from "./onboarding_sections/create_tool_index/create_tool_index_section";
 import { OnboardingChecklist } from "./onboarding_checklist/onboading_checklist";
 import { OnboardingWrapup } from "./onboarding_wrapup/onboarding_wrapup";
+import { type BackendStatus } from "#/database/db_utility_types/health";
+import MediaQuery from "react-responsive";
 
 const pendingFromStepIndex = (
     idx: number,
@@ -19,9 +21,9 @@ const pendingFromStepIndex = (
     return "in-progress";
 };
 
-
 export const OnboardingPage = (): ReactNode => {
     const [onboardingSection, setOnboardingSection] = useState(0);
+    const [results, setResults] = useState<BackendStatus | null>(null);
 
     const sections = [
         {
@@ -34,21 +36,23 @@ export const OnboardingPage = (): ReactNode => {
             id: "create-db",
             status: pendingFromStepIndex(1, onboardingSection),
             label: "Create Database",
-            body: "Build a local vector store with one click."
+            body: "Build a local vector store with one click.",
         },
         {
             id: "create-tool-index",
             status: pendingFromStepIndex(2, onboardingSection),
             label: "Seed Tool Index",
-            body: "Your model has choices."
+            body: "Your model has choices.",
         },
     ];
     return (
         <div className="w-full h-full min-h-screen max-h-screen text-foreground flex flex-col justify-center items-center min-[768px]:grid min-[768px]:grid-cols-[auto_1fr] min-[768px]:gap-x-6">
-            <OnboardingChecklist
-                lastPage={onboardingSection === sections.length}
-                steps={sections}
-            />
+            <MediaQuery minWidth={768}>
+                <OnboardingChecklist
+                    lastPage={onboardingSection === sections.length}
+                    steps={sections}
+                />
+            </MediaQuery>
             <div className="@container/onboarding overflow-y-auto overflow-x-hidden flex flex-col justify-center items-center w-full h-fit max-h-screen @max-3xl:px-6 @3xl:pr-6">
                 <AnimatePresence key={onboardingSection}>
                     <>
@@ -68,6 +72,8 @@ export const OnboardingPage = (): ReactNode => {
                                 back={() => {
                                     setOnboardingSection(0);
                                 }}
+                                results={results}
+                                setResults={setResults}
                             />
                         ) : onboardingSection === 2 ? (
                             <CreateToolIndexOnboardingSection
@@ -78,9 +84,11 @@ export const OnboardingPage = (): ReactNode => {
                                 back={() => {
                                     setOnboardingSection(1);
                                 }}
+                                results={results}
+                                setResults={setResults}
                             />
                         ) : (
-                            <OnboardingWrapup />
+                            <OnboardingWrapup results={results} />
                         )}
                     </>
                 </AnimatePresence>

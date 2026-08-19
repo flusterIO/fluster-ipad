@@ -3768,6 +3768,7 @@ dependencies = [
  "notify-rust",
  "ollama-rs 0.3.5",
  "once_cell",
+ "online",
  "pretty_env_logger",
  "prettycli",
  "ratex-layout",
@@ -15143,6 +15144,15 @@ checksum = "c7f86c6eef3d6df15f23bcfb6af487cbd2fed4e5581d58d5bf1f5f8b7f6727dc"
 dependencies = [
  "cc",
  "pkg-config",
+]
+
+[[package]]
+name = "online"
+version = "4.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "644d4b55e7e65885eba895f7958912e86eb04370d858a28779860223a8b5ec43"
+dependencies = [
+ "tokio",
 ]
 
 [[package]]

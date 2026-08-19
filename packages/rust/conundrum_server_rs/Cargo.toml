@@ -78,6 +78,7 @@ fake.workspace = true
 futures-util = "0.3.33"
 async-stream = "0.3.6"
 test-log = "0.2.21"
+online = { version = "4.0.2", features = ["tokio", "tokio-runtime"] }
 
 [lints]
 workspace = true

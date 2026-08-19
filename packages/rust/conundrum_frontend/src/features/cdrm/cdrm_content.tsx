@@ -8,6 +8,8 @@ interface InlineCdrmContentProps {
     className?: string;
     em?: "span" | "div";
     inline?: boolean;
+    onLoad?: () => void;
+    loading?: ReactNode;
 }
 
 export const CdrmContent = ({
@@ -15,6 +17,8 @@ export const CdrmContent = ({
     content,
     inline,
     em,
+    onLoad,
+    loading,
 }: InlineCdrmContentProps): ReactNode => {
     const { mutateAsync } = rspc.useMutation("cdrm.compile_cdrm", {});
     const [parsedContent, setParsedContent] = useState<null | string>(null);
@@ -27,7 +31,7 @@ export const CdrmContent = ({
                 target: "html",
                 trusted: true,
                 hide_components: [],
-                modifiers: ["PreferInlineMarkdownSyntax"],
+                modifiers: inline ? ["PreferInlineMarkdownSyntax"] : [],
                 note_id: null,
                 ui_params: {
                     dark_mode: true,
@@ -38,6 +42,9 @@ export const CdrmContent = ({
             },
         });
         setParsedContent(res.content);
+        if (onLoad) {
+            onLoad();
+        }
     };
 
     useEffect(() => {
@@ -47,6 +54,9 @@ export const CdrmContent = ({
     }, [content]);
 
     if (!parsedContent) {
+        if (loading) {
+            return loading;
+        }
         return _em === "span" ? <span /> : <div />;
     }
 

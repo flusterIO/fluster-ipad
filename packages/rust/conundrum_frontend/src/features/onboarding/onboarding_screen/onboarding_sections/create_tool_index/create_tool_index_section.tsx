@@ -3,11 +3,60 @@ import { type OnboardingSectionProps } from "../welcome/welcome_to_cdrm";
 import { Button } from "@/components/shad/button";
 import { motion } from "framer-motion";
 import { ToolCaseIcon } from "lucide-react";
+import { rspc } from "@/app/rspc_client";
+import consola from "consola";
+import { useLogger } from "#/logging/state/hooks/use_logger";
 
 export const CreateToolIndexOnboardingSection = ({
     next,
     back,
+    setResults,
 }: OnboardingSectionProps): ReactNode => {
+    const { mutateAsync } = rspc.useMutation("initialize.step_2_init_tool_index");
+    const logger = useLogger();
+    const handleNext = async (): Promise<void> => {
+        try {
+            const res = await mutateAsync(
+                {},
+                {
+                    onError: (err) => {
+                        consola.error("Database Error: ", err);
+                        logger(
+                            {
+                                title: "Created Tool Index",
+                                message:
+                                    "Conundrum successfully seeded the dynamic tool index. Your AI now has access to a growing list of tools to help you accomplish all of your academic goals.",
+                                ai_description:
+                                    "The user successfully seeded their database with all of the tools you now have access to.",
+                                purpose: "process-complete",
+                                severity: "success",
+                            },
+                            true,
+                        ).catch((err: unknown) => {
+                            consola.error("Error: ", err);
+                        });
+                    },
+                    onSuccess: () => {
+                        logger({
+                            title: "Created Tool Index",
+                            message:
+                                "Conundrum successfully seeded the dynamic tool index. Your AI now has access to a growing list of tools to help you accomplish all of your academic goals.",
+                            ai_description:
+                                "The user successfully seeded their database with all of the tools you now have access to.",
+                            purpose: "process-complete",
+                            severity: "success",
+                        }).catch((err: unknown) => {
+                            consola.error("Error: ", err);
+                        });
+                    },
+                },
+            );
+            setResults(res);
+            next();
+        } catch (err: unknown) {
+            consola.error("Error: ", err);
+        }
+    };
     return (
         <motion.div
             initial={{
@@ -90,7 +139,15 @@ export const CreateToolIndexOnboardingSection = ({
                 <Button variant={"outline"} onClick={back}>
                     Back
                 </Button>
-                <Button onClick={next}>Generate Index</Button>
+                <Button
+                    onClick={() => {
+                        handleNext().catch((err: unknown) => {
+                            consola.error("Error: ", err);
+                        });
+                    }}
+                >
+                    Generate Index
+                </Button>
             </div>
         </motion.div>
     );

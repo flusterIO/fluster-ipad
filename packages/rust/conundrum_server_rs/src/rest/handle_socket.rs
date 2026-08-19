@@ -30,14 +30,10 @@ pub async fn handle_socket<M>(socket: WebSocket, state: Arc<ServerState>)
 
             let prompt = prompt.to_string();
             let locked_client = client.clone().lock_owned().await;
-            let client_result = locked_client.get_default_agent(AgentPrimaryTask::GeneralChat);
+            let client_result = locked_client.get_default_agent(AgentPrimaryTask::Agent);
             drop(locked_client);
             if let Ok(msg) = serde_json::from_str::<UserMessageInput>(prompt.as_str()) {
                 let user_message: UserMessage = UserMessage::from(msg);
-                // RESUME: Pick back up here. We won't have to make this generic because the
-                // model will always receive a message from the user, so we
-                // won't even have to worry about the AIMessage or the
-                // SystemPrompt here.
                 let mut stream = client_result.stream_chat_response(user_message, vec![]).await;
                 while let Some(item) = stream.next().await {
                     match item {

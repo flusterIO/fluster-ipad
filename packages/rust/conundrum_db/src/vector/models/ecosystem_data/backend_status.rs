@@ -17,21 +17,27 @@ pub struct BackendStatus {
     pub local_client_access: bool,
     pub remote_client_access: bool,
     pub all_tables_exist: bool,
+    pub missing_tables: bool,
 }
 
 impl FromAsync<Arc<ServerState>> for BackendStatus {
     async fn from_async(input: Arc<ServerState>) -> Self
         where Self: Sized {
         let db = input.db.clone().lock_owned().await;
+        let mut any_tables_exist = false;
         for k in DatabaseTable::iter() {
             if db.open_table(k.to_string()).execute().await.is_err() {
                 return Self { local_client_access: input.local_client.is_some(),
                               remote_client_access: input.remote_client.is_some(),
-                              all_tables_exist: false };
+                              all_tables_exist: false,
+                              any_tables_exist };
+            } else {
+                any_tables_exist = true;
             }
         }
         Self { local_client_access: input.local_client.is_some(),
                remote_client_access: input.remote_client.is_some(),
-               all_tables_exist: true }
+               all_tables_exist: true,
+               any_tables_exist }
     }
 }

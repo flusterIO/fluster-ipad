@@ -1,17 +1,16 @@
 use fake::Dummy;
-use std::{fmt::Display, sync::Arc};
+use std::sync::Arc;
 
 use crate::{
     ai::models::{
         agent::{agent_description_partial::AgentDescriptionPartial, agent_primary_task::AgentPrimaryTask},
-        tool::mcp_tool_name_list::MCPToolNameList,
+        tool::{mcp_tool_name::MCPToolName, mcp_tool_name_list::MCPToolNameList},
     },
     ecosystem::db::{
         db_traits::{
             db_entity::{DBEntity, DBSchema},
             db_field::DatabaseField,
         },
-        parameters::ai::schema_parameters::SchemaParameters,
         tables::DatabaseTable,
     },
     impl_default_crud,
@@ -24,6 +23,8 @@ pub struct AgentDescription {
     /// The name that the AI should be referred to as. AI should reference this
     /// field when a user asks for another agent by name.
     pub name: Option<String>,
+    pub max_tokens: Option<u32>,
+    pub allow_tools: bool,
     /// The model to use
     pub model: String,
     pub reasoning: bool,
@@ -39,12 +40,34 @@ pub struct AgentDescription {
     pub utime: DateTime,
 }
 
+impl Default for AgentDescription {
+    fn default() -> Self {
+        Self { 
+            id: DatabaseId::new(),
+            name: None,
+            max_tokens: Some(1024),
+            allow_tools: true,
+            model: "qwen3:8b".to_string(),
+            reasoning: true,
+            is_local: true,
+            instructions: None,
+            always_include_tools: MCPToolNameList::new_empty(),
+            temperature_scalar: 1.,
+            primary_task: Some(AgentPrimaryTask::Agent),
+            ctime: DateTime::new_now(),
+            utime: DateTime::new_now()
+        }
+    }
+}
+
 impl AgentDescription {
     pub fn default_local_chat() -> Self {
         AgentDescription {
             id: DatabaseId::default(),
             name: None,
             model: "qwen3:8b".to_string(),
+            max_tokens: Some(1024),
+            allow_tools: true, 
             reasoning: true,
             is_local: true,
             instructions: Some("You are an assistant for an academic research platform for STEM students and professionals.".to_string()),

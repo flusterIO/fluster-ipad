@@ -1,7 +1,28 @@
-import { CdrmContent } from '#/cdrm/cdrm_content'
-import React, { type ReactNode } from 'react'
+import { CdrmContent } from "#/cdrm/cdrm_content";
+import { type BackendStatus } from "#/database/db_utility_types/health";
+import {
+    REMOTE_AI_ENVIRONMENT_VARIABLE,
+    REMOTE_AI_PROVIDER_NAME,
+} from "@/ai_constants";
+import React, { type ReactNode } from "react";
 
-export const OnboardingWrapup = (): ReactNode => {
+export const OnboardingWrapup = ({
+    results,
+}: {
+    results: BackendStatus | null;
+}): ReactNode => {
+    const ollama = {
+        valid: `- [x] Ollama
+  Your Ollama environment is valid and Conundrum was able to connect successfully. You'll have access to a full offline fall-back and local models when the task is fitting for local hardware.`,
+        invalid: `- [ ] Ollama
+  Your Ollama environment appears to be invalid or completely absent. Conundrum could not connect to Ollama which means you'll need to rely only on remote infereence.`,
+    };
+    const remote = {
+        valid: `- [x] Server Scale AI
+  Your ${REMOTE_AI_PROVIDER_NAME} environment is valid and Conundrum was able to connect successfully. While Ollama provides local fallback for cost efficent tasks that your local hardware can handle, ${REMOTE_AI_PROVIDER_NAME} offers all the horsepower a modern academic needs.`,
+        invalid: `- [ ] Server Scale AI
+  Conundrum could not connect to the remote server. It appears as if you're missing your \`${REMOTE_AI_ENVIRONMENT_VARIABLE}\` environment variable, are perhaps offline, or are encountering another environment issue.`,
+    };
     return (
         <div className="w-full h-full min-h-screem flex flex-col justify-center items-center p-6 overflow-x-hidden overflow-y-auto">
             <div className="cdrm @container/mdx fluster-mac flex flex-col justify-center items-center w-full max-w-270">
@@ -12,6 +33,9 @@ export const OnboardingWrapup = (): ReactNode => {
 <Hint>
 Use cmd+shift+p for the command palette!
 </Hint>
+
+${results?.local_client_access ? ollama.valid : ollama.invalid}
+${results?.remote_client_access ? remote.valid : remote.invalid}
 
 So what's next? You can use the Conundrum ecosystem of tools as regular markdown (just drop in your Obsidian vault), or you can learn _Conundrum_, a super-set of markdown that offers additional features on-top of the markdown syntax you're already familiar with[^1].
 
@@ -64,8 +88,7 @@ One last thing though. I built this all while homeless, and I'm still _sort-of_ 
                 />
             </div>
         </div>
-    )
-}
+    );
+};
 
-
-OnboardingWrapup.displayName = "OnboardingWrapup"
+OnboardingWrapup.displayName = "OnboardingWrapup";
