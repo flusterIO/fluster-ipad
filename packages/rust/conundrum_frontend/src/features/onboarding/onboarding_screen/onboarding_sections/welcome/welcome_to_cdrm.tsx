@@ -1,6 +1,5 @@
-import React, { useEffect, useState, type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { motion } from "framer-motion";
-import { WelcomeTitle } from "./welcome_title";
 import { Button } from "@/components/shad/button";
 import { DatabaseIcon } from "lucide-react";
 
@@ -41,7 +40,7 @@ export const WelcomeToConundrum = ({
                 <div
                     className="text-sm"
                 >
-                    We have to build your local database, but in the end, you'll have a fully working modular toolkit powered by <span className="font-bold">LanceDB</span> and <a href="https://flusterapp.com" className="font-bold">Conundrum</a>, ready to tackle of your academic goals.
+                    We have to build your local database, but in just a few moments you'll have a fully working modular toolkit powered by <span className="font-bold">LanceDB</span> and <a href="https://flusterapp.com" className="font-bold">Conundrum</a>, ready to tackle of your academic goals.
                 </div>
             </div>
             <div className="flex flex-col justify-center items-center @lg/onboarding:h-full">
@@ -50,8 +49,7 @@ export const WelcomeToConundrum = ({
                     size="lg"
                     className="text-xl"
                 >
-                    <DatabaseIcon className="w-6 h-6" />
-                    <span>Set me up</span>
+                    <span>Let's Go</span>
                 </MotionButton>
             </div>
         </motion.div>

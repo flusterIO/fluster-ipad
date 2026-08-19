@@ -36,6 +36,7 @@ export default defineConfig({
                 pathUtils: path.resolve(__dirname, "./src/path__utils/index.ts"),
                 uiBlog: path.resolve(__dirname, "./src/prebuilt_ui/blog/index.ts"),
                 schemas: path.resolve(__dirname, "./src/database/index.ts"),
+                architecture: path.resolve(__dirname, "./src/architecture/index.ts"),
                 uiBlogSSR: path.resolve(
                     __dirname,
                     "./src/prebuilt_ui/blog/index_ssr.ts",

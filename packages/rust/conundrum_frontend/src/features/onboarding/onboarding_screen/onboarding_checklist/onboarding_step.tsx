@@ -27,7 +27,7 @@ export const OnboardingStep = ({
                 ? "text-green-500 bg-secondary border border-green-500/50!"
                 : "bg-secondary border border-primary/50!";
     return (
-        <div className="grid grid-cols-[auto_1fr] gap-x-3">
+        <div className="grid grid-cols-[auto_1fr] gap-x-3 w-full">
             <div className={cn("w-5 h-5 grid place-items-center mt-2 relative transition-all duration-300", color, status === "in-progress" ? "rounded-full" : "rounded")}>
                 <AnimatePresence key={id}>
                     {status === "in-progress" ? (
