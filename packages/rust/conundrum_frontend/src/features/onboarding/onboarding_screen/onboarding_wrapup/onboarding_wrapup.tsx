@@ -24,7 +24,7 @@ export const OnboardingWrapup = ({
   Conundrum could not connect to the remote server. It appears as if you're missing your \`${REMOTE_AI_ENVIRONMENT_VARIABLE}\` environment variable, are perhaps offline, or are encountering another environment issue.`,
     };
     return (
-        <div className="w-full h-full min-h-screem flex flex-col justify-center items-center p-6 overflow-x-hidden overflow-y-auto">
+        <div className="w-full h-full min-h-screem flex flex-col justify-start items-center p-6 overflow-x-hidden overflow-y-auto min-scrollbar scrollbarMuted">
             <div className="cdrm @container/mdx fluster-mac flex flex-col justify-center items-center w-full max-w-270">
                 <CdrmContent
                     content={`
@@ -34,8 +34,10 @@ export const OnboardingWrapup = ({
 Use cmd+shift+p for the command palette!
 </Hint>
 
+<Card title="Results">
 ${results?.local_client_access ? ollama.valid : ollama.invalid}
 ${results?.remote_client_access ? remote.valid : remote.invalid}
+</Card>
 
 So what's next? You can use the Conundrum ecosystem of tools as regular markdown (just drop in your Obsidian vault), or you can learn _Conundrum_, a super-set of markdown that offers additional features on-top of the markdown syntax you're already familiar with[^1].
 

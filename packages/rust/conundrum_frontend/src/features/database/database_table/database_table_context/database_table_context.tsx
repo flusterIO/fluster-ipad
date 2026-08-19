@@ -1,12 +1,5 @@
 "use client";
-import {
-    type ReactNode,
-    createContext,
-    useReducer,
-    useContext,
-    Dispatch,
-    useEffect,
-} from "react";
+import { type ReactNode, createContext, useReducer, useContext } from "react";
 import { type DatabaseTableManager } from "../table_managers/table_manager";
 import { type VisibilityState, type RowData } from "@tanstack/react-table";
 import { UserWorkspaceTableManager } from "../table_managers/user_workspace_table_manager";
@@ -19,14 +12,14 @@ export interface DatabaseTableState<DataType extends RowData> {
     selectedTable: DatabaseTable | null;
     loading: boolean;
     tableManager: DatabaseTableManager<DataType> | null;
-    visibility?: VisibilityState | null
+    visibility?: VisibilityState | null;
 }
 
 const defaultInitialValues: DatabaseTableState<RowData> = {
     selectedTable: null,
     loading: true,
     tableManager: null,
-    visibility: null
+    visibility: null,
 };
 
 export const DatabaseTableContext =
@@ -37,9 +30,10 @@ type DatabaseTableContextActions =
     | {
         type: "set-loading";
         payload: boolean;
-    } | {
+    }
+    | {
         type: "set-visibility";
-        payload: VisibilityState
+        payload: VisibilityState;
     };
 
 export const DatabaseTableDispatchContext = createContext<
@@ -51,15 +45,15 @@ export const useDatabaseTableContext = <TData extends RowData>() =>
 export const useDatabaseTableDispatch = () =>
     useContext(DatabaseTableDispatchContext);
 
-
-
-const getSelectedTableManager = <TData extends RowData>(databaseTable: DatabaseTable): DatabaseTableManager<TData> => {
+const getSelectedTableManager = <TData extends RowData>(
+    databaseTable: DatabaseTable,
+): DatabaseTableManager<TData> => {
     switch (databaseTable) {
         case DatabaseTable.UserWorkspace: {
-            return new UserWorkspaceTableManager() as DatabaseTableManager<TData>
+            return new UserWorkspaceTableManager() as DatabaseTableManager<TData>;
         }
     }
-}
+};
 
 export const DatabaseTableContextReducer = <TData extends RowData>(
     state: DatabaseTableState<TData>,
@@ -70,7 +64,9 @@ export const DatabaseTableContextReducer = <TData extends RowData>(
             return {
                 ...state,
                 selectedTable: action.payload,
-                tableManager: action.payload ? getSelectedTableManager(action.payload) : null
+                tableManager: action.payload
+                    ? getSelectedTableManager(action.payload)
+                    : null,
             };
         }
         case "set-loading": {
@@ -82,8 +78,8 @@ export const DatabaseTableContextReducer = <TData extends RowData>(
         case "set-visibility": {
             return {
                 ...state,
-                visibility: action.payload
-            }
+                visibility: action.payload,
+            };
         }
         default: {
             return state;

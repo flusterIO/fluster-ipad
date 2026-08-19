@@ -45,7 +45,7 @@ export const SomeTablesExistWarning = (): ReactNode => {
                         setIsInitial(false);
                         setFocusedIndex(focusedIndex >= 1 ? focusedIndex - 1 : n - 1);
                     }}
-                    className="flex flex-col justify-center items-center bg-secondary/50 text-secondary-foreground"
+                    className="flex flex-col justify-center items-center text-secondary-foreground"
                 >
                     <ChevronLeft />
                 </div>
@@ -77,7 +77,7 @@ export const SomeTablesExistWarning = (): ReactNode => {
                         setFocusedIndex((focusedIndex + 1) % n);
                         setIsInitial(false);
                     }}
-                    className="bg-secondary/50 text-secondary-foreground flex flex-col justify-center items-center"
+                    className="text-secondary-foreground flex flex-col justify-center items-center"
                 >
                     <ChevronRight />
                 </div>

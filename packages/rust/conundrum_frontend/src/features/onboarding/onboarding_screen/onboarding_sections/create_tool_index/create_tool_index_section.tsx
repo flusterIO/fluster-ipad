@@ -35,6 +35,7 @@ export const CreateToolIndexOnboardingSection = ({
                         ).catch((err: unknown) => {
                             consola.error("Error: ", err);
                         });
+                        next();
                     },
                     onSuccess: () => {
                         logger({
@@ -48,11 +49,11 @@ export const CreateToolIndexOnboardingSection = ({
                         }).catch((err: unknown) => {
                             consola.error("Error: ", err);
                         });
+                        next();
                     },
                 },
             );
             setResults(res);
-            next();
         } catch (err: unknown) {
             consola.error("Error: ", err);
         }

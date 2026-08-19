@@ -69,8 +69,10 @@ export const ChatSelectionSheet = ({
                         })
                     ) : (
                         <div className="grow w-full h-full flex flex-col justify-center items-center">
-                            <h6 className="text-center text-lg font-semibold">No History</h6>
-                            <div className="text-center">
+                            <h6 className="text-center text-lg font-semibold text-foreground">
+                                No History
+                            </h6>
+                            <div className="text-center text-foreground/80">
                                 You don't have any chat history to display. Simply start a
                                 conversation and AI will take care of the rest
                             </div>

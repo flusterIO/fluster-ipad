@@ -3,6 +3,7 @@ import { CheckIcon, XIcon } from "lucide-react";
 import React, { useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { CdrmContent } from "#/cdrm/cdrm_content";
+import { AnimatedCheckbox } from "#/onboarding/onboarding_screen/onboarding_checklist/onboarding_step";
 
 export const DatabaseTableHealthItem = ({
     item,
@@ -19,15 +20,7 @@ export const DatabaseTableHealthItem = ({
                 }}
             >
                 <div className="place-self-center">
-                    {item.exists ? (
-                        <div className="bg-green-500 rounded">
-                            <CheckIcon className="size-5" />
-                        </div>
-                    ) : (
-                        <div className="bg-red-600 rounded">
-                            <XIcon className="size-5" />
-                        </div>
-                    )}
+                    <AnimatedCheckbox status={item.exists ? "complete" : "error"} />
                 </div>
                 <h4 className="text-lg font-bold">{item.description.entity_name}</h4>
             </div>

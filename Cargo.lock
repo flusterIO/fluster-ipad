@@ -3604,6 +3604,7 @@ dependencies = [
  "log",
  "notify-debouncer-full",
  "once_cell",
+ "online",
  "open",
  "pdf-inspector",
  "pdf_oxide",

@@ -1,6 +1,10 @@
+use crate::mcp::mcp_server::get_mcp_server;
+use crate::rest::handle_socket::handle_socket;
 pub use crate::rpc::rspc_router::get_rspc_router;
 use crate::{mcp::mcp_handler::ConundrumMCP, rig::ai_types::ai_types::LocalCompletionModel};
 use axum::extract::State;
+use axum::{Router, extract::WebSocketUpgrade, response::Response, routing::get};
+use conundrum::ecosystem::environment_variables::cdrm_env_variable::{CdrmEnvVariable, DEFAULT_CDRM_SERVER_PORT};
 use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 #[cfg(debug_assertions)]
@@ -8,11 +12,6 @@ use rspc::Typescript;
 pub use rspc_axum;
 use std::sync::Arc;
 use tower_http::cors::{Any, CorsLayer};
-
-use crate::mcp::mcp_server::get_mcp_server;
-use crate::rest::handle_socket::handle_socket;
-use axum::{Router, extract::WebSocketUpgrade, response::Response, routing::get};
-use conundrum::ecosystem::environment_variables::cdrm_env_variable::{CdrmEnvVariable, DEFAULT_CDRM_SERVER_PORT};
 
 pub fn get_server_port() -> u32 {
     match CdrmEnvVariable::ServerPort.read() {

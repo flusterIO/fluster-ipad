@@ -9,10 +9,12 @@ export const PlainInlineCode = ({
     code,
     background = false,
     color = "inherit",
+    className,
 }: {
     code: string;
     color?: "inherit" | "code";
     background?: boolean;
+    className?: string;
 }) => {
     return (
         <span
@@ -20,6 +22,7 @@ export const PlainInlineCode = ({
                 "font-mono",
                 color === "code" && "text-lime-600! dark:text-lime-500!",
                 background && "rounded bg-muted",
+                className,
             )}
         >
             {code}

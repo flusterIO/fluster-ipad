@@ -1,9 +1,7 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::{
-    db_traits::async_traits::try_from_async::{FromAsync, TryFromAsync},
-    tables::DatabaseTable,
-};
+use conundrum::ecosystem::db::{db_traits::async_traits::try_from_async::FromAsync, tables::DatabaseTable};
+use online::tokio::check;
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 
@@ -17,12 +15,14 @@ pub struct BackendStatus {
     pub local_client_access: bool,
     pub remote_client_access: bool,
     pub all_tables_exist: bool,
-    pub missing_tables: bool,
+    pub any_tables_exist: bool,
+    pub is_online: bool,
 }
 
 impl FromAsync<Arc<ServerState>> for BackendStatus {
     async fn from_async(input: Arc<ServerState>) -> Self
         where Self: Sized {
+        let is_online = check(None).await.is_ok();
         let db = input.db.clone().lock_owned().await;
         let mut any_tables_exist = false;
         for k in DatabaseTable::iter() {
@@ -30,7 +30,8 @@ impl FromAsync<Arc<ServerState>> for BackendStatus {
                 return Self { local_client_access: input.local_client.is_some(),
                               remote_client_access: input.remote_client.is_some(),
                               all_tables_exist: false,
-                              any_tables_exist };
+                              any_tables_exist,
+                              is_online };
             } else {
                 any_tables_exist = true;
             }
@@ -38,6 +39,7 @@ impl FromAsync<Arc<ServerState>> for BackendStatus {
         Self { local_client_access: input.local_client.is_some(),
                remote_client_access: input.remote_client.is_some(),
                all_tables_exist: true,
-               any_tables_exist }
+               any_tables_exist,
+               is_online }
     }
 }

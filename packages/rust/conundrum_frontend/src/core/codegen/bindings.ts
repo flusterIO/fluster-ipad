@@ -270,7 +270,7 @@ export type PathSourceType = "file" | "directory" | "any"
 
 export type PathVariant = "File" | "Dir"
 
-export type ProceduresLegacy = { queries: { key: "backend_status"; input: null; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean } } | { key: "crud.agent_description.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; 
+export type ProceduresLegacy = { queries: { key: "backend_status"; input: null; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "crud.agent_description.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; 
 /**
  * The name that the AI should be referred to as. AI should reference this
  * field when a user asks for another agent by name.
@@ -675,7 +675,7 @@ resource_dir?: string; ai: AIInteractions; ctime: DateTime })[]; result: null } 
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
  */
-root: string; label?: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null }; subscriptions: never }
+root: string; label?: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null }; subscriptions: never }
 
 /**
  * ## Template (HTML)
@@ -795,7 +795,7 @@ resource_dir?: string; ai: AIInteractions; ctime: DateTime }
 export type WebGlueCodeGeneralFiles = "styles.css" | "katex.min.css" | "katex_ams_regular.woff2" | "katex_caligraphic_bold.woff2" | "katex_caligraphic_regular.woff2" | "katex_fraktur_bold.woff2" | "katex_fraktur_regular.woff2" | "katex_main_bold.woff2" | "katex_main_bolditalic.woff2" | "katex_main_italic.woff2" | "katex_main_regular.woff2" | "katex_math_bolditalic.woff2" | "katex_math_italic.woff2" | "katex_sansserif_bold.woff2" | "katex_sansserif_italic.woff2" | "katex_sansserif_regular.woff2" | "katex_script_regular.woff2" | "katex_size1_regular.woff2" | "katex_size2_regular.woff2" | "katex_size3_regular.woff2" | "katex_size4_regular.woff2" | "katex_typewriter_regular.woff2" | "Fira_Code_Regular.ttf"
 
 export type Procedures = {
-	backend_status: { kind: "query", input: null, output: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean }, error: unknown },
+	backend_status: { kind: "query", input: null, output: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean }, error: unknown },
 	cdrm: {
 	compile_cdrm: { kind: "mutation", input: { opts: ParseConundrumOptions }, output: { note_id: string | null; content: string; tags: TagResult[]; front_matter: FrontMatterResult | null; ordered_citation_keys: string[]; dictionary_entries: DictionaryEntryResult[]; outgoing_links: NoteOutgoingLinkResult[]; toc: MarkdownHeadingStringifiedResult[]; ignore_all_parsers: boolean; ai_secondary_parse_requests: AiSerializationRequestPhase1[]; eq_ref_map: Partial<{ [key in string]: number }>; warnings: ConundrumError[]; footnotes: Partial<{ [key in number]: RenderedFootnoteResult }>; included_components: AnyComponentKey[] }, error: unknown },
 },
@@ -885,8 +885,8 @@ export type Procedures = {
 	validate_path: { kind: "query", input: { path: string; source_type: PathSourceType; permitted_types: ParsableFileType[] }, output: boolean, error: unknown },
 },
 	initialize: {
-	step_1_init_db: { kind: "mutation", input: Record<string, never>, output: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean }, error: unknown },
-	step_2_init_tool_index: { kind: "mutation", input: Record<string, never>, output: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean }, error: unknown },
+	step_1_init_db: { kind: "mutation", input: Record<string, never>, output: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean }, error: unknown },
+	step_2_init_tool_index: { kind: "mutation", input: Record<string, never>, output: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean }, error: unknown },
 },
 	log: {
 	create: { kind: "mutation", input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }, output: null, error: unknown },

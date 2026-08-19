@@ -21,5 +21,6 @@ export const ecosystemLogToNotification = (
         title: log.title,
         body: log.message ?? undefined,
         severity: log.severity,
+        timeout: 5000,
     };
 };

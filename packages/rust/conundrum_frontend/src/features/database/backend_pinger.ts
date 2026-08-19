@@ -1,9 +1,25 @@
 import { rspc } from "@/app/rspc_client";
 import { type BackendStatus } from "./db_utility_types/health";
 import { AppPaths } from "#/navigation/app_paths";
-import consola from "consola";
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { type useLocation, useNavigate } from "react-router";
+
+const useNavigateToOnboardingOnPingerFail = (
+    data: BackendStatus | undefined,
+    location: ReturnType<typeof useLocation>,
+): void => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (
+            data?.all_tables_exist === false &&
+            !location.pathname.startsWith(AppPaths.onboarding)
+        ) {
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            navigate(AppPaths.onboarding);
+        }
+    }, [data, location]);
+};
 
 export const useBackendPinger = (): BackendStatus | null => {
     const { data } = rspc.useQuery(["backend_status", null], {
@@ -12,17 +28,8 @@ export const useBackendPinger = (): BackendStatus | null => {
         refetchInterval: 5 * 60 * 1000,
         refetchOnReconnect: "always",
     });
-    const location = useLocation();
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (
-            data?.all_tables_exist === false &&
-            !location.pathname.startsWith(AppPaths.onboarding)
-        ) {
-            navigate(AppPaths.onboarding).catch((err: unknown) => {
-                consola.error("Error: ", err);
-            });
-        }
-    }, [data, location]);
+    // const location = useLocation();
+    // TODO: TURN THIS BACK ON FOR PRODUCTION.
+    // useNavigateToOnboardingOnPingerFail(data, location);
     return data ?? null;
 };
