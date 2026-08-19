@@ -33,15 +33,15 @@ export const OnboardingStep = ({
                     {status === "in-progress" ? (
                         <RingLoader
                             initial={{
-                                /* y: 10, */
+                                y: 10,
                                 scale: 0
                             }}
                             exit={{
-                                /* y: -10, */
+                                y: -10,
                                 scale: 0
                             }}
                             animate={{
-                                /* y: 0, */
+                                y: 0,
                                 scale: 1
                             }}
                             className="w-4 h-4 max-w-4 max-h-4 relative transition-all duration-300" size={16}
@@ -69,11 +69,11 @@ export const OnboardingStep = ({
                         <motion.div
                             className="place-self-center leading-0"
                             initial={{
-                                y: -50,
+                                y: 10,
                                 scale: 0
                             }}
                             exit={{
-                                y: 50,
+                                y: -10,
                                 scale: 0
                             }}
                             animate={{

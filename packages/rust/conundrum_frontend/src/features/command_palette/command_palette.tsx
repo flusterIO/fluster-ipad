@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import React, {
+    Fragment,
     useEffect,
     useEffectEvent,
     useState,
@@ -146,7 +147,9 @@ export const CommandPalette = (): ReactNode => {
                             const items = childCommands[k as CommandGroupId] ?? [];
                             if (k !== "unknown") {
                                 return (
-                                    <CommandGroup>
+                                    <CommandGroup
+                                        key={`cg-${k}`}
+                                    >
                                         <div className="text-bold text-sm mb-2 mt-0 flex flex-row justify-start items-center w-full gap-x-2">
                                             <div className="w-4 h-0.5 bg-muted" />
                                             <div className="text-muted-foreground!">
@@ -169,7 +172,7 @@ export const CommandPalette = (): ReactNode => {
                                 );
                             } else {
                                 return (
-                                    <>
+                                    <Fragment key={`frag-${k}`}>
                                         {items.map((kk) => {
                                             return (
                                                 <CI
@@ -181,7 +184,7 @@ export const CommandPalette = (): ReactNode => {
                                                 />
                                             );
                                         })}
-                                    </>
+                                    </Fragment>
                                 );
                             }
                         })

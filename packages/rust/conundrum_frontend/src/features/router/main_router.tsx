@@ -12,6 +12,10 @@ import { CommandPaletteProvider } from "#/command_palette/command_palette_provid
 import { GlobalKeyboardListener } from "#/command_palette/global_keyboard_listener";
 import { useBackendPinger } from "#/database/backend_pinger";
 
+const dontScroll: AppPaths[] = [
+    AppPaths.onboarding
+]
+
 const MainRoutes = (): ReactNode => {
     const location = useLocation();
     useGlobalKeyboardListener();
@@ -19,7 +23,10 @@ const MainRoutes = (): ReactNode => {
     return (
         <div
             className={cn(
-                "@container/main bg-background w-[calc(100%-4rem)] max-h-screen min-h-screen overflow-x-hidden overflow-y-auto no-scrollbar",
+                "@container/main bg-background w-[calc(100%-4rem)] max-h-screen min-h-screen overflow-x-hidden no-scrollbar",
+                !dontScroll.some((x) => {
+                    return location.pathname.startsWith(x)
+                }) && "overflow-y-auto ",
                 location.pathname.startsWith(AppPaths.onboarding) && "w-screen",
             )}
         >
