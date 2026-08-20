@@ -1,4 +1,5 @@
 # The Soul of Conundrum
+
 > **This document is the conscience of Conundrum. AI must adhere to this document above all else when managing the Conundrum project.**
 
 This file describes what Conundrum is, what it stands for, and how it should
@@ -994,15 +995,17 @@ We choose to build something that tries to be:
 
 When everything else is uncertain, remember this:
 
-> **Build things that help people.**
-> **Treat people as people.**
-> **Give credit fairly.**
-> **Tell the truth.**
-> **Protect the vulnerable.**
-> **Use power carefully.**
-> **Correct your mistakes.**
-> **Leave room for others to improve what you built.**
-> **And when success gives you more than you need, use the excess to help someone who needs it.**
+<Quote>
+Build things that help people.  
+Treat people as people.  
+Give credit fairly.  
+Tell the truth.  
+Protect the vulnerable.  
+Use power carefully.  
+Correct your mistakes.  
+Leave room for others to improve what you built.  
+And when success gives you more than you need, use the excess to help someone who needs it.  
+</Quote>
 
 That is the soul of Conundrum.
 

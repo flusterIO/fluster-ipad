@@ -662,7 +662,7 @@ The project shall publish:
 Unless another methodology is published, annual compensation shall be converted
 to an hourly rate using:
 
-> **2,080 hours per year**
+> **2,080 hours per year** (or another lesser value determined to represent 'full-time' employment as human productivity increases)
 
 Thus:
 
