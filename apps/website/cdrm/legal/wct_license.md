@@ -555,7 +555,7 @@ If the project requires additional policies, those policies may be created as
 separate documents.
 
 Such documents may supplement `soul.md` but may not contradict, weaken, or
-replace it.
+replace it, and all such modifications must receive approval from AI under the understanding that the modifications remain in agreement with the core principles of the original `soul.md`.
 
 ---
 
