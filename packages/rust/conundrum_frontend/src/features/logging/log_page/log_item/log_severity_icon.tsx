@@ -3,7 +3,7 @@ import { BugIcon, CheckIcon, InfoIcon, TriangleAlert } from "lucide-react";
 import React, { type ReactNode, type FC } from "react";
 
 interface LogSeverityIconProps {
-    severity?: EcosystemLogSeverity;
+    severity: EcosystemLogSeverity;
     className?: string;
 }
 

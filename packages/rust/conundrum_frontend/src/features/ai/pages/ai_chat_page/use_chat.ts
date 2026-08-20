@@ -7,7 +7,13 @@ import { getServerPort } from "@/app/rspc_client";
 import consola from "consola";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
-import { type ChatEvent } from "@conundrum/ts/codegen-typeshare-server";
+
+import { type ChatEvent } from "@conundrum/ts/codegen-typeshare";
+
+/**
+ * Used by the timeout function in case the provider doesn't send a 'final' request so the data can be sent back to the server.
+ */
+const STREAM_RESET_TIMEOUT = 250;
 
 export interface ChatSearchParams {
     agent: string;
@@ -21,11 +27,17 @@ export interface ChatSearchParams {
     page?: number;
 }
 
+type NotK<K extends ChatEvent["type"]> = Omit<ChatEvent["type"], K>;
+
+type ExtractChatEvent<K extends ChatEvent["type"]> = {
+    [L in ChatEvent["type"]]?: L extends K ? L : never;
+};
+
 export interface ChatData {
     reasoning: string[];
     response: string;
     reasoningSummary?: string;
-    toolCalls: { tool_name: string; tool_input_params?: string }[];
+    toolCalls: NotK<"tool_call">[];
     tokens: {
         total?: number;
         incoming?: number;
@@ -63,6 +75,7 @@ export const useChat = () => {
     const [activelyStreaming, setActivelyStreaming] = useState(false);
     const [response, setResponse] = useState<ChatData>(getEmptyChatData());
     const [connected, setConnected] = useState(false);
+    const streamingTimer = useRef<NodeJS.Timeout | null>(null);
 
     const page = sp.get("page") ?? "1";
     const agent_id = sp.get("agent");
@@ -76,6 +89,10 @@ export const useChat = () => {
     }, [conversation_id]);
 
     const socket = useRef<WebSocket | null>(null);
+
+    const cleanupStream = (): void => {
+        setActivelyStreaming(false);
+    };
 
     useEffect(() => {
         if (initialized) {
@@ -95,10 +112,16 @@ export const useChat = () => {
                 const chatEvent = JSON.parse(event.data) as ChatEvent;
 
                 const handleIndividualRequest = (req: ChatEvent) => {
+                    if (streamingTimer.current) {
+                        clearTimeout(streamingTimer.current);
+                    }
                     if (req.type !== "done") {
                         setActivelyStreaming(true);
+                        streamingTimer.current = setTimeout(() => {
+                            cleanupStream();
+                        }, STREAM_RESET_TIMEOUT);
                     } else {
-                        setActivelyStreaming(false);
+                        cleanupStream();
                         return;
                     }
                     if (req.type === "text_delta") {

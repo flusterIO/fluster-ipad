@@ -155,7 +155,7 @@ export type DOMId = string
  */
 export type DatabaseId = string
 
-export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "chat_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -400,7 +400,7 @@ resource_dir?: string; ai: AIInteractions; ctime: DateTime })[] } | { key: "desc
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
  */
-entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "chat_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -440,7 +440,7 @@ message: string | null;
 /**
  * A description of the event logged written directly to AI.
  */
-ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "chat_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -452,7 +452,7 @@ ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSe
 /**
  * ---- Vectors ----
  */
-"cdrm_vec" | "mcp_tool" | "documentation_chunk")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+"cdrm_vec" | "mcp_tool" | "documentation_chunk")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "chat_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -878,7 +878,7 @@ export type Procedures = {
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "chat_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
@@ -894,8 +894,8 @@ export type Procedures = {
 },
 	rpc_health: { kind: "query", input: null, output: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean }, error: unknown },
 	tables: {
-	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk")[], error: unknown },
-	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "chat_message" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "chat_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk")[], error: unknown },
+	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "chat_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {

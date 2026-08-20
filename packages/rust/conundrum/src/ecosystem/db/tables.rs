@@ -43,6 +43,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "agent_message")]
     #[serde(rename = "agent_message")]
     AgentMessage,
+    #[strum(to_string = "system_prompt_message")]
+    #[serde(rename = "system_prompt_message")]
+    SystemPromptMessage,
     #[strum(to_string = "chat_message")]
     #[serde(rename = "chat_message")]
     UserMessage,

@@ -1220,15 +1220,6 @@ export interface OrderedListModel {
 }
 
 /**
- * Deperecated unless we have to lift things up. Use the one in the database
- * package.
- */
-export interface PaginationParams {
-	per_page: number;
-	page: number;
-}
-
-/**
  * The goal with these modifiers is to have a few different compile targets
  * (markdown, mdx, jsx, eventually straight to html/js, and then to an AST that
  * can be handled by other UI ecosystems), and these modifiers is how we can
@@ -1706,6 +1697,16 @@ export interface YoutubeComponent {
 	sizable: SizablePropsGroup;
 }
 
+export type AIError = 
+	| { tag: "ConundrumError", content: ConundrumErrorVariant }
+	| { tag: "FailToInitializeModel", content: string }
+	| { tag: "SkippingIrrelevantAIOutput", content?: undefined }
+	| { tag: "EmbeddingFail", content: string }
+	| { tag: "InvalidProps", content: string }
+	| { tag: "InvalidEnvironment", content: string }
+	| { tag: "InvalidLocalProvider", content?: undefined }
+	| { tag: "InvalidRemoteProvider", content?: undefined };
+
 export enum AiSerializationRequestType {
 	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
 	SummarizeNote = "SummarizeNote",
@@ -1736,6 +1737,45 @@ export enum CdrmEnvVariable {
 	ServerPort = "CDRM_SERVER_PORT",
 	CSLFilePath = "CDRM_CSL_FILE_PATH",
 }
+
+export type ChatEvent = 
+	| { type: "text_delta", content: {
+	text: string;
+	is_reasoning: boolean;
+}}
+	| { type: "redacted", content: {
+	text: string;
+}}
+	/** A complete block of reasoning logic. */
+	| { type: "reasoning_block", content: {
+	text: string;
+}}
+	/** A summary of the reasoning content. */
+	| { type: "reasoning_summary", content: {
+	text: string;
+}}
+	| { type: "encrypted", content: {
+	text: string;
+}}
+	| { type: "done", content: {
+	input_tokens: number;
+	output_tokens: number;
+	total_tokens: number;
+}}
+	| { type: "tool_call", content: {
+	tool_name: string;
+	tool_input_params?: string;
+}}
+	| { type: "tool_result_text", content: {
+	content: string;
+}}
+	| { type: "tool_result_image", content: {
+	image_type?: string;
+}}
+	| { type: "user_content", content: {
+	text: string;
+}}
+	| { type: "many", content: ChatEvent[] };
 
 export type CodeBlockLanguage = 
 	| { tag: "DefaultLanguage", content?: undefined }
@@ -1866,7 +1906,11 @@ export enum DatabaseTable {
 	WorkspacePath = "workspace_path",
 	QAPair = "qa_pair",
 	ChatConversation = "chat_conversation",
-	ChatMessage = "chat_message",
+	AgentMessage = "agent_message",
+	SystemPromptMessage = "system_prompt_message",
+	UserMessage = "chat_message",
+	AgentReasoning = "reasoning_block",
+	ToolExecution = "tool_execution",
 	AcademicResultMetric = "academic_res_metric",
 	BibEntry = "bib_entry",
 	AutoTaggable = "auto_taggable",
@@ -1888,6 +1932,7 @@ export enum DatabaseTable {
 	/** ---- Vectors ---- */
 	MarkdownChunk = "cdrm_vec",
 	MCPToolRecord = "mcp_tool",
+	DocumentationChunk = "documentation_chunk",
 }
 
 export enum DocumentationComponentName {

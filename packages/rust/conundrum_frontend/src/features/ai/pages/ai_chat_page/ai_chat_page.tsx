@@ -124,6 +124,9 @@ export const GeneralAIChatPage = (): ReactNode => {
                             <PromptInputButton tooltip={"Voice Input"}>
                                 <MicIcon size={16} />
                             </PromptInputButton>
+                            {activelyStreaming ? (
+                                <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                            ) : null}
                         </PromptInputTools>
                         <PromptInputSubmit />
                     </PromptInputFooter>

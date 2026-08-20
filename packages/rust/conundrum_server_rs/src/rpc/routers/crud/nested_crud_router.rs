@@ -5,9 +5,17 @@ use conundrum::ai::models::agent::agent_description::AgentDescription;
 use conundrum::ai::models::agent::agent_description_partial::AgentDescriptionPartial;
 use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 use conundrum::{
-    ai::models::chat::{
-        chat_conversation::{chat_conversation::ChatConversation, chat_conversation_partial::ChatConversationPartial},
-        chat_message::chat_message::ChatMessage,
+    ai::models::{
+        chat::{
+            chat_conversation::{
+                chat_conversation::ChatConversation, chat_conversation_partial::ChatConversationPartial,
+            },
+            chat_message::{
+                ai::ai_message::AIMessage, system::system_prompt_message::SystemPromptMessage,
+                user::user_message::UserMessage,
+            },
+        },
+        tool::tool_execution::ToolExecution,
     },
     ecosystem::db::{db_traits::entity_crud::EntityCRUD, tables::DatabaseTable},
 };
@@ -45,8 +53,11 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let flashcard_crud = crud_router!(FlashCardEntity, FlashCardEntityPartial);
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
     let chat_conversation_crud = crud_router!(ChatConversation, ChatConversationPartial);
-    let chat_message_crud = crud_router!(ChatMessage, ChatMessage);
+    let user_message_crud = crud_router!(UserMessage, UserMessage);
+    let ai_message_crud = crud_router!(AIMessage, AIMessage);
+    let system_prompt_message_crud = crud_router!(SystemPromptMessage, SystemPromptMessage);
     let agent_description_crud = crud_router!(AgentDescription, AgentDescriptionPartial);
+    let tool_execution_crud = crud_router!(ToolExecution, ToolExecution);
     Router::<Arc<ServerState>>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
                                      .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)
                                      .nest(DatabaseTable::Topic.to_string(), topic_crud)
@@ -58,5 +69,7 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
                                      .nest(DatabaseTable::QAPair.to_string(), flashcard_crud)
                                      .nest(DatabaseTable::AgentDescription.to_string(), agent_description_crud)
                                      .nest(DatabaseTable::ChatConversation.to_string(), chat_conversation_crud)
-                                     .nest(DatabaseTable::UserMessage.to_string(), chat_message_crud)
+                                     .nest(DatabaseTable::UserMessage.to_string(), user_message_crud)
+                                     .nest(DatabaseTable::AgentMessage.to_string(), ai_message_crud)
+                                     .nest(DatabaseTable::SystemPromptMessage.to_string(), system_prompt_message_crud)
 }

@@ -83,7 +83,7 @@ impl<'a> DBEntity<'a, DatabaseId> for AIMessage {
     type PartialUpdateType = AIMessage;
 
     fn table() -> crate::ecosystem::db::tables::DatabaseTable {
-        crate::ecosystem::db::tables::DatabaseTable::UserMessage
+        crate::ecosystem::db::tables::DatabaseTable::AgentMessage
     }
 
     fn merge_keys() -> &'static [&'static str] {

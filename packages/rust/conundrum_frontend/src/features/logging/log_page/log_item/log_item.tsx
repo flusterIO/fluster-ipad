@@ -3,6 +3,7 @@ import React, { type ReactNode } from "react";
 import { LogIntentionIcon } from "./log_intention_icon";
 import { type EcosystemLogSeverity } from "@/codegen/bindings";
 import { DateTimeComponent } from "#/datetime/components/date_time";
+import { LogSeverityIcon } from "./log_severity_icon";
 
 interface LogItemComponentProps {
     item: EcosystemLogItem;
@@ -29,7 +30,7 @@ export const LogItemComponent = ({
     return (
         <div className="w-full flex flex-col jutify-between items-start rounded p-4 border bg-fd-card text-fd-card-foreground">
             <div className="w-full flex flex-row justify-start items-center gap-x-2">
-                <LogIntentionIcon className="w-4 h-4" intention={item.purpose} />
+                <LogSeverityIcon className="w-4 h-4" severity={item.severity} />
                 <h5 className="font-bold">{item.title}</h5>
             </div>
             {item.message ? (
