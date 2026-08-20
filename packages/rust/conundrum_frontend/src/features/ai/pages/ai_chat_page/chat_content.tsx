@@ -16,14 +16,20 @@ export const ChatContent = ({
     setHasMessages,
 }: ChatContentProps): ReactNode => {
     const [page, setPage] = useState(1);
-    const { data: chatHistory } = rspc.useQuery([
-        "agent.load_chat_history",
+    const { data: chatHistory } = rspc.useQuery(
+        [
+            "agent.load_chat_history",
+            {
+                convo_id,
+                max_count: page * 10,
+            },
+        ],
         {
-            convo_id,
-            max_count: page * 10,
+            refetchOnWindowFocus: true,
+            refetchOnReconnect: true,
+            refetchOnMount: true,
         },
-    ]);
-    console.log("chatHistory: ", chatHistory);
+    );
     const data = useFormattedChatHistory(chatHistory ?? null);
 
     useEffect(() => {

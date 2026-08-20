@@ -36,6 +36,7 @@ declare global {
 const GeneralAIChatPageContent = (): ReactNode => {
     const [sp] = useSearchParams();
     const convo_id = sp.get("convo");
+    console.log("vonvoId: ", convo_id);
     if (!convo_id) {
         return null;
     }

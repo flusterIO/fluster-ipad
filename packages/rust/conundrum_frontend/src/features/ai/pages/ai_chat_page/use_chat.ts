@@ -1,12 +1,7 @@
-import {
-    type ChatMessageResultItem,
-    type ChatMessageResult,
-    type ChatClientData,
-    type ChatHistoryResponse,
-} from "#/database/db_utility_types/chat";
+import { type ChatClientData } from "#/database/db_utility_types/chat";
 import { useSelector } from "react-redux";
 import { v4 } from "uuid";
-import { getServerPort, rspc } from "@/app/rspc_client";
+import { getServerPort } from "@/app/rspc_client";
 import consola from "consola";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -84,15 +79,11 @@ export const useChat = () => {
     });
     const [initialized, setInitialized] = useState(false);
     const [sp, setSp] = useSearchParams();
-    const [messages, setMessages] = useState<ChatHistoryResponse>([]);
     const [activelyStreaming, setActivelyStreaming] = useState(false);
     const [response, setResponse] = useState<ChatData>(getEmptyChatData());
     const [connected, setConnected] = useState(false);
     const streamingTimer = useRef<NodeJS.Timeout | null>(null);
     const logger = useLogger();
-    const { mutateAsync: mutateChatData } = rspc.useMutation(
-        "agent.save_chat_data",
-    );
 
     const page = sp.get("page") ?? "1";
     const agent_id = sp.get("agent");
@@ -116,13 +107,7 @@ export const useChat = () => {
             setActivelyStreaming(false);
             return;
         }
-
         try {
-            await mutateChatData({
-                ...response,
-                agent_id,
-                convo_id: conversation_id,
-            });
             await logger({
                 title: "Appended to Chat Context",
                 message: `Your chat context was successfully updated for the chat with the id \`${conversation_id}\`.`,
@@ -252,6 +237,7 @@ export const useChat = () => {
             consola.warn("No socket found. Cannot continue.");
             return;
         }
+        setActivelyStreaming(true);
 
         setResponse(getEmptyChatData());
 
@@ -269,7 +255,6 @@ export const useChat = () => {
         response,
         connected,
         sendMessage,
-        messages,
         activelyStreaming,
     };
 };
