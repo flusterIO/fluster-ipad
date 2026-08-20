@@ -1,19 +1,28 @@
 import {
     type ChatMessageResultItem,
     type ChatMessageResult,
+    type ChatClientData,
+    type ChatHistoryResponse,
 } from "#/database/db_utility_types/chat";
+import { useSelector } from "react-redux";
 import { v4 } from "uuid";
-import { getServerPort } from "@/app/rspc_client";
+import { getServerPort, rspc } from "@/app/rspc_client";
 import consola from "consola";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
-import { type ChatEvent } from "@conundrum/ts/codegen-typeshare";
+import {
+    type ChatEvent,
+    type UserMessageInput,
+} from "@conundrum/ts/codegen-typeshare";
+import { type ToolExecution } from "@/codegen/bindings";
+import { type AppState } from "@/state/initial_state";
+import { useLogger } from "#/logging/state/hooks/use_logger";
 
 /**
  * Used by the timeout function in case the provider doesn't send a 'final' request so the data can be sent back to the server.
  */
-const STREAM_RESET_TIMEOUT = 250;
+const STREAM_RESET_TIMEOUT = 2000;
 
 export interface ChatSearchParams {
     agent: string;
@@ -27,21 +36,19 @@ export interface ChatSearchParams {
     page?: number;
 }
 
-type NotK<K extends ChatEvent["type"]> = Omit<ChatEvent["type"], K>;
-
-type ExtractChatEvent<K extends ChatEvent["type"]> = {
-    [L in ChatEvent["type"]]?: L extends K ? L : never;
-};
-
-export interface ChatData {
+export interface ChatData extends Pick<
+    ChatClientData,
+    "reasoning" | "response" | "tokens" | "tool_calls" | "system_prompt"
+> {
     reasoning: string[];
     response: string;
     reasoningSummary?: string;
-    toolCalls: NotK<"tool_call">[];
+    toolCalls: ToolExecution[];
+    system_prompt: "";
     tokens: {
-        total?: number;
-        incoming?: number;
-        outgoing?: number;
+        total: number;
+        incoming: number;
+        outgoing: number;
     };
 }
 
@@ -58,24 +65,34 @@ export const getEmptyChatData = (): ChatData => {
     return {
         reasoning: [],
         response: "",
+        reasoningSummary: "",
         toolCalls: [],
+        system_prompt: "",
+        tool_calls: [],
         tokens: {
-            total: undefined,
-            incoming: undefined,
-            outgoing: undefined,
+            total: 0,
+            incoming: 0,
+            outgoing: 0,
         },
     };
 };
 
 export const useChat = () => {
     const container = useRef<HTMLDivElement>(null);
+    const dailyChat = useSelector((state: AppState) => {
+        return state.ai.dailyChat;
+    });
     const [initialized, setInitialized] = useState(false);
     const [sp, setSp] = useSearchParams();
-    const [messages, setMessages] = useState<ChatMessageResult>([]);
+    const [messages, setMessages] = useState<ChatHistoryResponse>([]);
     const [activelyStreaming, setActivelyStreaming] = useState(false);
     const [response, setResponse] = useState<ChatData>(getEmptyChatData());
     const [connected, setConnected] = useState(false);
     const streamingTimer = useRef<NodeJS.Timeout | null>(null);
+    const logger = useLogger();
+    const { mutateAsync: mutateChatData } = rspc.useMutation(
+        "agent.save_chat_data",
+    );
 
     const page = sp.get("page") ?? "1";
     const agent_id = sp.get("agent");
@@ -83,16 +100,42 @@ export const useChat = () => {
 
     useEffect(() => {
         if (!conversation_id) {
-            sp.set("convo", v4());
+            sp.set("convo", dailyChat?.chat_id ?? v4());
             setSp(sp);
         }
-    }, [conversation_id]);
+    }, [conversation_id, dailyChat]);
 
     const socket = useRef<WebSocket | null>(null);
 
-    const cleanupStream = (): void => {
-        setActivelyStreaming(false);
-    };
+    const cleanupStream = useCallback(async () => {
+        if (!activelyStreaming) {
+            return;
+        }
+        if (!conversation_id) {
+            consola.error("Failed to load conversation id.");
+            setActivelyStreaming(false);
+            return;
+        }
+
+        try {
+            await mutateChatData({
+                ...response,
+                agent_id,
+                convo_id: conversation_id,
+            });
+            await logger({
+                title: "Appended to Chat Context",
+                message: `Your chat context was successfully updated for the chat with the id \`${conversation_id}\`.`,
+                ai_description: `A user successfully appended content the chat history so that you can retrieve it later.`,
+                purpose: "process-complete",
+                severity: "success",
+            });
+            setActivelyStreaming(false);
+        } catch (err: unknown) {
+            consola.error("Error: ", err);
+            setActivelyStreaming(false);
+        }
+    }, [conversation_id, agent_id, response, activelyStreaming]);
 
     useEffect(() => {
         if (initialized) {
@@ -118,10 +161,14 @@ export const useChat = () => {
                     if (req.type !== "done") {
                         setActivelyStreaming(true);
                         streamingTimer.current = setTimeout(() => {
-                            cleanupStream();
+                            cleanupStream().catch((err: unknown) => {
+                                consola.error("Error: {}", err);
+                            });
                         }, STREAM_RESET_TIMEOUT);
                     } else {
-                        cleanupStream();
+                        cleanupStream().catch((err: unknown) => {
+                            consola.error("Error: {}", err);
+                        });
                         return;
                     }
                     if (req.type === "text_delta") {
@@ -206,21 +253,11 @@ export const useChat = () => {
             return;
         }
 
-        setResponse({
-            response: "",
-            reasoning: [],
-            toolCalls: [],
-            tokens: {},
-        });
+        setResponse(getEmptyChatData());
 
-        const data: Pick<
-            ChatMessageResultItem,
-            "conversation_id" | "agent_id" | "body"
-        > = {
-            // TODO: Swap this out with the real testid
-            // @ts-expect-error -- It's getting set in the useEffect. The user would have to be mighty fast to be the hook.
-            conversation_id: conversation_id,
-            agent_id,
+        const data: UserMessageInput = {
+            convo_id: conversation_id,
+            agent_id: agent_id ?? null,
             body: input,
         };
 

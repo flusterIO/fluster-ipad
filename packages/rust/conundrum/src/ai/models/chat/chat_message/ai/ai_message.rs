@@ -2,14 +2,22 @@ use std::sync::Arc;
 
 use crate::{
     ai::{
-        models::chat::chat_message::user::user_message_input::UserMessageInput,
-        rig::ai_traits::ai_chat_history_item::IntoChatHistoryItem,
+        models::{
+            agent::agent_primary_task::AgentPrimaryTask, chat::chat_message::user::user_message_input::UserMessageInput,
+        },
+        rig::ai_traits::{
+            ai_chat_history_item::IntoChatHistoryItem, from_with_convo_information::FromWithConvoInformation,
+        },
     },
     ecosystem::db::db_traits::{
         db_entity::{DBEntity, DBSchema},
         db_field::DatabaseField,
     },
-    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId, static_id::StaticId},
+    lifted_models::primitives::{
+        date_time::DateTime,
+        db_id::DatabaseId,
+        static_id::{StaticId, StaticIdIter},
+    },
 };
 use axum::extract::ws::Message;
 use fake::Dummy;
@@ -21,12 +29,21 @@ use crate::impl_default_crud;
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct AIMessage {
     pub id: DatabaseId,
-    pub conversation_id: DatabaseId,
+    pub convo_id: DatabaseId,
     pub agent_id: DatabaseId,
     pub body: String,
     pub ctime: DateTime,
 }
 
+impl FromWithConvoInformation<String> for AIMessage {
+    fn from_with_convo_info(data: String, convo_id: DatabaseId, agent_id: Option<DatabaseId>) -> Self {
+        AIMessage { id: DatabaseId::new(),
+                    convo_id,
+                    agent_id: agent_id.unwrap_or_else(|| StaticId::DefaultAgent.into()),
+                    body: data,
+                    ctime: DateTime::new_now() }
+    }
+}
 impl Into<Message> for AIMessage {
     fn into(self) -> Message {
         if let Ok(s) = serde_json::to_string(&self) {
@@ -40,7 +57,7 @@ impl Into<Message> for AIMessage {
 impl From<UserMessageInput> for AIMessage {
     fn from(value: UserMessageInput) -> Self {
         AIMessage { id: DatabaseId::new(),
-                    conversation_id: value.conversation_id.unwrap_or_else(|| DatabaseId::new()),
+                    convo_id: value.convo_id.unwrap_or_else(|| DatabaseId::new()),
                     agent_id: value.agent_id.unwrap_or_else(|| {
                                                 let id: DatabaseId = StaticId::DefaultAgent.into();
                                                 id
@@ -72,7 +89,7 @@ impl<'a> DBSchema<'a> for AIMessage {
         -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
     {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(DatabaseId::field_definition("conversation_id", false)),
+                Arc::new(DatabaseId::field_definition("convo_id", false)),
                 Arc::new(DatabaseId::field_definition("agent_id", true)),
                 Arc::new(String::field_definition("body", false)),
                 Arc::new(DateTime::field_definition("ctime", false)),])

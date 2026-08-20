@@ -1073,8 +1073,7 @@ technology that performs similar functions.
 The project does not claim ownership over ideas, concepts, algorithms, methods,
 or general technical knowledge that are independently developed.
 
-The Hosted Service restriction applies to the Software and Derivative Technology,
-not to independent implementation.
+The Hosted Service restriction applies to the Software and Derivative Technology, not to independent implementation.
 
 ---
 

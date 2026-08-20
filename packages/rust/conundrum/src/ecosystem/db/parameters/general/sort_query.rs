@@ -12,6 +12,11 @@ impl SortQuery {
     pub fn to_column_ordering(&self) -> ColumnOrdering {
         self.order.to_lancedb(self.column.clone())
     }
+
+    pub fn order_by_ctime() -> Self {
+        SortQuery { column: "ctime".to_string(),
+                    order: SortOrder::DescNullLast }
+    }
 }
 
 pub struct SortQueryList(pub Vec<SortQuery>);

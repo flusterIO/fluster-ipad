@@ -52,6 +52,12 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                         This table holds individual chat messages between yourself and the user.
                         "}.to_string() },
+            DatabaseTable::SystemPromptMessage => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds individual system prompt messages between yourself and the user.
+                        "}.to_string() },
             DatabaseTable::EcosystemLog => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,

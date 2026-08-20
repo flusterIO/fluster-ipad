@@ -1,6 +1,7 @@
 import { sortByCtime } from "#/database/shared_queries/sort_queries";
 import { CenteredExpandedLoadingIndicator } from "#/navigation/full_screen_loading";
 import { rspc } from "@/app/rspc_client";
+import { motion } from "framer-motion";
 import {
     InputGroup,
     InputGroupAddon,
@@ -30,7 +31,7 @@ export const ChatSelectionSheet = ({
     const { data: conversations, isLoading } = rspc.useQuery([
         "crud.chat_conversation.get_by_predicate",
         {
-            predicate: convo ? `conversation_id="${convo}"` : undefined,
+            predicate: undefined,
             pagination: {
                 page,
                 per_page: 10,
@@ -65,7 +66,13 @@ export const ChatSelectionSheet = ({
                         <CenteredExpandedLoadingIndicator className="grow" />
                     ) : conversations?.length ? (
                         conversations.map((c) => {
-                            return <ChatSelectionItem item={c} key={c.id} />;
+                            return (
+                                <ChatSelectionItem
+                                    active={convo === c.id}
+                                    item={c}
+                                    key={c.id}
+                                />
+                            );
                         })
                     ) : (
                         <div className="grow w-full h-full flex flex-col justify-center items-center">

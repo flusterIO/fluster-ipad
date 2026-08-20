@@ -26,6 +26,18 @@ pub struct ReasoningBlock {
     pub ctime: DateTime,
 }
 
+impl FromWithConvoInformation<String> for ReasoningBlock {
+    fn from_with_convo_info(data: String, convo_id: DatabaseId, agent_id: Option<DatabaseId>) -> Self {
+        let content = data;
+
+        Self { id: DatabaseId::new(),
+               convo_id,
+               agent_id: agent_id.unwrap_or_else(|| StaticId::DefaultAgent.into()),
+               content,
+               ctime: DateTime::new_now() }
+    }
+}
+
 impl FromWithConvoInformation<rig::completion::message::Reasoning> for ReasoningBlock {
     fn from_with_convo_info(data: Reasoning, convo_id: DatabaseId, agent_id: Option<DatabaseId>) -> Self {
         let content = data.content

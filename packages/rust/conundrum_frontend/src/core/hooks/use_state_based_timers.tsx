@@ -1,13 +1,15 @@
 import { resetDailyChat } from "#/ai/state/ai_state_slice";
 import { type AppState } from "@/state/initial_state";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export const useTimer = (exec_at: Date | null, cb: () => void) => {
     const timer = useRef<NodeJS.Timeout | null>(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!exec_at) {
+            dispatch(resetDailyChat(null));
             return;
         }
         const target = exec_at.valueOf();

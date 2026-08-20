@@ -88,8 +88,7 @@ as the authoritative repository for the Software.
 5. a Hosted Service whose operation depends materially upon the Software or a
    Derivative Technology.
 
-Mere interoperability with the Software, without incorporating or substantially
-deriving from it, does not by itself constitute Derivative Technology.
+Mere interoperability with the Software, without incorporating or substantially deriving from it, does not by itself constitute Derivative Technology.
 
 ## 1.8 "Personal Use"
 

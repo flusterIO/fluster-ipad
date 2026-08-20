@@ -4,6 +4,7 @@ use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    ai::rig::ai_traits::from_with_convo_information::FromWithConvoInformation,
     ecosystem::db::{
         db_traits::{
             db_entity::{DBEntity, DBSchema},
@@ -22,6 +23,15 @@ pub struct SystemPromptMessage {
     pub body: String,
     pub convo_id: DatabaseId,
     pub ctime: DateTime,
+}
+
+impl FromWithConvoInformation<String> for SystemPromptMessage {
+    fn from_with_convo_info(data: String, convo_id: DatabaseId, agent_id: Option<DatabaseId>) -> Self {
+        Self { id: DatabaseId::new(),
+               body: data,
+               convo_id,
+               ctime: DateTime::new_now() }
+    }
 }
 
 impl<'a> DBSchema<'a> for SystemPromptMessage {

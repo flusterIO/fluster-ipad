@@ -2,7 +2,7 @@ use axum::{Json, extract::State};
 use conundrum::ai::{
     ai_constants::BASE_TEMPERATURE_AGENT,
     models::{
-        agent::agent_description::AgentDescription,
+        agent::{agent_description::AgentDescription, agent_primary_task::AgentPrimaryTask},
         chat::chat_message::user::{user_message::UserMessage, user_message_input::UserMessageInput},
     },
     rig::ai_traits::{ai_client_container::AIClientContainer, conundrum_agent::ConundrumAgent},
@@ -27,7 +27,7 @@ pub async fn chat_request_handler(State(state): State<Arc<ServerState>>,
         let locked_client = local_client.clone().lock_owned().await;
         // TODO: Get the agent description from the DB here.
         let agent = locked_client
-            .get_agent(AgentDescription::default_local_chat(), BASE_TEMPERATURE_AGENT as f64);
+            .get_agent(AgentDescription::default_local_chat(), AgentPrimaryTask::Agent.to_base_temperature());
         drop(locked_client);
         let user_message = UserMessage::from(payload);
         let mut stream = agent.stream_chat_response(user_message, vec![]).await;
@@ -46,6 +46,7 @@ pub async fn chat_request_handler(State(state): State<Arc<ServerState>>,
         }
         }
     } else {
+        log::warn!("Attempted to load local client before it was ready.");
         todo!()
     }
 }

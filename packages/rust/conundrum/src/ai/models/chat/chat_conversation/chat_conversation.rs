@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use crate::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
-use crate::ecosystem::db::parameters::ai::schema_parameters::SchemaParameters;
 use crate::ecosystem::db::tables::DatabaseTable;
 use crate::impl_default_crud;
 use crate::lifted_models::primitives::date_time::DateTime;

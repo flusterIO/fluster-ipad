@@ -6,8 +6,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     ai::{
-        models::tool::mcp_tool_name::MCPToolName,
-        rig::ai_traits::from_with_convo_information::TryFromWithConvoInformation,
+        models::tool::{mcp_tool_name::MCPToolName, tool_execution_partial::ToolExecutionPartial},
+        rig::ai_traits::from_with_convo_information::{FromWithConvoInformation, TryFromWithConvoInformation},
     },
     ecosystem::{
         db::{
@@ -31,6 +31,17 @@ pub struct ToolExecution {
     pub convo_id: DatabaseId,
     pub agent_id: Option<DatabaseId>,
     pub ctime: DateTime,
+}
+
+impl FromWithConvoInformation<ToolExecutionPartial> for ToolExecution {
+    fn from_with_convo_info(data: ToolExecutionPartial, convo_id: DatabaseId, agent_id: Option<DatabaseId>) -> Self {
+        Self { id: DatabaseId::new(),
+               tool_name: data.tool_name,
+               convo_id,
+               args: data.args,
+               agent_id,
+               ctime: DateTime::new_now() }
+    }
 }
 
 impl TryFromWithConvoInformation<ToolCall> for ToolExecution {

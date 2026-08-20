@@ -3,9 +3,10 @@ use axum::extract::ws::Message;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
+#[typeshare::typeshare]
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct UserMessageInput {
-    pub conversation_id: Option<DatabaseId>,
+    pub convo_id: Option<DatabaseId>,
     /// If the sender is the user, this is the agent requested. If the sender is
     /// AI, this is the AI sending the response.
     pub agent_id: Option<DatabaseId>,

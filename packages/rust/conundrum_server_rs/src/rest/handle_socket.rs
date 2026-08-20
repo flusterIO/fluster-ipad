@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::sync::Arc;
 
 use axum::extract::ws::{Message, WebSocket};
@@ -17,9 +18,14 @@ use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
 use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use futures_util::{SinkExt, StreamExt};
-use rig::agent::MultiTurnStreamItem;
+use rig::agent::{MultiTurnStreamItem, PromptResponse};
 use rig::completion::{CompletionModel, GetTokenUsage};
 use rig::streaming::{StreamedAssistantContent, StreamingCompletionResponse};
+use tokio::sync::{OnceCell, OwnedMutexGuard};
+
+/// Records the <ConversationId, ActivelyStreamingMessage> in a map until it can
+/// be saved.
+static ACCUMULATOR: OnceCell<HashMap<DatabaseId, String>> = OnceCell::const_new();
 
 use crate::rig::features::chat::chat_event::ChatEvent;
 
@@ -39,7 +45,7 @@ async fn handle_side_effects<R>(data: MultiTurnStreamItem<R>,
             match ToolExecution::try_from_with_convo_info(tool_call, convo_id, agent_id) {
                 Ok(r) => {
                     let db = Arc::clone(&state.db);
-                    if let Err(err) = ToolExecution::save_one(r, &db).await {
+                    if let Err(err) = ToolExecution::save_many(vec![r], &db).await {
                         log::error!("Failed attempting to save a tool execution. This context will be lost in future conversations with this model: {:#?}",
                                     err);
                     }
@@ -54,24 +60,41 @@ async fn handle_side_effects<R>(data: MultiTurnStreamItem<R>,
             StreamedAssistantContent::Reasoning(x) => {
                 let reasoning_block = ReasoningBlock::from_with_convo_info(x, convo_id, agent_id);
                 let db = Arc::clone(&state.db);
-                let _ = ReasoningBlock::save_one(reasoning_block, &db).await
+                let _ = ReasoningBlock::save_many(vec![reasoning_block], &db).await
                     .inspect_err(|e| {
                         log::error!("Failed trying to save agent's reasoning block. This context will be lost in future conversations: {:#?}", e);
                     });
             }
             StreamedAssistantContent::Text(text) => {
-                println!("The text that needs to be serialized: {}", text.text)
-                // let ai_message = AIMessage::from(text.)
+                let mut accumulator = ACCUMULATOR.get_or_init(|| async { HashMap::new() }).await.clone();
+                let next_content = match accumulator.get_mut(&convo_id) {
+                    Some(q) => {
+                        println!("Q: {}", q.clone());
+                        return *q += text.text.as_str();
+                    }
+                    None => text.text.clone(),
+                };
+                println!("Next Content: {}", next_content.clone());
+                accumulator.insert(convo_id.clone(), next_content);
             }
             _ => {}
         },
+        MultiTurnStreamItem::FinalResponse(pr) => {
+            println!("Concatenated Output: {}", pr.output);
+            println!("Other shit: {:#?}", pr.usage);
+            let msg = AIMessage::from_with_convo_info(pr.output.clone(), convo_id, agent_id);
+            let db = Arc::clone(&state.db);
+            let _ = AIMessage::save_many(vec![msg], &db).await.inspect_err(|e| {
+                log::error!("Failed to save an Agent generated message. This context will be lost in future conversations.");
+            });
+        }
         _ => {}
     }
 }
 
 pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
     let mut conversation_id = DatabaseId::new();
-    let mut agent_id = None;
+    let mut agent_id: Option<DatabaseId>;
     if let Some(client) = &state.clone().local_client {
         let (mut tx, mut rx) = socket.split();
 
@@ -89,21 +112,23 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
             let client_result = locked_client.get_default_agent(AgentPrimaryTask::Agent);
             drop(locked_client);
             if let Ok(msg) = serde_json::from_str::<UserMessageInput>(prompt.as_str()) {
-                if let Some(cid) = &msg.conversation_id {
+                if let Some(cid) = &msg.convo_id {
                     conversation_id = cid.clone();
                 }
                 agent_id = msg.agent_id.clone();
                 let user_message: UserMessage = UserMessage::from(msg);
+                let db = Arc::clone(&state.db);
+                let _ = UserMessage::save_many(vec![user_message.clone()], &Arc::clone(&db)).await.inspect_err(|e| {
+                    log::error!("Conundrum failed attempting to save the submitted user message: {:#?}", e);
+                });
                 let mut stream = client_result.stream_chat_response(user_message, vec![]).await;
                 while let Some(item) = stream.next().await {
                     match item {
                         Ok(data) => {
-                            // Turning this on triggers that side-effect issue. Handle this at the
-                            // library tomorrow.
-                            // handle_side_effects(data.clone(),
-                            //                     conversation_id.clone(),
-                            //                     agent_id.clone(),
-                            //                     &Arc::clone(&state)).await;
+                            handle_side_effects(data.clone(),
+                                                conversation_id.clone(),
+                                                agent_id.clone(),
+                                                &Arc::clone(&state)).await;
                             if let Ok(event) = ChatEvent::try_from(data) {
                                 match serde_json::to_string(&event) {
                                     Ok(s) => {

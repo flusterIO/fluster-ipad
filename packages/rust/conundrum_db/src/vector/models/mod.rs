@@ -93,3 +93,4 @@ pub mod themeing;
 pub mod utility;
 pub mod vector;
 pub mod workspace;
+pub mod knowledge;

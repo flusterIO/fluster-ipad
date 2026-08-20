@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::extract::ws::Message;
 use crate::{
     ai::{models::chat::chat_sender::chat_sender::ChatParticipant, rig::ai_traits::ai_chat_history_item::IntoChatHistoryItem},
-    ecosystem::db::{db_traits::{db_entity::{DBEntity, DBSchema}, db_field::DatabaseField}, parameters::ai::schema_parameters::SchemaParameters}, lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
+    ecosystem::db::{db_traits::{db_entity::{DBEntity, DBSchema}, db_field::DatabaseField}}, lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 use fake::Dummy;
 use rig::{OneOrMany, message::{Reasoning, UserContent}};
@@ -17,7 +17,7 @@ use crate::{
 pub struct ChatMessage {
     pub id: DatabaseId,
     pub reasoning_content: Option<String>,
-    pub conversation_id: DatabaseId,
+    pub convo_id: DatabaseId,
     /// If the sender is the user, this is the agent requested. If the sender is
     /// AI, this is the AI sending the response.
     pub agent_id: Option<DatabaseId>,
@@ -84,7 +84,7 @@ impl<'a> DBSchema<'a> for ChatMessage {
     {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
                 Arc::new(String::field_definition("reasoning_content", true)),
-                Arc::new(DatabaseId::field_definition("conversation_id", false)),
+                Arc::new(DatabaseId::field_definition("convo_id", false)),
                 Arc::new(DatabaseId::field_definition("agent_id", true)),
                 Arc::new(ChatParticipant::field_definition("sender", true)),
                 Arc::new(String::field_definition("body", false)),

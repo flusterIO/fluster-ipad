@@ -14,7 +14,7 @@ use rspc::Procedure;
 
 use crate::rpc::{
     routers::{
-        cdrm::cdrm_router::get_cdrm_router, code::code_router::get_code_router,
+        agent::agent_router::get_agent_router, cdrm::cdrm_router::get_cdrm_router, code::code_router::get_code_router,
         crud::nested_crud_router::get_nested_crud_router, describe::describe_router::get_describe_router,
         fs::fs_router::get_fs_router, initialization::initialization_router::get_initialization_router,
         log::logger_router::get_logger_router, table::table_router::get_table_router,
@@ -33,6 +33,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
     let code_router = get_code_router();
     let cdrm_router = get_cdrm_router();
     let describe_router = get_describe_router();
+    let agent_router = get_agent_router();
     let crud_router = get_nested_crud_router();
 
     let r = rspc::Router::<Arc<ServerState>>::new().nest("fs", fs_router)
@@ -42,6 +43,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
                                                .nest("tables", table_router)
                                                .nest("cdrm", cdrm_router)
                                                .nest("describe", describe_router)
+                                               .nest("agent", agent_router)
                                                .nest("crud", crud_router)
                                                .nest("initialize", initialization_router)
                                                .procedure("backend_status", Procedure::builder::<ServerError>().query(|ctx: Arc<ServerState>, _: ()| async move {

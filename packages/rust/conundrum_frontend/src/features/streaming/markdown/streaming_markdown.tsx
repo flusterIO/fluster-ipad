@@ -20,7 +20,7 @@ export const StreamingMarkdown = ({
             animated={true}
             isAnimating={activelyStreaming}
             skipHtml
-            shikiTheme={["dracula", "dracula"]}
+            shikiTheme={["github-light-default", "dracula"]}
             plugins={{ code, mermaid, math }}
             linkSafety={{
                 enabled: false,

@@ -1,3 +1,4 @@
+pub mod agent;
 pub mod cdrm;
 pub mod code;
 pub mod crud;

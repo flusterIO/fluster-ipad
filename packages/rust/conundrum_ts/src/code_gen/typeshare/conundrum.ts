@@ -1657,6 +1657,16 @@ export interface UnorderedTaskListModel {
 	items: UnorderedTaskListItem[];
 }
 
+export interface UserMessageInput {
+	convo_id?: DatabaseId;
+	/**
+	 * If the sender is the user, this is the agent requested. If the sender is
+	 * AI, this is the AI sending the response.
+	 */
+	agent_id?: DatabaseId;
+	body: string;
+}
+
 /**
  * The `Container` component is an intentionally almost entirely unstyled
  * component that accepts most of the _generic_ properties accepted elsewhere.
@@ -1908,7 +1918,7 @@ export enum DatabaseTable {
 	ChatConversation = "chat_conversation",
 	AgentMessage = "agent_message",
 	SystemPromptMessage = "system_prompt_message",
-	UserMessage = "chat_message",
+	UserMessage = "user_message",
 	AgentReasoning = "reasoning_block",
 	ToolExecution = "tool_execution",
 	AcademicResultMetric = "academic_res_metric",

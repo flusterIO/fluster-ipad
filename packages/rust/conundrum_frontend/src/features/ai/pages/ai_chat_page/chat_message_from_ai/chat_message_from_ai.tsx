@@ -1,14 +1,17 @@
-import { type ChatMessageResultItem } from "#/database/db_utility_types/chat";
+import { StreamingMarkdown } from "#/streaming/markdown/streaming_markdown";
+import { type AIMessage } from "@/codegen/bindings";
 import React, { type ReactNode } from "react";
 
 interface ChatMessageFromAIProps {
-    item: ChatMessageResultItem;
+    item: AIMessage;
 }
 
-export const ChatMessageFromAI = ({
+export const ChatMessageFromAgent = ({
     item,
 }: ChatMessageFromAIProps): ReactNode => {
-    return <div className="text-foreground">{item.body}</div>;
+    return (
+        <StreamingMarkdown activelyStreaming={false}>{item.body}</StreamingMarkdown>
+    );
 };
 
-ChatMessageFromAI.displayName = "ChatMessageFromAI";
+ChatMessageFromAgent.displayName = "ChatMessageFromAI";

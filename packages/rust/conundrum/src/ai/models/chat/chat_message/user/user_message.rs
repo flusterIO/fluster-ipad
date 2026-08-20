@@ -5,7 +5,9 @@ use crate::{
         models::chat::{
             chat_message::user::user_message_input::UserMessageInput, chat_sender::chat_sender::ChatParticipant,
         },
-        rig::ai_traits::ai_chat_history_item::IntoChatHistoryItem,
+        rig::ai_traits::{
+            ai_chat_history_item::IntoChatHistoryItem, from_with_convo_information::FromWithConvoInformation,
+        },
     },
     ecosystem::db::{
         db_traits::{
@@ -26,12 +28,22 @@ use crate::impl_default_crud;
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct UserMessage {
     pub id: DatabaseId,
-    pub conversation_id: DatabaseId,
+    pub convo_id: DatabaseId,
     /// If the sender is the user, this is the agent requested. If the sender is
     /// AI, this is the AI sending the response.
     pub agent_id: DatabaseId,
     pub body: String,
     pub ctime: DateTime,
+}
+
+impl FromWithConvoInformation<String> for UserMessage {
+    fn from_with_convo_info(data: String, convo_id: DatabaseId, agent_id: Option<DatabaseId>) -> Self {
+        UserMessage { id: DatabaseId::new(),
+                      convo_id,
+                      agent_id: agent_id.unwrap_or_else(|| StaticId::DefaultAgent.into()),
+                      body: data,
+                      ctime: DateTime::new_now() }
+    }
 }
 
 impl Into<Message> for UserMessage {
@@ -47,7 +59,7 @@ impl Into<Message> for UserMessage {
 impl From<UserMessageInput> for UserMessage {
     fn from(value: UserMessageInput) -> Self {
         UserMessage { id: DatabaseId::new(),
-                      conversation_id: value.conversation_id.unwrap_or_else(|| DatabaseId::new()),
+                      convo_id: value.convo_id.unwrap_or_else(|| DatabaseId::new()),
                       agent_id: value.agent_id.unwrap_or_else(|| {
                                                   let id: DatabaseId = StaticId::DefaultAgent.into();
                                                   id
@@ -79,7 +91,7 @@ impl<'a> DBSchema<'a> for UserMessage {
         -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
     {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(DatabaseId::field_definition("conversation_id", false)),
+                Arc::new(DatabaseId::field_definition("convo_id", false)),
                 Arc::new(DatabaseId::field_definition("agent_id", true)),
                 Arc::new(String::field_definition("body", false)),
                 Arc::new(DateTime::field_definition("ctime", false)),])
