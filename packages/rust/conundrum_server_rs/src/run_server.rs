@@ -68,5 +68,5 @@ pub async fn run_server(write_types_to: Option<impl AsRef<std::path::Path>>) -> 
 }
 
 async fn ws_handler(ws: WebSocketUpgrade, State(state): State<Arc<ServerState>>) -> Response {
-    ws.on_upgrade(move |socket| handle_socket::<LocalCompletionModel>(socket, state))
+    ws.on_upgrade(move |socket| handle_socket(socket, state))
 }

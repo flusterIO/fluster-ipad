@@ -43,17 +43,17 @@ export const footerLinks: Record<FooterLinkKeys, LinkGroupItems> & {
         },
         {
             href: staticContent.links.github.notebook.notebookPage,
-            label: "α ω Gravity Jupyter Notebook"
-        }
+            label: "α ω Gravity Jupyter Notebook",
+        },
     ],
     legal: [
         {
-            href: staticContent.links.docs.internal.developerHome,
-            label: "Old App",
+            href: "/license",
+            label: "License",
         },
         {
-            href: "/tos",
-            label: "Terms Of Service",
+            href: "/soul",
+            label: "Soul",
         },
         {
             href: "/privacy",

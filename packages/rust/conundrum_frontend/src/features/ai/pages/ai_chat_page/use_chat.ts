@@ -2,6 +2,7 @@ import {
     type ChatMessageResultItem,
     type ChatMessageResult,
 } from "#/database/db_utility_types/chat";
+import { v4 } from "uuid";
 import { getServerPort } from "@/app/rspc_client";
 import consola from "consola";
 import { useEffect, useRef, useState } from "react";
@@ -63,10 +64,16 @@ export const useChat = () => {
     const [response, setResponse] = useState<ChatData>(getEmptyChatData());
     const [connected, setConnected] = useState(false);
 
-    const chatId = sp.get("convo");
     const page = sp.get("page") ?? "1";
     const agent_id = sp.get("agent");
     const conversation_id = sp.get("convo");
+
+    useEffect(() => {
+        if (!conversation_id) {
+            sp.set("convo", v4());
+            setSp(sp);
+        }
+    }, [conversation_id]);
 
     const socket = useRef<WebSocket | null>(null);
 
@@ -86,7 +93,6 @@ export const useChat = () => {
         ws.onmessage = (event: MessageEvent<string>) => {
             try {
                 const chatEvent = JSON.parse(event.data) as ChatEvent;
-                console.log("chatEvent: ", chatEvent);
 
                 const handleIndividualRequest = (req: ChatEvent) => {
                     if (req.type !== "done") {
@@ -189,7 +195,8 @@ export const useChat = () => {
             "conversation_id" | "agent_id" | "body"
         > = {
             // TODO: Swap this out with the real testid
-            conversation_id,
+            // @ts-expect-error -- It's getting set in the useEffect. The user would have to be mighty fast to be the hook.
+            conversation_id: conversation_id,
             agent_id,
             body: input,
         };

@@ -8,3 +8,4 @@ pub mod from_agent_description;
 pub mod into_embedding_description;
 pub mod rig_client;
 pub mod tool_implementation;
+pub mod from_with_convo_information;

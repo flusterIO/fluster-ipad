@@ -1,6 +1,6 @@
 # World-Changing Technology License (WCTL) v1.0
 
-Copyright © 2026 Andrew C. Mueller
+Copyright © 2026 Andrew C. Mueller (Conundrum)
 
 ---
 
@@ -14,14 +14,14 @@ The Software covered by this License is intentionally **source-available rather 
 
 Every person should be free to:
 
-* use the Software;
-* study the Software;
-* copy the Software;
-* clone the Software;
-* fork the Software;
-* modify the Software;
-* experiment with the Software; and
-* operate their own private copy for Personal Use.
+- use the Software;
+- study the Software;
+- copy the Software;
+- clone the Software;
+- fork the Software;
+- modify the Software;
+- experiment with the Software; and
+- operate their own private copy for Personal Use.
 
 The principal restriction is that the Software and technologies substantially derived from it may not be operated as a Hosted Service for third parties without a separate commercial license.
 
@@ -34,7 +34,7 @@ This restriction exists because successful hosting of the Software may generate 
 
 The project further establishes an AI-governed contribution system intended to make decisions as impartially, transparently, and consistently as reasonably possible.
 
-That AI governance is subordinate to the project's foundational ethical principles, which are recorded in the immutable `soul.md` described in this License.
+That AI governance is subordinate to the project's foundational ethical principles, which are recorded in the immutable `soul.md` (available [here](https://flusterapp.com/soul)) described in this License.
 
 This License should be interpreted in favor of those purposes.
 
@@ -109,12 +109,12 @@ A Hosted Service exists whether or not the operator charges money.
 
 "Qualifying Revenue" means revenue actually received from:
 
-* commercial hosting of the Software;
-* commercial hosting of a Derivative Technology;
-* commercial licensing of the Software;
-* commercial licensing of a Derivative Technology;
-* paid services substantially based upon the Software; or
-* another commercial exploitation of the Software or Derivative Technology
+- commercial hosting of the Software;
+- commercial hosting of a Derivative Technology;
+- commercial licensing of the Software;
+- commercial licensing of a Derivative Technology;
+- paid services substantially based upon the Software; or
+- another commercial exploitation of the Software or Derivative Technology
   designated by the project as part of its commercial ecosystem.
 
 Taxes, refunds, payment reversals, and amounts legally required to be remitted to
@@ -156,17 +156,17 @@ distribution to Contributors pursuant to this License.
 Subject to the terms of this License, every person receives a worldwide,
 royalty-free, non-exclusive license to:
 
-* use the Software;
-* inspect the Software;
-* copy the Software;
-* clone the Software;
-* fork the Software;
-* modify the Software;
-* create Derivative Technology for Personal Use;
-* compile the Software;
-* experiment with the Software;
-* use the Software for education and research; and
-* redistribute copies and modifications for Personal Use.
+- use the Software;
+- inspect the Software;
+- copy the Software;
+- clone the Software;
+- fork the Software;
+- modify the Software;
+- create Derivative Technology for Personal Use;
+- compile the Software;
+- experiment with the Software;
+- use the Software for education and research; and
+- redistribute copies and modifications for Personal Use.
 
 No payment to the project is required merely to exercise these rights.
 
@@ -178,13 +178,13 @@ You may create unlimited private forks and modified versions of the Software.
 
 You may:
 
-* modify any portion of the Software;
-* remove functionality;
-* add functionality;
-* replace components;
-* integrate other technologies;
-* experiment with alternative implementations; and
-* maintain a private version indefinitely.
+- modify any portion of the Software;
+- remove functionality;
+- add functionality;
+- replace components;
+- integrate other technologies;
+- experiment with alternative implementations; and
+- maintain a private version indefinitely.
 
 You are not required to contribute modifications back to the project.
 
@@ -211,13 +211,13 @@ Without a separate commercial license, you may not:
 
 This restriction applies regardless of whether the Hosted Service is:
 
-* paid;
-* free;
-* donation supported;
-* advertising supported;
-* subscription based;
-* usage based; or
-* otherwise monetized.
+- paid;
+- free;
+- donation supported;
+- advertising supported;
+- subscription based;
+- usage based; or
+- otherwise monetized.
 
 The restriction exists because commercial hosting may generate substantial
 economic value that the project intends to use for the purposes described in
@@ -245,14 +245,14 @@ The project may grant separate licenses authorizing commercial Hosted Services.
 
 The terms of such licenses may include:
 
-* revenue sharing;
-* licensing fees;
-* subscriptions;
-* usage fees;
-* service agreements;
-* equity arrangements;
-* partnerships; or
-* other mutually agreed consideration.
+- revenue sharing;
+- licensing fees;
+- subscriptions;
+- usage fees;
+- service agreements;
+- equity arrangements;
+- partnerships; or
+- other mutually agreed consideration.
 
 Commercial license revenue shall constitute Qualifying Revenue unless the
 applicable commercial agreement expressly provides otherwise.
@@ -333,7 +333,7 @@ At minimum, the system shall estimate:
 
 Each Commit shall receive one of the following classifications:
 
-```text
+```txt
 junior
 senior
 staff
@@ -359,37 +359,37 @@ The system shall evaluate the **work**, not the perceived worth of the person.
 The AI Governance System shall evaluate Contributions according to principles
 including:
 
-* correctness;
-* maintainability;
-* security;
-* reliability;
-* performance;
-* simplicity;
-* architectural integrity;
-* appropriate testing;
-* documentation;
-* accessibility;
-* interoperability;
-* long-term sustainability;
-* technical difficulty;
-* engineering judgment;
-* actual effort; and
-* the principles contained within `soul.md`.
+- correctness;
+- maintainability;
+- security;
+- reliability;
+- performance;
+- simplicity;
+- architectural integrity;
+- appropriate testing;
+- documentation;
+- accessibility;
+- interoperability;
+- long-term sustainability;
+- technical difficulty;
+- engineering judgment;
+- actual effort; and
+- the principles contained within `soul.md`.
 
 The system shall not intentionally evaluate Contributors based upon:
 
-* race;
-* sex;
-* religion;
-* disability;
-* nationality;
-* political affiliation;
-* personal wealth;
-* social status;
-* popularity;
-* personal relationships;
-* reputation unrelated to the Contribution; or
-* other irrelevant personal characteristics.
+- race;
+- sex;
+- religion;
+- disability;
+- nationality;
+- political affiliation;
+- personal wealth;
+- social status;
+- popularity;
+- personal relationships;
+- reputation unrelated to the Contribution or the principles contained within `soul.md`; or
+- other irrelevant personal characteristics.
 
 The purpose of AI evaluation is to make the process **more impartial**, not to
 create a mechanism for disguising arbitrary human preferences as objective
@@ -404,11 +404,11 @@ hours represented by each Commit.
 
 The estimate shall not be determined merely by:
 
-* lines of code;
-* number of files;
-* number of characters;
-* number of commits; or
-* time between Git commits.
+- lines of code;
+- number of files;
+- number of characters;
+- number of commits; or
+- time between Git commits.
 
 The system should instead consider the substantive engineering work involved.
 
@@ -417,19 +417,19 @@ engineering value than a thousand-line mechanical change.
 
 The system may consider:
 
-* debugging;
-* investigation;
-* design;
-* research;
-* architectural reasoning;
-* testing;
-* integration;
-* security analysis;
-* performance analysis;
-* refactoring;
-* documentation;
-* domain complexity; and
-* other reasonably inferable engineering effort.
+- debugging;
+- investigation;
+- design;
+- research;
+- architectural reasoning;
+- testing;
+- integration;
+- security analysis;
+- performance analysis;
+- refactoring;
+- documentation;
+- domain complexity; and
+- other reasonably inferable engineering effort.
 
 ---
 
@@ -439,7 +439,7 @@ The project shall maintain an auditable record for every qualifying Commit.
 
 The record should contain at least:
 
-```text
+```txt
 commit_id
 pull_request_id
 contributor
@@ -466,13 +466,13 @@ AI assessments are estimates and may be challenged.
 
 A Contributor may request review of:
 
-* estimated hours;
-* seniority classification;
-* attribution;
-* duplicate counting;
-* omitted work;
-* incorrect interpretation of the Contribution; or
-* another material error.
+- estimated hours;
+- seniority classification;
+- attribution;
+- duplicate counting;
+- omitted work;
+- incorrect interpretation of the Contribution; or
+- another material error.
 
 The project shall provide a reasonable mechanism for correcting materially
 incorrect assessments.
@@ -492,13 +492,13 @@ approval shall be managed by the AI Governance System.
 
 The purpose of AI-controlled approval is to minimize:
 
-* favoritism;
-* personal conflicts;
-* social pressure;
-* founder preference;
-* contributor popularity;
-* organizational politics; and
-* inconsistent application of technical standards.
+- favoritism;
+- personal conflicts;
+- social pressure;
+- founder preference;
+- contributor popularity;
+- organizational politics; and
+- inconsistent application of technical standards.
 
 The AI Governance System shall evaluate Pull Requests according to the project's
 technical standards **and** `soul.md`.
@@ -513,7 +513,7 @@ decisions merely because they personally disagree with a Contributor.
 
 The project shall contain a file named:
 
-```text
+```txt
 soul.md
 ```
 
@@ -522,19 +522,19 @@ the project.
 
 At minimum, `soul.md` shall establish that the project seeks to be:
 
-* benevolent;
-* compassionate;
-* empathetic;
-* caring;
-* fair;
-* honest;
-* transparent;
-* respectful of human dignity;
-* protective of vulnerable people;
-* oriented toward constructive human progress;
-* resistant to exploitation;
-* respectful of Contributors; and
-* committed to using technological success for broad human benefit.
+- benevolent;
+- compassionate;
+- empathetic;
+- caring;
+- fair;
+- honest;
+- transparent;
+- respectful of human dignity;
+- protective of vulnerable people;
+- oriented toward constructive human progress;
+- resistant to exploitation;
+- respectful of Contributors; and
+- committed to using technological success for broad human benefit.
 
 The precise contents of `soul.md` shall be established by the Founder.
 
@@ -584,15 +584,15 @@ System evaluates Contributions and Pull Requests.
 
 To the extent reasonably possible, the project shall publish:
 
-* the AI model or model family used;
-* relevant model versions;
-* evaluation prompts or specifications;
-* scoring methodology;
-* contribution classification methodology;
-* applicable coding standards;
-* relevant governance policies;
-* changes to the AI evaluation system; and
-* mechanisms for challenging erroneous decisions.
+- the AI model or model family used;
+- relevant model versions;
+- evaluation prompts or specifications;
+- scoring methodology;
+- contribution classification methodology;
+- applicable coding standards;
+- relevant governance policies;
+- changes to the AI evaluation system; and
+- mechanisms for challenging erroneous decisions.
 
 Secret criteria shall not be intentionally used to manipulate Contributor
 compensation or Pull Request acceptance.
@@ -645,9 +645,9 @@ This avoids compensating seniority twice.
 At the beginning of each Financial Year, the project shall establish an
 annual compensation benchmark for:
 
-* United States `junior` software engineers;
-* United States `senior` software engineers; and
-* United States `staff` software engineers.
+- United States (or a country with equal or greater engineer pay) `junior` software engineers;
+- United States (or a country with equal or greater engineer pay) `senior` software engineers; and
+- United States (or a country with equal or greater engineer pay) `staff` software engineers.
 
 The benchmark shall use reputable publicly available compensation data.
 
@@ -707,12 +707,12 @@ System shall attribute work to the appropriate Contributors.
 
 A Contributor shall not lose compensation merely because:
 
-* a Pull Request is squashed;
-* commits are rebased;
-* commits are cherry-picked;
-* Git history is rewritten;
-* commits are merged through another branch; or
-* repository maintenance changes the resulting Git identifiers.
+- a Pull Request is squashed;
+- commits are rebased;
+- commits are cherry-picked;
+- Git history is rewritten;
+- commits are merged through another branch; or
+- repository maintenance changes the resulting Git identifiers.
 
 The economic record shall follow the work rather than merely the Git hash.
 
@@ -724,13 +724,13 @@ The project shall not intentionally reward artificial Git activity.
 
 Contribution Units shall not be increased merely by:
 
-* splitting one task into hundreds of commits;
-* artificially inflating line counts;
-* repeatedly formatting the same code;
-* introducing unnecessary complexity;
-* deliberately creating bugs and fixing them;
-* creating meaningless Pull Requests; or
-* otherwise manipulating the accounting system.
+- splitting one task into hundreds of commits;
+- artificially inflating line counts;
+- repeatedly formatting the same code;
+- introducing unnecessary complexity;
+- deliberately creating bugs and fixing them;
+- creating meaningless Pull Requests; or
+- otherwise manipulating the accounting system.
 
 The AI Governance System may consolidate related activity where doing so more
 accurately represents the actual engineering work performed.
@@ -787,13 +787,13 @@ that receive the charitable allocation.
 
 The Founder may establish:
 
-* an approved charity list;
-* allocation percentages;
-* minimum standards;
-* geographic priorities;
-* areas of focus;
-* replacement rules; and
-* other reasonable charitable criteria.
+- an approved charity list;
+- allocation percentages;
+- minimum standards;
+- geographic priorities;
+- areas of focus;
+- replacement rules; and
+- other reasonable charitable criteria.
 
 The Founder may not retroactively reduce compensation already earned by
 Contributors in order to increase charitable distributions.
@@ -810,15 +810,15 @@ transferred from the Founder to the committee.
 
 The committee should operate according to principles including:
 
-* transparency;
-* accountability;
-* independence;
-* avoidance of conflicts of interest;
-* charitable effectiveness;
-* compassion;
-* human dignity;
-* measurable positive impact; and
-* long-term benefit to society.
+- transparency;
+- accountability;
+- independence;
+- avoidance of conflicts of interest;
+- charitable effectiveness;
+- compassion;
+- human dignity;
+- measurable positive impact; and
+- long-term benefit to society.
 
 Until such a committee is legally established and authorized to act, the Founder
 retains responsibility for charitable allocation.
@@ -832,22 +832,22 @@ foundational `soul.md`.
 
 The Founder may:
 
-* establish the initial charitable organizations;
-* establish the initial project governance;
-* establish the initial AI Governance System;
-* establish the initial compensation methodology;
-* establish the Canonical Repository; and
-* establish supplementary policies consistent with this License.
+- establish the initial charitable organizations;
+- establish the initial project governance;
+- establish the initial AI Governance System;
+- establish the initial compensation methodology;
+- establish the Canonical Repository; and
+- establish supplementary policies consistent with this License.
 
 The Founder may not:
 
-* alter the immutable foundational `soul.md`;
-* retroactively eliminate Contributor compensation;
-* intentionally manipulate AI assessments to favor particular Contributors;
-* intentionally discriminate against Contributors;
-* use personal discretion to award compensation contrary to the contribution
+- alter the immutable foundational `soul.md`;
+- retroactively eliminate Contributor compensation;
+- intentionally manipulate AI assessments to favor particular Contributors;
+- intentionally discriminate against Contributors;
+- use personal discretion to award compensation contrary to the contribution
   accounting system; or
-* represent arbitrary personal preference as an AI decision.
+- represent arbitrary personal preference as an AI decision.
 
 The purpose of this structure is to allow the Founder to establish the project
 while preventing the project from becoming permanently dependent upon the
@@ -862,11 +862,11 @@ the project.
 
 Any successor organization shall remain bound by:
 
-* the Contributor compensation obligations;
-* the charitable obligations;
-* the immutable `soul.md`;
-* the Personal Use rights granted by this License; and
-* the fundamental restrictions on Hosted Services.
+- the Contributor compensation obligations;
+- the charitable obligations;
+- the immutable `soul.md`;
+- the Personal Use rights granted by this License; and
+- the fundamental restrictions on Hosted Services.
 
 The project shall not be transferred for the purpose of escaping obligations
 already accrued to Contributors.
@@ -902,12 +902,12 @@ that Contributor's compensation.
 
 A Contributor may request correction of:
 
-* incorrect attribution;
-* missing Contributions;
-* erroneous estimated hours;
-* incorrect seniority;
-* duplicate Contributions; or
-* other material accounting errors.
+- incorrect attribution;
+- missing Contributions;
+- erroneous estimated hours;
+- incorrect seniority;
+- duplicate Contributions; or
+- other material accounting errors.
 
 The project shall make reasonable efforts to resolve legitimate errors.
 
@@ -919,12 +919,12 @@ Nothing in this License guarantees that the project will generate revenue.
 
 No Contributor is promised:
 
-* employment;
-* a minimum payment;
-* a particular number of hours;
-* a particular seniority classification;
-* a particular AI assessment; or
-* a particular annual distribution.
+- employment;
+- a minimum payment;
+- a particular number of hours;
+- a particular seniority classification;
+- a particular AI assessment; or
+- a particular annual distribution.
 
 The purpose of the system is to distribute actual economic value generated by
 the project according to a transparent methodology.
@@ -935,11 +935,11 @@ the project according to a transparent methodology.
 
 Participation in the project does not, by itself, create:
 
-* an employment relationship;
-* a partnership;
-* a joint venture;
-* an agency relationship; or
-* entitlement to employee benefits.
+- an employment relationship;
+- a partnership;
+- a joint venture;
+- an agency relationship; or
+- entitlement to employee benefits.
 
 Contributor payments shall be treated according to applicable law.
 
@@ -1027,12 +1027,12 @@ Accrued Contributor compensation rights survive termination.
 
 The project owner shall not intentionally restructure:
 
-* ownership;
-* corporate entities;
-* repositories;
-* licensing arrangements;
-* commercial agreements; or
-* governance structures
+- ownership;
+- corporate entities;
+- repositories;
+- licensing arrangements;
+- commercial agreements; or
+- governance structures
 
 for the principal purpose of avoiding Contributor compensation obligations that
 have already accrued.
@@ -1050,14 +1050,14 @@ necessary to establish those obligations.
 
 No person may intentionally circumvent the Hosted Service restriction by:
 
-* renaming the Software;
-* removing copyright notices;
-* wrapping the Software in another application;
-* exposing the Software indirectly through an API;
-* replacing individual components while retaining substantially the same
+- renaming the Software;
+- removing copyright notices;
+- wrapping the Software in another application;
+- exposing the Software indirectly through an API;
+- replacing individual components while retaining substantially the same
   functionality;
-* restructuring the commercial offering primarily to evade this License; or
-* otherwise attempting to obtain the economic benefits of Hosted Service
+- restructuring the commercial offering primarily to evade this License; or
+- otherwise attempting to obtain the economic benefits of Hosted Service
   operation without a commercial license.
 
 This provision does not prohibit independently developed software that merely
@@ -1127,16 +1127,16 @@ faith.
 The AI Governance System, Contributors, maintainers, Founder, and any future
 governing committee should seek to:
 
-* reward meaningful work;
-* recognize genuine engineering difficulty;
-* compensate Contributors fairly;
-* avoid favoritism;
-* correct mistakes;
-* protect vulnerable people;
-* preserve human dignity;
-* encourage technical excellence;
-* resist exploitation; and
-* advance the benevolent purposes expressed in `soul.md`.
+- reward meaningful work;
+- recognize genuine engineering difficulty;
+- compensate Contributors fairly;
+- avoid favoritism;
+- correct mistakes;
+- protect vulnerable people;
+- preserve human dignity;
+- encourage technical excellence;
+- resist exploitation; and
+- advance the benevolent purposes expressed in `soul.md`.
 
 The AI system is intended to make governance more impartial, not less humane.
 
@@ -1214,7 +1214,9 @@ The conscience is the principle expressed in `soul.md`.
 And that principle shall not be changed merely because changing it would be
 convenient, profitable, politically advantageous, or technically expedient.
 
-**Build freely.
-Build fairly.
-Build compassionately.
-And let success become a force for good.**
+<Quote centerContent>
+Build freely.  
+Build fairly.  
+Build compassionately.  
+And let success become a force for good.  
+</Quote>

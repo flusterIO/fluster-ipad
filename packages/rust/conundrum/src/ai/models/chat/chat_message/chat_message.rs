@@ -96,7 +96,7 @@ impl<'a> DBEntity<'a, DatabaseId> for ChatMessage {
     type PartialUpdateType = ChatMessage;
 
     fn table() -> crate::ecosystem::db::tables::DatabaseTable {
-        crate::ecosystem::db::tables::DatabaseTable::ChatMessage
+        crate::ecosystem::db::tables::DatabaseTable::UserMessage
     }
 
     fn merge_keys() -> &'static [&'static str] {

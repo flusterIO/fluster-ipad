@@ -5,9 +5,12 @@ use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-use crate::ecosystem::db::db_traits::{
-    db_field::{DatabaseField, DatabaseFieldRepresentation},
-    db_identifiable::DatabaseIdentifiable,
+use crate::{
+    ecosystem::db::db_traits::{
+        db_field::{DatabaseField, DatabaseFieldRepresentation},
+        db_identifiable::DatabaseIdentifiable,
+    },
+    lifted_models::primitives::static_id::StaticId,
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
@@ -49,6 +52,12 @@ impl DatabaseId {
 
     pub fn new_from_input_id(value: String) -> Self {
         DatabaseId(value.clone())
+    }
+}
+
+impl From<StaticId> for DatabaseId {
+    fn from(value: StaticId) -> Self {
+        Self(value.to_string())
     }
 }
 

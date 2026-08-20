@@ -3,7 +3,11 @@ use std::sync::Arc;
 use conundrum::{
     ai::models::{
         agent::agent_description::AgentDescription,
-        chat::{chat_conversation::chat_conversation::ChatConversation, chat_message::chat_message::ChatMessage},
+        chat::{
+            chat_conversation::chat_conversation::ChatConversation,
+            chat_message::{ai::reasoning_block::ReasoningBlock, chat_message::ChatMessage},
+        },
+        tool::tool_execution::ToolExecution,
     },
     ecosystem::{
         db::{db::get_database, db_traits::db_entity::DBSchema, tables::DatabaseTable},
@@ -72,8 +76,14 @@ pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResu
                                               TableInitData { table: DatabaseTable::ChatConversation,
                                                               schema: ChatConversation::schema()?,
                                                               set_indices: None },
-                                              TableInitData { table: DatabaseTable::ChatMessage,
+                                              TableInitData { table: DatabaseTable::UserMessage,
                                                               schema: ChatMessage::schema()?,
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::AgentReasoning,
+                                                              schema: ReasoningBlock::schema()?,
+                                                              set_indices: None },
+                                              TableInitData { table: DatabaseTable::ToolExecution,
+                                                              schema: ToolExecution::schema()?,
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::EcosystemLog,
                                                               schema: EcosystemLog::schema()?,

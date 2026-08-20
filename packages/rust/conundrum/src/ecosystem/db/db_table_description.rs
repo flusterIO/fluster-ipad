@@ -28,7 +28,25 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                         This table holds the chat messages between yourself and the user.
                         "}.to_string() },
-            DatabaseTable::ChatMessage => DBTableDescription { table: value.clone(),
+            DatabaseTable::AgentMessage => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds individual chat messages between yourself and the user.
+                        "}.to_string() },
+            DatabaseTable::AgentReasoning => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds individual chat messages between yourself and the user.
+                        "}.to_string() },
+            DatabaseTable::ToolExecution => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds information regarding the recent tool executions performed by you and other AI. Review it frequently and always keep the user up-to-date about any changes that you make.
+                        "}.to_string() },
+            DatabaseTable::UserMessage => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,
                                                                  description: indoc! {"

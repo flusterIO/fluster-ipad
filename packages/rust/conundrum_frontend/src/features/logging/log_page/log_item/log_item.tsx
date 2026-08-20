@@ -29,11 +29,13 @@ export const LogItemComponent = ({
     return (
         <div className="w-full flex flex-col jutify-between items-start rounded p-4 border bg-fd-card text-fd-card-foreground">
             <div className="w-full flex flex-row justify-start items-center gap-x-2">
-                <LogIntentionIcon intention={item.purpose} />
-                <h5 className="text-lg font-semibold">{item.title}</h5>
+                <LogIntentionIcon className="w-4 h-4" intention={item.purpose} />
+                <h5 className="font-bold">{item.title}</h5>
             </div>
             {item.message ? (
-                <div className="w-full h-fit text-foreground/80">{item.message}</div>
+                <div className="w-full h-fit text-foreground/80 text-sm mt-2">
+                    {item.message}
+                </div>
             ) : null}
             <DateTimeComponent
                 className="text-sm text-foreground/60 mt-2"

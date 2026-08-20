@@ -299,6 +299,9 @@
   .invisible {
     visibility: hidden;
   }
+  .visible {
+    visibility: visible;
+  }
   .sr-only {
     position: absolute;
     width: 1px;
@@ -6836,6 +6839,18 @@
     --color-fd-accent: hsla(0, 0%, 82%, 50%);
     --color-fd-accent-foreground: hsl(0, 0%, 9%);
     --color-fd-ring: hsl(0, 0%, 63.9%);
+    --chart-1: #1a5f8e;
+    --chart-2: #c16a26;
+    --chart-3: #2f4f4f;
+    --chart-4: #4b2e83;
+    --chart-5: #d35400;
+    --chart-6: #001f3f;
+    --chart-7: #3e8e41;
+    --chart-8: #8e2430;
+    --chart-9: #c19a6b;
+    --chart-10: #4b4b4b;
+    --chart-11: #004d99;
+    --chart-12: #a0522d;
   }
   body.dark {
     --emphasis-info: 221.0 100.0% 65.0%;
@@ -6871,6 +6886,18 @@
     --color-fd-article: hsl(0, 0%, 7.04%);
     --color-fd-background: hsl(0, 0%, 5.04%);
     --desktop-background-match: hsl(213, 39%, 9%);
+    --chart-1: #a0c4da;
+    --chart-2: #ffd580;
+    --chart-3: #a3d6a7;
+    --chart-4: #b5a4e2;
+    --chart-5: #ffb6c1;
+    --chart-6: #6a8d9d;
+    --chart-7: #a4e3a4;
+    --chart-8: #e67e80;
+    --chart-9: #f5f5dc;
+    --chart-10: #d3d3d3;
+    --chart-11: #87ceeb;
+    --chart-12: #e99675;
   }
   body[data-cdrm-theme="cdrm"] {
     --background: 0 0% 100%;
@@ -6899,18 +6926,6 @@
     --border-radius: 0.5rem;
     --general-link-color: #2563eb;
     --brand: 198.6 88.7% 48.4%;
-    --chart-1: #1a5f8e;
-    --chart-2: #c16a26;
-    --chart-3: #2f4f4f;
-    --chart-4: #4b2e83;
-    --chart-5: #d35400;
-    --chart-6: #001f3f;
-    --chart-7: #3e8e41;
-    --chart-8: #8e2430;
-    --chart-9: #c19a6b;
-    --chart-10: #4b4b4b;
-    --chart-11: #004d99;
-    --chart-12: #a0522d;
     .dark:not(.light *), &.dark, body.dark * {
       --background: 222.2 84% 4.9%;
       --foreground: 210 40% 98%;
@@ -6935,18 +6950,6 @@
       --input: 217.2 32.6% 17.5%;
       --ring: 224.3 76.3% 48%;
       --general-link-color: #1e90ff;
-      --chart-1: #a0c4da;
-      --chart-2: #ffd580;
-      --chart-3: #a3d6a7;
-      --chart-4: #b5a4e2;
-      --chart-5: #ffb6c1;
-      --chart-6: #6a8d9d;
-      --chart-7: #a4e3a4;
-      --chart-8: #e67e80;
-      --chart-9: #f5f5dc;
-      --chart-10: #d3d3d3;
-      --chart-11: #87ceeb;
-      --chart-12: #e99675;
     }
   }
 }
@@ -6962,6 +6965,84 @@ p {
 }
 .no-scrollbar {
   scrollbar-width: none;
+}
+.min-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: white #778899;
+  @supports (scrollbar-width: auto) {
+    * {
+      scrollbar-width: thin;
+    }
+  }
+  @supports selector(::-webkit-scrollbar) {
+    & *::-webkit-scrollbar {
+      background-color: hsl(var(--muted));
+      width: 2px;
+      height: 6px;
+    }
+    & *::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--background));
+    }
+    &.scrollbarMuted {
+      & *::-webkit-scrollbar {
+        background-color: hsl(var(--muted));
+      }
+      & *::-webkit-scrollbar-thumb {
+        background: hsl(var(--background));
+      }
+    }
+  }
+}
+.dark .min-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #1f2937 black;
+  @supports (scrollbar-width: auto) {
+    * {
+      scrollbar-width: thin;
+    }
+  }
+  @supports selector(::-webkit-scrollbar) {
+    & *::-webkit-scrollbar {
+      background-color: hsl(var(--muted));
+      width: 2px;
+      height: 6px;
+    }
+    & *::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--background));
+    }
+    &.scrollbarMuted {
+      & *::-webkit-scrollbar {
+        background-color: hsl(var(--muted));
+      }
+      & *::-webkit-scrollbar-thumb {
+        background: hsl(var(--background));
+      }
+    }
+    &.scrollbarMutedForeground {
+      & *::-webkit-scrollbar {
+        background-color: hsl(var(--muted-foreground));
+      }
+      & *::-webkit-scrollbar-thumb {
+        background: hsl(var(--background));
+      }
+    }
+    &.scrollbarPrimary {
+      & *::-webkit-scrollbar {
+        background-color: hsl(var(--primary));
+      }
+      & *::-webkit-scrollbar-thumb {
+        background: hsl(var(--background));
+      }
+    }
+    &.scrollbarForeground {
+      & *::-webkit-scrollbar {
+        background-color: hsl(var(--foreground));
+      }
+      & *::-webkit-scrollbar-thumb {
+        background: hsl(var(--background));
+      }
+    }
+  }
 }
 .hideMathLabels {
   .cdrm-equation-label {

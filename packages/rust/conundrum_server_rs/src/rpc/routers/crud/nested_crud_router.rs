@@ -58,5 +58,5 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
                                      .nest(DatabaseTable::QAPair.to_string(), flashcard_crud)
                                      .nest(DatabaseTable::AgentDescription.to_string(), agent_description_crud)
                                      .nest(DatabaseTable::ChatConversation.to_string(), chat_conversation_crud)
-                                     .nest(DatabaseTable::ChatMessage.to_string(), chat_message_crud)
+                                     .nest(DatabaseTable::UserMessage.to_string(), chat_message_crud)
 }

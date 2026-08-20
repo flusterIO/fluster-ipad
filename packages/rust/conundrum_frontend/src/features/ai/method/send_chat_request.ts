@@ -31,17 +31,13 @@ export async function sendMessage(message: string) {
         }
 
         const text = decoder.decode(value, { stream: true });
-        console.log("text: ", text)
 
         accumulated += text;
-
-        // Update your UI here
-        console.log(text);
     }
 
     // Optional: flush any remaining decoder state
     const decoded = decoder.decode();
-    console.log("decoded: ", decoded)
+    console.log("decoded: ", decoded);
     accumulated += decoded;
 
     return accumulated;

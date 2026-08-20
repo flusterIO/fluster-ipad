@@ -14,7 +14,7 @@ use crate::{
         },
         parameters::ai::schema_parameters::SchemaParameters,
     },
-    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
+    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId, static_id::StaticId},
 };
 use axum::extract::ws::Message;
 use fake::Dummy;
@@ -47,8 +47,11 @@ impl Into<Message> for UserMessage {
 impl From<UserMessageInput> for UserMessage {
     fn from(value: UserMessageInput) -> Self {
         UserMessage { id: DatabaseId::new(),
-                      conversation_id: value.conversation_id,
-                      agent_id: value.agent_id,
+                      conversation_id: value.conversation_id.unwrap_or_else(|| DatabaseId::new()),
+                      agent_id: value.agent_id.unwrap_or_else(|| {
+                                                  let id: DatabaseId = StaticId::DefaultAgent.into();
+                                                  id
+                                              }),
                       body: value.body,
                       ctime: DateTime::new_now() }
     }
@@ -76,12 +79,10 @@ impl<'a> DBSchema<'a> for UserMessage {
         -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
     {
         Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(String::field_definition("reasoning_content", true)),
                 Arc::new(DatabaseId::field_definition("conversation_id", false)),
                 Arc::new(DatabaseId::field_definition("agent_id", true)),
-                Arc::new(ChatParticipant::field_definition("sender", true)),
                 Arc::new(String::field_definition("body", false)),
-                Arc::new(DateTime::field_definition("ctime", false))])
+                Arc::new(DateTime::field_definition("ctime", false)),])
     }
 }
 
@@ -89,7 +90,7 @@ impl<'a> DBEntity<'a, DatabaseId> for UserMessage {
     type PartialUpdateType = UserMessage;
 
     fn table() -> crate::ecosystem::db::tables::DatabaseTable {
-        crate::ecosystem::db::tables::DatabaseTable::ChatMessage
+        crate::ecosystem::db::tables::DatabaseTable::UserMessage
     }
 
     fn merge_keys() -> &'static [&'static str] {

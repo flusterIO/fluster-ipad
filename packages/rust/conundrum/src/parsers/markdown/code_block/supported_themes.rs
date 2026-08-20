@@ -1,5 +1,4 @@
 use fake::Dummy;
-use ratatui::text::ToSpan;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::{EnumIter, IntoEnumIterator};
@@ -152,4 +151,6 @@ impl TryFrom<ConundrumString> for SupportedCodeBlockTheme {
         Err(ErrMode::Backtrack(ConundrumErrorVariant::TypeConversionError { from: String::from("string"),
                                                                             to: String::from("SupportedCodeBlockTheme") }))
     }
+                                                                               
+                                                                               
 }

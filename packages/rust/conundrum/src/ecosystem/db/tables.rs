@@ -40,9 +40,18 @@ pub enum DatabaseTable {
     #[strum(to_string = "chat_conversation")]
     #[serde(rename = "chat_conversation")]
     ChatConversation,
+    #[strum(to_string = "agent_message")]
+    #[serde(rename = "agent_message")]
+    AgentMessage,
     #[strum(to_string = "chat_message")]
     #[serde(rename = "chat_message")]
-    ChatMessage,
+    UserMessage,
+    #[strum(to_string = "reasoning_block")]
+    #[serde(rename = "reasoning_block")]
+    AgentReasoning,
+    #[strum(to_string = "tool_execution")]
+    #[serde(rename = "tool_execution")]
+    ToolExecution,
     #[strum(to_string = "academic_res_metric")]
     #[serde(rename = "academic_res_metric")]
     AcademicResultMetric,
