@@ -29,7 +29,7 @@ pub struct DatabaseId(String);
 
 impl DatabaseIdentifiable for DatabaseId {
     fn to_predicate(&self, field_key: &str) -> String {
-        format!("{} = {}", field_key, self.0)
+        format!("{} = \"{}\"", field_key, self.0)
     }
 }
 

@@ -36,7 +36,6 @@ declare global {
 const GeneralAIChatPageContent = (): ReactNode => {
     const [sp] = useSearchParams();
     const convo_id = sp.get("convo");
-    console.log("vonvoId: ", convo_id);
     if (!convo_id) {
         return null;
     }
@@ -63,6 +62,7 @@ export const GeneralAIChatPageInner = ({
     useEventListener("set-ai-message-count", (e) => {
         setHasMessages(e.detail.has_messages);
     });
+    console.log("hasMessages: ", hasMessages);
     const placeholder = useMemo(() => {
         return randomFromArray([
             "How can I help?",
@@ -119,11 +119,14 @@ export const GeneralAIChatPageInner = ({
                     }
                 >
                     {children}
-                    <CurrentlyStreamingMessage
-                        {...response}
-                        activelyStreaming={activelyStreaming}
-                    />
-                    {isEmptyChatResponse(response) ? <EmptyChat /> : null}
+                    {isEmptyChatResponse(response) && !hasMessages ? (
+                        <EmptyChat />
+                    ) : (
+                        <CurrentlyStreamingMessage
+                            {...response}
+                            activelyStreaming={activelyStreaming}
+                        />
+                    )}
                 </motion.div>
                 <MotionInput
                     onSubmit={(val) => {

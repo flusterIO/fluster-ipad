@@ -5,6 +5,7 @@ use conundrum::ai::models::chat::chat_message::system::system_prompt_message::Sy
 use conundrum::ai::models::chat::chat_message::user::user_message::UserMessage;
 use conundrum::ai::models::chat::client_chat_data::client_chat_data::ClientChatData;
 use conundrum::ai::models::tool::tool_execution::ToolExecution;
+use conundrum::ecosystem::db::db_traits::db_identifiable::DatabaseIdentifiable;
 use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
 use conundrum::ecosystem::db::parameters::general::pagination::PaginationParams;
 use conundrum::ecosystem::db::parameters::general::sort_query::SortQuery;
@@ -31,7 +32,8 @@ pub fn get_agent_router() -> Router<Arc<ServerState>> {
                                                                                }))
 .procedure("load_chat_history",
                                             Procedure::<Arc<ServerState>, ChatHistoryParams, (Vec<UserMessage>, Vec<SystemPromptMessage>, Vec<AIMessage>, Vec<ReasoningBlock>, Vec<ToolExecution>)>::builder::<ServerError>().query(|state: Arc<ServerState>, req: ChatHistoryParams| async move {
-                                                let predicate = format!("convo_id=\"{}\"", req.convo_id);
+                                                let predicate = req.convo_id.to_predicate("convo_id");
+                                                println!("Predicate: {:#?}", predicate.clone());
                                                 let pag = Some(PaginationParams {
                                                     page: 1,
                                                     per_page: req.max_count

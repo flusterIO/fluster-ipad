@@ -15,6 +15,7 @@ export const ChatContent = ({
     convo_id,
     setHasMessages,
 }: ChatContentProps): ReactNode => {
+    console.log("convo_id: ", convo_id);
     const [page, setPage] = useState(1);
     const { data: chatHistory } = rspc.useQuery(
         [
@@ -33,6 +34,7 @@ export const ChatContent = ({
     const data = useFormattedChatHistory(chatHistory ?? null);
 
     useEffect(() => {
+        console.log("data: ", data);
         setHasMessages(Boolean(data.length));
     }, [data]);
     return (
