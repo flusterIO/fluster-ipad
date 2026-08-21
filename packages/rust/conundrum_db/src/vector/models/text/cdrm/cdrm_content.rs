@@ -2,7 +2,7 @@ use std::{ops::{Index, IndexMut}, sync::Arc};
 
 use arrow_schema::Field;
 use conundrum::{
-    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk_temporary::Chunk}, ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::{ai_error::{AIError, AIResult}, db_error::DatabaseError}}, lang::{lib::shared::utility_types::ArcTokioMutex, runtime::{queries::get_title::get_title_group, run_conundrum::{ParseConundrumOptions, run_conundrum}}}, lifted_models::primitives::db_id::DatabaseId
+    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk}, ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::{ai_error::{AIError, AIResult}, db_error::DatabaseError}}, lang::{lib::shared::utility_types::ArcTokioMutex, runtime::{queries::get_title::get_title_group, run_conundrum::{ParseConundrumOptions, run_conundrum}}}, lifted_models::primitives::db_id::DatabaseId
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};

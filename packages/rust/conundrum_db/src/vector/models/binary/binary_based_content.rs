@@ -15,13 +15,14 @@ use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{
     ai::{ai_generated_status::AIGeneratedStatus, ai_interactions::AIInteractions},
+    binary::{binary::Binary, binary_based_content_trait::BinaryBasedContent as BinaryBasedContentTrait},
     taggables::taggables::Taggables,
     text::text_based_content::text_based_content_trait::TextBasedContent as TextBasedContentTrait,
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct TextBasedContent<ContentType, ChunkType, ParseParameters>
-    where ContentType: TextBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug,
+pub struct BinaryBasedContent<ContentType, ChunkType, ParseParameters>
+    where ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug,
           ChunkType: Serialize + Debug {
     pub id: DatabaseId,
     pub content: ContentType,
@@ -38,8 +39,8 @@ pub struct TextBasedContent<ContentType, ChunkType, ParseParameters>
 
 impl<ChunkType: Serialize + Debug,
      ParseParameters,
-     ContentType: TextBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug> Dummy<Faker>
-    for TextBasedContent<ContentType, ChunkType, ParseParameters>
+     ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug> Dummy<Faker>
+    for BinaryBasedContent<ContentType, ChunkType, ParseParameters>
 {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
         todo!()
@@ -48,12 +49,12 @@ impl<ChunkType: Serialize + Debug,
 
 impl<'a,
      ChunkType: Serialize + Debug,
-     ContentType: Serialize + Debug + TextBasedContentTrait<ParseParameters, ChunkType> + Dummy<Faker> + Deserialize<'a>,
-     ParseParameters> DBSchema<'a> for TextBasedContent<ContentType, ChunkType, ParseParameters>
+     ContentType: Serialize + Debug + BinaryBasedContentTrait<ParseParameters, ChunkType> + Dummy<Faker> + Deserialize<'a>,
+     ParseParameters> DBSchema<'a> for BinaryBasedContent<ContentType, ChunkType, ParseParameters>
 {
     fn arrow_fields() -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<Field>>> {
         let res = vec![Arc::new(DatabaseId::field_definition("id", false)),
-                       Arc::new(String::field_definition_large("content", false)),
+                       Arc::new(Binary::field_definition_large("content", false)),
                        Arc::new(AIGeneratedStatus::field_definition("ai_generated", false)),
                        Arc::new(workspace_relative_path_field("ws_path", true)),
                        Arc::new(String::field_definition("title", true)),

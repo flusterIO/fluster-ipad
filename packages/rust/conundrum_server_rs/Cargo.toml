@@ -70,7 +70,7 @@ rust-mcp-extra = "1.0.1"
 async-trait = "0.1.89"
 schemars = { version = "1.2.2", features = ["chrono04", "either1"] }
 indoc = "2.0.7"
-rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "rmcp", "memory"] }
+rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "memory"] }
 rig-lancedb = "0.41.0"
 rig-memory = "0.41.0"
 lancedb = "0.30.0"

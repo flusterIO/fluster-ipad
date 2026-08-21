@@ -6,6 +6,7 @@ use conundrum::{
 use crate::vector::models::text::text_based_content::text_based_chunk::TextBasedChunk;
 
 pub trait TextBasedContent<ParseParameters, ChunkType = TextBasedChunk>: DatabaseField {
+    /// Returns a markdown string.
     async fn get_parsed_content(&self, opts: ParseParameters) -> DatabaseResult<String>;
     async fn get_title(&self,
                        modifiers: Vec<ConundrumModifier>,

@@ -1,5 +1,8 @@
 //! # Conundrum
 //!
+//! > A fair warning: The readme's written by AI, as is the license, but as
+//! > you'll see in the license, that's a feature... not a bug.
+//!
 //! ### A modular knowledge toolkit for the vibe-coding era.
 //!
 //! > **Conundrum is a modular academic toolkit built in the pursuit of
@@ -234,7 +237,7 @@
 //! Consider:
 //!
 //! ```tsx
-//! <Admonition type="research">
+//! <Admonition research>
 //!     This result is still speculative.
 //! </Admonition>
 //! ```
@@ -341,6 +344,8 @@
 //!
 //! - [x] HTML
 //! - [x] JSX
+//! - [x] Plain Text
+//! - [ ] TUI oriented plain text
 //! - [ ] CommonMark-compatible Markdown — approximately 90% complete
 //! - [ ] JSON AST output for rendering from languages such as Swift and Kotlin
 //!
@@ -635,10 +640,10 @@
 //! |---|---|
 //! | Rust | 🟢 Core |
 //! | TypeScript | 🟢 Active |
+//! | Swift | 🟡 Developing (Powers [Fluster](https://flusterapp.com)) |
 //! | Go | 🟡 Developing |
 //! | Python | 🟡 Developing |
 //! | Lua | 🟡 Developing |
-//! | Swift | 🟡 Developing |
 //!
 //! The SDKs are not intended to turn Conundrum into six unrelated
 //! implementations.
@@ -889,7 +894,7 @@
 //! WCTL is designed to make the technology broadly accessible while creating a
 //! sustainable path for contributors and charitable giving.
 //!
-//! The complete legal terms are available in [`LICENSE`](LICENSE).
+//! The complete legal terms are available at [Fluster](https://flusterapp.com/license).
 //!
 //! The README is intentionally only a description of the philosophy behind the
 //! license; **the license itself controls.**
@@ -989,6 +994,7 @@
 //! - AI can help you build new tools directly on top of your knowledge base.
 //! - Your knowledge remains yours regardless of which AI company leads the
 //!   market.
+//! - Additional support for long running research tasks.
 //!
 //! That's the direction of Conundrum.
 //!

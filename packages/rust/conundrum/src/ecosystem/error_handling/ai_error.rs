@@ -23,6 +23,8 @@ pub enum AIError {
     InvalidLocalProvider,
     #[error("Conundrum could not connect to the remote model.")]
     InvalidRemoteProvider,
+    #[error("Conundrum failed attempting to extract text from {0}.")]
+    FailToExtractText(String),
 }
 
 pub type AIResult<T> where T: Sized

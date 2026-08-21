@@ -3632,6 +3632,7 @@ dependencies = [
  "tokio",
  "tokio-cron-scheduler",
  "typeid",
+ "typst-as-lib",
  "uuid",
  "which 8.0.5",
  "whisper-rs",

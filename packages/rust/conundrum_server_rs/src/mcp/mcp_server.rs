@@ -19,7 +19,7 @@ pub fn get_mcp_server() -> ServerResult<Router<()>> {
                                                          version: "0.0.1".into(),
                                                          title: Some("Conundrum MCP Server".into()),
                                                          description:
-                                                             Some("An all-in-one academic toolkit.".into()),
+                                                             Some("A modular academic toolkit.".into()),
                                                          icons: vec![],
                                                          website_url: Some("https://flusterapp.com".into()) },
                            capabilities: ServerCapabilities { tools:

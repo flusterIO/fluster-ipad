@@ -48,7 +48,6 @@ export const ChatContent = ({
 
     useEventListener("append-user-message", (e) => {
         if (e.detail.message.convo_id === convo_id) {
-            console.log(`Refetching...`);
             refetch().catch((err: unknown) => {
                 consola.error("Error: ", err);
             });
@@ -61,7 +60,7 @@ export const ChatContent = ({
     return (
         <div
             className={
-                "w-full h-fit flex flex-col justify-end items-end gap-y-4 px-2 mt-4"
+                "w-full h-fit flex flex-col justify-end items-end gap-y-4 px-2 mt-4 chat-content"
             }
         >
             <AnimatePresence presenceAffectsLayout>

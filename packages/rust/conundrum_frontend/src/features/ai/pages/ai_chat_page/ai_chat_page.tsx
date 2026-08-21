@@ -60,8 +60,6 @@ export const GeneralAIChatPageInner = ({
 }): ReactNode => {
     const [sheetOpen, setSheetOpen] = useState(false);
     const [hasMessages, setHasMessages] = useState(false);
-    const [initialAnimationSettled, setInitialAnimationSettled] = useState(false);
-    const [sp] = useSearchParams();
     useEventListener("set-ai-message-count", (e) => {
         setHasMessages(e.detail.has_messages);
     });
@@ -77,11 +75,10 @@ export const GeneralAIChatPageInner = ({
         ]);
     }, []);
     const { sendMessage, ref, response, activelyStreaming } = useChat();
-    useEventListener("set-chat-entrance-settled", (e) => {
-        if (e.detail.chat_id === sp.get("convo")) {
-            setInitialAnimationSettled(true);
-        }
-    });
+    const showingEmptyChat = useMemo(() => {
+        return isEmptyChatResponse(response) && !hasMessages;
+    }, [response, hasMessages]);
+    console.log("showingEmptyChahowing: ", showingEmptyChat);
     return (
         <div className="w-full h-screen max-h-screen px-4">
             <motion.div
@@ -130,12 +127,13 @@ export const GeneralAIChatPageInner = ({
             >
                 <motion.div
                     ref={ref}
-                    className={
-                        "grow overflow-x-hidden overflow-y-auto w-[calc(100%+0.5rem)] translate-x-1 no-scrollbar flex flex-col justify-end items-center pb-4"
-                    }
+                    className={cn(
+                        "grow overflow-x-hidden overflow-y-auto w-[calc(100%+0.5rem)] translate-x-1 no-scrollbar flex flex-col justify-end items-center pb-4",
+                        showingEmptyChat && "showing-empty-chat",
+                    )}
                 >
                     {children}
-                    {isEmptyChatResponse(response) && !hasMessages ? (
+                    {showingEmptyChat ? (
                         <EmptyChat />
                     ) : (
                         <CurrentlyStreamingMessage

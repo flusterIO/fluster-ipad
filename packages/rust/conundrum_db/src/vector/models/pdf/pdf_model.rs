@@ -8,17 +8,10 @@ use conundrum::{
     lifted_models::primitives::{bytes::Bytes, db_id::DatabaseId},
 };
 
-use crate::vector::models::ai::ai_interactions::AIInteractions;
+use crate::vector::models::{ai::ai_interactions::AIInteractions, binary::{binary_based_content::BinaryBasedContent, binary_based_content_trait::BinaryBasedContentTrait}};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, fake::Dummy)]
-pub struct PdfEntity {
-    pub id: DatabaseId,
-    pub title: Option<String>,
-    pub data: Bytes,
-    /// The text extracted from the pdf. It will be null if extraction fails.
-    pub text: Option<String>,
-    pub ai: AIInteractions,
-}
+pub struct PdfEntity(BinaryBasedContent)
 
 impl<'a> DBSchema<'a> for PdfEntity {
     fn arrow_fields(

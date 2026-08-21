@@ -19,6 +19,7 @@
     "@hookform/resolvers": "5.2.2",
     "@jupyterlab/services": "7.5.10",
     "@microsoft/fetch-event-source": "2.0.1",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@radix-ui/react-use-controllable-state": "1.2.6",
     "@rspc/client": "0.3.1",
     "@rspc/react": "0.2.2",

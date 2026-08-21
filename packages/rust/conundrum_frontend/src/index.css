@@ -470,3 +470,10 @@ body,
         }
     }
 }
+
+
+.showing-empty-chat {
+    .chat-content {
+        display: none;
+    }
+}
