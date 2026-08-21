@@ -44,7 +44,7 @@ const persistConfig: PersistConfig<AppState> = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = configureStore({
+const store = configureStore<Partial<AppState>>({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -53,5 +53,15 @@ const store = configureStore({
             },
         }),
 });
+
+declare global {
+    interface Window {
+        store?: typeof store;
+    }
+}
+
+if (import.meta.env.DEV) {
+    window.store = store;
+}
 
 export default store;

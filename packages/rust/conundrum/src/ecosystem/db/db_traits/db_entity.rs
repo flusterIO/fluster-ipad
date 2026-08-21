@@ -58,5 +58,6 @@ pub trait DBEntity<'a, PrimaryValueType = String>: DBSchema<'a> {
     fn merge_keys() -> &'static [&'static str];
     fn primary_key() -> &'static str;
     fn primary_value(&self) -> PrimaryValueType;
+    fn set_primary_value(&mut self, value: PrimaryValueType);
     // fn save_self(&self, db: &ArcMutexDB) -> DatabaseResult<()>;
 }

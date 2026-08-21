@@ -71,7 +71,9 @@ export const useFormattedChatHistory = (
                 }),
             ] satisfies FormattedChatHistoryItem[]
         ).sort((a, b) => {
-            return new Date(a.ctime).valueOf() < new Date(b.ctime).valueOf() ? -1 : 1;
+            return new Date(a.data.ctime).valueOf() < new Date(b.data.ctime).valueOf()
+                ? -1
+                : 1;
         });
     }, [chatHistory]);
 };

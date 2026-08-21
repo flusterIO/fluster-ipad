@@ -82,7 +82,6 @@ export const useChat = () => {
     const [activelyStreaming, setActivelyStreaming] = useState(false);
     const [response, setResponse] = useState<ChatData>(getEmptyChatData());
     const [connected, setConnected] = useState(false);
-    const streamingTimer = useRef<NodeJS.Timeout | null>(null);
     const logger = useLogger();
 
     const page = sp.get("page") ?? "1";
@@ -140,17 +139,10 @@ export const useChat = () => {
                 const chatEvent = JSON.parse(event.data) as ChatEvent;
 
                 const handleIndividualRequest = (req: ChatEvent) => {
-                    if (streamingTimer.current) {
-                        clearTimeout(streamingTimer.current);
-                    }
                     if (req.type !== "done") {
                         setActivelyStreaming(true);
-                        streamingTimer.current = setTimeout(() => {
-                            cleanupStream().catch((err: unknown) => {
-                                consola.error("Error: {}", err);
-                            });
-                        }, STREAM_RESET_TIMEOUT);
                     } else {
+                        consola.log(`Tokens expended: `, req.content)
                         cleanupStream().catch((err: unknown) => {
                             consola.error("Error: {}", err);
                         });
@@ -208,6 +200,13 @@ export const useChat = () => {
                         for (const k of req.content) {
                             handleIndividualRequest(k);
                         }
+                    }
+                    if (req.type === "user_message_bounce_back") {
+                        window.dispatchEvent(
+                            new CustomEvent("append-user-event", {
+                                detail: req.content,
+                            }),
+                        );
                     }
                 };
                 handleIndividualRequest(chatEvent);

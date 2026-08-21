@@ -4,7 +4,10 @@ import { NotificationSettings } from "./settings_sections/notifications/notifica
 import { Form } from "@/components/shad/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { mainSettingsSchema } from "./settings_schema/main_settings_schema";
+import {
+    defaultExpiresTime,
+    mainSettingsSchema,
+} from "./settings_schema/main_settings_schema";
 import { type z } from "zod";
 
 export const MainSettingsPage = (): ReactNode => {
@@ -15,6 +18,9 @@ export const MainSettingsPage = (): ReactNode => {
                 first: "",
                 middle: "",
                 last: "",
+            },
+            daily_chat: {
+                expires_time: defaultExpiresTime,
             },
         },
     });

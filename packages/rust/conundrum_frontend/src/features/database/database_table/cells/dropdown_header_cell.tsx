@@ -28,7 +28,7 @@ export const DropdownHeaderCell = <RowType extends object>({
                                 {...props}
                                 variant="ghost"
                                 size="sm"
-                                className="-ml-3 h-8 data-[state=open]:bg-accent"
+                                className="-ml-3 h-8 data-[state=open]:bg-accent text-foreground border-none"
                             >
                                 <span>{content}</span>
                                 {column.getIsSorted() === "desc" ? (

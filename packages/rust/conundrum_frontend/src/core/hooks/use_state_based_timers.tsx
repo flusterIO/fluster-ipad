@@ -9,7 +9,7 @@ export const useTimer = (exec_at: Date | null, cb: () => void) => {
 
     useEffect(() => {
         if (!exec_at) {
-            dispatch(resetDailyChat(null));
+            resetDailyChat(dispatch);
             return;
         }
         const target = exec_at.valueOf();
@@ -36,6 +36,6 @@ export const useGlobalTimers = () => {
 
     const dispatch = useDispatch();
     useTimer(aiDailyChat, () => {
-        dispatch(resetDailyChat(null));
+        resetDailyChat(dispatch);
     });
 };

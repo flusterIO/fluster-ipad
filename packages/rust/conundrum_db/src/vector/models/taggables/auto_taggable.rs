@@ -74,4 +74,8 @@ impl<'a> DBEntity<'a, DatabaseId> for AutoTaggable {
     fn primary_value(&self) -> DatabaseId {
         self.id.clone()
     }
+
+    fn set_primary_value(&mut self, value: DatabaseId) {
+        self.id = value.clone()
+    }
 }

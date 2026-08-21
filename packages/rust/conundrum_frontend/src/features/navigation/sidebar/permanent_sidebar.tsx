@@ -62,16 +62,17 @@ export const PermanentSidebar = (): ReactNode => {
         <div className="left-0 top-0 bottom-0 h-screen w-16 bg-background border-r flex flex-col justify-between items-center py-6 gap-y-4">
             <div className="flex flex-col justify-start items-center gap-y-4">
                 {buttons.map((b) => {
+                    console.log("b: ", b)
                     return (
                         <PermanentSidebarButton
                             active={
                                 b.href
                                     ? b.href === "/"
                                         ? location.pathname === "/"
-                                        : location.pathname.startsWith(b.href)
+                                        : (location.pathname.startsWith(b.href) || (location.pathname.startsWith(AppPaths.aiChat) && b.href.startsWith(location.pathname)))
                                     : false
                             }
-                            key={b.href ?? b.id}
+                            key={b.href}
                             {...b}
                         />
                     );

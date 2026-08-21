@@ -3,6 +3,10 @@
 */
 
 
+/**
+ * Moved up to the Conundrum crate. THis is deprecated but I'm scaed to delete
+ * it.
+ */
 export type ChatEvent = 
 	| { type: "text_delta", content: {
 	text: string;

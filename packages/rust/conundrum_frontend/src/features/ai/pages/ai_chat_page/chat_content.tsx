@@ -6,11 +6,23 @@ import { ChatMessageFromAgent } from "./chat_message_from_ai/chat_message_from_a
 import { ReasoningTextComponent } from "./chat_message_from_ai/reasoning_text_from_ai";
 import { ToolExecComponent } from "./tool_execution_component/tool_exec_component";
 import { AnimatePresence } from "framer-motion";
-import { cn } from "@/utils/shad_utils";
+import { type UserMessage } from "@/codegen/bindings";
+import { useEventListener } from "@/state/hooks/use_event_listener";
+import consola from "consola";
 
 interface ChatContentProps {
     convo_id: string;
     setHasMessages: (hasLength: boolean) => void;
+}
+
+interface EventProps {
+    message: UserMessage;
+}
+
+declare global {
+    interface WindowEventMap {
+        "append-user-message": CustomEvent<EventProps>;
+    }
 }
 
 export const ChatContent = ({
@@ -18,7 +30,7 @@ export const ChatContent = ({
     setHasMessages,
 }: ChatContentProps): ReactNode => {
     const [page, setPage] = useState(1);
-    const { data: chatHistory } = rspc.useQuery(
+    const { data: chatHistory, refetch } = rspc.useQuery(
         [
             "agent.load_chat_history",
             {
@@ -34,8 +46,16 @@ export const ChatContent = ({
     );
     const data = useFormattedChatHistory(chatHistory ?? null);
 
+    useEventListener("append-user-message", (e) => {
+        if (e.detail.message.convo_id === convo_id) {
+            console.log(`Refetching...`);
+            refetch().catch((err: unknown) => {
+                consola.error("Error: ", err);
+            });
+        }
+    });
+
     useEffect(() => {
-        console.log("data: ", data);
         setHasMessages(Boolean(data.length));
     }, [data]);
     return (

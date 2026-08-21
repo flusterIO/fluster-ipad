@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum::ecosystem::db::db_traits::{db_field::DatabaseField, db_identifiable::DatabaseIdentifiable};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
@@ -15,5 +15,11 @@ pub enum EcosystemApplicationAction {
 impl DatabaseField for EcosystemApplicationAction {
     fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
         String::field_definition(field_key, nullable)
+    }
+}
+
+impl DatabaseIdentifiable for EcosystemApplicationAction {
+    fn to_predicate(&self, field_key: &str) -> String {
+        format!("{} = \"{}\"", field_key, self.to_string())
     }
 }

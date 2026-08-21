@@ -6,14 +6,16 @@ import { ChatMessageContainer } from "../chat_message_from_user/chat_message_con
 interface ChatMessageFromAIProps {
     item: AIMessage;
     index: number;
+    isLast: boolean
 }
 
 export const ChatMessageFromAgent = ({
     item,
     index,
+    isLast
 }: ChatMessageFromAIProps): ReactNode => {
     return (
-        <ChatMessageContainer className="w-full h-fit rounded" index={index}>
+        <ChatMessageContainer isLast={isLast} className="w-full h-fit rounded" index={index}>
             <StreamingMarkdown activelyStreaming={false}>
                 {item.body}
             </StreamingMarkdown>

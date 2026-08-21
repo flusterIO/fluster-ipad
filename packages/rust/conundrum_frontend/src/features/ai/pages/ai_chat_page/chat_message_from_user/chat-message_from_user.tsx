@@ -19,9 +19,10 @@ export const ChatMessageFromUser = ({
 }: ChatMessageFromUserProps): ReactNode => {
     return (
         <ChatMessageContainer
-            className="bg-primary p-2 rounded max-w-[80%]"
+            className="bg-primary p-2 rounded max-w-[80%] w-fit"
             index={index}
             isLast={isLast}
+            ctime={item.ctime}
         >
             <StreamingMarkdownMotion activelyStreaming={false}>
                 {item.body}

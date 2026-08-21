@@ -1,21 +1,24 @@
 import React, { type ReactNode } from "react";
 import { motion } from "framer-motion";
-import consola from "consola";
 import { useSearchParams } from "react-router";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/shad/tooltip";
+import { DateTimeComponent } from "#/datetime/components/date_time";
 
 interface ChatMessageContainerProps {
     index: number;
     children: ReactNode;
     className: string;
     isLast: boolean;
+    ctime?: string
 }
 
-export const ChatMessageContainer = ({
+
+const CM = ({
     index,
     className,
     children,
     isLast,
-}: ChatMessageContainerProps): ReactNode => {
+}: ChatMessageContainerProps & { className?: string }): ReactNode => {
     const [sp] = useSearchParams();
     const convo_id = sp.get("convo");
     return (
@@ -48,7 +51,27 @@ export const ChatMessageContainer = ({
         >
             {children}
         </motion.div>
-    );
+    )
+}
+
+export const ChatMessageContainer = (props: ChatMessageContainerProps): ReactNode => {
+    if (props.ctime) {
+        const { className, ..._props } = props;
+        return (
+            <Tooltip>
+                <TooltipTrigger className={className} >
+                    <CM {..._props} />
+                </TooltipTrigger>
+                <TooltipContent>
+                    <DateTimeComponent dateTime={props.ctime} format="full-with-time" />
+                </TooltipContent>
+            </Tooltip>
+        )
+    } else {
+        return (
+            <CM {...props} />
+        )
+    }
 };
 
 ChatMessageContainer.displayName = "ChatMessageContainer";

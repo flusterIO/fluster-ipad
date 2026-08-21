@@ -12,13 +12,9 @@ use conundrum::lifted_models::primitives::date_time::DateTime;
 use conundrum_fs::workspace_management::file_walk_config::FileWalkConfig;
 use conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively;
 use fake::Dummy;
-use futures_util::TryStreamExt;
 use lancedb::arrow::arrow_schema::DataType;
 use lancedb::arrow::arrow_schema::Field;
-use lancedb::query::ExecutableQuery;
-use lancedb::query::QueryBase;
 use serde::{Deserialize, Serialize};
-use serde_arrow::from_record_batch;
 use specta::Type;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
@@ -49,6 +45,7 @@ pub struct UserWorkspace {
     #[serde(default = "Default::default")]
     pub resource_dir: String,
     pub ai: AIInteractions,
+    #[serde(default = "DateTime::new_now")]
     pub ctime: DateTime,
 }
 
@@ -147,6 +144,10 @@ impl<'a> DBEntity<'a> for UserWorkspace {
 
     fn primary_value(&self) -> String {
         self.root.clone()
+    }
+
+    fn set_primary_value(&mut self, value: String) {
+        self.root = value.clone()
     }
 }
 

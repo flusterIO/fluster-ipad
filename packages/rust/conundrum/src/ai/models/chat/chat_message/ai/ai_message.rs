@@ -114,6 +114,10 @@ impl<'a> DBEntity<'a, DatabaseId> for AIMessage {
     fn primary_value(&self) -> DatabaseId {
         self.id.clone()
     }
+
+    fn set_primary_value(&mut self, value: DatabaseId) {
+        self.id = value.clone();
+    }
 }
 
 impl_default_crud!(AIMessage, AIMessage, DatabaseId);

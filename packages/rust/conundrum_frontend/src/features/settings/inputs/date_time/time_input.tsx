@@ -1,16 +1,26 @@
 import React, { useEffect, useState, type ReactNode } from "react";
-import { type FormInputProps } from "../types";
-import { type FieldValues, type PathValue } from "react-hook-form";
-import { Label } from "../../shad/label";
-import { Popover, PopoverContent, PopoverTrigger } from "../../shad/popover";
-import { Button } from "../../shad/button";
+import {
+    type Path,
+    type FieldValues,
+    useFormContext,
+} from "react-hook-form";
 import { ChevronDownIcon } from "lucide-react";
-import { Input } from "../../shad/input";
-import { cn } from "../../../utils/cn";
-import dayjs from "dayjs";
+import dayjs, { type Dayjs } from "dayjs";
+import { Button } from "@/components/shad/button";
+import { Calendar } from "@/components/shad/calendar";
+import { Input } from "@/components/shad/input";
+import { Label } from "@/components/shad/label";
+import {
+    PopoverContent,
+    PopoverTrigger,
+    Popover,
+} from "@/components/shad/popover";
+import { cn } from "@/utils/shad_utils";
 
-interface DateTimeInputProps<T extends FieldValues>
-    extends Omit<FormInputProps<T>, "label" | "desc"> {
+interface DateTimeInputProps<T extends FieldValues> {
+    name: Path<T>;
+    formatter: (d: Dayjs) => T[Path<T>];
+    hideDate?: boolean;
     classes?: {
         container?: string;
         dateFormItem?: string;
@@ -24,18 +34,22 @@ interface DateTimeInputProps<T extends FieldValues>
         calendarInputContainer?: string;
         timeInputContainer?: string;
     };
+    timeLabel?: string;
 }
 
 export const DateTimeInput = <T extends FieldValues>({
-    form,
     name,
+    hideDate,
+    formatter,
+    timeLabel,
     classes = {},
 }: DateTimeInputProps<T>): ReactNode => {
+    const form = useFormContext();
     const formValue = form.watch(name);
-    const now = formValue ? (formValue as Date) : new Date();
+    const now = formValue ? (new Date(formValue)) : new Date();
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [date, setDate] = useState<Date | undefined>(
-        new Date(`${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`)
+        new Date(`${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`),
     );
     const [time, setTime] = useState<string | undefined>("09:00:00");
     const handleDateTime = (): void => {
@@ -47,17 +61,15 @@ export const DateTimeInput = <T extends FieldValues>({
         d = d.add(parseInt(hours), "hours");
         d = d.add(parseInt(minutes), "minutes");
         d = d.add(parseInt(seconds), "seconds");
-        console.log("d.toDate(): ", d.toDate());
-        form.setValue(name, d.toDate() as PathValue<T, typeof name>);
+        form.setValue(name, formatter(d));
     };
     useEffect(() => {
         handleDateTime();
-
     }, [date, time]);
 
     return (
         <div className={cn("flex gap-4", classes.container)}>
-            <div
+            {hideDate ? null : (<div
                 className={cn("flex flex-col gap-3", classes.calendarInputContainer)}
             >
                 <Label
@@ -73,7 +85,7 @@ export const DateTimeInput = <T extends FieldValues>({
                             id="date-picker"
                             className={cn(
                                 "w-32 justify-between font-normal",
-                                classes.calendarButton
+                                classes.calendarButton,
                             )}
                         >
                             {date ? date.toLocaleDateString() : "Select date"}
@@ -83,7 +95,7 @@ export const DateTimeInput = <T extends FieldValues>({
                     <PopoverContent
                         className={cn(
                             "w-auto overflow-hidden p-0",
-                            classes.calendarPopover
+                            classes.calendarPopover,
                         )}
                         align="start"
                     >
@@ -99,13 +111,13 @@ export const DateTimeInput = <T extends FieldValues>({
                         />
                     </PopoverContent>
                 </Popover>
-            </div>
+            </div>)}
             <div className={cn("flex flex-col gap-3", classes.timeInputContainer)}>
                 <Label
                     htmlFor="time-picker"
                     className={cn("px-1", classes.timeInputLabel)}
                 >
-                    Time
+                    {timeLabel ?? "Time"}
                 </Label>
                 <Input
                     type="time"
@@ -114,7 +126,7 @@ export const DateTimeInput = <T extends FieldValues>({
                     defaultValue={time}
                     className={cn(
                         "bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none",
-                        classes.timeInput
+                        classes.timeInput,
                     )}
                     onChange={(e) => {
                         setTime(e.target.value);

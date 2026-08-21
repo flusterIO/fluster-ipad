@@ -1,9 +1,12 @@
 use std::sync::Arc;
 
 use crate::vector::models::vector::vector::DBVector;
-use conundrum::ecosystem::db::db_traits::{
-    db_entity::{DBEntity, DBSchema},
-    db_field::DatabaseField,
+use conundrum::{
+    ai::models::tool::mcp_tool_name::MCPToolName,
+    ecosystem::db::db_traits::{
+        db_entity::{DBEntity, DBSchema},
+        db_field::DatabaseField,
+    },
 };
 use fake::Dummy;
 use rust_mcp_sdk::schema::Tool;
@@ -11,7 +14,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct MCPToolRecord {
-    pub name: String,
+    pub name: MCPToolName,
     pub description: String,
     pub input_schema_json: String,
     pub vector: DBVector,
@@ -29,7 +32,7 @@ impl<'a> DBSchema<'a> for MCPToolRecord {
     }
 }
 
-impl<'a> DBEntity<'a> for MCPToolRecord {
+impl<'a> DBEntity<'a, MCPToolName> for MCPToolRecord {
     type PartialUpdateType = MCPToolRecord;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
@@ -44,14 +47,19 @@ impl<'a> DBEntity<'a> for MCPToolRecord {
         "name"
     }
 
-    fn primary_value(&self) -> String {
-        self.name.to_string()
+    fn primary_value(&self) -> MCPToolName {
+        self.name.clone()
+    }
+
+    fn set_primary_value(&mut self, value: MCPToolName) {
+        self.name = value.clone()
     }
 }
 
 impl MCPToolRecord {
     pub fn from_tool_and_embedding(tool: Tool, input_schema_json: String, vec: Vec<f64>) -> Self {
-        MCPToolRecord { name: tool.name.clone(),
+        let mcp_tool_name = MCPToolName::try_from(tool.name).expect("Must always unwrap all provided tools.");
+        MCPToolRecord { name: mcp_tool_name,
                         description: tool.description.unwrap_or_default(),
                         input_schema_json,
                         vector: DBVector(vec) }

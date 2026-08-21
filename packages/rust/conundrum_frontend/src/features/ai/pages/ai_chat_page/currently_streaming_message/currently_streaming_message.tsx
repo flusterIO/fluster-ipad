@@ -13,10 +13,10 @@ export const CurrentlyStreamingMessage = (
     if (isEmptyChatResponse(props)) {
         return null;
     }
-    const { reasoning, response, toolCalls, activelyStreaming } = props;
+    const { reasoning, response, activelyStreaming } = props;
     return (
         <motion.div
-            className="w-full flex flex-col justify-start items-start rounded p-4 border origin-bottom my-3"
+            className="w-full flex flex-col justify-start items-start rounded p-4 origin-bottom my-3"
             initial={{
                 scale: 0,
                 opacity: 0,

@@ -1749,6 +1749,13 @@ export enum CdrmEnvVariable {
 }
 
 export type ChatEvent = 
+	/**
+	 * Returned directly after the user sends their message, only attaching an
+	 * id and the ctime.
+	 */
+	| { type: "user_message_bounce_back", content: {
+	user_message: UserMessage;
+}}
 	| { type: "text_delta", content: {
 	text: string;
 	is_reasoning: boolean;

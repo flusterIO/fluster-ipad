@@ -397,7 +397,7 @@ ignore_hidden: boolean;
  * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
-resource_dir?: string; ai: AIInteractions; ctime: DateTime })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
+resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[] } | { key: "describe.all_tables"; input: null; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -672,7 +672,7 @@ ignore_hidden: boolean;
  * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
-resource_dir?: string; ai: AIInteractions; ctime: DateTime })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
+resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
@@ -809,7 +809,7 @@ ignore_hidden: boolean;
  * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
-resource_dir?: string; ai: AIInteractions; ctime: DateTime }
+resource_dir?: string; ai: AIInteractions; ctime?: DateTime }
 
 export type WebGlueCodeGeneralFiles = "styles.css" | "katex.min.css" | "katex_ams_regular.woff2" | "katex_caligraphic_bold.woff2" | "katex_caligraphic_regular.woff2" | "katex_fraktur_bold.woff2" | "katex_fraktur_regular.woff2" | "katex_main_bold.woff2" | "katex_main_bolditalic.woff2" | "katex_main_italic.woff2" | "katex_main_regular.woff2" | "katex_math_bolditalic.woff2" | "katex_math_italic.woff2" | "katex_sansserif_bold.woff2" | "katex_sansserif_italic.woff2" | "katex_sansserif_regular.woff2" | "katex_script_regular.woff2" | "katex_size1_regular.woff2" | "katex_size2_regular.woff2" | "katex_size3_regular.woff2" | "katex_size4_regular.woff2" | "katex_typewriter_regular.woff2" | "Fira_Code_Regular.ttf"
 
@@ -906,8 +906,8 @@ export type Procedures = {
 },
 	user_workspace: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime: DateTime })[], error: unknown },
-	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime: DateTime })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ root: string; label?: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
 },
 },

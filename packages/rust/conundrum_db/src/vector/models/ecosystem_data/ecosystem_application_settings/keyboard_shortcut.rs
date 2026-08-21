@@ -28,9 +28,9 @@ pub struct KeyboardShortcut {
     pub ctrl: bool,
 }
 
-impl_default_crud!(KeyboardShortcut, KeyboardShortcutPartial, String);
+impl_default_crud!(KeyboardShortcut, KeyboardShortcutPartial, EcosystemApplicationAction);
 
-impl<'a> DBEntity<'a> for KeyboardShortcut {
+impl<'a> DBEntity<'a, EcosystemApplicationAction> for KeyboardShortcut {
     type PartialUpdateType = KeyboardShortcutPartial;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
@@ -45,8 +45,12 @@ impl<'a> DBEntity<'a> for KeyboardShortcut {
         "action"
     }
 
-    fn primary_value(&self) -> String {
-        self.action.to_string()
+    fn primary_value(&self) -> EcosystemApplicationAction {
+        self.action.clone()
+    }
+
+    fn set_primary_value(&mut self, value: EcosystemApplicationAction) {
+        self.action = value.clone();
     }
 }
 

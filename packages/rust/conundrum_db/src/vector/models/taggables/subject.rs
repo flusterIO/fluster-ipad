@@ -69,4 +69,8 @@ impl<'a> DBEntity<'a> for Subject {
     fn primary_value(&self) -> String {
         self.value.to_comparison_string()
     }
+
+    fn set_primary_value(&mut self, value: String) {
+        self.value = CaseInsensitiveString::from(value);
+    }
 }
