@@ -14,6 +14,7 @@ use conundrum::ai::rig::ai_traits::conundrum_agent::ConundrumAgent;
 use conundrum::ai::rig::ai_traits::from_with_convo_information::{
     FromWithConvoInformation, TryFromWithConvoInformation,
 };
+use conundrum::ai::rig::features::chat::chat_event::ChatEvent;
 use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
 use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
@@ -27,12 +28,10 @@ use tokio::sync::{OnceCell, OwnedMutexGuard};
 /// be saved.
 static ACCUMULATOR: OnceCell<HashMap<DatabaseId, String>> = OnceCell::const_new();
 
-use crate::rig::features::chat::chat_event::ChatEvent;
-
 /// ## TODO
 /// - [ ] Save tool executions
-/// - [ ] Save completed messages from AI
-/// - [?] Save reasoning content seperately from other AI output.
+/// - [x] Save completed messages from AI
+/// - [x] Save reasoning content seperately from other AI output.
 /// - [ ] Save incoming user messages (in the other function)
 async fn handle_side_effects<R>(data: MultiTurnStreamItem<R>,
                                 convo_id: DatabaseId,
@@ -74,14 +73,11 @@ async fn handle_side_effects<R>(data: MultiTurnStreamItem<R>,
                     }
                     None => text.text.clone(),
                 };
-                println!("Next Content: {}", next_content.clone());
                 accumulator.insert(convo_id.clone(), next_content);
             }
             _ => {}
         },
         MultiTurnStreamItem::FinalResponse(pr) => {
-            println!("Concatenated Output: {}", pr.output);
-            println!("Other shit: {:#?}", pr.usage);
             let msg = AIMessage::from_with_convo_info(pr.output.clone(), convo_id, agent_id);
             let db = Arc::clone(&state.db);
             let _ = AIMessage::save_many(vec![msg], &db).await.inspect_err(|e| {

@@ -11,47 +11,53 @@ import {
     WalletCards,
     HeartPulseIcon,
     MessageSquare,
-    PersonStanding
+    PersonStanding,
 } from "lucide-react";
 import { AppPaths } from "../app_paths";
 import { useLocation } from "react-router";
-
-const buttons: Omit<PermanentSidebarButtonProps, "active">[] = [
-    {
-        href: AppPaths.dashboard,
-        icon: HomeIcon,
-    },
-    {
-        href: AppPaths.aiChat,
-        icon: MessageSquare,
-    },
-    {
-        href: AppPaths.workspaces,
-        icon: BoxesIcon,
-    },
-    {
-        href: AppPaths.flashcards,
-        icon: WalletCards,
-    },
-    {
-        href: AppPaths.database,
-        icon: FileSpreadsheet,
-    },
-    {
-        href: AppPaths.agents,
-        icon: PersonStanding,
-    },
-    {
-        href: AppPaths.health,
-        icon: HeartPulseIcon,
-    },
-];
+import { type AppState } from "@/state/initial_state";
+import { useSelector } from "react-redux";
 
 export const PermanentSidebar = (): ReactNode => {
     const location = useLocation();
-    if (location.pathname.startsWith(AppPaths.onboarding)) {
+    const dailyChat = useSelector((state: AppState) => {
+        return state.ai.dailyChat;
+    });
+    if (location.pathname.startsWith(AppPaths.onboarding) || !dailyChat) {
         return null;
     }
+    const searchParams = new URLSearchParams();
+    searchParams.set("convo", dailyChat.chat_id);
+    const buttons: Omit<PermanentSidebarButtonProps, "active">[] = [
+        {
+            href: AppPaths.dashboard,
+            icon: HomeIcon,
+        },
+        {
+            href: `${AppPaths.aiChat}?${searchParams.toString()}`,
+            icon: MessageSquare,
+        },
+        {
+            href: AppPaths.workspaces,
+            icon: BoxesIcon,
+        },
+        {
+            href: AppPaths.flashcards,
+            icon: WalletCards,
+        },
+        {
+            href: AppPaths.database,
+            icon: FileSpreadsheet,
+        },
+        {
+            href: AppPaths.agents,
+            icon: PersonStanding,
+        },
+        {
+            href: AppPaths.health,
+            icon: HeartPulseIcon,
+        },
+    ];
     return (
         <div className="left-0 top-0 bottom-0 h-screen w-16 bg-background border-r flex flex-col justify-between items-center py-6 gap-y-4">
             <div className="flex flex-col justify-start items-center gap-y-4">

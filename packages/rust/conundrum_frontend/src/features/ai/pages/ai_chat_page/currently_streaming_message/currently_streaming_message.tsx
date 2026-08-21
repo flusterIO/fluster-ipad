@@ -16,7 +16,7 @@ export const CurrentlyStreamingMessage = (
     const { reasoning, response, toolCalls, activelyStreaming } = props;
     return (
         <motion.div
-            className="w-full flex flex-col justify-start items-start rounded p-4 border origin-bottom"
+            className="w-full flex flex-col justify-start items-start rounded p-4 border origin-bottom my-3"
             initial={{
                 scale: 0,
                 opacity: 0,

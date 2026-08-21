@@ -9,6 +9,8 @@ use typeshare::typeshare;
 use crate::rig::ai_types::ai_types::LocalMultiTurnStreamItem;
 use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 
+/// Moved up to the Conundrum crate. THis is deprecated but I'm scaed to delete
+/// it.
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone, specta::Type, Dummy)]
 #[specta(export = true)]

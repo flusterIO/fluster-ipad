@@ -19,6 +19,7 @@ import { EmptyChat } from "./empty_chat/empty_chat";
 import { ChatContent } from "./chat_content";
 import { useSearchParams } from "react-router";
 import { useEventListener } from "@/state/hooks/use_event_listener";
+import { cn } from "@/utils/shad_utils";
 
 const MotionButton = motion.create(Button);
 const MotionInput = motion.create(PromptInput);
@@ -30,6 +31,7 @@ interface EventProps {
 declare global {
     interface WindowEventMap {
         "set-ai-message-count": CustomEvent<EventProps>;
+        "set-chat-entrance-settled": CustomEvent<{ chat_id: string }>;
     }
 }
 
@@ -58,11 +60,11 @@ export const GeneralAIChatPageInner = ({
 }): ReactNode => {
     const [sheetOpen, setSheetOpen] = useState(false);
     const [hasMessages, setHasMessages] = useState(false);
+    const [initialAnimationSettled, setInitialAnimationSettled] = useState(false);
     const [sp] = useSearchParams();
     useEventListener("set-ai-message-count", (e) => {
         setHasMessages(e.detail.has_messages);
     });
-    console.log("hasMessages: ", hasMessages);
     const placeholder = useMemo(() => {
         return randomFromArray([
             "How can I help?",
@@ -74,10 +76,20 @@ export const GeneralAIChatPageInner = ({
             "Let's change the world...",
         ]);
     }, []);
-    const { sendMessage, messages, ref, response, activelyStreaming } = useChat();
+    const { sendMessage, ref, response, activelyStreaming } = useChat();
+    useEventListener("set-chat-entrance-settled", (e) => {
+        if (e.detail.chat_id === sp.get("convo")) {
+            setInitialAnimationSettled(true);
+        }
+    });
     return (
         <div className="w-full h-screen max-h-screen px-4">
-            <div className="absolute top-4 right-4">
+            <motion.div
+                className="absolute top-4 right-4 z-10 opacity-90 hover:opacity-100 hover:bg-secondary rounded cursor-pointer"
+                whileHover={{
+                    backgroundColor: "hsl(var(--secondary))",
+                }}
+            >
                 <MotionButton
                     transitionAll={false}
                     key="general-ai-search"
@@ -110,12 +122,16 @@ export const GeneralAIChatPageInner = ({
                 >
                     <SearchIcon />
                 </MotionButton>
-            </div>
-            <div className="@container/chat mx-auto w-270 max-w-[calc(100%-4rem)] max-h-screen min-h-screen flex flex-col justify-between items-center">
+            </motion.div>
+            <div
+                className={cn(
+                    "@container/chat mx-auto w-270 max-w-[calc(100%-2rem)] max-h-screen min-h-screen flex flex-col justify-between items-center",
+                )}
+            >
                 <motion.div
                     ref={ref}
                     className={
-                        "grow overflow-x-hidden overflow-y-auto w-[calc(100%+0.5rem)] translate-x-1 min-scrollbar mb-2 flex flex-col justify-end items-center"
+                        "grow overflow-x-hidden overflow-y-auto w-[calc(100%+0.5rem)] translate-x-1 no-scrollbar flex flex-col justify-end items-center pb-4"
                     }
                 >
                     {children}
@@ -128,6 +144,15 @@ export const GeneralAIChatPageInner = ({
                         />
                     )}
                 </motion.div>
+                <div className="relative h-0! w-full overflow-visible">
+                    <div
+                        className="w-full h-4 absolute bottom-0"
+                        style={{
+                            background:
+                                "linear-gradient(hsl(var(--background)/0.1), hsl(var(--background)))",
+                        }}
+                    />
+                </div>
                 <MotionInput
                     onSubmit={(val) => {
                         sendMessage(val.text);

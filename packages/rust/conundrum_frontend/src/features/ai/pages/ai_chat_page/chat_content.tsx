@@ -5,6 +5,8 @@ import { ChatMessageFromUser } from "./chat_message_from_user/chat-message_from_
 import { ChatMessageFromAgent } from "./chat_message_from_ai/chat_message_from_ai";
 import { ReasoningTextComponent } from "./chat_message_from_ai/reasoning_text_from_ai";
 import { ToolExecComponent } from "./tool_execution_component/tool_exec_component";
+import { AnimatePresence } from "framer-motion";
+import { cn } from "@/utils/shad_utils";
 
 interface ChatContentProps {
     convo_id: string;
@@ -15,7 +17,6 @@ export const ChatContent = ({
     convo_id,
     setHasMessages,
 }: ChatContentProps): ReactNode => {
-    console.log("convo_id: ", convo_id);
     const [page, setPage] = useState(1);
     const { data: chatHistory } = rspc.useQuery(
         [
@@ -38,22 +39,56 @@ export const ChatContent = ({
         setHasMessages(Boolean(data.length));
     }, [data]);
     return (
-        <div className="w-full h-fit flex flex-col justify-end items-end gap-y-4">
-            {data.map((d) => {
-                if (d.type === "user-message") {
-                    return <ChatMessageFromUser item={d.data} key={d.data.id} />;
-                }
-                if (d.type === "agent-message") {
-                    return <ChatMessageFromAgent item={d.data} key={d.data.id} />;
-                }
-                if (d.type === "reasoning-block") {
-                    return <ReasoningTextComponent item={d.data} key={d.data.id} />;
-                }
-                if (d.type === "tool-execution") {
-                    return <ToolExecComponent item={d.data} key={d.data.id} />;
-                }
-                return null;
-            })}
+        <div
+            className={
+                "w-full h-fit flex flex-col justify-end items-end gap-y-4 px-2 mt-4"
+            }
+        >
+            <AnimatePresence presenceAffectsLayout>
+                {data.map((d, i) => {
+                    if (d.type === "user-message") {
+                        return (
+                            <ChatMessageFromUser
+                                isLast={i === data.length - 1}
+                                index={i}
+                                item={d.data}
+                                key={d.data.id}
+                            />
+                        );
+                    }
+                    if (d.type === "agent-message") {
+                        return (
+                            <ChatMessageFromAgent
+                                isLast={i === data.length - 1}
+                                index={i}
+                                item={d.data}
+                                key={d.data.id}
+                            />
+                        );
+                    }
+                    if (d.type === "reasoning-block") {
+                        return (
+                            <ReasoningTextComponent
+                                isLast={i === data.length - 1}
+                                index={i}
+                                item={d.data}
+                                key={d.data.id}
+                            />
+                        );
+                    }
+                    if (d.type === "tool-execution") {
+                        return (
+                            <ToolExecComponent
+                                index={i}
+                                isLast={i === data.length - 1}
+                                item={d.data}
+                                key={d.data.id}
+                            />
+                        );
+                    }
+                    return null;
+                })}
+            </AnimatePresence>
         </div>
     );
 };

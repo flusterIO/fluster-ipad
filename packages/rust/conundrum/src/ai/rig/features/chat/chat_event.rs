@@ -5,7 +5,12 @@ use rig::{
 };
 use serde::Serialize;
 
-use crate::{ai::rig::ai_types::ai_types::LocalMultiTurnStreamItem, ecosystem::error_handling::ai_error::AIError};
+use crate::{
+    ai::{
+        models::chat::chat_message::user::user_message::UserMessage, rig::ai_types::ai_types::LocalMultiTurnStreamItem,
+    },
+    ecosystem::error_handling::ai_error::AIError,
+};
 
 #[typeshare::typeshare]
 #[derive(Debug, Serialize, Clone, specta::Type, Dummy)]
@@ -13,6 +18,11 @@ use crate::{ai::rig::ai_types::ai_types::LocalMultiTurnStreamItem, ecosystem::er
 #[serde(rename_all = "snake_case")]
 #[serde(tag = "type", content = "content")]
 pub enum ChatEvent {
+    /// Returned directly after the user sends their message, only attaching an
+    /// id and the ctime.
+    UserMessageBounceBack {
+        user_message: UserMessage,
+    },
     TextDelta {
         text: String,
         is_reasoning: bool,

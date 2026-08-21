@@ -239,13 +239,13 @@ export const useChat = () => {
         }
         setActivelyStreaming(true);
 
-        setResponse(getEmptyChatData());
-
         const data: UserMessageInput = {
             convo_id: conversation_id,
             agent_id: agent_id ?? null,
             body: input,
         };
+
+        setResponse(getEmptyChatData());
 
         socket.current.send(JSON.stringify(data));
     }

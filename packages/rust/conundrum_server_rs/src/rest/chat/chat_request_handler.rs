@@ -5,13 +5,14 @@ use conundrum::ai::{
         agent::{agent_description::AgentDescription, agent_primary_task::AgentPrimaryTask},
         chat::chat_message::user::{user_message::UserMessage, user_message_input::UserMessageInput},
     },
-    rig::ai_traits::{ai_client_container::AIClientContainer, conundrum_agent::ConundrumAgent},
+    rig::{
+        ai_traits::{ai_client_container::AIClientContainer, conundrum_agent::ConundrumAgent},
+        features::chat::chat_event::ChatEvent,
+    },
 };
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use futures_util::stream::{Stream, StreamExt};
 use std::sync::Arc;
-
-use crate::rig::features::chat::chat_event::ChatEvent;
 
 /// # TODO
 ///
@@ -30,6 +31,8 @@ pub async fn chat_request_handler(State(state): State<Arc<ServerState>>,
             .get_agent(AgentDescription::default_local_chat(), AgentPrimaryTask::Agent.to_base_temperature());
         drop(locked_client);
         let user_message = UserMessage::from(payload);
+        let bounce_back_message = ChatEvent::UserMessageBounceBack { user_message: user_message.clone() };
+        yield bounce_back_message;
         let mut stream = agent.stream_chat_response(user_message, vec![]).await;
         while let Some(item) = stream.next().await {
             match item {

@@ -1,4 +1,8 @@
-import React, { type ReactNode, type ComponentProps } from "react";
+import React, {
+    type ReactNode,
+    type ComponentProps,
+    type RefObject,
+} from "react";
 import { Streamdown } from "streamdown";
 import { code } from "@streamdown/code";
 import { mermaid } from "@streamdown/mermaid";

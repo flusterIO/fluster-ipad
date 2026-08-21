@@ -33,7 +33,6 @@ pub fn get_agent_router() -> Router<Arc<ServerState>> {
 .procedure("load_chat_history",
                                             Procedure::<Arc<ServerState>, ChatHistoryParams, (Vec<UserMessage>, Vec<SystemPromptMessage>, Vec<AIMessage>, Vec<ReasoningBlock>, Vec<ToolExecution>)>::builder::<ServerError>().query(|state: Arc<ServerState>, req: ChatHistoryParams| async move {
                                                 let predicate = req.convo_id.to_predicate("convo_id");
-                                                println!("Predicate: {:#?}", predicate.clone());
                                                 let pag = Some(PaginationParams {
                                                     page: 1,
                                                     per_page: req.max_count
