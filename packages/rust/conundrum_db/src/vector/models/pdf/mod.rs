@@ -1,2 +1,2 @@
-pub mod pdf_chunk;
+pub mod pdf_binary;
 pub mod pdf_model;

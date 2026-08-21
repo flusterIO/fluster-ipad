@@ -81,6 +81,10 @@ impl ParseConundrumOptions {
                                 trusted }
     }
 
+    pub fn for_chunking() -> Self {
+        ParseConundrumOptions::default()
+    }
+
     pub fn duplicate_with_new_content(&self, content: String) -> ParseConundrumOptions {
         ParseConundrumOptions { note_id: self.note_id.clone(),
                                 content,

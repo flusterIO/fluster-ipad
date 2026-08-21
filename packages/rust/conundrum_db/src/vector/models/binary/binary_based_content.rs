@@ -20,7 +20,7 @@ use crate::vector::models::{
     text::text_based_content::text_based_content_trait::TextBasedContent as TextBasedContentTrait,
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type)]
 pub struct BinaryBasedContent<ContentType, ChunkType, ParseParameters>
     where ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug,
           ChunkType: Serialize + Debug {

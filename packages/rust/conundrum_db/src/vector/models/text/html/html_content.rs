@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use arrow_schema::Field;
 use conundrum::{
-    ai::rig::ai_traits::{chunk::Chunk, chunk_temporary::Chunk},
+    ai::rig::ai_traits::chunk::Chunk,
     ecosystem::{
         db::db_traits::db_field::DatabaseField,
         error_handling::{
@@ -63,10 +63,13 @@ impl TextBasedContent<()> for HTMLContent {
                        modifiers: Vec<conundrum::lang::runtime::state::parse_state::ConundrumModifier>,
                        target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget)
                        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Option<String>> {
-        let r = get_title_group(self.0.clone(), modifiers, target).map_err(|e| {
-                    log::error!("Failed to get Conundrum title: {:#?}", e);
-                    DatabaseError::ConundrumError(e)
-                })?;
+        let content = self.get_parsed_content(()).await.map_err(|e| {
+                                                            log::error!("Error: {:#?}", e);
+                                                        })?;
+        let r = get_title_group(content, modifiers, target).map_err(|e| {
+                                                               log::error!("Failed to get Conundrum title: {:#?}", e);
+                                                               DatabaseError::ConundrumError(e)
+                                                           })?;
         if r.title.trim().is_empty() {
             Ok(None)
         } else {
@@ -82,6 +85,6 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for HTMLContent {
                        -> AIResult<(AIResult<Vec<TextBasedChunk>>, AIResult<Vec<TextBasedChunk>>)> {
         let content = self.get_parsed_content(()).await?;
         let cdrm = CdrmContent::from(content);
-        cdrm.try_chunk(opts, locked_state).await
+        cdrm.try_chunk(opts, state).await
     }
 }

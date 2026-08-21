@@ -6,6 +6,12 @@ use serde::{Deserialize, Serialize};
 #[serde(transparent)]
 pub struct Binary(Vec<u8>);
 
+impl Binary {
+    pub fn bytes(&self) -> Vec<u8> {
+        return self.0;
+    }
+}
+
 impl DatabaseField for Binary {
     fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
         Field::new(field_key.to_string(), arrow_schema::DataType::Binary, nullable)
