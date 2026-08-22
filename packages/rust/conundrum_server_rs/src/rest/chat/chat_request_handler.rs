@@ -1,14 +1,20 @@
 use axum::{Json, extract::State};
-use conundrum::ai::{
-    ai_constants::BASE_TEMPERATURE_AGENT,
-    models::{
-        agent::{agent_description::AgentDescription, agent_primary_task::AgentPrimaryTask},
-        chat::chat_message::user::{user_message::UserMessage, user_message_input::UserMessageInput},
+use conundrum::{
+    ai::{
+        ai_constants::BASE_TEMPERATURE_AGENT,
+        models::{
+            agent::{agent_description::AgentDescription, agent_primary_task::AgentPrimaryTask},
+            chat::{
+                chat_conversation::{chat_conversation::ChatConversation, chat_conversation_utime_partial::ChatConversationUtimePartial},
+                chat_message::user::{user_message::UserMessage, user_message_input::UserMessageInput},
+            },
+        },
+        rig::{
+            ai_traits::{ai_client_container::AIClientContainer, conundrum_agent::ConundrumAgent},
+            features::chat::chat_event::ChatEvent,
+        },
     },
-    rig::{
-        ai_traits::{ai_client_container::AIClientContainer, conundrum_agent::ConundrumAgent},
-        features::chat::chat_event::ChatEvent,
-    },
+    lifted_models::primitives::db_id::DatabaseId,
 };
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use futures_util::stream::{Stream, StreamExt};
@@ -21,18 +27,23 @@ use std::sync::Arc;
 ///   inserting into history
 /// with the proper fields.
 pub async fn chat_request_handler(State(state): State<Arc<ServerState>>,
-                                  Json(payload): Json<UserMessageInput>)
+                                  Json(mut payload): Json<UserMessageInput>)
                                   -> impl Stream<Item = ChatEvent> {
     if let Some(local_client) = state.clone().local_client.clone() {
         async_stream::stream! {
+        let convo_id = payload.convo_id.unwrap_or_else(|| {
+            DatabaseId::new()
+        });
+        if Some(convo_id) != payload.convo_id {
+            payload.convo_id = Some(convo_id.clone());
+        }
+        let convo = ChatConversationUtimePartial::new(convo_id, None);
         let locked_client = local_client.clone().lock_owned().await;
         // TODO: Get the agent description from the DB here.
         let agent = locked_client
             .get_agent(AgentDescription::default_local_chat(), AgentPrimaryTask::Agent.to_base_temperature());
         drop(locked_client);
         let user_message = UserMessage::from(payload);
-        let bounce_back_message = ChatEvent::UserMessageBounceBack { user_message: user_message.clone() };
-        yield bounce_back_message;
         let mut stream = agent.stream_chat_response(user_message, vec![]).await;
         while let Some(item) = stream.next().await {
             match item {

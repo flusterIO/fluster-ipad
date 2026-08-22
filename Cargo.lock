@@ -3641,20 +3641,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "conundrum_db_macros"
-version = "0.0.1"
-dependencies = [
- "conundrum_macro_traits",
- "convert_case 0.11.0",
- "env_filter",
- "macrotest",
- "prettyplease",
- "proc-macro2",
- "quote",
- "syn 2.0.117",
-]
-
-[[package]]
 name = "conundrum_docgen"
 version = "0.0.1"
 dependencies = [

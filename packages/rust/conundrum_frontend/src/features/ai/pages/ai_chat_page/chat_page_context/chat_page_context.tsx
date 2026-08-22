@@ -23,7 +23,6 @@ import { type AppState } from "@/state/initial_state";
 import consola from "consola";
 import { useSearchParams } from "react-router";
 import { type FormattedChatHistoryItem } from "#/ai/state/hooks/use_formatted_chat_history";
-import { StatementSync } from "node:sqlite";
 
 export interface ChatPageState {
     /**
@@ -203,8 +202,11 @@ export const ChatPageContextReducer = (
                 response: action.payload,
             };
         }
-        default: {
-            return state;
+        case "set-page": {
+            return {
+                ...state,
+                page: action.payload
+            }
         }
     }
 };
@@ -412,7 +414,7 @@ export const ChatPageProvider = ({
     useEffect(() => {
         dispatch({
             type: "set-page",
-            payload: page ?? 1,
+            payload: page ? parseInt(page) : 1
         });
     }, [page]);
 

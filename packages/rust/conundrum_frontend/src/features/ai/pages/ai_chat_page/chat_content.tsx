@@ -1,19 +1,13 @@
-import { useFormattedChatHistory } from "#/ai/state/hooks/use_formatted_chat_history";
-import { rspc } from "@/app/rspc_client";
-import React, { useEffect, useState, type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { ChatMessageFromUser } from "./chat_message_from_user/chat-message_from_user";
 import { ChatMessageFromAgent } from "./chat_message_from_ai/chat_message_from_ai";
 import { ReasoningTextComponent } from "./chat_message_from_ai/reasoning_text_from_ai";
 import { ToolExecComponent } from "./tool_execution_component/tool_exec_component";
 import { AnimatePresence } from "framer-motion";
 import { type UserMessage } from "@/codegen/bindings";
-import { useEventListener } from "@/state/hooks/use_event_listener";
-import consola from "consola";
 import { useChatPageContext } from "./chat_page_context/chat_page_context";
-
-interface ChatContentProps {
-    convo_id: string;
-}
+import { useLocation } from "react-router";
+import { motion } from "framer-motion";
 
 interface EventProps {
     message: UserMessage;
@@ -25,15 +19,17 @@ declare global {
     }
 }
 
-export const ChatContent = ({
-    convo_id,
-}: ChatContentProps): ReactNode => {
-    const { page, messages } = useChatPageContext();
+export const ChatContent = (): ReactNode => {
+    const { messages } = useChatPageContext();
     return (
-        <div
+        <motion.div
             className={
                 "w-full h-fit flex flex-col justify-end items-end gap-y-4 px-2 mt-4 chat-content"
             }
+            exit={{
+                /* scale: 0, */
+                opacity: 0,
+            }}
         >
             <AnimatePresence presenceAffectsLayout>
                 {messages.map((d, i) => {
@@ -80,7 +76,7 @@ export const ChatContent = ({
                     return null;
                 })}
             </AnimatePresence>
-        </div>
+        </motion.div>
     );
 };
 

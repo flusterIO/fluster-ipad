@@ -2,7 +2,7 @@ import { humanReadableDateTime } from "@/utils/datetime_utils";
 import React, { type ReactNode } from "react";
 
 interface DateTimeComponentProps {
-    dateTime: number | string;
+    dateTime: number | string | Date;
     format: Parameters<typeof humanReadableDateTime>[1];
     className?: string;
     asSpan?: boolean;
