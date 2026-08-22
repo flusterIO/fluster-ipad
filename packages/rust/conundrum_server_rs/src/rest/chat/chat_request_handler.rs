@@ -24,6 +24,7 @@ use std::sync::Arc;
 
 /// # TODO
 ///
+///   
 /// - [ ] Read chat history from DB and insert that into the history.
 /// - [ ] Save thinking along side but separately from the main history for
 ///   inserting into history

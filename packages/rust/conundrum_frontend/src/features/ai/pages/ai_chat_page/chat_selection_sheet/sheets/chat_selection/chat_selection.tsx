@@ -7,21 +7,13 @@ import {
     InputGroupAddon,
     InputGroupInput,
 } from "@/components/shad/input-group";
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-} from "@/components/shad/sheet";
 import { SearchIcon } from "lucide-react";
-import React, { useState, type ReactNode } from "react";
-import { useSearchParams } from "react-router";
-import { ChatSelectionItem } from "./chat_selection_item";
+import React, { type ReactNode } from "react";
+import { ChatList } from "./chat_list";
+import { useChatPageContext } from "../../../chat_page_context/chat_page_context";
 
 export const ChatSelectionSheet = (): ReactNode => {
-    const [sp, setSp] = useSearchParams();
-    const convo = sp.get("convo");
-    const [page, setPage] = useState(1);
+    const { page } = useChatPageContext();
     const { data: conversations, isLoading } = rspc.useQuery([
         "crud.chat_conversation.get_by_predicate",
         {
@@ -35,7 +27,19 @@ export const ChatSelectionSheet = (): ReactNode => {
     ]);
     return (
         <>
-            <div className="px-4 grow w-full">
+            <motion.div
+                className="px-4 grow w-full"
+                initial={{
+                    opacity: 0,
+                }}
+                animate={{
+                    opacity: 1,
+                }}
+                exit={{
+                    opacity: 0,
+                    scale: 0,
+                }}
+            >
                 <InputGroup className="px-4 text-sm focus-visible:ring-0! focus-visible:border-none">
                     <InputGroupInput className="p-0" />
                     <InputGroupAddon>
@@ -45,11 +49,7 @@ export const ChatSelectionSheet = (): ReactNode => {
                 {isLoading ? (
                     <CenteredExpandedLoadingIndicator className="grow" />
                 ) : conversations?.length ? (
-                    conversations.map((c) => {
-                        return (
-                            <ChatSelectionItem active={convo === c.id} item={c} key={c.id} />
-                        );
-                    })
+                    <ChatList items={conversations} />
                 ) : (
                     <div className="grow w-full h-full flex flex-col justify-center items-center">
                         <h6 className="text-center text-lg font-semibold text-foreground">
@@ -61,7 +61,7 @@ export const ChatSelectionSheet = (): ReactNode => {
                         </div>
                     </div>
                 )}
-            </div>
+            </motion.div>
         </>
     );
 };

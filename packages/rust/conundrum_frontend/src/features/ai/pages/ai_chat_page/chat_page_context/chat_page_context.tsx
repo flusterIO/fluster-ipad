@@ -151,7 +151,7 @@ export const ChatPageContextReducer = (
             return {
                 ...state,
                 messages: action.payload,
-                hasMessages: Boolean(action.payload.length)
+                hasMessages: Boolean(action.payload.length),
             };
         }
         case "append-message": {
@@ -205,8 +205,8 @@ export const ChatPageContextReducer = (
         case "set-page": {
             return {
                 ...state,
-                page: action.payload
-            }
+                page: action.payload,
+            };
         }
     }
 };
@@ -232,8 +232,7 @@ export const ChatPageProvider = ({
         return state.ai.dailyChat;
     });
     const [sp, setSp] = useSearchParams();
-    const [activelyStreaming, setActivelyStreaming] = useState(false);
-    const [response, setResponse] = useState<ChatData>(getEmptyChatData());
+    const [initializedConversation, setInitializedConversation] = useState(false);
     const logger = useLogger();
 
     const page = sp.get("page") ?? "1";
@@ -254,12 +253,15 @@ export const ChatPageProvider = ({
     const socket = useRef<WebSocket | null>(null);
 
     const cleanupStream = useCallback(async () => {
-        if (!activelyStreaming) {
+        if (!state.thinking) {
             return;
         }
         if (!conversation_id) {
             consola.error("Failed to load conversation id.");
-            setActivelyStreaming(false);
+            dispatch({
+                type: "set-thinking",
+                payload: false,
+            });
             return;
         }
         try {
@@ -270,12 +272,18 @@ export const ChatPageProvider = ({
                 purpose: "process-complete",
                 severity: "success",
             });
-            setActivelyStreaming(false);
+            dispatch({
+                type: "set-thinking",
+                payload: false,
+            });
         } catch (err: unknown) {
             consola.error("Error: ", err);
-            setActivelyStreaming(false);
+            dispatch({
+                type: "set-thinking",
+                payload: false,
+            });
         }
-    }, [conversation_id, agent_id, response, activelyStreaming]);
+    }, [conversation_id, agent_id, state.response, state.thinking]);
 
     useEffect(() => {
         dispatch({
@@ -283,6 +291,14 @@ export const ChatPageProvider = ({
             payload: agent_id ?? null,
         });
     }, [agent_id]);
+
+    const setResponse = (cb: (data: ChatData) => ChatData): void => {
+        const res = cb(state.response ?? getEmptyChatData());
+        dispatch({
+            type: "set-response",
+            payload: res,
+        });
+    };
 
     useEffect(() => {
         if (state.initialized) {
@@ -306,7 +322,10 @@ export const ChatPageProvider = ({
 
                 const handleIndividualRequest = (req: ChatEvent) => {
                     if (req.type !== "done") {
-                        setActivelyStreaming(true);
+                        dispatch({
+                            type: "set-thinking",
+                            payload: false,
+                        });
                     } else {
                         consola.log(`Tokens expended: `, req.content);
                         cleanupStream().catch((err: unknown) => {
@@ -414,17 +433,17 @@ export const ChatPageProvider = ({
     useEffect(() => {
         dispatch({
             type: "set-page",
-            payload: page ? parseInt(page) : 1
+            payload: page ? parseInt(page) : 1,
         });
     }, [page]);
 
     useEffect(() => {
-        const isEmpty = isEmptyChatResponse(response);
+        const isEmpty = state.response ? isEmptyChatResponse(state.response) : true;
         dispatch({
             type: "set-response",
-            payload: isEmpty ? null : response,
+            payload: isEmpty ? null : state.response,
         });
-    }, [response, state.hasMessages]);
+    }, [state.response, state.hasMessages]);
 
     return (
         <ChatPageContext.Provider value={state}>

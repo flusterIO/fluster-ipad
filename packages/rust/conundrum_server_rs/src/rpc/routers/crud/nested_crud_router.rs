@@ -3,13 +3,11 @@ use std::sync::Arc;
 use crate::crud_router;
 use conundrum::ai::models::agent::agent_description::AgentDescription;
 use conundrum::ai::models::agent::agent_description_partial::AgentDescriptionPartial;
-use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
+use conundrum::ecosystem::error_handling::server_error::ServerError;
 use conundrum::{
     ai::models::{
         chat::{
-            chat_conversation::{
-                chat_conversation::ChatConversation, chat_conversation_partial::ChatConversationPartial,
-            },
+            chat_conversation::chat_conversation::ChatConversation,
             chat_message::{
                 ai::ai_message::AIMessage, system::system_prompt_message::SystemPromptMessage,
                 user::user_message::UserMessage,
@@ -33,7 +31,6 @@ use conundrum_db::vector::models::{
         server_state::server_state::ServerState,
     },
     git::{git_repository_entity::GitRepositoryEntity, git_repository_partial::GitRepositoryPartial},
-    primitives::helper_models::label_and_id::IDAndOptionalLabel,
     taggables::{
         auto_taggable::AutoTaggable, auto_taggable_partial::AutoTaggablePartial, subject::Subject, tag::Tag,
         taggable_update_partial::TaggablePartial, topic::Topic,
@@ -52,7 +49,7 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let assignment_crud = crud_router!(AssignmentEntity, AssignmentEntityPartial);
     let flashcard_crud = crud_router!(FlashCardEntity, FlashCardEntityPartial);
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
-    let chat_conversation_crud = crud_router!(ChatConversation, ChatConversationPartial);
+    let chat_conversation_crud = crud_router!(ChatConversation, ChatConversation);
     let user_message_crud = crud_router!(UserMessage, UserMessage);
     let ai_message_crud = crud_router!(AIMessage, AIMessage);
     let system_prompt_message_crud = crud_router!(SystemPromptMessage, SystemPromptMessage);

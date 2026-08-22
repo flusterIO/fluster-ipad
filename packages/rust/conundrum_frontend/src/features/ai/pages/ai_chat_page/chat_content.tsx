@@ -6,7 +6,6 @@ import { ToolExecComponent } from "./tool_execution_component/tool_exec_componen
 import { AnimatePresence } from "framer-motion";
 import { type UserMessage } from "@/codegen/bindings";
 import { useChatPageContext } from "./chat_page_context/chat_page_context";
-import { useLocation } from "react-router";
 import { motion } from "framer-motion";
 
 interface EventProps {

@@ -14,8 +14,8 @@ export const useMessageSender = () => {
 
         dispatch({
             type: "set-thinking",
-            payload: true
-        })
+            payload: true,
+        });
 
         const data: UserMessageInput = {
             convo_id: convo,
@@ -29,18 +29,18 @@ export const useMessageSender = () => {
                 type: "user-partial",
                 data: {
                     ...data,
-                    ctime: new Date()
-                }
-            }
-        })
+                    ctime: new Date(),
+                },
+            },
+        });
 
         dispatch({
             type: "set-response",
-            payload: getEmptyChatData()
-        })
+            payload: getEmptyChatData(),
+        });
 
         socket.send(JSON.stringify(data));
     }
 
-    return sendMessage
-}
+    return sendMessage;
+};

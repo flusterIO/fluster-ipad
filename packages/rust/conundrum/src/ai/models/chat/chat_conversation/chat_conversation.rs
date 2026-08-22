@@ -1,8 +1,9 @@
-use std::ops::{Index, IndexMut};
+use std::ops::IndexMut;
 use std::sync::Arc;
 
 use crate::ecosystem::db::db::ArcMutexDB;
 use crate::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
+use crate::ecosystem::db::db_traits::db_field::DatabaseField;
 use crate::ecosystem::db::db_traits::db_identifiable::DatabaseIdentifiable;
 use crate::ecosystem::db::db_traits::entity_crud::EntityCRUD;
 use crate::ecosystem::db::parameters::general::pagination::PaginationParams;
@@ -11,10 +12,6 @@ use crate::ecosystem::error_handling::db_error::DatabaseResult;
 use crate::impl_default_crud;
 use crate::lifted_models::primitives::date_time::DateTime;
 use crate::lifted_models::primitives::db_id::DatabaseId;
-use crate::{
-    ai::models::chat::chat_conversation::chat_conversation_partial::ChatConversationPartial,
-    ecosystem::db::db_traits::db_field::DatabaseField,
-};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
@@ -31,7 +28,7 @@ pub struct ChatConversation {
 impl ChatConversation {
     pub fn new(convo_id: DatabaseId, label: Option<String>) -> Self {
         Self { id: convo_id,
-               label: label.unwrap_or_default(),
+               label: label.unwrap_or(String::from("New Chat")),
                desc: None,
                requires_label_update: true,
                ctime: DateTime::new_now(),
@@ -52,10 +49,10 @@ impl ChatConversation {
             }
             1 => {
                 let item = _self.index_mut(0);
-                if !item.requires_label_update {
-                    item.requires_label_update = true;
-                    Self::save_many(vec![item.clone()], &Arc::clone(db)).await?;
-                }
+                item.requires_label_update = true;
+                item.utime = DateTime::new_now();
+                ChatConversation::merge_by_primary_key(vec![item.clone()], &Arc::clone(db)).await?;
+                log::info!("Updated one chat conversation.")
             }
             _ => {
                 log::error!("Found multiple chat conversation's with the same id. Shit's gone haywire.")
@@ -65,7 +62,7 @@ impl ChatConversation {
     }
 }
 
-impl_default_crud!(ChatConversation, ChatConversationPartial, DatabaseId);
+impl_default_crud!(ChatConversation, ChatConversation, DatabaseId);
 
 impl<'a> DBSchema<'a> for ChatConversation {
     fn arrow_fields(
