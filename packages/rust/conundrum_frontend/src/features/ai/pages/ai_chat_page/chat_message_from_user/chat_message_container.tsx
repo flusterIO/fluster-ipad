@@ -14,6 +14,7 @@ interface ChatMessageContainerProps {
     className?: string;
     isLast: boolean;
     ctime?: string | Date;
+    containerClasses?: string;
 }
 
 const CM = ({
@@ -64,11 +65,10 @@ export const ChatMessageContainer = (
     props: ChatMessageContainerProps,
 ): ReactNode => {
     if (props.ctime) {
-        const { className, ..._props } = props;
         return (
             <Tooltip>
-                <TooltipTrigger className={className}>
-                    <CM {..._props} />
+                <TooltipTrigger className={props.containerClasses}>
+                    <CM {...props} />
                 </TooltipTrigger>
                 <TooltipContent>
                     <DateTimeComponent dateTime={props.ctime} format="full-with-time" />
