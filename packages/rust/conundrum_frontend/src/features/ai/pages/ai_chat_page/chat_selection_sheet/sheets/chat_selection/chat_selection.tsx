@@ -35,9 +35,6 @@ export const ChatSelectionSheet = (): ReactNode => {
     ]);
     return (
         <>
-            <SheetHeader className="w-full">
-                <SheetTitle className="w-full">Chat History</SheetTitle>
-            </SheetHeader>
             <div className="px-4 grow w-full">
                 <InputGroup className="px-4 text-sm focus-visible:ring-0! focus-visible:border-none">
                     <InputGroupInput className="p-0" />

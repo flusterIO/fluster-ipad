@@ -11,8 +11,7 @@ import { SheetHeader, SheetTitle } from "@/components/shad/sheet";
 import { SearchIcon } from "lucide-react";
 import React, { useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
-import { ToolCallItem } from "./tool_call_item";
-import { ToolCallHistoryInner } from "./tool_callhistory_inner";
+import { ToolCallHistoryInner } from "./tool_call_history_inner";
 
 export const ToolCallHistorySheet = (): ReactNode => {
     const [sp, setSp] = useSearchParams();
@@ -23,7 +22,21 @@ export const ToolCallHistorySheet = (): ReactNode => {
             <SheetHeader className="w-full">
                 <SheetTitle className="w-full">Tool Call History</SheetTitle>
             </SheetHeader>
-            <div className="px-4 grow w-full">
+            <motion.div
+                className="px-4 grow w-full"
+                initial={{
+                    opacity: 0,
+                    scale: 0,
+                }}
+                animate={{
+                    opacity: 1,
+                    scale: 1,
+                }}
+                exit={{
+                    opacity: 0,
+                    scale: 0,
+                }}
+            >
                 <InputGroup className="px-4 text-sm focus-visible:ring-0! focus-visible:border-none">
                     <InputGroupInput className="p-0" />
                     <InputGroupAddon>
@@ -42,7 +55,7 @@ export const ToolCallHistorySheet = (): ReactNode => {
                         </div>
                     </div>
                 )}
-            </div>
+            </motion.div>
         </>
     );
 };

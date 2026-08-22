@@ -2,7 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { initialAIState } from "./initial_ai_state";
 import { type useDispatch } from "react-redux";
 import { v4 } from "uuid";
-import { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import store from "@/state/store";
 
 const aiSlice = createSlice({
@@ -26,7 +26,7 @@ const { setDailyChat, ...props } = aiSlice.actions;
 export const { setChatAgentID } = props;
 
 export const resetDailyChat = (dispatch: ReturnType<typeof useDispatch>) => {
-    const now = new Dayjs();
+    const now = dayjs();
     const endOfDay = now.endOf("day");
     const timeOffset =
         store.getState().ai?.dailyChatTimeExpires ?? 3 * 60 * 60 * 1000; // Defaults to 3am;

@@ -83,7 +83,6 @@ export const GeneralAIChatPageInner = ({
     const showingEmptyChat = useMemo(() => {
         return isEmptyChatResponse(response) && !hasMessages;
     }, [response, hasMessages]);
-    console.log("showingEmptyChahowing: ", showingEmptyChat);
     return (
         <div className="w-full h-screen max-h-screen px-4">
             <motion.div
@@ -192,7 +191,7 @@ export const GeneralAIChatPageInner = ({
                                 </MicSelector>
                             </PromptInputButton>
                             {activelyStreaming ? (
-                                <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                                <div className="ml-4 w-2 h-2 rounded-full bg-primary animate-ping" />
                             ) : null}
                         </PromptInputTools>
                         <PromptInputSubmit />

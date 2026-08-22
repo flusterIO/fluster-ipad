@@ -4,6 +4,10 @@ import { type AppState } from "@/state/initial_state";
 import React, { type ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { AgentSelectionPanel } from "./sheets/agent_selection/agent_selection_panel";
+import { ChatSelectionSheet } from "./sheets/chat_selection/chat_selection";
+import { AnimatePresence } from "framer-motion";
+import { ToolCallHistorySheet } from "./sheets/tool_call_history/tool_call_history_panel";
+import { SheetTitle } from "./sheets/sheet_title";
 
 export const ChatSideSheet = ({
     open,
@@ -28,11 +32,16 @@ export const ChatSideSheet = ({
                 side="right"
                 className="flex flex-col justify-start items-center"
             >
-                {sheet === SecondaryPanelKey.AgentSelect ? (
-                <AgentSelectionPanel />
-                ) : (
-                < />
-                )}
+                <SheetTitle />
+                <AnimatePresence key={sheet}>
+                    {sheet === SecondaryPanelKey.AgentSelect ? (
+                        <AgentSelectionPanel key="agent-selection" />
+                    ) : sheet === SecondaryPanelKey.ToolExecHistory ? (
+                        <ToolCallHistorySheet key="tool-call-history" />
+                    ) : (
+                        <ChatSelectionSheet key="chat-selection" />
+                    )}
+                </AnimatePresence>
             </SheetContent>
         </Sheet>
     );
