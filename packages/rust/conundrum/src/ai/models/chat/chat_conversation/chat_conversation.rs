@@ -31,7 +31,7 @@ pub struct ChatConversation {
 impl ChatConversation {
     pub fn new(convo_id: DatabaseId, label: Option<String>) -> Self {
         Self { id: convo_id,
-               label: String::new(),
+               label: label.unwrap_or_default(),
                desc: None,
                requires_label_update: true,
                ctime: DateTime::new_now(),

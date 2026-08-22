@@ -5,7 +5,9 @@ use conundrum::{
         models::{
             agent::{agent_description::AgentDescription, agent_primary_task::AgentPrimaryTask},
             chat::{
-                chat_conversation::{chat_conversation::ChatConversation, chat_conversation_utime_partial::ChatConversationUtimePartial},
+                chat_conversation::{
+                    chat_conversation::ChatConversation, chat_conversation_utime_partial::ChatConversationUtimePartial,
+                },
                 chat_message::user::{user_message::UserMessage, user_message_input::UserMessageInput},
             },
         },
@@ -31,13 +33,17 @@ pub async fn chat_request_handler(State(state): State<Arc<ServerState>>,
                                   -> impl Stream<Item = ChatEvent> {
     if let Some(local_client) = state.clone().local_client.clone() {
         async_stream::stream! {
-        let convo_id = payload.convo_id.unwrap_or_else(|| {
+        let convo_id = payload.convo_id.as_ref().cloned().unwrap_or_else(|| {
             DatabaseId::new()
         });
-        if Some(convo_id) != payload.convo_id {
+        if payload.convo_id.as_ref().cloned().is_some_and(|x| x == convo_id.clone()) || payload.convo_id.is_none() {
             payload.convo_id = Some(convo_id.clone());
         }
-        let convo = ChatConversationUtimePartial::new(convo_id, None);
+        let convo = ChatConversation::new(convo_id, None);
+        let _ = convo.make_require_update(&Arc::clone(&state.db)).await
+            .inspect_err(|e| {
+                log::error!("Conversation Error: {:#?}", e);
+            });
         let locked_client = local_client.clone().lock_owned().await;
         // TODO: Get the agent description from the DB here.
         let agent = locked_client
