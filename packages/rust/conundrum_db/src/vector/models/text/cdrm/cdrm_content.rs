@@ -2,7 +2,7 @@ use std::{ops::{Index, IndexMut}, sync::Arc};
 
 use arrow_schema::Field;
 use conundrum::{
-    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk}, ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::{ai_error::{AIError, AIResult}, db_error::DatabaseError}}, lang::{lib::shared::utility_types::ArcTokioMutex, runtime::{queries::get_title::get_title_group, run_conundrum::{ParseConundrumOptions, run_conundrum}}}, lifted_models::primitives::db_id::DatabaseId
+    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk}, ecosystem::{db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge}, error_handling::{ai_error::{AIError, AIResult}, db_error::DatabaseError}}, lang::{lib::shared::utility_types::ArcTokioMutex, runtime::{queries::get_title::get_title_group, run_conundrum::{ParseConundrumOptions, run_conundrum}}}, lifted_models::primitives::db_id::DatabaseId
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
@@ -14,7 +14,7 @@ pub struct CdrmContent(String);
 
 impl DatabaseField for CdrmContent {
     fn field_definition(field_key: &'static str, nullable: bool) -> Field {
-        String::field_definition(field_key, nullable)
+        String::field_definition_large(field_key, nullable)
     }
 }
 
@@ -27,10 +27,10 @@ impl From<String> for CdrmContent {
 impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
     async fn get_parsed_content(&self,
         opts: ParseConundrumOptions)
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<String> {
+        -> AIResult<String> {
             let x = run_conundrum(opts).map_err(|e| {
                 log::error!("Fail to parse Conundrum content: {:#?}", e);
-                DatabaseError::ConundrumError(e)
+                AIError::ConundrumError(e)
             })?;
             Ok(x.content)
     }
@@ -38,10 +38,10 @@ impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
     async fn get_title(&self,
         modifiers: Vec<conundrum::lang::runtime::state::parse_state::ConundrumModifier>,
         target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget)
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Option<String>> {
+        -> AIResult<Option<String>> {
             let r = get_title_group(self.0.clone(), modifiers, target).map_err(|e| {
                 log::error!("Failed to get Conundrum title: {:#?}", e);
-                DatabaseError::ConundrumError(e)
+                AIError::ConundrumError(e)
             })?;
             if r.title.trim().is_empty() {
                 Ok(None)

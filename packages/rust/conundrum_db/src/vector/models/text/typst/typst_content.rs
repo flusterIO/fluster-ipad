@@ -1,5 +1,5 @@
 use arrow_schema::Field;
-use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge};
 use serde::{Deserialize, Serialize};
 
 /// TODO
@@ -13,7 +13,7 @@ pub struct TypstContent(String);
 
 impl DatabaseField for TypstContent {
     fn field_definition(field_key: &'static str, nullable: bool) -> Field {
-        String::field_definition(field_key, nullable)
+        String::field_definition_large(field_key, nullable)
     }
 }
 

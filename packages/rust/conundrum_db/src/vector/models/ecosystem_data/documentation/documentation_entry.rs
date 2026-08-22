@@ -1,5 +1,5 @@
 use conundrum::{
-    ai::rig::ai_traits::chunk_temporary::Chunk, ecosystem::error_handling::ai_error::AIError,
+    ai::rig::ai_traits::chunk::Chunk, ecosystem::error_handling::ai_error::AIError,
     lang::runtime::run_conundrum::ParseConundrumOptions,
 };
 use std::sync::Arc;

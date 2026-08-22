@@ -1,7 +1,10 @@
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use crate::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
+use crate::{
+    ecosystem::error_handling::db_error::DatabaseError,
+    lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
+};
 
 #[typeshare::typeshare]
 #[derive(Debug, Error, uniffi::Error, Serialize, Deserialize, Clone, specta::Type)]

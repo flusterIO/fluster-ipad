@@ -11,8 +11,9 @@ use conundrum::{
     impl_default_crud,
     lifted_models::primitives::db_id::DatabaseId,
 };
+use fake::Dummy;
 
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct UserWorkspaceRepository {
     pub workspace_root: String,
     pub repository_id: DatabaseId,
@@ -31,7 +32,7 @@ impl<'a> DBSchema<'a> for UserWorkspaceRepository {
 impl_default_crud!(UserWorkspaceRepository, UserWorkspaceRepository, String);
 
 impl<'a> DBEntity<'a> for UserWorkspaceRepository {
-    type PartialUpdateType;
+    type PartialUpdateType = UserWorkspaceRepository;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         DatabaseTable::WorkspaceRepository

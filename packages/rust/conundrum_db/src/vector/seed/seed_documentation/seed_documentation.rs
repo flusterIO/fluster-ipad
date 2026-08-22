@@ -1,7 +1,5 @@
 use conundrum::{
-    ai::rig::ai_traits::{
-        ai_client_container::AIClientEmbedder, chunk_temporary::Chunk, conundrum_agent::ConundrumAgent,
-    },
+    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk, conundrum_agent::ConundrumAgent},
     ecosystem::{
         db::{db::ArcMutexDB, db_traits::entity_crud::EntityCRUD, tables::DatabaseTable},
         error_handling::{

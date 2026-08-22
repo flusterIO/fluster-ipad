@@ -16,7 +16,7 @@ use crate::vector::models::{
     ecosystem_data::ecosystem_data::EcosystemData,
     meta::{front_matter::front_matter::FrontMatter, summary::summary::SummaryModel},
     taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
-    text::{cdrm::cdrm_content::CdrmContent, html::html_content::HTMLContent, typst::typst::TypstContent},
+    text::{cdrm::cdrm_content::CdrmContent, html::html_content::HTMLContent, typst::typst_content::TypstContent},
 };
 
 pub enum TableData {

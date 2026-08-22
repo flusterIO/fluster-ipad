@@ -1,44 +1,20 @@
-import { sortByCtime } from "#/database/shared_queries/sort_queries";
-import { CenteredExpandedLoadingIndicator } from "#/navigation/full_screen_loading";
-import { rspc } from "@/app/rspc_client";
-import { motion } from "framer-motion";
-import {
-    InputGroup,
-    InputGroupAddon,
-    InputGroupInput,
-} from "@/components/shad/input-group";
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-} from "@/components/shad/sheet";
-import { SearchIcon } from "lucide-react";
-import React, { useState, type ReactNode } from "react";
-import { useSearchParams } from "react-router";
-import { ChatSelectionItem } from "./chat_selection_item";
+import { SecondaryPanelKey } from "#/navigation/secondary_panel/secondary_panel_key";
+import { Sheet, SheetContent } from "@/components/shad/sheet";
+import { type AppState } from "@/state/initial_state";
+import React, { type ReactNode } from "react";
+import { useSelector } from "react-redux";
+import { AgentSelectionPanel } from "./sheets/agent_selection/agent_selection_panel";
 
-export const ChatSelectionSheet = ({
+export const ChatSideSheet = ({
     open,
     close,
 }: {
     open: boolean;
     close: () => void;
 }): ReactNode => {
-    const [sp, setSp] = useSearchParams();
-    const convo = sp.get("convo");
-    const [page, setPage] = useState(1);
-    const { data: conversations, isLoading } = rspc.useQuery([
-        "crud.chat_conversation.get_by_predicate",
-        {
-            predicate: undefined,
-            pagination: {
-                page,
-                per_page: 10,
-            },
-            sort: [sortByCtime],
-        },
-    ]);
+    const sheet = useSelector((state: AppState) => {
+        return state.navigation.side_panel.active_panel;
+    });
     return (
         <Sheet
             open={open}
@@ -52,43 +28,14 @@ export const ChatSelectionSheet = ({
                 side="right"
                 className="flex flex-col justify-start items-center"
             >
-                <SheetHeader className="w-full">
-                    <SheetTitle className="w-full">Chat History</SheetTitle>
-                </SheetHeader>
-                <div className="px-4 grow w-full">
-                    <InputGroup className="px-4 text-sm focus-visible:ring-0! focus-visible:border-none">
-                        <InputGroupInput className="p-0" />
-                        <InputGroupAddon>
-                            <SearchIcon />
-                        </InputGroupAddon>
-                    </InputGroup>
-                    {isLoading ? (
-                        <CenteredExpandedLoadingIndicator className="grow" />
-                    ) : conversations?.length ? (
-                        conversations.map((c) => {
-                            return (
-                                <ChatSelectionItem
-                                    active={convo === c.id}
-                                    item={c}
-                                    key={c.id}
-                                />
-                            );
-                        })
-                    ) : (
-                        <div className="grow w-full h-full flex flex-col justify-center items-center">
-                            <h6 className="text-center text-lg font-semibold text-foreground">
-                                No History
-                            </h6>
-                            <div className="text-center text-foreground/80">
-                                You don't have any chat history to display. Simply start a
-                                conversation and AI will take care of the rest
-                            </div>
-                        </div>
-                    )}
-                </div>
+                {sheet === SecondaryPanelKey.AgentSelect ? (
+                <AgentSelectionPanel />
+                ) : (
+                < />
+                )}
             </SheetContent>
         </Sheet>
     );
 };
 
-ChatSelectionSheet.displayName = "ChatSelectionSheet";
+ChatSideSheet.displayName = "ChatSelectionSheet";

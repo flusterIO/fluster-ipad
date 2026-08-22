@@ -9,6 +9,7 @@
 //! beyond a simple vector store, AI can take advantage of both the vector
 //! similarity _and_ graph capabilities with some simple tools that are capable
 //! of running on your own machine.
+pub mod actionable_step;
 pub mod geographic_location;
 pub mod long_term_goal;
 pub mod major_life_event;

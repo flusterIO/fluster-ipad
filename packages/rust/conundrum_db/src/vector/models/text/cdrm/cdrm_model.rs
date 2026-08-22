@@ -6,7 +6,7 @@ use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::text::{
-    cdrm::{cdrm_chunk::CdrmChunk, cdrm_content::CdrmContent},
+    cdrm::cdrm_content::CdrmContent,
     text_based_content::{text_based_chunk::TextBasedChunk, text_based_content::TextBasedContent},
 };
 

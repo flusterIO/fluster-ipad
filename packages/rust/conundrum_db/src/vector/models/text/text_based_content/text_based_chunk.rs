@@ -13,9 +13,9 @@ use conundrum::{
 use rig::Embed;
 use std::sync::Arc;
 
-use crate::vector::{models::vector::vector::DBVector, parameters};
+use crate::vector::models::vector::vector::DBVector;
 
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, fake::Dummy)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, fake::Dummy, specta::Type)]
 pub struct TextBasedChunk {
     pub id: DatabaseId,
     /// The id pointing back to the primary document. There's no point in having

@@ -72,4 +72,5 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
                                      .nest(DatabaseTable::UserMessage.to_string(), user_message_crud)
                                      .nest(DatabaseTable::AgentMessage.to_string(), ai_message_crud)
                                      .nest(DatabaseTable::SystemPromptMessage.to_string(), system_prompt_message_crud)
+                                     .nest(DatabaseTable::ToolExecution.to_string(), tool_execution_crud)
 }

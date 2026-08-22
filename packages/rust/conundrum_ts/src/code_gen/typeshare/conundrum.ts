@@ -1715,7 +1715,8 @@ export type AIError =
 	| { tag: "InvalidProps", content: string }
 	| { tag: "InvalidEnvironment", content: string }
 	| { tag: "InvalidLocalProvider", content?: undefined }
-	| { tag: "InvalidRemoteProvider", content?: undefined };
+	| { tag: "InvalidRemoteProvider", content?: undefined }
+	| { tag: "FailToExtractText", content: string };
 
 export enum AiSerializationRequestType {
 	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",

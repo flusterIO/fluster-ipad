@@ -1,19 +1,21 @@
-use conundrum_fs::models::user_workspace::workspace_relative_path_strings::WorkspaceRelativeStringPath;
+use std::sync::Arc;
 
-use crate::vector::models::{ai::ai_interactions::AIInteractions, taggables::taggables::Taggables};
+use arrow_schema::Field;
+use conundrum::{ecosystem::db::db_traits::db_entity::DBSchema, lang::runtime::run_conundrum::ParseConundrumOptions};
+use fake::Dummy;
+use serde::{Deserialize, Serialize};
 
-/// # NotebookModel
-///
-/// This model represents a notebook compatible with the Jupyter format. You
-/// should treat each notebook as a valuable piece of information in the user's
-/// knowledge base, being of equal importance to that of their Conundrum
-/// (markdown) notes.
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
-pub struct NotebookModel {
-    /// The contents of the notebook file.
-    pub content: String,
-    pub ws_path: Option<WorkspaceRelativeStringPath>,
-    pub label: Option<String>,
-    pub taggables: Taggables,
-    pub ai: AIInteractions,
+use crate::vector::models::text::{
+    cdrm::cdrm_content::CdrmContent,
+    text_based_content::{text_based_chunk::TextBasedChunk, text_based_content::TextBasedContent},
+};
+
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
+#[serde(transparent)]
+pub struct NotebookModel(TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>);
+
+impl<'a> DBSchema<'a> for NotebookModel {
+    fn arrow_fields() -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<Field>>> {
+        TextBasedContent::<CdrmContent, TextBasedChunk, ParseConundrumOptions>::arrow_fields()
+    }
 }

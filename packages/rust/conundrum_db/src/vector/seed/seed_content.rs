@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use conundrum::{
-    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk_temporary::Chunk},
+    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk},
     ecosystem::{
         db::{
             db::ArcMutexDB,

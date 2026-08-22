@@ -8,18 +8,23 @@ import {
     PromptInputTools,
 } from "@/components/ai_elements/prompt_input";
 import { randomFromArray } from "@/utils/array_utils";
-import { MicIcon, PaperclipIcon, SearchIcon } from "lucide-react";
+import { MicIcon, PersonStandingIcon, SearchIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import React, { useMemo, useState, type ReactNode } from "react";
 import { isEmptyChatResponse, useChat } from "./use_chat";
 import { CurrentlyStreamingMessage } from "./currently_streaming_message/currently_streaming_message";
-import { ChatSelectionSheet } from "./chat_selection_sheet/chat_selection_sheet";
+import { ChatSideSheet } from "./chat_selection_sheet/chat_selection_sheet";
 import { Button } from "@/components/shad/button";
 import { EmptyChat } from "./empty_chat/empty_chat";
 import { ChatContent } from "./chat_content";
 import { useSearchParams } from "react-router";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import { cn } from "@/utils/shad_utils";
+import {
+    MicSelector,
+    MicSelectorTrigger,
+} from "@/components/ai_elements/mic_selector";
+import { OllamaModelSelect } from "#/ai/components/ollama_model_select/ollama_model_select";
 
 const MotionButton = motion.create(Button);
 const MotionInput = motion.create(PromptInput);
@@ -175,10 +180,16 @@ export const GeneralAIChatPageInner = ({
                     <PromptInputFooter>
                         <PromptInputTools>
                             <PromptInputButton>
-                                <PaperclipIcon size={16} />
+                                <OllamaModelSelect>
+                                    <PersonStandingIcon />
+                                </OllamaModelSelect>
                             </PromptInputButton>
                             <PromptInputButton tooltip={"Voice Input"}>
-                                <MicIcon size={16} />
+                                <MicSelector>
+                                    <MicSelectorTrigger>
+                                        <MicIcon size={16} />
+                                    </MicSelectorTrigger>
+                                </MicSelector>
                             </PromptInputButton>
                             {activelyStreaming ? (
                                 <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
@@ -188,7 +199,7 @@ export const GeneralAIChatPageInner = ({
                     </PromptInputFooter>
                 </MotionInput>
             </div>
-            <ChatSelectionSheet
+            <ChatSideSheet
                 open={sheetOpen}
                 close={() => {
                     setSheetOpen(false);

@@ -2,6 +2,7 @@ use std::path::Path;
 
 use conundrum::{
     ecosystem::error_handling::{
+        ai_error::AIResult,
         conundrum_fs_error::ConundrumFSError,
         db_error::{DatabaseError, DatabaseResult},
     },
@@ -13,9 +14,9 @@ use crate::vector::models::text::text_based_content::text_based_chunk::TextBased
 pub trait BinaryBasedContent<ParseParameters, ChunkType = TextBasedChunk> {
     fn bytes(&self) -> Vec<u8>;
     /// Returns mardown or text via some extraction method like OCR or whatnot
-    async fn get_parsed_content(&self, opts: ParseParameters) -> DatabaseResult<String>;
+    async fn get_parsed_content(&self, opts: ParseParameters) -> AIResult<String>;
     async fn get_title(&self,
                        modifiers: Vec<ConundrumModifier>,
                        target: ConundrumCompileTarget)
-                       -> DatabaseResult<Option<String>>;
+                       -> AIResult<Option<String>>;
 }
