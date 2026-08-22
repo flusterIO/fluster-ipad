@@ -2,7 +2,8 @@ import { type AgentDescription } from "#/database/db_utility_types/agent";
 import React, { type ReactNode } from "react";
 
 interface AgentSelectionItemProps {
-    item: AgentDescription;
+    agent: AgentDescription;
+    active: boolean;
 }
 
 export const AgentSelectionItem = (

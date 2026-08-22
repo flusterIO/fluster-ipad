@@ -1,4 +1,5 @@
 // mod how_the_fuck_do_we_get_exported;
+mod database;
 use convert_case::{self, Case, Casing};
 use proc_macro::TokenStream;
 use quote::quote;
@@ -10,6 +11,12 @@ use syn::{Data, DeriveInput, Fields, parse_macro_input};
 // pub fn database_entity_macro(input: TokenStream) -> TokenStream {
 //     database_entity_macro_logic(input)
 // }
+//
+
+#[proc_macro_derive(DBSchema, attributes(db))]
+pub fn derive_database_schema(input: TokenStream) -> TokenStream {
+    database::schema::derive_db_schema(input)
+}
 
 #[proc_macro_derive(ConundrumPropertyMap, attributes(cdrm_property))]
 pub fn my_macro(input: TokenStream) -> TokenStream {

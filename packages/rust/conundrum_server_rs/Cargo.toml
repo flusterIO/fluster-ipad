@@ -70,7 +70,7 @@ rust-mcp-extra = "1.0.1"
 async-trait = "0.1.89"
 schemars = { version = "1.2.2", features = ["chrono04", "either1"] }
 indoc = "2.0.7"
-rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "memory"] }
+rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "memory", "rmcp"] }
 rig-lancedb = "0.41.0"
 rig-memory = "0.41.0"
 lancedb = "0.30.0"
@@ -79,6 +79,7 @@ futures-util = "0.3.33"
 async-stream = "0.3.6"
 test-log = "0.2.21"
 online = { version = "4.0.2", features = ["tokio", "tokio-runtime"] }
+rmcp = "3.1.4"
 
 [lints]
 workspace = true

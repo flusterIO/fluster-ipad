@@ -1,5 +1,6 @@
-use conundrum_db_macros::ConundrumDBModel;
+use conundrum_macros::DBSchema;
 
+#[derive(DBSchema)]
 pub struct LongTermGoal {
     /// Describe the user's goal in just a few words
     pub label: String,

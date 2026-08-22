@@ -1,12 +1,14 @@
 //! # Conundrum
 //!
-//! > A fair warning: The readme's written by AI, as is the license, but as
-//! > you'll see in the license, that's a feature... not a bug.
-//!
-//! ### A modular knowledge toolkit for the vibe-coding era.
-//!
 //! > **Conundrum is a modular academic toolkit built in the pursuit of
 //! > quantized gravity, rebuilt for the vibe-coding era.**
+//!
+//! ### Built To Be Built Upon
+//!
+//! > A fair warning: The readme's written by AI, as is the license, but as
+//! > you'll see in the license, that's a feature... not a bug. See the
+//! [license](https://flusterapp.com/license) or the [soul.md](https://flusterapp.com/soul) for
+//! more information.
 //!
 //! Conundrum began as part of [Fluster](https://flusterapp.com), an application born from an attempt to build better tools for doing academic research.
 //!
@@ -270,7 +272,9 @@
 //! This is a major part of Conundrum's philosophy:
 //!
 //! > **The syntax should communicate useful information to both humans and
-//! > machines.**
+//! > machines.** See the `emphasis`
+//! > [section](crate::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis)
+//! > for the growing list of supported keys.
 //!
 //! ---
 //!
@@ -549,7 +553,8 @@
 //! This means Conundrum isn't simply an application that happens to have AI
 //! features.
 //!
-//! It can become infrastructure that **AI applications build upon.**
+//! It can become infrastructure that **AI applications build upon**, your
+//! secondary file system that's AI first.
 //!
 //! ---
 //!
@@ -557,7 +562,7 @@
 //!
 //! Conundrum's knowledge layer is intentionally independent of the AI provider.
 //!
-//! You can use hosted models such as OpenAI.
+//! You can use hosted models.
 //!
 //! You can use local models through Ollama.
 //!
@@ -644,8 +649,9 @@
 //! | Go | 🟡 Developing |
 //! | Python | 🟡 Developing |
 //! | Lua | 🟡 Developing |
+//! | Kotlin | 🟡 Planned |
 //!
-//! The SDKs are not intended to turn Conundrum into six unrelated
+//! The SDKs are not intended to turn Conundrum into seven unrelated
 //! implementations.
 //!
 //! The Rust-powered core remains the source of truth wherever practical.
@@ -924,7 +930,7 @@
 //! **Conundrum was built by someone who has experienced homelessness and built
 //! significant portions of the project while offline.**
 //!
-//! It began with an attempt to pursue astrophysics full-time.
+//! It began with an attempt to pursue [astrophysics full-time](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time).
 //!
 //! It evolved through years of experimentation.
 //!

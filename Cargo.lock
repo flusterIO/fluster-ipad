@@ -3588,8 +3588,8 @@ dependencies = [
  "chrono",
  "chrono-humanize",
  "conundrum",
- "conundrum_db_macros",
  "conundrum_fs",
+ "conundrum_macros",
  "convert_case 0.11.0",
  "dirs 6.0.0",
  "docx-rs",
@@ -3600,6 +3600,7 @@ dependencies = [
  "go-away",
  "html-to-markdown-rs",
  "indoc 2.0.7",
+ "jupyter-protocol",
  "lancedb",
  "leptess",
  "log",
@@ -3795,6 +3796,7 @@ dependencies = [
  "rig",
  "rig-lancedb",
  "rig-memory",
+ "rmcp 3.1.4",
  "rspc",
  "rspc-axum",
  "rust-embed",
@@ -4621,6 +4623,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "darling"
+version = "0.24.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed17f5901b6630b993ca003def43f2f8ef4014fc13b047b57aad617ff32bc2ec"
+dependencies = [
+ "darling_core 0.24.1",
+ "darling_macro 0.24.1",
+]
+
+[[package]]
 name = "darling_core"
 version = "0.20.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4648,6 +4660,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "darling_core"
+version = "0.24.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6837e2cf7485aaae18f86181d2f0e9a7ed297a025e220aeabf63fdebd3a2ddff"
+dependencies = [
+ "ident_case",
+ "proc-macro2",
+ "quote",
+ "strsim",
+ "syn 3.0.3",
+]
+
+[[package]]
 name = "darling_macro"
 version = "0.20.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4667,6 +4692,17 @@ dependencies = [
  "darling_core 0.23.0",
  "quote",
  "syn 2.0.117",
+]
+
+[[package]]
+name = "darling_macro"
+version = "0.24.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2ac7135c3ef02b2f7833bbeb1be5ba7f966dcde8a87c6b87f65a778d71a02785"
+dependencies = [
+ "darling_core 0.24.1",
+ "quote",
+ "syn 3.0.3",
 ]
 
 [[package]]
@@ -11984,6 +12020,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "jupyter-protocol"
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "670197bfdc3b171334f450d9a3ae47999e8aec048579cc3c52f752cc8ff59843"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "chrono",
+ "futures",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "uuid",
+]
+
+[[package]]
 name = "just"
 version = "1.51.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -19075,7 +19127,7 @@ dependencies = [
  "indexmap 2.14.0",
  "rig-core",
  "rig-derive",
- "rmcp",
+ "rmcp 2.2.0",
  "schemars 1.2.2",
  "serde",
  "serde_json",
@@ -19283,7 +19335,7 @@ dependencies = [
  "futures",
  "pastey 0.2.3",
  "pin-project-lite",
- "rmcp-macros",
+ "rmcp-macros 2.2.0",
  "schemars 1.2.2",
  "serde",
  "serde_json",
@@ -19292,6 +19344,29 @@ dependencies = [
  "tokio-stream",
  "tokio-util",
  "tracing",
+]
+
+[[package]]
+name = "rmcp"
+version = "3.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a15bc53261a9dc37e105df006e4656c598379a8f9581f8950debb130f27a7cf"
+dependencies = [
+ "base64 0.23.1",
+ "chrono",
+ "futures",
+ "indexmap 2.14.0",
+ "pastey 0.2.3",
+ "pin-project-lite",
+ "rmcp-macros 3.1.4",
+ "schemars 1.2.2",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "tokio",
+ "tokio-util",
+ "tracing",
+ "uuid",
 ]
 
 [[package]]
@@ -19305,6 +19380,19 @@ dependencies = [
  "quote",
  "serde_json",
  "syn 2.0.117",
+]
+
+[[package]]
+name = "rmcp-macros"
+version = "3.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a85d45508e9b4ba024fe996c2638799635d75b6dd0ba8f32ccf08f8026f0c780"
+dependencies = [
+ "darling 0.24.1",
+ "proc-macro2",
+ "quote",
+ "serde_json",
+ "syn 3.0.3",
 ]
 
 [[package]]
@@ -24644,6 +24732,7 @@ dependencies = [
  "getrandom 0.4.2",
  "js-sys",
  "serde_core",
+ "sha1_smol",
  "wasm-bindgen",
 ]
 

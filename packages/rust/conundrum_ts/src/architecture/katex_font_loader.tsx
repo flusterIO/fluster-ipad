@@ -1,14 +1,13 @@
-import React, { type ReactNode } from 'react'
+import React, { type ReactNode } from "react";
 
-const withTrailingSlash = (s: string, x = "/") => s.endsWith(x) ? s : `${s}${x}`
+const withTrailingSlash = (s: string, x = "/") =>
+    s.endsWith(x) ? s : `${s}${x}`;
 
-export const KatexFontLoader = (props: {
-    fontUrl: string
-}): ReactNode => {
+export const KatexFontLoader = (props: { fontUrl: string }): ReactNode => {
     const formattedUrl = withTrailingSlash(props.fontUrl);
-    console.log("formattedUrl: ", formattedUrl)
     return (
-        <style>{`
+        <style>
+            {`
 @font-face {
     font-display: block;
     font-family: KaTeX_AMS;
@@ -172,8 +171,7 @@ export const KatexFontLoader = (props: {
 
 `}
         </style>
-    )
-}
+    );
+};
 
-
-KatexFontLoader.displayName = "KatexFontLoader"
+KatexFontLoader.displayName = "KatexFontLoader";

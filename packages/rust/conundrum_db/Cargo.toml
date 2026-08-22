@@ -28,7 +28,7 @@ uuid = { version = "1.23.2", features = ["v4"] }
 convert_case = "0.11.0"
 conundrum = { path = "../conundrum/", features = ["db"] }
 conundrum_fs = { path = "../conundrum_fs/" }
-conundrum_db_macros = { path = "../conundrum_db_macros/" }
+conundrum_macros = { path = "../conundrum_macros/" }
 schemars = { version = "1.2.1", features = ["chrono04", "either1", "uuid1"] }
 either = "1.16.0"
 log = "0.4.32"
@@ -71,6 +71,7 @@ text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
 cfg-if = "1.0.4"
 online = { version = "4.0.2", features = ["tokio"] }
 typst-as-lib = { version = "0.15.4", features = ["typst-html"] }
+jupyter-protocol = "2.0.2"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }
