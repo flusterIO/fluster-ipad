@@ -9,10 +9,10 @@ import { AnimatePresence } from "framer-motion";
 import { type UserMessage } from "@/codegen/bindings";
 import { useEventListener } from "@/state/hooks/use_event_listener";
 import consola from "consola";
+import { useChatPageContext } from "./chat_page_context/chat_page_context";
 
 interface ChatContentProps {
     convo_id: string;
-    setHasMessages: (hasLength: boolean) => void;
 }
 
 interface EventProps {
@@ -27,36 +27,8 @@ declare global {
 
 export const ChatContent = ({
     convo_id,
-    setHasMessages,
 }: ChatContentProps): ReactNode => {
-    const [page, setPage] = useState(1);
-    const { data: chatHistory, refetch } = rspc.useQuery(
-        [
-            "agent.load_chat_history",
-            {
-                convo_id,
-                max_count: page * 10,
-            },
-        ],
-        {
-            refetchOnWindowFocus: true,
-            refetchOnReconnect: true,
-            refetchOnMount: true,
-        },
-    );
-    const data = useFormattedChatHistory(chatHistory ?? null);
-
-    useEventListener("append-user-message", (e) => {
-        if (e.detail.message.convo_id === convo_id) {
-            refetch().catch((err: unknown) => {
-                consola.error("Error: ", err);
-            });
-        }
-    });
-
-    useEffect(() => {
-        setHasMessages(Boolean(data.length));
-    }, [data]);
+    const { page, messages } = useChatPageContext();
     return (
         <div
             className={
@@ -64,21 +36,21 @@ export const ChatContent = ({
             }
         >
             <AnimatePresence presenceAffectsLayout>
-                {data.map((d, i) => {
-                    if (d.type === "user-message") {
+                {messages.map((d, i) => {
+                    if (d.type === "user-message" || d.type === "user-partial") {
                         return (
                             <ChatMessageFromUser
-                                isLast={i === data.length - 1}
+                                isLast={i === messages.length - 1}
                                 index={i}
                                 item={d.data}
-                                key={d.data.id}
+                                key={"id" in d.data ? d.data.id : `${d.data.body}${i}`}
                             />
                         );
                     }
                     if (d.type === "agent-message") {
                         return (
                             <ChatMessageFromAgent
-                                isLast={i === data.length - 1}
+                                isLast={i === messages.length - 1}
                                 index={i}
                                 item={d.data}
                                 key={d.data.id}
@@ -88,7 +60,7 @@ export const ChatContent = ({
                     if (d.type === "reasoning-block") {
                         return (
                             <ReasoningTextComponent
-                                isLast={i === data.length - 1}
+                                isLast={i === messages.length - 1}
                                 index={i}
                                 item={d.data}
                                 key={d.data.id}
@@ -99,7 +71,7 @@ export const ChatContent = ({
                         return (
                             <ToolExecComponent
                                 index={i}
-                                isLast={i === data.length - 1}
+                                isLast={i === messages.length - 1}
                                 item={d.data}
                                 key={d.data.id}
                             />

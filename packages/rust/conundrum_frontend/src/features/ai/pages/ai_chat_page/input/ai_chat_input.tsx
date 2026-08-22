@@ -8,20 +8,18 @@ import {
     PromptInputSubmit,
     PromptInput,
 } from "@/components/ai_elements/prompt_input";
-import { PersonStandingIcon, MicIcon } from "lucide-react";
+import { PersonStandingIcon } from "lucide-react";
 import React, { useMemo, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useChatPageContext } from "../chat_page_context/chat_page_context";
 import { randomFromArray } from "@/utils/array_utils";
 import { MicSelector } from "./buttons/mic_select";
+import { useMessageSender } from "../chat_page_context/use_message_sender";
 
 const MotionInput = motion.create(PromptInput);
 
-interface ChatInputProps {
-    sendMessage: (val: string) => void;
-}
-
-export const ChatInput = ({ sendMessage }: ChatInputProps): ReactNode => {
+export const ChatInput = (): ReactNode => {
+    const sendMessage = useMessageSender();
     const { thinking } = useChatPageContext();
 
     const placeholder = useMemo(() => {

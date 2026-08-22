@@ -3,11 +3,12 @@ import { type UserMessage } from "@/codegen/bindings";
 import React, { type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ChatMessageContainer } from "./chat_message_container";
+import { type UserMessageInput } from "@conundrum/ts/codegen-typeshare";
 
 const StreamingMarkdownMotion = motion.create(StreamingMarkdown);
 
 interface ChatMessageFromUserProps {
-    item: UserMessage;
+    item: UserMessage | (UserMessageInput & { ctime: Date });
     index: number;
     isLast: boolean;
 }

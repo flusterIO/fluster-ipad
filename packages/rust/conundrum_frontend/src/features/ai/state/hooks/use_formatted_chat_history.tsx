@@ -6,6 +6,7 @@ import {
     type SystemPromptMessage,
     type UserMessage,
 } from "@/codegen/bindings";
+import { type UserMessageInput } from "@conundrum/ts/codegen-typeshare";
 import { useMemo } from "react";
 
 export type FormattedChatHistoryItem =
@@ -28,6 +29,10 @@ export type FormattedChatHistoryItem =
     | {
         type: "tool-execution";
         data: ToolExecution;
+    }
+    | {
+        type: "user-partial";
+        data: UserMessageInput & { ctime: Date };
     };
 
 export const useFormattedChatHistory = (

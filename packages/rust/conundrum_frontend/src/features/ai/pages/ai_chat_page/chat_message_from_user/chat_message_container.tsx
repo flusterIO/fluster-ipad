@@ -9,7 +9,7 @@ interface ChatMessageContainerProps {
     children: ReactNode;
     className: string;
     isLast: boolean;
-    ctime?: string
+    ctime?: string | Date
 }
 
 

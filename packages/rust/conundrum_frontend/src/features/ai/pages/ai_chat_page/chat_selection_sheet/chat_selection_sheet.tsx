@@ -8,14 +8,17 @@ import { ChatSelectionSheet } from "./sheets/chat_selection/chat_selection";
 import { AnimatePresence } from "framer-motion";
 import { ToolCallHistorySheet } from "./sheets/tool_call_history/tool_call_history_panel";
 import { SheetTitle } from "./sheets/sheet_title";
+import { useChatPageContext, useChatPageDispatch } from "../chat_page_context/chat_page_context";
 
-export const ChatSideSheet = ({
-    open,
-    close,
-}: {
-    open: boolean;
-    close: () => void;
-}): ReactNode => {
+export const ChatSideSheet = (): ReactNode => {
+    const { sheetOpen: open } = useChatPageContext();
+    const dispatch = useChatPageDispatch();
+    const close = () => {
+        dispatch({
+            type: "set-sheet-open",
+            payload: false
+        })
+    }
     const sheet = useSelector((state: AppState) => {
         return state.navigation.side_panel.active_panel;
     });
