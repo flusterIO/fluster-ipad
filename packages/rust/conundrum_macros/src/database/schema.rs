@@ -52,17 +52,17 @@ fn generate_db_schema(input: &DeriveInput) -> syn::Result<proc_macro2::TokenStre
         let field_type = analyzed.ty;
 
         generated_fields.push(quote! {
-                                  std::sync::Arc::new(
-                                      <#field_type as DBSchemaField>::field_definition(
-                                          #name,
-                                          #nullable,
-                                      )
-                                  )
-                              });
+                  std::sync::Arc::new(
+                      <#field_type as conundrum::ecosystem::db::db_traits::db_field::DatabaseField>::field_definition(
+                          #name,
+                          #nullable,
+                      )
+                  )
+              });
     }
 
     Ok(quote! {
-        impl<'a> DBSchema<'a> for #name {
+        impl<'a> conundrum::ecosystem::db::db_traits::db_entity::DBSchema<'a> for #name {
             fn arrow_fields()
                 -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<
                     Vec<std::sync::Arc<arrow_schema::Field>>
@@ -112,6 +112,10 @@ fn parse_field_options(field: &syn::Field) -> syn::Result<FieldOptions> {
                 if meta.path.is_ident("nullable") {
                     let value: syn::LitBool = meta.value()?.parse()?;
                     options.nullable = Some(value.value);
+                    return Ok(());
+                }
+
+                if meta.path.is_ident("partial") {
                     return Ok(());
                 }
 

@@ -5,6 +5,7 @@ use syn::{DeriveInput, parse_macro_input};
 // mod field;
 // mod model;
 // mod partial;
+pub mod db_partial;
 pub mod schema;
 
 // pub fn derive(input: TokenStream) -> TokenStream {

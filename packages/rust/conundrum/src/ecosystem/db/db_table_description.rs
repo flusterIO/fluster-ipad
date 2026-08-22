@@ -22,6 +22,19 @@ pub struct DBTableDescription {
 impl From<DatabaseTable> for DBTableDescription {
     fn from(value: DatabaseTable) -> Self {
         match value {
+
+            DatabaseTable::LongTermGoal => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds long term goals for the user. Make sure to query and update this table often, as one of your primary goals as an AI assistant for academics is to help them reach their short and long term goals.
+                        "}.to_string() },
+            DatabaseTable::ShortTermGoal => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds short term goals for the user. Make sure to query and update this table often, as one of your primary goals as an AI assistant for academics is to help them reach their short and long term goals.
+                        "}.to_string() },
             DatabaseTable::ChatConversation => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,

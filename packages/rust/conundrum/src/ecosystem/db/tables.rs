@@ -98,6 +98,13 @@ pub enum DatabaseTable {
     #[strum(to_string = "keyboard_shortcut")]
     #[serde(rename = "keyboard_shortcut")]
     KeyboardShortcut,
+    /// --- Knowledge ---
+    #[strum(to_string = "long_term_goal")]
+    #[serde(rename = "long_term_goal")]
+    LongTermGoal,
+    #[strum(to_string = "short_term_goal")]
+    #[serde(rename = "short_term_goal")]
+    ShortTermGoal,
     /// --- 'Joining' tables ---
     #[strum(to_string = "workspace_repository")]
     #[serde(rename = "workspace_repository")]
