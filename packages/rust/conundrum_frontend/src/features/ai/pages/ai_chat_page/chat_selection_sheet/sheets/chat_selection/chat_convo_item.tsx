@@ -28,12 +28,16 @@ export const ChatConversationItem = ({
             )}
             onClick={() => {
                 if (chatId !== item.id) {
-                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                    navigate(`${AppPaths.aiChat}?${newSp.toString()}`);
                     dispatch({
                         type: "set-response",
                         payload: null,
                     });
+                    dispatch({
+                        type: "set-sheet-open",
+                        payload: false
+                    })
+                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                    navigate(`${AppPaths.aiChat}?${newSp.toString()}`);
                 }
             }}
         >

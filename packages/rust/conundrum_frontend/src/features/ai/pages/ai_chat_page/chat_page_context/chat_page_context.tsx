@@ -232,7 +232,6 @@ export const ChatPageProvider = ({
         return state.ai.dailyChat;
     });
     const [sp, setSp] = useSearchParams();
-    const [initializedConversation, setInitializedConversation] = useState(false);
     const logger = useLogger();
 
     const page = sp.get("page") ?? "1";
@@ -292,13 +291,16 @@ export const ChatPageProvider = ({
         });
     }, [agent_id]);
 
-    const setResponse = (cb: (data: ChatData) => ChatData): void => {
-        const res = cb(state.response ?? getEmptyChatData());
-        dispatch({
-            type: "set-response",
-            payload: res,
-        });
-    };
+    const setResponse = useCallback(
+        (cb: (state: ChatData) => ChatData) => {
+            const res = cb(state.response ?? getEmptyChatData());
+            dispatch({
+                type: "set-response",
+                payload: res,
+            });
+        },
+        [state.response],
+    );
 
     useEffect(() => {
         if (state.initialized) {

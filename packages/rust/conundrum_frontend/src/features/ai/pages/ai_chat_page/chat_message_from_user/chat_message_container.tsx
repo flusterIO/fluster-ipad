@@ -1,4 +1,4 @@
-import React, { type ReactNode } from "react";
+import React, { useEffect, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router";
 import {
@@ -25,9 +25,11 @@ const CM = ({
 }: ChatMessageContainerProps & { className?: string }): ReactNode => {
     const [sp] = useSearchParams();
     const convo_id = sp.get("convo");
+    const [haveAnimated, setHaveAnimated] = useState(false)
     return (
         <motion.div
             onAnimationComplete={() => {
+                setHaveAnimated(true)
                 if (isLast) {
                     window.dispatchEvent(
                         new CustomEvent("set-chat-entrance-settled", {
@@ -48,12 +50,12 @@ const CM = ({
                 opacity: 1,
             }}
             exit={{
-                x: 100,
-                scale: 0,
+                /* x: 100, */
+                /* scale: 0, */
                 opacity: 0,
             }}
             transition={{
-                delay: index * 0.05,
+                delay: haveAnimated ? 0 : index * 0.05,
             }}
         >
             {children}

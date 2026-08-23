@@ -1,9 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { initialAIState } from "./initial_ai_state";
+import { initialAIState, newDailyChat } from "./initial_ai_state";
 import { type useDispatch } from "react-redux";
-import { v4 } from "uuid";
-import dayjs from "dayjs";
-import store from "@/state/store";
 
 const aiSlice = createSlice({
     name: "ai",
@@ -18,25 +15,22 @@ const aiSlice = createSlice({
         ) {
             state.dailyChat = action.payload;
         },
+        setDailyChatViewed(state, action: PayloadAction<boolean>) {
+            state.dailyChat ??= newDailyChat(null);
+            state.dailyChat.was_directed = action.payload;
+        },
+        setMostRecentChat(state, action: PayloadAction<string>) {
+            state.mostRecentChat = action.payload;
+        },
     },
 });
 
 const { setDailyChat, ...props } = aiSlice.actions;
 
-export const { setChatAgentID } = props;
+export const { setChatAgentID, setMostRecentChat, setDailyChatViewed } = props;
 
 export const resetDailyChat = (dispatch: ReturnType<typeof useDispatch>) => {
-    const now = dayjs();
-    const endOfDay = now.endOf("day");
-    const timeOffset =
-        store.getState().ai?.dailyChatTimeExpires ?? 3 * 60 * 60 * 1000; // Defaults to 3am;
-    const expires_at = new Date(endOfDay.valueOf() + timeOffset).toISOString();
-    dispatch(
-        setDailyChat({
-            chat_id: v4(),
-            expires_at,
-        }),
-    );
+    dispatch(setDailyChat(newDailyChat(null)));
 };
 
 export default aiSlice.reducer;

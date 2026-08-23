@@ -26,7 +26,6 @@ export const ChatContent = (): ReactNode => {
                 "w-full h-fit flex flex-col justify-end items-end gap-y-4 px-2 mt-4 chat-content"
             }
             exit={{
-                /* scale: 0, */
                 opacity: 0,
             }}
         >

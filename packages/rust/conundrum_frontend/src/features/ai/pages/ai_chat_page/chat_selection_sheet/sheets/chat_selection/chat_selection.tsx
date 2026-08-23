@@ -8,16 +8,17 @@ import {
     InputGroupInput,
 } from "@/components/shad/input-group";
 import { SearchIcon } from "lucide-react";
-import React, { type ReactNode } from "react";
+import React, { useState, type ReactNode } from "react";
 import { ChatList } from "./chat_list";
 import { useChatPageContext } from "../../../chat_page_context/chat_page_context";
 
 export const ChatSelectionSheet = (): ReactNode => {
     const { page } = useChatPageContext();
+    const [inputValue, setInputValue] = useState("")
     const { data: conversations, isLoading } = rspc.useQuery([
         "crud.chat_conversation.get_by_predicate",
         {
-            predicate: undefined,
+            predicate: !inputValue.trim().length ? undefined : `label CONTAINS "${inputValue}"`,
             pagination: {
                 page,
                 per_page: 10,
@@ -41,7 +42,9 @@ export const ChatSelectionSheet = (): ReactNode => {
                 }}
             >
                 <InputGroup className="px-4 text-sm focus-visible:ring-0! focus-visible:border-none">
-                    <InputGroupInput className="p-0" />
+                    <InputGroupInput value={inputValue} onChange={(e) => {
+                        setInputValue(e.target.value)
+                    }} className="p-0" />
                     <InputGroupAddon>
                         <SearchIcon />
                     </InputGroupAddon>
@@ -57,7 +60,7 @@ export const ChatSelectionSheet = (): ReactNode => {
                         </h6>
                         <div className="text-center text-foreground/80">
                             You don't have any chat history to display. Simply start a
-                            conversation and AI will take care of the rest
+                            conversation and we'll take care of the rest
                         </div>
                     </div>
                 )}
