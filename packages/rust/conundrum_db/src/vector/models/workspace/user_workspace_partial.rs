@@ -13,7 +13,6 @@ pub struct UserWorkspacePartial {
     /// The path to the root of the workspace and the primary key for the
     /// workspace. This is still required to update the proper item.
     pub root: String,
-    #[serde(default = "Default::default")]
     pub label: Option<String>,
     pub respect_gitignore: Option<bool>,
     pub ignore_hidden: Option<bool>,

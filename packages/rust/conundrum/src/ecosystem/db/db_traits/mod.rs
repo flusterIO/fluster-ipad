@@ -12,6 +12,8 @@ pub mod db_identifiable;
 pub mod entity_crud;
 #[cfg(feature = "db")]
 pub mod impls;
+#[cfg(feature = "db")]
+pub mod into_partial;
 pub mod local_default;
 pub mod remote_default;
 #[cfg(feature = "db")]

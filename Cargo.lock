@@ -3833,16 +3833,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "conundrum_workspace"
-version = "0.0.1"
-dependencies = [
- "conundrum",
- "serde",
- "serde_json",
- "serde_with",
-]
-
-[[package]]
 name = "convert_case"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

@@ -91,16 +91,15 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
                                                                                DatabaseError::SerializationError
                                                                            })?;
 
-        let schema = Self::schema().map(Arc::new)?;
+        let schema = UpdatePartial::schema().map(Arc::new)?;
         let stream = Box::new(RecordBatchIterator::new(vec![Ok(record_batch)].into_iter(), schema.clone()));
         db_tbl.merge_insert(merge_keys)
               .when_matched_update_all(None)
-              .when_not_matched_insert_all()
               .clone()
               .execute(stream)
               .await
               .map_err(|e| {
-                  println!("Error: {:?}", e);
+                  log::error!("Error: {:?}", e);
                   DatabaseError::SerializationError
               })?;
         log::info!("Successfully merged `{}` models.", tbl.to_model_name());

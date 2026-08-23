@@ -18,6 +18,7 @@ import { defaultAINotepadSchema } from "@conundrum/ts/schemas";
 import { rspc } from "@/app/rspc_client";
 import consola from "consola";
 import { useLogger } from "#/logging/state/hooks/use_logger";
+import { type UserWorkspace } from "@/codegen/bindings";
 
 export const WorkspaceForm = (): ReactNode => {
     const { data } = useGenericRemoteDataContext<{
@@ -25,49 +26,48 @@ export const WorkspaceForm = (): ReactNode => {
     }>();
     const { mutateAsync } = rspc.useMutation("crud.user_workspace.update_many");
     const logger = useLogger();
-    const form = useForm<WorkspaceUpdateRequest[number]>({
-        resolver: zodResolver(userWorkspaceSchema),
-        defaultValues: (data?.workspace
-            ? {
+    const form = useForm({
+        resolver: zodResolver<UserWorkspace, null, UserWorkspace>(
+            userWorkspaceSchema,
+        ),
+        defaultValues: data?.workspace
+            ? ({
                 ...data.workspace,
-                resource_dir: data.workspace.resource_dir ?? null,
-            }
-            : {
-                resource_dir: "",
+                resource_dir: data.workspace.resource_dir,
+            } satisfies UserWorkspace)
+            : ({
+                resource_dir: "resources/",
                 label: "",
                 ignore_hidden: false,
                 respect_gitignore: false,
                 root: "",
+                ctime: new Date().toISOString(),
                 ...defaultAINotepadSchema,
-            }) satisfies WorkspaceUpdateRequest[number],
+            } satisfies UserWorkspace),
     });
 
     useEffect(() => {
         if (data?.workspace) {
             const ws = data.workspace;
-            form.setValue("resource_dir", ws.resource_dir ?? null);
+            form.setValue("resource_dir", ws.resource_dir);
             form.setValue("label", ws.label);
             form.setValue("ignore_hidden", ws.ignore_hidden);
             form.setValue("respect_gitignore", ws.respect_gitignore);
             form.setValue("root", ws.root);
             form.setValue("ai.notes", ws.ai.notes);
             form.setValue("ai.ai_generated_input", ws.ai.ai_generated_input);
+            form.setValue("ctime", ws.ctime);
         }
     }, [data]);
-    const handleSubmit = async ({
-        root,
-        ...data
-    }: WorkspaceUpdateRequest[number]) => {
+    const handleSubmit = async ({ root, ...data }: UserWorkspace) => {
+        console.log("root, data: ", root, data);
         if (!root) {
             return undefined;
         }
         const workspaceUpdate: WorkspaceUpdateRequest = [
             {
                 root,
-                ai: data.ai ?? {
-                    ai_generated_input: "",
-                    notes: "",
-                },
+                ai: data.ai,
                 ignore_hidden: data.ignore_hidden,
                 respect_gitignore: data.respect_gitignore,
                 label: data.label ?? null,
@@ -92,13 +92,7 @@ export const WorkspaceForm = (): ReactNode => {
             <Form {...form}>
                 <form
                     className="my-6 space-y-6 @[540px]/form:px-4"
-                    onSubmit={(e) => {
-                        form
-                            .handleSubmit(handleSubmit)(e)
-                            .catch((err: unknown) => {
-                                console.error("Error: ", err);
-                            });
-                    }}
+                    onSubmit={form.handleSubmit(handleSubmit)}
                 >
                     <h2 className="text-3xl font-bold text-foreground">
                         Workspace Settings

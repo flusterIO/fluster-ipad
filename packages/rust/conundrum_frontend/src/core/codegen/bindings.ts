@@ -693,7 +693,7 @@ resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[]; result: null }
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
  */
-root: string; label?: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null }; subscriptions: never }
+root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null }; subscriptions: never }
 
 export type ReasoningBlock = { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; content: string; ctime: DateTime }
 
@@ -930,7 +930,7 @@ export type Procedures = {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ root: string; label?: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
 },
 },
 	describe: {

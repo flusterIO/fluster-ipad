@@ -3,6 +3,7 @@ use crate::vector::models::workspace::user_workspace_partial::UserWorkspaceParti
 use conundrum::ecosystem::db::db_traits::db_entity::DBEntity;
 use conundrum::ecosystem::db::db_traits::db_entity::DBSchema;
 use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum::ecosystem::db::db_traits::into_partial::IntoPartial;
 use conundrum::ecosystem::db::db_traits::validate::ValidateSelf;
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
@@ -125,6 +126,17 @@ impl From<String> for UserWorkspace {
     }
 }
 
+impl IntoPartial<UserWorkspacePartial> for UserWorkspace {
+    fn into_partial(&self) -> UserWorkspacePartial {
+        UserWorkspacePartial { root: self.root.clone(),
+                               label: self.label.clone(),
+                               ignore_hidden: Some(self.ignore_hidden),
+                               respect_gitignore: Some(self.respect_gitignore),
+                               ai: Some(self.ai.clone()),
+                               resource_dir: Some(self.resource_dir.clone()) }
+    }
+}
+
 impl_default_crud!(UserWorkspace, UserWorkspacePartial, String);
 
 impl<'a> DBEntity<'a> for UserWorkspace {
@@ -162,6 +174,6 @@ mod tests {
 
     #[tokio::test]
     async fn user_workspace_crud_functionality() {
-        test_crud_functionality!(UserWorkspace, "UserWorkspace")
+        test_crud_functionality!(UserWorkspace, UserWorkspacePartial, "UserWorkspace")
     }
 }
