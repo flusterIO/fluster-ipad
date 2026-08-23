@@ -35,6 +35,8 @@ pub enum DatabaseError {
     FailToDelete(DatabaseTable),
     #[error("Failed to serialize. Nested Error: {0}")]
     FailToSerialize(String),
+    #[error("Invalid Setting: {0}")]
+    InvalidSetting(String),
     #[error("Failed to create table for the `{:?}` model.", .0.to_model_name())]
     FailToCreateTable(DatabaseTable),
     #[error("File system error: {:?}", .0)]

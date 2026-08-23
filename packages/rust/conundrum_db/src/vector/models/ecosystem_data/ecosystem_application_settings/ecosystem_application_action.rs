@@ -2,6 +2,10 @@ use conundrum::ecosystem::db::db_traits::{db_field::DatabaseField, db_identifiab
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
+/// # TODO
+/// Definitely something for version 2, but eventually keyboard settings will be
+/// modifiable and sharable across the ecosystem, so you can swap out
+/// applications with as little hickup as possible.
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, strum_macros::Display)]
 pub enum EcosystemApplicationAction {
     #[serde(rename = "toggle-command-palette")]

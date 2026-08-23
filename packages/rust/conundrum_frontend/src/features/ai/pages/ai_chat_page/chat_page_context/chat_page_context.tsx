@@ -1,15 +1,15 @@
 "use client";
 import { useSelector } from "react-redux";
 import { v4 } from "uuid";
-import {
+import React, {
     type ReactNode,
     createContext,
     useReducer,
     useContext,
-    useState,
     useEffect,
     useCallback,
     useRef,
+    useEffectEvent,
 } from "react";
 import {
     isEmptyChatResponse,
@@ -119,6 +119,7 @@ type ChatPageContextActions =
 
 export const ChatPageDispatchContext = createContext<
     React.Dispatch<ChatPageContextActions>
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 >(null!);
 
 export const useChatPageContext = () => useContext(ChatPageContext);
@@ -158,6 +159,7 @@ export const ChatPageContextReducer = (
             return {
                 ...state,
                 messages: [...state.messages, action.payload],
+                hasMessages: true,
             };
         }
         case "set-sheet-open": {
@@ -199,7 +201,7 @@ export const ChatPageContextReducer = (
         case "set-response": {
             return {
                 ...state,
-                response: action.payload,
+                response: (action.payload ? isEmptyChatResponse(action.payload) : false) ? null : action.payload,
             };
         }
         case "set-page": {
@@ -291,15 +293,16 @@ export const ChatPageProvider = ({
         });
     }, [agent_id]);
 
-    const setResponse = useCallback(
+
+    const setResponse = useEffectEvent(
         (cb: (state: ChatData) => ChatData) => {
+            consola.log("state.response: ", state.response);
             const res = cb(state.response ?? getEmptyChatData());
             dispatch({
                 type: "set-response",
                 payload: res,
             });
         },
-        [state.response],
     );
 
     useEffect(() => {
@@ -439,13 +442,13 @@ export const ChatPageProvider = ({
         });
     }, [page]);
 
-    useEffect(() => {
-        const isEmpty = state.response ? isEmptyChatResponse(state.response) : true;
-        dispatch({
-            type: "set-response",
-            payload: isEmpty ? null : state.response,
-        });
-    }, [state.response, state.hasMessages]);
+    /* useEffect(() => { */
+    /*     const isEmpty = state.response ? isEmptyChatResponse(state.response) : true; */
+    /*     dispatch({ */
+    /*         type: "set-response", */
+    /*         payload: isEmpty ? null : state.response, */
+    /*     }); */
+    /* }, [state.response, state.hasMessages]); */
 
     return (
         <ChatPageContext.Provider value={state}>

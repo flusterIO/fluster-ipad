@@ -20,7 +20,7 @@ export const ChatMessageFromUser = ({
 }: ChatMessageFromUserProps): ReactNode => {
     return (
         <ChatMessageContainer
-            className="bg-primary p-2 rounded"
+            className="bg-primary p-2 rounded block"
             containerClasses="max-w-[80%] w-fit"
             index={index}
             isLast={isLast}

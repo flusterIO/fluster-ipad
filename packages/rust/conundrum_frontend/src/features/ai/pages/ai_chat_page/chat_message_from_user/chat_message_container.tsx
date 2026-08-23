@@ -69,9 +69,9 @@ export const ChatMessageContainer = (
     if (props.ctime) {
         return (
             <Tooltip>
-                <TooltipTrigger className={props.containerClasses}>
-                    <CM {...props} />
-                </TooltipTrigger>
+                <TooltipTrigger
+                    render={<CM {...props} />}
+                    className={props.containerClasses} />
                 <TooltipContent>
                     <DateTimeComponent dateTime={props.ctime} format="full-with-time" />
                 </TooltipContent>

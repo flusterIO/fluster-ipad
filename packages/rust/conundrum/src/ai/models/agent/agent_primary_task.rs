@@ -130,4 +130,20 @@ impl AgentPrimaryTask {
             Self::Embedding => 0.0,
         }
     }
+
+    pub fn to_local_ai_preference(&self) -> f32 {
+        match self {
+            Self::Agent => 0.75,
+            Self::Summarization => 0.5,
+            Self::QuestionAnswering => 0.8,
+            Self::CreativeGeneration => 0.7,
+            Self::Classification => 0.5,
+            Self::CodeTransformation => 0.75,
+            Self::CodeGeneration => 0.8,
+            Self::Extraction => 0.85,
+            Self::ToolCalling => 0.85,
+            Self::StructuredGeneration => 0.85,
+            Self::Embedding => 0.9,
+        }
+    }
 }

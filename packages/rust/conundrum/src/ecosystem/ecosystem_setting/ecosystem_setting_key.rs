@@ -5,6 +5,7 @@ use strum::{EnumIter, IntoEnumIterator};
 
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant;
 
+/// Deprecated... Moving things around.
 #[derive(Serialize, Deserialize, Clone, Debug, strum_macros::Display, EnumIter, Type, PartialEq, Eq, Hash)]
 pub enum EcosystemSettingKey {
     #[serde(rename = "first_name")]

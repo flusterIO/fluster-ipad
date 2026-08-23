@@ -98,7 +98,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "keyboard_shortcut")]
     #[serde(rename = "keyboard_shortcut")]
     KeyboardShortcut,
-    /// --- Knowledge ---
+    #[strum(to_string = "ecosystem_setting")]
+    #[serde(rename = "ecosystem_setting")]
+    EcosystemSetting,
     #[strum(to_string = "long_term_goal")]
     #[serde(rename = "long_term_goal")]
     LongTermGoal,
