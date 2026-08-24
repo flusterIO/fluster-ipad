@@ -23,6 +23,12 @@ impl From<DatabaseTable> for DBTableDescription {
     fn from(value: DatabaseTable) -> Self {
         match value {
 
+            DatabaseTable::EcosystemSetting => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds settings for the Conundrum ecosystem.
+                        "}.to_string() },
             DatabaseTable::LongTermGoal => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,

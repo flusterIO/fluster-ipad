@@ -28,7 +28,9 @@ export const SheetTitle = (): ReactNode => {
         <SheetHeader className="w-full">
             <St className="w-full">
                 <DropdownMenu>
-                    <DropdownMenuTrigger>{options[value]}</DropdownMenuTrigger>
+                    <DropdownMenuTrigger
+                        className="*:text-foreground"
+                    >{options[value]}</DropdownMenuTrigger>
                     <DropdownMenuPortal>
                         <DropdownMenuContent>
                             {Object.values(options).map((k) => {

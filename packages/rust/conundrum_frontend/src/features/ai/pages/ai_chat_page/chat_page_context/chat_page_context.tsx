@@ -23,6 +23,7 @@ import { type AppState } from "@/state/initial_state";
 import consola from "consola";
 import { useSearchParams } from "react-router";
 import { type FormattedChatHistoryItem } from "#/ai/state/hooks/use_formatted_chat_history";
+import { resetDailyChat } from "#/ai/state/ai_state_slice";
 
 export interface ChatPageState {
     /**
@@ -199,9 +200,11 @@ export const ChatPageContextReducer = (
             };
         }
         case "set-response": {
+            const isEmpty = action.payload ? isEmptyChatResponse(action.payload) : true;
             return {
                 ...state,
-                response: (action.payload ? isEmptyChatResponse(action.payload) : false) ? null : action.payload,
+                response: isEmpty ? null : action.payload,
+                thinking: isEmpty
             };
         }
         case "set-page": {
@@ -248,6 +251,11 @@ export const ChatPageProvider = ({
         if (!conversation_id) {
             sp.set("convo", dailyChat?.chat_id ?? v4());
             setSp(sp);
+        } else if (dailyChat?.expires_at) {
+            const expires = new Date(dailyChat.expires_at).valueOf();
+            if (expires <= new Date().valueOf()) {
+                resetDailyChat()
+            }
         }
     }, [conversation_id, dailyChat]);
 

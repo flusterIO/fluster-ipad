@@ -2,7 +2,6 @@ import { SearchIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import React, { type ReactNode } from "react";
 import { CurrentlyStreamingMessage } from "./currently_streaming_message/currently_streaming_message";
-import { ChatSideSheet } from "./chat_selection_sheet/chat_secondary_panel";
 import { Button } from "@/components/shad/button";
 import { EmptyChat } from "./empty_chat/empty_chat";
 import { ChatContent } from "./chat_content";
@@ -14,6 +13,7 @@ import {
 } from "./chat_page_context/chat_page_context";
 import { ChatInput } from "./input/ai_chat_input";
 import { HistoryFetcher } from "./chat_page_context/history_fetcher";
+import { ChatSideSheet } from "./secondary_sheet/chat_secondary_panel";
 
 const MotionButton = motion.create(Button);
 

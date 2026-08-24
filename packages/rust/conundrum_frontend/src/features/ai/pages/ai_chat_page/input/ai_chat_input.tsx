@@ -1,20 +1,18 @@
-import { OllamaModelSelect } from "#/ai/components/ollama_model_select/ollama_model_select";
 import {
     PromptInputBody,
     PromptInputTextarea,
     PromptInputFooter,
     PromptInputTools,
-    PromptInputButton,
     PromptInputSubmit,
     PromptInput,
 } from "@/components/ai_elements/prompt_input";
-import { PersonStandingIcon } from "lucide-react";
 import React, { useMemo, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useChatPageContext } from "../chat_page_context/chat_page_context";
 import { randomFromArray } from "@/utils/array_utils";
 import { MicSelector } from "./buttons/mic_select";
 import { useMessageSender } from "../chat_page_context/use_message_sender";
+import { AgentSelectInputButton } from "./buttons/agent_select";
 
 const MotionInput = motion.create(PromptInput);
 
@@ -57,11 +55,7 @@ export const ChatInput = (): ReactNode => {
             </PromptInputBody>
             <PromptInputFooter>
                 <PromptInputTools>
-                    <PromptInputButton>
-                        <OllamaModelSelect>
-                            <PersonStandingIcon />
-                        </OllamaModelSelect>
-                    </PromptInputButton>
+                    <AgentSelectInputButton />
                     <MicSelector />
                     {thinking ? (
                         <div className="ml-4 w-2 h-2 rounded-full bg-primary animate-ping" />

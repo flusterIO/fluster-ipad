@@ -1,5 +1,5 @@
-use crate::vector::models::ecosystem_data::ecosystem_setting::value_types::setting_value_type::SettingValueType;
+use crate::vector::models::ecosystem_data::ecosystem_setting_key::unique_setting_key::UniqueSettingKey;
 
 pub trait EcosystemSettingKey {
-    fn type_of_setting(&self) -> SettingValueType;
+    fn to_setting_key(&self) -> UniqueSettingKey;
 }

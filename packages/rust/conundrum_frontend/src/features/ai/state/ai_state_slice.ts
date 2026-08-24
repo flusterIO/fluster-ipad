@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { initialAIState, newDailyChat } from "./initial_ai_state";
-import { type useDispatch } from "react-redux";
+import store from "@/state/store";
 
 const aiSlice = createSlice({
     name: "ai",
@@ -29,8 +29,8 @@ const { setDailyChat, ...props } = aiSlice.actions;
 
 export const { setChatAgentID, setMostRecentChat, setDailyChatViewed } = props;
 
-export const resetDailyChat = (dispatch: ReturnType<typeof useDispatch>) => {
-    dispatch(setDailyChat(newDailyChat(null)));
+export const resetDailyChat = () => {
+    store.dispatch(setDailyChat(newDailyChat(null)));
 };
 
 export default aiSlice.reducer;
