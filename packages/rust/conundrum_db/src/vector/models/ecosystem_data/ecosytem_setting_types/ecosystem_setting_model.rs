@@ -1,4 +1,13 @@
-use conundrum::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
+use conundrum::{
+    ecosystem::db::{
+        db_traits::{
+            db_entity::{DBEntity, DBSchema},
+            db_field::DatabaseField,
+        },
+        tables::DatabaseTable,
+    },
+    impl_default_crud,
+};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -6,11 +15,15 @@ use crate::vector::models::ecosystem_data::ecosystem_setting_key::{
     setting_key::Setting, unique_setting_key::UniqueSettingKey,
 };
 
+/// Warning: Don't use this directly. Use the enum to handle all interactions
+/// with the DB for typesafetey.
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
 pub struct EcosystemSettingModel {
     pub key: UniqueSettingKey,
     pub data: Setting,
 }
+
+impl_default_crud!(EcosystemSettingModel, EcosystemSettingModel, UniqueSettingKey);
 
 impl<'a> DBSchema<'a> for EcosystemSettingModel {
     fn arrow_fields(
@@ -18,5 +31,29 @@ impl<'a> DBSchema<'a> for EcosystemSettingModel {
         -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
     {
         Ok(vec![Arc::new(String::field_definition("key", false)), Arc::new(String::field_definition("key", false)),])
+    }
+}
+
+impl<'a> DBEntity<'a, UniqueSettingKey> for EcosystemSettingModel {
+    type PartialUpdateType = EcosystemSettingModel;
+
+    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
+        DatabaseTable::EcosystemSetting
+    }
+
+    fn merge_keys() -> &'static [&'static str] {
+        &["key"]
+    }
+
+    fn primary_key() -> &'static str {
+        "key"
+    }
+
+    fn set_primary_value(&mut self, value: UniqueSettingKey) {
+        self.key = value.clone();
+    }
+
+    fn primary_value(&self) -> UniqueSettingKey {
+        self.key.clone()
     }
 }

@@ -1,3 +1,4 @@
+use conundrum::ecosystem::db::db_traits::db_identifiable::DatabaseIdentifiable;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
@@ -20,3 +21,8 @@ pub enum UniqueSettingKey {
     LogVectorGenMethod,
 }
 
+impl DatabaseIdentifiable for UniqueSettingKey {
+    fn to_predicate(&self, field_key: &str) -> String {
+        format!("{} = \"{}\"", field_key, self.to_string())
+    }
+}

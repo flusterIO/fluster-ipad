@@ -20,6 +20,8 @@ export type AIMessage = { id: DatabaseId; convo_id: DatabaseId; agent_id: Databa
 
 export type AINotes = string
 
+export type AISettingKey = { "local-ai-preference": number }
+
 export type AgentPrimaryTask = "embedding" | "classification" | "extraction" | "structured-generation" | "code-generation" | "code-transformation" | "summarization" | "question-answering" | "creative-generation" | "tool-calling" | "agent"
 
 export type AiSerializationRequestPhase1 = { parsing_result: GeneralCodeBlock }
@@ -159,11 +161,7 @@ export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdr
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | 
-/**
- * --- Knowledge ---
- */
-"long_term_goal" | "short_term_goal" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -189,6 +187,12 @@ export type DocumentSpan = { start: number; end: number }
 
 export type DocumentationComponentName = "InContentDocumentationContainer" | "InContentDocsEmphasisTypeList" | "InContentDocsHighlightDemo" | "InContentDocsUnderlineDemo" | "AutoInsertedNestedEmojiDocumentation"
 
+/**
+ * # TODO
+ * Definitely something for version 2, but eventually keyboard settings will be
+ * modifiable and sharable across the ecosystem, so you can swap out
+ * applications with as little hickup as possible.
+ */
 export type EcosystemApplicationAction = "toggle-command-palette" | "toggle-side-panel"
 
 export type EcosystemLogIntention = "git-status-change" | "process-complete" | "entity-created" | "entity-updated" | "entity-deleted"
@@ -231,6 +235,12 @@ export type NoteOutgoingLinkResult = {
  * The user defined id on the target note.
  */
 link_to_note_id: string }
+
+/**
+ * This type should only be applied to structs who's vectors are not critical
+ * for the functioning of the app.
+ */
+export type OptionalVectorGenerationMethod = "local-only" | "local-and-remote"
 
 export type PaginationParams = { per_page: number; page: number }
 
@@ -410,11 +420,7 @@ entity_name: string; is_joining_table: boolean; description: string }[] } | { ke
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | 
-/**
- * --- Knowledge ---
- */
-"long_term_goal" | "short_term_goal" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -450,15 +456,11 @@ message: string | null;
 /**
  * A description of the event logged written directly to AI.
  */
-ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "settings.read"; input: "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method"; result: SyncSettingKey | AISettingKey | StorageSettingKey | null } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | 
-/**
- * --- Knowledge ---
- */
-"long_term_goal" | "short_term_goal" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -470,11 +472,7 @@ ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSe
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | 
-/**
- * --- Knowledge ---
- */
-"long_term_goal" | "short_term_goal" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -693,7 +691,7 @@ resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[]; result: null }
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
  */
-root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null }; subscriptions: never }
+root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null } | { key: "settings.save"; input: SyncSettingKey | AISettingKey | StorageSettingKey; result: null }; subscriptions: never }
 
 export type ReasoningBlock = { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; content: string; ctime: DateTime }
 
@@ -733,6 +731,12 @@ export type SortOrder = "asc-null-last" | "desc-null-last" | "asc-null-first" | 
 
 export type SortQuery = { column: string; order: SortOrder }
 
+export type StorageSettingKey = 
+/**
+ * The number of days that logs should be saved. Defaults to 30.
+ */
+{ "save-log-duration": number } | { "log-vector-gen-method": OptionalVectorGenerationMethod }
+
 /**
  * All keys must be cast to lowercase and all `_` replaced with `-`.
  * 
@@ -748,6 +752,8 @@ export type SortQuery = { column: string; order: SortOrder }
 export type SupportedCodeBlockSyntax = "Plain Text" | "ASP" | "HTML (ASP)" | "ActionScript" | "AppleScript" | "Batch File" | "NAnt Build File" | "C#" | "C++" | "C" | "CSS" | "Clojure" | "D" | "DMD Output" | "Diff" | "Erlang" | "HTML (Erlang)" | "Git Attributes" | "Git Commit" | "Git Common" | "Git Config" | "Git Ignore" | "Git Link" | "Git Log" | "Git Mailmap" | "Git Rebase Todo" | "Go" | "Graphviz (DOT)" | "Groovy" | "HTML" | "Haskell" | "Literate Haskell" | "JSON" | "Java Server Page (JSP)" | "Java" | "Javadoc" | "Java Properties" | "JavaScript" | "Regular Expressions (Javascript)" | "BibTeX" | "LaTeX Log" | "LaTeX" | "TeX" | "Lisp" | "Lua" | "Make Output" | "Makefile" | "Markdown" | "MultiMarkdown" | "MATLAB" | "OCaml" | "OCamllex" | "OCamlyacc" | "camlp4" | "Objective-C++" | "Objective-C" | "PHP Source" | "PHP" | "Regular Expressions (PHP)" | "Pascal" | "Perl" | "Python" | "Regular Expressions (Python)" | "R Console" | "R" | "Rd (R Documentation)" | "HTML (Rails)" | "JavaScript (Rails)" | "Ruby Haml" | "Ruby on Rails" | "SQL (Rails)" | "Regular Expression" | "reStructuredText" | "Ruby" | "Cargo Build Results" | "Rust" | "SQL" | "Scala" | "Bourne Again Shell (bash)" | "Shell-Unix-Generic" | "commands-builtin-shell-bash" | "HTML (Tcl)" | "Tcl" | "Textile" | "XML" | "YAML" | "AWK" | "Ada" | "Apache Conf" | "AsciiDoc (Asciidoctor)" | "ARM Assembly" | "Assembly (x86_64)" | "CMake C Header" | "CMake C++ Header" | "CMake" | "CMakeCache" | "CMakeCommands" | "Comma Separated Values" | "Cabal" | "CoffeeScript" | "CpuInfo" | "Crontab" | "Crystal" | "Dart" | "Dockerfile" | "DotENV" | "Elixir" | "HTML (EEx)" | "Regular Expressions (Elixir)" | "Elm Compile Messages" | "Elm Documentation" | "Elm" | "Email" | "F#" | "Fish" | "Fortran (Fixed Form)" | "Fortran (Modern)" | "Fortran Namelist" | "GFortran Build Results" | "OpenMP (Fortran)" | "fstab" | "GLSL" | "GraphQL" | "Groff/troff" | "group" | "HTML (Twig)" | "hosts" | "INI" | "JavaScript (Babel)" | "HTML (Jinja2)" | "Jinja2" | "jsonnet" | "Julia" | "Kotlin" | "Less" | "LLVM" | "Lean" | "LiveScript" | "Manpage" | "MediawikerPanel" | "MediaWiki" | "MemInfo" | "nginx" | "Nim" | "Ninja" | "Nix" | "orgmode" | "passwd" | "PowerShell" | "Protocol Buffer" | "Protocol Buffer (TEXT)" | "Puppet" | "PureScript" | "QML" | "Racket" | "Rego" | "Requirements.txt" | "resolv" | "Robot Framework" | "SCSS" | "Sass" | "Salt State (SLS)" | "SML" | "Ruby Slim" | "Strace" | "Stylus" | "Solidity" | "Vyper" | "JQ" | "Svelte" | "Swift" | "SystemVerilog" | "Navigational Bar SV" | "TOML" | "JSON (Terraform)" | "Terraform" | "Todo.txt" | "TypeScript" | "TypeScriptReact" | "Verilog" | "VimHelp" | "VimL" | "Vue Component" | "Zig" | "Command Help" | "gnuplot" | "HTTP Request and Response" | "log" | "Highlight non-printables" | "Authorized Keys" | "Known Hosts" | "Private Key" | "SSH Common" | "SSH Config" | "SSH Crypto" | "SSHD Config" | "syslog" | "varlink" | "conundrum-ai" | "dictionary" | "mermaid"
 
 export type SupportedCodeBlockTheme = "1337" | "Coldark-Cold" | "Coldark-Dark" | "DarkNeon" | "Dracula" | "GitHub" | "Monokai Extended" | "Monokai Extended Bright" | "Monokai Extended Light" | "Monokai Extended Origin" | "Nord" | "OneHalfDark" | "OneHalfLight" | "Solarized (dark)" | "Solarized (light)" | "Sublime Snazzy" | "TwoDark" | "Visual Studio Dark+" | "ansi" | "base16" | "base16-256" | "gruvbox-dark" | "gruvbox-light" | "zenburn"
+
+export type SyncSettingKey = { "auto-sync-on-new-chat": boolean } | { "auto-sync-on-new-msg": boolean }
 
 export type SystemPromptMessage = { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }
 
@@ -935,7 +941,7 @@ export type Procedures = {
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
@@ -950,9 +956,13 @@ export type Procedures = {
 	get_many: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[], error: unknown },
 },
 	rpc_health: { kind: "query", input: null, output: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean }, error: unknown },
+	settings: {
+	read: { kind: "query", input: "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method", output: SyncSettingKey | AISettingKey | StorageSettingKey | null, error: unknown },
+	save: { kind: "mutation", input: SyncSettingKey | AISettingKey | StorageSettingKey, output: null, error: unknown },
+},
 	tables: {
-	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk")[], error: unknown },
-	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk")[], error: unknown },
+	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {

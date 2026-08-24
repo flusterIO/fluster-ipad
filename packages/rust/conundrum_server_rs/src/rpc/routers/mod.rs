@@ -6,6 +6,7 @@ pub mod describe;
 pub mod fs;
 pub mod initialization;
 pub mod log;
+pub mod settings;
 pub mod study;
 pub mod sync;
 pub mod table;
