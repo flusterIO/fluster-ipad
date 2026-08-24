@@ -14,7 +14,11 @@ use conundrum::{
     lifted_models::primitives::db_id::DatabaseId,
 };
 
-pub trait SeedContent<'a, ChunkType, PartialUpdateType, ParseParameters, ServerStateType>:
+pub trait SeedContent {
+    async fn try_seed(&self, db: &ArcMutexDB) -> DatabaseResult<()>;
+}
+
+pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerStateType>:
     Chunk<ParseParameters, ChunkType, ServerStateType>
     where ChunkType: DBSchema<'a> + EntityCRUD<'a, DatabaseId, PartialUpdateType> + Clone,
           PartialUpdateType: Clone + DBSchema<'a> {

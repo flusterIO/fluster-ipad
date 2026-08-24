@@ -15,7 +15,7 @@ use serde_with::{DeserializeFromStr, SerializeDisplay, serde_as};
 use crate::vector::models::ecosystem_data::{
     ecosystem_setting_key::{
         ai_setting_key::AISettingKey, setting_key_trait::EcosystemSettingKey, storage_setting_key::StorageSettingKey,
-        sync_setting_key::SyncSettingKey,
+        sync_setting_key::SyncSettingKey, unique_setting_key::UniqueSettingKey,
     },
     ecosytem_setting_types::ecosystem_setting_model::EcosystemSettingModel,
 };
@@ -27,6 +27,20 @@ pub enum Setting {
     Sync(SyncSettingKey),
     AI(AISettingKey),
     Storage(StorageSettingKey),
+}
+
+impl From<UniqueSettingKey> for Setting {
+    /// Returns the **default** setting for each key. Don't use this if you
+    /// expect real data after the DB has been initialized.
+    fn from(value: UniqueSettingKey) -> Self {
+        match value {
+            UniqueSettingKey::AutoSyncOnNewChat => Self::Sync(SyncSettingKey::AutoSyncOnNewChat(true)),
+            UniqueSettingKey::AutoSyncOnNewMsg => Self::Sync(SyncSettingKey::AutoSyncOnNewChat(false)),
+            UniqueSettingKey::SaveLogDuration => Self::Storage(StorageSettingKey::SaveLogDuration(30.0)),
+            UniqueSettingKey::LocalAiPreference => Self::AI(AISettingKey::LocalAiPreference(0.5)),
+            UniqueSettingKey::LogVectorGenMethod => Self::AI(AISettingKey::LogVectorGenMethod(crate::vector::models::ecosystem_data::ecosytem_setting_types::vector_generation_method::OptionalVectorGenerationMethod::LocalAndRemote)),
+        }
+    }
 }
 
 impl Display for Setting {

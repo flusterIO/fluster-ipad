@@ -4,6 +4,7 @@
            serde::Deserialize,
            Clone,
            Debug,
+           Default,
            specta::Type,
            fake::Dummy,
            strum_macros::EnumString,
@@ -12,5 +13,6 @@
 #[serde(rename_all = "kebab-case")]
 pub enum OptionalVectorGenerationMethod {
     LocalOnly,
+    #[default]
     LocalAndRemote,
 }

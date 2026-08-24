@@ -12,15 +12,13 @@ use crate::vector::models::ecosystem_data::{
 #[serde(rename_all = "kebab-case")]
 pub enum StorageSettingKey {
     /// The number of days that logs should be saved. Defaults to 30.
-    SaveLogDuration(u32),
-    LogVectorGenMethod(OptionalVectorGenerationMethod),
+    SaveLogDuration(f32),
 }
 
 impl EcosystemSettingKey for StorageSettingKey {
     fn to_setting_key(&self) -> UniqueSettingKey {
         match self {
             Self::SaveLogDuration(_) => UniqueSettingKey::SaveLogDuration,
-            Self::LogVectorGenMethod(_) => UniqueSettingKey::LogVectorGenMethod,
         }
     }
 }

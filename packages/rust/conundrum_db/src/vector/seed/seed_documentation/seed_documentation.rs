@@ -20,7 +20,7 @@ use crate::vector::{
         },
         text::text_based_content::text_based_chunk::TextBasedChunk,
     },
-    seed::seed_content::SeedContent,
+    seed::seed_content::SeedChunks,
 };
 
 pub struct SeedDocumentation(Vec<DocumentationEntry>);
@@ -62,7 +62,7 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for SeedDocumenta
     }
 }
 
-impl<'a> SeedContent<'a, TextBasedChunk, TextBasedChunk, ParseConundrumOptions, ServerState> for SeedDocumentation {
+impl<'a> SeedChunks<'a, TextBasedChunk, TextBasedChunk, ParseConundrumOptions, ServerState> for SeedDocumentation {
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         DatabaseTable::DocumentationChunk
     }
