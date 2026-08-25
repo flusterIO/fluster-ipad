@@ -14,6 +14,8 @@ import {
 import { ChatInput } from "./input/ai_chat_input";
 import { HistoryFetcher } from "./chat_page_context/history_fetcher";
 import { ChatSideSheet } from "./secondary_sheet/chat_secondary_panel";
+import { type AppState } from "@/state/initial_state";
+import { useSelector } from "react-redux";
 
 const MotionButton = motion.create(Button);
 
@@ -36,6 +38,9 @@ export const GeneralAIChatPageInner = ({
     sheet: ReactNode;
 }): ReactNode => {
     const { hasMessages, messages, response } = useChatPageContext();
+    const sheetOpen = useSelector((state: AppState) => {
+        return state.navigation.side_panel.open;
+    });
     const dispatch = useChatPageDispatch();
     return (
         <div className="w-full h-screen max-h-screen px-4">
@@ -48,7 +53,7 @@ export const GeneralAIChatPageInner = ({
                 <MotionButton
                     transitionAll={false}
                     key="general-ai-search"
-                    size={hasMessages ? "icon-xs" : "icon-lg"}
+                    size={messages.length || sheetOpen ? "icon-xs" : "icon-lg"}
                     variant="secondary"
                     onClick={() => {
                         dispatch({
@@ -75,7 +80,7 @@ export const GeneralAIChatPageInner = ({
                             height: 40,
                         },
                     }}
-                    animate={messages.length ? "small" : "large"}
+                    animate={messages.length || sheetOpen ? "small" : "large"}
                     exit={"hide"}
                 >
                     <SearchIcon />
@@ -89,7 +94,9 @@ export const GeneralAIChatPageInner = ({
                 <motion.div
                     className={cn(
                         "grow overflow-x-hidden overflow-y-auto w-[calc(100%+0.5rem)] translate-x-1 no-scrollbar",
-                        response === null && !hasMessages && "showing-empty-chat",
+                        response === null &&
+                        !hasMessages &&
+                        "showing-empty-chat flex flex-col justify-center items-center",
                     )}
                 >
                     <div className="w-full h-fit flex flex-col justify-end items-center pb-4">

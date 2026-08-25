@@ -14,7 +14,7 @@ type ValidPredicate = `${keyof ToolExecution} = "${string}"`;
 export const ToolCallHistoryInner = ({
     convo,
 }: ToolCallHistoryInnerProps): ReactNode => {
-    const { data: conversations, isLoading } = rspc.useQuery([
+    const { data: toolCalls, isLoading } = rspc.useQuery([
         "crud.tool_execution.get_by_predicate",
         {
             predicate: `convo_id = "${convo}"` satisfies ValidPredicate,
@@ -29,8 +29,8 @@ export const ToolCallHistoryInner = ({
     if (isLoading) {
         return <CenteredExpandedLoadingIndicator className="grow" />;
     }
-    return conversations?.length ? (
-        conversations.map((c) => {
+    return toolCalls?.length ? (
+        toolCalls.map((c) => {
             return <ToolCallItem item={c} key={c.id} />;
         })
     ) : (

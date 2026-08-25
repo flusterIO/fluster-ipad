@@ -1,4 +1,3 @@
-import { SheetHeader, SheetTitle as St } from "@/components/shad/sheet";
 import React, { useState, type ReactNode } from "react";
 import { SecondaryPanelKey } from "#/navigation/secondary_panel/secondary_panel_key";
 import {
@@ -14,10 +13,10 @@ import { setSecondaryActivePanel } from "#/navigation/state/navigation_slice";
 import { Button } from "@/components/shad/button";
 
 const options: Record<SecondaryPanelKey, string> = {
-    [SecondaryPanelKey.AgentSelect]: "Agent Select",
-    [SecondaryPanelKey.Logs]: "Logs",
     [SecondaryPanelKey.ChatSelect]: "Chat Select",
+    [SecondaryPanelKey.AgentSelect]: "Agent Select",
     [SecondaryPanelKey.ToolExecHistory]: "Tool Calls",
+    [SecondaryPanelKey.Logs]: "Logs",
 };
 
 export const SheetTitle = (): ReactNode => {

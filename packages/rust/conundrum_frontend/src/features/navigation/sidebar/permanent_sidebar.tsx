@@ -35,7 +35,7 @@ export const PermanentSidebar = (): ReactNode => {
     }
     const buttons = useMemo(() => {
         const searchParams = new URLSearchParams();
-        const chatId = dailyChat?.dailyChat?.was_directed
+        const chatId = dailyChat.dailyChat?.was_directed
             ? (dailyChat.mostRecentChat ?? dailyChat.dailyChat.chat_id)
             : dailyChat.dailyChat?.chat_id;
         searchParams.set("convo", chatId ?? v4());
