@@ -17,6 +17,7 @@ use specta::Type;
 #[serde_as]
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 #[serde(transparent)]
+#[typeshare::typeshare]
 pub struct DateTime(#[specta(type = String)] i64);
 
 impl Dummy<Faker> for DateTime {

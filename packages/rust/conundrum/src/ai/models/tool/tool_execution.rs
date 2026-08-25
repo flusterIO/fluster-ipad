@@ -23,6 +23,7 @@ use crate::{
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 
+#[typeshare::typeshare]
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct ToolExecution {
     pub id: DatabaseId,

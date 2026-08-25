@@ -134,6 +134,7 @@ export const ChatPageContextReducer = (
     state: ChatPageState,
     action: ChatPageContextActions,
 ): ChatPageState => {
+    consola.info("Action: ", action.type);
     switch (action.type) {
         case "set-loading": {
             return {
@@ -306,14 +307,12 @@ export const ChatPageProvider = ({
                 severity: "success",
             });
             dispatch({
-                type: "set-thinking",
-                payload: false,
+                type: "stream-complete",
             });
         } catch (err: unknown) {
             consola.error("Error: ", err);
             dispatch({
-                type: "set-thinking",
-                payload: false,
+                type: "stream-complete",
             });
         }
     }, [conversation_id, agent_id, state.response, state.thinking]);
@@ -355,11 +354,7 @@ export const ChatPageProvider = ({
                 const chatEvent = JSON.parse(event.data) as ChatEvent;
 
                 const handleIndividualRequest = (req: ChatEvent) => {
-                    if (req.type !== "done") {
-                        dispatch({
-                            type: "stream-complete",
-                        });
-                    } else {
+                    if (req.type === "done") {
                         consola.log(`Tokens expended: `, req.content);
                         cleanupStream().catch((err: unknown) => {
                             consola.error("Error: {}", err);
@@ -411,7 +406,7 @@ export const ChatPageProvider = ({
                         });
                     }
                     if (req.type === "tool_call") {
-                        consola.info(`The ${req.content.tool_name} was called!`);
+                        consola.info(`The ${req.content} was called!`);
                         setResponse((current) => {
                             return {
                                 ...current,

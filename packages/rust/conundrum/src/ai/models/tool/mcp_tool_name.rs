@@ -12,6 +12,7 @@ use crate::ecosystem::error_handling::db_error::DatabaseError;
            strum_macros::EnumIter)]
 #[strum(serialize_all = "snake_case")]
 #[serde(try_from = "String", into = "String", rename_all = "snake_case")]
+#[typeshare::typeshare]
 pub enum MCPToolName {
     HelloWorld,
     QueryWorkspaces,

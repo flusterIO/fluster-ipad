@@ -20,10 +20,10 @@ use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
 use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use futures_util::{SinkExt, StreamExt};
-use rig::agent::{MultiTurnStreamItem};
-use rig::completion::{GetTokenUsage};
-use rig::streaming::{StreamedAssistantContent};
-use tokio::sync::{OnceCell};
+use rig::agent::MultiTurnStreamItem;
+use rig::completion::GetTokenUsage;
+use rig::streaming::StreamedAssistantContent;
+use tokio::sync::OnceCell;
 
 /// Records the <ConversationId, ActivelyStreamingMessage> in a map until it can
 /// be saved.
@@ -41,7 +41,7 @@ async fn handle_side_effects<R>(data: MultiTurnStreamItem<R>,
     where R: Clone + Unpin + GetTokenUsage {
     match data {
         MultiTurnStreamItem::ToolExecutionCommitted { tool_call,
-                                                      internal_call_id, } => {
+                                                      .. } => {
             match ToolExecution::try_from_with_convo_info(tool_call, convo_id, agent_id) {
                 Ok(r) => {
                     let db = Arc::clone(&state.db);
@@ -79,11 +79,13 @@ async fn handle_side_effects<R>(data: MultiTurnStreamItem<R>,
             _ => {}
         },
         MultiTurnStreamItem::FinalResponse(pr) => {
-            let msg = AIMessage::from_with_convo_info(pr.output.clone(), convo_id, agent_id);
+            let msg = AIMessage::from_with_convo_info(pr.output.clone(), convo_id.clone(), agent_id);
             let db = Arc::clone(&state.db);
-            let _ = AIMessage::save_many(vec![msg], &db).await.inspect_err(|e| {
+            let _ = AIMessage::save_many(vec![msg], &db).await.inspect_err(|_| {
                 log::error!("Failed to save an Agent generated message. This context will be lost in future conversations.");
             });
+            let mut accumulator = ACCUMULATOR.get_or_init(|| async { HashMap::new() }).await.clone();
+            let _ = accumulator.remove(&convo_id);
         }
         _ => {}
     }

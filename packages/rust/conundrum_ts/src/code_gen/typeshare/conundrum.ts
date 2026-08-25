@@ -70,6 +70,21 @@ export type CssColor = CL;
 
 export type DOMId = string;
 
+/**
+ * The developers of Surreal should be punched in the fucking eye. Make up your
+ * mind. Is your db flexible or not? Make the types public or just be postgres
+ * with pg-vector.
+ * 
+ * For anyone that sees this: Use Lance, or Neo, or something else. The only
+ * reason I'm using surreal is because I was without internet for a few days
+ * and I wanted to make progress, I already had Surreal installed. I'd go back
+ * to Lance right now and undo 2 weeks worth of work just to get rid of this
+ * half-axxed DB. I already miss the reliable arrow support of Lance instead of
+ * serializing to sql strings and json objects. No wonder it's slow as shit.
+ * It's the DB that does everything but nothing well.
+ */
+export type DatabaseId = string;
+
 export type GridColumnProps = GridColumnsMap;
 
 /**
@@ -1594,6 +1609,20 @@ export interface TitleGroup {
 	subtitle?: string;
 }
 
+export enum MCPToolName {
+	HelloWorld = "hello_world",
+	QueryWorkspaces = "query_workspaces",
+}
+
+export interface ToolExecution {
+	id: DatabaseId;
+	tool_name: MCPToolName;
+	args: Value;
+	convo_id: DatabaseId;
+	agent_id?: DatabaseId;
+	ctime: DateTime;
+}
+
 export interface Underline {
 	children: Children;
 	/** Default: .highlight */
@@ -1780,10 +1809,7 @@ export type ChatEvent =
 	output_tokens: number;
 	total_tokens: number;
 }}
-	| { type: "tool_call", content: {
-	tool_name: string;
-	tool_input_params?: string;
-}}
+	| { type: "tool_call", content: ToolExecution }
 	| { type: "tool_result_text", content: {
 	content: string;
 }}

@@ -13,6 +13,7 @@ use crate::{
     lifted_models::primitives::static_id::StaticId,
 };
 
+#[typeshare::typeshare]
 #[derive(Serialize, Deserialize, Clone, Debug, Type, Eq, PartialEq, Hash)]
 /// The developers of Surreal should be punched in the fucking eye. Make up your
 /// mind. Is your db flexible or not? Make the types public or just be postgres
