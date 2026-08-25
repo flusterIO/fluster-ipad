@@ -38,7 +38,6 @@ use crate::vector::{
         ai::tool::mcp_tool_record::MCPToolRecord,
         ecosystem_data::{
             ecosystem_application_settings::keyboard_shortcut::KeyboardShortcut,
-            ecosystem_setting_key::setting_key::Setting,
             ecosytem_setting_types::ecosystem_setting_model::EcosystemSettingModel, log::ecosystem_log::EcosystemLog,
             server_state::server_state::ServerState,
         },

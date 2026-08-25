@@ -20,7 +20,7 @@ export type AIMessage = { id: DatabaseId; convo_id: DatabaseId; agent_id: Databa
 
 export type AINotes = string
 
-export type AISettingKey = { "local-ai-preference": number }
+export type AISettingKey = { "local-ai-preference": number } | { "log-vector-gen-method": OptionalVectorGenerationMethod }
 
 export type AgentPrimaryTask = "embedding" | "classification" | "extraction" | "structured-generation" | "code-generation" | "code-transformation" | "summarization" | "question-answering" | "creative-generation" | "tool-calling" | "agent"
 
@@ -286,6 +286,8 @@ export type PathSourceType = "file" | "directory" | "any"
 
 export type PathVariant = "File" | "Dir"
 
+export type PersonalizationSettingKey = { "first-name": string } | { "last-name": string } | { profession: string }
+
 export type ProceduresLegacy = { queries: { key: "agent.load_chat_history"; input: { convo_id: DatabaseId; max_count: number }; result: [UserMessage[], SystemPromptMessage[], AIMessage[], ReasoningBlock[], ToolExecution[]] } | { key: "backend_status"; input: null; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "crud.agent_description.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; 
 /**
  * The name that the AI should be referred to as. AI should reference this
@@ -456,7 +458,7 @@ message: string | null;
 /**
  * A description of the event logged written directly to AI.
  */
-ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "settings.read"; input: "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method"; result: SyncSettingKey | AISettingKey | StorageSettingKey | null } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "settings.read"; input: "first-name" | "last-name" | "profession" | "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method"; result: { Personalization: PersonalizationSettingKey } | { Sync: SyncSettingKey } | { AI: AISettingKey } | { Storage: StorageSettingKey } | null } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
@@ -691,7 +693,7 @@ resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[]; result: null }
  * The path to the root of the workspace and the primary key for the
  * workspace. This is still required to update the proper item.
  */
-root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null } | { key: "settings.save"; input: SyncSettingKey | AISettingKey | StorageSettingKey; result: null }; subscriptions: never }
+root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null } | { key: "settings.save"; input: { Personalization: PersonalizationSettingKey } | { Sync: SyncSettingKey } | { AI: AISettingKey } | { Storage: StorageSettingKey }; result: null }; subscriptions: never }
 
 export type ReasoningBlock = { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; content: string; ctime: DateTime }
 
@@ -735,7 +737,7 @@ export type StorageSettingKey =
 /**
  * The number of days that logs should be saved. Defaults to 30.
  */
-{ "save-log-duration": number } | { "log-vector-gen-method": OptionalVectorGenerationMethod }
+{ "save-log-duration": number }
 
 /**
  * All keys must be cast to lowercase and all `_` replaced with `-`.
@@ -957,8 +959,8 @@ export type Procedures = {
 },
 	rpc_health: { kind: "query", input: null, output: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean }, error: unknown },
 	settings: {
-	read: { kind: "query", input: "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method", output: SyncSettingKey | AISettingKey | StorageSettingKey | null, error: unknown },
-	save: { kind: "mutation", input: SyncSettingKey | AISettingKey | StorageSettingKey, output: null, error: unknown },
+	read: { kind: "query", input: "first-name" | "last-name" | "profession" | "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method", output: { Personalization: PersonalizationSettingKey } | { Sync: SyncSettingKey } | { AI: AISettingKey } | { Storage: StorageSettingKey } | null, error: unknown },
+	save: { kind: "mutation", input: { Personalization: PersonalizationSettingKey } | { Sync: SyncSettingKey } | { AI: AISettingKey } | { Storage: StorageSettingKey }, output: null, error: unknown },
 },
 	tables: {
 	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "mcp_tool" | "documentation_chunk")[], error: unknown },

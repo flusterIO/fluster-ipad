@@ -2,6 +2,8 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{DeriveInput, Type, parse_macro_input};
 
+use crate::database::model::Model;
+
 pub fn derive_db_partial(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
@@ -51,6 +53,45 @@ fn parse_partial_options(field: &syn::Field) -> syn::Result<PartialOptions> {
     }
 
     Ok(options)
+}
+
+pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
+    let struct_name = &input.ident;
+
+    let partial_name = syn::Ident::new(&format!("{struct_name}Partial"), struct_name.span());
+
+    let fields = input.fields.clone();
+
+    let mut partial_fields = Vec::new();
+
+    for field in fields {
+        let field_ident = field.ident.clone();
+
+        let options = field.options.partial.clone();
+
+        if options.skip {
+            continue;
+        }
+
+        let field_type = &field.ty;
+
+        if options.required {
+            partial_fields.push(quote! {
+                                    pub #field_ident: #field_type
+                                });
+        } else {
+            partial_fields.push(quote! {
+                                    pub #field_ident: Option<#field_type>
+                                });
+        }
+    }
+
+    Ok(quote! {
+        #[derive(Debug, Clone)]
+        pub struct #partial_name {
+            #(#partial_fields),*
+        }
+    })
 }
 
 pub fn generate_db_partial(input: &DeriveInput) -> syn::Result<proc_macro2::TokenStream> {

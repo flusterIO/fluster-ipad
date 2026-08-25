@@ -3,7 +3,10 @@ use syn::{DeriveInput, parse_macro_input};
 
 // mod attributes;
 // mod field;
-// mod model;
+pub mod database_entity;
+mod db_default_crud;
+mod db_entity;
+mod model;
 // mod partial;
 pub mod db_model;
 pub mod db_partial;

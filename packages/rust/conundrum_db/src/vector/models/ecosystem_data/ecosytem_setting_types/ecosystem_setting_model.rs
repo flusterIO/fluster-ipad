@@ -1,10 +1,14 @@
+use arrow_array::{RecordBatch, StringArray};
 use conundrum::{
-    ecosystem::db::{
-        db_traits::{
-            db_entity::{DBEntity, DBSchema},
-            db_field::DatabaseField,
+    ecosystem::{
+        db::{
+            db_traits::{
+                db_entity::{DBEntity, DBSchema},
+                db_field::DatabaseField,
+            },
+            tables::DatabaseTable,
         },
-        tables::DatabaseTable,
+        error_handling::db_error::DatabaseError,
     },
     impl_default_crud,
 };
@@ -55,5 +59,25 @@ impl<'a> DBEntity<'a, UniqueSettingKey> for EcosystemSettingModel {
 
     fn primary_value(&self) -> UniqueSettingKey {
         self.key.clone()
+    }
+
+    fn get_record_batch(data: Vec<Self>)
+                        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<arrow_array::RecordBatch>
+        where Self: Sized + Clone + Serialize {
+        let schema = Self::schema()?;
+        let mut keys = Vec::new();
+        let mut datas = Vec::new();
+        for item in data {
+            keys.push(item.key.to_string());
+            let s = serde_json::to_string(&item.data).map_err(|e| {
+                                                         log::error!("Serialization Error: {:#?}", e);
+                                                         DatabaseError::SerializationError
+                                                     })?;
+            datas.push(s);
+        }
+        let batch =
+            RecordBatch::try_new(Arc::new(schema),
+                                 vec![Arc::new(StringArray::from(keys)), Arc::new(StringArray::from(datas)),]).unwrap();
+        Ok(batch)
     }
 }

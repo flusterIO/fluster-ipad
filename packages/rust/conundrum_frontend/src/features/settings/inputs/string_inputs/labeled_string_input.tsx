@@ -6,7 +6,7 @@ import { capitalize } from "@/utils/string_utilts";
 import React, { type ReactNode } from "react";
 import { type FieldValues, type Path, useFormContext } from "react-hook-form";
 
-interface LabeledStringInputProps<T extends FieldValues> {
+export interface LabeledStringInputProps<T extends FieldValues> {
     label?: ReactNode;
     name: Path<T>;
     desc?: string;

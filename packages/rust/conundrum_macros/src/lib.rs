@@ -12,6 +12,11 @@ use syn::{Data, DeriveInput, Fields, parse_macro_input};
 //     database_entity_macro_logic(input)
 // }
 //
+//
+#[proc_macro_derive(DatabaseEntity, attributes(db))]
+pub fn derive_complete_db_entity(input: TokenStream) -> TokenStream {
+    database::database_entity::derive_db_partial(input)
+}
 
 #[proc_macro_derive(DBSchema, attributes(db))]
 pub fn derive_database_schema(input: TokenStream) -> TokenStream {

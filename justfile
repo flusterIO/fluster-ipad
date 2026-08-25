@@ -138,6 +138,7 @@ generate_initial_note_data: generate_initial_note_paths write_in_content_docs_by
 write_typescript_types:
 	typeshare {{justfile_directory()}}/packages/rust/conundrum --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/conundrum_ts/src/code_gen/typeshare
 	typeshare {{justfile_directory()}}/packages/rust/conundrum_server_rs --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/conundrum_ts/src/code_gen/typeshare_server
+	typeshare {{justfile_directory()}}/packages/rust/conundrum_db --lang=typescript --output-folder={{justfile_directory()}}/packages/rust/conundrum_ts/src/code_gen/typeshare_db
 
 build_cross_language_schemas: generate_initial_note_data write_typescript_types
 	$FLAT_BUFFER_PATH -o ./packages/swift/FlusterData/Sources/FlusterData/code_gen/flat_buffer/ ./flatbuffers_schemas/v1_flat_buffer_schema.fbs --swift

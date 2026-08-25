@@ -14,6 +14,9 @@ use serde::{Deserialize, Serialize};
 #[strum(serialize_all = "kebab-case")]
 #[serde(rename_all = "kebab-case")]
 pub enum UniqueSettingKey {
+    FirstName,
+    LastName,
+    Profession,
     AutoSyncOnNewChat,
     AutoSyncOnNewMsg,
     LocalAiPreference,
@@ -23,6 +26,6 @@ pub enum UniqueSettingKey {
 
 impl DatabaseIdentifiable for UniqueSettingKey {
     fn to_predicate(&self, field_key: &str) -> String {
-        format!("{} = \"{}\"", field_key, self.to_string())
+        format!("{} = \"{}\"", field_key, self)
     }
 }

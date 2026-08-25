@@ -9,12 +9,12 @@ use conundrum::ecosystem::{
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
 use fake::Dummy;
-use serde::{Deserialize, Serialize};
 use serde_with::{DeserializeFromStr, SerializeDisplay, serde_as};
 
 use crate::vector::models::ecosystem_data::{
     ecosystem_setting_key::{
-        ai_setting_key::AISettingKey, setting_key_trait::EcosystemSettingKey, storage_setting_key::StorageSettingKey,
+        ai_setting_key::AISettingKey, personalization_key::PersonalizationSettingKey,
+        setting_key_trait::EcosystemSettingKey, storage_setting_key::StorageSettingKey,
         sync_setting_key::SyncSettingKey, unique_setting_key::UniqueSettingKey,
     },
     ecosytem_setting_types::ecosystem_setting_model::EcosystemSettingModel,
@@ -22,8 +22,9 @@ use crate::vector::models::ecosystem_data::{
 
 #[serde_as]
 #[derive(Clone, Debug, Dummy, specta::Type, SerializeDisplay, DeserializeFromStr)]
-#[serde(untagged)]
+#[serde(tag = "category", content = "data")]
 pub enum Setting {
+    Personalization(PersonalizationSettingKey),
     Sync(SyncSettingKey),
     AI(AISettingKey),
     Storage(StorageSettingKey),
@@ -34,6 +35,9 @@ impl From<UniqueSettingKey> for Setting {
     /// expect real data after the DB has been initialized.
     fn from(value: UniqueSettingKey) -> Self {
         match value {
+            UniqueSettingKey::FirstName => Self::Personalization(PersonalizationSettingKey::FirstName(String::new())),
+            UniqueSettingKey::LastName => Self::Personalization(PersonalizationSettingKey::FirstName(String::new())),
+            UniqueSettingKey::Profession => Self::Personalization(PersonalizationSettingKey::FirstName("Researcher".to_string())),
             UniqueSettingKey::AutoSyncOnNewChat => Self::Sync(SyncSettingKey::AutoSyncOnNewChat(true)),
             UniqueSettingKey::AutoSyncOnNewMsg => Self::Sync(SyncSettingKey::AutoSyncOnNewChat(false)),
             UniqueSettingKey::SaveLogDuration => Self::Storage(StorageSettingKey::SaveLogDuration(30.0)),
@@ -74,6 +78,7 @@ impl DatabaseIdentifiable for Setting {
 impl EcosystemSettingKey for Setting {
     fn to_setting_key(&self) -> super::unique_setting_key::UniqueSettingKey {
         match self {
+            Self::Personalization(p) => p.to_setting_key(),
             Self::Sync(s) => s.to_setting_key(),
             Self::AI(a) => a.to_setting_key(),
             Self::Storage(s) => s.to_setting_key(),

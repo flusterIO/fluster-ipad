@@ -1944,6 +1944,9 @@ export enum DatabaseTable {
 	CustomAcademicResultMetric = "custom_academic_res_metric",
 	GitRepository = "git_repository",
 	KeyboardShortcut = "keyboard_shortcut",
+	EcosystemSetting = "ecosystem_setting",
+	LongTermGoal = "long_term_goal",
+	ShortTermGoal = "short_term_goal",
 	/** --- 'Joining' tables --- */
 	WorkspaceRepository = "workspace_repository",
 	MilestoneAlarm = "milestone_alarm",
