@@ -75,10 +75,13 @@ export const ChatConversationItem = ({
                 <ContextMenuContent>
                     <ContextMenuItem
                         onClick={() => {
-                            deleteConversation(item.id).catch((err: unknown) => {
-                                consola.error("Error: ", err);
-                            });
-                            refetch();
+                            deleteConversation(item.id)
+                                .then(() => {
+                                    refetch();
+                                })
+                                .catch((err: unknown) => {
+                                    consola.error("Error: ", err);
+                                });
                         }}
                     >
                         Delete

@@ -42,7 +42,7 @@ pub fn get_chat_conversation_crud() -> rspc::Router<Arc<ServerState>> {
             Ok(())
         })).procedure("delete_conversation", Procedure::<Arc<ServerState>, DatabaseId, ()>::builder::<conundrum::ecosystem::error_handling::server_error::ServerError>().mutation(|state: std::sync::Arc<ServerState>, params: DatabaseId | async move {
         let predicate = format!("convo_id = {}", params.to_quoted_string()?);
-            ChatConversation::delete_by_predicate(format!("id = \"{}\"", &params).as_str(), &state.db).await?;
+            ChatConversation::delete_by_predicate(format!("id = {}", &params.to_quoted_string()).as_str(), &state.db).await?;
             UserMessage::delete_by_predicate(predicate.as_str(), &Arc::clone(&state.db)).await?;
             AIMessage::delete_by_predicate(predicate.as_str(), &Arc::clone(&state.db)).await?;
             ToolExecution::delete_by_predicate(predicate.as_str(), &Arc::clone(&state.db)).await?;

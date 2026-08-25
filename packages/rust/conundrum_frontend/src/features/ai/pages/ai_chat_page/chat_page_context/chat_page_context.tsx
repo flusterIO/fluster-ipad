@@ -231,6 +231,7 @@ export const ChatPageContextReducer = (
             };
         }
         case "stream-complete": {
+            consola.log("Stream complete");
             return {
                 ...state,
                 messages: [
@@ -297,10 +298,6 @@ export const ChatPageProvider = ({
     const socket = useRef<WebSocket | null>(null);
 
     const cleanupStream = useEffectEvent(async () => {
-        if (!state.thinking) {
-            consola.log("Can't cleanup stream, we're not even thinking...");
-            return;
-        }
         if (!conversation_id) {
             consola.error("Failed to load conversation id.");
             dispatch({

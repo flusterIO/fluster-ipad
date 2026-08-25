@@ -15,7 +15,7 @@ import { ChatInput } from "./input/ai_chat_input";
 import { HistoryFetcher } from "./chat_page_context/history_fetcher";
 import { ChatSideSheet } from "./secondary_sheet/chat_secondary_panel";
 import { type AppState } from "@/state/initial_state";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const MotionButton = motion.create(Button);
 
@@ -38,10 +38,9 @@ export const GeneralAIChatPageInner = ({
     sheet: ReactNode;
 }): ReactNode => {
     const { hasMessages, messages, response } = useChatPageContext();
-    const sheetOpen = useSelector((state: AppState) => {
-        return state.navigation.side_panel.open;
-    });
+    const { sheetOpen } = useChatPageContext();
     const dispatch = useChatPageDispatch();
+    console.log("sheetOpen: ", sheetOpen);
     return (
         <div className="w-full h-screen max-h-screen px-4">
             <motion.div
@@ -58,7 +57,7 @@ export const GeneralAIChatPageInner = ({
                     onClick={() => {
                         dispatch({
                             type: "set-sheet-open",
-                            payload: true,
+                            payload: !sheetOpen,
                         });
                     }}
                     initial={"hide"}
