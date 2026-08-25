@@ -70,6 +70,10 @@ type ChatPageContextActions =
         payload: boolean;
     }
     | {
+        type: "stream-complete";
+        payload?: undefined;
+    }
+    | {
         type: "set-sheet-open";
         payload: boolean;
     }
@@ -200,17 +204,37 @@ export const ChatPageContextReducer = (
             };
         }
         case "set-response": {
-            const isEmpty = action.payload ? isEmptyChatResponse(action.payload) : true;
+            const isEmpty = action.payload
+                ? isEmptyChatResponse(action.payload)
+                : true;
             return {
                 ...state,
                 response: isEmpty ? null : action.payload,
-                thinking: isEmpty
+                thinking: isEmpty,
             };
         }
         case "set-page": {
             return {
                 ...state,
                 page: action.payload,
+            };
+        }
+        case "stream-complete": {
+            return {
+                ...state,
+                messages: [
+                    ...state.messages,
+                    {
+                        type: "user-partial",
+                        data: {
+                            body: state.response?.response ?? "",
+                            ctime: new Date(),
+                        },
+                    },
+                ],
+                response: getEmptyChatData(),
+                thinking: false,
+                loading: false,
             };
         }
     }
@@ -254,7 +278,7 @@ export const ChatPageProvider = ({
         } else if (dailyChat?.expires_at) {
             const expires = new Date(dailyChat.expires_at).valueOf();
             if (expires <= new Date().valueOf()) {
-                resetDailyChat()
+                resetDailyChat();
             }
         }
     }, [conversation_id, dailyChat]);
@@ -301,17 +325,14 @@ export const ChatPageProvider = ({
         });
     }, [agent_id]);
 
-
-    const setResponse = useEffectEvent(
-        (cb: (state: ChatData) => ChatData) => {
-            consola.log("state.response: ", state.response);
-            const res = cb(state.response ?? getEmptyChatData());
-            dispatch({
-                type: "set-response",
-                payload: res,
-            });
-        },
-    );
+    const setResponse = useEffectEvent((cb: (state: ChatData) => ChatData) => {
+        consola.log("state.response: ", state.response);
+        const res = cb(state.response ?? getEmptyChatData());
+        dispatch({
+            type: "set-response",
+            payload: res,
+        });
+    });
 
     useEffect(() => {
         if (state.initialized) {
@@ -336,8 +357,7 @@ export const ChatPageProvider = ({
                 const handleIndividualRequest = (req: ChatEvent) => {
                     if (req.type !== "done") {
                         dispatch({
-                            type: "set-thinking",
-                            payload: false,
+                            type: "stream-complete",
                         });
                     } else {
                         consola.log(`Tokens expended: `, req.content);
@@ -392,6 +412,12 @@ export const ChatPageProvider = ({
                     }
                     if (req.type === "tool_call") {
                         consola.info(`The ${req.content.tool_name} was called!`);
+                        setResponse((current) => {
+                            return {
+                                ...current,
+                                toolCalls: [...current.toolCalls, req.content],
+                            };
+                        });
                         return;
                     }
                     if (req.type === "many") {

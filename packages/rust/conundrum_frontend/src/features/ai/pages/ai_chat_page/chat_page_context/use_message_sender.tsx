@@ -24,17 +24,6 @@ export const useMessageSender = () => {
         };
 
         dispatch({
-            type: "append-message",
-            payload: {
-                type: "user-partial",
-                data: {
-                    ...data,
-                    ctime: new Date(),
-                },
-            },
-        });
-
-        dispatch({
             type: "set-response",
             payload: getEmptyChatData(),
         });

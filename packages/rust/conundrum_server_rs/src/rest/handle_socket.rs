@@ -20,10 +20,10 @@ use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
 use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use futures_util::{SinkExt, StreamExt};
-use rig::agent::{MultiTurnStreamItem, PromptResponse};
-use rig::completion::{CompletionModel, GetTokenUsage};
-use rig::streaming::{StreamedAssistantContent, StreamingCompletionResponse};
-use tokio::sync::{OnceCell, OwnedMutexGuard};
+use rig::agent::{MultiTurnStreamItem};
+use rig::completion::{GetTokenUsage};
+use rig::streaming::{StreamedAssistantContent};
+use tokio::sync::{OnceCell};
 
 /// Records the <ConversationId, ActivelyStreamingMessage> in a map until it can
 /// be saved.
@@ -138,7 +138,9 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
                                                 conversation_id.clone(),
                                                 agent_id.clone(),
                                                 &Arc::clone(&state)).await;
-                            if let Ok(event) = ChatEvent::try_from(data) {
+                            if let Ok(event) =
+                                ChatEvent::try_from_with_convo_info(data, conversation_id.clone(), agent_id.clone())
+                            {
                                 match serde_json::to_string(&event) {
                                     Ok(s) => {
                                         if let Err(err) = tx.send(Message::text(s)).await {

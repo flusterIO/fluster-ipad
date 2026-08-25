@@ -7,9 +7,13 @@ use serde::Serialize;
 
 use crate::{
     ai::{
-        models::chat::chat_message::user::user_message::UserMessage, rig::ai_types::ai_types::LocalMultiTurnStreamItem,
+        models::{chat::chat_message::user::user_message::UserMessage, tool::tool_execution::ToolExecution},
+        rig::{
+            ai_traits::from_with_convo_information::TryFromWithConvoInformation,
+            ai_types::ai_types::LocalMultiTurnStreamItem,
+        },
     },
-    ecosystem::error_handling::ai_error::AIError,
+    ecosystem::error_handling::{ai_error::AIError, db_error::DatabaseError},
 };
 
 #[typeshare::typeshare]
@@ -46,10 +50,7 @@ pub enum ChatEvent {
         output_tokens: u32,
         total_tokens: u32,
     },
-    ToolCall {
-        tool_name: String,
-        tool_input_params: Option<String>,
-    },
+    ToolCall(ToolExecution),
     ToolResultText {
         content: String,
     },
@@ -62,10 +63,12 @@ pub enum ChatEvent {
     Many(Vec<ChatEvent>),
 }
 
-impl<R> TryFrom<StreamedAssistantContent<R>> for ChatEvent where R: Clone + Unpin {
-    type Error = AIError;
-
-    fn try_from(value: StreamedAssistantContent<R>) -> Result<Self, Self::Error> {
+impl<R> TryFromWithConvoInformation<StreamedAssistantContent<R>> for ChatEvent where R: Clone + Unpin {
+    fn try_from_with_convo_info(value: StreamedAssistantContent<R>,
+                                convo_id: crate::lifted_models::primitives::db_id::DatabaseId,
+                                agent_id: Option<crate::lifted_models::primitives::db_id::DatabaseId>)
+                                -> crate::ecosystem::error_handling::db_error::DatabaseResult<Self>
+        where Self: Sized {
         match value {
             StreamedAssistantContent::ReasoningDelta { reasoning,
                                                        .. } => Ok(ChatEvent::TextDelta { text: reasoning,
@@ -97,7 +100,7 @@ impl<R> TryFrom<StreamedAssistantContent<R>> for ChatEvent where R: Clone + Unpi
                              .collect::<Vec<_>>();
 
                 if events.is_empty() {
-                    Err(AIError::SkippingIrrelevantAIOutput)
+                    Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
                 } else if events.len() == 1 {
                     Ok(events.into_iter().next().unwrap())
                 } else {
@@ -107,16 +110,15 @@ impl<R> TryFrom<StreamedAssistantContent<R>> for ChatEvent where R: Clone + Unpi
 
             StreamedAssistantContent::ToolCall { tool_call,
                                                  .. } => {
-                Ok(ChatEvent::ToolCall { tool_name: tool_call.function.name,
-                                         tool_input_params:
-                                             serde_json::to_string(&tool_call.function.arguments).ok() })
+                let r = ToolExecution::try_from_with_convo_info(tool_call, convo_id.clone(), agent_id.clone())?;
+                Ok(ChatEvent::ToolCall(r))
             }
 
-            StreamedAssistantContent::Final(_) => Err(AIError::SkippingIrrelevantAIOutput),
+            StreamedAssistantContent::Final(_) => Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput)),
 
             _ => {
                 log::debug!("Skipping unknown AI output.");
-                Err(AIError::SkippingIrrelevantAIOutput)
+                Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
             }
         }
     }
@@ -176,17 +178,19 @@ impl<R> TryFrom<StreamedAssistantContent<R>> for ChatEvent where R: Clone + Unpi
 //     }
 // }
 
-impl TryFrom<LocalMultiTurnStreamItem> for ChatEvent {
-    type Error = AIError;
-
-    fn try_from(value: LocalMultiTurnStreamItem) -> Result<Self, Self::Error> {
+impl TryFromWithConvoInformation<LocalMultiTurnStreamItem> for ChatEvent {
+    fn try_from_with_convo_info(value: LocalMultiTurnStreamItem,
+                                convo_id: crate::lifted_models::primitives::db_id::DatabaseId,
+                                agent_id: Option<crate::lifted_models::primitives::db_id::DatabaseId>)
+                                -> crate::ecosystem::error_handling::db_error::DatabaseResult<Self>
+        where Self: Sized {
         match value {
             rig::agent::MultiTurnStreamItem::StreamAssistantItem(x) => {
-                if let Ok(res) = ChatEvent::try_from(x) {
+                if let Ok(res) = ChatEvent::try_from_with_convo_info(x, convo_id.clone(), agent_id.clone()) {
                     Ok(res)
                 } else {
                     log::warn!("Something went wrong while gathering a ChatEvent. Cannot stream this event to the front-end.");
-                    Err(AIError::SkippingIrrelevantAIOutput)
+                    Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
                 }
             }
             rig::agent::MultiTurnStreamItem::FinalResponse(x) => {
@@ -223,13 +227,13 @@ impl TryFrom<LocalMultiTurnStreamItem> for ChatEvent {
             },
             rig::agent::MultiTurnStreamItem::ToolExecutionCommitted { tool_call,
                                                                       .. } => {
-                let tool_input_params = serde_json::to_string(&tool_call.function.arguments).ok();
-                Ok(ChatEvent::ToolCall { tool_name: tool_call.function.name,
-                                         tool_input_params })
+                let tool_execution =
+                    ToolExecution::try_from_with_convo_info(tool_call.clone(), convo_id.clone(), agent_id.clone())?;
+                Ok(Self::ToolCall(tool_execution))
             }
             _ => {
                 log::debug!("Skipping model events that Conundrum doesn't need.");
-                Err(AIError::SkippingIrrelevantAIOutput)
+                Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
             }
         }
     }
