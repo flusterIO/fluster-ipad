@@ -14,11 +14,13 @@ import { useChatPageContext } from "../../../chat_page_context/chat_page_context
 
 export const ChatSelectionSheet = (): ReactNode => {
     const { page } = useChatPageContext();
-    const [inputValue, setInputValue] = useState("")
+    const [inputValue, setInputValue] = useState("");
     const { data: conversations, isLoading } = rspc.useQuery([
         "crud.chat_conversation.get_by_predicate",
         {
-            predicate: !inputValue.trim().length ? undefined : `label CONTAINS "${inputValue}"`,
+            predicate: !inputValue.trim().length
+                ? undefined
+                : `label CONTAINS "${inputValue}"`,
             pagination: {
                 page,
                 per_page: 10,
@@ -42,9 +44,16 @@ export const ChatSelectionSheet = (): ReactNode => {
                 }}
             >
                 <InputGroup className="px-4 text-sm focus-visible:ring-0! focus-visible:border-none">
-                    <InputGroupInput value={inputValue} onChange={(e) => {
-                        setInputValue(e.target.value)
-                    }} className="p-0" />
+                    <InputGroupInput
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                        value={inputValue}
+                        onChange={(e) => {
+                            setInputValue(e.target.value);
+                        }}
+                        className="p-0"
+                    />
                     <InputGroupAddon>
                         <SearchIcon />
                     </InputGroupAddon>
