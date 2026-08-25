@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use crate::crud_router;
+use crate::rpc::routers::crud::expanded::chat_conversation_crud::get_chat_conversation_crud;
 use conundrum::ai::models::agent::agent_description::AgentDescription;
 use conundrum::ai::models::agent::agent_description_partial::AgentDescriptionPartial;
 use conundrum::ecosystem::error_handling::server_error::ServerError;
@@ -49,10 +50,10 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let assignment_crud = crud_router!(AssignmentEntity, AssignmentEntityPartial);
     let flashcard_crud = crud_router!(FlashCardEntity, FlashCardEntityPartial);
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
-    let chat_conversation_crud = crud_router!(ChatConversation, ChatConversation);
     let user_message_crud = crud_router!(UserMessage, UserMessage);
     let ai_message_crud = crud_router!(AIMessage, AIMessage);
     let system_prompt_message_crud = crud_router!(SystemPromptMessage, SystemPromptMessage);
+    let chat_conversation_crud = get_chat_conversation_crud();
     let agent_description_crud = crud_router!(AgentDescription, AgentDescriptionPartial);
     let tool_execution_crud = crud_router!(ToolExecution, ToolExecution);
     Router::<Arc<ServerState>>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)

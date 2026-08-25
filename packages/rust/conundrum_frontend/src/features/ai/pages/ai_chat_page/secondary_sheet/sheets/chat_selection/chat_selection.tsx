@@ -11,11 +11,16 @@ import { SearchIcon } from "lucide-react";
 import React, { useState, type ReactNode } from "react";
 import { ChatList } from "./chat_list";
 import { useChatPageContext } from "../../../chat_page_context/chat_page_context";
+import consola from "consola";
 
 export const ChatSelectionSheet = (): ReactNode => {
     const { page } = useChatPageContext();
     const [inputValue, setInputValue] = useState("");
-    const { data: conversations, isLoading } = rspc.useQuery([
+    const {
+        data: conversations,
+        isLoading,
+        refetch,
+    } = rspc.useQuery([
         "crud.chat_conversation.get_by_predicate",
         {
             predicate: !inputValue.trim().length
@@ -61,7 +66,14 @@ export const ChatSelectionSheet = (): ReactNode => {
                 {isLoading ? (
                     <CenteredExpandedLoadingIndicator className="grow" />
                 ) : conversations?.length ? (
-                    <ChatList items={conversations} />
+                    <ChatList
+                        items={conversations}
+                        refetch={() => {
+                            refetch().catch((err: unknown) => {
+                                consola.error("Error: ", err);
+                            });
+                        }}
+                    />
                 ) : (
                     <div className="grow w-full h-full flex flex-col justify-center items-center">
                         <h6 className="text-center text-lg font-semibold text-foreground">

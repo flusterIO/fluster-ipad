@@ -555,7 +555,7 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.delete_conversation"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
 /**
  * Will match the root of the workspace if this is a workspace repository,
  * otherwise user's can optionally set this to a local path to allow AI
@@ -876,6 +876,7 @@ export type Procedures = {
 },
 	chat_conversation: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	delete_conversation: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[], output: null, error: unknown },

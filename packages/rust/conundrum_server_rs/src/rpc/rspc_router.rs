@@ -37,7 +37,6 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
     let agent_router = get_agent_router();
     let crud_router = get_nested_crud_router();
     let settings_router = get_settings_router();
-
     let r = rspc::Router::<Arc<ServerState>>::new().nest("fs", fs_router)
                                                .nest("workspace_management", workspace_router)
                                                .nest("code", code_router)

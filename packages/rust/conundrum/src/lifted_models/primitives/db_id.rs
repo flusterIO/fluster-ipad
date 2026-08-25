@@ -10,27 +10,23 @@ use crate::{
         db_field::{DatabaseField, DatabaseFieldRepresentation},
         db_identifiable::DatabaseIdentifiable,
     },
+    lang::lib::std_lib_impls::json_string::QuotedString,
     lifted_models::primitives::static_id::StaticId,
 };
 
 #[typeshare::typeshare]
 #[derive(Serialize, Deserialize, Clone, Debug, Type, Eq, PartialEq, Hash)]
-/// The developers of Surreal should be punched in the fucking eye. Make up your
-/// mind. Is your db flexible or not? Make the types public or just be postgres
-/// with pg-vector.
-///
-/// For anyone that sees this: Use Lance, or Neo, or something else. The only
-/// reason I'm using surreal is because I was without internet for a few days
-/// and I wanted to make progress, I already had Surreal installed. I'd go back
-/// to Lance right now and undo 2 weeks worth of work just to get rid of this
-/// half-axxed DB. I already miss the reliable arrow support of Lance instead of
-/// serializing to sql strings and json objects. No wonder it's slow as shit.
-/// It's the DB that does everything but nothing well.
 pub struct DatabaseId(String);
+
+impl QuotedString for DatabaseId {
+    fn to_quoted_string(&self) -> crate::ecosystem::error_handling::db_error::DatabaseResult<String> {
+        self.0.to_quoted_string()
+    }
+}
 
 impl DatabaseIdentifiable for DatabaseId {
     fn to_predicate(&self, field_key: &str) -> String {
-        format!("{} = \"{}\"", field_key, self.0)
+        format!("{} = {}", field_key, self.to_quoted_string().unwrap_or(self.0.clone()))
     }
 }
 

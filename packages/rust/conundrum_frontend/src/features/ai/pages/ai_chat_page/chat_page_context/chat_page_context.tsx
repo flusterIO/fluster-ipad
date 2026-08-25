@@ -7,7 +7,6 @@ import React, {
     useReducer,
     useContext,
     useEffect,
-    useCallback,
     useRef,
     useEffectEvent,
 } from "react";
@@ -24,6 +23,17 @@ import consola from "consola";
 import { useSearchParams } from "react-router";
 import { type FormattedChatHistoryItem } from "#/ai/state/hooks/use_formatted_chat_history";
 import { resetDailyChat } from "#/ai/state/ai_state_slice";
+import { useEventListener } from "@/state/hooks/use_event_listener";
+
+interface DeleteConversationEvent {
+    conversationId: string;
+}
+
+declare global {
+    interface WindowEventMap {
+        "delete-conversation": CustomEvent<DeleteConversationEvent>;
+    }
+}
 
 export interface ChatPageState {
     /**
@@ -473,6 +483,17 @@ export const ChatPageProvider = ({
             payload: page ? parseInt(page) : 1,
         });
     }, [page]);
+
+    const handleDeleteConvo = useEffectEvent((convoId: string) => {
+        if (convoId === conversation_id) {
+            sp.delete("convo");
+            setSp(sp);
+        }
+    });
+
+    useEventListener("delete-conversation", (e) => {
+        handleDeleteConvo(e.detail.conversationId);
+    });
 
     /* useEffect(() => { */
     /*     const isEmpty = state.response ? isEmptyChatResponse(state.response) : true; */

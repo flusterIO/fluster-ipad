@@ -34,7 +34,9 @@ export const ChatInput = (): ReactNode => {
     return (
         <MotionInput
             onSubmit={(val) => {
-                sendMessage(val.text);
+                if (val.text.trim().length) {
+                    sendMessage(val.text);
+                }
             }}
             className="mb-4 mx-4 w-full"
             initial={{
