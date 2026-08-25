@@ -88,16 +88,18 @@ export const GeneralAIChatPageInner = ({
             >
                 <motion.div
                     className={cn(
-                        "grow overflow-x-hidden overflow-y-auto w-[calc(100%+0.5rem)] translate-x-1 no-scrollbar flex flex-col justify-end items-center pb-4",
+                        "grow overflow-x-hidden overflow-y-auto w-[calc(100%+0.5rem)] translate-x-1 no-scrollbar",
                         response === null && !hasMessages && "showing-empty-chat",
                     )}
                 >
-                    {children}
-                    {response === null && !hasMessages ? (
-                        <EmptyChat />
-                    ) : (
-                        <CurrentlyStreamingMessage />
-                    )}
+                    <div className="w-full h-fit flex flex-col justify-end items-center pb-4">
+                        {children}
+                        {response === null && !messages.length ? (
+                            <EmptyChat />
+                        ) : (
+                            <CurrentlyStreamingMessage />
+                        )}
+                    </div>
                 </motion.div>
                 <div className="relative h-0! w-full overflow-visible">
                     <div

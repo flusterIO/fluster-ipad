@@ -18,8 +18,8 @@ export const useMessageSender = () => {
         });
 
         const data: UserMessageInput = {
-            convo_id: convo,
-            agent_id: agent,
+            convo_id: convo ?? undefined,
+            agent_id: agent ?? undefined,
             body: input,
         };
 

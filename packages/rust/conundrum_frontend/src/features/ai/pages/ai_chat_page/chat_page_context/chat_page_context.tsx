@@ -233,7 +233,7 @@ export const ChatPageContextReducer = (
                         },
                     },
                 ],
-                response: getEmptyChatData(),
+                response: null,
                 thinking: false,
                 loading: false,
             };
@@ -286,15 +286,15 @@ export const ChatPageProvider = ({
 
     const socket = useRef<WebSocket | null>(null);
 
-    const cleanupStream = useCallback(async () => {
+    const cleanupStream = useEffectEvent(async () => {
         if (!state.thinking) {
+            consola.log("Can't cleanup stream, we're not even thinking...");
             return;
         }
         if (!conversation_id) {
             consola.error("Failed to load conversation id.");
             dispatch({
-                type: "set-thinking",
-                payload: false,
+                type: "stream-complete",
             });
             return;
         }
@@ -315,7 +315,7 @@ export const ChatPageProvider = ({
                 type: "stream-complete",
             });
         }
-    }, [conversation_id, agent_id, state.response, state.thinking]);
+    });
 
     useEffect(() => {
         dispatch({
@@ -325,7 +325,6 @@ export const ChatPageProvider = ({
     }, [agent_id]);
 
     const setResponse = useEffectEvent((cb: (state: ChatData) => ChatData) => {
-        consola.log("state.response: ", state.response);
         const res = cb(state.response ?? getEmptyChatData());
         dispatch({
             type: "set-response",
@@ -360,6 +359,11 @@ export const ChatPageProvider = ({
                             consola.error("Error: {}", err);
                         });
                         return;
+                    } else {
+                        dispatch({
+                            type: "set-thinking",
+                            payload: true,
+                        });
                     }
                     if (req.type === "text_delta") {
                         setResponse((current): ChatData => {
@@ -406,7 +410,6 @@ export const ChatPageProvider = ({
                         });
                     }
                     if (req.type === "tool_call") {
-                        consola.info(`The ${req.content} was called!`);
                         setResponse((current) => {
                             return {
                                 ...current,
