@@ -41,13 +41,14 @@ export const ChatContent = (): ReactNode => {
                             />
                         );
                     }
-                    if (d.type === "agent-message") {
+                    if (d.type === "agent-message" || d.type === "agent-partial") {
                         return (
                             <ChatMessageFromAgent
                                 isLast={i === messages.length - 1}
                                 index={i}
                                 item={d.data}
-                                key={d.data.id}
+                                key={"id" in d.data ? d.data.id : `${d.data.body}${i}`}
+                                animate={d.type === "agent-message"}
                             />
                         );
                     }

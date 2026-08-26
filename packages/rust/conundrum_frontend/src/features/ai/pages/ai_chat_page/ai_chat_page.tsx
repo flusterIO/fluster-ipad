@@ -40,7 +40,6 @@ export const GeneralAIChatPageInner = ({
     const { hasMessages, messages, response } = useChatPageContext();
     const { sheetOpen } = useChatPageContext();
     const dispatch = useChatPageDispatch();
-    console.log("sheetOpen: ", sheetOpen);
     return (
         <div className="w-full h-screen max-h-screen px-4">
             <motion.div
@@ -95,7 +94,7 @@ export const GeneralAIChatPageInner = ({
                         "grow overflow-x-hidden overflow-y-auto w-[calc(100%+0.5rem)] translate-x-1 no-scrollbar flex flex-col",
                         response === null && !hasMessages
                             ? "showing-empty-chat justify-center items-center"
-                            : "justify-end items-end",
+                            : "justify-end items-end pb-4",
                     )}
                 >
                     {children}

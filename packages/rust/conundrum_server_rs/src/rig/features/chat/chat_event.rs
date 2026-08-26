@@ -116,60 +116,6 @@ impl<R> TryFrom<StreamedAssistantContent<R>> for ChatEvent where R: Clone + Unpi
     }
 }
 
-// impl TryFrom<StreamedAssistantContent<ollama::StreamingCompletionResponse>>
-// for ChatEvent {     type Error = ServerError;
-
-//     fn try_from(value:
-// StreamedAssistantContent<ollama::StreamingCompletionResponse>) ->
-// Result<Self, Self::Error> {         match value {
-//             StreamedAssistantContent::ReasoningDelta { id,
-//                                                        reasoning, } =>
-// Ok(ChatEvent::TextDelta { text: reasoning,
-// is_reasoning: true }),             StreamedAssistantContent::Text(s) =>
-// Ok(ChatEvent::TextDelta { text: s.text,
-// is_reasoning: false }),             StreamedAssistantContent::Reasoning(r) =>
-// {                 let mut items: Vec<ChatEvent> = Vec::new();
-//                 for x in r.content {
-//                     match x {
-//                         ReasoningContent::Text { text,
-//                                                  .. } =>
-// items.push(ChatEvent::TextDelta { text,
-// is_reasoning: true }),                         ReasoningContent::Redacted {
-// data, } => items.push(ChatEvent::Redacted { text: data }),
-// ReasoningContent::Summary(s) => items.push(ChatEvent::ReasoningSummary {
-// text: s }),                         ReasoningContent::Encrypted(x) =>
-// items.push(ChatEvent::Encrypted { text: x }),                         _ => {
-//                             log::debug!("Encountered some piece of mystery AI
-// output...");                         }
-//                     }
-//                 }
-//                 Ok(Self::Many(items))
-//             }
-//             StreamedAssistantContent::ToolCall { tool_call,
-//                                                  .. } => {
-//                 let tool_name = tool_call.function.name;
-//                 let tool_input_params =
-// serde_json::to_string(&tool_call.function.arguments).ok();
-// Ok(ChatEvent::ToolCall { tool_name,
-// tool_input_params })             }
-//             StreamedAssistantContent::Final(_) => {
-//                 // let usage = x.token_usage();
-//                 // let input_tokens = usage.input_tokens as u32;
-//                 // let output_tokens = usage.output_tokens as u32;
-//                 // let total_tokens = usage.total_tokens as u32;
-//                 // Ok(ChatEvent::Done { input_tokens,
-//                 //                      total_tokens,
-//                 //                      output_tokens })
-//                 Err(ServerError::SkippingIrrelevantAIOutput)
-//             }
-//             _ => {
-//                 log::debug!("Skipping unknown AI output.");
-//                 Err(ServerError::SkippingIrrelevantAIOutput)
-//             }
-//         }
-//     }
-// }
-
 impl TryFrom<LocalMultiTurnStreamItem> for ChatEvent {
     type Error = ServerError;
 
@@ -222,7 +168,7 @@ impl TryFrom<LocalMultiTurnStreamItem> for ChatEvent {
                                          tool_input_params })
             }
             _ => {
-                log::debug!("Skipping model events that Conundrum doesn't need.");
+                log::debug!("Skipping model events that Conundrum doesn't need: {:#?}", value.clone());
                 Err(ServerError::SkippingIrrelevantAIOutput)
             }
         }

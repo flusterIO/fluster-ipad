@@ -6,48 +6,48 @@ import { useSearchParams } from "react-router";
 import { useObserveChatLocationState } from "./use_observe_chat_location_state";
 
 interface HistoryFetcherProps {
-  convo_id: string;
-  page?: number;
+    convo_id: string;
+    page?: number;
 }
 
 const HistoryFetcherInner = ({
-  convo_id,
-  page = 1,
+    convo_id,
+    page = 1,
 }: HistoryFetcherProps): ReactNode => {
-  const { data: chatHistory } = rspc.useQuery(
-    [
-      "agent.load_chat_history",
-      {
-        convo_id,
-        max_count: page * 10,
-      },
-    ],
-    {
-      refetchOnWindowFocus: true,
-      refetchOnReconnect: true,
-      refetchOnMount: true,
-    },
-  );
-  const dispatch = useChatPageDispatch();
-  const data = useFormattedChatHistory(chatHistory ?? null);
-  useEffect(() => {
-    dispatch({
-      type: "set-messages",
-      payload: data,
-    });
-  }, [data]);
-  return null;
+    const { data: chatHistory } = rspc.useQuery(
+        [
+            "agent.load_chat_history",
+            {
+                convo_id,
+                max_count: page * 10,
+            },
+        ],
+        {
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: true,
+            refetchOnMount: true,
+        },
+    );
+    const dispatch = useChatPageDispatch();
+    const data = useFormattedChatHistory(chatHistory ?? null);
+    useEffect(() => {
+        dispatch({
+            type: "set-messages",
+            payload: data,
+        });
+    }, [data]);
+    return null;
 };
 
 export const HistoryFetcher = ({ page }: { page?: number }): ReactNode => {
-  useObserveChatLocationState();
-  const [sp] = useSearchParams();
-  const convo = sp.get("convo");
-  if (convo) {
-    return <HistoryFetcherInner convo_id={convo} page={page} />;
-  } else {
-    return null;
-  }
+    useObserveChatLocationState();
+    const [sp] = useSearchParams();
+    const convo = sp.get("convo");
+    if (convo) {
+        return <HistoryFetcherInner convo_id={convo} page={page} />;
+    } else {
+        return null;
+    }
 };
 
 HistoryFetcher.displayName = "HistoryFetcher";

@@ -7,7 +7,10 @@ use serde::{Deserialize, Serialize};
 use crate::{
     ai::{
         models::tool::{mcp_tool_name::MCPToolName, tool_execution_partial::ToolExecutionPartial},
-        rig::ai_traits::from_with_convo_information::{FromWithConvoInformation, TryFromWithConvoInformation},
+        rig::{
+            ai_traits::from_with_convo_information::{FromWithConvoInformation, TryFromWithConvoContext},
+            features::chat::convo_context::{ArcMutexConversationContext, ConversationContext},
+        },
     },
     ecosystem::{
         db::{
@@ -45,18 +48,16 @@ impl FromWithConvoInformation<ToolExecutionPartial> for ToolExecution {
     }
 }
 
-impl TryFromWithConvoInformation<ToolCall> for ToolExecution {
-    fn try_from_with_convo_info(data: ToolCall,
-                                convo_id: DatabaseId,
-                                agent_id: Option<DatabaseId>)
-                                -> DatabaseResult<Self> {
+impl TryFromWithConvoContext<ToolCall> for ToolExecution {
+    async fn try_from_with_convo_info(data: ToolCall, _ctx: &ArcMutexConversationContext) -> DatabaseResult<Self> {
         let tool_name = MCPToolName::try_from(data.function.name)?;
         let args = data.function.arguments;
+        let ctx = _ctx.clone().lock_owned().await;
         Ok(Self { id: DatabaseId::new(),
                   tool_name,
-                  convo_id,
+                  convo_id: ctx.convo.clone(),
                   args,
-                  agent_id,
+                  agent_id: Some(ctx.agent.clone()),
                   ctime: DateTime::new_now() })
     }
 }

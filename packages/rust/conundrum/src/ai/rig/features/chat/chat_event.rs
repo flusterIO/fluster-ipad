@@ -1,19 +1,37 @@
+use std::sync::Arc;
+
 use fake::Dummy;
 use rig::{
     message::{MimeType, ReasoningContent},
     streaming::StreamedAssistantContent,
 };
 use serde::Serialize;
+use winnow::stream::Accumulate;
 
 use crate::{
     ai::{
-        models::{chat::chat_message::user::user_message::UserMessage, tool::tool_execution::ToolExecution},
+        models::{
+            chat::chat_message::{
+                ai::{ai_message::AIMessage, reasoning_block::ReasoningBlock},
+                user::user_message::UserMessage,
+            },
+            tool::tool_execution::ToolExecution,
+        },
         rig::{
-            ai_traits::from_with_convo_information::TryFromWithConvoInformation,
+            ai_traits::from_with_convo_information::TryFromWithConvoContext,
             ai_types::ai_types::LocalMultiTurnStreamItem,
+            features::chat::{convo_context::ArcMutexConversationContext, log_usage::log_usage},
         },
     },
-    ecosystem::error_handling::{ai_error::AIError, db_error::DatabaseError},
+    ecosystem::{
+        db::{db::ArcMutexDB, db_traits::entity_crud::EntityCRUD},
+        error_handling::{
+            ai_error::AIError,
+            db_error::{DatabaseError, DatabaseResult},
+        },
+    },
+    lang::lib::shared::utility_types::ArcTokioMutex,
+    lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 
 #[typeshare::typeshare]
@@ -63,11 +81,79 @@ pub enum ChatEvent {
     Many(Vec<ChatEvent>),
 }
 
-impl<R> TryFromWithConvoInformation<StreamedAssistantContent<R>> for ChatEvent where R: Clone + Unpin {
-    fn try_from_with_convo_info(value: StreamedAssistantContent<R>,
-                                convo_id: crate::lifted_models::primitives::db_id::DatabaseId,
-                                agent_id: Option<crate::lifted_models::primitives::db_id::DatabaseId>)
-                                -> crate::ecosystem::error_handling::db_error::DatabaseResult<Self>
+impl ChatEvent {
+    pub async fn side_effect(&self, context: ArcMutexConversationContext, database: ArcMutexDB) -> DatabaseResult<()> {
+        match self {
+            Self::ToolCall(c) => {
+                ToolExecution::save_many(vec![c.clone()], &Arc::clone(&database)).await?;
+                Ok(())
+            }
+            Self::ReasoningBlock { text, } => {
+                let mut ctx = context.clone().lock_owned().await;
+                let reasoning_block = ReasoningBlock { id: DatabaseId::new(),
+                                                       convo_id: ctx.convo.clone(),
+                                                       agent_id: ctx.agent.clone(),
+                                                       content: text.clone(),
+                                                       ctime: DateTime::new_now() };
+                ReasoningBlock::save_many(vec![reasoning_block], &Arc::clone(&database)).await?;
+                ctx.clear_current_reasoning_accumulator();
+                drop(ctx);
+                Ok(())
+            }
+            Self::TextDelta { text,
+                              is_reasoning, } => {
+                let ctx = context.clone().lock_owned().await;
+                let accumulator = match is_reasoning {
+                    true => ctx.reasoning_accumulator.clone().lock_owned().await,
+                    false => ctx.accumulator.clone().lock_owned().await,
+                };
+                let next_content: String = match accumulator.get_mut(&ctx.convo) {
+                    Some(q) => {
+                        format!("{}{}", q.clone(), &text)
+                    }
+                    None => text.clone(),
+                };
+                accumulator.insert(ctx.convo.clone(), next_content);
+                drop(ctx);
+                drop(accumulator);
+                Ok(())
+            }
+            Self::Done { .. } => {
+                let ctx = context.clone().lock_owned().await;
+                let accumulator = ctx.accumulator.clone().lock_owned().await;
+                let reasoning_accumulator = ctx.reasoning_accumulator.clone().lock_owned().await;
+                if let Some(reasoning_content) = reasoning_accumulator.get(&ctx.convo) {
+                    let reasoning_block = ReasoningBlock { id: DatabaseId::new(),
+                                                           convo_id: ctx.convo.clone(),
+                                                           agent_id: ctx.agent.clone(),
+                                                           content: reasoning_content.clone(),
+                                                           ctime: DateTime::new_now() };
+                    ReasoningBlock::save_many(vec![reasoning_block], &Arc::clone(&database)).await?;
+                } else {
+                    log::warn!("Attempted to save a reasoning block but could not find any content. If you have reasoning turned off ignore this warning, otherwise this may indicate an issue.");
+                }
+                if let Some(content) = accumulator.get(&ctx.convo) {
+                    let agent_message = AIMessage { id: DatabaseId::new(),
+                                                    body: content.clone(),
+                                                    convo_id: ctx.convo.clone(),
+                                                    agent_id: ctx.agent.clone(),
+                                                    ctime: DateTime::new_now() };
+                    AIMessage::save_many(vec![agent_message], &Arc::clone(&database)).await?;
+                } else {
+                    log::warn!("Attempted to save an agent message but could not find any content.");
+                }
+                drop(ctx);
+                Ok(())
+            }
+            _ => Ok(()),
+        }
+    }
+}
+
+impl<R> TryFromWithConvoContext<StreamedAssistantContent<R>> for ChatEvent where R: Clone + Unpin {
+    async fn try_from_with_convo_info(value: StreamedAssistantContent<R>,
+                                      ctx: &ArcMutexConversationContext)
+                                      -> crate::ecosystem::error_handling::db_error::DatabaseResult<Self>
         where Self: Sized {
         match value {
             StreamedAssistantContent::ReasoningDelta { reasoning,
@@ -100,6 +186,7 @@ impl<R> TryFromWithConvoInformation<StreamedAssistantContent<R>> for ChatEvent w
                              .collect::<Vec<_>>();
 
                 if events.is_empty() {
+                    log::debug!("Skipping empty reasoning content");
                     Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
                 } else if events.len() == 1 {
                     Ok(events.into_iter().next().unwrap())
@@ -110,83 +197,33 @@ impl<R> TryFromWithConvoInformation<StreamedAssistantContent<R>> for ChatEvent w
 
             StreamedAssistantContent::ToolCall { tool_call,
                                                  .. } => {
-                let r = ToolExecution::try_from_with_convo_info(tool_call, convo_id.clone(), agent_id.clone())?;
+                let r = ToolExecution::try_from_with_convo_info(tool_call, &Arc::clone(&ctx)).await?;
                 Ok(ChatEvent::ToolCall(r))
             }
 
             StreamedAssistantContent::Final(_) => Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput)),
 
-            _ => {
-                log::debug!("Skipping unknown AI output.");
+            StreamedAssistantContent::Unknown(val) => {
+                log::debug!("Found unknown LLM output: {:#?}", val);
+                Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
+            }
+
+            StreamedAssistantContent::ToolCallDelta { .. } => {
+                log::debug!("Skipping tool call delta");
                 Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
             }
         }
     }
 }
 
-// impl TryFrom<StreamedAssistantContent<ollama::StreamingCompletionResponse>>
-// for ChatEvent {     type Error = ServerError;
-
-//     fn try_from(value:
-// StreamedAssistantContent<ollama::StreamingCompletionResponse>) ->
-// Result<Self, Self::Error> {         match value {
-//             StreamedAssistantContent::ReasoningDelta { id,
-//                                                        reasoning, } =>
-// Ok(ChatEvent::TextDelta { text: reasoning,
-// is_reasoning: true }),             StreamedAssistantContent::Text(s) =>
-// Ok(ChatEvent::TextDelta { text: s.text,
-// is_reasoning: false }),             StreamedAssistantContent::Reasoning(r) =>
-// {                 let mut items: Vec<ChatEvent> = Vec::new();
-//                 for x in r.content {
-//                     match x {
-//                         ReasoningContent::Text { text,
-//                                                  .. } =>
-// items.push(ChatEvent::TextDelta { text,
-// is_reasoning: true }),                         ReasoningContent::Redacted {
-// data, } => items.push(ChatEvent::Redacted { text: data }),
-// ReasoningContent::Summary(s) => items.push(ChatEvent::ReasoningSummary {
-// text: s }),                         ReasoningContent::Encrypted(x) =>
-// items.push(ChatEvent::Encrypted { text: x }),                         _ => {
-//                             log::debug!("Encountered some piece of mystery AI
-// output...");                         }
-//                     }
-//                 }
-//                 Ok(Self::Many(items))
-//             }
-//             StreamedAssistantContent::ToolCall { tool_call,
-//                                                  .. } => {
-//                 let tool_name = tool_call.function.name;
-//                 let tool_input_params =
-// serde_json::to_string(&tool_call.function.arguments).ok();
-// Ok(ChatEvent::ToolCall { tool_name,
-// tool_input_params })             }
-//             StreamedAssistantContent::Final(_) => {
-//                 // let usage = x.token_usage();
-//                 // let input_tokens = usage.input_tokens as u32;
-//                 // let output_tokens = usage.output_tokens as u32;
-//                 // let total_tokens = usage.total_tokens as u32;
-//                 // Ok(ChatEvent::Done { input_tokens,
-//                 //                      total_tokens,
-//                 //                      output_tokens })
-//                 Err(ServerError::SkippingIrrelevantAIOutput)
-//             }
-//             _ => {
-//                 log::debug!("Skipping unknown AI output.");
-//                 Err(ServerError::SkippingIrrelevantAIOutput)
-//             }
-//         }
-//     }
-// }
-
-impl TryFromWithConvoInformation<LocalMultiTurnStreamItem> for ChatEvent {
-    fn try_from_with_convo_info(value: LocalMultiTurnStreamItem,
-                                convo_id: crate::lifted_models::primitives::db_id::DatabaseId,
-                                agent_id: Option<crate::lifted_models::primitives::db_id::DatabaseId>)
-                                -> crate::ecosystem::error_handling::db_error::DatabaseResult<Self>
+impl TryFromWithConvoContext<LocalMultiTurnStreamItem> for ChatEvent {
+    async fn try_from_with_convo_info(value: LocalMultiTurnStreamItem,
+                                      ctx: &ArcMutexConversationContext)
+                                      -> crate::ecosystem::error_handling::db_error::DatabaseResult<Self>
         where Self: Sized {
         match value {
             rig::agent::MultiTurnStreamItem::StreamAssistantItem(x) => {
-                if let Ok(res) = ChatEvent::try_from_with_convo_info(x, convo_id.clone(), agent_id.clone()) {
+                if let Ok(res) = ChatEvent::try_from_with_convo_info(x, &Arc::clone(ctx)).await {
                     Ok(res)
                 } else {
                     log::warn!("Something went wrong while gathering a ChatEvent. Cannot stream this event to the front-end.");
@@ -228,8 +265,16 @@ impl TryFromWithConvoInformation<LocalMultiTurnStreamItem> for ChatEvent {
             rig::agent::MultiTurnStreamItem::ToolExecutionCommitted { tool_call,
                                                                       .. } => {
                 let tool_execution =
-                    ToolExecution::try_from_with_convo_info(tool_call.clone(), convo_id.clone(), agent_id.clone())?;
+                    ToolExecution::try_from_with_convo_info(tool_call.clone(), &Arc::clone(&ctx)).await?;
                 Ok(Self::ToolCall(tool_execution))
+            }
+            rig::agent::MultiTurnStreamItem::ModelTurnRetried { turn, } => {
+                log::info!("Model retried {} times.", turn);
+                Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
+            }
+            rig::agent::MultiTurnStreamItem::CompletionCall(c) => {
+                log_usage(c.usage);
+                Err(DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput))
             }
             _ => {
                 log::debug!("Skipping model events that Conundrum doesn't need.");

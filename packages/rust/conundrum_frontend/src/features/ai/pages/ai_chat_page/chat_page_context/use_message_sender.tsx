@@ -12,6 +12,7 @@ export const useMessageSender = () => {
             return;
         }
 
+        // Set thinking
         dispatch({
             type: "set-thinking",
             payload: true,
@@ -23,6 +24,7 @@ export const useMessageSender = () => {
             body: input,
         };
 
+        // Send the new user's message to state
         dispatch({
             type: "append-message",
             payload: {
@@ -34,11 +36,13 @@ export const useMessageSender = () => {
             },
         });
 
+        // Start with an empty response
         dispatch({
             type: "set-response",
             payload: getEmptyChatData(),
         });
 
+        // Stream that s--t...
         socket.send(JSON.stringify(data));
     }
 

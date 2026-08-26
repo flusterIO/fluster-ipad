@@ -15,12 +15,11 @@ export const ReasoningTextComponent = ({
     isLast,
 }: ReasoningTextComponentProps): ReactNode => {
     return (
-        <ChatMessageContainer
-            isLast={isLast}
-            className="text-sm font-serif"
-            index={index}
-        >
-            <StreamingMarkdown activelyStreaming={false}>
+        <ChatMessageContainer isLast={isLast} className="text-sm te" index={index}>
+            <StreamingMarkdown
+                activelyStreaming={false}
+                className="w-full bg-card rounded p-4 text-sm *:text-foreground/80!"
+            >
                 {item.content}
             </StreamingMarkdown>
         </ChatMessageContainer>

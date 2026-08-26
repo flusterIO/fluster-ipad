@@ -142,19 +142,6 @@ export type DBVector = number[]
 
 export type DOMId = string
 
-/**
- * The developers of Surreal should be punched in the fucking eye. Make up your
- * mind. Is your db flexible or not? Make the types public or just be postgres
- * with pg-vector.
- * 
- * For anyone that sees this: Use Lance, or Neo, or something else. The only
- * reason I'm using surreal is because I was without internet for a few days
- * and I wanted to make progress, I already had Surreal installed. I'd go back
- * to Lance right now and undo 2 weeks worth of work just to get rid of this
- * half-axxed DB. I already miss the reliable arrow support of Lance instead of
- * serializing to sql strings and json objects. No wonder it's slow as shit.
- * It's the DB that does everything but nothing well.
- */
 export type DatabaseId = string
 
 export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 

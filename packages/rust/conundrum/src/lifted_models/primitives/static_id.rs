@@ -1,4 +1,4 @@
-use crate::ecosystem::error_handling::db_error::DatabaseError;
+use crate::{ecosystem::error_handling::db_error::DatabaseError, lifted_models::primitives::db_id::DatabaseId};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 

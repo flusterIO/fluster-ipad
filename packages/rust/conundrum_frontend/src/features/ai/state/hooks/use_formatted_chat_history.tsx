@@ -9,6 +9,13 @@ import {
 import { type UserMessageInput } from "@conundrum/ts/codegen-typeshare";
 import { useMemo } from "react";
 
+export type PartialAgentMessage = Pick<
+    AIMessage,
+    "body" | "ctime" | "convo_id"
+> & {
+    agent_id?: AIMessage["agent_id"];
+};
+
 export type FormattedChatHistoryItem =
     | {
         type: "user-message";
@@ -33,6 +40,10 @@ export type FormattedChatHistoryItem =
     | {
         type: "user-partial";
         data: UserMessageInput & { ctime: Date };
+    }
+    | {
+        type: "agent-partial";
+        data: PartialAgentMessage;
     };
 
 export const useFormattedChatHistory = (

@@ -15,6 +15,7 @@ interface ChatMessageContainerProps {
     isLast: boolean;
     ctime?: string | Date;
     containerClasses?: string;
+    animate?: boolean;
 }
 
 const CM = ({
@@ -22,14 +23,15 @@ const CM = ({
     className,
     children,
     isLast,
+    animate = true,
 }: ChatMessageContainerProps & { className?: string }): ReactNode => {
     const [sp] = useSearchParams();
     const convo_id = sp.get("convo");
-    const [haveAnimated, setHaveAnimated] = useState(false)
+    const [haveAnimated, setHaveAnimated] = useState(!animate);
     return (
         <motion.div
             onAnimationComplete={() => {
-                setHaveAnimated(true)
+                setHaveAnimated(true);
                 if (isLast) {
                     window.dispatchEvent(
                         new CustomEvent("set-chat-entrance-settled", {
@@ -41,10 +43,17 @@ const CM = ({
                 }
             }}
             className={className}
-            initial={{
-                scale: 0,
-                opacity: 0,
-            }}
+            initial={
+                animate
+                    ? {
+                        scale: 0,
+                        opacity: 0,
+                    }
+                    : {
+                        scale: 1,
+                        opacity: 1,
+                    }
+            }
             animate={{
                 scale: 1,
                 opacity: 1,
@@ -71,7 +80,8 @@ export const ChatMessageContainer = (
             <Tooltip>
                 <TooltipTrigger
                     render={<CM {...props} />}
-                    className={props.containerClasses} />
+                    className={props.containerClasses}
+                />
                 <TooltipContent>
                     <DateTimeComponent dateTime={props.ctime} format="full-with-time" />
                 </TooltipContent>

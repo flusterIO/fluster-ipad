@@ -221,7 +221,7 @@ export const ChatPageContextReducer = (
             return {
                 ...state,
                 response: isEmpty ? null : action.payload,
-                thinking: isEmpty,
+                thinking: !isEmpty,
             };
         }
         case "set-page": {
@@ -232,18 +232,23 @@ export const ChatPageContextReducer = (
         }
         case "stream-complete": {
             consola.log("Stream complete");
-            return {
-                ...state,
-                messages: [
+            const messages: typeof state.messages = state.convo
+                ? [
                     ...state.messages,
                     {
-                        type: "user-partial",
+                        type: "agent-partial",
                         data: {
                             body: state.response?.response ?? "",
-                            ctime: new Date(),
+                            convo_id: state.convo,
+                            ctime: new Date().toISOString(),
+                            agent_id: state.agent ?? undefined,
                         },
-                    },
-                ],
+                    } satisfies FormattedChatHistoryItem,
+                ]
+                : state.messages;
+            return {
+                ...state,
+                messages,
                 response: null,
                 thinking: false,
                 loading: false,
@@ -356,21 +361,16 @@ export const ChatPageProvider = ({
         };
 
         ws.onmessage = (event: MessageEvent<string>) => {
+            consola.log("Event: ", event);
             try {
                 const chatEvent = JSON.parse(event.data) as ChatEvent;
 
                 const handleIndividualRequest = (req: ChatEvent) => {
                     if (req.type === "done") {
-                        consola.log(`Tokens expended: `, req.content);
                         cleanupStream().catch((err: unknown) => {
                             consola.error("Error: {}", err);
                         });
                         return;
-                    } else {
-                        dispatch({
-                            type: "set-thinking",
-                            payload: true,
-                        });
                     }
                     if (req.type === "text_delta") {
                         setResponse((current): ChatData => {

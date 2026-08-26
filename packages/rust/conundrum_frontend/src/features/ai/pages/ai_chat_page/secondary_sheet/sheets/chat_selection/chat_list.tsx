@@ -10,16 +10,19 @@ import { useChatPageDispatch } from "../../../chat_page_context/chat_page_contex
 
 interface ChatListProps {
     items: ChatConversationResult;
+    refetch: () => void;
 }
 
-export const ChatList = ({ items }: ChatListProps): ReactNode => {
+export const ChatList = ({ items, refetch }: ChatListProps): ReactNode => {
     const sp = new URLSearchParams();
     const dispatch = useChatPageDispatch();
     sp.set("convo", v4());
     return (
         <div className="w-full h-fit flex flex-col justify-start items-start gap-y-2 py-4">
             {items.map((item) => {
-                return <ChatConversationItem item={item} key={item.id} />;
+                return (
+                    <ChatConversationItem refetch={refetch} item={item} key={item.id} />
+                );
             })}
             <Link
                 className={cn(
