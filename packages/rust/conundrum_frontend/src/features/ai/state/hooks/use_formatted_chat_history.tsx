@@ -16,6 +16,10 @@ export type PartialAgentMessage = Pick<
     agent_id?: AIMessage["agent_id"];
 };
 
+export type ReasoningBlockPartial = Omit<ReasoningBlock, "id" | "agent_id"> & {
+    agent_id?: AIMessage["agent_id"];
+};
+
 export type FormattedChatHistoryItem =
     | {
         type: "user-message";
@@ -36,6 +40,10 @@ export type FormattedChatHistoryItem =
     | {
         type: "tool-execution";
         data: ToolExecution;
+    }
+    | {
+        type: "reasoning-partial";
+        data: ReasoningBlockPartial;
     }
     | {
         type: "user-partial";

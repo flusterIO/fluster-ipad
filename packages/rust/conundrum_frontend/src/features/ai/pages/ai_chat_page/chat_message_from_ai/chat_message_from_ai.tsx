@@ -6,29 +6,39 @@ import { type PartialAgentMessage } from "#/ai/state/hooks/use_formatted_chat_hi
 
 interface ChatMessageFromAIProps {
     item: AIMessage | PartialAgentMessage;
-    index: number;
+    index: number | "stream";
     isLast: boolean;
     animate?: boolean;
 }
 
-export const ChatMessageFromAgent = ({
-    item,
+export const ChatMessageContent = ({
+    children,
     index,
     isLast,
     animate,
-}: ChatMessageFromAIProps): ReactNode => {
+}: Omit<ChatMessageFromAIProps, "item"> & { children: string }): ReactNode => {
     return (
         <ChatMessageContainer
             isLast={isLast}
-            className="w-full h-fit rounded"
+            className="w-full h-fit rounded mb-4"
             index={index}
             animate={animate}
         >
-            <StreamingMarkdown activelyStreaming={false}>
-                {item.body}
+            <StreamingMarkdown
+                className="w-full [&>p]:w-full"
+                activelyStreaming={false}
+            >
+                {children}
             </StreamingMarkdown>
         </ChatMessageContainer>
     );
+};
+
+export const ChatMessageFromAgent = ({
+    item,
+    ...props
+}: ChatMessageFromAIProps): ReactNode => {
+    return <ChatMessageContent {...props}>{item.body}</ChatMessageContent>;
 };
 
 ChatMessageFromAgent.displayName = "ChatMessageFromAI";

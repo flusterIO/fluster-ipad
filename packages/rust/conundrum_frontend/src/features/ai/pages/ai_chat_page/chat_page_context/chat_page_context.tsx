@@ -236,6 +236,15 @@ export const ChatPageContextReducer = (
                 ? [
                     ...state.messages,
                     {
+                        type: "reasoning-partial",
+                        data: {
+                            convo_id: state.convo,
+                            agent_id: state.agent ?? undefined,
+                            content: (state.response?.reasoning ?? [""]).join(""),
+                            ctime: new Date().toISOString(),
+                        },
+                    } satisfies FormattedChatHistoryItem,
+                    {
                         type: "agent-partial",
                         data: {
                             body: state.response?.response ?? "",

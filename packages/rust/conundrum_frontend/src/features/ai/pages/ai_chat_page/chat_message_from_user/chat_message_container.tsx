@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ReactNode } from "react";
+import React, { useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router";
 import {
@@ -9,7 +9,7 @@ import {
 import { DateTimeComponent } from "#/datetime/components/date_time";
 
 interface ChatMessageContainerProps {
-    index: number;
+    index: number | "stream";
     children: ReactNode;
     className?: string;
     isLast: boolean;
@@ -64,7 +64,9 @@ const CM = ({
                 opacity: 0,
             }}
             transition={{
-                delay: haveAnimated ? 0 : index * 0.05,
+                delay: haveAnimated
+                    ? 0
+                    : (typeof index === "number" ? index : 0) * 0.05,
             }}
         >
             {children}

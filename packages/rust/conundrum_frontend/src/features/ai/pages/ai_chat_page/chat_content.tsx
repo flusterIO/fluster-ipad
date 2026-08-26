@@ -21,14 +21,12 @@ declare global {
 export const ChatContent = (): ReactNode => {
     const { messages } = useChatPageContext();
     return (
-        <motion.div
-            className={
-                "w-full h-fit flex flex-col justify-end items-end gap-y-4 px-2 mt-4 chat-content"
-            }
-            exit={{
-                opacity: 0,
-            }}
-        >
+        </* className={ */
+      /*     "w-full h-fit flex flex-col justify-end items-end gap-y-4 px-2 mt-4 chat-content" */
+      /* } */
+      /* exit={{ */
+      /*     opacity: 0, */
+      /* }} */>
             <AnimatePresence presenceAffectsLayout>
                 {messages.map((d, i) => {
                     if (d.type === "user-message" || d.type === "user-partial") {
@@ -52,13 +50,14 @@ export const ChatContent = (): ReactNode => {
                             />
                         );
                     }
-                    if (d.type === "reasoning-block") {
+                    if (d.type === "reasoning-block" || d.type === "reasoning-partial") {
                         return (
                             <ReasoningTextComponent
                                 isLast={i === messages.length - 1}
                                 index={i}
                                 item={d.data}
-                                key={d.data.id}
+                                key={"id" in d.data ? d.data.id : `${d.data.content}${i}`}
+                                animate={d.type === "reasoning-block"}
                             />
                         );
                     }
@@ -75,7 +74,7 @@ export const ChatContent = (): ReactNode => {
                     return null;
                 })}
             </AnimatePresence>
-        </motion.div>
+        </>
     );
 };
 

@@ -14,8 +14,6 @@ import {
 import { ChatInput } from "./input/ai_chat_input";
 import { HistoryFetcher } from "./chat_page_context/history_fetcher";
 import { ChatSideSheet } from "./secondary_sheet/chat_secondary_panel";
-import { type AppState } from "@/state/initial_state";
-import { useSelector, useDispatch } from "react-redux";
 
 const MotionButton = motion.create(Button);
 
