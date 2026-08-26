@@ -142,7 +142,11 @@ impl ChatEvent {
                 } else {
                     log::warn!("Attempted to save an agent message but could not find any content.");
                 }
+                accumulator.remove(&ctx.convo);
+                reasoning_accumulator.remove(&ctx.convo);
                 drop(ctx);
+                drop(reasoning_accumulator);
+                drop(accumulator);
                 Ok(())
             }
             _ => Ok(()),
@@ -265,7 +269,7 @@ impl TryFromWithConvoContext<LocalMultiTurnStreamItem> for ChatEvent {
             rig::agent::MultiTurnStreamItem::ToolExecutionCommitted { tool_call,
                                                                       .. } => {
                 let tool_execution =
-                    ToolExecution::try_from_with_convo_info(tool_call.clone(), &Arc::clone(&ctx)).await?;
+                    ToolExecution::try_from_with_convo_info(tool_call.clone(), &Arc::clone(ctx)).await?;
                 Ok(Self::ToolCall(tool_execution))
             }
             rig::agent::MultiTurnStreamItem::ModelTurnRetried { turn, } => {
