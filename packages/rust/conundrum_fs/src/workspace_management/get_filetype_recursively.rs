@@ -36,7 +36,7 @@ pub fn get_types() -> ConundrumFSResult<Types> {
 
 pub type ParsableFileTypePathMap = Arc<Mutex<HashMap<ParsableFileType, Vec<String>>>>;
 
-/// Returns a list of *relative* paths matching the file extension.
+/// Returns a list of *absolute* paths matching the file extension.
 pub async fn get_filetype_in_workspace_recursively(params: FileWalkConfig)
                                                    -> ConundrumFSResult<ParsableFileTypePathMap> {
     let types = get_types()?;
@@ -50,7 +50,6 @@ pub async fn get_filetype_in_workspace_recursively(params: FileWalkConfig)
                                          .build_parallel()
                                          .run(|| {
                                              let fp = Arc::clone(&file_paths);
-                                             let root = Arc::clone(&root_path);
                                              Box::new(move |res| {
                                                  if let Ok(entry) = res {
                                                      let entry_path = entry.path();

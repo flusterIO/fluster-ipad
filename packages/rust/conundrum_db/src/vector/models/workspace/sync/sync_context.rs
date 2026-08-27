@@ -8,6 +8,16 @@ pub struct SyncContext {
     pub update_count: HashMap<ParsableFileType, u32>,
 }
 
+impl SyncContext {
+    pub fn increment_parsable_file_count(&mut self, pf: ParsableFileType) {
+        if let Some(existing) = self.update_count.get(&pf) {
+            self.update_count.insert(pf.clone(), existing + 1);
+        } else {
+            self.update_count.insert(pf.clone(), 1);
+        }
+    }
+}
+
 impl Default for SyncContext {
     fn default() -> Self {
         let mut update_count = HashMap::new();
