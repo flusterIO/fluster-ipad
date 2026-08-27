@@ -11,12 +11,14 @@ use conundrum::impl_default_crud;
 use conundrum::lang::constants::file_types::ParsableFileType;
 use conundrum::lifted_models::primitives::date_time::DateTime;
 use conundrum_fs::workspace_management::file_walk_config::FileWalkConfig;
+use conundrum_fs::workspace_management::get_filetype_recursively::ParsableFileTypePathMap;
 use conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively;
 use fake::Dummy;
 use lancedb::arrow::arrow_schema::DataType;
 use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};
 use specta::Type;
+use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
@@ -71,8 +73,8 @@ impl UserWorkspace {
         Path::new(&self.root).join(fp)
     }
 
-    pub async fn parsable_files_of_type(&self, parsable_file_type: ParsableFileType) -> DatabaseResult<Vec<String>> {
-        let c = self.into_file_walk_config(parsable_file_type);
+    pub async fn parsable_files_of_type(&self) -> DatabaseResult<HashMap<ParsableFileType, Vec<String>>> {
+        let c = self.into_file_walk_config();
         let mutex = get_filetype_in_workspace_recursively(c).await.map_err(DatabaseError::FileSystemError)?;
         if let Ok(items) = Arc::try_unwrap(mutex) {
             let x = items.into_inner();
@@ -96,11 +98,10 @@ impl UserWorkspace {
         Field::new("item", DataType::Utf8, true)
     }
 
-    fn into_file_walk_config(&self, file_type: ParsableFileType) -> FileWalkConfig {
+    fn into_file_walk_config(&self) -> FileWalkConfig {
         FileWalkConfig { ignore_hidden: self.ignore_hidden,
                          respect_git_ignore: self.respect_gitignore,
-                         root: self.root.clone(),
-                         file_type }
+                         root: self.root.clone() }
     }
 }
 

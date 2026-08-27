@@ -5,7 +5,10 @@ use conundrum::{
     ai::models::{
         chat::{
             chat_conversation::chat_conversation::ChatConversation,
-            chat_message::{ai::ai_message::AIMessage, user::user_message::UserMessage},
+            chat_message::{
+                ai::{ai_message::AIMessage, reasoning_block::ReasoningBlock},
+                user::user_message::UserMessage,
+            },
         },
         tool::tool_execution::ToolExecution,
     },
@@ -45,6 +48,7 @@ pub fn get_chat_conversation_crud() -> rspc::Router<Arc<ServerState>> {
             ChatConversation::delete_by_predicate(format!("id = {}", &params.to_quoted_string()?).as_str(), &state.db).await?;
             UserMessage::delete_by_predicate(predicate.as_str(), &Arc::clone(&state.db)).await?;
             AIMessage::delete_by_predicate(predicate.as_str(), &Arc::clone(&state.db)).await?;
+            ReasoningBlock::delete_by_predicate(predicate.as_str(), &Arc::clone(&state.db)).await?;
             ToolExecution::delete_by_predicate(predicate.as_str(), &Arc::clone(&state.db)).await?;
             Ok(())
         }))

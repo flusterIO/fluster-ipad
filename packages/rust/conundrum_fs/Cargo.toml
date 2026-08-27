@@ -16,7 +16,7 @@ serde.workspace = true
 thiserror.workspace = true
 typeshare.workspace = true
 uniffi = "0.29"
-conundrum = { path = "../conundrum/" }
+conundrum = { path = "../conundrum/", features = ["db"] }
 conundrum_config = { path = "../conundrum_config/" }
 ignore = "0.4.25"
 tempfile = "3.27.0"
@@ -30,6 +30,7 @@ strum.workspace = true
 pathdiff = "0.2.3"
 specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url"] }
 same-file = "1.0.6"
+test-log = "0.2.21"
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

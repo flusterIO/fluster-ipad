@@ -6,7 +6,6 @@ use rig::{
     streaming::StreamedAssistantContent,
 };
 use serde::Serialize;
-use winnow::stream::Accumulate;
 
 use crate::{
     ai::{
@@ -30,7 +29,6 @@ use crate::{
             db_error::{DatabaseError, DatabaseResult},
         },
     },
-    lang::lib::shared::utility_types::ArcTokioMutex,
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 

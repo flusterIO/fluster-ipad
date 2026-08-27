@@ -1,6 +1,7 @@
 use std::{
-    fs,
+    collections::HashMap,
     path::{self, Path},
+    str::FromStr,
     sync::Arc,
 };
 
@@ -13,29 +14,33 @@ use ignore::{
     WalkBuilder, WalkState,
 };
 use parking_lot::Mutex;
-use pathdiff::diff_paths;
+use strum::IntoEnumIterator;
 
 use crate::workspace_management::file_walk_config::FileWalkConfig;
 
-pub fn get_types(ft: ParsableFileType) -> ConundrumFSResult<Types> {
+pub fn get_types() -> ConundrumFSResult<Types> {
     let mut types_builder = TypesBuilder::new();
-    let (k, v) = ft.to_ignore_types();
-    types_builder.add(k, v).map_err(|e| {
-                                log::error!("Error: {:?}", e);
-                                ConundrumFSError::GeneralFSError
-                            })?;
-    let r = types_builder.select(k).build().map_err(|e| {
-                                                log::error!("Error: {:?}", e);
-                                                ConundrumFSError::GeneralFSError
-                                            })?;
+    for ft in ParsableFileType::iter() {
+        let (k, v) = ft.to_ignore_types();
+        types_builder.add(k, v).map_err(|e| {
+                                    log::error!("Error: {:?}", e);
+                                    ConundrumFSError::GeneralFSError
+                                })?;
+    }
+    let r = types_builder.select("all").build().map_err(|e| {
+                                                    log::error!("Error: {:?}", e);
+                                                    ConundrumFSError::GeneralFSError
+                                                })?;
     Ok(r)
 }
 
+pub type ParsableFileTypePathMap = Arc<Mutex<HashMap<ParsableFileType, Vec<String>>>>;
+
 /// Returns a list of *relative* paths matching the file extension.
 pub async fn get_filetype_in_workspace_recursively(params: FileWalkConfig)
-                                                   -> ConundrumFSResult<Arc<Mutex<Vec<String>>>> {
-    let types = get_types(params.file_type)?;
-    let file_paths: Arc<Mutex<Vec<String>>> = Arc::new(Mutex::new(Vec::new()));
+                                                   -> ConundrumFSResult<ParsableFileTypePathMap> {
+    let types = get_types()?;
+    let file_paths: Arc<Mutex<HashMap<ParsableFileType, Vec<String>>>> = Arc::new(Mutex::new(HashMap::new()));
     let rp = Path::new(&params.root);
     let root_path = Arc::new(rp);
     WalkBuilder::new(params.root.clone()).git_ignore(params.respect_git_ignore)
@@ -48,16 +53,30 @@ pub async fn get_filetype_in_workspace_recursively(params: FileWalkConfig)
                                              let root = Arc::clone(&root_path);
                                              Box::new(move |res| {
                                                  if let Ok(entry) = res {
-                                                     if entry.file_type().map_or(false, |f| f.is_file()) {
-                                                         let f = entry.path();
-                                                         if let Some(p) = diff_paths(f, *root) {
-                                                             if let Some(substring) = p.to_str() {
-                                                                 let mut _file_paths = fp.clone().lock_arc();
-                                                                 _file_paths.push(substring.to_string());
-                                                                 drop(_file_paths);
+                                                     let entry_path = entry.path();
+                                                         if let Some(file_extension) = entry_path.extension() {
+                                                             if let Some(file_ext_str) = file_extension.to_str() {
+                                                             if let Ok(pf) = ParsableFileType::from_str(file_ext_str).map_err(|e| {
+                                                                         ConundrumFSError::UnsupportedFileExtension(format!("{:?}", file_extension))
+                                                                     }) {
+                                                                 let mut paths = fp.clone().lock_arc();
+                                                                 if let Some(existing) = paths.get_mut(&pf) {
+                                                                     if let Some(p) = entry_path.to_str() {
+                                                                     existing.push(p.to_string());
+                                                                     } else {
+                                                                         log::error!("Failed to parse file path to a string.")
+                                                                     }
+                                                                 } else {
+                                                                     if let Some(p) = entry_path.to_str() {
+                                                                         paths.insert(pf.clone(), vec![p.to_string()]);
+                                                                     } else {
+                                                                         log::error!("Failed to parse file path to a string.")
+                                                                     }
+                                                                 }
+                                                                 drop(paths);
                                                              }
                                                          }
-                                                     }
+                                                         }
                                                  }
                                                  WalkState::Continue
                                              })
@@ -71,11 +90,12 @@ mod tests {
 
     use super::*;
 
-    #[tokio::test]
+    #[test_log::test(tokio::test)]
     async fn returns_file_types() {
         for ft in ParsableFileType::iter() {
-            let r  = get_filetype_in_workspace_recursively(FileWalkConfig { root: "/Users/bigsexy/Desktop/notes/content/".to_string(), respect_git_ignore: true, ignore_hidden: true, file_type: ft }).await.expect("gets file types without throwing an error.");
+            let r  = get_filetype_in_workspace_recursively(FileWalkConfig { root: "/Users/bigsexy/Desktop/notes/content/".to_string(), respect_git_ignore: true, ignore_hidden: true }).await.expect("gets file types without throwing an error.");
             let _r = r.clone().lock_arc();
+            println!("{:#?}", _r.clone());
             assert!(!_r.is_empty(), "File types found is not empty");
         }
         // assert_eq!(result, 4);
