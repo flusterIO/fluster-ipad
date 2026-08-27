@@ -77,6 +77,8 @@ typst-as-lib = { version = "0.15.4", features = ["typst-html"] }
 jupyter-protocol = "2.0.2"
 typeshare.workspace = true
 dashmap = { version = "6.1.0", features = ["rayon", "serde"] }
+globset = "0.4.20"
+pathdiff = "0.2.3"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }

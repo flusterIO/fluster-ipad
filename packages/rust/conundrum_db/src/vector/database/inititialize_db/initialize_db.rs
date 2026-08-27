@@ -42,6 +42,7 @@ use crate::vector::{
             server_state::server_state::ServerState,
         },
         git::git_repository_entity::GitRepositoryEntity,
+        meta::front_matter::front_matter::FrontMatter,
         taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
         text::{cdrm::cdrm_model::CdrmModel, text_based_content::text_based_chunk::TextBasedChunk},
         workspace::user_workspace::UserWorkspace,
@@ -124,6 +125,9 @@ pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResu
                                               TableInitData { table: DatabaseTable::Cdrm,
                                                               schema: CdrmModel::schema()?,
                                                               set_indices: None },
+                                              TableInitData { table: DatabaseTable::FrontMatter,
+                                                              schema: FrontMatter::schema()?,
+                                                              set_indices: None },
                                               TableInitData { table: DatabaseTable::Milestone,
                                                               schema: MilestoneEntity::schema()?,
                                                               set_indices: None },
@@ -171,8 +175,10 @@ pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResu
         }
     }
     drop(db);
+    log::info!("Conundrum successfully initialized {} tables.", table_data.len());
     let _ = seed_db(&db_arc, state).await.inspect_err(|e| {
                                              log::error!("Error: {:#?}", e);
                                          });
+    log::info!("Conundrum successfully seeded your database with documentation and some initial settings. Add a workspace to start adding actually meaningful content to your database.");
     Ok(())
 }

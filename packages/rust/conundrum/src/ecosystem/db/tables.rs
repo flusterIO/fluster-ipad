@@ -25,6 +25,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "cdrm")]
     #[serde(rename = "cdrm")]
     Cdrm,
+    #[strum(to_string = "front_matter")]
+    #[serde(rename = "front_matter")]
+    FrontMatter,
     #[strum(to_string = "typst")]
     #[serde(rename = "typst")]
     TypstContent,

@@ -2,15 +2,18 @@ use arrow_array::{RecordBatch, StringArray};
 use conundrum::{
     ecosystem::{
         db::{
+            db::ArcMutexDB,
             db_traits::{
                 db_entity::{DBEntity, DBSchema},
                 db_field::DatabaseField,
+                entity_crud::EntityCRUD,
             },
             tables::DatabaseTable,
         },
-        error_handling::db_error::DatabaseError,
+        error_handling::db_error::{DatabaseError, DatabaseResult},
     },
     impl_default_crud,
+    lang::lib::std_lib_impls::json_string::QuotedString,
 };
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
@@ -25,6 +28,25 @@ use crate::vector::models::ecosystem_data::ecosystem_setting_key::{
 pub struct EcosystemSettingModel {
     pub key: UniqueSettingKey,
     pub data: Setting,
+}
+
+impl From<UniqueSettingKey> for EcosystemSettingModel {
+    fn from(value: UniqueSettingKey) -> Self {
+        EcosystemSettingModel { key: value.clone(),
+                                data: Setting::from(value) }
+    }
+}
+
+impl EcosystemSettingModel {
+    pub async fn get_by_setting_key(key: UniqueSettingKey, db: &ArcMutexDB) -> DatabaseResult<Option<Self>> {
+        EcosystemSettingModel::get_one_by_predicate(Some(format!("key = {}", key.to_string().to_quoted_string()?)),
+                                                    None,
+                                                    &Arc::clone(&db)).await
+    }
+
+    pub async fn save(&self, db: &ArcMutexDB) -> DatabaseResult<()> {
+        EcosystemSettingModel::merge_by_primary_key(vec![self.clone()], &Arc::clone(&db)).await
+    }
 }
 
 impl_default_crud!(EcosystemSettingModel, EcosystemSettingModel, UniqueSettingKey);

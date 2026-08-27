@@ -5,17 +5,21 @@ use conundrum::{
     },
     lang::constants::file_types::ParsableFileType,
 };
-use conundrum_fs::workspace_management::file_walk_config::FileWalkConfig;
-use std::sync::Arc;
+use conundrum_fs::{
+    models::user_workspace::workspace_relative_path::WorkspaceRelativePath,
+    workspace_management::file_walk_config::FileWalkConfig,
+};
+use std::{path::PathBuf, sync::Arc};
 use tokio::task::JoinSet;
 
 use crate::vector::models::workspace::sync::{
-    sync_context::SyncContext, sync_file_types::sync_conundrum_path::sync_conundrum_path,
+    sync_context::SyncContext, sync_file_types::cdrm::sync_conundrum_path::sync_conundrum_path,
 };
 
 pub async fn sync_workspace(db: ArcMutexDB, walk_config: FileWalkConfig) -> DatabaseResult<SyncContext> {
-    let ctx = Arc::new(tokio::sync::Mutex::new(SyncContext::default()));
-    let file_paths_arc = conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively(walk_config).await
+    let context = SyncContext::new(&Arc::clone(&db)).await?;
+    let ctx = Arc::new(tokio::sync::Mutex::new(context));
+    let file_paths_arc = conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively(walk_config.clone()).await
             .map_err(|e| {
                 log::error!("File System Error: {:#?}", e);
                 DatabaseError::FileSystemError(e)
@@ -28,21 +32,27 @@ pub async fn sync_workspace(db: ArcMutexDB, walk_config: FileWalkConfig) -> Data
     for (pf, file_paths) in file_paths_group.clone() {
         for fp in file_paths {
             let db = Arc::clone(&db);
+            let ctx = Arc::clone(&ctx);
             let pf = pf.clone();
+            let root_path = walk_config.root.clone();
             set.spawn(async move {
-                   match pf {
-                       ParsableFileType::Markdown | ParsableFileType::Cdrm | ParsableFileType::Mdx => {
-                           log::debug!("Parsing conundrum file at {}", fp.clone());
-                           sync_conundrum_path(fp.clone(), &Arc::clone(&db)).await.inspect_err(|e| {
+                match pf {
+                    ParsableFileType::Markdown | ParsableFileType::Cdrm | ParsableFileType::Mdx => {
+                        log::debug!("Parsing conundrum file at {}", fp.clone());
+                        let ws_path = WorkspaceRelativePath::<PathBuf>::from_path_and_root(fp.clone(), root_path.clone())
+                               .map_err(|e| {
+                                   DatabaseError::FileSystemError(e)
+                               })?;
+                        sync_conundrum_path(ws_path.clone(), &Arc::clone(&db), Arc::clone(&ctx)).await.inspect_err(|e| {
                                                                                       log::error!("Error: {:#?}", e);
                                                                                   });
-                           Ok(ParsableFileType::Cdrm)
-                       }
-                       _ => {
-                           todo!()
-                       }
-                   }
-               });
+                        Ok(ParsableFileType::Cdrm)
+                    }
+                    _ => {
+                        todo!()
+                    }
+                }
+            });
         }
     }
 
@@ -51,7 +61,7 @@ pub async fn sync_workspace(db: ArcMutexDB, walk_config: FileWalkConfig) -> Data
             match parsed_file_type {
                 Ok(unwrapped_file_type) => {
                     let mut context = ctx.clone().lock_owned().await;
-                    context.increment_parsable_file_count(unwrapped_file_type);
+                    context.count.increment_parsable_file_count(unwrapped_file_type);
                     drop(context);
                 }
                 Err(err) => {

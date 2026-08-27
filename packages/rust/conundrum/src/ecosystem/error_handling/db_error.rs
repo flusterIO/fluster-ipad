@@ -58,6 +58,8 @@ pub enum DatabaseError {
     InvalidDateTime,
     #[error("AI Error: {:#?}", .0)]
     AIError(#[from] AIError),
+    #[error("Conundrum encountered an invalid glob: {0}")]
+    InvalidGlob(String),
 }
 
 impl From<ConundrumFSError> for DatabaseError {

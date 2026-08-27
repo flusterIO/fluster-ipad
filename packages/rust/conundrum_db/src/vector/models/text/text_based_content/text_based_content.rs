@@ -27,10 +27,11 @@ pub struct TextBasedContent<ContentType, ChunkType, ParseParameters>
     pub content: ContentType,
     pub title: Option<String>,
     pub ai_generated: AIGeneratedStatus,
-    pub taggables: Taggables,
-    pub ws_path: Option<WorkspaceRelativeStringPath>,
+    pub ws_root: Option<String>,
+    pub relative_path: Option<String>,
     pub ctime: DateTime,
     pub utime: DateTime,
+    pub last_sync: Option<DateTime>,
     pub ai: AIInteractions,
     pub chunk_type: PhantomData<ChunkType>,
     pub parse_params: PhantomData<ParseParameters>,
@@ -46,6 +47,26 @@ impl<ChunkType: Serialize + Debug,
     }
 }
 
+impl<ContentType, ChunkType, ParseParams> TextBasedContent<ContentType, ChunkType, ParseParams>
+    where ChunkType: Serialize + Debug,
+          ContentType: TextBasedContentTrait<ParseParams, ChunkType> + Serialize + Debug
+{
+    pub fn new(content: ContentType, title: Option<String>, workspace_path: String, relative_path: String) -> Self {
+        TextBasedContent { id: DatabaseId::new(),
+                           content,
+                           title,
+                           ai_generated: AIGeneratedStatus::None,
+                           ws_root: Some(workspace_path),
+                           relative_path: Some(relative_path),
+                           ctime: DateTime::new_now(),
+                           utime: DateTime::new_now(),
+                           last_sync: None,
+                           ai: AIInteractions::default(),
+                           chunk_type: PhantomData::default(),
+                           parse_params: PhantomData::default() }
+    }
+}
+
 impl<'a,
      ChunkType: Serialize + Debug,
      ContentType: Serialize + Debug + TextBasedContentTrait<ParseParameters, ChunkType> + Dummy<Faker> + Deserialize<'a>,
@@ -54,11 +75,13 @@ impl<'a,
     fn arrow_fields() -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<Field>>> {
         let res = vec![Arc::new(DatabaseId::field_definition("id", false)),
                        Arc::new(String::field_definition_large("content", false)),
-                       Arc::new(AIGeneratedStatus::field_definition("ai_generated", false)),
-                       Arc::new(workspace_relative_path_field("ws_path", true)),
                        Arc::new(String::field_definition("title", true)),
+                       Arc::new(AIGeneratedStatus::field_definition("ai_generated", false)),
+                       Arc::new(String::field_definition("ws_root", true)),
+                       Arc::new(String::field_definition("relative_path", true)),
                        Arc::new(DateTime::field_definition("ctime", false)),
                        Arc::new(DateTime::field_definition("utime", false)),
+                       Arc::new(DateTime::field_definition("last_sync", true)),
                        Arc::new(AIInteractions::field_definition("ai", false))];
         Ok(res)
     }

@@ -171,6 +171,12 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                     This table holds Conundrum content, an mdx (markdown) like language that is the user's primary input to the Conundrum ecosystem. When the user asks you to create a note, you should usually create a Conundrum note, as it supports most of commonmark markdown. Only attempt to write additional components if you are sure of the related properties and syntaxes, as this language will be many user's first exposure to code and any errors on your end may create a negative experience.
                         "}.to_string() },
+            DatabaseTable::FrontMatter => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                    Many of the Conundrum models can accept 'front-matter', or a tabular block at the front of the note (usually yaml) that allows a user to insert things like tags, topics and subjects without modifying the content of the note.
+                        "}.to_string() },
             DatabaseTable::MarkdownChunk => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,

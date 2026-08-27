@@ -1,6 +1,9 @@
+use arrow_schema::{Field, Fields};
 use gray_matter::Pod;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
+
+use crate::ecosystem::db::db_traits::db_field::DatabaseField;
 
 #[derive(uniffi::Enum, strum_macros::Display, Clone, Serialize, Deserialize)]
 pub enum FrontMatterKey {
@@ -39,6 +42,22 @@ pub struct FrontMatterResult {
     pub topic: Option<String>,
     pub subject: Option<String>,
     pub summary: Option<String>,
+}
+
+impl DatabaseField for FrontMatterResult {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        Field::new(field_key.to_string(),
+                   arrow_schema::DataType::Struct(Fields::from(vec![<Vec<String>>::field_definition("ignored_parsers",
+                                                                                                    true),
+                                                                    String::field_definition("title", true),
+                                                                    String::field_definition("user_defined_id",
+                                                                                             true),
+                                                                    String::field_definition("file_path", true),
+                                                                    String::field_definition("topic", true),
+                                                                    String::field_definition("subject", true),
+                                                                    String::field_definition("summary", true),])),
+                   nullable)
+    }
 }
 
 impl FrontMatterResult {

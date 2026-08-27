@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use crate::vector::models::{ecosystem_data::server_state::server_state::ServerState, text::text_based_content::{text_based_chunk::TextBasedChunk, text_based_content_trait::TextBasedContent}, vector::vector::DBVector};
 
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
-pub struct CdrmContent(String);
+pub struct CdrmContent(pub String);
 
 impl DatabaseField for CdrmContent {
     fn field_definition(field_key: &'static str, nullable: bool) -> Field {

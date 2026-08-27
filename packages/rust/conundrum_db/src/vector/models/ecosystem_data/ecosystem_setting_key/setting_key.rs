@@ -43,6 +43,7 @@ impl From<UniqueSettingKey> for Setting {
             UniqueSettingKey::SaveLogDuration => Self::Storage(StorageSettingKey::SaveLogDuration(30.0)),
             UniqueSettingKey::LocalAiPreference => Self::AI(AISettingKey::LocalAiPreference(0.5)),
             UniqueSettingKey::LogVectorGenMethod => Self::AI(AISettingKey::LogVectorGenMethod(crate::vector::models::ecosystem_data::ecosytem_setting_types::vector_generation_method::OptionalVectorGenerationMethod::LocalAndRemote)),
+            UniqueSettingKey::AutoCleanVectors => Self::AI(AISettingKey::AutoCleanVectors(true))
         }
     }
 }

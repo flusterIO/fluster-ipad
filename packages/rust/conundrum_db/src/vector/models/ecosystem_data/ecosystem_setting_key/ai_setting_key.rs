@@ -1,3 +1,4 @@
+use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
@@ -20,6 +21,7 @@ use crate::vector::models::ecosystem_data::{
 pub enum AISettingKey {
     LocalAiPreference(f32),
     LogVectorGenMethod(OptionalVectorGenerationMethod),
+    AutoCleanVectors(bool),
 }
 
 impl EcosystemSettingKey for AISettingKey {
@@ -27,6 +29,7 @@ impl EcosystemSettingKey for AISettingKey {
         match self {
             Self::LocalAiPreference(_) => UniqueSettingKey::LocalAiPreference,
             Self::LogVectorGenMethod(_) => UniqueSettingKey::LogVectorGenMethod,
+            Self::AutoCleanVectors(_) => UniqueSettingKey::AutoCleanVectors,
         }
     }
 }

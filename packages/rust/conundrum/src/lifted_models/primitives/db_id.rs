@@ -26,7 +26,7 @@ impl QuotedString for DatabaseId {
 
 impl DatabaseIdentifiable for DatabaseId {
     fn to_predicate(&self, field_key: &str) -> String {
-        format!("{} = {}", field_key, self.to_quoted_string().unwrap_or(self.0.clone()))
+        format!("{} = {}", field_key, self.to_quoted_string().unwrap_or(format!("\"{}\"", self.0.clone())))
     }
 }
 

@@ -13,10 +13,13 @@ use crate::{
         parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
         ui_params::UIParams,
     },
+    lifted_models::primitives::db_id::DatabaseId,
     output::{
         general::component_constants::component_names::EmbeddableComponentName,
-        parsing_result::dictionary_result::{DictionaryEntryResult, DictionaryEntryResultUnCompiled},
-        parsing_result::mdx_parsing_result::MdxParsingResult,
+        parsing_result::{
+            dictionary_result::{DictionaryEntryResult, DictionaryEntryResultUnCompiled},
+            mdx_parsing_result::MdxParsingResult,
+        },
     },
     parsers::{document::ConundrumDocument, markdown::heading_sluggger::Slugger},
 };
@@ -83,6 +86,16 @@ impl ParseConundrumOptions {
 
     pub fn for_chunking() -> Self {
         ParseConundrumOptions::default()
+    }
+
+    pub fn for_syncing_ecosystem_database(content: &str, note_id: Option<DatabaseId>) -> Self {
+        ParseConundrumOptions { note_id: note_id.map(|x| x.to_string()),
+                                content: content.to_string(),
+                                modifiers: vec![],
+                                trusted: true,
+                                hide_components: vec![],
+                                ui_params: UIParams::default(),
+                                target: ConundrumCompileTarget::Html }
     }
 
     pub fn duplicate_with_new_content(&self, content: String) -> ParseConundrumOptions {

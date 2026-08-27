@@ -1,17 +1,22 @@
+use std::path::Path;
 use std::sync::Arc;
 
 use conundrum::{
-    ecosystem::db::{
-        db_traits::{
-            db_entity::{DBEntity, DBSchema},
-            db_field::DatabaseField,
+    ecosystem::{
+        db::{
+            db_traits::{
+                db_entity::{DBEntity, DBSchema},
+                db_field::DatabaseField,
+            },
+            tables::DatabaseTable,
         },
-        tables::DatabaseTable,
+        error_handling::db_error::{DatabaseError, DatabaseResult},
     },
     impl_default_crud,
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 use fake::Dummy;
+use globset::{Glob, GlobMatcher};
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::taggables::{
@@ -77,5 +82,21 @@ impl<'a> DBEntity<'a, DatabaseId> for AutoTaggable {
 
     fn set_primary_value(&mut self, value: DatabaseId) {
         self.id = value.clone()
+    }
+}
+
+impl AutoTaggable {
+    fn get_matcher(&self) -> DatabaseResult<GlobMatcher> {
+        let g = Glob::new(self.glob.as_str()).map_err(|e| {
+                    log::error!("Invalid Glob found in an auto-taggable setting. This auto-taggable can't be applied.");
+                    DatabaseError::InvalidGlob(self.glob.clone())
+                })?
+                .compile_matcher();
+        Ok(g)
+    }
+
+    pub fn matches_path<P>(&self, path: P) -> DatabaseResult<bool>
+        where P: AsRef<Path> {
+        self.get_matcher().map(|g| g.is_match(path))
     }
 }

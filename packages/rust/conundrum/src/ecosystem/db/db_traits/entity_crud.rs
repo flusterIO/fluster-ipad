@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{ops::Index, sync::Arc};
 
 use crate::ecosystem::{
     db::{
@@ -104,5 +104,21 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
               })?;
         log::info!("Successfully merged `{}` models.", tbl.to_model_name());
         Ok(())
+    }
+
+    async fn get_one_by_predicate(predicate: Option<String>,
+                                  sort: Option<Vec<SortQuery>>,
+                                  db: &ArcMutexDB)
+                                  -> DatabaseResult<Option<Self>> {
+        let res =
+            Self::get_by_predicate(predicate.clone(), Some(PaginationParams::single()), sort, &Arc::clone(&db)).await?;
+        match res.len() {
+            0 => Ok(None),
+            1 => {
+                let item = res.index(0);
+                Ok(Some(item.clone()))
+            }
+            _ => Err(DatabaseError::DuplicateEntities),
+        }
     }
 }

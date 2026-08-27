@@ -2,7 +2,7 @@ use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, strum_macros::Display, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, strum_macros::Display, Dummy, Eq, PartialEq)]
 pub enum TaggableVariant {
     #[serde(rename = "tag")]
     #[strum(to_string = "tag")]
