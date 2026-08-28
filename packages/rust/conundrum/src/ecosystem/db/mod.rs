@@ -1,5 +1,6 @@
 #[cfg(feature = "db")]
 pub mod db;
+pub mod db_default_constants;
 #[cfg(feature = "db")]
 pub mod db_table_description;
 pub mod db_traits;

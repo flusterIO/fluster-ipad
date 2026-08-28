@@ -104,7 +104,7 @@ $$ {#eq_delta}
 \delta = \frac{d}{dR} g = 2 G \frac{M}{R^3}
 $$
 
-If we take the average of this integral, we find a scalar product that can be used in the same manner as $\gamma$:
+If we take the average of this integral, we find a scalar that can be used in the same manner as $\gamma$:
 
 $$ {#onePlusgR}
 \frac{1}{R} \int_0^{R_0} 2 G \frac{M}{R^3} = 1 + \frac{g}{R}

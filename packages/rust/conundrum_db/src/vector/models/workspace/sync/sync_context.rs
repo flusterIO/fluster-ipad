@@ -25,8 +25,8 @@ pub struct SyncContext {
 }
 
 impl SyncContext {
-    pub async fn new(database: &ArcMutexDB) -> DatabaseResult<Self> {
-        let auto_taggables = AutoTaggable::get_by_predicate(None, None, None, &Arc::clone(&database)).await?;
+    pub async fn new(database: ArcMutexDB) -> DatabaseResult<Self> {
+        let auto_taggables = AutoTaggable::get_by_predicate(None, None, None, Arc::clone(&database)).await?;
         Ok(Self { count: SyncCount::default(),
                   tags: Vec::new(),
                   topics: Vec::new(),
@@ -66,25 +66,25 @@ impl SyncContext {
         Ok(auto_taggables)
     }
 
-    async fn sync_topics(&self, db: &ArcMutexDB, clean: bool) -> DatabaseResult<()> {
-        let existing_tags = Topic::get_by_predicate(None, None, None, &Arc::clone(db)).await?;
+    async fn sync_topics(&self, db: ArcMutexDB, clean: bool) -> DatabaseResult<()> {
+        let existing_tags = Topic::get_by_predicate(None, None, None, Arc::clone(&db)).await?;
         todo!()
     }
 
-    async fn sync_subjects(&self, db: &ArcMutexDB, clean: bool) -> DatabaseResult<()> {
-        let existing_tags = Subject::get_by_predicate(None, None, None, &Arc::clone(db)).await?;
+    async fn sync_subjects(&self, db: ArcMutexDB, clean: bool) -> DatabaseResult<()> {
+        let existing_tags = Subject::get_by_predicate(None, None, None, Arc::clone(&db)).await?;
         todo!()
     }
 
-    async fn sync_tags(&self, db: &ArcMutexDB, clean: bool) -> DatabaseResult<()> {
-        let existing_tags = Tag::get_by_predicate(None, None, None, &Arc::clone(db)).await?;
+    async fn sync_tags(&self, db: ArcMutexDB, clean: bool) -> DatabaseResult<()> {
+        let existing_tags = Tag::get_by_predicate(None, None, None, Arc::clone(&db)).await?;
         todo!()
     }
 
-    pub async fn sync_taggables(&self, db: &ArcMutexDB, clean_taggables: bool) -> DatabaseResult<()> {
-        self.sync_tags(&Arc::clone(&db), clean_taggables).await?;
-        self.sync_topics(&Arc::clone(&db), clean_taggables).await?;
-        self.sync_subjects(&Arc::clone(&db), clean_taggables).await?;
+    pub async fn sync_taggables(&self, db: ArcMutexDB, clean_taggables: bool) -> DatabaseResult<()> {
+        self.sync_tags(Arc::clone(&db), clean_taggables).await?;
+        self.sync_topics(Arc::clone(&db), clean_taggables).await?;
+        self.sync_subjects(Arc::clone(&db), clean_taggables).await?;
         Ok(())
     }
 }

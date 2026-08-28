@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use conundrum::{
     ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk, conundrum_agent::ConundrumAgent},
     ecosystem::{
@@ -68,22 +70,24 @@ impl<'a> SeedChunks<'a, TextBasedChunk, TextBasedChunk, ParseConundrumOptions, S
     }
 
     async fn try_seed(&self,
-                      db: &ArcMutexDB,
+                      db: ArcMutexDB,
                       opts: ParseConundrumOptions,
                       agent: &std::sync::Arc<ServerState>)
                       -> DatabaseResult<()> {
         let (local_chunks, remote_chunks) = self.try_chunk(opts, agent).await.map_err(DatabaseError::AIError)?;
         if let Ok(lc) = local_chunks {
-            TextBasedChunk::save_many(lc, db).await.inspect_err(|e| {
-                                                        log::error!("Failed to save seed content: {:#?}", e);
-                                                    })?;
+            TextBasedChunk::save_many(lc, Arc::clone(&db)).await
+                                                          .inspect_err(|e| {
+                                                              log::error!("Failed to save seed content: {:#?}", e);
+                                                          })?;
         } else {
             log::warn!("Failed to save local documentation chunks");
         }
         if let Ok(rc) = remote_chunks {
-            TextBasedChunk::save_many(rc, db).await.inspect_err(|e| {
-                                                        log::error!("Failed to save seed content: {:#?}", e);
-                                                    })?;
+            TextBasedChunk::save_many(rc, Arc::clone(&db)).await
+                                                          .inspect_err(|e| {
+                                                              log::error!("Failed to save seed content: {:#?}", e);
+                                                          })?;
         } else {
             log::warn!("Failed to save remotely generated documentation chunks. You won't be able to query Conundrum documentation via AI until this is resolved.");
         }

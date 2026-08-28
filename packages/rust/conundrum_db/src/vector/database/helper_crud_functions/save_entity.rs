@@ -11,9 +11,9 @@ pub async fn save_entities<'a, T, IDType>(items: Vec<T>, db: ArcMutexDB) -> Data
     let schema = T::schema().map(Arc::new)?;
     let _db = db.clone().lock_owned().await;
     let table = T::table();
-    let tbl = open_table(_db, &table).await.inspect_err(|e| {
-                                                log::error!("Table Error: {:?}", e);
-                                            })?;
+    let tbl = open_table(_db, table.clone()).await.inspect_err(|e| {
+                                                       log::error!("Table Error: {:?}", e);
+                                                   })?;
     let batches = T::get_record_batch(items.clone()).inspect_err(|e| {
                                                         log::error!("get_record_batch Error: {:?}", e);
                                                     })?;

@@ -14,8 +14,8 @@ use crate::vector::{
     },
 };
 
-pub async fn seed_db(db: &ArcMutexDB, client: &std::sync::Arc<ServerState>) -> DatabaseResult<()> {
+pub async fn seed_db(db: ArcMutexDB, client: &std::sync::Arc<ServerState>) -> DatabaseResult<()> {
     SeedDocumentation::default().try_seed(db, ParseConundrumOptions::default(), client).await?;
-    SettingsSeeder {}.try_seed(&Arc::clone(db)).await?;
+    SettingsSeeder {}.try_seed(Arc::clone(&db)).await?;
     Ok(())
 }

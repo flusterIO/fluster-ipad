@@ -13,7 +13,7 @@ macro_rules! test_crud_functionality {
             test_data.push(fake_item);
         }
         <$entity>::save_many(test_data.clone(), &test_db).await.expect(format!("Saves {} values without throwing an error.", $label).as_str());
-        let mut saved_items = <$entity>::get_by_predicate(None, None, None, &test_db).await.inspect_err(|e| {
+        let mut saved_items = <$entity>::get_by_predicate(None, None, None, test_db).await.inspect_err(|e| {
             log::error!("Error: {:#?}", e);
         }).expect(format!("Saves {} values without throwing an error", $label).as_str());
         let mut mutated_items: Vec<$entity> = Vec::new();

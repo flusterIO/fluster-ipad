@@ -36,22 +36,22 @@ impl ChatConversation {
     }
 
     /// Required over the merge method to preserve the conversation ctime.
-    pub async fn make_require_update(&self, db: &ArcMutexDB) -> DatabaseResult<()> {
+    pub async fn make_require_update(&self, db: ArcMutexDB) -> DatabaseResult<()> {
         let predicate = self.id.to_predicate("id");
         let mut _self = ChatConversation::get_by_predicate(Some(predicate),
                                                            Some(PaginationParams::single()),
                                                            None,
-                                                           &Arc::clone(db)).await?;
+                                                           Arc::clone(&db)).await?;
         match _self.clone().len() {
             0 => {
                 log::info!("Chat Conversation not found. Creating a new one.");
-                ChatConversation::save_many(vec![self.clone()], &Arc::clone(db)).await?;
+                ChatConversation::save_many(vec![self.clone()], Arc::clone(&db)).await?;
             }
             1 => {
                 let item = _self.index_mut(0);
                 item.requires_label_update = true;
                 item.utime = DateTime::new_now();
-                ChatConversation::merge_by_primary_key(vec![item.clone()], &Arc::clone(db)).await?;
+                ChatConversation::merge_by_primary_key(vec![item.clone()], Arc::clone(&db)).await?;
                 log::info!("Updated one chat conversation.")
             }
             _ => {

@@ -51,7 +51,8 @@ pub async fn update_database_from_parsed_cdrm(content: MdxParsingResult,
                                                 relative_path.clone())),
     };
 
-    CdrmModel::merge_by_primary_key(vec![model.clone()], &Arc::clone(&db)).await?;
+    let cloned_db = Arc::clone(&db);
+    CdrmModel::merge_by_primary_key(vec![model.clone()], cloned_db).await?;
     let existing_frontmatter = model.get_related_frontmatter(Arc::clone(&db)).await?;
     if let Some(new_frontmatter) = match existing_frontmatter {
         Some(mut fm) => {
@@ -67,12 +68,15 @@ pub async fn update_database_from_parsed_cdrm(content: MdxParsingResult,
                                                                     source_type: FrontMatterSourceType::Cdrm,
                                                                     data: fm.clone() }),
     } {
-        FrontMatter::merge_by_primary_key(vec![new_frontmatter], &Arc::clone(&db)).await?;
+        FrontMatter::merge_by_primary_key(vec![new_frontmatter], Arc::clone(&db)).await?;
     }
+
     let mut ctx = context.clone().lock_owned().await;
+
     for tag in content.tags {
         ctx.append_tag(GenericTagInput::from_tag_result(tag, model.0.id.clone(), TagLocation::Body));
     }
+
     let matching_taggables = ctx.matching_autotaggables(relative_path.clone())?;
     for auto_tag in &matching_taggables {
         if auto_tag.variant == TaggableVariant::Tag {
@@ -105,5 +109,5 @@ pub async fn update_database_from_parsed_cdrm(content: MdxParsingResult,
                                            source_type: TagSource::Cdrm,
                                            location: topic_location });
     }
-    todo!()
+    Ok(())
 }

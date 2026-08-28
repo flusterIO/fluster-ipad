@@ -70,7 +70,7 @@ impl_default_crud!(CdrmModel, CdrmModel, DatabaseId);
 impl CdrmModel {
     pub async fn get_related_frontmatter(&self, db: ArcMutexDB) -> DatabaseResult<Option<FrontMatter>> {
         let predicate = self.0.id.to_predicate("note_id");
-        let item = FrontMatter::get_one_by_predicate(Some(predicate), None, &Arc::clone(&db)).await?;
+        let item = FrontMatter::get_one_by_predicate(Some(predicate), None, Arc::clone(&db)).await?;
         Ok(item)
     }
 }

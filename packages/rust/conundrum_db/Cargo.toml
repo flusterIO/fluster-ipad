@@ -79,6 +79,7 @@ typeshare.workspace = true
 dashmap = { version = "6.1.0", features = ["rayon", "serde"] }
 globset = "0.4.20"
 pathdiff = "0.2.3"
+leptess = "0.14.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.0", features = ["full"] }

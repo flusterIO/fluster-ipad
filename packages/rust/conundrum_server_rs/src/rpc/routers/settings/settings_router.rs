@@ -21,7 +21,7 @@ pub fn get_settings_router() -> Router<Arc<ServerState>> {
 .procedure("read",
                                             Procedure::<Arc<ServerState>, UniqueSettingKey, Option<Setting>>::builder::<ServerError>().query(|state: Arc<ServerState>, req: UniqueSettingKey| async move {
                                                 let predicate = req.to_predicate("key");
-                                                let models = EcosystemSettingModel::get_by_predicate(Some(predicate), Some(PaginationParams::single()), None, &Arc::clone(&state.db)).await
+                                                let models = EcosystemSettingModel::get_by_predicate(Some(predicate), Some(PaginationParams::single()), None, Arc::clone(&state.db)).await
                                                     .map_err(ServerError::DatabaseError)?;
                                                 match models.len() {
                                                     0 => {

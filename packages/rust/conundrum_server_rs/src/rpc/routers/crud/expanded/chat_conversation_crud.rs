@@ -20,7 +20,7 @@ use conundrum_db::vector::models::ecosystem_data::server_state::server_state::Se
 
 pub fn get_chat_conversation_crud() -> rspc::Router<Arc<ServerState>> {
     rspc::Router::<std::sync::Arc<conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState>>::new().procedure("get_by_predicate",Procedure::<std::sync::Arc<conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState>,conundrum_db::vector::parameters::general::general_query::GeneralQuery,Vec<ChatConversation>>::builder::<conundrum::ecosystem::error_handling::server_error::ServerError>().query(|state: std::sync::Arc<ServerState>,params: conundrum_db::vector::parameters::general::general_query::GeneralQuery|async move {
-            let r =  <ChatConversation>::get_by_predicate(params.predicate,Some(params.pagination),params.sort, &state.db).await.map_err(|e|{
+            let r =  <ChatConversation>::get_by_predicate(params.predicate,Some(params.pagination),params.sort, state.db).await.map_err(|e|{
                 log::error!("Error: {:?}",e);
                 ServerError::DatabaseError(e)
             })?;

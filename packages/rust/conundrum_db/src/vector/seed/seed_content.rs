@@ -15,7 +15,7 @@ use conundrum::{
 };
 
 pub trait SeedContent {
-    async fn try_seed(&self, db: &ArcMutexDB) -> DatabaseResult<()>;
+    async fn try_seed(&self, db: ArcMutexDB) -> DatabaseResult<()>;
 }
 
 pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerStateType>:
@@ -24,7 +24,7 @@ pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerSt
           PartialUpdateType: Clone + DBSchema<'a> {
     fn table() -> DatabaseTable;
     async fn try_seed(&self,
-                      db: &ArcMutexDB,
+                      db: ArcMutexDB,
                       opts: ParseParameters,
                       agent: &Arc<ServerStateType>)
                       -> DatabaseResult<()> {
@@ -35,9 +35,9 @@ pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerSt
         if let Ok(lc) = local_chunks {
             // TODO: Move this to a new type and just wrap the TextBasedChunk in a macro
             // that generates the necessary new type.
-            ChunkType::save_many(lc, db).await.inspect_err(|e| {
-                                                   log::error!("Failed to save seed content: {:#?}", e);
-                                               })?;
+            ChunkType::save_many(lc, Arc::clone(&db)).await.inspect_err(|e| {
+                                                                log::error!("Failed to save seed content: {:#?}", e);
+                                                            })?;
         } else {
             log::warn!("Could not seed locally generated vectors. You won't be able to access some AI features offline.");
         }

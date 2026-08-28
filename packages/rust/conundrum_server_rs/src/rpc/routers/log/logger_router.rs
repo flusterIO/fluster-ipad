@@ -27,7 +27,7 @@ pub fn get_logger_router() -> Router<Arc<ServerState>> {
         .procedure("get_many",
                                             Procedure::<Arc<ServerState>, GeneralQuery, Vec<EcosystemLog>>::builder::<ServerError>().query(|ctx: Arc<ServerState>, req: GeneralQuery| async move {
                                                 let db = ctx.db.clone();
-                                                let items = EcosystemLog::get_by_predicate(req.predicate, Some(req.pagination), req.sort, &db).await.map_err(ServerError::DatabaseError)?;
+                                                let items = EcosystemLog::get_by_predicate(req.predicate, Some(req.pagination), req.sort, db).await.map_err(ServerError::DatabaseError)?;
                                                 Ok(items)
                                                                                }))
 }

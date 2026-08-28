@@ -7,6 +7,7 @@ use conundrum::{
 };
 
 /// ## TO-DO
+///
 /// - [ ] Embed message chunks in vector space.
 /// - [ ] Retrieve message chunks from semantic search instead of based on
 ///   recency.

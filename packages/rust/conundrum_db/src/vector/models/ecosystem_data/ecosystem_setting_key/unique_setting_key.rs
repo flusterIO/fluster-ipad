@@ -35,6 +35,7 @@ pub enum UniqueSettingKey {
     SaveLogDuration,
     LogVectorGenMethod,
     AutoCleanVectors,
+    MaxSyncThreads,
 }
 
 impl DatabaseIdentifiable for UniqueSettingKey {
@@ -46,8 +47,8 @@ impl DatabaseIdentifiable for UniqueSettingKey {
 }
 
 impl UniqueSettingKey {
-    pub async fn read_setting(&self, database: &ArcMutexDB) -> DatabaseResult<EcosystemSettingModel> {
-        let setting = EcosystemSettingModel::get_by_setting_key(self.clone(), &Arc::clone(&database)).await?;
+    pub async fn read_setting(&self, database: ArcMutexDB) -> DatabaseResult<EcosystemSettingModel> {
+        let setting = EcosystemSettingModel::get_by_setting_key(self.clone(), Arc::clone(&database)).await?;
         Ok(match setting {
             Some(s) => s,
             None => {

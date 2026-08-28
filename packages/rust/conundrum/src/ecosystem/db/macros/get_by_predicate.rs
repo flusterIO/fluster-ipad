@@ -6,7 +6,7 @@ macro_rules! get_by_predicate {
         use lancedb::query::QueryBase;
         let _db = $db.clone().lock_owned().await;
         let self_table = Self::table();
-        let tbl = $crate::ecosystem::db::helpers::open_table::open_table(_db, &self_table).await?;
+        let tbl = $crate::ecosystem::db::helpers::open_table::open_table(_db, self_table.clone()).await?;
         let mut query_builder = tbl.query();
         if let Some(_predicate) = $predicate.clone() {
             query_builder = query_builder.only_if(_predicate);

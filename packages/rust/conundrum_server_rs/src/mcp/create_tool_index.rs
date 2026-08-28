@@ -19,7 +19,7 @@ use rig_lancedb::{LanceDbVectorIndex, SearchParams};
 use serde_arrow::to_record_batch;
 use std::sync::Arc;
 
-pub async fn create_tool_index(db: &ArcMutexDB) -> ServerResult<()> {
+pub async fn create_tool_index(db: ArcMutexDB) -> ServerResult<()> {
     let tool_list = ToolDefinitionList::new_all_tools();
     let client = RigClientRemote::initialize().map_err(|e| {
                                                   let e: DatabaseError = e.into();

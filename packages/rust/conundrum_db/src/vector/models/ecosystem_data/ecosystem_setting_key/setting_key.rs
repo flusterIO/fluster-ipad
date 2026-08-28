@@ -3,6 +3,7 @@ use std::{fmt::Display, ops::Index, str::FromStr, sync::Arc};
 use conundrum::ecosystem::{
     db::{
         db::ArcMutexDB,
+        db_default_constants::DEFAULT_MAX_SYNC_THREADS,
         db_traits::{db_identifiable::DatabaseIdentifiable, entity_crud::EntityCRUD},
         parameters::general::pagination::PaginationParams,
     },
@@ -43,7 +44,8 @@ impl From<UniqueSettingKey> for Setting {
             UniqueSettingKey::SaveLogDuration => Self::Storage(StorageSettingKey::SaveLogDuration(30.0)),
             UniqueSettingKey::LocalAiPreference => Self::AI(AISettingKey::LocalAiPreference(0.5)),
             UniqueSettingKey::LogVectorGenMethod => Self::AI(AISettingKey::LogVectorGenMethod(crate::vector::models::ecosystem_data::ecosytem_setting_types::vector_generation_method::OptionalVectorGenerationMethod::LocalAndRemote)),
-            UniqueSettingKey::AutoCleanVectors => Self::AI(AISettingKey::AutoCleanVectors(true))
+            UniqueSettingKey::AutoCleanVectors => Self::AI(AISettingKey::AutoCleanVectors(true)),
+            UniqueSettingKey::MaxSyncThreads => Self::Sync(SyncSettingKey::MaxSyncThreads(DEFAULT_MAX_SYNC_THREADS))
         }
     }
 }
@@ -94,17 +96,17 @@ impl Setting {
                                 data: self.clone() }
     }
 
-    pub async fn save(&self, db: &ArcMutexDB) -> DatabaseResult<()> {
+    pub async fn save(&self, db: ArcMutexDB) -> DatabaseResult<()> {
         let model = self.to_model();
-        EcosystemSettingModel::save_many(vec![model], &Arc::clone(db)).await?;
+        EcosystemSettingModel::save_many(vec![model], Arc::clone(&db)).await?;
         Ok(())
     }
 
-    pub async fn read(&self, db: &ArcMutexDB) -> DatabaseResult<Self> {
+    pub async fn read(&self, db: ArcMutexDB) -> DatabaseResult<Self> {
         let x = EcosystemSettingModel::get_by_predicate(Some(self.to_predicate("key")),
                                                         Some(PaginationParams::single()),
                                                         None,
-                                                        db).await?;
+                                                        Arc::clone(&db)).await?;
         let item = match x.len() {
                        0 => {
                            log::warn!("Setting not found for the `{}` key.", self);

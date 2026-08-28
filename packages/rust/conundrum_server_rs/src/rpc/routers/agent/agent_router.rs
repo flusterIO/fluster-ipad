@@ -38,11 +38,11 @@ pub fn get_agent_router() -> Router<Arc<ServerState>> {
                                                     per_page: req.max_count
                                                 });
                                                 let sort = Some(vec![SortQuery::order_by_ctime()]);
-                                                let user_messages = UserMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), &Arc::clone(&state.db)).await?;
-                                                let system_prompts = SystemPromptMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), &Arc::clone(&state.db)).await?;
-                                                let agent_reasoning = ReasoningBlock::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), &Arc::clone(&state.db)).await?;
-                                                let agent_messages = AIMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), &Arc::clone(&state.db)).await?;
-                                                let tool_executions = ToolExecution::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), &Arc::clone(&state.db)).await?;
+                                                let user_messages = UserMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
+                                                let system_prompts = SystemPromptMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
+                                                let agent_reasoning = ReasoningBlock::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
+                                                let agent_messages = AIMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
+                                                let tool_executions = ToolExecution::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
                                                 Ok((user_messages, system_prompts, agent_messages, agent_reasoning, tool_executions))
                                                                                }))
 }

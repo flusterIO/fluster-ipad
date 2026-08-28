@@ -19,16 +19,28 @@ use arrow_array::RecordBatchIterator;
 use serde::Serialize;
 use serde_arrow::to_record_batch;
 
+pub fn filter_one<T>(items: Vec<T>) -> DatabaseResult<Option<T>>
+    where T: Clone {
+    match items.len() {
+        0 => Ok(None),
+        1 => {
+            let item = items.index(0);
+            Ok(Some(item.clone()))
+        }
+        _ => Err(DatabaseError::DuplicateEntities),
+    }
+}
+
 pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
     DBEntity<'a, IDType> + Clone + Serialize {
-    async fn save_many(items: Vec<Self>, db: &ArcMutexDB) -> DatabaseResult<()>
+    async fn save_many(items: Vec<Self>, db: ArcMutexDB) -> DatabaseResult<()>
         where Self: Sized {
         let schema = Self::schema().map(Arc::new)?;
         let _db = db.clone().lock_owned().await;
         let table = Self::table();
-        let tbl = open_table(_db, &table).await.inspect_err(|e| {
-                                                    log::error!("Table Error: {:?}", e);
-                                                })?;
+        let tbl = open_table(_db, table.clone()).await.inspect_err(|e| {
+                                                           log::error!("Table Error: {:?}", e);
+                                                       })?;
         let batches = Self::get_record_batch(items.clone()).inspect_err(|e| {
                                                                log::error!("get_record_batch Error: {:?}", e);
                                                            })?;
@@ -47,25 +59,25 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
         log::info!("Successfully saved {} `{}` models", items.len(), table.to_model_name());
         Ok(())
     }
-    async fn save_one(item: Self, db: &ArcMutexDB) -> DatabaseResult<()>
+    async fn save_one(item: Self, db: ArcMutexDB) -> DatabaseResult<()>
         where Self: Sized {
-        Self::save_many(vec![item], db).await
+        Self::save_many(vec![item], Arc::clone(&db)).await
     }
 
     async fn get_by_predicate(predicate: Option<String>,
                               pagination: Option<PaginationParams>,
                               sort: Option<Vec<SortQuery>>,
-                              db: &ArcMutexDB)
+                              db: ArcMutexDB)
                               -> DatabaseResult<Vec<Self>>
         where Self: Sized {
         // crate::get_by_predicate
         todo!()
     }
 
-    async fn delete_by_predicate<'b>(predicate: &'b str, db: &ArcMutexDB) -> DatabaseResult<()> {
+    async fn delete_by_predicate<'b>(predicate: &'b str, db: ArcMutexDB) -> DatabaseResult<()> {
         let tbl = Self::table();
         let _db = db.clone().lock_owned().await;
-        let db_tbl = open_table(_db, &tbl).await?;
+        let db_tbl = open_table(_db, tbl.clone()).await?;
         // let pk = Self::primary_key();
         db_tbl.delete(predicate).await.map_err(|e| {
                                            log::error!("Error: {:?}", e);
@@ -75,14 +87,14 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
         Ok(())
     }
 
-    async fn delete_by_primary_key(id: IDType, db: &ArcMutexDB) -> DatabaseResult<()> {
+    async fn delete_by_primary_key(id: IDType, db: ArcMutexDB) -> DatabaseResult<()> {
         Self::delete_by_predicate(id.to_predicate(Self::primary_key()).as_str(), db).await
     }
 
-    async fn merge_by_primary_key(items: Vec<UpdatePartial>, db: &ArcMutexDB) -> DatabaseResult<()> {
+    async fn merge_by_primary_key(items: Vec<UpdatePartial>, db: ArcMutexDB) -> DatabaseResult<()> {
         let tbl = Self::table();
         let _db = db.clone().lock_owned().await;
-        let db_tbl = open_table(_db, &tbl).await?;
+        let db_tbl = open_table(_db, tbl.clone()).await?;
         let merge_keys = Self::merge_keys();
 
         let partial_fields = UpdatePartial::arrow_fields()?;
@@ -108,10 +120,10 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
 
     async fn get_one_by_predicate(predicate: Option<String>,
                                   sort: Option<Vec<SortQuery>>,
-                                  db: &ArcMutexDB)
+                                  db: ArcMutexDB)
                                   -> DatabaseResult<Option<Self>> {
         let res =
-            Self::get_by_predicate(predicate.clone(), Some(PaginationParams::single()), sort, &Arc::clone(&db)).await?;
+            Self::get_by_predicate(predicate.clone(), Some(PaginationParams::single()), sort, Arc::clone(&db)).await?;
         match res.len() {
             0 => Ok(None),
             1 => {

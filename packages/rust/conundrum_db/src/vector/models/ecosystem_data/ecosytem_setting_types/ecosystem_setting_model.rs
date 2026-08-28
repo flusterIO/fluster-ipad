@@ -38,14 +38,14 @@ impl From<UniqueSettingKey> for EcosystemSettingModel {
 }
 
 impl EcosystemSettingModel {
-    pub async fn get_by_setting_key(key: UniqueSettingKey, db: &ArcMutexDB) -> DatabaseResult<Option<Self>> {
+    pub async fn get_by_setting_key(key: UniqueSettingKey, db: ArcMutexDB) -> DatabaseResult<Option<Self>> {
         EcosystemSettingModel::get_one_by_predicate(Some(format!("key = {}", key.to_string().to_quoted_string()?)),
                                                     None,
-                                                    &Arc::clone(&db)).await
+                                                    Arc::clone(&db)).await
     }
 
-    pub async fn save(&self, db: &ArcMutexDB) -> DatabaseResult<()> {
-        EcosystemSettingModel::merge_by_primary_key(vec![self.clone()], &Arc::clone(&db)).await
+    pub async fn save(&self, db: ArcMutexDB) -> DatabaseResult<()> {
+        EcosystemSettingModel::merge_by_primary_key(vec![self.clone()], Arc::clone(&db)).await
     }
 }
 

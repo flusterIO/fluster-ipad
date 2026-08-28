@@ -14,7 +14,7 @@ pub struct ServerHealthReport {
 }
 
 impl ServerHealthReport {
-    pub async fn new(_db: &ArcMutexDB) -> DatabaseResult<Self> {
+    pub async fn new(_db: ArcMutexDB) -> DatabaseResult<Self> {
         let db = _db.clone().lock_owned().await;
         let table_names = db.table_names().execute().await.map_err(|e| {
                                                                log::error!("Error: {:?}", e);
