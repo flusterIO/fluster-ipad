@@ -27,9 +27,7 @@ pub fn get_initialization_router() -> Router<Arc<ServerState>> {
                                                                                }))
         .procedure("step_2_init_tool_index",
                                             Procedure::<Arc<ServerState>, EmptyStructBecauseSpectaFuckingSucks, BackendStatus>::builder::<ServerError>().mutation(|state: Arc<ServerState>, _: EmptyStructBecauseSpectaFuckingSucks| async move {
-                                                let cloned_state = Arc::clone(&state);
-                                                let db = &cloned_state.db;
-                                                create_tool_index(db).await?;
+                                                create_tool_index(Arc::clone(&state.db)).await?;
                                                 let health = BackendStatus::from_async(Arc::clone(&state)).await;
                                                                                    Ok(health)
                                                                                }))

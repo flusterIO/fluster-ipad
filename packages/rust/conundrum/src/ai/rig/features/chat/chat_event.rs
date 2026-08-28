@@ -83,7 +83,7 @@ impl ChatEvent {
     pub async fn side_effect(&self, context: ArcMutexConversationContext, database: ArcMutexDB) -> DatabaseResult<()> {
         match self {
             Self::ToolCall(c) => {
-                ToolExecution::save_many(vec![c.clone()], &Arc::clone(&database)).await?;
+                ToolExecution::save_many(vec![c.clone()], Arc::clone(&database)).await?;
                 Ok(())
             }
             Self::ReasoningBlock { text, } => {
@@ -93,7 +93,7 @@ impl ChatEvent {
                                                        agent_id: ctx.agent.clone(),
                                                        content: text.clone(),
                                                        ctime: DateTime::new_now() };
-                ReasoningBlock::save_many(vec![reasoning_block], &Arc::clone(&database)).await?;
+                ReasoningBlock::save_many(vec![reasoning_block], Arc::clone(&database)).await?;
                 ctx.clear_current_reasoning_accumulator();
                 drop(ctx);
                 Ok(())
@@ -126,7 +126,7 @@ impl ChatEvent {
                                                            agent_id: ctx.agent.clone(),
                                                            content: reasoning_content.clone(),
                                                            ctime: DateTime::new_now() };
-                    ReasoningBlock::save_many(vec![reasoning_block], &Arc::clone(&database)).await?;
+                    ReasoningBlock::save_many(vec![reasoning_block], Arc::clone(&database)).await?;
                 } else {
                     log::warn!("Attempted to save a reasoning block but could not find any content. If you have reasoning turned off ignore this warning, otherwise this may indicate an issue.");
                 }
@@ -136,7 +136,7 @@ impl ChatEvent {
                                                     convo_id: ctx.convo.clone(),
                                                     agent_id: ctx.agent.clone(),
                                                     ctime: DateTime::new_now() };
-                    AIMessage::save_many(vec![agent_message], &Arc::clone(&database)).await?;
+                    AIMessage::save_many(vec![agent_message], Arc::clone(&database)).await?;
                 } else {
                     log::warn!("Attempted to save an agent message but could not find any content.");
                 }

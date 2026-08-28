@@ -21,13 +21,13 @@ pub fn get_agent_router() -> Router<Arc<ServerState>> {
     Router::<Arc<ServerState>>::new().procedure("save_chat_data",
                                             Procedure::<Arc<ServerState>, ClientChatData, ()>::builder::<ServerError>().mutation(|state: Arc<ServerState>, req: ClientChatData| async move {
                                                 let (user_message, reasoning_blocks, system_prompt, tool_executions) = req.expand();
-                                                UserMessage::save_many(vec![user_message], &Arc::clone(&state.db)).await?;
+                                                UserMessage::save_many(vec![user_message], Arc::clone(&state.db)).await?;
                                                 ReasoningBlock::save_many(reasoning_blocks
-                                                    , &Arc::clone(&state.db)).await?;
+                                                    , Arc::clone(&state.db)).await?;
                                                 if let Some(sp) = system_prompt {
-                                                    SystemPromptMessage::save_many(vec![sp], &Arc::clone(&state.db)).await?;
+                                                    SystemPromptMessage::save_many(vec![sp], Arc::clone(&state.db)).await?;
                                                 }
-                                                ToolExecution::save_many(tool_executions, &Arc::clone(&state.db)).await?;
+                                                ToolExecution::save_many(tool_executions, Arc::clone(&state.db)).await?;
                                                 Ok(())
                                                                                }))
 .procedure("load_chat_history",

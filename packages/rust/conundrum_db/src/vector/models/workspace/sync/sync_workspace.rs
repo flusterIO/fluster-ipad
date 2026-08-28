@@ -25,7 +25,7 @@ pub async fn sync_workspace(db: ArcMutexDB, walk_config: FileWalkConfig) -> Data
                                                                              .unwrap_or(DEFAULT_MAX_SYNC_THREADS),
                                     _ => max_threads as usize,
                                 }));
-    let context = SyncContext::new(&Arc::clone(&db)).await?;
+    let context = SyncContext::new(Arc::clone(&db)).await?;
     let ctx = Arc::new(tokio::sync::Mutex::new(context));
     let file_paths_arc = conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively(walk_config.clone()).await
             .map_err(|e| {

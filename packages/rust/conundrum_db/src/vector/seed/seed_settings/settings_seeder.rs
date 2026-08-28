@@ -15,12 +15,12 @@ pub struct SettingsSeeder {}
 
 impl SeedContent for SettingsSeeder {
     async fn try_seed(&self,
-                      db: &conundrum::ecosystem::db::db::ArcMutexDB)
+                      db: conundrum::ecosystem::db::db::ArcMutexDB)
                       -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<()> {
         for setting_key in UniqueSettingKey::iter() {
             let default_setting = Setting::from(setting_key);
             let model = default_setting.to_model();
-            EcosystemSettingModel::merge_by_primary_key(vec![model], &Arc::clone(db)).await?;
+            EcosystemSettingModel::merge_by_primary_key(vec![model], Arc::clone(&db)).await?;
         }
         Ok(())
     }

@@ -9,7 +9,7 @@ use conundrum::{
             db_traits::{
                 db_entity::{DBEntity, DBSchema},
                 db_identifiable::DatabaseIdentifiable,
-                entity_crud::EntityCRUD,
+                entity_crud::{EntityCRUD, filter_one},
             },
             parameters::general::pagination::PaginationParams,
             tables::DatabaseTable,
@@ -70,7 +70,11 @@ impl_default_crud!(CdrmModel, CdrmModel, DatabaseId);
 impl CdrmModel {
     pub async fn get_related_frontmatter(&self, db: ArcMutexDB) -> DatabaseResult<Option<FrontMatter>> {
         let predicate = self.0.id.to_predicate("note_id");
-        let item = FrontMatter::get_one_by_predicate(Some(predicate), None, Arc::clone(&db)).await?;
+        let items = FrontMatter::get_by_predicate(Some(predicate),
+                                                  Some(PaginationParams::single()),
+                                                  None,
+                                                  Arc::clone(&db)).await?;
+        let item = filter_one(items)?;
         Ok(item)
     }
 }

@@ -14,8 +14,7 @@ use std::sync::Arc;
 pub fn get_settings_router() -> Router<Arc<ServerState>> {
     Router::<Arc<ServerState>>::new().procedure("save",
                                             Procedure::<Arc<ServerState>, Setting, ()>::builder::<ServerError>().mutation(|state: Arc<ServerState>, req: Setting| async move {
-                                                let db = Arc::clone(&state.db);
-                                                req.save(&db).await?;
+                                                req.save(Arc::clone(&state.db)).await?;
                                                                                    Ok(())
                                                                                }))
 .procedure("read",

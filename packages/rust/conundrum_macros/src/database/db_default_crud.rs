@@ -11,7 +11,7 @@ pub fn gen_default_crud(input: &Model) -> Result<proc_macro2::TokenStream, syn::
             async fn get_by_predicate(predicate: Option<String>,
                                       pagination: Option<conundrum::ecosystem::db::parameters::general::pagination::PaginationParams>,
                                       sort: Option<Vec<conundrum::ecosystem::db::parameters::general::sort_query::SortQuery>>,
-                                      db: &conundrum::ecosystem::db::db::ArcMutexDB)
+                                      db: conundrum::ecosystem::db::db::ArcMutexDB)
                                       -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Self>>
                 where Self: Sized {
                 conundrum::get_by_predicate!(#self_ident, db, predicate, pagination, sort)

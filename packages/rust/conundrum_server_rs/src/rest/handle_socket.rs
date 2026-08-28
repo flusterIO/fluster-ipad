@@ -56,7 +56,7 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
                     ctx.convo = cid.clone();
                     drop(ctx);
                     let conversation = ChatConversation::new(cid.clone(), None);
-                    let _ = conversation.make_require_update(&Arc::clone(&state.db))
+                    let _ = conversation.make_require_update(Arc::clone(&state.db))
                                         .await
                                         .inspect_err(|e| {
                                             log::error!("Conversation Error: {:#?}", e);
@@ -66,7 +66,7 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
                 }
                 let user_message: UserMessage = UserMessage::from(msg);
                 let db = Arc::clone(&state.db);
-                let _ = UserMessage::save_many(vec![user_message.clone()], &Arc::clone(&db)).await.inspect_err(|e| {
+                let _ = UserMessage::save_many(vec![user_message.clone()], Arc::clone(&db)).await.inspect_err(|e| {
                     log::error!("Conundrum failed attempting to save the submitted user message: {:#?}", e);
                 });
                 let mut stream = client_result.stream_chat_response(user_message, vec![]).await;
