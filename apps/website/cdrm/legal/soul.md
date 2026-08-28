@@ -1004,7 +1004,8 @@ Protect the vulnerable.
 Use power carefully.  
 Correct your mistakes.  
 Leave room for others to improve what you built.  
-And when success gives you more than you need, use the excess to help someone who needs it.  
+And when success gives you more than you need,  
+use the excess to help someone who needs it.  
 </Quote>
 
 That is the soul of Conundrum.

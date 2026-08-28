@@ -29,32 +29,33 @@ pub async fn sync_workspace(db: ArcMutexDB, walk_config: FileWalkConfig) -> Data
 
     let mut set = JoinSet::<DatabaseResult<ParsableFileType>>::new();
 
-    for (pf, file_paths) in file_paths_group.clone() {
-        for fp in file_paths {
-            let db = Arc::clone(&db);
-            let ctx = Arc::clone(&ctx);
-            let pf = pf.clone();
-            let root_path = walk_config.root.clone();
-            set.spawn(async move {
-                match pf {
-                    ParsableFileType::Markdown | ParsableFileType::Cdrm | ParsableFileType::Mdx => {
-                        log::debug!("Parsing conundrum file at {}", fp.clone());
-                        let ws_path = WorkspaceRelativePath::<PathBuf>::from_path_and_root(fp.clone(), root_path.clone())
-                               .map_err(|e| {
-                                   DatabaseError::FileSystemError(e)
-                               })?;
-                        sync_conundrum_path(ws_path.clone(), &Arc::clone(&db), Arc::clone(&ctx)).await.inspect_err(|e| {
-                                                                                      log::error!("Error: {:#?}", e);
-                                                                                  });
-                        Ok(ParsableFileType::Cdrm)
-                    }
-                    _ => {
-                        todo!()
-                    }
-                }
-            });
-        }
-    }
+    // for (pf, file_paths) in file_paths_group.clone() {
+    //     for fp in file_paths {
+    //         let db = Arc::clone(&db);
+    //         let ctx = Arc::clone(&ctx);
+    //         let pf = pf.clone();
+    //         let root_path = walk_config.root.clone();
+    //         set.spawn(async move {
+    //                match pf {
+    //                    ParsableFileType::Markdown | ParsableFileType::Cdrm |
+    // ParsableFileType::Mdx => {                        log::debug!("Parsing
+    // conundrum file at {}", fp.clone());                        let ws_path =
+    // WorkspaceRelativePath::<PathBuf>::from_path_and_root(fp, root_path)
+    //                            .map_err(|e| {
+    //                                DatabaseError::FileSystemError(e)
+    //                            })?;
+    //                        sync_conundrum_path(ws_path, &Arc::clone(&db),
+    // Arc::clone(&ctx)).await.inspect_err(|e| {
+    // log::error!("Error: {:#?}", e);
+    // });                        Ok(ParsableFileType::Cdrm)
+    //                    }
+    //                    _ => {
+    //                        todo!()
+    //                    }
+    //                }
+    //            });
+    //     }
+    // }
 
     while let Some(res) = set.join_next().await {
         if let Ok(parsed_file_type) = res {
