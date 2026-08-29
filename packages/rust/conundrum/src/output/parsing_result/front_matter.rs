@@ -3,6 +3,7 @@ use gray_matter::Pod;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
+#[cfg(feature = "db")]
 use crate::ecosystem::db::db_traits::db_field::DatabaseField;
 
 #[derive(uniffi::Enum, strum_macros::Display, Clone, Serialize, Deserialize)]
@@ -44,6 +45,7 @@ pub struct FrontMatterResult {
     pub summary: Option<String>,
 }
 
+#[cfg(feature = "db")]
 impl DatabaseField for FrontMatterResult {
     fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
         Field::new(field_key.to_string(),

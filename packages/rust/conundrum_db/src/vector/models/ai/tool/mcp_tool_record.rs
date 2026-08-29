@@ -1,8 +1,7 @@
 use std::sync::Arc;
 
-use crate::vector::models::vector::vector::DBVector;
 use conundrum::{
-    ai::models::tool::mcp_tool_name::MCPToolName,
+    ai::models::{chat::vector::vector_model::DBVector, tool::mcp_tool_name::MCPToolName},
     ecosystem::db::db_traits::{
         db_entity::{DBEntity, DBSchema},
         db_field::DatabaseField,

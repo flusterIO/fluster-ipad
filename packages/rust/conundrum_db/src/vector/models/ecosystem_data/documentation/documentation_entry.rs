@@ -14,13 +14,10 @@ pub struct DocumentationEntry {
 }
 
 impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for DocumentationEntry {
-    async fn try_chunk(
-        &self,
-        opts: ParseConundrumOptions,
-        state: &Arc<ServerState>)
-        -> Result<(Result<Vec<TextBasedChunk>, conundrum::ecosystem::error_handling::ai_error::AIError>,
-                   Result<Vec<TextBasedChunk>, conundrum::ecosystem::error_handling::ai_error::AIError>),
-                  AIError> {
+    async fn try_chunk(&self,
+                       opts: ParseConundrumOptions,
+                       state: Arc<ServerState>)
+                       -> Result<Vec<TextBasedChunk>, AIError> {
         let x: String = self.key.clone().into();
         let y: CdrmContent = x.into();
         let res = y.try_chunk(opts, state).await?;

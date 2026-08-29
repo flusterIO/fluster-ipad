@@ -7,8 +7,5 @@ use crate::{
 
 pub trait Chunk<ParseParameters, ChunkType, ServerStateType> {
     /// Returns (Local, Remote) chunks un that order.
-    async fn try_chunk(&self,
-                       opts: ParseParameters,
-                       state: &Arc<ServerStateType>)
-                       -> AIResult<(AIResult<Vec<ChunkType>>, AIResult<Vec<ChunkType>>)>;
+    async fn try_chunk(&self, opts: ParseParameters, state: Arc<ServerStateType>) -> AIResult<Vec<ChunkType>>;
 }

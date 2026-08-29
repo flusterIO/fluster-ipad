@@ -38,29 +38,16 @@ impl Default for SeedDocumentation {
 }
 
 impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for SeedDocumentation {
-    async fn try_chunk(&self,
-                       opts: ParseConundrumOptions,
-                       agent: &std::sync::Arc<ServerState>)
-                       -> AIResult<(AIResult<Vec<TextBasedChunk>>, AIResult<Vec<TextBasedChunk>>)> {
-        let mut local_res = Vec::new();
-        let mut remote_res = Vec::new();
+    async fn try_chunk(&self, opts: ParseConundrumOptions, state: std::sync::Arc<ServerState>) -> Result<_, AIError> {
+        let mut chunk_res = Vec::new();
         for k in &self.0 {
-            let (local_chunks, remote_chunks) = k.try_chunk(opts.clone(), agent).await?;
-            if let Ok(lc) = local_chunks {
-                local_res.extend(lc);
-            }
-            if let Ok(rc) = remote_chunks {
-                remote_res.extend(rc);
-            }
+            let chunks = k.try_chunk(opts.clone(), Arc::clone(&state)).await?;
+            chunk_res.extend(chunks);
         }
-        Ok((match local_res.len() {
-                0 => Err(AIError::InvalidLocalProvider),
-                _ => Ok(local_res),
-            },
-            match remote_res.len() {
-                0 => Err(AIError::InvalidRemoteProvider),
-                _ => Ok(remote_res),
-            }))
+        match chunk_res.len() {
+            0 => Err(AIError::InvalidLocalProvider),
+            _ => Ok(chunk_res),
+        }
     }
 }
 
@@ -72,25 +59,12 @@ impl<'a> SeedChunks<'a, TextBasedChunk, TextBasedChunk, ParseConundrumOptions, S
     async fn try_seed(&self,
                       db: ArcMutexDB,
                       opts: ParseConundrumOptions,
-                      agent: &std::sync::Arc<ServerState>)
+                      state: std::sync::Arc<ServerState>)
                       -> DatabaseResult<()> {
-        let (local_chunks, remote_chunks) = self.try_chunk(opts, agent).await.map_err(DatabaseError::AIError)?;
-        if let Ok(lc) = local_chunks {
-            TextBasedChunk::save_many(lc, Arc::clone(&db)).await
-                                                          .inspect_err(|e| {
-                                                              log::error!("Failed to save seed content: {:#?}", e);
-                                                          })?;
-        } else {
-            log::warn!("Failed to save local documentation chunks");
-        }
-        if let Ok(rc) = remote_chunks {
-            TextBasedChunk::save_many(rc, Arc::clone(&db)).await
-                                                          .inspect_err(|e| {
-                                                              log::error!("Failed to save seed content: {:#?}", e);
-                                                          })?;
-        } else {
-            log::warn!("Failed to save remotely generated documentation chunks. You won't be able to query Conundrum documentation via AI until this is resolved.");
-        }
+        let chunks = self.try_chunk(opts, Arc::clone(&state)).await.map_err(DatabaseError::AIError)?;
+        // TextBasedChunk::save_many(lc, Arc::clone(&db)).await.inspect_err(|e| {
+        //                                                          log::error!("Failed to save seed content: {:#?}", e);
+        //                                                      })?;
         Ok(())
     }
 }

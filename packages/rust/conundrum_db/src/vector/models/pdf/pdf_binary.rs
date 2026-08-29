@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use conundrum::{
     ai::rig::ai_traits::chunk::Chunk,
     ecosystem::error_handling::{
@@ -79,10 +81,10 @@ impl BinaryBasedContent<ParseConundrumOptions> for PdfBinary {
 impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for PdfBinary {
     async fn try_chunk(&self,
                        opts: ParseConundrumOptions,
-                       state: &std::sync::Arc<ServerState>)
-    -> conundrum::ecosystem::error_handling::ai_error::AIResult<(conundrum::ecosystem::error_handling::ai_error::AIResult<Vec<TextBasedChunk>>, conundrum::ecosystem::error_handling::ai_error::AIResult<Vec<TextBasedChunk>>)>{
+                       state: std::sync::Arc<ServerState>)
+                       -> Result<Vec<TextBasedChunk>, AIError> {
         let parsed_content = self.get_parsed_content(opts.clone()).await?;
         let cdrm = CdrmContent::from(parsed_content);
-        cdrm.try_chunk(opts, state).await
+        cdrm.try_chunk(opts, Arc::clone(&state)).await
     }
 }

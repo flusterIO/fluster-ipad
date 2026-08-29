@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use typeshare::typeshare;
 
+#[cfg(feature = "db")]
+use crate::lifted_models::primitives::db_id::DatabaseId;
 use crate::{
     lang::runtime::state::{
         citation_list::CitationList,
@@ -13,13 +15,9 @@ use crate::{
         parse_state::{ConundrumCompileTarget, ConundrumModifier, ParseState},
         ui_params::UIParams,
     },
-    lifted_models::primitives::db_id::DatabaseId,
     output::{
         general::component_constants::component_names::EmbeddableComponentName,
-        parsing_result::{
-            dictionary_result::{DictionaryEntryResult, DictionaryEntryResultUnCompiled},
-            mdx_parsing_result::MdxParsingResult,
-        },
+        parsing_result::{dictionary_result::DictionaryEntryResult, mdx_parsing_result::MdxParsingResult},
     },
     parsers::{document::ConundrumDocument, markdown::heading_sluggger::Slugger},
 };
@@ -88,6 +86,7 @@ impl ParseConundrumOptions {
         ParseConundrumOptions::default()
     }
 
+    #[cfg(feature = "db")]
     pub fn for_syncing_ecosystem_database(content: &str, note_id: Option<DatabaseId>) -> Self {
         ParseConundrumOptions { note_id: note_id.map(|x| x.to_string()),
                                 content: content.to_string(),

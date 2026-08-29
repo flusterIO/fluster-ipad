@@ -1,5 +1,6 @@
 #![feature(trim_prefix_suffix)]
 pub mod codegen;
+pub mod db_models;
 pub mod documentation;
 pub mod errors;
 mod generated_generators;

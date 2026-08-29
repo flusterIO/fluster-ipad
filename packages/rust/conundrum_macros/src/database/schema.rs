@@ -4,17 +4,10 @@ use syn::{DeriveInput, GenericArgument, PathArguments, Type, parse_macro_input};
 
 use crate::database::model::Model;
 
-pub fn derive_db_schema(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-
-    match generate_db_schema(&input) {
-        Ok(tokens) => tokens.into(),
-        Err(error) => error.to_compile_error().into(),
-    }
-}
-
 pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     let name = &input.ident;
+
+    let crate_id = &input.conundrum_crate_import();
 
     let mut generated_fields = Vec::new();
 
@@ -37,7 +30,7 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
 
         generated_fields.push(quote! {
                   std::sync::Arc::new(
-                      <#field_type as conundrum::ecosystem::db::db_traits::db_field::DatabaseField>::field_definition(
+                      <#field_type as #crate_id::ecosystem::db::db_traits::db_field::DatabaseField>::field_definition(
                           #name,
                           #nullable,
                       )
@@ -46,9 +39,9 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     }
 
     Ok(quote! {
-        impl<'a> conundrum::ecosystem::db::db_traits::db_entity::DBSchema<'a> for #name {
+        impl<'a> #crate_id::ecosystem::db::db_traits::db_entity::DBSchema<'a> for #name {
             fn arrow_fields()
-                -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<
+                -> #crate_id::ecosystem::error_handling::db_error::DatabaseResult<
                     Vec<std::sync::Arc<arrow_schema::Field>>
                 >
             {
@@ -60,70 +53,17 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     })
 }
 
-pub fn generate_db_schema(input: &DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
-    let name = &input.ident;
+pub fn derive_db_schema(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
 
-    let fields = match &input.data {
-        syn::Data::Struct(data) => match &data.fields {
-            syn::Fields::Named(fields) => &fields.named,
+    let model = Model::try_from(input).expect("Failed to constuct Model struct from macro input.");
 
-            syn::Fields::Unnamed(_) => {
-                return Err(syn::Error::new_spanned(name, "DBSchema does not support tuple structs"));
-            }
-
-            syn::Fields::Unit => {
-                return Err(syn::Error::new_spanned(name, "DBSchema does not support unit structs"));
-            }
-        },
-
-        _ => {
-            return Err(syn::Error::new_spanned(name, "DBSchema can only be derived for structs"));
-        }
-    };
-
-    let mut generated_fields = Vec::new();
-
-    for field in fields {
-        let field_name = field.ident.as_ref().unwrap();
-
-        let options = parse_field_options(field)?;
-
-        if options.skip {
-            continue;
-        }
-
-        let analyzed = analyze_type(&field.ty);
-
-        let nullable = options.nullable.unwrap_or(analyzed.nullable);
-
-        let name = options.rename.unwrap_or_else(|| field_name.to_string());
-
-        let field_type = analyzed.ty;
-
-        generated_fields.push(quote! {
-                  std::sync::Arc::new(
-                      <#field_type as conundrum::ecosystem::db::db_traits::db_field::DatabaseField>::field_definition(
-                          #name,
-                          #nullable,
-                      )
-                  )
-              });
+    match gen_db_schema(&model) {
+        Ok(tokens) => tokens.into(),
+        Err(error) => error.to_compile_error().into(),
     }
-
-    Ok(quote! {
-        impl<'a> conundrum::ecosystem::db::db_traits::db_entity::DBSchema<'a> for #name {
-            fn arrow_fields()
-                -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<
-                    Vec<std::sync::Arc<arrow_schema::Field>>
-                >
-            {
-                Ok(vec![
-                    #(#generated_fields),*
-                ])
-            }
-        }
-    })
 }
+
 
 struct FieldOptions {
     rename: Option<String>,

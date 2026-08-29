@@ -1,3 +1,4 @@
+use conundrum::ecosystem::db::tables::DatabaseTable;
 use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
@@ -6,5 +7,5 @@ use crate::vector::models::text::text_based_content::text_based_chunk::TextBased
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
 #[serde(transparent)]
-#[db(table = DatabaseTable::DocumentationChunk, unit = TextBasedChunk)]
-pub struct DocumentationChunk(TextBasedChunk);
+#[db(table = DatabaseTable::CdrmChunk, unit = TextBasedChunk)]
+pub struct CdrmChunk(TextBasedChunk);

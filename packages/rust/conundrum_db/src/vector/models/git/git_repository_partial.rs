@@ -4,8 +4,6 @@ use arrow_schema::{DataType, Field};
 use conundrum::{ecosystem::db::db_traits::db_entity::DBSchema, lifted_models::primitives::db_id::DatabaseId};
 use fake::Dummy;
 
-use crate::vector::models::vector::vector::DBVector;
-
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct GitRepositoryPartial {
     /// Will match the root of the workspace if this is a workspace repository.

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
+use crate::ecosystem::db::db_traits::db_field::DatabaseField;
 use arrow_schema::Field;
-use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
 use fake::Dummy;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rig::embeddings::Embedding;

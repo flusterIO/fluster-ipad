@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
-use conundrum::lifted_models::primitives::db_id::DatabaseId;
+use conundrum::{ai::models::chat::vector::vector_model::DBVector, lifted_models::primitives::db_id::DatabaseId};
 use fake::Dummy;
 
 use crate::vector::models::{
     ai::ai_interactions::AIInteractions, git::git_repository_partial::GitRepositoryPartial,
-    taggables::taggables::Taggables, vector::vector::DBVector,
+    taggables::taggables::Taggables,
 };
 
 /// # Git

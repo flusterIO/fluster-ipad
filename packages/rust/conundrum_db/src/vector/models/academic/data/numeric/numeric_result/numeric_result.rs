@@ -1,6 +1,7 @@
+use conundrum::ai::models::chat::vector::vector_model::DBVector;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::{academic::result::academic_result_metric::AcademicResultMetric, vector::vector::DBVector};
+use crate::vector::models::academic::result::academic_result_metric::AcademicResultMetric;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct NumericResult {

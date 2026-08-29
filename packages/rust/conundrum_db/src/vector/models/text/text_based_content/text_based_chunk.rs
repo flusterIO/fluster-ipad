@@ -1,5 +1,8 @@
 use conundrum::{
-    ai::rig::ai_traits::into_embedding_description::IntoEmbeddingDescription,
+    ai::{
+        models::chat::vector::vector_model::DBVector,
+        rig::ai_traits::into_embedding_description::IntoEmbeddingDescription,
+    },
     ecosystem::db::{
         db_traits::{
             db_entity::{DBEntity, DBSchema},
@@ -13,8 +16,6 @@ use conundrum::{
 use rig::Embed;
 use std::sync::Arc;
 
-use crate::vector::models::vector::vector::DBVector;
-
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, fake::Dummy, specta::Type)]
 pub struct TextBasedChunk {
     pub id: DatabaseId,
@@ -27,44 +28,6 @@ pub struct TextBasedChunk {
     pub chunk_idx: u32,
     pub local_vector: DBVector,
     pub remote_vector: Option<DBVector>,
-}
-
-impl<'a> DBSchema<'a> for TextBasedChunk {
-    fn arrow_fields(
-        )
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(DatabaseId::field_definition("document_id", false)),
-                Arc::new(String::field_definition("content", false)),
-                Arc::new(u32::field_definition("chunk_idx", false)),
-                Arc::new(DBVector::field_definition("local_vector", true)),
-                Arc::new(DBVector::field_definition("remote_vector", true)),])
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for TextBasedChunk {
-    type PartialUpdateType = TextBasedChunk;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::DocumentationChunk
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "document_id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone();
-    }
 }
 
 impl Embed for TextBasedChunk {
@@ -83,5 +46,3 @@ impl IntoEmbeddingDescription for TextBasedChunk {
         "TextBasedChunk"
     }
 }
-
-impl_default_crud!(TextBasedChunk, TextBasedChunk, DatabaseId);

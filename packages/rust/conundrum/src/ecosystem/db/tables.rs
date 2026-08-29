@@ -118,8 +118,11 @@ pub enum DatabaseTable {
     #[serde(rename = "milestone_alarm")]
     MilestoneAlarm,
     /// ---- Chunks ----
-    #[strum(to_string = "cdrm_vec")]
-    #[serde(rename = "cdrm_vec")]
+    #[strum(to_string = "cdrm_chunk")]
+    #[serde(rename = "cdrm_chunk")]
+    CdrmChunk,
+    #[strum(to_string = "markdown_chunk")]
+    #[serde(rename = "markdown_chunk")]
     MarkdownChunk,
     #[strum(to_string = "message_chunk")]
     #[serde(rename = "message_chunk")]

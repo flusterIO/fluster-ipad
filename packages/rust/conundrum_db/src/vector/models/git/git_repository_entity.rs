@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
 use conundrum::{
+    ai::models::chat::vector::vector_model::DBVector,
     ecosystem::db::{
         db_traits::{
             db_entity::{DBEntity, DBSchema},
@@ -16,7 +17,7 @@ use fake::Dummy;
 
 use crate::vector::models::{
     ai::ai_interactions::AIInteractions, git::git_repository_partial::GitRepositoryPartial,
-    taggables::taggables::Taggables, vector::vector::DBVector,
+    taggables::taggables::Taggables,
 };
 
 /// # Git

@@ -2,11 +2,12 @@ use std::sync::Arc;
 
 use conundrum::{
     ai::{
-        models::chat::chat_message::{any_message::AnyChatMessage, chat_context_policy::ChatContextPolicy},
+        models::chat::chat_message::chat_context_policy::ChatContextPolicy,
         traits::chat_history_context::ConversationStore,
     },
     ecosystem::db::db::ArcMutexDB,
 };
+use conundrum_db::vector::models::ai::any_message::AnyChatMessage;
 
 pub struct ChatConversationClient {
     pub messages: Vec<AnyChatMessage>,

@@ -24,7 +24,7 @@ arrow-schema = "58"
 crossbeam = { version = "0.8.4", features = ["crossbeam-channel"] }
 miette = { version = "7.6.0", features = ["fancy"] }
 serde = { workspace = true, features = ["alloc", "rc"] }
-serde_json.workspace = true
+serde_json = { version = "1.0.45", default-features = false, features = ["alloc"] }
 typeshare.workspace = true
 strum = { workspace = true, features = ["derive"] }
 strum_macros.workspace = true
@@ -56,7 +56,8 @@ askama_derive = "0.15.6"
 lexopt = "0.3.2"
 typst-as-lib = { version = "0.15.4", features = ["typst-kit-fonts", "typst-kit-embed-fonts", "typst-html"] }
 emoji = "0.2.1"
-wasm-bindgen = { version = "0.2.114", features = ["serde", "serde-serialize", "serde_json"] }
+# Note that adding any serde features to the wasm-bindgen crate pulls in a circular dependency with serde_json somehow.
+wasm-bindgen = { version = "0.2.114" }
 serde-wasm-bindgen = "0.6.5"
 css-color = "0.2.8"
 color-eyre = "0.6.5"
@@ -134,11 +135,10 @@ dirs = "6.0.0"
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 uniffi = { version="=0.29.5", features = ["tokio", "cli"] }
 tokio = { version = "1.0", features = ["full"] }
-rssn = { version = "0.2.7", features = ["full"] }
 ratatui = "*"
 katex-rs = { version = "0.2.4", features = ["backtrace"]}
 rand = "0.10.1"
-polars = { workspace = true }
+polars = "0.39.2"
 text-splitter = { version = "0.30.1", features = ["markdown", "code"] }
 lightningcss = { version = "1.0.0-alpha.71", features = ["serde", "serde_json", "substitute_variables"] }
 tower-lsp = "0.20.0"
@@ -146,7 +146,7 @@ ignore = "0.4.31"
 rig = { version = "0.41.0", features = ["lancedb", "image", "pdf", "rmcp", "memory"] }
 rig-lancedb = "0.41.0"
 rig-memory = "0.41.0"
-gix = "0.86.0"
+gix = {version = "0.87.1", features = ["serde", "merge"]}
 futures-util = "0.3.33"
 axum = { version = "0.8.9", features = ["query", "ws"], optional = true }
 rspc = { version = "0.4.1", features = ["typescript"], optional = true }

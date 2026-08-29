@@ -36,7 +36,7 @@ serde.workspace = true
 thiserror.workspace = true
 rayon.workspace = true
 notify = "8.2.0"
-serde_json.workspace = true
+serde_json = { version = "1.0.45", default-features = false, features = ["alloc"] }
 schemars = { version = "1.2.1", features = ["either1"] }
 package_json_schema = "0.3.0"
 tempfile = "3.27.0"

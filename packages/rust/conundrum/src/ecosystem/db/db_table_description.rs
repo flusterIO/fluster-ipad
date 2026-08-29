@@ -248,6 +248,10 @@ impl From<DatabaseTable> for DBTableDescription {
                 This table holds message chunks that will be provided to your message context history. It's unnecessary to explore this table yourself.
                 "}.to_string(),
             },
+            DatabaseTable::CdrmChunk => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
+                This table holds conundrum chunks that will be provided to you. It's unnecessary to explore this table yourself.
+                "}.to_string(),
+            },
             DatabaseTable::AgentDescription => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
                 This tool describes your 'colleagues', or other agents that you may request access to if your tools permit.
                 "}.to_string(),

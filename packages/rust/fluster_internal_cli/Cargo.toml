@@ -11,7 +11,7 @@ license.workspace = true
 clap = { version = "4.6.0", features = ["derive"] }
 ignore = "0.4.25"
 serde.workspace = true
-serde_json.workspace = true
+serde_json = { version = "1.0.45", default-features = false, features = ["alloc"] }
 conundrum = { path = "../conundrum/" }
 tokio = { version = "1.0", features = ["full"] }
 strum.workspace = true

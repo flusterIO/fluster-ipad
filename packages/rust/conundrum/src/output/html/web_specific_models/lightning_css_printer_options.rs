@@ -36,7 +36,7 @@ pub fn safari_specific_lightning_css_printer_options<'a>() -> PrinterOptions<'a>
     }
 }
 
-pub fn fluster_specific_stylesheet_parser_opts<'i, 'o>() -> ParserOptions<'i, 'o> {
+pub fn fluster_specific_stylesheet_parser_opts<'a>() -> ParserOptions<'a> {
     ParserOptions { filename: "conundrum.scss".to_string(),
                     css_modules: None,
                     source_index: 0,

@@ -13,11 +13,13 @@ pub fn generate_db_entity(model: &Model) -> Result<proc_macro2::TokenStream, syn
 
     let partial_type = &model.partial_type_or_self()?;
 
+    let crate_id = &model.conundrum_crate_import();
+
     Ok(quote! {
-        impl<'a> conundrum::ecosystem::db::db_traits::db_entity::DBEntity<'a, #id_type> for #ident {
+        impl<'a> #crate_id::ecosystem::db::db_traits::db_entity::DBEntity<'a, #id_type> for #ident {
             type PartialUpdateType = #partial_type;
 
-            fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
+            fn table() -> #crate_id::ecosystem::db::tables::DatabaseTable {
                 #table
             }
 

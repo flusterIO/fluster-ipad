@@ -1,20 +1,17 @@
 use crate::{
-    ai::models::{
-        chat::chat_message::{any_message::AnyChatMessage, chat_context_policy::ChatContextPolicy},
-        memory::memory_model::Memory,
-    },
+    ai::models::{chat::chat_message::chat_context_policy::ChatContextPolicy, memory::memory_model::Memory},
     ecosystem::{db::db::ArcMutexDB, error_handling::db_error::DatabaseResult},
     lifted_models::primitives::db_id::DatabaseId,
 };
 
-pub trait ConversationStore {
-    async fn append(&mut self, message: AnyChatMessage, db: ArcMutexDB) -> DatabaseResult<()>;
+pub trait ConversationStore<AnyChatMessageType> {
+    async fn append(&mut self, message: AnyChatMessageType, db: ArcMutexDB) -> DatabaseResult<()>;
 
     async fn history(&self,
                      conversation_id: DatabaseId,
                      policy: ChatContextPolicy,
                      db: ArcMutexDB)
-                     -> DatabaseResult<Vec<AnyChatMessage>>;
+                     -> DatabaseResult<Vec<AnyChatMessageType>>;
 }
 
 pub trait MemoryStore {

@@ -2,12 +2,12 @@ use std::{ops::{Index, IndexMut}, sync::Arc};
 
 use arrow_schema::Field;
 use conundrum::{
-    ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk}, ecosystem::{db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge}, error_handling::{ai_error::{AIError, AIResult}, db_error::DatabaseError}}, lang::{lib::shared::utility_types::ArcTokioMutex, runtime::{queries::get_title::get_title_group, run_conundrum::{ParseConundrumOptions, run_conundrum}}}, lifted_models::primitives::db_id::DatabaseId
+    ai::{models::chat::vector::vector_model::DBVector, rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk}}, ecosystem::{db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge}, error_handling::{ai_error::{AIError, AIResult}, db_error::DatabaseError}}, lang::{lib::shared::utility_types::ArcTokioMutex, runtime::{queries::get_title::get_title_group, run_conundrum::{ParseConundrumOptions, run_conundrum}}}, lifted_models::primitives::db_id::DatabaseId
 };
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::{ecosystem_data::server_state::server_state::ServerState, text::text_based_content::{text_based_chunk::TextBasedChunk, text_based_content_trait::TextBasedContent}, vector::vector::DBVector};
+use crate::vector::models::{ecosystem_data::server_state::server_state::ServerState, text::{cdrm::markdown_content::MarkdownContent, text_based_content::{text_based_chunk::TextBasedChunk, text_based_content_trait::TextBasedContent}}};
 
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
 pub struct CdrmContent(pub String);
@@ -54,58 +54,13 @@ impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
 impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for CdrmContent {
     async fn try_chunk(&self,
         opts: ParseConundrumOptions,
-        locked_state: &Arc<ServerState>)
-        -> AIResult<(AIResult<Vec<TextBasedChunk>>, AIResult<Vec<TextBasedChunk>>)> {
-                let opts = run_conundrum(ParseConundrumOptions { 
+        locked_state: Arc<ServerState>)
+        -> AIResult<Vec<TextBasedChunk>> {
+                let res = run_conundrum(ParseConundrumOptions { 
                     target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget::Markdown,
                     ..opts.clone()
                 }).map_err(AIError::ConundrumError)?;
-
-                let x = text_splitter::MarkdownSplitter::new(512);
-                let chunk_strings = x.chunks(&opts.content).map(|v| {
-                    v.to_string()     
-                }).collect::<Vec<String>>();
-                let local_vectors = match &locked_state.local_client {
-                    Some(s) => {
-                        let client = s.clone().lock_owned().await;
-                        let r = client.embed_models(None, chunk_strings.clone(), None).await?;
-                        Ok(r.iter().enumerate().map(|(i, x)| {
-                            TextBasedChunk { 
-                                id: DatabaseId::default(),
-                                document_id: DatabaseId::new_from_input_id("Conundrum Documentation".to_string()),
-                                content: chunk_strings.index(i).clone(),
-                                chunk_idx: i as u32,
-                                local_vector: DBVector(x.vec.clone()),
-                                remote_vector: None
-                            }
-                        }).collect::<Vec<TextBasedChunk>>())
-                    } 
-                    None => Err(
-                        AIError::InvalidLocalProvider
-                    )
-                };
-                // RESUME: Fix this now that you're embedding both vectors on the same struct.
-                // Getting this fixed needs to be a major priority.
-                // let remote_vectors = match &locked_state.remote_client {
-                //     Some(s) => {
-                //         let client = s.clone().lock_owned().await;
-                //         let r = client.embed_models(None, chunk_strings.clone(), None).await?;
-                //         Ok(r.iter().enumerate().map(|(i, x)| {
-                //             TextBasedChunk { 
-                //                 id: DatabaseId::default(),
-                //                 document_id: DatabaseId::new_from_input_id("Conundrum Documentation".to_string()),
-                //                 content: chunk_strings.index(i).clone(),
-                //                 chunk_idx: i as u32,
-                //                 remote_vector: DBVector(x.vec.clone())
-                //             }
-                //         }).collect::<Vec<TextBasedChunk>>())
-                //     } 
-                //     None => Err(
-                //         AIError::InvalidRemoteProvider
-                //     )
-                // };
-                Ok((local_vectors, Err(
-                        AIError::InvalidRemoteProvider
-                    )))
+            let md = MarkdownContent(res.content);
+            md.try_chunk(opts.clone(), Arc::clone(&locked_state)).await
         }
 }

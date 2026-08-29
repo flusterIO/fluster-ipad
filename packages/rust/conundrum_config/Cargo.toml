@@ -11,7 +11,7 @@ license.workspace = true
 ignore = "0.4.25"
 schemars = "1.2.1"
 serde.workspace = true
-serde_json.workspace = true
+serde_json = { version = "1.0.45", default-features = false, features = ["alloc"] }
 strum_macros.workspace = true
 conundrum = { path = "../conundrum/" }
 anyhow = "1.0.102"
