@@ -2,9 +2,13 @@ use fake::Dummy;
 use std::sync::Arc;
 
 use crate::{
-    ai::models::{
-        agent::{agent_description_partial::AgentDescriptionPartial, agent_primary_task::AgentPrimaryTask},
-        tool::{mcp_tool_name::MCPToolName, mcp_tool_name_list::MCPToolNameList},
+    ai::{
+        ai_constants::DEFAULT_LOCAL_LANGUAGE_MODEL,
+        models::{
+            agent::{agent_description_partial::AgentDescriptionPartial, agent_primary_task::AgentPrimaryTask},
+            chat::chat_conversation::vector_mode::VectorMode,
+            tool::{mcp_tool_name::MCPToolName, mcp_tool_name_list::MCPToolNameList},
+        },
     },
     ecosystem::db::{
         db_traits::{
@@ -16,6 +20,7 @@ use crate::{
     impl_default_crud,
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
+use indoc::formatdoc;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct AgentDescription {
@@ -25,6 +30,8 @@ pub struct AgentDescription {
     pub name: Option<String>,
     pub max_tokens: Option<u32>,
     pub allow_tools: bool,
+    pub embedding_mode: VectorMode,
+    pub chat_mode: VectorMode,
     /// The model to use
     pub model: String,
     pub reasoning: bool,
@@ -42,41 +49,44 @@ pub struct AgentDescription {
 
 impl Default for AgentDescription {
     fn default() -> Self {
-        Self { 
-            id: DatabaseId::new(),
-            name: None,
-            max_tokens: Some(1024),
-            allow_tools: true,
-            model: "qwen3:8b".to_string(),
-            reasoning: true,
-            is_local: true,
-            instructions: None,
-            always_include_tools: MCPToolNameList::new_empty(),
-            temperature_scalar: 1.,
-            primary_task: Some(AgentPrimaryTask::Agent),
-            ctime: DateTime::new_now(),
-            utime: DateTime::new_now()
-        }
+        Self { id: DatabaseId::new(),
+               name: None,
+               max_tokens: Some(1024),
+               allow_tools: true,
+               embedding_mode: VectorMode::Remote,
+               chat_mode: VectorMode::Remote,
+               model: DEFAULT_LOCAL_LANGUAGE_MODEL.to_string(),
+               reasoning: true,
+               is_local: true,
+               instructions: None,
+               always_include_tools: MCPToolNameList::new_empty(),
+               temperature_scalar: 1.,
+               primary_task: Some(AgentPrimaryTask::Agent),
+               ctime: DateTime::new_now(),
+               utime: DateTime::new_now() }
     }
 }
 
 impl AgentDescription {
     pub fn default_local_chat() -> Self {
-        AgentDescription {
-            id: DatabaseId::default(),
-            name: None,
-            model: "qwen3:8b".to_string(),
-            max_tokens: Some(1024),
-            allow_tools: true, 
-            reasoning: true,
-            is_local: true,
-            instructions: Some("You are an assistant for an academic research platform for STEM students and professionals.".to_string()),
-            always_include_tools: MCPToolNameList::new_empty(),
-            temperature_scalar: 1.,
-            primary_task: None,
-            ctime: DateTime::new_now(),
-            utime: DateTime::new_now()
-        }
+        AgentDescription { id: DatabaseId::default(),
+                           name: None,
+                           model: DEFAULT_LOCAL_LANGUAGE_MODEL.to_string(),
+                           max_tokens: Some(1024),
+                           allow_tools: true,
+                           reasoning: true,
+                           is_local: true,
+                           embedding_mode: VectorMode::Remote,
+                           chat_mode: VectorMode::Remote,
+                           instructions: Some(formatdoc! {"
+            You are an assistant for an academic note taking application for students and professionals, especially those interested in STEM fields.
+            Use the tools available to you to help each student or researcher reach their academic goals.
+                "}),
+                           always_include_tools: MCPToolNameList::new_empty(),
+                           temperature_scalar: 1.,
+                           primary_task: None,
+                           ctime: DateTime::new_now(),
+                           utime: DateTime::new_now() }
     }
 
     /// Only to be used for local development.
@@ -98,6 +108,8 @@ impl<'a> DBSchema<'a> for AgentDescription {
                 Arc::new(String::field_definition("instructions", true)),
                 Arc::new(MCPToolNameList::field_definition("always_include_tools", false)),
                 Arc::new(f32::field_definition("temperature_scalar", false)),
+                Arc::new(VectorMode::field_definition("embedding_mode", false)),
+                Arc::new(VectorMode::field_definition("chat_mode", false)),
                 Arc::new(AgentPrimaryTask::field_definition("primary_task", true)),
                 Arc::new(DateTime::field_definition("ctime", false)),
                 Arc::new(DateTime::field_definition("utime", false)),])

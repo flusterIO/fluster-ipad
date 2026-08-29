@@ -280,7 +280,7 @@ export type ProceduresLegacy = { queries: { key: "agent.load_chat_history"; inpu
  * The name that the AI should be referred to as. AI should reference this
  * field when a user asks for another agent by name.
  */
-name: string | null; max_tokens: number | null; allow_tools: boolean; 
+name: string | null; max_tokens: number | null; allow_tools: boolean; embedding_mode: VectorMode; chat_mode: VectorMode; 
 /**
  * The model to use
  */
@@ -500,7 +500,7 @@ footnotes: Partial<{ [key in number]: RenderedFootnoteResult }>; included_compon
  * The name that the AI should be referred to as. AI should reference this
  * field when a user asks for another agent by name.
  */
-name: string | null; max_tokens: number | null; allow_tools: boolean; 
+name: string | null; max_tokens: number | null; allow_tools: boolean; embedding_mode: VectorMode; chat_mode: VectorMode; 
 /**
  * The model to use
  */
@@ -827,6 +827,8 @@ ignore_hidden: boolean;
  */
 resource_dir?: string; ai: AIInteractions; ctime?: DateTime }
 
+export type VectorMode = "local" | "remote"
+
 export type WebGlueCodeGeneralFiles = "styles.css" | "katex.min.css" | "katex_ams_regular.woff2" | "katex_caligraphic_bold.woff2" | "katex_caligraphic_regular.woff2" | "katex_fraktur_bold.woff2" | "katex_fraktur_regular.woff2" | "katex_main_bold.woff2" | "katex_main_bolditalic.woff2" | "katex_main_italic.woff2" | "katex_main_regular.woff2" | "katex_math_bolditalic.woff2" | "katex_math_italic.woff2" | "katex_sansserif_bold.woff2" | "katex_sansserif_italic.woff2" | "katex_sansserif_regular.woff2" | "katex_script_regular.woff2" | "katex_size1_regular.woff2" | "katex_size2_regular.woff2" | "katex_size3_regular.woff2" | "katex_size4_regular.woff2" | "katex_typewriter_regular.woff2" | "Fira_Code_Regular.ttf"
 
 export type Procedures = {
@@ -844,8 +846,8 @@ export type Procedures = {
 	crud: {
 	agent_description: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; name: string | null; max_tokens: number | null; allow_tools: boolean; model: string; reasoning: boolean; is_local: boolean; instructions: string | null; always_include_tools: MCPToolNameList; temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[], error: unknown },
-	save_many: { kind: "mutation", input: ({ id: DatabaseId; name: string | null; max_tokens: number | null; allow_tools: boolean; model: string; reasoning: boolean; is_local: boolean; instructions: string | null; always_include_tools: MCPToolNameList; temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; name: string | null; max_tokens: number | null; allow_tools: boolean; embedding_mode: VectorMode; chat_mode: VectorMode; model: string; reasoning: boolean; is_local: boolean; instructions: string | null; always_include_tools: MCPToolNameList; temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ id: DatabaseId; name: string | null; max_tokens: number | null; allow_tools: boolean; embedding_mode: VectorMode; chat_mode: VectorMode; model: string; reasoning: boolean; is_local: boolean; instructions: string | null; always_include_tools: MCPToolNameList; temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ id: DatabaseId; name: string | null; model: string | null; reasoning: boolean | null; is_local: boolean | null; instructions: string | null; always_include_tools: MCPToolNameList | null; temperature_scalar: number | null; primary_task: AgentPrimaryTask | null })[], output: null, error: unknown },
 },
 	agent_message: {

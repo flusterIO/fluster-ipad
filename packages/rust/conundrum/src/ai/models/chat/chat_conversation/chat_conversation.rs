@@ -1,6 +1,7 @@
 use std::ops::IndexMut;
 use std::sync::Arc;
 
+use crate::ai::models::chat::chat_conversation::vector_mode::VectorMode;
 use crate::ecosystem::db::db::ArcMutexDB;
 use crate::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
 use crate::ecosystem::db::db_traits::db_field::DatabaseField;

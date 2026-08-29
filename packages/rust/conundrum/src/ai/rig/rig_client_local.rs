@@ -15,6 +15,7 @@ use rig::{
     providers::ollama::{self, Client as OllamaClient, OllamaApiKey},
 };
 
+/// Deprecaed and moved up to the Conundrum crate.
 const DEFAULT_LOCAL_EMBEDDING_MODEL: &str = "qwen3-embedding:4b";
 
 /// # RigProvider

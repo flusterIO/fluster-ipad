@@ -15,6 +15,8 @@ use conundrum::ai::rig::ai_traits::from_with_convo_information::{FromWithConvoIn
 use conundrum::ai::rig::features::chat::chat_event::ChatEvent;
 use conundrum::ai::rig::features::chat::convo_context::ConversationContext;
 use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
+use conundrum::ecosystem::error_handling::ai_error::AIError;
+use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use conundrum::lifted_models::primitives::db_id::DatabaseId;
 use conundrum::lifted_models::primitives::static_id::StaticId;
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
@@ -78,7 +80,9 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
                                     let ctx = Arc::clone(&CHAT_CONTEXT);
                                     let db_clone = Arc::clone(&state.db);
                                     let _ = event.side_effect(ctx, db_clone).await.inspect_err(|e| {
+                                        if !matches!(e, DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput)) {
                                                                                       log::error!("Error: {:#?}", e);
+                                        }
                                                                                   });
                                     match serde_json::to_string(&event) {
                                         Ok(s) => {
@@ -92,7 +96,9 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
                                     }
                                 }
                                 Err(err) => {
-                                    log::error!("Failed to construct ChatEvent: {:#?}", err);
+                                    if !matches!(err, DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput)) {
+                                        log::error!("Failed to construct ChatEvent: {:#?}", err);
+                                    }
                                 }
                             };
                         }

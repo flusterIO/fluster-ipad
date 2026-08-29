@@ -1,3 +1,5 @@
+pub const DEFAULT_LOCAL_EMBEDDING_MODEL: &str = "qwen3-embedding:4b";
+pub const DEFAULT_LOCAL_LANGUAGE_MODEL: &str = "qwen3:8b";
 pub const BASE_TEMPERATURE_CHAT: f32 = 0.5;
 pub const BASE_TEMPERATURE_NOTE_CREATION: f32 = 0.5;
 pub const BASE_TEMPERATURE_TEXT_SUMMARIZATION: f32 = 0.5;
