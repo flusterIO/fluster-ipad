@@ -9,6 +9,7 @@ import { NotificationsList } from "#/notifications/components/notification_list"
 import { CommandPalette } from "#/command_palette/command_palette";
 import { CommandPaletteProvider } from "#/command_palette/command_palette_provider";
 import { GlobalListeners } from "@/state/global_listeners";
+import { ChatPageProvider } from "#/ai/pages/ai_chat_page/chat_page_context/chat_page_context";
 
 const dontScroll: AppPaths[] = [AppPaths.onboarding];
 
@@ -32,16 +33,18 @@ const MainRoutes = (): ReactNode => {
 export const MainAppRouter = (): ReactNode => {
     return (
         <BrowserRouter basename="/">
-            <div className="app-container w-full h-screen max-h-screen flex flex-row justify-center items-center">
-                <PermanentSidebar />
-                <MainRoutes />
-                <CommandPaletteProvider>
-                    <GlobalListeners />
-                    <CommandPalette />
-                </CommandPaletteProvider>
-                <NotificationsList />
-                <SecondaryPanel />
-            </div>
+            <ChatPageProvider>
+                <div className="app-container w-full h-screen max-h-screen flex flex-row justify-center items-center">
+                    <PermanentSidebar />
+                    <MainRoutes />
+                    <CommandPaletteProvider>
+                        <GlobalListeners />
+                        <CommandPalette />
+                    </CommandPaletteProvider>
+                    <NotificationsList />
+                    <SecondaryPanel />
+                </div>
+            </ChatPageProvider>
         </BrowserRouter>
     );
 };
