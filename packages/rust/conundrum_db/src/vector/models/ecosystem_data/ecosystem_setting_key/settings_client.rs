@@ -45,7 +45,7 @@ impl SettingsClient {
         }
     }
 
-    pub async fn max_sync_threads(database: ArcMutexDB) -> DatabaseResult<usize> {
+    pub async fn max_sync_threads(database: ArcMutexDB) -> DatabaseResult<u16> {
         let setting = SettingsClient::get_setting(UniqueSettingKey::MaxSyncThreads, Arc::clone(&database)).await;
         match setting.data {
             Setting::Sync(k) => match k {

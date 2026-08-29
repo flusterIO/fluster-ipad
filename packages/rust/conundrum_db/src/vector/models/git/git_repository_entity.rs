@@ -54,7 +54,8 @@ pub struct GitRepositoryEntity {
     /// Permissions regarding access to the file system can be found
     /// on the settings page of the Conundrum dashboard.
     pub allow_ai_access: bool,
-    pub vec: DBVector,
+    pub local_vector: DBVector,
+    pub remote_vector: DBVector,
 }
 
 impl<'a> DBSchema<'a> for GitRepositoryEntity {
@@ -66,7 +67,8 @@ impl<'a> DBSchema<'a> for GitRepositoryEntity {
                 Arc::new(AIInteractions::field_definition("ai", false)),
                 Arc::new(bool::field_definition("is_workspace", false)),
                 Arc::new(bool::field_definition("allow_ai_access", false)),
-                Arc::new(DBVector::field_definition(true))])
+                Arc::new(DBVector::field_definition("local_vector", true)),
+                Arc::new(DBVector::field_definition("remote_vector", true)),])
     }
 }
 

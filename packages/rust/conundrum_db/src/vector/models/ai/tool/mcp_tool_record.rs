@@ -17,7 +17,8 @@ pub struct MCPToolRecord {
     pub name: MCPToolName,
     pub description: String,
     pub input_schema_json: String,
-    pub vector: DBVector,
+    pub local_vector: DBVector,
+    pub remote_vector: Option<DBVector>,
 }
 
 impl<'a> DBSchema<'a> for MCPToolRecord {
@@ -28,7 +29,8 @@ impl<'a> DBSchema<'a> for MCPToolRecord {
         Ok(vec![Arc::new(String::field_definition("name", false)),
                 Arc::new(String::field_definition("description", false)),
                 Arc::new(String::field_definition("input_schema_json", false)),
-                Arc::new(DBVector::field_definition(false))])
+                Arc::new(DBVector::field_definition("local_vector", true)),
+                Arc::new(DBVector::field_definition("remote_vector", true)),])
     }
 }
 
@@ -57,11 +59,16 @@ impl<'a> DBEntity<'a, MCPToolName> for MCPToolRecord {
 }
 
 impl MCPToolRecord {
-    pub fn from_tool_and_embedding(tool: Tool, input_schema_json: String, vec: Vec<f64>) -> Self {
+    pub fn from_tool_and_embedding(tool: Tool,
+                                   input_schema_json: String,
+                                   local_vec: Vec<f64>,
+                                   remote_vec: Option<Vec<f64>>)
+                                   -> Self {
         let mcp_tool_name = MCPToolName::try_from(tool.name).expect("Must always unwrap all provided tools.");
         MCPToolRecord { name: mcp_tool_name,
                         description: tool.description.unwrap_or_default(),
                         input_schema_json,
-                        vector: DBVector(vec) }
+                        local_vector: DBVector(local_vec),
+                        remote_vector: remote_vec.map(DBVector) }
     }
 }

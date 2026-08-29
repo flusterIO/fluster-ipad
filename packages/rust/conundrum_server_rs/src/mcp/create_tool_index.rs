@@ -48,7 +48,7 @@ pub async fn create_tool_index(db: ArcMutexDB) -> ServerResult<()> {
                                                                               ServerError::EmbeddingError
                                                                           })?;
 
-        let record = MCPToolRecord::from_tool_and_embedding(tool, schema_json, embedding.vec);
+        let record = MCPToolRecord::from_tool_and_embedding(tool, schema_json, embedding.vec, None);
         tool_records.push(record);
     }
 

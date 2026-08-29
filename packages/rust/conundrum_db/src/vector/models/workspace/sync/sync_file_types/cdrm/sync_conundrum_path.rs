@@ -62,6 +62,7 @@ pub async fn sync_conundrum_path(fp: WorkspaceRelativePath<PathBuf>,
         );
                                         DatabaseError::ConundrumError(e)
                                     })?;
+
     update_database_from_parsed_cdrm(parsed.clone(),
                                      existing_note.clone(),
                                      file_content.clone(),

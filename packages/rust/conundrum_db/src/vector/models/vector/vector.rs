@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use arrow_schema::Field;
+use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
 use fake::Dummy;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rig::embeddings::Embedding;
@@ -28,16 +29,18 @@ impl From<Vec<f64>> for DBVector {
     }
 }
 
-impl DBVector {
-    pub fn field_definition(nullable: bool) -> arrow_schema::Field {
-        Field::new("vector",
+impl DatabaseField for DBVector {
+    fn field_definition(field_key: &'static str, nullable: bool) -> Field {
+        Field::new(field_key.to_string(),
                    arrow_schema::DataType::FixedSizeList(Arc::new(Field::new("item",
                                                                              arrow_schema::DataType::Float32,
                                                                              true)),
                                                          DB_VECTOR_DIMENSIONS),
                    nullable)
     }
+}
 
+impl DBVector {
     fn to_db_representation(&self) -> Vec<f64> {
         self.0.clone()
     }

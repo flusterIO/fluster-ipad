@@ -25,7 +25,8 @@ pub struct TextBasedChunk {
     pub content: String,
     /// The index of the chunk as it appears in the whole document.
     pub chunk_idx: u32,
-    pub vector: DBVector,
+    pub local_vector: DBVector,
+    pub remote_vector: Option<DBVector>,
 }
 
 impl<'a> DBSchema<'a> for TextBasedChunk {
@@ -37,7 +38,8 @@ impl<'a> DBSchema<'a> for TextBasedChunk {
                 Arc::new(DatabaseId::field_definition("document_id", false)),
                 Arc::new(String::field_definition("content", false)),
                 Arc::new(u32::field_definition("chunk_idx", false)),
-                Arc::new(DBVector::field_definition(false)),])
+                Arc::new(DBVector::field_definition("local_vector", true)),
+                Arc::new(DBVector::field_definition("remote_vector", true)),])
     }
 }
 

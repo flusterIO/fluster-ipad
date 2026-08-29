@@ -1,1 +1,1 @@
-pub const DEFAULT_MAX_SYNC_THREADS: usize = 8;
+pub const DEFAULT_MAX_SYNC_THREADS: u16 = 8;

@@ -21,7 +21,7 @@ pub enum SyncSettingKey {
     AutoSyncOnNewMsg(bool),
     /// The maximum number of threads to be used while syncing. Note that this
     /// will default to the maximum number of threads available if set to 0.
-    MaxSyncThreads(usize),
+    MaxSyncThreads(u16),
 }
 
 impl EcosystemSettingKey for SyncSettingKey {

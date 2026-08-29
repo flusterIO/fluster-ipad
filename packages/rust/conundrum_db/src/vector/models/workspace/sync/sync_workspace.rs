@@ -22,7 +22,7 @@ pub async fn sync_workspace(db: ArcMutexDB, walk_config: FileWalkConfig) -> Data
     let concurrency =
         Arc::new(Semaphore::new(match &max_threads {
                                     0 => std::thread::available_parallelism().map(|n| n.get())
-                                                                             .unwrap_or(DEFAULT_MAX_SYNC_THREADS),
+                                                                             .unwrap_or(DEFAULT_MAX_SYNC_THREADS as usize),
                                     _ => max_threads as usize,
                                 }));
     let context = SyncContext::new(Arc::clone(&db)).await?;

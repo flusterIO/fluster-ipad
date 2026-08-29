@@ -75,7 +75,8 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for CdrmContent {
                                 document_id: DatabaseId::new_from_input_id("Conundrum Documentation".to_string()),
                                 content: chunk_strings.index(i).clone(),
                                 chunk_idx: i as u32,
-                                vector: DBVector(x.vec.clone())
+                                local_vector: DBVector(x.vec.clone()),
+                                remote_vector: None
                             }
                         }).collect::<Vec<TextBasedChunk>>())
                     } 
@@ -83,24 +84,28 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for CdrmContent {
                         AIError::InvalidLocalProvider
                     )
                 };
-                let remote_vectors = match &locked_state.remote_client {
-                    Some(s) => {
-                        let client = s.clone().lock_owned().await;
-                        let r = client.embed_models(None, chunk_strings.clone(), None).await?;
-                        Ok(r.iter().enumerate().map(|(i, x)| {
-                            TextBasedChunk { 
-                                id: DatabaseId::default(),
-                                document_id: DatabaseId::new_from_input_id("Conundrum Documentation".to_string()),
-                                content: chunk_strings.index(i).clone(),
-                                chunk_idx: i as u32,
-                                vector: DBVector(x.vec.clone())
-                            }
-                        }).collect::<Vec<TextBasedChunk>>())
-                    } 
-                    None => Err(
+                // RESUME: Fix this now that you're embedding both vectors on the same struct.
+                // Getting this fixed needs to be a major priority.
+                // let remote_vectors = match &locked_state.remote_client {
+                //     Some(s) => {
+                //         let client = s.clone().lock_owned().await;
+                //         let r = client.embed_models(None, chunk_strings.clone(), None).await?;
+                //         Ok(r.iter().enumerate().map(|(i, x)| {
+                //             TextBasedChunk { 
+                //                 id: DatabaseId::default(),
+                //                 document_id: DatabaseId::new_from_input_id("Conundrum Documentation".to_string()),
+                //                 content: chunk_strings.index(i).clone(),
+                //                 chunk_idx: i as u32,
+                //                 remote_vector: DBVector(x.vec.clone())
+                //             }
+                //         }).collect::<Vec<TextBasedChunk>>())
+                //     } 
+                //     None => Err(
+                //         AIError::InvalidRemoteProvider
+                //     )
+                // };
+                Ok((local_vectors, Err(
                         AIError::InvalidRemoteProvider
-                    )
-                };
-                Ok((local_vectors, remote_vectors))
+                    )))
         }
 }

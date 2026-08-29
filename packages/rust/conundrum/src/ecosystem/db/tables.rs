@@ -117,10 +117,13 @@ pub enum DatabaseTable {
     #[strum(to_string = "milestone_alarm")]
     #[serde(rename = "milestone_alarm")]
     MilestoneAlarm,
-    /// ---- Vectors ----
+    /// ---- Chunks ----
     #[strum(to_string = "cdrm_vec")]
     #[serde(rename = "cdrm_vec")]
     MarkdownChunk,
+    #[strum(to_string = "message_chunk")]
+    #[serde(rename = "message_chunk")]
+    MessageChunk,
     #[strum(to_string = "mcp_tool")]
     #[serde(rename = "mcp_tool")]
     MCPToolRecord,

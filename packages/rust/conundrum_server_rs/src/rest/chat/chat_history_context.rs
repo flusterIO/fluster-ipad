@@ -27,6 +27,7 @@ impl<C, M> ChatHistoryContext<C, M>
                                conversation_id: DatabaseId,
                                user_message: &str)
                                -> DatabaseResult<ChatHistoryContext<C, M>> {
+        
         todo!()
     }
 }
