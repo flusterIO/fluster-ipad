@@ -21,7 +21,7 @@ pub fn gen_default_crud(input: &Model) -> Result<proc_macro2::TokenStream, syn::
                                     .expect("You must provide a 'unit' value if the struct does not have an id field.")
                                     .ty;
                            quote! {
-                               #nested_type::IDType
+                               <#nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::IDType
                            }
                        });
     let partial_type = input.partial_type_or_self()?;

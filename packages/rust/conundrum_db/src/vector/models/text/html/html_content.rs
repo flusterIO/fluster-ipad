@@ -72,12 +72,9 @@ impl TextBasedContent<()> for HTMLContent {
 }
 
 impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for HTMLContent {
-    async fn try_chunk(&self,
-                       opts: ParseConundrumOptions,
-                       state: &Arc<ServerState>)
-                       -> AIResult<(AIResult<Vec<TextBasedChunk>>, AIResult<Vec<TextBasedChunk>>)> {
+    async fn try_chunk(&self, opts: ParseConundrumOptions, state: Arc<ServerState>) -> AIResult<Vec<TextBasedChunk>> {
         let content = self.get_parsed_content(()).await?;
         let cdrm = CdrmContent::from(content);
-        cdrm.try_chunk(opts, state).await
+        cdrm.try_chunk(opts, Arc::clone(&state)).await
     }
 }

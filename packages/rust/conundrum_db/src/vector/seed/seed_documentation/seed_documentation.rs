@@ -17,7 +17,10 @@ use strum::IntoEnumIterator;
 use crate::vector::{
     models::{
         ecosystem_data::{
-            documentation::{documentation_entry::DocumentationEntry, documentation_key::DocumentationKey},
+            documentation::{
+                documentation_chunk::DocumentationChunk, documentation_entry::DocumentationEntry,
+                documentation_key::DocumentationKey,
+            },
             server_state::server_state::ServerState,
         },
         text::text_based_content::text_based_chunk::TextBasedChunk,
@@ -37,8 +40,11 @@ impl Default for SeedDocumentation {
     }
 }
 
-impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for SeedDocumentation {
-    async fn try_chunk(&self, opts: ParseConundrumOptions, state: std::sync::Arc<ServerState>) -> Result<_, AIError> {
+impl Chunk<ParseConundrumOptions, DocumentationChunk, ServerState> for SeedDocumentation {
+    async fn try_chunk(&self,
+                       opts: ParseConundrumOptions,
+                       state: std::sync::Arc<ServerState>)
+                       -> AIResult<Vec<DocumentationChunk>> {
         let mut chunk_res = Vec::new();
         for k in &self.0 {
             let chunks = k.try_chunk(opts.clone(), Arc::clone(&state)).await?;
@@ -51,7 +57,9 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for SeedDocumenta
     }
 }
 
-impl<'a> SeedChunks<'a, TextBasedChunk, TextBasedChunk, ParseConundrumOptions, ServerState> for SeedDocumentation {
+impl<'a> SeedChunks<'a, DocumentationChunk, DocumentationChunk, ParseConundrumOptions, ServerState>
+    for SeedDocumentation
+{
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         DatabaseTable::DocumentationChunk
     }
@@ -63,8 +71,9 @@ impl<'a> SeedChunks<'a, TextBasedChunk, TextBasedChunk, ParseConundrumOptions, S
                       -> DatabaseResult<()> {
         let chunks = self.try_chunk(opts, Arc::clone(&state)).await.map_err(DatabaseError::AIError)?;
         // TextBasedChunk::save_many(lc, Arc::clone(&db)).await.inspect_err(|e| {
-        //                                                          log::error!("Failed to save seed content: {:#?}", e);
-        //                                                      })?;
+        //                                                          log::error!("Failed
+        // to save seed content: {:#?}", e);
+        // })?;
         Ok(())
     }
 }

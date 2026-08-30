@@ -13,10 +13,11 @@ use conundrum::{
     impl_default_crud,
     lifted_models::primitives::db_id::DatabaseId,
 };
+use conundrum_macros::{DBEntity, DBSchema};
 use rig::Embed;
 use std::sync::Arc;
 
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, fake::Dummy, specta::Type)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, fake::Dummy, specta::Type, DBSchema)]
 pub struct TextBasedChunk {
     pub id: DatabaseId,
     /// The id pointing back to the primary document. There's no point in having

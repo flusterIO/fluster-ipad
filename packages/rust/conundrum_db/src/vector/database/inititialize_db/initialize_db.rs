@@ -37,6 +37,7 @@ use crate::vector::{
         },
         ai::tool::mcp_tool_record::MCPToolRecord,
         ecosystem_data::{
+            documentation::documentation_chunk::DocumentationChunk,
             ecosystem_application_settings::keyboard_shortcut::KeyboardShortcut,
             ecosytem_setting_types::ecosystem_setting_model::EcosystemSettingModel, log::ecosystem_log::EcosystemLog,
             server_state::server_state::ServerState,
@@ -75,7 +76,7 @@ pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResu
                                                               schema: MCPToolRecord::schema()?,
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::DocumentationChunk,
-                                                              schema: TextBasedChunk::schema()?,
+                                                              schema: DocumentationChunk::schema()?,
                                                               set_indices: None },
                                               TableInitData { table: DatabaseTable::EcosystemSetting,
                                                               schema: EcosystemSettingModel::schema()?,

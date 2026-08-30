@@ -42,7 +42,7 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
         Some(um) => {
             let nested_type = um.ty;
             quote! {
-               #nested_type::arrow_fields()
+               <#nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::arrow_fields()
             }
         }
         None => {

@@ -8,3 +8,9 @@ use crate::vector::models::text::text_based_content::text_based_chunk::TextBased
 #[serde(transparent)]
 #[db(table = DatabaseTable::DocumentationChunk, unit = TextBasedChunk)]
 pub struct DocumentationChunk(TextBasedChunk);
+
+impl From<TextBasedChunk> for DocumentationChunk {
+    fn from(value: TextBasedChunk) -> Self {
+        Self(value)
+    }
+}

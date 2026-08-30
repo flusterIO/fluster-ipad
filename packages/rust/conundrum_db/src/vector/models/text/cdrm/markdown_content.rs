@@ -93,7 +93,11 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for MarkdownConte
                                          content: chunk_strings.index(i).clone(),
                                          chunk_idx: i as u32,
                                          local_vector: DBVector(x.vec.clone()),
-                                         remote_vector: remote_vectors.map(|k| DBVector(k.index(i).vec.clone())) }
+                                         remote_vector: remote_vectors.as_ref().cloned().map(|k| {
+                                                                                            DBVector(k.index(i)
+                                                                                                      .vec
+                                                                                                      .clone())
+                                                                                        }) }
                     })
                     .collect::<Vec<TextBasedChunk>>())
             }

@@ -38,7 +38,7 @@ impl AnyChatMessage {
 impl Chunk<ParseConundrumOptions, MessageChunk, ServerState> for AnyChatMessage {
     async fn try_chunk(&self,
                        opts: ParseConundrumOptions,
-                       state: &std::sync::Arc<ServerState>)
+                       state: std::sync::Arc<ServerState>)
                        -> AIResult<Vec<MessageChunk>> {
         let (body, sender) = {
             match self {

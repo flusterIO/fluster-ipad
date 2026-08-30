@@ -23,34 +23,14 @@ pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerSt
     where ChunkType: DBSchema<'a> + EntityCRUD<'a, PartialUpdateType> + Clone,
           PartialUpdateType: Clone + DBSchema<'a> {
     fn table() -> DatabaseTable;
-    async fn try_seed(&self,
-                      db: ArcMutexDB,
-                      opts: ParseParameters,
-                      agent: &Arc<ServerStateType>)
-                      -> DatabaseResult<()> {
-        let (local_chunks, remote_chunks) = self.try_chunk(opts, agent).await.map_err(|e| {
-                                                                                  log::error!("AI Error: {:#?}", e);
-                                                                                  DatabaseError::AIError(e)
-                                                                              })?;
-        if let Ok(lc) = local_chunks {
-            // TODO: Move this to a new type and just wrap the TextBasedChunk in a macro
-            // that generates the necessary new type.
-            ChunkType::save_many(lc, Arc::clone(&db)).await.inspect_err(|e| {
-                                                                log::error!("Failed to save seed content: {:#?}", e);
-                                                            })?;
-        } else {
-            log::warn!("Could not seed locally generated vectors. You won't be able to access some AI features offline.");
-        }
-
-        if let Ok(rc) = remote_chunks {
-            // TODO: Move this to a new type and just wrap the TextBasedChunk in a macro
-            // that generates the necessary new type.
-            ChunkType::save_many(rc, db).await.inspect_err(|e| {
-                                                   log::error!("Failed to save seed content: {:#?}", e);
-                                               })?;
-        } else {
-            log::warn!("Could not seed remotely generated vectors.");
-        }
+    async fn try_seed(&self, db: ArcMutexDB, opts: ParseParameters, state: Arc<ServerStateType>) -> DatabaseResult<()> {
+        let chunks = self.try_chunk(opts, Arc::clone(&state)).await.map_err(|e| {
+                                                                        log::error!("AI Error: {:#?}", e);
+                                                                        DatabaseError::AIError(e)
+                                                                    })?;
+        ChunkType::save_many(rc, db).await.inspect_err(|e| {
+                                               log::error!("Failed to save seed content: {:#?}", e);
+                                           })?;
         Ok(())
     }
 }
