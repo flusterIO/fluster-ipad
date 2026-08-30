@@ -1,8 +1,9 @@
 use conundrum::{
-    ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema},
+    ecosystem::db::db_traits::db_entity::{ArrowFields, DBEntity, DBSchema},
     impl_default_crud,
     lifted_models::primitives::{case_insensitive_string::CaseInsensitiveString, date_time::DateTime},
 };
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
@@ -22,23 +23,13 @@ use crate::vector::models::{
 /// 'newtonian-gravity' and 'covariant-derivatives'. However, this is
 /// **not** a rule that is set in stone and you should follow whatever pattern
 /// the user is using with their tags, topics and subjects.
-#[derive(Serialize, Deserialize, Clone, Debug, Dummy, specta::Type)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy, specta::Type, DatabaseEntity)]
 pub struct Subject {
     pub value: CaseInsensitiveString,
     pub location: TagLocation,
     pub ctime: DateTime,
     pub last_access: DateTime,
     pub ai: AIInteractions,
-}
-
-impl_default_crud!(Subject, TaggablePartial, String);
-impl<'a> DBSchema<'a> for Subject {
-    fn arrow_fields(
-        )
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(taggable_fields())
-    }
 }
 
 impl From<String> for Subject {
@@ -48,29 +39,5 @@ impl From<String> for Subject {
                   ctime: DateTime::new_now(),
                   last_access: DateTime::new_now(),
                   ai: AIInteractions::default() }
-    }
-}
-
-impl<'a> DBEntity<'a> for Subject {
-    type PartialUpdateType = TaggablePartial;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        conundrum::ecosystem::db::tables::DatabaseTable::Subject
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        TAGGABLE_MERGE_KEYS
-    }
-
-    fn primary_key() -> &'static str {
-        TAGGABLE_PRIMARY_KEY
-    }
-
-    fn primary_value(&self) -> String {
-        self.value.to_comparison_string()
-    }
-
-    fn set_primary_value(&mut self, value: String) {
-        self.value = CaseInsensitiveString::from(value);
     }
 }

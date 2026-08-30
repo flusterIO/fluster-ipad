@@ -10,6 +10,7 @@ use conundrum::{
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 use conundrum_fs::models::user_workspace::workspace_relative_path_strings::WorkspaceRelativeStringPath;
+use conundrum_macros::DBSchema;
 use fake::{Dummy, Faker};
 use serde::{Deserialize, Serialize};
 
@@ -20,7 +21,7 @@ use crate::vector::models::{
     text::text_based_content::text_based_content_trait::TextBasedContent as TextBasedContentTrait,
 };
 
-#[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type)]
+#[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, DBSchema)]
 pub struct BinaryBasedContent<ContentType, ChunkType, ParseParameters>
     where ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug,
           ChunkType: Serialize + Debug {
@@ -44,23 +45,5 @@ impl<ChunkType: Serialize + Debug,
 {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
         todo!()
-    }
-}
-
-impl<'a,
-     ChunkType: Serialize + Debug,
-     ContentType: Serialize + Debug + BinaryBasedContentTrait<ParseParameters, ChunkType> + Dummy<Faker> + Deserialize<'a>,
-     ParseParameters> DBSchema<'a> for BinaryBasedContent<ContentType, ChunkType, ParseParameters>
-{
-    fn arrow_fields() -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<Field>>> {
-        let res = vec![Arc::new(DatabaseId::field_definition("id", false)),
-                       Arc::new(Binary::field_definition_large("content", false)),
-                       Arc::new(AIGeneratedStatus::field_definition("ai_generated", false)),
-                       Arc::new(workspace_relative_path_field("ws_path", true)),
-                       Arc::new(String::field_definition("title", true)),
-                       Arc::new(DateTime::field_definition("ctime", false)),
-                       Arc::new(DateTime::field_definition("utime", false)),
-                       Arc::new(AIInteractions::field_definition("ai", false))];
-        Ok(res)
     }
 }

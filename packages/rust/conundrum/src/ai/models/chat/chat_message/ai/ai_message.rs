@@ -9,9 +9,12 @@ use crate::{
             ai_chat_history_item::IntoChatHistoryItem, from_with_convo_information::FromWithConvoInformation,
         },
     },
-    ecosystem::db::db_traits::{
-        db_entity::{DBEntity, DBSchema},
-        db_field::DatabaseField,
+    ecosystem::db::{
+        db_traits::{
+            db_entity::{DBEntity, DBSchema},
+            db_field::DatabaseField,
+        },
+        tables::DatabaseTable,
     },
     lifted_models::primitives::{
         date_time::DateTime,
@@ -20,13 +23,15 @@ use crate::{
     },
 };
 use axum::extract::ws::Message;
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use rig::{OneOrMany, message::UserContent};
 use serde::{Deserialize, Serialize};
 
 use crate::impl_default_crud;
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::AgentMessage, source_crate = true)]
 pub struct AIMessage {
     pub id: DatabaseId,
     pub convo_id: DatabaseId,
@@ -82,42 +87,3 @@ impl IntoChatHistoryItem for AIMessage {
         self.body.clone()
     }
 }
-
-impl<'a> DBSchema<'a> for AIMessage {
-    fn arrow_fields(
-        )
-        -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(DatabaseId::field_definition("convo_id", false)),
-                Arc::new(DatabaseId::field_definition("agent_id", true)),
-                Arc::new(String::field_definition("body", false)),
-                Arc::new(DateTime::field_definition("ctime", false)),])
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for AIMessage {
-    type PartialUpdateType = AIMessage;
-
-    fn table() -> crate::ecosystem::db::tables::DatabaseTable {
-        crate::ecosystem::db::tables::DatabaseTable::AgentMessage
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone();
-    }
-}
-
-impl_default_crud!(AIMessage, AIMessage, DatabaseId);

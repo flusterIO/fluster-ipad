@@ -1,3 +1,4 @@
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use std::sync::Arc;
 
@@ -5,7 +6,7 @@ use crate::{
     ai::{
         ai_constants::DEFAULT_LOCAL_LANGUAGE_MODEL,
         models::{
-            agent::{agent_description_partial::AgentDescriptionPartial, agent_primary_task::AgentPrimaryTask},
+            agent::agent_primary_task::AgentPrimaryTask,
             chat::chat_conversation::vector_mode::VectorMode,
             tool::{mcp_tool_name::MCPToolName, mcp_tool_name_list::MCPToolNameList},
         },
@@ -22,7 +23,8 @@ use crate::{
 };
 use indoc::formatdoc;
 
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::AgentDescription, source_crate = true)]
 pub struct AgentDescription {
     pub id: DatabaseId,
     /// The name that the AI should be referred to as. AI should reference this
@@ -94,50 +96,3 @@ impl AgentDescription {
         Self::default_local_chat()
     }
 }
-
-impl<'a> DBSchema<'a> for AgentDescription {
-    fn arrow_fields(
-        )
-        -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(String::field_definition("name", true)),
-                Arc::new(String::field_definition("model", false)),
-                Arc::new(bool::field_definition("reasoning", false)),
-                Arc::new(bool::field_definition("is_local", false)),
-                Arc::new(String::field_definition("instructions", true)),
-                Arc::new(MCPToolNameList::field_definition("always_include_tools", false)),
-                Arc::new(f32::field_definition("temperature_scalar", false)),
-                Arc::new(VectorMode::field_definition("embedding_mode", false)),
-                Arc::new(VectorMode::field_definition("chat_mode", false)),
-                Arc::new(AgentPrimaryTask::field_definition("primary_task", true)),
-                Arc::new(DateTime::field_definition("ctime", false)),
-                Arc::new(DateTime::field_definition("utime", false)),])
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for AgentDescription {
-    type PartialUpdateType = AgentDescriptionPartial;
-
-    fn table() -> crate::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::AgentDescription
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone();
-    }
-}
-
-impl_default_crud!(AgentDescription, AgentDescriptionPartial, DatabaseId);

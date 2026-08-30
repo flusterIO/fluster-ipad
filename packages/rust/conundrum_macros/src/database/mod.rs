@@ -4,7 +4,7 @@ use syn::{DeriveInput, parse_macro_input};
 // mod attributes;
 // mod field;
 pub mod database_entity;
-mod db_default_crud;
+pub mod db_default_crud;
 pub mod db_entity;
 mod model;
 // mod partial;

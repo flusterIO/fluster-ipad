@@ -42,7 +42,7 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
         Some(um) => {
             let nested_type = um.ty;
             quote! {
-               <#nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::arrow_fields()
+               <#nested_type as #crate_id::ecosystem::db::db_traits::db_entity::ArrowFields>::arrow_fields()
             }
         }
         None => {
@@ -55,7 +55,8 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     };
 
     Ok(quote! {
-        impl<'a> #crate_id::ecosystem::db::db_traits::db_entity::DBSchema<'a> for #name {
+        impl #crate_id::ecosystem::db::db_traits::db_entity::DBSchema for #name {}
+        impl #crate_id::ecosystem::db::db_traits::db_entity::ArrowFields for #name {
             fn arrow_fields()
                 -> #crate_id::ecosystem::error_handling::db_error::DatabaseResult<
                         Vec<std::sync::Arc<arrow_schema::Field>>
@@ -78,6 +79,7 @@ pub fn derive_db_schema(input: TokenStream) -> TokenStream {
     }
 }
 
+#[derive(Clone, Debug)]
 struct FieldOptions {
     rename: Option<String>,
     nullable: Option<bool>,

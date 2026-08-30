@@ -28,6 +28,11 @@ pub fn derive_database_entity(input: TokenStream) -> TokenStream {
     database::db_entity::derive_db_entity(input)
 }
 
+#[proc_macro_derive(DBDefaultCrud, attributes(db))]
+pub fn derive_database_default_crud(input: TokenStream) -> TokenStream {
+    database::db_default_crud::derive_db_default_crud(input)
+}
+
 #[proc_macro_derive(DBPartial, attributes(db))]
 pub fn derive_database_partial(input: TokenStream) -> TokenStream {
     database::db_partial::derive_db_partial(input)

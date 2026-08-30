@@ -1,11 +1,22 @@
 use crate::database::model::Model;
 use quote::quote;
-use syn::{Ident, Path, PathSegment, TypePath, punctuated::Punctuated};
+use syn::{DeriveInput, Ident, Path, PathSegment, TypePath, parse_macro_input, punctuated::Punctuated};
 
-use proc_macro2::Span;
+use proc_macro::{Span, TokenStream};
+
+pub fn derive_db_default_crud(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+
+    let model = Model::try_from(input).expect("Failed to constuct Model struct from macro input.");
+    match gen_default_crud(&model) {
+        Ok(tokens) => tokens.into(),
+        Err(error) => error.to_compile_error().into(),
+    }
+}
 
 pub fn gen_default_crud(input: &Model) -> Result<proc_macro2::TokenStream, syn::Error> {
     let crate_id = input.conundrum_crate_import();
+    let as_entity = input.as_db_entity();
     let id_type = input.primary_field()
                        .map(|x| {
                            let ty = x.ty.clone();
@@ -21,7 +32,7 @@ pub fn gen_default_crud(input: &Model) -> Result<proc_macro2::TokenStream, syn::
                                     .expect("You must provide a 'unit' value if the struct does not have an id field.")
                                     .ty;
                            quote! {
-                               <#nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::IDType
+                               <#nested_type as #as_entity>::IDType
                            }
                        });
     let partial_type = input.partial_type_or_self()?;

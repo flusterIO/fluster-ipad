@@ -13,6 +13,7 @@ use conundrum::{
     },
     lifted_models::primitives::db_id::DatabaseId,
 };
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 
 use crate::vector::models::{
@@ -25,7 +26,7 @@ use crate::vector::models::{
 /// This is a git repository that is important to the user's knowledge base. You
 /// should query this repository as needed to help this user tackle their short
 /// and long term goals.
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
 pub struct GitRepositoryEntity {
     #[serde(default = "DatabaseId::default")]
     pub id: DatabaseId,
@@ -57,42 +58,4 @@ pub struct GitRepositoryEntity {
     pub allow_ai_access: bool,
     pub local_vector: DBVector,
     pub remote_vector: DBVector,
-}
-
-impl<'a> DBSchema<'a> for GitRepositoryEntity {
-    fn arrow_fields() -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<Field>>> {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(String::field_definition("fs_path", true)),
-                Arc::new(String::field_definition("url", true)),
-                Arc::new(String::field_definition("label", false)),
-                Arc::new(AIInteractions::field_definition("ai", false)),
-                Arc::new(bool::field_definition("is_workspace", false)),
-                Arc::new(bool::field_definition("allow_ai_access", false)),
-                Arc::new(DBVector::field_definition("local_vector", true)),
-                Arc::new(DBVector::field_definition("remote_vector", true)),])
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for GitRepositoryEntity {
-    type PartialUpdateType = GitRepositoryPartial;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::GitRepository
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone()
-    }
 }

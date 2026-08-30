@@ -13,5 +13,3 @@ pub struct TaggablePartial {
     pub location: Option<TagLocation>,
     pub last_access: Option<DateTime>,
 }
-
-impl<'a> DBSchema<'a> for TaggablePartial {}

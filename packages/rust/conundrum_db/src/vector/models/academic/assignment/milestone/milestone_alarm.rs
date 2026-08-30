@@ -1,19 +1,17 @@
 use std::sync::Arc;
 
 use arrow_schema::Field;
-use conundrum::{ecosystem::db::db_traits::db_entity::DBSchema, lifted_models::primitives::db_id::DatabaseId};
+use conundrum::{
+    ecosystem::db::{db_traits::db_entity::DBSchema, tables::DatabaseTable},
+    lifted_models::primitives::db_id::DatabaseId,
+};
+use conundrum_macros::DatabaseEntity;
 
 use crate::vector::database::primitive_field_schema_generators::dual_id_fields::two_required_id_fields;
 
-#[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, fake::Dummy)]
+#[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, fake::Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::MilestoneAlarm)]
 pub struct MilestoneAlarm {
     pub milestone_id: DatabaseId,
     pub alarm_id: DatabaseId,
-}
-
-impl<'a> DBSchema<'a> for MilestoneAlarm {
-    fn arrow_fields() -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<Field>>> {
-        let (f1, f2) = two_required_id_fields("milestone_id", "alarm_id");
-        Ok(vec![Arc::new(f1), Arc::new(f2)])
-    }
 }

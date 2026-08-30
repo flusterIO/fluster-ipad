@@ -20,17 +20,17 @@ pub trait SeedContent {
 
 pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerStateType>:
     Chunk<ParseParameters, ChunkType, ServerStateType>
-    where ChunkType: DBSchema<'a> + EntityCRUD<'a, PartialUpdateType> + Clone,
-          PartialUpdateType: Clone + DBSchema<'a> {
+    where ChunkType: DBSchema + EntityCRUD<'a, PartialUpdateType> + Clone,
+          PartialUpdateType: Clone + DBSchema {
     fn table() -> DatabaseTable;
     async fn try_seed(&self, db: ArcMutexDB, opts: ParseParameters, state: Arc<ServerStateType>) -> DatabaseResult<()> {
         let chunks = self.try_chunk(opts, Arc::clone(&state)).await.map_err(|e| {
                                                                         log::error!("AI Error: {:#?}", e);
                                                                         DatabaseError::AIError(e)
                                                                     })?;
-        ChunkType::save_many(rc, db).await.inspect_err(|e| {
-                                               log::error!("Failed to save seed content: {:#?}", e);
-                                           })?;
+        ChunkType::save_many(chunks, db).await.inspect_err(|e| {
+                                                   log::error!("Failed to save seed content: {:#?}", e);
+                                               })?;
         Ok(())
     }
 }

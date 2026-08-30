@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use axum::extract::ws::Message;
+use conundrum_macros::DatabaseEntity;
 use crate::{
     ai::{models::chat::chat_sender::chat_sender::ChatParticipant, rig::ai_traits::ai_chat_history_item::IntoChatHistoryItem},
     ecosystem::db::{db_traits::{db_entity::{DBEntity, DBSchema}, db_field::DatabaseField}}, lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
@@ -75,44 +76,3 @@ impl IntoChatHistoryItem for ChatMessage {
         self.body.clone()
     }
 }
-
-impl<'a> DBSchema<'a> for ChatMessage {
-    fn arrow_fields(
-        
-        )
-        -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(String::field_definition("reasoning_content", true)),
-                Arc::new(DatabaseId::field_definition("convo_id", false)),
-                Arc::new(DatabaseId::field_definition("agent_id", true)),
-                Arc::new(ChatParticipant::field_definition("sender", true)),
-                Arc::new(String::field_definition("body", false)),
-                Arc::new(DateTime::field_definition("ctime", false))])
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for ChatMessage {
-    type PartialUpdateType = ChatMessage;
-
-    fn table() -> crate::ecosystem::db::tables::DatabaseTable {
-        crate::ecosystem::db::tables::DatabaseTable::UserMessage
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone()
-    }
-}
-
-impl_default_crud!(ChatMessage, ChatMessage, DatabaseId);

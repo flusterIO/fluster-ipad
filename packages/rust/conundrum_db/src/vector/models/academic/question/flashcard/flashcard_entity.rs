@@ -12,6 +12,7 @@ use conundrum::{
     impl_default_crud,
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
@@ -20,7 +21,8 @@ pub fn default_empty() -> u32 {
     0
 }
 
-#[derive(Clone, Serialize, Deserialize, Dummy, specta::Type)]
+#[derive(Clone, Serialize, Deserialize, Dummy, specta::Type, DatabaseEntity)]
+#[db(table = DatabaseTable::QAPair)]
 pub struct FlashCardEntity {
     #[serde(default = "DatabaseId::default")]
     pub id: DatabaseId,
@@ -43,47 +45,3 @@ pub struct FlashCardEntity {
     #[serde(default = "DateTime::new_now")]
     pub last_access: DateTime,
 }
-
-impl<'a> DBSchema<'a> for FlashCardEntity {
-    fn arrow_fields(
-        )
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(String::field_definition("question", false)),
-                FlashcardValue::field_definition("answer", true),
-                Arc::new(String::field_definition("explanation", true)),
-                Arc::new(u32::field_definition("correct_responses", false)),
-                Arc::new(u32::field_definition("incorrect_responses", false)),
-                Arc::new(f32::field_definition("difficulty", true)),
-                Arc::new(DateTime::field_definition("ctime", false)),
-                Arc::new(DateTime::field_definition("utime", false)),
-                Arc::new(DateTime::field_definition("last_access", false)),])
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for FlashCardEntity {
-    type PartialUpdateType = FlashCardEntityPartial;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::QAPair
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone();
-    }
-}
-
-impl_default_crud!(FlashCardEntity, FlashCardEntityPartial, DatabaseId);

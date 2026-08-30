@@ -1,7 +1,11 @@
 use std::sync::Arc;
 
 use arrow_schema::Field;
-use conundrum::{ecosystem::db::db_traits::db_entity::DBSchema, lang::runtime::run_conundrum::ParseConundrumOptions};
+use conundrum::{
+    ecosystem::db::{db_traits::db_entity::DBSchema, tables::DatabaseTable},
+    lang::runtime::run_conundrum::ParseConundrumOptions,
+};
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
@@ -10,12 +14,7 @@ use crate::vector::models::text::{
     text_based_content::{text_based_chunk::TextBasedChunk, text_based_content::TextBasedContent},
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy, DatabaseEntity)]
 #[serde(transparent)]
+#[db(table = DatabaseTable::HTML, unit = TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>)]
 pub struct HTMLModel(TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>);
-
-impl<'a> DBSchema<'a> for HTMLModel {
-    fn arrow_fields() -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<Field>>> {
-        TextBasedContent::<CdrmContent, TextBasedChunk, ParseConundrumOptions>::arrow_fields()
-    }
-}

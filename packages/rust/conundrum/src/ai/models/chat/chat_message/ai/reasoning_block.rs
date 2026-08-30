@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use rig::completion::message::{Reasoning, ReasoningContent};
 use serde::{Deserialize, Serialize};
@@ -17,7 +18,8 @@ use crate::{
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId, static_id::StaticId},
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::AgentReasoning, source_crate = true)]
 pub struct ReasoningBlock {
     pub id: DatabaseId,
     pub convo_id: DatabaseId,
@@ -58,42 +60,3 @@ impl FromWithConvoInformation<rig::completion::message::Reasoning> for Reasoning
                ctime: DateTime::new_now() }
     }
 }
-
-impl<'a> DBSchema<'a> for ReasoningBlock {
-    fn arrow_fields(
-        )
-        -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(DatabaseId::field_definition("convo_id", false)),
-                Arc::new(DatabaseId::field_definition("agent_id", false)),
-                Arc::new(String::field_definition("content", false)),
-                Arc::new(DateTime::field_definition("ctime", false))])
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for ReasoningBlock {
-    type PartialUpdateType = ReasoningBlock;
-
-    fn table() -> crate::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::AgentReasoning
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone();
-    }
-}
-
-impl_default_crud!(ReasoningBlock, ReasoningBlock, DatabaseId);

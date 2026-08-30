@@ -28,16 +28,3 @@ impl From<ChatConversationPartial> for ChatConversationUtimePartial {
                utime: DateTime::new_now() }
     }
 }
-
-impl<'a> DBSchema<'a> for ChatConversationUtimePartial {
-    fn arrow_fields(
-        )
-        -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(String::field_definition("label", true)),
-                Arc::new(String::field_definition("desc", true)),
-                Arc::new(bool::field_definition("requires_label_update", true)),
-                Arc::new(DateTime::field_definition("utime", true))])
-    }
-}

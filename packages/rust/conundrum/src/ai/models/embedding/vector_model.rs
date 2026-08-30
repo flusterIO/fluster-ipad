@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use serde::Serialize;
+
 use crate::{
     ecosystem::{
         db::{
@@ -16,8 +18,8 @@ use crate::{
 };
 
 pub trait VectorModel<'a, PrimaryIdType: DatabaseIdentifiable + Display = DatabaseId>:
-    DBEntity<'a, PrimaryIdType> + DBSchema<'a> + EntityCRUD<'a, Self::UpdatePartial> {
-    type UpdatePartial: DBSchema<'a> + Clone;
+    DBEntity + DBSchema + EntityCRUD<'a, Self::UpdatePartial> {
+    type UpdatePartial: DBSchema + Clone + Serialize;
     /// Returns (DocumentId, ChunkReferenceKey) in that order.
     ///
     /// For example,

@@ -24,8 +24,12 @@ impl Chunk<ParseConundrumOptions, DocumentationChunk, ServerState> for Documenta
                        -> Result<Vec<DocumentationChunk>, AIError> {
         let x: String = self.key.clone().into();
         let y: CdrmContent = x.into();
-        let res =
-            y.try_chunk(opts, state).await?.iter().map(DocumentationChunk::from).collect::<Vec<DocumentationChunk>>();
+        let res = y.try_chunk(opts, state)
+                   .await?
+                   .iter()
+                   .cloned()
+                   .map(DocumentationChunk::from)
+                   .collect::<Vec<DocumentationChunk>>();
         Ok(res)
     }
 }

@@ -15,6 +15,7 @@ use conundrum::{
     impl_default_crud,
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use globset::{Glob, GlobMatcher};
 use serde::{Deserialize, Serialize};
@@ -24,7 +25,7 @@ use crate::vector::models::taggables::{
 };
 use specta::Type;
 
-#[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy, DatabaseEntity)]
 pub struct AutoTaggable {
     pub id: DatabaseId,
     /// The value of the taggable that will be automatically applied.
@@ -42,47 +43,6 @@ pub struct AutoTaggable {
     pub glob: String,
     pub ctime: DateTime,
     pub utime: DateTime,
-}
-
-impl_default_crud!(AutoTaggable, AutoTaggablePartial, DatabaseId);
-
-impl<'a> DBSchema<'a> for AutoTaggable {
-    fn arrow_fields(
-        )
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        let r = vec![Arc::new(DatabaseId::field_definition("id", false)),
-                     Arc::new(String::field_definition("value", false)),
-                     Arc::new(TaggableVariant::field_definition("variant", false)),
-                     Arc::new(String::field_definition("glob", false)),
-                     Arc::new(DateTime::field_definition("ctime", false)),
-                     Arc::new(DateTime::field_definition("utime", false)),];
-        Ok(r)
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for AutoTaggable {
-    type PartialUpdateType = AutoTaggablePartial;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::AutoTaggable
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone()
-    }
 }
 
 impl AutoTaggable {

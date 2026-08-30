@@ -1,3 +1,4 @@
+use conundrum::ecosystem::db::db_traits::db_entity::DBEntity;
 use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};

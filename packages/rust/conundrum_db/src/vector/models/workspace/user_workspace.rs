@@ -13,6 +13,7 @@ use conundrum::lifted_models::primitives::date_time::DateTime;
 use conundrum_fs::workspace_management::file_walk_config::FileWalkConfig;
 use conundrum_fs::workspace_management::get_filetype_recursively::ParsableFileTypePathMap;
 use conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively;
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use lancedb::arrow::arrow_schema::DataType;
 use lancedb::arrow::arrow_schema::Field;
@@ -25,7 +26,7 @@ use std::sync::Arc;
 static USER_WORKSPACE_PRIMARY_KEY: &str = "root";
 static USER_WORKSPACE_MERGE_KEYS: &[&str] = &[USER_WORKSPACE_PRIMARY_KEY];
 
-#[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy, DatabaseEntity)]
 pub struct UserWorkspace {
     /// The path to the root of the workspace and the primary key for the
     /// workspace.
@@ -50,18 +51,6 @@ pub struct UserWorkspace {
     pub ai: AIInteractions,
     #[serde(default = "DateTime::new_now")]
     pub ctime: DateTime,
-}
-
-impl<'a> DBSchema<'a> for UserWorkspace {
-    fn arrow_fields() -> DatabaseResult<Vec<Arc<Field>>> {
-        Ok(vec![Arc::new(String::field_definition("root", false)),
-                Arc::new(String::field_definition("label", true)),
-                Arc::new(bool::field_definition("respect_gitignore", false)),
-                Arc::new(bool::field_definition("ignore_hidden", false)),
-                Arc::new(String::field_definition("resource_dir", false)),
-                Arc::new(AIInteractions::field_definition("ai", false)),
-                Arc::new(DateTime::field_definition("ctime", false))])
-    }
 }
 
 impl UserWorkspace {
@@ -135,32 +124,6 @@ impl IntoPartial<UserWorkspacePartial> for UserWorkspace {
                                respect_gitignore: Some(self.respect_gitignore),
                                ai: Some(self.ai.clone()),
                                resource_dir: Some(self.resource_dir.clone()) }
-    }
-}
-
-impl_default_crud!(UserWorkspace, UserWorkspacePartial, String);
-
-impl<'a> DBEntity<'a> for UserWorkspace {
-    type PartialUpdateType = UserWorkspacePartial;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        conundrum::ecosystem::db::tables::DatabaseTable::UserWorkspace
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        USER_WORKSPACE_MERGE_KEYS
-    }
-
-    fn primary_key() -> &'static str {
-        USER_WORKSPACE_PRIMARY_KEY
-    }
-
-    fn primary_value(&self) -> String {
-        self.root.clone()
-    }
-
-    fn set_primary_value(&mut self, value: String) {
-        self.root = value.clone()
     }
 }
 

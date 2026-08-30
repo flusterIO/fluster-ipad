@@ -240,6 +240,11 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                         This table describes keyboard shortcuts for the user throughout the Conundrum ecosystem.
                         "}.to_string() },
+
+            DatabaseTable::StreetAddress => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
+            Ths table holds addresses of places that are important to the user. Save information here as needed using the tools available to you, and query it as needed to help the user manage their lives.
+                "}.to_string()
+            },
             DatabaseTable::DocumentationChunk => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
                 This table holds the content that describes the documentation for the Conundrum ecosystem of tools, and the Conundrum language itself. Query it as needed to help user's get the most from these tools so that they can reach their academic goals.
                 "}.to_string(),

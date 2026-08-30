@@ -110,6 +110,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "short_term_goal")]
     #[serde(rename = "short_term_goal")]
     ShortTermGoal,
+    #[strum(to_string = "street_address")]
+    #[serde(rename = "street_address")]
+    StreetAddress,
     /// --- 'Joining' tables ---
     #[strum(to_string = "workspace_repository")]
     #[serde(rename = "workspace_repository")]

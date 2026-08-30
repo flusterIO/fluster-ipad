@@ -7,15 +7,18 @@ use crate::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
 use crate::ecosystem::db::db_traits::db_field::DatabaseField;
 use crate::ecosystem::db::db_traits::db_identifiable::DatabaseIdentifiable;
 use crate::ecosystem::db::db_traits::entity_crud::EntityCRUD;
+use crate::ecosystem::db::db_traits::into_partial::IntoPartial;
 use crate::ecosystem::db::parameters::general::pagination::PaginationParams;
 use crate::ecosystem::db::tables::DatabaseTable;
 use crate::ecosystem::error_handling::db_error::DatabaseResult;
 use crate::impl_default_crud;
 use crate::lifted_models::primitives::date_time::DateTime;
 use crate::lifted_models::primitives::db_id::DatabaseId;
+use conundrum_macros::DatabaseEntity;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::ChatConversation, source_crate = true)]
 pub struct ChatConversation {
     pub id: DatabaseId,
     pub label: String,
@@ -24,6 +27,17 @@ pub struct ChatConversation {
     pub ctime: DateTime,
     #[serde(default = "DateTime::new_now")]
     pub utime: DateTime,
+}
+
+impl From<ChatConversation> for <ChatConversation as DBEntity>::PartialUpdateType {
+    fn from(value: ChatConversation) -> Self {
+        Self { id: value.id.clone(),
+               label: Some(value.label.clone()),
+               desc: Some(value.desc.clone()),
+               requires_label_update: Some(value.requires_label_update),
+               ctime: Some(value.ctime),
+               utime: Some(value.utime) }
+    }
 }
 
 impl ChatConversation {
@@ -52,7 +66,8 @@ impl ChatConversation {
                 let item = _self.index_mut(0);
                 item.requires_label_update = true;
                 item.utime = DateTime::new_now();
-                ChatConversation::merge_by_primary_key(vec![item.clone()], Arc::clone(&db)).await?;
+                let partial = <ChatConversation as DBEntity>::PartialUpdateType::from(item.clone());
+                ChatConversation::merge_by_primary_key(vec![partial], Arc::clone(&db)).await?;
                 log::info!("Updated one chat conversation.")
             }
             _ => {
@@ -60,45 +75,5 @@ impl ChatConversation {
             }
         };
         Ok(())
-    }
-}
-
-impl_default_crud!(ChatConversation, ChatConversation, DatabaseId);
-
-impl<'a> DBSchema<'a> for ChatConversation {
-    fn arrow_fields(
-        )
-        -> crate::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(String::field_definition("label", false)),
-                Arc::new(String::field_definition("desc", true)),
-                Arc::new(bool::field_definition("requires_label_update", true)),
-                Arc::new(DateTime::field_definition("ctime", false)),
-                Arc::new(DateTime::field_definition("utime", false))])
-    }
-}
-
-impl<'a> DBEntity<'a, DatabaseId> for ChatConversation {
-    type PartialUpdateType = ChatConversation;
-
-    fn table() -> crate::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::ChatConversation
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["id"]
-    }
-
-    fn primary_key() -> &'static str {
-        "id"
-    }
-
-    fn primary_value(&self) -> DatabaseId {
-        self.id.clone()
-    }
-
-    fn set_primary_value(&mut self, value: DatabaseId) {
-        self.id = value.clone();
     }
 }

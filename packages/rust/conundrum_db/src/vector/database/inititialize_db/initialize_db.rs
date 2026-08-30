@@ -177,9 +177,9 @@ pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResu
     }
     drop(db);
     log::info!("Conundrum successfully initialized {} tables.", table_data.len());
-    let _ = seed_db(Arc::clone(&db_arc), state).await.inspect_err(|e| {
-                                                         log::error!("Error: {:#?}", e);
-                                                     });
+    let _ = seed_db(Arc::clone(&db_arc), Arc::clone(state)).await.inspect_err(|e| {
+                                                                     log::error!("Error: {:#?}", e);
+                                                                 });
     log::info!("Conundrum successfully seeded your database with documentation and some initial settings. Add a workspace to start adding actually meaningful content to your database.");
     Ok(())
 }

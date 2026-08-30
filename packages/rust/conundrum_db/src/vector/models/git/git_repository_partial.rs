@@ -2,9 +2,10 @@ use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
 use conundrum::{ecosystem::db::db_traits::db_entity::DBSchema, lifted_models::primitives::db_id::DatabaseId};
+use conundrum_macros::DBSchema;
 use fake::Dummy;
 
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy, DBSchema)]
 pub struct GitRepositoryPartial {
     /// Will match the root of the workspace if this is a workspace repository.
     pub fs_path: Option<String>,
@@ -16,5 +17,3 @@ pub struct GitRepositoryPartial {
     is_workspace: Option<bool>,
     pub allow_ai_access: Option<bool>,
 }
-
-impl<'a> DBSchema<'a> for GitRepositoryPartial {}

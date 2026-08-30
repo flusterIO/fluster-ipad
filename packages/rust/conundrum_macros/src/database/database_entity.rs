@@ -1,6 +1,6 @@
 use proc_macro::TokenStream;
-use quote::quote;
 use syn::{DeriveInput, parse_macro_input};
+use quote::quote;
 
 use crate::database::{
     db_default_crud::gen_default_crud, db_entity::generate_db_entity, db_partial::gen_db_partial, model::Model,

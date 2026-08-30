@@ -13,6 +13,7 @@ use conundrum::{
     lifted_models::primitives::{case_insensitive_string::CaseInsensitiveString, date_time::DateTime},
     testing::faker_generators::fake_words_as_string::fake_words_as_string,
 };
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
@@ -28,22 +29,15 @@ pub static TAGGABLE_PRIMARY_KEY: &str = "value";
 pub static TAGGABLE_MERGE_KEYS: &[&str] = &[TAGGABLE_PRIMARY_KEY];
 
 #[serde_as]
-#[derive(Serialize, Deserialize, Clone, Debug, Dummy, Type)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy, Type, DatabaseEntity)]
 pub struct Tag {
     #[dummy(faker = "fake_words_as_string(0..10)")]
+    #[db(primary)]
     pub value: CaseInsensitiveString,
     pub location: TagLocation,
     pub ai: AIInteractions,
     pub ctime: DateTime,
     pub last_access: DateTime,
-}
-
-pub fn taggable_fields() -> Vec<Arc<Field>> {
-    vec![Arc::new(CaseInsensitiveString::field_definition("value", false)),
-         Arc::new(TagLocation::field_definition("location", false)),
-         Arc::new(AIInteractions::field_definition("ai", false)),
-         Arc::new(DateTime::field_definition("ctime", false)),
-         Arc::new(DateTime::field_definition("last_access", false)),]
 }
 
 impl From<String> for Tag {
@@ -53,38 +47,6 @@ impl From<String> for Tag {
               ai: AIInteractions::default(),
               ctime: DateTime::new_now(),
               last_access: DateTime::new_now() }
-    }
-}
-
-impl<'a> DBSchema<'a> for Tag {
-    fn arrow_fields() -> DatabaseResult<Vec<Arc<arrow_schema::Field>>> {
-        Ok(taggable_fields())
-    }
-}
-
-impl_default_crud!(Tag, TaggablePartial, String);
-
-impl<'a> DBEntity<'a> for Tag {
-    type PartialUpdateType = TaggablePartial;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        conundrum::ecosystem::db::tables::DatabaseTable::Tag
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        TAGGABLE_MERGE_KEYS
-    }
-
-    fn primary_key() -> &'static str {
-        TAGGABLE_PRIMARY_KEY
-    }
-
-    fn primary_value(&self) -> String {
-        self.value.to_comparison_string()
-    }
-
-    fn set_primary_value(&mut self, value: String) {
-        self.value = CaseInsensitiveString::from(value.clone());
     }
 }
 

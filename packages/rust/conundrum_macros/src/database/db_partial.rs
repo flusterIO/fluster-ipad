@@ -19,7 +19,7 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     let struct_name = &input.ident;
 
     let partial_name = syn::Ident::new(&format!("{struct_name}Partial"), struct_name.span());
-    let table_name = input.table.clone();
+    let table_name = input.table_required()?;
     let db_attr = match input.in_source_crate {
         true => {
             if let Some(um) = input.unit.clone() {

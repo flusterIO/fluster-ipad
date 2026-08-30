@@ -13,7 +13,7 @@ macro_rules! subject_join {
             pub $id_key: $id_type,
         }
 
-        impl<'a> DBSchema<'a> for $struct_name {
+        impl<'a> DBSchema for $struct_name {
             fn arrow_fields(
                 )
                 -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>

@@ -1,4 +1,6 @@
 use proc_macro2::Span;
+use proc_macro2::TokenStream;
+use quote::quote;
 use syn::{Error, Field, GenericArgument, PathArguments, Type};
 
 fn is_option(ty: &Type) -> bool {
@@ -58,7 +60,7 @@ fn parse_partial(options: &mut PartialOptions, meta: syn::meta::ParseNestedMeta<
         })
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct PartialOptions {
     pub skip: bool,
     pub required: bool,
@@ -74,7 +76,7 @@ impl Default for PartialOptions {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct FieldOptions {
     pub skip: bool,
     pub rename: Option<String>,
@@ -147,7 +149,7 @@ impl Default for FieldOptions {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct ModelField {
     pub ident: syn::Ident,
 
@@ -247,6 +249,7 @@ impl UnitModel {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct Model {
     pub ident: syn::Ident,
     pub generics: syn::Generics,
@@ -255,7 +258,7 @@ pub struct Model {
     /// any crate that imports conundrum.
     pub in_source_crate: bool,
 
-    pub table: syn::Path,
+    pub table: Option<syn::Path>,
     pub partial: Option<syn::Path>,
     pub fields: Vec<ModelField>,
 
@@ -426,7 +429,7 @@ impl Model {
               .cloned()
               .ok_or_else(|| syn::Error::new_spanned(pt, "partial type must be a simple type identifier"))
         } else {
-            Ok(self.ident.clone())
+            Ok(self.partial_name())
         }
     }
 
@@ -458,10 +461,42 @@ impl Model {
             false => syn::PathSegment::from(syn::Ident::new("conundrum", Span::call_site())),
         }
     }
+
+    pub fn table_required(&self) -> Result<syn::Path, syn::Error> {
+        self.table
+            .as_ref()
+            .cloned()
+            .ok_or_else(|| syn::Error::new(Span::call_site(), "database model requires #[db(table = ...)]"))
+    }
+
+    pub fn as_db_entity(&self) -> TokenStream {
+        let id_type = self.primary_field().ok();
+        let crate_id = self.conundrum_crate_import();
+        match id_type {
+            Some(um) => {
+                let id_type = um.ty.clone();
+                quote! {
+                    #crate_id::ecosystem::db::db_traits::db_entity::DBEntity
+                }
+            }
+            None => {
+                quote! {
+                    #crate_id::ecosystem::db::db_traits::db_entity::DBEntity
+                }
+            }
+        }
+    }
+
+    pub fn partial_name(&self) -> syn::Ident {
+        let struct_name = &self.ident;
+
+        let partial_name = syn::Ident::new(&format!("{struct_name}Partial"), struct_name.span());
+        partial_name
+    }
 }
 
 pub struct ModelOptions {
-    pub table: syn::Path,
+    pub table: Option<syn::Path>,
     pub in_source_crate: bool,
     pub partial: Option<syn::Path>,
     pub unit: Option<syn::Path>,
@@ -511,8 +546,8 @@ impl ModelOptions {
                 })?;
         }
 
-        let table =
-            table.ok_or_else(|| syn::Error::new(Span::call_site(), "database model requires #[db(table = ...)]"))?;
+        // let table =
+        //     table;
 
         Ok(Self { table,
                   in_source_crate,

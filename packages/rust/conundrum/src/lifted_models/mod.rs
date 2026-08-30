@@ -6,3 +6,4 @@
 pub mod primitives;
 pub mod remote_local_group;
 pub mod remote_or_local;
+pub mod text;

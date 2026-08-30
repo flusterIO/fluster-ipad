@@ -1,13 +1,18 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
+use conundrum::ecosystem::db::{
+    db_traits::{db_entity::DBSchema, db_field::DatabaseField},
+    tables::DatabaseTable,
+};
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::ecosystem_data::ecosystem_application_settings::ecosystem_application_action::EcosystemApplicationAction;
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
 pub struct KeyboardShortcutPartial {
+    #[db(primary)]
     pub action: EcosystemApplicationAction,
     pub key: Option<String>,
     /// The shift key was pressed.
@@ -18,18 +23,4 @@ pub struct KeyboardShortcutPartial {
     pub alt: Option<bool>,
     /// The 'option' key was pressed.
     pub ctrl: Option<bool>,
-}
-
-impl<'a> DBSchema<'a> for KeyboardShortcutPartial {
-    fn arrow_fields(
-        )
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(EcosystemApplicationAction::field_definition("action", false)),
-                Arc::new(String::field_definition("key", true)),
-                Arc::new(bool::field_definition("shift", true)),
-                Arc::new(bool::field_definition("meta", true)),
-                Arc::new(bool::field_definition("alt", true)),
-                Arc::new(bool::field_definition("ctrl", true)),])
-    }
 }

@@ -4,7 +4,7 @@ use conundrum::{
         db::{
             db::ArcMutexDB,
             db_traits::{
-                db_entity::{DBEntity, DBSchema},
+                db_entity::{ArrowFields, DBEntity, DBSchema},
                 db_field::DatabaseField,
                 entity_crud::EntityCRUD,
             },
@@ -15,6 +15,7 @@ use conundrum::{
     impl_default_crud,
     lang::lib::std_lib_impls::json_string::QuotedString,
 };
+use conundrum_macros::DBDefaultCrud;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -24,7 +25,7 @@ use crate::vector::models::ecosystem_data::ecosystem_setting_key::{
 
 /// Warning: Don't use this directly. Use the enum to handle all interactions
 /// with the DB for typesafetey.
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy, DBDefaultCrud)]
 pub struct EcosystemSettingModel {
     pub key: UniqueSettingKey,
     pub data: Setting,
@@ -49,9 +50,7 @@ impl EcosystemSettingModel {
     }
 }
 
-impl_default_crud!(EcosystemSettingModel, EcosystemSettingModel, UniqueSettingKey);
-
-impl<'a> DBSchema<'a> for EcosystemSettingModel {
+impl<'a> ArrowFields<'a> for EcosystemSettingModel {
     fn arrow_fields(
         )
         -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
@@ -60,7 +59,7 @@ impl<'a> DBSchema<'a> for EcosystemSettingModel {
     }
 }
 
-impl<'a> DBEntity<'a, UniqueSettingKey> for EcosystemSettingModel {
+impl<'a> DBEntity for EcosystemSettingModel {
     type PartialUpdateType = EcosystemSettingModel;
 
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {

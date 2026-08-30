@@ -10,6 +10,7 @@ use conundrum::{
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 use conundrum_fs::models::user_workspace::workspace_relative_path_strings::WorkspaceRelativeStringPath;
+use conundrum_macros::{DatabaseEntity, DatabaseModel};
 use fake::{Dummy, Faker};
 use serde::{Deserialize, Serialize};
 
@@ -19,7 +20,7 @@ use crate::vector::models::{
     text::text_based_content::text_based_content_trait::TextBasedContent as TextBasedContentTrait,
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, DatabaseEntity)]
 pub struct TextBasedContent<ContentType, ChunkType, ParseParameters>
     where ContentType: TextBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug,
           ChunkType: Serialize + Debug {
@@ -64,25 +65,5 @@ impl<ContentType, ChunkType, ParseParams> TextBasedContent<ContentType, ChunkTyp
                            ai: AIInteractions::default(),
                            chunk_type: PhantomData::default(),
                            parse_params: PhantomData::default() }
-    }
-}
-
-impl<'a,
-     ChunkType: Serialize + Debug,
-     ContentType: Serialize + Debug + TextBasedContentTrait<ParseParameters, ChunkType> + Dummy<Faker> + Deserialize<'a>,
-     ParseParameters> DBSchema<'a> for TextBasedContent<ContentType, ChunkType, ParseParameters>
-{
-    fn arrow_fields() -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<Arc<Field>>> {
-        let res = vec![Arc::new(DatabaseId::field_definition("id", false)),
-                       Arc::new(String::field_definition_large("content", false)),
-                       Arc::new(String::field_definition("title", true)),
-                       Arc::new(AIGeneratedStatus::field_definition("ai_generated", false)),
-                       Arc::new(String::field_definition("ws_root", true)),
-                       Arc::new(String::field_definition("relative_path", true)),
-                       Arc::new(DateTime::field_definition("ctime", false)),
-                       Arc::new(DateTime::field_definition("utime", false)),
-                       Arc::new(DateTime::field_definition("last_sync", true)),
-                       Arc::new(AIInteractions::field_definition("ai", false))];
-        Ok(res)
     }
 }

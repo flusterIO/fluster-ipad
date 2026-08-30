@@ -1,6 +1,6 @@
 use strum::IntoEnumIterator;
 
-use crate::ecosystem::error_handling::db_error::DatabaseError;
+use crate::ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::db_error::DatabaseError};
 
 #[derive(serde::Serialize,
            serde::Deserialize,
@@ -34,5 +34,11 @@ impl TryFrom<String> for MCPToolName {
 impl From<MCPToolName> for String {
     fn from(value: MCPToolName) -> Self {
         value.to_string()
+    }
+}
+
+impl DatabaseField for MCPToolName {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        String::field_definition(field_key, nullable)
     }
 }

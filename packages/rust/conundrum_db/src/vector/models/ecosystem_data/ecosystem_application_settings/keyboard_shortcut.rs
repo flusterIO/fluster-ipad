@@ -1,12 +1,16 @@
 use std::sync::Arc;
 
 use conundrum::{
-    ecosystem::db::db_traits::{
-        db_entity::{DBEntity, DBSchema},
-        db_field::DatabaseField,
+    ecosystem::db::{
+        db_traits::{
+            db_entity::{DBEntity, DBSchema},
+            db_field::DatabaseField,
+        },
+        tables::DatabaseTable,
     },
     impl_default_crud,
 };
+use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
@@ -14,7 +18,8 @@ use crate::vector::models::ecosystem_data::ecosystem_application_settings::{
     ecosystem_application_action::EcosystemApplicationAction, keyboard_shortcut_partial::KeyboardShortcutPartial,
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::KeyboardShortcut)]
 pub struct KeyboardShortcut {
     pub action: EcosystemApplicationAction,
     pub key: String,
@@ -26,44 +31,4 @@ pub struct KeyboardShortcut {
     pub alt: bool,
     /// The 'crl' key was pressed.
     pub ctrl: bool,
-}
-
-impl_default_crud!(KeyboardShortcut, KeyboardShortcutPartial, EcosystemApplicationAction);
-
-impl<'a> DBEntity<'a, EcosystemApplicationAction> for KeyboardShortcut {
-    type PartialUpdateType = KeyboardShortcutPartial;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        conundrum::ecosystem::db::tables::DatabaseTable::KeyboardShortcut
-    }
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["action"]
-    }
-
-    fn primary_key() -> &'static str {
-        "action"
-    }
-
-    fn primary_value(&self) -> EcosystemApplicationAction {
-        self.action.clone()
-    }
-
-    fn set_primary_value(&mut self, value: EcosystemApplicationAction) {
-        self.action = value.clone();
-    }
-}
-
-impl<'a> DBSchema<'a> for KeyboardShortcut {
-    fn arrow_fields(
-        )
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(EcosystemApplicationAction::field_definition("action", false)),
-                Arc::new(String::field_definition("key", false)),
-                Arc::new(bool::field_definition("shift", false)),
-                Arc::new(bool::field_definition("meta", false)),
-                Arc::new(bool::field_definition("alt", false)),
-                Arc::new(bool::field_definition("ctrl", false)),])
-    }
 }

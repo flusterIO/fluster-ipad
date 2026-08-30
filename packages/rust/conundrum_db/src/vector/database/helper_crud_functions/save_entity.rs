@@ -7,7 +7,7 @@ use conundrum::ecosystem::{
 };
 
 pub async fn save_entities<'a, T, IDType>(items: Vec<T>, db: ArcMutexDB) -> DatabaseResult<()>
-    where T: DBEntity<'a, IDType> + Clone + Debug {
+    where T: DBEntity + Clone + Debug {
     let schema = T::schema().map(Arc::new)?;
     let _db = db.clone().lock_owned().await;
     let table = T::table();

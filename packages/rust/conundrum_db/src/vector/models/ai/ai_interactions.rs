@@ -24,8 +24,6 @@ pub struct AIInteractions {
     pub ai_generated_input: AIGeneratedInput,
 }
 
-impl<'a> DBSchema<'a> for AIInteractions {}
-
 impl DatabaseField for AIInteractions {
     fn field_definition(field_key: &'static str, nullable: bool) -> Field {
         Field::new(field_key.to_string(),

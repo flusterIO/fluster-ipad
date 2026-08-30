@@ -31,14 +31,13 @@ pub fn filter_one<T>(items: Vec<T>) -> DatabaseResult<Option<T>>
     }
 }
 
-pub trait EntityCRUD<'a, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
-    DBEntity<'a, Self::IDType> + Clone + Serialize {
+pub trait EntityCRUD<'a, UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Clone + Serialize {
     type IDType: DatabaseIdentifiable;
     async fn save_many(items: Vec<Self>, db: ArcMutexDB) -> DatabaseResult<()>
         where Self: Sized {
         let schema = Self::schema().map(Arc::new)?;
         let _db = db.clone().lock_owned().await;
-        let table = Self::table();
+        let table = <Self as DBEntity>::table();
         let tbl = open_table(_db, table.clone()).await.inspect_err(|e| {
                                                            log::error!("Table Error: {:?}", e);
                                                        })?;
@@ -55,7 +54,7 @@ pub trait EntityCRUD<'a, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
            .await
            .map_err(|e| {
                log::error!("Database Error: {:?}", e);
-               DatabaseError::FailToCreateEntity(Self::table().to_model_name())
+               DatabaseError::FailToCreateEntity(<Self as DBEntity>::table().to_model_name())
            })?;
         log::info!("Successfully saved {} `{}` models", items.len(), table.to_model_name());
         Ok(())
@@ -76,7 +75,7 @@ pub trait EntityCRUD<'a, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
     }
 
     async fn delete_by_predicate<'b>(predicate: &'b str, db: ArcMutexDB) -> DatabaseResult<()> {
-        let tbl = Self::table();
+        let tbl = <Self as DBEntity>::table();
         let _db = db.clone().lock_owned().await;
         let db_tbl = open_table(_db, tbl.clone()).await?;
         // let pk = Self::primary_key();
@@ -88,12 +87,12 @@ pub trait EntityCRUD<'a, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
         Ok(())
     }
 
-    async fn delete_by_primary_key(id: Self::IDType, db: ArcMutexDB) -> DatabaseResult<()> {
+    async fn delete_by_primary_key(id: <Self as DBEntity>::IDType, db: ArcMutexDB) -> DatabaseResult<()> {
         Self::delete_by_predicate(id.to_predicate(Self::primary_key()).as_str(), db).await
     }
 
     async fn merge_by_primary_key(items: Vec<UpdatePartial>, db: ArcMutexDB) -> DatabaseResult<()> {
-        let tbl = Self::table();
+        let tbl = <Self as DBEntity>::table();
         let _db = db.clone().lock_owned().await;
         let db_tbl = open_table(_db, tbl.clone()).await?;
         let merge_keys = Self::merge_keys();

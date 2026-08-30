@@ -7,13 +7,14 @@ use conundrum::{
     lifted_models::primitives::{bytes::Bytes, date_time::DateTime, db_id::DatabaseId},
 };
 use conundrum_fs::models::user_workspace::workspace_relative_path_strings::WorkspaceRelativeStringPath;
+use conundrum_macros::{DBSchema, DatabaseEntity};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 use crate::vector::models::ai::ai_interactions::AIInteractions;
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DBSchema)]
 pub struct BinaryFileModel {
     pub id: DatabaseId,
     pub ws_path: Option<WorkspaceRelativeStringPath>,
@@ -21,18 +22,4 @@ pub struct BinaryFileModel {
     pub ai: AIInteractions,
     pub ctime: DateTime,
     pub utime: DateTime,
-}
-
-impl<'a> DBSchema<'a> for BinaryFileModel {
-    fn arrow_fields(
-        )
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(DatabaseId::field_definition("id", false)),
-                Arc::new(workspace_relative_path_field("ws_path", true)),
-                Arc::new(Bytes::field_definition_large("data", false)),
-                Arc::new(AIInteractions::field_definition("ai", false)),
-                Arc::new(DateTime::field_definition("ctime", false)),
-                Arc::new(DateTime::field_definition("utime", false)),])
-    }
 }
