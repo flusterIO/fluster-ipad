@@ -3,7 +3,7 @@ use crate::{
     ecosystem::db::{db_traits::db_entity::DBEntity, tables::DatabaseTable},
     lifted_models::primitives::db_id::DatabaseId,
 };
-use conundrum_macros::DatabaseEntity;
+use conundrum_macros::{DBSchema, DatabaseEntity};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 

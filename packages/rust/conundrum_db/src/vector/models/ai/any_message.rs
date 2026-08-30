@@ -11,7 +11,7 @@ use conundrum::{
     },
     ecosystem::{
         db::{db::ArcMutexDB, db_traits::entity_crud::EntityCRUD},
-        error_handling::db_error::DatabaseResult,
+        error_handling::{ai_error::AIResult, db_error::DatabaseResult},
     },
     lang::runtime::run_conundrum::ParseConundrumOptions,
 };
@@ -39,7 +39,7 @@ impl Chunk<ParseConundrumOptions, MessageChunk, ServerState> for AnyChatMessage 
     async fn try_chunk(&self,
                        opts: ParseConundrumOptions,
                        state: &std::sync::Arc<ServerState>)
-    -> crate::ecosystem::error_handling::ai_error::AIResult<(crate::ecosystem::error_handling::ai_error::AIResult<Vec<MessageChunk>>, crate::ecosystem::error_handling::ai_error::AIResult<Vec<MessageChunk>>)>{
+                       -> AIResult<Vec<MessageChunk>> {
         let (body, sender) = {
             match self {
                 Self::User(u) => (u.body.clone(), ChatMessageSender::User),

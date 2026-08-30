@@ -1,5 +1,5 @@
 use conundrum::ecosystem::db::tables::DatabaseTable;
-use conundrum_macros::DatabaseEntity;
+use conundrum_macros::{DBSchema, DatabaseEntity};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 

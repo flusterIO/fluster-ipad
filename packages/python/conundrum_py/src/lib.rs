@@ -1,5 +1,10 @@
 use pyo3::prelude::*;
 
+// #[pymodule]
+// mod my_module {
+//     const VERSION: &str = "1.0.0";
+// }
+
 #[pyfunction]
 fn hello_from_bin() -> String {
     "Hello from conundrum-py!".to_string()

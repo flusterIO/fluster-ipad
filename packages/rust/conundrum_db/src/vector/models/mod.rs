@@ -93,5 +93,4 @@ pub mod taggables;
 pub mod text;
 pub mod themeing;
 pub mod utility;
-pub mod vector;
 pub mod workspace;

@@ -31,8 +31,9 @@ pub fn filter_one<T>(items: Vec<T>) -> DatabaseResult<Option<T>>
     }
 }
 
-pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
-    DBEntity<'a, IDType> + Clone + Serialize {
+pub trait EntityCRUD<'a, UpdatePartial: DBSchema<'a> + Clone + Serialize>:
+    DBEntity<'a, Self::IDType> + Clone + Serialize {
+    type IDType: DatabaseIdentifiable;
     async fn save_many(items: Vec<Self>, db: ArcMutexDB) -> DatabaseResult<()>
         where Self: Sized {
         let schema = Self::schema().map(Arc::new)?;
@@ -87,7 +88,7 @@ pub trait EntityCRUD<'a, IDType: DatabaseIdentifiable, UpdatePartial: DBSchema<'
         Ok(())
     }
 
-    async fn delete_by_primary_key(id: IDType, db: ArcMutexDB) -> DatabaseResult<()> {
+    async fn delete_by_primary_key(id: Self::IDType, db: ArcMutexDB) -> DatabaseResult<()> {
         Self::delete_by_predicate(id.to_predicate(Self::primary_key()).as_str(), db).await
     }
 

@@ -19,11 +19,46 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     let struct_name = &input.ident;
 
     let partial_name = syn::Ident::new(&format!("{struct_name}Partial"), struct_name.span());
+    let table_name = input.table.clone();
+    let db_attr = match input.in_source_crate {
+        true => {
+            if let Some(um) = input.unit.clone() {
+                let unit_type = um.ty.clone();
+                quote! {
+                    #[db(table = #table_name, source_crate = true, unit = #unit_type)]
+                }
+            } else {
+                quote! {
+                    #[db(table = #table_name, source_crate = true)]
+                }
+            }
+        }
+        false => {
+            if let Some(um) = input.unit.clone() {
+                let unit_type = um.ty.clone();
+                quote! {
+                    #[db(table = #table_name, unit = #unit_type)]
+                }
+            } else {
+                quote! {
+                    #[db(table = #table_name)]
+                }
+            }
+        }
+    };
+    if let Some(um) = &input.unit {
+        let partial_nested_type = um.ty.clone();
+        return Ok(quote! {
+        #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, specta::Type, fake::Dummy, conundrum_macros::DBSchema)]
+        #db_attr
+        pub struct #partial_name(#partial_nested_type);
+        });
+    }
 
     let fields = input.fields.clone();
 
     let mut partial_fields = Vec::new();
-    let primary_field = input.primary_field()?;
+    let primary_field = input.primary_field().ok();
 
     for field in fields {
         let field_ident = field.ident.clone();
@@ -36,7 +71,7 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
 
         let field_type = &field.ty;
 
-        if options.required || field == primary_field.clone() {
+        if options.required || primary_field.is_some_and(|x| *x == field) {
             partial_fields.push(quote! {
                                     pub #field_ident: #field_type
                                 });
@@ -48,7 +83,8 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     }
 
     Ok(quote! {
-        #[derive(Debug, Clone)]
+        #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, specta::Type, fake::Dummy, conundrum_macros::DBSchema)]
+        #db_attr
         pub struct #partial_name {
             #(#partial_fields),*
         }

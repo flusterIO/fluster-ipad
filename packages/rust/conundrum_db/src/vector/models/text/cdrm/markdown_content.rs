@@ -16,6 +16,8 @@ use conundrum::{
     },
     lifted_models::primitives::db_id::DatabaseId,
 };
+use fake::Dummy;
+use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{
     ecosystem_data::server_state::server_state::ServerState,

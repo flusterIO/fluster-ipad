@@ -20,7 +20,7 @@ pub trait SeedContent {
 
 pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerStateType>:
     Chunk<ParseParameters, ChunkType, ServerStateType>
-    where ChunkType: DBSchema<'a> + EntityCRUD<'a, DatabaseId, PartialUpdateType> + Clone,
+    where ChunkType: DBSchema<'a> + EntityCRUD<'a, PartialUpdateType> + Clone,
           PartialUpdateType: Clone + DBSchema<'a> {
     fn table() -> DatabaseTable;
     async fn try_seed(&self,

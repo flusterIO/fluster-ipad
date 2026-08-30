@@ -257,24 +257,6 @@ pub struct Model {
 
     pub table: syn::Path,
     pub partial: Option<syn::Path>,
-
-    /// The fields used by this database model.
-    ///
-    /// For a normal struct:
-    ///
-    ///     struct Foo {
-    ///         id: DatabaseId,
-    ///         name: String,
-    ///     }
-    ///
-    /// these are Foo's fields.
-    ///
-    /// For a unit/newtype model:
-    ///
-    ///     #[db(unit = TextBasedChunk)]
-    ///     struct CdrmChunk(TextBasedChunk);
-    ///
-    /// these are TextBasedChunk's fields.
     pub fields: Vec<ModelField>,
 
     /// The underlying type when this model is a newtype.

@@ -96,5 +96,3 @@ impl<'a> DBEntity<'a, DatabaseId> for GitRepositoryEntity {
         self.id = value.clone()
     }
 }
-
-impl<'a> EntityCRUD<'a, DatabaseId, GitRepositoryPartial> for GitRepositoryEntity {}
