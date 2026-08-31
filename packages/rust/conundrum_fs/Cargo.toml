@@ -31,6 +31,8 @@ pathdiff = "0.2.3"
 specta = { workspace = true, features = ["tokio", "chrono", "uuid", "url"] }
 same-file = "1.0.6"
 test-log = "0.2.21"
+serde_arrow = { version = "0.14.2", features = ["arrow-58"] }
+arrow-schema = "58"
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

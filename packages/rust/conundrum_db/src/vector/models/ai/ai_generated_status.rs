@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 // This is the status that represents the amount of input AI had on the creation
 // on a given instance of a database model. AI should always update this field
 // accordingly when updating other parts of a model.
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub enum AIGeneratedStatus {
     /// This was completely written by humans.
     None = 0,

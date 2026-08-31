@@ -11,7 +11,7 @@ use crate::topic_join;
 use std::sync::Arc;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, fake::Dummy, DatabaseEntity)]
-#[db(table = DatabaseTable::AssigmentTopic)]
+#[db(table = DatabaseTable::AssignmentTopic)]
 pub struct AssignmentTopic {
     pub id: DatabaseId,
     pub topic_value: String,

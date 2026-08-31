@@ -42,6 +42,10 @@ impl From<String> for HTMLContent {
 }
 
 impl TextBasedContent<()> for HTMLContent {
+    fn inner_text(&self) -> String {
+        self.0.clone()
+    }
+
     async fn get_parsed_content(&self, _: ()) -> AIResult<String> {
         let res = convert(&self.0, ConversionOptions::default()).map_err(|e| {
                                                                     log::error!("HTML Conversion error: {:#?}", e);

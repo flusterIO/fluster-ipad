@@ -52,7 +52,7 @@ impl EcosystemSettingModel {
     }
 }
 
-impl<'a> ArrowFields<'a> for EcosystemSettingModel {
+impl ArrowFields for EcosystemSettingModel {
     fn arrow_fields(
         )
         -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
@@ -61,13 +61,8 @@ impl<'a> ArrowFields<'a> for EcosystemSettingModel {
     }
 }
 
-impl<'a> DBEntity for EcosystemSettingModel {
+impl DBSchema for EcosystemSettingModel {
     type IDType = UniqueSettingKey;
-    type PartialUpdateType = EcosystemSettingModel;
-
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::EcosystemSetting
-    }
 
     fn merge_keys() -> &'static [&'static str] {
         &["key"]
@@ -88,7 +83,7 @@ impl<'a> DBEntity for EcosystemSettingModel {
     fn get_record_batch(data: Vec<Self>)
                         -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<arrow_array::RecordBatch>
         where Self: Sized + Clone + Serialize {
-        let schema = Self::schema()?;
+        let schema = <Self as DBSchema>::schema()?;
         let mut keys = Vec::new();
         let mut datas = Vec::new();
         for item in data {
@@ -103,5 +98,13 @@ impl<'a> DBEntity for EcosystemSettingModel {
             RecordBatch::try_new(Arc::new(schema),
                                  vec![Arc::new(StringArray::from(keys)), Arc::new(StringArray::from(datas)),]).unwrap();
         Ok(batch)
+    }
+}
+
+impl DBEntity for EcosystemSettingModel {
+    type PartialUpdateType = EcosystemSettingModel;
+
+    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
+        DatabaseTable::EcosystemSetting
     }
 }

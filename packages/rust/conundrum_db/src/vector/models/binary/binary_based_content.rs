@@ -20,27 +20,25 @@ use crate::vector::models::{
         binary::Binary, binary_based_content_trait::BinaryBasedContent as BinaryBasedContentTrait,
         binary_based_content_wrapper_trait::BinaryBasedContentWrapper,
     },
-    taggables::taggables::Taggables,
+    taggables::{subject::Subject, tag_list::TagList, taggables::Taggables, topic::Topic},
     text::text_based_content::text_based_content_trait::TextBasedContent as TextBasedContentTrait,
 };
 
-#[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, DBSchema, DBPartial)]
-pub struct BinaryBasedContent<ContentType, ChunkType, ParseParameters>
-    where ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug,
-          Self: BinaryBasedContentWrapper,
-          ChunkType: Serialize + Debug {
+#[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, DBSchema, DBPartial, Dummy)]
+pub struct BinaryBasedContent<'a, ChunkType, ParseParameters>
+    where ChunkType: Serialize + Debug + Deserialize<'a> + Dummy<Faker> + Debug,
+          Self: BinaryBasedContentWrapper<'a, ParseParameters, ChunkType> {
     pub id: DatabaseId,
-    pub content: <Self as BinaryBasedContentWrapper>::ContentType,
+    pub content: <Self as BinaryBasedContentWrapper<'a, ParseParameters, ChunkType>>::ContentType,
     pub title: Option<String>,
     pub ai_generated: AIGeneratedStatus,
-    pub taggables: Taggables,
     pub ws_path: Option<WorkspaceRelativeStringPath>,
     pub ctime: DateTime,
     pub utime: DateTime,
     pub ai: AIInteractions,
 }
 
-impl<ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug,
+impl<ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug + specta::Type + Clone,
      ChunkType: Serialize + Debug,
      ParseParameters> Dummy<Faker> for BinaryBasedContent<ContentType, ChunkType, ParseParameters>
 {
@@ -49,8 +47,8 @@ impl<ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType> + Serializ
     }
 }
 
-impl<ContentType, ChunkType, ParseParameters> BinaryBasedContentWrapper
-    for BinaryBasedContent<ContentType, ChunkType, ParseParameters>
+impl<'a, ContentType, ChunkType, ParseParameters> BinaryBasedContentWrapper<'a, ParseParameters, ChunkType>
+    for BinaryBasedContent<'a, ChunkType, ParseParameters> where ContentType: BinaryBasedContentTrait<ParseParameters, ChunkType>
 {
     type ContentType = ContentType;
 

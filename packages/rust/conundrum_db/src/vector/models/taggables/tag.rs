@@ -31,7 +31,6 @@ use crate::vector::models::{
 pub static TAGGABLE_PRIMARY_KEY: &str = "value";
 pub static TAGGABLE_MERGE_KEYS: &[&str] = &[TAGGABLE_PRIMARY_KEY];
 
-#[serde_as]
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, Type, DatabaseEntity)]
 #[db(table = DatabaseTable::Tag)]
 pub struct Tag {

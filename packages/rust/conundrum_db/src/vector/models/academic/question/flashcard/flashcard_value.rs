@@ -101,9 +101,8 @@ impl DatabaseFieldRepresentation<DatabaseResult<String>> for FlashcardValue {
     }
 }
 
-impl DatabaseField<Arc<Field>> for FlashcardValue {
-    fn field_definition(field_key: &'static str, nullable: bool) -> Arc<lancedb::arrow::arrow_schema::Field> {
-        let r = String::field_definition(field_key, nullable);
-        Arc::new(r)
+impl<T> DatabaseField<T> for FlashcardValue {
+    fn field_definition(field_key: &'static str, nullable: bool) -> Field {
+        String::field_definition(field_key, nullable)
     }
 }

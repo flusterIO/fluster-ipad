@@ -45,10 +45,11 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     };
     if let Some(um) = &input.unit {
         let partial_nested_type = um.ty.clone();
+        let crate_id = input.conundrum_crate_import();
         return Ok(quote! {
         #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, specta::Type, fake::Dummy, conundrum_macros::DBSchema)]
         #db_attr
-        pub struct #partial_name(#partial_nested_type);
+        pub struct #partial_name(<#partial_nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::PartialUpdateType);
         });
     }
 
@@ -78,13 +79,6 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
                                 });
         }
     }
-
-    let generics = input.generics.clone();
-
-    println!("Generics: {}",
-             quote! {
-                 #generics
-             });
 
     Ok(quote! {
         #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, specta::Type, fake::Dummy, conundrum_macros::DBSchema)]

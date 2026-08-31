@@ -13,6 +13,7 @@ use conundrum::{
     },
     lifted_models::primitives::db_id::DatabaseId,
 };
+use serde::Serialize;
 
 pub trait SeedContent {
     async fn try_seed(&self, db: ArcMutexDB) -> DatabaseResult<()>;
@@ -20,8 +21,8 @@ pub trait SeedContent {
 
 pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerStateType>:
     Chunk<ParseParameters, ChunkType, ServerStateType>
-    where ChunkType: DBSchema + EntityCRUD<'a, PartialUpdateType> + Clone,
-          PartialUpdateType: Clone + DBSchema {
+    where ChunkType: DBSchema + EntityCRUD<'a, PartialUpdateType> + Clone + Serialize,
+          PartialUpdateType: Clone + DBSchema + Serialize {
     fn table() -> DatabaseTable;
     async fn try_seed(&self, db: ArcMutexDB, opts: ParseParameters, state: Arc<ServerStateType>) -> DatabaseResult<()> {
         let chunks = self.try_chunk(opts, Arc::clone(&state)).await.map_err(|e| {

@@ -2,7 +2,10 @@ use std::sync::Arc;
 
 use conundrum::{
     ecosystem::{
-        db::{db::ArcMutexDB, db_traits::entity_crud::EntityCRUD},
+        db::{
+            db::ArcMutexDB,
+            db_traits::{db_entity::DBEntity, entity_crud::EntityCRUD},
+        },
         error_handling::db_error::DatabaseResult,
     },
     lang::{lib::shared::utility_types::ArcTokioMutex, runtime::queries::get_title::get_title_group},
@@ -52,7 +55,7 @@ pub async fn update_database_from_parsed_cdrm(content: MdxParsingResult,
     };
 
     let cloned_db = Arc::clone(&db);
-    CdrmModel::merge_by_primary_key(vec![model.clone()], cloned_db).await?;
+    <CdrmModel as EntityCRUD>::merge_by_primary_key(vec![model.clone()], cloned_db).await?;
     let existing_frontmatter = model.get_related_frontmatter(Arc::clone(&db)).await?;
     if let Some(new_frontmatter) = match existing_frontmatter {
         Some(mut fm) => {
@@ -68,7 +71,7 @@ pub async fn update_database_from_parsed_cdrm(content: MdxParsingResult,
                                                                     source_type: FrontMatterSourceType::Cdrm,
                                                                     data: fm.clone() }),
     } {
-        FrontMatter::merge_by_primary_key(vec![new_frontmatter], Arc::clone(&db)).await?;
+        <FrontMatter as EntityCRUD>::merge_by_primary_key(vec![new_frontmatter], Arc::clone(&db)).await?;
     }
 
     let mut ctx = context.clone().lock_owned().await;

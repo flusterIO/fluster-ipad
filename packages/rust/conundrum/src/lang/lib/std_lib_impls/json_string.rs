@@ -2,6 +2,7 @@ use crate::ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult};
 
 pub trait QuotedString {
     fn to_quoted_string(&self) -> DatabaseResult<String>;
+    fn to_quoted_string_with_fallback(&self) -> String;
 }
 
 impl QuotedString for String {
@@ -11,5 +12,9 @@ impl QuotedString for String {
                                                 DatabaseError::SerializationError
                                             })?;
         Ok(s)
+    }
+
+    fn to_quoted_string_with_fallback(&self) -> String {
+        self.to_quoted_string().unwrap_or(format!("\"{}\"", self.clone()))
     }
 }

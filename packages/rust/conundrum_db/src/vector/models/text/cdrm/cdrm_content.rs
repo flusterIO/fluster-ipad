@@ -24,7 +24,16 @@ impl From<String> for CdrmContent {
     }
 }
 
+impl From<CdrmContent> for String {
+    fn from(value: CdrmContent) -> Self {
+        value.inner_text()
+    }
+}
+
 impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
+    fn inner_text(&self) -> String {
+        self.0.clone()
+    }
     async fn get_parsed_content(&self,
         opts: ParseConundrumOptions)
         -> AIResult<String> {

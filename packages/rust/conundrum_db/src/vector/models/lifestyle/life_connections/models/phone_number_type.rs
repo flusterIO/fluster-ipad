@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum::ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::db_error::DatabaseError};
 use fake::Dummy;
 
 /// The type of phone number.
@@ -14,6 +14,12 @@ pub enum PhoneNumberType {
     Emergency,
     /// Cannot be more than 20 characters long.
     Other(String),
+}
+
+impl DatabaseField for PhoneNumberType {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        String::field_definition(field_key, nullable)
+    }
 }
 
 impl Display for PhoneNumberType {

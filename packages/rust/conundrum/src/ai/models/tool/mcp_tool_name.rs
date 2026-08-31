@@ -1,6 +1,12 @@
 use strum::IntoEnumIterator;
 
-use crate::ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::db_error::DatabaseError};
+use crate::{
+    ecosystem::{
+        db::db_traits::{db_field::DatabaseField, db_identifiable::DatabaseIdentifiable},
+        error_handling::db_error::DatabaseError,
+    },
+    lang::lib::std_lib_impls::json_string::QuotedString,
+};
 
 #[derive(serde::Serialize,
            serde::Deserialize,
@@ -40,5 +46,11 @@ impl From<MCPToolName> for String {
 impl DatabaseField for MCPToolName {
     fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
         String::field_definition(field_key, nullable)
+    }
+}
+
+impl DatabaseIdentifiable for MCPToolName {
+    fn to_predicate(&self, field_key: &str) -> String {
+        format!("{} = {}", field_key, String::to_quoted_string_with_fallback(&self.to_string()))
     }
 }

@@ -219,7 +219,7 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: true,
                                                                  description: indoc! {"
-                        This table holds assigments for the user. Query it often when the user is studying or focused on an academic task to help them meet their deadlines and accomplish their goals.
+                        This table holds assignments for the user. Query it often when the user is studying or focused on an academic task to help them meet their deadlines and accomplish their goals.
                         "}.to_string() },
             DatabaseTable::AssignmentTag => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
@@ -253,6 +253,10 @@ impl From<DatabaseTable> for DBTableDescription {
             },
             DatabaseTable::PhoneContact => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
             Ths table holds phone numbers of people and places that are important to the user. Save information here as needed using the tools available to you, and query it as needed to help the user manage their lives.
+                "}.to_string()
+            },
+            DatabaseTable::Alarm => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
+                This table holds alarms for the user. Query it as needed, especially when you first start a conversation with the user to keep them on top of up coming due dates.
                 "}.to_string()
             },
             DatabaseTable::DocumentationChunk => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"

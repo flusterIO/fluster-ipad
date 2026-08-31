@@ -113,6 +113,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "short_term_goal")]
     #[serde(rename = "short_term_goal")]
     ShortTermGoal,
+    #[strum(to_string = "alarm")]
+    #[serde(rename = "alarm")]
+    Alarm,
     #[strum(to_string = "street_address")]
     #[serde(rename = "street_address")]
     StreetAddress,

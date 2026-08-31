@@ -6,12 +6,21 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 use crate::{
-    ecosystem::db::db_traits::db_field::DatabaseField, lang::runtime::state::conundrum_error::ConundrumError,
+    ecosystem::db::db_traits::{db_field::DatabaseField, db_identifiable::DatabaseIdentifiable},
+    lang::{lib::std_lib_impls::json_string::QuotedString, runtime::state::conundrum_error::ConundrumError},
     testing::faker_generators::fake_words_as_string::fake_words_as_string,
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 pub struct CaseInsensitiveString(String);
+
+impl DatabaseIdentifiable for CaseInsensitiveString {
+    fn to_predicate(&self, field_key: &str) -> String {
+        // TODO: I'm pretty sure there's some syntax to cast the data to lowercase as
+        // well. This will be broken without that.
+        format!("{} = {}", field_key, self.0.to_lowercase().to_quoted_string_with_fallback())
+    }
+}
 
 impl Dummy<String> for CaseInsensitiveString {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(_: &String, _: &mut R) -> Self {

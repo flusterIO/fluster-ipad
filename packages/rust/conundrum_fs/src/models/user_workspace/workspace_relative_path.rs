@@ -1,6 +1,9 @@
 use std::path::PathBuf;
 
-use conundrum::ecosystem::error_handling::conundrum_fs_error::ConundrumFSResult;
+use arrow_schema::{Field, Fields};
+use conundrum::ecosystem::{
+    db::db_traits::db_field::DatabaseField, error_handling::conundrum_fs_error::ConundrumFSResult,
+};
 use serde::{Deserialize, Serialize};
 
 use crate::models::user_workspace::cdrm_path_buf::CDRMPathBuf;
@@ -24,5 +27,18 @@ impl WorkspaceRelativePath<PathBuf> {
             log::warn!("Attempted to get a nested path from a parent that isn't that path's parent.");
             Err(conundrum::ecosystem::error_handling::conundrum_fs_error::ConundrumFSError::PathSerializationError)
         }
+    }
+}
+
+impl DatabaseField for WorkspaceRelativePath {
+    fn field_definition(field_key: &'static str, nullable: bool) -> Field {
+        Field::new(field_key.to_string(),
+                   arrow_schema::DataType::Struct(Fields::from(vec![Field::new("workspace_path",
+                                                                               arrow_schema::DataType::Utf8,
+                                                                               false),
+                                                                    Field::new("relative_path",
+                                                                               arrow_schema::DataType::Utf8,
+                                                                               false),])),
+                   nullable)
     }
 }

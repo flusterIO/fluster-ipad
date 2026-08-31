@@ -3569,6 +3569,7 @@ name = "conundrum_fs"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "arrow-schema",
  "conundrum",
  "conundrum_config",
  "dirs 6.0.0",
@@ -3582,6 +3583,7 @@ dependencies = [
  "pathdiff",
  "same-file",
  "serde",
+ "serde_arrow",
  "specta",
  "strum 0.27.2",
  "tempfile",

@@ -22,6 +22,10 @@ impl QuotedString for DatabaseId {
     fn to_quoted_string(&self) -> crate::ecosystem::error_handling::db_error::DatabaseResult<String> {
         self.0.to_quoted_string()
     }
+
+    fn to_quoted_string_with_fallback(&self) -> String {
+        self.to_quoted_string().unwrap_or(format!("\"{}\"", self.0.clone()))
+    }
 }
 
 impl DatabaseIdentifiable for DatabaseId {

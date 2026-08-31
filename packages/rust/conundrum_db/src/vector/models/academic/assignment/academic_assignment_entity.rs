@@ -16,7 +16,7 @@ use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
-#[db(table = DatabaseTable::AssigmentEntity)]
+#[db(table = DatabaseTable::Assignment)]
 pub struct AssignmentEntity {
     pub id: DatabaseId,
     pub label: String,

@@ -3,7 +3,11 @@ use std::sync::Arc;
 use conundrum::{
     ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk, conundrum_agent::ConundrumAgent},
     ecosystem::{
-        db::{db::ArcMutexDB, db_traits::entity_crud::EntityCRUD, tables::DatabaseTable},
+        db::{
+            db::ArcMutexDB,
+            db_traits::{db_entity::DBEntity, entity_crud::EntityCRUD},
+            tables::DatabaseTable,
+        },
         error_handling::{
             ai_error::{AIError, AIResult},
             db_error::{DatabaseError, DatabaseResult},
@@ -57,8 +61,12 @@ impl Chunk<ParseConundrumOptions, DocumentationChunk, ServerState> for SeedDocum
     }
 }
 
-impl<'a> SeedChunks<'a, DocumentationChunk, DocumentationChunk, ParseConundrumOptions, ServerState>
-    for SeedDocumentation
+impl<'a>
+    SeedChunks<'a,
+               DocumentationChunk,
+               <DocumentationChunk as DBEntity>::PartialUpdateType,
+               ParseConundrumOptions,
+               ServerState> for SeedDocumentation
 {
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         DatabaseTable::DocumentationChunk
