@@ -12,6 +12,7 @@ use conundrum_macros::DatabaseEntity;
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, fake::Dummy, DatabaseEntity)]
 #[db(table = DatabaseTable::AssignmentTag)]
 pub struct AssignmentTag {
+    pub id: DatabaseId,
     pub tag_value: String,
     pub assignment_id: DatabaseId,
 }

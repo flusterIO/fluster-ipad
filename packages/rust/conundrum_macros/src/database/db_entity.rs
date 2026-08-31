@@ -17,34 +17,17 @@ pub fn generate_db_entity(model: &Model) -> Result<proc_macro2::TokenStream, syn
     let ident = &model.ident;
     let table = &model.table_required()?;
 
-    let as_entity = &model.as_db_entity();
+    let as_entity = &model.as_db_entity_path();
     let crate_id = &model.conundrum_crate_import();
 
     if let Some(um) = &model.unit {
         let ty = um.ty.clone();
         return Ok(quote! {
         impl #crate_id::ecosystem::db::db_traits::db_entity::DBEntity for #ident {
-            type PartialUpdateType = <#ty as #as_entity>::PartialUpdateType;
-            type IDType = <#ty as #as_entity>::IDType;
+            type PartialUpdateType = <#ty as #as_entity::DBEntity>::PartialUpdateType;
 
             fn table() -> #crate_id::ecosystem::db::tables::DatabaseTable {
                 #table
-            }
-
-            fn merge_keys() -> &'static [&'static str] {
-               <#ty as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::merge_keys()
-            }
-
-            fn primary_key() -> &'static str {
-               <#ty as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::primary_key()
-            }
-
-            fn primary_value(&self) -> <#ty as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::IDType {
-               self.primary_value().clone()
-            }
-
-            fn set_primary_value(&mut self, value: <#ty as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::IDType) {
-                self.set_primary_value(value.clone());
             }
         }
         });
@@ -61,26 +44,9 @@ pub fn generate_db_entity(model: &Model) -> Result<proc_macro2::TokenStream, syn
     Ok(quote! {
         impl<'a> #crate_id::ecosystem::db::db_traits::db_entity::DBEntity for #ident {
             type PartialUpdateType = #partial_type;
-            type IDType = #primary_type;
 
             fn table() -> #crate_id::ecosystem::db::tables::DatabaseTable {
                 #table
-            }
-
-            fn merge_keys() -> &'static [&'static str] {
-                &[#primary_key]
-            }
-
-            fn primary_key() -> &'static str {
-                #primary_key
-            }
-
-            fn primary_value(&self) -> <Self as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::IDType {
-                self.#primary_ident.clone()
-            }
-
-            fn set_primary_value(&mut self, value: <Self as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::IDType) {
-                self.#primary_ident = value.clone();
             }
         }
     })

@@ -16,20 +16,17 @@ pub fn derive_db_partial(input: TokenStream) -> TokenStream {
 }
 
 pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
-    let struct_name = &input.ident;
-
-    let partial_name = syn::Ident::new(&format!("{struct_name}Partial"), struct_name.span());
-    let table_name = input.table_required()?;
+    let partial_name = input.partial_name();
     let db_attr = match input.in_source_crate {
         true => {
             if let Some(um) = input.unit.clone() {
                 let unit_type = um.ty.clone();
                 quote! {
-                    #[db(table = #table_name, source_crate = true, unit = #unit_type)]
+                    #[db(source_crate = true, unit = #unit_type)]
                 }
             } else {
                 quote! {
-                    #[db(table = #table_name, source_crate = true)]
+                    #[db(source_crate = true)]
                 }
             }
         }
@@ -37,11 +34,11 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
             if let Some(um) = input.unit.clone() {
                 let unit_type = um.ty.clone();
                 quote! {
-                    #[db(table = #table_name, unit = #unit_type)]
+                    #[db(unit = #unit_type)]
                 }
             } else {
                 quote! {
-                    #[db(table = #table_name)]
+                    #[db(source_crate = false)]
                 }
             }
         }
@@ -81,6 +78,13 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
                                 });
         }
     }
+
+    let generics = input.generics.clone();
+
+    println!("Generics: {}",
+             quote! {
+                 #generics
+             });
 
     Ok(quote! {
         #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, specta::Type, fake::Dummy, conundrum_macros::DBSchema)]

@@ -54,8 +54,58 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
         }
     };
 
+    let primary_ident = &input.primary_field()?.ident;
+    let primary_type = &input.primary_field()?.ty;
+    let primary_key = input.primary_field()?.key.as_str();
+
+    let schema_impl = match input.unit.clone() {
+        Some(um) => {
+            let ty = um.ty.clone();
+            quote! {
+            fn merge_keys() -> &'static [&'static str] {
+               <#ty as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::merge_keys()
+            }
+
+            fn primary_key() -> &'static str {
+               <#ty as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::primary_key()
+            }
+
+            fn primary_value(&self) -> <#ty as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::IDType {
+               self.primary_value().clone()
+            }
+
+            fn set_primary_value(&mut self, value: <#ty as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::IDType) {
+                self.set_primary_value(value.clone());
+            }
+            }
+        }
+        None => {
+            quote! {
+            fn merge_keys() -> &'static [&'static str] {
+                &[#primary_key]
+            }
+
+            fn primary_key() -> &'static str {
+                #primary_key
+            }
+
+            fn primary_value(&self) -> <Self as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::IDType {
+                self.#primary_ident.clone()
+            }
+
+            fn set_primary_value(&mut self, value: <Self as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::IDType) {
+                self.#primary_ident = value.clone();
+            }
+            }
+        }
+    };
+
+    let id_type = input.primary_field_with_nested_type_fallback();
     Ok(quote! {
-        impl #crate_id::ecosystem::db::db_traits::db_entity::DBSchema for #name {}
+        impl #crate_id::ecosystem::db::db_traits::db_entity::DBSchema for #name {
+            type IDType = #id_type;
+            #schema_impl
+        }
         impl #crate_id::ecosystem::db::db_traits::db_entity::ArrowFields for #name {
             fn arrow_fields()
                 -> #crate_id::ecosystem::error_handling::db_error::DatabaseResult<

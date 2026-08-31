@@ -267,20 +267,28 @@ pub struct Model {
 }
 
 impl Model {
-    /// Extract the UnitModel from the wrapper's tuple field.
-    ///
-    /// This validates:
-    ///
-    ///     #[db(unit = TextBasedChunk)]
-    ///     struct CdrmChunk(TextBasedChunk);
-    ///
-    /// and rejects things such as:
-    ///
-    ///     struct CdrmChunk(Foo, Bar);
-    ///
-    /// or:
-    ///
-    ///     struct CdrmChunk(SomeOtherType);
+    pub fn primary_field_with_nested_type_fallback(&self) -> TokenStream {
+        self.primary_field()
+            .map(|x| {
+                let ty = x.ty.clone();
+                quote! {
+                  #ty
+                }
+            })
+            .unwrap_or_else(|_| {
+                let nested_type =
+                    self.unit
+                        .as_ref()
+                        .cloned()
+                        .expect("You must provide a 'unit' value if the struct does not have an id field.")
+                        .ty;
+                let crate_id = self.conundrum_crate_import();
+                quote! {
+                    <#nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::IDType
+                }
+            })
+    }
+
     fn extract_unit(fields: &syn::Fields, unit_path: Option<&syn::Path>) -> Result<Option<UnitModel>, syn::Error> {
         let Some(unit_path) = unit_path else {
             return Ok(None);
@@ -469,19 +477,19 @@ impl Model {
             .ok_or_else(|| syn::Error::new(Span::call_site(), "database model requires #[db(table = ...)]"))
     }
 
-    pub fn as_db_entity(&self) -> TokenStream {
+    pub fn as_db_entity_path(&self) -> TokenStream {
         let id_type = self.primary_field().ok();
         let crate_id = self.conundrum_crate_import();
         match id_type {
             Some(um) => {
                 let id_type = um.ty.clone();
                 quote! {
-                    #crate_id::ecosystem::db::db_traits::db_entity::DBEntity
+                    #crate_id::ecosystem::db::db_traits::db_entity
                 }
             }
             None => {
                 quote! {
-                    #crate_id::ecosystem::db::db_traits::db_entity::DBEntity
+                    #crate_id::ecosystem::db::db_traits::db_entity
                 }
             }
         }

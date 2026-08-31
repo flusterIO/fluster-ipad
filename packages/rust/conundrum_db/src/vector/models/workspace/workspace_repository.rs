@@ -15,8 +15,9 @@ use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
-#[db(table = DatabaseTable::UserWorkspaceRepository)]
+#[db(table = DatabaseTable::WorkspaceRepository)]
 pub struct UserWorkspaceRepository {
+    pub id: DatabaseId,
     pub workspace_root: String,
     pub repository_id: DatabaseId,
 }

@@ -15,8 +15,6 @@ use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::academic::assignment::academic_assignment_entity_partial::AssignmentEntityPartial;
-
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
 #[db(table = DatabaseTable::AssigmentEntity)]
 pub struct AssignmentEntity {

@@ -1,5 +1,5 @@
 pub mod auto_taggable;
-pub mod auto_taggable_partial;
+pub mod join_macros;
 pub mod subject;
 pub mod tag;
 pub mod tag_list;
@@ -9,4 +9,3 @@ pub mod taggable_arrow_schema;
 pub mod taggable_update_partial;
 pub mod taggables;
 pub mod topic;
-pub mod join_macros;

@@ -14,6 +14,7 @@ use crate::vector::models::lifestyle::life_connections::models::phone_number_typ
 #[db(table = DatabaseTable::PhoneContact)]
 pub struct PhoneContact {
     /// The phone number, stored as a string.
+    #[db(primary)]
     pub number: String,
     pub phone_type: Option<PhoneNumberType>,
 }

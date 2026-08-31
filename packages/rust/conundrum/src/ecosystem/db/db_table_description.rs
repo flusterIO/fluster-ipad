@@ -171,6 +171,12 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                     This table holds Conundrum content, an mdx (markdown) like language that is the user's primary input to the Conundrum ecosystem. When the user asks you to create a note, you should usually create a Conundrum note, as it supports most of commonmark markdown. Only attempt to write additional components if you are sure of the related properties and syntaxes, as this language will be many user's first exposure to code and any errors on your end may create a negative experience.
                         "}.to_string() },
+            DatabaseTable::HTML => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds html content that's important to the user. Query it often to help user's advance their knowledge and understanding.
+                        "}.to_string() },
             DatabaseTable::FrontMatter => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,
@@ -243,6 +249,10 @@ impl From<DatabaseTable> for DBTableDescription {
 
             DatabaseTable::StreetAddress => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
             Ths table holds addresses of places that are important to the user. Save information here as needed using the tools available to you, and query it as needed to help the user manage their lives.
+                "}.to_string()
+            },
+            DatabaseTable::PhoneContact => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
+            Ths table holds phone numbers of people and places that are important to the user. Save information here as needed using the tools available to you, and query it as needed to help the user manage their lives.
                 "}.to_string()
             },
             DatabaseTable::DocumentationChunk => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"

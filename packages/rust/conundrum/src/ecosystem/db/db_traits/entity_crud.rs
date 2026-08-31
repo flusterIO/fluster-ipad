@@ -87,7 +87,7 @@ pub trait EntityCRUD<'a, UpdatePartial: DBSchema + Clone + Serialize>: DBEntity 
         Ok(())
     }
 
-    async fn delete_by_primary_key(id: <Self as DBEntity>::IDType, db: ArcMutexDB) -> DatabaseResult<()> {
+    async fn delete_by_primary_key(id: <Self as DBSchema>::IDType, db: ArcMutexDB) -> DatabaseResult<()> {
         Self::delete_by_predicate(id.to_predicate(Self::primary_key()).as_str(), db).await
     }
 

@@ -1,6 +1,4 @@
-use crate::vector::models::academic::question::flashcard::{
-    flashcard_entity_partial::FlashCardEntityPartial, flashcard_value::FlashcardValue,
-};
+use crate::vector::models::academic::question::flashcard::flashcard_value::FlashcardValue;
 use conundrum::{
     ecosystem::db::{
         db_traits::{

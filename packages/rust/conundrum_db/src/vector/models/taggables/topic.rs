@@ -14,7 +14,7 @@ use specta::Type;
 use crate::vector::models::{
     ai::ai_interactions::AIInteractions,
     taggables::{
-        tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY, taggable_fields},
+        tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY},
         tag_location::TagLocation,
         taggable_update_partial::TaggablePartial,
     },

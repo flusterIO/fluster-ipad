@@ -20,12 +20,11 @@ use fake::Dummy;
 use globset::{Glob, GlobMatcher};
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::taggables::{
-    auto_taggable_partial::AutoTaggablePartial, taggable::TaggableVariant, taggable_update_partial::TaggablePartial,
-};
+use crate::vector::models::taggables::{taggable::TaggableVariant, taggable_update_partial::TaggablePartial};
 use specta::Type;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::AutoTaggable)]
 pub struct AutoTaggable {
     pub id: DatabaseId,
     /// The value of the taggable that will be automatically applied.

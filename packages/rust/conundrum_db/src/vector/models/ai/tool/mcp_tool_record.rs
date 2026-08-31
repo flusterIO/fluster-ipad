@@ -18,6 +18,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
 #[db(table = DatabaseTable::MCPToolRecord)]
 pub struct MCPToolRecord {
+    #[db(primary)]
     pub name: MCPToolName,
     pub description: String,
     pub input_schema_json: String,

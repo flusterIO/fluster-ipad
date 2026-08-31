@@ -1,10 +1,10 @@
 use crate::vector::models::ai::ai_interactions::AIInteractions;
-use crate::vector::models::workspace::user_workspace_partial::UserWorkspacePartial;
 use conundrum::ecosystem::db::db_traits::db_entity::DBEntity;
 use conundrum::ecosystem::db::db_traits::db_entity::DBSchema;
 use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
 use conundrum::ecosystem::db::db_traits::into_partial::IntoPartial;
 use conundrum::ecosystem::db::db_traits::validate::ValidateSelf;
+use conundrum::ecosystem::db::tables::DatabaseTable;
 use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
 use conundrum::impl_default_crud;
@@ -27,9 +27,11 @@ static USER_WORKSPACE_PRIMARY_KEY: &str = "root";
 static USER_WORKSPACE_MERGE_KEYS: &[&str] = &[USER_WORKSPACE_PRIMARY_KEY];
 
 #[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::UserWorkspace)]
 pub struct UserWorkspace {
     /// The path to the root of the workspace and the primary key for the
     /// workspace.
+    #[db(primary)]
     pub root: String,
     /// A short, descriptive label for this workspace.
     pub label: Option<String>,
@@ -119,11 +121,12 @@ impl From<String> for UserWorkspace {
 impl IntoPartial<UserWorkspacePartial> for UserWorkspace {
     fn into_partial(&self) -> UserWorkspacePartial {
         UserWorkspacePartial { root: self.root.clone(),
-                               label: self.label.clone(),
+                               label: Some(self.label.clone()),
                                ignore_hidden: Some(self.ignore_hidden),
                                respect_gitignore: Some(self.respect_gitignore),
                                ai: Some(self.ai.clone()),
-                               resource_dir: Some(self.resource_dir.clone()) }
+                               resource_dir: Some(self.resource_dir.clone()),
+                               ctime: Some(self.ctime.clone()) }
     }
 }
 

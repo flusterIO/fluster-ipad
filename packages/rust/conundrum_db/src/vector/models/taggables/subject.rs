@@ -1,5 +1,8 @@
 use conundrum::{
-    ecosystem::db::db_traits::db_entity::{ArrowFields, DBEntity, DBSchema},
+    ecosystem::db::{
+        db_traits::db_entity::{ArrowFields, DBEntity, DBSchema},
+        tables::DatabaseTable,
+    },
     impl_default_crud,
     lifted_models::primitives::{case_insensitive_string::CaseInsensitiveString, date_time::DateTime},
 };
@@ -10,7 +13,7 @@ use serde::{Deserialize, Serialize};
 use crate::vector::models::{
     ai::ai_interactions::AIInteractions,
     taggables::{
-        tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY, taggable_fields},
+        tag::{TAGGABLE_MERGE_KEYS, TAGGABLE_PRIMARY_KEY},
         tag_location::TagLocation,
         taggable_update_partial::TaggablePartial,
     },
@@ -24,7 +27,9 @@ use crate::vector::models::{
 /// **not** a rule that is set in stone and you should follow whatever pattern
 /// the user is using with their tags, topics and subjects.
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, specta::Type, DatabaseEntity)]
+#[db(table = DatabaseTable::Tag)]
 pub struct Subject {
+    #[db(primary)]
     pub value: CaseInsensitiveString,
     pub location: TagLocation,
     pub ctime: DateTime,

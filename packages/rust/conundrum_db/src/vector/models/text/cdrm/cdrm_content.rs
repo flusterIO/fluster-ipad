@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{ecosystem_data::server_state::server_state::ServerState, text::{cdrm::markdown_content::MarkdownContent, text_based_content::{text_based_chunk::TextBasedChunk, text_based_content_trait::TextBasedContent}}};
 
-#[derive(Serialize, Deserialize, Clone, Debug, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy, specta::Type)]
 pub struct CdrmContent(pub String);
 
 impl DatabaseField for CdrmContent {

@@ -3,9 +3,12 @@ use std::sync::Arc;
 use arrow_schema::Field;
 use conundrum::{
     ecosystem::{
-        db::db_traits::{
-            db_entity::{DBEntity, DBSchema},
-            db_field::DatabaseField,
+        db::{
+            db_traits::{
+                db_entity::{DBEntity, DBSchema},
+                db_field::DatabaseField,
+            },
+            tables::DatabaseTable,
         },
         error_handling::db_error::DatabaseResult,
     },
@@ -30,6 +33,7 @@ pub static TAGGABLE_MERGE_KEYS: &[&str] = &[TAGGABLE_PRIMARY_KEY];
 
 #[serde_as]
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, Type, DatabaseEntity)]
+#[db(table = DatabaseTable::Tag)]
 pub struct Tag {
     #[dummy(faker = "fake_words_as_string(0..10)")]
     #[db(primary)]

@@ -27,6 +27,7 @@ use crate::vector::models::{
 /// should query this repository as needed to help this user tackle their short
 /// and long term goals.
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
+#[db(table = DatabaseTable::GitRepository)]
 pub struct GitRepositoryEntity {
     #[serde(default = "DatabaseId::default")]
     pub id: DatabaseId,

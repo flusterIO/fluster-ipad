@@ -4,7 +4,6 @@ use crate::ecosystem::db::db_traits::db_entity::DBSchema;
 macro_rules! impl_default_crud {
     ( $self:ty, $partial:ty, $id_type:ty ) => {
         impl<'a> $crate::ecosystem::db::db_traits::entity_crud::EntityCRUD<'a, $partial> for $self {
-            type IDType = $id_type;
             async fn get_by_predicate(predicate: Option<String>,
                                       pagination: Option<$crate::ecosystem::db::parameters::general::pagination::PaginationParams>,
                                       sort: Option<Vec<$crate::ecosystem::db::parameters::general::sort_query::SortQuery>>,

@@ -25,6 +25,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "cdrm")]
     #[serde(rename = "cdrm")]
     Cdrm,
+    #[strum(to_string = "html")]
+    #[serde(rename = "html")]
+    HTML,
     #[strum(to_string = "front_matter")]
     #[serde(rename = "front_matter")]
     FrontMatter,
@@ -113,6 +116,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "street_address")]
     #[serde(rename = "street_address")]
     StreetAddress,
+    #[strum(to_string = "phone_contact")]
+    #[serde(rename = "phone_contact")]
+    PhoneContact,
     /// --- 'Joining' tables ---
     #[strum(to_string = "workspace_repository")]
     #[serde(rename = "workspace_repository")]

@@ -14,13 +14,12 @@ use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::ecosystem_data::ecosystem_application_settings::{
-    ecosystem_application_action::EcosystemApplicationAction, keyboard_shortcut_partial::KeyboardShortcutPartial,
-};
+use crate::vector::models::ecosystem_data::ecosystem_application_settings::ecosystem_application_action::EcosystemApplicationAction;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
 #[db(table = DatabaseTable::KeyboardShortcut)]
 pub struct KeyboardShortcut {
+    #[db(primary)]
     pub action: EcosystemApplicationAction,
     pub key: String,
     /// The meta key was pressed.

@@ -7,7 +7,7 @@ use conundrum_macros::{DBSchema, DatabaseEntity};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone, Debug, DatabaseEntity, specta::Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, conundrum_macros::DatabaseEntity, specta::Type, Dummy)]
 #[db(table = DatabaseTable::MessageChunk, source_crate = true)]
 pub struct MessageChunk {
     pub id: DatabaseId,

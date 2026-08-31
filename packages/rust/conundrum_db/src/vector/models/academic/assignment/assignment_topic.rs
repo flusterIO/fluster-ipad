@@ -13,6 +13,7 @@ use std::sync::Arc;
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, fake::Dummy, DatabaseEntity)]
 #[db(table = DatabaseTable::AssigmentTopic)]
 pub struct AssignmentTopic {
+    pub id: DatabaseId,
     pub topic_value: String,
     pub topic_id: DatabaseId,
 }
